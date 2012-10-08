@@ -1,5 +1,7 @@
 <resources>
 
     <string name="app_name">Discover</string>
-
+    <string name="username_placeholder">Credit Card User ID</string>
+	<string name="password_placeholder">Credit Card Password</string>
+	<string name="login_button_text">Log In</string>
 </resources>
