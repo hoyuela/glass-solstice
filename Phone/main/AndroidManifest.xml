@@ -10,12 +10,13 @@
 	
     <application
         android:name=".Discover"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/discove_mobile_icn"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" 
         android:allowBackup="false">
+        
         <activity 
-            android:name=".login.LoginActivity"
+            android:name=".login.LandingActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -25,7 +26,22 @@
                 <category android:name="android.intent.category.LAUNCHER" >
                 </category>
             </intent-filter>
-            </activity>
+        </activity>
+            
+        <activity 
+            android:name=".login.LoginActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+       </activity>
+       
+        <activity 
+            android:name=".login.LoggedInLandingPage"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+       </activity>
+
     </application>
 
 </manifest>

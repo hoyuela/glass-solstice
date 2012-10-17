@@ -4,4 +4,5 @@
     <string name="username_placeholder">Credit Card User ID</string>
 	<string name="password_placeholder">Credit Card Password</string>
 	<string name="login_button_text">Log In</string>
+	<string name="card_login_button_text">Secure Credit Card Login</string>
 </resources>
