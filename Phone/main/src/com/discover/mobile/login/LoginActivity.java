@@ -36,6 +36,5 @@ public class LoginActivity extends Activity {
 	private void logIn(){
 		Intent logIn = new Intent(this, LoggedInLandingPage.class);
 		this.startActivity(logIn);
-		
 	}
 }
