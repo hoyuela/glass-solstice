@@ -8,12 +8,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.discover.mobile.commons.*;
+
 public class LoginActivity extends Activity {
 	private Button loginButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		LoginLogout service = new LoginLogout();
+		service.preAuthCheck();
+		
 		setupViews();
 	}
 	
