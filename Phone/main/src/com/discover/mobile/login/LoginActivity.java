@@ -1,15 +1,13 @@
 package com.discover.mobile.login;
 
-import com.discover.mobile.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.discover.mobile.commons.*;
+import com.discover.mobile.R;
+import com.discover.mobile.common.auth.AuthService;
 
 public class LoginActivity extends Activity {
 	private Button loginButton;
@@ -18,7 +16,7 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		LoginLogout service = new LoginLogout();
+		AuthService service = new AuthService();
 		service.preAuthCheck();
 		
 		setupViews();
