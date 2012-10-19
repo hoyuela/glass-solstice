@@ -38,7 +38,7 @@
        </activity>
        
         <activity 
-            android:name=".login.LoggedInLandingPage"
+            android:name=".LoggedInLanding.LoggedInLandingPage"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
