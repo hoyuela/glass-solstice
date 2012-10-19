@@ -43,45 +43,6 @@ public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 		}};
 	}
 	
-//	public void preAuthCheck() {
-////		executor.submit(new Runnable() {
-////
-////			@Override
-////			public void run() {
-////				// TODO Auto-generated method stub
-//				
-//				HttpURLConnection urlConnection = null;
-//				URL url;
-//				int responseCode;
-//				
-//				try {
-//					url = new URL("https://www.discovercard.com/cardsvcs/acs/session/preauthcheck");
-//					
-//					urlConnection = (HttpURLConnection) url.openConnection();
-////					urlConnection.setRequestMethod("GET");
-////					urlConnection.setRequestProperty("X-Client-Platform", "Android");
-////					urlConnection.setRequestProperty("X-Application-Version", "4.00");
-//					
-////					urlConnection.setReadTimeout(15*1000);
-////					urlConnection.connect();
-//					
-//		            responseCode = urlConnection.getResponseCode();
-//		            
-//		            Log.d(TAG, "Response code: " + responseCode);
-//		        } catch (final ClientProtocolException e)  {
-//		        	if(urlConnection != null)
-//		        		urlConnection.disconnect();
-//		            e.printStackTrace();
-//		        } catch (final IOException e) {
-//		        	if(urlConnection != null)
-//		        		urlConnection.disconnect();
-//		            e.printStackTrace();
-//		        }
-////			}
-////			
-////		});
-//	}
-	
 	public class PreAuthResult {
 		// TEMP
 		public int statusCode;
