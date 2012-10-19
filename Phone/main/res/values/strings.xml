@@ -14,4 +14,6 @@
 	<color name="black">#000</color>
 	<color name="blue">#025D96</color>
 	<color name="orange">#FD6C04</color>
+	<string name="feedback_text">Provide Feedback</string>
+	<string name="discover_copyright_text">© 2012 Discover Bank, Member FDIC</string>
 </resources>

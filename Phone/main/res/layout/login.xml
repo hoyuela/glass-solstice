@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/black" >
 
     <ImageView
@@ -9,11 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_image"
-        android:src="@drawable/discover_logo"
-        android:contentDescription="@string/image_description" 
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/image_description"
+        android:src="@drawable/discover_logo" />
 
     <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_image"
@@ -44,7 +45,6 @@
                 android:text="@string/secure_login"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/orange" />
-
         </TableRow>
 
         <TableRow
@@ -100,10 +100,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:paddingRight="16dp"
                 android:textOff="No"
-                android:textOn="Yes" 
-                android:paddingRight="16dp"/>
-
+                android:textOn="Yes" />
         </TableRow>
 
         <TableRow
@@ -136,7 +135,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight=".1"
+                android:layout_weight=".05"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/blue_arrow_small" />
 
@@ -146,26 +145,27 @@
                 android:layout_height="wrap_content"
                 android:layout_weight=".3"
                 android:text="@string/login_button_text" />
-
         </TableRow>
 
         <TableRow
-            android:id="@+id/forgot_id_and_pass_row"
+            android:id="@+id/tableRow2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content" >
 
             <Button
                 android:id="@+id/button3"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:clickable="false"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:text="@string/forgot_id_or_pass_label"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/blue" />
         </TableRow>
 
@@ -173,9 +173,27 @@
             android:id="@+id/table_width_row"
             android:layout_width="320dp"
             android:layout_height="wrap_content" >
-
         </TableRow>
-
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/feedback_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="43dp"
+        android:text="@string/feedback_text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/copyright_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/feedback_textview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="@string/discover_copyright_text" />
 
 </RelativeLayout>
