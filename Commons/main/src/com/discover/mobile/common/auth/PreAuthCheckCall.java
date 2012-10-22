@@ -9,11 +9,9 @@ import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.net.AsyncCallback;
 import com.discover.mobile.common.net.HttpMethod;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.WeakReferenceHandler;
+import com.discover.mobile.common.net.StrongReferenceHandler;
 
 public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
-	
-	private static final String TAG = PreAuthCheckCall.class.getSimpleName();
 	
 	private static final ServiceCallParams STANDARD_PARAMS = new ServiceCallParams() {{
 		method = HttpMethod.GET;
@@ -25,7 +23,7 @@ public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 	public PreAuthCheckCall(final Context context, final AsyncCallback<PreAuthResult> callback) {
 		super(context, STANDARD_PARAMS);
 		
-		handler = new WeakReferenceHandler<PreAuthResult>(callback);
+		handler = new StrongReferenceHandler<PreAuthResult>(callback);
 	}
 	
 	@Override
