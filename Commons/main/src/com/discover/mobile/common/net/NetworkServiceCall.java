@@ -36,7 +36,6 @@ public abstract class NetworkServiceCall<R> {
 		checkPreconditions(context, params);
 		
 		this.context = context;
-		
 		this.params = params;
 	}
 	
@@ -111,8 +110,6 @@ public abstract class NetworkServiceCall<R> {
 		}
 		
 		sendSuccessfulResultToHandler(result);
-		
-		// TODO
 	}
 	
 	private HttpURLConnection createConnection() throws IOException {
@@ -120,7 +117,9 @@ public abstract class NetworkServiceCall<R> {
 		return (HttpURLConnection) fullUrl.openConnection();
 	}
 	
-	private void prepareConnection(final HttpURLConnection conn) {
+	private void prepareConnection(final HttpURLConnection conn) throws IOException {
+		conn.setRequestMethod(params.method.name());
+		
 		setDefaultHeaders(conn);
 		setCustomHeaders(conn);
 		

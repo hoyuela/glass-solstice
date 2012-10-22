@@ -36,7 +36,7 @@ public class LoginActivity extends Activity {
 		
 		Log.e(TAG, "onStart()");
 		
-		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, new AsyncCallback<PreAuthCheckCall.PreAuthResult>() {
+		final AsyncCallback<PreAuthResult> callback = new AsyncCallback<PreAuthCheckCall.PreAuthResult>() {
 			@Override
 			public void success(final PreAuthResult value) {
 				Log.e(TAG, "Status code: " + value.statusCode);
@@ -46,7 +46,8 @@ public class LoginActivity extends Activity {
 			public void error(final Object error) {
 				Log.e(TAG, "Error: " + error);
 			}
-		});
+		};
+		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);
 		preAuthCall.submit();
 	}
 	
