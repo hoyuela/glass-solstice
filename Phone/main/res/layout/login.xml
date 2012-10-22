@@ -182,7 +182,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayout1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp"
+        android:layout_marginTop="64dp"
         android:text="@string/feedback_text"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/white" />
@@ -193,7 +193,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/feedback_textview"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
         android:text="@string/discover_copyright_text" />
 
 </RelativeLayout>

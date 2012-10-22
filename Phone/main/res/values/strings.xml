@@ -16,4 +16,7 @@
 	<color name="orange">#FD6C04</color>
 	<string name="feedback_text">Provide Feedback</string>
 	<string name="discover_copyright_text">© 2012 Discover Bank, Member FDIC</string>
+	<string name="member_title_text">MST0 23075 CARDMEMBER</string>
+	<string name="member_id_text">Discover Card Ending 4545</string>
+	<string name="discover_secured_text">Discover Bank, Member FDIC | SECURED</string>
 </resources>

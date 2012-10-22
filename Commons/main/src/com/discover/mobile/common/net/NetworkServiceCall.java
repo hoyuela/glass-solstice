@@ -21,7 +21,7 @@ import com.google.common.base.Strings;
 
 public abstract class NetworkServiceCall<R> {
 	
-	private static final String TAG = NetworkServiceCall.class.getSimpleName();
+	static final String TAG = NetworkServiceCall.class.getSimpleName();
 	
 	// TODO externalize
 	public static final String BASE_URL = "https://www.discovercard.com";
@@ -39,7 +39,7 @@ public abstract class NetworkServiceCall<R> {
 		this.params = params;
 	}
 	
-	private void checkPreconditions(final Context context, final ServiceCallParams params) {
+	private static void checkPreconditions(final Context context, final ServiceCallParams params) {
 		checkNotNull(context, "context cannot be null");
 		checkNotNull(params.method, "params.method cannot be null");
 		checkArgument(!Strings.isNullOrEmpty(params.path), "params.path should never be empty");
@@ -80,6 +80,8 @@ public abstract class NetworkServiceCall<R> {
 				}
 			}
 		});
+		
+		Log.e(TAG, "submit() done");
 	}
 
 	protected abstract Handler getHandler();
@@ -105,6 +107,8 @@ public abstract class NetworkServiceCall<R> {
 			final InputStream in = conn.getInputStream();
 			
 			result = parseResponse(in, statusCode);
+			
+			in.close();
 		} finally {
 			conn.disconnect();
 		}
@@ -130,7 +134,7 @@ public abstract class NetworkServiceCall<R> {
 		return new URL(BASE_URL + params.path);
 	}
 	
-	private void setDefaultHeaders(final HttpURLConnection conn) {
+	private static void setDefaultHeaders(final HttpURLConnection conn) {
 		conn.setRequestProperty("X-Client-Platform", "Android");
 		conn.setRequestProperty("X-Application-Version", "4.00");
 	}
