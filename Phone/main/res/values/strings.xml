@@ -10,13 +10,16 @@
 	<string name="secure_login">Secure Credit Card Log In</string>
 	<string name="register_now">Register Now </string>
 	<string name="forgot_id_or_pass_label">Forgot User ID or Password?</string>
-	<color name="white">#ffffff</color>
-	<color name="black">#000</color>
-	<color name="blue">#025D96</color>
-	<color name="orange">#FD6C04</color>
+	<string name="login_error">Sorry. The User ID and/or Password does not match our records, or you are not registered. Please try again.</string>
 	<string name="feedback_text">Provide Feedback</string>
 	<string name="discover_copyright_text">© 2012 Discover Bank, Member FDIC</string>
 	<string name="member_title_text">MST0 23075 CARDMEMBER</string>
 	<string name="member_id_text">Discover Card Ending 4545</string>
 	<string name="discover_secured_text">Discover Bank, Member FDIC | SECURED</string>
+	
+	<color name="white">#ffffff</color>
+	<color name="black">#000</color>
+	<color name="blue">#025D96</color>
+	<color name="orange">#FD6C04</color>
+	<color name="red">#ff0000</color>
 </resources>

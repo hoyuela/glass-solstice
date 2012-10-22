@@ -25,7 +25,7 @@
         >
 
         <TableRow
-            android:id="@+id/tableRow1"
+            android:id="@+id/card_and_login_text_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -46,6 +46,20 @@
                 android:text="@string/secure_login"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/orange" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/error_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/error_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red" />
+
         </TableRow>
 
         <TableRow
@@ -54,26 +68,32 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp" >
 
-            <EditText
-                android:id="@+id/username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/username_placeholder" />
-        </TableRow>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
 
-        <TableRow
-            android:id="@+id/user_pass_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+                <EditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/username_placeholder"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions"
+                    android:maxLines="@integer/MAX_INPUT_LINES" />
 
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/password_placeholder"
-                android:inputType="textPassword" />
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/username"
+                    android:ems="10"
+                    android:hint="@string/password_placeholder"
+                    android:inputType="textPassword"
+                    android:maxLines="@integer/MAX_INPUT_LINES" />
+
+            </RelativeLayout>
+
         </TableRow>
 
         <TableRow
@@ -149,7 +169,7 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRow2"
+            android:id="@+id/forgot_pass_id_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -172,14 +192,14 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/reflection"
         android:layout_width="294dp"
         android:layout_height="64dp"
         android:layout_below="@id/linearLayout1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="1dp"
         android:background="@drawable/login_box_reflection"
-        android:orientation="vertical" 
-        >
+        android:orientation="vertical" >
 
     </LinearLayout>
 
