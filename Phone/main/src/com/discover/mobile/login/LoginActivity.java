@@ -23,9 +23,6 @@ public class LoginActivity extends Activity {
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-//		AuthService service = new AuthService();
-//		service.preAuthCheck();
-		
 		setupViews();
 		setupButtons();
 	}
