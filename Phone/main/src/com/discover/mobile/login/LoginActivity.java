@@ -9,7 +9,6 @@ import android.widget.Button;
 
 import com.discover.mobile.R;
 import com.discover.mobile.LoggedInLanding.LoggedInLandingPage;
-//import com.discover.mobile.common.auth.AuthService;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.net.AsyncCallback;
@@ -23,9 +22,6 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-//		AuthService service = new AuthService();
-//		service.preAuthCheck();
 		
 		setupViews();
 		setupButtons();
