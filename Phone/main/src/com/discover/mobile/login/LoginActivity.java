@@ -48,6 +48,7 @@ public class LoginActivity extends Activity {
 			}
 		});
 		preAuthCall.submit();
+		Log.e(TAG, "OnStart() done");
 	}
 	
 	private void setupViews() {

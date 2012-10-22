@@ -81,6 +81,8 @@ public abstract class NetworkServiceCall<R> {
 				}
 			}
 		});
+		
+		Log.e(TAG, "submit() done");
 	}
 
 	protected abstract Handler getHandler();
