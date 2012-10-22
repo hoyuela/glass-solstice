@@ -16,9 +16,7 @@ import com.discover.mobile.common.net.AsyncCallback;
 public class LoginActivity extends Activity {
 	
 	private static final String TAG = LoginActivity.class.getSimpleName();
-	
-	private Button loginButton;
-	
+		
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

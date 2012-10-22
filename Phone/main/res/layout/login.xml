@@ -15,13 +15,14 @@
 
     <LinearLayout
         android:id="@+id/linearLayout1"
-        android:layout_width="wrap_content"
+        android:layout_width="294dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_image"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
         android:background="@drawable/rounded_table_corners_shape"
-        android:orientation="vertical" >
+        android:orientation="vertical" 
+        >
 
         <TableRow
             android:id="@+id/tableRow1"
@@ -126,7 +127,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight=".3"
+                android:layout_weight=".35"
                 android:text="@string/register_now"
                 android:textColor="@color/blue" />
 
@@ -168,28 +169,17 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/blue" />
         </TableRow>
-
-        <TableRow
-            android:id="@+id/table_width_row"
-            android:layout_width="320dp"
-            android:layout_height="wrap_content" >
-        </TableRow>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="294dp"
         android:layout_height="64dp"
         android:layout_below="@id/linearLayout1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="1dp"
         android:background="@drawable/login_box_reflection"
-        android:orientation="vertical" >
-
-        <TableRow
-            android:id="@+id/TableRow01"
-            android:layout_width="320dp"
-            android:layout_height="wrap_content" >
-        </TableRow>
+        android:orientation="vertical" 
+        >
 
     </LinearLayout>
 
