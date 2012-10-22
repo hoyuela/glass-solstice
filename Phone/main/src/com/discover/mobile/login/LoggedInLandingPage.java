@@ -1,4 +1,4 @@
-package com.discover.mobile.LoggedInLanding;
+package com.discover.mobile.login;
 
 import com.discover.mobile.R;
 
