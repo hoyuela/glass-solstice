@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black" >
+    android:background="@drawable/login_bkgd" >
 
     <ImageView
         android:id="@+id/title_image"
@@ -62,39 +62,33 @@
 
         </TableRow>
 
-        <TableRow
-            android:id="@+id/user_id_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/username_placeholder"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
+                android:maxLines="@integer/MAX_INPUT_LINES" >
 
-                <EditText
-                    android:id="@+id/username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/username_placeholder"
-                    android:imeOptions="actionNext"
-                    android:inputType="textNoSuggestions"
-                    android:maxLines="@integer/MAX_INPUT_LINES" />
+                <requestFocus />
+            </EditText>
 
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/username"
-                    android:ems="10"
-                    android:hint="@string/password_placeholder"
-                    android:inputType="textPassword"
-                    android:maxLines="@integer/MAX_INPUT_LINES" />
-
-            </RelativeLayout>
-
-        </TableRow>
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/username"
+                android:ems="10"
+                android:hint="@string/password_placeholder"
+                android:inputType="textPassword"
+                android:maxLines="@integer/MAX_INPUT_LINES" />
+        </RelativeLayout>
 
         <TableRow
             android:id="@+id/remember_user_row"
