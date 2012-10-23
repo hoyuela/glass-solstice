@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
@@ -41,6 +42,13 @@ public class LoginActivity extends Activity {
 		
 		Log.e(TAG, "onStart()");
 		
+//		runPreAuth();
+		runAuth();
+		
+		Log.e(TAG, "onStart() done");
+	}
+	
+	private void runPreAuth() {
 		final AsyncCallback<PreAuthResult> callback = new AsyncCallback<PreAuthCheckCall.PreAuthResult>() {
 			@Override
 			public void success(final PreAuthResult value) {
@@ -54,7 +62,22 @@ public class LoginActivity extends Activity {
 		};
 		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);
 		preAuthCall.submit();
-		Log.e(TAG, "onStart() done");
+	}
+	
+	private void runAuth() {
+		final AsyncCallback<Object> callback = new AsyncCallback<Object>() {
+			@Override
+			public void success(final Object value) {
+				Log.e(TAG, "Value: " + value);
+			}
+
+			@Override
+			public void failure(final Throwable error) {
+				Log.e(TAG, "Error: " + error);
+			}
+		};
+		final AuthenticateCall authCall = new AuthenticateCall(this, callback);
+		authCall.submit();
 	}
 	
 	private void setupViews() {
@@ -85,7 +108,7 @@ public class LoginActivity extends Activity {
 		}
 		else{
 			nullifyInputs();
-			String errMsg = getString(R.string.login_error);
+			final String errMsg = getString(R.string.login_error);
 			errorTextView.setText(errMsg);
 		}
 	}
