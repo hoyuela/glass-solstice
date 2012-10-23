@@ -12,14 +12,11 @@ final class NetworkTrafficExecutorHolder {
 	// TODO consider externalizing if there's a good reason
 	private static final int NETWORK_THREAD_COUNT = 3;
 	
-	static final ExecutorService networkTrafficExecutor;
-	
-	static {
-		Log.d(TAG, "Creating networkTrafficExecutor");
-		networkTrafficExecutor = createNetworkTrafficExecutor();
-	}
+	static final ExecutorService networkTrafficExecutor = createNetworkTrafficExecutor();
 	
 	private static ExecutorService createNetworkTrafficExecutor() {
+		Log.d(TAG, "Creating networkTrafficExecutor");
+		
 		return Executors.newFixedThreadPool(NETWORK_THREAD_COUNT);
 	}
 	

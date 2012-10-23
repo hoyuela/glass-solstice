@@ -17,7 +17,6 @@ import com.google.common.collect.ImmutableMap;
 
 public class UpdateSessionCall extends NetworkServiceCall<UpdateSessionResult> {
 	
-	@SuppressWarnings("unused")
 	private static String TAG = AuthenticateCall.class.getSimpleName();
 	
 	private final Handler handler;
@@ -41,7 +40,7 @@ public class UpdateSessionCall extends NetworkServiceCall<UpdateSessionResult> {
 
 	@Override
 	protected UpdateSessionResult parseResponse(final int status,
-			Map<String, List<String>> headers, InputStream body) {
+			final Map<String, List<String>> headers, final InputStream body) {
 		// TODO Auto-generated method stub
 		return new UpdateSessionResult() {{
 			statusCode = status;
