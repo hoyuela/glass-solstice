@@ -1,6 +1,8 @@
 package com.discover.mobile.common.auth;
 
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.os.Handler;
@@ -32,12 +34,13 @@ public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 	}
 
 	@Override
-	protected PreAuthResult parseResponse(final InputStream responseStream, final int resultCode) {
+	protected PreAuthResult parseResponse(final int status, final Map<String,List<String>> headers,
+			final InputStream responseStream) {
 		// TODO
 		
 		// TEMP
 		return new PreAuthResult() {{
-			statusCode = resultCode;
+			statusCode = status;
 		}};
 	}
 	

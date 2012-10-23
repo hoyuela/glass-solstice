@@ -48,13 +48,13 @@ public class LoginActivity extends Activity {
 			}
 
 			@Override
-			public void error(final Object error) {
+			public void failure(final Throwable error) {
 				Log.e(TAG, "Error: " + error);
 			}
 		};
 		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);
 		preAuthCall.submit();
-		Log.e(TAG, "OnStart() done");
+		Log.e(TAG, "onStart() done");
 	}
 	
 	private void setupViews() {

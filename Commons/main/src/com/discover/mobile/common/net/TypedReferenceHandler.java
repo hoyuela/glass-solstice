@@ -6,7 +6,7 @@ import android.util.Log;
 
 abstract class TypedReferenceHandler<V> extends Handler {
 	
-	private static final String TAG = TypedReferenceHandler.class.getSimpleName();
+	private final String TAG = getClass().getSimpleName();
 	
 	abstract AsyncCallback<V> getCallback();
 	

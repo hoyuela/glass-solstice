@@ -7,11 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -23,12 +22,10 @@ public abstract class NetworkServiceCall<R> {
 	
 	static final String TAG = NetworkServiceCall.class.getSimpleName();
 	
-	// TODO externalize
-	public static final String BASE_URL = "https://www.discovercard.com";
-	
 	static final int STATUS_SUCCESS = 0;
 	
 	private final ServiceCallParams params;
+	private final String BASE_URL;
 	
 	private Context context;
 	
@@ -37,25 +34,19 @@ public abstract class NetworkServiceCall<R> {
 		
 		this.context = context;
 		this.params = params;
-	}
-	
-	private static void checkPreconditions(final Context context, final ServiceCallParams params) {
-		checkNotNull(context, "context cannot be null");
-		checkNotNull(params.method, "params.method cannot be null");
-		checkArgument(!Strings.isNullOrEmpty(params.path), "params.path should never be empty");
-		checkArgument(params.readTimeoutSeconds > 0, "invalid params.readTimeoutSeconds: " + params.readTimeoutSeconds);
-		checkCurrentThreadHasLooper();
+		
+		BASE_URL = ContextNetworkUtility.getBaseUrl(context);
 	}
 	
 	/**
 	 * Submit the service call for asynchronous execution and call the callback when completed.
 	 */
 	public final void submit() {
-		// TEMP
-		Log.e(TAG, "submit()");
+		Log.v(TAG, "submit()");
 		
+		// TODO throw a ConnectionFailureException
 		try {
-			if(!isActiveNetworkConnected(context)) {
+			if(!ContextNetworkUtility.isActiveNetworkConnected(context)) {
 				Log.d(TAG, "No network connection available, dropping call");
 				return;
 			}
@@ -66,8 +57,7 @@ public abstract class NetworkServiceCall<R> {
 		NetworkTrafficExecutorHolder.networkTrafficExecutor.submit(new Runnable() {
 			@Override
 			public void run() {
-				// TEMP
-				Log.e(TAG, "run()");
+				Log.v(TAG, "run()");
 				
 				try {
 					executeRequest();
@@ -85,14 +75,24 @@ public abstract class NetworkServiceCall<R> {
 	}
 
 	protected abstract Handler getHandler();
+	
 	/**
 	 * Executed in a background thread, needs to be thread-safe.
 	 * 
-	 * @param responseStream
-	 * @param statusCode
+	 * @param status 
+	 * @param headers 
+	 * @param body 
 	 * @return The parsed result from the response
 	 */
-	protected abstract R parseResponse(final InputStream responseStream, int statusCode);
+	protected abstract R parseResponse(int status, Map<String,List<String>> headers, InputStream body);
+	
+	private static void checkPreconditions(final Context context, final ServiceCallParams params) {
+		checkNotNull(context, "context cannot be null");
+		checkNotNull(params.method, "params.method cannot be null");
+		checkArgument(!Strings.isNullOrEmpty(params.path), "params.path should never be empty");
+		checkArgument(params.readTimeoutSeconds > 0, "invalid params.readTimeoutSeconds: " + params.readTimeoutSeconds);
+		checkCurrentThreadHasLooper();
+	}
 	
 	// Executes in the background thread, does actual connection and delegates parsing to subclass
 	private void executeRequest() throws IOException {
@@ -104,11 +104,9 @@ public abstract class NetworkServiceCall<R> {
 		conn.connect();
 		try {
 			final int statusCode = conn.getResponseCode();
-			final InputStream in = conn.getInputStream();
+			final InputStream responseStream = getResponseStream(conn, statusCode);
 			
-			result = parseResponse(in, statusCode);
-			
-			in.close();
+			result = parseResponse(statusCode, conn.getHeaderFields(), responseStream);
 		} finally {
 			conn.disconnect();
 		}
@@ -140,11 +138,23 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private void setCustomHeaders(final HttpURLConnection conn) {
-		if(params.headers == null)
+		if(params.headers == null || params.headers.isEmpty())
 			return;
 		
 		for(final Map.Entry<String,String> headerEntry : params.headers.entrySet())
 			conn.setRequestProperty(headerEntry.getKey(), headerEntry.getValue());
+	}
+	
+	private InputStream getResponseStream(final HttpURLConnection conn, final int statusCode) throws IOException {
+		if(isErrorStatus(statusCode))
+			return conn.getErrorStream();
+		
+		return conn.getInputStream();
+	}
+	
+	// TODO determine if there is a better way to do this
+	private boolean isErrorStatus(final int statusCode) {
+		return statusCode >= 400;
 	}
 	
 	private void sendSuccessfulResultToHandler(final R result) {
@@ -158,13 +168,6 @@ public abstract class NetworkServiceCall<R> {
 			throw new AssertionError("Current thread does not have an associated Looper, callbacks can't be scheduled");
 	}
 	
-	// TODO check before firing network request
-	public static boolean isActiveNetworkConnected(final Context context) {
-		final ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		final NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-		return networkInfo != null && networkInfo.isConnected();
-	}
-	
 	protected static class ServiceCallParams {
 		// Required
 		public HttpMethod method;
@@ -172,7 +175,7 @@ public abstract class NetworkServiceCall<R> {
 		
 		// Optional/Defaulted
 		public Map<String,String> headers = null;
-		public int readTimeoutSeconds = 15;
+		public int readTimeoutSeconds = 15;  // TODO other timeouts
 	}
 	
 }
