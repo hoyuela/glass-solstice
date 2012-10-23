@@ -18,6 +18,11 @@ import android.util.Log;
 
 import com.google.common.base.Strings;
 
+/**
+ * An abstract wrapper for network calls that should simplify common HTTP connection-related patterns for implementors.
+ * 
+ * @param <R> The <u>r</u>esult type that this service call will return
+ */
 public abstract class NetworkServiceCall<R> {
 	
 	static final String TAG = NetworkServiceCall.class.getSimpleName();
@@ -37,6 +42,18 @@ public abstract class NetworkServiceCall<R> {
 		
 		BASE_URL = ContextNetworkUtility.getBaseUrl(context);
 	}
+
+	protected abstract Handler getHandler();
+	/**
+	 * Executed in a background thread, needs to be thread-safe.
+	 * 
+	 * @param status 
+	 * @param headers 
+	 * @param body 
+	 * @return The parsed result from the response
+	 * @throws IOException 
+	 */
+	protected abstract R parseResponse(int status, Map<String,List<String>> headers, InputStream body) throws IOException;
 	
 	/**
 	 * Submit the service call for asynchronous execution and call the callback when completed.
@@ -73,18 +90,6 @@ public abstract class NetworkServiceCall<R> {
 		
 		Log.e(TAG, "submit() done");
 	}
-
-	protected abstract Handler getHandler();
-	
-	/**
-	 * Executed in a background thread, needs to be thread-safe.
-	 * 
-	 * @param status 
-	 * @param headers 
-	 * @param body 
-	 * @return The parsed result from the response
-	 */
-	protected abstract R parseResponse(int status, Map<String,List<String>> headers, InputStream body);
 	
 	private static void checkPreconditions(final Context context, final ServiceCallParams params) {
 		checkNotNull(context, "context cannot be null");
@@ -169,7 +174,7 @@ public abstract class NetworkServiceCall<R> {
 			throw new AssertionError("Current thread does not have an associated Looper, callbacks can't be scheduled");
 	}
 	
-	protected static class ServiceCallParams {
+	public static class ServiceCallParams {
 		// Required
 		public HttpMethod method;
 		public String path;
