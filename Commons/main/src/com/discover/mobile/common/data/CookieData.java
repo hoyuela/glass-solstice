@@ -1,8 +1,7 @@
 package com.discover.mobile.common.data;
 
-
 public final class CookieData {
-
+	
 	private static final CookieData instance = new CookieData();
 	
 	private String secToken;
@@ -15,7 +14,8 @@ public final class CookieData {
 		return secToken;
 	}
 	
-	public void setSecToken(String secToken) {
+	public void setSecToken(final String secToken) {
 		this.secToken = secToken;
 	}
+	
 }
