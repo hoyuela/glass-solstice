@@ -1,4 +1,0 @@
-<resources>
-    <string name="app_name">Discover Commons</string><string name="PRE_AUTH_CHECK_URL">https://www.discovercard.com/cardsvcs/acs/session/preauthcheck</string>
-    
-</resources>
