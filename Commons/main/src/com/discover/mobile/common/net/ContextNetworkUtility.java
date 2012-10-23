@@ -7,8 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Looper;
 
-import com.discover.mobile.commons.R;
-
 final class ContextNetworkUtility {
 	
 	// This should only ever be mutated on the main thread
@@ -18,7 +16,7 @@ final class ContextNetworkUtility {
 		checkState(isMainThread(), "getBaseUrl() must be called from the main thread");
 		
 		if(baseUrl == null) {
-			baseUrl = currentContext.getString(R.string.base_url);
+			baseUrl = "https://mst0.m.discovercard.com"; //currentContext.getString(R.string.base_url);
 			checkNotNull(baseUrl, "baseUrl was null when retrieving from resources");
 		}
 		

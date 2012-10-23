@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 
+import com.discover.mobile.common.data.CookieData;
 import com.discover.mobile.common.net.AsyncCallback;
 import com.discover.mobile.common.net.HttpMethod;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -20,6 +21,8 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 
 public class AuthenticateCall extends NetworkServiceCall<Object> {
+	
+	private static String TAG = AuthenticateCall.class.getSimpleName();
 	
 	// TEMP
 	private static final ServiceCallParams STANDARD_PARAMS = new ServiceCallParams() {{
@@ -58,14 +61,33 @@ public class AuthenticateCall extends NetworkServiceCall<Object> {
 		} catch(final Exception e) {
 			throw Throwables.propagate(e);
 		}
-		for(final HttpCookie cookie : manager.getCookieStore().getCookies()) {
-			Log.e(getClass().getSimpleName(), String.format("cookie: %s -> %s", cookie.getName(), cookie));
-		}
 		
+		saveCookieInfo(manager);
 		// TEMP
 		return null;
 		
 		// TODO
 	}
 	
+	private static void saveCookieInfo(CookieManager cookieManager) {
+		for(final HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {			
+			if(cookie.getName().equalsIgnoreCase("sectoken")) {
+				String tempFormattedToken = formatCookieData(cookie);
+				CookieData.getInstance().setSecToken(tempFormattedToken);
+			}
+		}
+	}
+	
+	private static String formatCookieData(HttpCookie cookie) {
+		String[] separatedData = cookie.toString().split("=", 2);
+		
+		Log.d("tag", "Length: " + separatedData.length);
+		Log.d("tag", "SecToken set: " + separatedData[1]);
+		
+		if(separatedData[1] != null)
+			return separatedData[1];
+		
+		Log.e(TAG, "Cookie could not be formatted.  No token set.");
+		return null;
+	}
 }

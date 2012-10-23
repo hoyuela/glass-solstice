@@ -1,0 +1,58 @@
+package com.discover.mobile.common.auth;
+
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
+import android.content.Context;
+import android.os.Handler;
+
+import com.discover.mobile.common.auth.UpdateSessionCall.UpdateSessionResult;
+import com.discover.mobile.common.data.CookieData;
+import com.discover.mobile.common.net.AsyncCallback;
+import com.discover.mobile.common.net.HttpMethod;
+import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.net.StrongReferenceHandler;
+import com.google.common.collect.ImmutableMap;
+
+public class UpdateSessionCall extends NetworkServiceCall<UpdateSessionResult> {
+	
+	@SuppressWarnings("unused")
+	private static String TAG = AuthenticateCall.class.getSimpleName();
+	
+	private final Handler handler;
+	
+	public UpdateSessionCall(final Context context, final AsyncCallback<UpdateSessionResult> callback) {
+		super(context, new ServiceCallParams() {{
+			method = HttpMethod.POST;
+			path = "/cardsvcs/acs/session/v1/update";
+			
+			headers = ImmutableMap.<String,String>builder()
+					.put("X-Sec-Token", CookieData.getInstance().getSecToken()).build();
+		}});
+		
+		handler = new StrongReferenceHandler<UpdateSessionResult>(callback);
+	}
+
+	@Override
+	protected Handler getHandler() {
+		return handler;
+	}
+
+	@Override
+	protected UpdateSessionResult parseResponse(final int status,
+			Map<String, List<String>> headers, InputStream body) {
+		// TODO Auto-generated method stub
+		return new UpdateSessionResult() {{
+			statusCode = status;
+		}};
+	}
+	
+	// TODO
+	public class UpdateSessionResult {
+		// TEMP
+		public int statusCode;
+		
+		// TODO
+	}
+}

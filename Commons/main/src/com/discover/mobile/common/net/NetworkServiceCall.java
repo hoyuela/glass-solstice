@@ -116,6 +116,7 @@ public abstract class NetworkServiceCall<R> {
 	
 	private HttpURLConnection createConnection() throws IOException {
 		final URL fullUrl = getFullUrl();
+		Log.e(TAG, "full url: " + fullUrl);
 		return (HttpURLConnection) fullUrl.openConnection();
 	}
 	
@@ -145,7 +146,7 @@ public abstract class NetworkServiceCall<R> {
 			conn.setRequestProperty(headerEntry.getKey(), headerEntry.getValue());
 	}
 	
-	private InputStream getResponseStream(final HttpURLConnection conn, final int statusCode) throws IOException {
+	private static InputStream getResponseStream(final HttpURLConnection conn, final int statusCode) throws IOException {
 		if(isErrorStatus(statusCode))
 			return conn.getErrorStream();
 		
@@ -153,7 +154,7 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	// TODO determine if there is a better way to do this
-	private boolean isErrorStatus(final int statusCode) {
+	private static boolean isErrorStatus(final int statusCode) {
 		return statusCode >= 400;
 	}
 	
