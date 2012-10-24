@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/gradient_bg"
-        android:paddingBottom="@dimen/CONTENT_PADDING"
-        android:paddingLeft="@dimen/CONTENT_PADDING"
-        android:paddingRight="@dimen/CONTENT_PADDING"
-        android:paddingTop="@dimen/CONTENT_PADDING" >
+
+
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/account_info_scroll_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" 
+            android:background="@drawable/gradient_bg"
+            android:paddingBottom="@dimen/CONTENT_PADDING"
+        	android:paddingLeft="@dimen/CONTENT_PADDING"
+        	android:paddingRight="@dimen/CONTENT_PADDING"
+        	android:paddingTop="@dimen/CONTENT_PADDING"
+            >
+            
+    	<RelativeLayout
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+         	>
 
         <TextView
-            android:id="@+id/register_text_view"
+            android:id="@+id/account_info_register_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -20,12 +30,12 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/step_text_view"
+            android:id="@+id/account_info_step_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/register_text_view"
+            android:layout_alignLeft="@id/account_info_register_label"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/register_text_view"
+            android:layout_below="@id/account_info_register_label"
             android:paddingTop="8dp"
             android:text="@string/account_informaiton_step_lablel_one"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -33,32 +43,33 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/account_info_label_one_text"
+            android:id="@+id/account_info_label_one_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/step_text_view"
-            android:layout_below="@+id/step_text_view"
+            android:layout_alignLeft="@+id/account_info_step_label"
+            android:layout_below="@+id/account_info_step_label"
             android:paddingTop="4dp"
             android:text="@string/account_info_label_one"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/black" />
 
         <TextView
-            android:id="@+id/account_information_input_info_text"
+            android:id="@+id/account_information_input_info_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/account_info_label_one_text"
-            android:layout_below="@+id/account_info_label_one_text"
+            android:layout_alignLeft="@+id/account_info_label_one_label"
+            android:layout_below="@+id/account_info_label_one_label"
             android:paddingTop="4dp"
-            android:text="@string/account_information_input_info_label"
+            android:text="@string/account_info_input_restrictions_label"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/black"
             android:textSize="@dimen/LIGHT_TEXT_SIZE" />
 
         <TextView
-            android:id="@+id/card_expiration_date_label"
+            android:id="@+id/account_info_card_expiration_date_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_card_account_number_field"
             android:layout_marginTop="16dp"
             android:text="@string/card_expiration_date_text"
             android:textColor="@color/black" />
@@ -67,7 +78,7 @@
             android:id="@+id/account_info_discover_copyright_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/account_info_feedback_label"
             android:layout_centerHorizontal="true"
             android:text="@string/discover_copyright_text"
             android:textSize="@dimen/LIGHT_TEXT_SIZE" />
@@ -76,18 +87,19 @@
             android:id="@+id/account_info_feedback_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/account_info_discover_copyright_label"
+            android:layout_below="@+id/account_info_help_row"
             android:layout_centerHorizontal="true"
             android:text="@string/feedback_text"
-            android:textColor="@color/blue" />
+            android:textColor="@color/blue" 
+            android:layout_marginTop="16dp"/>
 
         <TableRow
-            android:id="@+id/tableRow1"
+            android:id="@+id/account_info_help_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/account_info_feedback_label"
+            android:layout_below="@+id/account_info_button_row"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="48dp" >
+            android:layout_marginTop="16dp" >
 
             <TextView
                 android:id="@+id/need_help_label"
@@ -109,8 +121,8 @@
             android:id="@+id/account_info_month_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/card_expiration_date_label"
-            android:layout_centerVertical="true" />
+            android:layout_alignLeft="@+id/account_info_card_expiration_date_label"
+			android:layout_below="@+id/account_info_card_expiration_date_label" />
 
         <Spinner
             android:id="@+id/account_info_year_spinner"
@@ -120,31 +132,114 @@
             android:layout_toRightOf="@+id/account_info_month_spinner" />
 
         <TextView
-            android:id="@+id/account_info_ssn_prefix_label"
+            android:id="@+id/account_info_ssn_info_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/account_info_month_spinner"
+            android:text="@string/account_info_ssn_info_text"
+            android:textColor="@color/black"
+            android:paddingTop="8dp"
+            />
+        
+         <TextView
+            android:id="@+id/account_info_ssn_prefix_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/account_info_ssn_info_label"
             android:text="@string/ssn_prefix"
-            android:textColor="@color/black" />
-
+            android:textColor="@color/black"
+            android:paddingTop="4dp"
+            />
+         
         <EditText
             android:id="@+id/account_info_ssn_input_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/account_info_year_spinner"
+            android:layout_below="@+id/account_info_ssn_info_label"
             android:layout_toRightOf="@+id/account_info_ssn_prefix_label"
-            android:ems="10"
-            android:inputType="number" />
+            android:ems="4"
+		 	android:maxLength="4"
+            android:inputType="number"
+            android:imeOptions="actionDone"
+             />
 
         <EditText
-            android:id="@+id/card_input_field"
-            android:layout_width="fill_parent"
+            android:id="@+id/account_info_card_account_number_field"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/account_information_input_info_text"
-            android:layout_below="@+id/account_information_input_info_text"
-            android:ems="10"
+            android:layout_alignLeft="@+id/account_information_input_info_label"
+            android:layout_below="@+id/account_information_input_info_label"
+            android:ems="16"
             android:inputType="number"
-            android:paddingTop="8dp" />
+            android:maxLength="16"
+            android:paddingTop="8dp" 
+            android:imeOptions="actionDone"
+            />
+
+        <TextView
+            android:id="@+id/account_info_dob_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/account_info_ssn_input_field"
+            android:text="@string/account_info_dob_text" 
+            android:textColor="@color/black"/>
+
+        <Spinner
+            android:id="@+id/account_info_dob_month_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/account_info_dob_label"
+            android:layout_below="@+id/account_info_dob_label"
+            />
+
+        <Spinner
+            android:id="@+id/account_info_dob_day_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/account_info_dob_month_spinner"
+            android:layout_toRightOf="@id/account_info_dob_month_spinner" />
+
+        <EditText
+            android:id="@+id/account_info_dob_year_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/account_info_dob_day_spinner"
+            android:layout_toRightOf="@+id/account_info_dob_day_spinner"
+            android:ems="4"
+            android:hint="@string/year_hint"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="4" >
+
+            <requestFocus />
+        </EditText>
+
+        <TableRow
+            android:id="@+id/account_info_button_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_dob_year_field"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp" >
+
+            <TextView
+                android:id="@+id/account_info_cancel_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_text"
+                android:textColor="@color/blue" />
+
+            <Button
+                android:id="@+id/account_info_continue_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/continue_text"
+                android:layout_marginLeft="16dp" />
+
+        </TableRow>
 
     </RelativeLayout>
+            </ScrollView>
