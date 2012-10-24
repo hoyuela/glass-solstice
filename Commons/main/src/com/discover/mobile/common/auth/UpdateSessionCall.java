@@ -8,12 +8,10 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.discover.mobile.common.auth.UpdateSessionCall.UpdateSessionResult;
-import com.discover.mobile.common.data.CookieData;
 import com.discover.mobile.common.net.AsyncCallback;
 import com.discover.mobile.common.net.HttpMethod;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.StrongReferenceHandler;
-import com.google.common.collect.ImmutableMap;
 
 public class UpdateSessionCall extends NetworkServiceCall<UpdateSessionResult> {
 	
@@ -25,9 +23,6 @@ public class UpdateSessionCall extends NetworkServiceCall<UpdateSessionResult> {
 		super(context, new ServiceCallParams() {{
 			method = HttpMethod.POST;
 			path = "/cardsvcs/acs/session/v1/update";
-			
-			headers = ImmutableMap.<String,String>builder()
-					.put("X-Sec-Token", CookieData.getInstance().getSecToken()).build();
 		}});
 		
 		handler = new StrongReferenceHandler<UpdateSessionResult>(callback);

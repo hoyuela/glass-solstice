@@ -123,6 +123,7 @@ public abstract class NetworkServiceCall<R> {
 		conn.setRequestMethod(params.method.name());
 		
 		setDefaultHeaders(conn);
+		setSessionHeaders(conn);
 		setCustomHeaders(conn);
 		
 		conn.setReadTimeout(params.readTimeoutSeconds * 1000);
@@ -135,6 +136,10 @@ public abstract class NetworkServiceCall<R> {
 	private static void setDefaultHeaders(final HttpURLConnection conn) {
 		conn.setRequestProperty("X-Client-Platform", "Android");
 		conn.setRequestProperty("X-Application-Version", "4.00");
+	}
+	
+	private static void setSessionHeaders(final HttpURLConnection conn) {
+		ServiceCallSessionManager.prepareWithSecurityToken(conn);
 	}
 	
 	private void setCustomHeaders(final HttpURLConnection conn) {
