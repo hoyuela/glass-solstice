@@ -1,6 +1,7 @@
 package com.discover.mobile.login;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +17,6 @@ import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.auth.UpdateSessionCall;
 import com.discover.mobile.common.auth.UpdateSessionCall.UpdateSessionResult;
-import com.discover.mobile.common.data.CookieData;
 import com.discover.mobile.common.net.AsyncCallback;
 
 public class LoginActivity extends Activity {
@@ -27,6 +27,7 @@ public class LoginActivity extends Activity {
 	private TextView errorTextView;
 	private String uid, pass;
 	
+	// currently not used for testing (does not apply to test id's)
 	private static InputValidator validator;
 	
 	@Override
@@ -43,14 +44,12 @@ public class LoginActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 		
-		Log.e(TAG, "onStart()");
-		
+		// TEMP testing calls
 //		runPreAuth();
-		runAuth();
-		
-		Log.e(TAG, "onStart() done");
+//		runAuth();
 	}
 	
+	// TEMP example preAuth call
 	private void runPreAuth() {
 		final AsyncCallback<PreAuthResult> callback = new AsyncCallback<PreAuthCheckCall.PreAuthResult>() {
 			@Override
@@ -67,34 +66,48 @@ public class LoginActivity extends Activity {
 		preAuthCall.submit();
 	}
 	
-	private void runAuth() {
+	private void runAuthWithUsernameAndPassword(final String username, final String password) {
+		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
+		
 		final AsyncCallback<Object> callback = new AsyncCallback<Object>() {
 			@Override
 			public void success(final Object value) {
-				Log.e(TAG, "Value: " + CookieData.getInstance().getSecToken());
-				Log.e(TAG, "running update now");
-				runUpdate();
+				Log.d(TAG, "Success");
+				progress.dismiss();
+				handleSuccessfulAuth();
 			}
 
 			@Override
 			public void failure(final Throwable error) {
 				Log.e(TAG, "Error: " + error);
+				progress.dismiss();
+				nullifyInputs();
+				final String errMsg = getString(R.string.login_error);
+				errorTextView.setText(errMsg);
 			}
 		};
-		final AuthenticateCall authCall = new AuthenticateCall(this, callback);
+		
+		final AuthenticateCall authCall = new AuthenticateCall(this, callback, username, password);
 		authCall.submit();
 	}
 	
+	private void handleSuccessfulAuth() {
+		nullifyInputs();
+		final Intent logIn = new Intent(this, LoggedInLandingPage.class);
+		this.startActivity(logIn);
+	}
+	
+	// TEMP example update call
 	private void runUpdate() {
 		final AsyncCallback<UpdateSessionResult> callback = new AsyncCallback<UpdateSessionCall.UpdateSessionResult>() {
 
 			@Override
-			public void success(UpdateSessionResult value) {
+			public void success(final UpdateSessionResult value) {
 				Log.e(TAG, "Status code for update: " + value.statusCode);
 			}
 
 			@Override
-			public void failure(Throwable error) {
+			public void failure(final Throwable error) {
 				Log.e(TAG, "Error: " + error);
 			}
 		};
@@ -124,18 +137,19 @@ public class LoginActivity extends Activity {
 		uid = uidField.getText().toString();
 		pass = passField.getText().toString();
 		
-		if(validator.validateCredentials(uid, pass)){
-			nullifyInputs();
-			final Intent logIn = new Intent(this, LoggedInLandingPage.class);
-			this.startActivity(logIn);
-		}
-		else{
-			nullifyInputs();
-			final String errMsg = getString(R.string.login_error);
-			errorTextView.setText(errMsg);
-		}
+		// TODO production error handling (validator doesn't work with test uid's)
+		
+//		if(validator.validateCredentials(uid, pass)){
+			runAuthWithUsernameAndPassword(uid, pass);
+//		}
+//		else{
+//			nullifyInputs();
+//			final String errMsg = getString(R.string.login_error);
+//			errorTextView.setText(errMsg);
+//		}
 	}
 	
+	// TODO create Credentials object to handle any Model-like properties
 	public void nullifyInputs(){
 		uid = null;
 		pass = null;

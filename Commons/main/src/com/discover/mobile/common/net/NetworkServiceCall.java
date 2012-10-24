@@ -58,9 +58,7 @@ public abstract class NetworkServiceCall<R> {
 	/**
 	 * Submit the service call for asynchronous execution and call the callback when completed.
 	 */
-	public final void submit() {
-		Log.v(TAG, "submit()");
-		
+	public final void submit() {		
 		// TODO throw a ConnectionFailureException
 		try {
 			if(!ContextNetworkUtility.isActiveNetworkConnected(context)) {
@@ -74,7 +72,6 @@ public abstract class NetworkServiceCall<R> {
 		NetworkTrafficExecutorHolder.networkTrafficExecutor.submit(new Runnable() {
 			@Override
 			public void run() {
-				Log.v(TAG, "run()");
 				
 				try {
 					executeRequest();
@@ -87,8 +84,6 @@ public abstract class NetworkServiceCall<R> {
 				}
 			}
 		});
-		
-		Log.e(TAG, "submit() done");
 	}
 	
 	private static void checkPreconditions(final Context context, final ServiceCallParams params) {
@@ -121,7 +116,6 @@ public abstract class NetworkServiceCall<R> {
 	
 	private HttpURLConnection createConnection() throws IOException {
 		final URL fullUrl = getFullUrl();
-		Log.e(TAG, "full url: " + fullUrl);
 		return (HttpURLConnection) fullUrl.openConnection();
 	}
 	
