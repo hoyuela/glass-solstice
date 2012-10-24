@@ -14,10 +14,9 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 /**
  * A {@link NetworkServiceCall} that handles mapping of JSON requests and responses.
  * 
- * @param <R> The <u>r</u>esult type that this service call will return
  * @param <M> The <u>m</u>odel type for the JSON result
  */
-public abstract class JsonMappingNetworkServiceCall<R,M> extends NetworkServiceCall<R> {
+public abstract class JsonMappingNetworkServiceCall<M> extends NetworkServiceCall<M> {
 	
 	private final Class<M> modelClass;
 	
@@ -31,18 +30,11 @@ public abstract class JsonMappingNetworkServiceCall<R,M> extends NetworkServiceC
 		this.modelClass = modelClass;
 	}
 	
-	protected abstract R createResultFromModel(M model);
-	
 	@Override
-	protected R parseResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
+	protected M parseResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 		
-		final M model = parseModelFromResponse(body);
-		return createResultFromModel(model);
-	}
-	
-	private M parseModelFromResponse(final InputStream responseBody) throws IOException {
-		return JacksonObjectMapperHolder.mapper.readValue(responseBody, modelClass);
+		return JacksonObjectMapperHolder.mapper.readValue(body, modelClass);
 	}
 	
 }

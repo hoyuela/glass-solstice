@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.auth.AccountDetails;
+import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
@@ -70,9 +72,9 @@ public class LoginActivity extends Activity {
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
-		final AsyncCallback<Object> callback = new AsyncCallback<Object>() {
+		final AsyncCallback<AccountDetails> callback = new AsyncCallback<AccountDetails>() {
 			@Override
-			public void success(final Object value) {
+			public void success(final AccountDetails value) {
 				Log.d(TAG, "Success");
 				progress.dismiss();
 				handleSuccessfulAuth();
@@ -88,7 +90,8 @@ public class LoginActivity extends Activity {
 			}
 		};
 		
-
+		final AuthenticateCall authenticateCall = new AuthenticateCall(this, callback, username, password);
+		authenticateCall.submit();
 	}
 	
 	private void handleSuccessfulAuth() {
@@ -100,7 +103,7 @@ public class LoginActivity extends Activity {
 	// TEMP example update call
 	private void runUpdate() {
 		final AsyncCallback<UpdateSessionResult> callback = new AsyncCallback<UpdateSessionCall.UpdateSessionResult>() {
-
+			
 			@Override
 			public void success(final UpdateSessionResult value) {
 				Log.e(TAG, "Status code for update: " + value.statusCode);
@@ -149,7 +152,7 @@ public class LoginActivity extends Activity {
 //		}
 	}
 	
-	public void registerNewUser(View v){
+	public void registerNewUser(final View v){
 		final Intent accountInformationActivity = new Intent(
 				this, AccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);

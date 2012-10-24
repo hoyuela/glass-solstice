@@ -1,5 +1,6 @@
 package com.discover.mobile.common.net.json;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -12,9 +13,9 @@ final class JacksonObjectMapperHolder {
 	static final ObjectMapper mapper = createObjectMapper();
 	
 	private static ObjectMapper createObjectMapper() {
-		final ObjectMapper mapper = new ObjectMapper();
-		
-		return mapper;
+		return new ObjectMapper()
+				.configure(MapperFeature.AUTO_DETECT_GETTERS, false)
+				.configure(MapperFeature.AUTO_DETECT_SETTERS, false);
 	}
 	
 	private JacksonObjectMapperHolder() {
