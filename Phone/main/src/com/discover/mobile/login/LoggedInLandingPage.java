@@ -1,20 +1,19 @@
 package com.discover.mobile.login;
 
-import com.discover.mobile.R;
-
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.discover.mobile.R;
 
 public class LoggedInLandingPage extends Activity{
 	
-
-	public void onCreate(Bundle savedInstanceState){
+	@Override
+	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setupViews();
 		
-		ListView listView = (ListView)findViewById(R.id.optionsTable);
+		final ListView listView = (ListView)findViewById(R.id.optionsTable);
 		//ArrayAdapter<String> adapter = new ArrayAdapter<String>( );
 		listView.setAdapter(null);
 	}

@@ -7,11 +7,11 @@ public class InputValidator {
 		//empty
 	}
 	
-	public boolean validateCredentials(String uid, String pass){
+	public static boolean validateCredentials(final String uid, final String pass){
 		return (validateUID(uid) && validatePassword(pass));
 	}
 	
-	public boolean validateUID(String uid){
+	public static boolean validateUID(final String uid){
 		//Validate length
 		if(    !uid.equals("Credit Card User ID") &&
 			   uid.length() >= 6 && 
@@ -23,19 +23,16 @@ public class InputValidator {
 			   !uid.contains("\\")){
 				return true;
 			}
-		else
-			return false;
+		return false;
 	}
 	
-	public boolean validatePassword(String pass){
+	public static boolean validatePassword(final String pass){
 		if(		pass.length() >= 6 && 
 				pass.length() <= 32 &&
 				!pass.equals("Credit Card Password"))
 				{
 			return true;
 		}
-		else{
-			return false;
-		}
+		return false;
 	}
 }
