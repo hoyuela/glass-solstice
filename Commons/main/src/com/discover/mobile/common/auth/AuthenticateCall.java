@@ -1,13 +1,9 @@
 package com.discover.mobile.common.auth;
 
-import java.net.CookieManager;
-import java.net.HttpCookie;
-
 import android.content.Context;
 import android.os.Handler;
 import android.util.Base64;
 
-import com.discover.mobile.common.data.CookieData;
 import com.discover.mobile.common.net.AsyncCallback;
 import com.discover.mobile.common.net.HttpMethod;
 import com.discover.mobile.common.net.StrongReferenceHandler;
@@ -42,14 +38,5 @@ public class AuthenticateCall extends JsonMappingNetworkServiceCall<AccountDetai
 		return handler;
 		
 		// TODO
-	}
-	
-	private static void saveCookieInfo(final CookieManager cookieManager) {
-		for(final HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {			
-			if(cookie.getName().equalsIgnoreCase("sectoken")) {
-				final String tempFormattedToken = cookie.getValue();
-				CookieData.getInstance().setSecToken(tempFormattedToken);
-			}
-		}
 	}
 }
