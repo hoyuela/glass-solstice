@@ -1,8 +1,13 @@
 package com.discover.mobile.common.auth;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class AccountDetails {
+public class AccountDetails implements Serializable {
+
+	private static final long serialVersionUID = 5560948851652492739L;
+	
 	
 	public String availableCredit;
 	public String currentBalance;
