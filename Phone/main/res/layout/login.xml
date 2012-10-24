@@ -137,7 +137,7 @@
                 android:layout_weight=".4"
                 android:clickable="false"
                 android:longClickable="false"
-                android:visibility="invisible" />
+                android:visibility="invisible"/>
 
             <TextView
                 android:id="@+id/textView3"
@@ -145,8 +145,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight=".35"
+                android:clickable="true"
                 android:text="@string/register_now"
-                android:textColor="@color/blue" />
+                android:textColor="@color/blue"
+				android:onClick="registerNewUser"/>
 
             <ImageView
                 android:id="@+id/imageView2"

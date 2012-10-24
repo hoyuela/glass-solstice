@@ -10,14 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.auth.PreAuthCheckCall;
-import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
-import com.discover.mobile.common.auth.UpdateSessionCall;
-import com.discover.mobile.common.auth.UpdateSessionCall.UpdateSessionResult;
-import com.discover.mobile.common.data.CookieData;
-import com.discover.mobile.common.net.AsyncCallback;
 
 public class LoginActivity extends Activity {
 	
@@ -46,63 +39,63 @@ public class LoginActivity extends Activity {
 		Log.e(TAG, "onStart()");
 		
 //		runPreAuth();
-		runAuth();
+//		runAuth();
 		
 		Log.e(TAG, "onStart() done");
 	}
 	
-	private void runPreAuth() {
-		final AsyncCallback<PreAuthResult> callback = new AsyncCallback<PreAuthCheckCall.PreAuthResult>() {
-			@Override
-			public void success(final PreAuthResult value) {
-				Log.e(TAG, "Status code: " + value.statusCode);
-			}
-
-			@Override
-			public void failure(final Throwable error) {
-				Log.e(TAG, "Error: " + error);
-			}
-		};
-		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);
-		preAuthCall.submit();
-	}
-	
-	private void runAuth() {
-		final AsyncCallback<Object> callback = new AsyncCallback<Object>() {
-			@Override
-			public void success(final Object value) {
-				Log.e(TAG, "Value: " + CookieData.getInstance().getSecToken());
-				Log.e(TAG, "running update now");
-				runUpdate();
-			}
-
-			@Override
-			public void failure(final Throwable error) {
-				Log.e(TAG, "Error: " + error);
-			}
-		};
-		final AuthenticateCall authCall = new AuthenticateCall(this, callback);
-		authCall.submit();
-	}
-	
-	private void runUpdate() {
-		final AsyncCallback<UpdateSessionResult> callback = new AsyncCallback<UpdateSessionCall.UpdateSessionResult>() {
-
-			@Override
-			public void success(UpdateSessionResult value) {
-				Log.e(TAG, "Status code for update: " + value.statusCode);
-			}
-
-			@Override
-			public void failure(Throwable error) {
-				Log.e(TAG, "Error: " + error);
-			}
-		};
-		
-		final UpdateSessionCall updateCall = new UpdateSessionCall(this, callback);
-		updateCall.submit();
-	}
-	
+//	private void runPreAuth() {
+//		final AsyncCallback<PreAuthResult> callback = new AsyncCallback<PreAuthCheckCall.PreAuthResult>() {
+//			@Override
+//			public void success(final PreAuthResult value) {
+//				Log.e(TAG, "Status code: " + value.statusCode);
+//			}
+//
+//			@Override
+//			public void failure(final Throwable error) {
+//				Log.e(TAG, "Error: " + error);
+//			}
+//		};
+//		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);
+//		preAuthCall.submit();
+//	}
+//	
+//	private void runAuth() {
+//		final AsyncCallback<Object> callback = new AsyncCallback<Object>() {
+//			@Override
+//			public void success(final Object value) {
+//				Log.e(TAG, "Value: " + CookieData.getInstance().getSecToken());
+//				Log.e(TAG, "running update now");
+//				runUpdate();
+//			}
+//
+//			@Override
+//			public void failure(final Throwable error) {
+//				Log.e(TAG, "Error: " + error);
+//			}
+//		};
+//		final AuthenticateCall authCall = new AuthenticateCall(this, callback);
+//		authCall.submit();
+//	}
+//	
+//	private void runUpdate() {
+//		final AsyncCallback<UpdateSessionResult> callback = new AsyncCallback<UpdateSessionCall.UpdateSessionResult>() {
+//
+//			@Override
+//			public void success(UpdateSessionResult value) {
+//				Log.e(TAG, "Status code for update: " + value.statusCode);
+//			}
+//
+//			@Override
+//			public void failure(Throwable error) {
+//				Log.e(TAG, "Error: " + error);
+//			}
+//		};
+//		
+//		final UpdateSessionCall updateCall = new UpdateSessionCall(this, callback);
+//		updateCall.submit();
+//	}
+//	
 	private void setupViews() {
 		setContentView(R.layout.login);
 		passField = (EditText)findViewById(R.id.password);
@@ -136,7 +129,13 @@ public class LoginActivity extends Activity {
 		}
 	}
 	
-	public void nullifyInputs(){
+	public void registerNewUser(View v){
+		final Intent accountInformationActivity = new Intent(
+				this, AccountInformationActivity.class);
+		this.startActivity(accountInformationActivity);
+	}
+	
+	private void nullifyInputs(){
 		uid = null;
 		pass = null;
 		errorTextView.setText(null);

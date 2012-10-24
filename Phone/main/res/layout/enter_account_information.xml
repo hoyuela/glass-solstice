@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/gradient_bg"
+        android:paddingBottom="@dimen/CONTENT_PADDING"
+        android:paddingLeft="@dimen/CONTENT_PADDING"
+        android:paddingRight="@dimen/CONTENT_PADDING"
+        android:paddingTop="@dimen/CONTENT_PADDING" >
+
+        <TextView
+            android:id="@+id/register_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/register_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/step_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/register_text_view"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/register_text_view"
+            android:paddingTop="8dp"
+            android:text="@string/account_informaiton_step_lablel_one"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/orange"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/account_info_label_one_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/step_text_view"
+            android:layout_below="@+id/step_text_view"
+            android:paddingTop="4dp"
+            android:text="@string/account_info_label_one"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/account_information_input_info_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/account_info_label_one_text"
+            android:layout_below="@+id/account_info_label_one_text"
+            android:paddingTop="4dp"
+            android:text="@string/account_information_input_info_label"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/black"
+            android:textSize="@dimen/LIGHT_TEXT_SIZE" />
+
+        <TextView
+            android:id="@+id/card_expiration_date_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/card_expiration_date_text"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/account_info_discover_copyright_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/discover_copyright_text"
+            android:textSize="@dimen/LIGHT_TEXT_SIZE" />
+
+        <TextView
+            android:id="@+id/account_info_feedback_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/account_info_discover_copyright_label"
+            android:layout_centerHorizontal="true"
+            android:text="@string/feedback_text"
+            android:textColor="@color/blue" />
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/account_info_feedback_label"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="48dp" >
+
+            <TextView
+                android:id="@+id/need_help_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/need_help_text"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/help_number_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/need_help_number_text"
+                android:textColor="@color/blue" />
+        </TableRow>
+
+        <Spinner
+            android:id="@+id/account_info_month_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/card_expiration_date_label"
+            android:layout_centerVertical="true" />
+
+        <Spinner
+            android:id="@+id/account_info_year_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/account_info_month_spinner"
+            android:layout_toRightOf="@+id/account_info_month_spinner" />
+
+        <TextView
+            android:id="@+id/account_info_ssn_prefix_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/account_info_month_spinner"
+            android:text="@string/ssn_prefix"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/account_info_ssn_input_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_year_spinner"
+            android:layout_toRightOf="@+id/account_info_ssn_prefix_label"
+            android:ems="10"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/card_input_field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/account_information_input_info_text"
+            android:layout_below="@+id/account_information_input_info_text"
+            android:ems="10"
+            android:inputType="number"
+            android:paddingTop="8dp" />
+
+    </RelativeLayout>
