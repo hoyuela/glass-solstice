@@ -1,4 +1,4 @@
-package com.discover.mobile.common.net.json;
+package com.discover.mobile.common.net;
 
 public class GenericErrorResponse {
 	

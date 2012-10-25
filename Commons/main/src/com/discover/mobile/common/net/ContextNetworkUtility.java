@@ -1,6 +1,6 @@
 package com.discover.mobile.common.net;
 
-import static com.discover.mobile.common.net.ThreadUtility.isMainThread;
+import static com.discover.mobile.common.ThreadUtility.isMainThread;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import android.content.Context;

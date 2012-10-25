@@ -1,5 +1,6 @@
 package com.discover.mobile.common.net;
 
+import static com.discover.mobile.common.ThreadUtility.assertCurrentThreadHasLooper;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -12,7 +13,6 @@ import java.util.Map;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
@@ -25,9 +25,10 @@ import com.google.common.base.Strings;
  */
 public abstract class NetworkServiceCall<R> {
 	
-	static final String TAG = NetworkServiceCall.class.getSimpleName();
-	
-	static final int STATUS_SUCCESS = 0;
+	private final String TAG = getClass().getSimpleName();
+
+	static final int RESULT_SUCCESS = 0;
+	static final int RESULT_EXCEPTION = 1;
 	
 	private final ServiceCallParams params;
 	private final String BASE_URL;
@@ -35,7 +36,7 @@ public abstract class NetworkServiceCall<R> {
 	private Context context;
 	
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params) {
-		checkPreconditions(context, params);
+		validateConstruction(context, params);
 		
 		this.context = context;
 		this.params = params;
@@ -59,48 +60,51 @@ public abstract class NetworkServiceCall<R> {
 	/**
 	 * Submit the service call for asynchronous execution and call the callback when completed.
 	 */
-	public final void submit() {		
-		// TODO throw a ConnectionFailureException
+	public final void submit() {
 		try {
-			if(!ContextNetworkUtility.isActiveNetworkConnected(context)) {
-				Log.d(TAG, "No network connection available, dropping call");
-				return;
-			}
+			checkNetworkConnected();
+		} catch(final ConnectionFailureException e) {
+			sendResultToHandler(e, RESULT_EXCEPTION);
+			return;
 		} finally {
-			context = null; // allow garbage collection no matter what the result is
+			context = null; // allow context garbage collection no matter what the result is
 		}
 		
 		NetworkTrafficExecutorHolder.networkTrafficExecutor.submit(new Runnable() {
 			@Override
 			public void run() {
-				
 				try {
 					executeRequest();
-				} catch(final Exception e) {
-					// TEMP
-					Log.w(TAG, "caught exception", e);
-					e.printStackTrace();
-					
-					// TODO send error result
+				} catch(final Throwable t) {
+					Log.w(TAG, "caught throwable during network call execution", t);
+					sendResultToHandler(t, RESULT_EXCEPTION);
 				}
 			}
 		});
 	}
 	
-	private static void checkPreconditions(final Context context, final ServiceCallParams params) {
+	private static void validateConstruction(final Context context, final ServiceCallParams params) {
 		checkNotNull(context, "context cannot be null");
+		
 		checkNotNull(params.method, "params.method cannot be null");
 		checkArgument(!Strings.isNullOrEmpty(params.path), "params.path should never be empty");
 		checkArgument(params.readTimeoutSeconds > 0, "invalid params.readTimeoutSeconds: " + params.readTimeoutSeconds);
-		checkCurrentThreadHasLooper();
+		
+		assertCurrentThreadHasLooper();
 	}
 	
-	// Executes in the background thread, does actual connection and delegates parsing to subclass
+	private void checkNetworkConnected() throws ConnectionFailureException {
+		if(!ContextNetworkUtility.isActiveNetworkConnected(context)) {
+			Log.i(TAG, "No network connection available, dropping call");
+			throw new ConnectionFailureException("no active, connected network available");
+		}
+	}
+	
+	// Executes in the background thread, performs the HTTP connection and delegates parsing to subclass
 	private void executeRequest() throws IOException {
 		final HttpURLConnection conn = createConnection();
 		prepareConnection(conn);
 		
-		// TODO figure out if conn.connect() and prepareConnection() need to be called within the try block
 		final R result;
 		conn.connect();
 		try {
@@ -112,7 +116,7 @@ public abstract class NetworkServiceCall<R> {
 			conn.disconnect();
 		}
 		
-		sendSuccessfulResultToHandler(result);
+		sendResultToHandler(result, RESULT_SUCCESS);
 	}
 	
 	private HttpURLConnection createConnection() throws IOException {
@@ -163,15 +167,10 @@ public abstract class NetworkServiceCall<R> {
 		return statusCode >= 400;
 	}
 	
-	private void sendSuccessfulResultToHandler(final R result) {
+	private void sendResultToHandler(final Object result, final int status) {
 		final Handler handler = getHandler();
-		final Message message = Message.obtain(handler, STATUS_SUCCESS, result);
+		final Message message = Message.obtain(handler, status, result);
 		handler.sendMessage(message);
-	}
-	
-	private static void checkCurrentThreadHasLooper() {
-		if(Looper.myLooper() == null)
-			throw new AssertionError("Current thread does not have an associated Looper, callbacks can't be scheduled");
 	}
 	
 	public static class ServiceCallParams {
