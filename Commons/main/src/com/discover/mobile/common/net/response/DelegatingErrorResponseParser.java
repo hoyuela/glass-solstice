@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.List;
 
@@ -52,28 +53,26 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 			this.parserDelegates = ImmutableList.<ErrorResponseParser<?>>copyOf(parserDelegates);
 	}
 	
-	@Override
-	public boolean shouldParseResponse(final int httpStatusCode, final HttpURLConnection conn) {
-		return isErrorStatus(httpStatusCode);
-	}
-	
 	public static boolean isErrorStatus(final int httpStatusCode) {
 		return httpStatusCode >= 400;
 	}
 	
 	@Override
-	public ErrorResponse parseErrorResponse(final int httpStatusCode, final HttpURLConnection conn) throws IOException {
-		final ErrorResponse errorResponse = findDelegateAndParseErrorResponse(httpStatusCode, conn);
+	public ErrorResponse parseErrorResponse(final int httpStatusCode, final InputStream in,
+			final HttpURLConnection conn) throws IOException {
+		
+		final ErrorResponse errorResponse = findDelegateAndParseErrorResponse(httpStatusCode, in, conn);
 		setProtectedFields(errorResponse, httpStatusCode);
 		return errorResponse;
 	}
 	
-	private ErrorResponse findDelegateAndParseErrorResponse(final int httpStatusCode, final HttpURLConnection conn)
-			throws IOException {
+	private ErrorResponse findDelegateAndParseErrorResponse(final int httpStatusCode, final InputStream in,
+			final HttpURLConnection conn) throws IOException {
 		
 		for(final ErrorResponseParser<?> parser : parserDelegates) {
-			if(parser.shouldParseResponse(httpStatusCode, conn))
-				return parser.parseErrorResponse(httpStatusCode, conn);
+			final ErrorResponse response = parser.parseErrorResponse(httpStatusCode, in, conn);
+			if(response != null)
+				return response;
 		}
 		
 		throw new UnsupportedOperationException("Unable to parse error response, no compatible parser found");

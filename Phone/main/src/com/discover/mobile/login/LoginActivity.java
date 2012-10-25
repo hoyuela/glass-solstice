@@ -95,7 +95,7 @@ public class LoginActivity extends Activity {
 			public void messageErrorResponse(final MessageErrorResponse messageErrorResponse) {
 				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
 			}
-		}, "uid7124", "ccccc").submit();
+		}, "uid6478a", "ccccc").submit();
 	}
 	
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {

@@ -4,6 +4,7 @@ import static com.discover.mobile.common.ThreadUtility.assertCurrentThreadHasLoo
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -193,9 +194,10 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private void parseResponseAndSendResult(final int statusCode) throws IOException {
-		final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();
-		if(chosenErrorParser.shouldParseResponse(statusCode, conn)) {
-			final ErrorResponse errorResult = chosenErrorParser.parseErrorResponse(statusCode, conn);
+		if(DelegatingErrorResponseParser.isErrorStatus(statusCode)) {
+			final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();
+			final InputStream errorStream = getMarkSupportedErrorStream(conn);
+			final ErrorResponse errorResult = chosenErrorParser.parseErrorResponse(statusCode, errorStream, conn);
 			sendResultToHandler(errorResult, RESULT_PARSED_ERROR);
 		} else {
 			final R result = parseSuccessResponse(statusCode, conn.getHeaderFields(), conn.getInputStream());
@@ -206,6 +208,15 @@ public abstract class NetworkServiceCall<R> {
 	private ErrorResponseParser<?> getErrorResponseParser() {
 		return params.errorResponseParser == null ?
 				DelegatingErrorResponseParser.getSharedInstance() : params.errorResponseParser;
+	}
+	
+	private InputStream getMarkSupportedErrorStream(final HttpURLConnection conn) {
+		final InputStream orig = conn.getErrorStream();
+		
+		if(!orig.markSupported())
+			return new BufferedInputStream(orig);
+		
+		return orig;
 	}
 	
 	private void sendResultToHandler(final Object result, final int status) {

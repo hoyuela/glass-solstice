@@ -7,8 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallback;
+import com.discover.mobile.common.net.response.ErrorResponse;
 
 public abstract class TypedReferenceHandler<V> extends Handler {
 	
@@ -56,7 +56,7 @@ public abstract class TypedReferenceHandler<V> extends Handler {
 	}
 	
 	void handleErrorResponse(final Message message, final AsyncCallback<V> callback) {
-		final MessageErrorResponse errorResponse = (MessageErrorResponse) message.obj;
+		final ErrorResponse errorResponse = (ErrorResponse) message.obj;
 		callback.failure(errorResponse);
 	}
 	
