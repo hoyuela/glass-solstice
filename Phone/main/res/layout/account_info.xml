@@ -193,6 +193,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/account_info_dob_label"
             android:layout_below="@+id/account_info_dob_label"
+            android:layout_marginTop="8dp"
             />
 
         <Spinner

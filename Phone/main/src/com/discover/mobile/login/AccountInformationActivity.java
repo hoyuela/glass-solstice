@@ -12,7 +12,7 @@ public class AccountInformationActivity extends Activity{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 			super.onCreate(savedInstanceState);
-			setContentView(R.layout.enter_account_information);
+			setContentView(R.layout.account_info);
 			setupSpinnerAdapters();
 	}
 	
