@@ -1,7 +1,9 @@
 package com.discover.mobile.login;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -14,6 +16,13 @@ public class AccountInformationActivity extends Activity{
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.account_info);
 			setupSpinnerAdapters();
+	}
+	
+	public void submitCurrentAccountInfo(View v){
+		
+		Intent enhancedAccountSecurityIntent = new Intent(this, EnhancedAccountSecurity.class);
+		this.startActivity(enhancedAccountSecurityIntent);
+		
 	}
 	
 	private void setupSpinnerAdapters(){

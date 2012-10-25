@@ -30,6 +30,13 @@
 	<string name="account_info_ssn_info_text">Social Security Number of Primary Cardmember:</string>
 	<string name="cancel_text">Cancel</string>
 	<string name="continue_text">Continue</string>
+	<string name="account_security_text">Enhanced Account Security</string>
+	<string name="account_security_info_text">For your security, please answer the following question before continuing.</string>
+	<string name="account_security_placeholder_text">¿Security Question Placeholder?</string>
+	<string name="account_security_question_hint">Your Answer</string>
+	<string name="account_security_remember_device_text">Would you like us to remember this device?</string>
+	<string name="account_security_whats_this_text">What\'s this?</string>
+	<string name="account_security_plus_text">+</string>
 	
 	<color name="white">#ffffff</color>
 	<color name="black">#000</color>

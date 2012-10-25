@@ -14,7 +14,6 @@ public class LoggedInLandingPage extends Activity{
 		setupViews();
 		
 		final ListView listView = (ListView)findViewById(R.id.optionsTable);
-		//ArrayAdapter<String> adapter = new ArrayAdapter<String>( );
 		listView.setAdapter(null);
 	}
 	

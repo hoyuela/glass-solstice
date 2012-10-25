@@ -14,6 +14,7 @@ Commons/main/res/values/environment.xml
 # generated files
 bin/
 gen/
+target
 
 # Local configuration file (sdk path, etc)
 local.properties
