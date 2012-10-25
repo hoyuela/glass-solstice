@@ -8,8 +8,7 @@
         android:id="@+id/title_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title_image"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="30dp"
         android:contentDescription="@string/image_description"
         android:src="@drawable/discover_logo" />
 
@@ -17,8 +16,7 @@
         android:id="@+id/linearLayout1"
         android:layout_width="294dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title_image"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginTop="32dp"
         android:background="@drawable/rounded_table_corners_shape"
         android:orientation="vertical" 
@@ -207,9 +205,8 @@
         android:id="@+id/feedback_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout1"
+        android:layout_above="@+id/copyright_textview"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
         android:text="@string/feedback_text"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/white" />
@@ -218,7 +215,8 @@
         android:id="@+id/copyright_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/feedback_textview"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
         android:layout_centerHorizontal="true"
         android:text="@string/discover_copyright_text" />
 
