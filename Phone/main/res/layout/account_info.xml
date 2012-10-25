@@ -72,24 +72,24 @@
             android:text="@string/card_expiration_date_text"
             android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/account_info_discover_copyright_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/account_info_feedback_label"
-            android:layout_centerHorizontal="true"
-            android:text="@string/discover_copyright_text"
-            android:textSize="@dimen/LIGHT_TEXT_SIZE" />
-
-        <TextView
-            android:id="@+id/account_info_feedback_label"
+            <TextView
+            android:id="@+id/feedback_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_info_help_row"
             android:layout_centerHorizontal="true"
             android:text="@string/feedback_text"
             android:textColor="@color/blue" 
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="64dp"/>
+            
+            <TextView
+            android:id="@+id/discover_copyright_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/feedback_label"
+            android:layout_centerHorizontal="true"
+            android:text="@string/discover_copyright_text"
+            android:textSize="@dimen/LIGHT_TEXT_SIZE" />
 
         <TableRow
             android:id="@+id/account_info_help_row"

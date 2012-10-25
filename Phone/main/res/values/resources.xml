@@ -66,6 +66,12 @@
  		<item>31</item>
     </string-array>
     
+    <string-array name="choices_array">
+        <item>Yes. This is my mobile device that I use to access my Account.</item>
+        <item>No. This is a public or shared device or one I don\'t plan on using often to access my account.</item>
+   		<item>some other item</item>
+    </string-array>
+    
     <string-array name="better_month_array">
         <item>Month</item>
         <item>(01) January</item>

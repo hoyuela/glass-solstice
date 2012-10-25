@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/scrollView1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/gradient_bg" 
-        android:paddingBottom="@dimen/CONTENT_PADDING"
-        android:paddingLeft="@dimen/CONTENT_PADDING"
-        android:paddingRight="@dimen/CONTENT_PADDING"
-        android:paddingTop="@dimen/CONTENT_PADDING">
+<ScrollView android:id="@+id/scrollView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/gradient_bg"
+    android:paddingBottom="@dimen/CONTENT_PADDING"
+    android:paddingLeft="@dimen/CONTENT_PADDING"
+    android:paddingRight="@dimen/CONTENT_PADDING"
+    android:paddingTop="@dimen/CONTENT_PADDING" xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/account_security_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/account_security_text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/black" 
-                android:textStyle="bold"/>
-            
-            <TextView
+        <TextView
+            android:id="@+id/account_security_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_security_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/account_security_info_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,57 +33,138 @@
             android:textColor="@color/black"
             android:textSize="@dimen/LIGHT_TEXT_SIZE" />
 
-            <TextView
-                android:id="@+id/account_security_question_placeholder_label"
+        <TextView
+            android:id="@+id/account_security_question_placeholder_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_info_label"
+            android:layout_marginTop="16dp"
+            android:text="@string/account_security_placeholder_text"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/black" />
+
+        <EditText
+            android:id="@+id/account_security_question_answer_field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_question_placeholder_label"
+            android:ems="10"
+            android:hint="@string/account_security_question_hint"
+            android:maxLines="@integer/MAX_INPUT_LINES" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/account_security_remember_device_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_question_answer_field"
+            android:layout_marginTop="16dp"
+            android:text="@string/account_security_remember_device_text"
+            android:textColor="@color/black" />
+
+        <View
+            android:id="@+id/account_security_separator_line_one"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/account_security_remember_device_label"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/account_security_whats_this_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_separator_line_one"
+            android:text="@string/account_security_whats_this_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/blue" />
+
+        <TextView
+            android:id="@+id/account_security_plus_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/account_security_separator_line_one"
+            android:text="@string/account_security_plus_text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/blue"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/account_security_separator_line_two"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/account_security_whats_this_label"
+            android:layout_marginTop="4dp"
+            android:background="@android:color/darker_gray" />
+
+
+
+            <RadioGroup
+		        android:id="@+id/account_security_choice_radio_group"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" 
+                android:background="@drawable/rounded_table_corners_shape"
+                android:layout_marginTop="16dp"
+                android:layout_below="@+id/account_security_separator_line_two">
+		        
+	            <RadioButton
+	                android:id="@+id/account_security_choice_one_radio"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:checked="true"
+	                android:text="@string/account_security_remember_me_text"
+	                android:textColor="@color/black" />
+	
+			    <View
+	                android:id="@+id/account_security_choices_separator"
+	                android:layout_width="fill_parent"
+	                android:layout_height="1dp"
+	                android:layout_marginTop="4dp"
+	                android:background="@android:color/darker_gray" />
+			                     
+	            <RadioButton
+	                android:id="@+id/account_security_choice_two_radio"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/account_security_dont_remember_me_text" 
+	                android:textColor="@color/black"
+	                android:layout_marginTop="4dp"/>
+	            
+	         </RadioGroup>
+
+            <Button
+                android:id="@+id/account_security_continue_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/account_security_info_label"
-            	android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/account_security_placeholder_text"
-                android:textColor="@color/black" 
-                android:layout_marginTop="8dp"/>
+                android:layout_below="@+id/account_security_choice_radio_group"
+                android:layout_centerHorizontal="true"
+                android:text="@string/continue_text"
+                android:layout_marginTop="16dp" />
+        
+        <TextView
+            android:id="@+id/feedback_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="64dp"
+            android:layout_below="@+id/account_security_continue_button"
+            android:text="@string/feedback_text"
+            android:textColor="@color/blue" />
 
-            <EditText
-                android:id="@+id/account_security_question_answer_field"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/account_security_question_placeholder_label"
-                android:ems="10"
-                android:hint="@string/account_security_question_hint"
-                android:maxLines="@integer/MAX_INPUT_LINES" >
+        <TextView
+            android:id="@+id/discover_copyright_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/feedback_label"
+            android:layout_centerHorizontal="true"
+            android:text="@string/discover_copyright_text"
+            android:textSize="@dimen/LIGHT_TEXT_SIZE" />
 
-                <requestFocus />
-            </EditText>
-            
-            <TextView
-                android:id="@+id/account_security_remember_device_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/account_security_question_answer_field"
-                android:text="@string/account_security_remember_device_text"
-                android:textColor="@color/black" 
-                android:layout_marginTop="8dp"/>
 
-            <TextView
-                android:id="@+id/account_security_whats_this_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/account_security_remember_device_label"
-                android:text="@string/account_security_whats_this_text"
-                android:textAppearance="?android:attr/textAppearanceMedium" 
-                android:textColor="@color/blue"/>
-            
-             <TextView
-                 android:id="@+id/account_security_plus_label"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentRight="true"
-                 android:layout_below="@+id/account_security_remember_device_label"
-                 android:text="@string/account_security_plus_text"
-                 android:textAppearance="?android:attr/textAppearanceLarge"
-                 android:textColor="@color/blue"
-                 android:textStyle="bold" />
-
-        </RelativeLayout>
+    </RelativeLayout>
 
     </ScrollView>
