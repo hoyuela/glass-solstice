@@ -130,10 +130,14 @@ public abstract class NetworkServiceCall<R> {
 				final int statusCode = getResponseCode();
 				parseResponseAndSendResult(statusCode);
 			} finally {
+				Log.d("TEMP", "Disconnect!");
 				conn.disconnect();
 			}
 		} finally {
-			conn = null;
+			// Commented out to fix performance issues with skipped frames issue
+			// I believe the conn needs to stay alive and calling disconnect() on it
+			// handles getting rid of any memory allocations that need to happen anyway
+//			conn = null;
 		}
 	}
 	
@@ -214,7 +218,7 @@ public abstract class NetworkServiceCall<R> {
 				DelegatingErrorResponseParser.getSharedInstance() : params.errorResponseParser;
 	}
 	
-	private InputStream getMarkSupportedErrorStream(final HttpURLConnection conn) {
+	private static InputStream getMarkSupportedErrorStream(final HttpURLConnection conn) {
 		final InputStream orig = conn.getErrorStream();
 		
 		if(!orig.markSupported())

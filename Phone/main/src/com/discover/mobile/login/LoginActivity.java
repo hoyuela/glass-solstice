@@ -36,6 +36,20 @@ public class LoginActivity extends Activity {
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+//		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//        .detectDiskReads()
+//        .detectDiskWrites()
+//        .detectNetwork()   // or .detectAll() for all detectable problems
+//        .penaltyLog()
+//        .build());
+//		
+//		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+//        .detectLeakedSqlLiteObjects()
+//        .detectLeakedClosableObjects()
+//        .penaltyLog()
+//        .penaltyDeath()
+//        .build());
+		
 		setupViews();
 		setupButtons();
 		validator = new InputValidator();
@@ -115,14 +129,20 @@ public class LoginActivity extends Activity {
 			public void errorResponse(final ErrorResponse errorResponse) {
 				Log.e(TAG, "AuthenticateCall.errorResponse(ErrorResponse): " + errorResponse);
 				progress.dismiss();
-				nullifyInputs();
-				final String errMsg = getString(R.string.login_error);
-				errorTextView.setText(errMsg);
+				
+				if(errorResponse.getHttpStatusCode() == 401)
+					errorTextView.setText(getString(R.string.login_error));
+				else
+					throw new UnsupportedOperationException("Not able to handle status other than 401");
 			}
 
 			@Override
 			public void messageErrorResponse(final MessageErrorResponse messageErrorResponse) {
 				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
+				progress.dismiss();
+				nullifyInputs();
+				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
+				errorTextView.setText(messageErrorResponse.getMessage());
 			}
 		};
 		
@@ -148,6 +168,7 @@ public class LoginActivity extends Activity {
 		loginButton.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
+				errorTextView.setText(null);
 				logIn();
 			}
 		});
