@@ -64,94 +64,108 @@
             android:text="@string/account_security_remember_device_text"
             android:textColor="@color/black" />
 
-        <View
-            android:id="@+id/account_security_separator_line_one"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
+        <RelativeLayout
+            android:id="@+id/account_security_whats_this_relative_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
             android:layout_below="@+id/account_security_remember_device_label"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/darker_gray" />
+            android:onClick="expandHelpMenu">
 
-        <TextView
-            android:id="@+id/account_security_whats_this_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/account_security_separator_line_one"
-            android:text="@string/account_security_whats_this_text"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/blue" />
+            <View
+                android:id="@+id/account_security_separator_line_one"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/darker_gray" />
 
-        <TextView
-            android:id="@+id/account_security_plus_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/account_security_separator_line_one"
-            android:text="@string/account_security_plus_text"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/blue"
-            android:textStyle="bold" />
-
-        <View
-            android:id="@+id/account_security_separator_line_two"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/account_security_whats_this_label"
-            android:layout_marginTop="4dp"
-            android:background="@android:color/darker_gray" />
-
-
-
-            <RadioGroup
-		        android:id="@+id/account_security_choice_radio_group"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content" 
-                android:background="@drawable/rounded_table_corners_shape"
-                android:layout_marginTop="16dp"
-                android:layout_below="@+id/account_security_separator_line_two">
-		        
-	            <RadioButton
-	                android:id="@+id/account_security_choice_one_radio"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:checked="true"
-	                android:text="@string/account_security_remember_me_text"
-	                android:textColor="@color/black" />
-	
-			    <View
-	                android:id="@+id/account_security_choices_separator"
-	                android:layout_width="fill_parent"
-	                android:layout_height="1dp"
-	                android:layout_marginTop="4dp"
-	                android:background="@android:color/darker_gray" />
-			                     
-	            <RadioButton
-	                android:id="@+id/account_security_choice_two_radio"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:text="@string/account_security_dont_remember_me_text" 
-	                android:textColor="@color/black"
-	                android:layout_marginTop="4dp"/>
-	            
-	         </RadioGroup>
-
-            <Button
-                android:id="@+id/account_security_continue_button"
+            <TextView
+                android:id="@+id/account_security_whats_this_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/account_security_choice_radio_group"
-                android:layout_centerHorizontal="true"
-                android:text="@string/continue_text"
-                android:layout_marginTop="16dp" />
-        
+                android:layout_below="@+id/account_security_separator_line_one"
+                android:text="@string/account_security_whats_this_text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blue" />
+
+            <TextView
+                android:id="@+id/account_security_plus_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/account_security_whats_this_label"
+                android:layout_alignParentRight="true"
+                android:text="@string/account_security_plus_text"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/blue"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/account_security_separator_line_two"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:layout_below="@+id/account_security_whats_this_detail_label"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/account_security_whats_this_detail_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_security_whats_this_label"
+                android:maxLines="@integer/ZERO"
+                android:text="@string/account_security_whats_this_detail_text"
+                android:textColor="@color/black" />
+            	
+        </RelativeLayout>
+
+        <RadioGroup
+            android:id="@+id/account_security_choice_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/account_security_whats_this_relative_layout"
+            android:background="@drawable/rounded_table_corners_shape">
+
+            <RadioButton
+                android:id="@+id/account_security_choice_one_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/account_security_remember_me_text"
+                android:textColor="@color/black" />
+
+            <View
+                android:id="@+id/account_security_choices_separator"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@android:color/darker_gray" />
+
+            <RadioButton
+                android:id="@+id/account_security_choice_two_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/account_security_dont_remember_me_text"
+                android:textColor="@color/black" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/account_security_continue_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_choice_radio_group"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="@string/continue_text" />
+
         <TextView
             android:id="@+id/feedback_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_continue_button"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="64dp"
-            android:layout_below="@+id/account_security_continue_button"
             android:text="@string/feedback_text"
             android:textColor="@color/blue" />
 
@@ -163,8 +177,6 @@
             android:layout_centerHorizontal="true"
             android:text="@string/discover_copyright_text"
             android:textSize="@dimen/LIGHT_TEXT_SIZE" />
-
-
     </RelativeLayout>
 
     </ScrollView>
