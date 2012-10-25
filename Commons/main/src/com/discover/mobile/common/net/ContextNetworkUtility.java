@@ -1,11 +1,11 @@
 package com.discover.mobile.common.net;
 
+import static com.discover.mobile.common.ThreadUtility.isMainThread;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Looper;
 
 import com.discover.mobile.commons.R;
 
@@ -29,10 +29,6 @@ final class ContextNetworkUtility {
 		final ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		final NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 		return networkInfo != null && networkInfo.isConnected();
-	}
-	
-	private static boolean isMainThread() {
-		return Thread.currentThread() == Looper.getMainLooper().getThread();
 	}
 	
 	private ContextNetworkUtility() {

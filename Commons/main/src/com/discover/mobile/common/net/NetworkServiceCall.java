@@ -1,8 +1,10 @@
 package com.discover.mobile.common.net;
 
+import static com.discover.mobile.common.ThreadUtility.assertCurrentThreadHasLooper;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -12,10 +14,12 @@ import java.util.Map;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.discover.mobile.common.net.response.DelegatingErrorResponseParser;
+import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.common.net.response.ErrorResponseParser;
 import com.google.common.base.Strings;
 
 /**
@@ -25,17 +29,22 @@ import com.google.common.base.Strings;
  */
 public abstract class NetworkServiceCall<R> {
 	
-	static final String TAG = NetworkServiceCall.class.getSimpleName();
+	private final String TAG = getClass().getSimpleName();
 	
-	static final int STATUS_SUCCESS = 0;
+	static final int RESULT_SUCCESS = 0;
+	static final int RESULT_EXCEPTION = 1;
+	static final int RESULT_PARSED_ERROR = 2;
 	
 	private final ServiceCallParams params;
 	private final String BASE_URL;
 	
 	private Context context;
+	private HttpURLConnection conn;
+	
+	private volatile boolean submitted = false;
 	
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params) {
-		checkPreconditions(context, params);
+		validateConstructorArgs(context, params);
 		
 		this.context = context;
 		this.params = params;
@@ -43,7 +52,7 @@ public abstract class NetworkServiceCall<R> {
 		BASE_URL = ContextNetworkUtility.getBaseUrl(context);
 	}
 
-	protected abstract Handler getHandler();
+	protected abstract TypedReferenceHandler<R> getHandler();
 	/**
 	 * Executed in a background thread, needs to be thread-safe.
 	 * 
@@ -53,91 +62,110 @@ public abstract class NetworkServiceCall<R> {
 	 * @return The parsed result from the response
 	 * @throws IOException 
 	 */
-	protected abstract R parseResponse(int status, Map<String,List<String>> headers, InputStream body) throws IOException;
+	protected abstract R parseSuccessResponse(int status, Map<String,List<String>> headers, InputStream body)
+			throws IOException;
 	
 	/**
 	 * Submit the service call for asynchronous execution and call the callback when completed.
 	 */
-	public final void submit() {		
-		// TODO throw a ConnectionFailureException
+	public final void submit() {
 		try {
-			if(!ContextNetworkUtility.isActiveNetworkConnected(context)) {
-				Log.d(TAG, "No network connection available, dropping call");
-				return;
-			}
+			checkAndUpdateSubmittedState();
+			checkNetworkConnected();
+		} catch(final ConnectionFailureException e) {
+			sendResultToHandler(e, RESULT_EXCEPTION);
+			return;
 		} finally {
-			context = null; // allow garbage collection no matter what the result is
+			context = null; // allow context garbage collection no matter what the result is
 		}
 		
 		NetworkTrafficExecutorHolder.networkTrafficExecutor.submit(new Runnable() {
 			@Override
 			public void run() {
-				
 				try {
 					executeRequest();
-				} catch(final Exception e) {
-					// TEMP
-					Log.w(TAG, "caught exception", e);
-					e.printStackTrace();
-					
-					// TODO send error result
+				} catch(final Throwable t) {
+					Log.w(TAG, "caught throwable during network call execution", t);
+					sendResultToHandler(t, RESULT_EXCEPTION);
 				}
 			}
 		});
 	}
 	
-	private static void checkPreconditions(final Context context, final ServiceCallParams params) {
+	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {
 		checkNotNull(context, "context cannot be null");
+		
 		checkNotNull(params.method, "params.method cannot be null");
 		checkArgument(!Strings.isNullOrEmpty(params.path), "params.path should never be empty");
+		
+		checkArgument(params.connectTimeoutSeconds > 0,
+				"invalid params.connectTimeoutSeconds: " + params.connectTimeoutSeconds);
 		checkArgument(params.readTimeoutSeconds > 0, "invalid params.readTimeoutSeconds: " + params.readTimeoutSeconds);
-		checkCurrentThreadHasLooper();
+		
+		assertCurrentThreadHasLooper();
 	}
 	
-	// Executes in the background thread, does actual connection and delegates parsing to subclass
-	private void executeRequest() throws IOException {
-		final HttpURLConnection conn = createConnection();
-		prepareConnection(conn);
+	private void checkAndUpdateSubmittedState() {
+		if(submitted)
+			throw new AssertionError("This call has already been submitted, it cannot be re-used");
 		
-		// TODO figure out if conn.connect() and prepareConnection() need to be called within the try block
-		final R result;
-		conn.connect();
-		try {
-			final int statusCode = conn.getResponseCode();
-			final InputStream responseStream = getResponseStream(conn, statusCode);
-			
-			result = parseResponse(statusCode, conn.getHeaderFields(), responseStream);
-		} finally {
-			conn.disconnect();
+		submitted = true;
+	}
+	
+	private void checkNetworkConnected() throws ConnectionFailureException {
+		if(!ContextNetworkUtility.isActiveNetworkConnected(context)) {
+			Log.i(TAG, "No network connection available, dropping call");
+			throw new ConnectionFailureException("no active, connected network available");
 		}
-		
-		sendSuccessfulResultToHandler(result);
 	}
 	
-	private HttpURLConnection createConnection() throws IOException {
+	// Executes in the background thread, performs the HTTP connection and delegates parsing to subclass
+	private void executeRequest() throws IOException {
+		createConnection();
+		try {
+			prepareConnection();
+			
+			conn.connect();
+			try {
+				final int statusCode = getResponseCode();
+				parseResponseAndSendResult(statusCode);
+			} finally {
+				conn.disconnect();
+			}
+		} finally {
+			conn = null;
+		}
+	}
+	
+	private void createConnection() throws IOException {
 		final URL fullUrl = getFullUrl();
-		return (HttpURLConnection) fullUrl.openConnection();
-	}
-	
-	private void prepareConnection(final HttpURLConnection conn) throws IOException {
-		conn.setRequestMethod(params.method.name());
-		
-		setDefaultHeaders(conn);
-		setCustomHeaders(conn);
-		
-		conn.setReadTimeout(params.readTimeoutSeconds * 1000);
+		conn = (HttpURLConnection) fullUrl.openConnection();
 	}
 	
 	private URL getFullUrl() throws IOException {
 		return new URL(BASE_URL + params.path);
 	}
 	
-	private static void setDefaultHeaders(final HttpURLConnection conn) {
+	private void prepareConnection() throws IOException {
+		conn.setRequestMethod(params.method.name());
+		
+		setupDefaultHeaders();
+		setupSessionHeaders();
+		setupCustomHeaders();
+		
+		setupTimeouts();
+	}
+	
+	private void setupDefaultHeaders() {
 		conn.setRequestProperty("X-Client-Platform", "Android");
 		conn.setRequestProperty("X-Application-Version", "4.00");
 	}
 	
-	private void setCustomHeaders(final HttpURLConnection conn) {
+	private void setupSessionHeaders() {
+		ServiceCallSessionManager.prepareWithSecurityToken(conn);
+	}
+	
+	private void setupCustomHeaders() {
 		if(params.headers == null || params.headers.isEmpty())
 			return;
 		
@@ -145,27 +173,56 @@ public abstract class NetworkServiceCall<R> {
 			conn.setRequestProperty(headerEntry.getKey(), headerEntry.getValue());
 	}
 	
-	private static InputStream getResponseStream(final HttpURLConnection conn, final int statusCode) throws IOException {
-		if(isErrorStatus(statusCode))
-			return conn.getErrorStream();
+	private void setupTimeouts() {
+		conn.setConnectTimeout(params.connectTimeoutSeconds * 1000);
+		conn.setReadTimeout(params.readTimeoutSeconds * 1000);
+	}
+	
+	private int getResponseCode() throws IOException {
+		try {
+			return conn.getResponseCode();
+		} catch(final IOException e) {
+			// Unfortunately necessary hack - Jelly Bean's HttpURLConnection implementation tries to parse out
+			// information about the authentication challenge that doesn't exist and throws an IOException when it isn't
+			// found (the authentication scheme is "DCRDBasic", not a standard scheme). Luckily between pooling
+			// connections and the automated redirect support the implementation seems to keep its state despite
+			// exiting its control via an exception, so we try to get the response code again before giving up.
+			if("No authentication challenges found".equals(e.getMessage()))
+				return conn.getResponseCode();
+			throw e;
+		}
+	}
+	
+	private void parseResponseAndSendResult(final int statusCode) throws IOException {
+		if(DelegatingErrorResponseParser.isErrorStatus(statusCode)) {
+			final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();
+			final InputStream errorStream = getMarkSupportedErrorStream(conn);
+			final ErrorResponse errorResult = chosenErrorParser.parseErrorResponse(statusCode, errorStream, conn);
+			sendResultToHandler(errorResult, RESULT_PARSED_ERROR);
+		} else {
+			final R result = parseSuccessResponse(statusCode, conn.getHeaderFields(), conn.getInputStream());
+			sendResultToHandler(result, RESULT_SUCCESS);
+		}
+	}
+	
+	private ErrorResponseParser<?> getErrorResponseParser() {
+		return params.errorResponseParser == null ?
+				DelegatingErrorResponseParser.getSharedInstance() : params.errorResponseParser;
+	}
+	
+	private InputStream getMarkSupportedErrorStream(final HttpURLConnection conn) {
+		final InputStream orig = conn.getErrorStream();
 		
-		return conn.getInputStream();
+		if(!orig.markSupported())
+			return new BufferedInputStream(orig);
+		
+		return orig;
 	}
 	
-	// TODO determine if there is a better way to do this
-	private static boolean isErrorStatus(final int statusCode) {
-		return statusCode >= 400;
-	}
-	
-	private void sendSuccessfulResultToHandler(final R result) {
+	private void sendResultToHandler(final Object result, final int status) {
 		final Handler handler = getHandler();
-		final Message message = Message.obtain(handler, STATUS_SUCCESS, result);
+		final Message message = Message.obtain(handler, status, result);
 		handler.sendMessage(message);
-	}
-	
-	private static void checkCurrentThreadHasLooper() {
-		if(Looper.myLooper() == null)
-			throw new AssertionError("Current thread does not have an associated Looper, callbacks can't be scheduled");
 	}
 	
 	public static class ServiceCallParams {
@@ -174,8 +231,11 @@ public abstract class NetworkServiceCall<R> {
 		public String path;
 		
 		// Optional/Defaulted
+		public ErrorResponseParser<?> errorResponseParser = null;
 		public Map<String,String> headers = null;
-		public int readTimeoutSeconds = 15;  // TODO other timeouts
+		// TODO consider other timeout defaults
+		public int connectTimeoutSeconds = 15;
+		public int readTimeoutSeconds = 15;
 	}
 	
 }

@@ -14,11 +14,12 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.auth.PreAuthCheckCall;
-import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.auth.UpdateSessionCall;
 import com.discover.mobile.common.auth.UpdateSessionCall.UpdateSessionResult;
-import com.discover.mobile.common.net.AsyncCallback;
+import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.response.AsyncCallback;
+import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
+import com.discover.mobile.common.net.response.ErrorResponse;
 
 public class LoginActivity extends Activity {
 	
@@ -40,39 +41,67 @@ public class LoginActivity extends Activity {
 		validator = new InputValidator();
 	}
 	
-	// TEMP
 	@Override
 	protected void onStart() {
 		super.onStart();
 		
 		// TEMP testing calls
-//		runPreAuth();
-//		runAuth();
+		testAuthAndUpdate();
 		
+		// TEMP
 		Log.e(TAG, "onStart() done");
 	}
 	
-	// TEMP example preAuth call
-	private void runPreAuth() {
-		final AsyncCallback<PreAuthResult> callback = new AsyncCallback<PreAuthCheckCall.PreAuthResult>() {
+	// TEMP
+	private void testAuthAndUpdate() {
+		Log.e(TAG, "testAuthAndUpdate() start");
+		new AuthenticateCall(this, new AsyncCallbackAdapter<AccountDetails>() {
 			@Override
-			public void success(final PreAuthResult value) {
-				Log.e(TAG, "Status code: " + value.statusCode);
+			public void success(final AccountDetails value) {
+				new UpdateSessionCall(LoginActivity.this, new AsyncCallbackAdapter<UpdateSessionResult>() {
+					@Override
+					public void success(final UpdateSessionResult value) {
+						Log.e(TAG, "Status code for update: " + value.statusCode);
+					}
+
+					@Override
+					public void failure(final Throwable error) {
+						Log.e(TAG, "UpdateSessionCall.failure(Throwable): " + error);
+					}
+
+					@Override
+					public void errorResponse(final ErrorResponse errorResponse) {
+						Log.e(TAG, "UpdateSessionCall.errorResponse(ErrorResponse): " + errorResponse);
+					}
+
+					@Override
+					public void messageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+						Log.e(TAG, "UpdateSessionCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
+					}
+				}).submit();
+			}
+			
+			@Override
+			public void failure(final Throwable error) {
+				Log.e(TAG, "AuthenticateCall.failure(Throwable): " + error);
 			}
 
 			@Override
-			public void failure(final Throwable error) {
-				Log.e(TAG, "Error: " + error);
+			public void errorResponse(final ErrorResponse errorResponse) {
+				Log.e(TAG, "AuthenticateCall.errorResponse(ErrorResponse): " + errorResponse);
 			}
-		};
-		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);
-		preAuthCall.submit();
+
+			@Override
+			public void messageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
+			}
+		}, "uid6478a", "ccccc").submit();
 	}
 	
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
-		final AsyncCallback<AccountDetails> callback = new AsyncCallback<AccountDetails>() {
+		final AsyncCallback<AccountDetails> callback = new AsyncCallbackAdapter<AccountDetails>() {
 			@Override
 			public void success(final AccountDetails value) {
 				Log.d(TAG, "Success");
@@ -88,6 +117,11 @@ public class LoginActivity extends Activity {
 				final String errMsg = getString(R.string.login_error);
 				errorTextView.setText(errMsg);
 			}
+
+			@Override
+			public void errorResponse(final ErrorResponse errorResponse) {
+				// TODO
+			}
 		};
 		
 		final AuthenticateCall authenticateCall = new AuthenticateCall(this, callback, username, password);
@@ -98,25 +132,6 @@ public class LoginActivity extends Activity {
 		nullifyInputs();
 		final Intent logIn = new Intent(this, LoggedInLandingPage.class);
 		this.startActivity(logIn);
-	}
-	
-	// TEMP example update call
-	private void runUpdate() {
-		final AsyncCallback<UpdateSessionResult> callback = new AsyncCallback<UpdateSessionCall.UpdateSessionResult>() {
-			
-			@Override
-			public void success(final UpdateSessionResult value) {
-				Log.e(TAG, "Status code for update: " + value.statusCode);
-			}
-
-			@Override
-			public void failure(final Throwable error) {
-				Log.e(TAG, "Error: " + error);
-			}
-		};
-		
-		final UpdateSessionCall updateCall = new UpdateSessionCall(this, callback);
-		updateCall.submit();
 	}
 	
 	private void setupViews() {
