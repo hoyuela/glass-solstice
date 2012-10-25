@@ -46,10 +46,7 @@ public class LoginActivity extends Activity {
 		super.onStart();
 		
 		// TEMP testing calls
-		testAuthAndUpdate();
-		
-		// TEMP
-		Log.e(TAG, "onStart() done");
+//		testAuthAndUpdate();
 	}
 	
 	// TEMP
@@ -112,6 +109,11 @@ public class LoginActivity extends Activity {
 			@Override
 			public void failure(final Throwable error) {
 				Log.e(TAG, "Error: " + error);
+			}
+
+			@Override
+			public void errorResponse(final ErrorResponse errorResponse) {
+				Log.e(TAG, "AuthenticateCall.errorResponse(ErrorResponse): " + errorResponse);
 				progress.dismiss();
 				nullifyInputs();
 				final String errMsg = getString(R.string.login_error);
@@ -119,8 +121,8 @@ public class LoginActivity extends Activity {
 			}
 
 			@Override
-			public void errorResponse(final ErrorResponse errorResponse) {
-				// TODO
+			public void messageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
 			}
 		};
 		
