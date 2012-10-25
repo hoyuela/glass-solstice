@@ -14,8 +14,6 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.auth.PreAuthCheckCall;
-import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.auth.UpdateSessionCall;
 import com.discover.mobile.common.auth.UpdateSessionCall.UpdateSessionResult;
 import com.discover.mobile.common.net.AsyncCallback;
@@ -40,33 +38,41 @@ public class LoginActivity extends Activity {
 		validator = new InputValidator();
 	}
 	
-	// TEMP
 	@Override
 	protected void onStart() {
 		super.onStart();
 		
 		// TEMP testing calls
-//		runPreAuth();
-//		runAuth();
+		testAuthAndUpdate();
 		
+		// TEMP
 		Log.e(TAG, "onStart() done");
 	}
 	
-	// TEMP example preAuth call
-	private void runPreAuth() {
-		final AsyncCallback<PreAuthResult> callback = new AsyncCallback<PreAuthCheckCall.PreAuthResult>() {
+	// TEMP
+	private void testAuthAndUpdate() {
+		Log.e(TAG, "testAuthAndUpdate() start");
+		new AuthenticateCall(this, new AsyncCallback<AccountDetails>() {
 			@Override
-			public void success(final PreAuthResult value) {
-				Log.e(TAG, "Status code: " + value.statusCode);
-			}
+			public void success(final AccountDetails value) {
+				new UpdateSessionCall(LoginActivity.this, new AsyncCallback<UpdateSessionResult>() {
+					@Override
+					public void success(final UpdateSessionResult value) {
+						Log.e(TAG, "Status code for update: " + value.statusCode);
+					}
 
+					@Override
+					public void failure(final Throwable error) {
+						Log.e(TAG, "Error: " + error);
+					}
+				}).submit();
+			}
+			
 			@Override
 			public void failure(final Throwable error) {
 				Log.e(TAG, "Error: " + error);
 			}
-		};
-		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);
-		preAuthCall.submit();
+		}, "uid4545", "ccccc").submit();
 	}
 	
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
@@ -98,25 +104,6 @@ public class LoginActivity extends Activity {
 		nullifyInputs();
 		final Intent logIn = new Intent(this, LoggedInLandingPage.class);
 		this.startActivity(logIn);
-	}
-	
-	// TEMP example update call
-	private void runUpdate() {
-		final AsyncCallback<UpdateSessionResult> callback = new AsyncCallback<UpdateSessionCall.UpdateSessionResult>() {
-			
-			@Override
-			public void success(final UpdateSessionResult value) {
-				Log.e(TAG, "Status code for update: " + value.statusCode);
-			}
-
-			@Override
-			public void failure(final Throwable error) {
-				Log.e(TAG, "Error: " + error);
-			}
-		};
-		
-		final UpdateSessionCall updateCall = new UpdateSessionCall(this, callback);
-		updateCall.submit();
 	}
 	
 	private void setupViews() {

@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.os.Handler;
 
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.net.AsyncCallback;
 import com.discover.mobile.common.net.HttpMethod;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.StrongReferenceHandler;
+import com.discover.mobile.common.net.TypedReferenceHandler;
 
 public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 	
@@ -20,7 +20,7 @@ public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 		path = "/cardsvcs/acs/session/preauthcheck";
 	}};
 	
-	private final Handler handler;
+	private final TypedReferenceHandler<PreAuthResult> handler;
 	
 	public PreAuthCheckCall(final Context context, final AsyncCallback<PreAuthResult> callback) {
 		super(context, STANDARD_PARAMS);
@@ -29,13 +29,14 @@ public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 	}
 	
 	@Override
-	protected Handler getHandler() {
+	protected TypedReferenceHandler<PreAuthResult> getHandler() {
 		return handler;
 	}
 
 	@Override
-	protected PreAuthResult parseResponse(final int status, final Map<String,List<String>> headers,
+	protected PreAuthResult parseSuccessResponse(final int status, final Map<String,List<String>> headers,
 			final InputStream responseStream) {
+		
 		// TODO
 		
 		// TEMP
@@ -44,11 +45,8 @@ public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 		}};
 	}
 	
-	public class PreAuthResult {
-		// TEMP
+	public static class PreAuthResult {
 		public int statusCode;
-		
-		// TODO
 	}
 	
 }

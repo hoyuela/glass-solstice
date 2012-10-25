@@ -31,7 +31,7 @@ public abstract class JsonMappingNetworkServiceCall<M> extends NetworkServiceCal
 	}
 	
 	@Override
-	protected M parseResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
+	protected M parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 		
 		return JacksonObjectMapperHolder.mapper.readValue(body, modelClass);

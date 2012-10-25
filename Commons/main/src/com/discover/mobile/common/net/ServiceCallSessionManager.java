@@ -7,7 +7,7 @@ import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 
-public class ServiceCallSessionManager {
+public final class ServiceCallSessionManager {
 	
 	private static final CookieManager cookieManager = createAndSetupCookieManager();
 	

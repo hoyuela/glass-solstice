@@ -43,7 +43,7 @@ public abstract class NetworkServiceCall<R> {
 		BASE_URL = ContextNetworkUtility.getBaseUrl(context);
 	}
 
-	protected abstract Handler getHandler();
+	protected abstract TypedReferenceHandler<R> getHandler();
 	/**
 	 * Executed in a background thread, needs to be thread-safe.
 	 * 
@@ -53,7 +53,8 @@ public abstract class NetworkServiceCall<R> {
 	 * @return The parsed result from the response
 	 * @throws IOException 
 	 */
-	protected abstract R parseResponse(int status, Map<String,List<String>> headers, InputStream body) throws IOException;
+	protected abstract R parseSuccessResponse(int status, Map<String,List<String>> headers, InputStream body)
+			throws IOException;
 	
 	/**
 	 * Submit the service call for asynchronous execution and call the callback when completed.
@@ -106,7 +107,7 @@ public abstract class NetworkServiceCall<R> {
 			final int statusCode = conn.getResponseCode();
 			final InputStream responseStream = getResponseStream(conn, statusCode);
 			
-			result = parseResponse(statusCode, conn.getHeaderFields(), responseStream);
+			result = parseSuccessResponse(statusCode, conn.getHeaderFields(), responseStream);
 		} finally {
 			conn.disconnect();
 		}
@@ -133,12 +134,12 @@ public abstract class NetworkServiceCall<R> {
 		return new URL(BASE_URL + params.path);
 	}
 	
-	private static void setDefaultHeaders(final HttpURLConnection conn) {
+	private void setDefaultHeaders(final HttpURLConnection conn) {
 		conn.setRequestProperty("X-Client-Platform", "Android");
 		conn.setRequestProperty("X-Application-Version", "4.00");
 	}
 	
-	private static void setSessionHeaders(final HttpURLConnection conn) {
+	private void setSessionHeaders(final HttpURLConnection conn) {
 		ServiceCallSessionManager.prepareWithSecurityToken(conn);
 	}
 	

@@ -20,21 +20,33 @@ public class LandingActivity extends Activity{
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		
-		runPreAuth();
+		startPreAuthCheck();
 		
 		setupViews();
 		setupButtons();
 	}
 	
-	private void runPreAuth() {
-		final AsyncCallback<PreAuthResult> callback = new AsyncCallback<PreAuthCheckCall.PreAuthResult>() {
+	private void startPreAuthCheck() {
+		Log.d(TAG, "starting pre-auth check");
+		
+		final AsyncCallback<PreAuthResult> callback = new AsyncCallback<PreAuthResult>() {
 			@Override
 			public void success(final PreAuthResult value) {
+				Log.d(TAG, "pre-auth check successful");
+				
+				// TODO
+				
+				// TEMP
 				Log.e(TAG, "Status code: " + value.statusCode);
 			}
 
 			@Override
 			public void failure(final Throwable error) {
+				Log.d(TAG, "pre-auth check failed");
+				
+				// TODO
+				
+				// TEMP
 				Log.e(TAG, "Error: " + error);
 			}
 		};

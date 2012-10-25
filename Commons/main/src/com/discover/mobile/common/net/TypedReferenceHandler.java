@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-abstract class TypedReferenceHandler<V> extends Handler {
+public abstract class TypedReferenceHandler<V> extends Handler {
 	
 	private final String TAG = getClass().getSimpleName();
 	
