@@ -108,7 +108,7 @@ public class LoginActivity extends Activity {
 				progress.dismiss();
 				handleSuccessfulAuth();
 			}
-
+			
 			@Override
 			public void failure(final Throwable error) {
 				Log.e(TAG, "Error: " + error);
@@ -117,10 +117,17 @@ public class LoginActivity extends Activity {
 				final String errMsg = getString(R.string.login_error);
 				errorTextView.setText(errMsg);
 			}
-
+			
 			@Override
 			public void errorResponse(final ErrorResponse errorResponse) {
-				// TODO
+				// TEMP
+				Log.e(TAG, "AuthenticateCall.errorResponse(ErrorResponse): " + errorResponse);
+			}
+
+			@Override
+			public void messageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+				// TEMP
+				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
 			}
 		};
 		
