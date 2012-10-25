@@ -195,14 +195,18 @@ public abstract class NetworkServiceCall<R> {
 	
 	private void parseResponseAndSendResult(final int statusCode) throws IOException {
 		if(DelegatingErrorResponseParser.isErrorStatus(statusCode)) {
-			final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();
-			final InputStream errorStream = getMarkSupportedErrorStream(conn);
-			final ErrorResponse errorResult = chosenErrorParser.parseErrorResponse(statusCode, errorStream, conn);
-			sendResultToHandler(errorResult, RESULT_PARSED_ERROR);
+			parseErrorResponseAndSendResult(statusCode);
 		} else {
 			final R result = parseSuccessResponse(statusCode, conn.getHeaderFields(), conn.getInputStream());
 			sendResultToHandler(result, RESULT_SUCCESS);
 		}
+	}
+	
+	private void parseErrorResponseAndSendResult(final int statusCode) throws IOException {
+		final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();
+		final InputStream errorStream = getMarkSupportedErrorStream(conn);
+		final ErrorResponse errorResult = chosenErrorParser.parseErrorResponse(statusCode, errorStream, conn);
+		sendResultToHandler(errorResult, RESULT_PARSED_ERROR);
 	}
 	
 	private ErrorResponseParser<?> getErrorResponseParser() {
