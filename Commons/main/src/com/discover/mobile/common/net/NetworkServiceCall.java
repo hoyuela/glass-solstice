@@ -126,7 +126,7 @@ public abstract class NetworkServiceCall<R> {
 			
 			conn.connect();
 			try {
-				final int statusCode = conn.getResponseCode();
+				final int statusCode = getResponseCode();
 				parseResponseAndSendResult(statusCode);
 			} finally {
 				conn.disconnect();
@@ -175,6 +175,21 @@ public abstract class NetworkServiceCall<R> {
 	private void setupTimeouts() {
 		conn.setConnectTimeout(params.connectTimeoutSeconds * 1000);
 		conn.setReadTimeout(params.readTimeoutSeconds * 1000);
+	}
+	
+	private int getResponseCode() throws IOException {
+		try {
+			return conn.getResponseCode();
+		} catch(final IOException e) {
+			// Unfortunately necessary hack - Jelly Bean's HttpURLConnection implementation tries to parse out
+			// information about the authentication challenge that doesn't exist and throws an IOException when it isn't
+			// found (the authentication scheme is "DCRDBasic", not a standard scheme). Luckily between pooling
+			// connections and the automated redirect support the implementation seems to keep its state despite
+			// exiting its control via an exception, so we try to get the response code again before giving up.
+			if("No authentication challenges found".equals(e.getMessage()))
+				return conn.getResponseCode();
+			throw e;
+		}
 	}
 	
 	private void parseResponseAndSendResult(final int statusCode) throws IOException {
