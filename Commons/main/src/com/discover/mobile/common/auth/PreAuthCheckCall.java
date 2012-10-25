@@ -7,11 +7,11 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
-import com.discover.mobile.common.net.AsyncCallback;
 import com.discover.mobile.common.net.HttpMethod;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
+import com.discover.mobile.common.net.response.AsyncCallback;
 
 public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 	

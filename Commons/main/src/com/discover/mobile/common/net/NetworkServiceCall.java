@@ -16,6 +16,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.discover.mobile.common.net.response.DelegatingErrorResponseParser;
+import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.common.net.response.ErrorResponseParser;
 import com.google.common.base.Strings;
 
 /**
@@ -26,17 +29,21 @@ import com.google.common.base.Strings;
 public abstract class NetworkServiceCall<R> {
 	
 	private final String TAG = getClass().getSimpleName();
-
+	
 	static final int RESULT_SUCCESS = 0;
 	static final int RESULT_EXCEPTION = 1;
+	static final int RESULT_PARSED_ERROR = 2;
 	
 	private final ServiceCallParams params;
 	private final String BASE_URL;
 	
 	private Context context;
+	private HttpURLConnection conn;
+	
+	private volatile boolean submitted = false;
 	
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params) {
-		validateConstruction(context, params);
+		validateConstructorArgs(context, params);
 		
 		this.context = context;
 		this.params = params;
@@ -62,6 +69,7 @@ public abstract class NetworkServiceCall<R> {
 	 */
 	public final void submit() {
 		try {
+			checkAndUpdateSubmittedState();
 			checkNetworkConnected();
 		} catch(final ConnectionFailureException e) {
 			sendResultToHandler(e, RESULT_EXCEPTION);
@@ -83,14 +91,24 @@ public abstract class NetworkServiceCall<R> {
 		});
 	}
 	
-	private static void validateConstruction(final Context context, final ServiceCallParams params) {
+	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {
 		checkNotNull(context, "context cannot be null");
 		
 		checkNotNull(params.method, "params.method cannot be null");
 		checkArgument(!Strings.isNullOrEmpty(params.path), "params.path should never be empty");
+		
+		checkArgument(params.connectTimeoutSeconds > 0,
+				"invalid params.connectTimeoutSeconds: " + params.connectTimeoutSeconds);
 		checkArgument(params.readTimeoutSeconds > 0, "invalid params.readTimeoutSeconds: " + params.readTimeoutSeconds);
 		
 		assertCurrentThreadHasLooper();
+	}
+	
+	private void checkAndUpdateSubmittedState() {
+		if(submitted)
+			throw new AssertionError("This call has already been submitted, it cannot be re-used");
+		
+		submitted = true;
 	}
 	
 	private void checkNetworkConnected() throws ConnectionFailureException {
@@ -102,52 +120,51 @@ public abstract class NetworkServiceCall<R> {
 	
 	// Executes in the background thread, performs the HTTP connection and delegates parsing to subclass
 	private void executeRequest() throws IOException {
-		final HttpURLConnection conn = createConnection();
-		prepareConnection(conn);
-		
-		final R result;
-		conn.connect();
+		createConnection();
 		try {
-			final int statusCode = conn.getResponseCode();
-			final InputStream responseStream = getResponseStream(conn, statusCode);
+			prepareConnection();
 			
-			result = parseSuccessResponse(statusCode, conn.getHeaderFields(), responseStream);
+			conn.connect();
+			try {
+				final int statusCode = conn.getResponseCode();
+				parseResponseAndSendResult(statusCode);
+			} finally {
+				conn.disconnect();
+			}
 		} finally {
-			conn.disconnect();
+			conn = null;
 		}
-		
-		sendResultToHandler(result, RESULT_SUCCESS);
 	}
 	
-	private HttpURLConnection createConnection() throws IOException {
+	private void createConnection() throws IOException {
 		final URL fullUrl = getFullUrl();
-		return (HttpURLConnection) fullUrl.openConnection();
-	}
-	
-	private void prepareConnection(final HttpURLConnection conn) throws IOException {
-		conn.setRequestMethod(params.method.name());
-		
-		setDefaultHeaders(conn);
-		setSessionHeaders(conn);
-		setCustomHeaders(conn);
-		
-		conn.setReadTimeout(params.readTimeoutSeconds * 1000);
+		conn = (HttpURLConnection) fullUrl.openConnection();
 	}
 	
 	private URL getFullUrl() throws IOException {
 		return new URL(BASE_URL + params.path);
 	}
 	
-	private void setDefaultHeaders(final HttpURLConnection conn) {
+	private void prepareConnection() throws IOException {
+		conn.setRequestMethod(params.method.name());
+		
+		setupDefaultHeaders();
+		setupSessionHeaders();
+		setupCustomHeaders();
+		
+		setupTimeouts();
+	}
+	
+	private void setupDefaultHeaders() {
 		conn.setRequestProperty("X-Client-Platform", "Android");
 		conn.setRequestProperty("X-Application-Version", "4.00");
 	}
 	
-	private void setSessionHeaders(final HttpURLConnection conn) {
+	private void setupSessionHeaders() {
 		ServiceCallSessionManager.prepareWithSecurityToken(conn);
 	}
 	
-	private void setCustomHeaders(final HttpURLConnection conn) {
+	private void setupCustomHeaders() {
 		if(params.headers == null || params.headers.isEmpty())
 			return;
 		
@@ -155,16 +172,25 @@ public abstract class NetworkServiceCall<R> {
 			conn.setRequestProperty(headerEntry.getKey(), headerEntry.getValue());
 	}
 	
-	private static InputStream getResponseStream(final HttpURLConnection conn, final int statusCode) throws IOException {
-		if(isErrorStatus(statusCode))
-			return conn.getErrorStream();
-		
-		return conn.getInputStream();
+	private void setupTimeouts() {
+		conn.setConnectTimeout(params.connectTimeoutSeconds * 1000);
+		conn.setReadTimeout(params.readTimeoutSeconds * 1000);
 	}
 	
-	// TODO determine if there is a better way to do this
-	private static boolean isErrorStatus(final int statusCode) {
-		return statusCode >= 400;
+	private void parseResponseAndSendResult(final int statusCode) throws IOException {
+		final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();
+		if(chosenErrorParser.shouldParseResponse(statusCode, conn)) {
+			final ErrorResponse errorResult = chosenErrorParser.parseErrorResponse(statusCode, conn);
+			sendResultToHandler(errorResult, RESULT_PARSED_ERROR);
+		} else {
+			final R result = parseSuccessResponse(statusCode, conn.getHeaderFields(), conn.getInputStream());
+			sendResultToHandler(result, RESULT_SUCCESS);
+		}
+	}
+	
+	private ErrorResponseParser<?> getErrorResponseParser() {
+		return params.errorResponseParser == null ?
+				DelegatingErrorResponseParser.getSharedInstance() : params.errorResponseParser;
 	}
 	
 	private void sendResultToHandler(final Object result, final int status) {
@@ -179,8 +205,11 @@ public abstract class NetworkServiceCall<R> {
 		public String path;
 		
 		// Optional/Defaulted
+		public ErrorResponseParser<?> errorResponseParser = null;
 		public Map<String,String> headers = null;
-		public int readTimeoutSeconds = 15;  // TODO other timeouts
+		// TODO consider other timeout defaults
+		public int connectTimeoutSeconds = 15;
+		public int readTimeoutSeconds = 15;
 	}
 	
 }

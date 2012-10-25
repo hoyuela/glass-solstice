@@ -3,11 +3,11 @@ package com.discover.mobile.common.auth;
 import android.content.Context;
 import android.util.Base64;
 
-import com.discover.mobile.common.net.AsyncCallback;
 import com.discover.mobile.common.net.HttpMethod;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonMappingNetworkServiceCall;
+import com.discover.mobile.common.net.response.AsyncCallback;
 import com.google.common.collect.ImmutableMap;
 
 public class AuthenticateCall extends JsonMappingNetworkServiceCall<AccountDetails> {
@@ -17,7 +17,9 @@ public class AuthenticateCall extends JsonMappingNetworkServiceCall<AccountDetai
 	
 	private final TypedReferenceHandler<AccountDetails> handler;
 
-	public AuthenticateCall(final Context context, final AsyncCallback<AccountDetails> callback, final String username, final String password) {
+	public AuthenticateCall(final Context context, final AsyncCallback<AccountDetails> callback,
+			final String username, final String password) {
+		
 		super(context, new ServiceCallParams() {{
 			method = HttpMethod.GET;
 			path = "/cardsvcs/acs/acct/v1/account";

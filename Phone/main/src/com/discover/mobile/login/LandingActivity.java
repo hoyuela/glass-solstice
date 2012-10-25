@@ -10,7 +10,8 @@ import android.widget.Button;
 import com.discover.mobile.R;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
-import com.discover.mobile.common.net.AsyncCallback;
+import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
+import com.discover.mobile.common.net.response.ErrorResponse;
 
 public class LandingActivity extends Activity{
 	
@@ -29,7 +30,7 @@ public class LandingActivity extends Activity{
 	private void startPreAuthCheck() {
 		Log.d(TAG, "starting pre-auth check");
 		
-		final AsyncCallback<PreAuthResult> callback = new AsyncCallback<PreAuthResult>() {
+		final AsyncCallbackAdapter<PreAuthResult> callback = new AsyncCallbackAdapter<PreAuthResult>() {
 			@Override
 			public void success(final PreAuthResult value) {
 				Log.d(TAG, "pre-auth check successful");
@@ -48,6 +49,14 @@ public class LandingActivity extends Activity{
 				
 				// TEMP
 				Log.e(TAG, "Error: " + error);
+			}
+			
+			@Override
+			public void errorResponse(final ErrorResponse errorResponse) {
+				// TODO
+				
+				// TEMP
+				Log.e(TAG, "errorResponse(ErrorResponse): " + errorResponse);
 			}
 		};
 		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);

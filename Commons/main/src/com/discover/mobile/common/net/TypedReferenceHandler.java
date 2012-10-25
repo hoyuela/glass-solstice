@@ -1,12 +1,14 @@
 package com.discover.mobile.common.net;
 
 import static com.discover.mobile.common.net.NetworkServiceCall.RESULT_EXCEPTION;
+import static com.discover.mobile.common.net.NetworkServiceCall.RESULT_PARSED_ERROR;
 import static com.discover.mobile.common.net.NetworkServiceCall.RESULT_SUCCESS;
-
-
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
+import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.response.AsyncCallback;
 
 public abstract class TypedReferenceHandler<V> extends Handler {
 	
@@ -31,6 +33,10 @@ public abstract class TypedReferenceHandler<V> extends Handler {
 				handleException(message, callback);
 				break;
 				
+			case RESULT_PARSED_ERROR:
+				handleErrorResponse(message, callback);
+				break;
+				
 			// TODO
 			
 			default:
@@ -47,6 +53,11 @@ public abstract class TypedReferenceHandler<V> extends Handler {
 	void handleException(final Message message, final AsyncCallback<V> callback) {
 		final Throwable exception = (Throwable) message.obj;
 		callback.failure(exception);
+	}
+	
+	void handleErrorResponse(final Message message, final AsyncCallback<V> callback) {
+		final MessageErrorResponse errorResponse = (MessageErrorResponse) message.obj;
+		callback.failure(errorResponse);
 	}
 	
 }
