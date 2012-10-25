@@ -11,20 +11,21 @@ public class JsonMessageErrorResponseParser implements ErrorResponseParser<Messa
 	private static final String MIME_JSON = "application/json";
 
 	@Override
-	public MessageErrorResponse parseErrorResponse(final int httpStatusCode, final InputStream in,
+	public MessageErrorResponse parseErrorResponse(final int httpStatusCode, final InputStream errorStream,
 			final HttpURLConnection conn) throws IOException {
 		
-		if(!isParseableContentType(conn) || !inputStreamHasContent(in))
+		if(!isParseableContentType(conn) || hasDeclaredContent(conn) || !inputStreamHasContent(errorStream))
 			return null;
-		
-		// Don't have to close, NetworkServiceCall handles closing HttpURLConnection
-		final InputStream errorStream = conn.getErrorStream();
 		
 		return JacksonObjectMapperHolder.mapper.readValue(errorStream, MessageErrorResponse.class);
 	}
 	
 	private boolean isParseableContentType(final HttpURLConnection conn) {
 		return MIME_JSON.equalsIgnoreCase(conn.getContentType());
+	}
+	
+	private boolean hasDeclaredContent(final HttpURLConnection conn) {
+		return conn.getContentLength() > 0;
 	}
 	
 	private boolean inputStreamHasContent(final InputStream in) throws IOException {
