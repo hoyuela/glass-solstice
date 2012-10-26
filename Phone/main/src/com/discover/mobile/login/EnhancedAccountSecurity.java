@@ -38,5 +38,8 @@ public class EnhancedAccountSecurity extends Activity{
 				detailHelpLabel.setMaxLines(0);
 			}
 	}
+	
+	public void subimtSecurityInfo(View v){
+	}
 
 }

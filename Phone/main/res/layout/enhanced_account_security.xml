@@ -157,7 +157,8 @@
             android:layout_below="@+id/account_security_choice_radio_group"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
-            android:text="@string/continue_text" />
+            android:text="@string/continue_text" 
+            android:onClick="submitSecurityInfo"/>
 
         <TextView
             android:id="@+id/feedback_label"
