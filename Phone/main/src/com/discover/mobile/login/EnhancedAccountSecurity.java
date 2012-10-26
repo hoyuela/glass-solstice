@@ -1,6 +1,7 @@
 package com.discover.mobile.login;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -39,7 +40,10 @@ public class EnhancedAccountSecurity extends Activity{
 			}
 	}
 	
-	public void subimtSecurityInfo(View v){
+	public void submitSecurityInfo(View v){
+		Intent accountInfoTwoActivity = new Intent(this, AccountInformationTwoActivity.class);
+		this.startActivity(accountInfoTwoActivity);
+		
 	}
 
 }

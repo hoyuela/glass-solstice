@@ -68,10 +68,31 @@
                 android:paddingTop="8dp" />
 
             <TextView
+                android:id="@+id/account_info_two_confirm_id_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/account_info_two_id_field"
+                android:layout_marginTop="8dp"
+                android:text="@string/account_info_two_confirm_id_text"
+                android:textColor="@color/black" />
+            
+            <EditText
+                android:id="@+id/account_info_two_confirm_id_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/account_information_input_info_label"
+                android:layout_below="@+id/account_info_two_confirm_id_label"
+                android:ems="16"
+                android:imeOptions="actionNext"
+                android:maxLength="16"
+                android:paddingTop="8dp" />
+
+            <TextView
                 android:id="@+id/account_info_two_pass_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_two_id_field"
+                android:layout_below="@+id/account_info_two_confirm_id_field"
+                android:layout_marginTop="8dp"
                 android:text="@string/account_info_two_pass_text"
                 android:textColor="@color/black" />
 

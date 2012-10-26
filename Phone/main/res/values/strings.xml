@@ -23,6 +23,7 @@
 	<string name="account_info_two_create_id_text">Create a User ID:</string>
 	<string name="account_info_two_pass_text">Create a Password:</string>
 	<string name="account_info_two_pass_info_text">(Must be 8&#8211;32 characters and have at least one letter and one number. Your password is case sensitivie and can also use all special characters.)</string>
+	<string name="account_info_two_confirm_id_text">Confirm User ID:</string>
 	
 	<!-- &#8211; is a dash character so that lint will not complain of using a dash in strings -->
 	<string name="account_info_input_restrictions_label">(This is a 16&#8211;digit number starting with 6011. Do not include space or hyphens.)</string>
