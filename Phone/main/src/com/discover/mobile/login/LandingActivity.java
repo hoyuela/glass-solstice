@@ -1,6 +1,7 @@
 package com.discover.mobile.login;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ public class LandingActivity extends Activity{
 			public void failure(final Throwable error) {
 				progress.dismiss();
 				Log.e(TAG, "UpdateSessionCall.failure(Throwable): " + error);
+				showOkAlertDialog("Error", error.getMessage());
 			}
 
 			@Override
@@ -70,6 +72,14 @@ public class LandingActivity extends Activity{
 		};
 		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);
 		preAuthCall.submit();
+	}
+	
+	private void showOkAlertDialog(final String title, final String message) {
+		new AlertDialog.Builder(this)
+	    .setTitle(title)
+	    .setMessage(message)
+	    .setNegativeButton("OK", null)
+	    .show();
 	}
 	
 	private void setupViews() {
