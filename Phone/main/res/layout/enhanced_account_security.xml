@@ -6,7 +6,8 @@
     android:paddingBottom="@dimen/CONTENT_PADDING"
     android:paddingLeft="@dimen/CONTENT_PADDING"
     android:paddingRight="@dimen/CONTENT_PADDING"
-    android:paddingTop="@dimen/CONTENT_PADDING" xmlns:android="http://schemas.android.com/apk/res/android">
+    android:paddingTop="@dimen/CONTENT_PADDING" 
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:layout_width="match_parent"

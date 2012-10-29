@@ -1,4 +1,4 @@
-package com.discover.mobile.login;
+package com.discover.mobile.register;
 
 import android.app.Activity;
 import android.content.Intent;

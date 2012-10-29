@@ -20,6 +20,7 @@ import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallback;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.register.AccountInformationActivity;
 
 public class LoginActivity extends Activity {
 	
@@ -179,15 +180,8 @@ public class LoginActivity extends Activity {
 		pass = passField.getText().toString();
 		
 		// TODO production error handling (validator doesn't work with test uid's)
-		
-//		if(validator.validateCredentials(uid, pass)){
-			runAuthWithUsernameAndPassword(uid, pass);
-//		}
-//		else{
-//			nullifyInputs();
-//			final String errMsg = getString(R.string.login_error);
-//			errorTextView.setText(errMsg);
-//		}
+		runAuthWithUsernameAndPassword(uid, pass);
+
 	}
 	
 	public void registerNewUser(final View v){

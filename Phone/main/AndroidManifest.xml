@@ -42,7 +42,7 @@
        </activity>
        
       <activity 
-            android:name=".login.EnhancedAccountSecurity"
+            android:name="register.EnhancedAccountSecurity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -61,7 +61,7 @@
        </activity>
        
         <activity 
-            android:name=".login.AccountInformationActivity"
+            android:name="register.AccountInformationActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -73,7 +73,7 @@
        </activity>
        
         <activity 
-            android:name=".login.AccountInformationTwoActivity"
+            android:name="register.AccountInformationTwoActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">

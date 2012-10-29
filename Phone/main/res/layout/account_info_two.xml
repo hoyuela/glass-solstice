@@ -66,12 +66,49 @@
                 android:imeOptions="actionNext"
                 android:maxLength="16"
                 android:paddingTop="8dp" />
+            
+            <TextView
+                android:id="@+id/account_info_two_id_strength_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/account_info_two_id_field"
+                android:layout_marginTop="8dp"
+                android:text="@string/account_info_two_id_strength_text"
+                android:textColor="@color/black" />
+            
+            <View
+                android:id="@+id/strength_bar_one"
+                android:layout_width="32dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="32dp"
+                android:layout_below="@+id/account_info_two_id_field"
+                android:layout_toRightOf="@+id/account_info_two_id_strength_label"
+                android:background="@android:color/darker_gray" />
+            
+            <View
+                android:id="@+id/strength_bar_two"
+                android:layout_width="32dp"
+                android:layout_height="4dp"
+                android:layout_alignTop="@+id/strength_bar_one"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/strength_bar_one"
+                android:background="@android:color/darker_gray" />
+            
+            <View
+                android:id="@+id/strength_bar_three"
+                android:layout_alignTop="@+id/strength_bar_one"
+                android:layout_width="32dp"
+                android:layout_height="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/strength_bar_two"
+                android:background="@android:color/darker_gray" />
 
             <TextView
                 android:id="@+id/account_info_two_confirm_id_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/account_info_two_id_field"
+                android:layout_below="@+id/account_info_two_id_strength_label"
                 android:layout_marginTop="8dp"
                 android:text="@string/account_info_two_confirm_id_text"
                 android:textColor="@color/black" />
@@ -117,12 +154,21 @@
                 android:inputType="textPassword"
                 android:maxLength="32"
                 android:paddingTop="8dp" />
+            
+            <TextView
+                android:id="@+id/account_info_two_pass_strength_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_info_two_pass_field"
+                android:layout_marginTop="8dp"
+                android:text="@string/account_info_two_pass_strength_text"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/account_info_two_pass_confirm_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/account_info_two_pass_field"
+                android:layout_below="@+id/account_info_two_pass_strength_label"
                 android:layout_marginTop="8dp"
                 android:text="@string/account_info_two_pass_confirm_text"
                 android:textColor="@color/black" />
@@ -161,8 +207,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="64dp"
-                android:layout_below="@+id/account_info_two_submit_button"
+                android:layout_marginTop="32dp"
+                android:layout_below="@+id/account_info_help_row"
                 android:text="@string/feedback_text"
                 android:textColor="@color/blue" />
 
@@ -193,6 +239,41 @@
                 android:layout_below="@+id/account_info_two_email_field"
                 android:text="@string/submit_text" 
                 android:layout_marginTop="8dp"/>
+            
+            <TableRow
+            android:id="@+id/account_info_help_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_two_submit_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp" >
+
+            <TextView
+                android:id="@+id/need_help_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/need_help_text"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/help_number_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/need_help_number_text"
+                android:textColor="@color/blue" />
+        </TableRow>
+
+            <TextView
+                android:id="@+id/strength_bar_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/strength_bar_one"
+                android:layout_below="@+id/strength_bar_one" 
+                android:text="@string/strength_bar_text"
+				android:textColor="@color/black"
+				/>
+
         </RelativeLayout>
 
     </ScrollView>
