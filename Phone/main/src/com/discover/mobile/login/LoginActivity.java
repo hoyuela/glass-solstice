@@ -132,7 +132,10 @@ public class LoginActivity extends Activity {
 				
 				if(errorResponse.getHttpStatusCode() == 401)
 					errorTextView.setText(getString(R.string.login_error));
-				else
+				else if(errorResponse.getHttpStatusCode() == 400) {
+					// TODO handle this some other way (crashes on Bedford's phone otherwise)
+					errorTextView.setText(getString(R.string.login_error));
+				} else
 					throw new UnsupportedOperationException("Not able to handle status other than 401");
 			}
 

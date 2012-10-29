@@ -137,7 +137,7 @@ public abstract class NetworkServiceCall<R> {
 			// Commented out to fix performance issues with skipped frames issue
 			// I believe the conn needs to stay alive and calling disconnect() on it
 			// handles getting rid of any memory allocations that need to happen anyway
-//			conn = null;
+			conn = null;
 		}
 	}
 	
