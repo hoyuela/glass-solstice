@@ -42,7 +42,7 @@
        </activity>
        
       <activity 
-            android:name="register.EnhancedAccountSecurity"
+            android:name="com.discover.mobile.register.EnhancedAccountSecurity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -61,7 +61,7 @@
        </activity>
        
         <activity 
-            android:name="register.AccountInformationActivity"
+            android:name="com.discover.mobile.register.AccountInformationActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
@@ -73,7 +73,7 @@
        </activity>
        
         <activity 
-            android:name="register.AccountInformationTwoActivity"
+            android:name="com.discover.mobile.register.AccountInformationTwoActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
