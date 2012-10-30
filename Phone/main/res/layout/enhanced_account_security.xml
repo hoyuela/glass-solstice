@@ -51,10 +51,10 @@
             android:layout_below="@+id/account_security_question_placeholder_label"
             android:ems="10"
             android:hint="@string/account_security_question_hint"
-            android:maxLines="@integer/MAX_INPUT_LINES" >
-
-            <requestFocus />
-        </EditText>
+            android:maxLines="@integer/MAX_INPUT_LINES"
+            android:imeOptions="actionDone"
+             />
+            
 
         <TextView
             android:id="@+id/account_security_remember_device_label"
