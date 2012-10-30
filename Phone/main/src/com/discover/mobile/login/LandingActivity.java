@@ -3,6 +3,7 @@ package com.discover.mobile.login;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,9 @@ import com.discover.mobile.common.net.response.ErrorResponse;
 
 public class LandingActivity extends Activity{
 	
+	private final int OPTIONAL_UPGRADE = 1;
+	private final int FORCED_UPGRADE = 2;
+	
 	private static final String TAG = LoginActivity.class.getSimpleName();
 
 	@Override
@@ -31,28 +35,33 @@ public class LandingActivity extends Activity{
 	}
 	
 	private void startPreAuthCheck() {
-		Log.d(TAG, "starting pre-auth check");
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
 		final AsyncCallbackAdapter<PreAuthResult> callback = new AsyncCallbackAdapter<PreAuthResult>() {
 			@Override
 			public void success(final PreAuthResult value) {
 				progress.dismiss();
-				Log.d(TAG, "pre-auth check successful");
 				Log.e(TAG, "Status code: " + value.statusCode);
+				
+				//check if optional upgrade available
+				if (value.upgradeDescription != null) {
+					if(shouldPresentOptionalUpdate(value.upgradeDescription)) {
+						showUpgradeAlertDialog("Upgrade", 
+								"You are currently not running the latest version of the Discover app. Would you like to upgrade?", 
+								OPTIONAL_UPGRADE);
+					}
+				}
 			}
 
 			@Override
 			public void failure(final Throwable error) {
 				progress.dismiss();
-				Log.e(TAG, "UpdateSessionCall.failure(Throwable): " + error);
 				showOkAlertDialog("Error", error.getMessage());
 			}
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
 				progress.dismiss();
-				Log.e(TAG, "UpdateSessionCall.errorResponse(ErrorResponse): " + errorResponse);
 				
 				// TEMP
 				return true;
@@ -61,10 +70,11 @@ public class LandingActivity extends Activity{
 			@Override
 			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
-				Log.e(TAG, "UpdateSessionCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
 				switch(messageErrorResponse.getMessageStatusCode()) {
 					case 1002: 
-						Log.e(TAG, "Invalid client version");
+						showUpgradeAlertDialog("Upgrade", 
+								"Your Discover app is out of date. You must update before continuing.", 
+								FORCED_UPGRADE);
 						break;
 						
 					case 1006:
@@ -81,12 +91,44 @@ public class LandingActivity extends Activity{
 		preAuthCall.submit();
 	}
 	
+	private static boolean shouldPresentOptionalUpdate(final String updateDescription) {
+		// TODO check if there is saved date
+		// TODO if there is, see if 30 days have passed
+		// TODO if 30 days have passed, return true
+		// TODO if there is no saved date, save it to local storage
+		
+		// TEMP
+		return true;
+	}
+	
 	private void showOkAlertDialog(final String title, final String message) {
 		new AlertDialog.Builder(this)
 			    .setTitle(title)
 			    .setMessage(message)
 			    .setNegativeButton("OK", null)
 			    .show();
+	}
+	
+	private void showUpgradeAlertDialog(final String title, final String message, final int typeOfUpgrade) {
+		final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+		
+		alertBuilder.setTitle(title)
+	    		.setMessage(message)
+	    		.setPositiveButton("Upgrade", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(final DialogInterface dialog, final int which) {
+						upgrade();
+					}
+				});
+				
+		if (typeOfUpgrade == OPTIONAL_UPGRADE) alertBuilder.setNegativeButton("Cancel", null);
+		
+	    alertBuilder.show();
+	}
+	
+	private void upgrade() {
+		// TODO send to upgrade URI
 	}
 	
 	private void setupViews() {

@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,7 +57,6 @@ public class LoginActivity extends Activity {
 		final AsyncCallbackAdapter<AccountDetails> callback = new AsyncCallbackAdapter<AccountDetails>() {
 			@Override
 			public void success(final AccountDetails value) {
-				Log.d(TAG, "Success");
 				progress.dismiss();
 				handleSuccessfulAuth();
 			}
@@ -71,7 +69,6 @@ public class LoginActivity extends Activity {
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				Log.w(TAG, "AuthenticateCall.errorResponse(ErrorResponse): " + errorResponse);
 				progress.dismiss();
 				
 				switch (errorResponse.getHttpStatusCode()) {
@@ -89,10 +86,8 @@ public class LoginActivity extends Activity {
 				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
 					return false;
 				
-				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
 				progress.dismiss();
 				nullifyInputs();
-				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
 				errorTextView.setText(messageErrorResponse.getMessage());
 				
 				return true;
@@ -135,7 +130,7 @@ public class LoginActivity extends Activity {
 		runAuthWithUsernameAndPassword(uid, pass);
 	}
 	
-	public void registerNewUser(View v){
+	public void registerNewUser(final View v){
 		final Intent accountInformationActivity = new Intent(
 				this, AccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);
