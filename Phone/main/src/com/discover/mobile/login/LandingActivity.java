@@ -50,24 +50,31 @@ public class LandingActivity extends Activity{
 			}
 
 			@Override
-			public void errorResponse(final ErrorResponse errorResponse) {
+			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
 				progress.dismiss();
 				Log.e(TAG, "UpdateSessionCall.errorResponse(ErrorResponse): " + errorResponse);
+				
+				// TEMP
+				return true;
 			}
 
 			@Override
-			public void messageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
 				Log.e(TAG, "UpdateSessionCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
 				switch(messageErrorResponse.getMessageStatusCode()) {
 					case 1002: 
 						Log.e(TAG, "Invalid client version");
 						break;
+						
 					case 1006:
 					case 1007: 
 						Log.e(TAG, "Send to maintainance page.");
 						break;
 				}
+				
+				// TEMP
+				return true;
 			}
 		};
 		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);
@@ -76,10 +83,10 @@ public class LandingActivity extends Activity{
 	
 	private void showOkAlertDialog(final String title, final String message) {
 		new AlertDialog.Builder(this)
-	    .setTitle(title)
-	    .setMessage(message)
-	    .setNegativeButton("OK", null)
-	    .show();
+			    .setTitle(title)
+			    .setMessage(message)
+			    .setNegativeButton("OK", null)
+			    .show();
 	}
 	
 	private void setupViews() {
