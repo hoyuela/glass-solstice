@@ -16,8 +16,6 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.auth.UpdateSessionCall;
-import com.discover.mobile.common.auth.UpdateSessionCall.UpdateSessionResult;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
@@ -57,60 +55,6 @@ public class LoginActivity extends Activity {
 		validator = new InputValidator();
 	}
 	
-	@Override
-	protected void onStart() {
-		super.onStart();
-		
-		// TEMP testing calls
-//		testAuthAndUpdate();
-	}
-	
-	// TEMP
-	private void testAuthAndUpdate() {
-		Log.e(TAG, "testAuthAndUpdate() start");
-		new AuthenticateCall(this, new AsyncCallbackAdapter<AccountDetails>() {
-			@Override
-			public void success(final AccountDetails value) {
-				new UpdateSessionCall(LoginActivity.this, new AsyncCallbackAdapter<UpdateSessionResult>() {
-					@Override
-					public void success(final UpdateSessionResult value) {
-						Log.e(TAG, "Status code for update: " + value.statusCode);
-					}
-
-					@Override
-					public void failure(final Throwable error) {
-						Log.e(TAG, "UpdateSessionCall.failure(Throwable): " + error);
-					}
-
-					@Override
-					public void errorResponse(final ErrorResponse errorResponse) {
-						Log.e(TAG, "UpdateSessionCall.errorResponse(ErrorResponse): " + errorResponse);
-					}
-
-					@Override
-					public void messageErrorResponse(final MessageErrorResponse messageErrorResponse) {
-						Log.e(TAG, "UpdateSessionCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
-					}
-				}).submit();
-			}
-			
-			@Override
-			public void failure(final Throwable error) {
-				Log.e(TAG, "AuthenticateCall.failure(Throwable): " + error);
-			}
-
-			@Override
-			public void errorResponse(final ErrorResponse errorResponse) {
-				Log.e(TAG, "AuthenticateCall.errorResponse(ErrorResponse): " + errorResponse);
-			}
-
-			@Override
-			public void messageErrorResponse(final MessageErrorResponse messageErrorResponse) {
-				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
-			}
-		}, "uid6478a", "ccccc").submit();
-	}
-	
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
@@ -122,13 +66,14 @@ public class LoginActivity extends Activity {
 				handleSuccessfulAuth();
 			}
 
-			@Override
-			public void failure(final Throwable error) {
-				Log.e(TAG, "Error: " + error);
-			}
+			// TODO use or remove (commented because AsyncCallbackAdapter now has default handlers for this)
+//			@Override
+//			public void failure(final Throwable error) {
+//				Log.e(TAG, "Error: " + error);
+//			}
 
 			@Override
-			public void errorResponse(final ErrorResponse errorResponse) {
+			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
 				Log.e(TAG, "AuthenticateCall.errorResponse(ErrorResponse): " + errorResponse);
 				progress.dismiss();
 				
@@ -136,23 +81,24 @@ public class LoginActivity extends Activity {
 					case HttpURLConnection.HTTP_BAD_REQUEST:
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						errorTextView.setText(getString(R.string.login_error));
-						break;
-						
-					case HttpURLConnection.HTTP_FORBIDDEN:
-						break;
-					
-					default:
-						throw new UnsupportedOperationException("Not able to handle status other than 401 or 400");
-				}	
+						return true;
+				}
+				
+				return false;
 			}
 
 			@Override
-			public void messageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
+					return false;
+				
 				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
 				progress.dismiss();
 				nullifyInputs();
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
 				errorTextView.setText(messageErrorResponse.getMessage());
+				
+				return true;
 			}
 		};
 		
@@ -190,7 +136,6 @@ public class LoginActivity extends Activity {
 		
 		// TODO production error handling (validator doesn't work with test uid's)
 		runAuthWithUsernameAndPassword(uid, pass);
-
 	}
 	
 	public void registerNewUser(final View v){
