@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
-import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
@@ -30,7 +29,6 @@ public class LoginActivity extends Activity {
 	private String uid, pass;
 	
 	// currently not used for testing (does not apply to test id's)
-	private static InputValidator validator;
 	
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -52,7 +50,6 @@ public class LoginActivity extends Activity {
 		
 		setupViews();
 		setupButtons();
-		validator = new InputValidator();
 	}
 	
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
