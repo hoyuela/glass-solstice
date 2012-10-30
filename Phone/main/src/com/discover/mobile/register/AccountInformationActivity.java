@@ -136,9 +136,9 @@ public class AccountInformationActivity extends Activity {
 		final String memberDobDayString = memberDobDay.getSelectedItem().toString();
 		final String memberDobYearString = memberDobYear.getText().toString();
 		final String memberSsnNumString =  memberSsnNum.getText().toString();
+		RegistrationOneDetails formData = new RegistrationOneDetails();
 		
-		final RegistrationCallOne registrationCall = new RegistrationCallOne(this, callback, accountNumString, cardMonthExpString, 
-				cardYearExpString, memberDobMonthString, memberDobDayString, memberSsnNumString, memberDobYearString);
+		final RegistrationCallOne registrationCall = new RegistrationCallOne(this, callback, formData);
 		registrationCall.submit();
 	}
 
