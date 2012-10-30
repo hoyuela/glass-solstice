@@ -1,5 +1,7 @@
 package com.discover.mobile.login;
 
+import java.net.HttpURLConnection;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -130,13 +132,18 @@ public class LoginActivity extends Activity {
 				Log.e(TAG, "AuthenticateCall.errorResponse(ErrorResponse): " + errorResponse);
 				progress.dismiss();
 				
-				if(errorResponse.getHttpStatusCode() == 401)
-					errorTextView.setText(getString(R.string.login_error));
-				else if(errorResponse.getHttpStatusCode() == 400) {
-					// TODO handle this some other way (crashes on Bedford's phone otherwise)
-					errorTextView.setText(getString(R.string.login_error));
-				} else
-					throw new UnsupportedOperationException("Not able to handle status other than 401 or 400");
+				switch (errorResponse.getHttpStatusCode()) {
+					case HttpURLConnection.HTTP_BAD_REQUEST:
+					case HttpURLConnection.HTTP_UNAUTHORIZED:
+						errorTextView.setText(getString(R.string.login_error));
+						break;
+						
+					case HttpURLConnection.HTTP_FORBIDDEN:
+						break;
+					
+					default:
+						throw new UnsupportedOperationException("Not able to handle status other than 401 or 400");
+				}	
 			}
 
 			@Override
