@@ -7,8 +7,8 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.common.auth.UpdateSessionCall.UpdateSessionResult;
-import com.discover.mobile.common.net.HttpMethod;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.response.AsyncCallback;
@@ -20,10 +20,8 @@ public class UpdateSessionCall extends NetworkServiceCall<UpdateSessionResult> {
 	private final TypedReferenceHandler<UpdateSessionResult> handler;
 	
 	public UpdateSessionCall(final Context context, final AsyncCallback<UpdateSessionResult> callback) {
-		super(context, new ServiceCallParams() {{
-			method = HttpMethod.POST;
-			path = "/cardsvcs/acs/session/v1/update";
-		}});
+		// TODO make PostCallParams a static instance
+		super(context, new PostCallParams("/cardsvcs/acs/session/v1/update"));
 
 		// TODO decide if this is the best type of handler
 		handler = new StrongReferenceHandler<UpdateSessionResult>(callback);

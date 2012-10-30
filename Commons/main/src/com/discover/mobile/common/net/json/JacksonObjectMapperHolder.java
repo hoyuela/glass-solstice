@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Creates and initializes the common {@link ObjectMapper} for the {@link JsonMappingNetworkServiceCall}s. Since the
+ * Creates and initializes the common {@link ObjectMapper} for the {@link JsonResponseMappingNetworkServiceCall}s. Since the
  * {@link ObjectMapper} is thread-safe as long as its not being configured, this class will handle its setup and users
  * should not modify its configuration.
  */

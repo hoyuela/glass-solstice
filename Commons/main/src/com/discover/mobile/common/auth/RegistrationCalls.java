@@ -2,13 +2,13 @@ package com.discover.mobile.common.auth;
 
 import android.content.Context;
 
-import com.discover.mobile.common.net.HttpMethod;
+import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.json.JsonMappingNetworkServiceCall;
+import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.net.response.AsyncCallback;
 
-public class RegistrationCalls extends JsonMappingNetworkServiceCall<AccountDetails> {
+public class RegistrationCalls extends JsonResponseMappingNetworkServiceCall<AccountDetails> {
 	
 	@SuppressWarnings("unused")
 	private static String TAG = AuthenticateCall.class.getSimpleName();
@@ -19,10 +19,8 @@ public class RegistrationCalls extends JsonMappingNetworkServiceCall<AccountDeta
 			final String acctNbr, final String expirationMonth, final String dateOfBirthMonth, final String  dateOfBirthDay,
 			final String socialSecurityNumber, final String dateOfBirthYear) {
 		
-		super(context, new ServiceCallParams() {{
-			method = HttpMethod.POST;
-			path = "/reg/v1/user/reg/auth";
-			
+		super(context, new PostCallParams("/reg/v1/user/reg/auth") {{
+			// TODO
 		}}, AccountDetails.class);
 		
 		// TODO decide if this is the best type of handler

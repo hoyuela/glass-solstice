@@ -7,6 +7,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -17,10 +18,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
+import com.discover.mobile.common.net.json.JsonMappingRequestBodySerializer;
 import com.discover.mobile.common.net.response.DelegatingErrorResponseParser;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.common.net.response.ErrorResponseParser;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 
 /**
  * An abstract wrapper for network calls that should simplify common HTTP connection-related patterns for implementors.
@@ -30,6 +34,14 @@ import com.google.common.base.Strings;
 public abstract class NetworkServiceCall<R> {
 	
 	private final String TAG = getClass().getSimpleName();
+	
+	private static final List<RequestBodySerializer> REQUEST_BODY_SERIALIZERS = createRequestBodySerializers();
+	
+	private static List<RequestBodySerializer> createRequestBodySerializers() {
+		return ImmutableList.<RequestBodySerializer>builder()
+				.add(new StringRequestBodySerializer())
+				.add(new JsonMappingRequestBodySerializer()).build();
+	}
 	
 	static final int RESULT_SUCCESS = 0;
 	static final int RESULT_EXCEPTION = 1;
@@ -95,7 +107,6 @@ public abstract class NetworkServiceCall<R> {
 	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {
 		checkNotNull(context, "context cannot be null");
 		
-		checkNotNull(params.method, "params.method cannot be null");
 		checkArgument(!Strings.isNullOrEmpty(params.path), "params.path should never be empty");
 		
 		checkArgument(params.connectTimeoutSeconds > 0,
@@ -121,12 +132,14 @@ public abstract class NetworkServiceCall<R> {
 	
 	// Executes in the background thread, performs the HTTP connection and delegates parsing to subclass
 	private void executeRequest() throws IOException {
-		createConnection();
+		conn = createConnection();
 		try {
 			prepareConnection();
 			
 			conn.connect();
 			try {
+				sendRequestBody();
+				
 				final int statusCode = getResponseCode();
 				parseResponseAndSendResult(statusCode);
 			} finally {
@@ -137,9 +150,9 @@ public abstract class NetworkServiceCall<R> {
 		}
 	}
 	
-	private void createConnection() throws IOException {
+	private HttpURLConnection createConnection() throws IOException {
 		final URL fullUrl = getFullUrl();
-		conn = (HttpURLConnection) fullUrl.openConnection();
+		return (HttpURLConnection) fullUrl.openConnection();
 	}
 	
 	private URL getFullUrl() throws IOException {
@@ -147,7 +160,7 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private void prepareConnection() throws IOException {
-		conn.setRequestMethod(params.method.name());
+		conn.setRequestMethod(params.httpMethod);
 		
 		setupDefaultHeaders();
 		setupSessionHeaders();
@@ -176,6 +189,36 @@ public abstract class NetworkServiceCall<R> {
 	private void setupTimeouts() {
 		conn.setConnectTimeout(params.connectTimeoutSeconds * 1000);
 		conn.setReadTimeout(params.readTimeoutSeconds * 1000);
+	}
+	
+	private void sendRequestBody() throws IOException {
+		if(!(params instanceof PostCallParams))
+			return;
+		
+		final PostCallParams postParams = (PostCallParams) params;
+		final Object body = postParams.body;
+		
+		final RequestBodySerializer serializer;
+		if(postParams.customBodySerializer != null && postParams.customBodySerializer.canSerialize(body))
+			serializer = postParams.customBodySerializer;
+		else
+			serializer = findCapableDefaultRequestBodySerializer(body);
+		
+		if(serializer == null)
+			throw new UnsupportedOperationException("Unable to serialize body: " + body);
+		
+		conn.setDoOutput(true);
+		final OutputStream requestStream = conn.getOutputStream();
+		serializer.serializeBody(body, requestStream);
+	}
+	
+	private RequestBodySerializer findCapableDefaultRequestBodySerializer(final Object body) {
+		for(final RequestBodySerializer serializer : REQUEST_BODY_SERIALIZERS) {
+			if(serializer.canSerialize(body))
+				return serializer;
+		}
+		
+		return null;
 	}
 	
 	private int getResponseCode() throws IOException {
@@ -227,19 +270,6 @@ public abstract class NetworkServiceCall<R> {
 		final Handler handler = getHandler();
 		final Message message = Message.obtain(handler, status, result);
 		handler.sendMessage(message);
-	}
-	
-	public static class ServiceCallParams {
-		// Required
-		public HttpMethod method;
-		public String path;
-		
-		// Optional/Defaulted
-		public ErrorResponseParser<?> errorResponseParser = null;
-		public Map<String,String> headers = null;
-		// TODO consider other timeout defaults
-		public int connectTimeoutSeconds = 15;
-		public int readTimeoutSeconds = 15;
 	}
 	
 }

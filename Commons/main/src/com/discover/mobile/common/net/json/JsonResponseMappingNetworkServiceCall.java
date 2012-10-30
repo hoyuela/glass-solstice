@@ -10,17 +10,18 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.net.ServiceCallParams;
 
 /**
  * A {@link NetworkServiceCall} that handles mapping of JSON requests and responses.
  * 
  * @param <M> The <u>m</u>odel type for the JSON result
  */
-public abstract class JsonMappingNetworkServiceCall<M> extends NetworkServiceCall<M> {
+public abstract class JsonResponseMappingNetworkServiceCall<M> extends NetworkServiceCall<M> {
 	
 	private final Class<M> modelClass;
 	
-	protected JsonMappingNetworkServiceCall(final Context context, final ServiceCallParams params,
+	protected JsonResponseMappingNetworkServiceCall(final Context context, final ServiceCallParams params,
 			final Class<M> modelClass) {
 		
 		super(context, params);

@@ -7,18 +7,16 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
-import com.discover.mobile.common.net.HttpMethod;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.net.ServiceCallParams;
+import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.response.AsyncCallback;
 
 public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 	
-	private static final ServiceCallParams STANDARD_PARAMS = new ServiceCallParams() {{
-		method = HttpMethod.GET;
-		path = "/cardsvcs/acs/session/preauthcheck";
-	}};
+	private static final ServiceCallParams STANDARD_PARAMS = new GetCallParams("/cardsvcs/acs/session/preauthcheck");
 	
 	private final TypedReferenceHandler<PreAuthResult> handler;
 	
