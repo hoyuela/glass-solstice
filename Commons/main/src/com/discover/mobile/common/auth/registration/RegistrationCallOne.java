@@ -1,34 +1,35 @@
-package com.discover.mobile.common.auth;
+package com.discover.mobile.common.auth.registration;
 
 import android.content.Context;
 
+import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.net.response.AsyncCallback;
 
-public class RegistrationCalls extends JsonResponseMappingNetworkServiceCall<AccountDetails> {
+public class RegistrationCallOne extends JsonResponseMappingNetworkServiceCall<RegistrationDetails> {
 	
 	@SuppressWarnings("unused")
 	private static String TAG = AuthenticateCall.class.getSimpleName();
 	
-	private final TypedReferenceHandler<AccountDetails> handler;
+	private final TypedReferenceHandler<RegistrationDetails> handler;
 
-	public RegistrationCalls(final Context context, final AsyncCallback<AccountDetails> callback,
-			final String acctNbr, final String expirationMonth, final String dateOfBirthMonth, final String  dateOfBirthDay,
+	public RegistrationCallOne(final Context context, final AsyncCallback<RegistrationDetails> callback,
+			final String acctNbr, final String expirationMonth, final String expirationYear, final String dateOfBirthMonth, final String  dateOfBirthDay,
 			final String socialSecurityNumber, final String dateOfBirthYear) {
 		
 		super(context, new PostCallParams("/reg/v1/user/reg/auth") {{
 			// TODO
-		}}, AccountDetails.class);
+		}}, RegistrationDetails.class);
 		
 		// TODO decide if this is the best type of handler
-		handler = new StrongReferenceHandler<AccountDetails>(callback);
+		handler = new StrongReferenceHandler<RegistrationDetails>(callback);
 	}
 
 	@Override
-	protected TypedReferenceHandler<AccountDetails> getHandler() {
+	protected TypedReferenceHandler<RegistrationDetails> getHandler() {
 		return handler;
 	}
 }

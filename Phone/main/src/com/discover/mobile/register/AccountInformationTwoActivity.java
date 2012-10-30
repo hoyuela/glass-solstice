@@ -1,44 +1,53 @@
 package com.discover.mobile.register;
 
+import java.net.HttpURLConnection;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.auth.registration.RegistrationDetails;
+import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
+import com.discover.mobile.common.net.response.ErrorResponse;
 
 public class AccountInformationTwoActivity extends Activity{
 
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.account_info_two);
-		EditText idField = (EditText)findViewById(R.id.account_info_two_id_field);
-		EditText passField = (EditText)findViewById(R.id.account_info_two_pass_field);
+		final EditText idField = (EditText)findViewById(R.id.account_info_two_id_field);
+		final EditText passField = (EditText)findViewById(R.id.account_info_two_pass_field);
 		passField.addTextChangedListener(new TextWatcher(){
 			@Override
-			public void afterTextChanged(Editable s) {
+			public void afterTextChanged(final Editable s) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
+			public void beforeTextChanged(final CharSequence s, final int start, final int count,
+					final int after) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			public void onTextChanged(final CharSequence s, final int start, final int before,
+					final int count) {
 				// TODO Auto-generated method stub
-				updateBarsForPass(s, (View)findViewById(R.id.account_info_two_pass_bar_one), 
-							  (View)findViewById(R.id.account_info_two_pass_bar_two),
-							  (View)findViewById(R.id.account_info_two_pass_bar_three),
+				updateBarsForPass(s, findViewById(R.id.account_info_two_pass_bar_one), 
+							  findViewById(R.id.account_info_two_pass_bar_two),
+							  findViewById(R.id.account_info_two_pass_bar_three),
 						      (TextView)findViewById(R.id.account_info_two_pass_strength_bar_label));
 			}
 		});
@@ -46,25 +55,25 @@ public class AccountInformationTwoActivity extends Activity{
 		idField.addTextChangedListener(new TextWatcher(){
 
 			@Override
-			public void afterTextChanged(Editable s) {
+			public void afterTextChanged(final Editable s) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
+			public void beforeTextChanged(final CharSequence s, final int start, final int count,
+					final int after) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			public void onTextChanged(final CharSequence s, final int start, final int before,
+					final int count) {
 				// TODO Auto-generated method stub
-				updateBarsForUID(s, (View)findViewById(R.id.account_info_two_uid_bar_one), 
-							  (View)findViewById(R.id.account_info_two_uid_bar_two),
-							  (View)findViewById(R.id.account_info_two_uid_bar_three),
+				updateBarsForUID(s, findViewById(R.id.account_info_two_uid_bar_one), 
+							  findViewById(R.id.account_info_two_uid_bar_two),
+							  findViewById(R.id.account_info_two_uid_bar_three),
 						      (TextView)findViewById(R.id.account_info_two_uid_strength_bar_label));
 			}
 			
@@ -74,7 +83,7 @@ public class AccountInformationTwoActivity extends Activity{
 	
 	
 	//Currently setup only for a single user id input.
-	public void updateBarsForUID(CharSequence inputSequence, View barOne, View barTwo, View barThree, TextView label){
+	public void updateBarsForUID(final CharSequence inputSequence, final View barOne, final View barTwo, final View barThree, final TextView label){
 		boolean hasGoodLength  = false;
 		boolean hasUpperCase   = false;
 		boolean hasLowerCase   = false;
@@ -149,7 +158,7 @@ public class AccountInformationTwoActivity extends Activity{
 	}
 
 	
-	public void updateBarsForPass(CharSequence inputSequence, View barOne, View barTwo, View barThree, TextView label){
+	public void updateBarsForPass(final CharSequence inputSequence, final View barOne, final View barTwo, final View barThree, final TextView label){
 		boolean hasGoodLength  = false;
 		boolean hasUpperCase   = false;
 		boolean hasLowerCase   = false;
@@ -178,7 +187,7 @@ public class AccountInformationTwoActivity extends Activity{
 				}
 			}
 			
-			boolean hasUpperAndLowerAndNum = hasLowerCase && hasUpperCase && hasNumber;
+			final boolean hasUpperAndLowerAndNum = hasLowerCase && hasUpperCase && hasNumber;
 			/*
 			 * Meets minimum requirements and combines upper case letters,
 			 * lower case letters, numbers, and special characters.
@@ -210,6 +219,78 @@ public class AccountInformationTwoActivity extends Activity{
 				label.setText(getResources().getString(R.string.strength_bar_not_valid));
 			}
 			
+	}
+	
+	private void submitFormInfo() {
+		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
+		final String TAG = "Form Submission";
+		
+		final AsyncCallbackAdapter<RegistrationDetails> callback = new AsyncCallbackAdapter<RegistrationDetails>() {
+			@Override
+			public void success(final RegistrationDetails value) {
+				Log.d(TAG, "Success");
+				progress.dismiss();
+
+			}
+
+			// TODO use or remove (commented because AsyncCallbackAdapter now has default handlers for this)
+//			@Override
+//			public void failure(final Throwable error) {
+//				Log.e(TAG, "Error: " + error);
+//			}
+
+			@Override
+			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+				Log.w(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse);
+				progress.dismiss();
+				
+				switch (errorResponse.getHttpStatusCode()) {
+//					case HttpURLConnection.HTTP_BAD_REQUEST: // TODO figure out if this actually happens
+					case HttpURLConnection.HTTP_UNAUTHORIZED:
+						return true;
+				}
+				
+				return false;
+			}
+
+			@Override
+			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
+					return false;
+				
+				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
+				progress.dismiss();
+				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
+				
+				return true;
+			}
+		};
+//		(final Context context, final AsyncCallback<RegistrationDetails> callback,
+//		final String acctNbr, final String expirationMonth, final String expirationYear, final String dateOfBirthMonth, final String  dateOfBirthDay,
+//		final String socialSecurityNumber, final String dateOfBirthYear)
+		final EditText userIdField = (EditText)findViewById(R.id.account_info_two_id_field);
+		final EditText userIdConfirmField = (EditText)findViewById(R.id.account_info_two_confirm_id_field);
+		final EditText passField = (EditText)findViewById(R.id.account_info_two_pass_field);
+		final EditText passConfirmField = (EditText)findViewById(R.id.account_info_two_pass_confirm_field);
+		final EditText emailField = (EditText)findViewById(R.id.account_info_two_id_field);
+
+
+		final Spinner cardMonthExp = (Spinner)findViewById(R.id.account_info_month_spinner);
+		final Spinner cardYearExp = (Spinner)findViewById(R.id.account_info_year_spinner);
+		final Spinner memberDobMonth = (Spinner)findViewById(R.id.account_info_dob_month_spinner);
+		final Spinner memberDobDay = (Spinner)findViewById(R.id.account_info_dob_day_spinner);
+		final EditText memberDobYear = (EditText)findViewById(R.id.account_info_dob_year_field);
+		final EditText memberSsnNum = (EditText)findViewById(R.id.account_info_ssn_input_field);
+		
+		final String cardMonthExpString = cardMonthExp.getSelectedItem().toString();
+		final String cardYearExpString = cardYearExp.getSelectedItem().toString();
+		final String memberDobMonthString = memberDobMonth.getSelectedItem().toString();
+		final String memberDobDayString = memberDobDay.getSelectedItem().toString();
+		final String memberDobYearString = memberDobYear.getText().toString();
+		final String memberSsnNumString =  memberSsnNum.getText().toString();
+		
+		//final RegistrationCallTwo registrationCall = new RegistrationCallTwo(this, callback, );
+		//registrationCall.submit();
 	}
 
 }

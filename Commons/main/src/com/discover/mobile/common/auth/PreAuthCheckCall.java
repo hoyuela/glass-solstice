@@ -34,17 +34,19 @@ public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 	@Override
 	protected PreAuthResult parseSuccessResponse(final int status, final Map<String,List<String>> headers,
 			final InputStream responseStream) {
-		
-		// TODO
-		
-		// TEMP
+
 		return new PreAuthResult() {{
 			statusCode = status;
+			final List<String> descriptions = headers.get("VersionInfo");
+			
+			if(descriptions != null && !descriptions.isEmpty())
+				upgradeDescription = descriptions.get(0);
 		}};
 	}
 	
 	public static class PreAuthResult {
 		public int statusCode;
+		public String upgradeDescription = null;
 	}
 	
 }
