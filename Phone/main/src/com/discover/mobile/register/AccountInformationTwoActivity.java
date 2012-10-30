@@ -9,12 +9,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.auth.registration.RegistrationDetails;
+import com.discover.mobile.common.auth.registration.RegistrationTwoDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
@@ -25,6 +27,23 @@ public class AccountInformationTwoActivity extends Activity{
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.account_info_two);
+		
+		setupButtonListeners();
+		setupTextChangedListeners();
+		
+	}
+	
+	private void setupButtonListeners(){
+		Button submitButton = (Button)findViewById(R.id.account_info_two_submit_button);
+		submitButton.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v){
+			submitFormInfo();	
+			}
+		});
+	}
+	
+	private void setupTextChangedListeners(){
 		final EditText idField = (EditText)findViewById(R.id.account_info_two_id_field);
 		final EditText passField = (EditText)findViewById(R.id.account_info_two_pass_field);
 		passField.addTextChangedListener(new TextWatcher(){
@@ -78,7 +97,6 @@ public class AccountInformationTwoActivity extends Activity{
 			}
 			
 		});
-		
 	}
 	
 	
@@ -225,9 +243,9 @@ public class AccountInformationTwoActivity extends Activity{
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		final String TAG = "Form Submission";
 		
-		final AsyncCallbackAdapter<RegistrationDetails> callback = new AsyncCallbackAdapter<RegistrationDetails>() {
+		final AsyncCallbackAdapter<RegistrationTwoDetails> callback = new AsyncCallbackAdapter<RegistrationTwoDetails>() {
 			@Override
-			public void success(final RegistrationDetails value) {
+			public void success(final RegistrationTwoDetails value) {
 				Log.d(TAG, "Success");
 				progress.dismiss();
 

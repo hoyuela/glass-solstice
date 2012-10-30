@@ -2,7 +2,7 @@ package com.discover.mobile.common.auth.registration;
 
 import java.io.Serializable;
 
-public class RegistrationDetails implements Serializable{
+public class RegistrationOneDetails implements Serializable{
 
 	private static final long serialVersionUID = 8196921305619911757L;
 
@@ -11,14 +11,8 @@ public class RegistrationDetails implements Serializable{
 	public String expirationMonth;
 	public String expirationYear;
 	public String dateOfBirthMonth;
-	public String dateOfBirthDay,
-	socialSecurityNumber,
-	dateOfBirthYear;
+	public String dateOfBirthDay;
+	public String socialSecurityNumber;
+	public String dateOfBirthYear;
 	
-	//Step Two Strings
-	public String userId,
-	userIdConfirm,
-	password,
-	passwordConfirm,
-	email;
 }

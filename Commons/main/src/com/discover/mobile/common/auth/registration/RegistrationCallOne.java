@@ -9,27 +9,26 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.net.response.AsyncCallback;
 
-public class RegistrationCallOne extends JsonResponseMappingNetworkServiceCall<RegistrationDetails> {
+public class RegistrationCallOne extends JsonResponseMappingNetworkServiceCall<RegistrationOneDetails> {
 	
 	@SuppressWarnings("unused")
 	private static String TAG = AuthenticateCall.class.getSimpleName();
 	
-	private final TypedReferenceHandler<RegistrationDetails> handler;
+	private final TypedReferenceHandler<RegistrationOneDetails> handler;
 
-	public RegistrationCallOne(final Context context, final AsyncCallback<RegistrationDetails> callback,
-			final String acctNbr, final String expirationMonth, final String expirationYear, final String dateOfBirthMonth, final String  dateOfBirthDay,
-			final String socialSecurityNumber, final String dateOfBirthYear) {
+	public RegistrationCallOne(final Context context, final AsyncCallback<RegistrationOneDetails> callback,
+			final RegistrationOneDetails formData) {
 		
 		super(context, new PostCallParams("/reg/v1/user/reg/auth") {{
-			// TODO
-		}}, RegistrationDetails.class);
+			body = formData;
+		}}, RegistrationOneDetails.class);
 		
 		// TODO decide if this is the best type of handler
-		handler = new StrongReferenceHandler<RegistrationDetails>(callback);
+		handler = new StrongReferenceHandler<RegistrationOneDetails>(callback);
 	}
 
 	@Override
-	protected TypedReferenceHandler<RegistrationDetails> getHandler() {
+	protected TypedReferenceHandler<RegistrationOneDetails> getHandler() {
 		return handler;
 	}
 }

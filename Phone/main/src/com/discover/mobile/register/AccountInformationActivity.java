@@ -16,7 +16,7 @@ import android.widget.Spinner;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.auth.registration.RegistrationCallOne;
-import com.discover.mobile.common.auth.registration.RegistrationDetails;
+import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
@@ -78,9 +78,9 @@ public class AccountInformationActivity extends Activity {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		final String TAG = "Form Submission";
 		
-		final AsyncCallbackAdapter<RegistrationDetails> callback = new AsyncCallbackAdapter<RegistrationDetails>() {
+		final AsyncCallbackAdapter<RegistrationOneDetails> callback = new AsyncCallbackAdapter<RegistrationOneDetails>() {
 			@Override
-			public void success(final RegistrationDetails value) {
+			public void success(final RegistrationOneDetails value) {
 				Log.d(TAG, "Success");
 				progress.dismiss();
 
