@@ -135,7 +135,7 @@ public class LoginActivity extends Activity {
 		runAuthWithUsernameAndPassword(uid, pass);
 	}
 	
-	public void registerNewUser(){
+	public void registerNewUser(View v){
 		final Intent accountInformationActivity = new Intent(
 				this, AccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);
