@@ -71,11 +71,11 @@ public class LoginActivity extends Activity {
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				Log.e(TAG, "AuthenticateCall.errorResponse(ErrorResponse): " + errorResponse);
+				Log.w(TAG, "AuthenticateCall.errorResponse(ErrorResponse): " + errorResponse);
 				progress.dismiss();
 				
 				switch (errorResponse.getHttpStatusCode()) {
-					case HttpURLConnection.HTTP_BAD_REQUEST:
+//					case HttpURLConnection.HTTP_BAD_REQUEST: // TODO figure out if this actually happens
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						errorTextView.setText(getString(R.string.login_error));
 						return true;
@@ -135,7 +135,7 @@ public class LoginActivity extends Activity {
 		runAuthWithUsernameAndPassword(uid, pass);
 	}
 	
-	public void registerNewUser(final View v){
+	public void registerNewUser(){
 		final Intent accountInformationActivity = new Intent(
 				this, AccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);
