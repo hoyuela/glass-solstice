@@ -20,15 +20,15 @@ public class JsonMessageErrorResponseParser implements ErrorResponseParser<Messa
 		return JacksonObjectMapperHolder.mapper.readValue(errorStream, MessageErrorResponse.class);
 	}
 	
-	private boolean isParseableContentType(final HttpURLConnection conn) {
+	private static boolean isParseableContentType(final HttpURLConnection conn) {
 		return MIME_JSON.equalsIgnoreCase(conn.getContentType());
 	}
 	
-	private boolean hasDeclaredContent(final HttpURLConnection conn) {
+	private static boolean hasDeclaredContent(final HttpURLConnection conn) {
 		return conn.getContentLength() > 0;
 	}
 	
-	private boolean inputStreamHasContent(final InputStream in) throws IOException {
+	private static boolean inputStreamHasContent(final InputStream in) throws IOException {
 		if(!in.markSupported())
 			throw new UnsupportedOperationException("Not able to handle non-markable InputStreams");
 		

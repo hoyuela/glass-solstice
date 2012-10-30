@@ -17,7 +17,6 @@ import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.UpdateSessionCall;
 import com.discover.mobile.common.auth.UpdateSessionCall.UpdateSessionResult;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
-import com.discover.mobile.common.net.response.AsyncCallback;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.register.AccountInformationActivity;
@@ -113,7 +112,7 @@ public class LoginActivity extends Activity {
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
-		final AsyncCallback<AccountDetails> callback = new AsyncCallbackAdapter<AccountDetails>() {
+		final AsyncCallbackAdapter<AccountDetails> callback = new AsyncCallbackAdapter<AccountDetails>() {
 			@Override
 			public void success(final AccountDetails value) {
 				Log.d(TAG, "Success");
@@ -137,7 +136,7 @@ public class LoginActivity extends Activity {
 					// TODO handle this some other way (crashes on Bedford's phone otherwise)
 					errorTextView.setText(getString(R.string.login_error));
 				} else
-					throw new UnsupportedOperationException("Not able to handle status other than 401");
+					throw new UnsupportedOperationException("Not able to handle status other than 401 or 400");
 			}
 
 			@Override

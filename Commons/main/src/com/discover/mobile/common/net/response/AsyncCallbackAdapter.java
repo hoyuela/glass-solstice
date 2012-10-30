@@ -1,5 +1,7 @@
 package com.discover.mobile.common.net.response;
 
+import android.util.Log;
+
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 
 /**
@@ -17,8 +19,10 @@ public abstract class AsyncCallbackAdapter<V> implements AsyncCallback<V> {
 	
 	@Override
 	public final void failure(final ErrorResponse errorResponse) {
-		if(errorResponse instanceof MessageErrorResponse)
+		if(errorResponse instanceof MessageErrorResponse) {
+			Log.e("AHHHH!", "This is a message error response...");
 			messageErrorResponse((MessageErrorResponse)errorResponse);
+		}
 		
 		// Called every time for implementors who don't care about MessageErrorResponse-specific stuff
 		errorResponse(errorResponse);

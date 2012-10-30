@@ -78,7 +78,7 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 		throw new UnsupportedOperationException("Unable to parse error response, no compatible parser found");
 	}
 	
-	private void setProtectedFields(final ErrorResponse response, final int httpStatusCode) {
+	private static void setProtectedFields(final ErrorResponse response, final int httpStatusCode) {
 		response.setHttpStatusCode(httpStatusCode);
 	}
 	
