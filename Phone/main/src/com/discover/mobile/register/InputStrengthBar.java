@@ -1,3 +1,10 @@
+/*
+ * This class is currently NOT in use.
+ * It is intended to be a custom View that would provide
+ * password and user id strength bars to notify users of how
+ * 'secure' their password and or user id is.
+ */
+
 package com.discover.mobile.register;
 
 import android.content.Context;
