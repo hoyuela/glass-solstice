@@ -72,7 +72,7 @@ public class LoginActivity extends Activity {
 				progress.dismiss();
 				
 				switch (errorResponse.getHttpStatusCode()) {
-					case HttpURLConnection.HTTP_BAD_REQUEST:
+//					case HttpURLConnection.HTTP_BAD_REQUEST: // TODO figure out if this actually happens
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						errorTextView.setText(getString(R.string.login_error));
 						return true;
