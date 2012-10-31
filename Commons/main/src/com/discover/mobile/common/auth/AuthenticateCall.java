@@ -4,7 +4,6 @@ import java.util.Map;
 
 import android.content.Context;
 import android.util.Base64;
-import android.util.Log;
 
 import com.discover.mobile.common.Struct;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
@@ -18,6 +17,7 @@ import com.google.common.collect.ImmutableMap.Builder;
 public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<AccountDetails> {
 	
 	private final TypedReferenceHandler<AccountDetails> handler;
+	private static final String TAG = AuthenticateCall.class.getSimpleName();
 	
 	private static final String ID_PREFIX = "%&(()!12[";
 
@@ -40,7 +40,6 @@ public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<Acco
 		final Builder<String, String> builder = ImmutableMap.<String,String>builder();
 		
 		final String concatenatedCreds = params.authUsername + ": :" + params.authPassword;
-		Log.d(TAG, "creds: ", concatenatedCreds);
 		final String dcrdBasicCreds = Base64.encodeToString(concatenatedCreds.getBytes(), Base64.DEFAULT);
 		
 		builder.put("Authorization", "DCRDBasic " + dcrdBasicCreds);
