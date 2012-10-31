@@ -5,10 +5,11 @@ import java.net.HttpURLConnection;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -76,14 +77,18 @@ public class LoginActivity extends RoboActivity {
 		final AsyncCallbackAdapter<AccountDetails> callback = new AsyncCallbackAdapter<AccountDetails>() {
 			@Override
 			public void success(final AccountDetails value) {
-				Log.d(TAG, "Success");
 				progress.dismiss();
 				handleSuccessfulAuth();
+			}
+			
+			@Override
+			public void failure(final Throwable error) {
+				progress.dismiss();
+				showOkAlertDialog("Error", error.getMessage());
 			}
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				Log.w(TAG, "AuthenticateCall.errorResponse(ErrorResponse): " + errorResponse);
 				progress.dismiss();
 				
 				switch (errorResponse.getHttpStatusCode()) {
@@ -101,10 +106,8 @@ public class LoginActivity extends RoboActivity {
 				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
 					return false;
 				
-				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
 				progress.dismiss();
 				clearInputs();
-				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
 				errorTextView.setText(messageErrorResponse.getMessage());
 				
 				return true;
@@ -122,7 +125,22 @@ public class LoginActivity extends RoboActivity {
 		this.startActivity(logIn);
 	}
 	
-	private void logIn(){
+	private void showOkAlertDialog(final String title, final String message) {
+		new AlertDialog.Builder(this)
+			    .setTitle(title)
+			    .setMessage(message)
+			    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(final DialogInterface dialog, final int which) {
+						dialog.dismiss();
+						finish();
+					}
+				})
+			    .show();
+	}
+	
+	private void logIn() {
 		final String uid = uidField.getText().toString();
 		final String pass = passField.getText().toString();
 		

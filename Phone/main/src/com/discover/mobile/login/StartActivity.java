@@ -96,6 +96,7 @@ public class StartActivity extends RoboActivity {
 						
 					case 1006:
 					case 1007: 
+						// TODO
 						Log.e(TAG, "Send to maintainance page.");
 						break;
 				}
@@ -122,7 +123,14 @@ public class StartActivity extends RoboActivity {
 		new AlertDialog.Builder(this)
 			    .setTitle(title)
 			    .setMessage(message)
-			    .setNegativeButton("OK", null)
+			    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(final DialogInterface dialog, final int which) {
+						dialog.dismiss();
+						finish();
+					}
+				})
 			    .show();
 	}
 	
