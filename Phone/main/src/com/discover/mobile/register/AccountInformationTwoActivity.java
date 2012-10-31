@@ -4,6 +4,7 @@ import java.net.HttpURLConnection;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,12 +34,20 @@ public class AccountInformationTwoActivity extends Activity{
 		
 	}
 	
+	private void navigateToConfirmationScree(){
+		Intent confirmationScreen = new Intent(this, AccountInformationConfirmation.class);
+		this.startActivity(confirmationScreen);
+	}
+	
 	private void setupButtonListeners(){
 		Button submitButton = (Button)findViewById(R.id.account_info_two_submit_button);
 		submitButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-			submitFormInfo();	
+//			submitFormInfo();
+				//On success
+				navigateToConfirmationScree();
+				
 			}
 		});
 	}
