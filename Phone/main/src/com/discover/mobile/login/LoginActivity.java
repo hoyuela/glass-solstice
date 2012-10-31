@@ -2,7 +2,9 @@ package com.discover.mobile.login;
 
 import java.net.HttpURLConnection;
 
-import android.app.Activity;
+import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
+import roboguice.inject.InjectView;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,15 +22,22 @@ import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.register.AccountInformationActivity;
 
-public class LoginActivity extends Activity {
+@ContentView(R.layout.login)
+public class LoginActivity extends RoboActivity {
 	
 	private static final String TAG = LoginActivity.class.getSimpleName();
-		
-	private EditText uidField, passField;
-	private TextView errorTextView;
-	private String uid, pass;
+
+	@InjectView(R.id.username)
+	private EditText uidField;
 	
-	// currently not used for testing (does not apply to test id's)
+	@InjectView(R.id.password)
+	private EditText passField;
+
+	@InjectView(R.id.login_button)
+	private Button loginButton;
+
+	@InjectView(R.id.error_text_view)
+	private TextView errorTextView;
 	
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -48,8 +57,17 @@ public class LoginActivity extends Activity {
 //        .penaltyDeath()
 //        .build());
 		
-		setupViews();
 		setupButtons();
+	}
+	
+	private void setupButtons() {
+		loginButton.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				errorTextView.setText(null);
+				logIn();
+			}
+		});
 	}
 	
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
@@ -62,12 +80,6 @@ public class LoginActivity extends Activity {
 				progress.dismiss();
 				handleSuccessfulAuth();
 			}
-
-			// TODO use or remove (commented because AsyncCallbackAdapter now has default handlers for this)
-//			@Override
-//			public void failure(final Throwable error) {
-//				Log.e(TAG, "Error: " + error);
-//			}
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
@@ -91,7 +103,7 @@ public class LoginActivity extends Activity {
 				
 				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
 				progress.dismiss();
-				nullifyInputs();
+				clearInputs();
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
 				errorTextView.setText(messageErrorResponse.getMessage());
 				
@@ -104,32 +116,15 @@ public class LoginActivity extends Activity {
 	}
 	
 	private void handleSuccessfulAuth() {
-		nullifyInputs();
+		clearInputs();
+		
 		final Intent logIn = new Intent(this, LoggedInLandingPage.class);
 		this.startActivity(logIn);
 	}
 	
-	private void setupViews() {
-		setContentView(R.layout.login);
-		passField = (EditText)findViewById(R.id.password);
-		uidField = (EditText)findViewById(R.id.username);
-		errorTextView = (TextView)findViewById(R.id.error_text_view);
-	}
-	
-	private void setupButtons(){
-		final Button loginButton = (Button)findViewById(R.id.login_button);
-		loginButton.setOnClickListener(new View.OnClickListener(){
-			@Override
-			public void onClick(final View v){
-				errorTextView.setText(null);
-				logIn();
-			}
-		});
-	}
-	
 	private void logIn(){
-		uid = uidField.getText().toString();
-		pass = passField.getText().toString();
+		final String uid = uidField.getText().toString();
+		final String pass = passField.getText().toString();
 		
 		// TODO production error handling (validator doesn't work with test uid's)
 		runAuthWithUsernameAndPassword(uid, pass);
@@ -142,11 +137,10 @@ public class LoginActivity extends Activity {
 	}
 	
 	// TODO create Credentials object to handle any Model-like properties
-	public void nullifyInputs(){
-		uid = null;
-		pass = null;
-		errorTextView.setText(null);
+	public void clearInputs() {
+		errorTextView.setText("");
 		passField.setText("");
 		uidField.setText("");
 	}
+	
 }

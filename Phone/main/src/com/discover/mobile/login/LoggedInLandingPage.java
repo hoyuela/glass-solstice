@@ -1,25 +1,21 @@
 package com.discover.mobile.login;
 
-import android.app.Activity;
+import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
 import android.os.Bundle;
 import android.widget.ListView;
 
 import com.discover.mobile.R;
 
-public class LoggedInLandingPage extends Activity{
+@ContentView(R.layout.logged_in_landing)
+public class LoggedInLandingPage extends RoboActivity {
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setupViews();
 		
 		final ListView listView = (ListView)findViewById(R.id.optionsTable);
 		listView.setAdapter(null);
 	}
-	
-	private void setupViews() {
-		setContentView(R.layout.logged_in_landing);
-	}
-	
 	
 }

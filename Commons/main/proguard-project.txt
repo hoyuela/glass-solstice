@@ -19,5 +19,15 @@
 #   public *;
 #}
 
--libraryjars lib-compile/jsr305.jar
--dontwarn sun.misc.Unsafe
+##-libraryjars lib-compile/jsr305.jar
+#-dontwarn sun.misc.Unsafe
+#
+#-keep public class roboguice.**
+#
+#-keep class com.google.inject.Binder
+#-keepclassmembers class * {
+#    @com.google.inject.Inject <init>(...);
+#}
+#-keepclassmembers class * { 
+#    void *(**On*Event); 
+#}
