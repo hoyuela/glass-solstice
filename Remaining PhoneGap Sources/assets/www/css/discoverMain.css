@@ -1,0 +1,388 @@
+body.ui-mobile-viewport,div.ui-mobile-viewport {
+	background: #1A1A1A;
+}
+/*orange button*/
+.ui-btn-up-c,.small_btn,.white-box-rd-corner .small_btn {
+	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053), to(#fc510b), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) );
+	border: 1px solid rgba(241, 113, 20, 0.5);
+	color: white;
+	border-radius: 6px !important;
+	-webkit-border-radius: 6px !important;
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: none;
+	display: inline-block;
+	padding: 0 5px 0 5px;
+}
+
+.white-box-rd-corner .small_btn_110px {
+	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713) !important;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053), to(#fc510b), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) ) !important;
+	border: 1px solid rgba(241, 113, 20, 0.5) !important;
+	color: white;
+	border-radius: 6px !important;
+	-webkit-border-radius: 6px !important;
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: none;
+	display: inline-block;
+	padding: 0 5px 0 5px;
+}
+
+.ui-disabled {
+	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#a2a2a2),
+		to(#818181), color-stop(0.5, #a2a2a2), color-stop(0.51, #818181) );
+	border: 1px solid #ccc;
+	color: white;
+	border-radius: 6px !important;
+	-webkit-border-radius: 6px !important;
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: none;
+	display: inline-block;
+	padding: 0 5px 0 5px;
+	opacity: 1;
+}
+.redeem_landing .small_btn_110px {
+	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713)		!important;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053), to(#ef6713), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) ) !important;
+	border: 1px solid rgba(241, 113, 20, 0.5) !important;
+	color: white;
+	border-radius: 6px !important;
+	-webkit-border-radius: 6px !important;
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: none;
+	display: inline-block;
+	padding: 0 5px 0 5px;
+}
+.ui-btn-hover-c,.ui-btn-down-c, .small_btn:hover,.white-box-rd-corner #ui-btn:hover,.white-box-rd-corner .small_btn:hover,.small_btn_110px:hover
+	{ /* button rolover effect */
+	background-image: -webkit-linear-gradient(#ec6000, #ff7509 50%, #ff9019 51%, #ffc45f) !important;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ec6000), to(#ffc45f), color-stop(0.5, #ff9019), color-stop(0.51, #ff9019) ) !important;
+	/*border: 1px solid rgba(241, 113, 20, 0.5);*/
+	border: 1px solid #ff9c00;
+	color: white;
+	border-radius: 6px !important;
+	-webkit-border-radius: 6px !important;
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: none;
+	display: inline-block;
+	padding: 0 5px 0 5px;
+}
+
+.small_btn {
+	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713) !important;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053), to(#ef6713), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f)) !important;
+}
+/*from app start */
+span.small_btn_150px .ui-btn-up-c, span.small_btn_150px .ui-btn-hover-c{padding:0 25px 0 25px; line-height:20px; margin-left:10px;}
+span input.small_btn_150px .ui-btn-up-c, span input.small_btn_150px .ui-btn-hover-c{padding:0 25px 0 25px; line-height:20px; margin-left:10px;}
+/*from app end */
+/*gray button*/
+
+/*from web start */
+#login-pg #grid1 .ui-btn-up-d,#login-pg #grid1 .ui-btn-hover-d,#login-pg #grid1 .ui-btn-down-d
+	{
+	border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	color: #3178A4;
+	font-size: 8px;
+	font-weight: 600;
+	margin-left: 1px;
+	margin-right: 1px;	
+	background-image: -webkit-linear-gradient(#d3d2d2, #ebeaea 15%, #e7e6e6 16%, #ecebeb 50%, #dedfdf 51%, #cfcece);
+	background: -webkit-gradient(linear, left top, left bottom, from(#d3d2d2),	to(#cfcece), color-stop(0.15, #e7e6e6), color-stop(0.16, #ecebeb), color-stop(0.5, #dedfdf), color-stop(0.51, #cfcece) );
+	border: 1px solid #cccccc !important;
+	text-shadow: none;
+	line-height: 22px;
+}
+/*from web start */
+
+#login-pg #grid1 .ui-btn-hover-d,#login-pg #grid1 .ui-btn-down-d {
+	border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	/*from app start */
+	color: #267BB1;	
+	font-size: 8px;
+	/*letter-spacing: -1px;
+	margin-left: 1px;
+	margin-right: 1px;*/
+	/*from app end */
+	font-weight: 600;	
+	background: -webkit-gradient(linear, left top, left bottom, from(#bababa),	to(#bababa), color-stop(0.0, #e7e6e6), color-stop(0.50, #bababa), color-stop(0.51, #999999), color-stop(1, #cfcece) );
+	border: 1px solid #707070 !important;
+	color: #00355e !important;
+	text-shadow: none;
+	line-height: 22px;
+}
+
+/*reflection*/
+#login-pg #grid1.ui-grid-b div div {
+	background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.2),
+		rgba(255, 255, 255, 0) );
+	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255,
+		0.2) ), to(rgba(255, 255, 255, 0) ) );
+	height: 10px;
+	border-radius: 5px 5px 0 0;
+	margin-right: 2px;
+	margin-left: 1px;
+	margin-top: -3px;
+}
+/*to change corner radius*/
+.ui-btn-corner-all {
+	border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+}
+/*space manaagement */
+.ui-btn-inner {
+	padding: 5px;
+}
+
+#login-pg .ui-btn-inner .ui-btn-text { font-size:12px }
+.ui-btn-inner .ui-btn-text{	font-size:13px }
+/*logo*/
+#logo {
+	display: block;
+	margin: auto;
+	padding-top: 40px;
+	padding-bottom: 50px;
+}
+/*foot notes */
+#cc-login,#bank-login {
+	text-align: left;
+	font-weight: bold;
+	padding: 0px;
+	text-shadow: 0 -1px 2px #935023;
+	display: block !important;
+	margin: 0 auto;
+	width: 290px;
+}
+
+#cc-login  .arrow,#bank-login .arrow {
+	float: right
+}
+
+#cc-login .ui-icon,#bank-login .ui-icon {
+	padding: 0 0 0 35px;
+	margin-left: 10px;
+	width: 80%;
+	border-radius: 0px !important;
+	-webkit-border-radius: 0px !important;
+	line-height: 28px;
+}
+
+/* index page buttons */
+#cc-login .ui-icon {
+	background: url(../images/ccLogin.png) no-repeat left center;
+	height: 26px
+}
+
+#bank-login .ui-icon {
+	background: url(../images/bankLogin.png) no-repeat left center;
+	height: 26px
+}
+
+.access_btn {
+	margin-bottom: 9px !important;
+}
+
+@media all and (orientation:portrait) {
+	#login-pg #logo {
+		width: 170px;
+		height: 28px;
+		padding: 30px 0 20px 0;
+	}
+	#login-pg .index-btns {
+		margin-top: 10px;
+	}
+	#login-pg #footnotes {
+		margin-top: 20px;
+	}
+	.MobileSolutions {
+		padding-bottom: 15%;
+		font-weight: bold
+	}
+	#login-pg.ui-body-c,#cardLogin-pg.ui-body-c,#publicError-pg.ui-body-c,#globalErrorPage.ui-body-c,.loginBg, 
+	#forceUpgrade-pg.ui-body-c,#optionalUpgrade-pg.ui-body-c,#loginErrorPage-Pg.ui-body-c,#strongAuthLocked-Pg.ui-body-c
+	{
+		background-image:-webkit-gradient(radial, 50% 600, 0, 50% 1700, 1500, from(#1A1A1A), color-stop(75%, #1A1A1A), color-stop(87%, #4B4B4B), color-stop(87.5%, #404040), color-stop(88%, #4C4C4C), color-stop(90%, #1A1A1A), to(#1A1A1A) );
+		/*background-image: -webkit-radial-gradient(50% 643px, 681px 440px, #1A1A1A, #1A1A1A 72%, #4B4B4B 89%, #404040 90.5%, #4C4C4C 91%, #1A1A1A 92.5%, #1A1A1A 45%) !important;*/
+		/* Above line is commented because it is creating issues in android 4.0 but this css property also right because this is usefull for latest device */
+	}
+	#login-pg .wraper,.loginbox,.errorbox {
+		width: 290px;
+		margin: auto;
+	}
+	#login-pg .indexlinks {
+		margin-left: 2px;
+	}
+	.access_btn {
+		margin-bottom: 20px !important;
+	}
+	nav#menu {
+		margin: 28px auto 0;
+	}
+	#cc-login .ui-icon,#bank-login .ui-icon {
+		padding: 2px 0 2px 30px;
+	}
+	.Home_quicklinks {
+		width: 293px;
+		margin: auto;
+	}
+	.indexlogo {
+	background: url("../images/handsetLoginLogoPortrait.png") no-repeat center
+		center;
+	height: 28px;
+	-webkit-background-size: 170px 28px;
+	background-size: 170px 28px
+	}
+}
+
+@media all and (orientation:landscape) {
+	#login-pg #logo {
+		width: 158px;
+		height: 26px;
+		padding: 8px 0 20px 0;
+	}
+	#login-pg .index-btns {
+		margin-top: 0;
+	}
+	#login-pg #footnotes {
+		margin-top: 0;
+	}
+	#login-pg.ui-body-c,#cardLogin-pg.ui-body-c,#publicError-pg.ui-body-c,#globalErrorPage.ui-body-c,.loginBg,
+	#forceUpgrade-pg.ui-body-c,#optionalUpgrade-pg.ui-body-c,#loginErrorPage-Pg.ui-body-c,#strongAuthLocked-Pg.ui-body-c
+		{
+		background-image: -webkit-gradient(radial, 50% 600, 0, 50% 1630, 1500, from(#1A1A1A), color-stop(75%, #1A1A1A), color-stop(87%, #4B4B4B), color-stop(87.5%, #404040), color-stop(88%, #4C4C4C), color-stop(90%, #1A1A1A), to(#1A1A1A) );
+		/*background-image: -webkit-radial-gradient(50% 541px, 919px 395px, #1A1A1A, #1A1A1A 75%, #4B4B4B 87%, #404040 89.5%, #4C4C4C 89%, #1A1A1A 91%, #1A1A1A 36%) !important; */
+		/* Above line is commented because it is creating issues in android 4.0 but this css property also right because this is usefull for latest device */
+	}
+	#login-pg .wraper,.loginbox,.errorbox {
+		width: 290px;
+		margin: auto;
+	}
+	#login-pg .indexlinks {
+		margin-left: 3px;
+	}
+	#login-pg .indexlinks {
+		margin-left: 5px;
+	}
+	nav#menu {
+		margin: 16px auto 0;
+	}
+	.Home_quicklinks {
+		width: 295px;
+		margin: auto;
+	}
+	.indexlogo {
+	background: url("../images/handsetLoginLogo.png") no-repeat center
+		center;
+	height: 26px;
+	-webkit-background-size: 158px 26px;
+	background-size: 158px 26px
+	}
+}
+
+.Home_quicklinks b {
+	line-height: 14px;
+	width: 80px;
+	font-size: 9px;
+	white-space: normal;
+	margin: 0;
+	margin-top: -3px;
+	display: inline-block
+}
+
+.Home_quicklinks a {
+	height: 32px;
+}
+
+.Home_quicklinks a span.arrow {
+	position: absolute;
+	left: 73px;
+	font-size: 9px;
+	font-weight: normal;
+	margin-top: -1px;
+}
+
+.quicklinks_ED {
+	background: url(../images/expDisc.png) no-repeat 0px 8px !important;
+}
+
+.quicklinks_CS {
+	background: url(../images/headPhone.png) no-repeat 0px 6px !important;
+}
+
+.quicklinks_AN {
+	background: url(../images/applyNow.png) no-repeat 0px 7px !important;
+}
+
+.more-faq {
+	display: inline-block;
+	background: url("../images/linkArrow.png") no-repeat right 4px
+		transparent;
+	padding-right: 10px;
+	-webkit-background-size: 6px 6px;
+	background-size: 6px 6px;
+}
+
+/* change slider height */
+.ui-controlgroup a.ui-slider-handle,a.ui-slider-handle {
+	height: 20px !important;
+}
+
+div.ui-slider-switch {
+	height: 24px !important;
+}
+
+span.ui-slider-label {
+	font-size: 12px;
+}
+
+.ui-slider-inneroffset .ui-btn-corner-all {
+	border-radius: 0.5em;
+	-webkit-border-radius: 0.4em;
+}
+
+.indexlogo {
+	background: url("../images/handsetLoginLogo.png") no-repeat center
+		center;
+	height: 26px;
+	-webkit-background-size: 157px 26px;
+	background-size: 157px 26px
+}
+/* retina image changes */
+@media ( -webkit-min-device-pixel-ratio :2) {
+	#bank-login .ui-icon {
+	background: url(../images/bankLogin.png) no-repeat left center;	
+	}
+	.indexlogo {
+		background: url("../images/discover-logo2x.png") no-repeat center center;
+		height: 26px;
+		-webkit-background-size: 157px 26px;
+		background-size: 157px 26px
+	}
+	.quicklinks_ED {
+		background: url(../images/exp-dic-size2x.png) no-repeat 0 8px;
+		-webkit-background-size: 12px 12px;
+		background-size: 12px 12px
+	}
+	.quicklinks_CS {
+		background: url(../images/headphone_size2x.png) no-repeat 0 8px;
+		-webkit-background-size: 12px 13px;
+		background-size: 12px 13px
+	}
+	.quicklinks_AN {
+		background: url(../images/apply-now_size2x.png) no-repeat 0 8px;
+		-webkit-background-size: 12px 13px;
+		background-size: 12px 13px
+	}
+}
+
+.ui-page-header-fixed {
+	padding-top: 52px;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Payments Step-II</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="paymentStep2-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+		<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<h1>Make a Payment:</h1>
+				<h2>Step 2 of 3</h2>
+				<p class="redtext" id="safeSecureDiv" ></p>
+				<p class="marginTB15 fontsize13px" id="cuttOff_Note"></p>
+				<ul class="whitebg-list-view">
+					<li><span style="float:left" id="bankname"></span> <span class="boldtext" id="accountnumber"></span>
+					</li>
+					<li>Payment Option<span class="boldtext" id="paymentOption_value"></span>
+					</li>
+					<li>Amount<span class="boldtext" id="amount_value"></span>
+					</li>
+					<li>Posting Date<span class="boldtext" id="paymentStep2_posting_date"></span>
+					</li>
+				</ul>
+				<div class="ui-grid-a" id="milesRedeem-button">
+					<div class="txtcenteraln r3matchbtn">
+						<a href="#" onclick="navigation('cancelPayment')" class="bluelink boldtext">Cancel</a>
+						<a href="#" onclick="dfs.crd.pymt.confirmfromstep2tostep3(false,'');" data-role="button">Confirm</a>
+					</div>
+				</div>
+			</div>
+			<div id="footnotes" class="footnotes" ></div>
+		</div>
+
+		<!-- content end -->
+
+<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
+            <footer id="footer" class="mnu_footer">
+			</footer>
+				</div>
+		</div>
+
+	<!--page end -->
+</body>
+</html>

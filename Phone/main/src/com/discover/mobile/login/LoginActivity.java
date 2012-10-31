@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,10 +20,12 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
+import com.discover.mobile.common.auth.AuthenticateCall.AuthCallParams;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.register.AccountInformationActivity;
+import com.google.inject.Inject;
 
 @ContentView(R.layout.login)
 public class LoginActivity extends RoboActivity {
@@ -37,9 +40,15 @@ public class LoginActivity extends RoboActivity {
 
 	@InjectView(R.id.login_button)
 	private Button loginButton;
+	
+	@InjectView(R.id.register_text)
+	private TextView registerText;
 
 	@InjectView(R.id.error_text_view)
 	private TextView errorTextView;
+	
+	@Inject
+	private TelephonyManager telephonyManager;
 	
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -66,8 +75,16 @@ public class LoginActivity extends RoboActivity {
 		loginButton.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				errorTextView.setText(null);
+				errorTextView.setText("");
 				logIn();
+			}
+		});
+		
+		registerText.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				errorTextView.setText(null);
+				registerNewUser();
 			}
 		});
 	}
@@ -116,7 +133,16 @@ public class LoginActivity extends RoboActivity {
 			}
 		};
 		
-		final AuthenticateCall authenticateCall = new AuthenticateCall(this, callback, username, password);
+//		final AuthenticateCall authenticateCall = new AuthenticateCall(this, callback, username, password);
+		final AuthenticateCall authenticateCall = new AuthenticateCall(this, callback, 
+				new AuthCallParams() {{
+					authUsername = username;
+					authPassword = password;
+					did = telephonyManager.getDeviceId();
+					sid = telephonyManager.getSimSerialNumber();
+					oid = telephonyManager.getDeviceId();
+				}});
+		
 		authenticateCall.submit();
 	}
 	
@@ -143,14 +169,11 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	private void logIn() {
-		final String uid = uidField.getText().toString();
-		final String pass = passField.getText().toString();
-		
 		// TODO production error handling (validator doesn't work with test uid's)
-		runAuthWithUsernameAndPassword(uid, pass);
+		runAuthWithUsernameAndPassword(uidField.getText().toString(), passField.getText().toString());
 	}
 	
-	public void registerNewUser(@SuppressWarnings("unused") final View v) {
+	public void registerNewUser() {
 		final Intent accountInformationActivity = new Intent(
 				this, AccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);

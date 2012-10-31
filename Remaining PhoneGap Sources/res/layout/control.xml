@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/background"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal">
+
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+  		android:layout_width="fill_parent"
+        android:id="@+id/mainrelativelayout"
+        android:layout_height="fill_parent">
+        
+        <!-- DEFINE CAMERA PREVIEW AREA-->
+       	<FrameLayout android:id="@+id/camera_preview"
+    		android:layout_width="fill_parent"
+    		android:layout_height="fill_parent"
+    		android:layout_weight="1">
+    	</FrameLayout>
+        
+        <!-- DEFINE CUSTOM BACKGROUND -->
+        <ImageView android:id="@+id/bgcustom"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="55dp"
+				android:background="@drawable/camerabgmarks">
+		</ImageView>
+
+		<!-- DEFINE ELEMENTS FOR THE TOP OF THE VIEW -->
+		<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	        android:layout_width="fill_parent"
+	        android:id="@+id/toplayout"
+	        android:layout_height="45dp"
+	        android:layout_gravity="top|center_horizontal"
+	        android:orientation="horizontal" >
+	         
+	         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	        	android:id="@+id/top_buttons"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:orientation="horizontal"
+	        	android:layout_centerInParent="true">
+	        	
+				<!-- Back button -->
+				<Button android:id="@+id/backbutton"
+		         		android:layout_height="30dp"
+		         		android:layout_width="50dp"
+		            	android:layout_marginTop="5dp"
+		            	android:layout_alignParentTop="false"
+		            	android:background="@drawable/backbutton">
+				</Button>
+		        
+		        <!-- 1 Select Account button -->    
+				<Button android:id="@+id/selectaccountbutton"
+						android:background="@drawable/opt1" 
+			    		android:layout_width="wrap_content"  
+			            android:layout_height="wrap_content" 
+			            android:layout_alignParentTop="true" 
+			            android:layout_alignLeft="@id/backbutton" 
+			            android:layout_marginLeft="55dp">
+				</Button>
+		        
+		        <!-- 2 Enter amount button -->     
+		        <Button android:id="@+id/enteramountbutton"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_marginRight="0dp"
+		            android:layout_alignParentTop="true"
+		  			android:background="@drawable/opt2"
+		            android:layout_toRightOf="@id/selectaccountbutton">
+		        </Button>
+		        
+		        <!-- 3 Capture image button -->
+		        <Button android:id="@+id/opt3button"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentTop="true"
+		            android:background="@drawable/opt3"
+		            android:layout_toRightOf="@id/enteramountbutton">
+				</Button>
+		        
+		        <!-- Front & Back check boxes -->    
+				<Button android:id="@+id/frontcheckedbutton"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentTop="true"
+		            android:background="@drawable/frontunchecked"
+		            android:layout_toRightOf="@id/opt3button">
+				</Button>
+			
+			</RelativeLayout>
+			
+		</RelativeLayout>
+		
+		<!--DEFINE ELEMENTS FOR THE CENTER OF THE VIEW -->
+
+   		<!-- Preview of the picture-->
+		<ImageView android:id="@+id/previewCheck"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="46dp"			
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+   		</ImageView>
+   		
+		<!-- Define gray modal info -->
+       	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        	android:id="@+id/grayModalLayout"
+        	android:layout_width="300dp"
+        	android:layout_height="100dp"
+        	android:layout_marginTop="100dp"
+        	android:layout_centerHorizontal="true"
+        	android:orientation="horizontal"
+      		android:background="@drawable/bgfront">
+      		
+      		<!-- Warning image -->
+      		<ImageView android:id="@+id/warningimage"
+      			android:layout_width="wrap_content"
+	       		android:layout_height="wrap_content"
+	       		android:layout_marginLeft="30dp"
+	       		android:layout_centerVertical="true"
+	       		android:background="@drawable/warning">
+      		</ImageView>
+      		
+        	<!-- Title for front gray modal -->		       
+	       	<TextView android:id="@+id/frontTitleTextView"
+	       		android:layout_width="wrap_content"
+	       		android:layout_height="wrap_content"
+	       		android:textSize="15dp"
+	       		android:textStyle="bold"
+	       		android:layout_marginLeft="80dp"
+	       		android:layout_marginTop="10dp"
+	        	android:text="@string/titlefrontcheck">
+	       	</TextView>
+	        
+	        <!-- Message for front gray modal -->           
+	    	<TextView android:id="@+id/frontTextView"
+	    		android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:textSize="14dp"
+	        	android:layout_marginTop="14dp"
+	       		android:layout_marginLeft="80dp"
+	        	android:text="@string/messagefrontcheck">
+	       	</TextView>      
+       	</RelativeLayout>
+       	       	
+       	<!-- Define gray modal counter -->
+       	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        	android:id="@+id/grayModalCounterLayout"
+        	android:layout_width="300dp"
+        	android:layout_height="100dp"
+        	android:layout_marginTop="100dp"
+        	android:layout_centerHorizontal="true"
+        	android:orientation="horizontal"
+      		android:background="@drawable/bgfront">
+      		
+        	<!-- Counter for front gray modal -->		       
+	       	<TextView android:id="@+id/frontTitleCounterView"
+	       		android:layout_width="wrap_content"
+	       		android:layout_height="wrap_content"
+	       		android:textSize="50dp"
+	       		android:textStyle="bold"
+	       		android:layout_centerHorizontal="true"
+	       		android:layout_marginTop="5dp"
+	        	android:text="@string/titleCounter">
+	       	</TextView>
+	        
+	        <!-- Message for front gray modal counter -->           
+	    	<TextView android:id="@+id/frontMessageCountertView"
+	    		android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:textSize="14dp"
+	        	android:layout_centerHorizontal="true"
+	        	android:layout_marginTop="65dp"
+	        	android:text="@string/messageCounter">
+	       	</TextView>      
+       	</RelativeLayout>
+		
+		
+    	<!-- DEFINE ELEMENTS FOR THE BOTTOM OF THE VIEW -->   
+    	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        	android:id="@+id/bottomlayout"
+        	android:layout_width="fill_parent"
+        	android:layout_height="55dp"
+        	android:layout_gravity="bottom|center_horizontal"
+      		android:layout_marginTop="-225dp"
+      		android:layout_below="@id/toplayout"
+        	android:orientation="horizontal" 
+        	android:background="@drawable/bottombar"
+        	android:layout_alignParentBottom="true" >
+        	
+			<!-- i button for display help info -->   
+	        <Button android:id="@+id/displayinfo"
+	            android:layout_width="20dp"
+	            android:layout_height="20dp"
+	            android:layout_marginLeft="20dp"
+	            android:layout_marginRight="20dp"
+	            android:layout_centerVertical="true"
+	            android:background="@drawable/i">
+			</Button>
+
+	        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	        	android:id="@+id/retake_continue_buttons"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:orientation="horizontal"
+	        	android:layout_centerInParent="true">
+	        	
+	        	<!-- Cancel button -->  
+		        <Button android:id="@+id/cancelbutton"
+		            android:layout_width="50dp"
+		            android:layout_height="12dp"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="10dp"
+		            android:layout_toRightOf="@id/displayinfo"
+		            android:background="@drawable/cancel">
+		        </Button>
+		        
+		        <!-- Capture button -->
+		        <Button android:id="@+id/takepicture"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_centerHorizontal="true"
+		            android:layout_toRightOf="@id/cancelbutton"       
+					android:background="@drawable/capture">
+				</Button>
+	        	
+		        <!-- Retake button -->     
+		        <Button android:id="@+id/retakepicture"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="10dp"        
+		            android:layout_toRightOf="@id/cancelbutton"
+					android:background="@drawable/retakebutton">
+				</Button>
+				
+				<!-- Continue button -->	
+		        <Button android:id="@+id/continuebutton"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="10dp"        
+		            android:layout_toRightOf="@id/retakepicture"
+					android:background="@drawable/continuebutton">
+				</Button>	
+			
+	      	</RelativeLayout>
+      
+		</RelativeLayout>
+
+    	
+		<!-- DEFINE ELEMENTS FOR HELP MODAL INFO --> 
+       	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        	android:id="@+id/helpModalLayout"
+        	android:layout_width="470dp"
+        	android:layout_height="250dp"
+        	android:layout_centerInParent="true"
+        	android:orientation="horizontal"
+      		android:background="@drawable/helpmodalbg">
+      		
+      		<!-- Title for help modal -->
+      		<TextView android:id="@+id/titleHelpTextView"
+      			android:layout_width="wrap_content"
+	       		android:layout_height="wrap_content"
+	       		android:layout_marginLeft="25dp"
+	       		android:layout_marginTop="10dp"
+	       		android:textSize="20dp"
+	       		android:textStyle="bold"
+	       		android:textColor="#000000"
+	       		android:text="@string/titlehelpfrontcheck">
+      		</TextView>
+      		
+      		<!-- Message for help modal -->
+      		<TextView android:id="@+id/frontTextHelpView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="25dp"
+		       	android:layout_marginTop="40dp"
+		       	android:textSize="12dp"
+		       	android:textColor="#000000"
+				android:text="@string/messagehelpfrontcheck">
+			</TextView>
+			
+			<!-- Cancel button for modal help -->     
+        	<Button android:id="@+id/closeButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerHorizontal="true"
+	            android:layout_marginTop="200dp"
+	            android:background="@drawable/closebutton">
+			</Button>
+      		
+      	</RelativeLayout>
+      	
+      	<!-- DEFINE ELEMENTS FOR CANCEL DEPOSIT MODAL --> 
+      	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        	android:id="@+id/cancelModalLayout"
+        	android:layout_width="350dp"
+        	android:layout_height="200dp"
+        	android:layout_marginTop="50dp"
+        	android:layout_centerHorizontal="true"
+        	android:orientation="horizontal"
+      		android:background="@drawable/helpmodalbg">
+
+      		<!-- Title for cancel deposit modal -->
+      		<TextView android:id="@+id/titleCancelTextView"
+      			android:layout_width="wrap_content"
+	       		android:layout_height="wrap_content"
+	       		android:layout_marginLeft="40dp"
+	       		android:layout_marginTop="15dp"
+	       		android:textSize="22dp"
+	       		android:textStyle="bold"
+	       		android:textColor="#000000"
+	       		android:text="@string/titleCancelModal">
+      		</TextView>
+      		
+      		<!-- Message for cancel deposit modal -->
+      		<TextView android:id="@+id/messageCancelTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="30dp"
+		       	android:layout_marginTop="80dp"
+		       	android:textSize="14dp"
+		       	android:textColor="#000000"
+				android:text="@string/messageCancelModal">
+			</TextView>
+			
+			<!-- Cancel button for modal help -->     
+        	<Button android:id="@+id/cancelDepositButton"
+	            android:layout_width="100dp"
+	            android:layout_height="18dp"
+	            android:layout_marginLeft="30dp"
+	            android:layout_marginTop="145dp"
+	            android:background="@drawable/canceldeposit">
+			</Button>
+			
+			<!-- Dont'Cancel button for modal help -->     
+        	<Button android:id="@+id/dontCancelDepositButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="205dp"
+	            android:layout_marginTop="135dp"
+	            android:background="@drawable/dontcanceldeposit">
+			</Button>
+      		
+      	</RelativeLayout>
+		
+		<!-- DEFINE LAYER TO BLOCK SCREEN -->
+		<ImageView  android:id="@+id/blockscreen"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_centerHorizontal="true"
+			android:background="@drawable/helpblockscreen">
+		</ImageView> 
+		
+	</RelativeLayout>
+</LinearLayout>

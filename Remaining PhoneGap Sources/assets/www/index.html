@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">     
+
+<!-----------------    MOBILE DEPENDECIES       ------------------->
+<script type="text/javascript">
+        if (navigator.userAgent.match(/iPhone/i)) {
+            document.write('<script type="text/javascript" src="script/ios/cordova-1.7.0.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/LoadingView.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/ChildBrowser.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/CookieManager.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/Contactsios.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/KeyValue.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/NetworkConnectivity.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/XtifyCordovaPlugin.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/clipboardPlugin.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/EmailComposer.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/Print.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/Screenshot.js" ><\/script>');
+        } else {
+        	document.write('<script type="text/javascript" src="script/android/Contactsand.js" ><\/script>');
+        	document.write('<script type="text/javascript" src="script/android/CookieManager.js" ><\/script>');
+        	document.write('<script type="text/javascript" src="script/android/cordova-1.7.0.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/LoadingView.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/childbrowser.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/KeyValue.js" ><\/script>'); 
+            document.write('<script type="text/javascript" src="script/android/clearHistory.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/NetworkConnectivity.js" ><\/script>');
+			document.write('<script type="text/javascript" src="script/android/video.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/XtifyCordovaPlugin.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/clipboardPlugin.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/Screenshot.js" ><\/script>');
+        }
+        </script>
+<link rel="stylesheet" href="jquery.mobile-1.1.min.css" />
+<script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+<script>
+	if (navigator.userAgent.match(/Android/)){
+		$(window.document).bind("mobileinit", function() {
+			$.mobile.pushStateEnabled = false;
+		});
+	}
+</script>
+<script type="text/javascript" src="jquery.mobile-1.1.min.js"></script>
+<script type="text/javascript" src="Sha256_Encryption.js"></script>
+<script type="text/javascript" src="jquery.mobile.simpledialog2.min.js"></script>
+<script type="text/javascript" src="jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="jquery-ui-1.8.20.custom.min.js"></script>
+<script type="text/javascript" src="jquery.ui.datepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="jquery.mobile.simpledialog.min.css" />
+    
+<!--script type="text/javascript" src="script/ios/XtifyCordovaPlugin.js"></script-->
+    
+<script type="text/javascript" src="jquery.easing.js"></script>
+<script type="text/javascript" src="jquery.jqtransform.js"></script>
+    
+<link rel="stylesheet" type="text/css" href="jquery.mobile.simpledialog.min.css" />
+<link rel="stylesheet" type="text/css" href="css/jqmTransition.css" />
+<!-----------------------------Scripts-------------------------->
+<script type="text/javascript" src="card/scripts/applicationConstants.js"></script>
+<script>
+	if (window.location.host.match(/local.discovercard.com/) || window.location.host.match(/localhost.discovercard.com/)){
+		env.load("../local-env.xml");
+	}else{
+		env.load("env.xml");
+	}
+</script>
+<script type="text/javascript" src="card/scripts/common.js"></script>
+<script type="text/javascript" src="card/scripts/commonUI.js"></script>
+<script type="text/javascript" src="card/scripts/achome.js"></script>
+<script type="text/javascript" src="card/scripts/loginLogout.js"></script>
+<script type="text/javascript" src="card/scripts/shared/statementsShared.js"></script>
+<script type="text/javascript" src="card/scripts/statements.js"></script>
+<script type="text/javascript" src="card/scripts/util.js"></script>
+<script type="text/javascript" src="card/scripts/errorCodeMap.js"></script>
+<script type="text/javascript" src="card/scripts/redeemCBBEcert.js"></script>
+<script type="text/javascript" src="card/scripts/rewards.js"></script>
+<script type="text/javascript" src="card/scripts/shared/registrationShared.js"></script>
+<script type="text/javascript" src="card/scripts/registration.js"></script>
+<script type="text/javascript" src="card/scripts/strongAuth.js"></script>
+<script type="text/javascript" src="card/scripts/redeemCBBCreditDirectDeposit.js"></script>
+<script type="text/javascript" src="card/scripts/exploreDiscover.js"></script>
+<script type="text/javascript" src="card/scripts/sendMoney.js"></script>
+<script type="text/javascript" src="card/scripts/shared/profileShared.js"></script>
+<script type="text/javascript" src="card/scripts/profile.js"></script>
+<script type="text/javascript" src="card/scripts/redemption-R5.js"></script>
+<script type="text/javascript" src="card/scripts/redeemEcertsAndGiftCards.js"></script>
+<script type="text/javascript" src="card/scripts/redeemGiftCard.js"></script>
+<script type="text/javascript" src="jquery.mobile.fixedToolbar.js"></script>
+<script type="text/javascript" src="jqmTransition.js"></script>
+<script type="text/javascript" src="card/scripts/payment.js"></script>
+<script type="text/javascript" src="card/scripts/index.js"></script>
+<script language="JavaScript" type="text/javascript" src="s_code.js"></script>   
+    
+    
+<script type="text/javascript" src="card/scripts/pushDiagonstic.js"></script> 
+<script type="text/javascript" src="card/scripts/pushTermsAndConditions.js"></script> 
+<script type="text/javascript" src="card/scripts/pushManageAlerts.js"></script> 
+<script type="text/javascript" src="card/scripts/pushAlertHistory.js"></script>  
+<!--script type="text/javascript" src="card/scripts/common-bypass-native.js"></script-->  
+    
+<script type="text/javascript" src="jquery.mobile.stepper.js"></script>
+<script type="text/javascript" src="jquery.jqtransform.js"></script>
+<script type="text/javascript" src="card/scripts/referAFriend.js"></script>
+<script type="text/javascript" src="md5.js"></script>
+<script type="text/javascript" src="jquery.watermark.min.js"></script>
+<!-----------------------------CSS-------------------------->
+<link rel="stylesheet" href="css/discoverMain.css" />
+<link rel="stylesheet" href="card/css/discoverCard.css" />
+<link rel="stylesheet" href="card/css/discoverCardR4.css" />
+<link rel="stylesheet" href="css/pnMain-R5.css" />
+<link rel="stylesheet" href="css/jquery.mobile.fixedToolbar.polyfill.css" />
+<!--script type="text/javascript" src="../bypassPG.js"></script-->
+<link rel="stylesheet" href="card/css/redemption-R5.css" />
+<link rel="stylesheet" href="css/jquery.mobile.stepper.css" />
+<link rel="stylesheet" href="card/css/referAFriend.css" />
+</head>
+<body onload="onBodyLoad();">
+	<!-- page start -->
+	<div data-role="page" id="login-pg">
+		<div data-role="header"></div>
+		<!-- content start -->
+		<div data-role="content">
+			<div class="wraper">
+				<div class="indexlogo" id="logo"></div>
+				<!--Logout message div start -->
+				<div class="index-btns">
+				<div class="new_version"></div>
+					<div id="logoutDiv" style="display: none">
+						You are now logged out. <span>Thank you for using Discover
+							mobile.</span>
+					</div>
+					<!-- Logout message div end -->
+					<a href="" onclick="dfs.crd.lilo.preLoginCheck();" data-role="button"
+						id="cc-login" class="access_btn" data-transition="slidec">
+						<div class="ui-icon">
+							&nbsp;SECURE CREDIT CARD LOG IN<span class="arrow"> &gt;</span>
+						</div> </a> <a href="" onclick="dfs.crd.lilo.goToBankLogin();" data-role="button" id="bank-login"
+						class="access_btn">
+						<div class="ui-icon">
+							&nbsp;SECURE BANK ACCOUNT LOG IN<span class="arrow"> &gt;</span>
+						</div> </a>
+				<nav id="menu">
+					<div class="ui-grid-b Home_quicklinks" id="grid1">
+						<div class="ui-block-a">
+							<a href="#"
+								onclick="navigation('card/html/common/exploreDiscover');"
+								data-role="button" data-theme="d"><b class="quicklinks_ED">EXPLORE<br />
+									DISCOVER</b><span class="arrow">&gt;</span> </a>
+							<div></div>
+						</div>
+						<div class="ui-block-b">
+							<a href="#"
+								onclick="navigation('card/html/common/customerService');"
+								data-role="button" data-theme="d"><b class="quicklinks_CS">CUSTOMER<br />
+									SERVICE</b><span class="arrow">&gt;</span> </a>
+							<div></div>
+						</div>
+						<div class="ui-block-c">
+							<a href="#" onclick="redirectToPageAfterConfirm('Apply Now');"
+								data-role="button" data-theme="d"><b class="quicklinks_AN">APPLY<br />NOW</b><span
+								class="arrow">&gt;</span> </a>
+							<div></div>
+						</div>
+					</div>
+				</nav>
+				</div>
+			</div>
+			<div id="footnotes" class="footnotes"></div>
+
+		</div>
+		<!-- content end -->
+		<div data-role="footer" data-position="fixed"></div>
+	</div>
+	<!-- page end -->
+
+</body>
+</html>

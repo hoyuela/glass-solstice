@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, DiscoverMobileActivity!</string>
+    <string name="app_name">Discover</string>
+	<string-array name="allowed_prefixes">
+	    <item>https://www.discovercard.com/cardmembersvcs/mobile/app/</item>
+	    <item>https://www.discovercard.com/mobile-adv</item>
+	    <item>https://www.discoverbank.com/m</item>
+		<item>https://m.discovercard.com</item>
+		<item>http://www.youtube.com</item>
+		<item>http://s.ytimg.com</item>
+		<item>http://i1.ytimg.com</item>
+		<item>https://ajax.google.com</item>
+		<item>https://smetrics.discover.com</item>
+		<item>http://sandbox.objectwave.com</item>
+	</string-array>
+
+	<!-- Camera MDC Start -->
+	
+	<!-- Define URL's -->
+    
+    <string name="MAIN_URL">intro-terms</string>
+    <string name="CONFIRM_AUTHORIZE_PAGE">confirm-authorize</string>
+    <string name="ENTER_AMOUNT_PAGE">enter-amount</string>
+    <string name="SELECT_ACCOUNT_PAGE">select-account</string>
+   	
+   	
+	<!-- Define capture mode: false = Camera mode , true = Mock gallery mode -->
+	
+   	<string name="TEST_MODE">false</string>
+    
+    
+	<!-- Custom camera phonegap plugin actions -->
+	
+    <string name="CAPTURE_CHECK_FRONT">captureCheckFront</string>
+    <string name="CAPTURE_CHECK_BACK">captureCheckBack</string>
+    <string name="CAPTURE_CHECK">captureCheck</string>
+    <string name="REMOVE_CHECK_IMAGES">removeCheckImages</string>
+    <string name="CHECK_REVIEW_FRONT">checkReviewFront</string>
+    <string name="CHECK_REVIEW_BACK">checkReviewBack</string>
+    <string name="FRONT_CHK_ELEMENT_ID">frontCheck</string>
+    <string name="BACK_CHK_ELEMENT_ID">backCheck</string>
+    <string name="BACK_CONFIRM_AUTHORIZE">backConfirmAuthorize</string>
+    <string name="INJECT_CHECKS_CAPTURES">injectChecksCaptures</string>
+    
+    
+	<!-- Temporary file names of the checks captures-->
+	
+    <string name="FRONT_CHECK_FILENAME">FRONT_CHK</string>
+    <string name="BACK_CHECK_FILENAME">BACK_CHK</string>
+    
+    
+    <!-- Labels and Messages -->
+    
+    <string name="main">Custom Camera Layout</string>
+    <string name="info">info</string>
+    <string name="help">help</string>
+    <string name="capture">Take Picture</string>
+    <string name="titlefrontcheck">FRONT OF CHECK</string>
+    <string name="titlebackcheck">BACK OF CHECK</string>
+    <string name="messagefrontcheck">\n\n      Position image within four\n      corners, then press Capture.</string>
+    <string name="titlehelpfrontcheck">Auto Capture and Review Help</string>
+    <string name="messagehelpfrontcheck">* Place the check on a plain, dark, flat surface.\n* Stand over the check.\n* Position the check on the screen within the orange box.\n* Hold the camera steady during the countdown and wait for the phone\'s camera to auto-capture the check image.\n\nWhen reviewing the image:\n* Ensure the check is in focus.\n* Ensure the back is endorsed.\n* Ensure all areas of the check are visible</string>
+    <string name="messagebackcheck">\n\n      Position image within four\n      corners, then press Capture.</string>
+    <string name="messagehelpbackcheck">* Place the check on a plain, dark, flat surface.\n* Stand over the check.\n* Position the check on the screen within the orange box.\n* Hold the camera steady during the countdown and wait for the phone\'s camera to auto-capture the check image.\n\nWhen reviewing the image:\n* Ensure the check is in focus\n* Ensure the back is endorsed\n* Ensure all areas of the check are visible</string>
+    <string name="titleCounter">3</string>
+    <string name="messageCounter">Hold steady...</string>
+    <string name="emptyString"></string>
+    <string name="encodeBase64Error">Please retake: [Picture encoding failed]</string>
+    <string name="titleCancelModal">Are you sure you want to\ncancel this deposit?</string>
+    <string name="messageCancelModal">All information entered for this transaction will\nbe lost.</string>
+    
+    <!-- Preferences file-->
+    <string name="PREFERENCES_FILE_NAME">RDCCameraPrefsFile</string>
+    <string name="PREFERENCES_KEY_RELEASE_ALL_CAMERA_RESOURCES">releaseAllCameraResources</string>
+    
+	<!-- Camera MSC End -->
+	
+</resources>

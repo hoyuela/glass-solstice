@@ -1,6 +1,7 @@
 package com.discover.mobile.common.net;
 
 import static com.discover.mobile.common.ThreadUtility.assertCurrentThreadHasLooper;
+import static com.discover.mobile.common.ThreadUtility.assertMainThreadExecution;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -85,6 +86,9 @@ public abstract class NetworkServiceCall<R> {
 			checkAndUpdateSubmittedState();
 			checkNetworkConnected();
 		} catch(final ConnectionFailureException e) {
+			// We don't need to catch anything else because this should be executing on the main thread
+			assertMainThreadExecution();
+			
 			sendResultToHandler(e, RESULT_EXCEPTION);
 			return;
 		} finally {
@@ -113,6 +117,9 @@ public abstract class NetworkServiceCall<R> {
 				"invalid params.connectTimeoutSeconds: " + params.connectTimeoutSeconds);
 		checkArgument(params.readTimeoutSeconds > 0, "invalid params.readTimeoutSeconds: " + params.readTimeoutSeconds);
 		
+		checkArgument(!(params.clearsSessionBeforeRequest && params.requiresSessionForRequest),
+				"params.clearsSessionBeforeRequest and params.requiresSessionForRequest cannot both be true");
+		
 		assertCurrentThreadHasLooper();
 	}
 	
@@ -132,6 +139,8 @@ public abstract class NetworkServiceCall<R> {
 	
 	// Executes in the background thread, performs the HTTP connection and delegates parsing to subclass
 	private void executeRequest() throws IOException {
+		prepareGlobalSessionForConnection();
+		
 		conn = createConnection();
 		try {
 			prepareConnection();
@@ -148,6 +157,11 @@ public abstract class NetworkServiceCall<R> {
 		} finally {
 			conn = null;
 		}
+	}
+	
+	private void prepareGlobalSessionForConnection() {
+		if(params.clearsSessionBeforeRequest)
+			ServiceCallSessionManager.clearSession();
 	}
 	
 	private HttpURLConnection createConnection() throws IOException {
@@ -174,8 +188,12 @@ public abstract class NetworkServiceCall<R> {
 		conn.setRequestProperty("X-Application-Version", "4.00");
 	}
 	
-	private void setupSessionHeaders() {
-		ServiceCallSessionManager.prepareWithSecurityToken(conn);
+	private void setupSessionHeaders() throws IOException {
+		final boolean foundToken = ServiceCallSessionManager.prepareWithSecurityToken(conn);
+		
+		if(!foundToken && params.requiresSessionForRequest)
+			throw new IOException("No session available when one was required for NetworkServiceCall to url: " +
+					conn.getURL());
 	}
 	
 	private void setupCustomHeaders() {
@@ -207,7 +225,6 @@ public abstract class NetworkServiceCall<R> {
 		if(serializer == null)
 			throw new UnsupportedOperationException("Unable to serialize body: " + body);
 		
-		conn.setDoOutput(true);
 		final OutputStream requestStream = conn.getOutputStream();
 		serializer.serializeBody(body, requestStream);
 	}

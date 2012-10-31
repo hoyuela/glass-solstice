@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Home</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="sendMoneyStep1-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-position="fixed">
+		<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<div class="floatleft" id="name">
+					<h1>Send Money:</h1>
+				</div>
+				<div class="floatright">
+					<img src="images/pay-pal.png" />
+				</div>
+				<div class="clearboth"></div>
+				<div id="card-info">
+					<!-- PayPal image required here -->
+				</div>
+				<h2>Step 1 of 3</h2>
+				<div>
+					<h3>Enter Information.</h3>
+				</div>
+				<a href="#" class="normaltext bluelink">How does it work?</a>
+				<ul data-role="listview" data-theme="d" data-inset="true"
+					class="white-box-rd-corner">
+					<li><label><b>Send Money to:</b>
+					</label>
+						<div>
+							<input type="text" name="name" id="basic"
+								value="Full Name or Nickname"  />
+								<input type="text" name="name" id="basic1"
+								value="Email or Mobile Phone" />
+							<div class="txtcenteraln">
+								<label><b>Mobile phone must accept text messages</b>.</label><br />
+								<a href="#" class="bluelink">Select from Contact List</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div id="gri1">
+							<div id="grid11">
+								<div id="minpay">
+									<b>Amount:</b>
+								</div>
+								<div id="div12">
+									<div class="floatleft" style="text-align: left">
+										$ <input type="text" name="name" id="basic" value="0.00"
+											class="inputtext"
+											style="width: 40px !important; display: inline-block; margin-right: 10px; margin-left: 10px;" />
+										<span class="note">Limit $500 a Day,$1000 a month</span>
+									</div>
+								</div>
+								<div class="clearboth"></div>
+								<label>You'll earn Cashback Bonus on this <br /> transaction !</label>
+							</div>
+						</div></li>
+					<li>
+						<div id="gri1">
+							<div id="grid11">
+								<div id="minpay">
+									<b>Transaction Type:</b>
+								</div>
+								<div id="div12">
+									<select name="select-choice-0" id="select-choice-1">
+										<option value="standard">Friends or Family</option>
+										<option value="rush">Rush: 3 days</option>
+										<option value="express">Express: next day</option>
+										<option value="overnight">Overnight</option>
+									</select>
+								</div>
+								<label>Free for you and recepient.</label>
+							</div>
+						</div></li>
+					<li>
+						<div id="gri1">
+							<div id="grid11">
+								<div id="minpay">
+									<b>Note (optional):</b>
+								</div>
+								<div id="div12">
+									<textarea name="textarea" id="textarea-a" style="width:100%" ></textarea>
+								</div>
+							</div>
+						</div></li>
+				</ul>
+
+
+				<div class="txtcenteraln">
+					<a href="#" class="bluelink normaltext">Cancel</a>
+					<a href="#" onclick="send_money_2()" data-role="button" class="small_btn_110px">Continue</a>
+				</div>
+
+
+
+				<div class="clearboth"></div>
+			</div>
+			<div id="footnotes" class="footnotes" ></div>
+		</div>
+
+		<!-- content end -->
+
+		<div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
+			<footer id="footer" class="mnu_footer">
+			</footer>
+		</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

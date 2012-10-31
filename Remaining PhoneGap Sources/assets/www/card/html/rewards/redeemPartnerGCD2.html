@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Redeem GiftCard Verify</title>
+        
+	</head>
+
+    <body>
+        <!--page start -->
+        <div data-role="page" id="gift-card-verify-partner" class="cbb-page rd-page">
+            <!--header start -->
+            <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed" data-tap-toggle="false">
+                <header id="header" class="cmn_header">
+				</header>
+                 <div class="clearboth"></div>
+		    <section id="cbbSection">
+			<p class="cbb-panel">Current Cashback Bonus: <span id="redeemPartnerGCD_CBB"></span>&nbsp;</p>
+                    </section>
+            </div>
+            <div id="pgPadding"></div>
+            <div class="progress-indicator">
+		<ul>
+		    <li><a href="#" class="visited">1. Review/Edit</a></li>
+                    <li><a href="#" class="active">2. Verify</a></li>
+                    <li><a href="#">3. Confirmation</a></li>
+		</ul>
+		<div class="clearboth"></div>
+	    </div>
+            <!-- header end -->
+            <!-- Middle content start from here-->
+            <div data-role="content" class="ui-content-internalpages">
+                <div>
+                    <div class="repeater-border">
+                    <div class="details-section-container">
+
+                        <div class="padding-l-r shipping-details-btm-border">
+                        	<span class="details-title">details</span>
+                    		<h1 class="margin-none"><span id="gcSelectdQty"></span>$<span id="giftCardDisbAmt"></span> Gift Card<span class="pluralTxt">s</span> for<br/> <span id="gcmodeDesc"><span></h1>
+                            <div class="shipping-details">
+                        <div class="floatleft">
+                            <div class="shipping-address">
+                            	<span class="shiping-title">Ships to current billing address:</span>
+                                <address id="billingAddr"></address>
+                            </div>
+                        </div>
+                        <div class="clearboth"></div>
+                        </div>
+                        </div>
+
+                        <div class="padding-l-r shipping-details-btm-border cbb-detail">
+                        	<div class="cbb-detail-border padd-top-btm-10">
+                            	<div class="width-80percnt floatleft">
+                                	<p>Current Cashback Bonus Balance:</p>
+                                    <p>Cashback Bonus to be Redeemed:</p>
+                                </div>
+                                <div class="floatright width-20percnt">
+                                	<p id="redeemCurrent_CBB"></p>
+                                    <p id="giftCardModeAmt"></p>
+                                </div>
+                                <div class="clearboth"></div>
+                            </div>
+                            <div class="padd-top-btm-10">
+                            	<div class="width-80percnt floatleft">
+                                	<p>Cashback Bonus Remaining (after transaction):</p>
+                                </div>
+                                <div class="floatright width-20percnt">
+                                	<p class="boldnum" id="remaingCBB"></p>
+                                </div>
+                                <div class="clearboth"></div>
+                            </div>
+
+                        </div>
+                        <div class="padd-all-10 terms-note">
+                        	<p>By clicking Redeem,you hereby agree to the</p>
+                            <a href="#" id="mercntTerms" data-transition="pop" class="link-style-3">Partner Terms &amp; Conditions.</a>
+                        </div>
+                    </div>
+                    </div>
+                     <div id="tnc-confirmation-verify" class="tnc ui-grid-a">
+                        <div class="btm-links"> 
+							<a href="#" id="redeemGCD2Cancel" class="cancel-btn notifcancel">Cancel</a> 
+							<a href="#" id="redeemGCD2" data-role="button" class="common-btn notifsave">Redeem</a> 
+						</div>
+                        
+                    </div>
+                </div>
+                <div id="footnotes" class="footnotes"></div>
+            </div>
+            <!-- Middle content end here-->
+            <div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter" data-tap-toggle="false">
+            
+                <footer id="footer" class="mnu_footer">
+       			 </footer>
+            </div>
+        </div>
+		<!--Mobile App Commented
+         <script type="text/javascript" src="../scripts/redemption-R5.js"></script>
+		<script type="text/javascript" src="../scripts/commonFunctions.js"></script>
+		-->
+        <!--page end -->
+    </body>
+
+</html>

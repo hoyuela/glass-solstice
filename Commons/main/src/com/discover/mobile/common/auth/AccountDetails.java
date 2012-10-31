@@ -2,12 +2,13 @@ package com.discover.mobile.common.auth;
 
 import java.io.Serializable;
 
+import com.discover.mobile.common.Struct;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Struct
 public class AccountDetails implements Serializable {
 
 	private static final long serialVersionUID = 5560948851652492739L;
-	
 	
 	public String availableCredit;
 	public String currentBalance;
@@ -19,11 +20,6 @@ public class AccountDetails implements Serializable {
 	
 	@JsonProperty("primaryCardmember")
 	public PrimaryCardMember primaryCardMember;
-	
-	public static class PrimaryCardMember {
-		public String nameOnCard;
-		public String emailAddress;
-	}
 	
 	public String statementBalance;
 	public String earnRewardAmount;
@@ -41,5 +37,11 @@ public class AccountDetails implements Serializable {
 	public boolean paperlessOutageMode;
 	public boolean rewardOutage;
 	public boolean smcOutageMode;
+
+	@Struct
+	public static class PrimaryCardMember {
+		public String nameOnCard;
+		public String emailAddress;
+	}
 
 }

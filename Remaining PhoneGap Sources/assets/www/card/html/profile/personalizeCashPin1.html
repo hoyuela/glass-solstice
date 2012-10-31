@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Profile Personalize Cash Pin</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="personalizeCashPin1-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-position="fixed" data-id="myHeaderDiscover">
+		<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<h1>Personalize Cash PIN:</h1>
+				<h2>Step 1 of 2</h2>
+				<p>Protect yourself by customizing a secure PIN that you can use
+					to draw cash advances at participating ATMs worldwide.</p>
+				<div id="errormsg" class="errormsg" style="display:block">
+						Sorry. Your new PIN and re-entered PIN must match.<br/>Please re-enter it again.  
+				</div>
+				<ul data-role="listview" data-theme="d" data-inset="true"
+					class="white-box-rd-corner">
+					<li><label class="boldtext">Enter New PIN:</label>
+						<div>
+							<input type="password" name="enterPin" id="enterPin" value=""
+								maxlength="4" class="inputtext" />
+						</div></li>
+					<li><label class="boldtext">RE-enter New PIN:</label>
+						
+						<div>
+							<input type="password" name="confirmPin" id="confirmPin" value=""
+								maxlength="4" class="inputtext" />
+						</div></li>
+				</ul>
+				<div class="txtcenteraln">
+						<a href="#" id="cancelBtn" class="bluelink normaltext">Cancel</a>
+						<a href="#" id="updateBtn" data-role="button">Update</a>
+						<!--<a href="#" id="updateBtn" onclick="personalizeCashPin2();" data-role="button"
+							data-theme="c">Update</a>-->
+				</div>
+				<h3>Tips for a Secure PIN</h3>
+				<ul class="bullate01">
+					<li>It is more secure to enter a combination of varying
+						numbers.Try to avoid repeated numbers of common
+						sequences.Examples:2222,1234</li>
+					<li>Avoid easily identifiable dates and numbers.Example:Date
+						of birth, address</li>
+					<li>Do not write your PIN on your card.</li>
+					<li>Memorize your PIN and do not disclose it to anyone.</li>
+					<li>You may update your PIN as often as you like.</li>
+				</ul>
+			</div>
+
+			<div id="footnotes" class="footnotes" ></div>
+		</div>
+
+		<!-- content end -->
+		<div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
+			<footer id="footer" class="mnu_footer">
+			</footer>
+		</div>
+	</div>
+	<!--page end -->
+		
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Home</title>
+<meta name="viewport"
+	content="width=device-width,height=device-height, initial-scale=1">
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="ssendMoney3-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover"
+			data-position="fixed">
+			<header id="header" class="cmn_header"> </header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<div class="floatleft" id="name">
+					<h1>Send Money:</h1>
+				</div>
+				<div class="floatright pay-pal-logo"></div>
+				<div class="clearboth"></div>
+				<div id="card-info">
+					<!-- PayPal image required here -->
+				</div>
+				<h2>Step 3 of 3</h2>
+				<div>
+					<h3>Confirmation</h3>
+					<p>
+						A notification will be sent by Paypal to <span id="recve_name">&nbsp;</span>
+						at <span id='mail_id_3'> &nbsp;</span> with instructions on how to
+						access the money you sent. It's also good idea to contact the
+						recipient directly so they will know to expect the money. You will
+						receive an email confirming this transaction and when the payment
+						is claimed.
+					</p>
+				</div>
+
+				<ul class="whitebg-list-view">
+					<li>Transaction Date<span class="boldtext" id="transdate"></span>
+					</li>
+					<li>Transaction ID<span class="boldtext" id="trans_id"></span>
+					</li>
+					<li id='recipient_name'>Recepient's Name<span class="boldtext"
+						id="trans_name"></span>
+					</li>
+					<li>Recepient's E-mail <span class="boldtext" id="trans_email"></span>
+					</li>
+
+					<li>Amount <span class="boldtext" id="trans_amount"></span>
+						<div class="clearboth"></div>
+						<div class="floatleft note">
+							<span id="bonustypes" class="italic_text"
+								style="float: left; margin-right: 5px"></span> earned on this
+							transaction!
+						</div>
+					</li>
+
+					<li>Transaction Type<span class="boldtext" id="trans_type"></span>
+					</li>
+					<li id="trans_note"><div>
+							<b>Note</b><label class="marginleft10px" id="confirm_note_3"></label>
+						</div></li>
+				</ul>
+				<div class="txtcenteraln  r3matchbtn" id="sendmoremoney">
+					<a href="#" onclick="dfs.crd.p2p.goToSendMoney1();" data-role="button"
+						>Send More Money</a>
+				</div>
+			</div>
+
+			<div id="footnotes" class="footnotes"></div>
+		</div>
+
+		<!-- content end -->
+
+		<div data-role="footer" id="pg-footer" data-position="fixed"
+			data-id="myfooter">
+			<footer id="footer" class="mnu_footer"> </footer>
+		</div>
+	</div>
+	<!--page end -->
+</body> 
+</html>

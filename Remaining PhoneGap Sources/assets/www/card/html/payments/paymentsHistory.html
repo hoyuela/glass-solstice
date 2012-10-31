@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Payments History</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="paymentsHistory-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+		<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<h1>Payment History</h1>
+
+				 <span id="paymentsHistory_paymentHistory"></span> 
+                <span id = "errorPaymentsHistoryDiv"></span>
+				
+				<div class="txtcenteraln" >
+					<a class="small_btn" data-role="button" onclick="navigation('paymentStep1');" href="#">Make a Payment </a>
+				</div>
+
+              <p class="boldtext small11pxfont" id="paymentsHistory_onlinepaymentmethodmsg"></p>
+				<!--<p class="note">"Online" payment method includes mobile
+					payments.</p>-->
+			</div>
+
+			<div id="footnotes" class="footnotes" ></div>
+		</div>
+
+
+		<!-- content end -->
+
+      <div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
+            <footer id="footer" class="mnu_footer">
+			</footer>
+				</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

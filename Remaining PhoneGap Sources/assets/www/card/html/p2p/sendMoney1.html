@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Home</title>
+<meta name="viewport"
+	content="width=device-width,height=device-height, initial-scale=1">
+</head>
+
+<body>
+	<!--page start  -->
+	<div data-role="page" id="sendMoney1-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover"
+			data-position="fixed">
+			<header id="header" class="cmn_header"> </header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<div class="floatleft" id="name">
+					<h1>Send Money:</h1>
+				</div>
+				<div class="floatright pay-pal-logo"></div>
+				<div class="clearboth"></div>
+				<!-- div id="card-info">					
+				</div -->
+				<h2>Step 1 of 3</h2>
+
+				<p id="errorTitle" style="color: red; font: 10px; display: none">
+					<b>Your request cannot be processed. Please review and update
+						the highlighted area(s) below.</b>
+				</p>
+
+				<div>
+					<h3>Enter information.</h3>
+				</div>
+				<a href="#" class="bluelink"
+					onclick="navigation('../p2p/howItWorks');">How does it work?</a>
+				<ul data-role="listview" data-theme="d" data-inset="true"
+					class="white-box-rd-corner noborder">
+					<li style="overflow: visible"><label><b>Send Money
+								to:</b> </label>
+						<div>
+							<div id='name_msg' style="color: red; font: 10px"></div>
+							<div>
+								<input type="text" name="name" id="fullname"
+									placeholder="Full Name or Nickname"
+									onKeyUp="dfs.crd.p2p.autoFetchNames();"
+									onFocus="dfs.crd.p2p.hideEmailList();" style="width: 97%" />
+								<div class="internalPopup" id="internalPopup">
+									<ul id="list1" class="autoUL"></ul>
+								</div>
+							</div>
+							<div id='emailorphone_msg' style="color: red; font: 10px"></div>
+
+							<div>
+								<input type="text" name="name" id="emailOrphone"
+									onKeyup="dfs.crd.p2p.autoFetchEmails();"
+									placeholder="E-Mail or Mobile Phone"
+									onFocus="dfs.crd.p2p.hideNameList();"
+									onblur="dfs.crd.p2p.enableContinueBtn();" />
+								<div class="clearboth"></div>
+								<div class="internalPopup1" id="internalPopup1">
+									<ul id="list2" class="autoUL">
+									</ul>
+								</div>
+							</div>
+							<label><b>Mobile phone must accept text messages.</b>
+							</label><br />
+							<div class="txtcenteraln">
+								<div class="contactlist margintop10px">
+									<a href="#" class="bluelink" onclick="showAllContacts();">Select
+										From Contact List</a>
+								</div>
+							</div>
+						</div></li>
+					<li style="clear: both">
+						<div id="gri1">
+							<div id="grid11">
+								<div>
+									<b>Amount:</b>
+								</div>
+								<div id="div12">
+									<div id='amount_msg' style='color: red; font: 10px'></div>
+									<div class="floatleft">
+										<b class="fontsize13px">$</b> <input
+											class="amount margintop10px" type="number" name="name"
+											id="Amount" onKeyup="dfs.crd.p2p.enableContinueBtn();"
+											onblur="dfs.crd.p2p.changeAmountTo2Decimal();"
+											onFocus="dfs.crd.p2p.hideNameList();dfs.crd.p2p.hideEmailList();"
+											placeholder="0.00" /> <span>Limit $<span
+											id="daylimit"></span> a day, $<span id="monthLimit"></span> a
+											month</span>
+									</div>
+								</div>
+								<div class="clearboth"></div>
+								<span class="note boldtext">You'll earn <span
+									id="bonusTypes" class="italic_text"></span> on this
+									transaction!</span>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div id="gri1">
+							<div id="grid11">
+								<div>
+									<b>Transaction Type:</b>
+								</div>
+								<div id="div12">
+									<div class="ui-select">
+										<div data-theme="d"
+											class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-up-d">
+											<span class="ui-btn-inner ui-btn-corner-all"
+												aria-hidden="true"><span class="ui-btn-text"
+												id="selectedTransType">Friends or Family</span><span
+												class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span> </span> <span
+												id="sendMoney1_TransTypeSelectField"></span>
+										</div>
+									</div>
+								</div>
+
+								<div></div>
+								<label id="related_content">Fast. Easy.</label>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div id="gri1">
+							<div id="grid11">
+								<div id="minpay">
+									<b>Note </b>(optional):
+								</div>
+								<div id="div12">
+									<textarea name="textarea" maxlength="150" id="noteId" rows="4"
+										style="height: 75px; max-height: 75px;"
+										onFocus="dfs.crd.p2p.hideNameList();dfs.crd.p2p.hideEmailList();"></textarea>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<div class="txtcenteraln r3matchbtn">
+					<a href="#" class="bluelink boldtext"
+						onclick="dfs.crd.p2p.getSendMoney1Data(),navigation('../p2p/cancelTransaction',false);">Cancel</a>
+					<input type="button" disabled="disabled" id="continueBtn"
+						onclick="dfs.crd.p2p.validateData();" data-role="button"
+						value="Continue" />
+				</div>
+				<div class="clearboth"></div>
+			</div>
+			<div id="footnotes" class="footnotes"></div>
+		</div>
+		<!-- content end -->
+		<div data-role="footer" id="pg-footer" data-position="fixed"
+			data-id="myfooter">
+			<footer id="footer" class="mnu_footer"> </footer>
+		</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

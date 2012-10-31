@@ -1,0 +1,244 @@
+/* header css */
+/*
+#pg-header {
+    overflow:auto;
+    padding:3px 0 3px 0;
+    display: inline-block;
+    background:url(../images/header-bg.png) repeat-x left center;
+}            
+#pg-header .back-button {
+    float:left;
+    width:19%;
+    padding:7px 0px 5px 12px;
+}
+
+#pg-header .logout-button {
+    float:right;
+    width:19%;
+    text-align:right;
+    padding:7px 0px 0px 0px;
+}
+*/
+#pg-header.ui-bar-a {
+    top: 0px;
+    z-index: 1001;
+    left: 0px;
+}
+.ui-content-internalpages h1, .ui-content-internalpages h2, .ui-content-internalpages h3, .ui-content-internalpages p {
+    padding: -13px 0 10px 0;
+}
+.ui-content-internalpages h1 {
+    font-size: 18px;
+    white-space:nowrap;
+}
+.ui-content-internalpages p {
+    font-size: 12px;
+    font-weight: normal;
+    margin:3px 0px 10px 0px;
+    color:#000
+}
+#cardLogin-pg #pg-header, #globalErrorPage #pg-header  {
+    background:none;
+    border: 0px
+}
+#login-pg #logo  {
+    display: block;
+    margin: auto;
+}
+#name {
+    font-size:14px;
+    font-weight: bold;
+}
+#exploreDiscover-pg #footer-links, .loginBg #footer-links {
+    display:block !important
+}
+.footer-text-icon span {
+    background:url(../images/lock.png)  no-repeat right center;
+    margin:auto;
+    padding-right:15px;
+    color:#838383
+}
+#sccl {
+    font-weight: bold;
+    color: #f75318;
+    background: url(../images/cc-on.png) 0 center no-repeat;
+    padding-left: 40px;
+    line-height:26px;
+    display:inline-block;
+}
+input.ui-input-text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    line-height:22px;
+}
+
+/*#register-link {
+    float: right;
+    padding-top: 15px;
+    padding-right: 5px;
+    font-size: 12px;
+    text-decoration: none;
+    background: url(../images/handsetRegisterArrow.png) no-repeat 80px 19px;
+    padding-right:15px;
+}*/
+
+#remember {
+    color: #000;
+    font-size:12px;
+    margin-top:15px;
+    display:inline-block;
+}
+#milesRedeem-button .ui-block-a a {
+    float: right;
+    padding-top: 15px;
+    text-decoration: none;
+    font-size: 11px;
+}
+.account-list-view li a.bluelink {
+    color:rgb(0, 112, 168) !important;
+    background:url(../images/blueArrow.png) no-repeat right 10px !important;
+    font-size:14px;
+}
+.whitebg-list-view li a {
+    display: inline-block;
+    font-size: 12px;
+    color: rgb(36, 137, 206) !important;
+}
+.pn-page .whitebg-list-view li span {
+    text-align: right !important;
+    float:none ;
+}
+#login-submit {
+    display:block
+}
+.inputtext {
+    width: 95% !important;
+    padding: 3px !important;
+    background: #fff !important;
+    border:1px  solid #ccc;
+    -webkit-border-radius: 5px;
+}
+.white-box-rd-corner .ui-icon {
+    background: url(../images/downArrow.gif) no-repeat center center;
+}
+
+/*.bluelink {
+    text-decoration: none !important;
+    font-size:12px !important;
+    font-weight:normal !important
+}*/
+
+.hrow {
+    background: url("../images/grayDot.gif") repeat-x left center;
+    height: 6px;
+}
+.signin {
+    background: url("../images/checkBox.png") no-repeat left center;
+    padding-left: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    top: 45%;
+}
+.bullate01 li {
+    list-style-type: none;
+    background: url(../images/bullet01.png) no-repeat left 4px !important;
+    padding:0 0 0 15px;
+    overflow:auto;
+}
+.comp-logo-list-active .yellow-bg, .yellow-bg {
+    background: url("../images/redeemYellowBg.png") no-repeat center 0px;
+}
+.comp-logo-list-deactive .yellow-bg {
+    background: url("../images/redeemYellowBgGray.png") no-repeat center 0px;
+}
+input.ui-input-text, textarea.ui-input-text {
+    font-size:12px !important;
+}
+#card-login input.ui-input-text {
+    line-height:22px;
+    border:1px solid #666
+}
+#pg-header .logo-img {
+    float:left;
+    width:59%;
+    text-align:center;
+    padding:12px 0px 6px 0px !important;
+}
+.account-list-view li a.bluelink {
+    margin:6px
+}
+#pg-header .logo-img {
+    float:left;
+    width:60%;
+    text-align:center;
+    padding:12px 0px 6px 0px;
+}
+.white-form .ui-radio-on .ui-icon {
+    background: url("../images/radioBtn.png") no-repeat  -10px -20px;
+    background:none
+}
+.white-form .ui-radio-off .ui-icon {
+    background: url("../images/radioBtn.png") no-repeat  0px -1px;
+    background:none
+}
+.dd_select_box, select.dd_select_box {
+    border: 1px solid #828282;
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    width:100%;
+    line-height: 18px;
+    background: url(../images/image-downArrow.gif) no-repeat right center;
+    margin: 0px;
+}
+.collapsible {
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    margin-bottom:20px !important;
+}
+.cardhome_ul a .col1 {
+    width:70%;
+    float:left;
+    color:#000;
+    font-weight:normal
+}
+.cardhome_ul a .col2 {
+    width:25%;
+    float:right;
+    text-align: right;
+    background:url(../images/navArrow.png)  no-repeat right 2px;
+    padding-right:12px !important;
+    font-size:13px;
+    font-weight: bold;
+    color:#025d96 !important;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+.MobileSolutions {
+    display: block;
+    width:200px;
+    margin:auto;
+    padding-left:20px;
+    line-height: 25px;
+    text-decoration: none;
+    text-align: center;
+    color: #F4781A !important;
+    font-size: 10px !important;
+    background:url('../images/iconMobilePhone.png') no-repeat left top;
+    -webkit-background-size: 16px 25px;
+    background-size: 16px 25px;
+    vertical-align: middle;
+}
+#card-login .ui-btn-active{
+    background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713) !important;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053),to(#ef6713), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) ) !important;
+}
+.MobileSolutions_arrow {
+    background:url(../images/iconOrangeArrow.png)  no-repeat right 2px;
+    padding-right:15px;
+    -webkit-background-size: 8px 8px;
+    background-size: 8px 8px;
+}	
+a.date-picker span.ui-btn-inner {
+    background:url(../images/button-calendar.png) no-repeat right 4px;
+    margin-right:10px;height:20px;
+}
