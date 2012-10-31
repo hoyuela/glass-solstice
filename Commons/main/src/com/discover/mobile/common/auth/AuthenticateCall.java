@@ -15,11 +15,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
 public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<AccountDetails> {
-	
-	private final TypedReferenceHandler<AccountDetails> handler;
+
 	private static final String TAG = AuthenticateCall.class.getSimpleName();
 	
 	private static final String ID_PREFIX = "%&(()!12[";
+	
+	private final TypedReferenceHandler<AccountDetails> handler;
 
 	public AuthenticateCall(final Context context, final AsyncCallback<AccountDetails> callback,
 			final AuthCallParams params) {

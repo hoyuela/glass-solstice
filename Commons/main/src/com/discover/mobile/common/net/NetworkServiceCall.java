@@ -225,7 +225,6 @@ public abstract class NetworkServiceCall<R> {
 		if(serializer == null)
 			throw new UnsupportedOperationException("Unable to serialize body: " + body);
 		
-		conn.setDoOutput(true);
 		final OutputStream requestStream = conn.getOutputStream();
 		serializer.serializeBody(body, requestStream);
 	}
