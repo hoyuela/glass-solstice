@@ -4,8 +4,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Map;
 
+import com.discover.mobile.common.Struct;
 import com.discover.mobile.common.net.response.ErrorResponseParser;
 
+@Struct
 public abstract class ServiceCallParams {
 
 	public final String httpMethod;
@@ -27,6 +29,7 @@ public abstract class ServiceCallParams {
 	 */
 	public boolean requiresSessionForRequest = true;
 	
+	@Struct
 	public static class GetCallParams extends ServiceCallParams {
 		
 		public GetCallParams(final String path) {
@@ -34,7 +37,8 @@ public abstract class ServiceCallParams {
 		}
 		
 	}
-	
+
+	@Struct
 	public static class PostCallParams extends ServiceCallParams {
 		
 		/**

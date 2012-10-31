@@ -2,7 +2,10 @@ package com.discover.mobile.common.auth.registration;
 
 import java.io.Serializable;
 
-public class RegistrationOneDetails implements Serializable{
+import com.discover.mobile.common.Struct;
+
+@Struct
+public class RegistrationOneDetails implements Serializable {
 
 	private static final long serialVersionUID = 8196921305619911757L;
 

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.common.Struct;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams;
@@ -46,6 +47,7 @@ public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 		}};
 	}
 	
+	@Struct
 	public static class PreAuthResult {
 		public int statusCode;
 		public String upgradeDescription = null;

@@ -3,6 +3,7 @@ package com.discover.mobile.common.auth;
 import android.content.Context;
 import android.util.Base64;
 
+import com.discover.mobile.common.Struct;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
@@ -39,6 +40,7 @@ public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<Acco
 		return handler;
 	}
 	
+	@Struct
 	public static class AuthCallParams {
 		public String authUsername;
 		public String authPassword;
