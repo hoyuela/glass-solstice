@@ -31,7 +31,6 @@ import com.google.inject.Inject;
 public class LoginActivity extends RoboActivity {
 	
 	private static final String TAG = LoginActivity.class.getSimpleName();
-	private static final String ID_PREFIX = "%&(()!12[";
 
 	@InjectView(R.id.username)
 	private EditText uidField;
@@ -139,15 +138,9 @@ public class LoginActivity extends RoboActivity {
 				new AuthCallParams() {{
 					authUsername = username;
 					authPassword = password;
-					
-					if (telephonyManager.getSimSerialNumber() != null)
-						did = ID_PREFIX + telephonyManager.getDeviceId();
-					
-					if (telephonyManager.getSimSerialNumber() != null)
-						sid = ID_PREFIX + telephonyManager.getSimSerialNumber();
-					
-					if (telephonyManager.getSimSerialNumber() != null)
-						oid = ID_PREFIX + telephonyManager.getDeviceId();
+					did = telephonyManager.getDeviceId();
+					sid = telephonyManager.getSimSerialNumber();
+					oid = telephonyManager.getDeviceId();
 				}});
 		
 		authenticateCall.submit();
