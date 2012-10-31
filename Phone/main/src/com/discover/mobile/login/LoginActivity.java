@@ -146,7 +146,8 @@ public class LoginActivity extends RoboActivity {
 					if (telephonyManager.getSimSerialNumber() != null)
 						sid = ID_PREFIX + telephonyManager.getSimSerialNumber();
 					
-					oid = "";
+					if (telephonyManager.getSimSerialNumber() != null)
+						oid = ID_PREFIX + telephonyManager.getDeviceId();
 				}});
 		
 		authenticateCall.submit();
