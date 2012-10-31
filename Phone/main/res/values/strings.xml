@@ -64,6 +64,7 @@
 	<color name="green">#008100</color>
 	<color name="yellow">#FFCC00</color>
 	<color name="gray">#CCCCCC</color>
+	<color name="lightRed">#1fff0000</color>
 	
 	<string name="register_text">Register</string>
 	<string name="account_info_label_one">Credit Card Account Number:</string>
@@ -86,4 +87,5 @@
 	<string name="strength_bar_strong">Strong</string>
 	<string name="empty"></string>
 	<string name="home_text">Home</string>
+	<string name="invalid_value">Invalid value</string>
 </resources>

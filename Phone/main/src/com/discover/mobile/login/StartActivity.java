@@ -36,7 +36,7 @@ public class StartActivity extends RoboActivity {
 		
 		// TODO consider running this after a brief delay so that involved
 		// classloading/initialization doesn't delay startup
-		startPreAuthCheck();
+		//startPreAuthCheck();
 		
 		setupButtons();
 	}

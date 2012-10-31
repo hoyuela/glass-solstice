@@ -140,15 +140,16 @@
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight=".3"
                 android:clickable="true"
+                android:gravity="center_vertical"
+                android:onClick="registerNewUser"
                 android:text="@string/register_now"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/blue"
-				android:onClick="registerNewUser"
-				android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="@dimen/light_text_size"/>
+                android:textSize="@dimen/light_text_size" />
 
             <ImageView
                 android:id="@+id/imageView2"

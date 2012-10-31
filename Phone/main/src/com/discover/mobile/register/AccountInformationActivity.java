@@ -13,8 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.RegistrationCallOne;
 import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
@@ -31,8 +33,8 @@ public class AccountInformationActivity extends Activity {
 		setupButtons();
 	}
 	
-	private void submitCurrentAccountInfo(){
-		final Intent enhancedAccountSecurityIntent = new Intent(this, EnhancedAccountSecurity.class);
+	private void startNextActivity(){
+		final Intent enhancedAccountSecurityIntent = new Intent(this, AccountInformationTwoActivity.class);
 		this.startActivity(enhancedAccountSecurityIntent);
 		
 	}
@@ -44,8 +46,7 @@ public class AccountInformationActivity extends Activity {
 			@Override
 			public void onClick(final View v) {
 				// TODO Auto-generated method stub
-				//submitFormInfo();
-				submitCurrentAccountInfo();
+				submitFormInfo();
 			}
 		});
 		
@@ -83,6 +84,7 @@ public class AccountInformationActivity extends Activity {
 			public void success(final RegistrationOneDetails value) {
 				Log.d(TAG, "Success");
 				progress.dismiss();
+				startNextActivity();
 
 			}
 
@@ -115,6 +117,7 @@ public class AccountInformationActivity extends Activity {
 //		(final Context context, final AsyncCallback<RegistrationDetails> callback,
 //		final String acctNbr, final String expirationMonth, final String expirationYear, final String dateOfBirthMonth, final String  dateOfBirthDay,
 //		final String socialSecurityNumber, final String dateOfBirthYear)
+		InputValidator validator = new InputValidator();
 		final EditText accountNum = (EditText)findViewById(R.id.account_info_card_account_number_field);
 		final Spinner cardMonthExp = (Spinner)findViewById(R.id.account_info_month_spinner);
 		final Spinner cardYearExp = (Spinner)findViewById(R.id.account_info_year_spinner);
@@ -132,8 +135,45 @@ public class AccountInformationActivity extends Activity {
 		final String memberSsnNumString =  memberSsnNum.getText().toString();
 		RegistrationOneDetails formData = new RegistrationOneDetails();
 		
-		final RegistrationCallOne registrationCall = new RegistrationCallOne(this, callback, formData);
-		registrationCall.submit();
+		validator.isCardAccountNumberValid(accountNumString);
+		validator.isCardExpMonthValid(cardMonthExpString);
+		validator.isCardExpYearValid(cardYearExpString);
+		validator.isDobYearValid(memberDobYearString);
+		validator.isDobMonthValid(memberDobMonthString);
+		validator.isDobDayValid(memberDobDayString);
+		validator.isSsnValid(memberSsnNumString);
+		
+		if(validator.wasAccountInfoComplete()){
+			final RegistrationCallOne registrationCall = new RegistrationCallOne(this, callback, formData);
+			registrationCall.submit();
+		}
+		else{
+			progress.dismiss();
+			TextView cardErrorLabel = (TextView)findViewById(R.id.account_info_card_account_number_error_label);
+			TextView ssnErrorLabel = (TextView)findViewById(R.id.account_info_ssn_error_label);
+			TextView dobYearErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
+			
+			String errorString = getResources().getString(R.string.invalid_value);
+			String emptyString = getResources().getString(R.string.empty);
+			
+			if(!validator.wasAccountNumberValid){
+				cardErrorLabel.setText(errorString);
+			}
+			else
+				cardErrorLabel.setText(emptyString);
+			
+			if(!validator.wasSsnValid){
+				ssnErrorLabel.setText(errorString);
+			}
+			else
+				ssnErrorLabel.setText(emptyString);
+			
+			if(!validator.wasDobYearValid){
+				dobYearErrorLabel.setText(errorString);
+			}
+			else
+				dobYearErrorLabel.setText(emptyString);
+		}
 	}
 
 }

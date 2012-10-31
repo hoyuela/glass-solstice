@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.RegistrationTwoDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
@@ -34,9 +35,34 @@ public class AccountInformationTwoActivity extends Activity{
 		
 	}
 	
-	private void navigateToConfirmationScree(){
-		Intent confirmationScreen = new Intent(this, AccountInformationConfirmation.class);
+	private void navigateToConfirmationScreen(){
+		Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
 		this.startActivity(confirmationScreen);
+	}
+	
+	
+	private void checkInputsThenNavOnSuccess(){
+		InputValidator validator = new InputValidator();
+		
+		validator.doPassesMatch(
+				((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString(), 
+				((EditText)findViewById(R.id.account_info_two_pass_confirm_field)).getText().toString());
+		
+		validator.doIdsMatch(
+				((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString(),
+				((EditText)findViewById(R.id.account_info_two_id_confirm_field)).getText().toString());
+		
+		validator.isEmailValid(
+				((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString());
+		
+		validator.doPassAndIdMatch(
+				((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString(),
+				((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString()); 
+
+		if(validator.wasAccountTwoInfoComplete()){
+			navigateToConfirmationScreen();
+		}
+		
 	}
 	
 	private void setupButtonListeners(){
@@ -46,8 +72,7 @@ public class AccountInformationTwoActivity extends Activity{
 			public void onClick(View v){
 //			submitFormInfo();
 				//On success
-				navigateToConfirmationScree();
-				
+				checkInputsThenNavOnSuccess();
 			}
 		});
 	}
@@ -296,7 +321,7 @@ public class AccountInformationTwoActivity extends Activity{
 //		final String acctNbr, final String expirationMonth, final String expirationYear, final String dateOfBirthMonth, final String  dateOfBirthDay,
 //		final String socialSecurityNumber, final String dateOfBirthYear)
 		final EditText userIdField = (EditText)findViewById(R.id.account_info_two_id_field);
-		final EditText userIdConfirmField = (EditText)findViewById(R.id.account_info_two_confirm_id_field);
+		final EditText userIdConfirmField = (EditText)findViewById(R.id.account_info_two_id_confirm_field);
 		final EditText passField = (EditText)findViewById(R.id.account_info_two_pass_field);
 		final EditText passConfirmField = (EditText)findViewById(R.id.account_info_two_pass_confirm_field);
 		final EditText emailField = (EditText)findViewById(R.id.account_info_two_id_field);

@@ -8,7 +8,7 @@ import android.view.View;
 import com.discover.mobile.R;
 import com.discover.mobile.login.LoggedInLandingPage;
 
-public class AccountInformationConfirmation extends Activity{
+public class AccountInformationConfirmationActivity extends Activity{
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
