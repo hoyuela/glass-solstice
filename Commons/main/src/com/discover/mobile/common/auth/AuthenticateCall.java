@@ -15,13 +15,16 @@ public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<Acco
 	private final TypedReferenceHandler<AccountDetails> handler;
 
 	public AuthenticateCall(final Context context, final AsyncCallback<AccountDetails> callback,
-			final String username, final String password) {
+			final AuthCallParams params) {
 		
 		super(context, new GetCallParams("/cardsvcs/acs/acct/v1/account") {{
-			final String concatenatedCreds = username + ": :" + password;
+			final String concatenatedCreds = params.authUsername + ": :" + params.authPassword;
 			final String dcrdBasicCreds = Base64.encodeToString(concatenatedCreds.getBytes(), Base64.DEFAULT);
 			headers = ImmutableMap.<String,String>builder()
-					.put("Authorization", "DCRDBasic " + dcrdBasicCreds).build();
+					.put("Authorization", "DCRDBasic " + dcrdBasicCreds)
+					.put("X-DID", params.did)
+					.put("X-SID", params.sid)
+					.put("X-OID", params.oid).build();
 		}}, AccountDetails.class);
 		
 		// TODO decide if this is the best type of handler
@@ -33,4 +36,11 @@ public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<Acco
 		return handler;
 	}
 	
+	public static class AuthCallParams {
+		public String authUsername;
+		public String authPassword;
+		public String did = "";
+		public String sid = "";
+		public String oid = "";
+	}
 }
