@@ -16,7 +16,9 @@ import com.discover.mobile.common.net.response.AsyncCallback;
 
 public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 	
-	private static final ServiceCallParams STANDARD_PARAMS = new GetCallParams("/cardsvcs/acs/session/preauthcheck");
+	private static final ServiceCallParams STANDARD_PARAMS = new GetCallParams("/cardsvcs/acs/session/preauthcheck") {{
+		requiresSessionForRequest = false;
+	}};
 	
 	private final TypedReferenceHandler<PreAuthResult> handler;
 	

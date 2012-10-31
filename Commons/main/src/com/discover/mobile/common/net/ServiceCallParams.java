@@ -11,12 +11,21 @@ public abstract class ServiceCallParams {
 	public final String httpMethod;
 	public final String path;
 	
-	// Optional/Defaulted
 	public ErrorResponseParser<?> errorResponseParser = null;
 	public Map<String,String> headers = null;
+	
 	// TODO consider other timeout defaults
 	public int connectTimeoutSeconds = 15;
 	public int readTimeoutSeconds = 15;
+	
+	/**
+	 * Should never be {@code true} at the same time as {@link #requiresSessionForRequest}.
+	 */
+	public boolean clearsSessionBeforeRequest = false;
+	/**
+	 * Should never be {@code true} at the same time as {@link #clearsSessionBeforeRequest}.
+	 */
+	public boolean requiresSessionForRequest = true;
 	
 	public static class GetCallParams extends ServiceCallParams {
 		

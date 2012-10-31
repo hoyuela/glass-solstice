@@ -117,6 +117,9 @@ public abstract class NetworkServiceCall<R> {
 				"invalid params.connectTimeoutSeconds: " + params.connectTimeoutSeconds);
 		checkArgument(params.readTimeoutSeconds > 0, "invalid params.readTimeoutSeconds: " + params.readTimeoutSeconds);
 		
+		checkArgument(!(params.clearsSessionBeforeRequest && params.requiresSessionForRequest),
+				"params.clearsSessionBeforeRequest and params.requiresSessionForRequest cannot both be true");
+		
 		assertCurrentThreadHasLooper();
 	}
 	
@@ -136,6 +139,8 @@ public abstract class NetworkServiceCall<R> {
 	
 	// Executes in the background thread, performs the HTTP connection and delegates parsing to subclass
 	private void executeRequest() throws IOException {
+		prepareGlobalSessionForConnection();
+		
 		conn = createConnection();
 		try {
 			prepareConnection();
@@ -152,6 +157,11 @@ public abstract class NetworkServiceCall<R> {
 		} finally {
 			conn = null;
 		}
+	}
+	
+	private void prepareGlobalSessionForConnection() {
+		if(params.clearsSessionBeforeRequest)
+			ServiceCallSessionManager.clearSession();
 	}
 	
 	private HttpURLConnection createConnection() throws IOException {
@@ -178,8 +188,12 @@ public abstract class NetworkServiceCall<R> {
 		conn.setRequestProperty("X-Application-Version", "4.00");
 	}
 	
-	private void setupSessionHeaders() {
-		ServiceCallSessionManager.prepareWithSecurityToken(conn);
+	private void setupSessionHeaders() throws IOException {
+		final boolean foundToken = ServiceCallSessionManager.prepareWithSecurityToken(conn);
+		
+		if(!foundToken && params.requiresSessionForRequest)
+			throw new IOException("No session available when one was required for NetworkServiceCall to url: " +
+					conn.getURL());
 	}
 	
 	private void setupCustomHeaders() {

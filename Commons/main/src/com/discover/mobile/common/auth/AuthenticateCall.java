@@ -25,6 +25,9 @@ public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<Acco
 					.put("X-DID", params.did)
 					.put("X-SID", params.sid)
 					.put("X-OID", params.oid).build();
+			
+			clearsSessionBeforeRequest = true;
+			requiresSessionForRequest = false;
 		}}, AccountDetails.class);
 		
 		// TODO decide if this is the best type of handler
