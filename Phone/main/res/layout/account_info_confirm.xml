@@ -158,7 +158,8 @@
                 android:layout_below="@+id/account_info_confirm_note_label"
                 android:layout_centerHorizontal="true"
                 android:text="@string/home_text" 
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="8dp"
+                android:onClick="navigateToHome"/>
             
           <TextView
                 android:id="@+id/feedback_label"

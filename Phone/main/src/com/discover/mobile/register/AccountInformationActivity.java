@@ -31,7 +31,7 @@ public class AccountInformationActivity extends Activity {
 		setupButtons();
 	}
 	
-	public void submitCurrentAccountInfo(final View v){
+	private void submitCurrentAccountInfo(){
 		final Intent enhancedAccountSecurityIntent = new Intent(this, EnhancedAccountSecurity.class);
 		this.startActivity(enhancedAccountSecurityIntent);
 		
@@ -44,7 +44,8 @@ public class AccountInformationActivity extends Activity {
 			@Override
 			public void onClick(final View v) {
 				// TODO Auto-generated method stub
-				submitFormInfo();
+				//submitFormInfo();
+				submitCurrentAccountInfo();
 			}
 		});
 		
