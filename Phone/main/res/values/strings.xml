@@ -84,6 +84,6 @@
 	<string name="strength_bar_not_valid">Not Valid.</string>
 	<string name="strength_bar_moderate">Moderate</string>
 	<string name="strength_bar_strong">Strong</string>
-	<string name="EMPTY"></string>
+	<string name="empty"></string>
 	<string name="home_text">Home</string>
 </resources>

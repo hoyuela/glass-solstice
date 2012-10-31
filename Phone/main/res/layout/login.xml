@@ -148,7 +148,7 @@
                 android:textColor="@color/blue"
 				android:onClick="registerNewUser"
 				android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="@dimen/LIGHT_TEXT_SIZE"/>
+                android:textSize="@dimen/light_text_size"/>
 
             <ImageView
                 android:id="@+id/imageView2"

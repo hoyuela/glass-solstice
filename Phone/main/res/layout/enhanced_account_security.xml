@@ -3,10 +3,10 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/gradient_bg"
-    android:paddingBottom="@dimen/CONTENT_PADDING"
-    android:paddingLeft="@dimen/CONTENT_PADDING"
-    android:paddingRight="@dimen/CONTENT_PADDING"
-    android:paddingTop="@dimen/CONTENT_PADDING" 
+    android:paddingBottom="@dimen/content_padding"
+    android:paddingLeft="@dimen/content_padding"
+    android:paddingRight="@dimen/content_padding"
+    android:paddingTop="@dimen/content_padding" 
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
@@ -32,7 +32,7 @@
             android:text="@string/account_security_info_text"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/black"
-            android:textSize="@dimen/LIGHT_TEXT_SIZE" />
+            android:textSize="@dimen/light_text_size" />
 
         <TextView
             android:id="@+id/account_security_question_placeholder_label"
@@ -178,7 +178,7 @@
             android:layout_below="@+id/feedback_label"
             android:layout_centerHorizontal="true"
             android:text="@string/discover_copyright_text"
-            android:textSize="@dimen/LIGHT_TEXT_SIZE" />
+            android:textSize="@dimen/light_text_size" />
     </RelativeLayout>
 
     </ScrollView>

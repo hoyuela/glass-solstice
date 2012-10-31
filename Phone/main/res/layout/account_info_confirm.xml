@@ -4,10 +4,10 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/gradient_bg"             
-        android:paddingBottom="@dimen/CONTENT_PADDING"
-        android:paddingLeft="@dimen/CONTENT_PADDING"
-        android:paddingRight="@dimen/CONTENT_PADDING"
-        android:paddingTop="@dimen/CONTENT_PADDING">
+        android:paddingBottom="@dimen/content_padding"
+        android:paddingLeft="@dimen/content_padding"
+        android:paddingRight="@dimen/content_padding"
+        android:paddingTop="@dimen/content_padding">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                 android:text="@string/account_info_confirm_security_precaution_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
-                android:textSize="@dimen/LIGHT_TEXT_SIZE" />
+                android:textSize="@dimen/light_text_size" />
 
             <TextView
                 android:id="@+id/account_info_confirm_summary_label"
@@ -65,7 +65,7 @@
                 android:text="@string/account_info_confirm_id_title_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
-                android:textSize="@dimen/LIGHT_TEXT_SIZE" />
+                android:textSize="@dimen/light_text_size" />
             <TextView
                 android:id="@+id/account_info_confirm_email_title_label"
                 android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
                 android:text="@string/account_info_confirm_email_title_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
-                android:textSize="@dimen/LIGHT_TEXT_SIZE" />
+                android:textSize="@dimen/light_text_size" />
             <TextView
                 android:id="@+id/account_info_confirm_account_title_label"
                 android:layout_width="wrap_content"
@@ -85,7 +85,7 @@
                 android:text="@string/account_info_confirm_account_title_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
-                android:textSize="@dimen/LIGHT_TEXT_SIZE" />
+                android:textSize="@dimen/light_text_size" />
             
             <TextView
                 android:id="@+id/account_info_confirm_id_label"
@@ -97,7 +97,7 @@
                 android:text="@string/account_info_confirm_id_placeholder_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
-                android:textSize="@dimen/LIGHT_TEXT_SIZE" 
+                android:textSize="@dimen/light_text_size" 
                 android:textStyle="bold"/>
             
             <TextView
@@ -110,7 +110,7 @@
                 android:text="@string/email_placeholder"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
-                android:textSize="@dimen/LIGHT_TEXT_SIZE"
+                android:textSize="@dimen/light_text_size"
                 android:textStyle="bold"  />
             
             <TextView
@@ -124,7 +124,7 @@
                 android:text="@string/account_info_confirm_account_stars_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
-                android:textSize="@dimen/LIGHT_TEXT_SIZE"
+                android:textSize="@dimen/light_text_size"
                 android:textStyle="bold" />
 
             <TextView
@@ -137,7 +137,7 @@
                 android:text="@string/account_info_confirm_account_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
-                android:textSize="@dimen/LIGHT_TEXT_SIZE"
+                android:textSize="@dimen/light_text_size"
                 android:textStyle="bold" />
             
 			<TextView
@@ -149,7 +149,7 @@
                 android:text="@string/account_info_confirm_note_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
-                android:textSize="@dimen/LIGHT_TEXT_SIZE" />
+                android:textSize="@dimen/light_text_size" />
 			
             <Button
                 android:id="@+id/account_info_confirm_home_button"
@@ -177,7 +177,7 @@
                 android:layout_below="@+id/feedback_label"
                 android:layout_centerHorizontal="true"
                 android:text="@string/discover_copyright_text"
-                android:textSize="@dimen/LIGHT_TEXT_SIZE" />
+                android:textSize="@dimen/light_text_size" />
         
         </RelativeLayout>
 
