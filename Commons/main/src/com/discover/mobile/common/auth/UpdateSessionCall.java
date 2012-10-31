@@ -42,7 +42,6 @@ public class UpdateSessionCall extends NetworkServiceCall<UpdateSessionResult> {
 		}};
 	}
 	
-	// TODO
 	@Struct
 	public static class UpdateSessionResult {
 		// TEMP
