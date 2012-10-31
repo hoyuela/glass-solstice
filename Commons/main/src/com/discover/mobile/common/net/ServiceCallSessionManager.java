@@ -17,12 +17,19 @@ public final class ServiceCallSessionManager {
 		return manager;
 	}
 	
-	public static void prepareWithSecurityToken(final HttpURLConnection conn) {
+	public static void clearSession() {
+		// TODO determine if this is really thread-safe (and safe if
+		// we have another long-running, concurrent network call)
+		cookieManager.getCookieStore().removeAll();
+	}
+	
+	public static boolean prepareWithSecurityToken(final HttpURLConnection conn) {
 		final String token = getSecurityToken();
 		if(isNullOrEmpty(token))
-			return;
+			return false;
 		
 		setTokenHeader(conn, token);
+		return true;
 	}
 	
 	private static String getSecurityToken() {
@@ -37,10 +44,6 @@ public final class ServiceCallSessionManager {
 	
 	private static void setTokenHeader(final HttpURLConnection conn, final String token) {
 		conn.addRequestProperty("X-Sec-Token", token);
-	}
-	
-	public static void destroySession() {
-		// TODO
 	}
 	
 	private ServiceCallSessionManager() {

@@ -2,7 +2,6 @@ package com.discover.mobile.common.auth.registration;
 
 import android.content.Context;
 
-import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
@@ -11,8 +10,7 @@ import com.discover.mobile.common.net.response.AsyncCallback;
 
 public class RegistrationCallOne extends JsonResponseMappingNetworkServiceCall<RegistrationOneDetails> {
 	
-	@SuppressWarnings("unused")
-	private static String TAG = AuthenticateCall.class.getSimpleName();
+	private static final String TAG = RegistrationCallOne.class.getSimpleName();
 	
 	private final TypedReferenceHandler<RegistrationOneDetails> handler;
 

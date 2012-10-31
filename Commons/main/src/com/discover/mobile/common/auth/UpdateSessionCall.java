@@ -6,6 +6,7 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.common.Struct;
 import com.discover.mobile.common.auth.UpdateSessionCall.UpdateSessionResult;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
@@ -15,7 +16,7 @@ import com.discover.mobile.common.net.response.AsyncCallback;
 
 public class UpdateSessionCall extends NetworkServiceCall<UpdateSessionResult> {
 	
-	private static String TAG = AuthenticateCall.class.getSimpleName();
+	private static final String TAG = UpdateSessionCall.class.getSimpleName();
 	
 	private final TypedReferenceHandler<UpdateSessionResult> handler;
 	
@@ -42,6 +43,7 @@ public class UpdateSessionCall extends NetworkServiceCall<UpdateSessionResult> {
 	}
 	
 	// TODO
+	@Struct
 	public static class UpdateSessionResult {
 		// TEMP
 		public int statusCode;
