@@ -18,6 +18,9 @@ public class RegistrationCallOne extends JsonResponseMappingNetworkServiceCall<R
 			final RegistrationOneDetails formData) {
 		
 		super(context, new PostCallParams("/reg/v1/user/reg/auth") {{
+			clearsSessionBeforeRequest = true;
+			requiresSessionForRequest = false;
+			
 			body = formData;
 		}}, RegistrationOneDetails.class);
 		
