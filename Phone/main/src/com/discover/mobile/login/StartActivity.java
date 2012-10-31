@@ -1,6 +1,8 @@
 package com.discover.mobile.login;
 
-import android.app.Activity;
+import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
+import roboguice.inject.InjectView;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -17,21 +19,36 @@ import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 
-public class StartActivity extends Activity {
+@ContentView(R.layout.landing)
+public class StartActivity extends RoboActivity {
 	
-	private final int OPTIONAL_UPGRADE = 1;
-	private final int FORCED_UPGRADE = 2;
+	private static final String TAG = StartActivity.class.getSimpleName();
 	
-	private static final String TAG = LoginActivity.class.getSimpleName();
+	private static final int OPTIONAL_UPGRADE = 1;
+	private static final int FORCED_UPGRADE = 2;
+	
+	@InjectView(R.id.card_login_button)
+	private Button creditCardLoginButton;
 
 	@Override
-	public void onCreate(final Bundle savedInstanceState){
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		// TODO consider running this after a brief delay so that involved
+		// classloading/initialization doesn't delay startup
 		startPreAuthCheck();
 		
-		setupViews();
 		setupButtons();
+	}
+	
+	private void setupButtons() {
+		//Setup the button that takes us to the login screen.
+		creditCardLoginButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				navigateToLogin();
+			}
+		});
 	}
 	
 	private void startPreAuthCheck() {
@@ -131,25 +148,9 @@ public class StartActivity extends Activity {
 		// TODO send to upgrade URI
 	}
 	
-	private void setupViews() {
-		setContentView(R.layout.landing);
-	}
-	
-	private void setupButtons(){
-		//Setup the button that takes us to the login screen.
-		final Button creditCardLoginButton = (Button)findViewById(R.id.card_login_button);
-		
-		creditCardLoginButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				// TODO Auto-generated method stub
-				navigateToLogin();
-			}
-		});
-	}
-	
-	private void navigateToLogin(){
+	private void navigateToLogin() {
 		final Intent loginActivity = new Intent(this, LoginActivity.class);
 		this.startActivity(loginActivity);
 	}
+	
 }
