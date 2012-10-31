@@ -17,7 +17,7 @@ import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 
-public class LandingActivity extends Activity{
+public class StartActivity extends Activity {
 	
 	private final int OPTIONAL_UPGRADE = 1;
 	private final int FORCED_UPGRADE = 2;

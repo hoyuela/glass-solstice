@@ -25,14 +25,13 @@ public class AccountInformationActivity extends Activity {
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
-			super.onCreate(savedInstanceState);
-			setContentView(R.layout.account_info);
-			setupSpinnerAdapters();
-			setupButtons();
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.account_info);
+		setupSpinnerAdapters();
+		setupButtons();
 	}
 	
 	public void submitCurrentAccountInfo(final View v){
-		
 		final Intent enhancedAccountSecurityIntent = new Intent(this, EnhancedAccountSecurity.class);
 		this.startActivity(enhancedAccountSecurityIntent);
 		
@@ -85,12 +84,6 @@ public class AccountInformationActivity extends Activity {
 				progress.dismiss();
 
 			}
-
-			// TODO use or remove (commented because AsyncCallbackAdapter now has default handlers for this)
-//			@Override
-//			public void failure(final Throwable error) {
-//				Log.e(TAG, "Error: " + error);
-//			}
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
