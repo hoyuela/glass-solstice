@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugins>
+
+    <plugin
+        name="App"
+        value="org.apache.cordova.App" />
+    <plugin
+        name="Geolocation"
+        value="org.apache.cordova.GeoBroker" />
+    <plugin
+        name="Device"
+        value="org.apache.cordova.Device" />
+    <plugin
+        name="Accelerometer"
+        value="org.apache.cordova.AccelListener" />
+    <plugin
+        name="Compass"
+        value="org.apache.cordova.CompassListener" />
+    <plugin
+        name="Media"
+        value="org.apache.cordova.AudioHandler" />
+    <plugin
+        name="Camera"
+        value="org.apache.cordova.CameraLauncher" />
+    <plugin
+        name="Contacts"
+        value="org.apache.cordova.ContactManager" />
+    <plugin
+        name="Crypto"
+        value="org.apache.cordova.CryptoHandler" />
+    <plugin
+        name="File"
+        value="org.apache.cordova.FileUtils" />
+    <plugin
+        name="NetworkStatus"
+        value="org.apache.cordova.NetworkManager" />
+    <plugin
+        name="Notification"
+        value="org.apache.cordova.Notification" />
+    <plugin
+        name="Storage"
+        value="org.apache.cordova.Storage" />
+    <plugin
+        name="Temperature"
+        value="org.apache.cordova.TempListener" />
+    <plugin
+        name="FileTransfer"
+        value="org.apache.cordova.FileTransfer" />
+    <plugin
+        name="Capture"
+        value="org.apache.cordova.Capture" />
+    <plugin
+        name="SplashScreen"
+        value="org.apache.cordova.SplashScreen" />
+    <plugin
+        name="ContactsViewPlugin"
+        value="com.discoverfinancial.mobile.plugins.ContactsViewPlugin" />
+    <plugin
+        name="LoadingViewPlugin"
+        value="com.discoverfinancial.mobile.plugins.LoadingViewPlugin" />
+    <plugin
+        name="ChildBrowser"
+        value="com.discoverfinancial.mobile.plugins.ChildBrowser" />
+    <plugin
+        name="CookieManagerPlugin"
+        value="com.discoverfinancial.mobile.plugins.CookieManagerPlugin" />
+    <plugin
+        name="ClearHistoryPlugin"
+        value="com.discoverfinancial.mobile.plugins.ClearHistoryPlugin" />
+    <plugin
+        name="KeyValuePlugin"
+        value="com.discoverfinancial.mobile.plugins.KeyValuePlugin" />
+    <plugin
+        name="ScreenshotPlugin"
+        value="com.discoverfinancial.mobile.plugins.ScreenshotPlugin" />
+    <plugin
+        name="ClipboardPlugin"
+        value="com.discoverfinancial.mobile.plugins.ClipboardPlugin" />
+    <plugin
+        name="NetworkConnectivityPlugin"
+        value="com.discoverfinancial.mobile.plugins.NetworkConnectivityPlugin" />
+    
+    <plugin
+        name="CustomCamera"
+        value="com.discover.rdc.camera.plugin.MyCustomCameraPlugin" />
+    <plugin
+        name="XtifyCordovaPlugin"
+        value="com.xtify.cordova.XtifyCordovaPlugin" />
+    <plugin
+        name="VideoPlayer"
+        value="com.discoverfinancial.mobile.plugins.VideoPlayer" />
+</plugins>

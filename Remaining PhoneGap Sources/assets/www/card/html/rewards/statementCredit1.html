@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Redeem Statement Credit Confirmation: 1 of 3</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="statementCredit1-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+		<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+
+				<div>
+					<h1>Redeem Cashback Bonus:</h1>
+				</div>
+				<h2>Step 1 of 3</h2>
+				<div>
+					<p>Cashback Bonus Balance:<span class="orangetxt boldtext marginL3px" id="statementCredit1_CashBackBonusBalance"></span></p>
+				</div>
+				<h3>Get a Statement Credit.</h3>
+
+				<p>
+					Use your Cashback Bonus Rewards to credit your Discover cardName
+					account in $50 increments.<br /> This action is final and cannot
+					be undone.
+				</p>
+				<ul class="white-box-rd-corner ui-listview ui-listview-inset ui-corner-all ui-shadow" data-inset="true" data-theme="d" data-role="listview">
+					<li data-icon="false" class="ui-li ui-li-static ui-body-d ui-corner-top ui-corner-bottom">
+						<h3 class="fontsize13px">Choose a $<span id="statement_credit_minDisbIncrAmt"></span> increment to Your Discover Card ending <span id="statementCredit1_CreditCardEnding"></span>:</h3>									
+						<div class="ui-select"><div data-theme="d" class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-up-d"><span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true"><span class="ui-btn-text" id="ui-btn-text">Choose a $<span id="statement_credit_minDisbIncrAmt"></span> increment...</span><span class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span></span>
+						
+						<span id="statementCredit1_AmoutSelectField"></span>
+							
+						</div></div>				
+					</li>
+				</ul>
+				<div class="txtcenteraln">
+				<span class="small_btn_150px">
+				<input onclick="dfs.crd.cbb.redeemStatementCredit2();" id="statement_Credit_continue_btn" type='button' value='Continue' disabled="disabled"  />
+				</span>
+				</div><br/>
+
+				<p class="boldtext">Credits will post to your account with in 72 hours.</p>
+				<p>Have a redemption question? Please call &nbsp;	<a href='tel:8003472683' class='eCertBlueLink'>800.347.2683</a></p>				
+				<ul class='collapsible'>
+					<li><a href="#" class='collapslink deactive' rel='statementCredit1_TermsConditions'>Terms and Conditions</a>
+					<div id="statementCredit1_TermsConditions" style='display: none;'></div>
+				</li>
+				</ul>
+			</div>
+
+			<div id="footnotes"  class="footnotes"></div>
+		</div>
+
+
+		<!-- content end -->
+
+		<div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
+			<footer id="footer" class="mnu_footer">
+			</footer>
+		</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

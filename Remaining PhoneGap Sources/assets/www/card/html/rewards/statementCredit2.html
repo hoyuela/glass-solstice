@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Redeem Statement Credit Confirmation: 2 of 3</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="statementCredit2-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+		<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+
+				<div>
+					<h1>Redeem Cashback Bonus:</h1>
+				</div>
+				<h2>Step 2 of 3</h2>
+				<div>
+					<p>
+						Cashback Bonus Balance: <span class="orangetxt boldtext marginL3px" id="statementCredit2_CashBackBonusBalance"></span>
+					</p>
+				</div>
+
+					<h3 class="fontsize13px">Please confirm to redeem you Cashback Bonus for the
+					following Statement Credit.</h3>
+
+				<ul class="whitebg-list-view">
+					<li>Date <span id="div11" class="boldtext fontsize13px"><span id="statementCredit2_RedeemDate"></span></span></li>
+					<li>Reward Type<span id="div21" class="boldtext fontsize13px"><span id="statementCredit2_RewardType"></span></span></li>
+					<li>Redemption Amount <span id="div31" class="boldtext fontsize13px">$<span id="statementCredit2_RedeemAmount"></span></span></li>
+					<li>Account <span id="div41" class="boldtext fontsize13px" style="width:80%">ending in<span id="statementCredit2_CreditCardEnding" style="margin-left:3px"></span></span></li>
+				</ul>
+				<div class="txtcenteraln r3matchbtn">
+					<a class="bluelink boldtext fontsize13px" onclick="navigation('../rewards/statementCreditCancelTrans')">Cancel</a>
+					<a href="#" onclick="dfs.crd.cbb.renderStatementCredit3Page();" data-role="button"
+						class="small_btn_110px ">Confirm</a>
+				</div>
+
+				<div class="clearboth"></div>
+			</div>
+
+
+			<div id="footnotes"  class="footnotes"></div>
+		</div>
+
+		<!-- content end -->
+
+		<div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
+			<footer id="footer" class="mnu_footer">
+			</footer>
+		</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

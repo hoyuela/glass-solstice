@@ -1,0 +1,2991 @@
+body {
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+h1,h2,h3,h4,p,a,li {
+	text-shadow: none;
+	padding: 0;
+	margin: 0;
+}
+
+table {
+	width: 100%;
+}
+
+a {
+	font-weight: bold !important;
+}
+
+
+
+/* header css */
+
+/* commenting existing header for Push Notification
+ #pg-header {
+ overflow: auto;
+ padding: 3px 0 3px 0;
+ display: inline-block;
+ background: url(../images/headerBg.png) repeat-x left center;
+ }
+ 
+ #pg-header .back-button {
+ float: left;
+ width: 19%;
+ padding: 8px 0px 5px 5px
+ }
+ 
+ #pg-header .logout-button {
+ float: right;
+ width: 19%;
+ text-align: right;
+ padding: 8px 5px 5px 0px
+ }
+ 
+ #pg-header.ui-bar-a {
+ top: 0px;
+ z-index: 1001;
+ left: 0px;
+ }
+ }*/
+
+/* New Header for Push Notification */
+
+#pg-header {
+    padding-top:3px;
+    padding-bottom:3px;
+    display: inline-block;background:url(../images/headerBg.png) repeat-x left top; }
+#pg-header .back-button { float:left; padding:7px 0px 5px 12px;}
+#pg-header .logout-button {float:right;text-align:right;margin-right:5px; padding:1px 1px 11px 0px;}
+/*.number-of-new-messages{color:#fff;font-size:10px;margin-right:6px;float:right;text-decoration:none !important;}*/
+
+#cbbSection
+{
+	float:right;
+}
+
+/* footer start */
+#pg-footer {
+	height: 47px;
+	overflow: hidden !important;
+	width: 100%;
+	text-align: center;
+	background: #000; 
+	z-index:1000;
+    margin-bottom:-1px;
+}
+
+#pg-footer ul {
+	max-width: 312px;
+	min-width: 59px;
+	padding:0px;
+	overflow: auto;
+	margin: 0px auto 0 auto;
+	display: inline-block; 
+}
+
+#pg-footer li {
+	list-style-type: none;
+	float: left;
+	margin: 0px;
+	padding: 0px;
+	margin-right: 0px;
+}
+#pg-footer li div.ui-link {
+	color: #A6A6A6;
+	text-decoration: none;
+	display: inline-block;
+	text-align: center;	
+}
+#pg-footer li div{
+	height: 49px;
+	width:48px;
+	padding:24px 7px 0px 7px;
+	background:url(../images/handsetNavSpriteTrans.png) no-repeat center top;
+	-webkit-background-size: 515px 98px;
+	background-size: 515px 98px;
+}
+#pg-footer li div#home {background-position:1px 0px;}
+#pg-footer li div.ui-btn-active#home {background-position:1px -49px; color: #fff;}
+#pg-footer li div#account  {background-position: -64px 0px;}
+#pg-footer li div.ui-btn-active#account {background-position:-64px -49px; color: #fff;}
+#pg-footer li div#payments{background-position:-128px 0px;}
+#pg-footer li div.ui-btn-active#payments {background-position: -128px -49px;color: #fff;}
+#pg-footer li div#cashback {background-position:-192px 0px;}
+#pg-footer li div.ui-btn-active#cashback{background-position:-192px -49px;color: #fff;}
+#pg-footer li div#more {background-position:-256px 0px;}
+#pg-footer li div.ui-btn-active#more{background-position:-256px -49px;color: #fff;}
+#pg-footer li div#expdiscover {background-position:-447px 0px;}
+#pg-footer li div.ui-btn-active#expdiscover{background-position:-447px -49px;color: #fff;}
+#pg-footer li div#sendmoney {background-position:-385px 0px;}
+#pg-footer li div.ui-btn-active#sendmoney{background-position:-385px -49px;color: #fff;}
+#pg-footer li div#miles {background-position:-318px 0px;}
+#pg-footer li div.ui-btn-active#miles{background-position:-318px -49px;color: #fff;}
+#pg-footer li div.ui-btn-active {height:49px;}
+
+#pg-footer li div.ui-btn-active {
+	border: 0px;	
+	color: #fff;
+	text-decoration: none;
+	text-align: center;
+	border-radius: 4px;	-webkit-border-radius: 4px;	
+}
+
+#pg-footer li:first-child {
+	/*margin-left: 2px;*/
+}
+
+#pg-footer li div.ui-link,#pg-footer li div.ui-btn-active,#pg-footer li div.ui-link:hover
+{
+	font-size: 9px;
+}
+/* footer end */
+
+/* keeping 10px padding from internal content */
+.ui-content {
+	padding: 7px 10px 10px 10px;
+}
+
+/* background color for all internal pages */
+.ui-content-internalpages,.ui-page {
+	display: block;
+	background-color: #1a82f7;
+	background: url(images/linear_bg_2.png);
+	background-repeat: repeat-x;
+	/* Safari 4-5, Chrome 1-9 */
+	background: -webkit-gradient(linear, left top, right top, from(#d1d1d1),
+		color-stop(0.15, #fafafa), color-stop(0.5, #fafafa),
+		color-stop(0.85, #fafafa), to(#d1d1d1) );
+	/* Safari 5.1, Chrome 10+ */
+	background: -webkit-linear-gradient(left, #d1d1d1, #fafafa, #d1d1d1);
+	/* Firefox 3.6+ */
+	background: -moz-linear-gradient(left, #d1d1d1, #fafafa, #d1d1d1);
+	/* IE 10 */
+	background: -ms-linear-gradient(left, #d1d1d1, #fafafa, #d1d1d1);
+	/* Opera 11.10+ */
+	background: -o-linear-gradient(left, #d1d1d1, #fafafa, #d1d1d1);
+}
+
+/* common for all internal pages */
+.ui-content-internalpages h1,.ui-content-internalpages h2,.ui-content-internalpages h3,.ui-content-internalpages p
+	{	padding: 0;}
+.ui-content-internalpages h1 {
+	font-size: 19px;
+	margin: 0px 0 5px 0
+}
+
+.ui-content-internalpages h2 {
+	color: rgb(250, 83, 21);
+	font-size: 18px;
+	margin: 0px 0 5px 0
+}
+
+.ui-content-internalpages h3 {
+	font-size: 14px;
+	font-weight: bold;
+	margin: 0px 0 5px 0;
+	color: #000
+}
+
+.ui-content-internalpages p {
+	font-size: 13px;
+	font-weight: normal;
+	margin: 0px 0 10px 0;
+	color: #000;
+	line-height:13px;
+}
+
+.ui-content-internalpages ul {
+	font-size: 12px;
+	font-weight: normal;
+	margin: 0;
+	padding: 0;
+}
+.ui-content-internalpages ul li {
+	list-style-type: none;
+	padding: 4px 6px;
+	overflow: auto;
+}
+.ui-content-internalpages ul.account-list-view li {
+	list-style-type: none;
+	padding: 9px 6px;
+	overflow: auto;
+}
+.ui-content-internalpages ul.showbullet li {
+	list-style-type: none;
+	background: url(../images/bullet01.png) no-repeat left 4px;
+	padding: 0 0 0 15px;
+	overflow: auto;
+}
+
+.ui-content-internalpages ol.faq {
+	font-size: 12px;
+	font-weight: bold;
+	margin: 0 0 0 20px;
+	padding: 0;
+}
+
+.ui-content-internalpages ol.faq h2 {
+	margin-left: -20px;
+}
+
+.ui-content-internalpages ol.faq li {
+	margin-bottom: 10px;
+}
+
+.ui-content-internalpages ol.faq div {
+	font-size: 12px;
+	font-weight: normal;
+}
+
+/* simple rounded box for Ul */
+.ui-content-internalpages ul.rounded-list-box  li img {
+	float: left;
+	margin-right: 10px
+}
+
+.ui-content-internalpages ul.rounded-list-box  li span.rightarrow {
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+	float: right;
+	line-height: 20px;
+	color: rgb(36, 137, 206);
+	width: 10px;
+	text-align: right;
+}
+
+.ui-content-internalpages ul.rounded-list-box  li a.bluelink {
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+	float: left;
+	line-height: 20px
+}
+
+.ui-content-internalpages ul.rounded-list-box-simple {
+	
+}
+
+.ui-content-internalpages ul.rounded-list-box-simple li {
+	background: #fff;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+.ui-content-internalpages ul.rounded-list-box-information div:first-child
+	{
+	float: left;
+		width: 29%;
+}
+
+.ui-content-internalpages ul.rounded-list-box-information span {
+	float: left;
+	width: 35%;
+}
+
+.ui-content-internalpages ul.rounded-list-box-information div:last-child
+	{
+	float: right;
+	width: 36%;
+	text-align: right;
+	color: rgb(36, 137, 206);
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.ui-content-internalpages ul.rounded-list-box-cont-info div:first-child
+	{
+	float: left;
+	width: 50%
+}
+
+.ui-content-internalpages ul.rounded-list-box-cont-info div:last-child {
+	float: right;
+	width: 45%;
+	text-align: right;
+	color: rgb(36, 137, 206);
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.ui-content-internalpages ul.rounded-list-box-mail-info div:first-child
+	{
+	float: left;
+	width: 38%
+}
+
+.ui-content-internalpages ul.rounded-list-box-mail-info div:last-child {
+	float: right;
+	width: 60%;
+	text-align: left;
+	font-weight: bold;
+}
+
+#list1 li,#list2 li,.ui-content-internalpages ul.rounded-list-box  li {
+	margin-top: 0px;
+	border-bottom: 1px solid #d6d5d5 !important;
+	background-color: #ffffff;
+	background: url(images/linear_bg_2.png);
+	background-repeat: repeat-x;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffffff),
+		to(#f4f6f7) );
+	background: -webkit-linear-gradient(top, #ffffff, #f4f6f7);
+	background: -moz-linear-gradient(top, #ffffff, #f4f6f7);
+	background: -ms-linear-gradient(top, #ffffff, #f4f6f7);
+	background: -o-linear-gradient(top, #ffffff, #f4f6f7);
+}
+
+#list1 li:last-child,#list2 li:last-child, .ui-content-internalpages ul.rounded-list-box  li:last-child
+	{
+	border: 0px !important
+}
+
+.ui-content-internalpages #footer-links {
+	color: #267BB1
+}
+
+#cardLogin-pg, #publicError-pg, #sendMoneyOverlay-pg, #forceUpgrade-pg,#optionalUpgrade-pg, #loginErrorPage-Pg,#strongAuthLocked-Pg {
+	background-color: #4d4d4d;
+	background-image: -webkit-linear-gradient(#1e1e1e, #4d4d4d 50%, #1e1e1e);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#1e1e1e),
+		to(#1e1e1e), color-stop(0.5, #4d4d4d) );
+		padding-top : 52px !important;
+}
+
+/* heade footer styles for card login and global error page */
+#cardLogin-pg #pg-header, #publicError-pg #pg-header, #sendMoneyOverlay-pg #pg-header, #globalErrorPage #pg-header,#forceUpgrade-pg #pg-header,#optionalUpgrade-pg #pg-header, #loginErrorPage-Pg  #pg-header, #strongAuthLocked-Pg #pg-header{
+	/*background: #1A1A1A;*/
+	border: 0px
+}
+
+#cardLogin-pg #pg-footer, #publicError-pg #pg-footer, #sendMoneyOverlay-pg #pg-footer,#globalErrorPage #pg-footer,#forceUpgrade-pg #pg-footer,#optionalUpgrade-pg #pg-footer, #loginErrorPage-Pg  #pg-footer,#strongAuthLocked-Pg  #pg-footer{
+	visibility: hidden;
+	background: none;
+}
+
+#card-login .ui-slider-switch {
+	width:78px!important;
+    height:20px;
+	float: right;
+	margin-right:0;
+}
+
+#card-login .ui-grid-a {
+width:101%;	
+}
+
+#card-login .ui-block-a {
+	width: 60%;
+	text-align: right;
+	line-height:30px;
+}
+
+#card-login .ui-block-b {
+	width: 40%;
+	/*height: 48px;*/
+	height:36px;
+}
+
+/* login page styles */
+#login-pg .ui-content {
+	margin-top: 0px;
+}
+
+#login-pg #logoutDiv {
+	color: #FA4B00;
+	text-align: center;
+	text-shadow: none;
+	font-weight: bold;
+	width: 100%;
+	font-size: 14px;
+	line-height: 15px;
+	margin: 5px auto 8px;
+}
+
+#login-pg #logoutDiv span {
+	display: inline-block;
+	font-size: 10px;
+	width: 100%;
+}
+
+#login-pg #logo {
+	display: block;
+	margin: auto;
+}
+
+/* using for all page title */
+#name {
+	font-size: 19px;
+	font-weight: bold;
+}
+
+#card-info {
+	font-size: 14px;
+}
+
+#minpay,#credit,#new,#div43 {
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.footnotes, #footnotes {
+	margin-top: 15px;
+}
+/*foot notes */
+#footnotes a,#footnotes p {
+	text-align: center;
+	display: block;
+	text-decoration: none;
+	font-size: 11px;
+	text-shadow: none;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+#footnotes a {
+	color: #267BB1; 
+	font-weight: normal;
+	font-weight: bold;
+}
+
+#footnotes a,#footnotes p {
+	text-align: center;
+	display: block;
+	text-decoration: none;
+	text-shadow: none;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+#footnotes #footer-links a {
+	display: inline;
+}
+/* foot note switch links */
+.view-site {
+	margin: auto;
+	display: inline-block;
+	font-size: 10px !important;
+	text-shadow: none !important;
+	font-weight: normal;
+	width: 165px;
+	display: block;
+	height: 20px;
+	margin-top: 10px;
+	color: #BEBEBE
+}
+.view-site a {
+	font-weight: normal !important;
+	float: left;
+	font-size: 10px !important;
+	padding: 0 2px 0 2px;
+	color: #267BB1
+}
+.view-site span {
+	float: left;
+}
+.footer-text-icon span {
+	background: url(../images/lock.png) no-repeat right 1px;
+	width: 230px !important;
+    margin: 0 0 0 0;
+    color: #838383;
+    font-size: 11px;
+    display: inline-block;
+	line-height:15px;
+}
+/*remove lock from index,login,explore discover,customer service*/
+#login-pg .footer-text-icon span,
+#cardLogin-pg .footer-text-icon span,
+#publicError-pg .footer-text-icon span,
+#sendMoneyOverlay-pg .footer-text-icon span,
+#forceUpgrade-pg .footer-text-icon span,
+#optionalUpgrade-pg .footer-text-icon span,
+#exploreDiscover-pg .footer-text-icon span,
+#customerService-pg .footer-text-icon span,
+#commonBenefits-pg .footer-text-icon span,
+#commonRewardsSeeDetails-pg .footer-text-icon span,
+#commonPrivacyPolicy-pg .footer-text-icon span,
+#commonSecurity-pg .footer-text-icon span,
+#coCustomerServiceFaqsOptimized-pg .footer-text-icon span,
+#forgot-password-step1-pg .footer-text-icon span,
+#forgot-password-step2-pg .footer-text-icon span,
+#forgot-uid-or-pass-pg .footer-text-icon span,
+#forgot-uid-pg .footer-text-icon span,
+#forgot-both-step1-pg .footer-text-icon span,
+#forgot-both-step2-pg .footer-text-icon span,
+#uid-strength-meter-pg .footer-text-icon span,
+#password-strength-meter-pg .footer-text-icon span,
+#forgot-uid-or-password-menu-pg .footer-text-icon span,
+#loginErrorPage-Pg .footer-text-icon span,
+#strongAuthLocked-Pg .footer-text-icon span
+{
+                padding-right: 0px;
+                background: none;
+}
+
+/* remove secured text from foot note */
+.footer-text-icon span.secured{ display:inline;  background: none; padding-right:12px} /* set default display block to secured text */
+#login-pg .footer-text-icon span.secured,
+#cardLogin-pg .footer-text-icon span.secured,
+#publicError-pg .footer-text-icon span.secured,
+#sendMoneyOverlay-pg .footer-text-icon span.secured,
+#forceUpgrade-pg .footer-text-icon span.secured,
+#optionalUpgrade-pg .footer-text-icon span.secured,
+#exploreDiscover-pg .footer-text-icon span.secured,
+#customerService-pg .footer-text-icon span.secured,
+#commonBenefits-pg .footer-text-icon span.secured,
+#commonRewardsSeeDetails-pg .footer-text-icon span.secured,
+#commonPrivacyPolicy-pg .footer-text-icon span.secured,
+#commonSecurity-pg .footer-text-icon span.secured,
+#coCustomerServiceFaqsOptimized-pg .footer-text-icon span.secured,
+#forgot-password-step1-pg .footer-text-icon span.secured,
+#forgot-password-step2-pg .footer-text-icon span.secured,
+#forgot-uid-or-pass-pg .footer-text-icon span.secured,
+#forgot-uid-pg .footer-text-icon span.secured,
+#forgot-both-step1-pg .footer-text-icon span.secured,
+#forgot-both-step2-pg .footer-text-icon span.secured,
+#uid-strength-meter-pg .footer-text-icon span.secured,
+#password-strength-meter-pg .footer-text-icon span.secured,
+#forgot-uid-or-password-menu-pg .footer-text-icon span.secured,
+#loginErrorPage-Pg .footer-text-icon span.secured,
+#strongAuthLocked-Pg .footer-text-icon span.secured
+{
+                display:none
+}
+/* display copy right text before login */
+.footer-text-icon span#copyRightYear { display:none;} /* set default display none to secured copy Right Year text */
+#login-pg .footer-text-icon span#copyRightYear,
+#cardLogin-pg .footer-text-icon span#copyRightYear,
+#publicError-pg .footer-text-icon span#copyRightYear,
+#sendMoneyOverlay-pg .footer-text-icon span#copyRightYear,
+#forceUpgrade-pg .footer-text-icon span#copyRightYear,
+#optionalUpgrade-pg .footer-text-icon span#copyRightYear,
+#exploreDiscover-pg .footer-text-icon span#copyRightYear,
+#customerService-pg .footer-text-icon span#copyRightYear,
+#commonBenefits-pg .footer-text-icon span#copyRightYear,
+#commonRewardsSeeDetails-pg .footer-text-icon span#copyRightYear,
+#commonPrivacyPolicy-pg .footer-text-icon span#copyRightYear,
+#commonSecurity-pg .footer-text-icon span#copyRightYear,
+#coCustomerServiceFaqsOptimized-pg .footer-text-icon span#copyRightYear,
+#forgot-password-step1-pg .footer-text-icon span#copyRightYear,
+#forgot-password-step2-pg .footer-text-icon span#copyRightYear,
+#forgot-uid-or-pass-pg .footer-text-icon span#copyRightYear,
+#forgot-uid-pg .footer-text-icon span#copyRightYear,
+#forgot-both-step1-pg .footer-text-icon span#copyRightYear,
+#forgot-both-step2-pg .footer-text-icon span#copyRightYear,
+#uid-strength-meter-pg .footer-text-icon span#copyRightYear,
+#password-strength-meter-pg .footer-text-icon span#copyRightYear,
+#forgot-uid-or-password-menu-pg .footer-text-icon span#copyRightYear,
+#loginErrorPage-Pg .footer-text-icon span#copyRightYear,
+#strongAuthLocked-Pg .footer-text-icon span#copyRightYear
+{
+                display:inline;
+}
+
+.loginBg #footer-links,
+.loginBg #footer-links a,
+#login-pg .view-site a,
+#cardLogin-pg .view-site a,
+#publicError-pg .view-site a,
+#sendMoneyOverlay-pg .view-site a,
+#forceUpgrade-pg .view-site a,
+#optionalUpgrade-pg .view-site a,
+#login-pg  #footer-links a,
+#cardLogin-pg  #footer-links a,
+#publicError-pg  #footer-links a,
+#sendMoneyOverlay-pg  #footer-links a,
+#forceUpgrade-pg  #footer-links a,
+#loginErrorPage-Pg  #footer-links a,
+#strongAuthLocked-Pg #footer-links a,
+#optionalUpgrade-pg  #footer-links a,
+#globalErrorPage  #footer-links a,
+#globalErrorPage  .view-site a,
+#loginErrorPage-Pg .view-site a,
+#strongAuthLocked-Pg .view-site a
+	{
+	color: #BEBEBE
+}
+#login-pg  #footnotes a.registerNow,
+#globalErrorPage #footnotes a.registerNow,
+#commonSecurity-pg #footnotes a.registerNow,
+#commonPrivacyPolicy-pg #footnotes a.registerNow,
+#commonRewardsSeeDetails-pg #footnotes a.registerNow,
+#commonBenefits-pg #footnotes a.registerNow,
+#exploreDiscover-pg #footnotes a.registerNow,
+#coCustomerServiceFaqsOptimized-pg #footnotes a.registerNow,
+#customerService-pg #footnotes a.registerNow
+{display: inline !important;}
+
+#footnotes a.registerNow, #cardLogin-pg #footnotes a.registerNow, 
+#publicError-pg #footnotes a.registerNow,
+#sendMoneyOverlay-pg #footnotes a.registerNow,
+#forceUpgrade-pg #footnotes a.registerNow,#optionalUpgrade-pg #footnotes a.registerNow,#exploreDiscover-pg #footnotes a.registerNow,
+#commonPrivacyPolicy-pg #footnotes a.registerNow, #commonSecurity-pg #footnotes a.registerNow,
+#commonBenefits-pg #footnotes a.registerNow , #commonRewardsSeeDetails-pg #footnotes a.registerNow,
+#coCustomerServiceFaqsOptimized-pg #footnotes a.registerNow, #customerService-pg #footnotes a.registerNow , #loginErrorPage-Pg #footnotes a.registerNow, #strongAuthLocked-Pg #footnotes a.registerNow
+{display: none !important}
+
+/*icon for secure card login*/
+#sccl,.errorPG_title {
+	font-weight: bold;
+	color: #f75318;
+	background: url(../images/ccOn.png) 0 3px no-repeat;
+	padding-left:33px;
+	/*line-height: 26px;*/
+	display: inline-block;
+	background-size: 19px 12px;
+	font-size:15px!important;
+}
+
+/*inputs*/
+input.ui-input-text {
+	margin-top: 10px;
+	margin-bottom: 8px;
+	/*line-height:26px;*/
+	font-size:13px;
+	height:26px;
+	border:1px solid #666;
+   /* -webkit-user-modify: read-write-plaintext-only; */
+	}
+#strongAuthFirstQues-pg input.ui-input-text, #sendMoney1-pg input.ui-input-text
+{
+	height:20px;
+	padding:7px 0px 7px 12px!important; 
+	font-size: 14px!important;
+	font-weight:bold;
+}
+/*footnotes*/
+ #register-link {
+	float: right;
+	padding-top: 5px;
+	padding-right: 5px;
+	font-size: 12px;
+	text-decoration: none;
+	background: url(../images/handsetRegisterArrow.png) no-repeat 80px 17px;
+	padding-right: 15px;
+	color:#025D96;
+}
+
+#remember {
+	color: #000;
+	font-size: 12px;
+	/*margin-top: 10px;*/
+	display: inline-block;
+}
+/*reflection*/
+#reflection {
+	background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.2),		rgba(255, 255, 255, 0) );
+	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255,	0.2) ), to(rgba(255, 255, 255, 0) ) );
+	height: 30px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	margin-top: 1px;
+}
+/*third screen or building look and fill of card home page */
+#gri1 .ui-block-a,#grid2 .ui-block-a,#grid3 .ui-block-a,#grid4 .ui-block-a
+	{
+	width: auto;
+	font-size: 12px;
+}
+
+#gri1 .ui-block-b,#grid2 .ui-block-b,#grid3 .ui-block-b,#grid4 .ui-block-b
+	{
+	width: auto;
+	text-align: right;
+	float: right;
+	color: rgb(36, 137, 206)
+}
+
+#list1,#list-payment {
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+#list1 li,#list2 li,#list-payment li,#list-pay-2 li {
+	padding-left: 5px;
+	padding-right: 5px;
+	border: none;
+}
+
+#grid11>.ui-block-b,#grid21>.ui-block-b,#grid31>.ui-block-b,#grid41>.ui-block-b
+	{
+	float: right;
+	padding-right: 5px;
+	color: rgb(250, 83, 21);
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+#list1 .ui-grid-a a,#list-payment .ui-grid-a a {
+	text-decoration: none;
+	letter-spacing: -1px;
+	font-size: 13px;
+	float: right;
+}
+
+.redtext,.errormsg,p.errormsg,ul li.redtext {
+	color: red !important;
+	font-size: 12px !important;
+}
+.redtext10px{font-size:10px; color:red;}
+.lightblue {
+	color: rgb(36, 137, 206)
+}
+
+#milesRedeem-button {
+	/*margin-right: 75px;*/
+}
+
+#milesRedeem-button .ui-block-a a {
+	float: right;
+	padding-top: 15px;
+	text-decoration: none;
+}
+
+#milesRedeem-button .ui-block-b {
+	width: 50%;
+}
+
+.floatleft {
+	float: left;
+}
+
+.floatright {
+	float: right;
+}
+
+.bigfont
+{
+font-size:18px !important;	
+text-decoration:none;
+}
+.account-list-view li a.bluelink {
+	color: rgb(0, 112, 168) !important;
+	background: url(../images/blueArrow.png) no-repeat right center !important;
+	font-size: 15px;
+}
+
+.account-list-view li span.arrow {
+	color: rgb(36, 137, 206) !important;
+	padding: 10px;
+	width: 10%;
+	display: none;
+}
+
+.transdata div {
+	padding: 5px 0 5px 0
+}
+
+/* normal white rounded corner box */
+ul.whitebg-list-view {
+	margin-bottom: 10px;
+}
+
+ul.whitebg-list-view li:first-child {
+	-moz-border-top-left-radius: 8px !important;
+	-moz-border-top-right-radius: 8px !important;
+	-webkit-border-top-left-radius: 8px !important;
+	-webkit-border-top-right-radius: 8px !important;
+}
+
+ul.whitebg-list-view li:last-child {
+	-moz-border-bottom-left-radius: 8px !important;
+	-moz-border-bottom-right-radius: 8px !important;
+	-webkit-border-bottom-left-radius: 8px !important;
+	-webkit-border-bottom-right-radius: 8px !important;
+	border-bottom: 0px;
+}
+
+.whitebg-list-view li {
+	border: 0;
+	border-bottom: 1px solid #c2c2c2;
+	border-radius: 0px !important;
+	font-size: 12px;
+	font-weight: normal;
+	background: #fff !important;
+	padding: 7px 10px 7px 10px !important;
+}
+
+ul.whitebg-list-view li.grayheading {
+	background: #d2d4d6 !important
+}
+
+ul.whitebg-list-view .trans_history .active {
+	color: #000 !important
+}
+
+.whitebg-list-view li:hover {
+	cursor: default !important;
+}
+
+.whitebg-list-view li {
+	text-align: left;
+	color: #000 !important
+}
+
+.whitebg-list-view li a {
+	display: inline-block !important;
+	font-size: 12px;
+	color: rgb(36, 137, 206) !important;
+}
+
+.whitebg-list-view li span {
+	text-align: right !important;
+	float: right;
+	padding-right: 10ppx
+}
+
+.whitebg-list-view li .ui-icon,.whitebg-list-view li .ui-icon-shadow {
+	display: none
+}
+
+.whitebg-list-view .textcenter,.textcenter {
+	text-align: center
+}
+
+.ui-input-text {
+	pause: 5px;
+	-moz-border-radius: 8px !important;
+	-webkit-border-radius: 5px !important;
+}
+
+/* common orange color button class */
+.fontsize13px {font-size:13px !important;}
+.fontsize14px {font-size:14px !important;}
+.fontsize15px  {font-size:15px !important;}
+a.small_btn .ui-btn-inner {
+	text-align: center !important;
+	min-width: 60px;
+	display: inline-block;
+	border: none;
+}
+
+a.small_btn .ui-btn-text {
+	padding: 5px;
+	line-height: 18px;
+}
+#login-submit {
+	display: block;
+	margin-right:0;
+	border:1px solid #FB4C0D;
+}
+
+/* orange button with 110px width */
+.small_btn_110px {
+	width: 110px;
+}
+.small_btn_180px {
+	width:180px;
+}
+/* normal drop down theme */
+.ui-select .ui-btn {
+	height: 28px;
+	font-size: 12px;
+	text-align: left;
+	font-weight: normal;
+	line-height: 18px;
+	border: 1px solid #828282;
+	background-color: #fbfbfb;
+	background: url(images/linear_bg_2.png);
+	background-repeat: repeat-x;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fbfbfb),
+		to(#d1d1d1) );
+	background: -webkit-linear-gradient(top, #fbfbfb, #d1d1d1);
+	background: -moz-linear-gradient(top, #fbfbfb, #d1d1d1);
+	background: -ms-linear-gradient(top, #fbfbfb, #d1d1d1);
+	background: -o-linear-gradient(top, #fbfbfb, #d1d1d1);
+}
+
+.ui-select  .ui-btn-up-b,.ui-select  .ui-btn-hover-b {
+	text-shadow: 0 0px 0px #194B7E;
+}
+
+.ui-select .ui-btn .ui-icon {
+	right: 0px;
+	top: 8px;
+	height: 30px;
+	width: 25px;
+	background: url("../images/icons-18-white.png") no-repeat scroll -211px
+		6px rgba(0, 0, 0, 0.4);
+	-webkit-border-radius: 0px 4px 4px 0px;
+}
+/* white color background list view */
+.white-box-rd-corner {
+	background: #fff !important
+}
+
+.trans-bg {
+	background: none !important
+}
+
+.white-box-rd-corner label {
+	font-size: 12px;
+}
+
+.inputtext {
+	width: 95% !important;
+	padding:7px 3px !important;
+	background: #fff !important;
+	border: 1px solid #ccc;
+	-webkit-border-radius: 5px;
+}
+.white-box-rd-corner .ui-btn,.white-box-rd-corner #ui-btn:hover,.selectDD_wraper
+	{
+	height: 29px;
+	font-size: 12px;
+	text-align: left;
+	font-weight: normal;
+	line-height: 19px;
+	/*border: 1px solid #828282;*/
+	background-color: #fbfbfb;
+	background: url(images/linear_bg_2.png);
+	background-repeat: repeat-x;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fbfbfb),
+		to(#d1d1d1) );
+	background: -webkit-linear-gradient(top, #fbfbfb, #d1d1d1);
+	background: -moz-linear-gradient(top, #fbfbfb, #d1d1d1);
+	background: -ms-linear-gradient(top, #fbfbfb, #d1d1d1);
+	background: -o-linear-gradient(top, #fbfbfb, #d1d1d1);
+	margin:5px 0;
+}
+
+#redeemCashbackLanding-pg .white-box-rd-corner .ui-btn, #redeemCashbackLanding-pg .white-box-rd-corner #ui-btn:hover
+	{
+	height: 36px;
+	font-size: 13px;	
+	font-weight: bold;
+	line-height: 28px;		
+}
+.white-box-rd-corner .ui-btn {
+	text-align: center;
+}
+
+.white-box-rd-corner .ui-select .ui-btn-icon-right .ui-icon {
+	right: 0px;
+	top: 8px;
+	height: 35px;
+}
+
+.white-box-rd-corner .ui-icon,.white-box-rd-corner .ui-icon-searchfield:after
+	{
+	border-radius: 0px 0px 0px 0px !important;
+	-moz-border-radius: 0px !important;
+	-webkit-border-radius: 0px !important;
+	height: 25px;
+	width: 25px;
+	margin-top: -13px;
+}
+
+.white-box-rd-corner .ui-btn-corner-all {
+	border-radius: 4px !important;
+	-moz-border-radius: 4px !important;
+	-webkit-border-radius: 4px !important;
+}
+
+.white-box-rd-corner .ui-select,.white-box-rd-corner #div12,.white-box-rd-corner  #gri1>.ui-block-a
+	{
+	width: 100%;
+}
+.white-box-rd-corner .ui-btn-inner,.white-box-rd-corner .ui-btn-text {
+	padding-top: 3px
+}
+
+.white-box-rd-corner  .ui-select .ui-btn-icon-right .ui-btn-inner {
+	padding-right: 20px;
+}
+
+.white-box-rd-corner .accountsearchresult .col1 {
+	float: left;
+	text-align: left;
+	width: 48%;
+	font-size: 12px;
+}
+
+.white-box-rd-corner .accountsearchresult .col2 {
+	float: right;
+	width: 50%;
+	text-align: right;
+}
+
+.white-box-rd-corner .accountsearchresult .date {
+	font-weight: normal;
+	font-size: 12px;
+}
+
+.white-box-rd-corner .accountsearchresult .title {
+	font-weight: bold;
+	font-size: 12px;
+}
+
+.white-box-rd-corner .accountsearchresult a {
+	text-decoration: none;
+	font-weight: normal;
+	font-size: 12px;
+	margin-top: 10px;
+	display: inline-block;
+}
+
+.white-box-rd-corner  .ui-li-heading {
+	white-space: normal !important;
+}
+
+.white-box-rd-corner select.selectopt_errormsg {
+	border: 1px solid red important;
+}
+
+.ui-select .ui-btn-text {
+	color: #444444
+}
+
+/* common css feature classes */
+.clearboth {
+	clear: both;
+}
+
+.normaltext {
+	font-size: 12px;
+	font-weight: normal !important;
+}
+
+.orangetxt {
+	color: #FA5317 !important
+}
+
+.bluelink, .bluelink2 {text-decoration: none !important; color:#0070A8 !important; font-size:13px;}
+/*.bluelink2 {font-size:14px;}*/
+.boldtext {	font-weight: bold !important;}
+.small11pxfont {	font-size: 11px !important;}
+.eCertBlueLink {
+	color: #267BB1 !important;
+	text-decoration: none !important;
+}
+.paddingtop20px {
+	padding-top: 20px
+}
+.margintop10px,.ui-content-internalpages h3.margintop10px {
+	margin-top: 10px
+}
+.margintop20px {
+	margin-top: 20px
+}
+.margintop5px{margin-top:5px;}
+.paddingbottomp20px {
+	padding-bottom: 20px
+}
+
+.marginbottom20px {
+	margin-bottom: 20px
+}
+.hrow {
+	background: url("../images/grayDot.gif") repeat-x left center;
+	height: 6px;
+}
+
+.borderbottom {
+	border-bottom: 1px solid #ccc
+}
+
+.note,p.note {
+	font-size: 10px;
+}
+
+.txtrightaln {
+	text-align: right;
+}
+
+.txtcenteraln {
+	text-align: center !important
+}
+
+.noborder {
+	border: 0px !important;
+}
+
+.redtxt {
+	color: red;
+}
+
+.orangeborder {
+	border: 1px solid #FA5315;
+	padding: 7px;
+	margin: 7px 0;
+}
+.signin {
+	background: url("../images/checkBox.png") no-repeat left center;
+	padding-left: 20px !important;
+	font-size: 12px;
+	font-weight: bold;
+	top: 45%;
+	display: inline-block;
+	height: 19px;
+	-webkit-background-size: 15px 20px;
+	background-size: 15px 20px;
+	
+}
+
+#cashBackBonusSignUp_Div p.signin,
+#cashBackBonusSignUpConfirm_Div p.signin,
+#milesSignup2_Div p.signin,
+#milesSignupConfirm_Div p.signin 
+{color:#FA5317 !important;}
+
+#cashBackBonusSignUp_Div ul li,
+#cashBackBonusSignUpConfirm_Div ul li,
+#milesSignup2_Div ul li,
+#milesSignupConfirm_Div ul li
+{
+	list-style: disc inside!important;
+}
+
+#cashBackBonusSignUp_Div p,
+#cashBackBonusSignUpConfirm_Div p,
+#milesSignup2_Div p,
+#milesSignupConfirm_Div p
+{
+font-weight: normal;
+margin: 0px 0 3px 0;
+}
+
+#cashBackBonusSignUp_Div .margintop10px,
+#cashBackBonusSignUpConfirm_Div .margintop10px,
+#milesSignup2_Div .margintop10px,
+#milesSignupConfirm_Div .margintop10px
+ {margin-top:10px;}
+ 
+#cashBackBonusSignUp_Div ul,
+#cashBackBonusSignUpConfirm_Div ul,
+#milesSignup2_Div ul,
+#milesSignupConfirm_Div ul
+ {clear:both; display:inline-block}
+ 
+#cashBackBonusSignUp_Div h3,
+#cashBackBonusSignUpConfirm_Div h3,
+#milesSignup2_Div h3,
+#milesSignupConfirm_Div h3
+ {margin:0}
+  
+ #cashBackBonusSignUp_Div h1,
+#cashBackBonusSignUpConfirm_Div h1,
+ #milesSignup2_Div h1,
+ #milesSignupConfirm_Div h1
+ {
+	font-size: 20px;
+	/*color:#FA5317;*/
+	color:#000 !important;
+}
+
+.bullate01 li {
+	list-style-type: none;
+	background: url(../images/bullet01.png) no-repeat left 5px !important;
+	padding: 0 0 0 15px !important;
+	overflow: auto;
+	margin-bottom:6px;
+	line-height:13px;
+}
+
+/* css for Redeem Cashback Bonus page */
+.comp-logo {
+	width: 85px;
+}
+
+.comp-logo img {
+	width: 74px;
+	height: 35px;
+}
+
+.comp-logo-list-active,.comp-logo-list-deactive {
+	background: #fff;
+	padding: 0px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	overflow: auto;
+}
+
+.comp-logo-list-active ul,.comp-logo-list-deactive ul{
+	margin: 0 10px 10px 10px;
+}
+.comp-logo-list-active li,.comp-logo-list-deactive li {
+	float: left;
+	overflow: hidden !important;
+	padding: 0px 3px 0px 3px !important;
+	border-right: 1px solid #ccc;
+	display: inline-block;
+	text-align: center;
+	margin-bottom: 18px;
+}
+
+.comp-logo-list-active h3,.comp-logo-list-deactive h3 {
+	font-size: 14px;
+	border-bottom: 1px solid #ccc;
+	margin: 10px 10px 5px 10px;
+	padding-bottom: 5px;
+}
+
+.comp-logo-list-deactive .comp-logo img {
+	background: rgba(0, 255, 255, 0.2);
+}
+
+.comp-logo-list-active .yellow-bg,.yellow-bg {
+	/*background: url("../images/redeemYellowBg.png") no-repeat center 0px;*/
+	background: url("../images/pill.png") no-repeat center bottom;
+}
+
+.comp-logo-list-deactive .yellow-bg {
+	/*background: url("../images/redeemYellowBgGray.png") no-repeat center 0px;*/
+	background: url("../images/pill.png") no-repeat center top;
+}
+.comp-logo-list-active .yellow-bg .white-doller,
+.comp-logo-list-active .yellow-bg .yellow-doller,
+.comp-logo-list-deactive .yellow-bg .white-doller,
+.comp-logo-list-deactive .yellow-bg .yellow-doller,
+.yellow-bg .yellow-doller,.yellow-bg .white-doller
+	{
+	font-size: 10px;
+	color: #000;
+	font-weight: bold;
+	display: inline-block;
+	padding: 3px 6px 4px 6px;
+}
+
+.comp-logo-list-active .yellow-bg .yellow-doller,
+.comp-logo-list-deactive .yellow-bg .yellow-doller,
+.yellow-bg .yellow-doller { color: #fff !important; }
+.yellow-bg-value {
+	height: 13px;
+	float: right;
+	width: 80px;
+	margin-top: 10px;
+	padding: 3px 3px 3px 3px;
+	background: url("../images/pill.png") no-repeat center bottom;
+	font-size: 9px;
+}
+
+.yellow-bg-value span {
+	float: left;
+	width: 38px;
+	text-align: center;
+	font-size:11px;
+}
+
+.yellow-bg-value span:last-child {
+	float: right;	
+}
+
+/* Three col laayout for eCertificate */
+.eCert4 {
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	margin-bottom: 10px;
+}
+
+.eCert4 .col1,.eCert4 .col2 {
+	width: 49%
+}
+
+.eCert4 .col1 {
+	float: left;
+	clear:both;
+}
+
+.eCert4 .col2 {
+	float: right;
+	text-align: right;
+}
+
+/* 4 col table  */
+.redeem_history {
+	background: #fff;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+.redeem_history  li {
+	background: #fff;
+}
+
+.redeem_history  li:first-child {
+	text-align: center;
+	background: #ccc;
+	color: #000;
+	font-weight: bold !important;
+}
+
+.redeem_history   .ui-body-c .ui-link,.redeem_history .ui-li-divider,.ui-li-static
+	{
+	font-size: 12px !important;
+	font-weight: normal !important;
+}
+
+.redeem_history  .col1 {
+	float: left;
+	width: 25%
+}
+
+.redeem_history  .col2 {
+	float: left;
+	width: 25%;
+	text-align: center;
+}
+
+.redeem_history  .col3 {
+	float: left;
+	width: 25%;
+	text-align: center;
+}
+
+.redeem_history  .col4 {
+	float: right;
+	width: 24%;
+	text-align: right;
+}
+
+input.ui-input-text,textarea.ui-input-text {
+	font-size: 12px !important;	
+}
+.paymentinputtext {height:18px !important; font-weight:bold;}
+#card-login input.ui-input-text {
+line-height: 15px;
+border: 1px solid #666;
+font-weight: bold;
+padding: 6px 4px 7px 7px;
+width: 246px;
+height:19px;
+}
+#historyId li.paddingTB0 {padding-top:0px !important; padding-bottom:0px !important;}
+.50pctleft,.50pctright {
+	width: 48% !important
+}
+
+/* start new class for orientation  */
+@media all and (orientation:portrait) {
+	#login-form {
+		margin-top: 10%;
+		min-height: 180px;
+	}
+	.account-list-view li a.bluelink {
+		margin:6px 3px 6px 0px;
+	}
+	#gri1>.ui-block-a,#grid2>.ui-block-a,#grid3>.ui-block-a,#grid4>.ui-block-a
+		{
+		width: 70%;
+	}
+	#pg-header .logo-img {
+		float: left;
+		width: 59%;
+		text-align: center;
+		padding: 10px 0px 6px 0px;
+	}
+	.comp-logo-list-active li:nth-child(3n),
+	.comp-logo-list-deactive li:nth-child(3n)
+		{
+		border: none;
+	}
+	.eCert4 {
+		background: url("../images/eCert4_v.png") #fff no-repeat center 0px;
+		padding: 40px 10px 10px 10px;
+	}
+	.eCert4 .orangetxt_doller {
+		font-size: 15px;
+		font-weight: bold;
+	}
+	.errorpg_block {
+		min-height: 220px
+	}
+	.CashbackBonus  .accountsearchresult {
+		width: 90%
+	}
+	.comp-logo-list-active, .comp-logo-list-deactive {
+		width: 295px;
+	}
+	.dueDate {width:40px; display:inline-block;}
+}
+
+@media all and (orientation:landscape) {
+	#login-form {
+		margin-top: 3%;
+		min-height: 100px;
+	}
+	.account-list-view li a.bluelink {
+		margin: 6px 3px 6px 0px;
+	}
+	#gri1>.ui-block-a,#grid2>.ui-block-a,#grid3>.ui-block-a,#grid4>.ui-block-a
+		{
+		width: 70%;
+	}
+	#pg-header .logo-img {
+		float: left;
+		width: 59%;
+		text-align: center;
+		padding: 10px 0px 6px 0px;
+	}
+	.comp-logo-list-active li:nth-child(4n),.comp-logo-list-deactive li:nth-child(4n)
+		{
+			border: none;
+		}
+	.eCert4 {
+		background: url("../images/eCert4_h.png") #fff no-repeat center 0px;
+		padding: 70px 10px 10px 10px;
+		width: 415px;
+		margin: auto;
+	}
+	.eCert4 .orangetxt_doller {
+		font-size: 15px;
+		font-weight: bold;
+	}
+	.errorpg_block {
+		min-height: 100px
+	}
+	.CashbackBonus  .accountsearchresult {
+		width: 100%;
+	}
+	 .comp-logo-list-active, .comp-logo-list-deactive {
+		margin-left: auto;
+		margin-right: auto;
+		width: 395px;
+	}
+	.dueDate {width:auto;}
+}
+/* End new class for orientation  */
+.errormsg {
+	display: none;
+	font-size: 11px !important;
+	font-weight: bold;
+}
+input[type="text"].errormsg,input[type="number"].errormsg{
+	color: #000 !important;
+	border: 1px solid red !important;
+}
+
+input[type="password"].errormsg {
+	color: #000 !important;
+	border: 1px solid red !important;
+}
+/* simple white bg form */
+.white-form {
+	background: #fff;
+	border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	padding: 8px;
+	font-size: 14px;
+	font-weight: normal;
+}
+#paymentStep1-pg .white-form {
+	padding: 5px !important;
+}
+
+.white-form .ui-radio .ui-btn {
+	background: none;
+	display: inline-block;
+	border: 0px;
+	font-size: 13px;
+	font-weight: normal;
+}
+
+.white-form .ui-icon {
+	height: 16px;
+	width: 16px;
+}
+
+.white-form .ui-btn {
+	color: #000
+}
+
+.white-form .ui-radio .ui-icon {
+	margin-left: 0px;
+	top: 15px;
+}
+#paymentStep1-pg .white-form .ui-radio .ui-icon {
+	margin-left: 0px;
+	top: 13px;
+}
+.white-form .ui-radio-on .ui-icon {
+	background:url("../images/icons-18-white.png") #ccc no-repeat -721px -1px;    
+}
+
+.white-form .ui-radio-off .ui-icon {
+	background:url("../images/icons-18-white.png") #ccc no-repeat -758px -1px;
+}
+
+.white-form .ui-checkbox,.ui-radio {
+	margin: 0px;
+	display: inline-block;
+}
+
+.white-form .col1 {
+	width: 65%;
+	float: left;
+	margin-bottom:5px;
+}
+
+.white-form .col2,.white-form .col2_RM {
+	width: 25%;
+	float: right;
+}
+
+.white-form .col2_RM {
+	margin-right: 20px;
+}
+
+.col2_RM input.ui-input-text {margin-bottom:0px;}
+.white-form .amount {	
+	text-align: right;
+	font-weight: bold;
+}
+.white-form .amount2 {
+	line-height: 28px;
+	text-align: right;
+	font-weight: bold;}
+
+.white-form .amount .inputtext {
+	width: 54px !important;
+	float: right;
+}
+
+/* transparent bg 2 column table */
+.nobg_2coltbl li {
+	border-bottom: 1px solid #ccc;
+	display: block;
+	padding: 5px !important;
+}
+
+.nobg_2coltbl li .col1 {
+	width: 49%;
+	float: left;
+}
+
+.nobg_2coltbl li .col2 {
+	width: 49%;
+	float: right;
+	text-align: right;
+}
+
+/* Use of this class is to handle payment summery 2 column table */
+.paymentsummerytbl {
+	border-radius: 12px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	padding: 10px;
+	background: #fff;
+}
+
+.paymentsummerytbl li {
+	border-bottom: 1px solid #ccc;
+	padding: 5px !important;
+}
+
+.paymentsummerytbl li:last-child {
+	border: 0px
+}
+
+.paymentsummerytbl li.graheading {
+	background-color: #d2d4d6;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	-webkit-border-top-left-radius: 12px;
+	-webkit-border-top-right-radius: 12px;
+	-moz-border-top-left-radius: 12px;
+	-moz-border-top-right-radius: 12px;
+}
+
+.paymentsummerytbl li .col1 {
+	float: left;
+	width: 44%
+}
+
+.paymentsummerytbl li .col2,.paymentsummerytbl li .col3 {
+	float: left;
+	width: 27%
+}
+
+.selectopt_errormsg .ui-btn {
+	border: 1px solid red;
+}
+
+.ui-btn-up-errormsg {
+	border: 1px solid red !important;
+}
+
+/* new changes 29 feb */
+#pg-header .header,#pg-header header {
+	display: inline-block !important;
+	height: 40px;
+	width: 100%;
+}
+
+/* new changes 5 mar */
+#list1 li.activetab,.activetab,.cardhome_ul li.activetab,.cardhome_ul a.activetab {
+	background-color: #ffffff;
+	background: url(images/linear_bg_2.png);
+	background-repeat: repeat-x;
+	/* Safari 4-5, Chrome 1-9 */
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#c7c7c7),
+		to(#e0e0e0) ) !important;
+	/* Safari 5.1, Chrome 10+ */
+	background: -webkit-linear-gradient(top, #c7c7c7, #e0e0e0) !important;
+	/* Firefox 3.6+ */
+	background: -moz-linear-gradient(top, #c7c7c7, #e0e0e0) !important;
+	/* IE 10 */
+	background: -ms-linear-gradient(top, #c7c7c7, #e0e0e0) !important;
+	/* Opera 11.10+ */
+	background: -o-linear-gradient(top, #c7c7c7, #e0e0e0) !important;
+}
+
+.account-list-view li.activetab a.bluelink {
+	color: #000 !important;
+	text-shadow: 0px 0px #000;
+}
+
+#list2 li .ui-block-b {
+	text-align: right;
+	text-decoration: none;
+}
+
+#list2 li .ui-block-b a {
+	text-decoration: none;
+}
+
+.ui-radio label.ui-btn:hover, .ui-radio label {
+	background: none !important
+}
+input[type="radio"],input[type="radio"]:hover,input[type="radio"]:visited,input[type="radio"]:active
+	{
+	background: none !important;
+}
+
+.selectDD_wraper {
+	border: 0;
+	padding: 0px;
+	display: inline-block;
+	width: 100%;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.dd_select_box,select.dd_select_box {
+	border: 1px solid #828282;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	width: 100%;
+	line-height: 18px;
+	background: url(../images/image-downArrow.gif) no-repeat right center;
+	margin: 0px;
+}
+
+/* normal collapsible text */
+.collapsible {
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	margin-bottom: 15px !important;
+}
+
+.collapsible a.collapslink {
+	display: block;
+	width: 97%;
+	padding: 4px 12px 4px 0;
+	text-decoration: none;
+	font-size:14px;
+}
+
+.collapsible a.active {
+	background: url(../images/minus.png) no-repeat right 4px;
+}
+
+.collapsible a.deactive {
+	background: url(../images/pluse.png) no-repeat right 4px;
+}
+
+#loading {
+	display: none;
+	position: absolute;
+	z-index: 100;
+	top: 155px;
+	left: 130px
+}
+
+.CashbackBonus  .normaltext {
+	width: 45%;
+	float: left;
+	margin-right: 5px;
+}
+
+.CashbackBonus .amount {
+	width: 30% !important;
+	float: left !important;
+}
+
+.CashbackBonus .ui-btn-text {
+	padding: 0px;
+	font-size:13px;
+}
+
+.pct50 {
+	width: 50%
+}
+
+.textlink {
+	text-decoration: none !important;
+	color: black !important;
+}
+
+.ui-simpledialog-screen-modal {
+	z-index: 9999 !important
+}
+
+.ui-simpledialog-container {
+	z-index: 10000 !important
+}
+.ui-simpledialog-controls {
+	text-align: center;
+}
+
+.ui-simpledialog-controls .ui-icon {
+	display: none
+}
+
+.ui-simpledialog-controls .ui-btn-inner {
+	padding-left: 0px !important;
+	min-width: 80px;
+}
+
+.ui-simpledialog-controls .ui-btn {
+	display: inline-block
+}
+
+.paddingtopbottom10px {
+	padding-top: 7px !important;
+	padding-bottom: 7px !important;
+}
+
+/* card home layout css */
+.cardhome_ul  a {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffffff),
+		to(#f0f5f7) ) !important;
+	background: -webkit-linear-gradient(top, #ffffff, #f0f5f7) !important;
+	background: -moz-linear-gradient(top, #ffffff, #f0f5f7) !important;
+	background: -ms-linear-gradient(top, #ffffff, #f0f5f7) !important;
+	background: -o-linear-gradient(top, #ffffff, #f0f5f7) !important;
+	margin: 0px !important;
+	font-size: 12px !important;
+	padding: 12px 7px 12px 7px !important;
+	border-top: 1px solid #AAA;
+}
+.cardhome_ul a .col1 {
+	width: 70%;
+	float: left;
+	color: #000;
+	font-weight: normal
+}
+
+.cardhome_ul a .orangetxt {
+	font-weight: bold
+}
+
+.cardhome_ul a .col1 .col_left {
+	width: 55%;
+	float: left;
+	color: #000;
+	font-weight: normal;
+	clear: left
+}
+
+.cardhome_ul a .col1 .col_right {
+	width: 25%;
+	float: right;
+	text-align: right;
+}
+
+.col_small_left {
+	width: 59%;
+	float: left;
+}
+
+.col_big_right {
+	width: 41%;
+	float: right;
+	text-align: right;
+}
+
+.cardhome_ul a .col2 {
+	width: 21%;
+	float: right;
+	text-align: right;
+	background: url(../images/navArrow.png) no-repeat right 0px;
+	padding-right: 12px !important;
+	font-size: 13px;
+	font-weight: bold;
+	color: #025d96 !important;
+	text-transform: uppercase;
+	margin-top: 10px;	
+	line-height:12px;
+}
+
+.cardhome_ul a {
+	display: block;
+	overflow: auto;
+	text-decoration: none
+}
+
+.cardhome_ul a:first-child {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+}
+
+.cardhome_ul a:last-child {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	border-top:1px solid #aaa;
+	border-left:0px;
+	border-right:0px;
+	border-bottom:0px;	
+}
+.ui-li .ui-btn-inner a.ui-link-inherit,.ui-li-static.ui-li {
+	padding: 6px 10px 6px 10px;
+}
+#sendMoney1-pg.ui-li .ui-btn-inner a.ui-link-inherit,.ui-li-static.ui-li {
+	padding: 5px 10px 10px 10px;
+}
+.ui-li .ui-btn-inner a.ui-link-inherit,.ui-li-static.ui-li label {
+	/*	line-height: 25px;*/
+}
+
+.search_bar input[type='text'] {
+	float: left;
+	width: 72% !important;
+	line-height: 22px;
+}
+
+.search_bar .searchbtn {
+	float: right;
+	width: 25%;
+	margin-top: -3px;
+	text-align: right;
+}
+
+h2.recent_ac_activity_h2 {
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.col2_layout li {
+	background: #fff !important;
+}
+
+.col2_layout .data {
+	font-size: 12px;
+}
+
+.col2_layout .data {
+	float: left;
+	width: 60%;
+	display: inline;
+	font-size: 12px;
+	text-transform: uppercase;
+}
+
+.col2_layout .amt {
+	float: right;
+	width: 40%;
+	text-align: right;
+	font-size: 13px;
+}
+
+.whitetxt {
+	color: #fff !important;
+	text-shadow: none;
+}
+
+.Ecertificate_DD {
+	width: 62%;
+}
+
+.ui-select .ui-btn .ui-btn-text {
+	text-align: left;
+    padding-left:5px
+}
+.italic_text {
+	font-style: italic !important;
+}
+.errormsg2 {
+	/*margin-top: 10px;*/
+	display: block;
+	color: red;
+	font-size: 13px !important;
+	font-weight: bold
+}
+.errormsg2 h1 {
+	color: #000
+}
+/* mobile solution */
+.MobileSolutions {
+	display: block;
+	width: 200px;
+	margin: auto;
+	padding-left: 20px;
+	line-height: 25px;
+	text-decoration: none;
+	text-align: center;
+	color: #F4781A !important;
+	font-size: 10px !important;
+	background: url('../images/iconMobilePhone.png') no-repeat left top;
+	-webkit-background-size: 16px 25px;
+	background-size: 16px 25px;
+	vertical-align: middle;
+}
+/* set back button image over and normal  */
+
+.back_btn_normal,#back {
+	background: url(../images/backButton.png) no-repeat left top;
+	display: inline-block;
+	width: 32px;
+	height: 30px;
+	margin:6px 3px 0px 6px;
+}
+
+.back_over, #back:active {
+	background: url(../images/backButtonOver.png) no-repeat left top;
+	display: inline-block;
+	width: 32px;
+	height: 30px;
+}
+/* this style use for iphone. without image back is not working in iphone */
+.back_btn_normal img {
+	opacity: 0;
+	width: 32px;
+	height: 30px;
+}
+.logout_over img {
+	opacity: 0;
+	width: 60px;
+	height: 29px;
+}
+
+.logo-img {  
+    height: 29px;
+    -webkit-background-size: 130px 21px;
+	background-size: 130px 21px;
+}
+.logout_over, .logout-button a:active  {
+	background-image: -webkit-linear-gradient(#e86103, #ff9002 50%, #f1d179 51%, #fc9b14);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#e86103),
+		to(#fc9b14), color-stop(0.5, #ff9002), color-stop(0.51, #f1d179) );
+	box-shadow: none !important;
+}
+
+.logout_over_normal, .logout-button a {
+	border-radius: 5px !important;
+	-webkit-border-radius: 5px !important;
+	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053),
+		to(#ef6713), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) );
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	display: inline-block;
+	height: 22px;
+	width: 60px;
+	text-decoration: none;
+	color: white !important;
+	font-size: 11px;
+	text-align: center;
+	text-shadow: 0 -1px 1px #777;
+	padding-top: 7px;
+}
+#card-login .ui-btn-active {
+	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713)
+		!important;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053),
+		to(#ef6713), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) )
+		!important;
+}
+
+/* This is to remove up & down arrow from html 5 type=number */
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
+	/* display: none; <- Crashes Chrome on hover */
+	-webkit-appearance: none;
+	margin: 0;
+	/* <-- Apparently some margin are still there even though it's hidden */
+}
+
+.input_error {
+	border: 1px solid red
+}
+.contactlist {padding-bottom:10px}
+.contactlist div,.contactlist span,.contactlist a {
+	background: none !important;
+	border: 0px !important;
+	-webkit-box-shadow: none !important;
+	color: rgb(36, 137, 206) !important;
+}
+
+.MobileSolutions_arrow {
+	background: url(../images/iconOrangeArrow.png) no-repeat right 2px;
+	padding-right: 15px;
+	-webkit-background-size: 8px 8px;
+	background-size: 8px 8px;
+}
+
+#autocomplete {
+	position: absolute;
+	background: #fff;
+	border-bottom-left-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	margin-left: 12px;
+}
+#autocomplete ul.autocomplete-list {
+	border: 1px solid #c0c0c0;
+	border-bottom-left-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+}
+
+#autocomplete ul.autocomplete-list li {
+	height: 20px;
+	padding-top: 5px;
+	cursor: pointer;
+}
+
+#autocomplete ul.autocomplete-list span.via {
+	float: right;
+	margin-right: 7px;
+}
+
+/*CSS for Terms and Condition, Send Money FAQ, Validate Send Money Transactions */
+.send_money_validate p {
+	text-align: center;
+}
+
+.send_money_validate p.blckTxt {
+	font-weight: bold;
+	font-size: 12px;
+}
+
+.send_money_validate p.paypal {
+	text-align: center;
+	width: 115px;
+	margin: 0 auto;
+}
+.send_money_validate p.paypal span.grayTxt {
+	text-align: right !important;
+	padding-left: 30px !important;
+	color: silver;
+	font-weight: bold;
+	font-size: 11px;
+}
+.new_version {
+	font-size: 11px;
+	font-weight: bold;
+	color: #fff;
+	text-shadow: none;
+	text-align: center;
+	margin: 10px 0 10px 0
+}
+.new_version a {
+	color: #fff !important;
+}
+.paymentsummerytbl li .col1.bankinfo {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 66.66% !important;
+	white-space: nowrap;
+}
+/* date picker button styles  start*/
+a.date-picker {
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #5A5A5A),
+		color-stop(0.49, #626262), color-stop(0.5, #7C7C7C),
+		color-stop(1, #9A9A9A) ) !important;
+	padding: 3px 0;
+	color: white;
+	float: right;
+	width: 130px;
+	margin-top:0;
+}
+a.date-picker span {
+	border: none;
+}
+a.date-picker span.ui-btn-inner {
+	background: url(../images/button-calendar.png) no-repeat right 4px;
+	margin-right: 10px;
+	height: 16px;
+}
+a.date-picker .ui-btn-text {text-shadow: none !important;}
+
+a.date-picker.disabled {
+	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #A3A3A3),
+		color-stop(0.49, #A6A6A6), color-stop(0.5, #BDBDBD),
+		color-stop(1, #CBCBCB) ) !important;
+	border: 1px solid #9C9C9C;
+	text-shadow: none;
+}
+/* date picker button styles end */
+/********* css for date picker start *********/
+/*#calendar .ui-datepicker .ui-corner-all{
+                border-radius: 10px 10px 0 0 !important;
+                -webkit-border-radius: 10px 10px 0 0 !important;
+}*/
+table.ui-datepicker-calendar {
+	width: 100%;
+	border-collapse: collapse;
+}
+#calendar .ui-datepicker-header {
+	background: #424242 !important;
+	height: 27px;
+	font-size: 14px;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	text-align: center;
+	color: white;
+	padding-top: 15px;
+	/*border-radius: 10px 10px 0 0;
+	-webkit-border-radius: 10px 10px 0 0;*/
+	position: relative;
+}
+.ui-datepicker .ui-datepicker-title { line-height:15px !important;}
+table.ui-datepicker-calendar tbody {
+	text-align: center;
+}
+#calendar .ui-datepicker-calendar th {
+	background: #424242 !important;
+	font-size: 12px;
+	border: 1px solid #464646;
+	padding: 0 0 5px 0;
+	text-shadow: none;
+	color: white;
+}
+table.ui-datepicker-calendar tbody td {
+	border: 1px solid #464646;
+	height: 36px;
+	background: #9F9F9F;
+	font-size: 15px;
+	font-weight: bold;
+}
+table.ui-datepicker-calendar tbody td a {
+	text-decoration: none;
+	color: white;
+	text-align: center;
+}
+#calendar .ui-datepicker-unselectable {
+	color: #AAA;
+	background: #666;
+	text-shadow: none;
+	text-align: center;
+}
+
+#calendar .ui-datepicker-other-month.ui-datepicker-unselectable {
+	background: #505050;
+	color: #888;
+	text-shadow: none;
+	text-align: center !important;
+}
+#calendar  .ui-datepicker td span, #calendar  .ui-datepicker td a {text-align: center !important;}
+
+#calendar .ui-datepicker-current-day {
+	background: #F95317;
+}
+
+#calendar-cancel {
+	text-align: center;
+	display: block;
+}
+
+#calendar .ui-icon {
+	float: left;
+	text-indent: -9999px;
+	background: url("../images/DatepickerNav.png");
+	width: 30px;
+	height: 30px;
+	margin: 0 10px;
+}
+
+#calendar .ui-datepicker-next .ui-icon {
+	float: right;
+	background-position: 0 -30px;
+}
+#calendar {margin-bottom: 10px;}
+
+.ui-datepicker { padding: .2em 0 0; display: block !important; }
+/********* css for date picker ends *********/
+#cardLogin-pg .logout-button,
+#sendMoneyOverlay-pg .logout-button,
+#publicError-pg .logout-button,
+#forceUpgrade-pg .logout-button,
+#optionalUpgrade-pg .logout-button,
+#cardLogin-pg #commonPrivacyPolicy-pg .logout-button,
+#sendMoneyOverlay-pg #commonPrivacyPolicy-pg .logout-button,
+#publicError-pg #commonPrivacyPolicy-pg .logout-button,
+#forceUpgrade-pg #commonPrivacyPolicy-pg .logout-button,
+#optionalUpgrade-pg #commonPrivacyPolicy-pg .logout-button,
+#exploreDiscover-pg .logout-button,
+#customerService-pg .logout-button,
+#applyDiscoverCard-pg .logout-button,
+#loginErrorPage-Pg .logout-button,
+#strongAuthLocked-Pg .logout-button,
+#commonPrivacyPolicy-pg .logout-button,
+#commonSecurity-pg  .logout-button,
+#coCustomerServiceFaqsOptimized-pg  .logout-button,
+#commonBenefits-pg  .logout-button,
+#commonRewardsSeeDetails-pg .logout-button,
+#forgot-uid-or-pass-pg .logout-button,
+#forgot-uid-pg .logout-button,
+#optionalUpgrade-Pg .logout-button,
+#loginErrorPage-Pg .logout-button,
+#cardHome-pg .back-button a
+	{
+	display: none;
+}
+h6.ui-li-heading {
+	font-size: 12px;
+	margin: 0;
+	padding: 0;
+}
+.cardhome_ul a.activetab.non-clickable {
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(white),
+		to(#F0F5F7) ) !important;
+	background: -webkit-linear-gradient(top, white, #F0F5F7) !important;
+	background: -moz-linear-gradient(top, white, #F0F5F7) !important;
+	background: -ms-linear-gradient(top, white, #F0F5F7) !important;
+	background: -o-linear-gradient(top, white, #F0F5F7) !important;
+	margin: 0px !important;
+	font-size: 12px !important;
+	padding: 12px 7px 12px 7px !important;
+	border-top: 1px solid #AAA;
+}
+.yellow-bg.step2 {
+	display: inline-block;
+	text-align: center;
+	width: 85px;
+	margin-left: 10px;
+}
+.white-form .errormsg {
+	margin-top: 10px;
+}
+.ui-content-internalpages ol.discover {
+	font-size: 12px;
+	font-weight: bold;
+	margin: 0 0 0 0px;
+	padding: 0;
+}
+
+.ui-content-internalpages ol.discover li {
+	margin-bottom: 10px;
+	list-style: none;
+}
+
+.ui-content-internalpages ol.discover p {
+	font-size: 11px;
+	font-weight: normal;
+}
+
+.ui-page-mobile-sol {
+	background: #fff !important;
+	display: inline-block;
+	padding: 10px
+}
+
+.ui-content-internalpages ol.mobile-solution {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.ui-content-internalpages ol.mobile-solution li {
+	float: left;
+	margin-bottom: 10px;
+	list-style: none;
+	width: 99%;
+}
+
+.ui-content-internalpages ol.mobile-solution li a {
+	font-weight: normal;
+	text-decoration: none;
+}
+
+.ui-content-internalpages ol.mobile-solution li  span {
+	float: left;
+	font-size: 12px;
+	font-weight: bold;
+	margin: 0 0 0 0px;
+	padding: 20px 0 20px 20px;
+	list-style: none;
+}
+
+.ui-content-internalpages ol.mobile-solution li  img {
+	float: left;
+}
+
+.ui-content-internalpages ol.mobile-solution li ul li {
+	display: list-item;
+	list-style: disc;
+	list-style-position: inside;
+}
+
+.ui-content-internalpages ol.mobile-solution p {
+	font-size: 11px;
+	font-weight: normal;
+}
+
+.ecert-results {
+	border: none;
+	border-radius: 7px;
+	font-size: 14px;
+	padding: 0 0px;
+	overflow: hidden;
+	margin-bottom: 10px;
+	border-image: initial;
+}
+
+.ecert-results ul li {
+	list-style-type: none;
+	padding: 0 0 0 10px;
+}
+
+.ecert-results .data-row {
+	padding: 10px;
+	position: relative;
+	border-bottom: 1px solid #D6D6D6;
+	font-size: 12px;
+	overflow: hidden;
+}
+.data-row h3 {
+	color: #FA5317;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.ecert-content-first {
+	float: left;
+}
+
+.ecert-content-last {
+	display: block;
+	float: right;
+	margin: 0 5px;
+	font-weight: bold;
+}
+.account-data,.account-instructions {
+	font-size: 14px;
+	margin: 0 0 10px 0px;
+}
+.steps-header {
+	margin: 25px 0 10px 0;
+	font-size: 15px;
+	font-weight: bold;
+	color: #FA5317;
+}
+.normal-text {
+	font-weight: normal !important;
+	text-decoration: none;
+}
+#esa-yes, #esa-no {
+	width:20px;
+	float:left;
+}
+.ui-btn-hidden {opacity: 0;}
+.r3matchbtn .ui-btn {
+	padding:0px 10px 0px 10px;
+	margin-left:10px;
+	line-height:20px;
+	min-width:100px;
+	border:1px solid #FB4C0D;
+}
+.btnRedBorder .ui-btn {
+	border:1px solid #FB4C0D;
+}
+.r3matchbtn .ui-disabled {padding:0px 10px 0px 10px;
+line-height:20px;
+min-width:100px; border:0px
+}
+.r3matchbtn .ui-btn .ui-btn-inner {
+	border: none !important;
+}
+.r3matchbtn a {
+	width: 70px ;
+	display: inline-block;
+	padding: 8px 0px 8px 15px;
+	margin-right: 10px;    
+}
+.lineheight20px {line-height:20px}
+.wraper .socialnetIcon li {padding:15px  10px 15px 10px}
+.pay-pal-logo{
+background:url(../images/pay-pal.png);
+width:85px;
+height:17px;
+margin-top:4px;
+}
+.ui-content-internalpages ul.socialnetIcon a {
+	float:none !important;
+	color:#267BB1 !important;
+	font-weight:bold !important;
+	font-size:13px !important; 
+	text-decoration:none;
+}
+.ui-content-internalpages ul.socialnetIcon li div{
+	padding-left:32px;
+	line-height:21px;
+}
+.ui-content-internalpages ul.socialnetIcon li span.rightarrow {background:url(../images/blueArrow.png) no-repeat center center; float:right; height:22px;}
+.ui-content-internalpages ul.socialnetIcon li.cashback-blog div{background:url(../images/community-sprite.png) no-repeat 5px 0px !important;}
+.ui-content-internalpages ul.socialnetIcon li.discover-blog div{background:url(../images/community-sprite.png) no-repeat 5px -26px !important;}
+.ui-content-internalpages ul.socialnetIcon li.facebook div{background:url(../images/community-sprite.png) no-repeat 5px -50px !important;}
+.ui-content-internalpages ul.socialnetIcon li.twitter div{background:url(../images/community-sprite.png) no-repeat 5px -77px !important;}
+
+.logo-img a,.logo-img div {
+	background: url(../images/handsetLoginLogo.png);
+	display: inline-block;
+	width: 130px;
+	height: 21px;
+	-webkit-background-size:130px 21px;
+	background-size:130px 21px;
+}
+.redeemPointsIcon {
+background: url(../images/yellow-doller1.png) no-repeat right bottom;
+width: 136px;
+height: 14px;
+display: inline-block;
+position: relative;
+margin-top: 1px;
+margin-right: 6px;
+}
+/* retina image changes */
+@media ( -webkit-min-device-pixel-ratio :2) {
+	.cardhome_ul a .col2 {
+	background: url(../images/nav-arrow2x.png) no-repeat right 2px;
+	-webkit-background-size: 12px 24px;
+	background-size: 12px 24px;
+	}
+	.account-list-view li a.bluelink {
+	background: url(../images/blueArrow-2x.png) no-repeat right center !important;
+	-webkit-background-size: 12px 12px;
+	background-size: 12px 12px;
+	}
+	.ui-content-internalpages ul.socialnetIcon li span.rightarrow {background:url(../images/blueArrow-2x.png) no-repeat center center; 
+	-webkit-background-size: 12px 12px;
+	background-size: 12px 12px;
+	}
+	.yellow-bg-value {
+		background: url("../images/pill2x.png") no-repeat center -19px;
+		-webkit-background-size: 75px 38px;
+		background-size: 75px 38px
+	}
+	.comp-logo-list-active .yellow-bg,.yellow-bg {
+		background: url("../images/pill2x.png") no-repeat center -19px;
+		-webkit-background-size: 75px 38px;
+		background-size: 75px 38px
+	}
+	.comp-logo-list-deactive .yellow-bg {
+		background: url("../images/pill2x.png") no-repeat center top;
+		-webkit-background-size: 75px 38px;
+		background-size: 75px 38px
+	}
+	.redeemPointsIcon {
+		background: url(../images/money-to-money2x.png) no-repeat right bottom;
+		-webkit-background-size: 40px 14px;
+		background-size: 40px 14px
+	}
+	.footer-text-icon span {
+		background: url(../images/lock_2x.png) no-repeat right 1px;
+		-webkit-background-size: 9px 10px;
+		background-size: 9px 10px
+	}
+	.signin {
+		background: url(../images/checkmark2x.png) no-repeat left center;
+	}
+	.MobileSolutions {
+		background: url('../images/iconMobilePhone2x.png') no-repeat left top;
+	}
+	.logo-img a,.logo-img div {
+		background: url(../images/discover-logo2x.png) no-repeat 0 50%;
+		-webkit-background-size: 130px 21px;
+		background-size: 130px 21px
+	}
+	.pay-pal-logo{
+		background:url(../images/pay-pal2x.png) no-repeat;
+		-webkit-background-size: 85px 17px;
+		background-size: 85px 17px
+	}	
+	.ui-content-internalpages ul.socialnetIcon li div {
+	background: url(../images/community-sprite2x.png) no-repeat;
+	-webkit-background-size: auto 96px;
+	background-size: auto 96px
+	}
+	.ui-content-internalpages ul.socialnetIcon li.cashback-blog div{
+	background:url(../images/community-sprite2x.png) no-repeat 5px 0px !important;
+	-webkit-background-size: 22px 96px;
+	background-size: 22px 96px
+	}
+	.ui-content-internalpages ul.socialnetIcon li.discover-blog div{
+	background:url(../images/community-sprite2x.png) no-repeat 5px -26px !important;
+	-webkit-background-size: 22px 96px;
+	background-size: 22px 96px
+	}
+	.ui-content-internalpages ul.socialnetIcon li.facebook div{
+	background:url(../images/community-sprite2x.png) no-repeat 5px -50px !important;
+	-webkit-background-size: 22px 96px;
+	background-size: 22px 96px
+	}
+	.ui-content-internalpages ul.socialnetIcon li.twitter div{
+	background:url(../images/community-sprite2x.png) no-repeat 5px -77px !important;
+	-webkit-background-size: 22px 96px;
+	background-size: 22px 96px
+	}	
+	#pg-footer li div {
+	background:url(../images/handsetNavSpriteTrans@2x.png) no-repeat center top;
+	-webkit-background-size: 515px 98px;
+	background-size: 515px 98px
+	}
+	#pg-footer li div#home {background-position:-1px 0px;}
+	#pg-footer li div.ui-btn-active#home {background-position:-1px -49px; color: #fff;}
+	#pg-footer li div#account  {background-position: -66px 0px;}
+	#pg-footer li div.ui-btn-active#account {background-position:-66px -49px; color: #fff;}
+	#pg-footer li div#payments{background-position:-130px 0px;}
+	#pg-footer li div.ui-btn-active#payments {background-position: -130px -49px;color: #fff;}
+	#pg-footer li div#cashback {background-position:-193px 0px;}
+	#pg-footer li div.ui-btn-active#cashback{background-position:-193px -49px;color: #fff;}
+	#pg-footer li div#more {background-position:-259px 0px;}
+	#pg-footer li div.ui-btn-active#more{background-position:-259px -49px;color: #fff;}
+	#pg-footer li div#expdiscover {background-position:-452px 0px;}
+	#pg-footer li div.ui-btn-active#expdiscover{background-position:-452px -49px;color: #fff;}
+	#pg-footer li div#sendmoney {background-position:-387px 0px;}
+	#pg-footer li div.ui-btn-active#sendmoney{background-position:-387px -49px;color: #fff;}
+	#pg-footer li div#miles {background-position:-323px 0px;}
+	#pg-footer li div.ui-btn-active#miles{background-position:-323px -49px;color: #fff;}
+	/*.back_btn_normal,#back {
+		background: url(../images/back-button2x.png) no-repeat;
+		-webkit-background-size: 50px 29px;
+		background-size: 50px 29px
+	}*/
+}
+
+#card-login .ui-slider-switch .ui-btn-active{
+background: rgb(82,157,233) !important;
+background: -moz-linear-gradient(top, rgba(82,157,233,1) 2%, rgba(96,168,242,1) 47%, rgba(138,191,253,1) 68%, rgba(150,198,254,1) 100%) !important;
+background: -webkit-gradient(linear, left top, left bottom, color-stop(2%,rgba(82,157,233,1)), color-stop(47%,rgba(96,168,242,1)), color-stop(68%,rgba(138,191,253,1)), color-stop(100%,rgba(150,198,254,1))) !important;
+background: -webkit-linear-gradient(top, rgba(82,157,233,1) 2%,rgba(96,168,242,1) 47%,rgba(138,191,253,1) 68%,rgba(150,198,254,1) 100%) !important;
+background: -o-linear-gradient(top, rgba(82,157,233,1) 2%,rgba(96,168,242,1) 47%,rgba(138,191,253,1) 68%,rgba(150,198,254,1) 100%) !important;
+background: -ms-linear-gradient(top, rgba(82,157,233,1) 2%,rgba(96,168,242,1) 47%,rgba(138,191,253,1) 68%,rgba(150,198,254,1) 100%) !important;
+background: linear-gradient(top, rgba(82,157,233,1) 2%,rgba(96,168,242,1) 47%,rgba(138,191,253,1) 68%,rgba(150,198,254,1) 100%) !important;
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#529de9', endColorstr='#96c6fe',GradientType=0 ) !important;
+ -webkit-box-shadow:none!important;box-shadow:none!important; 
+ }
+#card-login .ui-slider.ui-btn-corner-all, #card-login .ui-slider-label.ui-btn-corner-all, .ui-slider-inneroffset .ui-btn-corner-all 
+ { border-radius: 5px;	-webkit-border-radius: 5px;	}
+ 
+input[type="radio"] {visibility:hidden} 
+.ui-icon-loading {
+	background: url(../images/ajaxLoader.gif);
+}
+.ui-select .ui-btn-icon-right .ui-btn-inner {
+	margin-top: 0px;
+}
+.white-box-rd-corner .ui-select .ui-btn-inner {
+	padding-top: 6px;
+	line-height: 16px;
+	margin-top: -1px;
+}
+.ui-select .ui-icon {
+	background: url("../images/downArrow.gif") no-repeat scroll -10px -5px
+		rgba(0, 0, 0, 0.4) !important;
+	-webkit-background-size: 48px 43px;
+	background-size: 48px 43px;
+	-webkit-border-radius: 9px 9px 9px 9px;
+}
+.managebank {
+	padding-top: 7px;
+	padding-bottom: 9px;
+	display: inline-block;
+	font-size: 14px;
+}
+.errormsg_heading_noimg {
+	background: none !important;
+	padding-left: 0 !important;
+}
+ol.lifont h3, ol.lifont p, ol.lifont li{font-size: 12px !important;}
+ol.lifont li{font-weight : bold;}
+.ui-body-c,.ui-overlay-c{text-shadow:none!important}
+.eCertBlueLinkFAQ {
+	color: #267BB1 !important;
+    text-decoration: none !important;
+}
+.marginleft10px{margin-left:10px;}
+.ui-icon-radio-on{background-image:url(../images/icons-18-white.png);-moz-background-size:776px 18px;-o-background-size:776px 18px;-webkit-background-size:776px 18px;background-size:776px 18px}
+ 
+.ui-btn-up-c.ui-btn-up-hover-c,
+.ui-btn-hover-c.ui-btn-up-down-c {
+	padding: 0 !important;
+}
+.ui-btn-up-c.ui-disabled {
+	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713) !important;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#a2a2a2),
+		to(#818181), color-stop(0.5, #a2a2a2), color-stop(0.51, #818181) ) !important;
+	border: 1px solid #ccc;
+	color: white;
+	border-radius: 6px !important;
+	-webkit-border-radius: 6px !important;
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: none;
+	display:inline-block;	
+	opacity:1;
+}
+.block{display:block;}
+.hide{display:none;}
+/* 4 col table  */
+.payment_history  {background: #fff; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px;}
+.payment_history  li {background: #fff;}
+.payment_history  li:first-child {text-align: center; background: #ccc; color: #000; font-weight: bold !important;}
+.payment_history   .ui-body-c .ui-link, .redeem_history .ui-li-divider, .ui-li-static
+{font-size: 12px !important; font-weight: normal !important;}
+.payment_history  .col1 {float: left; width: 50%;}
+.payment_history  .col2 {float: left; width: 21%}
+.payment_history  .col3 {float: right; width: 25%; text-align: right; /*padding-right:10px*/ font-size:13px;}
+.payment_history li:first-child .col3 {font-size:12px;}
+.payment_history .rh_header .col1 {text-align:left;}
+.payment_history .rh_header .col2  {text-align:left}
+.payment_history .rh_header .col3 {text-align:right !important; padding-right:3px}
+.ui-select .ui-disabled {display:block !important; padding: 0 0.9px 0 5px !important; }
+
+/* changes made from native app start */
+.ui-radio .ui-btn-icon-left .ui-icon{
+left:1px;
+}
+.ui-radio .ui-btn-icon-left .ui-btn-inner{
+padding-left:30px;
+}
+.ui-loader{
+display : none !important;
+}
+#minpay{padding-bottom:6px;}
+.redtext10px{font-size:10px; color:red;}
+input.amount{
+      width: 40px !important;
+      display: inline-block;
+      margin: 10px 2px 8px 2px;
+      line-height: 26px;
+	  border: 1px solid #666;
+}
+/* changes made from native app end */
+#list1.autoUL, #list2.autoUL {display:inline-block !important; margin: -7px 0 10px 0 !important;; border-radius: 7px !important;	-webkit-border-radius: 7px !important; width:99%; border:1px solid #D6D5D5 !important}
+#list1.autoUL li.autoLI:first-child, 
+#list2.autoUL li.autoLI:first-child {-webkit-border-top-left-radius: 8px !important;	-webkit-border-top-right-radius: 8px !important;}
+#list1.autoUL li.autoLI:last-child,
+#list2.autoUL li.autoLI:last-child {-webkit-border-bottom-left-radius: 8px !important;	-webkit-border-bottom-right-radius: 8px !important;}
+#list1.autoUL li.autoLI, 
+#list2.autoUL li.autoLI { padding:8px;}
+#list1.autoUL li.autoLI span#autoname,
+#list2.autoUL li.autoLI span#autoname  {float:left}
+#list1.autoUL li.autoLI span#autoemail,
+#list2.autoUL li.autoLI span#autoemail {float:right}
+
+
+.internalPopup, .internalPopup1 {
+height: 120px;
+position: absolute;
+z-index: 999;
+width: 96%;
+display: block;
+}
+.noborder li {border-left:0px !important; border-right:0px !important}
+
+.ui-radio.ui-disabled {
+      background-color:none !important;
+      background-image:none;
+      border: 0px !important;
+      color: inherit !important;
+      border-radius: 0px !important;
+      -webkit-border-radius: 0px !important;
+      font-weight: inherit !important;
+      font-size: 0px !important;
+      text-shadow: none !important;
+      display: inherit !important;
+      padding: inherit !important;
+      opacity: 0.5 !important;
+}
+#login-pg .ui-bar-a, #cardLogin-pg .ui-bar-a,#forceUpgrade-pg .ui-bar-a,#sendMoneyOverlay-pg .ui-bar-a,
+ #publicError-pg .ui-bar-a,#forceUpgrade-pg .ui-bar-a,#optionalUpgrade-pg .ui-bar-a, #loginErrorPage-Pg .ui-bar-a, #strongAuthLocked-Pg .ui-bar-a
+{
+border:none !important;	
+}
+.toprow1 {margin:5px 0 5px 0px}
+.ui-btn-inner {
+border-top: 0px;
+}
+#milesSignup2_Div h1{
+	font-size: 20px;
+	color:#FA5317;
+}
+#cashBackBonusSignUpConfirm_Div h1{
+	font-size: 20px;
+	color:#FA5317;
+}
+
+#cashBackBonusSignUpConfirm_Div p{
+font-weight: normal;
+margin: 0px 0 3px 0;
+}
+#cashBackBonusSignUpConfirm_Div ul li{
+list-style: disc inside!important;
+}
+
+
+/** DD START  **/
+ul#cashbackBonusSignup_promotionList li.DD,ul#milesSignup1_promotionList  li.DD{
+padding: 10px 5px 15px 10px !important;
+-webkit-border-radius: .6em !important;
+box-shadow: 0 1px 4px rgba(0,0,0,.3) !important;
+margin-bottom:15px;
+background:#fff;	
+}
+
+ul#cashbackBonusSignup_promotionList li.DD .ui-block-a,ul#milesSignup1_promotionList li.DD .ui-block-a{
+width:56%;
+float:left; 
+padding:0; 
+margin:0; 
+list-style:none;
+}
+ul#cashbackBonusSignup_promotionList li.DD .ui-block-a ul,ul#milesSignup1_promotionList li.DD .ui-block-a ul{
+width:100%;
+float:left; 
+padding:0; 
+margin:0; 
+list-style:none;}
+
+ul#cashbackBonusSignup_promotionList li.DD .ui-block-a ul  li,ul#milesSignup1_promotionList li.DD .ui-block-a ul  li{
+display:block;
+padding:0 0 3px 0; 
+margin:0; 
+}
+ul#cashbackBonusSignup_promotionList li.DD .ui-block-a ul  li.italic,ul#milesSignup1_promotionList li.DD .ui-block-a ul  li.italic{font-style:italic}
+ul#cashbackBonusSignup_promotionList li.DD .ui-block-a ul li:first-child,ul#milesSignup1_promotionList li.DD .ui-block-a ul li:first-child {
+font-weight:bold;
+}
+
+ul#cashbackBonusSignup_promotionList li.DD .ui-block-a ul li a.ui-link,ul#milesSignup1_promotionList li.DD .ui-block-a ul li a.ui-link{
+color:#2489CE;
+font-weight:bold;
+text-decoration:none;}
+
+ul#cashbackBonusSignup_promotionList li.DD .ui-block-b,ul#milesSignup1_promotionList li.DD .ui-block-b{
+width:36%;
+margin-left:5px;
+}
+ul#cashbackBonusSignup_promotionList li.DD .ui-block-b span.signed-up,ul#milesSignup1_promotionList li.DD .ui-block-b span.signed-up{
+background: url("../images/checkBox.png") no-repeat left;
+padding-left:18px;
+font-size: 12px;
+font-weight: bold;
+display: inline-block;
+height: 19px;
+-webkit-background-size: 15px 20px;
+background-size: 15px 20px;
+color:#FA5317;
+}
+ul#cashbackBonusSignup_promotionList li.DD .ui-block-b .ui-btn-up-c, 
+ul#cashbackBonusSignup_promotionList li.DD .ui-block-b .ui-btn-hover-c,
+ul#milesSignup1_promotionList li.DD .ui-block-b .ui-btn-up-c,
+ul#milesSignup1_promotionList li.DD .ui-block-b .ui-btn-hover-c{
+	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053),
+		to(#fc510b), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) );
+	border: 1px solid rgba(241, 113, 20, 0.5);
+	color: white;
+	border-radius:6px;
+	-webkit-border-radius: 6px !important;
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: none;
+	line-height: 22px;
+	text-align: center;
+	-webkit-box-shadow: none;
+	width: 90px;
+}
+ul#cashbackBonusSignup_promotionList li.DD .ui-block-b,ul#milesSignup1_promotionList li.DD .ui-block-b
+{
+                float:right;
+                margin-top:9%;
+                margin-right:5px;
+}
+#milesSignupConfirm_Div h1{
+	font-size: 20px;
+	color:#FA5317;
+}
+
+#milesSignupConfirm_Div p{
+	margin: 0px 0 3px 0;
+}
+
+
+
+#milesSignup2_Div h1{
+	font-size: 20px;
+	color:#FA5317;
+}
+
+#milesSignup2_Div p{
+	margin: 0px 0 3px 0;
+}
+
+#cashBackBonusSignUp_Div ul li{
+	list-style: disc inside!important;
+}
+
+#cashBackBonusSignUp_Div ul li{
+	list-style: disc inside!important;
+}
+
+#cashBackBonusSignUp_Div p{
+font-weight: normal;
+margin: 0px 0 3px 0;
+}
+
+#cashBackBonusSignUpConfirm_Div h1{
+	font-size: 20px;
+	color:#FA5317;
+}
+
+#cashBackBonusSignUpConfirm_Div p{
+font-weight: normal;
+margin: 0px 0 3px 0;
+}
+#cashBackBonusSignUpConfirm_Div ul li{
+list-style: disc inside!important;
+}
+.ui-content-internalpages .wraper ul#cashbackBonusSignup_promotionList ul,
+.ui-content-internalpages .wraper ul#milesSignup1_promotionList ul{
+	border:0px!important;background: none 
+	!important;box-shadow:none !important;
+}
+
+/** DD END  **/
+
+.ui-radio label
+{background:white !important; background-image:white !important}
+
+/*aclite mode outage related css*/
+.error-box {
+     height: auto;
+     font-size: 8px;
+     text-align: left;
+     font-weight: normal;
+     line-height: 12px;
+     border: 1px solid red;
+     padding: 5px;
+     margin-bottom: 8px;     
+}
+.ui-content .ui-listview-inset {margin: 7px 0;}
+.cancelbtnarea {width: 60px !important;
+padding: 8px 15px 8px 15px !important;
+margin: auto;}
+.redeemCashbackEcert2_amtselectDD {width:68%}
+
+
+/* ul.ui-shadow bellow css added by client  start */
+ul.ui-shadow, 
+ul.ui-btn-up-a, 
+ul.ui-btn-hover-a, 
+ul.ui-btn-down-a, 
+ul.ui-body-b, 
+ul.ui-btn-up-b, 
+ul.ui-btn-hover-b, 
+ul.ui-btn-down-b, 
+ul.ui-bar-c, 
+ul.ui-body-c, 
+ul.ui-btn-up-c, 
+ul.ui-btn-hover-c, 
+ul.ui-btn-down-c, 
+ul.ui-bar-c, 
+ul.ui-body-d, 
+ul.ui-btn-up-d, 
+ul.ui-btn-hover-d, 
+ul.ui-btn-down-d, 
+ul.ui-bar-d, 
+ul.ui-body-e, 
+ul.ui-btn-up-e, 
+ul.ui-btn-hover-e, 
+ul.ui-btn-down-e, 
+ul.ui-bar-e, 
+ul.ui-overlay-shadow, 
+ul.ui-shadow, 
+ul.ui-btn-active, 
+ul.ui-body-a, 
+ul.ui-bar-a { 
+         text-shadow: none; 
+         box-shadow: none; 
+         -webkit-box-shadow: none; 
+} 
+/* ul.ui-shadow bellow css added by client  end */
+
+.normaltext a {font-weight: normal !important;}
+
+#sendmoremoney .ui-btn {width:130px}
+#statementCredit2-pg h3 {margin-bottom:18px;}
+#directDeposit2-pg h3 {margin-bottom:18px;}
+#redeemECert3-pg h3 {margin-bottom:11px;}
+#redeemCashbackLanding-pg .small_btn_110px {width: 130px; margin-left:10px;}
+.marginL3px {margin-left: 3px;}
+.marginB5px {margin-bottom:5px;}
+#accountSummary-pg .bigboldBTN  .ui-btn {width:150px; line-height:20px;}
+.bigboldBTN  a {width:150px; line-height:20px}
+#paymentStep1-pg  .wraper2 #calendar { max-width:100% !important}
+#redeemECert4-pg #redeemECert4_redeemInstruct a {color:#2489CE}
+.marginTB15{ margin-top:15px !important; margin-bottom:15px !important;}
+.faq_send_money  ol {padding:0px 10px 0px 20px}
+.longPageHeight p, .longPageHeight h3{font-size:12px;}
+#sendMoney1-pg input.ui-input-text.amount {text-align: left !important; padding-left:2px !important; width:60px !important}
+#strongAuthFirstQues-pg .white-form {padding:5px}
+#strongAuthFirstQues-pg .collapsible {margin-bottom: 8px !important;}
+#cashBackBonusSignUp_Div p.signin{
+                font-weight: bold;
+}
+
+#optionalUpgrade-pg #card-login {margin: 10px 1px 10px 11px;}
+#optionalUpgrade-pg #optionalUpgradeMsg {margin: 20px 0 20px 0px; display: block; color:#000;}
+#forceUpgrade-pg .errormsg {margin: 20px 0 20px 35px; display: block;}
+
+#community-pg .ui-content-internalpages ul.rounded-list-box  li:last-child, #exploreDiscover-pg .ui-content-internalpages ul.rounded-list-box  li:last-child
+{
+    border: 1px solid #D6D5D5 !important;
+} 
+#paymentStep1-pg .disableActiveRadio .ui-disabled {opacity:1 !important}
+
+.sendMoneyVideoImg {background: url(../images/sendMoneyVideo.png) no-repeat center center;
+-webkit-background-size: 198px 115px;
+	background-size: 198px 115px;
+width:198px; height:115px; margin:auto}
+
+#dummyDiv{
+    background-color:#00ff00;
+    position:absolute;
+    left:0px;
+    top:0px;
+    z-index:9999;
+    opacity:0;
+    filter:alpha(opacity=1);
+}
+
+.marginbottom10px {
+    margin-bottom: 10px
+}
+
+#hdrbgimg {
+	background: url(../images/headerBg.png);
+}
+
+#statementCredit2-pg a.small_btn_110px {
+    background-image:-webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713) !important; 
+    background-image:-webkit-gradient(linear, left top, left bottom, from(#ffc053), to(#ef6713), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) ) !important;
+}
+#statementCredit2-pg a.small_btn_110px:active {
+    background-image: -webkit-linear-gradient(#ec6000, #ff7509 50%, #ff9019 51%, #ffc45f) !important;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#ec6000), to(#ffc45f), color-stop(0.5, #ff9019), color-stop(0.51, #ff9019) ) !important;
+}
+ 

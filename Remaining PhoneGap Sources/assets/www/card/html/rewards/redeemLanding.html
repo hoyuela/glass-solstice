@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Account Home</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="redeemCashbackLanding-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+		<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+
+				<div>
+					<h1>Redeem Cashback Bonus:</h1>
+				</div>
+				<p>
+					Cashback Bonus Balance: <span class="orangetxt boldtext" id="redeemLanding_CashBackBonusBalance"></span>
+				</p>
+				<h3>What would you like to do with your <i>Cashback Bonus?</i></h3>
+				<ul data-role="listview" data-theme="d" data-inset="true"
+					class="white-box-rd-corner CashbackBonus  redeem_landing" >
+					<li>
+						<div id="gri1">
+							<div id="grid11" class="accountsearchresult">
+								<div class="normaltext"  >Redeem for eCertificates and get more from your <i>Cashback Bonus</i>.</div>
+								<div id="div12" class="col2 amount">
+									<a href="#" data-role="button" onclick="navigation('../rewards/redeemCashbackEcert1');" class="small_btn_110px">eCertificate</a>
+								</div>
+							</div>
+						</div></li>
+					<li>
+						<div id="gri1">
+							<div id="grid11" class="accountsearchresult">
+								<div class="normaltext">Credit your <i>Cashback Bonus</i> to your Discover Card account.</div>
+								<div id="div12" class="col2 amount" >
+									<a href="#" data-role="button" class="small_btn_110px" onclick="navigation('../rewards/statementCredit1');">Statement Credit</a>
+								</div>
+							</div>
+						</div></li>
+					<li>
+						<div id="gri1">
+							<div id="grid11" class="accountsearchresult">
+								<div class="normaltext">Deposit your <i>Cashbank Bonus</i> directly to your bank account.</div>
+								<div id="div12" class="col2 amount">
+									<a href="#" data-role="button" class="small_btn_110px" onclick="navigation('../rewards/directDeposit1');">Direct Deposit</a>
+								</div>
+							</div>
+						</div></li>
+				</ul>
+			</div>
+			<p>
+			For other redemption options visit <a href="#" onclick="redirectToPageAfterConfirm('DISCOVERLINK');" class="bluelink">discover.com</a>
+			</p>
+			<div id="footnotes" class="footnotes" ></div>
+		</div>
+
+		<!-- content end -->
+		<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
+            <footer id="footer" class="mnu_footer">
+			</footer>
+				</div>
+	</div>
+	<!-- page end -->
+</body>
+</html>

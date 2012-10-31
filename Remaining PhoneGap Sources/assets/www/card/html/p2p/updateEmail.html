@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Home</title>
+<meta name="viewport" content="width=device-width,height=device-height, initial-scale=1">
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="updateEmail-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+			<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<div class="floatleft" id="name">
+					<h1>Send Money:</h1>
+				</div>
+				<div class="floatright pay-pal-logo"> </div>
+				<div class="clearboth"></div>
+				<div id="card-info">
+					<!-- PayPal image required here -->
+				</div>
+				<h2>Your Email Address is Required </h2>
+				<div>
+					<p>
+						<b style="color:red;" id="errorEmailRequired"></b>
+					</p>
+				</div>
+
+				<ul class="whitebg-list-view">
+					<li>Email Address:
+					<div id='updateEmailErrorMsg' style="color:red;"></div>
+								<input type="text" name="name" id="updateEmail" onKeyup="dfs.crd.p2p.enableEmailBtn(this);"
+								placeholder="E-mail Address" />
+					<p class="note">An e-mail address is required to use this feature so you can receive e-mails regarding your Money Messenger transactions. We will be notifying you via e-mail once your transaction has been sent and
+				when the money is claimed.</p> <p class="note">The e-mail address you provide will also be used for managing your Discover card account and to send you special offers. In the future, you may change this e-mail address in your account profile.
+				</p></li>
+					
+				</ul>
+
+				<div style="width: 100%;"></div>
+		
+				<div class="txtcenteraln r3matchbtn">
+					<a href="#" class="bluelink boldtext" onclick="navigation('../p2p/sendMoneyLanding');">Cancel</a>
+					<input type="button" disabled="disabled" id="updateContinue" data-inline="true"
+						onclick="dfs.crd.p2p.postUpdateEmailAddress();" data-role="button" value="Save & Continue" />
+				</div>
+
+
+				<div class="clearboth"></div>
+			</div>
+
+			<div id="footnotes" class="footnotes" ></div>
+		</div>
+
+		<!-- content end -->
+
+	<div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
+        <footer id="footer" class="mnu_footer">
+        </footer>
+		</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

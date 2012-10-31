@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Discover - Gift Card</title>
+    </head>    
+    <body>
+        <!--page start -->
+        <div data-role="page" id="redeem-gift-card" class="cbb-page rd-page">
+            <!--header start -->
+            <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed" data-tap-toggle="false">
+                 <header id="header" class="cmn_header">
+				</header>
+                 <div class="clearboth"></div>
+                 <section id="cbbSection">
+                    <p class="cbb-panel">Current Cashback Bonus: <span id="giftCard1_CashBackBonusBalance"></span>&nbsp;</p>
+                </section>                 
+            </div>
+            <div id="pgPadding"></div>
+            <div class="progress-indicator">
+                <ul>
+                    <li><a href="#" class="active">1. Review/Edit</a></li>
+                    <li><a href="#">2. Verify</a></li>
+                    <li><a href="#">3. Confirmation</a></li>
+                </ul>
+            </div>   
+            <!-- header end -->
+            <!-- Middle content start from here-->
+            <div data-role="content" class="ui-content-internalpages pop-content">
+            	         
+                    <h1 class="clearboth">Discover Gift Card</h1>
+                    <div class="gift-card-section">
+                        <div class="gift-card-content">
+                            <a href="#" data-transition="pop" id="giftCardImgLink">
+                                <img id="giftCardImage" alt="" width="116" height="73" class="current-img" align="left">
+                            </a>
+                            <p class="padd5">Use wherever Discover Card is accepted.</p>
+                            <span class="classic-heading" id="giftCard1_Design"></span>
+                            <p class="small-font">Touch card to choose design</p>
+                        </div>
+                        <div class="clearboth" id="amountCombo">
+                            <label for="giftcard1_AmountSelectField">Amount:</label>
+                            <span id="giftcard1_AmountSelectField"></span>
+                             <div class="gift-card-error-msg">The first or last name is not valid. Please update the first or last name or call 1-800-DISCOVER for assistance.</div>
+                            <label>First Name: (Optional)</label>
+                            <input type="text" name="first-name" id="first-name" class="error-field" placeholder="First Name" value="" maxlength="10"/>
+                            <label>Last Name: (Optional)</label>
+                            <input type="text" name="last-name" id="last-name" class="error-field" placeholder="Last Name" value="" maxlength="15" />
+                        </div>
+                        <div class="btm-links">
+                            <a href="#" data-transition="pop" id="giftcard1terms">Terms &amp; Conditions</a>
+                            <a href="#" data-role="button" id="dgcard-continue-btn" class="common-btn">Continue</a>
+                        </div>
+                    </div>
+            </div>
+            <div id="overlay"></div>
+            <div id="overlay_wraper"></div>
+           <div id="footnotes" class="footnotes"></div>
+            <!-- Middle content end here-->
+            <div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter" data-tap-toggle="false">
+                <footer id="footer" class="mnu_footer">
+       			 </footer>
+            </div>
+            
+        </div>		
+    </body>
+
+</html>

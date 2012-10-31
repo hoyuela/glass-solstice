@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<devices>
+	<!--  
+	Device collection to release all camera resources during checks captures
+	(stop/start preview).
+	 -->
+	
+	<device>
+		<brand>verizon</brand>
+	    <sdk_level>10</sdk_level>
+	    <model>DROID RAZR</model>
+	</device>
+	
+	<device>
+		<brand>tmobile</brand>
+	    <sdk_level>10</sdk_level>
+	    <model>T-Mobile G2</model>
+	</device>	
+</devices>

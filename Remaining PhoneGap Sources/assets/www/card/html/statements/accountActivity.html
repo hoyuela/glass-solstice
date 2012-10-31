@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Account Activity</title>
+</head> 
+<body>
+	<!--page start  -->
+	<div data-role="page" id="account-activity">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+			<header id="header" class="cmn_header"></header>
+		</div>
+		<!-- header end -->
+
+		 <!-- content start -->
+		 <div data-role="content" class="ui-content-internalpages ui-content" role="main">
+		   <div id="r4-wrap">
+			<div class="wrapper">
+				<h1>Account Activity</h1>
+				<p class="view-message">View Transactions by Activity Period:</p>
+				<div class="select-range" data-theme="d" id="activitySelection">
+					<select data-theme="d" id="activity-selection"></select>
+				</div>
+				<p>To narrow list, <a href="#" id="js-search-transactions-link">search transactions</a></p>
+				
+				<!-- Developer's Note: add the hidden class below to hide pending transactions. -->
+				<div id="pending-transactions">
+					<h2>Pending Transactions</h2>
+					<p>
+						Pending transactions are transactions that have been deducted from your available credit but have not yet posted to your account.
+					</p>
+					<div class="show-hide">	
+						<p class="show-hide-content" style="display: none; ">
+		               			Transactions may take up to three calendar days to post.<strong> Pending descriptions and amounts may differ once posted </strong>
+		               			due to merchants sending authorization requests before the final purchase amount is known. This commonly occurs with hotel, restaurant, gas station 
+		               			or car rental transactions.<br/><br/>Transactions cannot be disputed until they post to your account.
+		                </p>
+		                <p>
+							<a class="show-hide-link" data-text-on="View Less" data-text-off="Learn More" href="#">Learn More</a>
+						</p>
+					</div>
+				
+					<ul class="transaction-list" data-role="listview" data-theme="d" data-inset="true" id="js-pending-list">
+					</ul>
+					<!-- / .transaction-list -->
+				
+				</div>
+				<!-- / .pending-transactions -->
+				
+				<div id="posted-transactions">
+					<h2 id="js-transactions-title">Posted Transactions</h2>
+				
+					<ul class="transaction-list" data-role="listview" data-theme="d" data-inset="true" id="js-trans-list">
+					</ul>
+					<div class="clr"><!-- --></div>
+					<!-- / .transaction-list -->
+					
+					<div id="load-more-button">
+						<a id="load-more" class="small_btn" data-role="button" href="#">Load More Transactions</a>	
+					</div>
+					<!-- / #load-more-button -->
+									
+				</div>
+				<!-- / .posted-transactions -->
+				
+			  </div>
+			  <!-- / .wrapper -->
+			 </div>
+			<div id="footnotes" class="footnotes" ></div>
+		 </div>
+		 <!-- content end -->
+		<div data-role="footer" id="pg-footer" data-position="fixed" data-id="myfooter" data-tap-toggle="false">
+			<footer id="footer" class="mnu_footer">
+			</footer>
+		</div>
+	</div>
+	<!--page end -->
+</body>
+</html>
