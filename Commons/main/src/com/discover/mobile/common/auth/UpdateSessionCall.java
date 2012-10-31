@@ -16,7 +16,7 @@ import com.discover.mobile.common.net.response.AsyncCallback;
 
 public class UpdateSessionCall extends NetworkServiceCall<UpdateSessionResult> {
 	
-	private static String TAG = AuthenticateCall.class.getSimpleName();
+	private static final String TAG = UpdateSessionCall.class.getSimpleName();
 	
 	private final TypedReferenceHandler<UpdateSessionResult> handler;
 	
