@@ -1,6 +1,7 @@
 package com.discover.mobile.common.net;
 
 import static com.discover.mobile.common.ThreadUtility.assertCurrentThreadHasLooper;
+import static com.discover.mobile.common.ThreadUtility.assertMainThreadExecution;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -85,6 +86,9 @@ public abstract class NetworkServiceCall<R> {
 			checkAndUpdateSubmittedState();
 			checkNetworkConnected();
 		} catch(final ConnectionFailureException e) {
+			// We don't need to catch anything else because this should be executing on the main thread
+			assertMainThreadExecution();
+			
 			sendResultToHandler(e, RESULT_EXCEPTION);
 			return;
 		} finally {
