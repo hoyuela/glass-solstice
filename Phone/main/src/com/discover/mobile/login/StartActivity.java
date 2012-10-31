@@ -73,6 +73,7 @@ public class StartActivity extends RoboActivity {
 			@Override
 			public void failure(final Throwable error) {
 				progress.dismiss();
+				Log.e(TAG, "Error: " + error.getMessage());
 				showOkAlertDialog("Error", error.getMessage());
 			}
 
