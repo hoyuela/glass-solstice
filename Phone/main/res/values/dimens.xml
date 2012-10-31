@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="CONTENT_PADDING">8dp</dimen>
-    <dimen name="LIGHT_TEXT_SIZE">12sp</dimen>
+    <dimen name="content_padding">8dp</dimen>
+    <dimen name="light_text_size">12sp</dimen>
 </resources>

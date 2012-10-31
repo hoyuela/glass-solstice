@@ -5,10 +5,10 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" 
             android:background="@drawable/gradient_bg"
-            android:paddingBottom="@dimen/CONTENT_PADDING"
-        	android:paddingLeft="@dimen/CONTENT_PADDING"
-        	android:paddingRight="@dimen/CONTENT_PADDING"
-        	android:paddingTop="@dimen/CONTENT_PADDING"
+            android:paddingBottom="@dimen/content_padding"
+        	android:paddingLeft="@dimen/content_padding"
+        	android:paddingRight="@dimen/content_padding"
+        	android:paddingTop="@dimen/content_padding"
             >
             
     	<RelativeLayout
@@ -61,7 +61,7 @@
             android:text="@string/account_info_input_restrictions_label"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/black"
-            android:textSize="@dimen/LIGHT_TEXT_SIZE" />
+            android:textSize="@dimen/light_text_size" />
 
         <TextView
             android:id="@+id/account_info_card_expiration_date_label"
@@ -89,7 +89,7 @@
             android:layout_below="@+id/feedback_label"
             android:layout_centerHorizontal="true"
             android:text="@string/discover_copyright_text"
-            android:textSize="@dimen/LIGHT_TEXT_SIZE" />
+            android:textSize="@dimen/light_text_size" />
 
         <TableRow
             android:id="@+id/account_info_help_row"
@@ -224,7 +224,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp" >
 
-            <Button
+            <TextView
                 android:id="@+id/account_info_cancel_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

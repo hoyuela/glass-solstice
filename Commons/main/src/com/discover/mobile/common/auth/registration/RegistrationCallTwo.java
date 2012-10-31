@@ -21,6 +21,11 @@ public class RegistrationCallTwo extends JsonResponseMappingNetworkServiceCall<R
 		
 		super(context, new PostCallParams("/reg/v1/user/reg") {{
 			// TODO
+			/*
+			 * head = X-DID getdeviceid
+			 *  X-OID get
+			 *  and X-SID get
+			 */
 			body = formData;
 		}}, RegistrationTwoDetails.class);
 		

@@ -146,7 +146,7 @@ public class InputStrengthBar extends View{
 				barOne.setBackgroundColor(getResources().getColor(R.color.gray));		
 				barTwo.setBackgroundColor(getResources().getColor(R.color.gray));
 				barThree.setBackgroundColor(getResources().getColor(R.color.gray));
-				strengthLabel.setText(getResources().getString(R.string.EMPTY));
+				strengthLabel.setText(getResources().getString(R.string.empty));
 			}
 			
 	}
