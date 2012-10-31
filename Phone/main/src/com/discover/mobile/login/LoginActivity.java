@@ -37,6 +37,9 @@ public class LoginActivity extends RoboActivity {
 
 	@InjectView(R.id.login_button)
 	private Button loginButton;
+	
+	@InjectView(R.id.register_text)
+	private TextView registerText;
 
 	@InjectView(R.id.error_text_view)
 	private TextView errorTextView;
@@ -68,6 +71,14 @@ public class LoginActivity extends RoboActivity {
 			public void onClick(final View v){
 				errorTextView.setText(null);
 				logIn();
+			}
+		});
+		
+		registerText.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				errorTextView.setText(null);
+				registerNewUser();
 			}
 		});
 	}
@@ -143,14 +154,11 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	private void logIn() {
-		final String uid = uidField.getText().toString();
-		final String pass = passField.getText().toString();
-		
 		// TODO production error handling (validator doesn't work with test uid's)
-		runAuthWithUsernameAndPassword(uid, pass);
+		runAuthWithUsernameAndPassword(uidField.getText().toString(), passField.getText().toString());
 	}
 	
-	public void registerNewUser(@SuppressWarnings("unused") final View v) {
+	public void registerNewUser() {
 		final Intent accountInformationActivity = new Intent(
 				this, AccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);
