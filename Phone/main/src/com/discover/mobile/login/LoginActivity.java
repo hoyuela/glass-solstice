@@ -76,7 +76,7 @@ public class LoginActivity extends RoboActivity {
 		loginButton.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				errorTextView.setText(null);
+				errorTextView.setText("");
 				logIn();
 			}
 		});
