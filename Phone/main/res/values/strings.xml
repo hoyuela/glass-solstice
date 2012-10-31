@@ -19,6 +19,18 @@
 	<string name="account_info_two_confirm_id_text">Confirm User ID:</string>
 	<string name="account_info_two_id_strength_text">User ID Strength:</string>
 	<string name="account_info_two_pass_strength_text">Password Strength:</string>
+	<string name="account_info_confirm_step_title_text">Registration Confirmation</string>
+	<string name="account_info_confirm_first_paragraph_text">Your registration is complete, you are now logged in and an email has been sent to you.</string>
+	<string name="account_info_confirm_security_precaution_text">As a security precaution, your password and the first 12 digits of your Account number are not shown.</string>
+	<string name="account_info_confirm_summary_text">Your Online Account Information:</string>
+	<string name="account_info_confirm_id_title_text">User ID</string>
+	<string name="account_info_confirm_email_title_text">E&#8211;mail Address</string>
+	<string name="account_info_confirm_account_title_text">Account Number</string>
+	<string name="account_info_confirm_account_stars_text">**** **** **** </string>
+	<string name="account_info_confirm_account_text">8888</string>
+	<string name="email_placeholder">mail@mail.com</string>
+	<string name="account_info_confirm_id_placeholder_text">Chuck Yeager</string>
+	<string name="account_info_confirm_note_text">Please Note: If you currently use Secure online Account Numbers, that password has also been changed.</string>
 	
 	<!-- &#8211; is a dash character so that lint will not complain of using a dash in strings -->
 	<string name="account_info_input_restrictions_label">(This is a 16&#8211;digit number starting with 6011. Do not include space or hyphens.)</string>
@@ -73,5 +85,5 @@
 	<string name="strength_bar_moderate">Moderate</string>
 	<string name="strength_bar_strong">Strong</string>
 	<string name="EMPTY"></string>
-	
+	<string name="home_text">Home</string>
 </resources>
