@@ -55,6 +55,7 @@ public class InputValidator {
 		
 		if(email != null){
 			String[] emailParts = email.split("@");
+			
 			String[] trailingParts = emailParts[1].split(".");
 			
 			//If we have some string with an @ symbol followed by another string witha .
