@@ -111,7 +111,6 @@ public class LoginActivity extends RoboActivity {
 				progress.dismiss();
 				
 				switch (errorResponse.getHttpStatusCode()) {
-//					case HttpURLConnection.HTTP_BAD_REQUEST: // TODO figure out if this actually happens
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						errorTextView.setText(getString(R.string.login_error));
 						return true;
@@ -133,7 +132,6 @@ public class LoginActivity extends RoboActivity {
 			}
 		};
 		
-//		final AuthenticateCall authenticateCall = new AuthenticateCall(this, callback, username, password);
 		final AuthenticateCall authenticateCall = new AuthenticateCall(this, callback, 
 				new AuthCallParams() {{
 					authUsername = username;
@@ -179,11 +177,9 @@ public class LoginActivity extends RoboActivity {
 		this.startActivity(accountInformationActivity);
 	}
 	
-	// TODO create Credentials object to handle any Model-like properties
 	public void clearInputs() {
 		errorTextView.setText("");
 		passField.setText("");
 		uidField.setText("");
 	}
-	
 }

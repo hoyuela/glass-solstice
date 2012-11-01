@@ -6,47 +6,34 @@ import java.util.Map;
 
 import android.content.Context;
 
-import com.discover.mobile.common.Struct;
-import com.discover.mobile.common.auth.UpdateSessionCall.UpdateSessionResult;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.response.AsyncCallback;
 
-public class UpdateSessionCall extends NetworkServiceCall<UpdateSessionResult> {
+public class UpdateSessionCall extends NetworkServiceCall<Object> {
 	
 	private static final String TAG = UpdateSessionCall.class.getSimpleName();
 	
-	private final TypedReferenceHandler<UpdateSessionResult> handler;
+	private final TypedReferenceHandler<Object> handler;
 	
-	public UpdateSessionCall(final Context context, final AsyncCallback<UpdateSessionResult> callback) {
+	public UpdateSessionCall(final Context context, final AsyncCallback<Object> callback) {
 		// TODO make PostCallParams a static instance
 		super(context, new PostCallParams("/cardsvcs/acs/session/v1/update"));
 
 		// TODO decide if this is the best type of handler
-		handler = new StrongReferenceHandler<UpdateSessionResult>(callback);
+		handler = new StrongReferenceHandler<Object>(callback);
 	}
 
 	@Override
-	protected TypedReferenceHandler<UpdateSessionResult> getHandler() {
+	protected TypedReferenceHandler<Object> getHandler() {
 		return handler;
 	}
 
 	@Override
-	protected UpdateSessionResult parseSuccessResponse(final int status,
+	protected Object parseSuccessResponse(final int status,
 			final Map<String, List<String>> headers, final InputStream body) {
-		// TODO Auto-generated method stub
-		return new UpdateSessionResult() {{
-			statusCode = status;
-		}};
-	}
-	
-	@Struct
-	public static class UpdateSessionResult {
-		// TEMP
-		public int statusCode;
-		
-		// TODO
+		return this;
 	}
 }
