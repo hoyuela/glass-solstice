@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/gradient_bg"             
+        android:paddingBottom="@dimen/content_padding"
+        android:paddingLeft="@dimen/content_padding"
+        android:paddingRight="@dimen/content_padding"
+        android:paddingTop="@dimen/content_padding">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/account_info_help_title_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/register_text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+            
+            <TextView
+                android:id="@+id/account_info_help_not_valid_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/account_info_help_title_label"
+                android:paddingTop="8dp"
+                android:text="@string/account_info_help_pass_strength_text"
+                android:textColor="@color/black"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                 />
+            
+            <TextView
+                android:id="@string/account_info_help_not_valid_detail_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_info_help_not_valid_label"
+                android:layout_marginTop="16dp"
+                android:text="@string/account_info_help_not_valid_detail_label"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@color/black"
+                android:textSize="@dimen/light_text_size" />
+            
+            <View
+                android:id="@+id/account_info_two_uid_bar_one"
+                android:layout_width="32dp"
+                android:layout_height="4dp"
+                android:layout_alignTop="@id/account_info_help_not_valid_label"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@+id/account_info_help_not_valid_label"
+                android:background="@color/red" />
+            
+            <View
+                android:id="@+id/account_info_two_uid_bar_two"
+                android:layout_width="32dp"
+                android:layout_height="4dp"
+                android:layout_alignTop="@+id/account_info_two_uid_bar_one"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/account_info_two_uid_bar_one"
+                android:background="@android:color/darker_gray" />
+            
+            <View
+                android:id="@+id/account_info_two_uid_bar_three"
+                android:layout_alignTop="@+id/account_info_two_uid_bar_one"
+                android:layout_width="32dp"
+                android:layout_height="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/account_info_two_uid_bar_two"
+                android:background="@android:color/darker_gray" />
+            
+            <TextView
+                android:id="@+id/account_info_two_uid_strength_bar_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_alignLeft="@+id/account_info_two_uid_bar_one"
+                android:layout_below="@+id/account_info_two_uid_bar_one" 
+                android:text="@string/strength_bar_not_valid"
+				android:textColor="@color/black"
+				android:textAppearance="?android:attr/textAppearanceSmall"
+				/>
+            
+        </RelativeLayout>
+
+    </ScrollView>
