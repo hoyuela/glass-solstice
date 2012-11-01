@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams;
@@ -29,12 +30,12 @@ public abstract class JsonResponseMappingNetworkServiceCall<M> extends NetworkSe
 		checkNotNull(modelClass, "modelClass cannot be null");
 		
 		this.modelClass = modelClass;
+		Log.d("Model Class", modelClass.toString());
 	}
 	
 	@Override
 	protected M parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
-		
 		return JacksonObjectMapperHolder.mapper.readValue(body, modelClass);
 	}
 	

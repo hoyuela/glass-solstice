@@ -51,8 +51,14 @@ public class InputValidator {
 	
 	
 	public boolean isEmailValid(String email){
-		wasEmailValid = true;
 		
+		String[] emailParts = email.split("@");
+//		
+//		if(emailParts.length == 2 ){
+//			emailParts[0].length() > 1;
+//			emailParts[1].length() > 1 && emailParts[1].contains('.');
+//		}
+		wasEmailValid = true;
 		return wasEmailValid;
 	}
 	

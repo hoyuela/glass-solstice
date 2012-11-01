@@ -13,9 +13,9 @@ public class RegistrationOneDetails implements Serializable {
 	public String acctNbr;
 	public String expirationMonth;
 	public String expirationYear;
+	public String socialSecurityNumber;
 	public String dateOfBirthMonth;
 	public String dateOfBirthDay;
-	public String socialSecurityNumber;
 	public String dateOfBirthYear;
 	
 }

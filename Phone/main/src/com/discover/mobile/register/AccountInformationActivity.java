@@ -134,7 +134,7 @@ public class AccountInformationActivity extends Activity {
 		final String memberDobYearString = memberDobYear.getText().toString();
 		final String memberSsnNumString =  memberSsnNum.getText().toString();
 		RegistrationOneDetails formData = new RegistrationOneDetails();
-		
+				
 		validator.isCardAccountNumberValid(accountNumString);
 		validator.isCardExpMonthValid(cardMonthExpString);
 		validator.isCardExpYearValid(cardYearExpString);
@@ -144,6 +144,14 @@ public class AccountInformationActivity extends Activity {
 		validator.isSsnValid(memberSsnNumString);
 		
 		if(validator.wasAccountInfoComplete()){
+			formData.acctNbr = accountNumString;
+			formData.dateOfBirthDay = memberDobDayString;
+			formData.dateOfBirthMonth = memberDobMonthString;
+			formData.dateOfBirthYear = memberDobYearString;
+			formData.expirationMonth = cardMonthExpString;
+			formData.expirationYear  = cardYearExpString;
+			formData.socialSecurityNumber = memberSsnNumString;
+			
 			final RegistrationCallOne registrationCall = new RegistrationCallOne(this, callback, formData);
 			registrationCall.submit();
 		}

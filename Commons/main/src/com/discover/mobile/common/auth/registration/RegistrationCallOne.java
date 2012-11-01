@@ -1,5 +1,6 @@
 package com.discover.mobile.common.auth.registration;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import android.content.Context;
 
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
@@ -17,10 +18,11 @@ public class RegistrationCallOne extends JsonResponseMappingNetworkServiceCall<R
 	public RegistrationCallOne(final Context context, final AsyncCallback<RegistrationOneDetails> callback,
 			final RegistrationOneDetails formData) {
 		
-		super(context, new PostCallParams("/reg/v1/user/reg/auth") {{
+		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/reg/auth") {{
 			clearsSessionBeforeRequest = true;
 			requiresSessionForRequest = false;
 			
+			checkNotNull(formData, "form data cannot be null");
 			body = formData;
 		}}, RegistrationOneDetails.class);
 		

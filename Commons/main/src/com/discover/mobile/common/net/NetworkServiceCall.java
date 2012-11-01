@@ -186,6 +186,7 @@ public abstract class NetworkServiceCall<R> {
 	private void setupDefaultHeaders() {
 		conn.setRequestProperty("X-Client-Platform", "Android");
 		conn.setRequestProperty("X-Application-Version", "4.00");
+		conn.setRequestProperty("Content-Type", "applicaiton/json");
 	}
 	
 	private void setupSessionHeaders() throws IOException {
