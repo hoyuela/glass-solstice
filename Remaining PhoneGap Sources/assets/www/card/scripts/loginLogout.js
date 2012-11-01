@@ -62,39 +62,6 @@ dfs.crd.lilo.isDeviceRegistered = function()
 
 // End Push Notification Code
 
-dfs.crd.lilo.goToCardLogin = function(hashValue,navigationFlag)
-{
-	try{
-		$("#cardLogin-pg").live("pagebeforeshow", function() {
-		 
-			
-			KeyValue.prototype.getEncryptedValue(function success(uid){
-				 try{
-				 if (uid != null && uid!="" && uid!=undefined){
-				 $("#uid").val(uid);
-				 $("#flip-b").val("yes").slider("refresh");
-				 $("#pwd").focus();
-				 return true;
-				 }
-				 return false;
-				 }catch(err)
-				 {
-				 showSysException(err);
-				 }
-				 }, null,"USER");
-						
-		});       
-		if(navigationFlag!= undefined){
-            navigation("../loginLogout/cardLogin",hashValue);
-        }else{
-            navigation("card/html/loginLogout/cardLogin");
-        }
-	}catch(err)
-	{
-		showSysException(err);
-	}
-}
-
 dfs.crd.lilo.goToBankLogin = function ()
 {
      try {
@@ -169,18 +136,6 @@ dfs.crd.lilo.setRememberID = function(userName,rememberID)
 		{
             KeyValue.prototype.setEncryptedKeyValue(function success(){}, function failure(){},"USER","");
 		}
-	}catch(err)
-	{
-		showSysException(err);
-	}
-}
-
-dfs.crd.lilo.unbindEventHandlers = function()
-{
-	try{
-		$("#login-pg").die("pagebeforeshow");
-		$("#cardLogin-pg").die("pagebeforeshow");
-		$("#loginErrorPage-Pg").die("pagebeforeshow");
 	}catch(err)
 	{
 		showSysException(err);
@@ -550,25 +505,7 @@ dfs.crd.lilo.gotoACHome = function(error)
 
 // End Push Notification
 
-//reset the server time out
-dfs.crd.lilo.resetServerTimeOut = function()
-{
-	try{
-		var newDate = new Date();	
-		var LILOURL = RESTURL+"session/v1/update";
-		$.ajax({
-			type : "POST",
-			url : LILOURL,
-			async : true,
-			dataType : "json",
-			headers :preparePostHeader(),
-			success : function(responseData, status, jqXHR){},
-			error : function(jqXHR, textStatus, errorThrown) {}
-		});
-	}catch (err) {
-        showSysException(err);
-    }
-}
+//reset the server time out (update) - added by Ryan
 
 //Application-Version and Service Unavailable check
 dfs.crd.lilo.preLoginCheck = function(){
@@ -737,15 +674,3 @@ dfs.crd.lilo.errorHandlerPreLogin = function(errorCode,custErrorMsg)
 		showSysException(err);
 	}
 }
-
-$("#login-pg").live( "pagehide",function(event, ui){
-
-                    try{
-
-                        var logoutDiv=$("#logoutDiv");
-
-                        logoutDiv.css("display", "none");
-
-                    } catch (err) {}
-
-                });
