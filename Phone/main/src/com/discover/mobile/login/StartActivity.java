@@ -76,7 +76,6 @@ public class StartActivity extends RoboActivity {
 			@Override
 			public void failure(final Throwable error) {
 				progress.dismiss();
-				Log.e(TAG, "Error: " + error.getMessage());
 				showOkAlertDialog("Error", error.getMessage());
 			}
 
@@ -115,7 +114,6 @@ public class StartActivity extends RoboActivity {
 				final SharedPreferences.Editor editor=prefs.edit();
 				editor.putLong(dateTimeKey, new Date().getTime());
 				editor.commit();
-				Log.d(TAG, "saved date...");
 				return false;
 			}
 			
