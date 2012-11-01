@@ -22,6 +22,8 @@ public class RegistrationCallOne extends JsonResponseMappingNetworkServiceCall<R
 			clearsSessionBeforeRequest = true;
 			requiresSessionForRequest = false;
 			
+			sendDeviceIdentifiers = true;
+			
 			checkNotNull(formData, "form data cannot be null");
 			body = formData;
 		}}, RegistrationOneDetails.class);
