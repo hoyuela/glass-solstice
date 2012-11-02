@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,19 +49,19 @@ public class LoginActivity extends RoboActivity {
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-//		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-//        .detectDiskReads()
-//        .detectDiskWrites()
-//        .detectNetwork()   // or .detectAll() for all detectable problems
-//        .penaltyLog()
-//        .build());
-//		
-//		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-//        .detectLeakedSqlLiteObjects()
-//        .detectLeakedClosableObjects()
-//        .penaltyLog()
-//        .penaltyDeath()
-//        .build());
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+        .detectDiskReads()
+        .detectDiskWrites()
+        .detectNetwork()   // or .detectAll() for all detectable problems
+        .penaltyLog()
+        .build());
+		
+		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+        .detectLeakedSqlLiteObjects()
+        .detectLeakedClosableObjects()
+        .penaltyLog()
+        .penaltyDeath()
+        .build());
 		
 		setupButtons();
 	}
@@ -151,7 +152,6 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	private void logIn() {
-		// TODO production error handling (validator doesn't work with test uid's)
 		runAuthWithUsernameAndPassword(uidField.getText().toString(), passField.getText().toString());
 	}
 	
