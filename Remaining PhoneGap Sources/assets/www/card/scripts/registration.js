@@ -100,95 +100,6 @@ dfs.crd.reg.flow = {
 		allowableNav : ['forgotPasswordStep2'],
 		backNavToHome : ['accountLanding']
     },    
-    forgotBothStep1 : {
-    	load : function() {
-    		dfs.crd.reg.nav.handleNav(this);
-			dfs.crd.reg.ui.prepareFooter();
-    		//set title
-    		var title = getDataFromCache(dfs.crd.reg.shared.constant.cache.FORGOT_BOTH_TITLE);
-    		if (!isEmpty(title))	{
-    			$('#forgotBothTitleStep1').html(title.step1);	
-    		}
-    		
-    		dfs.crd.reg.util.accountValidation.validateForm('#forgot-both-step1-form');
-    		
-    		//submit handler
-    		var form = $('#forgot-both-step1-form');
-    		form.unbind('submit').submit(function(event) {
-				dfs.crd.reg.forgotBoth.step1.submit(event);
-			});
-			$('#forgot-both-step1-form #js-submit').unbind('click').click(function(event) {
-				form.submit();
-			});
-			//back button handler
-			$('#forgot-both-step1-form #js-back').unbind('click').click(function(event) {
-                dfs.crd.reg.nav.skipBack();
-            });
-    	},
-    	allowableNav : ['forgotUserIdOrPasswordMenu', 'publicError'],
-    	backNavToHome : ['forgotBothConfirmation']
-    },
-    forgotBothStep2 : {     
-		load : function() {
-			dfs.crd.reg.nav.handleNav(this);	
-			dfs.crd.reg.ui.prepareFooter();	
-				
-			//set title
-			var title = getDataFromCache(dfs.crd.reg.shared.constant.cache.FORGOT_BOTH_TITLE);
-    		if (!isEmpty(title)){
-    			$('#forgotBothTitleStep2').html(title.step2);  
-    		}    	
-    		
-			var userIDMeter = new dfs.crd.reg.shared.util.InputStrengthMeter('.userid-field', '.user-id', true);
-			var passwordMeter = new dfs.crd.reg.shared.util.InputStrengthMeter('.password-field', '.password', false, '.user-id');	
-			dfs.crd.reg.forgotBoth.step2.validateForm('#forgot-both-step2-form');
-			//call after validate form
-			dfs.crd.reg.shared.util.populateFormFromCache(dfs.crd.reg.shared.constant.cache.FORGOT_BOTH_STEP2_REQ);
-						
-			//submit handler
-			var form = $('#forgot-both-step2-form');
-    		form.unbind('submit').submit(function(event) {
-				dfs.crd.reg.forgotBoth.step2.submit(event);
-			});
-			$('#forgot-both-step2-form #js-submit').unbind('click').click(function(event) {
-				form.submit();
-			});
-			$('#forgot-both-step2-form #js-back').unbind('click').click(function(event) {
-                dfs.crd.reg.nav.skipBack();
-            });
-            
-			//password strength meter handler
-			$('#forgot-both-step2-form #passwordStrengthMeter').unbind('click').click(function(event) {
-				dfs.crd.reg.nav.cacheAndGo("passwordStrengthMeter", "forgot-both-step2-form", dfs.crd.reg.shared.constant.cache.FORGOT_BOTH_STEP2_REQ);
-			});	
-			//user id strength meter handler
-			$('#forgot-both-step2-form #userIdStrengthMeter').unbind('click').click(function(event) {
-				dfs.crd.reg.nav.cacheAndGo("userIdStrengthMeter", "forgot-both-step2-form", dfs.crd.reg.shared.constant.cache.FORGOT_BOTH_STEP2_REQ);
-			});
-		},
-		allowableNav : ['forgotBothStep1', 'strongAuthFirstQues', 'userIdStrengthMeter', 'passwordStrengthMeter'],
-		backNavToHome : ['forgotBothConfirmation', 'accountLanding']
-    }, 
-    forgotBothConfirmation : {     
-		load : function() {
-			dfs.crd.reg.nav.handleNav(this);
-			
-			//set title
-			var title = getDataFromCache(dfs.crd.reg.shared.constant.cache.FORGOT_BOTH_TITLE);
-    		if (!isEmpty(title)){
-    			$('#forgotBothTitleConfirmation').html(title.confirmation);  
-    			$('#forgotBothBodyConfirmation').html(title.confirmationBody);  
-    		}    	
-    		
-    		dfs.crd.reg.shared.util.populateConfirmation('email', 'last4', 'userId', dfs.crd.reg.shared.constant.cache.FORGOT_BOTH_CONFIRMATION_RESP);
-    		dfs.crd.reg.shared.constant.cache.removeAll();
-			$('#forgot-both-confirmation-pg #js-home-link').unbind('click').click(function(event) {
-				dfs.crd.reg.nav.goToHome();
-			});
-		},
-		allowableNav : ['forgotBothStep2'],
-		backNavToHome : ['accountLanding']
-    },
     forgotUserIdOrPasswordMenu : {
     	load : function (){
     		dfs.crd.reg.ui.prepareFooter();
@@ -203,35 +114,9 @@ dfs.crd.reg.flow = {
 				dfs.crd.reg.nav.goToForgotBoth();
 			});
     	}
-    },
-    passwordStrengthMeter : {
-    	load : function() {
-    		dfs.crd.reg.nav.handleNav(this);
-			dfs.crd.reg.ui.prepareFooter();
-    	}
-    
-    },
-    userIdStrengthMeter : {
-    	load : function (){
-    		dfs.crd.reg.nav.handleNav(this);
-			dfs.crd.reg.ui.prepareFooter();
-    	}
     }
+   
 }
-
-/**
- * Since there aren't good footers in common to use I can overwrite the common footer with my own here.
-**/
-dfs.crd.reg.ui = {
-	prepareFooter : function() {
-		/*var pubFootnotes = "<div class='need-help'><span>Need Help?</span> <a href='tel:18003472683'>Call 1-800-347-2683</a></div>";
-		//var myFootnotesHtml="<p id='footer-links'><a href='#'  onclick='cbInvoke();'>Provide Feedback </a><a href='#' onclick='dfs.crd.reg.nav.goToRegistration();'  data-rel='external' class='registerNow'>| Register Now</a></p><p data-theme='e' class='footer-text-icon'><span>&copy;2012 Discover Bank, Member FDIC.</span></p>";
-		var myFootnotesHtml="<a href='#' onclick='cbInvoke();' id='footer-links'>Provide Feedback</a><span class='divspace' style='font-size:15px'>|</span><p id='footer-text'>&copy;2012 Discover Bank, Member FDIC <span id='wordSecured'>| SECURED</span></p>";
-		$(".reg-footnotes").html(pubFootnotes + myFootnotesHtml);*/
-		var footnotesHtml="<div class='need-help'><span>Need Help?</span> <a href='tel:18003472683'>Call 1-800-347-2683</a></div><p id='footer-links'><a href='#'  onclick='provideFeedBack();'>Provide Feedback </a><a href='#' onclick='dfs.crd.reg.nav.goToRegistration();'  data-rel='external' class='registerNow'>| Register Now</a></p><p data-theme='e' class='footer-text-icon'><span>&copy; 2012 Discover Bank, Member FDIC<span class='secured'> | SECURED</span></p>";
-		$(".footnotes-reg").html(footnotesHtml);
-	}
-};
 
 /**
  * Registration related navigation
@@ -263,19 +148,6 @@ dfs.crd.reg.nav = {
 		putDataToCache(cacheLoc, formData);
 		navigation(destination);
 	},
-	
-	goToRegistration : function(pagename){     
-		putDataToCache(dfs.crd.reg.shared.constant.cache.FORGOT_BOTH_TITLE, 
-			{step1 : "Register", step2 : "Register", confirmation : "Registration Confirmation", confirmationBody : "Your registration is complete, you are now logged in and an email has been sent to you."});
-		
-		dfs.crd.reg.forceNavAllow = true;
-		
-		if(pagename=='cardLogin') {
-			navigation('../registration/forgotBothStep1');
-		} else {
-			navigation('card/html/registration/forgotBothStep1');
-		}
-	},
 
 	goToForgotUidOrPassMenu : function(){
 		navigation('../registration/forgotUserIdOrPasswordMenu');
@@ -306,54 +178,7 @@ dfs.crd.reg.nav = {
 	skipBack : function() { cpEvent.preventDefault(); history.back(); }
 };
 
-/**
- * Used for both forgot pass and forgot both 
- */
-dfs.crd.reg.util.accountValidation = {
 
-	validateForm : function(form) {
-	    
-		var init = function() {
-			var $ccNum = $('.credit-card-number', form), ccNumPattern = /^6011\d{12}$/, $ccOrAccountId = $('.credit-card-account-number', form), validForm = false, $expMonth = $(".expiration-month", form), $expYear = $(".expiration-year", form), $birthMonth = $('.birth-month', form), $birthDate = $('.birth-date', form), $ssnEnding = $('.ssn-ending', form), $dobYear = $('.dob-year', form), fourDigitPattern = /^[0-9]{4}$/, $submitButton = $('#js-submit', form);
-			
-			dfs.crd.reg.shared.util.formValidation.setCurrentForm(form);
-			
-			// If 'credit card or user id' field exists,
-			// perform this validation and attach the handler
-			if ($ccOrAccountId.length) {
-				dfs.crd.reg.shared.util.formValidation.validateCcOrAccountId($ccOrAccountId);
-				dfs.crd.reg.shared.util.formValidation.ccOrAccountIdHandlers($ccOrAccountId);
-			}
-
-			// Forgot Both flow only:
-			// If 'credit card or user id' field exists,
-			// perform this validation and attach the handler
-			if ($ccNum.length) {
-				dfs.crd.reg.shared.util.formValidation.validateCcNum($ccNum);
-				dfs.crd.reg.shared.util.formValidation.ccNumHandlers($ccNum);
-			}
-
-			// shared validation functions
-			dfs.crd.reg.shared.util.formValidation.validateExpirationMonth($expMonth);
-			dfs.crd.reg.shared.util.formValidation.validateExpirationYear($expYear);
-			dfs.crd.reg.shared.util.formValidation.validateBirthMonth($birthMonth);
-			dfs.crd.reg.shared.util.formValidation.validateBirthDate($birthDate);
-			dfs.crd.reg.shared.util.formValidation.validateSsnEnding($ssnEnding);
-			dfs.crd.reg.shared.util.formValidation.validateDobYear($dobYear);
-
-			// shared event handlers
-			dfs.crd.reg.shared.util.formValidation.onChangeExpirationMonth($expMonth);
-			dfs.crd.reg.shared.util.formValidation.onChangeExpirationYear($expYear);
-			dfs.crd.reg.shared.util.formValidation.onChangeBirthMonth($birthMonth);
-			dfs.crd.reg.shared.util.formValidation.onChangeBirthDate($birthDate);
-			dfs.crd.reg.shared.util.formValidation.ssnEndingHandlers($ssnEnding);
-			dfs.crd.reg.shared.util.formValidation.dobYearHandlers($dobYear);
-		}();
-	}
-	//==> validateForm
-
-};
-//==>dfs.crd.reg.util.accountValidation
 
 /** Logic involved in the forgot password flow **/
 dfs.crd.reg.forgotPassword.step1 = {
@@ -402,95 +227,17 @@ dfs.crd.reg.forgotPassword.step2 = {
 			showSysException(err);
 		}
 	},
-	//==>submit
 
-	validateForm : function(form) {
-		var init = function() {
-		    var $passwordField = $('.password', form), $confirmPasswordField = $('.confirm-password', form), $submitButton = $('#js-submit', form);
-            dfs.crd.reg.shared.util.formValidation.setCurrentForm(form);            
-            dfs.crd.reg.shared.util.formValidation.validatePassword($passwordField, $confirmPasswordField);
-			dfs.crd.reg.shared.util.formValidation.passwordHandlers($passwordField, $confirmPasswordField);
-			dfs.crd.reg.shared.util.formValidation.confirmPasswordHandlers($passwordField, $confirmPasswordField);
-		}();
-	}
-	//==>validateForm
-};
-//==> forgotPassword.step2
 
-/** Logic involved in the forgot both flow **/
-dfs.crd.reg.forgotBoth.step1 = {
-	submit : function(event) {
-		try {
-		    event.preventDefault();
-			event.stopPropagation();
-		    if (!dfs.crd.reg.shared.util.formValidation.isValidForm()) {
-                event.preventDefault();
-                event.stopPropagation();     
-                var $ccNum = $('[name=acctNbr]');
-                var $expMonth =  $('[name=expirationMonth]');
-                var $expYear =  $('[name=expirationYear]');
-                var $birthMonth =  $('[name=dateOfBirthMonth]');
-                var $birthDate =  $('[name=dateOfBirthDay]');
-                var $ssnEnding =  $('[name=socialSecrityNumber]');
-                var $dobYear = $('[name=dateOfBirthYear]');               
-                dfs.crd.reg.shared.util.formValidation.forgotBothStep1Validation($ccNum, $expMonth, $expYear, $birthMonth, $birthDate, $ssnEnding, $dobYear); 
-                return;           
-            }
-		    
-			var url = dfs.crd.reg.shared.constant.url.FORGOT_BOTH_AUTH;
-			var formData = $('#forgot-both-step1-form').serializeObject();
-			var requestBody = JSON.stringify(formData);
-			var cacheName = dfs.crd.reg.shared.constant.cache.FORGOT_BOTH_STEP1_REQ;
-			var nav = dfs.crd.reg.shared.constant.url.FORGOT_BOTH_STEP2;
-			dfs.crd.reg.shared.http.step1Post(url, requestBody, nav, cacheName, formData);
-		} catch(err) {
-			showSysException(err);
-		}
-	}
-	//==>submit
-}
-//==> forgotBoth.step1
+//==> forgotBoth.step2
 
-dfs.crd.reg.forgotBoth.step2 = {
-	submit : function(event) {
-		try {
-		    event.preventDefault();
-			event.stopPropagation();
-		    if (!dfs.crd.reg.shared.util.formValidation.isValidForm()) {
-                var $userIdField = $('[name=userId]');
-                var $confirmUserIdField = $('[name=userIdConfirm]');                
-                var $passwordField = $('[name=password]');
-                var $confirmPasswordField = $('[name=passwordConfirm]');             
-                var $emailAddressField = $('[name=email]');                
-                dfs.crd.reg.shared.util.formValidation.forgotBothStep2Validation($userIdField, $confirmUserIdField, $passwordField, $confirmPasswordField, $emailAddressField);
-                return;            
-            }
+dfs.crd.reg.forgotBoth.step2 = 
+
             var formData = $('#forgot-both-step2-form').serializeObject();	
 		    dfs.crd.reg.shared.http.step2Post(event, formData, dfs.crd.reg.shared.constant.url.FORGOT_BOTH);
-		} catch(err) {
-			showSysException(err);
-		}
-	},
-	//==>submit
 
-	validateForm : function(form) {
-	    
-		var init = function() {
-		    var $passwordField = $('.password', form), $userIdField = $('.user-id', form), $confirmUserIdField = $('.confirm-user-id', form), $confirmPasswordField = $('.confirm-password', form), $emailAddressField = $('.email-address', form), emailPattern = /^\s*[\w\-\+_]+(?:\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(?:\.[\w\-\+_]+)*\s*$/, validForm = false, $submitButton = $('#js-submit', form);
 
-            dfs.crd.reg.shared.util.formValidation.setCurrentForm(form);
-			dfs.crd.reg.shared.util.formValidation.validatePassword($passwordField, $confirmPasswordField);            
-			dfs.crd.reg.shared.util.formValidation.validateUserId($userIdField, $confirmUserIdField);
-			dfs.crd.reg.shared.util.formValidation.validateEmail($emailAddressField);
-			dfs.crd.reg.shared.util.formValidation.passwordHandlers($passwordField, $confirmPasswordField);
-            dfs.crd.reg.shared.util.formValidation.confirmPasswordHandlers($passwordField, $confirmPasswordField);
-			dfs.crd.reg.shared.util.formValidation.userIdHandlers($userIdField, $confirmUserIdField);
-			dfs.crd.reg.shared.util.formValidation.confirmUserIdHandlers($userIdField, $confirmUserIdField);
-			dfs.crd.reg.shared.util.formValidation.emailHandlers($emailAddressField);
-		}();
-	}//==>validateForm()
-};
-//==> forgotBoth.step2
+	
 
 /** Logic involved in the forgot user id flow **/
 dfs.crd.reg.forgotUserId = {
@@ -515,21 +262,7 @@ dfs.crd.reg.forgotUserId = {
 		}
 	},
 	
-	validateForm : function(form) {
-
-		var init = function() {
-		    var $creditCardField = $('.credit-card-account-number', form), $accountCenterPassword = $('.account-center-password', form), $submitButton = $('#js-submit', form);
-
-            dfs.crd.reg.shared.util.formValidation.setCurrentForm(form);
-			dfs.crd.reg.shared.util.formValidation.validateCcNum($creditCardField);
-			dfs.crd.reg.shared.util.formValidation.validateAccountCenterPassword($accountCenterPassword );
-			dfs.crd.reg.shared.util.formValidation.ccNumHandlers($creditCardField);
-			dfs.crd.reg.shared.util.formValidation.accountCenterPasswordHandlers($accountCenterPassword);
-			//dfs.crd.reg.shared.util.formValidation.onFormSubmit(form);
-		}();
-	}
-	//==> validateForm
-}
+	
 
 /********  Registration Load Functions Called by Common +Load Framework *********/
 function forgotUserIdOrPasswordMenuLoad() {

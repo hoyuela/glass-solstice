@@ -32,8 +32,9 @@
 	<string name="account_info_confirm_id_placeholder_text">Chuck Yeager</string>
 	<string name="account_info_confirm_note_text">Please Note: If you currently use Secure online Account Numbers, that password has also been changed.</string>
 	<string name="account_info_help_pass_strength_text">Password Strength:</string>
-	<string name="account_info_help_not_valid_detail_label">Does not meet minimum requirements (not 8&#8211;32 characters, does not contain at least 1 letter and 1 number, or is the word "password").</string>
-	
+	<string name="account_info_help_pass_p1_text">Does not meet minimum requirements (not 8&#8211;32 characters, does not contain at least 1 letter and 1 number, or is the word "password").</string>
+	<string name="account_info_help_pass_p2_text">Meets minimum requirements but does not include a variation of uppercase letters, lower case letters, numbers, and special characters.</string>
+	<string name="account_info_help_pass_strong_text">Meets minimum requirements and combines upper case letters, lower case letters, numbers, and special characters.</string>
 	<!-- &#8211; is a dash character so that lint will not complain of using a dash in strings -->
 	<string name="account_info_input_restrictions_label">(This is a 16&#8211;digit number starting with 6011. Do not include space or hyphens.)</string>
 	<string name="card_expiration_date_text">Discover Card Expiration Date:</string>
@@ -42,6 +43,11 @@
 	<string name="need_help_number_text">Call 1&#8211;800&#8211;347&#8211;2683</string>
 	<string name="account_info_dob_text">Date of Birth of Primary Cardmember:</string>
 	<string name="account_info_ssn_info_text">Social Security Number of Primary Cardmember:</string>
+	<string name="account_info_help_id_strength_text">User ID Strength</string>
+	<string name="account_info_help_bar_title_text">User ID Strength:</string>
+	<string name="account_info_help_id_p1_text">Does not meet minimum requirements (not 6&#8211;16 characters, looks like an account number, or uses spaces or the following characters: (\`)(\')(\")(\\))</string>
+	<string name="account_info_help_id_p2_text">Meets minimum requirements but does not include a variation of letters, numbers, and special characters.</string>
+	<string name="account_info_help_id_p3_text">Meets minimum requirements and combines a variation of letters, numbers, and special characters.</string>
 	
 	<string name="account_security_text">Enhanced Account Security</string>
 	<string name="account_security_info_text">For your security, please answer the following question before continuing.</string>

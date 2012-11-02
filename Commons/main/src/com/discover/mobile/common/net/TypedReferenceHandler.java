@@ -50,11 +50,13 @@ public abstract class TypedReferenceHandler<V> extends Handler {
 		callback.success(value);
 	}
 	
+	@SuppressWarnings("static-method")
 	void handleException(final Message message, final AsyncCallback<V> callback) {
 		final Throwable exception = (Throwable) message.obj;
 		callback.failure(exception);
 	}
 	
+	@SuppressWarnings("static-method")
 	void handleErrorResponse(final Message message, final AsyncCallback<V> callback) {
 		final ErrorResponse errorResponse = (ErrorResponse) message.obj;
 		callback.failure(errorResponse);

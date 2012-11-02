@@ -45,7 +45,6 @@ public class AccountInformationActivity extends Activity {
 			
 			@Override
 			public void onClick(final View v) {
-				// TODO Auto-generated method stub
 				submitFormInfo();
 			}
 		});
@@ -117,7 +116,7 @@ public class AccountInformationActivity extends Activity {
 //		(final Context context, final AsyncCallback<RegistrationDetails> callback,
 //		final String acctNbr, final String expirationMonth, final String expirationYear, final String dateOfBirthMonth, final String  dateOfBirthDay,
 //		final String socialSecurityNumber, final String dateOfBirthYear)
-		InputValidator validator = new InputValidator();
+		final InputValidator validator = new InputValidator();
 		final EditText accountNum = (EditText)findViewById(R.id.account_info_card_account_number_field);
 		final Spinner cardMonthExp = (Spinner)findViewById(R.id.account_info_month_spinner);
 		final Spinner cardYearExp = (Spinner)findViewById(R.id.account_info_year_spinner);
@@ -133,7 +132,7 @@ public class AccountInformationActivity extends Activity {
 		final String memberDobDayString = memberDobDay.getSelectedItem().toString();
 		final String memberDobYearString = memberDobYear.getText().toString();
 		final String memberSsnNumString =  memberSsnNum.getText().toString();
-		RegistrationOneDetails formData = new RegistrationOneDetails();
+		final RegistrationOneDetails formData = new RegistrationOneDetails();
 				
 		validator.isCardAccountNumberValid(accountNumString);
 		validator.isCardExpMonthValid(cardMonthExpString);
@@ -157,12 +156,12 @@ public class AccountInformationActivity extends Activity {
 		}
 		else{
 			progress.dismiss();
-			TextView cardErrorLabel = (TextView)findViewById(R.id.account_info_card_account_number_error_label);
-			TextView ssnErrorLabel = (TextView)findViewById(R.id.account_info_ssn_error_label);
-			TextView dobYearErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
+			final TextView cardErrorLabel = (TextView)findViewById(R.id.account_info_card_account_number_error_label);
+			final TextView ssnErrorLabel = (TextView)findViewById(R.id.account_info_ssn_error_label);
+			final TextView dobYearErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
 			
-			String errorString = getResources().getString(R.string.invalid_value);
-			String emptyString = getResources().getString(R.string.empty);
+			final String errorString = getResources().getString(R.string.invalid_value);
+			final String emptyString = getResources().getString(R.string.empty);
 			
 			if(!validator.wasAccountNumberValid){
 				cardErrorLabel.setText(errorString);

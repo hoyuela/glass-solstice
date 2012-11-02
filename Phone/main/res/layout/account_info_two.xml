@@ -321,6 +321,33 @@
                 android:layout_centerHorizontal="true"
                 android:text="@string/discover_copyright_text"
                 android:textSize="@dimen/content_padding" />
+
+            <ImageView
+                android:id="@+id/ImageView01"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/helpbubble" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignTop="@+id/account_info_two_pass_strength_bar_label"
+                android:layout_toRightOf="@+id/account_info_two_pass_bar_three"
+                android:src="@drawable/helpbubble" 
+                android:onClick="showPasswordStrengthBarHelp"/>
+
+            <ImageView
+                android:id="@+id/ImageView02"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignTop="@+id/account_info_two_uid_strength_bar_label"
+                android:layout_toRightOf="@+id/account_info_two_uid_bar_three"
+                android:src="@drawable/helpbubble" 
+                android:onClick="showIdStrengthBarHelp"/>
+
         </RelativeLayout>
 
     </ScrollView>
