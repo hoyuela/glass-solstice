@@ -77,6 +77,19 @@ public class AccountInformationTwoActivity extends Activity{
 		});
 	}
 	
+	public void showPasswordStrengthBarHelp(View v){
+		Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+		passwordHelpScreen.putExtra("helpType", "password");
+		this.startActivity(passwordHelpScreen);
+	}
+	
+	public void showIdStrengthBarHelp(View v){
+		Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+		passwordHelpScreen.putExtra("helpType", "id");
+		this.startActivity(passwordHelpScreen);
+		
+	}
+	
 	private void setupTextChangedListeners(){
 		final EditText idField = (EditText)findViewById(R.id.account_info_two_id_field);
 		final EditText passField = (EditText)findViewById(R.id.account_info_two_pass_field);

@@ -9,7 +9,18 @@ public class AccountInformationHelpActivity extends Activity{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.account_info_help);
-	}
+		
+		if (savedInstanceState == null) {
+			
+			Bundle extras = getIntent().getExtras();
+        	if(extras != null) {
+        		String helpLayout = extras.getString("helpType");
+        		if("id".equals(helpLayout))
+        			setContentView(R.layout.account_info_id_strength_help);
+        		else
+        			setContentView(R.layout.account_info_password_strength_help);
+        	}
+		}
 
+	}
 }
