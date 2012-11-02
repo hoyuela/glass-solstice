@@ -29,6 +29,8 @@ public abstract class ServiceCallParams {
 	 */
 	public boolean requiresSessionForRequest = true;
 	
+	public boolean sendDeviceIdentifiers = false;
+	
 	@Struct
 	public static class GetCallParams extends ServiceCallParams {
 		

@@ -17,8 +17,10 @@ import java.util.Map;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.discover.mobile.common.Struct;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.json.JsonMappingRequestBodySerializer;
 import com.discover.mobile.common.net.response.DelegatingErrorResponseParser;
@@ -35,6 +37,8 @@ import com.google.common.collect.ImmutableList;
 public abstract class NetworkServiceCall<R> {
 	
 	private final String TAG = getClass().getSimpleName();
+	
+	private static final String ID_PREFIX = "%&(()!12[";
 	
 	private static final List<RequestBodySerializer> REQUEST_BODY_SERIALIZERS = createRequestBodySerializers();
 	
@@ -53,6 +57,7 @@ public abstract class NetworkServiceCall<R> {
 	
 	private Context context;
 	private HttpURLConnection conn;
+	private DeviceIdentifiers deviceIdentifiers;
 	
 	private volatile boolean submitted = false;
 	
@@ -63,6 +68,21 @@ public abstract class NetworkServiceCall<R> {
 		this.params = params;
 		
 		BASE_URL = ContextNetworkUtility.getBaseUrl(context);
+	}
+	
+	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {
+		checkNotNull(context, "context cannot be null");
+		
+		checkArgument(!Strings.isNullOrEmpty(params.path), "params.path should never be empty");
+		
+		checkArgument(params.connectTimeoutSeconds > 0,
+				"invalid params.connectTimeoutSeconds: " + params.connectTimeoutSeconds);
+		checkArgument(params.readTimeoutSeconds > 0, "invalid params.readTimeoutSeconds: " + params.readTimeoutSeconds);
+		
+		checkArgument(!(params.clearsSessionBeforeRequest && params.requiresSessionForRequest),
+				"params.clearsSessionBeforeRequest and params.requiresSessionForRequest cannot both be true");
+		
+		assertCurrentThreadHasLooper();
 	}
 
 	protected abstract TypedReferenceHandler<R> getHandler();
@@ -82,18 +102,9 @@ public abstract class NetworkServiceCall<R> {
 	 * Submit the service call for asynchronous execution and call the callback when completed.
 	 */
 	public final void submit() {
-		try {
-			checkAndUpdateSubmittedState();
-			checkNetworkConnected();
-		} catch(final ConnectionFailureException e) {
-			// We don't need to catch anything else because this should be executing on the main thread
-			assertMainThreadExecution();
-			
-			sendResultToHandler(e, RESULT_EXCEPTION);
+		final boolean shouldContinue = useAndClearContext();
+		if(!shouldContinue)
 			return;
-		} finally {
-			context = null; // allow context garbage collection no matter what the result is
-		}
 		
 		NetworkTrafficExecutorHolder.networkTrafficExecutor.submit(new Runnable() {
 			@Override
@@ -108,19 +119,22 @@ public abstract class NetworkServiceCall<R> {
 		});
 	}
 	
-	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {
-		checkNotNull(context, "context cannot be null");
+	private boolean useAndClearContext() {
+		try {
+			checkAndUpdateSubmittedState();
+			checkNetworkConnected();
+			setupDeviceIdentifiers();
+		} catch(final ConnectionFailureException e) {
+			// We don't need to catch anything else because this should be executing on the main thread
+			assertMainThreadExecution();
+			
+			sendResultToHandler(e, RESULT_EXCEPTION);
+			return false;
+		} finally {
+			context = null; // allow context garbage collection no matter what the result is
+		}
 		
-		checkArgument(!Strings.isNullOrEmpty(params.path), "params.path should never be empty");
-		
-		checkArgument(params.connectTimeoutSeconds > 0,
-				"invalid params.connectTimeoutSeconds: " + params.connectTimeoutSeconds);
-		checkArgument(params.readTimeoutSeconds > 0, "invalid params.readTimeoutSeconds: " + params.readTimeoutSeconds);
-		
-		checkArgument(!(params.clearsSessionBeforeRequest && params.requiresSessionForRequest),
-				"params.clearsSessionBeforeRequest and params.requiresSessionForRequest cannot both be true");
-		
-		assertCurrentThreadHasLooper();
+		return true;
 	}
 	
 	private void checkAndUpdateSubmittedState() {
@@ -135,6 +149,20 @@ public abstract class NetworkServiceCall<R> {
 			Log.i(TAG, "No network connection available, dropping call");
 			throw new ConnectionFailureException("no active, connected network available");
 		}
+	}
+	
+	private void setupDeviceIdentifiers() {
+		if(!params.sendDeviceIdentifiers)
+			return;
+		
+		deviceIdentifiers = new DeviceIdentifiers() {{
+			final TelephonyManager telephonyManager =
+					(TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+			
+			did = telephonyManager.getDeviceId();
+			sid = telephonyManager.getSimSerialNumber();
+			oid = telephonyManager.getDeviceId();
+		}};
 	}
 	
 	// Executes in the background thread, performs the HTTP connection and delegates parsing to subclass
@@ -176,20 +204,21 @@ public abstract class NetworkServiceCall<R> {
 	private void prepareConnection() throws IOException {
 		conn.setRequestMethod(params.httpMethod);
 		
-		setupDefaultHeaders();
-		setupSessionHeaders();
-		setupCustomHeaders();
+		setDefaultHeaders();
+		setSessionHeaders();
+		setCustomHeaders();
+		setDeviceIdentifierHeaders();
 		
 		setupTimeouts();
 	}
 	
-	private void setupDefaultHeaders() {
+	private void setDefaultHeaders() {
 		conn.setRequestProperty("X-Client-Platform", "Android");
 		conn.setRequestProperty("X-Application-Version", "4.00");
 		conn.setRequestProperty("Content-Type", "applicaiton/json");
 	}
 	
-	private void setupSessionHeaders() throws IOException {
+	private void setSessionHeaders() throws IOException {
 		final boolean foundToken = ServiceCallSessionManager.prepareWithSecurityToken(conn);
 		
 		if(!foundToken && params.requiresSessionForRequest)
@@ -197,12 +226,24 @@ public abstract class NetworkServiceCall<R> {
 					conn.getURL());
 	}
 	
-	private void setupCustomHeaders() {
+	private void setCustomHeaders() {
 		if(params.headers == null || params.headers.isEmpty())
 			return;
 		
 		for(final Map.Entry<String,String> headerEntry : params.headers.entrySet())
 			conn.setRequestProperty(headerEntry.getKey(), headerEntry.getValue());
+	}
+	
+	private void setDeviceIdentifierHeaders() {
+		if(deviceIdentifiers == null)
+			return;
+		
+		if(deviceIdentifiers.did != null)
+			conn.setRequestProperty("X-DID", ID_PREFIX + deviceIdentifiers.did);
+		if(deviceIdentifiers.sid != null)
+			conn.setRequestProperty("X-SID", ID_PREFIX + deviceIdentifiers.sid);
+		if(deviceIdentifiers.oid != null)
+			conn.setRequestProperty("X-OID", ID_PREFIX + deviceIdentifiers.oid);
 	}
 	
 	private void setupTimeouts() {
@@ -288,6 +329,13 @@ public abstract class NetworkServiceCall<R> {
 		final Handler handler = getHandler();
 		final Message message = Message.obtain(handler, status, result);
 		handler.sendMessage(message);
+	}
+	
+	@Struct
+	private static class DeviceIdentifiers {
+		String did;
+		String sid;
+		String oid;
 	}
 	
 }

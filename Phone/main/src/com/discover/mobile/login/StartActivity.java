@@ -1,12 +1,16 @@
 package com.discover.mobile.login;
 
+import java.util.Date;
+
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +21,6 @@ import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
-import com.discover.mobile.common.net.response.ErrorResponse;
 
 @ContentView(R.layout.landing)
 public class StartActivity extends RoboActivity {
@@ -26,6 +29,8 @@ public class StartActivity extends RoboActivity {
 	
 	private static final int OPTIONAL_UPGRADE = 1;
 	private static final int FORCED_UPGRADE = 2;
+	
+	private static final long DAY_IN_MILLISECONDS = 86400000;
 	
 	@InjectView(R.id.card_login_button)
 	private Button creditCardLoginButton;
@@ -61,28 +66,17 @@ public class StartActivity extends RoboActivity {
 				Log.e(TAG, "Status code: " + value.statusCode);
 				
 				//check if optional upgrade available
-				if (value.upgradeDescription != null) {
-					if(shouldPresentOptionalUpdate(value.upgradeDescription)) {
-						showUpgradeAlertDialog("Upgrade", 
-								"You are currently not running the latest version of the Discover app. Would you like to upgrade?", 
-								OPTIONAL_UPGRADE);
-					}
+				if(shouldPresentOptionalUpdate(value.upgradeDescription)) {
+					showUpgradeAlertDialog("Upgrade", 
+							value.upgradeDescription, 
+							OPTIONAL_UPGRADE);
 				}
 			}
 
 			@Override
 			public void failure(final Throwable error) {
 				progress.dismiss();
-				Log.e(TAG, "Error: " + error.getMessage());
 				showOkAlertDialog("Error", error.getMessage());
-			}
-
-			@Override
-			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				progress.dismiss();
-				
-				// TEMP
-				return true;
 			}
 
 			@Override
@@ -93,31 +87,50 @@ public class StartActivity extends RoboActivity {
 						showUpgradeAlertDialog("Upgrade", 
 								"Your Discover app is out of date. You must update before continuing.", 
 								FORCED_UPGRADE);
-						break;
+						return true;
 						
 					case 1006:
 					case 1007: 
 						// TODO
 						Log.e(TAG, "Send to maintainance page.");
-						break;
+						return true;
 				}
 				
-				// TEMP
-				return true;
+				return false;
 			}
 		};
 		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);
 		preAuthCall.submit();
 	}
 	
-	private static boolean shouldPresentOptionalUpdate(final String updateDescription) {
-		// TODO check if there is saved date
-		// TODO if there is, see if 30 days have passed
-		// TODO if 30 days have passed, return true
-		// TODO if there is no saved date, save it to local storage
+	private boolean shouldPresentOptionalUpdate(final String updateDescription) {
+		if(updateDescription != null) {
+			final SharedPreferences prefs=getPreferences(Context.MODE_PRIVATE);
+			
+			final String dateTimeKey = "com.discover.mobile.optionalupdatedate";
+			final long savedDate = prefs.getLong(dateTimeKey, 0);
+			
+			if (savedDate == 0) {
+				final SharedPreferences.Editor editor=prefs.edit();
+				editor.putLong(dateTimeKey, new Date().getTime());
+				editor.commit();
+				return false;
+			}
+			
+			final long currentDate = new Date().getTime();
+			final long daysDifference = (currentDate - savedDate)/DAY_IN_MILLISECONDS;
+			
+			if(daysDifference > 29) {
+				final SharedPreferences.Editor editor=prefs.edit();
+				editor.remove(dateTimeKey);
+				editor.commit();
+				return true;
+			}
+			
+			return false;
+		}
 		
-		// TEMP
-		return true;
+		return false;
 	}
 	
 	private void showOkAlertDialog(final String title, final String message) {

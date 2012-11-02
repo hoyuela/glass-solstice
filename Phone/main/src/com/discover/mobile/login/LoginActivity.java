@@ -10,7 +10,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,12 +19,10 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
-import com.discover.mobile.common.auth.AuthenticateCall.AuthCallParams;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.register.AccountInformationActivity;
-import com.google.inject.Inject;
 
 @ContentView(R.layout.login)
 public class LoginActivity extends RoboActivity {
@@ -46,9 +43,6 @@ public class LoginActivity extends RoboActivity {
 
 	@InjectView(R.id.error_text_view)
 	private TextView errorTextView;
-	
-	@Inject
-	private TelephonyManager telephonyManager;
 	
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -111,7 +105,6 @@ public class LoginActivity extends RoboActivity {
 				progress.dismiss();
 				
 				switch (errorResponse.getHttpStatusCode()) {
-//					case HttpURLConnection.HTTP_BAD_REQUEST: // TODO figure out if this actually happens
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						errorTextView.setText(getString(R.string.login_error));
 						return true;
@@ -132,18 +125,8 @@ public class LoginActivity extends RoboActivity {
 				return true;
 			}
 		};
-		
-//		final AuthenticateCall authenticateCall = new AuthenticateCall(this, callback, username, password);
-		final AuthenticateCall authenticateCall = new AuthenticateCall(this, callback, 
-				new AuthCallParams() {{
-					authUsername = username;
-					authPassword = password;
-					did = telephonyManager.getDeviceId();
-					sid = telephonyManager.getSimSerialNumber();
-					oid = telephonyManager.getDeviceId();
-				}});
-		
-		authenticateCall.submit();
+
+		new AuthenticateCall(this, callback, username, password).submit();
 	}
 	
 	private void handleSuccessfulAuth() {
@@ -158,7 +141,6 @@ public class LoginActivity extends RoboActivity {
 			    .setTitle(title)
 			    .setMessage(message)
 			    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-					
 					@Override
 					public void onClick(final DialogInterface dialog, final int which) {
 						dialog.dismiss();
@@ -179,11 +161,9 @@ public class LoginActivity extends RoboActivity {
 		this.startActivity(accountInformationActivity);
 	}
 	
-	// TODO create Credentials object to handle any Model-like properties
 	public void clearInputs() {
 		errorTextView.setText("");
 		passField.setText("");
 		uidField.setText("");
 	}
-	
 }

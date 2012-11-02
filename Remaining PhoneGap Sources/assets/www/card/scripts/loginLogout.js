@@ -71,55 +71,6 @@ dfs.crd.lilo.goToBankLogin = function ()
     }
 }
 
-dfs.crd.lilo.validateLoginParams = function(userName, password, rememberID)
-{
-	try{
-		var result = true;
-		$("#uid").removeClass("errormsg");
-		$("#pwd").removeClass("errormsg");
-		$("errorLoginInline").html("");
-
-		/* If UID field has any errors */
-		if ((userName == "") || (/^\s+$/.test(userName))) 
-		{
-			$("#uid").addClass("errormsg");
-			result = false;
-		}
-		/* If Passwd field has any errors */
-		if ((password == "") || (/^\s+$/.test(password))) 
-		{
-			$("#pwd").addClass("errormsg");
-			result = false;
-		}
-		if (result== false)
-		{
-			dfs.crd.lilo.errorHandlerLogin("401", "");
-			return;
-		}
-		if ( ( ((/^\d+$/).test(userName)) && (userName.length == 16) && ((/^6011/).test(userName)) ) 
-				&& rememberID =="yes") 
-		{
-			var uid=$("#uid");
-			var pwd=$("#pwd");
-			uid.addClass("errormsg");
-			pwd.addClass("errormsg");
-			$("#errorLoginInline").css("display", "block");
-
-            $("#errorLoginInline").html("To protect the security of your Account, we do not save your Discover card Account number with the \"Remember My User ID\" feature. It is only available when you use a user ID to log in.");
-			uid.val("");
-    		pwd.val("");
-			
-			result=false;
-			$("#flip-b").val("no").slider("refresh");
-		}
-
-		return result;
-	}catch(err)
-	{
-		showSysException(err);
-	}
-}
-
 dfs.crd.lilo.setRememberID = function(userName,rememberID)
 {
 	try{
@@ -294,26 +245,12 @@ dfs.crd.lilo.errorHandlerLogin = function(errorCode, customErrorMessage,strongAu
 
 dfs.crd.lilo.authenticateUser = function()
 {
-	var user = $("#uid").val();
-	var password = $("#pwd").val();
-	var rememberID=$("#flip-b").val();
-	var label;
 	try{
         // Push Notification Change - to retrieve Vendor ID
         getXidFromNative();
         
 		if (dfs.crd.lilo.validateLoginParams(user,password,rememberID))
 		{
-
-			var authorizationString=getAuthorizationString(user+": :"+password);
-			var authHeader={"X-Application-Version":APPVER,"X-Client-Platform":"Android",
-							"Content-Type":"application/json","Authorization":"AuthorizationString",
-							"X-DID":"DeviceId","X-SID":"SimID","X-OID":"OtherID"};
-			authHeader.Authorization=authorizationString;
-			authHeader["X-DID"]=getDID();
-			authHeader["X-SID"]=getSID();
-			authHeader["X-OID"]=getOID();
-			authHeader["X-Client-Platform"]=getClientPlat();
 			var newDate = new Date();	
 			var LILOURL = RESTURL+"acct/v1/account?"+newDate+"";
 			showSpinner();
@@ -324,7 +261,6 @@ dfs.crd.lilo.authenticateUser = function()
                 timeout: 30000,
 				headers :authHeader,				
 				success : function(response, status, jqXHR){
-					hideSpinner();
 					getSecToken();
                     CookieManager.prototype.getCookie(function successToken (arg) {dfsKey = arg}, null, "dfsedskey");
 					dfs.crd.lilo.userLogOut = false;	
@@ -347,10 +283,6 @@ dfs.crd.lilo.authenticateUser = function()
                    
                         // setting the session variable true after successful authentication
                         isSessionValid = true;
-                   
-                        //Commenting existing login flow
-                        //navigation('../achome/cardHome');
-                   
                         // Check Local Storage for Device Registration Status, check if the VID retrieved is same with previous stored one
                         if (dfs.crd.lilo.isDeviceRegistered())
                         {
@@ -510,45 +442,6 @@ dfs.crd.lilo.gotoACHome = function(error)
 //Application-Version and Service Unavailable check
 dfs.crd.lilo.preLoginCheck = function(){
     try{
-        var newDate = new Date();	
-        var LILOURL = RESTURL+"session/preauthcheck?"+newDate+"";
-        showSpinner();
-        $.ajax({
-               type : "GET",
-               url : LILOURL,
-               dataType : "json",
-               timeout: 30000,
-               headers:prepareGetHeader(),
-               success : function(response, status, jqXHR){
-                   hideSpinner();
-                    CookieManager.prototype.getCookie(function successToken (arg) {vOne = arg}, null, "v1st");
-                   var headerVersionInfo=jqXHR.getResponseHeader("VersionInfo");
-                   if(!isEmpty(headerVersionInfo)){
-                        localStorage.setItem("VersionInfoMsg", headerVersionInfo);
-                        var versionInfoMsgDate=localStorage.getItem("VersionInfoMsgDate");
-                        if(isEmpty(versionInfoMsgDate)){
-                            var thirtyDaysFromToday = new Date((new Date()).getTime() + 30*86400000);
-                            localStorage.setItem("VersionInfoMsgDate", thirtyDaysFromToday);
-                           dfs.crd.lilo.showOptionalUpgradePage(headerVersionInfo);
-                        }else{
-                            var localDate=Date.parse(versionInfoMsgDate);
-                            versionInfoMsgDate = new Date(localDate);
-                            var currentDate=new Date();
-                            var millisecondsPerDay = 86400000;
-                            var millisBetween = versionInfoMsgDate - currentDate;
-                            var versionDays = millisBetween / millisecondsPerDay;
-                            if(versionDays < 0){
-                             dfs.crd.lilo.showOptionalUpgradePage(headerVersionInfo);
-                            }else{
-                                dfs.crd.lilo.goToCardLogin();
-                            }
-                        }
-                   }else{
-                        localStorage.setItem("VersionInfoMsg", "");
-                        localStorage.setItem("VersionInfoMsgDate", "");
-                        dfs.crd.lilo.goToCardLogin();
-                   }
-                },    
                error : function(jqXHR, textStatus, errorThrown){
                     hideSpinner();
                     var errorCode=""+jqXHR.status;
