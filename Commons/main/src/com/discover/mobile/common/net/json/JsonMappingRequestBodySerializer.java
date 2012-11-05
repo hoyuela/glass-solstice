@@ -20,4 +20,10 @@ public class JsonMappingRequestBodySerializer implements RequestBodySerializer {
 		JacksonObjectMapperHolder.mapper.writeValue(outputStream, body);
 	}
 	
+	@Override
+	public String getContentType() {
+		// TODO make named constant in more common location
+		return "application/json";
+	}
+	
 }
