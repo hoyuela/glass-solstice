@@ -1,5 +1,8 @@
 package com.discover.mobile.common.net.json;
 
+import java.io.Serializable;
+import java.util.List;
+
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -18,6 +21,9 @@ public class MessageErrorResponse extends ErrorResponse {
 	@JsonProperty
 	private String message;
 	
+	@JsonProperty
+	private List<Data> data;
+	
 	public int getMessageStatusCode() {
 		return messageStatusCode;
 	}
@@ -34,4 +40,9 @@ public class MessageErrorResponse extends ErrorResponse {
 				.add("message", message).toString();
 	}
 	
+	public static class Data implements Serializable {
+		private static final long serialVersionUID = 6370942047530497928L;
+		
+		public String saStatus;
+	}
 }

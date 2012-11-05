@@ -7,7 +7,7 @@ import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 
-public final class ServiceCallSessionManager {
+final class ServiceCallSessionManager {
 	
 	private static final CookieManager cookieManager = createAndSetupCookieManager();
 	
@@ -17,13 +17,13 @@ public final class ServiceCallSessionManager {
 		return manager;
 	}
 	
-	public static void clearSession() {
+	static void clearSession() {
 		// TODO determine if this is really thread-safe (and safe if
 		// we have another long-running, concurrent network call)
 		cookieManager.getCookieStore().removeAll();
 	}
 	
-	public static boolean prepareWithSecurityToken(final HttpURLConnection conn) {
+	static boolean prepareWithSecurityToken(final HttpURLConnection conn) {
 		final String token = getSecurityToken();
 		if(isNullOrEmpty(token))
 			return false;
