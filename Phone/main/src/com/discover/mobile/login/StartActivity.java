@@ -92,7 +92,7 @@ public class StartActivity extends RoboActivity {
 					case 1006:
 					case 1007: 
 						// TODO
-						Log.e(TAG, "Send to maintainance page.");
+						Log.w(TAG, "Send to maintainance page.");
 						return true;
 				}
 				

@@ -14,7 +14,7 @@ public class JsonMessageErrorResponseParser implements ErrorResponseParser<Messa
 	public MessageErrorResponse parseErrorResponse(final int httpStatusCode, final InputStream errorStream,
 			final HttpURLConnection conn) throws IOException {
 		
-		if(!isParseableContentType(conn) || !hasDeclaredContent(conn) || !inputStreamHasContent(errorStream))
+		if(!isParseableContentType(conn) || doesntHaveDeclaredContent(conn) || !inputStreamHasContent(errorStream))
 			return null;
 		
 		return JacksonObjectMapperHolder.mapper.readValue(errorStream, MessageErrorResponse.class);
@@ -24,8 +24,8 @@ public class JsonMessageErrorResponseParser implements ErrorResponseParser<Messa
 		return MIME_JSON.equalsIgnoreCase(conn.getContentType());
 	}
 	
-	private static boolean hasDeclaredContent(final HttpURLConnection conn) {
-		return conn.getContentLength() > 0;
+	private static boolean doesntHaveDeclaredContent(final HttpURLConnection conn) {
+		return conn.getContentLength() == 0;
 	}
 	
 	private static boolean inputStreamHasContent(final InputStream in) throws IOException {
