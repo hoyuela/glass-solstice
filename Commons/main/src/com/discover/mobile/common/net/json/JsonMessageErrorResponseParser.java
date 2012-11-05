@@ -14,7 +14,7 @@ public class JsonMessageErrorResponseParser implements ErrorResponseParser<Messa
 	public MessageErrorResponse parseErrorResponse(final int httpStatusCode, final InputStream errorStream,
 			final HttpURLConnection conn) throws IOException {
 		
-		if(!isParseableContentType(conn) || hasDeclaredContent(conn) || !inputStreamHasContent(errorStream))
+		if(!isParseableContentType(conn) || !hasDeclaredContent(conn) || !inputStreamHasContent(errorStream))
 			return null;
 		
 		return JacksonObjectMapperHolder.mapper.readValue(errorStream, MessageErrorResponse.class);

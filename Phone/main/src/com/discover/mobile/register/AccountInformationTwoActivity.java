@@ -13,11 +13,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.auth.InputValidator;
+import com.discover.mobile.common.auth.registration.RegistrationCallTwo;
+import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
 import com.discover.mobile.common.auth.registration.RegistrationTwoDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
@@ -25,42 +26,76 @@ import com.discover.mobile.common.net.response.ErrorResponse;
 
 public class AccountInformationTwoActivity extends Activity{
 
+	private RegistrationOneDetails formDataOne;
+	private RegistrationTwoDetails formDataTwo;
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.account_info_two);
+		formDataTwo = new RegistrationTwoDetails();
+		
+		if (savedInstanceState == null) {
+			Bundle extras = getIntent().getExtras();
+        	if(extras != null) {
+        		formDataOne = (RegistrationOneDetails)getIntent().getSerializableExtra("RegistrationOneDetails");
+        		formDataTwo.acctNbr = formDataOne.acctNbr;
+        		formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
+        		formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
+        		formDataTwo.dateOfBirthYear = formDataOne.dateOfBirthYear;
+        		formDataTwo.expirationMonth = formDataOne.expirationMonth;
+        		formDataTwo.expirationYear = formDataOne.expirationYear;
+        		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
+        	}
+		}
+		
 		
 		setupButtonListeners();
 		setupTextChangedListeners();
-		
 	}
 	
 	private void navigateToConfirmationScreen(){
 		Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
+		confirmationScreen.putExtra("id", formDataTwo.userId);
+		confirmationScreen.putExtra("email", formDataTwo.email);
+		confirmationScreen.putExtra("acctNbr", getLast4(formDataTwo.acctNbr));
 		this.startActivity(confirmationScreen);
 	}
 	
+	private String getLast4(String str){
+		
+		if(str != null && str.length() - 4 > 0)
+			return str.substring(str.length() - 4);
+		else
+			return str;
+		
+	}
 	
-	private void checkInputsThenNavOnSuccess(){
+	
+	private void checkInputsThenSubmit(){
 		InputValidator validator = new InputValidator();
+		String email = ((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString();
+		String id1 =((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString();
+		String id2 = ((EditText)findViewById(R.id.account_info_two_id_confirm_field)).getText().toString();
+		String pass1=((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString();
+		String pass2=((EditText)findViewById(R.id.account_info_two_pass_confirm_field)).getText().toString();
 		
 		validator.doPassesMatch(
-				((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString(), 
-				((EditText)findViewById(R.id.account_info_two_pass_confirm_field)).getText().toString());
+				pass1, pass2);
 		
-		validator.doIdsMatch(
-				((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString(),
-				((EditText)findViewById(R.id.account_info_two_id_confirm_field)).getText().toString());
+		validator.doIdsMatch(id1,id2);
 		
-		validator.isEmailValid(
-				((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString());
+		validator.isEmailValid(email);
 		
-		validator.doPassAndIdMatch(
-				((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString(),
-				((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString()); 
+		validator.doPassAndIdMatch(pass1,id1); 
 
 		if(validator.wasAccountTwoInfoComplete()){
-			navigateToConfirmationScreen();
+			
+			formDataTwo.email = email;
+			formDataTwo.password = pass1;
+			formDataTwo.passwordConfirm = formDataTwo.password;
+			formDataTwo.userId = id1;
+			formDataTwo.userIdConfirm = formDataTwo.userId;
+			submitFormInfo();
 		}
 		
 	}
@@ -72,7 +107,7 @@ public class AccountInformationTwoActivity extends Activity{
 			public void onClick(View v){
 //			submitFormInfo();
 				//On success
-				checkInputsThenNavOnSuccess();
+				checkInputsThenSubmit();
 			}
 		});
 	}
@@ -96,21 +131,18 @@ public class AccountInformationTwoActivity extends Activity{
 		passField.addTextChangedListener(new TextWatcher(){
 			@Override
 			public void afterTextChanged(final Editable s) {
-				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
 			public void beforeTextChanged(final CharSequence s, final int start, final int count,
 					final int after) {
-				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
 			public void onTextChanged(final CharSequence s, final int start, final int before,
 					final int count) {
-				// TODO Auto-generated method stub
 				updateBarsForPass(s, findViewById(R.id.account_info_two_pass_bar_one), 
 							  findViewById(R.id.account_info_two_pass_bar_two),
 							  findViewById(R.id.account_info_two_pass_bar_three),
@@ -122,21 +154,18 @@ public class AccountInformationTwoActivity extends Activity{
 
 			@Override
 			public void afterTextChanged(final Editable s) {
-				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
 			public void beforeTextChanged(final CharSequence s, final int start, final int count,
 					final int after) {
-				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
 			public void onTextChanged(final CharSequence s, final int start, final int before,
 					final int count) {
-				// TODO Auto-generated method stub
 				updateBarsForUID(s, findViewById(R.id.account_info_two_uid_bar_one), 
 							  findViewById(R.id.account_info_two_uid_bar_two),
 							  findViewById(R.id.account_info_two_uid_bar_three),
@@ -295,14 +324,9 @@ public class AccountInformationTwoActivity extends Activity{
 			public void success(final RegistrationTwoDetails value) {
 				Log.d(TAG, "Success");
 				progress.dismiss();
-
+				navigateToConfirmationScreen();
 			}
 
-			// TODO use or remove (commented because AsyncCallbackAdapter now has default handlers for this)
-//			@Override
-//			public void failure(final Throwable error) {
-//				Log.e(TAG, "Error: " + error);
-//			}
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
@@ -330,32 +354,10 @@ public class AccountInformationTwoActivity extends Activity{
 				return true;
 			}
 		};
-//		(final Context context, final AsyncCallback<RegistrationDetails> callback,
-//		final String acctNbr, final String expirationMonth, final String expirationYear, final String dateOfBirthMonth, final String  dateOfBirthDay,
-//		final String socialSecurityNumber, final String dateOfBirthYear)
-		final EditText userIdField = (EditText)findViewById(R.id.account_info_two_id_field);
-		final EditText userIdConfirmField = (EditText)findViewById(R.id.account_info_two_id_confirm_field);
-		final EditText passField = (EditText)findViewById(R.id.account_info_two_pass_field);
-		final EditText passConfirmField = (EditText)findViewById(R.id.account_info_two_pass_confirm_field);
-		final EditText emailField = (EditText)findViewById(R.id.account_info_two_id_field);
-
-
-		final Spinner cardMonthExp = (Spinner)findViewById(R.id.account_info_month_spinner);
-		final Spinner cardYearExp = (Spinner)findViewById(R.id.account_info_year_spinner);
-		final Spinner memberDobMonth = (Spinner)findViewById(R.id.account_info_dob_month_spinner);
-		final Spinner memberDobDay = (Spinner)findViewById(R.id.account_info_dob_day_spinner);
-		final EditText memberDobYear = (EditText)findViewById(R.id.account_info_dob_year_field);
-		final EditText memberSsnNum = (EditText)findViewById(R.id.account_info_ssn_input_field);
 		
-		final String cardMonthExpString = cardMonthExp.getSelectedItem().toString();
-		final String cardYearExpString = cardYearExp.getSelectedItem().toString();
-		final String memberDobMonthString = memberDobMonth.getSelectedItem().toString();
-		final String memberDobDayString = memberDobDay.getSelectedItem().toString();
-		final String memberDobYearString = memberDobYear.getText().toString();
-		final String memberSsnNumString =  memberSsnNum.getText().toString();
-		
-		//final RegistrationCallTwo registrationCall = new RegistrationCallTwo(this, callback, );
-		//registrationCall.submit();
+		final RegistrationCallTwo registrationCall = new RegistrationCallTwo(this, callback, formDataTwo);
+		registrationCall.submit();
+
 	}
 
 }

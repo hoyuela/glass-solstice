@@ -1,20 +1,25 @@
 package com.discover.mobile.common.auth.registration;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
+import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.WeakReferenceHandler;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.net.response.AsyncCallback;
 
-public class RegistrationCallOne extends JsonResponseMappingNetworkServiceCall<RegistrationOneDetails> {
+public class RegistrationCallOne extends NetworkServiceCall<Object> {
 	
 	private static final String TAG = RegistrationCallOne.class.getSimpleName();
 	
-	private final TypedReferenceHandler<RegistrationOneDetails> handler;
+	private final TypedReferenceHandler<Object> handler;
 
-	public RegistrationCallOne(final Context context, final AsyncCallback<RegistrationOneDetails> callback,
+	public RegistrationCallOne(final Context context, final AsyncCallback<Object> callback,
 			final RegistrationOneDetails formData) {
 		
 		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/reg/auth") {{
@@ -24,13 +29,21 @@ public class RegistrationCallOne extends JsonResponseMappingNetworkServiceCall<R
 			sendDeviceIdentifiers = true;
 			
 			body = formData;
-		}}, RegistrationOneDetails.class);
+		}});
 		
-		handler = new WeakReferenceHandler<RegistrationOneDetails>(callback);
+		handler = new StrongReferenceHandler<Object>(callback);
 	}
 
 	@Override
-	protected TypedReferenceHandler<RegistrationOneDetails> getHandler() {
+	protected TypedReferenceHandler<Object> getHandler() {
 		return handler;
+	}
+
+	@Override
+	protected Object parseSuccessResponse(int status,
+			Map<String, List<String>> headers, InputStream body)
+			throws IOException {
+		// TODO Auto-generated method stub
+		return this;
 	}
 }

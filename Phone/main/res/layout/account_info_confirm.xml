@@ -134,6 +134,7 @@
                 android:layout_toRightOf="@id/account_info_confirm_account_stars_label"
                 android:layout_below="@+id/account_info_confirm_email_title_label"
                 android:paddingTop="4dp"
+                android:layout_marginLeft="4dp"
                 android:text="@string/account_info_confirm_account_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"

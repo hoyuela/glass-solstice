@@ -68,9 +68,10 @@
                 android:layout_below="@+id/account_information_input_info_label"
                 android:ems="16"
                 android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
                 android:maxLength="16"
                 android:maxLines="@integer/MAX_INPUT_LINES"
-                android:paddingTop="8dp"> 
+                android:paddingTop="8dp" >
                         
                  <requestFocus />
                 </EditText>
@@ -139,6 +140,7 @@
                 android:layout_below="@+id/account_info_two_confirm_id_label"
                 android:ems="16"
                 android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
                 android:maxLength="16"
                 android:maxLines="@integer/MAX_INPUT_LINES"
                 android:paddingTop="8dp" />
@@ -258,6 +260,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_two_email_label"
                 android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
                 android:paddingTop="8dp" />
 
             <TextView
@@ -321,14 +324,6 @@
                 android:layout_centerHorizontal="true"
                 android:text="@string/discover_copyright_text"
                 android:textSize="@dimen/content_padding" />
-
-            <ImageView
-                android:id="@+id/ImageView01"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/helpbubble" />
 
             <ImageView
                 android:id="@+id/imageView1"

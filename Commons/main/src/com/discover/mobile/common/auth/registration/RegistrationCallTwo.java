@@ -16,14 +16,10 @@ public class RegistrationCallTwo extends JsonResponseMappingNetworkServiceCall<R
 
 	public RegistrationCallTwo(final Context context, final AsyncCallback<RegistrationTwoDetails> callback,
 			final RegistrationTwoDetails formData) {
-		
-		super(context, new PostCallParams("/reg/v1/user/reg") {{
+		///cardsvcs/acs/reg/v1/user/reg/auth
+		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/reg") {{
 			// TODO
-			/*
-			 * head = X-DID getdeviceid
-			 *  X-OID get
-			 *  and X-SID get
-			 */
+			
 			body = formData;
 		}}, RegistrationTwoDetails.class);
 		

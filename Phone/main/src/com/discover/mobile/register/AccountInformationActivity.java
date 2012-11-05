@@ -24,7 +24,7 @@ import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 
 public class AccountInformationActivity extends Activity {
-	
+	private RegistrationOneDetails formData;
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -35,6 +35,7 @@ public class AccountInformationActivity extends Activity {
 	
 	private void startNextActivity(){
 		final Intent enhancedAccountSecurityIntent = new Intent(this, AccountInformationTwoActivity.class);
+		enhancedAccountSecurityIntent.putExtra("RegistrationOneDetails", formData);
 		this.startActivity(enhancedAccountSecurityIntent);
 		
 	}
@@ -78,9 +79,9 @@ public class AccountInformationActivity extends Activity {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		final String TAG = "Form Submission";
 		
-		final AsyncCallbackAdapter<RegistrationOneDetails> callback = new AsyncCallbackAdapter<RegistrationOneDetails>() {
+		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
 			@Override
-			public void success(final RegistrationOneDetails value) {
+			public void success(final Object value) {
 				Log.d(TAG, "Success");
 				progress.dismiss();
 				startNextActivity();
@@ -132,7 +133,7 @@ public class AccountInformationActivity extends Activity {
 		final String memberDobDayString = memberDobDay.getSelectedItem().toString();
 		final String memberDobYearString = memberDobYear.getText().toString();
 		final String memberSsnNumString =  memberSsnNum.getText().toString();
-		final RegistrationOneDetails formData = new RegistrationOneDetails();
+		formData = new RegistrationOneDetails();
 				
 		validator.isCardAccountNumberValid(accountNumString);
 		validator.isCardExpMonthValid(cardMonthExpString);
@@ -153,6 +154,7 @@ public class AccountInformationActivity extends Activity {
 			
 			final RegistrationCallOne registrationCall = new RegistrationCallOne(this, callback, formData);
 			registrationCall.submit();
+
 		}
 		else{
 			progress.dismiss();
