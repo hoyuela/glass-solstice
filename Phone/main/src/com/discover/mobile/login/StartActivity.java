@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,8 @@ public class StartActivity extends RoboActivity {
 	
 	private static final String TAG = StartActivity.class.getSimpleName();
 	
+	private static final String PACKAGE_NAME = "com.discover.mobile.DiscoverMobileActivity";
+	
 	private static final int OPTIONAL_UPGRADE = 1;
 	private static final int FORCED_UPGRADE = 2;
 	
@@ -39,10 +42,6 @@ public class StartActivity extends RoboActivity {
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		// TODO consider running this after a brief delay so that involved
-		// classloading/initialization doesn't delay startup
-		startPreAuthCheck();
-		
 		setupButtons();
 	}
 	
@@ -51,7 +50,7 @@ public class StartActivity extends RoboActivity {
 		creditCardLoginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				navigateToLogin();
+				doPreAuthCheck();
 			}
 		});
 	}
@@ -70,6 +69,8 @@ public class StartActivity extends RoboActivity {
 					showUpgradeAlertDialog("Upgrade", 
 							value.upgradeDescription, 
 							OPTIONAL_UPGRADE);
+				} else {
+					navigateToLogin();
 				}
 			}
 
@@ -167,7 +168,9 @@ public class StartActivity extends RoboActivity {
 	}
 	
 	private void upgrade() {
-		// TODO send to upgrade URI
+		final Uri marketUri = Uri.parse("market://details?id=" + PACKAGE_NAME);
+		final Intent androidMarketplaceIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+		startActivity(androidMarketplaceIntent);
 	}
 	
 	private void navigateToLogin() {
@@ -175,4 +178,7 @@ public class StartActivity extends RoboActivity {
 		this.startActivity(loginActivity);
 	}
 	
+	private void doPreAuthCheck() {
+		startPreAuthCheck();
+	}
 }
