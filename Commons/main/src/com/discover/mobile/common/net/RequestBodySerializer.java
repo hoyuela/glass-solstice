@@ -7,5 +7,6 @@ public interface RequestBodySerializer {
 	
 	boolean canSerialize(Object body);
 	void serializeBody(Object body, OutputStream outputStream) throws IOException;
+	String getContentType();
 	
 }

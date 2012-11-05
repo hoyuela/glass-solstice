@@ -215,7 +215,6 @@ public abstract class NetworkServiceCall<R> {
 	private void setDefaultHeaders() {
 		conn.setRequestProperty("X-Client-Platform", "Android");
 		conn.setRequestProperty("X-Application-Version", "4.00");
-		conn.setRequestProperty("Content-Type", "applicaiton/json");
 	}
 	
 	private void setSessionHeaders() throws IOException {
@@ -266,6 +265,10 @@ public abstract class NetworkServiceCall<R> {
 		
 		if(serializer == null)
 			throw new UnsupportedOperationException("Unable to serialize body: " + body);
+		
+		final String contentType = serializer.getContentType();
+		if(!Strings.isNullOrEmpty(contentType))
+			conn.setRequestProperty("Content-Type", contentType);
 		
 		final OutputStream requestStream = conn.getOutputStream();
 		serializer.serializeBody(body, requestStream);

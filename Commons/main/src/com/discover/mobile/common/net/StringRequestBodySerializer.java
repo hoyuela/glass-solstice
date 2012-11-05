@@ -23,4 +23,9 @@ public class StringRequestBodySerializer implements RequestBodySerializer {
 		outputStream.write(bodyBytes);
 	}
 	
+	@Override
+	public String getContentType() {
+		return null;
+	}
+	
 }

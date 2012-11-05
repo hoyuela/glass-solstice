@@ -20,6 +20,8 @@ import com.discover.mobile.common.net.ServiceCallParams;
  */
 public abstract class JsonResponseMappingNetworkServiceCall<M> extends NetworkServiceCall<M> {
 	
+	private static final String TAG = JsonResponseMappingNetworkServiceCall.class.getSimpleName();
+	
 	private final Class<M> modelClass;
 	
 	protected JsonResponseMappingNetworkServiceCall(final Context context, final ServiceCallParams params,
@@ -30,7 +32,7 @@ public abstract class JsonResponseMappingNetworkServiceCall<M> extends NetworkSe
 		checkNotNull(modelClass, "modelClass cannot be null");
 		
 		this.modelClass = modelClass;
-		Log.d("Model Class", modelClass.toString());
+		Log.d(TAG, modelClass.toString());
 	}
 	
 	@Override
