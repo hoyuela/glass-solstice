@@ -63,7 +63,7 @@ public class StartActivity extends RoboActivity {
 			@Override
 			public void success(final PreAuthResult value) {
 				progress.dismiss();
-				Log.e(TAG, "Status code: " + value.statusCode);
+				Log.d(TAG, "Pre-auth status code: " + value.statusCode);
 				
 				//check if optional upgrade available
 				if(shouldPresentOptionalUpdate(value.upgradeDescription)) {
