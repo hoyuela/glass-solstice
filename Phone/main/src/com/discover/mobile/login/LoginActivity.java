@@ -152,6 +152,8 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	private void logIn() {
+		//If the user id, or password field are effectively blank, do not allow a service call to be made
+		//display the error message for id/pass not matching records.
 		if(getResources().getString(R.string.username_placeholder).equals(uidField.getText().toString()) ||
 			getResources().getString(R.string.password_placeholder).equals(passField.getText().toString()) ||
 			Strings.isNullOrEmpty(uidField.getText().toString()) ||
