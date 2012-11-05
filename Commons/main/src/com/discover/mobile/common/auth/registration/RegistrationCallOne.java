@@ -38,6 +38,7 @@ public class RegistrationCallOne extends NetworkServiceCall<Object> {
 	protected TypedReferenceHandler<Object> getHandler() {
 		return handler;
 	}
+	
 
 	@Override
 	protected Object parseSuccessResponse(int status,

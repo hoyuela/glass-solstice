@@ -39,14 +39,20 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/orange"
             android:textStyle="bold" />
-
+        
+        <TextView 
+            android:id="@+id/account_info_error_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:layout_below="@id/account_info_step_label"
+			android:textColor="@color/red"/>
+        
         <TextView
             android:id="@+id/account_info_label_one_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/account_info_step_label"
-            android:layout_below="@+id/account_info_step_label"
-            android:paddingTop="4dp"
+            android:layout_below="@+id/account_info_error_label"
             android:text="@string/account_info_label_one"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/black" />

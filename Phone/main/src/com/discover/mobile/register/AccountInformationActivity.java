@@ -94,9 +94,16 @@ public class AccountInformationActivity extends Activity {
 				progress.dismiss();
 				
 				switch (errorResponse.getHttpStatusCode()) {
-//					case HttpURLConnection.HTTP_BAD_REQUEST: // TODO figure out if this actually happens
+					case HttpURLConnection.HTTP_BAD_REQUEST:
+						return true;
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						return true;
+					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldnt authenticate user info.
+						{
+							((TextView)findViewById(R.id.account_info_error_label))
+							.setText(getResources().getString(R.string.account_info_error_text));
+							return true;
+						}
 				}
 				
 				return false;
@@ -104,10 +111,7 @@ public class AccountInformationActivity extends Activity {
 
 			@Override
 			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
-				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
-					return false;
-				
-				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
+
 				progress.dismiss();
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
 				
