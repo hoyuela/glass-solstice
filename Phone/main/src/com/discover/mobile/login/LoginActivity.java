@@ -23,6 +23,7 @@ import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.register.AccountInformationActivity;
+import com.google.common.base.Strings;
 
 @ContentView(R.layout.login)
 public class LoginActivity extends RoboActivity {
@@ -151,7 +152,13 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	private void logIn() {
-		runAuthWithUsernameAndPassword(uidField.getText().toString(), passField.getText().toString());
+		if(getResources().getString(R.string.username_placeholder).equals(uidField.getText().toString()) ||
+			getResources().getString(R.string.password_placeholder).equals(passField.getText().toString()) ||
+			Strings.isNullOrEmpty(uidField.getText().toString()) ||
+			Strings.isNullOrEmpty(passField.getText().toString()))
+			errorTextView.setText(getString(R.string.login_error));
+		else
+			runAuthWithUsernameAndPassword(uidField.getText().toString(), passField.getText().toString());
 	}
 	
 	public void registerNewUser() {
