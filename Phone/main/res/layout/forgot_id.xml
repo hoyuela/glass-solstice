@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/gradient_bg"
+        android:paddingBottom="@dimen/content_padding"
+        android:paddingLeft="@dimen/content_padding"
+        android:paddingRight="@dimen/content_padding"
+        android:paddingTop="@dimen/content_padding" >
+
+        <TextView
+            android:id="@+id/forgot_id_title_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_id_title_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/forgot_id_submission_error_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/forgot_id_title_label"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/red" />
+        
+        <TextView
+            android:id="@+id/forgot_id_account_num_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/forgot_id_submission_error_label"
+            android:text="@string/account_info_label_one"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/account_information_input_info_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/forgot_id_account_num_label"
+            android:layout_marginTop="8dp"
+            android:text="@string/account_info_input_restrictions_label"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/black"
+            android:textSize="@dimen/light_text_size" />
+
+        <TextView
+            android:id="@+id/forgot_id_id_error_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/account_information_input_info_label"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/red" />
+
+        <EditText
+            android:id="@+id/forgot_id_id_field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/account_information_input_info_label"
+            android:layout_below="@id/forgot_id_id_error_label"
+            android:inputType="number"
+            android:maxLength="16"
+            android:maxLines="@integer/MAX_INPUT_LINES" >
+
+        </EditText>
+
+        <TextView
+            android:id="@+id/forgot_id_password_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/forgot_id_id_field"
+            android:text="@string/forgot_id_password_text"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/forgot_id_pass_error_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/forgot_id_password_label"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/red" />
+
+        <EditText
+            android:id="@+id/forgot_id_password_field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/forgot_id_pass_error_label"
+            android:maxLength="32"
+            android:inputType="textPassword" >
+        </EditText>
+
+        <TableRow
+            android:id="@+id/forgot_id_button_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/forgot_id_password_field"
+            android:layout_centerHorizontal="true" >
+
+            <TextView
+                android:id="@+id/account_info_cancel_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:paddingRight="32dp"
+                android:text="@string/cancel_text"
+                android:textColor="@color/blue" />
+
+            <Button
+                android:id="@+id/forgot_id_submit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginLeft="32dp"
+                android:onClick="checkInputsAndSubmit"
+                android:text="@string/submit_text" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/account_info_help_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="64dp" 
+            android:layout_below="@id/forgot_id_button_row">
+
+            <TextView
+                android:id="@+id/need_help_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/need_help_text"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/help_number_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/need_help_number_text"
+                android:textColor="@color/blue" />
+        </TableRow>
+
+        <TextView
+            android:id="@+id/feedback_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/account_info_help_row"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="64dp"
+            android:text="@string/feedback_text"
+            android:textColor="@color/blue" />
+
+        <TextView
+            android:id="@+id/discover_copyright_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/feedback_label"
+            android:layout_centerHorizontal="true"
+            android:text="@string/discover_copyright_text"
+            android:textSize="@dimen/light_text_size" />
+
+    </RelativeLayout>

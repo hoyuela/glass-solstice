@@ -169,6 +169,12 @@ public class LoginActivity extends RoboActivity {
 		this.startActivity(accountInformationActivity);
 	}
 	
+	public void forgotIdAndOrPass(View v){
+		Log.d(TAG, "You pressed a button thinggy!");
+		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotCredentialsActivity.class);
+		this.startActivity(forgotIdAndOrPassActivity);
+	}
+	
 	public void clearInputs() {
 		errorTextView.setText("");
 		passField.setText("");

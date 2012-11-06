@@ -27,7 +27,7 @@
 	<string name="account_info_confirm_email_title_text">E&#8211;mail Address</string>
 	<string name="account_info_confirm_account_title_text">Account Number</string>
 	<string name="account_info_confirm_account_stars_text">**** **** **** </string>
-	<string name="account_info_confirm_account_text">8888</string>
+	<string name="account_info_confirm_account_text">1337</string>
 	<string name="email_placeholder">mail@mail.com</string>
 	<string name="account_info_confirm_id_placeholder_text">Chuck Yeager</string>
 	<string name="account_info_confirm_note_text">Please Note: If you currently use Secure online Account Numbers, that password has also been changed.</string>
@@ -44,6 +44,7 @@
 	<string name="account_info_dob_text">Date of Birth of Primary Cardmember:</string>
 	<string name="account_info_ssn_info_text">Social Security Number of Primary Cardmember:</string>
 	<string name="account_info_error_text">You have entered invalid information. Carefully review your information and please try again.</string>
+	
 	<string name="account_info_help_id_strength_text">User ID Strength</string>
 	<string name="account_info_help_bar_title_text">User ID Strength:</string>
 	<string name="account_info_help_id_p1_text">Does not meet minimum requirements (not 6&#8211;16 characters, looks like an account number, or uses spaces or the following characters: (\`)(\')(\")(\\))</string>
@@ -65,6 +66,18 @@
 	<string name="account_info_two_email_text">Email Address:</string>
 	<string name="account_info_two_email_info_text">(Used to confirm receipt of your online account registration.)</string>
 	
+	<string name="forgot_id_title_text">Forgot User ID</string>
+	<string name="forgot_id_password_text">Account Center Password:</string>
+	<string name="forgot_id_submission_error_text">
+	    We\'re sorry. The Credit Card Account Number and/or Password does not
+	    match our records, or you are not registered. Please try again.
+	</string>
+	
+	<string name="forgot_password_text">Forgot Password</string>
+	<string name="forgot_both_text">Forgot Both</string>
+	
+	<string name="arrow">></string>
+	<string name="forgot_credentials_text">Forgot User ID or Password</string>
 	<color name="white">#ffffff</color>
 	<color name="black">#000</color>
 	<color name="blue">#025D96</color>
@@ -74,7 +87,10 @@
 	<color name="yellow">#FFCC00</color>
 	<color name="gray">#CCCCCC</color>
 	<color name="lightRed">#1fff0000</color>
-	
+	<color name="lightBlue">#d0025D96</color>
+	<string name="vital_artery_eviscerating_error_text">Woah! Pump your brakes
+	     homie! Something hella bad went wrong. You shouldn\'t see this. 
+	     Check yo self!</string>
 	<string name="register_text">Register</string>
 	<string name="account_info_label_one">Credit Card Account Number:</string>
 	<string name="cancel_text">Cancel</string>

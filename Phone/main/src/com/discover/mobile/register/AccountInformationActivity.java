@@ -31,11 +31,37 @@ public class AccountInformationActivity extends Activity {
 		setContentView(R.layout.account_info);
 		setupSpinnerAdapters();
 		setupButtons();
+		
+		/*
+		 * Figure out what kind of screen we need to present
+		 * The default is registering a new user. If there is an extra
+		 * present that matches some screen type we can setup the screen
+		 * more specifically and change the flow based on that.
+		 */
+		if (savedInstanceState == null) {
+			Bundle extras = getIntent().getExtras();
+        	if(extras != null) {
+        		if("Forgot Password".equals(extras.getString("screenType"))){
+        			((TextView)findViewById(R.id.account_info_title_label))
+        			.setText(getResources()
+        					.getString(R.string.forgot_password_text));
+        		}
+        		else if("Forgot Both".equals(extras.getString("screenType"))){
+        			((TextView)findViewById(R.id.account_info_title_label))
+        			.setText(getResources()
+        					.getString(R.string.forgot_both_text));
+        		}
+        	}
+		}
 	}
 	
 	private void startNextActivity(){
-		final Intent enhancedAccountSecurityIntent = new Intent(this, AccountInformationTwoActivity.class);
-		enhancedAccountSecurityIntent.putExtra("RegistrationOneDetails", formData);
+		final Intent enhancedAccountSecurityIntent = 
+				new Intent(this, AccountInformationTwoActivity.class);
+		
+		enhancedAccountSecurityIntent
+			.putExtra("RegistrationOneDetails", formData);
+		
 		this.startActivity(enhancedAccountSecurityIntent);
 		
 	}

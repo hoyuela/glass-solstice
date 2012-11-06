@@ -87,4 +87,10 @@
         <item>(11) November</item>
         <item>(12) December</item>
     </string-array>
+    
+    <string-array name="forgot_login">
+        <item>Forgot User ID</item>
+        <item>Forgot Password</item>
+        <item>Forgot Both</item>
+    </string-array>
 </resources>

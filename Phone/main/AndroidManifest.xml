@@ -30,17 +30,17 @@
                 </category>
             </intent-filter>
         </activity>
-            
+        
+        
+<!-- TODO decide if these activities need intent-filters - lint says no -->
         <activity 
             android:name=".login.LoginActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-            
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            
        </activity>
        
       <activity 
@@ -48,7 +48,6 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-            
            <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -59,11 +58,9 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-            
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            
        </activity>
        
         <activity 
@@ -71,11 +68,9 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-            
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            
        </activity>
        
         <activity 
@@ -105,11 +100,29 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
-            
-            <intent-filter>
+             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            
+       </activity>
+       
+       <activity 
+            android:name=".login.ForgotCredentialsActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+              <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+       </activity>
+       
+       <activity 
+            android:name=".login.ForgotUserIdActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+               <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
        </activity>
 
     </application>

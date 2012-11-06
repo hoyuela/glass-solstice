@@ -168,27 +168,20 @@
                 android:text="@string/login_button_text" />
         </TableRow>
 
-        <TableRow
-            android:id="@+id/forgot_pass_id_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="invisible" />
-
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="right"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="8dp"
+                android:onClick="forgotIdAndOrPass"
                 android:text="@string/forgot_id_or_pass_label"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/blue" />
-        </TableRow>
+
     </LinearLayout>
 
     <LinearLayout

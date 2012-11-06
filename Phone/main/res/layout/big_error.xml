@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/gradient_bg"  
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:paddingBottom="@dimen/content_padding"
+    android:paddingLeft="@dimen/content_padding"
+    android:paddingRight="@dimen/content_padding"
+    android:paddingTop="@dimen/content_padding">
+
+     <TextView
+         android:id="@+id/vital_artery_eviscerating_error_label"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerHorizontal="true"
+         android:layout_centerInParent="true"
+         android:layout_centerVertical="true"
+         android:text="@string/vital_artery_eviscerating_error_text"
+         android:textAppearance="?android:attr/textAppearanceLarge"
+         android:textColor="@color/red"
+         android:textStyle="bold" />
+        
+</RelativeLayout>
+
