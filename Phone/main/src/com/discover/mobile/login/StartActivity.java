@@ -29,11 +29,14 @@ public class StartActivity extends RoboActivity {
 	private static final String TAG = StartActivity.class.getSimpleName();
 	
 	private static final String PACKAGE_NAME = "com.discover.mobile.DiscoverMobileActivity";
+	private static final int OPTIONAL_UPGRADE_DAYS = 30;
 	
 	private static final int OPTIONAL_UPGRADE = 1;
 	private static final int FORCED_UPGRADE = 2;
 	
 	private static final long DAY_IN_MILLISECONDS = 86400000;
+	
+	private static final String DATETIME_KEY = "com.discover.mobile.optionalupdatedate";
 	
 	@InjectView(R.id.card_login_button)
 	private Button creditCardLoginButton;
@@ -88,6 +91,7 @@ public class StartActivity extends RoboActivity {
 						showUpgradeAlertDialog("Upgrade", 
 								"Your Discover app is out of date. You must update before continuing.", 
 								FORCED_UPGRADE);
+						removeDateFromPrefs();
 						return true;
 						
 					case 1006:
@@ -108,23 +112,21 @@ public class StartActivity extends RoboActivity {
 		if(updateDescription != null) {
 			final SharedPreferences prefs=getPreferences(Context.MODE_PRIVATE);
 			
-			final String dateTimeKey = "com.discover.mobile.optionalupdatedate";
-			final long savedDate = prefs.getLong(dateTimeKey, 0);
+			final long savedDate = prefs.getLong(DATETIME_KEY, 0);
 			
 			if (savedDate == 0) {
+				Log.d(TAG, "SAVED DATE");
 				final SharedPreferences.Editor editor=prefs.edit();
-				editor.putLong(dateTimeKey, new Date().getTime());
+				editor.putLong(DATETIME_KEY, new Date().getTime());
 				editor.commit();
-				return false;
+				return true;
 			}
 			
 			final long currentDate = new Date().getTime();
 			final long daysDifference = (currentDate - savedDate)/DAY_IN_MILLISECONDS;
 			
-			if(daysDifference > 29) {
-				final SharedPreferences.Editor editor=prefs.edit();
-				editor.remove(dateTimeKey);
-				editor.commit();
+			if(daysDifference >= OPTIONAL_UPGRADE_DAYS) {
+				removeDateFromPrefs();
 				return true;
 			}
 			
@@ -132,6 +134,18 @@ public class StartActivity extends RoboActivity {
 		}
 		
 		return false;
+	}
+	
+	private void removeDateFromPrefs() {
+		final SharedPreferences prefs=getPreferences(Context.MODE_PRIVATE);
+		
+		final long savedDate = prefs.getLong(DATETIME_KEY, 0);
+		
+		if(savedDate != 0) {
+			final SharedPreferences.Editor editor=prefs.edit();
+			editor.remove(DATETIME_KEY);
+			editor.commit();
+		}
 	}
 	
 	private void showOkAlertDialog(final String title, final String message) {
