@@ -9,8 +9,11 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +61,7 @@ public abstract class NetworkServiceCall<R> {
 	private Context context;
 	private HttpURLConnection conn;
 	private DeviceIdentifiers deviceIdentifiers;
+	private RequestBodySerializer requestBodySerializer;
 	
 	private volatile boolean submitted = false;
 	
@@ -166,7 +170,7 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	// Executes in the background thread, performs the HTTP connection and delegates parsing to subclass
-	private void executeRequest() throws IOException {
+	private void executeRequest() throws IOException, NoSuchAlgorithmException {
 		prepareGlobalSessionForConnection();
 		
 		conn = createConnection();
@@ -201,8 +205,8 @@ public abstract class NetworkServiceCall<R> {
 		return new URL(BASE_URL + params.path);
 	}
 	
-	private void prepareConnection() throws IOException {
-		conn.setRequestMethod(params.httpMethod);
+	private void prepareConnection() throws IOException, NoSuchAlgorithmException {
+		doHttpMethodSpecificSetup();
 		
 		setDefaultHeaders();
 		setSessionHeaders();
@@ -210,6 +214,31 @@ public abstract class NetworkServiceCall<R> {
 		setDeviceIdentifierHeaders();
 		
 		setupTimeouts();
+	}
+	
+	private boolean isPostCall() {
+		return params instanceof PostCallParams;
+	}
+	
+	private void doHttpMethodSpecificSetup() throws IOException {
+		conn.setRequestMethod(params.httpMethod);
+		
+		if(isPostCall())
+			doPostSpecificSetup();
+	}
+	
+	private void doPostSpecificSetup() {
+		final PostCallParams postParams = (PostCallParams) params;
+		requestBodySerializer = findRequestBodySerializer(postParams, postParams.body);
+		
+		if(requestBodySerializer == null)
+			throw new UnsupportedOperationException("Unable to serialize body: " + postParams.body);
+		
+		final String contentType = requestBodySerializer.getContentType();
+		if(!Strings.isNullOrEmpty(contentType))
+			conn.setRequestProperty("Content-Type", contentType);
+		
+		conn.setDoOutput(true);
 	}
 	
 	private void setDefaultHeaders() {
@@ -233,16 +262,31 @@ public abstract class NetworkServiceCall<R> {
 			conn.setRequestProperty(headerEntry.getKey(), headerEntry.getValue());
 	}
 	
-	private void setDeviceIdentifierHeaders() {
+	private void setDeviceIdentifierHeaders() throws NoSuchAlgorithmException {
 		if(deviceIdentifiers == null)
 			return;
 		
-		if(deviceIdentifiers.did != null)
-			conn.setRequestProperty("X-DID", ID_PREFIX + deviceIdentifiers.did);
-		if(deviceIdentifiers.sid != null)
-			conn.setRequestProperty("X-SID", ID_PREFIX + deviceIdentifiers.sid);
-		if(deviceIdentifiers.oid != null)
-			conn.setRequestProperty("X-OID", ID_PREFIX + deviceIdentifiers.oid);
+		// TODO consider not setting headers if did/oid/sid is null/empty
+		conn.setRequestProperty("X-DID", getSha256Hash(deviceIdentifiers.did));
+		conn.setRequestProperty("X-SID", getSha256Hash(deviceIdentifiers.sid));
+		conn.setRequestProperty("X-OID", getSha256Hash(deviceIdentifiers.oid));
+	}
+	
+	private static String getSha256Hash(final String toHash) throws NoSuchAlgorithmException {
+		final String safeToHash = toHash == null ? ID_PREFIX : ID_PREFIX + toHash;
+		
+		final MessageDigest digester = MessageDigest.getInstance("SHA-256");
+		final byte[] preHash = safeToHash.getBytes(); // TODO consider specifying charset
+		
+		// Reset happens automatically after digester.digest() but we don't know its state beforehand so call reset()
+		digester.reset();
+		final byte[] postHash = digester.digest(preHash);
+		
+		return convertToHex(postHash);
+	}
+	
+	private static String convertToHex(final byte[] data) {
+		return String.format("%0" + data.length * 2 + 'x', new BigInteger(1, data));
 	}
 	
 	private void setupTimeouts() {
@@ -251,30 +295,26 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private void sendRequestBody() throws IOException {
-		if(!(params instanceof PostCallParams))
+		if(!isPostCall())
 			return;
-		
+
 		final PostCallParams postParams = (PostCallParams) params;
-		final Object body = postParams.body;
-		
-		final RequestBodySerializer serializer;
-		if(postParams.customBodySerializer != null && postParams.customBodySerializer.canSerialize(body))
-			serializer = postParams.customBodySerializer;
-		else
-			serializer = findCapableDefaultRequestBodySerializer(body);
-		
-		if(serializer == null)
-			throw new UnsupportedOperationException("Unable to serialize body: " + body);
-		
-		final String contentType = serializer.getContentType();
-		if(!Strings.isNullOrEmpty(contentType))
-			conn.setRequestProperty("Content-Type", contentType);
-		
 		final OutputStream requestStream = conn.getOutputStream();
-		serializer.serializeBody(body, requestStream);
+		try {
+			requestBodySerializer.serializeBody(postParams.body, requestStream);
+		} finally {
+			requestStream.close();
+		}
 	}
 	
-	private RequestBodySerializer findCapableDefaultRequestBodySerializer(final Object body) {
+	private static RequestBodySerializer findRequestBodySerializer(final PostCallParams postParams, final Object body) {
+		if(postParams.customBodySerializer != null && postParams.customBodySerializer.canSerialize(body))
+			return postParams.customBodySerializer;
+		
+		return findCapableDefaultRequestBodySerializer(body);
+	}
+	
+	private static RequestBodySerializer findCapableDefaultRequestBodySerializer(final Object body) {
 		for(final RequestBodySerializer serializer : REQUEST_BODY_SERIALIZERS) {
 			if(serializer.canSerialize(body))
 				return serializer;
@@ -292,8 +332,10 @@ public abstract class NetworkServiceCall<R> {
 			// found (the authentication scheme is "DCRDBasic", not a standard scheme). Luckily between pooling
 			// connections and the automated redirect support the implementation seems to keep its state despite
 			// exiting its control via an exception, so we try to get the response code again before giving up.
-			if("No authentication challenges found".equals(e.getMessage()))
+			if("No authentication challenges found".equals(e.getMessage())) {
+				Log.v(TAG, "getResponseCode() threw DCRDBasic-caused IOException, reattempting once", e);
 				return conn.getResponseCode();
+			}
 			throw e;
 		}
 	}
@@ -302,15 +344,27 @@ public abstract class NetworkServiceCall<R> {
 		if(DelegatingErrorResponseParser.isErrorStatus(statusCode)) {
 			parseErrorResponseAndSendResult(statusCode);
 		} else {
-			final R result = parseSuccessResponse(statusCode, conn.getHeaderFields(), conn.getInputStream());
+			final R result;
+			final InputStream in = conn.getInputStream();
+			try {
+				result = parseSuccessResponse(statusCode, conn.getHeaderFields(), in);
+			} finally {
+				in.close();
+			}
 			sendResultToHandler(result, RESULT_SUCCESS);
 		}
 	}
 	
 	private void parseErrorResponseAndSendResult(final int statusCode) throws IOException {
 		final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();
+		
+		final ErrorResponse errorResult;
 		final InputStream errorStream = getMarkSupportedErrorStream(conn);
-		final ErrorResponse errorResult = chosenErrorParser.parseErrorResponse(statusCode, errorStream, conn);
+		try {
+			errorResult = chosenErrorParser.parseErrorResponse(statusCode, errorStream, conn);
+		} finally {
+			errorStream.close();
+		}
 		sendResultToHandler(errorResult, RESULT_PARSED_ERROR);
 	}
 	
