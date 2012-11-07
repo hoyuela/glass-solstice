@@ -1,0 +1,16 @@
+<resources>
+    
+    <!-- Strings Used on Strong Auth/Account Security Screen -->
+    <string name="account_security_text">Enhanced Account Security</string>
+	<string name="account_security_info_text">For your security, please answer the following question before continuing.</string>
+	<string name="account_security_placeholder_text">¿Security Question Placeholder?</string>
+	<string name="account_security_question_hint">Your Answer</string>
+	<string name="account_security_remember_device_text">Would you like us to remember this device?</string>
+	<string name="account_security_whats_this_text">What\'s this?</string>
+	<string name="account_security_plus_text">+</string>
+	<string name="account_security_minus_text">-</string>
+	<string name="account_security_remember_me_text">Yes. This is my mobile device that I use to access my Account.</string>
+	<string name="account_security_dont_remember_me_text">No. This is a public or shared device or one I don\'t plan on using often to access my account.</string>
+	<string name="account_security_whats_this_detail_text">Choose "Yes" if this is a private device that you will frequently use to access your account. By doing so, you\'ll still benefit from heightened account security, but will receive fewer security question prompts when logging in. Choose "No" if this is a public device or you share it with others who are not authorized Cardmembers on your account.</string>
+	
+</resources>

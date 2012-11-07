@@ -29,6 +29,11 @@ public class InputValidator {
 		didPassAndIdMatch = false;
 	}
 	
+	public boolean wasForgotPasswordInfoComplete(){
+		return wasSsnValid & wasDobMonthValid & wasDobMonthValid & wasDobDayValid &
+				wasUidValid & wasCardExpMonthValid & wasCardExpYearValid;
+	}
+	
 	public boolean wasAccountInfoComplete(){
 		//bitwise operators FTW
 		return wasSsnValid & wasDobMonthValid & wasDobMonthValid & wasDobDayValid &
