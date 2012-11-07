@@ -155,7 +155,9 @@ public class InputValidator {
 	}
 	
 	public boolean isCardExpYearValid(String cardExpYear){
-		if( !"Year".equals(cardExpYear) && cardExpYear != null )
+		if( !"YYYY".equals(cardExpYear) && 
+				cardExpYear != null && 
+				cardExpYear.length() == 4)
 			 wasCardExpYearValid = true;
 		else
 			 wasCardExpYearValid = false;

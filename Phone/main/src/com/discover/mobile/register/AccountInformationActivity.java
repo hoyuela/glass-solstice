@@ -10,9 +10,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,12 +26,13 @@ import com.discover.mobile.common.net.response.ErrorResponse;
 public class AccountInformationActivity extends Activity {
 	private RegistrationOneDetails formData;
 	private boolean forgotPass = false;
+	private static final String TAG = AccountInformationActivity.class.getSimpleName();
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.account_info);
 		setupSpinnerAdapters();
-		setupButtons();
 		
 		/*
 		 * Figure out what kind of screen we need to present
@@ -97,18 +96,6 @@ public class AccountInformationActivity extends Activity {
 		
 	}
 	
-	private void setupButtons(){
-		final Button submitButton = (Button)findViewById(R.id.account_info_continue_button);
-		submitButton.setOnClickListener(new OnClickListener(){
-			
-			@Override
-			public void onClick(final View v) {
-				submitFormInfo();
-			}
-		});
-		
-	}
-	
 	private void setupSpinnerAdapters(){
 		Spinner spinner;
 		ArrayAdapter<CharSequence> adapter;
@@ -132,9 +119,8 @@ public class AccountInformationActivity extends Activity {
 	}
 	
 	
-	private void submitFormInfo() {
+	public void submitFormInfo(View v) {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
-		final String TAG = "Form Submission";
 		
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
 			@Override
@@ -155,12 +141,8 @@ public class AccountInformationActivity extends Activity {
 						return true;
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						return true;
-					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldnt authenticate user info.
-						{
-							((TextView)findViewById(R.id.account_info_error_label))
-							.setText(getResources().getString(R.string.account_info_error_text));
-							return true;
-						}
+					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldn't authenticate user info.
+						return true;
 				}
 				
 				return false;
@@ -171,6 +153,12 @@ public class AccountInformationActivity extends Activity {
 
 				progress.dismiss();
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
+				if(1906 == messageErrorResponse.getMessageStatusCode())
+				{
+					((TextView)findViewById(R.id.account_info_error_label))
+					.setText(getResources().getString(R.string.account_info_error_text));
+					return true;
+				}
 				
 				return true;
 			}
@@ -205,6 +193,8 @@ public class AccountInformationActivity extends Activity {
 		validator.isDobDayValid(memberDobDayString);
 		validator.isSsnValid(memberSsnNumString);
 		
+		updateLabelsUsingValidator(validator);
+		
 		//Submit info based on account information (new user registration)
 		if(validator.wasAccountInfoComplete()){
 			formData.acctNbr = accountNumString;
@@ -215,7 +205,8 @@ public class AccountInformationActivity extends Activity {
 			formData.expirationYear  = cardYearExpString;
 			formData.socialSecurityNumber = memberSsnNumString;
 			
-			final RegistrationCallOne registrationCall = new RegistrationCallOne(this, callback, formData);
+			final RegistrationCallOne registrationCall = 
+					new RegistrationCallOne(this, callback, formData);
 			registrationCall.submit();
 
 		}
@@ -223,40 +214,40 @@ public class AccountInformationActivity extends Activity {
 		else if(validator.wasForgotPasswordInfoComplete()){
 			
 		}
-		else{
-			progress.dismiss();
-			final TextView cardErrorLabel = (TextView)findViewById(R.id.account_info_card_account_number_error_label);
-			final TextView ssnErrorLabel = (TextView)findViewById(R.id.account_info_ssn_error_label);
-			final TextView dobYearErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
-			
-			final String errorString = getResources().getString(R.string.invalid_value);
-			final String emptyString = getResources().getString(R.string.empty);
-			
-			/*
-			 * Set error label based on what is valid.
-			 * These should never be both true.
-			 * Bitwise AND and inclusive OR used - why not.
-			 */
-			if((forgotPass & !validator.wasUidValid) | 
-					(!forgotPass & !validator.wasAccountNumberValid)){
-				cardErrorLabel.setText(errorString);
-			}
-			else{
-				cardErrorLabel.setText(emptyString);
-			}
-			
-			if(!validator.wasSsnValid){
-				ssnErrorLabel.setText(errorString);
-			}
-			else
-				ssnErrorLabel.setText(emptyString);
-			
-			if(!validator.wasDobYearValid){
-				dobYearErrorLabel.setText(errorString);
-			}
-			else
-				dobYearErrorLabel.setText(emptyString);
+	}
+	
+	private void updateLabelsUsingValidator(InputValidator validator){
+		final TextView cardErrorLabel = (TextView)findViewById(R.id.account_info_card_account_number_error_label);
+		final TextView ssnErrorLabel = (TextView)findViewById(R.id.account_info_ssn_error_label);
+		final TextView dobYearErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
+		
+		final String errorString = getResources().getString(R.string.invalid_value);
+		final String emptyString = getResources().getString(R.string.empty);
+		
+		/*
+		 * Set error label based on what is valid.
+		 * These should never be both true.
+		 * Bitwise AND and inclusive OR used - why not.
+		 */
+		if((forgotPass & !validator.wasUidValid) | 
+				(!forgotPass & !validator.wasAccountNumberValid)){
+			cardErrorLabel.setText(errorString);
 		}
+		else{
+			cardErrorLabel.setText(emptyString);
+		}
+		
+		if(!validator.wasSsnValid){
+			ssnErrorLabel.setText(errorString);
+		}
+		else
+			ssnErrorLabel.setText(emptyString);
+		
+		if(!validator.wasDobYearValid){
+			dobYearErrorLabel.setText(errorString);
+		}
+		else
+			dobYearErrorLabel.setText(emptyString);
 	}
 
 }
