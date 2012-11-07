@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
@@ -96,8 +97,7 @@ public class StartActivity extends RoboActivity {
 						
 					case 1006:
 					case 1007: 
-						// TODO
-						Log.w(TAG, "Send to maintainance page.");
+						sendToMaintenancePage();
 						return true;
 				}
 				
@@ -106,6 +106,12 @@ public class StartActivity extends RoboActivity {
 		};
 		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);
 		preAuthCall.submit();
+	}
+	
+	private void sendToMaintenancePage() {
+		final Intent maintenancePageIntent = new Intent(StartActivity.this, LockOutUserActivity.class);
+		maintenancePageIntent.putExtra("ScreenType", ScreenType.MAINTENANCE);
+		startActivity(maintenancePageIntent);
 	}
 	
 	private boolean shouldPresentOptionalUpdate(final String updateDescription) {
