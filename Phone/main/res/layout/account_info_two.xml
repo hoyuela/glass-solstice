@@ -32,7 +32,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@id/account_info_register_label"
                 android:paddingTop="8dp"
-                android:text="@string/account_informaiton_step_lablel_two"
+                android:text="@string/account_info_two_step_text"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/orange"
                 android:textStyle="bold" />

@@ -1,0 +1,15 @@
+<resources>
+    
+    <!-- Vairous Colors -->
+    <color name="white">#ffffff</color>
+	<color name="black">#000</color>
+	<color name="blue">#025D96</color>
+	<color name="orange">#FD6C04</color>
+	<color name="red">#ff0000</color>
+	<color name="green">#008100</color>
+	<color name="yellow">#FFCC00</color>
+	<color name="gray">#CCCCCC</color>
+	<color name="lightRed">#1fff0000</color>
+	<color name="lightBlue">#d0025D96</color>
+	
+</resources>

@@ -10,61 +10,12 @@
 	<string name="member_title_text">MST0 23075 CARDMEMBER</string>
 	<string name="member_id_text">Discover Card Ending 4545</string>
 	<string name="discover_secured_text">Discover Bank, Member FDIC | SECURED</string>
-	<string name="account_informaiton_step_lablel_one">Step 1 of 2: Enter Account Information</string>
-	<string name="account_informaiton_step_lablel_two">Step 2 of 2: Create Account Login</string>
-	<string name="account_info_two_id_detail_info_text">(Must be 6&#8211;16 characters and must not look like an account number. User ID can contain most special characters except for: (\"), (\'), (\\) and spaces)</string>
-	<string name="account_info_two_create_id_text">Create a User ID:</string>
-	<string name="account_info_two_pass_text">Create a Password:</string>
-	<string name="account_info_two_pass_info_text">(Must be 8&#8211;32 characters and have at least one letter and one number. Your password is case sensitivie and can also use all special characters.)</string>
-	<string name="account_info_two_confirm_id_text">Confirm User ID:</string>
-	<string name="account_info_two_id_strength_text">User ID Strength:</string>
-	<string name="account_info_two_pass_strength_text">Password Strength:</string>
-	<string name="account_info_confirm_step_title_text">Registration Confirmation</string>
-	<string name="account_info_confirm_first_paragraph_text">Your registration is complete, you are now logged in and an email has been sent to you.</string>
-	<string name="account_info_confirm_security_precaution_text">As a security precaution, your password and the first 12 digits of your Account number are not shown.</string>
-	<string name="account_info_confirm_summary_text">Your Online Account Information:</string>
-	<string name="account_info_confirm_id_title_text">User ID</string>
-	<string name="account_info_confirm_email_title_text">E&#8211;mail Address</string>
-	<string name="account_info_confirm_account_title_text">Account Number</string>
-	<string name="account_info_confirm_account_stars_text">**** **** **** </string>
-	<string name="account_info_confirm_account_text">1337</string>
 	<string name="email_placeholder">mail@mail.com</string>
-	<string name="account_info_confirm_id_placeholder_text">Chuck Yeager</string>
-	<string name="account_info_confirm_note_text">Please Note: If you currently use Secure online Account Numbers, that password has also been changed.</string>
-	<string name="account_info_help_pass_strength_text">Password Strength:</string>
-	<string name="account_info_help_pass_p1_text">Does not meet minimum requirements (not 8&#8211;32 characters, does not contain at least 1 letter and 1 number, or is the word "password").</string>
-	<string name="account_info_help_pass_p2_text">Meets minimum requirements but does not include a variation of uppercase letters, lower case letters, numbers, and special characters.</string>
-	<string name="account_info_help_pass_strong_text">Meets minimum requirements and combines upper case letters, lower case letters, numbers, and special characters.</string>
 	<!-- &#8211; is a dash character so that lint will not complain of using a dash in strings -->
-	<string name="account_info_input_restrictions_label">(This is a 16&#8211;digit number starting with 6011. Do not include space or hyphens.)</string>
 	<string name="card_expiration_date_text">Discover Card Expiration Date:</string>
 	<string name="need_help_text">Need Help?</string>
 	<!-- &#8211; is a dash character so that lint will not complain of using a dash in strings -->
 	<string name="need_help_number_text">Call 1&#8211;800&#8211;347&#8211;2683</string>
-	<string name="account_info_dob_text">Date of Birth of Primary Cardmember:</string>
-	<string name="account_info_ssn_info_text">Social Security Number of Primary Cardmember:</string>
-	<string name="account_info_error_text">You have entered invalid information. Carefully review your information and please try again.</string>
-	
-	<string name="account_info_help_id_strength_text">User ID Strength</string>
-	<string name="account_info_help_bar_title_text">User ID Strength:</string>
-	<string name="account_info_help_id_p1_text">Does not meet minimum requirements (not 6&#8211;16 characters, looks like an account number, or uses spaces or the following characters: (\`)(\')(\")(\\))</string>
-	<string name="account_info_help_id_p2_text">Meets minimum requirements but does not include a variation of letters, numbers, and special characters.</string>
-	<string name="account_info_help_id_p3_text">Meets minimum requirements and combines a variation of letters, numbers, and special characters.</string>
-	
-	<string name="account_security_text">Enhanced Account Security</string>
-	<string name="account_security_info_text">For your security, please answer the following question before continuing.</string>
-	<string name="account_security_placeholder_text">¿Security Question Placeholder?</string>
-	<string name="account_security_question_hint">Your Answer</string>
-	<string name="account_security_remember_device_text">Would you like us to remember this device?</string>
-	<string name="account_security_whats_this_text">What\'s this?</string>
-	<string name="account_security_plus_text">+</string>
-	<string name="account_security_minus_text">-</string>
-	<string name="account_security_remember_me_text">Yes. This is my mobile device that I use to access my Account.</string>
-	<string name="account_security_dont_remember_me_text">No. This is a public or shared device or one I don\'t plan on using often to access my account.</string>
-	<string name="account_security_whats_this_detail_text">Choose "Yes" if this is a private device that you will frequently use to access your account. By doing so, you\'ll still benefit from heightened account security, but will receive fewer security question prompts when logging in. Choose "No" if this is a public device or you share it with others who are not authorized Cardmembers on your account.</string>
-	<string name="account_info_two_pass_confirm_text">Confirm Password:</string>
-	<string name="account_info_two_email_text">Email Address:</string>
-	<string name="account_info_two_email_info_text">(Used to confirm receipt of your online account registration.)</string>
 	
 	<string name="forgot_id_title_text">Forgot User ID</string>
 	<string name="forgot_id_password_text">Account Center Password:</string>
@@ -75,19 +26,11 @@
 	
 	<string name="forgot_password_text">Forgot Password</string>
 	<string name="forgot_both_text">Forgot Both</string>
+	<string name="forgot_password_field_title_text">Credit Card User ID:</string>
 	
 	<string name="arrow">></string>
 	<string name="forgot_credentials_text">Forgot User ID or Password</string>
-	<color name="white">#ffffff</color>
-	<color name="black">#000</color>
-	<color name="blue">#025D96</color>
-	<color name="orange">#FD6C04</color>
-	<color name="red">#ff0000</color>
-	<color name="green">#008100</color>
-	<color name="yellow">#FFCC00</color>
-	<color name="gray">#CCCCCC</color>
-	<color name="lightRed">#1fff0000</color>
-	<color name="lightBlue">#d0025D96</color>
+	
 	<string name="vital_artery_eviscerating_error_text">Woah! Pump your brakes
 	     homie! Something hella bad went wrong. You shouldn\'t see this. 
 	     Check yo self!</string>

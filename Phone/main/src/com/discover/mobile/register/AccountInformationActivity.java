@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +27,7 @@ import com.discover.mobile.common.net.response.ErrorResponse;
 
 public class AccountInformationActivity extends Activity {
 	private RegistrationOneDetails formData;
+	private boolean forgotPass = false;
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -39,13 +42,41 @@ public class AccountInformationActivity extends Activity {
 		 * more specifically and change the flow based on that.
 		 */
 		if (savedInstanceState == null) {
-			Bundle extras = getIntent().getExtras();
+			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
+        		//Setup the screen for a forgotten password.
         		if("Forgot Password".equals(extras.getString("screenType"))){
+        			forgotPass = true;
+        			//Set the title of the screen to forgot password
         			((TextView)findViewById(R.id.account_info_title_label))
         			.setText(getResources()
         					.getString(R.string.forgot_password_text));
+        			
+        			//Set the detail label under the title to blank.
+        			((TextView)findViewById(
+        					R.id.account_information_input_info_label))
+        					.setHeight(0);
+        				
+        			//Set title label of the input field
+        			((TextView)findViewById(R.id.account_info_label_one_label))
+        				.setText(getResources()
+        						.getString(
+        							R.string.forgot_password_field_title_text));
+        			
+        			//Change the input type for the edit text to be valid for
+        			//user credentials and not the default card number stuff
+        			EditText mainInputField = 
+        				(EditText)findViewById(
+        						R.id.account_info_main_input_field);
+        			mainInputField.setInputType(
+        					InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        			
+        			//Change the max input length to 32 characters.
+        			InputFilter[] filterArray = new InputFilter[1];
+        			filterArray[0] = new InputFilter.LengthFilter(32);
+        			mainInputField.setFilters(filterArray);
         		}
+        		//Setup the screen for forgotten both credentials.
         		else if("Forgot Both".equals(extras.getString("screenType"))){
         			((TextView)findViewById(R.id.account_info_title_label))
         			.setText(getResources()
@@ -148,7 +179,7 @@ public class AccountInformationActivity extends Activity {
 //		final String acctNbr, final String expirationMonth, final String expirationYear, final String dateOfBirthMonth, final String  dateOfBirthDay,
 //		final String socialSecurityNumber, final String dateOfBirthYear)
 		final InputValidator validator = new InputValidator();
-		final EditText accountNum = (EditText)findViewById(R.id.account_info_card_account_number_field);
+		final EditText accountNum = (EditText)findViewById(R.id.account_info_main_input_field);
 		final Spinner cardMonthExp = (Spinner)findViewById(R.id.account_info_month_spinner);
 		final Spinner cardYearExp = (Spinner)findViewById(R.id.account_info_year_spinner);
 		final Spinner memberDobMonth = (Spinner)findViewById(R.id.account_info_dob_month_spinner);
@@ -165,6 +196,7 @@ public class AccountInformationActivity extends Activity {
 		final String memberSsnNumString =  memberSsnNum.getText().toString();
 		formData = new RegistrationOneDetails();
 				
+		validator.isUidValid(accountNumString);
 		validator.isCardAccountNumberValid(accountNumString);
 		validator.isCardExpMonthValid(cardMonthExpString);
 		validator.isCardExpYearValid(cardYearExpString);
@@ -173,6 +205,7 @@ public class AccountInformationActivity extends Activity {
 		validator.isDobDayValid(memberDobDayString);
 		validator.isSsnValid(memberSsnNumString);
 		
+		//Submit info based on account information (new user registration)
 		if(validator.wasAccountInfoComplete()){
 			formData.acctNbr = accountNumString;
 			formData.dateOfBirthDay = memberDobDayString;
@@ -186,6 +219,10 @@ public class AccountInformationActivity extends Activity {
 			registrationCall.submit();
 
 		}
+		//If this succeeds then we have a user who forgot their password.
+		else if(validator.wasForgotPasswordInfoComplete()){
+			
+		}
 		else{
 			progress.dismiss();
 			final TextView cardErrorLabel = (TextView)findViewById(R.id.account_info_card_account_number_error_label);
@@ -195,11 +232,18 @@ public class AccountInformationActivity extends Activity {
 			final String errorString = getResources().getString(R.string.invalid_value);
 			final String emptyString = getResources().getString(R.string.empty);
 			
-			if(!validator.wasAccountNumberValid){
+			/*
+			 * Set error label based on what is valid.
+			 * These should never be both true.
+			 * Bitwise AND and inclusive OR used - why not.
+			 */
+			if((forgotPass & !validator.wasUidValid) | 
+					(!forgotPass & !validator.wasAccountNumberValid)){
 				cardErrorLabel.setText(errorString);
 			}
-			else
+			else{
 				cardErrorLabel.setText(emptyString);
+			}
 			
 			if(!validator.wasSsnValid){
 				ssnErrorLabel.setText(errorString);

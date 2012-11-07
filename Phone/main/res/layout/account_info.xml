@@ -35,7 +35,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/account_info_title_label"
             android:paddingTop="8dp"
-            android:text="@string/account_informaiton_step_lablel_one"
+            android:text="@string/account_info_one_step_text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/orange"
             android:textStyle="bold" />
@@ -73,7 +73,7 @@
             android:id="@+id/account_info_card_expiration_date_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/account_info_card_account_number_field"
+            android:layout_below="@+id/account_info_main_input_field"
             android:layout_marginTop="16dp"
             android:text="@string/card_expiration_date_text"
             android:textColor="@color/black" />
@@ -192,7 +192,7 @@
             />
         
         <EditText
-            android:id="@+id/account_info_card_account_number_field"
+            android:id="@+id/account_info_main_input_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/account_information_input_info_label"
