@@ -4,8 +4,17 @@
 	<string name="account_info_one_step_text">Step 1 of 2: Enter Account Information</string>
     <string name="account_info_dob_text">Date of Birth of Primary Cardmember:</string>
 	<string name="account_info_ssn_info_text">Social Security Number of Primary Cardmember:</string>
-	<string name="account_info_error_text">You have entered invalid information. Carefully review your information and please try again.</string>
-	<string name="account_info_input_restrictions_label">(This is a 16&#8211;digit number starting with 6011. Do not include space or hyphens.)</string>
+	<string name="account_info_bad_input_error_text">You have entered invalid information.
+	     Carefully review your information and please try again.</string>
+	<string name="account_info_sams_club_card_error_text">
+	    As a Sam\'s Club Discover Cardmember, you cannot register for the Account Center access 
+	    at Discovercard.com. To manage your account you may register at the Sam\'s Club Web Site.
+	    Please contact customer service at 1&#8211;866&#8211;221&#8211;1126 for more information. 
+	</string>
+	
+	<string name="account_info_input_restrictions_label">(This is a 16&#8211;
+	    digit number starting with 6011. Do not include space or hyphens.)
+	</string>
 	
 	<!-- Account Info Screen 2 -->
 	<string name="account_info_two_step_text">Step 2 of 2: Create Account Login</string>

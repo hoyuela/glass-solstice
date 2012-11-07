@@ -271,7 +271,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/continue_text"
                 android:layout_marginLeft="16dp" 
-                android:onClick="submitCurrentAccountInfo"/>
+                android:onClick="submitFormInfo"/>
 
         </TableRow>
 

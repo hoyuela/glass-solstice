@@ -44,7 +44,6 @@ public class RegistrationCallOne extends NetworkServiceCall<Object> {
 	protected Object parseSuccessResponse(int status,
 			Map<String, List<String>> headers, InputStream body)
 			throws IOException {
-		// TODO Auto-generated method stub
 		return this;
 	}
 }

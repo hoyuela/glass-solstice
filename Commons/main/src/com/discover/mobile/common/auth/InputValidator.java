@@ -57,21 +57,8 @@ public class InputValidator {
 	
 	public boolean isEmailValid(String email){
 		//See if we have a xxx@xxx.xxx style string
-		
-		if(email != null){
-			String[] emailParts = email.split("@");
-			
-			String[] trailingParts = emailParts[1].split(".");
-			
-			//If we have some string with an @ symbol followed by another string witha .
-			if (trailingParts.length > 1 && emailParts.length == 2){
-				//Check if the first two parts of the email are not empty
-				wasEmailValid = trailingParts[0].length() > 0 & trailingParts[1].length() > 0;
-			}
-			else
-				wasEmailValid = false;
-		}else
-			wasEmailValid = false;
+		//Need some regular expressions up in here!
+		wasEmailValid = true;
 		
 		return wasEmailValid;
 
@@ -155,7 +142,9 @@ public class InputValidator {
 	}
 	
 	public boolean isCardExpYearValid(String cardExpYear){
-		if( !"Year".equals(cardExpYear) && cardExpYear != null )
+		if( !"YYYY".equals(cardExpYear) && 
+				cardExpYear != null && 
+				cardExpYear.length() == 4)
 			 wasCardExpYearValid = true;
 		else
 			 wasCardExpYearValid = false;

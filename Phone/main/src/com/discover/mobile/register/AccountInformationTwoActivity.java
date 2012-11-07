@@ -10,14 +10,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.RegistrationCallTwo;
+import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
 import com.discover.mobile.common.auth.registration.RegistrationTwoDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
@@ -28,6 +27,8 @@ public class AccountInformationTwoActivity extends Activity{
 
 	private RegistrationOneDetails formDataOne;
 	private RegistrationTwoDetails formDataTwo;
+	private static final String TAG = AccountInformationTwoActivity.class.getSimpleName();
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -48,16 +49,14 @@ public class AccountInformationTwoActivity extends Activity{
         	}
 		}
 		
-		
-		setupButtonListeners();
 		setupTextChangedListeners();
 	}
 	
-	private void navigateToConfirmationScreen(){
+	private void navigateToConfirmationScreenWithResponseData(RegistrationConfirmationDetails responseData){
 		Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
-		confirmationScreen.putExtra("id", formDataTwo.userId);
-		confirmationScreen.putExtra("email", formDataTwo.email);
-		confirmationScreen.putExtra("acctNbr", getLast4(formDataTwo.acctNbr));
+		confirmationScreen.putExtra("id", responseData.userId);
+		confirmationScreen.putExtra("email", responseData.email);
+		confirmationScreen.putExtra("acctNbr", responseData.acctLast4);
 		this.startActivity(confirmationScreen);
 	}
 	
@@ -71,7 +70,7 @@ public class AccountInformationTwoActivity extends Activity{
 	}
 	
 	
-	private void checkInputsThenSubmit(){
+	public void checkInputsThenSubmit(View v){
 		InputValidator validator = new InputValidator();
 		String email = ((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString();
 		String id1 =((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString();
@@ -98,18 +97,6 @@ public class AccountInformationTwoActivity extends Activity{
 			submitFormInfo();
 		}
 		
-	}
-	
-	private void setupButtonListeners(){
-		Button submitButton = (Button)findViewById(R.id.account_info_two_submit_button);
-		submitButton.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v){
-//			submitFormInfo();
-				//On success
-				checkInputsThenSubmit();
-			}
-		});
 	}
 	
 	public void showPasswordStrengthBarHelp(View v){
@@ -316,17 +303,17 @@ public class AccountInformationTwoActivity extends Activity{
 	}
 	
 	private void submitFormInfo() {
-		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
-		final String TAG = "Form Submission";
+		final ProgressDialog progress = 
+				ProgressDialog.show(this, "Discover", "Loading...", true);
 		
-		final AsyncCallbackAdapter<RegistrationTwoDetails> callback = new AsyncCallbackAdapter<RegistrationTwoDetails>() {
+		final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = 
+				new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
 			@Override
-			public void success(final RegistrationTwoDetails value) {
+			public void success(final RegistrationConfirmationDetails responseData) {
 				Log.d(TAG, "Success");
 				progress.dismiss();
-				navigateToConfirmationScreen();
+				navigateToConfirmationScreenWithResponseData(responseData);
 			}
-
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
@@ -355,7 +342,8 @@ public class AccountInformationTwoActivity extends Activity{
 			}
 		};
 		
-		final RegistrationCallTwo registrationCall = new RegistrationCallTwo(this, callback, formDataTwo);
+		final RegistrationCallTwo registrationCall = 
+				new RegistrationCallTwo(this, callback, formDataTwo);
 		registrationCall.submit();
 
 	}
