@@ -32,6 +32,8 @@ public class StartActivity extends RoboActivity {
 	private static final String PACKAGE_NAME = "com.discover.mobile.DiscoverMobileActivity";
 	private static final int OPTIONAL_UPGRADE_DAYS = 30;
 	
+	private static final int NO_DATE = 0;
+	
 	private static final int OPTIONAL_UPGRADE = 1;
 	private static final int FORCED_UPGRADE = 2;
 	
@@ -121,7 +123,6 @@ public class StartActivity extends RoboActivity {
 			final long savedDate = prefs.getLong(DATETIME_KEY, 0);
 			
 			if (savedDate == 0) {
-				Log.d(TAG, "SAVED DATE");
 				final SharedPreferences.Editor editor=prefs.edit();
 				editor.putLong(DATETIME_KEY, new Date().getTime());
 				editor.commit();
@@ -145,9 +146,9 @@ public class StartActivity extends RoboActivity {
 	private void removeDateFromPrefs() {
 		final SharedPreferences prefs=getPreferences(Context.MODE_PRIVATE);
 		
-		final long savedDate = prefs.getLong(DATETIME_KEY, 0);
+		final long savedDate = prefs.getLong(DATETIME_KEY, NO_DATE);
 		
-		if(savedDate != 0) {
+		if(savedDate != NO_DATE) {
 			final SharedPreferences.Editor editor=prefs.edit();
 			editor.remove(DATETIME_KEY);
 			editor.commit();
