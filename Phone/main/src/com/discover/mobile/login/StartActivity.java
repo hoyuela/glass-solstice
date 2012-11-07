@@ -56,7 +56,7 @@ public class StartActivity extends RoboActivity {
 		creditCardLoginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				doPreAuthCheck();
+				startPreAuthCheck();
 			}
 		});
 	}
@@ -199,7 +199,4 @@ public class StartActivity extends RoboActivity {
 		this.startActivity(loginActivity);
 	}
 	
-	private void doPreAuthCheck() {
-		startPreAuthCheck();
-	}
 }

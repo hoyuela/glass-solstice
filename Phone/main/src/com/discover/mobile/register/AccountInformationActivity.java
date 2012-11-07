@@ -153,14 +153,26 @@ public class AccountInformationActivity extends Activity {
 
 				progress.dismiss();
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-				if(1906 == messageErrorResponse.getMessageStatusCode())
-				{
-					((TextView)findViewById(R.id.account_info_error_label))
-					.setText(getResources().getString(R.string.account_info_error_text));
+				TextView errorMessageLabel = 
+						(TextView)findViewById(R.id.account_info_error_label);
+				
+				switch(messageErrorResponse.getMessageStatusCode()){
+				case 1905:
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_sams_club_card_error_text));
 					return true;
+				case 1906:
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					return true;
+				
+					
 				}
 				
-				return true;
+				
+				return false;
 			}
 		};
 //		(final Context context, final AsyncCallback<RegistrationDetails> callback,
