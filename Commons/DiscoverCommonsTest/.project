@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>DiscoverCommons</name>
+	<name>DiscoverCommonsTest</name>
 	<comment></comment>
 	<projects>
+		<project>DiscoverCommons</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -27,7 +28,6 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.sonar.ide.eclipse.core.sonarNature</nature>
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
