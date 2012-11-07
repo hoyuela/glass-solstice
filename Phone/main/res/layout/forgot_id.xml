@@ -113,7 +113,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginLeft="32dp"
-                android:onClick="checkInputsAndSubmit"
                 android:text="@string/submit_text" />
 
         </TableRow>

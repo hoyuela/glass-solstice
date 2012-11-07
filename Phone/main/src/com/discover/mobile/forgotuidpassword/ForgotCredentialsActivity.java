@@ -1,4 +1,4 @@
-package com.discover.mobile.login;
+package com.discover.mobile.forgotuidpassword;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.login.CustomArrayAdapter;
 import com.discover.mobile.register.AccountInformationActivity;
 
 @ContentView(R.layout.forgot_login)

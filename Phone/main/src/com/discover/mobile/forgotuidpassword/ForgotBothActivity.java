@@ -1,4 +1,4 @@
-package com.discover.mobile.login;
+package com.discover.mobile.forgotuidpassword;
 
 import roboguice.activity.RoboActivity;
 
