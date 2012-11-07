@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
@@ -121,6 +122,19 @@ public class LoginActivity extends RoboActivity {
 				
 				progress.dismiss();
 				clearInputs();
+				
+				switch(messageErrorResponse.getMessageStatusCode()) {
+					case 1006:
+					case 1007: 
+						sendToErrorPage(ScreenType.MAINTENANCE);
+						return true;
+					
+					case 1101:
+					case 1402:
+						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
+						return true;
+				}
+				
 				errorTextView.setText(messageErrorResponse.getMessage());
 				
 				return true;
@@ -128,6 +142,12 @@ public class LoginActivity extends RoboActivity {
 		};
 
 		new AuthenticateCall(this, callback, username, password).submit();
+	}
+	
+	private void sendToErrorPage(final int screenType) {
+		final Intent maintenancePageIntent = new Intent(LoginActivity.this, LockOutUserActivity.class);
+		maintenancePageIntent.putExtra("ScreenType", screenType);
+		startActivity(maintenancePageIntent);
 	}
 	
 	private void handleSuccessfulAuth() {
@@ -169,7 +189,7 @@ public class LoginActivity extends RoboActivity {
 		this.startActivity(accountInformationActivity);
 	}
 	
-	public void forgotIdAndOrPass(View v){
+	public void forgotIdAndOrPass(final View v){
 		Log.d(TAG, "You pressed a button thinggy!");
 		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotCredentialsActivity.class);
 		this.startActivity(forgotIdAndOrPassActivity);
