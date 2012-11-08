@@ -19,6 +19,7 @@ import android.widget.Button;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.ScreenType;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
@@ -47,6 +48,9 @@ public class StartActivity extends RoboActivity {
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		TrackingHelper.startActivity(this);
+		TrackingHelper.trackPageView("login-pg");
 		
 		setupButtons();
 	}
