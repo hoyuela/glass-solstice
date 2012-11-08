@@ -19,12 +19,15 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.RegistrationCallOne;
 import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
+import com.discover.mobile.common.forgotpassword.ForgotPasswordCall;
+import com.discover.mobile.common.forgotpassword.ForgotPasswordDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 
 public class AccountInformationActivity extends Activity {
-	private RegistrationOneDetails formData;
+	private RegistrationOneDetails registrationOneDetails;
+	private ForgotPasswordDetails forgotPasswordDetails;
 	private boolean forgotPass = false;
 	private static final String TAG = AccountInformationActivity.class.getSimpleName();
 	
@@ -44,7 +47,7 @@ public class AccountInformationActivity extends Activity {
 			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
         		//Setup the screen for a forgotten password.
-        		if("Forgot Password".equals(extras.getString("screenType"))){
+        		if("Forgot Password".equals(extras.getString("ScreenType"))){
         			forgotPass = true;
         			//Set the title of the screen to forgot password
         			((TextView)findViewById(R.id.account_info_title_label))
@@ -76,7 +79,7 @@ public class AccountInformationActivity extends Activity {
         			mainInputField.setFilters(filterArray);
         		}
         		//Setup the screen for forgotten both credentials.
-        		else if("Forgot Both".equals(extras.getString("screenType"))){
+        		else if("Forgot Both".equals(extras.getString("ScreenType"))){
         			((TextView)findViewById(R.id.account_info_title_label))
         			.setText(getResources()
         					.getString(R.string.forgot_both_text));
@@ -90,7 +93,7 @@ public class AccountInformationActivity extends Activity {
 				new Intent(this, AccountInformationTwoActivity.class);
 		
 		enhancedAccountSecurityIntent
-			.putExtra("RegistrationOneDetails", formData);
+			.putExtra("RegistrationOneDetails", registrationOneDetails);
 		
 		this.startActivity(enhancedAccountSecurityIntent);
 		
@@ -197,8 +200,7 @@ public class AccountInformationActivity extends Activity {
 		final String memberDobDayString = memberDobDay.getSelectedItem().toString();
 		final String memberDobYearString = memberDobYear.getText().toString();
 		final String memberSsnNumString =  memberSsnNum.getText().toString();
-		formData = new RegistrationOneDetails();
-				
+					
 		validator.isUidValid(accountNumString);
 		validator.isCardAccountNumberValid(accountNumString);
 		validator.isCardExpMonthValid(cardMonthExpString);
@@ -210,24 +212,42 @@ public class AccountInformationActivity extends Activity {
 		
 		updateLabelsUsingValidator(validator);
 		
+		if(validator.wasAccountInfoComplete() || validator.wasForgotPasswordInfoComplete()){
+			if(forgotPass){
+				forgotPasswordDetails = new ForgotPasswordDetails();
+				forgotPasswordDetails.userId = accountNumString;
+				forgotPasswordDetails.dateOfBirthDay = memberDobDayString;
+				forgotPasswordDetails.dateOfBirthMonth = memberDobMonthString;
+				forgotPasswordDetails.dateOfBirthYear = memberDobYearString;
+				forgotPasswordDetails.expirationMonth = cardMonthExpString;
+				forgotPasswordDetails.expirationYear  = cardYearExpString;
+				forgotPasswordDetails.socialSecurityNumber = memberSsnNumString;
+			}
+			else{
+				registrationOneDetails = new RegistrationOneDetails();
+				registrationOneDetails.acctNbr = accountNumString;
+				registrationOneDetails.dateOfBirthDay = memberDobDayString;
+				registrationOneDetails.dateOfBirthMonth = memberDobMonthString;
+				registrationOneDetails.dateOfBirthYear = memberDobYearString;
+				registrationOneDetails.expirationMonth = cardMonthExpString;
+				registrationOneDetails.expirationYear  = cardYearExpString;
+				registrationOneDetails.socialSecurityNumber = memberSsnNumString;
+			}
+			
+
+		}
 		//Submit info based on account information (new user registration)
 		if(validator.wasAccountInfoComplete()){
-			formData.acctNbr = accountNumString;
-			formData.dateOfBirthDay = memberDobDayString;
-			formData.dateOfBirthMonth = memberDobMonthString;
-			formData.dateOfBirthYear = memberDobYearString;
-			formData.expirationMonth = cardMonthExpString;
-			formData.expirationYear  = cardYearExpString;
-			formData.socialSecurityNumber = memberSsnNumString;
 			
 			final RegistrationCallOne registrationCall = 
-					new RegistrationCallOne(this, callback, formData);
+					new RegistrationCallOne(this, callback, registrationOneDetails);
 			registrationCall.submit();
 
 		}
 		//If this succeeds then we have a user who forgot their password.
 		else if(validator.wasForgotPasswordInfoComplete()){
-			
+			final ForgotPasswordCall passwordCall = new ForgotPasswordCall(this, callback, forgotPasswordDetails);
+			passwordCall.submit();
 		}
 	}
 	
