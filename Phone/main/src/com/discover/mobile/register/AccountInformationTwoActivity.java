@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.RegistrationCallTwo;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
@@ -36,7 +37,7 @@ public class AccountInformationTwoActivity extends Activity{
 		formDataTwo = new RegistrationTwoDetails();
 		
 		if (savedInstanceState == null) {
-			Bundle extras = getIntent().getExtras();
+			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
         		formDataOne = (RegistrationOneDetails)getIntent().getSerializableExtra("RegistrationOneDetails");
         		formDataTwo.acctNbr = formDataOne.acctNbr;
@@ -52,15 +53,15 @@ public class AccountInformationTwoActivity extends Activity{
 		setupTextChangedListeners();
 	}
 	
-	private void navigateToConfirmationScreenWithResponseData(RegistrationConfirmationDetails responseData){
-		Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
-		confirmationScreen.putExtra("id", responseData.userId);
-		confirmationScreen.putExtra("email", responseData.email);
-		confirmationScreen.putExtra("acctNbr", responseData.acctLast4);
+	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
+		final Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
+		confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
+		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
+		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
 		this.startActivity(confirmationScreen);
 	}
 	
-	private String getLast4(String str){
+	private String getLast4(final String str){
 		
 		if(str != null && str.length() - 4 > 0)
 			return str.substring(str.length() - 4);
@@ -70,13 +71,13 @@ public class AccountInformationTwoActivity extends Activity{
 	}
 	
 	
-	public void checkInputsThenSubmit(View v){
-		InputValidator validator = new InputValidator();
-		String email = ((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString();
-		String id1 =((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString();
-		String id2 = ((EditText)findViewById(R.id.account_info_two_id_confirm_field)).getText().toString();
-		String pass1=((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString();
-		String pass2=((EditText)findViewById(R.id.account_info_two_pass_confirm_field)).getText().toString();
+	public void checkInputsThenSubmit(final View v){
+		final InputValidator validator = new InputValidator();
+		final String email = ((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString();
+		final String id1 =((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString();
+		final String id2 = ((EditText)findViewById(R.id.account_info_two_id_confirm_field)).getText().toString();
+		final String pass1=((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString();
+		final String pass2=((EditText)findViewById(R.id.account_info_two_pass_confirm_field)).getText().toString();
 		
 		validator.doPassesMatch(
 				pass1, pass2);
@@ -99,14 +100,14 @@ public class AccountInformationTwoActivity extends Activity{
 		
 	}
 	
-	public void showPasswordStrengthBarHelp(View v){
-		Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+	public void showPasswordStrengthBarHelp(final View v){
+		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
 		passwordHelpScreen.putExtra("helpType", "password");
 		this.startActivity(passwordHelpScreen);
 	}
 	
-	public void showIdStrengthBarHelp(View v){
-		Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+	public void showIdStrengthBarHelp(final View v){
+		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
 		passwordHelpScreen.putExtra("helpType", "id");
 		this.startActivity(passwordHelpScreen);
 		

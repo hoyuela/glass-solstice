@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.forgotuidpassword.ForgotUserIdCall;
 import com.discover.mobile.common.forgotuidpassword.UserIdDetails;
@@ -139,9 +140,9 @@ public class ForgotUserIdActivity extends RoboActivity {
 	private void sendToConfirmationScreen(final String last4, final String email, final String uid) {
 		final Intent confirmationScreenIntent = 
 				new Intent(ForgotUserIdActivity.this, AccountInformationConfirmationActivity.class);
-		confirmationScreenIntent.putExtra("AccountLast4", last4);
-		confirmationScreenIntent.putExtra("Email", email);
-		confirmationScreenIntent.putExtra("UID", uid);
+		confirmationScreenIntent.putExtra(IntentExtraKey.ACCOUNT_LAST4, last4);
+		confirmationScreenIntent.putExtra(IntentExtraKey.EMAIL, email);
+		confirmationScreenIntent.putExtra(IntentExtraKey.UID, uid);
 		startActivity(confirmationScreenIntent);
 	}
 	
