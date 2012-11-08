@@ -7,11 +7,11 @@ import com.adobe.adms.measurement.ADMS_Measurement;
 public class TrackingHelper {
 
 	// params for using Bloodhound
-//	private static final String TRACKING_RSID = "test";
-//	private static final String TRACKING_SERVER = "192.168.4.235:50046";
+	private static final String TRACKING_RSID = "test";
+	private static final String TRACKING_SERVER = "192.168.4.235:50046";
 	
-	private static final String TRACKING_RSID = "discovercardmobiledev";
-	private static final String TRACKING_SERVER = "discoverfinancial.d1.sc.omtrdc.net";
+//	private static final String TRACKING_RSID = "discovercardmobiledev";
+//	private static final String TRACKING_SERVER = "discoverfinancial.d1.sc.omtrdc.net";
 	
 	private static ADMS_Measurement measurement;
 	
@@ -28,7 +28,7 @@ public class TrackingHelper {
 		if (TrackingHelper.measurement == null){
 			TrackingHelper.measurement = ADMS_Measurement.sharedInstance(activity);
 			TrackingHelper.measurement.configureMeasurement(TRACKING_RSID, TRACKING_SERVER);
-			TrackingHelper.measurement.setSSL(true);  // comment out if using Bloodhound
+//			TrackingHelper.measurement.setSSL(true);  // comment out if using Bloodhound
 		}
 	}
 	

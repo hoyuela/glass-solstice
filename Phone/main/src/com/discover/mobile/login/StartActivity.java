@@ -77,6 +77,7 @@ public class StartActivity extends RoboActivity {
 				
 				//check if optional upgrade available
 				if(shouldPresentOptionalUpdate(value.upgradeDescription)) {
+					TrackingHelper.trackPageView(AnalyticsPage.OPTIONAL_UPGRADE);
 					showUpgradeAlertDialog("Upgrade", 
 							value.upgradeDescription, 
 							OPTIONAL_UPGRADE);

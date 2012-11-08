@@ -122,6 +122,7 @@ public class LoginActivity extends RoboActivity {
 
 			@Override
 			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+				TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
 					return false;
 				

@@ -14,7 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.RegistrationCallTwo;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
@@ -33,6 +34,9 @@ public class AccountInformationTwoActivity extends Activity{
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		
+		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP2);
+		
 		setContentView(R.layout.account_info_two);
 		formDataTwo = new RegistrationTwoDetails();
 		
@@ -53,21 +57,22 @@ public class AccountInformationTwoActivity extends Activity{
 		setupTextChangedListeners();
 	}
 	
-	private void navigateToConfirmationScreenWithResponseData(RegistrationConfirmationDetails responseData){
-		Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
+	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
+		final Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
 		confirmationScreen.putExtra("id", responseData.userId);
 		confirmationScreen.putExtra("email", responseData.email);
 		confirmationScreen.putExtra("acctNbr", responseData.acctLast4);
+		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_CONFIRMATION);
 		this.startActivity(confirmationScreen);
 	}
 	
-	public void checkInputsThenSubmit(View v){
-		InputValidator validator = new InputValidator();
-		String email = ((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString();
-		String id1 =((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString();
-		String id2 = ((EditText)findViewById(R.id.account_info_two_id_confirm_field)).getText().toString();
-		String pass1=((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString();
-		String pass2=((EditText)findViewById(R.id.account_info_two_pass_confirm_field)).getText().toString();
+	public void checkInputsThenSubmit(final View v){
+		final InputValidator validator = new InputValidator();
+		final String email = ((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString();
+		final String id1 =((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString();
+		final String id2 = ((EditText)findViewById(R.id.account_info_two_id_confirm_field)).getText().toString();
+		final String pass1=((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString();
+		final String pass2=((EditText)findViewById(R.id.account_info_two_pass_confirm_field)).getText().toString();
 		
 		validator.doPassesMatch(
 				pass1, pass2);
@@ -93,14 +98,15 @@ public class AccountInformationTwoActivity extends Activity{
 	public void showPasswordStrengthBarHelp(final View v){
 		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
 		passwordHelpScreen.putExtra("helpType", "password");
+		TrackingHelper.trackPageView(AnalyticsPage.PASSWORD_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
 	}
 	
 	public void showIdStrengthBarHelp(final View v){
 		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
 		passwordHelpScreen.putExtra("helpType", "id");
+		TrackingHelper.trackPageView(AnalyticsPage.UID_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
-		
 	}
 	
 	private void setupTextChangedListeners(){

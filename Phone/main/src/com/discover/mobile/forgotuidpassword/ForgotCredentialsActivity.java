@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.login.CustomArrayAdapter;
 import com.discover.mobile.register.AccountInformationActivity;
 
@@ -19,6 +21,8 @@ public class ForgotCredentialsActivity extends RoboListActivity {
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		
+		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_MENU);
 	}
 	
 	/*
@@ -41,20 +45,20 @@ public class ForgotCredentialsActivity extends RoboListActivity {
 	
 	
 	@SuppressWarnings("deprecation")
-	public void navigateToAppropriateScreen(View v){
+	public void navigateToAppropriateScreen(final View v){
 		/*
 		 * On click we get passed the view that called got clicked.
 		 * We know its a linear layout because that is what is defined in the
 		 * custom table cell layout. We are referencing the selected table as
 		 * a whole.
 		 */
-		LinearLayout layout = (LinearLayout)v;
+		final LinearLayout layout = (LinearLayout)v;
 		
 		/*
 		 * Get the first text label (child) in the view so we can identify it.
 		 */
 		  
-		TextView text = (TextView)layout.getChildAt(0);
+		final TextView text = (TextView)layout.getChildAt(0);
 		 
 		 /* 
 		  * Set the selection background color
@@ -70,7 +74,7 @@ public class ForgotCredentialsActivity extends RoboListActivity {
 		 * Start the new activity and pass the kind of layout that it should
 		 * abide to.
 		 */
-		String screenType = text.getText().toString();
+		final String screenType = text.getText().toString();
 		handleSelection(screenType);
 		
 	}
@@ -79,7 +83,7 @@ public class ForgotCredentialsActivity extends RoboListActivity {
 	 * Check to see what was selected by the string value of the
 	 * label text on the list item. Navigate based on that.
 	 */
-	public void handleSelection(String screenType){
+	public void handleSelection(final String screenType){
 		Intent forgotSomethingScreen = null;
 
 		if(vals[0].equals(screenType)){

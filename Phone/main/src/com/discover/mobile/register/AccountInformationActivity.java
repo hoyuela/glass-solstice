@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.RegistrationCallOne;
 import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
@@ -45,6 +47,7 @@ public class AccountInformationActivity extends Activity {
         	if(extras != null) {
         		//Setup the screen for a forgotten password.
         		if("Forgot Password".equals(extras.getString("screenType"))){
+        			TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_STEP1);
         			forgotPass = true;
         			//Set the title of the screen to forgot password
         			((TextView)findViewById(R.id.account_info_title_label))
@@ -77,6 +80,7 @@ public class AccountInformationActivity extends Activity {
         		}
         		//Setup the screen for forgotten both credentials.
         		else if("Forgot Both".equals(extras.getString("screenType"))){
+        			TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP1);
         			((TextView)findViewById(R.id.account_info_title_label))
         			.setText(getResources()
         					.getString(R.string.forgot_both_text));
@@ -119,7 +123,7 @@ public class AccountInformationActivity extends Activity {
 	}
 	
 	
-	public void submitFormInfo(View v) {
+	public void submitFormInfo(final View v) {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
@@ -153,7 +157,7 @@ public class AccountInformationActivity extends Activity {
 
 				progress.dismiss();
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-				TextView errorMessageLabel = 
+				final TextView errorMessageLabel = 
 						(TextView)findViewById(R.id.account_info_error_label);
 				
 				switch(messageErrorResponse.getMessageStatusCode()){
@@ -231,7 +235,7 @@ public class AccountInformationActivity extends Activity {
 		}
 	}
 	
-	private void updateLabelsUsingValidator(InputValidator validator){
+	private void updateLabelsUsingValidator(final InputValidator validator){
 		final TextView cardErrorLabel = (TextView)findViewById(R.id.account_info_card_account_number_error_label);
 		final TextView ssnErrorLabel = (TextView)findViewById(R.id.account_info_ssn_error_label);
 		final TextView dobYearErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
