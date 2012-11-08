@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.RegistrationCallTwo;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
@@ -36,7 +37,7 @@ public class AccountInformationTwoActivity extends Activity{
 		formDataTwo = new RegistrationTwoDetails();
 		
 		if (savedInstanceState == null) {
-			Bundle extras = getIntent().getExtras();
+			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
         		formDataOne = (RegistrationOneDetails)getIntent().getSerializableExtra("RegistrationOneDetails");
         		formDataTwo.acctNbr = formDataOne.acctNbr;
@@ -89,14 +90,14 @@ public class AccountInformationTwoActivity extends Activity{
 		
 	}
 	
-	public void showPasswordStrengthBarHelp(View v){
-		Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+	public void showPasswordStrengthBarHelp(final View v){
+		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
 		passwordHelpScreen.putExtra("helpType", "password");
 		this.startActivity(passwordHelpScreen);
 	}
 	
-	public void showIdStrengthBarHelp(View v){
-		Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+	public void showIdStrengthBarHelp(final View v){
+		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
 		passwordHelpScreen.putExtra("helpType", "id");
 		this.startActivity(passwordHelpScreen);
 		
