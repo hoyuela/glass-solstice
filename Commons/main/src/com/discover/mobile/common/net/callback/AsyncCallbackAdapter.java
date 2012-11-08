@@ -1,18 +1,31 @@
-package com.discover.mobile.common.net.response;
+package com.discover.mobile.common.net.callback;
 
 import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.response.ErrorResponse;
 
 /**
- * Provides default, no-op implementations of the {@link AsyncCallback} methods to make implementing easier.
+ * Provides default, no-op implementations of the {@link AsyncCallback} and {@link ExtendedAsyncCallback} methods to
+ * make implementing easier.
  * 
  * @param <V>
  */
-public abstract class AsyncCallbackAdapter<V> implements AsyncCallback<V> {
+public class AsyncCallbackAdapter<V> implements ExtendedAsyncCallback<V> {
+
+	@Override
+	public void preSubmit() {
+		// Intentional no-op
+	}
+	
+	@Override
+	public void complete(final Object result) {
+		// Intentional no-op
+	}
 	
 	@Override
 	public void success(final V value) {
-		// TODO consider forcing some implementation of success (why have any calls that we don't care about a 200?)
 		// Intentional no-op
+		
+		// TODO consider forcing some implementation of success (why have any calls that we don't care about a 200?)
 	}
 	
 	@Override

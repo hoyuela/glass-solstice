@@ -10,17 +10,23 @@ public final class ThreadUtility {
 	
 	public static void assertMainThreadExecution() {
 		if(!isMainThread())
-			throw new AssertionError("Should never be called outside the main thread");
+			throw new UnsupportedOperationException("Should never be called outside the main thread");
+	}
+	
+	public static void assertMainThreadExecution(final Throwable causeIfThrown) {
+		if(!isMainThread())
+			throw new UnsupportedOperationException("Should never be called outside the main thread", causeIfThrown);
 	}
 	
 	public static void assertNonMainThreadExecution() {
 		if(isMainThread())
-			throw new AssertionError("Should never be called on the main thread");
+			throw new UnsupportedOperationException("Should never be called on the main thread");
 	}
 	
 	public static void assertCurrentThreadHasLooper() {
 		if(Looper.myLooper() == null)
-			throw new AssertionError("Current thread does not have an associated Looper, callbacks can't be scheduled");
+			throw new UnsupportedOperationException(
+					"Current thread does not have an associated Looper, callbacks can't be scheduled");
 	}
 	
 	private ThreadUtility() {

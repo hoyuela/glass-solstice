@@ -14,14 +14,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.RegistrationCallTwo;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
 import com.discover.mobile.common.auth.registration.RegistrationTwoDetails;
+import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
-import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 
 public class AccountInformationTwoActivity extends Activity{
@@ -53,21 +52,21 @@ public class AccountInformationTwoActivity extends Activity{
 		setupTextChangedListeners();
 	}
 	
-	private void navigateToConfirmationScreenWithResponseData(RegistrationConfirmationDetails responseData){
-		Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
+	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
+		final Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
 		confirmationScreen.putExtra("id", responseData.userId);
 		confirmationScreen.putExtra("email", responseData.email);
 		confirmationScreen.putExtra("acctNbr", responseData.acctLast4);
 		this.startActivity(confirmationScreen);
 	}
 	
-	public void checkInputsThenSubmit(View v){
-		InputValidator validator = new InputValidator();
-		String email = ((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString();
-		String id1 =((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString();
-		String id2 = ((EditText)findViewById(R.id.account_info_two_id_confirm_field)).getText().toString();
-		String pass1=((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString();
-		String pass2=((EditText)findViewById(R.id.account_info_two_pass_confirm_field)).getText().toString();
+	public void checkInputsThenSubmit(final View v){
+		final InputValidator validator = new InputValidator();
+		final String email = ((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString();
+		final String id1 =((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString();
+		final String id2 = ((EditText)findViewById(R.id.account_info_two_id_confirm_field)).getText().toString();
+		final String pass1=((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString();
+		final String pass2=((EditText)findViewById(R.id.account_info_two_pass_confirm_field)).getText().toString();
 		
 		validator.doPassesMatch(
 				pass1, pass2);

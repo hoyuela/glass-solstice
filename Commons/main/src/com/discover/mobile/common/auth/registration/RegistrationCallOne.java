@@ -11,7 +11,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.response.AsyncCallback;
+import com.discover.mobile.common.net.callback.AsyncCallback;
 
 public class RegistrationCallOne extends NetworkServiceCall<Object> {
 	

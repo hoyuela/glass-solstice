@@ -21,8 +21,8 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.forgotuidpassword.ForgotUserIdCall;
 import com.discover.mobile.common.forgotuidpassword.UserIdDetails;
+import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
-import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.register.AccountInformationConfirmationActivity;
 

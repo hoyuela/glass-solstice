@@ -5,8 +5,8 @@ import android.content.Context;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
+import com.discover.mobile.common.net.callback.AsyncCallback;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.net.response.AsyncCallback;
 
 public class RegistrationCallTwo extends JsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
 	

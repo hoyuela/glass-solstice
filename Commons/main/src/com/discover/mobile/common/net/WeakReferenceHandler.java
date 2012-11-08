@@ -2,7 +2,7 @@ package com.discover.mobile.common.net;
 
 import java.lang.ref.WeakReference;
 
-import com.discover.mobile.common.net.response.AsyncCallback;
+import com.discover.mobile.common.net.callback.AsyncCallback;
 
 // Nothing in this class should happen outside of the UI thread
 public final class WeakReferenceHandler<V> extends TypedReferenceHandler<V> {

@@ -22,8 +22,8 @@ import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
-import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 
 @ContentView(R.layout.landing)
 public class StartActivity extends RoboActivity {

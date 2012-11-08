@@ -7,7 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.discover.mobile.common.net.response.AsyncCallback;
+import com.discover.mobile.common.net.callback.AsyncCallback;
+import com.discover.mobile.common.net.callback.ExtendedAsyncCallback;
 import com.discover.mobile.common.net.response.ErrorResponse;
 
 public abstract class TypedReferenceHandler<V> extends Handler {
@@ -16,12 +17,26 @@ public abstract class TypedReferenceHandler<V> extends Handler {
 	
 	abstract AsyncCallback<V> getCallback();
 	
+	void preSubmit() {
+		final AsyncCallback<V> callback = getCallback();
+		
+		if(callback instanceof ExtendedAsyncCallback) {
+			final ExtendedAsyncCallback<V> extendedCallback = (ExtendedAsyncCallback<V>) callback;
+			extendedCallback.preSubmit();
+		}
+	}
+	
 	@Override
 	public void handleMessage(final Message message) {
 		final AsyncCallback<V> callback = getCallback();
 		if(callback == null) {
 			Log.d(TAG, "Callback was null, dropping callback");
 			return;
+		}
+
+		if(callback instanceof ExtendedAsyncCallback) {
+			final ExtendedAsyncCallback<V> extendedCallback = (ExtendedAsyncCallback<V>) callback;
+			extendedCallback.complete(message.obj);
 		}
 		
 		switch(message.what) {
@@ -36,8 +51,6 @@ public abstract class TypedReferenceHandler<V> extends Handler {
 			case RESULT_PARSED_ERROR:
 				handleErrorResponse(message, callback);
 				break;
-				
-			// TODO
 			
 			default:
 				throw new AssertionError("Unexpected result status: " + message.what);

@@ -19,8 +19,8 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.RegistrationCallOne;
 import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
+import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
-import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 
 public class AccountInformationActivity extends Activity {
@@ -119,7 +119,7 @@ public class AccountInformationActivity extends Activity {
 	}
 	
 	
-	public void submitFormInfo(View v) {
+	public void submitFormInfo(final View v) {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
@@ -153,7 +153,7 @@ public class AccountInformationActivity extends Activity {
 
 				progress.dismiss();
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-				TextView errorMessageLabel = 
+				final TextView errorMessageLabel = 
 						(TextView)findViewById(R.id.account_info_error_label);
 				
 				switch(messageErrorResponse.getMessageStatusCode()){
@@ -231,7 +231,7 @@ public class AccountInformationActivity extends Activity {
 		}
 	}
 	
-	private void updateLabelsUsingValidator(InputValidator validator){
+	private void updateLabelsUsingValidator(final InputValidator validator){
 		final TextView cardErrorLabel = (TextView)findViewById(R.id.account_info_card_account_number_error_label);
 		final TextView ssnErrorLabel = (TextView)findViewById(R.id.account_info_ssn_error_label);
 		final TextView dobYearErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
@@ -244,8 +244,8 @@ public class AccountInformationActivity extends Activity {
 		 * These should never be both true.
 		 * Bitwise AND and inclusive OR used - why not.
 		 */
-		if((forgotPass & !validator.wasUidValid) | 
-				(!forgotPass & !validator.wasAccountNumberValid)){
+		if(forgotPass & !validator.wasUidValid | 
+				!forgotPass & !validator.wasAccountNumberValid){
 			cardErrorLabel.setText(errorString);
 		}
 		else{
