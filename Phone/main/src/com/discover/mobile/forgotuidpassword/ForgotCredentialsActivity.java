@@ -1,13 +1,11 @@
 package com.discover.mobile.forgotuidpassword;
 
-import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboListActivity;
 import roboguice.inject.ContentView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
@@ -15,7 +13,7 @@ import com.discover.mobile.login.CustomArrayAdapter;
 import com.discover.mobile.register.AccountInformationActivity;
 
 @ContentView(R.layout.forgot_login)
-public class ForgotCredentialsActivity extends RoboActivity {
+public class ForgotCredentialsActivity extends RoboListActivity {
 	private String[] vals = {"Forgot User ID","Forgot Password","Forgot Both"};
 
 	@Override
@@ -30,13 +28,15 @@ public class ForgotCredentialsActivity extends RoboActivity {
 	@Override
 	public void onResume(){
 		super.onResume();
-		this.setContentView(R.layout.forgot_login);
-		final ListView listView = (ListView)findViewById(R.id.optionsTable);
+//		this.setContentView(R.layout.forgot_login);
+//		final ListView listView = (ListView)findViewById(android.R.id.list);
 
-		ArrayAdapter<String> adapter;
+//		ArrayAdapter<String> adapter;
 		
-		adapter = new CustomArrayAdapter(this, vals);
-		listView.setAdapter(adapter);
+//		adapter = new CustomArrayAdapter(this, vals);
+//		listView.setAdapter(adapter);
+		
+		setListAdapter(new CustomArrayAdapter(this, vals));
 	}
 	
 	
