@@ -36,7 +36,8 @@ public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<Acco
 	
 	private static String getAuthorizationString(final String username, final String password) {
 		final String concatenatedCreds = username + ": :" + password;
-		return "DCRDBasic " + Base64.encodeToString(concatenatedCreds.getBytes(), Base64.DEFAULT);
+		final String authString = "DCRDBasic " + Base64.encodeToString(concatenatedCreds.getBytes(), Base64.DEFAULT);
+		return authString.trim();
 	}
 
 	@Override
