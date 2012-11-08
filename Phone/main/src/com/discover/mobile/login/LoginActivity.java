@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.ScreenType;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
@@ -50,6 +52,8 @@ public class LoginActivity extends RoboActivity {
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		
 //		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
 //        .detectDiskReads()
