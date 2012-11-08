@@ -18,7 +18,6 @@ public class RegistrationCallTwo extends JsonResponseMappingNetworkServiceCall<R
 			final RegistrationTwoDetails formData) {
 		
 		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/reg") {{
-			//clearsSessionBeforeRequest = true;
 			requiresSessionForRequest = false;
 			
 			sendDeviceIdentifiers = true;

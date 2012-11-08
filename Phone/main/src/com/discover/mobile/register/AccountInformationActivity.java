@@ -64,14 +64,14 @@ public class AccountInformationActivity extends Activity {
         			
         			//Change the input type for the edit text to be valid for
         			//user credentials and not the default card number stuff
-        			EditText mainInputField = 
+        			final EditText mainInputField = 
         				(EditText)findViewById(
         						R.id.account_info_main_input_field);
         			mainInputField.setInputType(
         					InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         			
         			//Change the max input length to 32 characters.
-        			InputFilter[] filterArray = new InputFilter[1];
+        			final InputFilter[] filterArray = new InputFilter[1];
         			filterArray[0] = new InputFilter.LengthFilter(32);
         			mainInputField.setFilters(filterArray);
         		}
@@ -157,27 +157,30 @@ public class AccountInformationActivity extends Activity {
 						(TextView)findViewById(R.id.account_info_error_label);
 				
 				switch(messageErrorResponse.getMessageStatusCode()){
-				case 1905:
+				case 1905: //Wrong type of account info provided.
 					errorMessageLabel
 					.setText(getString(
 							R.string.account_info_sams_club_card_error_text));
 					return true;
-				case 1906:
+				case 1906: //Provided information was incorrect.
 					errorMessageLabel
 					.setText(getString(
 							R.string.account_info_bad_input_error_text));
 					return true;
-				
+				case 1907: //Last attemt with this account number warning.
+					errorMessageLabel
+					.setText(getString(
+							R.string.login_attempt_warning));
+					return true;
+					
+				default:
+					return false;
 					
 				}
 				
-				
-				return false;
 			}
 		};
-//		(final Context context, final AsyncCallback<RegistrationDetails> callback,
-//		final String acctNbr, final String expirationMonth, final String expirationYear, final String dateOfBirthMonth, final String  dateOfBirthDay,
-//		final String socialSecurityNumber, final String dateOfBirthYear)
+
 		final InputValidator validator = new InputValidator();
 		final EditText accountNum = (EditText)findViewById(R.id.account_info_main_input_field);
 		final Spinner cardMonthExp = (Spinner)findViewById(R.id.account_info_month_spinner);

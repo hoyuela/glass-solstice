@@ -60,16 +60,6 @@ public class AccountInformationTwoActivity extends Activity{
 		this.startActivity(confirmationScreen);
 	}
 	
-	private String getLast4(String str){
-		
-		if(str != null && str.length() - 4 > 0)
-			return str.substring(str.length() - 4);
-		else
-			return str;
-		
-	}
-	
-	
 	public void checkInputsThenSubmit(View v){
 		InputValidator validator = new InputValidator();
 		String email = ((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString();
@@ -331,14 +321,43 @@ public class AccountInformationTwoActivity extends Activity{
 
 			@Override
 			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
-				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
-					return false;
-				
-				Log.e(TAG, "AuthenticateCall.messageErrorResponse(MessageErrorResponse): " + messageErrorResponse);
 				progress.dismiss();
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-				
-				return true;
+				final TextView mainErrorMessageLabel = 
+						(TextView)findViewById(R.id.account_info_main_error_label);
+				final TextView errorMessageLabel =
+						(TextView)findViewById(R.id.account_info_error_label);
+				switch(messageErrorResponse.getMessageStatusCode()){
+				case 1906: //Provided information was incorrect.
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					return true;
+				case 1907: //Last attemt with this account number warning.
+					errorMessageLabel
+					.setText(getString(
+							R.string.login_attempt_warning));
+					return true;
+				case 1919:
+					mainErrorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_two_id_matches_pass_error_text));
+					return true;
+				case 1921:
+					mainErrorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_two_username_in_use_error_text));
+					
+				default:
+					return false;
+					
+				}
 			}
 		};
 		

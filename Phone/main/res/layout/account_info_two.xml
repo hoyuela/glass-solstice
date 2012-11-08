@@ -36,13 +36,19 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/orange"
                 android:textStyle="bold" />
+            
+            <TextView 
+	            android:id="@+id/account_info_main_error_label"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+				android:layout_below="@id/account_info_step_label"
+				android:textColor="@color/red"/>
 
             <TextView
                 android:id="@+id/account_info_label_one_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/account_info_step_label"
-                android:layout_below="@+id/account_info_step_label"
+                android:layout_below="@+id/account_info_main_error_label"
                 android:paddingTop="4dp"
                 android:text="@string/account_info_two_create_id_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -60,12 +66,19 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/light_text_size"  />
 
+            <TextView 
+	            android:id="@+id/account_info_error_label"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+				android:layout_below="@id/account_information_input_info_label"
+				android:textColor="@color/red"/>
+            
             <EditText
                 android:id="@+id/account_info_two_id_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/account_information_input_info_label"
-                android:layout_below="@+id/account_information_input_info_label"
+                android:layout_alignLeft="@+id/account_info_error_label"
+                android:layout_below="@+id/account_info_error_label"
                 android:ems="16"
                 android:imeOptions="actionNext"
                 android:inputType="textNoSuggestions"
