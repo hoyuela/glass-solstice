@@ -1,5 +1,7 @@
 package com.discover.mobile.common.auth;
 
+import java.nio.charset.Charset;
+
 import android.content.Context;
 import android.util.Base64;
 
@@ -36,7 +38,10 @@ public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<Acco
 	
 	private static String getAuthorizationString(final String username, final String password) {
 		final String concatenatedCreds = username + ": :" + password;
-		return "DCRDBasic " + Base64.encodeToString(concatenatedCreds.getBytes(), Base64.DEFAULT);
+		final Charset charset = Charset.forName("UTF-8");
+		final byte[] credsBytes = charset.encode(concatenatedCreds).array();
+		final String authString = "DCRDBasic " + Base64.encodeToString(credsBytes, Base64.DEFAULT);
+		return authString.trim();
 	}
 
 	@Override
