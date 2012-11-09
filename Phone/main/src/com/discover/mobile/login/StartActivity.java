@@ -6,7 +6,6 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +22,10 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 
 @ContentView(R.layout.landing)
@@ -67,12 +69,14 @@ public class StartActivity extends RoboActivity {
 	}
 	
 	private void startPreAuthCheck() {
-		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
-		
-		final AsyncCallbackAdapter<PreAuthResult> callback = new AsyncCallbackAdapter<PreAuthResult>() {
+		final SuccessListener<PreAuthResult> optionalUpdateListener = new SuccessListener<PreAuthResult>() {
+			@Override
+			public Order getOrder() {
+				return Order.MIDDLE;
+			}
+			
 			@Override
 			public void success(final PreAuthResult value) {
-				progress.dismiss();
 				Log.d(TAG, "Pre-auth status code: " + value.statusCode);
 				
 				//check if optional upgrade available
@@ -85,16 +89,16 @@ public class StartActivity extends RoboActivity {
 					navigateToLogin();
 				}
 			}
-
-			@Override
-			public void failure(final Throwable error) {
-				progress.dismiss();
-				showOkAlertDialog("Error", error.getMessage());
-			}
-
+		};
+		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback.<PreAuthResult>builder(this)
+				.showProgressDialog("Discover", "Loading...", true)
+				.withSuccessListener(optionalUpdateListener)
+				.build();
+		
+		// FIXME
+		final AsyncCallbackAdapter<PreAuthResult> oldCallback = new AsyncCallbackAdapter<PreAuthResult>() {
 			@Override
 			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
-				progress.dismiss();
 				switch(messageErrorResponse.getMessageStatusCode()) {
 					case 1002: 
 						TrackingHelper.trackPageView(AnalyticsPage.FORCED_UPGRADE);
@@ -113,8 +117,7 @@ public class StartActivity extends RoboActivity {
 				return false;
 			}
 		};
-		final PreAuthCheckCall preAuthCall = new PreAuthCheckCall(this, callback);
-		preAuthCall.submit();
+		new PreAuthCheckCall(this, callback).submit();
 	}
 	
 	private void sendToMaintenancePage() {

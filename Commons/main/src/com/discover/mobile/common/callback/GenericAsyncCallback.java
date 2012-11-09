@@ -53,6 +53,7 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	@Override
 	public void failure(final Throwable executionException) {
 		// TODO generic handling, error message, throw exception if not handled
+		// LOGME
 		
 		for(final ExceptionalFailureListener listener : exceptionalFailureListeners)
 			listener.failure(executionException);
@@ -63,6 +64,7 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	@Override
 	public void failure(final ErrorResponse errorResponse) {
 		// TODO generic handling, error message, throw exception if not handled
+		// LOGME
 		
 		for(final ErrorResponseFailureListener listener : errorResponseFailureListeners)
 			listener.failure(errorResponse);
