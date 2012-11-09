@@ -5,7 +5,7 @@
  * 'secure' their password and or user id is.
  */
 
-package com.discover.mobile.register;
+package com.discover.mobile.login.register;
 
 import android.content.Context;
 import android.text.Editable;

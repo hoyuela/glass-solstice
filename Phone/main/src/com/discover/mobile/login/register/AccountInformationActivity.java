@@ -1,4 +1,4 @@
-package com.discover.mobile.register;
+package com.discover.mobile.login.register;
 
 import java.net.HttpURLConnection;
 
@@ -17,16 +17,20 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.auth.registration.RegistrationCallOne;
-import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
+import com.discover.mobile.common.auth.StrongAuthCall;
+import com.discover.mobile.common.auth.StrongAuthDetails;
+import com.discover.mobile.common.auth.registration.AccountInformationCall;
+import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.forgotpassword.ForgotPasswordCall;
 import com.discover.mobile.common.forgotpassword.ForgotPasswordDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.response.AsyncCallback;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.forgotuidpassword.EnterNewPasswordActivity;
 
 public class AccountInformationActivity extends Activity {
-	private RegistrationOneDetails registrationOneDetails;
+	private AccountInformationDetails registrationOneDetails;
 	private ForgotPasswordDetails forgotPasswordDetails;
 	private boolean forgotPass = false;
 	private static final String TAG = AccountInformationActivity.class.getSimpleName();
@@ -89,13 +93,22 @@ public class AccountInformationActivity extends Activity {
 	}
 	
 	private void startNextActivity(){
-		final Intent enhancedAccountSecurityIntent = 
-				new Intent(this, AccountInformationTwoActivity.class);
-		
-		enhancedAccountSecurityIntent
-			.putExtra("RegistrationOneDetails", registrationOneDetails);
-		
-		this.startActivity(enhancedAccountSecurityIntent);
+		if(forgotPass){
+			final Intent enterNewPasswordActivity = 
+					new Intent(this, EnterNewPasswordActivity.class);
+			enterNewPasswordActivity
+			.putExtra("ForgotPasswordDetails", forgotPasswordDetails);
+			this.startActivity(enterNewPasswordActivity);
+
+		}else{
+			final Intent enhancedAccountSecurityIntent = 
+					new Intent(this, CreateLoginActivity.class);
+			
+			enhancedAccountSecurityIntent
+				.putExtra("RegistrationOneDetails", registrationOneDetails);
+			
+			this.startActivity(enhancedAccountSecurityIntent);
+		}
 		
 	}
 	
@@ -121,8 +134,65 @@ public class AccountInformationActivity extends Activity {
 		spinner.setAdapter(adapter);
 	}
 	
+	public void validateInfoAndSubmitOnSuccess(View v){
+		final InputValidator validator = new InputValidator();
+		final EditText accountNum = (EditText)findViewById(R.id.account_info_main_input_field);
+		final Spinner cardMonthExp = (Spinner)findViewById(R.id.account_info_month_spinner);
+		final Spinner cardYearExp = (Spinner)findViewById(R.id.account_info_year_spinner);
+		final Spinner memberDobMonth = (Spinner)findViewById(R.id.account_info_dob_month_spinner);
+		final Spinner memberDobDay = (Spinner)findViewById(R.id.account_info_dob_day_spinner);
+		final EditText memberDobYear = (EditText)findViewById(R.id.account_info_dob_year_field);
+		final EditText memberSsnNum = (EditText)findViewById(R.id.account_info_ssn_input_field);
+		
+		final String accountNumString = accountNum.getText().toString();
+		final String cardMonthExpString = cardMonthExp.getSelectedItem().toString();
+		final String cardYearExpString = cardYearExp.getSelectedItem().toString();
+		final String memberDobMonthString = memberDobMonth.getSelectedItem().toString();
+		final String memberDobDayString = memberDobDay.getSelectedItem().toString();
+		final String memberDobYearString = memberDobYear.getText().toString();
+		final String memberSsnNumString =  memberSsnNum.getText().toString();
+					
+		validator.isUidValid(accountNumString);
+		validator.isCardAccountNumberValid(accountNumString);
+		validator.isCardExpMonthValid(cardMonthExpString);
+		validator.isCardExpYearValid(cardYearExpString);
+		validator.isDobYearValid(memberDobYearString);
+		validator.isDobMonthValid(memberDobMonthString);
+		validator.isDobDayValid(memberDobDayString);
+		validator.isSsnValid(memberSsnNumString);
+		
+		updateLabelsUsingValidator(validator);
+		
+		if(validator.wasAccountInfoComplete() || validator.wasForgotPasswordInfoComplete()){
+			if(forgotPass){
+				forgotPasswordDetails = new ForgotPasswordDetails();
+				forgotPasswordDetails.userId = accountNumString;
+				forgotPasswordDetails.dateOfBirthDay = memberDobDayString;
+				forgotPasswordDetails.dateOfBirthMonth = memberDobMonthString;
+				forgotPasswordDetails.dateOfBirthYear = memberDobYearString;
+				forgotPasswordDetails.expirationMonth = cardMonthExpString;
+				forgotPasswordDetails.expirationYear  = cardYearExpString;
+				forgotPasswordDetails.socialSecurityNumber = memberSsnNumString;
+				submitFormInfo(validator);
+			}
+			else{
+				registrationOneDetails = new AccountInformationDetails();
+				registrationOneDetails.acctNbr = accountNumString;
+				registrationOneDetails.dateOfBirthDay = memberDobDayString;
+				registrationOneDetails.dateOfBirthMonth = memberDobMonthString;
+				registrationOneDetails.dateOfBirthYear = memberDobYearString;
+				registrationOneDetails.expirationMonth = cardMonthExpString;
+				registrationOneDetails.expirationYear  = cardYearExpString;
+				registrationOneDetails.socialSecurityNumber = memberSsnNumString;
+				submitFormInfo(validator);
+			}
+			
+
+		}
+
+	}
 	
-	public void submitFormInfo(View v) {
+	private void submitFormInfo(InputValidator validator) {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
@@ -130,6 +200,8 @@ public class AccountInformationActivity extends Activity {
 			public void success(final Object value) {
 				Log.d(TAG, "Success");
 				progress.dismiss();
+				checkForPreAuth();
+				
 				startNextActivity();
 
 			}
@@ -175,7 +247,11 @@ public class AccountInformationActivity extends Activity {
 					.setText(getString(
 							R.string.login_attempt_warning));
 					return true;
-					
+				case 1916:
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					return true;
 				default:
 					return false;
 					
@@ -184,71 +260,97 @@ public class AccountInformationActivity extends Activity {
 			}
 		};
 
-		final InputValidator validator = new InputValidator();
-		final EditText accountNum = (EditText)findViewById(R.id.account_info_main_input_field);
-		final Spinner cardMonthExp = (Spinner)findViewById(R.id.account_info_month_spinner);
-		final Spinner cardYearExp = (Spinner)findViewById(R.id.account_info_year_spinner);
-		final Spinner memberDobMonth = (Spinner)findViewById(R.id.account_info_dob_month_spinner);
-		final Spinner memberDobDay = (Spinner)findViewById(R.id.account_info_dob_day_spinner);
-		final EditText memberDobYear = (EditText)findViewById(R.id.account_info_dob_year_field);
-		final EditText memberSsnNum = (EditText)findViewById(R.id.account_info_ssn_input_field);
-		
-		final String accountNumString = accountNum.getText().toString();
-		final String cardMonthExpString = cardMonthExp.getSelectedItem().toString();
-		final String cardYearExpString = cardYearExp.getSelectedItem().toString();
-		final String memberDobMonthString = memberDobMonth.getSelectedItem().toString();
-		final String memberDobDayString = memberDobDay.getSelectedItem().toString();
-		final String memberDobYearString = memberDobYear.getText().toString();
-		final String memberSsnNumString =  memberSsnNum.getText().toString();
-					
-		validator.isUidValid(accountNumString);
-		validator.isCardAccountNumberValid(accountNumString);
-		validator.isCardExpMonthValid(cardMonthExpString);
-		validator.isCardExpYearValid(cardYearExpString);
-		validator.isDobYearValid(memberDobYearString);
-		validator.isDobMonthValid(memberDobMonthString);
-		validator.isDobDayValid(memberDobDayString);
-		validator.isSsnValid(memberSsnNumString);
-		
-		updateLabelsUsingValidator(validator);
-		
-		if(validator.wasAccountInfoComplete() || validator.wasForgotPasswordInfoComplete()){
-			if(forgotPass){
-				forgotPasswordDetails = new ForgotPasswordDetails();
-				forgotPasswordDetails.userId = accountNumString;
-				forgotPasswordDetails.dateOfBirthDay = memberDobDayString;
-				forgotPasswordDetails.dateOfBirthMonth = memberDobMonthString;
-				forgotPasswordDetails.dateOfBirthYear = memberDobYearString;
-				forgotPasswordDetails.expirationMonth = cardMonthExpString;
-				forgotPasswordDetails.expirationYear  = cardYearExpString;
-				forgotPasswordDetails.socialSecurityNumber = memberSsnNumString;
-			}
-			else{
-				registrationOneDetails = new RegistrationOneDetails();
-				registrationOneDetails.acctNbr = accountNumString;
-				registrationOneDetails.dateOfBirthDay = memberDobDayString;
-				registrationOneDetails.dateOfBirthMonth = memberDobMonthString;
-				registrationOneDetails.dateOfBirthYear = memberDobYearString;
-				registrationOneDetails.expirationMonth = cardMonthExpString;
-				registrationOneDetails.expirationYear  = cardYearExpString;
-				registrationOneDetails.socialSecurityNumber = memberSsnNumString;
-			}
-			
-
-		}
 		//Submit info based on account information (new user registration)
-		if(validator.wasAccountInfoComplete()){
-			
-			final RegistrationCallOne registrationCall = 
-					new RegistrationCallOne(this, callback, registrationOneDetails);
-			registrationCall.submit();
+				if(validator.wasAccountInfoComplete()){
+					final AccountInformationCall registrationCall = 
+							new AccountInformationCall(this, callback, registrationOneDetails);
+					registrationCall.submit();
 
-		}
-		//If this succeeds then we have a user who forgot their password.
-		else if(validator.wasForgotPasswordInfoComplete()){
-			final ForgotPasswordCall passwordCall = new ForgotPasswordCall(this, callback, forgotPasswordDetails);
-			passwordCall.submit();
-		}
+				}
+				//If this succeeds then we have a user who forgot their password.
+				else if(validator.wasForgotPasswordInfoComplete()){
+					final ForgotPasswordCall passwordCall = new ForgotPasswordCall(this, callback, forgotPasswordDetails);
+					passwordCall.submit();
+				}
+		
+		
+		
+	}
+	
+private void checkForPreAuth(){
+	final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
+		
+		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
+			@Override
+			public void success(final StrongAuthDetails value) {
+				Log.d(TAG, "Success");
+				progress.dismiss();
+				if(value.questionText != null && !"".equals(value.questionText)){
+					startNextActivity();
+				}
+				//TODO handle question if strong auth returns one.
+
+			}
+
+			@Override
+			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+				Log.w(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse);
+				progress.dismiss();
+				
+				switch (errorResponse.getHttpStatusCode()) {
+					case HttpURLConnection.HTTP_BAD_REQUEST:
+						return true;
+					case HttpURLConnection.HTTP_UNAUTHORIZED:
+						return true;
+					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldn't authenticate user info.
+						return true;
+				}
+				
+				//TODO properly handle these ^ v
+				return true;
+			}
+
+			@Override
+			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+
+				progress.dismiss();
+				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
+				TextView errorMessageLabel = 
+						(TextView)findViewById(R.id.account_info_error_label);
+				
+				switch(messageErrorResponse.getMessageStatusCode()){
+				case 1905: //Wrong type of account info provided.
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_sams_club_card_error_text));
+					return true;
+				case 1906: //Provided information was incorrect.
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					return true;
+				case 1907: //Last attemt with this account number warning.
+					errorMessageLabel
+					.setText(getString(
+							R.string.login_attempt_warning));
+					return true;
+				case 1916:
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					return true;
+				default://TODO properly handle these ^ v
+					return true;
+					
+				}
+				
+			}
+		};
+
+		final StrongAuthCall strongAuthCall = 
+				new StrongAuthCall(this, callback);
+		strongAuthCall.submit();
+		
 	}
 	
 	private void updateLabelsUsingValidator(InputValidator validator){

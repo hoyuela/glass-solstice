@@ -152,17 +152,40 @@ public class InputValidator {
 		return wasCardExpYearValid;
 	}
 	
-	public boolean isPassValid(String pass){
-		if(		pass.length() >= 6 && 
-				pass.length() <= 32 &&
-				!pass.equals("Credit Card Password"))
-				{
-			wasPassValid = true;
-		}
-		else 
-			wasPassValid = false;	
-		
-		return wasPassValid;
+	public boolean isPassValid(String inputSequence){		
+		boolean hasGoodLength  = false;
+		boolean hasUpperCase   = false;
+		boolean hasLowerCase   = false;
+		boolean hasNonAlphaNum = false;
+		boolean hasNumber 	   = false;
+				
+		//Check length of input.
+		if(inputSequence.length() >= 8 && inputSequence.length() <= 32)
+			hasGoodLength = true;
+					
+		//A password must have at least 1 letter and 1 number and cannot be 'password'
+		//but password doesn't have a number...
+			for(int i = 0; i < inputSequence.length(); ++i){
+
+				if(Character.isLowerCase(inputSequence.charAt(i))){
+					hasLowerCase = true;
+				}
+				else if (Character.isUpperCase(inputSequence.charAt(i))){
+					hasUpperCase = true;
+				}
+				else if (Character.isDigit(inputSequence.charAt(i))){
+					hasNumber = true;
+				}				
+				else if(!Character.isLetterOrDigit(inputSequence.charAt(i))){
+					hasNonAlphaNum = true;
+				}
+			}
+			
+			wasPassValid = (hasUpperCase || hasLowerCase) && 
+					hasGoodLength && 
+					hasNumber;
+			
+			return wasPassValid;
 	}
 	
 	public boolean isUidValid(String uid){

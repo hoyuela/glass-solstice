@@ -1,4 +1,4 @@
-package com.discover.mobile.register;
+package com.discover.mobile.login.register;
 
 import java.net.HttpURLConnection;
 
@@ -16,30 +16,30 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.auth.registration.RegistrationCallTwo;
+import com.discover.mobile.common.auth.registration.AccountInformationDetails;
+import com.discover.mobile.common.auth.registration.CreateLoginCall;
+import com.discover.mobile.common.auth.registration.CreateLoginDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
-import com.discover.mobile.common.auth.registration.RegistrationTwoDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 
-public class AccountInformationTwoActivity extends Activity{
+public class CreateLoginActivity extends Activity{
 
-	private RegistrationOneDetails formDataOne;
-	private RegistrationTwoDetails formDataTwo;
-	private static final String TAG = AccountInformationTwoActivity.class.getSimpleName();
+	private AccountInformationDetails formDataOne;
+	private CreateLoginDetails formDataTwo;
+	private static final String TAG = CreateLoginActivity.class.getSimpleName();
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.account_info_two);
-		formDataTwo = new RegistrationTwoDetails();
+		formDataTwo = new CreateLoginDetails();
 		
 		if (savedInstanceState == null) {
 			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
-        		formDataOne = (RegistrationOneDetails)getIntent().getSerializableExtra("RegistrationOneDetails");
+        		formDataOne = (AccountInformationDetails)getIntent().getSerializableExtra("AccountInformationDetails");
         		formDataTwo.acctNbr = formDataOne.acctNbr;
         		formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
         		formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
@@ -55,9 +55,9 @@ public class AccountInformationTwoActivity extends Activity{
 	
 	private void navigateToConfirmationScreenWithResponseData(RegistrationConfirmationDetails responseData){
 		Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
-		confirmationScreen.putExtra("id", responseData.userId);
-		confirmationScreen.putExtra("email", responseData.email);
-		confirmationScreen.putExtra("acctNbr", responseData.acctLast4);
+		confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
+		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
+		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
 		this.startActivity(confirmationScreen);
 	}
 	
@@ -91,13 +91,13 @@ public class AccountInformationTwoActivity extends Activity{
 	}
 	
 	public void showPasswordStrengthBarHelp(final View v){
-		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
 		passwordHelpScreen.putExtra("helpType", "password");
 		this.startActivity(passwordHelpScreen);
 	}
 	
 	public void showIdStrengthBarHelp(final View v){
-		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
 		passwordHelpScreen.putExtra("helpType", "id");
 		this.startActivity(passwordHelpScreen);
 		
@@ -354,7 +354,7 @@ public class AccountInformationTwoActivity extends Activity{
 					errorMessageLabel
 					.setText(getString(
 							R.string.account_info_two_username_in_use_error_text));
-					
+					return true;
 				default:
 					return false;
 					
@@ -362,8 +362,8 @@ public class AccountInformationTwoActivity extends Activity{
 			}
 		};
 		
-		final RegistrationCallTwo registrationCall = 
-				new RegistrationCallTwo(this, callback, formDataTwo);
+		final CreateLoginCall registrationCall = 
+				new CreateLoginCall(this, callback, formDataTwo);
 		registrationCall.submit();
 
 	}

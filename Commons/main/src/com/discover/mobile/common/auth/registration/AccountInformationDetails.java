@@ -6,7 +6,7 @@ import com.discover.mobile.common.Struct;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Struct
-public class RegistrationOneDetails implements Serializable {
+public class AccountInformationDetails implements Serializable {
 
 	private static final long serialVersionUID = 8196921305619911757L;
 

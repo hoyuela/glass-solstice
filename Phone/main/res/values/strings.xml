@@ -56,4 +56,6 @@
 	<string name="empty"></string>
 	<string name="home_text">Home</string>
 	<string name="invalid_value">Invalid value</string>
+	<string name="forgot_pass_create_new_text">Create a New Password:</string>
+	<string name="forgot_pass_step_two_text">Step 2 of 2: Create New Password</string>
 </resources>

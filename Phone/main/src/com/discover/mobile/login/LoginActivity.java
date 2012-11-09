@@ -24,7 +24,7 @@ import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.forgotuidpassword.ForgotCredentialsActivity;
-import com.discover.mobile.register.AccountInformationActivity;
+import com.discover.mobile.login.register.AccountInformationActivity;
 import com.google.common.base.Strings;
 
 @ContentView(R.layout.login)

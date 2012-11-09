@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.login.CustomArrayAdapter;
-import com.discover.mobile.register.AccountInformationActivity;
+import com.discover.mobile.login.register.AccountInformationActivity;
 
 @ContentView(R.layout.forgot_login)
 public class ForgotCredentialsActivity extends RoboListActivity {
