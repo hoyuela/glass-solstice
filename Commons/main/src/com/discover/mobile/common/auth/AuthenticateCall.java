@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableMap;
 
 public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<AccountDetails> {
 
+	@SuppressWarnings("unused")
 	private static final String TAG = AuthenticateCall.class.getSimpleName();
 	
 	private final TypedReferenceHandler<AccountDetails> handler;
