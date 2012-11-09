@@ -20,12 +20,12 @@ public interface GenericCallbackListener {
 		void success(V value);
 	}
 	
-	public static interface ExceptionalFailureListener extends GenericCallbackListener {
-		void failure(Throwable executionException);
+	public static interface ExceptionFailureHandler extends GenericCallbackListener {
+		boolean handleFailure(Throwable executionException);
 	}
 	
-	public static interface ErrorResponseFailureListener extends GenericCallbackListener {
-		void failure(ErrorResponse errorResponse);
+	public static interface ErrorResponseHandler extends GenericCallbackListener {
+		boolean handleFailure(ErrorResponse errorResponse);
 	}
 	
 }
