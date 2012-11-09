@@ -27,12 +27,12 @@ import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 
-public class AccountInformationTwoActivity extends Activity{
+public class CreateLoginActivity extends Activity{
 	
 	@SuppressWarnings("unused")
-	private static final String TAG = AccountInformationTwoActivity.class.getSimpleName();
+	private static final String TAG = CreateLoginActivity.class.getSimpleName();
 
-	private RegistrationTwoDetails formDataTwo;
+	private CreateLoginDetails formDataTwo;
 	
 	@InjectView(R.id.account_info_main_error_label)
 	private TextView mainErrorMessageLabel;
@@ -52,7 +52,7 @@ public class AccountInformationTwoActivity extends Activity{
 		if (savedInstanceState == null) {
 			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
-        		final RegistrationOneDetails formDataOne = (RegistrationOneDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
+        		final AccountInformationDetails formDataOne = (AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
         		formDataTwo.acctNbr = formDataOne.acctNbr;
         		formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
         		formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
@@ -100,14 +100,14 @@ public class AccountInformationTwoActivity extends Activity{
 	}
 	
 	public void showPasswordStrengthBarHelp(final View v){
-		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
 		passwordHelpScreen.putExtra(IntentExtraKey.HELP_TYPE, ScreenType.PASSWORD_STRENGTH_HELP);
 		TrackingHelper.trackPageView(AnalyticsPage.PASSWORD_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
 	}
 	
 	public void showIdStrengthBarHelp(final View v){
-		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
 		passwordHelpScreen.putExtra(IntentExtraKey.HELP_TYPE, ScreenType.UID_STRENGTH_HELP);
 		TrackingHelper.trackPageView(AnalyticsPage.UID_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);

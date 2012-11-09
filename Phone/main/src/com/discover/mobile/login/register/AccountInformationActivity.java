@@ -35,7 +35,7 @@ import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.forgotuidpassword.EnterNewPasswordActivity;
 
 public class AccountInformationActivity extends RoboActivity {
-	private RegistrationOneDetails registrationOneDetails;
+	private AccountInformationDetails registrationOneDetails;
 	private ForgotPasswordDetails forgotPasswordDetails;
 	private boolean forgotPass = false;
 	private static final String TAG = AccountInformationActivity.class.getSimpleName();
@@ -113,7 +113,7 @@ public class AccountInformationActivity extends RoboActivity {
 					new Intent(this, CreateLoginActivity.class);
 			
 			enhancedAccountSecurityIntent
-				.putExtra("RegistrationOneDetails", registrationOneDetails);
+				.putExtra("AccountInformationDetails", registrationOneDetails);
 			
 			this.startActivity(enhancedAccountSecurityIntent);
 		}
