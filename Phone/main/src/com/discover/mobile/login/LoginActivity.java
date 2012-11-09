@@ -25,6 +25,7 @@ import com.discover.mobile.common.net.callback.GenericAsyncCallback;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.forgotuidpassword.ForgotCredentialsActivity;
+import com.discover.mobile.navigation.NavigationMenuRootActivity;
 import com.discover.mobile.register.AccountInformationActivity;
 import com.google.common.base.Strings;
 
@@ -145,7 +146,8 @@ public class LoginActivity extends RoboActivity {
 				GenericAsyncCallback.<AccountDetails>builder(this)
 					.showProgressDialog("Discover", "Loading...", true)
 					.clearTextViewsOnComplete(errorTextView, passField, uidField)
-					.launchIntentOnSuccess(LoggedInLandingPage.class)
+//					.launchIntentOnSuccess(LoggedInLandingPage.class)
+					.launchIntentOnSuccess(NavigationMenuRootActivity.class)
 					.build();
 		
 		new AuthenticateCall(this, callback, username, password).submit();

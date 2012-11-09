@@ -2,4 +2,9 @@
 <resources>
     <dimen name="content_padding">8dp</dimen>
     <dimen name="light_text_size">12sp</dimen>
+    
+    <!-- Navigation Menu -->
+    <dimen name="nav_menu_shadow_width">15dp</dimen>
+    <dimen name="nav_menu_offset">60dp</dimen>
+    <dimen name="nav_menu_list_padding">10dp</dimen>
 </resources>
