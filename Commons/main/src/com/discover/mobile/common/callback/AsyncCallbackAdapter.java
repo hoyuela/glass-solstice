@@ -9,12 +9,7 @@ import com.discover.mobile.common.net.json.MessageErrorResponse;
  * 
  * @param <V>
  */
-public class AsyncCallbackAdapter<V> implements ExtendedAsyncCallback<V> {
-
-	@Override
-	public void preSubmit() {
-		// Intentional no-op
-	}
+public class AsyncCallbackAdapter<V> implements AsyncCallback<V> {
 	
 	@Override
 	public void complete(final Object result) {

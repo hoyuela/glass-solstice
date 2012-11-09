@@ -111,8 +111,6 @@ public abstract class NetworkServiceCall<R> {
 		if(!shouldContinue)
 			return;
 		
-		firePreSubmit();
-		
 		NetworkTrafficExecutorHolder.networkTrafficExecutor.submit(new Runnable() {
 			@Override
 			public void run() {
@@ -170,10 +168,6 @@ public abstract class NetworkServiceCall<R> {
 			sid = telephonyManager.getSimSerialNumber();
 			oid = telephonyManager.getDeviceId();
 		}};
-	}
-	
-	private void firePreSubmit() {
-		getHandler().preSubmit();
 	}
 	
 	// Executes in the background thread, performs the HTTP connection and delegates parsing to subclass

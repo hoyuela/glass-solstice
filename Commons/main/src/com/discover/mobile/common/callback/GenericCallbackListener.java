@@ -12,10 +12,6 @@ public interface GenericCallbackListener {
 		LAST
 	}
 	
-	public static interface PreSubmitListener extends GenericCallbackListener {
-		void preSubmit();
-	}
-	
 	public static interface CompletionListener extends GenericCallbackListener {
 		void complete(Object result);
 	}

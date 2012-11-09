@@ -17,32 +17,21 @@ import android.widget.TextView;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseFailureListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionalFailureListener;
-import com.discover.mobile.common.callback.GenericCallbackListener.PreSubmitListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.error.ErrorResponse;
 
-public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
-
-	private final @Nonnull List<PreSubmitListener> preSubmitListeners;
+public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
+	
 	private final @Nonnull List<CompletionListener> completionListeners;
 	private final @Nonnull List<SuccessListener<V>> successListeners;
 	private final @Nonnull List<ExceptionalFailureListener> exceptionalFailureListeners;
 	private final @Nonnull List<ErrorResponseFailureListener> errorResponseFailureListeners;
 	
 	private GenericAsyncCallback(final Builder<V> builder) {
-		preSubmitListeners = safeSortedCopy(builder.preSubmitListeners);
 		completionListeners = safeSortedCopy(builder.completionListeners);
 		successListeners = safeSortedCopy(builder.successListeners);
 		exceptionalFailureListeners = safeSortedCopy(builder.exceptionalFailureListeners);
 		errorResponseFailureListeners = safeSortedCopy(builder.errorResponseFailureListeners);
-	}
-
-	@Override
-	public void preSubmit() {
-		for(final PreSubmitListener listener : preSubmitListeners)
-			listener.preSubmit();
-		
-		safeClear(preSubmitListeners);
 	}
 
 	@Override
@@ -107,7 +96,6 @@ public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 		
 		private final @Nonnull Activity activity;
 		
-		private @Nullable List<PreSubmitListener> preSubmitListeners;
 		private @Nullable List<CompletionListener> completionListeners;
 		private @Nullable List<SuccessListener<V>> successListeners;
 		private @Nullable List<ExceptionalFailureListener> exceptionalFailureListeners;
@@ -119,14 +107,6 @@ public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 		
 		public GenericAsyncCallback<V> build() {
 			return new GenericAsyncCallback<V>(this);
-		}
-		
-		public Builder<V> withPreSubmitListener(final PreSubmitListener preSubmitListener) {
-			if(preSubmitListeners == null)
-				preSubmitListeners = new LinkedList<PreSubmitListener>();
-			preSubmitListeners.add(preSubmitListener);
-			
-			return this;
 		}
 		
 		public Builder<V> withCompletionListener(final CompletionListener completionListener) {
@@ -164,12 +144,9 @@ public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 		}
 		
 		public Builder<V> showProgressDialog(final String title, final String message, final boolean indeterminate) {
-			final ProgressDialog dialog = new ProgressDialog(activity);
-			dialog.setTitle(title);
-			dialog.setMessage(message);
-			dialog.setIndeterminate(indeterminate);
+			@SuppressWarnings("null")
+			final @Nonnull ProgressDialog dialog = ProgressDialog.show(activity, title, message, indeterminate);
 			
-			withPreSubmitListener(new ShowProgressPreSubmitListener(dialog));
 			withCompletionListener(new DialogDismissingCompletionListener(dialog));
 			
 			return this;
