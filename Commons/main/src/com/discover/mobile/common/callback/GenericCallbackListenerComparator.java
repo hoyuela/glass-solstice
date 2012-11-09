@@ -6,7 +6,7 @@ class GenericCallbackListenerComparator implements Comparator<GenericCallbackLis
 
 	@Override
 	public int compare(final GenericCallbackListener lhs, final GenericCallbackListener rhs) {
-		return lhs.getOrder().compareTo(rhs.getOrder());
+		return lhs.getCallbackPriority().compareTo(rhs.getCallbackPriority());
 	}
 	
 }

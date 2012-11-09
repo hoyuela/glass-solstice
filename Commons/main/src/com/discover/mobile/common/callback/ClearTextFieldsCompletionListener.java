@@ -19,8 +19,8 @@ class ClearTextFieldsCompletionListener implements CompletionListener {
 	}
 
 	@Override
-	public Order getOrder() {
-		return Order.MIDDLE;
+	public CallbackPriority getCallbackPriority() {
+		return CallbackPriority.MIDDLE;
 	}
 
 	@Override

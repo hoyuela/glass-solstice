@@ -71,8 +71,8 @@ public class StartActivity extends RoboActivity {
 	private void startPreAuthCheck() {
 		final SuccessListener<PreAuthResult> optionalUpdateListener = new SuccessListener<PreAuthResult>() {
 			@Override
-			public Order getOrder() {
-				return Order.MIDDLE;
+			public CallbackPriority getCallbackPriority() {
+				return CallbackPriority.MIDDLE;
 			}
 			
 			@Override

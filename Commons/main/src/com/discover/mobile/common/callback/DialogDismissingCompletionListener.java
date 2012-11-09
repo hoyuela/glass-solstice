@@ -19,8 +19,8 @@ class DialogDismissingCompletionListener implements CompletionListener {
 	}
 	
 	@Override
-	public Order getOrder() {
-		return Order.FIRST;
+	public CallbackPriority getCallbackPriority() {
+		return CallbackPriority.FIRST;
 	}
 	
 	@Override

@@ -4,9 +4,9 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 
 public interface GenericCallbackListener {
 	
-	Order getOrder();
+	CallbackPriority getCallbackPriority();
 	
-	public static enum Order {
+	public static enum CallbackPriority {
 		FIRST,
 		MIDDLE,
 		LAST

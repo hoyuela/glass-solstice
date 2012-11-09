@@ -22,8 +22,8 @@ class FireIntentSuccessListener<V> implements SuccessListener<V> {
 	}
 
 	@Override
-	public Order getOrder() {
-		return Order.LAST;
+	public CallbackPriority getCallbackPriority() {
+		return CallbackPriority.LAST;
 	}
 
 	@Override
