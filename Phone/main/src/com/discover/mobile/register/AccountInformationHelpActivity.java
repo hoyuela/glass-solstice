@@ -4,21 +4,30 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.ScreenType;
 
-public class AccountInformationHelpActivity extends Activity{
+public class AccountInformationHelpActivity extends Activity {
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		
 		if (savedInstanceState == null) {
 			
-			Bundle extras = getIntent().getExtras();
+			final Bundle extras = getIntent().getExtras();
+			
         	if(extras != null) {
-        		String helpLayout = extras.getString("helpType");
-        		if("id".equals(helpLayout))
-        			setContentView(R.layout.account_info_id_strength_help);
-        		else
-        			setContentView(R.layout.account_info_password_strength_help);
+        		
+        		switch(extras.getInt(IntentExtraKey.HELP_TYPE)) {
+        			case ScreenType.UID_STRENGTH_HELP:
+        				setContentView(R.layout.account_info_id_strength_help);
+        				break;
+        			case ScreenType.PASSWORD_STRENGTH_HELP:
+        				setContentView(R.layout.account_info_password_strength_help);
+        				break;
+        			default:
+        				break;
+        		}
         	}
 		}
 

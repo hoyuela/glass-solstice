@@ -59,20 +59,6 @@ public class LoginActivity extends RoboActivity {
 		
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		
-//		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-//        .detectDiskReads()
-//        .detectDiskWrites()
-//        .detectNetwork()   // or .detectAll() for all detectable problems
-//        .penaltyLog()
-//        .build());
-//		
-//		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-//        .detectLeakedSqlLiteObjects()
-//        .detectLeakedClosableObjects()
-//        .penaltyLog()
-//        .penaltyDeath()
-//        .build());
-		
 		setupButtons();
 	}
 	
@@ -151,6 +137,8 @@ public class LoginActivity extends RoboActivity {
 					case 1402:
 						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
 						return true;
+					default:
+						break;
 				}
 				
 				errorTextView.setText(messageErrorResponse.getMessage());
