@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.login.CustomArrayAdapter;
@@ -16,8 +18,10 @@ import com.discover.mobile.register.AccountInformationActivity;
 
 @ContentView(R.layout.forgot_login)
 public class ForgotCredentialsActivity extends RoboListActivity {
-	private String[] vals = {"Forgot User ID","Forgot Password","Forgot Both"};
+	
+	private static final String[] vals = {"Forgot User ID","Forgot Password","Forgot Both"};
 	private static final String TAG = ForgotCredentialsActivity.class.getSimpleName();
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -49,18 +53,15 @@ public class ForgotCredentialsActivity extends RoboListActivity {
 		
 		switch (position){
 		case 0:
-			forgotSomethingScreen = 
-			new Intent(this, ForgotUserIdActivity.class);
+			forgotSomethingScreen = new Intent(this, ForgotUserIdActivity.class);
 			break;
 		case 1:
-			forgotSomethingScreen = 
-			new Intent(this, AccountInformationActivity.class);
-			forgotSomethingScreen.putExtra("ScreenType", "Forgot Password");
+			forgotSomethingScreen = new Intent(this, AccountInformationActivity.class);
+			forgotSomethingScreen.putExtra(IntentExtraKey.SCREEN_TYPE, ScreenType.FORGOT_PASSWORD);
 			break;
 		case 2:
-			forgotSomethingScreen = 
-			new Intent(this, AccountInformationActivity.class);
-			forgotSomethingScreen.putExtra("ScreenType", "Forgot Both");
+			forgotSomethingScreen = new Intent(this, AccountInformationActivity.class);
+			forgotSomethingScreen.putExtra(IntentExtraKey.SCREEN_TYPE, ScreenType.FORGOT_BOTH);
 			break;
 		default:
 			Log.e(TAG, "Invalid Screen Selection!");
@@ -68,7 +69,6 @@ public class ForgotCredentialsActivity extends RoboListActivity {
 		
 		if(forgotSomethingScreen != null)
 			startActivity(forgotSomethingScreen);
-	
 	}
 	
 }

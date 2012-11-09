@@ -112,6 +112,8 @@ public class StartActivity extends RoboActivity {
 					case 1007: 
 						sendToMaintenancePage();
 						return true;
+					default:
+						break;
 				}
 				
 				return false;

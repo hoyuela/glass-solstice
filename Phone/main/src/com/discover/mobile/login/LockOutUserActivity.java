@@ -39,6 +39,8 @@ public class LockOutUserActivity extends RoboActivity {
 					// TODO reference lock out text when error map set up
 					errorTextView.setText("Locked out user Text...");
 					break;
+				default:
+					break;
 			}
 			
 		} catch (final Exception e) {

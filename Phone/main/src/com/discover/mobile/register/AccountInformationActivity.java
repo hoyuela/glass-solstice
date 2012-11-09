@@ -2,7 +2,8 @@ package com.discover.mobile.register;
 
 import java.net.HttpURLConnection;
 
-import android.app.Activity;
+import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectView;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
@@ -27,11 +30,23 @@ import com.discover.mobile.common.forgotpassword.ForgotPasswordDetails;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 
-public class AccountInformationActivity extends Activity {
+public class AccountInformationActivity extends RoboActivity {
 	private RegistrationOneDetails registrationOneDetails;
 	private ForgotPasswordDetails forgotPasswordDetails;
 	private boolean forgotPass = false;
 	private static final String TAG = AccountInformationActivity.class.getSimpleName();
+	
+	@InjectView(R.id.account_info_title_label)
+	private TextView accountInfoTitleLabel;
+	
+	@InjectView(R.id.account_information_input_info_label)
+	private TextView accountInfoInputLabel;
+	
+	@InjectView(R.id.account_info_label_one_label)
+	private TextView accountInfoLabelOne;
+	
+	@InjectView(R.id.account_info_main_input_field)
+	private EditText mainInputField;
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
@@ -49,47 +64,33 @@ public class AccountInformationActivity extends Activity {
 			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
         		//Setup the screen for a forgotten password.
+        		switch(extras.getInt(IntentExtraKey.SCREEN_TYPE)) {
+        			case ScreenType.FORGOT_PASSWORD:
+        				TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_STEP1);
 
-        		if("Forgot Password".equals(extras.getString("screenType"))){
-        			TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_STEP1);
-
-        			forgotPass = true;
-        			//Set the title of the screen to forgot password
-        			((TextView)findViewById(R.id.account_info_title_label))
-        			.setText(getResources()
-        					.getString(R.string.forgot_password_text));
-        			
-        			//Set the detail label under the title to blank.
-        			((TextView)findViewById(
-        					R.id.account_information_input_info_label))
-        					.setHeight(0);
-        				
-        			//Set title label of the input field
-        			((TextView)findViewById(R.id.account_info_label_one_label))
-        				.setText(getResources()
-        						.getString(
-        							R.string.forgot_password_field_title_text));
-        			
-        			//Change the input type for the edit text to be valid for
-        			//user credentials and not the default card number stuff
-        			final EditText mainInputField = 
-        				(EditText)findViewById(
-        						R.id.account_info_main_input_field);
-        			mainInputField.setInputType(
-        					InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        			
-        			//Change the max input length to 32 characters.
-        			final InputFilter[] filterArray = new InputFilter[1];
-        			filterArray[0] = new InputFilter.LengthFilter(32);
-        			mainInputField.setFilters(filterArray);
-        		}
-        		//Setup the screen for forgotten both credentials.
-        		else if("Forgot Both".equals(extras.getString("screenType"))){
-        			TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP1);
-
-        			((TextView)findViewById(R.id.account_info_title_label))
-        			.setText(getResources()
-        					.getString(R.string.forgot_both_text));
+            			forgotPass = true;
+            			//Set the title of the screen to forgot password
+            			accountInfoTitleLabel.setText(getString(R.string.forgot_password_text));
+            			
+            			//Set the detail label under the title to blank.
+            			accountInfoInputLabel.setHeight(0);
+            				
+            			//Set title label of the input field
+            			accountInfoLabelOne.setText(getString(R.string.forgot_password_field_title_text));
+            			
+            			//Change the input type for the edit text to be valid for
+            			//user credentials and not the default card number stuff
+            			mainInputField.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+            			
+            			//Change the max input length to 32 characters.
+            			final InputFilter[] filterArray = new InputFilter[1];
+            			filterArray[0] = new InputFilter.LengthFilter(32);
+            			mainInputField.setFilters(filterArray);
+        			case ScreenType.FORGOT_BOTH:
+        				TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP1);
+        				accountInfoTitleLabel.setText(getString(R.string.forgot_both_text));
+            		default:
+            			break;
         		}
         	}
 		}
@@ -100,7 +101,7 @@ public class AccountInformationActivity extends Activity {
 				new Intent(this, AccountInformationTwoActivity.class);
 		
 		enhancedAccountSecurityIntent
-			.putExtra("RegistrationOneDetails", registrationOneDetails);
+			.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, registrationOneDetails);
 		
 		this.startActivity(enhancedAccountSecurityIntent);
 		
@@ -135,7 +136,6 @@ public class AccountInformationActivity extends Activity {
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
 			@Override
 			public void success(final Object value) {
-				Log.d(TAG, "Success");
 				progress.dismiss();
 				startNextActivity();
 
@@ -143,7 +143,6 @@ public class AccountInformationActivity extends Activity {
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				Log.w(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse);
 				progress.dismiss();
 				
 				switch (errorResponse.getHttpStatusCode()) {
@@ -185,7 +184,6 @@ public class AccountInformationActivity extends Activity {
 					
 				default:
 					return false;
-					
 				}
 				
 			}
