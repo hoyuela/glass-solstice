@@ -133,6 +133,10 @@ public class LoginActivity extends RoboActivity {
 						sendToErrorPage(ScreenType.MAINTENANCE);
 						return true;
 					
+					case 1102:
+						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
+						return true;
+						
 					case 1101:
 					case 1402:
 						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
