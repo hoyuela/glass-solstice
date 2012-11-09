@@ -4,11 +4,13 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 
 /**
- * Provides default, no-op implementations of the {@link AsyncCallback} and {@link ExtendedAsyncCallback} methods to
- * make implementing easier.
+ * Provides default, no-op implementations of the {@link AsyncCallback} methods to make implementing easier.
  * 
  * @param <V>
+ * @deprecated Use {@link GenericAsyncCallback}s instead, with a {@link GenericCallbackListener} for more granular
+ * handling.
  */
+@Deprecated
 public class AsyncCallbackAdapter<V> implements AsyncCallback<V> {
 	
 	@Override
