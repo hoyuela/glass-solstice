@@ -2,19 +2,22 @@ package com.discover.mobile.login.register;
 
 import java.net.HttpURLConnection;
 
+import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.ScreenType;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.CreateLoginCall;
@@ -24,22 +27,32 @@ import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 
-public class CreateLoginActivity extends Activity{
+public class AccountInformationTwoActivity extends Activity{
+	
+	@SuppressWarnings("unused")
+	private static final String TAG = AccountInformationTwoActivity.class.getSimpleName();
 
-	private AccountInformationDetails formDataOne;
-	private CreateLoginDetails formDataTwo;
-	private static final String TAG = CreateLoginActivity.class.getSimpleName();
+	private RegistrationTwoDetails formDataTwo;
+	
+	@InjectView(R.id.account_info_main_error_label)
+	private TextView mainErrorMessageLabel;
+	
+	@InjectView(R.id.account_info_error_label)
+	private TextView errorMessageLabel;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		
+		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP2);
+		
 		setContentView(R.layout.account_info_two);
 		formDataTwo = new CreateLoginDetails();
 		
 		if (savedInstanceState == null) {
 			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
-        		formDataOne = (AccountInformationDetails)getIntent().getSerializableExtra("AccountInformationDetails");
+        		final RegistrationOneDetails formDataOne = (RegistrationOneDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
         		formDataTwo.acctNbr = formDataOne.acctNbr;
         		formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
         		formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
@@ -53,33 +66,30 @@ public class CreateLoginActivity extends Activity{
 		setupTextChangedListeners();
 	}
 	
-	private void navigateToConfirmationScreenWithResponseData(RegistrationConfirmationDetails responseData){
-		Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
+	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
+		final Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
 		confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
 		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
+		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_CONFIRMATION);
 		this.startActivity(confirmationScreen);
 	}
 	
-	public void checkInputsThenSubmit(View v){
-		InputValidator validator = new InputValidator();
-		String email = ((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString();
-		String id1 =((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString();
-		String id2 = ((EditText)findViewById(R.id.account_info_two_id_confirm_field)).getText().toString();
-		String pass1=((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString();
-		String pass2=((EditText)findViewById(R.id.account_info_two_pass_confirm_field)).getText().toString();
+	public void checkInputsThenSubmit(final View v){
+		final InputValidator validator = new InputValidator();
 		
-		validator.doPassesMatch(
-				pass1, pass2);
+		final String email = ((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString();
+		final String id1 = ((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString();
+		final String id2 = ((EditText)findViewById(R.id.account_info_two_id_confirm_field)).getText().toString();
+		final String pass1 = ((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString();
+		final String pass2 = ((EditText)findViewById(R.id.account_info_two_pass_confirm_field)).getText().toString();
 		
+		validator.doPassesMatch(pass1, pass2);
 		validator.doIdsMatch(id1,id2);
-		
 		validator.isEmailValid(email);
-		
 		validator.doPassAndIdMatch(pass1,id1); 
 
 		if(validator.wasAccountTwoInfoComplete()){
-			
 			formDataTwo.email = email;
 			formDataTwo.password = pass1;
 			formDataTwo.passwordConfirm = formDataTwo.password;
@@ -87,20 +97,20 @@ public class CreateLoginActivity extends Activity{
 			formDataTwo.userIdConfirm = formDataTwo.userId;
 			submitFormInfo();
 		}
-		
 	}
 	
 	public void showPasswordStrengthBarHelp(final View v){
-		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-		passwordHelpScreen.putExtra("helpType", "password");
+		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+		passwordHelpScreen.putExtra(IntentExtraKey.HELP_TYPE, ScreenType.PASSWORD_STRENGTH_HELP);
+		TrackingHelper.trackPageView(AnalyticsPage.PASSWORD_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
 	}
 	
 	public void showIdStrengthBarHelp(final View v){
-		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-		passwordHelpScreen.putExtra("helpType", "id");
+		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+		passwordHelpScreen.putExtra(IntentExtraKey.HELP_TYPE, ScreenType.UID_STRENGTH_HELP);
+		TrackingHelper.trackPageView(AnalyticsPage.UID_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
-		
 	}
 	
 	private void setupTextChangedListeners(){
@@ -109,13 +119,13 @@ public class CreateLoginActivity extends Activity{
 		passField.addTextChangedListener(new TextWatcher(){
 			@Override
 			public void afterTextChanged(final Editable s) {
-				
+				// not used
 			}
 
 			@Override
 			public void beforeTextChanged(final CharSequence s, final int start, final int count,
 					final int after) {
-				
+				// not used
 			}
 
 			@Override
@@ -132,13 +142,13 @@ public class CreateLoginActivity extends Activity{
 
 			@Override
 			public void afterTextChanged(final Editable s) {
-				
+				// not used
 			}
 
 			@Override
 			public void beforeTextChanged(final CharSequence s, final int start, final int count,
 					final int after) {
-				
+				// not used
 			}
 
 			@Override
@@ -149,10 +159,8 @@ public class CreateLoginActivity extends Activity{
 							  findViewById(R.id.account_info_two_uid_bar_three),
 						      (TextView)findViewById(R.id.account_info_two_uid_strength_bar_label));
 			}
-			
 		});
 	}
-	
 	
 	//Currently setup only for a single user id input.
 	public void updateBarsForUID(final CharSequence inputSequence, final View barOne, final View barTwo, final View barThree, final TextView label){
@@ -163,10 +171,10 @@ public class CreateLoginActivity extends Activity{
 		boolean hasInvalidChar = false;
 		boolean hasNumber 	   = false;
 		boolean looksLikeActNum= false;
+		
 		//Check length of input.
 		if(inputSequence.length() >= 6 && inputSequence.length() <= 16)
 			hasGoodLength = true;
-		
 		
 			for(int i = 0; i < inputSequence.length(); ++i){
 				
@@ -301,18 +309,15 @@ public class CreateLoginActivity extends Activity{
 				new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
 			@Override
 			public void success(final RegistrationConfirmationDetails responseData) {
-				Log.d(TAG, "Success");
 				progress.dismiss();
 				navigateToConfirmationScreenWithResponseData(responseData);
 			}
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				Log.w(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse);
 				progress.dismiss();
 				
 				switch (errorResponse.getHttpStatusCode()) {
-//					case HttpURLConnection.HTTP_BAD_REQUEST: // TODO figure out if this actually happens
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						return true;
 				}
@@ -323,11 +328,7 @@ public class CreateLoginActivity extends Activity{
 			@Override
 			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
-				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-				final TextView mainErrorMessageLabel = 
-						(TextView)findViewById(R.id.account_info_main_error_label);
-				final TextView errorMessageLabel =
-						(TextView)findViewById(R.id.account_info_error_label);
+				
 				switch(messageErrorResponse.getMessageStatusCode()){
 				case 1906: //Provided information was incorrect.
 					errorMessageLabel
@@ -367,5 +368,4 @@ public class CreateLoginActivity extends Activity{
 		registrationCall.submit();
 
 	}
-
 }

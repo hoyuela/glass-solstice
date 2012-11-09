@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.forgotuidpassword.ForgotUserIdCall;
 import com.discover.mobile.common.forgotuidpassword.UserIdDetails;
@@ -46,6 +48,8 @@ public class ForgotUserIdActivity extends RoboActivity {
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		
+		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
 		
 		setSubmitOnClick();
 	}
@@ -143,6 +147,7 @@ public class ForgotUserIdActivity extends RoboActivity {
 		confirmationScreenIntent.putExtra(IntentExtraKey.ACCOUNT_LAST4, last4);
 		confirmationScreenIntent.putExtra(IntentExtraKey.EMAIL, email);
 		confirmationScreenIntent.putExtra(IntentExtraKey.UID, uid);
+		TrackingHelper.trackPageView(AnalyticsPage.FOROGT_UID_CONFIRMATION);
 		startActivity(confirmationScreenIntent);
 	}
 	

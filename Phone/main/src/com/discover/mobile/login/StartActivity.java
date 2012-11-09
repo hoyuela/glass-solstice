@@ -19,6 +19,7 @@ import android.widget.Button;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.ScreenType;
+import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
@@ -50,7 +51,7 @@ public class StartActivity extends RoboActivity {
 		super.onCreate(savedInstanceState);
 		
 		TrackingHelper.startActivity(this);
-		TrackingHelper.trackPageView("login-pg");
+		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
 		
 		setupButtons();
 	}
@@ -76,6 +77,7 @@ public class StartActivity extends RoboActivity {
 				
 				//check if optional upgrade available
 				if(shouldPresentOptionalUpdate(value.upgradeDescription)) {
+					TrackingHelper.trackPageView(AnalyticsPage.OPTIONAL_UPGRADE);
 					showUpgradeAlertDialog("Upgrade", 
 							value.upgradeDescription, 
 							OPTIONAL_UPGRADE);
@@ -95,6 +97,7 @@ public class StartActivity extends RoboActivity {
 				progress.dismiss();
 				switch(messageErrorResponse.getMessageStatusCode()) {
 					case 1002: 
+						TrackingHelper.trackPageView(AnalyticsPage.FORCED_UPGRADE);
 						showUpgradeAlertDialog("Upgrade", 
 								"Your Discover app is out of date. You must update before continuing.", 
 								FORCED_UPGRADE);
@@ -105,6 +108,8 @@ public class StartActivity extends RoboActivity {
 					case 1007: 
 						sendToMaintenancePage();
 						return true;
+					default:
+						break;
 				}
 				
 				return false;
