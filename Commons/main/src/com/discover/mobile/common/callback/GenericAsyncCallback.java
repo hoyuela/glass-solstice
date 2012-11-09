@@ -73,7 +73,7 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	}
 	
 	@Override
-	public void failure(final ErrorResponse errorResponse) {
+	public void failure(final ErrorResponse<?> errorResponse) {
 		Log.w(TAG, "server returned errorResponse: " + errorResponse);
 		
 		// TODO generic handling, error message, throw exception if not handled

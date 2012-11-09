@@ -7,7 +7,7 @@ public interface AsyncCallback<V> {
 	
 	void success(V value);
 	
-	void failure(ErrorResponse errorResponse);
+	void failure(ErrorResponse<?> errorResponse);
 	void failure(Throwable executionException);
 	
 	/**
