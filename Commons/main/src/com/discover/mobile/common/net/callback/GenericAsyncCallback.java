@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.discover.mobile.common.net.callback.GenericCallbackListener.CompletionListener;
@@ -69,6 +70,9 @@ public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 			listener.failure(executionException);
 		
 		safeClear(exceptionalFailureListeners);
+		
+		// TEMP
+		Log.e(getClass().getSimpleName(), "exceptional failure", executionException);
 	}
 	
 	@Override
@@ -79,6 +83,9 @@ public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 			listener.failure(errorResponse);
 		
 		safeClear(errorResponseFailureListeners);
+		
+		// TEMP
+		Log.e(getClass().getSimpleName(), "ErrorResponse: " + errorResponse);
 	}
 	
 	@SuppressWarnings("null")
@@ -164,12 +171,9 @@ public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 		}
 		
 		public Builder<V> showProgressDialog(final String title, final String message, final boolean indeterminate) {
-			final ProgressDialog dialog = new ProgressDialog(activity);
-			dialog.setTitle(title);
-			dialog.setMessage(message);
-			dialog.setIndeterminate(indeterminate);
+			@SuppressWarnings("null")
+			final @Nonnull ProgressDialog dialog = ProgressDialog.show(activity, title, message, indeterminate);
 			
-			withPreSubmitListener(new ShowProgressPreSubmitListener(dialog));
 			withCompletionListener(new DialogDismissingCompletionListener(dialog));
 			
 			return this;
@@ -190,6 +194,20 @@ public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 		@SuppressWarnings("null")
 		public Builder<V> launchIntentOnSuccess(final @Nonnull Class<?> successLaunchIntentClass) {
 			withSuccessListener(new FireIntentSuccessListener<V>(activity, successLaunchIntentClass));
+			
+			// TEMP
+			withCompletionListener(new CompletionListener() {
+				@Override
+				public Order getOrder() {
+					return Order.LAST;
+				}
+				
+				@Override
+				public void complete(final Object result) {
+					final Intent intent = new Intent(activity, successLaunchIntentClass);
+					activity.startActivity(intent);
+				}
+			});
 			
 			return this;
 		}

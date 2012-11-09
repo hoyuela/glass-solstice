@@ -14,7 +14,7 @@ public class HomeFragment extends SherlockFragment {
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.logged_in_landing, null);
+		final View view = inflater.inflate(R.layout.navigation_home, null);
 		
 		// TEMP
 		view.setPadding(5, 5, 5, 0);

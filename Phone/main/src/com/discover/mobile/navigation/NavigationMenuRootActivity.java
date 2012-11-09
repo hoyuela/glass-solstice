@@ -1,13 +1,14 @@
 package com.discover.mobile.navigation;
 
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.discover.mobile.R;
 import com.slidingmenu.lib.SlidingMenu;
-import com.slidingmenu.lib.SlidingMenu.CanvasTransformer;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
 public class NavigationMenuRootActivity extends SlidingFragmentActivity {
@@ -55,7 +56,15 @@ public class NavigationMenuRootActivity extends SlidingFragmentActivity {
 				.replace(R.id.navigation_menu_frame, navMenuFragment)
 				.commit();
 		
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		final ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		actionBar.setDisplayUseLogoEnabled(false);
+//		actionBar.setDisplayShowTitleEnabled(false);
+
+//		actionBar.setTitle(R.string.member_title_text);
+		actionBar.setTitle("John Doe");
+		actionBar.setSubtitle("Card Ending 4545");
 	}
 	
 	// TODO customize these values
@@ -67,14 +76,21 @@ public class NavigationMenuRootActivity extends SlidingFragmentActivity {
 		slidingMenu.setFadeDegree(0.35f);
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
-		slidingMenu.setBehindScrollScale(0.0f);
-		slidingMenu.setBehindCanvasTransformer(new CanvasTransformer() {
-			@Override
-			public void transformCanvas(final Canvas canvas, final float percentOpen) {
-				final float scale = (float) (percentOpen*0.25 + 0.75);
-				canvas.scale(scale, scale, canvas.getWidth()/2, canvas.getHeight()/2);
-			}
-		});
+//		slidingMenu.setBehindScrollScale(0.0f);
+//		slidingMenu.setBehindCanvasTransformer(new CanvasTransformer() {
+//			@Override
+//			public void transformCanvas(final Canvas canvas, final float percentOpen) {
+//				final float scale = (float) (percentOpen*0.25 + 0.75);
+//				canvas.scale(scale, scale, canvas.getWidth()/2, canvas.getHeight()/2);
+//			}
+//		});
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
+		final MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.nav_root_menu, menu);
+		return true;
 	}
 
 	@Override

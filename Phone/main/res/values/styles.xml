@@ -5,7 +5,8 @@
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <!-- <style name="AppBaseTheme" parent="android:Theme.Light"> -->
-    <style name="AppBaseTheme" parent="Theme.Sherlock.Light.DarkActionBar">
+    <!-- Theme.Sherlock.Light.DarkActionBar -->
+    <style name="AppBaseTheme" parent="Theme.Sherlock">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -18,7 +19,8 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     
-    <style name="AppTheme.NoTitleBar" parent="android:Theme.NoTitleBar">
+    <!-- android:Theme.NoTitleBar -->
+    <style name="AppTheme.NoTitleBar" parent="Theme.Sherlock.NoActionBar">
     </style>
 
 </resources>
