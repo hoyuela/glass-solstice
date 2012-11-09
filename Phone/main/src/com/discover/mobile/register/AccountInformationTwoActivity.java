@@ -25,7 +25,7 @@ import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
 import com.discover.mobile.common.auth.registration.RegistrationTwoDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 
 public class AccountInformationTwoActivity extends Activity{
 	
@@ -326,7 +326,7 @@ public class AccountInformationTwoActivity extends Activity{
 			}
 
 			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
 				
 				switch(messageErrorResponse.getMessageStatusCode()){

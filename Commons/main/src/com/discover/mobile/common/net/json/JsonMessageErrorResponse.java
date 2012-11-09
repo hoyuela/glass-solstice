@@ -11,7 +11,7 @@ import com.google.common.base.Objects;
 
 @JsonAutoDetect(fieldVisibility=Visibility.NONE, setterVisibility=Visibility.NONE,
 		isGetterVisibility=Visibility.NONE, getterVisibility=Visibility.NONE)
-public class MessageErrorResponse extends ErrorResponse {
+public class JsonMessageErrorResponse extends ErrorResponse {
 	
 	private static final long serialVersionUID = 5979837443360856714L;
 

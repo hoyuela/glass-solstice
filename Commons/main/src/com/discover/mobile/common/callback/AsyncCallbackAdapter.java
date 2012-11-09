@@ -1,7 +1,7 @@
 package com.discover.mobile.common.callback;
 
 import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 
 /**
  * Provides default, no-op implementations of the {@link AsyncCallback} methods to make implementing easier.
@@ -36,15 +36,15 @@ public class AsyncCallbackAdapter<V> implements AsyncCallback<V> {
 	}
 	
 	@SuppressWarnings("unused")
-	public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+	public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 		return false;
 	}
 	
 	@Override
 	public final void failure(final ErrorResponse errorResponse) {
 		boolean handled;
-		if(errorResponse instanceof MessageErrorResponse) {
-			handled = handleMessageErrorResponse((MessageErrorResponse)errorResponse);
+		if(errorResponse instanceof JsonMessageErrorResponse) {
+			handled = handleMessageErrorResponse((JsonMessageErrorResponse)errorResponse);
 			if(handled)
 				return;
 		}

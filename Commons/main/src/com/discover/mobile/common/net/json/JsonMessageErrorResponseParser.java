@@ -6,18 +6,18 @@ import java.net.HttpURLConnection;
 
 import com.discover.mobile.common.net.error.ErrorResponseParser;
 
-public class JsonMessageErrorResponseParser implements ErrorResponseParser<MessageErrorResponse> {
+public class JsonMessageErrorResponseParser implements ErrorResponseParser<JsonMessageErrorResponse> {
 	
 	private static final String MIME_JSON = "application/json";
 
 	@Override
-	public MessageErrorResponse parseErrorResponse(final int httpStatusCode, final InputStream errorStream,
+	public JsonMessageErrorResponse parseErrorResponse(final int httpStatusCode, final InputStream errorStream,
 			final HttpURLConnection conn) throws IOException {
 		
 		if(!isParseableContentType(conn) || doesntHaveDeclaredContent(conn) || !inputStreamHasContent(errorStream))
 			return null;
 		
-		return JacksonObjectMapperHolder.mapper.readValue(errorStream, MessageErrorResponse.class);
+		return JacksonObjectMapperHolder.mapper.readValue(errorStream, JsonMessageErrorResponse.class);
 	}
 	
 	private static boolean isParseableContentType(final HttpURLConnection conn) {

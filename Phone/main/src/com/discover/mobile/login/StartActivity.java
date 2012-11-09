@@ -26,7 +26,7 @@ import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 
 @ContentView(R.layout.landing)
 public class StartActivity extends RoboActivity {
@@ -98,7 +98,7 @@ public class StartActivity extends RoboActivity {
 		// FIXME
 		final AsyncCallbackAdapter<PreAuthResult> oldCallback = new AsyncCallbackAdapter<PreAuthResult>() {
 			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				switch(messageErrorResponse.getMessageStatusCode()) {
 					case 1002: 
 						TrackingHelper.trackPageView(AnalyticsPage.FORCED_UPGRADE);

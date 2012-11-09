@@ -25,7 +25,7 @@ import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.forgotuidpassword.ForgotUserIdCall;
 import com.discover.mobile.common.forgotuidpassword.UserIdDetails;
 import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.register.AccountInformationConfirmationActivity;
 
 @ContentView(R.layout.forgot_id)
@@ -111,7 +111,7 @@ public class ForgotUserIdActivity extends RoboActivity {
 			}
 
 			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
 					return false;
 				

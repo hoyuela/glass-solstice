@@ -28,7 +28,7 @@ import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.forgotpassword.ForgotPasswordCall;
 import com.discover.mobile.common.forgotpassword.ForgotPasswordDetails;
 import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 
 public class AccountInformationActivity extends RoboActivity {
 	private RegistrationOneDetails registrationOneDetails;
@@ -158,7 +158,7 @@ public class AccountInformationActivity extends RoboActivity {
 			}
 
 			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 
 				progress.dismiss();
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
