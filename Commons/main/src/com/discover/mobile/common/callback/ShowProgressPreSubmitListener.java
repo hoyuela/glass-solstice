@@ -1,4 +1,4 @@
-package com.discover.mobile.common.net.callback;
+package com.discover.mobile.common.callback;
 
 import static com.discover.mobile.common.ThreadUtility.assertMainThreadExecution;
 
@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import android.app.ProgressDialog;
 
-import com.discover.mobile.common.net.callback.GenericCallbackListener.PreSubmitListener;
+import com.discover.mobile.common.callback.GenericCallbackListener.PreSubmitListener;
 
 class ShowProgressPreSubmitListener implements PreSubmitListener {
 	

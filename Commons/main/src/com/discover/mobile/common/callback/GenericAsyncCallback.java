@@ -1,4 +1,4 @@
-package com.discover.mobile.common.net.callback;
+package com.discover.mobile.common.callback;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,11 +14,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.widget.TextView;
 
-import com.discover.mobile.common.net.callback.GenericCallbackListener.CompletionListener;
-import com.discover.mobile.common.net.callback.GenericCallbackListener.ErrorResponseFailureListener;
-import com.discover.mobile.common.net.callback.GenericCallbackListener.ExceptionalFailureListener;
-import com.discover.mobile.common.net.callback.GenericCallbackListener.PreSubmitListener;
-import com.discover.mobile.common.net.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
+import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseFailureListener;
+import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionalFailureListener;
+import com.discover.mobile.common.callback.GenericCallbackListener.PreSubmitListener;
+import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.response.ErrorResponse;
 
 public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {

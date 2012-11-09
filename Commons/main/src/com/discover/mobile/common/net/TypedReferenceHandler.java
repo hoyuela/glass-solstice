@@ -7,8 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.discover.mobile.common.net.callback.AsyncCallback;
-import com.discover.mobile.common.net.callback.ExtendedAsyncCallback;
+import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.callback.ExtendedAsyncCallback;
 import com.discover.mobile.common.net.response.ErrorResponse;
 
 public abstract class TypedReferenceHandler<V> extends Handler {

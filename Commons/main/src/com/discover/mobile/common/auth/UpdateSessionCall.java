@@ -6,11 +6,11 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.callback.AsyncCallback;
 
 public class UpdateSessionCall extends NetworkServiceCall<Object> {
 	
