@@ -1,5 +1,6 @@
 # Project environment configurations
 Commons/main/res/values/env_*.xml
+Commons/main/doc
 
 # lt application files
 *.apk
