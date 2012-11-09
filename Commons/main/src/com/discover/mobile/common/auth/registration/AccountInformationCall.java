@@ -13,14 +13,14 @@ import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 
-public class RegistrationCallOne extends NetworkServiceCall<Object> {
+public class AccountInformationCall extends NetworkServiceCall<Object> {
 	
-	private static final String TAG = RegistrationCallOne.class.getSimpleName();
+	private static final String TAG = AccountInformationCall.class.getSimpleName();
 	
 	private final TypedReferenceHandler<Object> handler;
 
-	public RegistrationCallOne(final Context context, final AsyncCallback<Object> callback,
-			final RegistrationOneDetails formData) {
+	public AccountInformationCall(final Context context, final AsyncCallback<Object> callback,
+			final AccountInformationDetails formData) {
 		
 		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/reg/auth") {{
 			clearsSessionBeforeRequest = true;

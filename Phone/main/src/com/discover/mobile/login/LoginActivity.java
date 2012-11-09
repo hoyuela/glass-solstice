@@ -27,7 +27,7 @@ import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.forgotuidpassword.ForgotCredentialsActivity;
-import com.discover.mobile.register.AccountInformationActivity;
+import com.discover.mobile.login.register.AccountInformationActivity;
 import com.google.common.base.Strings;
 
 @ContentView(R.layout.login)
@@ -126,6 +126,10 @@ public class LoginActivity extends RoboActivity {
 						sendToErrorPage(ScreenType.MAINTENANCE);
 						return true;
 					
+					case 1102:
+						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
+						return true;
+						
 					case 1101:
 					case 1402:
 						sendToErrorPage(ScreenType.LOCKED_OUT_USER);

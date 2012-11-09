@@ -8,14 +8,14 @@ import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 
-public class RegistrationCallTwo extends JsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
+public class CreateLoginCall extends JsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
 	
-	private static final String TAG = RegistrationCallTwo.class.getSimpleName();
+	private static final String TAG = CreateLoginCall.class.getSimpleName();
 	
 	private final TypedReferenceHandler<RegistrationConfirmationDetails> handler;
 
-	public RegistrationCallTwo(final Context context, final AsyncCallback<RegistrationConfirmationDetails> callback,
-			final RegistrationTwoDetails formData) {
+	public CreateLoginCall(final Context context, final AsyncCallback<RegistrationConfirmationDetails> callback,
+			final CreateLoginDetails formData) {
 		
 		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/reg") {{
 			requiresSessionForRequest = false;

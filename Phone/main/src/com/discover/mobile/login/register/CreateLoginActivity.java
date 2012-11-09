@@ -1,4 +1,4 @@
-package com.discover.mobile.register;
+package com.discover.mobile.login.register;
 
 import java.net.HttpURLConnection;
 
@@ -19,20 +19,20 @@ import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.auth.registration.RegistrationCallTwo;
+import com.discover.mobile.common.auth.registration.AccountInformationDetails;
+import com.discover.mobile.common.auth.registration.CreateLoginCall;
+import com.discover.mobile.common.auth.registration.CreateLoginDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
-import com.discover.mobile.common.auth.registration.RegistrationTwoDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 
-public class AccountInformationTwoActivity extends Activity{
+public class CreateLoginActivity extends Activity{
 	
 	@SuppressWarnings("unused")
-	private static final String TAG = AccountInformationTwoActivity.class.getSimpleName();
+	private static final String TAG = CreateLoginActivity.class.getSimpleName();
 
-	private RegistrationTwoDetails formDataTwo;
+	private CreateLoginDetails formDataTwo;
 	
 	@InjectView(R.id.account_info_main_error_label)
 	private TextView mainErrorMessageLabel;
@@ -47,12 +47,12 @@ public class AccountInformationTwoActivity extends Activity{
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP2);
 		
 		setContentView(R.layout.account_info_two);
-		formDataTwo = new RegistrationTwoDetails();
+		formDataTwo = new CreateLoginDetails();
 		
 		if (savedInstanceState == null) {
 			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
-        		final RegistrationOneDetails formDataOne = (RegistrationOneDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
+        		final AccountInformationDetails formDataOne = (AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
         		formDataTwo.acctNbr = formDataOne.acctNbr;
         		formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
         		formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
@@ -100,14 +100,14 @@ public class AccountInformationTwoActivity extends Activity{
 	}
 	
 	public void showPasswordStrengthBarHelp(final View v){
-		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
 		passwordHelpScreen.putExtra(IntentExtraKey.HELP_TYPE, ScreenType.PASSWORD_STRENGTH_HELP);
 		TrackingHelper.trackPageView(AnalyticsPage.PASSWORD_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
 	}
 	
 	public void showIdStrengthBarHelp(final View v){
-		final Intent passwordHelpScreen = new Intent(this, AccountInformationHelpActivity.class);
+		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
 		passwordHelpScreen.putExtra(IntentExtraKey.HELP_TYPE, ScreenType.UID_STRENGTH_HELP);
 		TrackingHelper.trackPageView(AnalyticsPage.UID_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
@@ -330,35 +330,41 @@ public class AccountInformationTwoActivity extends Activity{
 				progress.dismiss();
 				
 				switch(messageErrorResponse.getMessageStatusCode()){
-				
-					case 1906: //Provided information was incorrect.
-						errorMessageLabel
-						.setText(getString(R.string.account_info_bad_input_error_text));
-						return true;
-					case 1907: //Last attempt with this account number warning.
-						errorMessageLabel
-						.setText(getString(R.string.login_attempt_warning));
-						return true;
-					case 1919:
-						mainErrorMessageLabel
-						.setText(getString(R.string.account_info_bad_input_error_text));
-						errorMessageLabel
-						.setText(getString(R.string.account_info_two_id_matches_pass_error_text));
-						return true;
-					case 1921:
-						mainErrorMessageLabel
-						.setText(getString(R.string.account_info_bad_input_error_text));
-						errorMessageLabel
-						.setText(getString(R.string.account_info_two_username_in_use_error_text));
-						
-					default:
-						return false;
+				case 1906: //Provided information was incorrect.
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					return true;
+				case 1907: //Last attemt with this account number warning.
+					errorMessageLabel
+					.setText(getString(
+							R.string.login_attempt_warning));
+					return true;
+				case 1919:
+					mainErrorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_two_id_matches_pass_error_text));
+					return true;
+				case 1921:
+					mainErrorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_two_username_in_use_error_text));
+					return true;
+				default:
+					return false;
+					
 				}
 			}
 		};
 		
-		final RegistrationCallTwo registrationCall = 
-				new RegistrationCallTwo(this, callback, formDataTwo);
+		final CreateLoginCall registrationCall = 
+				new CreateLoginCall(this, callback, formDataTwo);
 		registrationCall.submit();
 
 	}

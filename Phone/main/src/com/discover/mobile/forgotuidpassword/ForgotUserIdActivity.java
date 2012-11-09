@@ -26,7 +26,7 @@ import com.discover.mobile.common.forgotuidpassword.ForgotUserIdCall;
 import com.discover.mobile.common.forgotuidpassword.UserIdDetails;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.register.AccountInformationConfirmationActivity;
+import com.discover.mobile.login.register.AccountInformationConfirmationActivity;
 
 @ContentView(R.layout.forgot_id)
 public class ForgotUserIdActivity extends RoboActivity {

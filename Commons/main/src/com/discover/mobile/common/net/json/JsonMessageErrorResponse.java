@@ -45,6 +45,7 @@ public class JsonMessageErrorResponse extends AbstractErrorResponse<JsonMessageE
 	public static class Data implements Serializable {
 		private static final long serialVersionUID = 6370942047530497928L;
 		
+		public String status;
 		public String saStatus;
 	}
 	

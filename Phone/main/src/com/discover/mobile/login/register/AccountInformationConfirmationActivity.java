@@ -1,4 +1,4 @@
-package com.discover.mobile.register;
+package com.discover.mobile.login.register;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;

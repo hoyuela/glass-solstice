@@ -22,7 +22,7 @@ public class ForgotPasswordCall extends NetworkServiceCall<Object> {
 	public ForgotPasswordCall(final Context context, final AsyncCallback<Object> callback,
 			final ForgotPasswordDetails formData) {
 		
-		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/pass/auth") {{
+		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/pwd/auth") {{
 			clearsSessionBeforeRequest = true;
 			requiresSessionForRequest = false;
 			

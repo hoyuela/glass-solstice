@@ -41,7 +41,7 @@ public class ForgotUserIdCall extends JsonResponseMappingNetworkServiceCall<User
 	
 	private static String getAuthorizationString(final String username, final String password) {
 		final String concatenatedCreds = username + ": :" + password;
-		return "DCRDBasic " + Base64.encodeToString(concatenatedCreds.getBytes(), Base64.DEFAULT);
+		return "DCRDBasic " + Base64.encodeToString(concatenatedCreds.getBytes(), Base64.NO_WRAP);
 	}
 
 	@Override

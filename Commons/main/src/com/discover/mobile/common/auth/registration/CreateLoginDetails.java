@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.discover.mobile.common.Struct;
 
 @Struct
-public class RegistrationTwoDetails extends RegistrationOneDetails implements Serializable {
+public class CreateLoginDetails extends AccountInformationDetails implements Serializable {
 
 	private static final long serialVersionUID = -8474388982680521271L;
 

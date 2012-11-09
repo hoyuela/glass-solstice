@@ -1,4 +1,4 @@
-package com.discover.mobile.register;
+package com.discover.mobile.login.register;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 
-public class EnhancedAccountSecurity extends Activity{
+public class EnhancedAccountSecurityActivity extends Activity{
 	
 	private TextView detailHelpLabel, statusIconLabel;
 	
@@ -47,7 +47,7 @@ public class EnhancedAccountSecurity extends Activity{
 	}
 	
 	public void submitSecurityInfo(View v){
-		Intent accountInfoTwoActivity = new Intent(this, AccountInformationTwoActivity.class);
+		Intent accountInfoTwoActivity = new Intent(this, CreateLoginActivity.class);
 		this.startActivity(accountInfoTwoActivity);
 		
 	}

@@ -14,7 +14,7 @@ import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.login.CustomArrayAdapter;
-import com.discover.mobile.register.AccountInformationActivity;
+import com.discover.mobile.login.register.AccountInformationActivity;
 
 @ContentView(R.layout.forgot_login)
 public class ForgotCredentialsActivity extends RoboListActivity {
