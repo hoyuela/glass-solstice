@@ -1,4 +1,4 @@
-package com.discover.mobile.common.net.response;
+package com.discover.mobile.common.net.error;
 
 import static com.discover.mobile.common.ThreadUtility.assertNonMainThreadExecution;
 import static com.google.common.base.Preconditions.checkArgument;

@@ -1,6 +1,6 @@
 package com.discover.mobile.common.callback;
 
-import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.common.net.error.ErrorResponse;
 
 public interface AsyncCallback<V> {
 	

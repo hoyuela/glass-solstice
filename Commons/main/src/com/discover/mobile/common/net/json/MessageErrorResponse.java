@@ -3,7 +3,7 @@ package com.discover.mobile.common.net.json;
 import java.io.Serializable;
 import java.util.List;
 
-import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonProperty;

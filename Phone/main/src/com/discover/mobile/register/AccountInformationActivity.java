@@ -24,8 +24,8 @@ import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.forgotpassword.ForgotPasswordCall;
 import com.discover.mobile.common.forgotpassword.ForgotPasswordDetails;
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
-import com.discover.mobile.common.net.response.ErrorResponse;
 
 public class AccountInformationActivity extends Activity {
 	private RegistrationOneDetails registrationOneDetails;

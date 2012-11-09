@@ -1,7 +1,7 @@
 package com.discover.mobile.common.callback;
 
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.common.net.error.ErrorResponse;
 
 public interface ExtendedAsyncCallback<V> extends AsyncCallback<V> {
 	

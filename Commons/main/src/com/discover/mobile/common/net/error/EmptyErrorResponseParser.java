@@ -1,4 +1,4 @@
-package com.discover.mobile.common.net.response;
+package com.discover.mobile.common.net.error;
 
 import java.io.IOException;
 import java.io.InputStream;

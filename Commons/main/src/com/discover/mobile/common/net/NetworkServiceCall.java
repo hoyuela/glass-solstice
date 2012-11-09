@@ -25,10 +25,10 @@ import android.util.Log;
 
 import com.discover.mobile.common.Struct;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
+import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
+import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.common.net.error.ErrorResponseParser;
 import com.discover.mobile.common.net.json.JsonMappingRequestBodySerializer;
-import com.discover.mobile.common.net.response.DelegatingErrorResponseParser;
-import com.discover.mobile.common.net.response.ErrorResponse;
-import com.discover.mobile.common.net.response.ErrorResponseParser;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 

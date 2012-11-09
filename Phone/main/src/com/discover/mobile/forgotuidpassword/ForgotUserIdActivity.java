@@ -24,8 +24,8 @@ import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.forgotuidpassword.ForgotUserIdCall;
 import com.discover.mobile.common.forgotuidpassword.UserIdDetails;
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
-import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.register.AccountInformationConfirmationActivity;
 
 @ContentView(R.layout.forgot_id)

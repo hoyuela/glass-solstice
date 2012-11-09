@@ -19,7 +19,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponse
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionalFailureListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.PreSubmitListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.common.net.error.ErrorResponse;
 
 public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 

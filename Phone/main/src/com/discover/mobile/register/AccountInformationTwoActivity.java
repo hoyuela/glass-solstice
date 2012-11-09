@@ -22,8 +22,8 @@ import com.discover.mobile.common.auth.registration.RegistrationConfirmationDeta
 import com.discover.mobile.common.auth.registration.RegistrationOneDetails;
 import com.discover.mobile.common.auth.registration.RegistrationTwoDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
-import com.discover.mobile.common.net.response.ErrorResponse;
 
 public class AccountInformationTwoActivity extends Activity{
 

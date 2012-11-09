@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.ExtendedAsyncCallback;
-import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.common.net.error.ErrorResponse;
 
 public abstract class TypedReferenceHandler<V> extends Handler {
 	

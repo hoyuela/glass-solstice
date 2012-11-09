@@ -1,7 +1,7 @@
 package com.discover.mobile.common.callback;
 
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
-import com.discover.mobile.common.net.response.ErrorResponse;
 
 /**
  * Provides default, no-op implementations of the {@link AsyncCallback} and {@link ExtendedAsyncCallback} methods to

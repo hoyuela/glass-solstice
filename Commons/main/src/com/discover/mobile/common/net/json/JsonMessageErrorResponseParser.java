@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 
-import com.discover.mobile.common.net.response.ErrorResponseParser;
+import com.discover.mobile.common.net.error.ErrorResponseParser;
 
 public class JsonMessageErrorResponseParser implements ErrorResponseParser<MessageErrorResponse> {
 	
