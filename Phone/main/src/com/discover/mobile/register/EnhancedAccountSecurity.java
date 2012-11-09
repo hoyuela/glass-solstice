@@ -16,6 +16,12 @@ public class EnhancedAccountSecurity extends Activity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.enhanced_account_security);
+		final Bundle extras = getIntent().getExtras();
+    	if(extras != null) {
+    		final TextView questionLabel =
+    				(TextView)findViewById(R.id.account_security_question_placeholder_label);
+    		questionLabel.setText(extras.getString("SA Question"));
+    	}
 	}
 	
 	@Override
@@ -30,7 +36,7 @@ public class EnhancedAccountSecurity extends Activity{
 	}
 	
 	public void expandHelpMenu(View v){
-			if(statusIconLabel.getText().equals("+")){
+			if("+".equals(statusIconLabel.getText())){
 				statusIconLabel.setText(getString(R.string.account_security_minus_text));
 				detailHelpLabel.setMaxLines(10);
 			}

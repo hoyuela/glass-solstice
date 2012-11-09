@@ -16,12 +16,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
-import com.discover.mobile.common.net.callback.AsyncCallback;
-import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.net.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.forgotuidpassword.ForgotCredentialsActivity;
@@ -48,9 +51,14 @@ public class LoginActivity extends RoboActivity {
 	@InjectView(R.id.error_text_view)
 	private TextView errorTextView;
 	
+	@InjectView(R.id.forgot_uid_or_pass_text)
+	private TextView forgotUserIdOrPassText;
+	
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		
 //		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
 //        .detectDiskReads()
@@ -83,6 +91,14 @@ public class LoginActivity extends RoboActivity {
 			public void onClick(final View v){
 				errorTextView.setText("");
 				registerNewUser();
+			}
+		});
+		
+		forgotUserIdOrPassText.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				errorTextView.setText(null);
+				forgotIdAndOrPass();
 			}
 		});
 	}
@@ -120,6 +136,7 @@ public class LoginActivity extends RoboActivity {
 
 			@Override
 			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+				TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
 					return false;
 				
@@ -153,7 +170,7 @@ public class LoginActivity extends RoboActivity {
 	
 	private void sendToErrorPage(final int screenType) {
 		final Intent maintenancePageIntent = new Intent(LoginActivity.this, LockOutUserActivity.class);
-		maintenancePageIntent.putExtra("ScreenType", screenType);
+		maintenancePageIntent.putExtra(IntentExtraKey.SCREEN_TYPE, screenType);
 		startActivity(maintenancePageIntent);
 	}
 	
@@ -177,8 +194,7 @@ public class LoginActivity extends RoboActivity {
 		this.startActivity(accountInformationActivity);
 	}
 	
-	public void forgotIdAndOrPass(final View v){
-		Log.d(TAG, "You pressed a button thinggy!");
+	public void forgotIdAndOrPass(){
 		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotCredentialsActivity.class);
 		this.startActivity(forgotIdAndOrPassActivity);
 	}
