@@ -16,7 +16,7 @@ public class StrongAuthCall extends JsonResponseMappingNetworkServiceCall<Strong
 
 	public StrongAuthCall(final Context context, final AsyncCallback<StrongAuthDetails> callback) {
 		
-		super(context, new PostCallParams("/cardsvcs/acs/strongauth/v1/authenticate") {{
+		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/sa/check") {{
 			requiresSessionForRequest = true;
 			
 			sendDeviceIdentifiers = true;
