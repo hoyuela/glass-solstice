@@ -137,11 +137,15 @@ public class ForgotUserIdActivity extends RoboActivity {
 				idErrLabel.setText(messageErrorResponse.getMessage());
 				
 				switch (messageErrorResponse.getMessageStatusCode()){
-				case 1102://User's Account has an invalid online status.
-					sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
-					return true;
-				default:
-					break;
+					case 1907:
+					case 1102://User's Account has an invalid online status.
+						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
+						return true;
+					case 1910:
+						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
+						return true;
+					default:
+						break;
 				}
 
 				
