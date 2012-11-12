@@ -1,8 +1,14 @@
 package com.discover.mobile.common.auth;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 
 public class InputValidator {
+	private Pattern emailPattern;
+	private final static String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+									+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	public boolean 
 	wasDobMonthValid, wasDobYearValid, wasDobDayValid, 
 	wasAccountNumberValid, wasSsnValid, wasEmailValid, 
@@ -11,6 +17,7 @@ public class InputValidator {
 	;
 	
 	public InputValidator(){
+		emailPattern = Pattern.compile(EMAIL_PATTERN);
 		clear();
 	}
 	
@@ -58,7 +65,9 @@ public class InputValidator {
 	public boolean isEmailValid(String email){
 		//See if we have a xxx@xxx.xxx style string
 		//Need some regular expressions up in here!
-		wasEmailValid = true;
+		Matcher matcher = emailPattern.matcher(email);
+		
+		wasEmailValid = matcher.matches();
 		
 		return wasEmailValid;
 
