@@ -219,9 +219,6 @@ public class AccountInformationActivity extends RoboActivity {
 			public void success(final Object value) {
 				progress.dismiss();
 				checkForStrongAuth();
-				
-				startNextActivity();
-
 			}
 
 			@Override
@@ -264,6 +261,8 @@ public class AccountInformationActivity extends RoboActivity {
 					.setText(getString(
 							R.string.login_attempt_warning));
 					return true;
+				case 1910:
+					sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
 				case 1916:
 					errorMessageLabel
 					.setText(getString(
@@ -293,6 +292,7 @@ public class AccountInformationActivity extends RoboActivity {
 		
 	}
 	
+	
 private void checkForStrongAuth(){
 	final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
@@ -305,7 +305,6 @@ private void checkForStrongAuth(){
 				strongAuthQuestionId = value.questionId;
 				strongAuthRequired = true;
 				//TODO handle question if strong auth returns one.
-
 			}
 
 			@Override
@@ -317,6 +316,7 @@ private void checkForStrongAuth(){
 					case HttpURLConnection.HTTP_BAD_REQUEST:
 						return true;
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
+						startNextActivity();//Strong auth not required now.
 						return true;
 					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldn't authenticate user info.
 						return true;
@@ -361,6 +361,7 @@ private void checkForStrongAuth(){
 							R.string.account_info_bad_input_error_text));
 					return true;
 				default://TODO properly handle these ^ v
+					startNextActivity();
 					return true;
 					
 				}

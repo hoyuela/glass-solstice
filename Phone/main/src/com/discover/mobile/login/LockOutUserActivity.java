@@ -3,6 +3,7 @@ package com.discover.mobile.login;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -29,6 +30,12 @@ public class LockOutUserActivity extends RoboActivity {
 			setScreenType();
 	}
 	
+	@Override
+	public void onBackPressed() {
+	   Intent navToMain = new Intent(this, LoginActivity.class);
+	   startActivity(navToMain);
+	}
+	
 	private void setScreenType() {
 		try {
 			switch(getIntent().getExtras().getInt(IntentExtraKey.SCREEN_TYPE)) {
@@ -51,6 +58,12 @@ public class LockOutUserActivity extends RoboActivity {
 							R.string.account_security_title_text));
 					errorTextView.setText(getString(
 							R.string.account_security_locked_out));
+					break;
+				case ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS:
+					errorTitleText.setText(getString(
+							R.string.secure_login));
+					errorTextView.setText(getString(
+							R.string.max_attempts_exceeded_text));
 					break;
 				default:
 					break;

@@ -10,4 +10,5 @@ public class IntentExtraKey {
 	public static final String HELP_TYPE = "Uid-Pass-Help-Type";
 	public static final String STRONG_AUTH_QUESTION = "SA-Question";
 	public static final String STRONG_AUTH_QUESTION_ID = "SA-Question-ID";
+	public static final String ACCOUNT_LOCKED_FAILED_ATTEMPTS = "Account-Locked-Failed-Attempts";
 }
