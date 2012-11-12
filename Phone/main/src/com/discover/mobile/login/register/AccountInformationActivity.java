@@ -263,6 +263,7 @@ public class AccountInformationActivity extends RoboActivity {
 					return true;
 				case 1910:
 					sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
+					return true;
 				case 1916:
 					errorMessageLabel
 					.setText(getString(
