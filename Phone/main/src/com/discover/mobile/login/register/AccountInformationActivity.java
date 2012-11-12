@@ -33,11 +33,15 @@ import com.discover.mobile.common.net.response.AsyncCallback;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.forgotuidpassword.EnterNewPasswordActivity;
+import com.discover.mobile.login.LockOutUserActivity;
 
 public class AccountInformationActivity extends RoboActivity {
 	private AccountInformationDetails registrationOneDetails;
 	private ForgotPasswordDetails forgotPasswordDetails;
 	private boolean forgotPass = false;
+	private boolean strongAuthRequired = false;
+	private String strongAuthQuestion;
+	private String strongAuthQuestionId;
 	private static final String TAG = AccountInformationActivity.class.getSimpleName();
 	
 	@InjectView(R.id.account_info_title_label)
@@ -105,15 +109,25 @@ public class AccountInformationActivity extends RoboActivity {
 			final Intent enterNewPasswordActivity = 
 					new Intent(this, EnterNewPasswordActivity.class);
 			enterNewPasswordActivity
-			.putExtra("ForgotPasswordDetails", forgotPasswordDetails);
+			.putExtra(IntentExtraKey.FORGOT_PASS_DETAILS, forgotPasswordDetails);
 			this.startActivity(enterNewPasswordActivity);
 
-		}else{
+		}
+		else if(strongAuthRequired){
+			Intent strongAuth = new Intent(this, 
+					EnhancedAccountSecurityActivity.class);
+			strongAuth.putExtra(IntentExtraKey
+								.STRONG_AUTH_QUESTION, strongAuthQuestion);
+			strongAuth.putExtra(IntentExtraKey
+								.STRONG_AUTH_QUESTION_ID, strongAuthQuestionId);
+			startActivity(strongAuth);
+		}
+		else{
 			final Intent enhancedAccountSecurityIntent = 
 					new Intent(this, CreateLoginActivity.class);
 			
 			enhancedAccountSecurityIntent
-				.putExtra("AccountInformationDetails", registrationOneDetails);
+				.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, registrationOneDetails);
 			
 			this.startActivity(enhancedAccountSecurityIntent);
 		}
@@ -171,31 +185,28 @@ public class AccountInformationActivity extends RoboActivity {
 		
 		updateLabelsUsingValidator(validator);
 		
-		if(validator.wasAccountInfoComplete() || validator.wasForgotPasswordInfoComplete()){
-			if(forgotPass){
-				forgotPasswordDetails = new ForgotPasswordDetails();
-				forgotPasswordDetails.userId = accountNumString;
-				forgotPasswordDetails.dateOfBirthDay = memberDobDayString;
-				forgotPasswordDetails.dateOfBirthMonth = memberDobMonthString;
-				forgotPasswordDetails.dateOfBirthYear = memberDobYearString;
-				forgotPasswordDetails.expirationMonth = cardMonthExpString;
-				forgotPasswordDetails.expirationYear  = cardYearExpString;
-				forgotPasswordDetails.socialSecurityNumber = memberSsnNumString;
-				submitFormInfo(validator);
-			}
-			else{
-				registrationOneDetails = new AccountInformationDetails();
-				registrationOneDetails.acctNbr = accountNumString;
-				registrationOneDetails.dateOfBirthDay = memberDobDayString;
-				registrationOneDetails.dateOfBirthMonth = memberDobMonthString;
-				registrationOneDetails.dateOfBirthYear = memberDobYearString;
-				registrationOneDetails.expirationMonth = cardMonthExpString;
-				registrationOneDetails.expirationYear  = cardYearExpString;
-				registrationOneDetails.socialSecurityNumber = memberSsnNumString;
-				submitFormInfo(validator);
-			}
-			
-
+		
+		if(forgotPass && validator.wasForgotPasswordInfoComplete()){
+			forgotPasswordDetails = new ForgotPasswordDetails();
+			forgotPasswordDetails.userId = accountNumString;
+			forgotPasswordDetails.dateOfBirthDay = memberDobDayString;
+			forgotPasswordDetails.dateOfBirthMonth = memberDobMonthString;
+			forgotPasswordDetails.dateOfBirthYear = memberDobYearString;
+			forgotPasswordDetails.expirationMonth = cardMonthExpString;
+			forgotPasswordDetails.expirationYear  = cardYearExpString;
+			forgotPasswordDetails.socialSecurityNumber = memberSsnNumString;
+			submitFormInfo(validator);
+		}
+		else if(validator.wasAccountInfoComplete()){
+			registrationOneDetails = new AccountInformationDetails();
+			registrationOneDetails.acctNbr = accountNumString;
+			registrationOneDetails.dateOfBirthDay = memberDobDayString;
+			registrationOneDetails.dateOfBirthMonth = memberDobMonthString;
+			registrationOneDetails.dateOfBirthYear = memberDobYearString;
+			registrationOneDetails.expirationMonth = cardMonthExpString;
+			registrationOneDetails.expirationYear  = cardYearExpString;
+			registrationOneDetails.socialSecurityNumber = memberSsnNumString;
+			submitFormInfo(validator);
 		}
 
 	}
@@ -207,10 +218,7 @@ public class AccountInformationActivity extends RoboActivity {
 			@Override
 			public void success(final Object value) {
 				progress.dismiss();
-				checkForPreAuth();
-				
-				startNextActivity();
-
+				checkForStrongAuth();
 			}
 
 			@Override
@@ -253,6 +261,9 @@ public class AccountInformationActivity extends RoboActivity {
 					.setText(getString(
 							R.string.login_attempt_warning));
 					return true;
+				case 1910:
+					sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
+					return true;
 				case 1916:
 					errorMessageLabel
 					.setText(getString(
@@ -282,7 +293,12 @@ public class AccountInformationActivity extends RoboActivity {
 		
 	}
 	
-private void checkForPreAuth(){
+public void goBack(View v){
+	//finish() -> same action as pressing the hardware back button.
+	finish();
+}
+
+private void checkForStrongAuth(){
 	final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
 		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
@@ -290,11 +306,10 @@ private void checkForPreAuth(){
 			public void success(final StrongAuthDetails value) {
 				Log.d(TAG, "Success");
 				progress.dismiss();
-				if(value.questionText != null && !"".equals(value.questionText)){
-					startNextActivity();
-				}
+				strongAuthQuestion = value.questionText;
+				strongAuthQuestionId = value.questionId;
+				strongAuthRequired = true;
 				//TODO handle question if strong auth returns one.
-
 			}
 
 			@Override
@@ -306,8 +321,11 @@ private void checkForPreAuth(){
 					case HttpURLConnection.HTTP_BAD_REQUEST:
 						return true;
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
+						startNextActivity();//Strong auth not required now.
 						return true;
 					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldn't authenticate user info.
+						return true;
+					case HttpURLConnection.HTTP_FORBIDDEN:
 						return true;
 				}
 				
@@ -324,6 +342,9 @@ private void checkForPreAuth(){
 						(TextView)findViewById(R.id.account_info_error_label);
 				
 				switch(messageErrorResponse.getMessageStatusCode()){
+				case 1402:
+						sendToErrorPage(ScreenType.STRONG_AUTH_LOCKED_OUT);
+					return true;
 				case 1905: //Wrong type of account info provided.
 					errorMessageLabel
 					.setText(getString(
@@ -345,6 +366,7 @@ private void checkForPreAuth(){
 							R.string.account_info_bad_input_error_text));
 					return true;
 				default://TODO properly handle these ^ v
+					startNextActivity();
 					return true;
 					
 				}
@@ -356,6 +378,12 @@ private void checkForPreAuth(){
 				new StrongAuthCall(this, callback);
 		strongAuthCall.submit();
 		
+	}
+	
+	private void sendToErrorPage(final int screenType) {
+		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
+		maintenancePageIntent.putExtra(IntentExtraKey.SCREEN_TYPE, screenType);
+		startActivity(maintenancePageIntent);
 	}
 	
 	private void updateLabelsUsingValidator(final InputValidator validator){

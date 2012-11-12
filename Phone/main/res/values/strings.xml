@@ -58,4 +58,9 @@
 	<string name="invalid_value">Invalid value</string>
 	<string name="forgot_pass_create_new_text">Create a New Password:</string>
 	<string name="forgot_pass_step_two_text">Step 2 of 2: Create New Password</string>
+	<string name="max_attempts_exceeded_text">
+	    You have Exceeded the Maximum Number of Unsuccessful Attempts.
+	    Please contact Customer Service at 1&#8211;877&#8211;742&#8211;7822 
+	    for assistance.
+	</string>
 </resources>

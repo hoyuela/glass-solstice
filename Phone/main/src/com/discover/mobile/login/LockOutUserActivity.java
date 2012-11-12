@@ -3,6 +3,7 @@ package com.discover.mobile.login;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -17,6 +18,9 @@ public class LockOutUserActivity extends RoboActivity {
 	
 	@InjectView(R.id.error_text_view)
 	private TextView errorTextView;
+	
+	@InjectView(R.id.secure_card_login_label)
+	private TextView errorTitleText;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -24,6 +28,12 @@ public class LockOutUserActivity extends RoboActivity {
 		
 		if (savedInstanceState == null)
 			setScreenType();
+	}
+	
+	@Override
+	public void onBackPressed() {
+	   Intent navToMain = new Intent(this, LoginActivity.class);
+	   startActivity(navToMain);
 	}
 	
 	private void setScreenType() {
@@ -42,6 +52,19 @@ public class LockOutUserActivity extends RoboActivity {
 				case ScreenType.BAD_ACCOUNT_STATUS:
 					// TODO reference lock out text when error map set up
 					errorTextView.setText("Bad account status text...");
+					break;
+				case ScreenType.STRONG_AUTH_LOCKED_OUT:
+					errorTitleText.setText(getString(
+							R.string.account_security_title_text));
+					errorTextView.setText(getString(
+							R.string.account_security_locked_out));
+					break;
+				case ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS:
+					errorTitleText.setText(getString(
+							R.string.secure_login));
+					errorTextView.setText(getString(
+							R.string.max_attempts_exceeded_text));
+					break;
 				default:
 					break;
 			}

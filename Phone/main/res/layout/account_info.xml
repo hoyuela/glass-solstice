@@ -15,6 +15,17 @@
         	android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
          	>
+        
+        <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+		<LinearLayout
+		    android:focusable="true" android:focusableInTouchMode="true"
+		    android:layout_width="0px" android:layout_height="0px"/>
+		
+		<!-- :nextFocusUp and :nextFocusLeft have been set to the id of this component
+		     to prevent the dummy from receiving focus again -->
+		<AutoCompleteTextView android:id="@+id/autotext"
+		    android:layout_width="0dp" android:layout_height="0dp"
+		    android:nextFocusUp="@id/autotext" android:nextFocusLeft="@id/autotext"/>
 
         <TextView
             android:id="@+id/account_info_title_label"
@@ -189,7 +200,8 @@
             android:layout_below="@+id/account_information_input_info_label"
             android:textAppearance="?android:attr/textAppearanceSmall" 
             android:textColor="@color/red"
-            />
+            
+            ><requestFocus /></TextView>
         
         <EditText
             android:id="@+id/account_info_main_input_field"
@@ -201,8 +213,9 @@
             android:inputType="number"
             android:maxLength="16"
             android:paddingTop="8dp" 
-            android:imeOptions="actionDone"
-            />
+            android:imeOptions="actionDone">
+           
+            </EditText>
 
         <TextView
             android:id="@+id/account_info_dob_label"
@@ -262,6 +275,9 @@
                 android:id="@+id/account_info_cancel_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:onClick="goBack"
+                android:padding="8dp"
                 android:text="@string/cancel_text"
                 android:textColor="@color/blue" />
 
