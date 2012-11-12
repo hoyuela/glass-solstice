@@ -47,7 +47,7 @@ public class ForgotUserIdActivity extends RoboActivity {
 	@InjectView(R.id.forgot_id_password_field)
 	EditText passText;
 	@InjectView(R.id.account_info_cancel_label)
-	EditText cancelLabel;
+	TextView cancelLabel;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
