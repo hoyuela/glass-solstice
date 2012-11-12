@@ -105,7 +105,7 @@
                 android:layout_gravity="left|center_vertical"
                 android:clickable="true"
                 android:onClick="goBack"
-                android:paddingRight="32dp"
+                android:padding="8dp"
                 android:text="@string/cancel_text"
                 android:textColor="@color/blue" />
 
