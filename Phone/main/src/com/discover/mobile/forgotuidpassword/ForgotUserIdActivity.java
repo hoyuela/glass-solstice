@@ -46,6 +46,8 @@ public class ForgotUserIdActivity extends RoboActivity {
 	EditText cardNum;
 	@InjectView(R.id.forgot_id_password_field)
 	EditText passText;
+	@InjectView(R.id.account_info_cancel_label)
+	TextView cancelLabel;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
@@ -53,20 +55,26 @@ public class ForgotUserIdActivity extends RoboActivity {
 		
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
 		
-		setSubmitOnClick();
+		setOnClickActions();
 	}
 	
-	private void setSubmitOnClick() {
+	private void setOnClickActions() {
 		submitButton.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
 				checkInputsAndSubmit();
 			}
 		});
+		
+		cancelLabel.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				goBack();
+			}
+		});
 	}
 	
-	public void goBack(View v){
-		//finish() -> same action as pressing the hardware back button.
+	public void goBack(){
 		finish();
 	}
 	
@@ -129,11 +137,15 @@ public class ForgotUserIdActivity extends RoboActivity {
 				idErrLabel.setText(messageErrorResponse.getMessage());
 				
 				switch (messageErrorResponse.getMessageStatusCode()){
-				case 1102://User's Account has an invalid online status.
-					sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
-					return true;
-				default:
-					break;
+					case 1907:
+					case 1102://User's Account has an invalid online status.
+						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
+						return true;
+					case 1910:
+						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
+						return true;
+					default:
+						break;
 				}
 
 				
