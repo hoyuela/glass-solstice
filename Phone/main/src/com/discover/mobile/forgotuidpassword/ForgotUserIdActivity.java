@@ -71,7 +71,7 @@ public class ForgotUserIdActivity extends RoboActivity {
 		else
 			passErrLabel.setText(getString(R.string.empty));
 
-		if(!validator.isPassValid(passText.getText().toString()))
+		if(passText.getText().toString().isEmpty())
 			passErrLabel.setText(getString(R.string.invalid_value));
 		else
 			passErrLabel.setText(getString(R.string.empty));
