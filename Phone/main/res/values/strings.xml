@@ -23,7 +23,15 @@
 	    We\'re sorry. The Credit Card Account Number and/or Password does not
 	    match our records, or you are not registered. Please try again.
 	</string>
-	
+	<string name="zluba_error">
+	    Due to special conditions related to your account, we cannot provide
+	     you with access to Discover.com Mobile at this time. 
+	     Please contact customer service at 1&#8211;877&#8211;742&#8211;7822 
+	     for more information or assistance.
+	</string>
+	<string name="could_not_complete_request">
+	    Your Request Could Not Be Completed
+	</string>
 	<string name="forgot_password_text">Forgot Password</string>
 	<string name="forgot_both_text">Forgot Both</string>
 	<string name="forgot_password_field_title_text">Credit Card User ID:</string>

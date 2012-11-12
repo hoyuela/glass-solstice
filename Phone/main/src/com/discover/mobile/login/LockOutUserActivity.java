@@ -51,7 +51,8 @@ public class LockOutUserActivity extends RoboActivity {
 					break;
 				case ScreenType.BAD_ACCOUNT_STATUS:
 					// TODO reference lock out text when error map set up
-					errorTextView.setText("Bad account status text...");
+					errorTitleText.setText(R.string.could_not_complete_request);
+					errorTextView.setText(R.string.zluba_error);
 					break;
 				case ScreenType.STRONG_AUTH_LOCKED_OUT:
 					errorTitleText.setText(getString(

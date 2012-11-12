@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
@@ -26,6 +27,7 @@ import com.discover.mobile.common.forgotuidpassword.UserIdDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.register.AccountInformationConfirmationActivity;
 
 @ContentView(R.layout.forgot_id)
@@ -76,12 +78,12 @@ public class ForgotUserIdActivity extends RoboActivity {
 		else
 			passErrLabel.setText(getString(R.string.empty));
 
-		if(!validator.isPassValid(passText.getText().toString()))
-			passErrLabel.setText(getString(R.string.invalid_value));
-		else
-			passErrLabel.setText(getString(R.string.empty));
+//		if(!validator.isPassValid(passText.getText().toString()))
+//			passErrLabel.setText(getString(R.string.invalid_value));
+//		else
+//			passErrLabel.setText(getString(R.string.empty));
 
-		if(validator.wasPassValid & validator.wasAccountNumberValid)
+		//if(validator.wasPassValid & validator.wasAccountNumberValid)
 			doForgotUserIdCall();
 	}
 	
@@ -110,6 +112,8 @@ public class ForgotUserIdActivity extends RoboActivity {
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						idErrLabel.setText(getString(R.string.login_error));
 						return true;
+					case HttpURLConnection.HTTP_BAD_REQUEST:
+						return true;//Will happen for 400 + 1913 invalid online status. 
 				}
 				
 				return false;
@@ -122,14 +126,28 @@ public class ForgotUserIdActivity extends RoboActivity {
 				
 				progress.dismiss();
 				clearInputs();
-				
 				idErrLabel.setText(messageErrorResponse.getMessage());
+				
+				switch (messageErrorResponse.getMessageStatusCode()){
+				case 1102://User's Account has an invalid online status.
+					sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
+					return true;
+				default:
+					break;
+				}
+
 				
 				return true;
 			}
 		};
 
 		new ForgotUserIdCall(this, callback, cardNum.getText().toString(), passText.getText().toString()).submit();
+	}
+	
+	private void sendToErrorPage(final int screenType) {
+		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
+		maintenancePageIntent.putExtra(IntentExtraKey.SCREEN_TYPE, screenType);
+		startActivity(maintenancePageIntent);
 	}
 	
 	private void showOkAlertDialog(final String title, final String message) {
