@@ -1,0 +1,108 @@
+<resources>
+	<!-- <string name="app_name">Discover</string> -->
+	
+	<!--
+	"1005":"<h1>We're sorry.</h1><br/>Some of our web site features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.
+	"1201":"<h1>Make a Payment: </h1>To make a Secure Online Payment you must first add an external bank account.<div class='txtcenteraln r3matchbtn' style='width:130px,height:28px'><div data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-icon='null' data-iconpos='null' data-theme='c' data-inline='false' data-mini='false' class='ui-btn ui-shadow ui-btn-corner-all ui-fullsize ui-btn-block ui-btn-hover-c ui-btn-up-c' aria-disabled='false'><span class='ui-btn-inner ui-btn-corner-all'><span class='ui-btn-text'>Add a Bank Account</span></span><input type='button' onclick=navigation('../payments/manageBankInformation'); id='accSumm_makePayBtn' value='Add a Bank Account' class='ui-btn-hidden' aria-disabled='false'></div></div>
+	"1204":"<h1>Make a Payment:</h1>There are no dates left for you to make a payment. For assistance, please call <a href='tel:18777427822' class='eCertBlueLink'>1-877-742-7822</a>.
+	"1207":"Payment amount must be between $0.01 and $99,999.99.
+	"1208":"Your payment cannot be more than your current balance of !~currentBalance~!.
+	"1209":"You have already scheduled a payment for this statement. Your maximum payment amount cannot be greater than your current outstanding balance of !~outstandingBalance~!.
+	"1210":"Please enter an amount using only numerals and a decimal point. Do not use dollar signs and commas (e.g. 1000.00)
+	"1213":"Please enter a valid payment date in MM/dd/yyyy format.
+	"1214":"Please enter a valid payment open date in MM/dd/yyyy format.
+	"1215":"<h1>Make a Payment </h1><br/>We're sorry. We are unable to process your request at this time. There is a problem with your bank account on file. Please contact customer service at <a href='tel:18777427822' class='eCertBlueLink'>1-877-742-7822</a>. 
+	"1216":"You are unable to make a payment at this time.  </br> No payment is due at this time. You have a zero or credit balance. For assistance, please call <a href='tel:18777427822' class='eCertBlueLink'>1-877-742-7822.</a>
+	"1217":"You are unable to make a payment at this time.</br>Your pending payments total is $!~pendingPayments~! and your current balance is $!~currentBalance~!. Making additional payments to your Account will result in a credit balance. If you would like to view these payments select \"Pending Payments\". To cancel or edit payments, please visit the Account Center at www.discover.com.
+	"1218":"Some of our website features are unavailable at this time resulting in limited access to functionality. We cannot accept your additional payment request at this time, however, we are able to process the previous payment you made which is listed below for your reference.
+	"1219":"<h1>Make a Payment:</h1>Some of our website features are unavailable at this time. We can, however, process payments for the current day only. For a future date, please try again later. We thank you for your patience. </br> <div class='bordertop margin20px'><div class='txtcenteraln r3matchbtn' style='width:130px,height:28px'><div data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-icon='null' data-iconpos='null' data-theme='c' data-inline='false' data-mini='false' class='ui-btn ui-shadow ui-btn-corner-all ui-fullsize ui-btn-block ui-btn-hover-c ui-btn-up-c' aria-disabled='false'><span class='ui-btn-inner ui-btn-corner-all'><span class='ui-btn-text'>Make a Payment</span></span><input type='button' onclick=navigation('../payments/paymentStep1'); id='accSumm_makePayBtn' value='Make a Payment' class='ui-btn-hidden' aria-disabled='false'></div></div></div>
+	"1220":"Bank short name required.
+	"1221":"Provide valid bank short name.
+	"1222":"Payment amount required
+	"1223":"Payment date required.
+	"1224":"HA Mode Required.
+	"1225":"Provide valid HA mode (either true or false).
+	"1226":"We're unable to process your payment at this time because the following payment was submitted to your account while you were making a payment, from the same account.<br/>
+	"1227":"We're unable to process your payment at this time because the following payment was submitted to your account while you were making a payment, and the maximum number of payments per day has been reached.<br/>
+	"1228":"<h1>Make a Payment:</h1>We are unable to process your online payment today because it is past the 5:00pm Eastern Time cut off and you have no available payment dates. For assistance call 1-877-742-7822.
+	"1229":"<h1>Make a Payment:</h1>We’re unable to process your online payment because it is past the 5:00pm Eastern Time cutoff time and you have no available payment dates for the selected bank account. You can make a payment by selecting a different bank account. For assistance call 1-877-742-7822.<div class='bordertop margin20px'><div class='txtcenteraln r3matchbtn' style='width:130px,height:28px'><div data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-icon='null' data-iconpos='null' data-theme='c' data-inline='false' data-mini='false' class='ui-btn ui-shadow ui-btn-corner-all ui-fullsize ui-btn-block ui-btn-hover-c ui-btn-up-c' aria-disabled='false'><span class='ui-btn-inner ui-btn-corner-all'><span class='ui-btn-text'>Make a Payment</span></span><input type='button' onclick=navigation('../payments/paymentStep1'); id='accSumm_makePayBtn' value='Make a Payment' class='ui-btn-hidden' aria-disabled='false'></div></div></div>
+	"1230":"<h1>Make a Payment:</h1><p class='redtext'>You have missed the Eastern Time cut off for submitting a payment that will post today. Your next available payment posting date is !~nextAvailableDate~!. If you would like to submit your payment of $!~payAmount~! using this date please Submit below.</p><div class='ui-grid-a' id='milesRedeem-button'><div class='txtcenteraln r3matchbtn'><a href='#' onclick=navigation('../payments/cancelPayment') class='bluelink boldtext'>Cancel</a><a class='small_btn ui-btn ui-shadow ui-btn-corner-all ui-btn-hover-c ui-btn-up-c ui-btn-inner ui-btn-corner-all ' href='#' style='line-height:30px' onclick=dfs.crd.pymt.confirmfromstep2tostep3(true,'!~rePostingDate~!'); data-role='button'>Submit</a></div></div>
+	"1231":"Your bank account is problematic, provide valid bank short name.
+	"1232":"<h1>Make a Payment</h1>Some of our website features are unavailable at this time resulting  in limited access to functionality and can process payments for the current day only. If you would like to schedule a payment for a future date, please try again later. We thank you for your patience.<br/><a onclick=redirectToPageAfterConfirm('manageCurrentDayPayment'); class='eCertBlueLink'>Manage Current Day Payment</a>
+	"1233":"<h1>Make a Payment</h1>Some of our website features are unavailable at this time resulting in limited access to functionality.We can however,process payments for the current day only. If you would like to schedule a payment for a future date,please try again later. We thank you for your patience.<div class='txtcenteraln r3matchbtn' style='width:130px,height:28px'><div data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-icon='null' data-iconpos='null' data-theme='c' data-inline='false' data-mini='false' class='ui-btn ui-shadow ui-btn-corner-all ui-fullsize ui-btn-block ui-btn-hover-c ui-btn-up-c' aria-disabled='false'><span class='ui-btn-inner ui-btn-corner-all'><span class='ui-btn-text'>Return to Make a Payment</span></span><input type='button' onclick=navigation('../payments/paymentStep1');  value='Return to Make a Payment' class='ui-btn-hidden' aria-disabled='false'></div></div>
+	"1234":"Hashed account number required. Please enter a valid hashed account number.
+	"1235":"Hashed routing number required. Please enter a valid hashed routing number.
+	"1236":"Provide valid bank information.
+	"1403": "<h1>We're sorry.</h1></br> We are experiencing technical difficulties with the service you are trying to access.
+	"1404": "We are currently experiencing technical difficulties. We apologize for the inconvenience.Please try again later or contact Customer Service at 1-800-DISCOVER (1-800-347-2683).
+	"1601":"Promotion code is required
+	"1602":"Please enter a valid promotion code
+	"1603":"This promotion is already enrolled.
+	"1604":"Failed to enroll the promotion
+	"1605":"Mode code is required.
+	"1606":"Please enetr a valid mode code.
+	"1609":"You must have a bank account on file in order to redeem Direct Deposit.
+	"1610":"Amount is required.
+	"1611":"Please enter an amount using only number and a decimal point. Do not dollar signs and commas(e.g. 1000.00).
+	"1612":"No Disbursement Units available.
+	"1613":"Emergency mode closure.
+	"1614":"Please enter a valid hashed Account number.
+	"1615":"Please enetr a valid hashed Routing number.
+	"1616":"No Bank Account fount for the given Account Number and Routing Number combination.
+	"1617":"E-Certificate Number is required.
+	"1618":"Order-Id is required.
+	"1619":"Order-Date is required.
+	"1620":"Please enetr a valid orderdate in MM/DD/YYYY format.
+	"1621":"Failed to add order item in the cart.
+	"1622":"Failed to submit the order.
+	"1623":"Failed to submit the order.May not have enough balance to submit the order.
+	"1624":"We are sorry. You are ineligible for redemption.
+	"1625":"We are sorry. You are ineligible to access this rewards service.
+	"1626":"Device Type is required.
+	"1627":"Please enter valid Device Type.
+	"1628":"Cashback Bonus is currently unavailable. We apologize for the inconvenience. Please try again later.
+	"1629":"Account is in Bad status
+	"1630":"Order quantity is required.
+	"1631":"Please enter a valid integer value for order quantity greater than 0.
+	"1632":"Order quantity must not be greater than 1.
+	"1633":"No data found.
+	"1634":"Redemption amount must be in increments of minDisbAmt.
+	"1635":"Please enter a valid Parterns value.
+	"1636":"We are Sorry. This E-Certificate is not availabe to redeem now.
+	"1642":"We are sorry. You are ineligible to access this rewards service.
+	"1701":"<h1>Send Money</h1><br/>Your account is not eligible to use this service at this time. If you have questions about your eligibility, please call us at 1-800-DISCOVER.
+	"1702":"Some of our web site features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.
+	"1703":"Email not registered.
+	"1704":"We're Sorry. You've reached your Discover Money Messenger monthly limit of $!~Monthlylimit~!. You can send money again starting next month.
+	"1705":"We're sorry.You've reached your discover money messenger daily limit of $!~Dailylimit~!. You can send money again starting tomorrow.
+	"1706":"<h3>Service unavailable.</h3><span class='errormg2'>We're sorry, We are experiencing temporary technical difficulties. Please try again later.</span>
+	"1707":"Your Email Address is Required
+	"1708":"E-mail Address entered is not valid. Please enter it again.
+	"1709":"Recipient’s name is required.
+	"1710":"Recipient's Name cannot contain the special characters you entered
+	"1711":"Recipient's Name doesn't meet our acceptable use guidelines. Please remove or use a different name
+	"1712":"Recipient's E-mail or Mobile Phone Number is required.
+	"1713":"E-mail Address entered is not valid. Please enter it again.
+	"1714":"A valid phone number format is 000-000-0000
+	"1715":"You cannot send money to yourself. Please enter the Recipient's E-mail or Mobile Phone Number.
+	"1716":"Recipient's Mobile Phone Number cannot start with 0. (or) Recipient's Mobile Phone Number cannot start with 1
+	"1717":"Amount is required.
+	"1718":"Amount can only contain numbers and a decimal point.
+	"1719":"Transaction Type is required. 
+	"1720":"Please enter valid  Transaction Type. TransactionType should be (Friends or Family/ Pay for Goods)
+	"1721":"Please enter positive integer value for size.
+	"1722":"Please enter positive integer value for startIndex.
+	"1723":"Status Type is required.
+	"1724":"Status Type is invalid.
+	"1725":"Transaction id is required.
+	"1726":"Invalid transaction id.
+	"1727":"Request Type is required.
+	"1728":"This transaction cannot be cancelled. This payment was already claimed by the recipient. The status of the transaction will be updated to reflect this.
+	"1729":"This transaction cannot be cancelled. This payment was already claimed by the recipient . The status of the transaction will be updated to reflect this.
+	"1730":"Some of our web site features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.
+	"1731":"Show Status is required.
+	"1732":"Invalid Boolean Value.
+	"1733":"Please enter the E-mail Address not more than 100 characters.
+	"1734":"Amount can contain only two numbers after the decimal point.
+	-->
+</resources>
