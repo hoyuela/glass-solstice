@@ -17,6 +17,9 @@ public class LockOutUserActivity extends RoboActivity {
 	
 	@InjectView(R.id.error_text_view)
 	private TextView errorTextView;
+	
+	@InjectView(R.id.secure_card_login_label)
+	private TextView errorTitleText;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -42,6 +45,13 @@ public class LockOutUserActivity extends RoboActivity {
 				case ScreenType.BAD_ACCOUNT_STATUS:
 					// TODO reference lock out text when error map set up
 					errorTextView.setText("Bad account status text...");
+					break;
+				case ScreenType.STRONG_AUTH_LOCKED_OUT:
+					errorTitleText.setText(getString(
+							R.string.account_security_title_text));
+					errorTextView.setText(getString(
+							R.string.account_security_locked_out));
+					break;
 				default:
 					break;
 			}

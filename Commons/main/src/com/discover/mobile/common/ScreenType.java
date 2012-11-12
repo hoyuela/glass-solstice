@@ -9,4 +9,5 @@ public final class ScreenType {
 	public static final int FORGOT_BOTH = 5;
 	public static final int UID_STRENGTH_HELP = 6;
 	public static final int PASSWORD_STRENGTH_HELP = 7;
+	public static final int STRONG_AUTH_LOCKED_OUT = 8;
 }

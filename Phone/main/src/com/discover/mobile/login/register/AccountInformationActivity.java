@@ -33,6 +33,7 @@ import com.discover.mobile.common.net.response.AsyncCallback;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.forgotuidpassword.EnterNewPasswordActivity;
+import com.discover.mobile.login.LockOutUserActivity;
 
 public class AccountInformationActivity extends RoboActivity {
 	private AccountInformationDetails registrationOneDetails;
@@ -309,6 +310,8 @@ private void checkForPreAuth(){
 						return true;
 					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldn't authenticate user info.
 						return true;
+					case HttpURLConnection.HTTP_FORBIDDEN:
+						return true;
 				}
 				
 				//TODO properly handle these ^ v
@@ -324,6 +327,9 @@ private void checkForPreAuth(){
 						(TextView)findViewById(R.id.account_info_error_label);
 				
 				switch(messageErrorResponse.getMessageStatusCode()){
+				case 1402:
+						sendToErrorPage(ScreenType.STRONG_AUTH_LOCKED_OUT);
+					return true;
 				case 1905: //Wrong type of account info provided.
 					errorMessageLabel
 					.setText(getString(
@@ -356,6 +362,12 @@ private void checkForPreAuth(){
 				new StrongAuthCall(this, callback);
 		strongAuthCall.submit();
 		
+	}
+	
+	private void sendToErrorPage(final int screenType) {
+		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
+		maintenancePageIntent.putExtra(IntentExtraKey.SCREEN_TYPE, screenType);
+		startActivity(maintenancePageIntent);
 	}
 	
 	private void updateLabelsUsingValidator(final InputValidator validator){
