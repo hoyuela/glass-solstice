@@ -3,6 +3,7 @@ package com.discover.mobile.login;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -23,6 +24,12 @@ public class LoggedInLandingPage extends RoboActivity {
 		TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_LANDING);
 		
 		listView.setAdapter(null);
+	}
+	
+	@Override
+	public void onBackPressed() {
+	   Intent navToMain = new Intent(this, LoginActivity.class);
+	   startActivity(navToMain);
 	}
 	
 }
