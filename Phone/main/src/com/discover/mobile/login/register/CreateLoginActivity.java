@@ -73,6 +73,11 @@ public class CreateLoginActivity extends Activity{
 	   startActivity(navToMain);
 	}
 	
+	public void cancel(View v){
+		   Intent navToMain = new Intent(this, LoginActivity.class);
+		   startActivity(navToMain);
+	}
+	
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
 		final Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
 		confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);

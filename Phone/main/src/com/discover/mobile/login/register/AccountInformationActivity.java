@@ -292,7 +292,11 @@ public class AccountInformationActivity extends RoboActivity {
 		
 	}
 	
-	
+public void goBack(View v){
+	//finish() -> same action as pressing the hardware back button.
+	finish();
+}
+
 private void checkForStrongAuth(){
 	final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		

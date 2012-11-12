@@ -63,6 +63,11 @@ public class ForgotUserIdActivity extends RoboActivity {
 		});
 	}
 	
+	public void goBack(View v){
+		//finish() -> same action as pressing the hardware back button.
+		finish();
+	}
+	
 	public void checkInputsAndSubmit(){
 		final InputValidator validator = new InputValidator();
 		
