@@ -1,7 +1,7 @@
 package com.discover.mobile.login.register;
 
+import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 
-public class EnhancedAccountSecurityActivity extends Activity{
+public class EnhancedAccountSecurityActivity extends RoboActivity{
 	
 	private TextView detailHelpLabel, statusIconLabel;
 	private String question, questionId;
