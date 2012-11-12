@@ -26,6 +26,7 @@ import com.discover.mobile.common.auth.registration.RegistrationConfirmationDeta
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.login.LoginActivity;
 
 public class CreateLoginActivity extends Activity{
 	
@@ -64,6 +65,12 @@ public class CreateLoginActivity extends Activity{
 		}
 		
 		setupTextChangedListeners();
+	}
+	
+	@Override
+	public void onBackPressed() {
+	   Intent navToMain = new Intent(this, LoginActivity.class);
+	   startActivity(navToMain);
 	}
 	
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){

@@ -39,6 +39,9 @@ public class AccountInformationActivity extends RoboActivity {
 	private AccountInformationDetails registrationOneDetails;
 	private ForgotPasswordDetails forgotPasswordDetails;
 	private boolean forgotPass = false;
+	private boolean strongAuthRequired = false;
+	private String strongAuthQuestion;
+	private String strongAuthQuestionId;
 	private static final String TAG = AccountInformationActivity.class.getSimpleName();
 	
 	@InjectView(R.id.account_info_title_label)
@@ -106,15 +109,25 @@ public class AccountInformationActivity extends RoboActivity {
 			final Intent enterNewPasswordActivity = 
 					new Intent(this, EnterNewPasswordActivity.class);
 			enterNewPasswordActivity
-			.putExtra("ForgotPasswordDetails", forgotPasswordDetails);
+			.putExtra(IntentExtraKey.FORGOT_PASS_DETAILS, forgotPasswordDetails);
 			this.startActivity(enterNewPasswordActivity);
 
-		}else{
+		}
+		else if(strongAuthRequired){
+			Intent strongAuth = new Intent(this, 
+					EnhancedAccountSecurityActivity.class);
+			strongAuth.putExtra(IntentExtraKey
+								.STRONG_AUTH_QUESTION, strongAuthQuestion);
+			strongAuth.putExtra(IntentExtraKey
+								.STRONG_AUTH_QUESTION_ID, strongAuthQuestionId);
+			startActivity(strongAuth);
+		}
+		else{
 			final Intent enhancedAccountSecurityIntent = 
 					new Intent(this, CreateLoginActivity.class);
 			
 			enhancedAccountSecurityIntent
-				.putExtra("AccountInformationDetails", registrationOneDetails);
+				.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, registrationOneDetails);
 			
 			this.startActivity(enhancedAccountSecurityIntent);
 		}
@@ -172,31 +185,28 @@ public class AccountInformationActivity extends RoboActivity {
 		
 		updateLabelsUsingValidator(validator);
 		
-		if(validator.wasAccountInfoComplete() || validator.wasForgotPasswordInfoComplete()){
-			if(forgotPass){
-				forgotPasswordDetails = new ForgotPasswordDetails();
-				forgotPasswordDetails.userId = accountNumString;
-				forgotPasswordDetails.dateOfBirthDay = memberDobDayString;
-				forgotPasswordDetails.dateOfBirthMonth = memberDobMonthString;
-				forgotPasswordDetails.dateOfBirthYear = memberDobYearString;
-				forgotPasswordDetails.expirationMonth = cardMonthExpString;
-				forgotPasswordDetails.expirationYear  = cardYearExpString;
-				forgotPasswordDetails.socialSecurityNumber = memberSsnNumString;
-				submitFormInfo(validator);
-			}
-			else{
-				registrationOneDetails = new AccountInformationDetails();
-				registrationOneDetails.acctNbr = accountNumString;
-				registrationOneDetails.dateOfBirthDay = memberDobDayString;
-				registrationOneDetails.dateOfBirthMonth = memberDobMonthString;
-				registrationOneDetails.dateOfBirthYear = memberDobYearString;
-				registrationOneDetails.expirationMonth = cardMonthExpString;
-				registrationOneDetails.expirationYear  = cardYearExpString;
-				registrationOneDetails.socialSecurityNumber = memberSsnNumString;
-				submitFormInfo(validator);
-			}
-			
-
+		
+		if(forgotPass && validator.wasForgotPasswordInfoComplete()){
+			forgotPasswordDetails = new ForgotPasswordDetails();
+			forgotPasswordDetails.userId = accountNumString;
+			forgotPasswordDetails.dateOfBirthDay = memberDobDayString;
+			forgotPasswordDetails.dateOfBirthMonth = memberDobMonthString;
+			forgotPasswordDetails.dateOfBirthYear = memberDobYearString;
+			forgotPasswordDetails.expirationMonth = cardMonthExpString;
+			forgotPasswordDetails.expirationYear  = cardYearExpString;
+			forgotPasswordDetails.socialSecurityNumber = memberSsnNumString;
+			submitFormInfo(validator);
+		}
+		else if(validator.wasAccountInfoComplete()){
+			registrationOneDetails = new AccountInformationDetails();
+			registrationOneDetails.acctNbr = accountNumString;
+			registrationOneDetails.dateOfBirthDay = memberDobDayString;
+			registrationOneDetails.dateOfBirthMonth = memberDobMonthString;
+			registrationOneDetails.dateOfBirthYear = memberDobYearString;
+			registrationOneDetails.expirationMonth = cardMonthExpString;
+			registrationOneDetails.expirationYear  = cardYearExpString;
+			registrationOneDetails.socialSecurityNumber = memberSsnNumString;
+			submitFormInfo(validator);
 		}
 
 	}
@@ -208,7 +218,7 @@ public class AccountInformationActivity extends RoboActivity {
 			@Override
 			public void success(final Object value) {
 				progress.dismiss();
-				checkForPreAuth();
+				checkForStrongAuth();
 				
 				startNextActivity();
 
@@ -283,7 +293,7 @@ public class AccountInformationActivity extends RoboActivity {
 		
 	}
 	
-private void checkForPreAuth(){
+private void checkForStrongAuth(){
 	final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
 		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
@@ -291,9 +301,9 @@ private void checkForPreAuth(){
 			public void success(final StrongAuthDetails value) {
 				Log.d(TAG, "Success");
 				progress.dismiss();
-				if(value.questionText != null && !"".equals(value.questionText)){
-					startNextActivity();
-				}
+				strongAuthQuestion = value.questionText;
+				strongAuthQuestionId = value.questionId;
+				strongAuthRequired = true;
 				//TODO handle question if strong auth returns one.
 
 			}

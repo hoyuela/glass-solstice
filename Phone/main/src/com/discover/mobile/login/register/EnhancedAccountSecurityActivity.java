@@ -1,5 +1,6 @@
 package com.discover.mobile.login.register;
 
+import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,10 +8,16 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
 
 public class EnhancedAccountSecurityActivity extends Activity{
 	
 	private TextView detailHelpLabel, statusIconLabel;
+	private String question, questionId;
+	
+	@InjectView(R.id.account_security_question_placeholder_label)
+	private TextView questionLabel;
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -18,9 +25,12 @@ public class EnhancedAccountSecurityActivity extends Activity{
 		setContentView(R.layout.enhanced_account_security);
 		final Bundle extras = getIntent().getExtras();
     	if(extras != null) {
-    		final TextView questionLabel =
-    				(TextView)findViewById(R.id.account_security_question_placeholder_label);
-    		questionLabel.setText(extras.getString("SA Question"));
+    		question = 
+    				extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION);
+    		questionId = 
+    				extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION_ID);
+    		
+    		questionLabel.setText(question);
     	}
 	}
 	
