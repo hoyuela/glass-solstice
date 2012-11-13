@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mobile.discover.mobile.BlackDiscoverLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_bkgd" >
@@ -60,12 +61,6 @@
 
         </TableRow>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-        </RelativeLayout>
-
         <TableRow
             android:id="@+id/remember_user_row"
             android:layout_width="match_parent"
@@ -111,23 +106,6 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/feedback_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/copyright_textview"
-        android:layout_centerHorizontal="true"
-        android:text="@string/feedback_text"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/white" />
+    <include layout="@layout/copyright_footer"/>
 
-    <TextView
-        android:id="@+id/copyright_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_centerHorizontal="true"
-        android:text="@string/discover_copyright_text" />
-
-</RelativeLayout>
+</com.mobile.discover.mobile.BlackDiscoverLayout>
