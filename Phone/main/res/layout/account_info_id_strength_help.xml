@@ -229,11 +229,23 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/light_text_size" />
             
-             <TableRow
+            <TextView
+                android:id="@+id/account_info_help_go_back_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_below="@id/account_info_help_p3_label"
+                android:clickable="true"
+                android:onClick="goBack"
+                android:padding="8dp"
+                android:text="@string/go_back"
+                android:textColor="@color/blue"/>
+            
+          <TableRow
             android:id="@+id/account_info_help_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/account_info_help_p3_label"
+            android:layout_below="@+id/account_info_help_go_back_label"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp" >
 

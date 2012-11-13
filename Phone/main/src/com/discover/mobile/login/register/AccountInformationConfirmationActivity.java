@@ -19,6 +19,10 @@ public class AccountInformationConfirmationActivity extends RoboActivity {
 	TextView userEmailLabel;
 	@InjectView(R.id.account_info_confirm_account_label)
 	TextView userAcctNbrLabel;
+	@InjectView(R.id.account_info_confirm_step_title_label)
+	TextView titleLabel;
+	@InjectView(R.id.account_info_confirm_first_paragraph_label)
+	TextView firstParagraph;
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
@@ -30,6 +34,19 @@ public class AccountInformationConfirmationActivity extends RoboActivity {
         		userIdLabel.setText(extras.getString(IntentExtraKey.UID));
         		userEmailLabel.setText(extras.getString(IntentExtraKey.EMAIL));
         		userAcctNbrLabel.setText(extras.getString(IntentExtraKey.ACCOUNT_LAST4));
+        		if("forgotPass".equals(extras.getString("ScreenType"))){
+        			titleLabel.setText(
+        					R.string.password_confirmation_title_text);
+        			firstParagraph.setText(
+        					R.string.password_confirmation_changed_text);
+        		}
+        		else if("forgotBoth".equals(extras.getString("ScreenType"))){
+        			titleLabel.setText(R.string.forgot_both_title_text);
+        			firstParagraph.setText(R.string.forgot_both_changed_text);
+        		}
+        		else{
+        			//This is a registration screen 
+        		}
         	}
 		}
 	}

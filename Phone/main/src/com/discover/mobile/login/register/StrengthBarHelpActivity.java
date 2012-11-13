@@ -2,6 +2,7 @@ package com.discover.mobile.login.register;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.discover.mobile.R;
 
@@ -22,5 +23,9 @@ public class StrengthBarHelpActivity extends Activity{
         	}
 		}
 
+	}
+	
+	public void goBack(View v){
+		finish();
 	}
 }

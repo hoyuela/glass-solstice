@@ -43,7 +43,7 @@ public class EnterNewPasswordActivity extends RoboActivity{
 		if (savedInstanceState == null) {
 			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
-        		passOneDetails = (ForgotPasswordDetails)getIntent().getSerializableExtra("ForgotPasswordDetails");
+        		passOneDetails = (ForgotPasswordDetails)getIntent().getSerializableExtra(IntentExtraKey.FORGOT_PASS_DETAILS);
         		passTwoDetails.userId = passOneDetails.userId;
         		passTwoDetails.dateOfBirthDay = passOneDetails.dateOfBirthDay;
         		passTwoDetails.dateOfBirthMonth = passOneDetails.dateOfBirthMonth;
@@ -258,7 +258,7 @@ public class EnterNewPasswordActivity extends RoboActivity{
 			confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
 			confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 			confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
-			
+			confirmationScreen.putExtra("ScreenType", "forgotPass");
 			this.startActivity(confirmationScreen);
 		}
 	

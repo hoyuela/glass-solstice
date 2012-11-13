@@ -26,6 +26,7 @@ import com.discover.mobile.common.auth.registration.RegistrationConfirmationDeta
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.login.LoginActivity;
 
 public class CreateLoginActivity extends Activity{
 	
@@ -39,6 +40,11 @@ public class CreateLoginActivity extends Activity{
 	
 	@InjectView(R.id.account_info_error_label)
 	private TextView errorMessageLabel;
+	
+	@InjectView(R.id.account_info_register_label)
+	private TextView titleLabel;
+	
+	private boolean forgotBoth = false;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
@@ -60,10 +66,25 @@ public class CreateLoginActivity extends Activity{
         		formDataTwo.expirationMonth = formDataOne.expirationMonth;
         		formDataTwo.expirationYear = formDataOne.expirationYear;
         		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
+        		if("forgotBoth".equals(extras.getString("ScreenType"))){
+        			forgotBoth = true;
+        			titleLabel.setText(R.string.forgot_both_text);
+        		}
         	}
 		}
 		
 		setupTextChangedListeners();
+	}
+	
+	@Override
+	public void onBackPressed() {
+	   final Intent navToMain = new Intent(this, LoginActivity.class);
+	   startActivity(navToMain);
+	}
+	
+	public void cancel(final View v){
+		   final Intent navToMain = new Intent(this, LoginActivity.class);
+		   startActivity(navToMain);
 	}
 	
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
@@ -72,6 +93,8 @@ public class CreateLoginActivity extends Activity{
 		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_CONFIRMATION);
+		if(forgotBoth)
+			confirmationScreen.putExtra("ScreenType", "forgotBoth");
 		this.startActivity(confirmationScreen);
 	}
 	

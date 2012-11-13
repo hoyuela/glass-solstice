@@ -135,12 +135,9 @@ public class LoginActivity extends RoboActivity {
 						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
 						return true;
 					default:
-						break;
+						errorTextView.setText(messageErrorResponse.getMessage());
+						return true;
 				}
-				
-				errorTextView.setText(messageErrorResponse.getMessage());
-				
-				return true;
 			}
 		};
 		
