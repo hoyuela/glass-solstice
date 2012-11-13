@@ -29,9 +29,7 @@ public class StrongAuthAnswerCall extends NetworkServiceCall<Object> {
 		
 		super(context, new PostCallParams("/cardsvcs/acs/strongauth/v1/authenticate") {{
 			
-			clearsSessionBeforeRequest = true;
-
-			requiresSessionForRequest = false;
+			requiresSessionForRequest = true;
 			
 			sendDeviceIdentifiers = true;
 			

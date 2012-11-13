@@ -1,6 +1,5 @@
 package com.discover.mobile.login.register;
 
-import java.net.HttpURLConnection;
 import java.security.NoSuchAlgorithmException;
 
 import roboguice.activity.RoboActivity;
@@ -25,6 +24,7 @@ import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.forgotuidpassword.EnterNewPasswordActivity;
+import com.discover.mobile.login.LoginActivity;
 
 public class EnhancedAccountSecurityActivity extends RoboActivity{
 	private final static String TAG = 
@@ -94,20 +94,22 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 			@Override
 			public void success(final Object value) {
 				progress.dismiss();
+				Log.d(TAG, "Strong Auth Succeeded!");
 				navToNextScreen();
 			}
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
 				progress.dismiss();
-				
+				Log.e(TAG, "Error message: " + errorResponse.getHttpStatusCode());
+
 				switch (errorResponse.getHttpStatusCode()) {
-					case HttpURLConnection.HTTP_BAD_REQUEST:
-						return true;
-					case HttpURLConnection.HTTP_UNAUTHORIZED:
-						return true;
-					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldn't authenticate user info.
-						return true;
+//					case HttpURLConnection.HTTP_BAD_REQUEST:
+//						return true;
+//					case HttpURLConnection.HTTP_UNAUTHORIZED:
+//						return true;
+//					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldn't authenticate user info.
+//						return true;
 				}
 				
 				return false;
@@ -153,7 +155,13 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 		}
 		
 	}
-
+	
+	@Override
+	public void onBackPressed() {
+	   Intent navToMain = new Intent(this, LoginActivity.class);
+	   startActivity(navToMain);
+	}
+	
 	private void navToNextScreen(){
 		//Go to registration screen -> forgot both/register
 		if(nextScreen != null || nextScreen != ""){
