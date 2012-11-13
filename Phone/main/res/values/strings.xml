@@ -32,6 +32,9 @@
 	<string name="could_not_complete_request">
 	    Your Request Could Not Be Completed
 	</string>
+	<string name="go_back">
+	    Go back
+	</string>
 	<string name="forgot_password_text">Forgot Password</string>
 	<string name="forgot_both_text">Forgot Both</string>
 	<string name="forgot_password_field_title_text">Credit Card User ID:</string>
