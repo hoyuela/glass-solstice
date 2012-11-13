@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.InputValidator;
+import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.common.forgotpassword.ForgotPasswordDetails;
 import com.discover.mobile.common.forgotpassword.ForgotPasswordTwoCall;
 import com.discover.mobile.common.forgotpassword.ForgotPasswordTwoDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
@@ -29,9 +29,10 @@ import com.discover.mobile.login.register.StrengthBarHelpActivity;
 
 @ContentView(R.layout.enter_new_password)
 
-public class EnterNewPasswordActivity extends RoboActivity{
+public class EnterNewPasswordActivity extends RoboActivity {
+	
 	private static final String TAG = EnterNewPasswordActivity.class.getSimpleName();
-	private ForgotPasswordDetails passOneDetails;
+	private AccountInformationDetails passOneDetails;
 	private ForgotPasswordTwoDetails passTwoDetails;
 	
 	@Override
@@ -43,7 +44,7 @@ public class EnterNewPasswordActivity extends RoboActivity{
 		if (savedInstanceState == null) {
 			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
-        		passOneDetails = (ForgotPasswordDetails)getIntent().getSerializableExtra(IntentExtraKey.FORGOT_PASS_DETAILS);
+        		passOneDetails = (AccountInformationDetails) getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
         		passTwoDetails.userId = passOneDetails.userId;
         		passTwoDetails.dateOfBirthDay = passOneDetails.dateOfBirthDay;
         		passTwoDetails.dateOfBirthMonth = passOneDetails.dateOfBirthMonth;
@@ -224,11 +225,11 @@ public class EnterNewPasswordActivity extends RoboActivity{
 		}
 		
 		public void checkInputsThenSubmit(final View v){
-			InputValidator validator = new InputValidator();
-			EditText pass1 = (EditText)findViewById(R.id.account_info_two_pass_field);
-			EditText pass2 = (EditText)findViewById(R.id.account_info_two_pass_confirm_field);
-			String pass1Value = pass1.getText().toString();
-			String pass2Value = pass2.getText().toString();
+			final InputValidator validator = new InputValidator();
+			final EditText pass1 = (EditText)findViewById(R.id.account_info_two_pass_field);
+			final EditText pass2 = (EditText)findViewById(R.id.account_info_two_pass_confirm_field);
+			final String pass1Value = pass1.getText().toString();
+			final String pass2Value = pass2.getText().toString();
 			
 			//If the info was all valid - submit it to the service call.
 			if(validator.isPassValid(pass1Value) &&
@@ -239,12 +240,12 @@ public class EnterNewPasswordActivity extends RoboActivity{
 			}
 			else{
 				if(!validator.wasPassValid){
-					TextView errorLabelOne = 
+					final TextView errorLabelOne = 
 					(TextView)findViewById(R.id.enter_new_pass_error_two_label);
 					errorLabelOne.setText(getString(R.string.invalid_value));
 				}
 				if(validator.wasPassValid && !validator.didPassesMatch){
-					TextView errorLabelTwo = 
+					final TextView errorLabelTwo = 
 							(TextView)findViewById(R.id.enter_new_pass_error_two_label);
 							errorLabelTwo.setText(getString(R.string.invalid_value));
 				}
@@ -253,8 +254,8 @@ public class EnterNewPasswordActivity extends RoboActivity{
 			
 		}
 		
-		private void navigateToConfirmationScreenWithResponseData(RegistrationConfirmationDetails responseData){
-			Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
+		private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
+			final Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
 			confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
 			confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 			confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);

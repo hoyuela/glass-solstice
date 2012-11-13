@@ -33,6 +33,7 @@ public class StrongAuthAnswerCall extends NetworkServiceCall<Object> {
 			
 			sendDeviceIdentifiers = true;
 			
+			// TODO combine with the code for this in NetworkServiceCall
 			final TelephonyManager telephonyManager =
 					(TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 			strongAuthAnswerDetails.did = getSha256Hash(telephonyManager.getDeviceId());
@@ -56,8 +57,8 @@ public class StrongAuthAnswerCall extends NetworkServiceCall<Object> {
 
 
 	@Override
-	protected Object parseSuccessResponse(int status,
-			Map<String, List<String>> headers, InputStream body)
+	protected Object parseSuccessResponse(final int status,
+			final Map<String, List<String>> headers, final InputStream body)
 			throws IOException {
 		// TODO Auto-generated method stub
 		return null;

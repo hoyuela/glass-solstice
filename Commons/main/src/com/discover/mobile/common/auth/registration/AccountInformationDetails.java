@@ -10,8 +10,16 @@ public class AccountInformationDetails implements Serializable {
 
 	private static final long serialVersionUID = 8196921305619911757L;
 
-	//Step One Strings.
+	/**
+	 * This or {@link #userId} should always be {@code null}, never both or neither.
+	 */
 	public String acctNbr;
+	/**
+	 * This or {@link #acctNbr} should always be {@code null}, never both or neither.
+	 */
+	public String userId;
+	
+	//Step One Strings.
 	public String expirationMonth;
 	public String expirationYear;
 	
