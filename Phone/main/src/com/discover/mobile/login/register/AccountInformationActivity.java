@@ -444,9 +444,14 @@ private void getStrongAuthQuestion(){
 		Intent strongAuth = new Intent(this, EnhancedAccountSecurityActivity.class);
 		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, strongAuthQuestion);
 		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, strongAuthQuestionId);
-		if(forgotPass)
+		if(forgotPass){
 			strongAuth.putExtra(IntentExtraKey.SCREEN_TYPE, ScreenType.FORGOT_PASSWORD);
-		
+			strongAuth.putExtra(IntentExtraKey.FORGOT_PASS_DETAILS, 
+					forgotPasswordDetails);
+		}else{
+			strongAuth.putExtra(IntentExtraKey.REGISTRATION1_DETAILS,
+				registrationOneDetails);
+		}
 		startActivity(strongAuth);
 
 			
