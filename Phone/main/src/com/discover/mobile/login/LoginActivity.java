@@ -27,7 +27,7 @@ import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.forgotuidpassword.ForgotCredentialsActivity;
-import com.discover.mobile.login.register.AccountInformationActivity;
+import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.google.common.base.Strings;
 
 @ContentView(R.layout.login)
@@ -171,8 +171,7 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	public void registerNewUser() {
-		final Intent accountInformationActivity = new Intent(
-				this, AccountInformationActivity.class);
+		final Intent accountInformationActivity = new Intent(this, RegistrationAccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);
 	}
 	

@@ -33,6 +33,7 @@ public class StrongAuthAnswerCall extends NetworkServiceCall<Object> {
 			
 			sendDeviceIdentifiers = true;
 			
+			// TODO combine with the code for this in NetworkServiceCall
 			final TelephonyManager telephonyManager =
 					(TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 			strongAuthAnswerDetails.did = getSha256Hash(telephonyManager.getDeviceId());

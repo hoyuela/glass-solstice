@@ -17,9 +17,9 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.InputValidator;
+import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.forgotpassword.ForgotPasswordDetails;
 import com.discover.mobile.common.forgotpassword.ForgotPasswordTwoCall;
 import com.discover.mobile.common.forgotpassword.ForgotPasswordTwoDetails;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -29,9 +29,10 @@ import com.discover.mobile.login.register.StrengthBarHelpActivity;
 
 @ContentView(R.layout.enter_new_password)
 
-public class EnterNewPasswordActivity extends RoboActivity{
+public class EnterNewPasswordActivity extends RoboActivity {
+	
 	private static final String TAG = EnterNewPasswordActivity.class.getSimpleName();
-	private ForgotPasswordDetails passOneDetails;
+	private AccountInformationDetails passOneDetails;
 	private ForgotPasswordTwoDetails passTwoDetails;
 	
 	@Override
@@ -43,7 +44,7 @@ public class EnterNewPasswordActivity extends RoboActivity{
 		if (savedInstanceState == null) {
 			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
-        		passOneDetails = (ForgotPasswordDetails)getIntent().getSerializableExtra(IntentExtraKey.FORGOT_PASS_DETAILS);
+        		passOneDetails = (AccountInformationDetails) getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
         		passTwoDetails.userId = passOneDetails.userId;
         		passTwoDetails.dateOfBirthDay = passOneDetails.dateOfBirthDay;
         		passTwoDetails.dateOfBirthMonth = passOneDetails.dateOfBirthMonth;

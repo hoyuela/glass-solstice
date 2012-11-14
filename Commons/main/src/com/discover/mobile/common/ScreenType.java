@@ -1,6 +1,6 @@
 package com.discover.mobile.common;
 
-public final class ScreenType {
+public interface ScreenType {
 	public static final int MAINTENANCE = 0;
 	public static final int LOCKED_OUT_USER = 1;
 	public static final int BAD_ACCOUNT_STATUS = 2;

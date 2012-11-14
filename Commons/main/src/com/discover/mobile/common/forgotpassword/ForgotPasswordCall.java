@@ -8,6 +8,7 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
@@ -20,7 +21,7 @@ public class ForgotPasswordCall extends NetworkServiceCall<Object> {
 	private final TypedReferenceHandler<Object> handler;
 
 	public ForgotPasswordCall(final Context context, final AsyncCallback<Object> callback,
-			final ForgotPasswordDetails formData) {
+			final AccountInformationDetails formData) {
 		
 		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/pwd/auth") {{
 			clearsSessionBeforeRequest = true;
