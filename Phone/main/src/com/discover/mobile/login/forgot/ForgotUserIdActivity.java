@@ -142,9 +142,10 @@ public class ForgotUserIdActivity extends RoboActivity {
 						mainErrLabel.setText(getString(R.string.login_error));
 						showLabel(mainErrLabel);
 						return true;
-					case HttpURLConnection.HTTP_UNAVAILABLE:
-						sendToErrorPage(ScreenType.SERVICE_UNAVAILABLE);
-						return true;
+//					case HttpURLConnection.HTTP_UNAVAILABLE:
+//						//FIXME add service unavailable to screen types/error screens.
+//						sendToErrorPage(ScreenType.SERVICE_UNAVAILABLE);
+//						return true;
 				}
 				
 				return false;
