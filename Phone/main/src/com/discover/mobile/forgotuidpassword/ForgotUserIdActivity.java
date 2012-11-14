@@ -52,8 +52,8 @@ public class ForgotUserIdActivity extends RoboActivity {
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		
-		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
+		// FIXME Gives null pointer exception.
+//		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
 		
 		setOnClickActions();
 	}
@@ -74,22 +74,30 @@ public class ForgotUserIdActivity extends RoboActivity {
 		});
 	}
 	
-	public void goBack(){
+	public void goBack() {
 		finish();
+	}
+	
+	private void hideLabel(View v) {
+		v.setVisibility(View.GONE);
+	}
+	
+	private void showLabel(View v) {
+		v.setVisibility(View.VISIBLE);
 	}
 	
 	public void checkInputsAndSubmit(){
 		final InputValidator validator = new InputValidator();
 		
 		if(!validator.isCardAccountNumberValid(cardNum.getText().toString()))
-			idErrLabel.setText(getString(R.string.invalid_value));
+			showLabel(idErrLabel);
 		else
-			passErrLabel.setText(getString(R.string.empty));
+			hideLabel(idErrLabel);
 
 		if(passText.getText().toString().isEmpty())
-			passErrLabel.setText(getString(R.string.invalid_value));
+			showLabel(passErrLabel);
 		else
-			passErrLabel.setText(getString(R.string.empty));
+			hideLabel(passErrLabel);
 
 		if(validator.wasAccountNumberValid && !passText.getText().toString().isEmpty())
 			doForgotUserIdCall();

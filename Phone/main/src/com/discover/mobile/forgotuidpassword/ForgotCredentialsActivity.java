@@ -10,8 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.login.register.ForgotBothAccountInformationActivity;
 import com.discover.mobile.login.register.ForgotPasswordAccountInformationActivity;
 
@@ -20,14 +18,14 @@ public class ForgotCredentialsActivity extends RoboListActivity {
 	
 	private static final String TAG = ForgotCredentialsActivity.class.getSimpleName();
 	
-	private final ArrayAdapter<Option> optionAdapter = new ArrayAdapter<Option>(this,
-			R.layout.single_list_item_with_disclosure_indicator, R.id.tv, Option.values());
+	private ArrayAdapter<Option> optionAdapter;
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		
-		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_MENU);
+		optionAdapter = new ArrayAdapter<Option>(this,
+				R.layout.single_list_item_with_disclosure_indicator, R.id.tv, Option.values());
+//		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_MENU);
 	}
 	
 	/**

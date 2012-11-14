@@ -24,7 +24,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 	
 	private final static String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
 	private TextView detailHelpLabel, statusIconLabel;
-	private String question, questionId;
+	private String questionId;
 	
 	@InjectView(R.id.account_security_question_placeholder_label)
 	private TextView questionLabel;
@@ -41,7 +41,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 		setContentView(R.layout.enhanced_account_security);
 		final Bundle extras = getIntent().getExtras();
     	if(extras != null) {
-    		question = 
+    		String question = 
     				extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION);
     		questionId = 
     				extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION_ID);
@@ -105,6 +105,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 			strongAuthAnswer.submit();
 		} catch (final NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
+			Log.e(TAG, "Could not encode strong auth response body.");
 			e.printStackTrace();
 		}
 		

@@ -32,7 +32,7 @@ import com.discover.mobile.login.register.StrengthBarHelpActivity;
 public class EnterNewPasswordActivity extends RoboActivity {
 	
 	private static final String TAG = EnterNewPasswordActivity.class.getSimpleName();
-	private AccountInformationDetails passOneDetails;
+	private static AccountInformationDetails passOneDetails;
 	private ForgotPasswordTwoDetails passTwoDetails;
 	
 	@Override
@@ -41,19 +41,18 @@ public class EnterNewPasswordActivity extends RoboActivity {
 		
 		passTwoDetails = new ForgotPasswordTwoDetails();
 		
-		if (savedInstanceState == null) {
-			final Bundle extras = getIntent().getExtras();
-        	if(extras != null) {
-        		passOneDetails = (AccountInformationDetails) getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
-        		passTwoDetails.userId = passOneDetails.userId;
-        		passTwoDetails.dateOfBirthDay = passOneDetails.dateOfBirthDay;
-        		passTwoDetails.dateOfBirthMonth = passOneDetails.dateOfBirthMonth;
-        		passTwoDetails.dateOfBirthYear = passOneDetails.dateOfBirthYear;
-        		passTwoDetails.expirationMonth = passOneDetails.expirationMonth;
-        		passTwoDetails.expirationYear = passOneDetails.expirationYear;
-        		passTwoDetails.socialSecurityNumber = passOneDetails.socialSecurityNumber;
-        	}
-		}
+		final Bundle extras = getIntent().getExtras();
+    	if(extras != null) {
+    		passOneDetails = (AccountInformationDetails) getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
+    		passTwoDetails.userId = passOneDetails.userId;
+    		passTwoDetails.dateOfBirthDay = passOneDetails.dateOfBirthDay;
+    		passTwoDetails.dateOfBirthMonth = passOneDetails.dateOfBirthMonth;
+    		passTwoDetails.dateOfBirthYear = passOneDetails.dateOfBirthYear;
+    		passTwoDetails.expirationMonth = passOneDetails.expirationMonth;
+    		passTwoDetails.expirationYear = passOneDetails.expirationYear;
+    		passTwoDetails.socialSecurityNumber = passOneDetails.socialSecurityNumber;
+    	}
+		
 		final EditText passField = (EditText)findViewById(R.id.account_info_two_pass_field);
 		passField.addTextChangedListener(new TextWatcher(){
 			@Override

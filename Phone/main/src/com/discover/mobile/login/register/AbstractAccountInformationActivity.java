@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
-import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.StrongAuthCall;
@@ -72,7 +71,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		setupSpinnerAdapters();
     	setupFieldsAndLabels();
     	
-    	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
+//    	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 	}
 
 	@InjectView(R.id.account_info_month_spinner)
@@ -425,18 +424,20 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		final String emptyString = "";
 		
 		// FIXME
-//		/*
-//		 * Set error label based on what is valid.
-//		 * These should never be both true.
-//		 * Bitwise AND and inclusive OR used - why not.
-//		 */
-//		if(forgotPass & !validator.wasUidValid | 
-//				!forgotPass & !validator.wasAccountNumberValid){
-//			cardErrorLabel.setText(errorString);
-//		}
-//		else{
-//			cardErrorLabel.setText(emptyString);
-//		}
+		/*
+		 * Set error label based on what is valid.
+		 * These should never be both true.
+		 * Bitwise AND and inclusive OR used - why not.
+		 */
+		if("Forgot Password".equals(activityTitleLabel.getText().toString()) & !validator.wasPassValid){
+			cardErrorLabel.setText(errorString);
+		}
+		else if(!validator.wasAccountNumberValid){
+			cardErrorLabel.setText(errorString);
+		}
+		else{
+			cardErrorLabel.setText(emptyString);
+		}
 		
 		if(!validator.wasSsnValid){
 			ssnErrorLabel.setText(errorString);

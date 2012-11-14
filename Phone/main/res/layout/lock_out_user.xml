@@ -60,12 +60,6 @@
 
         </TableRow>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-        </RelativeLayout>
-
         <TableRow
             android:id="@+id/remember_user_row"
             android:layout_width="match_parent"

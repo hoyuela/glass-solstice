@@ -50,6 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/account_information_input_info_label"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:visibility="gone"
+            android:text="@string/invalid_value"
             android:textColor="@color/red" />
 
         <EditText
@@ -79,6 +81,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/forgot_id_password_label"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/invalid_value"
+            android:visibility="gone"
             android:textColor="@color/red" />
 
         <EditText
