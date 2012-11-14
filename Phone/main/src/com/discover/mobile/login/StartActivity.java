@@ -95,6 +95,8 @@ public class StartActivity extends RoboActivity {
 			@Override
 			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
+				
+				// FIXME named constants
 				switch(messageErrorResponse.getMessageStatusCode()) {
 					case 1002: 
 						TrackingHelper.trackPageView(AnalyticsPage.FORCED_UPGRADE);
@@ -121,7 +123,7 @@ public class StartActivity extends RoboActivity {
 	
 	private void sendToMaintenancePage() {
 		final Intent maintenancePageIntent = new Intent(StartActivity.this, LockOutUserActivity.class);
-		maintenancePageIntent.putExtra("ScreenType", ScreenType.MAINTENANCE);
+		ScreenType.MAINTENANCE.addExtraToIntent(maintenancePageIntent);
 		startActivity(maintenancePageIntent);
 	}
 	
@@ -192,7 +194,8 @@ public class StartActivity extends RoboActivity {
 					}
 				});
 				
-		if (typeOfUpgrade == OPTIONAL_UPGRADE) alertBuilder.setNegativeButton("Cancel", null);
+		if (typeOfUpgrade == OPTIONAL_UPGRADE)
+			alertBuilder.setNegativeButton("Cancel", null);
 		
 	    alertBuilder.show();
 	}

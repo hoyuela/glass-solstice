@@ -1,4 +1,4 @@
-package com.discover.mobile.login.register;
+package com.discover.mobile.common.auth.registration;
 
 public interface RegistrationErrorCodes {
 	

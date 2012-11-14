@@ -1,6 +1,6 @@
 package com.discover.mobile.login.register;
 
-import static com.discover.mobile.login.register.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
 
 import java.net.HttpURLConnection;
 
@@ -328,9 +328,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		
 	}
 	
-	private void sendToErrorPage(final int screenType) {
+	private void sendToErrorPage(final ScreenType screenType) {
 		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
-		maintenancePageIntent.putExtra(IntentExtraKey.SCREEN_TYPE, screenType);
+		screenType.addExtraToIntent(maintenancePageIntent);
 		startActivity(maintenancePageIntent);
 	}
 	
