@@ -15,24 +15,16 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.auth.StrongAuthAnswerCall;
 import com.discover.mobile.common.auth.StrongAuthAnswerDetails;
-import com.discover.mobile.common.auth.registration.AccountInformationDetails;
-import com.discover.mobile.common.forgotpassword.ForgotPasswordDetails;
-import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
-import com.discover.mobile.common.net.response.ErrorResponse;
-import com.discover.mobile.forgotuidpassword.EnterNewPasswordActivity;
 import com.discover.mobile.login.LoginActivity;
 
 public class EnhancedAccountSecurityActivity extends RoboActivity{
-	private final static String TAG = 
-			EnhancedAccountSecurityActivity.class.getSimpleName();
+	
+	private final static String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
 	private TextView detailHelpLabel, statusIconLabel;
-	private String question, questionId, nextScreen;
-	private AccountInformationDetails accountInformationDetails;
-	private ForgotPasswordDetails forgotPasswordDetails;
+	private String question, questionId;
 	
 	@InjectView(R.id.account_security_question_placeholder_label)
 	private TextView questionLabel;
@@ -44,7 +36,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 	private RadioGroup securityRadioGroup;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.enhanced_account_security);
 		final Bundle extras = getIntent().getExtras();
@@ -53,12 +45,6 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
     				extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION);
     		questionId = 
     				extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION_ID);
-    		accountInformationDetails = (AccountInformationDetails)
-    				extras.getSerializable(IntentExtraKey.REGISTRATION1_DETAILS);
-    		forgotPasswordDetails = (ForgotPasswordDetails)
-    				extras.getSerializable(IntentExtraKey.FORGOT_PASS_DETAILS);
-    		nextScreen = 
-    				extras.getString(IntentExtraKey.SCREEN_TYPE);
     		
     		questionLabel.setText(question);
     	}
@@ -75,7 +61,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 
 	}
 	
-	public void expandHelpMenu(View v){
+	public void expandHelpMenu(final View v){
 			if("+".equals(statusIconLabel.getText())){
 				statusIconLabel.setText(getString(R.string.account_security_minus_text));
 				detailHelpLabel.setMaxLines(10);
@@ -86,7 +72,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 			}
 	}
 	
-	public void submitSecurityInfo(View v){
+	public void submitSecurityInfo(final View v){
 		
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
@@ -95,50 +81,18 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 			public void success(final Object value) {
 				progress.dismiss();
 				Log.d(TAG, "Strong Auth Succeeded!");
-				navToNextScreen();
-			}
-
-			@Override
-			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				progress.dismiss();
-				Log.e(TAG, "Error message: " + errorResponse.getHttpStatusCode());
-
-				switch (errorResponse.getHttpStatusCode()) {
-//					case HttpURLConnection.HTTP_BAD_REQUEST:
-//						return true;
-//					case HttpURLConnection.HTTP_UNAUTHORIZED:
-//						return true;
-//					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldn't authenticate user info.
-//						return true;
-				}
-				
-				return false;
-			}
-
-			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
-
-				progress.dismiss();
-				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-				
-				
-				switch(messageErrorResponse.getMessageStatusCode()){
-				
-				default:
-					return false;
-				}
-				
+				setOkResultAndFinish();
 			}
 		};
 		
-		StrongAuthAnswerDetails answerDetails = new StrongAuthAnswerDetails();
+		final StrongAuthAnswerDetails answerDetails = new StrongAuthAnswerDetails();
 		answerDetails.questionAnswer = questionAnswerField.getText().toString();
 		answerDetails.questionId = questionId;
 		
 		//Find out which radio button is pressed.
-		int radioButtonId = securityRadioGroup.getCheckedRadioButtonId();
-		View selectedButton = securityRadioGroup.findViewById(radioButtonId);
-		int selectedIndex = securityRadioGroup.indexOfChild(selectedButton);
+		final int radioButtonId = securityRadioGroup.getCheckedRadioButtonId();
+		final View selectedButton = securityRadioGroup.findViewById(radioButtonId);
+		final int selectedIndex = securityRadioGroup.indexOfChild(selectedButton);
 		
 		if(selectedIndex == 0)
 			answerDetails.bindDevice = "true";
@@ -149,7 +103,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 		try {
 			strongAuthAnswer = new StrongAuthAnswerCall(this, callback, answerDetails);
 			strongAuthAnswer.submit();
-		} catch (NoSuchAlgorithmException e) {
+		} catch (final NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -158,29 +112,13 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 	
 	@Override
 	public void onBackPressed() {
-	   Intent navToMain = new Intent(this, LoginActivity.class);
+	   final Intent navToMain = new Intent(this, LoginActivity.class);
 	   startActivity(navToMain);
 	}
 	
-	private void navToNextScreen(){
-		//Go to registration screen -> forgot both/register
-		if(nextScreen != null || nextScreen != ""){
-			Intent createLoginActivity = new Intent(this,
-					CreateLoginActivity.class);
-			createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, 
-					accountInformationDetails);
-			startActivity(createLoginActivity);
-		}
-		//Go to enter new password screen
-		else if(nextScreen.equals(ScreenType.FORGOT_PASSWORD)){
-			Intent createLoginActivity = new Intent(this,
-					EnterNewPasswordActivity.class);
-			createLoginActivity.putExtra(IntentExtraKey.FORGOT_PASS_DETAILS,
-					forgotPasswordDetails);
-			startActivity(createLoginActivity);
-			
-		}
-			
-			
+	private void setOkResultAndFinish() {
+		setResult(RESULT_OK);
+		finish();
 	}
+	
 }

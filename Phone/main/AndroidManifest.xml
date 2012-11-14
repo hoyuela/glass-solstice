@@ -1,109 +1,103 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.discover.mobile"
     android:versionCode="1"
-    android:versionName="4.0" >
-
-    <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="16" />
+    android:versionName="4.0">
     
+	<uses-sdk android:minSdkVersion="10" android:targetSdkVersion="16" />
+	
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	
-    <application
-    	android:name=".DiscoverApplication"
-        android:icon="@drawable/discove_mobile_icn"
-        android:label="@string/app_name"
-        android:allowBackup="false" 
-        android:theme="@android:style/Theme.NoTitleBar">
-        
-       	<activity 
-            android:name=".login.StartActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-<intent-filter>
-                <action android:name="android.intent.action.MAIN" >
-                </action>
-                <category android:name="android.intent.category.LAUNCHER" >
-                </category>
-            </intent-filter>
-       	</activity>
-        
-        
-       <activity 
-            android:name=".login.LoginActivity"
+	<application android:name=".DiscoverApplication"
+		android:icon="@drawable/discove_mobile_icn"
+		android:label="@string/app_name"
+		android:allowBackup="false"
+		android:theme="@android:style/Theme.NoTitleBar">
+		
+		<activity android:name=".login.StartActivity"
+			android:label="@string/app_name"
+			android:launchMode="singleTask"
+			android:screenOrientation="portrait">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+
+		<activity android:name=".login.LoginActivity"
+			android:label="@string/app_name"
+			android:launchMode="singleTask"
+			android:screenOrientation="portrait">
+		</activity>
+
+		<activity android:name=".login.register.EnhancedAccountSecurityActivity"
+			android:label="@string/app_name"
+			android:launchMode="singleTask"
+			android:screenOrientation="portrait">
+		</activity>
+
+		<activity android:name=".login.LoggedInLandingPage"
+			android:label="@string/app_name"
+			android:launchMode="singleTask"
+			android:screenOrientation="portrait">
+		</activity>
+
+		<activity android:name=".login.LockOutUserActivity"
+			android:label="@string/app_name"
+			android:launchMode="singleTask"
+			android:screenOrientation="portrait">
+		</activity>
+
+		<activity android:name=".login.register.RegistrationAccountInformationActivity"
+			android:label="@string/app_name"
+			android:launchMode="singleTask"
+			android:screenOrientation="portrait">
+		</activity>
+	
+		<activity android:name=".login.register.ForgotPasswordAccountInformationActivity"
+			android:label="@string/app_name"
+			android:launchMode="singleTask"
+			android:screenOrientation="portrait">
+		</activity>
+	
+		<activity android:name=".login.register.ForgotBothAccountInformationActivity"
+			android:label="@string/app_name"
+			android:launchMode="singleTask"
+			android:screenOrientation="portrait">
+		</activity>
+       
+        <activity android:name=".login.register.CreateLoginActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
        </activity>
        
-       <activity 
-            android:name="com.discover.mobile.login.register.EnhancedAccountSecurityActivity"
+        <activity android:name=".login.register.AccountInformationConfirmationActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
        </activity>
        
-       <activity 
-            android:name=".login.LoggedInLandingPage"
+       <activity android:name=".login.register.StrengthBarHelpActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
        </activity>
        
-       <activity 
-            android:name=".login.LockOutUserActivity"
+       <activity android:name=".forgotuidpassword.ForgotCredentialsActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
        </activity>
        
-        <activity 
-            android:name="com.discover.mobile.login.register.AccountInformationActivity"
+       <activity android:name=".forgotuidpassword.ForgotUserIdActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
        </activity>
        
-        <activity 
-            android:name="com.discover.mobile.login.register.CreateLoginActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-       </activity>
-       
-        <activity 
-            android:name="com.discover.mobile.login.register.AccountInformationConfirmationActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-       </activity>
-       
-       <activity 
-            android:name="com.discover.mobile.login.register.StrengthBarHelpActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-       </activity>
-       
-       <activity 
-            android:name=".forgotuidpassword.ForgotCredentialsActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-       </activity>
-       
-       <activity 
-            android:name=".forgotuidpassword.ForgotUserIdActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-       </activity>
-       
-       <activity 
-            android:name=".forgotuidpassword.EnterNewPasswordActivity"
+       <activity android:name=".forgotuidpassword.EnterNewPasswordActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
