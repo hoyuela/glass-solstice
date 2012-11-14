@@ -156,6 +156,8 @@ public class ForgotUserIdActivity extends RoboActivity {
 					case 1910:
 						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
 						return true;
+					default:
+						break;
 				}
 
 				
