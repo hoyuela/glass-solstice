@@ -4,13 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_bkgd" >
 
-    <ImageView
-        android:id="@+id/title_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:contentDescription="@string/image_description"
-        android:src="@drawable/discover_logo" />
+    <include layout="@layout/discover_banner"/>
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -22,30 +16,7 @@
         android:orientation="vertical" 
         >
 
-        <TableRow
-            android:id="@+id/card_and_login_text_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/small_card_icon_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/card_login_button_text"
-                android:src="@drawable/card_icon" />
-
-            <TextView
-                android:id="@+id/secure_card_login_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="8dp"
-                android:text="@string/secure_login"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/orange" />
-
-        </TableRow>
+        <include layout="@layout/card_icon_and_login_label"/>
 
         <TableRow
             android:id="@+id/error_row"

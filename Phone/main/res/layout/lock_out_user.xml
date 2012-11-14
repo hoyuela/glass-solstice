@@ -1,52 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mobile.discover.mobile.BlackDiscoverLayout 
+<RelativeLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_bkgd" >
 
-    <ImageView
-        android:id="@+id/title_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:contentDescription="@string/image_description"
-        android:src="@drawable/discover_logo" />
+    <include layout="@layout/discover_banner"/>
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="294dp"
-        android:layout_height="wrap_content"
+        android:layout_height="240dp"
         android:layout_centerInParent="true"
         android:layout_marginTop="32dp"
         android:background="@drawable/rounded_table_corners_shape"
-        android:orientation="vertical" 
-        >
-
-        <TableRow
-            android:id="@+id/card_and_login_text_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/small_card_icon_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/card_login_button_text"
-                android:src="@drawable/card_icon" />
-
-            <TextView
-                android:id="@+id/secure_card_login_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="8dp"
-                android:text="@string/secure_login"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/orange" />
-
-        </TableRow>
+        android:orientation="vertical">
+        
+        <include layout="@layout/card_icon_and_login_label"/>
 
         <TableRow
             android:id="@+id/error_row"
@@ -60,38 +30,7 @@
                 android:textColor="@color/red" />
 
         </TableRow>
-
-        <TableRow
-            android:id="@+id/remember_user_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0" >
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="16dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="invisible" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/login_button_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_weight="0" >
-
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".4"
-                android:clickable="false"
-                android:longClickable="false"
-                android:visibility="invisible"/>
-        </TableRow>
-
+        
     </LinearLayout>
 
     <LinearLayout
@@ -102,10 +41,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="1dp"
         android:background="@drawable/login_box_reflection"
-        android:orientation="vertical" >
-
-    </LinearLayout>
+        android:orientation="vertical" />
 
     <include layout="@layout/copyright_footer"/>
 
-</com.mobile.discover.mobile.BlackDiscoverLayout>
+</RelativeLayout>

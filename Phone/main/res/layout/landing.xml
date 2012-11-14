@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_bkgd" >
+    
+    <include layout="@layout/discover_banner"/>
 
 	<Button
 	    android:id="@+id/card_login_button"
@@ -11,4 +13,4 @@
 	    android:layout_centerVertical="true"
 	    android:text="@string/card_login_button_text"/>
 
-	</RelativeLayout>
+</RelativeLayout>
