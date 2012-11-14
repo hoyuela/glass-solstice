@@ -10,20 +10,14 @@ import com.discover.mobile.common.net.response.AsyncCallback;
 
 public class GetStrongAuthQuestionCall extends JsonResponseMappingNetworkServiceCall<StrongAuthDetails> {
 	
-	private static final String TAG = GetStrongAuthQuestionCall.class.getSimpleName();
-	
 	private final TypedReferenceHandler<StrongAuthDetails> handler;
 
 	public GetStrongAuthQuestionCall(final Context context, final AsyncCallback<StrongAuthDetails> callback) {
-		
 		super(context, new GetCallParams("/cardsvcs/acs/strongauth/v1/challenge") {{
 			requiresSessionForRequest = true;
 			
 			sendDeviceIdentifiers = true;
-			
 		}}, StrongAuthDetails.class);
-		
-		
 		
 		// TODO decide if this is the best type of handler
 		handler = new StrongReferenceHandler<StrongAuthDetails>(callback);
@@ -33,4 +27,5 @@ public class GetStrongAuthQuestionCall extends JsonResponseMappingNetworkService
 	protected TypedReferenceHandler<StrongAuthDetails> getHandler() {
 		return handler;
 	}
+	
 }

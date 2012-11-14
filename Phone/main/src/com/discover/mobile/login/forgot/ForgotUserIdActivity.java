@@ -1,4 +1,4 @@
-package com.discover.mobile.forgotuidpassword;
+package com.discover.mobile.login.forgot;
 
 import java.net.HttpURLConnection;
 
@@ -22,8 +22,8 @@ import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.forgotuidpassword.ForgotUserIdCall;
-import com.discover.mobile.common.forgotuidpassword.UserIdDetails;
+import com.discover.mobile.common.auth.forgot.ForgotUserIdCall;
+import com.discover.mobile.common.auth.forgot.UserIdDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
@@ -124,8 +124,6 @@ public class ForgotUserIdActivity extends RoboActivity {
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						idErrLabel.setText(getString(R.string.login_error));
 						return true;
-					case HttpURLConnection.HTTP_BAD_REQUEST:
-						return true;//Will happen for 400 + 1913 invalid online status. 
 				}
 				
 				return false;
@@ -143,14 +141,13 @@ public class ForgotUserIdActivity extends RoboActivity {
 				// FIXME make named constants
 				switch (messageErrorResponse.getMessageStatusCode()){
 					case 1907:
-					case 1102://User's Account has an invalid online status.
+					case 1102: //User's Account has an invalid online status.
 						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
 						return true;
+						
 					case 1910:
 						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
 						return true;
-					default:
-						break;
 				}
 
 				
