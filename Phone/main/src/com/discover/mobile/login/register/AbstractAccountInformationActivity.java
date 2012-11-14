@@ -389,15 +389,20 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		final GetStrongAuthQuestionCall strongAuthCall = 
 				new GetStrongAuthQuestionCall(this, callback);
 		strongAuthCall.submit();
+		
 	}
 	
-	private static final int STRONG_AUTH_ACTIVITY = 0;
+	private static final int STRONG_AUTH_ACTIVITY = 1;
 	
 	private void navToStrongAuth() {
+		
 		final Intent strongAuth = new Intent(this, EnhancedAccountSecurityActivity.class);
+		
 		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, strongAuthQuestion);
 		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, strongAuthQuestionId);
+		
 		startActivityForResult(strongAuth, STRONG_AUTH_ACTIVITY);
+		
 	}
 	
 	@Override
@@ -408,7 +413,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, accountInformationDetails);
 				startActivity(createLoginActivity);
 			} else {
-				// TODO
+				// TODO if strong auth does not close with success.
 			}
 		}
 	}

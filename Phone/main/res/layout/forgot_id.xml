@@ -22,12 +22,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/forgot_id_title_label"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:visibility="gone"
             android:textColor="@color/red" />
         
         <TextView
             android:id="@+id/forgot_id_account_num_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_below="@+id/forgot_id_submission_error_label"
             android:text="@string/account_info_label_one"
             android:textAppearance="?android:attr/textAppearanceSmall"

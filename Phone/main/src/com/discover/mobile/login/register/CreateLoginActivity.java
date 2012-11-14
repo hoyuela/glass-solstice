@@ -232,7 +232,7 @@ public class CreateLoginActivity extends Activity{
 			/*
 			 * Meets minimum requirements and combines a variation of letters, numbers, and special characters.
 			 */
-			if(!looksLikeActNum && !hasInvalidChar && hasGoodLength && hasLowerCase && hasUpperCase && hasNonAlphaNum && hasNumber){
+			if(!looksLikeActNum && !hasInvalidChar && hasGoodLength && (hasLowerCase || hasUpperCase) && hasNonAlphaNum && hasNumber){
 				barOne.setBackgroundColor(getResources().getColor(R.color.green));		
 				barTwo.setBackgroundColor(getResources().getColor(R.color.green));
 				barThree.setBackgroundColor(getResources().getColor(R.color.green));

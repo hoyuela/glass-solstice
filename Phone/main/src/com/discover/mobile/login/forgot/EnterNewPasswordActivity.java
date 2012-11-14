@@ -110,7 +110,7 @@ public class EnterNewPasswordActivity extends RoboActivity {
 				 * Meets minimum requirements and combines upper case letters,
 				 * lower case letters, numbers, and special characters.
 				 */
-				if(hasGoodLength && hasUpperAndLowerAndNum && hasNonAlphaNum){
+				if(hasGoodLength && (hasLowerCase || hasUpperCase) && hasNonAlphaNum){
 					barOne.setBackgroundColor(getResources().getColor(R.color.green));		
 					barTwo.setBackgroundColor(getResources().getColor(R.color.green));
 					barThree.setBackgroundColor(getResources().getColor(R.color.green));

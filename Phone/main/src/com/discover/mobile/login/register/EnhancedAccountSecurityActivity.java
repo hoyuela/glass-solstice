@@ -81,7 +81,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 			public void success(final Object value) {
 				progress.dismiss();
 				Log.d(TAG, "Strong Auth Succeeded!");
-				setOkResultAndFinish();
+				finishWithResultOK();
 			}
 		};
 		
@@ -117,7 +117,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 	   startActivity(navToMain);
 	}
 	
-	private void setOkResultAndFinish() {
+	private void finishWithResultOK() {
 		setResult(RESULT_OK);
 		finish();
 	}

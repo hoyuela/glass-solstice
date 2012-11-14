@@ -85,19 +85,19 @@
             android:screenOrientation="portrait">
        </activity>
        
-       <activity android:name=".forgotuidpassword.ForgotCredentialsActivity"
+       <activity android:name=".login.forgot.ForgotCredentialsActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
        </activity>
        
-       <activity android:name=".forgotuidpassword.ForgotUserIdActivity"
+       <activity android:name=".login.forgot.ForgotUserIdActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
        </activity>
        
-       <activity android:name=".forgotuidpassword.EnterNewPasswordActivity"
+       <activity android:name=".login.forgot.EnterNewPasswordActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">

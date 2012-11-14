@@ -38,6 +38,9 @@ public class ForgotUserIdActivity extends RoboActivity {
 	@InjectView(R.id.forgot_id_submit_button)
 	private Button submitButton;
 	
+	@InjectView(R.id.forgot_id_submission_error_label)
+	private TextView mainErrLabel;
+	
 	@InjectView(R.id.forgot_id_id_error_label)
 	private TextView idErrLabel;
 	
@@ -80,6 +83,12 @@ public class ForgotUserIdActivity extends RoboActivity {
 	
 	public void goBack() {
 		finish();
+	}
+	
+	private void hideAllErrorLabels(){
+		hideLabel(idErrLabel);
+		hideLabel(passErrLabel);
+		hideLabel(mainErrLabel);
 	}
 	
 	private void hideLabel(View v) {
@@ -130,7 +139,11 @@ public class ForgotUserIdActivity extends RoboActivity {
 				
 				switch (errorResponse.getHttpStatusCode()) {
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
-						idErrLabel.setText(getString(R.string.login_error));
+						mainErrLabel.setText(getString(R.string.login_error));
+						showLabel(mainErrLabel);
+						return true;
+					case HttpURLConnection.HTTP_UNAVAILABLE:
+						sendToErrorPage(ScreenType.SERVICE_UNAVAILABLE);
 						return true;
 				}
 				
@@ -199,7 +212,7 @@ public class ForgotUserIdActivity extends RoboActivity {
 	}
 	
 	public void clearInputs() {
-		idErrLabel.setText("");
+		hideAllErrorLabels();
 		passText.setText("");
 		cardNum.setText("");
 	}
