@@ -7,11 +7,11 @@ import android.view.View;
 import com.discover.mobile.R;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.InputValidator;
+import com.discover.mobile.common.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
-import com.discover.mobile.common.forgotpassword.ForgotPasswordCall;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.response.AsyncCallback;
-import com.discover.mobile.forgotuidpassword.EnterNewPasswordActivity;
+import com.discover.mobile.login.forgot.EnterNewPasswordActivity;
 
 public class ForgotPasswordAccountInformationActivity extends AbstractAccountInformationActivity {
 	

@@ -21,7 +21,6 @@ public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<Acco
 			final String username, final String password) {
 		
 		super(context, new GetCallParams("/cardsvcs/acs/acct/v1/account") {{
-			
 			final String authString = getAuthorizationString(username, password);
 			headers = ImmutableMap.<String,String>builder().put("Authorization", authString).build();
 			
@@ -37,8 +36,7 @@ public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<Acco
 	
 	private static String getAuthorizationString(final String username, final String password) {
 		final String concatenatedCreds = username + ": :" + password;
-		final String authString = "DCRDBasic " + Base64.encodeToString(concatenatedCreds.getBytes(), Base64.NO_WRAP);
-		return authString;
+		return "DCRDBasic " + Base64.encodeToString(concatenatedCreds.getBytes(), Base64.NO_WRAP);
 	}
 
 	@Override

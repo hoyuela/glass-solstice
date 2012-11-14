@@ -1,4 +1,4 @@
-package com.discover.mobile.common.forgotuidpassword;
+package com.discover.mobile.common.auth.forgot;
 
 import java.io.Serializable;
 

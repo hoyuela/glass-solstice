@@ -1,4 +1,4 @@
-package com.discover.mobile.forgotuidpassword;
+package com.discover.mobile.login.forgot;
 
 import java.net.HttpURLConnection;
 
@@ -17,10 +17,10 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.InputValidator;
+import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoCall;
+import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoDetails;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.common.forgotpassword.ForgotPasswordTwoCall;
-import com.discover.mobile.common.forgotpassword.ForgotPasswordTwoDetails;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;

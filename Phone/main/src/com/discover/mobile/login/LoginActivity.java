@@ -28,7 +28,7 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
-import com.discover.mobile.forgotuidpassword.ForgotCredentialsActivity;
+import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.google.common.base.Strings;
 
