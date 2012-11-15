@@ -76,190 +76,197 @@ public class EnterNewPasswordActivity extends RoboActivity {
 			}
 		});
 	}
-		public void updateBarsForPass(final CharSequence inputSequence, final View barOne, final View barTwo, final View barThree, final TextView label){
-			boolean hasGoodLength  = false;
-			boolean hasUpperCase   = false;
-			boolean hasLowerCase   = false;
-			boolean hasNonAlphaNum = false;
-			boolean hasNumber 	   = false;
-					
-			//Check length of input.
-			if(inputSequence.length() >= 8 && inputSequence.length() <= 32)
-				hasGoodLength = true;
-						
-			//A password must have at least 1 letter and 1 number and cannot be 'password'
-			//but password doesn't have a number...
-				for(int i = 0; i < inputSequence.length(); ++i){
-					
-					if(Character.isLowerCase(inputSequence.charAt(i))){
-						hasLowerCase = true;
-					}
-					else if (Character.isUpperCase(inputSequence.charAt(i))){
-						hasUpperCase = true;
-					}
-					else if (Character.isDigit(inputSequence.charAt(i))){
-						hasNumber = true;
-					}				
-					else if(!Character.isLetterOrDigit(inputSequence.charAt(i))){
-						hasNonAlphaNum = true;
-					}
-				}
+
+	
+	public void updateBarsForPass(final CharSequence inputSequence, final View barOne, final View barTwo, final View barThree, final TextView label){
+		boolean hasGoodLength  = false;
+		boolean hasUpperCase   = false;
+		boolean hasLowerCase   = false;
+		boolean hasNonAlphaNum = false;
+		boolean hasNumber 	   = false;
 				
-				final boolean hasUpperAndLowerAndNum = hasLowerCase && hasUpperCase && hasNumber;
-				/*
-				 * Meets minimum requirements and combines upper case letters,
-				 * lower case letters, numbers, and special characters.
-				 */
-				if(hasGoodLength && (hasLowerCase || hasUpperCase) && hasNonAlphaNum){
-					barOne.setBackgroundColor(getResources().getColor(R.color.green));		
-					barTwo.setBackgroundColor(getResources().getColor(R.color.green));
-					barThree.setBackgroundColor(getResources().getColor(R.color.green));
-					label.setText(getResources().getString(R.string.strength_bar_strong));
-				}
-				/*
-				 * Meets minimum requirements but does not include a
-				 * variation of upper case letters, lower case letters, numbers, and special characters.
-				 */
-				else if(hasGoodLength && hasNumber && (hasUpperCase || hasLowerCase)){
-					barOne.setBackgroundColor(getResources().getColor(R.color.yellow));		
-					barTwo.setBackgroundColor(getResources().getColor(R.color.yellow));
-					barThree.setBackgroundColor(getResources().getColor(R.color.gray));
-					label.setText(getResources().getString(R.string.strength_bar_moderate));
-				}
-				/*
-				 * Does not meet minimum requirements (not 8-32 characters, 
-				 * does not contain at least 1 letter and 1 number, or is the word "password").
-				 */
-				else{
-					barOne.setBackgroundColor(getResources().getColor(R.color.red));		
-					barTwo.setBackgroundColor(getResources().getColor(R.color.gray));
-					barThree.setBackgroundColor(getResources().getColor(R.color.gray));
-					label.setText(getResources().getString(R.string.strength_bar_not_valid));
-				}
+		//Check length of input.
+		if(inputSequence.length() >= 8 && inputSequence.length() <= 32)
+			hasGoodLength = true;
+					
+		//A password must have at least 1 letter and 1 number and cannot be 'password'
+		//but password doesn't have a number...
+			for(int i = 0; i < inputSequence.length(); ++i){
 				
-		}
-		
-		private void submitFormInfo() {
-			final ProgressDialog progress = 
-					ProgressDialog.show(this, "Discover", "Loading...", true);
-			
-			final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = 
-					new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
-				@Override
-				public void success(final RegistrationConfirmationDetails responseData) {
-					Log.d(TAG, "Success");
-					progress.dismiss();
-					navigateToConfirmationScreenWithResponseData(responseData);
+				if(Character.isLowerCase(inputSequence.charAt(i))){
+					hasLowerCase = true;
 				}
-
-				@Override
-				public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-					Log.w(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse);
-					progress.dismiss();
-					
-					switch (errorResponse.getHttpStatusCode()) {
-						case HttpURLConnection.HTTP_BAD_REQUEST: // TODO figure out if this actually happens
-							return true;
-						case HttpURLConnection.HTTP_UNAUTHORIZED:
-							return true;
-					}
-					
-					return false;
+				else if (Character.isUpperCase(inputSequence.charAt(i))){
+					hasUpperCase = true;
 				}
-
-				@Override
-				public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
-					progress.dismiss();
-					Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-					final TextView mainErrorMessageLabel = 
-							(TextView)findViewById(R.id.account_info_main_error_label);
-					final TextView errorMessageLabel =
-							(TextView)findViewById(R.id.account_info_error_label);
-					switch(messageErrorResponse.getMessageStatusCode()){
-					case 1004:
-						return true;
-					case 1906: //Provided information was incorrect.
-						errorMessageLabel
-						.setText(getString(
-								R.string.account_info_bad_input_error_text));
-						return true;
-					case 1907: //Last attemt with this account number warning.
-						errorMessageLabel
-						.setText(getString(
-								R.string.login_attempt_warning));
-						return true;
-					case 1919:
-						mainErrorMessageLabel
-						.setText(getString(
-								R.string.account_info_bad_input_error_text));
-						errorMessageLabel
-						.setText(getString(
-								R.string.account_info_two_id_matches_pass_error_text));
-						return true;
-					case 1921:
-						mainErrorMessageLabel
-						.setText(getString(
-								R.string.account_info_bad_input_error_text));
-						errorMessageLabel
-						.setText(getString(
-								R.string.account_info_two_username_in_use_error_text));
-						return true;
-					default:
-						return false;
-						
-					}
+				else if (Character.isDigit(inputSequence.charAt(i))){
+					hasNumber = true;
+				}				
+				else if(!Character.isLetterOrDigit(inputSequence.charAt(i))){
+					hasNonAlphaNum = true;
 				}
-			};
-			
-			final ForgotPasswordTwoCall forgotPassTwoCall = 
-					new ForgotPasswordTwoCall(this, callback, passTwoDetails);
-			forgotPassTwoCall.submit();
-
-		}
-		
-		public void showPasswordStrengthBarHelp(final View v){
-			final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-			passwordHelpScreen.putExtra("helpType", "password");
-			this.startActivity(passwordHelpScreen);
-		}
-		
-		public void checkInputsThenSubmit(final View v){
-			final InputValidator validator = new InputValidator();
-			final EditText pass1 = (EditText)findViewById(R.id.account_info_two_pass_field);
-			final EditText pass2 = (EditText)findViewById(R.id.account_info_two_pass_confirm_field);
-			final String pass1Value = pass1.getText().toString();
-			final String pass2Value = pass2.getText().toString();
-			
-			//If the info was all valid - submit it to the service call.
-			if(validator.isPassValid(pass1Value) &&
-			   validator.doPassesMatch(pass1Value, pass2Value)){
-				passTwoDetails.password = pass1Value;
-				passTwoDetails.passwordConfirm = passTwoDetails.password;
-				submitFormInfo();
 			}
+			
+			final boolean hasUpperAndLowerAndNum = hasLowerCase && hasUpperCase && hasNumber;
+			/*
+			 * Meets minimum requirements and combines upper case letters,
+			 * lower case letters, numbers, and special characters.
+			 */
+			if(hasGoodLength && (hasLowerCase || hasUpperCase) && hasNonAlphaNum){
+				barOne.setBackgroundColor(getResources().getColor(R.color.green));		
+				barTwo.setBackgroundColor(getResources().getColor(R.color.green));
+				barThree.setBackgroundColor(getResources().getColor(R.color.green));
+				label.setText(getResources().getString(R.string.strength_bar_strong));
+			}
+			/*
+			 * Meets minimum requirements but does not include a
+			 * variation of upper case letters, lower case letters, numbers, and special characters.
+			 */
+			else if(hasGoodLength && hasNumber && (hasUpperCase || hasLowerCase)){
+				barOne.setBackgroundColor(getResources().getColor(R.color.yellow));		
+				barTwo.setBackgroundColor(getResources().getColor(R.color.yellow));
+				barThree.setBackgroundColor(getResources().getColor(R.color.gray));
+				label.setText(getResources().getString(R.string.strength_bar_moderate));
+			}
+			/*
+			 * Does not meet minimum requirements (not 8-32 characters, 
+			 * does not contain at least 1 letter and 1 number, or is the word "password").
+			 */
 			else{
-				if(!validator.wasPassValid){
-					final TextView errorLabelOne = 
-					(TextView)findViewById(R.id.enter_new_pass_error_two_label);
-					errorLabelOne.setText(getString(R.string.invalid_value));
+				barOne.setBackgroundColor(getResources().getColor(R.color.red));		
+				barTwo.setBackgroundColor(getResources().getColor(R.color.gray));
+				barThree.setBackgroundColor(getResources().getColor(R.color.gray));
+				label.setText(getResources().getString(R.string.strength_bar_not_valid));
+			}
+			
+	}
+	
+	private void submitFormInfo() {
+		final ProgressDialog progress = 
+				ProgressDialog.show(this, "Discover", "Loading...", true);
+		
+		final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = 
+				new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
+			@Override
+			public void success(final RegistrationConfirmationDetails responseData) {
+				Log.d(TAG, "Success");
+				progress.dismiss();
+				navigateToConfirmationScreenWithResponseData(responseData);
+			}
+
+			@Override
+			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+				Log.w(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse);
+				progress.dismiss();
+				
+				switch (errorResponse.getHttpStatusCode()) {
+					case HttpURLConnection.HTTP_BAD_REQUEST: // TODO figure out if this actually happens
+						return true;
+					case HttpURLConnection.HTTP_UNAUTHORIZED:
+						return true;
 				}
-				if(validator.wasPassValid && !validator.didPassesMatch){
-					final TextView errorLabelTwo = 
-							(TextView)findViewById(R.id.enter_new_pass_error_two_label);
-							errorLabelTwo.setText(getString(R.string.invalid_value));
+				
+				return false;
+			}
+
+			@Override
+			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+				progress.dismiss();
+				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
+				final TextView mainErrorMessageLabel = 
+						(TextView)findViewById(R.id.account_info_main_error_label);
+				final TextView errorMessageLabel =
+						(TextView)findViewById(R.id.account_info_error_label);
+				switch(messageErrorResponse.getMessageStatusCode()){
+				case 1004:
+					return true;
+				case 1906: //Provided information was incorrect.
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					return true;
+				case 1907: //Last attemt with this account number warning.
+					errorMessageLabel
+					.setText(getString(
+							R.string.login_attempt_warning));
+					return true;
+				case 1919:
+					mainErrorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_two_id_matches_pass_error_text));
+					return true;
+				case 1921:
+					mainErrorMessageLabel
+					.setText(getString(
+							R.string.account_info_bad_input_error_text));
+					errorMessageLabel
+					.setText(getString(
+							R.string.account_info_two_username_in_use_error_text));
+					return true;
+				default:
+					return false;
+					
 				}
 			}
-				
-			
-		}
+		};
 		
-		private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
-			final Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
-			confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
-			confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
-			confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
-			confirmationScreen.putExtra("ScreenType", "forgotPass");
-			this.startActivity(confirmationScreen);
+		final ForgotPasswordTwoCall forgotPassTwoCall = 
+				new ForgotPasswordTwoCall(this, callback, passTwoDetails);
+		forgotPassTwoCall.submit();
+
+	}
+	
+	public void showPasswordStrengthBarHelp(final View v){
+		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
+		passwordHelpScreen.putExtra("helpType", "password");
+		this.startActivity(passwordHelpScreen);
+	}
+	
+	public void checkInputsThenSubmit(final View v){
+		final InputValidator validator = new InputValidator();
+		final EditText pass1 = (EditText)findViewById(R.id.account_info_two_pass_field);
+		final EditText pass2 = (EditText)findViewById(R.id.account_info_two_pass_confirm_field);
+		final String pass1Value = pass1.getText().toString();
+		final String pass2Value = pass2.getText().toString();
+		
+		//If the info was all valid - submit it to the service call.
+		if(validator.isPassValid(pass1Value) &&
+		   validator.doPassesMatch(pass1Value, pass2Value)){
+			passTwoDetails.password = pass1Value;
+			passTwoDetails.passwordConfirm = passTwoDetails.password;
+			submitFormInfo();
 		}
+		else{
+			if(!validator.wasPassValid){
+				final TextView errorLabelOne = 
+				(TextView)findViewById(R.id.enter_new_pass_error_two_label);
+				errorLabelOne.setText(getString(R.string.invalid_value));
+			}
+			if(validator.wasPassValid && !validator.didPassesMatch){
+				final TextView errorLabelTwo = 
+						(TextView)findViewById(R.id.enter_new_pass_error_two_label);
+						errorLabelTwo.setText(getString(R.string.invalid_value));
+			}
+		}
+			
+		
+	}
+	
+	public void cancel(View v){
+		   Intent navToForgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+		   startActivity(navToForgotCredentials);
+	}
+	
+	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
+		final Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
+		confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
+		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
+		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
+		confirmationScreen.putExtra("ScreenType", "forgotPass");
+		this.startActivity(confirmationScreen);
+	}
 	
 }

@@ -258,9 +258,7 @@ public class CreateLoginActivity extends RoboActivity{
 				}
 			}
 			
-			if(inputSequence.toString().startsWith("6011") && 
-			   inputSequence.length() == 16 &&
-			   !hasLowerCase && !hasUpperCase && !hasNonAlphaNum){
+			if(inputSequence.toString().startsWith("6011")){
 				looksLikeActNum = true;
 				
 			}

@@ -231,6 +231,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
 						return true;
 						
+					case 1911:
 					case 1913:
 						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
 						return true;
