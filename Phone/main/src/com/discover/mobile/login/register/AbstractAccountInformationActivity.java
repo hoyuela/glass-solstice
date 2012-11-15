@@ -415,6 +415,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, accountInformationDetails);
 				if("Forgot Both".equals(activityTitleLabel.getText()))
 					createLoginActivity.putExtra("ScreenType", "forgotBoth");
+				else if("Forgot Password".equals(activityTitleLabel.getText()))
+					createLoginActivity.putExtra("ScreenType", "forgotPass");
+				
 				startActivity(createLoginActivity);
 			} else {
 				// TODO if strong auth fails.

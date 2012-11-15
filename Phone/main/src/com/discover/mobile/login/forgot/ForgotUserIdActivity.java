@@ -205,6 +205,7 @@ public class ForgotUserIdActivity extends RoboActivity {
 	private void sendToConfirmationScreen(final String last4, final String email, final String uid) {
 		final Intent confirmationScreenIntent = 
 				new Intent(ForgotUserIdActivity.this, AccountInformationConfirmationActivity.class);
+		confirmationScreenIntent.putExtra("ScreenType", "forgotId");
 		confirmationScreenIntent.putExtra(IntentExtraKey.ACCOUNT_LAST4, last4);
 		confirmationScreenIntent.putExtra(IntentExtraKey.EMAIL, email);
 		confirmationScreenIntent.putExtra(IntentExtraKey.UID, uid);

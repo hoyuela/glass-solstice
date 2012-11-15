@@ -52,4 +52,7 @@
 	    Your password and user ID have been changed, 
 	    you are now logged in and an email has been sent to you.
 	</string>
+	
+<!-- Forgot ID Confirmation Strings -->
+<string name="forgot_id_confirmation_title_text">You Are Now Logged In</string>
 </resources>
