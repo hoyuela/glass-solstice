@@ -1,217 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/login_bkgd" >
+	android:layout_height="match_parent"
+	style="@style/BlackTheme"  >
+	
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+	    
+	    <include layout="@layout/discover_banner"/>
+	
+	    <LinearLayout
+	        android:id="@+id/linearLayout1"
+	        android:layout_width="294dp"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true"
+	        android:layout_marginTop="32dp"
+	        android:background="@drawable/rounded_table_corners_shape"
+	        android:orientation="vertical" 
+	        >
+	        
+	        <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+			<LinearLayout
+			    android:focusable="true" android:focusableInTouchMode="true"
+			    android:layout_width="0px" android:layout_height="0px"/>
+	
+			<!-- :nextFocusUp and :nextFocusLeft have been set to the id of this component
+		   	to prevent the dummy from receiving focus again -->
+			<AutoCompleteTextView android:id="@+id/autotext"
+			    android:layout_width="0dp" android:layout_height="0dp"
+			    android:nextFocusUp="@id/autotext" android:nextFocusLeft="@id/autotext"/>
+	
+	        <include layout="@layout/card_icon_and_login_label"/>
+	
+	        <TableRow
+	            android:id="@+id/error_row"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" >
+	
+	            <TextView
+	                android:id="@+id/error_text_view"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textColor="@color/red" />
+	
+	        </TableRow>
+	
+	        <RelativeLayout
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" >
+	
+	            <EditText
+	                android:id="@+id/username"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:ems="10"
+	                android:hint="@string/username_placeholder"
+	                android:imeOptions="actionNext"
+	                android:inputType="textNoSuggestions"
+	                android:maxLines="@integer/MAX_INPUT_LINES"
+	                android:textColor="@color/black" >
 
-    <ImageView
-        android:id="@+id/title_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:contentDescription="@string/image_description"
-        android:src="@drawable/discover_logo" />
+	            </EditText>
+	
+	            <EditText
+	                android:id="@+id/password"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_below="@id/username"
+	                android:ems="10"
+	                android:hint="@string/password_placeholder"
+	                android:inputType="textPassword"
+	                android:maxLines="@integer/MAX_INPUT_LINES"
+	                android:textColor="@color/black" />
+	
+	        </RelativeLayout>
+	
+	        <TableRow
+	            android:id="@+id/remember_user_row"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="0" >
+	
+	            <Button
+	                android:id="@+id/button2"
+	                android:layout_width="16dp"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:visibility="invisible" />
+	
+	            <TextView
+	                android:id="@+id/textView1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:text="@string/remember_user_id" />
+	
+	            <ToggleButton
+	                android:id="@+id/toggle_button_save_user_id"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="0"
+	                android:paddingRight="16dp"
+	                android:textOff="No"
+	                android:textOn="Yes" />
+	        </TableRow>
+	
+	        <TableRow
+	            android:id="@+id/login_button_row"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="16dp"
+	            android:layout_weight="0" >
+	
+	            <Button
+	                android:id="@+id/button1"
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                android:layout_weight=".4"
+	                android:clickable="false"
+	                android:longClickable="false"
+	                android:visibility="invisible"/>
+	
+	            <TextView
+	                android:id="@+id/register_text"
+	                android:layout_width="0dp"
+	                android:layout_height="30dp"
+	                android:layout_gravity="center_vertical"
+	                android:layout_weight=".35"
+	                android:clickable="true"
+	                android:gravity="center_vertical"
+	                android:onClick="registerNewUser"
+	                android:text="@string/register_now"
+	                android:textAppearance="?android:attr/textAppearanceSmall"
+	                android:textColor="@color/blue"
+	                android:textSize="@dimen/light_text_size" />
+	
+	            <ImageView
+	                android:id="@+id/imageView2"
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_weight=".05"
+	                android:contentDescription="@string/image_description"
+	                android:src="@drawable/blue_arrow_small" />
+	
+	            <Button
+	                android:id="@+id/login_button"
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                android:layout_weight=".4"
+	                android:text="@string/login_button_text" />
+	        </TableRow>
+	
+	            <TextView
+	                android:id="@+id/forgot_uid_or_pass_text"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="right"
+	                android:clickable="true"
+	                android:layout_weight="1"
+	                android:layout_marginTop="8dp"
+	                android:paddingBottom="8dp"
+	                android:text="@string/forgot_id_or_pass_label"
+	                android:textAppearance="?android:attr/textAppearanceSmall"
+	                android:textColor="@color/blue" />
+	
+	    </LinearLayout>
+	
+	    <LinearLayout
+	        android:id="@+id/reflection"
+	        android:layout_width="294dp"
+	        android:layout_height="64dp"
+	        android:layout_below="@id/linearLayout1"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="1dp"
+	        android:background="@drawable/login_box_reflection"
+	        android:orientation="vertical" >
+	
+	    </LinearLayout>
+	
+	    <RelativeLayout
+    	    android:layout_width="match_parent"
+    	    android:layout_height="100dp"
+    	    android:layout_below="@+id/reflection" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="294dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/rounded_table_corners_shape"
-        android:orientation="vertical" 
-        >
-
-        <TableRow
-            android:id="@+id/card_and_login_text_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/small_card_icon_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/card_login_button_text"
-                android:src="@drawable/card_icon" />
-
-            <TextView
-                android:id="@+id/secure_card_login_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="8dp"
-                android:text="@string/secure_login"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/orange" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/error_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/error_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/red" />
-
-        </TableRow>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/username_placeholder"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:maxLines="@integer/MAX_INPUT_LINES"
-                android:textColor="@color/black" >
-
-                <requestFocus />
-            </EditText>
-
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/username"
-                android:ems="10"
-                android:hint="@string/password_placeholder"
-                android:inputType="textPassword"
-                android:maxLines="@integer/MAX_INPUT_LINES"
-                android:textColor="@color/black" />
-
-        </RelativeLayout>
-
-        <TableRow
-            android:id="@+id/remember_user_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0" >
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="16dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="invisible" />
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/remember_user_id" />
-
-            <ToggleButton
-                android:id="@+id/toggle_button_save_user_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:paddingRight="16dp"
-                android:textOff="No"
-                android:textOn="Yes" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/login_button_row"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_weight="0" >
-
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".4"
-                android:clickable="false"
-                android:longClickable="false"
-                android:visibility="invisible"/>
-
-            <TextView
-                android:id="@+id/register_text"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:layout_weight=".35"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:onClick="registerNewUser"
-                android:text="@string/register_now"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/blue"
-                android:textSize="@dimen/light_text_size" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight=".05"
-                android:contentDescription="@string/image_description"
-                android:src="@drawable/blue_arrow_small" />
-
-            <Button
-                android:id="@+id/login_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".4"
-                android:text="@string/login_button_text" />
-        </TableRow>
-
-            <TextView
-                android:id="@+id/forgot_uid_or_pass_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:clickable="true"
-                android:layout_weight="1"
-                android:layout_marginTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/forgot_id_or_pass_label"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/blue" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/reflection"
-        android:layout_width="294dp"
-        android:layout_height="64dp"
-        android:layout_below="@id/linearLayout1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="1dp"
-        android:background="@drawable/login_box_reflection"
-        android:orientation="vertical" >
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/feedback_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/copyright_textview"
-        android:layout_centerHorizontal="true"
-        android:text="@string/feedback_text"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/white" />
-
-    <TextView
-        android:id="@+id/copyright_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_centerHorizontal="true"
-        android:text="@string/discover_copyright_text" />
-
-</RelativeLayout>
+   			<include layout="@layout/copyright_footer"/>
+    	    
+    	</RelativeLayout>
+	
+	</RelativeLayout>
+	
+</ScrollView>

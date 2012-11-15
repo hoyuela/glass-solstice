@@ -28,10 +28,14 @@ public class AccountDetails implements Serializable {
 	public String cardType;
 	public String incentiveCode;
 	public String incentiveTypeCode;
+	public String cardImage;
 	public String cardProductGroupCode;
 	public String optionCode;
 	public String newlyEarnedRewards;
 	public String statementsTransaction;
+	
+	public ContactInfo contactInfo;
+	
 	public boolean acLiteOutageMode;
 	public boolean cardProductGroupOutageMode;
 	public boolean paperlessOutageMode;
@@ -44,4 +48,15 @@ public class AccountDetails implements Serializable {
 		public String emailAddress;
 	}
 
+	@Struct
+	public static class ContactInfo {
+		public String firstName;
+		public String middleName;
+		public String lastName;
+		public String line1;
+		public String line2;
+		public String city;
+		public String state;
+		public String postalCode;
+	}
 }
