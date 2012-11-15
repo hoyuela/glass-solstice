@@ -365,6 +365,7 @@ public abstract class NetworkServiceCall<R> {
 		} finally {
 			errorStream.close();
 		}
+		
 		sendResultToHandler(errorResult, RESULT_PARSED_ERROR);
 	}
 	

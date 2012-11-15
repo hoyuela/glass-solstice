@@ -1,376 +1,340 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/scrollView1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/gradient_bg"             
-        android:paddingBottom="@dimen/content_padding"
-        android:paddingLeft="@dimen/content_padding"
-        android:paddingRight="@dimen/content_padding"
-        android:paddingTop="@dimen/content_padding">
- 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-            
-       <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
-		<LinearLayout
-		    android:focusable="true" android:focusableInTouchMode="true"
-		    android:layout_width="0px" android:layout_height="0px"/>
-		
-		<!-- :nextFocusUp and :nextFocusLeft have been set to the id of this component
-		     to prevent the dummy from receiving focus again -->
-		<AutoCompleteTextView android:id="@+id/autotext"
-		    android:layout_width="0dp" android:layout_height="0dp"
-		    android:nextFocusUp="@id/autotext" android:nextFocusLeft="@id/autotext"/>
-		
-            <TextView
-                android:id="@+id/account_info_register_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/register_text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    style="@style/WhiteTheme" >
 
-            <TextView
-                android:id="@+id/account_info_step_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/account_info_register_label"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/account_info_register_label"
-                android:paddingTop="8dp"
-                android:text="@string/account_info_two_step_text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/orange"
-                android:textStyle="bold" />
-            
-            <TextView 
-	            android:id="@+id/account_info_main_error_label"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-				android:layout_below="@id/account_info_step_label"
-				android:textColor="@color/red"/>
-
-            <TextView
-                android:id="@+id/account_info_label_one_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_main_error_label"
-                android:paddingTop="4dp"
-                android:text="@string/account_info_two_create_id_text"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/account_information_input_info_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/account_info_label_one_label"
-                android:layout_below="@+id/account_info_label_one_label"
-                android:paddingTop="4dp"
-                android:text="@string/account_info_two_id_detail_info_text"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/black"
-                android:textSize="@dimen/light_text_size"  />
-
-            <TextView 
-	            android:id="@+id/account_info_error_label"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-				android:layout_below="@id/account_information_input_info_label"
-				android:textColor="@color/red"/>
-            
-            <EditText
-                android:id="@+id/account_info_two_id_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/account_info_error_label"
-                android:layout_below="@+id/account_info_error_label"
-                android:ems="16"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:maxLength="16"
-                android:maxLines="@integer/MAX_INPUT_LINES"
-                android:paddingTop="8dp" >
-                        
-                 <requestFocus />
-                </EditText>
-            
-            <TextView
-                android:id="@+id/account_info_two_id_strength_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/account_info_two_id_field"
-                android:layout_marginTop="8dp"
-                android:text="@string/account_info_two_id_strength_text"
-                android:textColor="@color/black" />
-            
-            <View
-                android:id="@+id/account_info_two_uid_bar_one"
-                android:layout_width="32dp"
-                android:layout_height="4dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="32dp"
-                android:layout_below="@+id/account_info_two_id_field"
-                android:layout_toRightOf="@+id/account_info_two_id_strength_label"
-                android:background="@android:color/darker_gray" />
-            
-            <View
-                android:id="@+id/account_info_two_uid_bar_two"
-                android:layout_width="32dp"
-                android:layout_height="4dp"
-                android:layout_alignTop="@+id/account_info_two_uid_bar_one"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@+id/account_info_two_uid_bar_one"
-                android:background="@android:color/darker_gray" />
-            
-            <View
-                android:id="@+id/account_info_two_uid_bar_three"
-                android:layout_alignTop="@+id/account_info_two_uid_bar_one"
-                android:layout_width="32dp"
-                android:layout_height="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@+id/account_info_two_uid_bar_two"
-                android:background="@android:color/darker_gray" />
-            
-            <TextView
-                android:id="@+id/account_info_two_uid_strength_bar_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/account_info_two_uid_bar_one"
-                android:layout_below="@+id/account_info_two_uid_bar_one" 
-                android:text="@string/empty"
-				android:textColor="@color/black"
-				/>
-
-            <TextView
-                android:id="@+id/account_info_two_confirm_id_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_two_id_strength_label"
-                android:layout_marginTop="8dp"
-                android:text="@string/account_info_two_confirm_id_text"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/account_info_two_id_confirm_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/account_information_input_info_label"
-                android:layout_below="@+id/account_info_two_confirm_id_label"
-                android:ems="16"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:maxLength="16"
-                android:maxLines="@integer/MAX_INPUT_LINES"
-                android:paddingTop="8dp" />
-
-            <TextView
-                android:id="@+id/account_info_two_pass_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_two_id_confirm_field"
-                android:layout_marginTop="8dp"
-                android:text="@string/account_info_two_pass_text"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/account_info_two_pass_info_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_two_pass_label"
-                android:text="@string/account_info_two_pass_info_text"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/black"
-                android:textSize="@dimen/light_text_size" />
-
-            <EditText
-                android:id="@+id/account_info_two_pass_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/account_information_input_info_label"
-                android:layout_below="@+id/account_info_two_pass_info_label"
-                android:ems="32"
-                android:imeOptions="actionNext"
-                android:inputType="textPassword"
-                android:maxLength="32"
-                android:paddingTop="8dp" />
-            
-            <TextView
-                android:id="@+id/account_info_two_pass_strength_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_two_pass_field"
-                android:layout_marginTop="8dp"
-                android:text="@string/account_info_two_pass_strength_text"
-                android:textColor="@color/black" />
-
-            <View
-                android:id="@+id/account_info_two_pass_bar_one"
-                android:layout_width="32dp"
-                android:layout_height="4dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="32dp"
-                android:layout_below="@+id/account_info_two_pass_field"
-                android:layout_toRightOf="@+id/account_info_two_pass_strength_label"
-                android:background="@android:color/darker_gray" />
-            
-            <View
-                android:id="@+id/account_info_two_pass_bar_two"
-                android:layout_width="32dp"
-                android:layout_height="4dp"
-                android:layout_alignTop="@+id/account_info_two_pass_bar_one"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@+id/account_info_two_pass_bar_one"
-                android:background="@android:color/darker_gray" />
-            
-            <View
-                android:id="@+id/account_info_two_pass_bar_three"
-                android:layout_alignTop="@+id/account_info_two_pass_bar_one"
-                android:layout_width="32dp"
-                android:layout_height="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@+id/account_info_two_pass_bar_two"
-                android:background="@android:color/darker_gray" />
-            
-            <TextView
-                android:id="@+id/account_info_two_pass_strength_bar_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/account_info_two_pass_bar_one"
-                android:layout_below="@+id/account_info_two_pass_bar_one" 
-                android:text="@string/empty"
-				android:textColor="@color/black"
-				/>
-            
-            
-            <TextView
-                android:id="@+id/account_info_two_pass_confirm_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_two_pass_strength_label"
-                android:layout_marginTop="8dp"
-                android:text="@string/account_info_two_pass_confirm_text"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/account_info_two_pass_confirm_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/account_info_two_pass_confirm_label"
-                android:layout_below="@+id/account_info_two_pass_confirm_label"
-                android:ems="32"
-                android:imeOptions="actionNext"
-                android:inputType="textPassword"
-                android:maxLength="32"
-                android:paddingTop="8dp" />
-
-            <TextView
-                android:id="@+id/account_info_two_email_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/account_info_two_pass_confirm_field"
-                android:layout_marginTop="8dp"
-                android:text="@string/account_info_two_email_text"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/account_info_two_email_field"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_two_email_label"
-                android:imeOptions="actionDone"
-                android:inputType="textEmailAddress"
-                android:paddingTop="8dp" />
-
-            <TextView
-                android:id="@+id/account_info_two_cancel_label"
-                android:padding="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/account_info_two_email_label"
-                android:layout_below="@id/account_info_two_email_field"
-                android:layout_marginTop="16dp"
-                android:clickable="true"
-                android:onClick="cancel"
-                android:text="@string/cancel_text"
-                android:textColor="@color/blue" />
-
-            <Button
-                android:id="@+id/account_info_two_submit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/account_info_step_label"
-                android:layout_below="@+id/account_info_two_email_field"
-                android:text="@string/submit_text" 
-                android:layout_marginTop="8dp"
-                android:onClick="checkInputsThenSubmit"/>
-            
-            <TableRow
-            android:id="@+id/account_info_help_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/account_info_two_submit_button"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp" >
-
-            <TextView
-                android:id="@+id/need_help_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/need_help_text"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/help_number_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="@string/need_help_number_text"
-                android:textColor="@color/blue" />
-        </TableRow>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
         
-            <TextView
-                android:id="@+id/feedback_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="32dp"
-                android:layout_below="@+id/account_info_help_row"
-                android:text="@string/feedback_text"
-                android:textColor="@color/blue" />
+   	<!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+	<LinearLayout
+	    android:focusable="true" android:focusableInTouchMode="true"
+	    android:layout_width="0px" android:layout_height="0px"/>
 
-            <TextView
-                android:id="@+id/discover_copyright_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/feedback_label"
-                android:layout_centerHorizontal="true"
-                android:text="@string/discover_copyright_text"
-                android:textSize="@dimen/content_padding" />
+	<!-- :nextFocusUp and :nextFocusLeft have been set to the id of this component
+   	to prevent the dummy from receiving focus again -->
+	<AutoCompleteTextView android:id="@+id/autotext"
+	    android:layout_width="0dp" android:layout_height="0dp"
+	    android:nextFocusUp="@id/autotext" android:nextFocusLeft="@id/autotext"/>
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignTop="@+id/account_info_two_pass_strength_bar_label"
-                android:layout_toRightOf="@+id/account_info_two_pass_bar_three"
-                android:src="@drawable/helpbubble" 
-                android:onClick="showPasswordStrengthBarHelp"/>
+          <TextView
+              android:id="@+id/account_info_register_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:layout_alignParentTop="true"
+              android:text="@string/register_text"
+              android:textAppearance="?android:attr/textAppearanceMedium"
+              android:textColor="@color/black"
+              android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/ImageView02"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignTop="@+id/account_info_two_uid_strength_bar_label"
-                android:layout_toRightOf="@+id/account_info_two_uid_bar_three"
-                android:src="@drawable/helpbubble" 
-                android:onClick="showIdStrengthBarHelp"/>
+          <TextView
+              android:id="@+id/account_info_step_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignLeft="@id/account_info_register_label"
+              android:layout_alignParentLeft="true"
+              android:layout_below="@id/account_info_register_label"
+              android:paddingTop="8dp"
+              android:text="@string/account_info_two_step_text"
+              android:textAppearance="?android:attr/textAppearanceMedium"
+              android:textColor="@color/orange"
+              android:textStyle="bold" />
+          
+          <TextView 
+           android:id="@+id/account_info_main_error_label"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+		android:layout_below="@id/account_info_step_label"
+		android:textColor="@color/red"/>
 
-        </RelativeLayout>
+          <TextView
+              android:id="@+id/account_info_label_one_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/account_info_main_error_label"
+              android:paddingTop="4dp"
+              android:text="@string/account_info_two_create_id_text"
+              android:textAppearance="?android:attr/textAppearanceSmall"
+              android:textColor="@color/black" />
 
-    </ScrollView>
+          <TextView
+              android:id="@+id/account_information_input_info_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignLeft="@+id/account_info_label_one_label"
+              android:layout_below="@+id/account_info_label_one_label"
+              android:paddingTop="4dp"
+              android:text="@string/account_info_two_id_detail_info_text"
+              android:textAppearance="?android:attr/textAppearanceSmall"
+              android:textColor="@color/black"
+              android:textSize="@dimen/light_text_size"  />
+
+          <TextView 
+           android:id="@+id/account_info_error_label"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+		android:layout_below="@id/account_information_input_info_label"
+		android:textColor="@color/red"/>
+          
+          <EditText
+              android:id="@+id/account_info_two_id_field"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignLeft="@+id/account_info_error_label"
+              android:layout_below="@+id/account_info_error_label"
+              android:ems="16"
+              android:imeOptions="actionNext"
+              android:inputType="textNoSuggestions"
+              android:maxLength="16"
+              android:maxLines="@integer/MAX_INPUT_LINES"
+              android:paddingTop="8dp" >
+                      
+               <requestFocus />
+              </EditText>
+          
+          <TextView
+              android:id="@+id/account_info_two_id_strength_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@id/account_info_two_id_field"
+              android:layout_marginTop="8dp"
+              android:text="@string/account_info_two_id_strength_text"
+              android:textColor="@color/black" />
+          
+          <View
+              android:id="@+id/account_info_two_uid_bar_one"
+              android:layout_width="32dp"
+              android:layout_height="4dp"
+              android:layout_marginTop="8dp"
+              android:layout_marginLeft="32dp"
+              android:layout_below="@+id/account_info_two_id_field"
+              android:layout_toRightOf="@+id/account_info_two_id_strength_label"
+              android:background="@android:color/darker_gray" />
+          
+          <View
+              android:id="@+id/account_info_two_uid_bar_two"
+              android:layout_width="32dp"
+              android:layout_height="4dp"
+              android:layout_alignTop="@+id/account_info_two_uid_bar_one"
+              android:layout_marginLeft="8dp"
+              android:layout_toRightOf="@+id/account_info_two_uid_bar_one"
+              android:background="@android:color/darker_gray" />
+          
+          <View
+              android:id="@+id/account_info_two_uid_bar_three"
+              android:layout_alignTop="@+id/account_info_two_uid_bar_one"
+              android:layout_width="32dp"
+              android:layout_height="4dp"
+              android:layout_marginLeft="8dp"
+              android:layout_toRightOf="@+id/account_info_two_uid_bar_two"
+              android:background="@android:color/darker_gray" />
+          
+          <TextView
+              android:id="@+id/account_info_two_uid_strength_bar_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignLeft="@+id/account_info_two_uid_bar_one"
+              android:layout_below="@+id/account_info_two_uid_bar_one" 
+              android:text="@string/empty"
+		android:textColor="@color/black"
+		/>
+
+          <TextView
+              android:id="@+id/account_info_two_confirm_id_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/account_info_two_id_strength_label"
+              android:layout_marginTop="8dp"
+              android:text="@string/account_info_two_confirm_id_text"
+              android:textColor="@color/black" />
+
+          <EditText
+              android:id="@+id/account_info_two_id_confirm_field"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignLeft="@+id/account_information_input_info_label"
+              android:layout_below="@+id/account_info_two_confirm_id_label"
+              android:ems="16"
+              android:imeOptions="actionNext"
+              android:inputType="textNoSuggestions"
+              android:maxLength="16"
+              android:maxLines="@integer/MAX_INPUT_LINES"
+              android:paddingTop="8dp" />
+
+          <TextView
+              android:id="@+id/account_info_two_pass_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/account_info_two_id_confirm_field"
+              android:layout_marginTop="8dp"
+              android:text="@string/account_info_two_pass_text"
+              android:textColor="@color/black" />
+
+          <TextView
+              android:id="@+id/account_info_two_pass_info_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/account_info_two_pass_label"
+              android:text="@string/account_info_two_pass_info_text"
+              android:textAppearance="?android:attr/textAppearanceSmall"
+              android:textColor="@color/black"
+              android:textSize="@dimen/light_text_size" />
+
+          <EditText
+              android:id="@+id/account_info_two_pass_field"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignLeft="@+id/account_information_input_info_label"
+              android:layout_below="@+id/account_info_two_pass_info_label"
+              android:ems="32"
+              android:imeOptions="actionNext"
+              android:inputType="textPassword"
+              android:maxLength="32"
+              android:paddingTop="8dp" />
+          
+          <TextView
+              android:id="@+id/account_info_two_pass_strength_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/account_info_two_pass_field"
+              android:layout_marginTop="8dp"
+              android:text="@string/account_info_two_pass_strength_text"
+              android:textColor="@color/black" />
+
+          <View
+              android:id="@+id/account_info_two_pass_bar_one"
+              android:layout_width="32dp"
+              android:layout_height="4dp"
+              android:layout_marginTop="8dp"
+              android:layout_marginLeft="32dp"
+              android:layout_below="@+id/account_info_two_pass_field"
+              android:layout_toRightOf="@+id/account_info_two_pass_strength_label"
+              android:background="@android:color/darker_gray" />
+          
+          <View
+              android:id="@+id/account_info_two_pass_bar_two"
+              android:layout_width="32dp"
+              android:layout_height="4dp"
+              android:layout_alignTop="@+id/account_info_two_pass_bar_one"
+              android:layout_marginLeft="8dp"
+              android:layout_toRightOf="@+id/account_info_two_pass_bar_one"
+              android:background="@android:color/darker_gray" />
+          
+          <View
+              android:id="@+id/account_info_two_pass_bar_three"
+              android:layout_alignTop="@+id/account_info_two_pass_bar_one"
+              android:layout_width="32dp"
+              android:layout_height="4dp"
+              android:layout_marginLeft="8dp"
+              android:layout_toRightOf="@+id/account_info_two_pass_bar_two"
+              android:background="@android:color/darker_gray" />
+          
+          <TextView
+              android:id="@+id/account_info_two_pass_strength_bar_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignLeft="@+id/account_info_two_pass_bar_one"
+              android:layout_below="@+id/account_info_two_pass_bar_one" 
+              android:text="@string/empty"
+		android:textColor="@color/black"
+		/>
+          
+          
+          <TextView
+              android:id="@+id/account_info_two_pass_confirm_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/account_info_two_pass_strength_label"
+              android:layout_marginTop="8dp"
+              android:text="@string/account_info_two_pass_confirm_text"
+              android:textColor="@color/black" />
+
+          <EditText
+              android:id="@+id/account_info_two_pass_confirm_field"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignLeft="@+id/account_info_two_pass_confirm_label"
+              android:layout_below="@+id/account_info_two_pass_confirm_label"
+              android:ems="32"
+              android:imeOptions="actionNext"
+              android:inputType="textPassword"
+              android:maxLength="32"
+              android:paddingTop="8dp" />
+
+          <TextView
+              android:id="@+id/account_info_two_email_label"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@id/account_info_two_pass_confirm_field"
+              android:layout_marginTop="8dp"
+              android:text="@string/account_info_two_email_text"
+              android:textColor="@color/black" />
+
+          <EditText
+              android:id="@+id/account_info_two_email_field"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_below="@+id/account_info_two_email_label"
+              android:imeOptions="actionDone"
+              android:inputType="textEmailAddress"
+              android:paddingTop="8dp" />
+
+          <TextView
+              android:id="@+id/account_info_two_cancel_label"
+              android:padding="8dp"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignRight="@+id/account_info_two_email_label"
+              android:layout_below="@id/account_info_two_email_field"
+              android:layout_marginTop="16dp"
+              android:clickable="true"
+              android:onClick="cancel"
+              android:text="@string/cancel_text"
+              android:textColor="@color/blue" />
+
+          <Button
+              android:id="@+id/account_info_two_submit_button"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignRight="@+id/account_info_step_label"
+              android:layout_below="@+id/account_info_two_email_field"
+              android:text="@string/submit_text" 
+              android:layout_marginTop="8dp"
+              android:onClick="checkInputsThenSubmit"/>
+          
+        <RelativeLayout
+    	    android:layout_width="match_parent"
+    	    android:layout_height="100dp"
+    	    android:layout_below="@+id/account_info_two_submit_button" >
+    	    
+    	    <include layout="@layout/need_help_footer"/>
+
+   			<include layout="@layout/copyright_footer"/>
+    	    
+    	</RelativeLayout>
+
+		<ImageView
+		    android:id="@+id/imageView1"
+		    android:layout_width="24dp"
+		    android:layout_height="24dp"
+		    android:layout_alignTop="@+id/account_info_two_pass_strength_bar_label"
+		    android:layout_toRightOf="@+id/account_info_two_pass_bar_three"
+		    android:src="@drawable/helpbubble" 
+		    android:onClick="showPasswordStrengthBarHelp"/>
+		
+		<ImageView
+		    android:id="@+id/ImageView02"
+		    android:layout_width="24dp"
+		    android:layout_height="24dp"
+		    android:layout_alignTop="@+id/account_info_two_uid_strength_bar_label"
+		    android:layout_toRightOf="@+id/account_info_two_uid_bar_three"
+		    android:src="@drawable/helpbubble" 
+		    android:onClick="showIdStrengthBarHelp"/>
+
+	</RelativeLayout>
+
+</ScrollView>

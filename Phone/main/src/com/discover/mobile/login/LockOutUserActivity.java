@@ -5,6 +5,7 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
@@ -43,13 +44,13 @@ public class LockOutUserActivity extends RoboActivity {
 			case MAINTENANCE:
 				// TODO find out analytics for maintenance mode
 				// TODO reference maintenance text when error map set up
-				errorTextView.setText("Maintenance Text...");
+				errorTextView.setText(Html.fromHtml("We're sorry. We are currently updating our system and cannot complete your request at this time. We apologize for any inconvenience. Please try again later or, for immediate assistance call <a href='tel:18003472683' class='eCertBlueLink'>1-800-347-2683</a>."));
 				break;
 				
 			case LOCKED_OUT_USER:
 				TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_LOCKED);
 				// TODO reference lock out text when error map set up
-				errorTextView.setText("Locked out user Text...");
+				errorTextView.setText(Html.fromHtml("<p>For security purposes, your online account has been locked.<p/><p>Please call Discover Customer Service at <a href='tel:18882518003' class='eCertBlueLink'>1-888-251-8003</a> for information about accessing your account online.</p>"));
 				break;
 				
 			case BAD_ACCOUNT_STATUS:
