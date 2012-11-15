@@ -2,7 +2,7 @@ package com.discover.mobile.common.auth;
 
 import android.content.Context;
 
-import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
+import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
@@ -16,7 +16,7 @@ public class StrongAuthCall extends JsonResponseMappingNetworkServiceCall<Strong
 
 	public StrongAuthCall(final Context context, final AsyncCallback<StrongAuthDetails> callback) {
 		
-		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/sa/check") {{
+		super(context, new GetCallParams("/cardsvcs/acs/reg/v1/user/sa/check") {{
 			requiresSessionForRequest = true;
 			
 			sendDeviceIdentifiers = true;

@@ -2,8 +2,9 @@ package com.discover.mobile.login.register;
 
 import java.net.HttpURLConnection;
 
+import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
@@ -28,7 +28,8 @@ import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.LoginActivity;
 
-public class CreateLoginActivity extends Activity{
+@ContentView(R.layout.account_info_two)
+public class CreateLoginActivity extends RoboActivity{
 	
 	@SuppressWarnings("unused")
 	private static final String TAG = CreateLoginActivity.class.getSimpleName();
@@ -44,34 +45,35 @@ public class CreateLoginActivity extends Activity{
 	@InjectView(R.id.account_info_register_label)
 	private TextView titleLabel;
 	
+	@InjectView(R.id.account_info_step_label)
+	private TextView stepLabel;
+	
 	private boolean forgotBoth = false;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		
+
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP2);
 		
-		setContentView(R.layout.account_info_two);
 		formDataTwo = new CreateLoginDetails();
+	
+		final Bundle extras = getIntent().getExtras();
+    	if(extras != null) {
+    		final AccountInformationDetails formDataOne = (AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
+    		formDataTwo.acctNbr = formDataOne.acctNbr;
+    		formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
+    		formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
+    		formDataTwo.dateOfBirthYear = formDataOne.dateOfBirthYear;
+    		formDataTwo.expirationMonth = formDataOne.expirationMonth;
+    		formDataTwo.expirationYear = formDataOne.expirationYear;
+    		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
+    		if("forgotBoth".equals(extras.getString("ScreenType"))){
+    			forgotBoth = true;
+    			titleLabel.setText(getString(R.string.forgot_both_text));
+    		}
+    	}
 		
-		if (savedInstanceState == null) {
-			final Bundle extras = getIntent().getExtras();
-        	if(extras != null) {
-        		final AccountInformationDetails formDataOne = (AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
-        		formDataTwo.acctNbr = formDataOne.acctNbr;
-        		formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
-        		formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
-        		formDataTwo.dateOfBirthYear = formDataOne.dateOfBirthYear;
-        		formDataTwo.expirationMonth = formDataOne.expirationMonth;
-        		formDataTwo.expirationYear = formDataOne.expirationYear;
-        		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
-        		if("forgotBoth".equals(extras.getString("ScreenType"))){
-        			forgotBoth = true;
-        			titleLabel.setText(getString(R.string.forgot_both_text));
-        		}
-        	}
-		}
 		
 		setupTextChangedListeners();
 	}
@@ -124,14 +126,14 @@ public class CreateLoginActivity extends Activity{
 	
 	public void showPasswordStrengthBarHelp(final View v){
 		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-		passwordHelpScreen.putExtra(IntentExtraKey.HELP_TYPE, ScreenType.PASSWORD_STRENGTH_HELP);
+		passwordHelpScreen.putExtra("ScreenType", "pass");
 		TrackingHelper.trackPageView(AnalyticsPage.PASSWORD_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
 	}
 	
 	public void showIdStrengthBarHelp(final View v){
 		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-		passwordHelpScreen.putExtra(IntentExtraKey.HELP_TYPE, ScreenType.UID_STRENGTH_HELP);
+		passwordHelpScreen.putExtra("ScreenType", "id");
 		TrackingHelper.trackPageView(AnalyticsPage.UID_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
 	}

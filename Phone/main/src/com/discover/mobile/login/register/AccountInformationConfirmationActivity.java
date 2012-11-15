@@ -23,6 +23,8 @@ public class AccountInformationConfirmationActivity extends RoboActivity {
 	TextView titleLabel;
 	@InjectView(R.id.account_info_confirm_first_paragraph_label)
 	TextView firstParagraph;
+	@InjectView(R.id.account_info_confirm_note_label)
+	TextView noteLabel;
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
@@ -44,8 +46,18 @@ public class AccountInformationConfirmationActivity extends RoboActivity {
         			titleLabel.setText(R.string.forgot_both_title_text);
         			firstParagraph.setText(R.string.forgot_both_changed_text);
         		}
+        		else if("forgotId".equals(extras.getString("ScreenType"))){
+        			titleLabel.setText(R.string.forgot_id_confirmation_title_text);
+        			firstParagraph.setVisibility(View.GONE);
+        			noteLabel.setVisibility(View.INVISIBLE);
+        		}
         	}
 		}
+	}
+	
+	@Override
+	public void onBackPressed(){
+		navigateToHome(null);	
 	}
 	
 	public void navigateToHome(final View v){

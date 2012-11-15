@@ -14,7 +14,8 @@
             android:layout_height="wrap_content"
             android:text="@string/forgot_id_title_text"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/black" />
+            android:textColor="@color/black" 
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/forgot_id_submission_error_label"
