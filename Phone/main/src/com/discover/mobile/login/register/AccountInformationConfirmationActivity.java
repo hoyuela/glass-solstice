@@ -44,9 +44,6 @@ public class AccountInformationConfirmationActivity extends RoboActivity {
         			titleLabel.setText(R.string.forgot_both_title_text);
         			firstParagraph.setText(R.string.forgot_both_changed_text);
         		}
-        		else{
-        			//This is a registration screen 
-        		}
         	}
 		}
 	}

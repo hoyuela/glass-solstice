@@ -1,4 +1,4 @@
-package com.discover.mobile.login.register;
+package com.discover.mobile.security;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -24,7 +24,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 	
 	private final static String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
 	private TextView detailHelpLabel, statusIconLabel;
-	private String question, questionId;
+	private String questionId;
 	
 	@InjectView(R.id.account_security_question_placeholder_label)
 	private TextView questionLabel;
@@ -41,7 +41,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 		setContentView(R.layout.enhanced_account_security);
 		final Bundle extras = getIntent().getExtras();
     	if(extras != null) {
-    		question = 
+    		String question = 
     				extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION);
     		questionId = 
     				extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION_ID);
@@ -81,7 +81,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 			public void success(final Object value) {
 				progress.dismiss();
 				Log.d(TAG, "Strong Auth Succeeded!");
-				setOkResultAndFinish();
+				finishWithResultOK();
 			}
 		};
 		
@@ -101,22 +101,36 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 		
 		StrongAuthAnswerCall strongAuthAnswer;
 		try {
+			
 			strongAuthAnswer = new StrongAuthAnswerCall(this, callback, answerDetails);
 			strongAuthAnswer.submit();
+			
 		} catch (final NoSuchAlgorithmException e) {
+			
 			// TODO Auto-generated catch block
+			Log.e(TAG, "Could not encode strong auth response body.");
 			e.printStackTrace();
+			
 		}
 		
 	}
 	
 	@Override
 	public void onBackPressed() {
+		
 	   final Intent navToMain = new Intent(this, LoginActivity.class);
 	   startActivity(navToMain);
+	   
 	}
 	
-	private void setOkResultAndFinish() {
+	private void finishWithResultOK() {
+//		Intent emptyData = new Intent();
+//		emptyData.setAction("STRONG_AUTH_SUCCESS");
+//		if (getParent() == null) {
+//		    setResult(Activity.RESULT_OK, emptyData);
+//		} else {
+//		    getParent().setResult(Activity.RESULT_OK, emptyData);
+//		}
 		setResult(RESULT_OK);
 		finish();
 	}

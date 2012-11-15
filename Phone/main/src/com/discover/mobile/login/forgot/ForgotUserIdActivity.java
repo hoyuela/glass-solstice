@@ -38,6 +38,9 @@ public class ForgotUserIdActivity extends RoboActivity {
 	@InjectView(R.id.forgot_id_submit_button)
 	private Button submitButton;
 	
+	@InjectView(R.id.forgot_id_submission_error_label)
+	private TextView mainErrLabel;
+	
 	@InjectView(R.id.forgot_id_id_error_label)
 	private TextView idErrLabel;
 	
@@ -56,8 +59,8 @@ public class ForgotUserIdActivity extends RoboActivity {
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		
-		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
+		// FIXME Gives null pointer exception.
+//		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
 		
 		setOnClickActions();
 	}
@@ -78,22 +81,36 @@ public class ForgotUserIdActivity extends RoboActivity {
 		});
 	}
 	
-	public void goBack(){
+	public void goBack() {
 		finish();
+	}
+	
+	private void hideAllErrorLabels(){
+		hideLabel(idErrLabel);
+		hideLabel(passErrLabel);
+		hideLabel(mainErrLabel);
+	}
+	
+	private void hideLabel(View v) {
+		v.setVisibility(View.GONE);
+	}
+	
+	private void showLabel(View v) {
+		v.setVisibility(View.VISIBLE);
 	}
 	
 	public void checkInputsAndSubmit(){
 		final InputValidator validator = new InputValidator();
 		
 		if(!validator.isCardAccountNumberValid(cardNum.getText().toString()))
-			idErrLabel.setText(getString(R.string.invalid_value));
+			showLabel(idErrLabel);
 		else
-			passErrLabel.setText(getString(R.string.empty));
+			hideLabel(idErrLabel);
 
 		if(passText.getText().toString().isEmpty())
-			passErrLabel.setText(getString(R.string.invalid_value));
+			showLabel(passErrLabel);
 		else
-			passErrLabel.setText(getString(R.string.empty));
+			hideLabel(passErrLabel);
 
 		if(validator.wasAccountNumberValid && !passText.getText().toString().isEmpty())
 			doForgotUserIdCall();
@@ -122,8 +139,13 @@ public class ForgotUserIdActivity extends RoboActivity {
 				
 				switch (errorResponse.getHttpStatusCode()) {
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
-						idErrLabel.setText(getString(R.string.login_error));
+						mainErrLabel.setText(getString(R.string.login_error));
+						showLabel(mainErrLabel);
 						return true;
+//					case HttpURLConnection.HTTP_UNAVAILABLE:
+//						//FIXME add service unavailable to screen types/error screens.
+//						sendToErrorPage(ScreenType.SERVICE_UNAVAILABLE);
+//						return true;
 				}
 				
 				return false;
@@ -148,6 +170,8 @@ public class ForgotUserIdActivity extends RoboActivity {
 					case 1910:
 						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
 						return true;
+					default:
+						break;
 				}
 
 				
@@ -189,7 +213,7 @@ public class ForgotUserIdActivity extends RoboActivity {
 	}
 	
 	public void clearInputs() {
-		idErrLabel.setText("");
+		hideAllErrorLabels();
 		passText.setText("");
 		cardNum.setText("");
 	}

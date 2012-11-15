@@ -32,6 +32,7 @@ import com.discover.mobile.common.net.response.AsyncCallback;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
+import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
 @ContentView(R.layout.account_info)
 abstract class AbstractAccountInformationActivity extends RoboActivity {
@@ -369,13 +370,13 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				//TODO properly handle these ^ v
 				return true;
 			}
-
+			
+			@InjectView(R.id.account_info_error_label)
+			TextView errorMessageLabel;
 			@Override
 			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
 
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-				final TextView errorMessageLabel = 
-						(TextView)findViewById(R.id.account_info_error_label);
 				
 				switch(messageErrorResponse.getMessageStatusCode()){
 				
@@ -390,26 +391,33 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		final GetStrongAuthQuestionCall strongAuthCall = 
 				new GetStrongAuthQuestionCall(this, callback);
 		strongAuthCall.submit();
+		
 	}
 	
 	private static final int STRONG_AUTH_ACTIVITY = 0;
 	
 	private void navToStrongAuth() {
+		
 		final Intent strongAuth = new Intent(this, EnhancedAccountSecurityActivity.class);
+		
 		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, strongAuthQuestion);
 		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, strongAuthQuestionId);
+		
 		startActivityForResult(strongAuth, STRONG_AUTH_ACTIVITY);
+		
 	}
 	
 	@Override
-	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {		
 		if(requestCode == STRONG_AUTH_ACTIVITY) {
 			if(resultCode == RESULT_OK) {
 				final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
 				createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, accountInformationDetails);
+				if("Forgot Both".equals(activityTitleLabel.getText()))
+					createLoginActivity.putExtra("ScreenType", "forgotBoth");
 				startActivity(createLoginActivity);
 			} else {
-				// TODO
+				// TODO if strong auth fails.
 			}
 		}
 	}
@@ -425,18 +433,20 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		final String emptyString = "";
 		
 		// FIXME
-//		/*
-//		 * Set error label based on what is valid.
-//		 * These should never be both true.
-//		 * Bitwise AND and inclusive OR used - why not.
-//		 */
-//		if(forgotPass & !validator.wasUidValid | 
-//				!forgotPass & !validator.wasAccountNumberValid){
-//			cardErrorLabel.setText(errorString);
-//		}
-//		else{
-//			cardErrorLabel.setText(emptyString);
-//		}
+		/*
+		 * Set error label based on what is valid.
+		 * These should never be both true.
+		 * Bitwise AND and inclusive OR used - why not.
+		 */
+		if("Forgot Password".equals(activityTitleLabel.getText().toString()) & !validator.wasPassValid){
+			cardErrorLabel.setText(errorString);
+		}
+		else if(!validator.wasAccountNumberValid){
+			cardErrorLabel.setText(errorString);
+		}
+		else{
+			cardErrorLabel.setText(emptyString);
+		}
 		
 		if(!validator.wasSsnValid){
 			ssnErrorLabel.setText(errorString);
