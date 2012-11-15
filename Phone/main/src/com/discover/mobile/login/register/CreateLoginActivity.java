@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
@@ -127,14 +126,14 @@ public class CreateLoginActivity extends RoboActivity{
 	
 	public void showPasswordStrengthBarHelp(final View v){
 		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-		passwordHelpScreen.putExtra(IntentExtraKey.HELP_TYPE, ScreenType.PASSWORD_STRENGTH_HELP);
+		passwordHelpScreen.putExtra("ScreenType", "pass");
 		TrackingHelper.trackPageView(AnalyticsPage.PASSWORD_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
 	}
 	
 	public void showIdStrengthBarHelp(final View v){
 		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-		passwordHelpScreen.putExtra(IntentExtraKey.HELP_TYPE, ScreenType.UID_STRENGTH_HELP);
+		passwordHelpScreen.putExtra("ScreenType", "id");
 		TrackingHelper.trackPageView(AnalyticsPage.UID_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
 	}

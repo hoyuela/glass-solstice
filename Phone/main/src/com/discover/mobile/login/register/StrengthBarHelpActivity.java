@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
 
 public class StrengthBarHelpActivity extends Activity{
@@ -15,7 +14,7 @@ public class StrengthBarHelpActivity extends Activity{
 		
 		Bundle extras = getIntent().getExtras();
     	if(extras != null) {
-    		String helpLayout = extras.getString(IntentExtraKey.HELP_TYPE);
+    		String helpLayout = extras.getString("ScreenType");
     		if(ScreenType.UID_STRENGTH_HELP.equals(helpLayout))
     			setContentView(R.layout.account_info_id_strength_help);
     		else
