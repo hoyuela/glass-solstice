@@ -231,10 +231,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
 						return true;
 						
-					case 1916:
-						if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_INTERNAL_ERROR)
-							return false;
+					case 1913:
+						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
+						return true;
 						
+					case 1916:					
 						errorMessageLabel.setText(getString(R.string.account_info_bad_input_error_text));
 						return true;
 						
@@ -441,7 +442,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		 * These should never be both true.
 		 * Bitwise AND and inclusive OR used - why not.
 		 */
-		if("Forgot Password".equals(activityTitleLabel.getText().toString()) & !validator.wasPassValid){
+		if("Forgot Password".equals(activityTitleLabel.getText().toString()) && !validator.wasPassValid){
 			cardErrorLabel.setText(errorString);
 		}
 		else if(!validator.wasAccountNumberValid){

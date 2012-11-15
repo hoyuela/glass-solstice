@@ -46,6 +46,9 @@ public class CreateLoginActivity extends RoboActivity{
 	@InjectView(R.id.account_info_register_label)
 	private TextView titleLabel;
 	
+	@InjectView(R.id.account_info_step_label)
+	private TextView stepLabel;
+	
 	private boolean forgotBoth = false;
 
 	@Override
@@ -68,7 +71,7 @@ public class CreateLoginActivity extends RoboActivity{
     		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
     		if("forgotBoth".equals(extras.getString("ScreenType"))){
     			forgotBoth = true;
-    			titleLabel.setText("Forgot Both");
+    			titleLabel.setText(getString(R.string.forgot_both_text));
     		}
     	}
 		
