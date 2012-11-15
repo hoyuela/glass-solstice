@@ -8,7 +8,6 @@ import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.net.response.AsyncCallback;
-import com.google.common.collect.ImmutableMap;
 
 public class CreateLoginCall extends JsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
 	
@@ -20,15 +19,15 @@ public class CreateLoginCall extends JsonResponseMappingNetworkServiceCall<Regis
 			final CreateLoginDetails formData) {
 		
 		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/reg") {{
-			final String authString = getAuthorizationString(formData.acctNbr, formData.password);
-			headers = ImmutableMap.<String,String>builder()
-					.put("Authorization", authString)
-					.put("X-Override-UID", "true")
-					.build();
+//			final String authString = getAuthorizationString(formData.acctNbr, formData.password);
+//			headers = ImmutableMap.<String,String>builder()
+//					.put("Authorization", authString)
+//					.put("X-Override-UID", "true")
+//					.build();
 			
-			clearsSessionBeforeRequest = true;
+//			clearsSessionBeforeRequest = true;
 
-			requiresSessionForRequest = false;
+			requiresSessionForRequest = true;
 			
 			sendDeviceIdentifiers = true;
 			

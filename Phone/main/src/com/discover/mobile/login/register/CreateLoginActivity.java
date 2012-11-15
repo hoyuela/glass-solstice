@@ -68,7 +68,7 @@ public class CreateLoginActivity extends Activity{
         		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
         		if("forgotBoth".equals(extras.getString("ScreenType"))){
         			forgotBoth = true;
-        			titleLabel.setText(R.string.forgot_both_text);
+        			titleLabel.setText(getString(R.string.forgot_both_text));
         		}
         	}
 		}

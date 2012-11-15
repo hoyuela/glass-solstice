@@ -1,4 +1,4 @@
-package com.discover.mobile.login.register;
+package com.discover.mobile.security;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -101,23 +101,36 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 		
 		StrongAuthAnswerCall strongAuthAnswer;
 		try {
+			
 			strongAuthAnswer = new StrongAuthAnswerCall(this, callback, answerDetails);
 			strongAuthAnswer.submit();
+			
 		} catch (final NoSuchAlgorithmException e) {
+			
 			// TODO Auto-generated catch block
 			Log.e(TAG, "Could not encode strong auth response body.");
 			e.printStackTrace();
+			
 		}
 		
 	}
 	
 	@Override
 	public void onBackPressed() {
+		
 	   final Intent navToMain = new Intent(this, LoginActivity.class);
 	   startActivity(navToMain);
+	   
 	}
 	
 	private void finishWithResultOK() {
+//		Intent emptyData = new Intent();
+//		emptyData.setAction("STRONG_AUTH_SUCCESS");
+//		if (getParent() == null) {
+//		    setResult(Activity.RESULT_OK, emptyData);
+//		} else {
+//		    getParent().setResult(Activity.RESULT_OK, emptyData);
+//		}
 		setResult(RESULT_OK);
 		finish();
 	}

@@ -107,17 +107,18 @@
                 android:layout_alignBaseline="@id/account_info_confirm_email_title_label"
                 android:layout_alignLeft="@id/account_info_confirm_account_stars_label"
                 android:layout_marginTop="4dp"
+                android:maxLines="@integer/MAX_INPUT_LINES"
                 android:text="@string/email_placeholder"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
                 android:textSize="@dimen/light_text_size"
-                android:textStyle="bold"  />
+                android:textStyle="bold" />
             
             <TextView
                 android:id="@+id/account_info_confirm_account_stars_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:layout_marginLeft="8dp"
                 android:layout_alignBaseline="@id/account_info_confirm_account_title_label"
                 android:layout_toRightOf="@id/account_info_confirm_account_title_label"
                 android:paddingTop="4dp"
@@ -159,7 +160,7 @@
                 android:layout_below="@+id/account_info_confirm_note_label"
                 android:layout_centerHorizontal="true"
                 android:text="@string/home_text" 
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:onClick="navigateToHome"/>
             
           <TextView

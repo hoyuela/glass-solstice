@@ -8,12 +8,12 @@
         android:paddingLeft="@dimen/content_padding"
         android:paddingRight="@dimen/content_padding"
         android:paddingTop="@dimen/content_padding">
-
+ 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
             
-        <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+       <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
 		<LinearLayout
 		    android:focusable="true" android:focusableInTouchMode="true"
 		    android:layout_width="0px" android:layout_height="0px"/>

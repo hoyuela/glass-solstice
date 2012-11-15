@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.StrongAuthCall;
@@ -31,6 +32,7 @@ import com.discover.mobile.common.net.response.AsyncCallback;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
+import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
 @ContentView(R.layout.account_info)
 abstract class AbstractAccountInformationActivity extends RoboActivity {
@@ -71,7 +73,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		setupSpinnerAdapters();
     	setupFieldsAndLabels();
     	
-//    	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
+    	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 	}
 
 	@InjectView(R.id.account_info_month_spinner)
@@ -368,13 +370,13 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				//TODO properly handle these ^ v
 				return true;
 			}
-
+			
+			@InjectView(R.id.account_info_error_label)
+			TextView errorMessageLabel;
 			@Override
 			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
 
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-				final TextView errorMessageLabel = 
-						(TextView)findViewById(R.id.account_info_error_label);
 				
 				switch(messageErrorResponse.getMessageStatusCode()){
 				
@@ -392,7 +394,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		
 	}
 	
-	private static final int STRONG_AUTH_ACTIVITY = 1;
+	private static final int STRONG_AUTH_ACTIVITY = 0;
 	
 	private void navToStrongAuth() {
 		
@@ -406,14 +408,16 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	}
 	
 	@Override
-	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {		
 		if(requestCode == STRONG_AUTH_ACTIVITY) {
 			if(resultCode == RESULT_OK) {
 				final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
 				createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, accountInformationDetails);
+				if("Forgot Both".equals(activityTitleLabel.getText()))
+					createLoginActivity.putExtra("ScreenType", "forgotBoth");
 				startActivity(createLoginActivity);
 			} else {
-				// TODO if strong auth does not close with success.
+				// TODO if strong auth fails.
 			}
 		}
 	}
