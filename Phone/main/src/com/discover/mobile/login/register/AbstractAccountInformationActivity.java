@@ -442,10 +442,10 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		 * These should never be both true.
 		 * Bitwise AND and inclusive OR used - why not.
 		 */
-		if("Forgot Password".equals(activityTitleLabel.getText().toString()) && !validator.wasPassValid){
+		if("Forgot Password".equals(activityTitleLabel.getText()) && !validator.wasUidValid){
 			cardErrorLabel.setText(errorString);
 		}
-		else if(!validator.wasAccountNumberValid){
+		else if(!"Forgot Password".equals(activityTitleLabel.getText()) && !validator.wasAccountNumberValid){
 			cardErrorLabel.setText(errorString);
 		}
 		else{
