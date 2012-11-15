@@ -29,7 +29,7 @@
             android:id="@+id/forgot_id_account_num_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_below="@+id/forgot_id_submission_error_label"
             android:text="@string/account_info_label_one"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -124,47 +124,8 @@
 
         </TableRow>
 
-        <TableRow
-            android:id="@+id/account_info_help_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="64dp" 
-            android:layout_below="@id/forgot_id_button_row">
+        <include layout="@layout/need_help_footer"/>
 
-            <TextView
-                android:id="@+id/need_help_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/need_help_text"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/help_number_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="@string/need_help_number_text"
-                android:textColor="@color/blue" />
-        </TableRow>
-
-        <TextView
-            android:id="@+id/feedback_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/account_info_help_row"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="64dp"
-            android:text="@string/feedback_text"
-            android:textColor="@color/blue" />
-
-        <TextView
-            android:id="@+id/discover_copyright_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/feedback_label"
-            android:layout_centerHorizontal="true"
-            android:text="@string/discover_copyright_text"
-            android:textSize="@dimen/light_text_size" />
+        <include layout="@layout/copyright_footer"/>
 
     </RelativeLayout>

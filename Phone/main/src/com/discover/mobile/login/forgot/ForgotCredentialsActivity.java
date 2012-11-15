@@ -18,13 +18,15 @@ import com.discover.mobile.login.register.ForgotPasswordAccountInformationActivi
 @ContentView(R.layout.forgot_login)
 public class ForgotCredentialsActivity extends RoboListActivity {
 		
-	private final ArrayAdapter<Option> optionAdapter = new ArrayAdapter<Option>(this,
-			R.layout.single_list_item_with_disclosure_indicator, R.id.tv, Option.values());
+	private ArrayAdapter<Option> optionAdapter;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 
+		optionAdapter = new ArrayAdapter<Option>(this,
+				R.layout.single_list_item_with_disclosure_indicator, R.id.tv, Option.values());
+		
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_MENU);
 	}
 	

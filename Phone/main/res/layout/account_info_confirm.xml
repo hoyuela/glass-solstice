@@ -163,25 +163,8 @@
                 android:layout_marginTop="16dp"
                 android:onClick="navigateToHome"/>
             
-          <TextView
-                android:id="@+id/feedback_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="32dp"
-                android:layout_below="@+id/account_info_confirm_home_button"
-                android:text="@string/feedback_text"
-                android:textColor="@color/blue" />
-
-            <TextView
-                android:id="@+id/discover_copyright_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/feedback_label"
-                android:layout_centerHorizontal="true"
-                android:text="@string/discover_copyright_text"
-                android:textSize="@dimen/light_text_size" />
+          <include layout="@layout/copyright_footer"/>
         
-        </RelativeLayout>
+	</RelativeLayout>
 
-    </ScrollView>
+</ScrollView>
