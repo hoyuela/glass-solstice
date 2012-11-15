@@ -2,11 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/WhiteTheme"
-    android:paddingBottom="@dimen/content_padding"
-    android:paddingLeft="@dimen/content_padding"
-    android:paddingRight="@dimen/content_padding"
-    android:paddingTop="@dimen/content_padding" >
+    style="@style/WhiteTheme" >
 
     <TextView
         android:id="@+id/forgot_credentials_label"

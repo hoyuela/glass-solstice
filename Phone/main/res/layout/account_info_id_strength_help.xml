@@ -3,11 +3,7 @@
 	android:id="@+id/scrollView1"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="@drawable/gradient_bg"             
-	android:paddingBottom="@dimen/content_padding"
-	android:paddingLeft="@dimen/content_padding"
-	android:paddingRight="@dimen/content_padding"
-	android:paddingTop="@dimen/content_padding">
+	style="@style/WhiteTheme" >
 
 	<RelativeLayout
 	    android:layout_width="match_parent"
@@ -33,36 +29,9 @@
             android:paddingTop="8dp"
             android:text="@string/account_info_help_bar_title_text"
             android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-             />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
         
-        <View
-            android:id="@+id/account_info_two_uid_bar_one"
-            android:layout_width="32dp"
-            android:layout_height="4dp"
-            android:layout_alignTop="@id/account_info_help_not_valid_label"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@+id/account_info_help_not_valid_label"
-            android:background="@color/red" />
-        
-        <View
-            android:id="@+id/account_info_two_uid_bar_two"
-            android:layout_width="32dp"
-            android:layout_height="4dp"
-            android:layout_alignTop="@+id/account_info_two_uid_bar_one"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/account_info_two_uid_bar_one"
-            android:background="@android:color/darker_gray" />
-        
-        <View
-            android:id="@+id/account_info_two_uid_bar_three"
-            android:layout_alignTop="@+id/account_info_two_uid_bar_one"
-            android:layout_width="32dp"
-            android:layout_height="4dp"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/account_info_two_uid_bar_two"
-            android:background="@android:color/darker_gray" />
+        <include layout="@layout/not_valid_bar"/>
         
         <TextView
             android:id="@+id/account_info_two_uid_strength_bar_label"
@@ -94,33 +63,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/light_text_size" />
         
-        <View
-            android:id="@+id/account_info_help_moderate_bar_one"
-            android:layout_width="32dp"
-            android:layout_height="4dp"
-            android:layout_alignLeft="@+id/account_info_two_uid_bar_one"
-            android:layout_below="@+id/account_info_help_separator_line_one"
-            android:layout_alignTop="@+id/account_info_help_p2_title_label"
-            android:layout_marginTop="8dp"
-            android:background="@color/yellow" />
-        
-        <View
-            android:id="@+id/account_info_help_moderate_bar_two"
-            android:layout_width="32dp"
-            android:layout_height="4dp"
-            android:layout_alignTop="@+id/account_info_help_moderate_bar_one"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/account_info_help_moderate_bar_one"
-            android:background="@color/yellow" />
-        
-        <View
-            android:id="@+id/account_info_help_moderate_bar_three"
-            android:layout_alignTop="@+id/account_info_help_moderate_bar_one"
-            android:layout_width="32dp"
-            android:layout_height="4dp"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/account_info_help_moderate_bar_two"
-            android:background="@android:color/darker_gray" />
+        <include layout="@layout/moderate_bar"/>
         
         <TextView
             android:id="@+id/account_info_help_moderate_label"
@@ -176,33 +119,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
              />
         
-        <View
-            android:id="@+id/account_info_help_strong_bar_one"
-            android:layout_width="32dp"
-            android:layout_height="4dp"
-            android:layout_alignLeft="@+id/account_info_two_uid_bar_one"
-            android:layout_below="@+id/account_info_help_separator_line_two"
-            android:layout_alignTop="@+id/account_info_help_p3_title_label"
-            android:layout_marginTop="8dp"
-            android:background="@color/green" />
-        
-        <View
-            android:id="@+id/account_info_help_strong_bar_two"
-            android:layout_width="32dp"
-            android:layout_height="4dp"
-            android:layout_alignTop="@+id/account_info_help_strong_bar_one"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/account_info_help_strong_bar_one"
-            android:background="@color/green" />
-        
-        <View
-            android:id="@+id/account_info_help_strong_bar_three"
-            android:layout_alignTop="@+id/account_info_help_strong_bar_one"
-            android:layout_width="32dp"
-            android:layout_height="4dp"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/account_info_help_strong_bar_two"
-            android:background="@color/green" />
+        <include layout="@layout/strong_bar"/>
         
         <TextView
             android:id="@+id/account_info_help_strong_label"
@@ -238,9 +155,16 @@
             android:text="@string/go_back"
             android:textColor="@color/blue"/>
         
-		<include layout="@layout/need_help_footer"/>
-        
-        <include layout="@layout/copyright_footer"/>
+		<RelativeLayout
+    	    android:layout_width="match_parent"
+    	    android:layout_height="100dp"
+    	    android:layout_below="@+id/account_info_help_go_back_label" >
+    	    
+    	    <include layout="@layout/need_help_footer"/>
+
+   			<include layout="@layout/copyright_footer"/>
+    	    
+    	</RelativeLayout>
             
 	</RelativeLayout>
 
