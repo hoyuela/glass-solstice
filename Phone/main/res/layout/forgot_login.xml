@@ -83,4 +83,4 @@
         android:paddingLeft="8dp"
         android:paddingBottom="3dp"/>
 
-	</RelativeLayout>
+</RelativeLayout>

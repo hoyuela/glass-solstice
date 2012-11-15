@@ -17,9 +17,7 @@ import com.discover.mobile.login.register.ForgotPasswordAccountInformationActivi
 
 @ContentView(R.layout.forgot_login)
 public class ForgotCredentialsActivity extends RoboListActivity {
-	
-	private static final String TAG = ForgotCredentialsActivity.class.getSimpleName();
-	
+		
 	private final ArrayAdapter<Option> optionAdapter = new ArrayAdapter<Option>(this,
 			R.layout.single_list_item_with_disclosure_indicator, R.id.tv, Option.values());
 	
