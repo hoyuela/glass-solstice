@@ -138,14 +138,17 @@ public class CreateLoginActivity extends RoboActivity{
 		this.startActivity(passwordHelpScreen);
 	}
 	
+	@InjectView (R.id.account_info_two_id_field)
+	EditText idField;
+	@InjectView (R.id.account_info_two_id_confirm_field)
+	EditText idConfirmField;
+	@InjectView (R.id.account_info_two_pass_field)
+	EditText passField;
+
 	private void setupTextChangedListeners(){
-		final EditText idField = (EditText)findViewById(R.id.account_info_two_id_field);
-		final EditText passField = (EditText)findViewById(R.id.account_info_two_pass_field);
-		passField.addTextChangedListener(new TextWatcher(){
-			@Override
-			public void afterTextChanged(final Editable s) {
-				// not used
-			}
+	
+		passField.addTextChangedListener(new TextWatcher() {
+
 
 			@Override
 			public void beforeTextChanged(final CharSequence s, final int start, final int count,
@@ -161,30 +164,61 @@ public class CreateLoginActivity extends RoboActivity{
 							  findViewById(R.id.account_info_two_pass_bar_three),
 						      (TextView)findViewById(R.id.account_info_two_pass_strength_bar_label));
 			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				//not used				
+			}
 		});
 		
 		idField.addTextChangedListener(new TextWatcher(){
-
+			
 			@Override
-			public void afterTextChanged(final Editable s) {
-				// not used
-			}
-
+			public void afterTextChanged(final Editable s) {/*not used*/}
+			
 			@Override
 			public void beforeTextChanged(final CharSequence s, final int start, final int count,
-					final int after) {
-				// not used
-			}
+					final int after) {/*not used*/}
 
 			@Override
 			public void onTextChanged(final CharSequence s, final int start, final int before,
 					final int count) {
+				
 				updateBarsForUID(s, findViewById(R.id.account_info_two_uid_bar_one), 
 							  findViewById(R.id.account_info_two_uid_bar_two),
 							  findViewById(R.id.account_info_two_uid_bar_three),
 						      (TextView)findViewById(R.id.account_info_two_uid_strength_bar_label));
+				setInputToLowerCase(s, idField);
 			}
 		});
+		
+		idConfirmField.addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(Editable s) {/*not used*/}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {/*not used*/}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				setInputToLowerCase(s, idConfirmField);
+			}
+			
+		});
+	}
+	
+	public void setInputToLowerCase(CharSequence input, EditText field){
+		String inputString = input.toString();
+		String lowerCaseInput = inputString.toLowerCase();
+		
+		if( !inputString.equals(lowerCaseInput)){
+			field.setText(lowerCaseInput);
+			field.setSelection(lowerCaseInput.length());
+		}
+		
 	}
 	
 	//Currently setup only for a single user id input.
