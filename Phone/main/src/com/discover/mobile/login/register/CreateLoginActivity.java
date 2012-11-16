@@ -51,7 +51,7 @@ public class CreateLoginActivity extends RoboActivity{
 	@InjectView (R.id.account_info_id_confirm_error_label)
 	private TextView idConfirmErrorLabel;
 	
-	@InjectView (R.id.account_info_two_pass_confirm_field)
+	@InjectView (R.id.account_info_pass_two_confirm_error_label)
 	private TextView passConfirmErrorLabel;
 	
 	private boolean forgotBoth = false;

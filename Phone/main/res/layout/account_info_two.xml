@@ -286,7 +286,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_alignLeft="@+id/account_info_two_pass_confirm_label"
-              android:layout_below="@+id/account_info_two_pass_confirm_label"
+              android:layout_below="@+id/account_info_pass_two_confirm_error_label"
               android:ems="32"
               android:imeOptions="actionNext"
               android:inputType="textPassword"
