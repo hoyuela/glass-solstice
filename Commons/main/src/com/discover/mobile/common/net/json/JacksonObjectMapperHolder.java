@@ -2,6 +2,7 @@ package com.discover.mobile.common.net.json;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,10 +17,11 @@ final class JacksonObjectMapperHolder {
 	
 	private static ObjectMapper createObjectMapper() {
 		return new ObjectMapper()
-				.configure(MapperFeature.AUTO_DETECT_GETTERS, false)
-				.configure(MapperFeature.AUTO_DETECT_SETTERS, false)
+				.disable(MapperFeature.AUTO_DETECT_GETTERS)
+				.disable(MapperFeature.AUTO_DETECT_SETTERS)
 				.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, true)
-				.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+				.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 	}
 	
 	private JacksonObjectMapperHolder() {
