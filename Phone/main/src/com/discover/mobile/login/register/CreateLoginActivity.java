@@ -150,7 +150,7 @@ public class CreateLoginActivity extends RoboActivity{
 		}
 		
 		if( !validator.didPassesMatch ){
-			hideLabel(passConfirmErrorLabel)
+			hideLabel(passConfirmErrorLabel);
 		}
 		else {
 			showLabel(passConfirmErrorLabel);
