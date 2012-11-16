@@ -26,7 +26,7 @@ import com.discover.mobile.common.auth.registration.RegistrationConfirmationDeta
 import com.discover.mobile.common.net.json.MessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
-import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 
 @ContentView(R.layout.account_info_two)
 public class CreateLoginActivity extends RoboActivity{
@@ -47,6 +47,12 @@ public class CreateLoginActivity extends RoboActivity{
 	
 	@InjectView(R.id.account_info_step_label)
 	private TextView stepLabel;
+	
+	@InjectView (R.id.account_info_id_confirm_error_label)
+	private TextView idConfirmErrorLabel;
+	
+	@InjectView (R.id.account_info_two_pass_confirm_field)
+	private TextView passConfirmErrorLabel;
 	
 	private boolean forgotBoth = false;
 
@@ -80,13 +86,12 @@ public class CreateLoginActivity extends RoboActivity{
 	
 	@Override
 	public void onBackPressed() {
-	   Intent navToMain = new Intent(this, LoginActivity.class);
-	   startActivity(navToMain);
+	  cancel(null);
 	}
 	
 	public void cancel(View v){
-		   Intent navToMain = new Intent(this, LoginActivity.class);
-		   startActivity(navToMain);
+		   Intent backToChoices = new Intent(this, ForgotCredentialsActivity.class);
+		   startActivity(backToChoices);
 	}
 	
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
@@ -114,6 +119,8 @@ public class CreateLoginActivity extends RoboActivity{
 		validator.isEmailValid(email);
 		validator.doPassAndIdMatch(pass1,id1); 
 
+		updateErrorLabelsUsingValidator(validator);
+		
 		if(validator.wasAccountTwoInfoComplete()){
 			formDataTwo.email = email;
 			formDataTwo.password = pass1;
@@ -124,6 +131,34 @@ public class CreateLoginActivity extends RoboActivity{
 		}
 	}
 	
+	private void showLabel(View v){
+		v.setVisibility(View.VISIBLE);
+	}
+	
+	private void hideLabel(View v){
+		v.setVisibility(View.GONE);
+	}
+	
+	private void updateErrorLabelsUsingValidator(InputValidator validator){
+		if( !validator.didIdsMatch ) {
+			showLabel(errorMessageLabel);
+			showLabel(idConfirmErrorLabel);
+		}
+		else {
+			hideLabel(errorMessageLabel);
+			hideLabel(idConfirmErrorLabel);
+		}
+		
+		if( !validator.didPassesMatch ){
+			hideLabel(passConfirmErrorLabel)
+		}
+		else {
+			showLabel(passConfirmErrorLabel);
+		}
+		
+			
+		
+	}
 	public void showPasswordStrengthBarHelp(final View v){
 		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
 		passwordHelpScreen.putExtra("ScreenType", "pass");

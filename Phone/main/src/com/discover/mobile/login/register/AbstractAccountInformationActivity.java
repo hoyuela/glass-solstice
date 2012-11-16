@@ -43,6 +43,8 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	
 	private final String ANALYTICS_PAGE_IDENTIFIER;
 	
+	private ProgressDialog progress;
+	
 	private boolean strongAuthRequired = false;
 	private String strongAuthQuestion;
 	private String strongAuthQuestionId;
@@ -185,12 +187,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	protected abstract boolean areDetailsValid(InputValidator validator);
 	
 	private void submitFormInfo() {
-		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
+		progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
 			@Override
 			public void success(final Object value) {
-				progress.dismiss();
 				checkForStrongAuth();
 			}
 
@@ -202,6 +203,10 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						// TODO handle
 						return true;
+						// TEMP temp fix for strange 503 coming back from server on some accounts. v
+					case HttpURLConnection.HTTP_UNAVAILABLE:
+						errorMessageLabel.setText("Unknown error with the server, please try again later.");
+					return true;
 				}
 				
 				return false;
@@ -260,7 +265,6 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	
 	// TODO go through old code and make sure this is called every time
 	private void checkForStrongAuth() {
-		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
 			public void success(final StrongAuthDetails value) {
