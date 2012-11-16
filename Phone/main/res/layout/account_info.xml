@@ -137,7 +137,9 @@
              android:layout_alignRight="@id/account_info_ssn_input_field"
              android:layout_below="@+id/account_info_ssn_info_label"
              android:textAppearance="?android:attr/textAppearanceSmall"
-             android:textColor="@color/red" />
+             android:textColor="@color/red" 
+             android:text="@string/invalid_value"
+             android:visibility="gone"/>
          
         
         
@@ -149,7 +151,8 @@
             android:layout_below="@+id/account_information_input_info_label"
             android:textAppearance="?android:attr/textAppearanceSmall" 
             android:textColor="@color/red"
-            
+            android:text="@string/invalid_value"
+            android:visibility="gone"
             ><requestFocus /></TextView>
         
         <EditText
@@ -182,7 +185,9 @@
             android:layout_alignRight="@+id/account_info_dob_year_field"
             android:layout_below="@+id/account_info_dob_label"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/red" />
+            android:text="@string/invalid_value"
+            android:textColor="@color/red" 
+            android:visibility="gone"/>
         
         <Spinner
             android:id="@+id/account_info_dob_month_spinner"

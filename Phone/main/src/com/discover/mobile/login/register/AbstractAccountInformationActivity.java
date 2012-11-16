@@ -68,12 +68,15 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
 	}
 	
+	protected void setupTextChangedListeners() {/*Override in subclass*/}
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		
 		setupSpinnerAdapters();
     	setupFieldsAndLabels();
+    	setupTextChangedListeners();
     	
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 	}
@@ -438,8 +441,6 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		final TextView ssnErrorLabel = (TextView)findViewById(R.id.account_info_ssn_error_label);
 		final TextView dobYearErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
 		
-		final String errorString = getResources().getString(R.string.invalid_value);
-		final String emptyString = "";
 		
 		// FIXME
 		/*
@@ -448,26 +449,34 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		 * Bitwise AND and inclusive OR used - why not.
 		 */
 		if("Forgot Password".equals(activityTitleLabel.getText()) && !validator.wasUidValid){
-			cardErrorLabel.setText(errorString);
+			showLabel(cardErrorLabel);
 		}
 		else if(!"Forgot Password".equals(activityTitleLabel.getText()) && !validator.wasAccountNumberValid){
-			cardErrorLabel.setText(errorString);
+			showLabel(cardErrorLabel);
 		}
 		else{
-			cardErrorLabel.setText(emptyString);
+			hideLabel(cardErrorLabel);
 		}
 		
 		if(!validator.wasSsnValid){
-			ssnErrorLabel.setText(errorString);
+			showLabel(ssnErrorLabel);
 		}
 		else
-			ssnErrorLabel.setText(emptyString);
+			hideLabel(ssnErrorLabel);
 		
 		if(!validator.wasDobYearValid){
-			dobYearErrorLabel.setText(errorString);
+			showLabel(dobYearErrorLabel);
 		}
 		else
-			dobYearErrorLabel.setText(emptyString);
+			hideLabel(dobYearErrorLabel);
+	}
+	
+	private void showLabel(View v){
+		v.setVisibility(View.VISIBLE);
+	}
+	
+	private void hideLabel(View v){
+		v.setVisibility(View.GONE);
 	}
 
 }

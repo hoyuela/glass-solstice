@@ -1,8 +1,13 @@
 package com.discover.mobile.login.register;
 
+import roboguice.inject.InjectView;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -23,6 +28,126 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	protected int getActivityTitleLabelResourceId() {
 		return R.string.forgot_password_text;
 	}
+	
+//INPUT FIELDS
+	@InjectView (R.id.account_info_main_input_field)
+	EditText idField;
+	
+	@InjectView (R.id.account_info_ssn_input_field)
+	EditText ssnField;
+	
+	@InjectView (R.id.account_info_dob_year_field)
+	EditText yearField;
+	
+//ERROR LABELS
+	@InjectView (R.id.account_info_card_account_number_error_label)
+	TextView idErrorLabel;
+	
+	@InjectView (R.id.account_info_dob_year_error_label)
+	TextView dobYearErrorLabel;
+	
+	@InjectView (R.id.account_info_ssn_error_label)
+	TextView ssnErrorLabel;
+	
+	
+	
+	private InputValidator validator;
+	
+	@Override
+	protected void setupTextChangedListeners(){
+		
+		validator = new InputValidator();
+		
+		ssnField.addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				if(s.length() < 4) {
+					//hide error label
+					ssnErrorLabel.setVisibility(View.VISIBLE);
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				if(s.length() == 4) {
+					//hide error label
+					ssnErrorLabel.setVisibility(View.GONE);
+				}
+				
+			}
+			
+		});
+		
+		yearField.addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				if(s.length() < 4) {
+					dobYearErrorLabel.setVisibility(View.VISIBLE);
+
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+				if(s.length() == 4) {
+					//hide error label
+					dobYearErrorLabel.setVisibility(View.GONE);
+				}
+			}
+			
+		});
+		
+		idField.addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				if( !validator.isUidValid( s.toString() ) ) {
+					idErrorLabel.setVisibility(View.VISIBLE);
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+				if( validator.isPassValid( s.toString() ) ) {
+					idErrorLabel.setVisibility(View.GONE);
+				}
+			}
+			
+		});
+		
+	}
+	
 	
 	@Override
 	protected void doCustomUiSetup() {
