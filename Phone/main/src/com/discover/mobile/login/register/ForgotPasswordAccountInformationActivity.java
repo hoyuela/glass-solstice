@@ -6,6 +6,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -52,33 +53,35 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	
 	
 	private InputValidator validator;
-	
+	private EditText inputField;
 	@Override
 	protected void setupTextChangedListeners(){
 		
 		validator = new InputValidator();
 		
-		ssnField.addTextChangedListener(new TextWatcher(){
+		ssnField.setOnFocusChangeListener(new OnFocusChangeListener(){
 
 			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				if(s.length() < 4) {
+			public void onFocusChange(View v, boolean hasFocus) {
+				inputField = (EditText)v;
+				
+				if(inputField.getText().length() < 4) {
 					//hide error label
 					ssnErrorLabel.setVisibility(View.VISIBLE);
 				}
 			}
+		});
+		
+		ssnField.addTextChangedListener(new TextWatcher(){
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void afterTextChanged(Editable s) {/*Intentionally empty*/}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				if(s.length() == 4) {
 					//hide error label
 					ssnErrorLabel.setVisibility(View.GONE);
@@ -88,28 +91,27 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 			
 		});
 		
+		yearField.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				inputField = (EditText)v;
+
+				if(inputField.getText().length() < 4) {
+					dobYearErrorLabel.setVisibility(View.VISIBLE);
+				}
+			}
+		});
+		
 		yearField.addTextChangedListener(new TextWatcher(){
 
 			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				if(s.length() < 4) {
-					dobYearErrorLabel.setVisibility(View.VISIBLE);
-
-				}
-			}
+			public void afterTextChanged(Editable s) {/*Intentionally empty*/}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				if(s.length() == 4) {
 					//hide error label
 					dobYearErrorLabel.setVisibility(View.GONE);
@@ -118,27 +120,31 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 			
 		});
 		
-		idField.addTextChangedListener(new TextWatcher(){
 
+		idField.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
 			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				if( !validator.isUidValid( s.toString() ) ) {
+			public void onFocusChange(View v, boolean hasFocus) {
+				inputField = (EditText)v;
+				
+				if( !validator.isUidValid( inputField.getText().toString() ) ) {
 					idErrorLabel.setVisibility(View.VISIBLE);
 				}
 			}
+		});
+		
+		idField.addTextChangedListener(new TextWatcher(){
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void afterTextChanged(Editable s) {/*Intentionally empty*/}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				// TODO Auto-generated method stub
+				//Hide error label.
 				if( validator.isPassValid( s.toString() ) ) {
 					idErrorLabel.setVisibility(View.GONE);
 				}
