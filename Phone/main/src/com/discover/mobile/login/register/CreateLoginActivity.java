@@ -2,8 +2,9 @@ package com.discover.mobile.login.register;
 
 import java.net.HttpURLConnection;
 
+import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
@@ -26,9 +26,10 @@ import com.discover.mobile.common.auth.registration.RegistrationConfirmationDeta
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 
-public class CreateLoginActivity extends Activity{
+@ContentView(R.layout.account_info_two)
+public class CreateLoginActivity extends RoboActivity{
 	
 	@SuppressWarnings("unused")
 	private static final String TAG = CreateLoginActivity.class.getSimpleName();
@@ -44,47 +45,53 @@ public class CreateLoginActivity extends Activity{
 	@InjectView(R.id.account_info_register_label)
 	private TextView titleLabel;
 	
+	@InjectView(R.id.account_info_step_label)
+	private TextView stepLabel;
+	
+	@InjectView (R.id.account_info_id_confirm_error_label)
+	private TextView idConfirmErrorLabel;
+	
+	@InjectView (R.id.account_info_pass_two_confirm_error_label)
+	private TextView passConfirmErrorLabel;
+	
 	private boolean forgotBoth = false;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		
+
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP2);
 		
-		setContentView(R.layout.account_info_two);
 		formDataTwo = new CreateLoginDetails();
+	
+		final Bundle extras = getIntent().getExtras();
+    	if(extras != null) {
+    		final AccountInformationDetails formDataOne = (AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
+    		formDataTwo.acctNbr = formDataOne.acctNbr;
+    		formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
+    		formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
+    		formDataTwo.dateOfBirthYear = formDataOne.dateOfBirthYear;
+    		formDataTwo.expirationMonth = formDataOne.expirationMonth;
+    		formDataTwo.expirationYear = formDataOne.expirationYear;
+    		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
+    		if("forgotBoth".equals(extras.getString("ScreenType"))){
+    			forgotBoth = true;
+    			titleLabel.setText(getString(R.string.forgot_both_text));
+    		}
+    	}
 		
-		if (savedInstanceState == null) {
-			final Bundle extras = getIntent().getExtras();
-        	if(extras != null) {
-        		final AccountInformationDetails formDataOne = (AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
-        		formDataTwo.acctNbr = formDataOne.acctNbr;
-        		formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
-        		formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
-        		formDataTwo.dateOfBirthYear = formDataOne.dateOfBirthYear;
-        		formDataTwo.expirationMonth = formDataOne.expirationMonth;
-        		formDataTwo.expirationYear = formDataOne.expirationYear;
-        		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
-        		if("forgotBoth".equals(extras.getString("ScreenType"))){
-        			forgotBoth = true;
-        			titleLabel.setText(R.string.forgot_both_text);
-        		}
-        	}
-		}
 		
 		setupTextChangedListeners();
 	}
 	
 	@Override
 	public void onBackPressed() {
-	   final Intent navToMain = new Intent(this, LoginActivity.class);
-	   startActivity(navToMain);
+		cancel(null);
 	}
 	
-	public void cancel(final View v){
-		   final Intent navToMain = new Intent(this, LoginActivity.class);
-		   startActivity(navToMain);
+	public void cancel(final View v) {
+		final Intent backToChoices = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(backToChoices);
 	}
 	
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
@@ -112,6 +119,8 @@ public class CreateLoginActivity extends Activity{
 		validator.isEmailValid(email);
 		validator.doPassAndIdMatch(pass1,id1); 
 
+		updateErrorLabelsUsingValidator(validator);
+		
 		if(validator.wasAccountTwoInfoComplete()){
 			formDataTwo.email = email;
 			formDataTwo.password = pass1;
@@ -122,28 +131,59 @@ public class CreateLoginActivity extends Activity{
 		}
 	}
 	
+	private void showLabel(final View v){
+		v.setVisibility(View.VISIBLE);
+	}
+	
+	private void hideLabel(final View v){
+		v.setVisibility(View.GONE);
+	}
+	
+	private void updateErrorLabelsUsingValidator(final InputValidator validator){
+		if( !validator.didIdsMatch ) {
+			showLabel(errorMessageLabel);
+			showLabel(idConfirmErrorLabel);
+		}
+		else {
+			hideLabel(errorMessageLabel);
+			hideLabel(idConfirmErrorLabel);
+		}
+		
+		if( !validator.didPassesMatch ){
+			hideLabel(passConfirmErrorLabel);
+		}
+		else {
+			showLabel(passConfirmErrorLabel);
+		}
+		
+			
+		
+	}
 	public void showPasswordStrengthBarHelp(final View v){
 		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-		passwordHelpScreen.putExtra(IntentExtraKey.HELP_TYPE, ScreenType.PASSWORD_STRENGTH_HELP);
+		passwordHelpScreen.putExtra("ScreenType", "pass");
 		TrackingHelper.trackPageView(AnalyticsPage.PASSWORD_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
 	}
 	
 	public void showIdStrengthBarHelp(final View v){
 		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-		passwordHelpScreen.putExtra(IntentExtraKey.HELP_TYPE, ScreenType.UID_STRENGTH_HELP);
+		passwordHelpScreen.putExtra("ScreenType", "id");
 		TrackingHelper.trackPageView(AnalyticsPage.UID_STRENGTH_HELP);
 		this.startActivity(passwordHelpScreen);
 	}
 	
+	@InjectView (R.id.account_info_two_id_field)
+	EditText idField;
+	@InjectView (R.id.account_info_two_id_confirm_field)
+	EditText idConfirmField;
+	@InjectView (R.id.account_info_two_pass_field)
+	EditText passField;
+
 	private void setupTextChangedListeners(){
-		final EditText idField = (EditText)findViewById(R.id.account_info_two_id_field);
-		final EditText passField = (EditText)findViewById(R.id.account_info_two_pass_field);
-		passField.addTextChangedListener(new TextWatcher(){
-			@Override
-			public void afterTextChanged(final Editable s) {
-				// not used
-			}
+	
+		passField.addTextChangedListener(new TextWatcher() {
+
 
 			@Override
 			public void beforeTextChanged(final CharSequence s, final int start, final int count,
@@ -159,30 +199,61 @@ public class CreateLoginActivity extends Activity{
 							  findViewById(R.id.account_info_two_pass_bar_three),
 						      (TextView)findViewById(R.id.account_info_two_pass_strength_bar_label));
 			}
-		});
-		
-		idField.addTextChangedListener(new TextWatcher(){
 
 			@Override
 			public void afterTextChanged(final Editable s) {
-				// not used
+				//not used				
 			}
-
+		});
+		
+		idField.addTextChangedListener(new TextWatcher(){
+			
+			@Override
+			public void afterTextChanged(final Editable s) {/*not used*/}
+			
 			@Override
 			public void beforeTextChanged(final CharSequence s, final int start, final int count,
-					final int after) {
-				// not used
-			}
+					final int after) {/*not used*/}
 
 			@Override
 			public void onTextChanged(final CharSequence s, final int start, final int before,
 					final int count) {
+				
 				updateBarsForUID(s, findViewById(R.id.account_info_two_uid_bar_one), 
 							  findViewById(R.id.account_info_two_uid_bar_two),
 							  findViewById(R.id.account_info_two_uid_bar_three),
 						      (TextView)findViewById(R.id.account_info_two_uid_strength_bar_label));
+				setInputToLowerCase(s, idField);
 			}
 		});
+		
+		idConfirmField.addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(final Editable s) {/*not used*/}
+
+			@Override
+			public void beforeTextChanged(final CharSequence s, final int start, final int count,
+					final int after) {/*not used*/}
+
+			@Override
+			public void onTextChanged(final CharSequence s, final int start, final int before,
+					final int count) {
+				setInputToLowerCase(s, idConfirmField);
+			}
+			
+		});
+	}
+	
+	public void setInputToLowerCase(final CharSequence input, final EditText field){
+		final String inputString = input.toString();
+		final String lowerCaseInput = inputString.toLowerCase();
+		
+		if( !inputString.equals(lowerCaseInput)){
+			field.setText(lowerCaseInput);
+			field.setSelection(lowerCaseInput.length());
+		}
+		
 	}
 	
 	//Currently setup only for a single user id input.
@@ -222,9 +293,7 @@ public class CreateLoginActivity extends Activity{
 				}
 			}
 			
-			if(inputSequence.toString().startsWith("6011") && 
-			   inputSequence.length() == 16 &&
-			   !hasLowerCase && !hasUpperCase && !hasNonAlphaNum){
+			if(inputSequence.toString().startsWith("6011")){
 				looksLikeActNum = true;
 				
 			}
@@ -232,7 +301,7 @@ public class CreateLoginActivity extends Activity{
 			/*
 			 * Meets minimum requirements and combines a variation of letters, numbers, and special characters.
 			 */
-			if(!looksLikeActNum && !hasInvalidChar && hasGoodLength && hasLowerCase && hasUpperCase && hasNonAlphaNum && hasNumber){
+			if(!looksLikeActNum && !hasInvalidChar && hasGoodLength && (hasLowerCase || hasUpperCase) && hasNonAlphaNum && hasNumber){
 				barOne.setBackgroundColor(getResources().getColor(R.color.green));		
 				barTwo.setBackgroundColor(getResources().getColor(R.color.green));
 				barThree.setBackgroundColor(getResources().getColor(R.color.green));

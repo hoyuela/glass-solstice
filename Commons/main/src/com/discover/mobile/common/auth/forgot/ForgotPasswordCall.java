@@ -1,4 +1,4 @@
-package com.discover.mobile.common.forgotpassword;
+package com.discover.mobile.common.auth.forgot;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -14,13 +14,12 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 
 public class UpdateSessionCall extends NetworkServiceCall<Object> {
 	
-	private static final String TAG = UpdateSessionCall.class.getSimpleName();
+	private static final PostCallParams PARAMS = new PostCallParams("/cardsvcs/acs/session/v1/update");
 	
 	private final TypedReferenceHandler<Object> handler;
 	
 	public UpdateSessionCall(final Context context, final AsyncCallback<Object> callback) {
-		// TODO make PostCallParams a static instance
-		super(context, new PostCallParams("/cardsvcs/acs/session/v1/update"));
+		super(context, PARAMS);
 
 		// TODO decide if this is the best type of handler
 		handler = new StrongReferenceHandler<Object>(callback);
@@ -36,4 +35,5 @@ public class UpdateSessionCall extends NetworkServiceCall<Object> {
 			final Map<String, List<String>> headers, final InputStream body) {
 		return this;
 	}
+	
 }

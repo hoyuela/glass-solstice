@@ -2,11 +2,7 @@
 <ScrollView android:id="@+id/scrollView1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/gradient_bg"
-    android:paddingBottom="@dimen/content_padding"
-    android:paddingLeft="@dimen/content_padding"
-    android:paddingRight="@dimen/content_padding"
-    android:paddingTop="@dimen/content_padding" 
+    style="@style/WhiteTheme"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
@@ -58,12 +54,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_security_question_placeholder_label"
-            android:ems="10"
             android:hint="@string/account_security_question_hint"
-            android:maxLines="@integer/MAX_INPUT_LINES"
             android:imeOptions="actionDone"
-             />
-            
+            android:inputType="textNoSuggestions"
+            android:maxLines="@integer/MAX_INPUT_LINES" />
 
         <TextView
             android:id="@+id/account_security_remember_device_label"
@@ -158,6 +152,7 @@
                 android:layout_marginTop="4dp"
                 android:text="@string/account_security_dont_remember_me_text"
                 android:textColor="@color/black" />
+            
         </RadioGroup>
 
         <Button
@@ -170,24 +165,15 @@
             android:text="@string/continue_text" 
             android:onClick="submitSecurityInfo"/>
 
-        <TextView
-            android:id="@+id/feedback_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/account_security_continue_button"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="64dp"
-            android:text="@string/feedback_text"
-            android:textColor="@color/blue" />
+        <RelativeLayout
+    	    android:layout_width="match_parent"
+    	    android:layout_height="70dp"
+    	    android:layout_below="@+id/account_security_continue_button" >
 
-        <TextView
-            android:id="@+id/discover_copyright_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/feedback_label"
-            android:layout_centerHorizontal="true"
-            android:text="@string/discover_copyright_text"
-            android:textSize="@dimen/light_text_size" />
+   			<include layout="@layout/copyright_footer"/>
+    	    
+    	</RelativeLayout>
+        
     </RelativeLayout>
 
-    </ScrollView>
+</ScrollView>

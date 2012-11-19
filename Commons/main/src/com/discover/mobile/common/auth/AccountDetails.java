@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Struct
 public class AccountDetails implements Serializable {
-
-	private static final long serialVersionUID = 5560948851652492739L;
+	
+	private static final long serialVersionUID = 586314752787142118L;
 	
 	public String availableCredit;
 	public String currentBalance;
@@ -16,7 +16,7 @@ public class AccountDetails implements Serializable {
 	public String lastPaymentDate;
 	public String minimumPaymentDue;
 	public String outageModeVal;
-	public String paymentDueDate;  // TODO Find out how Jackson maps Dates
+	public String paymentDueDate;
 	
 	@JsonProperty("primaryCardmember")
 	public PrimaryCardMember primaryCardMember;
@@ -32,6 +32,7 @@ public class AccountDetails implements Serializable {
 	public String optionCode;
 	public String newlyEarnedRewards;
 	public String statementsTransaction;
+	
 	public boolean acLiteOutageMode;
 	public boolean cardProductGroupOutageMode;
 	public boolean paperlessOutageMode;
@@ -43,5 +44,5 @@ public class AccountDetails implements Serializable {
 		public String nameOnCard;
 		public String emailAddress;
 	}
-
+	
 }

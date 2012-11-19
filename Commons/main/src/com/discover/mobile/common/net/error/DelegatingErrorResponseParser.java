@@ -16,7 +16,9 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 	
 	private static final Object SHARED_INSTANCE_LOCK = new Object();
 	
-	private static DelegatingErrorResponseParser sharedInstance;
+	private static final int HTTP_ERROR_STATUS_MINIMUM = 400;
+	
+	private static DelegatingErrorResponseParser SHARED_INSTANCE;
 	
 	public static DelegatingErrorResponseParser getSharedInstance() {
 		assertNonMainThreadExecution(); // using synchronization, don't want to block on UI thread
@@ -26,14 +28,14 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 	
 	private static DelegatingErrorResponseParser getOrCreateSharedInstance() {
 		synchronized(SHARED_INSTANCE_LOCK) {
-			if(sharedInstance == null)
-				sharedInstance = new DelegatingErrorResponseParser(defaultParserDelegates);
+			if(SHARED_INSTANCE == null)
+				SHARED_INSTANCE = new DelegatingErrorResponseParser(DEFAULT_PARSER_DELEGATES);
 			
-			return sharedInstance;
+			return SHARED_INSTANCE;
 		}
 	}
 	
-	protected static final List<ErrorResponseParser<? extends AbstractErrorResponse<?>>> defaultParserDelegates =
+	protected static final List<ErrorResponseParser<? extends AbstractErrorResponse<?>>> DEFAULT_PARSER_DELEGATES =
 			createDefaultDelegates();
 	
 	private static List<ErrorResponseParser<? extends AbstractErrorResponse<?>>> createDefaultDelegates() {
@@ -50,15 +52,15 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 		checkNotNull(parserDelegates, "parserDelegates cannot be null");
 		checkArgument(!parserDelegates.isEmpty(), "parserDelegates cannot be empty");
 		
-		if(defaultParserDelegates == parserDelegates)
-			this.parserDelegates = defaultParserDelegates;  // since its immutable already
+		if(DEFAULT_PARSER_DELEGATES == parserDelegates)
+			this.parserDelegates = DEFAULT_PARSER_DELEGATES;  // since its immutable already
 		else
 			this.parserDelegates =
 					ImmutableList.<ErrorResponseParser<? extends AbstractErrorResponse<?>>>copyOf(parserDelegates);
 	}
 	
 	public static boolean isErrorStatus(final int httpStatusCode) {
-		return httpStatusCode >= 400;
+		return httpStatusCode >= HTTP_ERROR_STATUS_MINIMUM;
 	}
 	
 	@Override

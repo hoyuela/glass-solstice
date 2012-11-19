@@ -1,6 +1,6 @@
 package com.discover.mobile.login.register;
 
-import static com.discover.mobile.login.register.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
 
 import java.net.HttpURLConnection;
 
@@ -32,6 +32,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
+import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
 @ContentView(R.layout.account_info)
 abstract class AbstractAccountInformationActivity extends RoboActivity {
@@ -41,6 +42,8 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	private AccountInformationDetails accountInformationDetails;
 	
 	private final String ANALYTICS_PAGE_IDENTIFIER;
+	
+	private ProgressDialog progress;
 	
 	private boolean strongAuthRequired = false;
 	private String strongAuthQuestion;
@@ -65,12 +68,15 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
 	}
 	
+	protected void setupTextChangedListeners() {/*Override in subclass*/}
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		
 		setupSpinnerAdapters();
     	setupFieldsAndLabels();
+    	setupTextChangedListeners();
     	
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 	}
@@ -184,12 +190,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	protected abstract boolean areDetailsValid(InputValidator validator);
 	
 	private void submitFormInfo() {
-		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
+		progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
 			@Override
 			public void success(final Object value) {
-				progress.dismiss();
 				checkForStrongAuth();
 			}
 
@@ -201,6 +206,10 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						// TODO handle
 						return true;
+						// TEMP temp fix for strange 503 coming back from server on some accounts. v
+					case HttpURLConnection.HTTP_UNAVAILABLE:
+						errorMessageLabel.setText("Unknown error with the server, please try again later.");
+					return true;
 				}
 				
 				return false;
@@ -230,10 +239,12 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
 						return true;
 						
-					case 1916:
-						if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_INTERNAL_ERROR)
-							return false;
+					case 1911:
+					case 1913:
+						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
+						return true;
 						
+					case 1916:					
 						errorMessageLabel.setText(getString(R.string.account_info_bad_input_error_text));
 						return true;
 						
@@ -257,7 +268,6 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	
 	// TODO go through old code and make sure this is called every time
 	private void checkForStrongAuth() {
-		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
 			public void success(final StrongAuthDetails value) {
@@ -329,9 +339,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		
 	}
 	
-	private void sendToErrorPage(final int screenType) {
+	private void sendToErrorPage(final ScreenType screenType) {
 		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
-		maintenancePageIntent.putExtra(IntentExtraKey.SCREEN_TYPE, screenType);
+		screenType.addExtraToIntent(maintenancePageIntent);
 		startActivity(maintenancePageIntent);
 	}
 	
@@ -369,13 +379,13 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				//TODO properly handle these ^ v
 				return true;
 			}
-
+			
+			@InjectView(R.id.account_info_error_label)
+			TextView errorMessageLabel;
 			@Override
 			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-				final TextView errorMessageLabel = 
-						(TextView)findViewById(R.id.account_info_error_label);
 				
 				switch(messageErrorResponse.getMessageStatusCode()){
 				
@@ -390,26 +400,36 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		final GetStrongAuthQuestionCall strongAuthCall = 
 				new GetStrongAuthQuestionCall(this, callback);
 		strongAuthCall.submit();
+		
 	}
 	
 	private static final int STRONG_AUTH_ACTIVITY = 0;
 	
 	private void navToStrongAuth() {
+		
 		final Intent strongAuth = new Intent(this, EnhancedAccountSecurityActivity.class);
+		
 		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, strongAuthQuestion);
 		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, strongAuthQuestionId);
+		
 		startActivityForResult(strongAuth, STRONG_AUTH_ACTIVITY);
+		
 	}
 	
 	@Override
-	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {		
 		if(requestCode == STRONG_AUTH_ACTIVITY) {
 			if(resultCode == RESULT_OK) {
 				final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
 				createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, accountInformationDetails);
+				if("Forgot Both".equals(activityTitleLabel.getText()))
+					createLoginActivity.putExtra("ScreenType", "forgotBoth");
+				else if("Forgot Password".equals(activityTitleLabel.getText()))
+					createLoginActivity.putExtra("ScreenType", "forgotPass");
+				
 				startActivity(createLoginActivity);
 			} else {
-				// TODO
+				// TODO if strong auth fails.
 			}
 		}
 	}
@@ -421,34 +441,42 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		final TextView ssnErrorLabel = (TextView)findViewById(R.id.account_info_ssn_error_label);
 		final TextView dobYearErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
 		
-		final String errorString = getResources().getString(R.string.invalid_value);
-		final String emptyString = "";
 		
 		// FIXME
-//		/*
-//		 * Set error label based on what is valid.
-//		 * These should never be both true.
-//		 * Bitwise AND and inclusive OR used - why not.
-//		 */
-//		if(forgotPass & !validator.wasUidValid | 
-//				!forgotPass & !validator.wasAccountNumberValid){
-//			cardErrorLabel.setText(errorString);
-//		}
-//		else{
-//			cardErrorLabel.setText(emptyString);
-//		}
+		/*
+		 * Set error label based on what is valid.
+		 * These should never be both true.
+		 * Bitwise AND and inclusive OR used - why not.
+		 */
+		if("Forgot Password".equals(activityTitleLabel.getText()) && !validator.wasUidValid){
+			showLabel(cardErrorLabel);
+		}
+		else if(!"Forgot Password".equals(activityTitleLabel.getText()) && !validator.wasAccountNumberValid){
+			showLabel(cardErrorLabel);
+		}
+		else{
+			hideLabel(cardErrorLabel);
+		}
 		
 		if(!validator.wasSsnValid){
-			ssnErrorLabel.setText(errorString);
+			showLabel(ssnErrorLabel);
 		}
 		else
-			ssnErrorLabel.setText(emptyString);
+			hideLabel(ssnErrorLabel);
 		
 		if(!validator.wasDobYearValid){
-			dobYearErrorLabel.setText(errorString);
+			showLabel(dobYearErrorLabel);
 		}
 		else
-			dobYearErrorLabel.setText(emptyString);
+			hideLabel(dobYearErrorLabel);
+	}
+	
+	private void showLabel(View v){
+		v.setVisibility(View.VISIBLE);
+	}
+	
+	private void hideLabel(View v){
+		v.setVisibility(View.GONE);
 	}
 
 }

@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/account_info_scroll_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" 
-            android:background="@drawable/gradient_bg"
-            android:paddingBottom="@dimen/content_padding"
-        	android:paddingLeft="@dimen/content_padding"
-        	android:paddingRight="@dimen/content_padding"
-        	android:paddingTop="@dimen/content_padding"
-            >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/account_info_scroll_view"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent" 
+	style="@style/WhiteTheme" >
             
-    	<RelativeLayout
-        	android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-         	>
+	<RelativeLayout android:layout_width="fill_parent"
+	   	android:layout_height="wrap_content">
         
         <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
 		<LinearLayout
@@ -89,49 +81,6 @@
             android:text="@string/card_expiration_date_text"
             android:textColor="@color/black" />
 
-            <TextView
-            android:id="@+id/feedback_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/account_info_help_row"
-            android:layout_centerHorizontal="true"
-            android:text="@string/feedback_text"
-            android:textColor="@color/blue" 
-            android:layout_marginTop="64dp"/>
-            
-            <TextView
-            android:id="@+id/discover_copyright_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/feedback_label"
-            android:layout_centerHorizontal="true"
-            android:text="@string/discover_copyright_text"
-            android:textSize="@dimen/light_text_size" />
-
-        <TableRow
-            android:id="@+id/account_info_help_row"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/account_info_button_row"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp" >
-
-            <TextView
-                android:id="@+id/need_help_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/need_help_text"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/help_number_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="@string/need_help_number_text"
-                android:textColor="@color/blue" />
-        </TableRow>
-
         <Spinner
             android:id="@+id/account_info_month_spinner"
             android:layout_width="wrap_content"
@@ -188,7 +137,9 @@
              android:layout_alignRight="@id/account_info_ssn_input_field"
              android:layout_below="@+id/account_info_ssn_info_label"
              android:textAppearance="?android:attr/textAppearanceSmall"
-             android:textColor="@color/red" />
+             android:textColor="@color/red" 
+             android:text="@string/invalid_value"
+             android:visibility="gone"/>
          
         
         
@@ -200,7 +151,8 @@
             android:layout_below="@+id/account_information_input_info_label"
             android:textAppearance="?android:attr/textAppearanceSmall" 
             android:textColor="@color/red"
-            
+            android:text="@string/invalid_value"
+            android:visibility="gone"
             ><requestFocus /></TextView>
         
         <EditText
@@ -233,7 +185,9 @@
             android:layout_alignRight="@+id/account_info_dob_year_field"
             android:layout_below="@+id/account_info_dob_label"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/red" />
+            android:text="@string/invalid_value"
+            android:textColor="@color/red" 
+            android:visibility="gone"/>
         
         <Spinner
             android:id="@+id/account_info_dob_month_spinner"
@@ -290,6 +244,18 @@
                 android:onClick="validateInfoAndSubmitOnSuccess"/>
 
         </TableRow>
+        
+    	<RelativeLayout
+    	    android:layout_width="match_parent"
+    	    android:layout_height="100dp"
+    	    android:layout_below="@+id/account_info_button_row" >
+    	    
+    	    <include layout="@layout/need_help_footer"/>
 
-    </RelativeLayout>
-            </ScrollView>
+   			<include layout="@layout/copyright_footer"/>
+    	    
+    	</RelativeLayout>
+
+	</RelativeLayout>
+
+</ScrollView>

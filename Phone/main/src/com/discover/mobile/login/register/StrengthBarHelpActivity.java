@@ -11,17 +11,14 @@ public class StrengthBarHelpActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		
-		if (savedInstanceState == null) {
-			
-			Bundle extras = getIntent().getExtras();
-        	if(extras != null) {
-        		String helpLayout = extras.getString("helpType");
-        		if("id".equals(helpLayout))
-        			setContentView(R.layout.account_info_id_strength_help);
-        		else
-        			setContentView(R.layout.account_info_password_strength_help);
-        	}
-		}
+		Bundle extras = getIntent().getExtras();
+    	if(extras != null) {
+    		String helpLayout = extras.getString("ScreenType");
+    		if("id".equals(helpLayout))
+    			setContentView(R.layout.account_info_id_strength_help);
+    		else
+    			setContentView(R.layout.account_info_password_strength_help);
+    	}
 
 	}
 	

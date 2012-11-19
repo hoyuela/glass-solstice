@@ -23,6 +23,9 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 
 public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	
+	// FIXME make ALL callbacks with the same priority happen in appropriate order, not just the order for that type of
+	// callback
+	
 	private static final String TAG = GenericAsyncCallback.class.getSimpleName();
 	
 	private final @Nonnull List<CompletionListener> completionListeners;

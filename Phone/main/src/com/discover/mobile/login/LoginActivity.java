@@ -1,5 +1,8 @@
 package com.discover.mobile.login;
 
+import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_1;
+import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_2;
+
 import java.net.HttpURLConnection;
 
 import roboguice.activity.RoboActivity;
@@ -15,7 +18,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -26,7 +28,7 @@ import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.forgotuidpassword.ForgotCredentialsActivity;
+import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.google.common.base.Strings;
 
@@ -82,7 +84,7 @@ public class LoginActivity extends RoboActivity {
 		forgotUserIdOrPassText.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				errorTextView.setText(null);
+				errorTextView.setText("");
 				forgotIdAndOrPass();
 			}
 		});
@@ -91,9 +93,7 @@ public class LoginActivity extends RoboActivity {
 	private void logIn() {
 		//If the user id, or password field are effectively blank, do not allow a service call to be made
 		//display the error message for id/pass not matching records.
-		if(getResources().getString(R.string.username_placeholder).equals(uidField.getText().toString()) ||
-			getResources().getString(R.string.password_placeholder).equals(passField.getText().toString()) ||
-			Strings.isNullOrEmpty(uidField.getText().toString()) ||
+		if(Strings.isNullOrEmpty(uidField.getText().toString()) ||
 			Strings.isNullOrEmpty(passField.getText().toString()))
 			errorTextView.setText(getString(R.string.login_error));
 		else
@@ -109,6 +109,8 @@ public class LoginActivity extends RoboActivity {
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						errorTextView.setText(getString(R.string.login_error));
 						return true;
+					
+					// FIXME other cases
 				}
 				
 				return false;
@@ -117,12 +119,14 @@ public class LoginActivity extends RoboActivity {
 			@Override
 			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
+				
 				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
 					return false;
 				
+				// FIXME convert other error codes to standard constants
 				switch(messageErrorResponse.getMessageStatusCode()) {
-					case 1006:
-					case 1007: 
+					case MAINTENANCE_MODE_1:
+					case MAINTENANCE_MODE_2: 
 						sendToErrorPage(ScreenType.MAINTENANCE);
 						return true;
 					
@@ -134,6 +138,7 @@ public class LoginActivity extends RoboActivity {
 					case 1402:
 						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
 						return true;
+						
 					default:
 						errorTextView.setText(messageErrorResponse.getMessage());
 						return true;
@@ -150,9 +155,9 @@ public class LoginActivity extends RoboActivity {
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
 	
-	private void sendToErrorPage(final int screenType) {
+	private void sendToErrorPage(final ScreenType screenType) {
 		final Intent maintenancePageIntent = new Intent(LoginActivity.this, LockOutUserActivity.class);
-		maintenancePageIntent.putExtra(IntentExtraKey.SCREEN_TYPE, screenType);
+		screenType.addExtraToIntent(maintenancePageIntent);
 		startActivity(maintenancePageIntent);
 	}
 	

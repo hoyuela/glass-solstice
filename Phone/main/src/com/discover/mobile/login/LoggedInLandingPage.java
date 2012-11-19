@@ -28,8 +28,8 @@ public class LoggedInLandingPage extends RoboActivity {
 	
 	@Override
 	public void onBackPressed() {
-	   Intent navToMain = new Intent(this, LoginActivity.class);
-	   startActivity(navToMain);
+		final Intent navToMain = new Intent(this, LoginActivity.class);
+		startActivity(navToMain);
 	}
 	
 }

@@ -1,4 +1,4 @@
-package com.discover.mobile.common.forgotuidpassword;
+package com.discover.mobile.common.auth.forgot;
 
 import android.content.Context;
 import android.util.Base64;
@@ -12,9 +12,6 @@ import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall
 import com.google.common.collect.ImmutableMap;
 
 public class ForgotUserIdCall extends JsonResponseMappingNetworkServiceCall<UserIdDetails> {
-
-	@SuppressWarnings("unused")
-	private static final String TAG = AuthenticateCall.class.getSimpleName();
 	
 	private final TypedReferenceHandler<UserIdDetails> handler;
 
@@ -48,4 +45,5 @@ public class ForgotUserIdCall extends JsonResponseMappingNetworkServiceCall<User
 	protected TypedReferenceHandler<UserIdDetails> getHandler() {
 		return handler;
 	}
+	
 }
