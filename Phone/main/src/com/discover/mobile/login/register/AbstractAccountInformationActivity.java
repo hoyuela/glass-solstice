@@ -471,11 +471,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			hideLabel(dobYearErrorLabel);
 	}
 	
-	private void showLabel(View v){
+	private void showLabel(final View v){
 		v.setVisibility(View.VISIBLE);
 	}
 	
-	private void hideLabel(View v){
+	private void hideLabel(final View v){
 		v.setVisibility(View.GONE);
 	}
 
