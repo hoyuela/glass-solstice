@@ -23,7 +23,7 @@ import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.CreateLoginCall;
 import com.discover.mobile.common.auth.registration.CreateLoginDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
@@ -89,8 +89,8 @@ public class CreateLoginActivity extends RoboActivity{
 	  cancel(null);
 	}
 	
-	public void cancel(View v){
-		   Intent backToChoices = new Intent(this, ForgotCredentialsActivity.class);
+	public void cancel(final View v){
+		   final Intent backToChoices = new Intent(this, ForgotCredentialsActivity.class);
 		   startActivity(backToChoices);
 	}
 	
@@ -131,15 +131,15 @@ public class CreateLoginActivity extends RoboActivity{
 		}
 	}
 	
-	private void showLabel(View v){
+	private void showLabel(final View v){
 		v.setVisibility(View.VISIBLE);
 	}
 	
-	private void hideLabel(View v){
+	private void hideLabel(final View v){
 		v.setVisibility(View.GONE);
 	}
 	
-	private void updateErrorLabelsUsingValidator(InputValidator validator){
+	private void updateErrorLabelsUsingValidator(final InputValidator validator){
 		if( !validator.didIdsMatch ) {
 			showLabel(errorMessageLabel);
 			showLabel(idConfirmErrorLabel);
@@ -201,7 +201,7 @@ public class CreateLoginActivity extends RoboActivity{
 			}
 
 			@Override
-			public void afterTextChanged(Editable s) {
+			public void afterTextChanged(final Editable s) {
 				//not used				
 			}
 		});
@@ -230,24 +230,24 @@ public class CreateLoginActivity extends RoboActivity{
 		idConfirmField.addTextChangedListener(new TextWatcher(){
 
 			@Override
-			public void afterTextChanged(Editable s) {/*not used*/}
+			public void afterTextChanged(final Editable s) {/*not used*/}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {/*not used*/}
+			public void beforeTextChanged(final CharSequence s, final int start, final int count,
+					final int after) {/*not used*/}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			public void onTextChanged(final CharSequence s, final int start, final int before,
+					final int count) {
 				setInputToLowerCase(s, idConfirmField);
 			}
 			
 		});
 	}
 	
-	public void setInputToLowerCase(CharSequence input, EditText field){
-		String inputString = input.toString();
-		String lowerCaseInput = inputString.toLowerCase();
+	public void setInputToLowerCase(final CharSequence input, final EditText field){
+		final String inputString = input.toString();
+		final String lowerCaseInput = inputString.toLowerCase();
 		
 		if( !inputString.equals(lowerCaseInput)){
 			field.setText(lowerCaseInput);
@@ -418,7 +418,7 @@ public class CreateLoginActivity extends RoboActivity{
 			}
 
 			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
 				
 				switch(messageErrorResponse.getMessageStatusCode()){

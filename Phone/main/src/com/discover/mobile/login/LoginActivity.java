@@ -25,7 +25,7 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
-import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
@@ -133,7 +133,7 @@ public class LoginActivity extends RoboActivity {
 			}
 
 			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 				
 				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
