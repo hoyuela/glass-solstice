@@ -23,7 +23,7 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
-import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 
 @ContentView(R.layout.landing)
@@ -93,7 +93,7 @@ public class StartActivity extends RoboActivity {
 			}
 
 			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
 				
 				// FIXME named constants

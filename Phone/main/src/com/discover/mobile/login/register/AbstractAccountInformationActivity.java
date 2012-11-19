@@ -27,7 +27,7 @@ import com.discover.mobile.common.auth.StrongAuthCall;
 import com.discover.mobile.common.auth.StrongAuthDetails;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallback;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
@@ -216,7 +216,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			}
 
 			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
 				Log.d(TAG, "Error message: " + messageErrorResponse.getMessage());
 				
@@ -301,7 +301,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			}
 
 			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
 
@@ -383,7 +383,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			@InjectView(R.id.account_info_error_label)
 			TextView errorMessageLabel;
 			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
 				
@@ -471,11 +471,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			hideLabel(dobYearErrorLabel);
 	}
 	
-	private void showLabel(View v){
+	private void showLabel(final View v){
 		v.setVisibility(View.VISIBLE);
 	}
 	
-	private void hideLabel(View v){
+	private void hideLabel(final View v){
 		v.setVisibility(View.GONE);
 	}
 

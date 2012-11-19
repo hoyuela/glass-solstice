@@ -21,7 +21,7 @@ import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoCall;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoDetails;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.register.AccountInformationConfirmationActivity;
@@ -170,7 +170,7 @@ public class EnterNewPasswordActivity extends RoboActivity {
 			}
 
 			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
 				final TextView mainErrorMessageLabel = 
@@ -255,8 +255,8 @@ public class EnterNewPasswordActivity extends RoboActivity {
 		
 	}
 	
-	public void cancel(View v){
-		   Intent navToForgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+	public void cancel(final View v){
+		   final Intent navToForgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
 		   startActivity(navToForgotCredentials);
 	}
 	

@@ -24,7 +24,7 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.forgot.ForgotUserIdCall;
 import com.discover.mobile.common.auth.forgot.UserIdDetails;
-import com.discover.mobile.common.net.json.MessageErrorResponse;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
@@ -91,11 +91,11 @@ public class ForgotUserIdActivity extends RoboActivity {
 		hideLabel(mainErrLabel);
 	}
 	
-	private void hideLabel(View v) {
+	private void hideLabel(final View v) {
 		v.setVisibility(View.GONE);
 	}
 	
-	private void showLabel(View v) {
+	private void showLabel(final View v) {
 		v.setVisibility(View.VISIBLE);
 	}
 	
@@ -152,7 +152,7 @@ public class ForgotUserIdActivity extends RoboActivity {
 			}
 
 			@Override
-			public boolean handleMessageErrorResponse(final MessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
 					return false;
 				
