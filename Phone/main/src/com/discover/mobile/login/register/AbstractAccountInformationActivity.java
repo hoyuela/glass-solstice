@@ -10,8 +10,11 @@ import roboguice.inject.InjectView;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -49,6 +52,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	private String strongAuthQuestion;
 	private String strongAuthQuestionId;
 	
+	
+//TEXT LABELS
+	
 	@InjectView(R.id.account_info_title_label)
 	private TextView activityTitleLabel;
 	
@@ -57,18 +63,37 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	
 	@InjectView(R.id.account_information_input_info_label)
 	protected TextView accountIdentifierFieldRestrictionsLabel;
+
+//INPUT FIELDS
 	
 	@InjectView(R.id.account_info_main_input_field)
 	protected EditText accountIdentifierField;
-
+	
+	@InjectView(R.id.account_info_ssn_input_field)
+	EditText ssnField;
+	
+	@InjectView(R.id.account_info_dob_year_field)
+	EditText dobYearField;
+	
+//ERROR LABELS
+	
 	@InjectView(R.id.account_info_error_label)
 	private TextView errorMessageLabel;
+	
+	@InjectView(R.id.account_info_card_account_number_error_label)
+	TextView cardErrorLabel;
+	
+	@InjectView (R.id.account_info_ssn_error_label)
+	TextView ssnErrorLabel;
+	
+	@InjectView (R.id.account_info_dob_year_error_label)
+	TextView dobYearErrorLabel;
 	
 	protected AbstractAccountInformationActivity(final String analyticsPageIdentifier) {
 		ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
 	}
 	
-	protected void setupTextChangedListeners() {/*Override in subclass*/}
+	
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
@@ -144,23 +169,129 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		
 	} */
 	
+	protected void setupTextChangedListeners(){
+    	setupYearTextChangedListeners();
+    	setupSsnTextChangedListeners();
+    	setupCustomTextChangedListeners();
+	}
+	
+	/*Override in subclass*/
+	protected void setupCustomTextChangedListeners() {
+
+		accountIdentifierField.setOnFocusChangeListener(new OnFocusChangeListener() {
+			InputValidator validator = new InputValidator();
+			
+				@Override
+				public void onFocusChange(View v, boolean hasFocus) {
+//					String titleLabel = (String)activityTitleLabel.getText();
+//					String forgotPassText = null;
+//					forgotPassText = getString(R.string.forgot_password_text);
+					
+					//This is then a user id that must be validated.
+					String acctNbr = ((EditText)v).getText().toString();
+					if(!hasFocus && !validator.isCardAccountNumberValid(acctNbr)){
+						showLabel( cardErrorLabel );
+					}
+				}
+				
+		});
+		
+		accountIdentifierField.addTextChangedListener(new TextWatcher(){
+			InputValidator validator = new InputValidator();
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(validator.isCardAccountNumberValid(s.toString())){
+					hideLabel( cardErrorLabel );
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {/*Intentionally empty*/}
+			
+		});
+		
+
+	}
+	
+	private void setupYearTextChangedListeners(){
+		dobYearField.setOnFocusChangeListener(new OnFocusChangeListener() {
+			EditText inputField;
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				inputField = (EditText)v;
+				if(!hasFocus && inputField.getText().length() < 4) {
+					showLabel(dobYearErrorLabel);
+				}
+			}
+		});
+		
+		dobYearField.addTextChangedListener(new TextWatcher(){
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(s.length() == 4) {
+					//hide error label
+					hideLabel(dobYearErrorLabel);
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {/*Intentionally empty*/}
+			
+		});
+	}
+	
+	private void setupSsnTextChangedListeners(){
+		
+		ssnField.setOnFocusChangeListener(new OnFocusChangeListener(){
+			EditText inputField;
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				inputField = (EditText)v;
+				
+				if(!hasFocus && inputField.getText().length() < 4) {
+					showLabel(ssnErrorLabel);
+				}
+			}
+		});
+		
+		ssnField.addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(s.length() == 4) {
+					//hide error label
+					hideLabel(ssnErrorLabel);
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {/*Intentionally empty*/}
+			
+		});
+	}
+	
 	public void validateInfoAndSubmitOnSuccess(final View v){
 		final InputValidator validator = new InputValidator();
-//		final EditText accountNum = (EditText)findViewById(R.id.account_info_main_input_field);
-//		final Spinner cardMonthExp = (Spinner)findViewById(R.id.account_info_month_spinner);
-//		final Spinner cardYearExp = (Spinner)findViewById(R.id.account_info_year_spinner);
-//		final Spinner memberDobMonth = (Spinner)findViewById(R.id.account_info_dob_month_spinner);
-//		final Spinner memberDobDay = (Spinner)findViewById(R.id.account_info_dob_day_spinner);
-		final EditText memberDobYear = (EditText)findViewById(R.id.account_info_dob_year_field);
-		final EditText memberSsnNum = (EditText)findViewById(R.id.account_info_ssn_input_field);
 		
 		final String accountNumString = accountIdentifierField.getText().toString();
 		final String cardMonthExpString = expirationMonthSpinner.getSelectedItem().toString();
 		final String cardYearExpString = expirationYearSpinner.getSelectedItem().toString();
 		final String memberDobMonthString = birthMonthSpinner.getSelectedItem().toString();
 		final String memberDobDayString = birthDaySpinner.getSelectedItem().toString();
-		final String memberDobYearString = memberDobYear.getText().toString();
-		final String memberSsnNumString =  memberSsnNum.getText().toString();
+		final String memberDobYearString = dobYearField.getText().toString();
+		final String memberSsnNumString =  ssnField.getText().toString();
 					
 		validator.isUidValid(accountNumString);
 		validator.isCardAccountNumberValid(accountNumString);
@@ -437,16 +568,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	protected abstract Class<?> getSuccessfulStrongAuthIntentClass();
 	
 	private void updateLabelsUsingValidator(final InputValidator validator){
-		final TextView cardErrorLabel = (TextView)findViewById(R.id.account_info_card_account_number_error_label);
-		final TextView ssnErrorLabel = (TextView)findViewById(R.id.account_info_ssn_error_label);
-		final TextView dobYearErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
-		
-		
-		// FIXME
+
+		// FIXME with a better input validator.
 		/*
 		 * Set error label based on what is valid.
 		 * These should never be both true.
-		 * Bitwise AND and inclusive OR used - why not.
 		 */
 		if("Forgot Password".equals(activityTitleLabel.getText()) && !validator.wasUidValid){
 			showLabel(cardErrorLabel);
@@ -471,11 +597,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			hideLabel(dobYearErrorLabel);
 	}
 	
-	private void showLabel(View v){
+	public void showLabel(View v){
 		v.setVisibility(View.VISIBLE);
 	}
 	
-	private void hideLabel(View v){
+	public void hideLabel(View v){
 		v.setVisibility(View.GONE);
 	}
 

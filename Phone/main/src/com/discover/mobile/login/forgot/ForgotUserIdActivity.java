@@ -10,8 +10,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -48,10 +51,10 @@ public class ForgotUserIdActivity extends RoboActivity {
 	private TextView passErrLabel;
 	
 	@InjectView(R.id.forgot_id_id_field)
-	private EditText cardNum;
+	private EditText cardNumField;
 	
 	@InjectView(R.id.forgot_id_password_field)
-	private EditText passText;
+	private EditText passField;
 	
 	@InjectView(R.id.account_info_cancel_label)
 	private TextView cancelLabel;
@@ -63,6 +66,81 @@ public class ForgotUserIdActivity extends RoboActivity {
 //		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
 		
 		setOnClickActions();
+		setupTextChangedListeners();
+	}
+	
+	private void setupTextChangedListeners(){
+		
+		setupPasswordTextChangedListeners();
+		setupCardNumTextChangedListeners();
+	}
+	
+	private void setupCardNumTextChangedListeners() {
+		cardNumField.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			InputValidator validator = new InputValidator();
+			
+				@Override
+				public void onFocusChange(View v, boolean hasFocus) {
+					//This is then a user id that must be validated.
+					String acctNbr = ((EditText)v).getText().toString();
+					if(!hasFocus && !validator.isCardAccountNumberValid(acctNbr)){
+						showLabel( idErrLabel );
+					}
+				}
+				
+		});
+		
+		cardNumField.addTextChangedListener(new TextWatcher(){
+			InputValidator validator = new InputValidator();
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(validator.isCardAccountNumberValid(s.toString())){
+					hideLabel( idErrLabel );
+				}
+			}			
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {/*Intentionally empty*/}
+			
+		});
+	}
+	
+		
+	private void setupPasswordTextChangedListeners(){
+		
+		passField.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+				@Override
+				public void onFocusChange(View v, boolean hasFocus) {
+					//This is then a user id that must be validated.
+					String pass = ((EditText)v).getText().toString();
+					if(!hasFocus && pass.length() < 1){
+						showLabel( passErrLabel );
+					}
+				}
+				
+		});
+		
+		passField.addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(s.toString().length() > 0){
+					hideLabel( passErrLabel );
+				}
+			}			
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {/*Intentionally empty*/}
+			
+		});
 	}
 	
 	private void setOnClickActions() {
@@ -102,17 +180,17 @@ public class ForgotUserIdActivity extends RoboActivity {
 	public void checkInputsAndSubmit(){
 		final InputValidator validator = new InputValidator();
 		
-		if(!validator.isCardAccountNumberValid(cardNum.getText().toString()))
+		if(!validator.isCardAccountNumberValid(cardNumField.getText().toString()))
 			showLabel(idErrLabel);
 		else
 			hideLabel(idErrLabel);
 
-		if(passText.getText().toString().isEmpty())
+		if(passField.getText().toString().isEmpty())
 			showLabel(passErrLabel);
 		else
 			hideLabel(passErrLabel);
 
-		if(validator.wasAccountNumberValid && !passText.getText().toString().isEmpty())
+		if(validator.wasAccountNumberValid && !passField.getText().toString().isEmpty())
 			doForgotUserIdCall();
 	}
 	
@@ -179,7 +257,7 @@ public class ForgotUserIdActivity extends RoboActivity {
 			}
 		};
 
-		new ForgotUserIdCall(this, callback, cardNum.getText().toString(), passText.getText().toString()).submit();
+		new ForgotUserIdCall(this, callback, cardNumField.getText().toString(), passField.getText().toString()).submit();
 	}
 	
 	private void sendToErrorPage(final ScreenType screenType) {
@@ -215,8 +293,8 @@ public class ForgotUserIdActivity extends RoboActivity {
 	
 	public void clearInputs() {
 		hideAllErrorLabels();
-		passText.setText("");
-		cardNum.setText("");
+		passField.setText("");
+		cardNumField.setText("");
 	}
 	
 }
