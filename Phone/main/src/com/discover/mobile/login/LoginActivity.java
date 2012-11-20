@@ -103,7 +103,6 @@ public class LoginActivity extends RoboActivity {
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback.<AccountDetails>builder(this)
 					.showProgressDialog("Discover", "Loading...", true)
 					.clearTextViewsOnComplete(errorTextView, passField, uidField)
-//					.launchIntentOnSuccess(LoggedInLandingPage.class)
 					.launchIntentOnSuccess(NavigationRootActivity.class)
 					
 					// FIXME DO NOT COPY THIS CODE

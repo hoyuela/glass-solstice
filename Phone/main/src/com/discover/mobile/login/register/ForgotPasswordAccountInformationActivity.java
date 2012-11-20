@@ -50,7 +50,7 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	@InjectView (R.id.account_info_ssn_error_label)
 	TextView ssnErrorLabel;
 	
-	private EditText inputField;
+	private EditText genericInputField;
 	
 	@Override
 	protected void setupCustomTextChangedListeners(){
@@ -60,9 +60,9 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
-				inputField = (EditText)v;
+				genericInputField = (EditText)v;
 				
-				if(inputField.getText().length() < 4) {
+				if(genericInputField.getText().length() < 4) {
 					//hide error label
 					ssnErrorLabel.setVisibility(View.VISIBLE);
 				}
@@ -91,9 +91,9 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 		yearField.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
-				inputField = (EditText)v;
+				genericInputField = (EditText)v;
 
-				if(inputField.getText().length() < 4) {
+				if(genericInputField.getText().length() < 4) {
 					dobYearErrorLabel.setVisibility(View.VISIBLE);
 				}
 			}
@@ -122,10 +122,10 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 			InputValidator validator = new InputValidator();
 			
 			@Override
-			public void onFocusChange(final View v, final boolean hasFocus) {
-				inputField = (EditText)v;
+			public void onFocusChange(View v, boolean hasFocus) {
+				genericInputField = (EditText)v;
 				
-				if( !hasFocus && !validator.isUidValid( inputField.getText().toString() ) ) {
+				if( !hasFocus && !validator.isUidValid( genericInputField.getText().toString() ) ) {
 					showLabel(idErrorLabel);
 				}
 			}
@@ -160,7 +160,7 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	@Override
 	protected void doCustomUiSetup() {
 		//Set the detail label under the title to blank.
-		accountIdentifierFieldRestrictionsLabel.setVisibility(View.GONE);
+		hideLabel(accountIdentifierFieldRestrictionsLabel);
 			
 		//Set title label of the input field
 		accountIdentifierFieldLabel.setText(getString(R.string.forgot_password_field_title_text));

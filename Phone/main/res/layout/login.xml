@@ -6,7 +6,9 @@
 	
 	<RelativeLayout
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
+	    android:layout_height="wrap_content" 
+ 	    android:focusable="true" 
+		android:focusableInTouchMode="true">
 	    
 	    <include layout="@layout/discover_banner"/>
 	
@@ -20,17 +22,6 @@
 	        android:orientation="vertical" 
 	        >
 	        
-	        <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
-			<LinearLayout
-			    android:focusable="true" android:focusableInTouchMode="true"
-			    android:layout_width="0px" android:layout_height="0px"/>
-	
-			<!-- :nextFocusUp and :nextFocusLeft have been set to the id of this component
-		   	to prevent the dummy from receiving focus again -->
-			<AutoCompleteTextView android:id="@+id/autotext"
-			    android:layout_width="0dp" android:layout_height="0dp"
-			    android:nextFocusUp="@id/autotext" android:nextFocusLeft="@id/autotext"/>
-	
 	        <include layout="@layout/card_icon_and_login_label"/>
 	
 	        <TableRow
@@ -48,7 +39,7 @@
 	
 	        <RelativeLayout
 	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content" >
+	            android:layout_height="wrap_content">
 	
 	            <EditText
 	                android:id="@+id/username"
@@ -76,7 +67,7 @@
 	
 	        </RelativeLayout>
 	
-	        <TableRow
+	        <LinearLayout
 	            android:id="@+id/remember_user_row"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
@@ -104,7 +95,7 @@
 	                android:paddingRight="16dp"
 	                android:textOff="No"
 	                android:textOn="Yes" />
-	        </TableRow>
+	        </LinearLayout>
 	
 	        <TableRow
 	            android:id="@+id/login_button_row"

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
+import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
@@ -29,18 +30,22 @@ import com.discover.mobile.common.auth.forgot.ForgotUserIdCall;
 import com.discover.mobile.common.auth.forgot.UserIdDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.register.AccountInformationConfirmationActivity;
 
 @ContentView(R.layout.forgot_id)
-public class ForgotUserIdActivity extends RoboActivity {
+public class ForgotUserIdActivity extends RoboActivity implements StandardErrorCodes, RegistrationErrorCodes{
 	
 	private static final String TAG = ForgotUserIdActivity.class.getSimpleName();
+	
+//BUTTONS
 	
 	@InjectView(R.id.forgot_id_submit_button)
 	private Button submitButton;
 	
+//TEXT LABELS
 	@InjectView(R.id.forgot_id_submission_error_label)
 	private TextView mainErrLabel;
 	
@@ -50,20 +55,22 @@ public class ForgotUserIdActivity extends RoboActivity {
 	@InjectView(R.id.forgot_id_pass_error_label)
 	private TextView passErrLabel;
 	
+	@InjectView(R.id.account_info_cancel_label)
+	private TextView cancelLabel;
+	
+//INPUT FIELDS
+	
 	@InjectView(R.id.forgot_id_id_field)
 	private EditText cardNumField;
 	
 	@InjectView(R.id.forgot_id_password_field)
 	private EditText passField;
 	
-	@InjectView(R.id.account_info_cancel_label)
-	private TextView cancelLabel;
-
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		// FIXME Gives null pointer exception.
-//		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
+		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
 		
 		setOnClickActions();
 		setupTextChangedListeners();
@@ -217,9 +224,13 @@ public class ForgotUserIdActivity extends RoboActivity {
 				
 				switch (errorResponse.getHttpStatusCode()) {
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
-						mainErrLabel.setText(getString(R.string.login_error));
-						showLabel(mainErrLabel);
+						displayOnMainErrorLabel(getString(R.string.login_error));
 						return true;
+						
+					case HttpURLConnection.HTTP_UNAVAILABLE:
+						displayOnMainErrorLabel(getString(R.string.unkown_error_text));
+						return true;
+						
 //					case HttpURLConnection.HTTP_UNAVAILABLE:
 //						//FIXME add service unavailable to screen types/error screens.
 //						sendToErrorPage(ScreenType.SERVICE_UNAVAILABLE);
@@ -228,32 +239,33 @@ public class ForgotUserIdActivity extends RoboActivity {
 				
 				return false;
 			}
+			
+			private void displayOnMainErrorLabel(String text){
+				mainErrLabel.setText(text);
+				showLabel(mainErrLabel);
+			}
 
 			@Override
 			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
-				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
-					return false;
 				
 				progress.dismiss();
 				clearInputs();
 				idErrLabel.setText(messageErrorResponse.getMessage());
 				
-				// FIXME make named constants
 				switch (messageErrorResponse.getMessageStatusCode()){
-					case 1907:
-					case 1102: //User's Account has an invalid online status.
+					case BAD_ACCOUNT_STATUS:
+					case AUTH_BAD_ACCOUNT_STATUS:
 						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
 						return true;
 						
-					case 1910:
+					case MAX_LOGIN_ATTEMPTS:
 						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
 						return true;
-					default:
-						break;
+
 				}
 
 				
-				return true;
+				return false;
 			}
 		};
 

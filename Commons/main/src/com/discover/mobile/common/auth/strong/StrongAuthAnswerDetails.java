@@ -1,4 +1,4 @@
-package com.discover.mobile.common.auth;
+package com.discover.mobile.common.auth.strong;
 
 import java.io.Serializable;
 

@@ -35,6 +35,9 @@
 	<string name="could_not_complete_request">
 	    Your Request Could Not Be Completed
 	</string>
+	<string name="unkown_error_text">
+	    Unknown error with the server, please try again later.
+	</string>
 	<string name="go_back">
 	    Go back
 	</string>

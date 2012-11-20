@@ -3,22 +3,15 @@
 	android:id="@+id/account_info_scroll_view"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent" 
+	
 	style="@style/WhiteTheme" >
             
-	<RelativeLayout android:layout_width="fill_parent"
-	   	android:layout_height="wrap_content">
+	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	   	android:layout_height="wrap_content"
+	   	android:focusable="true" 
+	   	android:focusableInTouchMode="true">
         
-        <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
-		<LinearLayout
-		    android:focusable="true" android:focusableInTouchMode="true"
-		    android:layout_width="0px" android:layout_height="0px"/>
-		
-		<!-- :nextFocusUp and :nextFocusLeft have been set to the id of this component
-		     to prevent the dummy from receiving focus again -->
-		<AutoCompleteTextView android:id="@+id/autotext"
-		    android:layout_width="0dp" android:layout_height="0dp"
-		    android:nextFocusUp="@id/autotext" android:nextFocusLeft="@id/autotext"/>
-
         <TextView
             android:id="@+id/account_info_title_label"
             android:layout_width="wrap_content"
@@ -48,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 			android:layout_below="@id/account_info_step_label"
+			android:visibility="gone"
 			android:textColor="@color/red"/>
         
         <TextView

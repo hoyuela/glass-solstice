@@ -1,7 +1,5 @@
 package com.discover.mobile.login.register;
 
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
-
 import java.net.HttpURLConnection;
 
 import roboguice.activity.RoboActivity;
@@ -23,14 +21,17 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
+import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.auth.StrongAuthCall;
-import com.discover.mobile.common.auth.StrongAuthDetails;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
+import com.discover.mobile.common.auth.strong.StrongAuthCheckCall;
+import com.discover.mobile.common.auth.strong.StrongAuthDetails;
+import com.discover.mobile.common.auth.strong.StrongAuthErrorResponse;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
@@ -38,7 +39,8 @@ import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
 @ContentView(R.layout.account_info)
-abstract class AbstractAccountInformationActivity extends RoboActivity {
+abstract class AbstractAccountInformationActivity extends RoboActivity implements RegistrationErrorCodes, 
+																						StandardErrorCodes{
 	
 	private static final String TAG = AbstractAccountInformationActivity.class.getSimpleName();
 	
@@ -144,31 +146,6 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		// Intentional no-op for subclasses to override
 	}
 	
-	// TODO
-	/* private void startNextActivity(){
-		if(forgotPass){
-			final Intent enterNewPasswordActivity = 
-					new Intent(this, EnterNewPasswordActivity.class);
-			enterNewPasswordActivity
-			.putExtra(IntentExtraKey.FORGOT_PASS_DETAILS, forgotPasswordDetails);
-			this.startActivity(enterNewPasswordActivity);
-
-		}
-		else if(strongAuthRequired){
-			// TODO
-		}
-		else{
-			final Intent createLoginActivity = 
-					new Intent(this, CreateLoginActivity.class);
-			
-			createLoginActivity
-				.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, registrationOneDetails);
-			
-			this.startActivity(createLoginActivity);
-		}
-		
-	} */
-	
 	protected void setupTextChangedListeners(){
     	setupYearTextChangedListeners();
     	setupSsnTextChangedListeners();
@@ -182,13 +159,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			InputValidator validator = new InputValidator();
 			
 				@Override
-				public void onFocusChange(final View v, final boolean hasFocus) {
-//					String titleLabel = (String)activityTitleLabel.getText();
-//					String forgotPassText = null;
-//					forgotPassText = getString(R.string.forgot_password_text);
+				public void onFocusChange(View v, boolean hasFocus) {
 					
-					//This is then a user id that must be validated.
-					final String acctNbr = ((EditText)v).getText().toString();
+					String acctNbr = ((EditText)v).getText().toString();
 					if(!hasFocus && !validator.isCardAccountNumberValid(acctNbr)){
 						showLabel( cardErrorLabel );
 					}
@@ -321,6 +294,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	protected abstract boolean areDetailsValid(InputValidator validator);
 	
 	private void submitFormInfo() {
+		hideLabel(errorMessageLabel);
 		progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
@@ -339,7 +313,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 						return true;
 						// TEMP temp fix for strange 503 coming back from server on some accounts. v
 					case HttpURLConnection.HTTP_UNAVAILABLE:
-						errorMessageLabel.setText("Unknown error with the server, please try again later.");
+						showMainErrorLabelWithText(getString(R.string.unkown_error_text));
 					return true;
 				}
 				
@@ -354,29 +328,30 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				// FIXME convert literals to RegistrationErrorCodes
 				// FIXME add "assertions" for what the HTTP status code should be
 				switch (messageErrorResponse.getMessageStatusCode()) {
-					case 1905: // Wrong type of account info provided.
-						errorMessageLabel.setText(getString(R.string.account_info_sams_club_card_error_text));
+					case SAMS_CLUB_MEMBER: // Wrong type of account info provided.
+						showMainErrorLabelWithText(getString(R.string.account_info_sams_club_card_error_text));
 						return true;
 						
-					case 1906: // Provided information was incorrect.
-						errorMessageLabel.setText(getString(R.string.account_info_bad_input_error_text));
+					case REG_AUTHENTICATION_PROBLEM: // Provided information was incorrect.
+						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));					
 						return true;
 						
-					case 1907: // Last attemt with this account number warning.
-						errorMessageLabel.setText(getString(R.string.login_attempt_warning));
+					case BAD_ACCOUNT_STATUS: // Last attemt with this account number warning.
+						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
 						return true;
 						
-					case 1910:
+					case MAX_LOGIN_ATTEMPTS:
 						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
 						return true;
 						
-					case 1911:
-					case 1913:
+					case INVALID_EXTERNAL_STATUS:
+					case ONLINE_STATUS_PROHIBITED:
+					case INVALID_ONLINE_STATUS:
 						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
 						return true;
 						
-					case 1916:					
-						errorMessageLabel.setText(getString(R.string.account_info_bad_input_error_text));
+					case FAILED_SECURITY:	
+						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
 						return true;
 						
 					default:
@@ -387,6 +362,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		
 		final NetworkServiceCall<?> serviceCall = createServiceCall(callback, accountInformationDetails);
 		serviceCall.submit();
+	}
+	
+	public void showMainErrorLabelWithText(String text) {
+		errorMessageLabel.setText(text);
+		showLabel(errorMessageLabel);
 	}
 	
 	protected abstract NetworkServiceCall<?> createServiceCall(
@@ -404,30 +384,34 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			public void success(final StrongAuthDetails value) {
 				Log.d(TAG, "Success");
 				progress.dismiss();
-				strongAuthQuestion = value.questionText;
-				strongAuthQuestionId = value.questionId;
-				strongAuthRequired = true;
+				
 				//TODO handle question if strong auth returns one.
 			}
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+				
 				Log.w(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse);
 				progress.dismiss();
 				
+				if(errorResponse instanceof StrongAuthErrorResponse)
+					return handleStrongAuthErrorResponse((StrongAuthErrorResponse)errorResponse);
+				
 				// TODO handle or remove cases where we don't have handling
 				switch (errorResponse.getHttpStatusCode()) {
-					case HttpURLConnection.HTTP_BAD_REQUEST:
-						return true;
+					
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
-						getStrongAuthQuestion();//Strong auth REQUIRED
-						return true;
-					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldn't authenticate user info.
-						return true;
-					case HttpURLConnection.HTTP_FORBIDDEN:
+						getStrongAuthQuestion();
 						return true;
 				}
 				
+				return false;
+			}
+			
+			private boolean handleStrongAuthErrorResponse(final StrongAuthErrorResponse errorResponse) {
+				// TODO
+				Log.e("====STRONG AUTH RESPONSE====", errorResponse.getResult());
+				// TEMP
 				return false;
 			}
 
@@ -439,24 +423,25 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				// FIXME convert literals to RegistrationErrorCodes
 				// FIXME add "assertions" for what the HTTP status code should be
 				switch(messageErrorResponse.getMessageStatusCode()){
-					case 1402:
+				
+					case LOCKED_OUT_ACCOUNT:
 						sendToErrorPage(ScreenType.STRONG_AUTH_LOCKED_OUT);
 						return true;
 						
 					case SAMS_CLUB_MEMBER:
-						errorMessageLabel.setText(getString(R.string.account_info_sams_club_card_error_text));
+						showMainErrorLabelWithText(getString(R.string.account_info_sams_club_card_error_text));
 						return true;
 						
-					case 1906: // Provided information was incorrect.
-						errorMessageLabel.setText(getString(R.string.account_info_bad_input_error_text));
+					case REG_AUTHENTICATION_PROBLEM: // Provided information was incorrect.
+						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
 						return true;
 						
-					case 1907: // Last attemt with this account number warning.
-						errorMessageLabel.setText(getString(R.string.login_attempt_warning));
+					case BAD_ACCOUNT_STATUS: // Last attemt with this account number warning.
+						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
 						return true;
 						
-					case 1916:
-						errorMessageLabel.setText(getString(R.string.account_info_bad_input_error_text));
+					case FAILED_SECURITY:
+						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
 						return true;
 						
 					default:// TODO properly handle these ^ v
@@ -465,7 +450,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			}
 		};
 
-		final StrongAuthCall strongAuthCall = new StrongAuthCall(this, callback);
+		final StrongAuthCheckCall strongAuthCall = new StrongAuthCheckCall(this, callback);
 		strongAuthCall.submit();
 		
 	}

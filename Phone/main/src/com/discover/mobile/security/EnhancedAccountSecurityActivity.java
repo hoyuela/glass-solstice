@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.auth.StrongAuthAnswerCall;
-import com.discover.mobile.common.auth.StrongAuthAnswerDetails;
+import com.discover.mobile.common.auth.strong.StrongAuthAnswerCall;
+import com.discover.mobile.common.auth.strong.StrongAuthAnswerDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.login.LoginActivity;
 
