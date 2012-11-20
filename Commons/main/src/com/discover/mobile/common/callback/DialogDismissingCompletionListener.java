@@ -1,4 +1,4 @@
-package com.discover.mobile.common.net.callback;
+package com.discover.mobile.common.callback;
 
 import static com.discover.mobile.common.ReferenceUtility.safeGetReferenced;
 
@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 import android.app.Dialog;
 
-import com.discover.mobile.common.net.callback.GenericCallbackListener.CompletionListener;
+import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 
 class DialogDismissingCompletionListener implements CompletionListener {
 	
@@ -19,8 +19,8 @@ class DialogDismissingCompletionListener implements CompletionListener {
 	}
 	
 	@Override
-	public Order getOrder() {
-		return Order.FIRST;
+	public CallbackPriority getCallbackPriority() {
+		return CallbackPriority.FIRST;
 	}
 	
 	@Override

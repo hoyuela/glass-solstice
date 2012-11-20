@@ -6,23 +6,25 @@ import android.view.View;
 
 import com.discover.mobile.R;
 
-public class StrengthBarHelpActivity extends Activity{
+public class StrengthBarHelpActivity extends Activity {
+	
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		Bundle extras = getIntent().getExtras();
-    	if(extras != null) {
-    		String helpLayout = extras.getString("ScreenType");
-    		if("id".equals(helpLayout))
-    			setContentView(R.layout.account_info_id_strength_help);
-    		else
-    			setContentView(R.layout.account_info_password_strength_help);
-    	}
-
+		final Bundle extras = getIntent().getExtras();
+		if(extras != null) {
+			final String helpLayout = extras.getString("ScreenType");
+			if("id".equals(helpLayout))
+				setContentView(R.layout.account_info_id_strength_help);
+			else
+				setContentView(R.layout.account_info_password_strength_help);
+		}
+		
 	}
 	
-	public void goBack(View v){
+	public void goBack(final View v) {
 		finish();
 	}
+
 }

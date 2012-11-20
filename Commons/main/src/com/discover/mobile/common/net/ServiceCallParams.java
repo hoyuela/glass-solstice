@@ -5,7 +5,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import java.util.Map;
 
 import com.discover.mobile.common.Struct;
-import com.discover.mobile.common.net.response.ErrorResponseParser;
+import com.discover.mobile.common.net.error.ErrorResponseParser;
 
 @Struct
 public abstract class ServiceCallParams {

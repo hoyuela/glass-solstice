@@ -3,15 +3,13 @@ package com.discover.mobile.common.auth.registration;
 import android.content.Context;
 import android.util.Base64;
 
+import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.callback.AsyncCallback;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 
 public class CreateLoginCall extends JsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
-	
-	private static final String TAG = CreateLoginCall.class.getSimpleName();
 	
 	private final TypedReferenceHandler<RegistrationConfirmationDetails> handler;
 
@@ -19,6 +17,7 @@ public class CreateLoginCall extends JsonResponseMappingNetworkServiceCall<Regis
 			final CreateLoginDetails formData) {
 		
 		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/reg") {{
+			// FIXME remove this code if not necessary
 //			final String authString = getAuthorizationString(formData.acctNbr, formData.password);
 //			headers = ImmutableMap.<String,String>builder()
 //					.put("Authorization", authString)

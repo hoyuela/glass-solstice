@@ -1,11 +1,11 @@
-package com.discover.mobile.common.net.callback;
+package com.discover.mobile.common.callback;
 
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
 import android.widget.TextView;
 
-import com.discover.mobile.common.net.callback.GenericCallbackListener.CompletionListener;
+import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.google.common.collect.Sets;
 
 class ClearTextFieldsCompletionListener implements CompletionListener {
@@ -19,8 +19,8 @@ class ClearTextFieldsCompletionListener implements CompletionListener {
 	}
 
 	@Override
-	public Order getOrder() {
-		return Order.MIDDLE;
+	public CallbackPriority getCallbackPriority() {
+		return CallbackPriority.MIDDLE;
 	}
 
 	@Override

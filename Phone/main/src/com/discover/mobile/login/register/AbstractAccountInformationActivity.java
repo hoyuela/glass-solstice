@@ -29,11 +29,11 @@ import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.StrongAuthCall;
 import com.discover.mobile.common.auth.StrongAuthDetails;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
+import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.callback.AsyncCallback;
-import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 

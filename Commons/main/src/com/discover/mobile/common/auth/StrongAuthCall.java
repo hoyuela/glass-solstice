@@ -2,10 +2,10 @@ package com.discover.mobile.common.auth;
 
 import android.content.Context;
 
+import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.callback.AsyncCallback;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 
 public class StrongAuthCall extends JsonResponseMappingNetworkServiceCall<StrongAuthDetails> {

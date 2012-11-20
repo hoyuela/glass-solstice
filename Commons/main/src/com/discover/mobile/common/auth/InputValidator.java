@@ -3,8 +3,6 @@ package com.discover.mobile.common.auth;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
 public class InputValidator {
 	private Pattern emailPattern;
 	private final static String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -51,7 +49,7 @@ public class InputValidator {
 		return !didPassAndIdMatch & didPassesMatch & didIdsMatch & wasEmailValid; 
 	}
 	
-	public boolean doPassAndIdMatch(String pass, String id){
+	public boolean doPassAndIdMatch(final String pass, final String id){
 		if(pass != null && id != null){
 			didPassAndIdMatch = pass.equals(id);
 		}
@@ -62,10 +60,10 @@ public class InputValidator {
 	}
 	
 	
-	public boolean isEmailValid(String email){
+	public boolean isEmailValid(final String email){
 		//See if we have a xxx@xxx.xxx style string
 		//Need some regular expressions up in here!
-		Matcher matcher = emailPattern.matcher(email);
+		final Matcher matcher = emailPattern.matcher(email);
 		
 		wasEmailValid = matcher.matches();
 		
@@ -73,7 +71,7 @@ public class InputValidator {
 
 	}
 	
-	public boolean isSsnValid(String ssn){
+	public boolean isSsnValid(final String ssn){
 		if(ssn.length() == 4)
 			wasSsnValid = true;
 		else
@@ -82,7 +80,7 @@ public class InputValidator {
 		return wasSsnValid;
 	}
 	
-	public boolean doPassesMatch(String pass1, String pass2){
+	public boolean doPassesMatch(final String pass1, final String pass2){
 		if(pass1 != null && pass2 != null)
 			didPassesMatch = pass1.equals(pass2);
 		else
@@ -91,7 +89,7 @@ public class InputValidator {
 		return didPassesMatch;
 	}
 	
-	public boolean doIdsMatch(String id1, String id2){
+	public boolean doIdsMatch(final String id1, final String id2){
 		if(id1 != null && id2 != null)
 			didIdsMatch = id1.equals(id2);
 		else
@@ -100,7 +98,7 @@ public class InputValidator {
 		return didIdsMatch;
 	}
 	
-	public boolean isDobDayValid(String day){
+	public boolean isDobDayValid(final String day){
 		if(!"Day".equals(day) && day != null)
 			wasDobDayValid = true;
 		else
@@ -109,7 +107,7 @@ public class InputValidator {
 		return wasDobDayValid;
 			
 	}
-	public boolean isDobMonthValid(String month){
+	public boolean isDobMonthValid(final String month){
 		if(!"Month".equals(month) && month != null)
 			wasDobMonthValid = true;
 		else
@@ -118,7 +116,7 @@ public class InputValidator {
 		return wasDobMonthValid;
 		
 	}
-	public boolean isDobYearValid(String year){		
+	public boolean isDobYearValid(final String year){		
 		if(!"Year".equals(year) && year.length() == 4)
 			wasDobYearValid = true;
 		else
@@ -127,11 +125,11 @@ public class InputValidator {
 		return wasDobYearValid;
 	}
 	
-	public boolean isLoginCredentialsValid(String uid, String pass){
-		return (isUidValid(uid) && isPassValid(pass));
+	public boolean isLoginCredentialsValid(final String uid, final String pass){
+		return isUidValid(uid) && isPassValid(pass);
 	}
 	
-	public boolean isCardAccountNumberValid(String cardAccountNumber){
+	public boolean isCardAccountNumberValid(final String cardAccountNumber){
 		if(		cardAccountNumber.startsWith("6011") &&
 				cardAccountNumber.length() == 16)
 			wasAccountNumberValid = true;
@@ -141,7 +139,7 @@ public class InputValidator {
 		return wasAccountNumberValid;
 	}
 	
-	public boolean isCardExpMonthValid(String cardExpMonth){
+	public boolean isCardExpMonthValid(final String cardExpMonth){
 		if(!"Month".equals(cardExpMonth) && cardExpMonth != null)
 			wasCardExpMonthValid = true;
 		else
@@ -150,7 +148,7 @@ public class InputValidator {
 		return wasCardExpMonthValid;
 	}
 	
-	public boolean isCardExpYearValid(String cardExpYear){
+	public boolean isCardExpYearValid(final String cardExpYear){
 		if( !"YYYY".equals(cardExpYear) && 
 				cardExpYear != null && 
 				cardExpYear.length() == 4)
@@ -161,7 +159,7 @@ public class InputValidator {
 		return wasCardExpYearValid;
 	}
 	
-	public boolean isPassValid(String inputSequence){		
+	public boolean isPassValid(final String inputSequence){		
 		boolean hasGoodLength  = false;
 		boolean hasUpperCase   = false;
 		boolean hasLowerCase   = false;
@@ -197,7 +195,7 @@ public class InputValidator {
 			return wasPassValid;
 	}
 	
-	public boolean isUidValid(String uid){
+	public boolean isUidValid(final String uid){
 
 		if(    !uid.equals("Credit Card User ID") &&
 			   uid.length() >= 6 && 

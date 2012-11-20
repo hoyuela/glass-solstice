@@ -1,16 +1,15 @@
-package com.discover.mobile.common.net.response;
-
-import java.io.Serializable;
+package com.discover.mobile.common.net.error;
 
 import com.google.common.base.Objects;
 
-public class ErrorResponse implements Serializable {
+public abstract class AbstractErrorResponse<E extends AbstractErrorResponse<E>> implements ErrorResponse<E> {
 	
 	private static final long serialVersionUID = 8305572864293562105L;
 	
 	private int httpStatusCode;
 	
-	public int getHttpStatusCode() {
+	@Override
+	public final int getHttpStatusCode() {
 		return httpStatusCode;
 	}
 	

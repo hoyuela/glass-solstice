@@ -7,15 +7,13 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.callback.AsyncCallback;
 
 public class AccountInformationCall extends NetworkServiceCall<Object> {
-	
-	private static final String TAG = AccountInformationCall.class.getSimpleName();
 	
 	private final TypedReferenceHandler<Object> handler;
 
@@ -41,8 +39,8 @@ public class AccountInformationCall extends NetworkServiceCall<Object> {
 	
 
 	@Override
-	protected Object parseSuccessResponse(int status,
-			Map<String, List<String>> headers, InputStream body)
+	protected Object parseSuccessResponse(final int status,
+			final Map<String, List<String>> headers, final InputStream body)
 			throws IOException {
 		return this;
 	}

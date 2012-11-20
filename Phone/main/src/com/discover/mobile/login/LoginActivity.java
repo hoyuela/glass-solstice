@@ -12,7 +12,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,11 +23,11 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
-import com.discover.mobile.common.net.callback.AsyncCallback;
-import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.net.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.navigation.NavigationMenuRootActivity;
@@ -103,13 +102,8 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
+		// FIXME
 		final AsyncCallbackAdapter<AccountDetails> callbackDelegate = new AsyncCallbackAdapter<AccountDetails>() {
-			@Override
-			public void failure(final Throwable error) {
-				Log.e(TAG, "Error: " + error.getMessage());
-				showOkAlertDialog("Error", error.getMessage());
-			}
-
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
 				switch(errorResponse.getHttpStatusCode()) {
@@ -130,6 +124,7 @@ public class LoginActivity extends RoboActivity {
 				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
 					return false;
 				
+				// FIXME convert other error codes to standard constants
 				switch(messageErrorResponse.getMessageStatusCode()) {
 					case MAINTENANCE_MODE_1:
 					case MAINTENANCE_MODE_2: 
@@ -152,8 +147,7 @@ public class LoginActivity extends RoboActivity {
 			}
 		};
 		
-		final AsyncCallback<AccountDetails> callback =
-				GenericAsyncCallback.<AccountDetails>builder(this)
+		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback.<AccountDetails>builder(this)
 					.showProgressDialog("Discover", "Loading...", true)
 					.clearTextViewsOnComplete(errorTextView, passField, uidField)
 //					.launchIntentOnSuccess(LoggedInLandingPage.class)

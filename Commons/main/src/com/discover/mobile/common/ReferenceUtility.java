@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 public final class ReferenceUtility {
 	
+	@SuppressWarnings("hiding")
 	public static @Nullable <R> R safeGetReferenced(final @Nullable WeakReference<R> ref) {
 		if(ref == null)
 			return null;

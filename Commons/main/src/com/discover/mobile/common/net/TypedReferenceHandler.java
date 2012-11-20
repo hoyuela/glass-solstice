@@ -7,24 +7,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.discover.mobile.common.net.callback.AsyncCallback;
-import com.discover.mobile.common.net.callback.ExtendedAsyncCallback;
-import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.net.error.ErrorResponse;
 
 public abstract class TypedReferenceHandler<V> extends Handler {
 	
 	private final String TAG = getClass().getSimpleName();
 	
 	abstract AsyncCallback<V> getCallback();
-	
-	void preSubmit() {
-		final AsyncCallback<V> callback = getCallback();
-		
-		if(callback instanceof ExtendedAsyncCallback) {
-			final ExtendedAsyncCallback<V> extendedCallback = (ExtendedAsyncCallback<V>) callback;
-			extendedCallback.preSubmit();
-		}
-	}
 	
 	@Override
 	public void handleMessage(final Message message) {
@@ -34,10 +24,7 @@ public abstract class TypedReferenceHandler<V> extends Handler {
 			return;
 		}
 
-		if(callback instanceof ExtendedAsyncCallback) {
-			final ExtendedAsyncCallback<V> extendedCallback = (ExtendedAsyncCallback<V>) callback;
-			extendedCallback.complete(message.obj);
-		}
+		callback.complete(message.obj);
 		
 		switch(message.what) {
 			case RESULT_SUCCESS:

@@ -8,12 +8,12 @@ import android.content.Context;
 
 import com.discover.mobile.common.Struct;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.callback.AsyncCallback;
 
 public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 	

@@ -27,9 +27,9 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.forgot.ForgotUserIdCall;
 import com.discover.mobile.common.auth.forgot.UserIdDetails;
-import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.register.AccountInformationConfirmationActivity;
 

@@ -1,15 +1,14 @@
-package com.discover.mobile.common.net.callback;
+package com.discover.mobile.common.callback;
 
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.common.net.error.ErrorResponse;
 
-public interface ExtendedAsyncCallback<V> extends AsyncCallback<V> {
+public interface AsyncCallback<V> {
 	
-	/**
-	 * Called on the UI thread immediately before the associated {@link NetworkServiceCall} is scheduled for execution
-	 * on a background thread.
-	 */
-	void preSubmit();
+	void success(V value);
+	
+	void failure(ErrorResponse<?> errorResponse);
+	void failure(Throwable executionException);
 	
 	/**
 	 * Called when the {@link NetworkServiceCall} finishes, no matter what the result was. This will be called before

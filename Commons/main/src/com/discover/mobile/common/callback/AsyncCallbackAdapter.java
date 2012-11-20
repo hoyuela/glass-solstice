@@ -1,20 +1,17 @@
-package com.discover.mobile.common.net.callback;
+package com.discover.mobile.common.callback;
 
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.net.response.ErrorResponse;
 
 /**
- * Provides default, no-op implementations of the {@link AsyncCallback} and {@link ExtendedAsyncCallback} methods to
- * make implementing easier.
+ * Provides default, no-op implementations of the {@link AsyncCallback} methods to make implementing easier.
  * 
  * @param <V>
+ * @deprecated Use {@link GenericAsyncCallback}s instead, with a {@link GenericCallbackListener} for more granular
+ * handling.
  */
-public class AsyncCallbackAdapter<V> implements ExtendedAsyncCallback<V> {
-
-	@Override
-	public void preSubmit() {
-		// Intentional no-op
-	}
+@Deprecated
+public class AsyncCallbackAdapter<V> implements AsyncCallback<V> {
 	
 	@Override
 	public void complete(final Object result) {
@@ -34,7 +31,7 @@ public class AsyncCallbackAdapter<V> implements ExtendedAsyncCallback<V> {
 	}
 	
 	@SuppressWarnings("unused")
-	public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+	public boolean handleErrorResponse(final ErrorResponse<?> errorResponse) {
 		return false;
 	}
 	
@@ -44,7 +41,7 @@ public class AsyncCallbackAdapter<V> implements ExtendedAsyncCallback<V> {
 	}
 	
 	@Override
-	public final void failure(final ErrorResponse errorResponse) {
+	public final void failure(final ErrorResponse<?> errorResponse) {
 		boolean handled;
 		if(errorResponse instanceof JsonMessageErrorResponse) {
 			handled = handleMessageErrorResponse((JsonMessageErrorResponse)errorResponse);

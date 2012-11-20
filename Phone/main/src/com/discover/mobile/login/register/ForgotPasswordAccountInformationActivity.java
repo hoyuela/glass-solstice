@@ -15,8 +15,8 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
+import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.callback.AsyncCallback;
 import com.discover.mobile.login.forgot.EnterNewPasswordActivity;
 
 public class ForgotPasswordAccountInformationActivity extends AbstractAccountInformationActivity {
@@ -54,7 +54,70 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	
 	@Override
 	protected void setupCustomTextChangedListeners(){
+		final InputValidator validator = new InputValidator();
 		
+		ssnField.setOnFocusChangeListener(new OnFocusChangeListener(){
+
+			@Override
+			public void onFocusChange(final View v, final boolean hasFocus) {
+				inputField = (EditText)v;
+				
+				if(inputField.getText().length() < 4) {
+					//hide error label
+					ssnErrorLabel.setVisibility(View.VISIBLE);
+				}
+			}
+		});
+		
+		ssnField.addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(final Editable s) {/*Intentionally empty*/}
+
+			@Override
+			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
+
+			@Override
+			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+				if(s.length() == 4) {
+					//hide error label
+					ssnErrorLabel.setVisibility(View.GONE);
+				}
+				
+			}
+			
+		});
+		
+		yearField.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(final View v, final boolean hasFocus) {
+				inputField = (EditText)v;
+
+				if(inputField.getText().length() < 4) {
+					dobYearErrorLabel.setVisibility(View.VISIBLE);
+				}
+			}
+		});
+		
+		yearField.addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(final Editable s) {/*Intentionally empty*/}
+
+			@Override
+			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
+
+			@Override
+			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+				if(s.length() == 4) {
+					//hide error label
+					dobYearErrorLabel.setVisibility(View.GONE);
+				}
+			}
+			
+		});
+		
+
 		idField.setOnFocusChangeListener(new OnFocusChangeListener() {
 			InputValidator validator = new InputValidator();
 			
@@ -69,20 +132,25 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 		});
 		
 		idField.addTextChangedListener(new TextWatcher(){
+			
+			// FIXME this may be a bug, is this intended to override the one defined
+			// at the beginning of setupCustomTextChangedListeners()?
 			InputValidator validator = new InputValidator();
 
 			@Override
-			public void afterTextChanged(final Editable s) {
-				if( validator.isPassValid( s.toString() ) ) {
-					hideLabel(idErrorLabel);
-				}
-			}
+			public void afterTextChanged(final Editable s) {/*Intentionally empty*/}
 
 			@Override
 			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
 
 			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {/*Intentionally empty*/}
+			public void onTextChanged(final CharSequence s, final int start, final int before,
+					final int count) {
+				//Hide error label.
+				if( validator.isPassValid( s.toString() ) ) {
+					idErrorLabel.setVisibility(View.GONE);
+				}
+			}
 			
 		});
 		

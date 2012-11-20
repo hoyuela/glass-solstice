@@ -1,4 +1,4 @@
-package com.discover.mobile.common.net.callback;
+package com.discover.mobile.common.callback;
 
 import static com.discover.mobile.common.ReferenceUtility.safeGetReferenced;
 
@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.discover.mobile.common.net.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 
 class FireIntentSuccessListener<V> implements SuccessListener<V> {
 	
@@ -22,8 +22,8 @@ class FireIntentSuccessListener<V> implements SuccessListener<V> {
 	}
 
 	@Override
-	public Order getOrder() {
-		return Order.LAST;
+	public CallbackPriority getCallbackPriority() {
+		return CallbackPriority.LAST;
 	}
 
 	@Override

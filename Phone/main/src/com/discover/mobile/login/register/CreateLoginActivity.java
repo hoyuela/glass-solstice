@@ -23,9 +23,9 @@ import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.CreateLoginCall;
 import com.discover.mobile.common.auth.registration.CreateLoginDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 
 @ContentView(R.layout.account_info_two)
@@ -86,12 +86,12 @@ public class CreateLoginActivity extends RoboActivity{
 	
 	@Override
 	public void onBackPressed() {
-	  cancel(null);
+		cancel(null);
 	}
 	
-	public void cancel(final View v){
-		   final Intent backToChoices = new Intent(this, ForgotCredentialsActivity.class);
-		   startActivity(backToChoices);
+	public void cancel(final View v) {
+		final Intent backToChoices = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(backToChoices);
 	}
 	
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){

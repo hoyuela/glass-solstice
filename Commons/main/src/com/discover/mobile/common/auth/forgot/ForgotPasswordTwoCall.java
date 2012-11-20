@@ -3,10 +3,10 @@ package com.discover.mobile.common.auth.forgot;
 import android.content.Context;
 
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
+import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.callback.AsyncCallback;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 
 public class ForgotPasswordTwoCall extends JsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {

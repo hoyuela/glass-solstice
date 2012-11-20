@@ -3,7 +3,8 @@ package com.discover.mobile.common.net.json;
 import java.io.Serializable;
 import java.util.List;
 
-import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.common.net.error.AbstractErrorResponse;
+import com.discover.mobile.common.net.error.ErrorMessageMapper;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +12,7 @@ import com.google.common.base.Objects;
 
 @JsonAutoDetect(fieldVisibility=Visibility.NONE, setterVisibility=Visibility.NONE,
 		isGetterVisibility=Visibility.NONE, getterVisibility=Visibility.NONE)
-public class JsonMessageErrorResponse extends ErrorResponse {
+public class JsonMessageErrorResponse extends AbstractErrorResponse<JsonMessageErrorResponse> {
 	
 	private static final long serialVersionUID = 5979837443360856714L;
 
@@ -21,6 +22,7 @@ public class JsonMessageErrorResponse extends ErrorResponse {
 	@JsonProperty
 	private String message;
 	
+	// TODO move to another subclass to make triage easier
 	@JsonProperty
 	private List<Data> data;
 	
@@ -46,4 +48,11 @@ public class JsonMessageErrorResponse extends ErrorResponse {
 		public String status;
 		public String saStatus;
 	}
+	
+	@Override
+	public ErrorMessageMapper<JsonMessageErrorResponse> getMessageMapper() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

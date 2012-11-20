@@ -1,4 +1,4 @@
-package com.discover.mobile.common.net.callback;
+package com.discover.mobile.common.callback;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,35 +15,29 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.discover.mobile.common.net.callback.GenericCallbackListener.CompletionListener;
-import com.discover.mobile.common.net.callback.GenericCallbackListener.ErrorResponseFailureListener;
-import com.discover.mobile.common.net.callback.GenericCallbackListener.ExceptionalFailureListener;
-import com.discover.mobile.common.net.callback.GenericCallbackListener.PreSubmitListener;
-import com.discover.mobile.common.net.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.common.net.response.ErrorResponse;
+import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
+import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
+import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
+import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.error.ErrorResponse;
 
-public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
-
-	private final @Nonnull List<PreSubmitListener> preSubmitListeners;
+public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
+	
+	// FIXME make ALL callbacks with the same priority happen in appropriate order, not just the order for that type of
+	// callback
+	
+	private static final String TAG = GenericAsyncCallback.class.getSimpleName();
+	
 	private final @Nonnull List<CompletionListener> completionListeners;
 	private final @Nonnull List<SuccessListener<V>> successListeners;
-	private final @Nonnull List<ExceptionalFailureListener> exceptionalFailureListeners;
-	private final @Nonnull List<ErrorResponseFailureListener> errorResponseFailureListeners;
+	private final @Nonnull List<ExceptionFailureHandler> exceptionFailureHandlers;
+	private final @Nonnull List<ErrorResponseHandler> errorResponseHandlers;
 	
 	private GenericAsyncCallback(final Builder<V> builder) {
-		preSubmitListeners = safeSortedCopy(builder.preSubmitListeners);
 		completionListeners = safeSortedCopy(builder.completionListeners);
 		successListeners = safeSortedCopy(builder.successListeners);
-		exceptionalFailureListeners = safeSortedCopy(builder.exceptionalFailureListeners);
-		errorResponseFailureListeners = safeSortedCopy(builder.errorResponseFailureListeners);
-	}
-
-	@Override
-	public void preSubmit() {
-		for(final PreSubmitListener listener : preSubmitListeners)
-			listener.preSubmit();
-		
-		safeClear(preSubmitListeners);
+		exceptionFailureHandlers = safeSortedCopy(builder.exceptionFailureHandlers);
+		errorResponseHandlers = safeSortedCopy(builder.errorResponseHandlers);
 	}
 
 	@Override
@@ -64,28 +58,40 @@ public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 
 	@Override
 	public void failure(final Throwable executionException) {
+		Log.w(TAG, "caught throwable during execution", executionException);
+		
 		// TODO generic handling, error message, throw exception if not handled
 		
-		for(final ExceptionalFailureListener listener : exceptionalFailureListeners)
-			listener.failure(executionException);
+		boolean handled = false;
+		for(final ExceptionFailureHandler handler : exceptionFailureHandlers) {
+			handled = handler.handleFailure(executionException);
+			if(handled)
+				break;
+		}
 		
-		safeClear(exceptionalFailureListeners);
+		safeClear(exceptionFailureHandlers);
 		
-		// TEMP
-		Log.e(getClass().getSimpleName(), "exceptional failure", executionException);
+		if(!handled)
+			throw new UnsupportedOperationException("No handler for throwable", executionException);
 	}
 	
 	@Override
-	public void failure(final ErrorResponse errorResponse) {
+	public void failure(final ErrorResponse<?> errorResponse) {
+		Log.w(TAG, "server returned errorResponse: " + errorResponse);
+		
 		// TODO generic handling, error message, throw exception if not handled
+
+		boolean handled = false;
+		for(final ErrorResponseHandler handler : errorResponseHandlers) {
+			handled = handler.handleFailure(errorResponse);
+			if(handled)
+				break;
+		}
 		
-		for(final ErrorResponseFailureListener listener : errorResponseFailureListeners)
-			listener.failure(errorResponse);
+		safeClear(errorResponseHandlers);
 		
-		safeClear(errorResponseFailureListeners);
-		
-		// TEMP
-		Log.e(getClass().getSimpleName(), "ErrorResponse: " + errorResponse);
+		if(!handled)
+			throw new UnsupportedOperationException("No handler for errorResponse: " + errorResponse);
 	}
 	
 	@SuppressWarnings("null")
@@ -114,11 +120,10 @@ public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 		
 		private final @Nonnull Activity activity;
 		
-		private @Nullable List<PreSubmitListener> preSubmitListeners;
 		private @Nullable List<CompletionListener> completionListeners;
 		private @Nullable List<SuccessListener<V>> successListeners;
-		private @Nullable List<ExceptionalFailureListener> exceptionalFailureListeners;
-		private @Nullable List<ErrorResponseFailureListener> errorResponseFailureListeners;
+		private @Nullable List<ExceptionFailureHandler> exceptionFailureHandlers;
+		private @Nullable List<ErrorResponseHandler> errorResponseHandlers;
 		
 		public Builder(final @Nonnull Activity activity) {
 			this.activity = activity;
@@ -126,14 +131,6 @@ public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 		
 		public GenericAsyncCallback<V> build() {
 			return new GenericAsyncCallback<V>(this);
-		}
-		
-		public Builder<V> withPreSubmitListener(final PreSubmitListener preSubmitListener) {
-			if(preSubmitListeners == null)
-				preSubmitListeners = new LinkedList<PreSubmitListener>();
-			preSubmitListeners.add(preSubmitListener);
-			
-			return this;
 		}
 		
 		public Builder<V> withCompletionListener(final CompletionListener completionListener) {
@@ -152,20 +149,18 @@ public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 			return this;
 		}
 		
-		public Builder<V> withExceptionalFailureListener(final ExceptionalFailureListener exceptionalFailureListener) {
-			if(exceptionalFailureListeners == null)
-				exceptionalFailureListeners = new LinkedList<ExceptionalFailureListener>();
-			exceptionalFailureListeners.add(exceptionalFailureListener);
+		public Builder<V> withExceptionFailureHandler(final ExceptionFailureHandler exceptionFailureHandler) {
+			if(exceptionFailureHandlers == null)
+				exceptionFailureHandlers = new LinkedList<ExceptionFailureHandler>();
+			exceptionFailureHandlers.add(exceptionFailureHandler);
 			
 			return this;
 		}
 		
-		public Builder<V> withErrorResponseFailureListener(
-				final ErrorResponseFailureListener errorResponseFailureListener) {
-			
-			if(errorResponseFailureListeners == null)
-				errorResponseFailureListeners = new LinkedList<ErrorResponseFailureListener>();
-			errorResponseFailureListeners.add(errorResponseFailureListener);
+		public Builder<V> withErrorResponseHandler(final ErrorResponseHandler errorResponseHandler) {
+			if(errorResponseHandlers == null)
+				errorResponseHandlers = new LinkedList<ErrorResponseHandler>();
+			errorResponseHandlers.add(errorResponseHandler);
 			
 			return this;
 		}
