@@ -23,8 +23,8 @@ import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.CreateLoginCall;
 import com.discover.mobile.common.auth.registration.CreateLoginDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
+import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 

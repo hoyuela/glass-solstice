@@ -30,9 +30,9 @@ import com.discover.mobile.common.auth.StrongAuthCall;
 import com.discover.mobile.common.auth.StrongAuthDetails;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.net.callback.AsyncCallback;
+import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.net.response.AsyncCallback;
-import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
@@ -182,13 +182,13 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			InputValidator validator = new InputValidator();
 			
 				@Override
-				public void onFocusChange(View v, boolean hasFocus) {
+				public void onFocusChange(final View v, final boolean hasFocus) {
 //					String titleLabel = (String)activityTitleLabel.getText();
 //					String forgotPassText = null;
 //					forgotPassText = getString(R.string.forgot_password_text);
 					
 					//This is then a user id that must be validated.
-					String acctNbr = ((EditText)v).getText().toString();
+					final String acctNbr = ((EditText)v).getText().toString();
 					if(!hasFocus && !validator.isCardAccountNumberValid(acctNbr)){
 						showLabel( cardErrorLabel );
 					}
@@ -199,17 +199,17 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		accountIdentifierField.addTextChangedListener(new TextWatcher(){
 			InputValidator validator = new InputValidator();
 			@Override
-			public void afterTextChanged(Editable s) {
+			public void afterTextChanged(final Editable s) {
 				if(validator.isCardAccountNumberValid(s.toString())){
 					hideLabel( cardErrorLabel );
 				}
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
+			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {/*Intentionally empty*/}
+			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {/*Intentionally empty*/}
 			
 		});
 		
@@ -221,7 +221,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			EditText inputField;
 
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
+			public void onFocusChange(final View v, final boolean hasFocus) {
 				inputField = (EditText)v;
 				if(!hasFocus && inputField.getText().length() < 4) {
 					showLabel(dobYearErrorLabel);
@@ -232,7 +232,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		dobYearField.addTextChangedListener(new TextWatcher(){
 			
 			@Override
-			public void afterTextChanged(Editable s) {
+			public void afterTextChanged(final Editable s) {
 				if(s.length() == 4) {
 					//hide error label
 					hideLabel(dobYearErrorLabel);
@@ -240,10 +240,10 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
+			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {/*Intentionally empty*/}
+			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {/*Intentionally empty*/}
 			
 		});
 	}
@@ -254,7 +254,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			EditText inputField;
 
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
+			public void onFocusChange(final View v, final boolean hasFocus) {
 				inputField = (EditText)v;
 				
 				if(!hasFocus && inputField.getText().length() < 4) {
@@ -266,7 +266,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		ssnField.addTextChangedListener(new TextWatcher(){
 
 			@Override
-			public void afterTextChanged(Editable s) {
+			public void afterTextChanged(final Editable s) {
 				if(s.length() == 4) {
 					//hide error label
 					hideLabel(ssnErrorLabel);
@@ -274,10 +274,10 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
+			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {/*Intentionally empty*/}
+			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {/*Intentionally empty*/}
 			
 		});
 	}
@@ -597,11 +597,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			hideLabel(dobYearErrorLabel);
 	}
 	
-	public void showLabel(View v){
+	public void showLabel(final View v){
 		v.setVisibility(View.VISIBLE);
 	}
 	
-	public void hideLabel(View v){
+	public void hideLabel(final View v){
 		v.setVisibility(View.GONE);
 	}
 

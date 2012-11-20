@@ -6,8 +6,8 @@ import android.util.Base64;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
+import com.discover.mobile.common.net.callback.AsyncCallback;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.net.response.AsyncCallback;
 
 public class CreateLoginCall extends JsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
 	

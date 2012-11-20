@@ -9,7 +9,6 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,11 +24,14 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
+import com.discover.mobile.common.net.callback.AsyncCallback;
+import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.net.callback.GenericAsyncCallback;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
+import com.discover.mobile.navigation.NavigationMenuRootActivity;
 import com.google.common.base.Strings;
 
 @ContentView(R.layout.login)
@@ -101,26 +103,15 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
-		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
-		
-		final AsyncCallbackAdapter<AccountDetails> callback = new AsyncCallbackAdapter<AccountDetails>() {
-			@Override
-			public void success(final AccountDetails value) {
-				progress.dismiss();
-				handleSuccessfulAuth();
-			}
-			
+		final AsyncCallbackAdapter<AccountDetails> callbackDelegate = new AsyncCallbackAdapter<AccountDetails>() {
 			@Override
 			public void failure(final Throwable error) {
-				progress.dismiss();
 				Log.e(TAG, "Error: " + error.getMessage());
 				showOkAlertDialog("Error", error.getMessage());
 			}
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				progress.dismiss();
-				
 				switch(errorResponse.getHttpStatusCode()) {
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						errorTextView.setText(getString(R.string.login_error));
@@ -139,10 +130,6 @@ public class LoginActivity extends RoboActivity {
 				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
 					return false;
 				
-				progress.dismiss();
-				clearInputs();
-				
-				// FIXME convert other error codes to standard constants
 				switch(messageErrorResponse.getMessageStatusCode()) {
 					case MAINTENANCE_MODE_1:
 					case MAINTENANCE_MODE_2: 
@@ -164,7 +151,15 @@ public class LoginActivity extends RoboActivity {
 				}
 			}
 		};
-
+		
+		final AsyncCallback<AccountDetails> callback =
+				GenericAsyncCallback.<AccountDetails>builder(this)
+					.showProgressDialog("Discover", "Loading...", true)
+					.clearTextViewsOnComplete(errorTextView, passField, uidField)
+//					.launchIntentOnSuccess(LoggedInLandingPage.class)
+					.launchIntentOnSuccess(NavigationMenuRootActivity.class)
+					.build();
+		
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
 	
@@ -172,13 +167,6 @@ public class LoginActivity extends RoboActivity {
 		final Intent maintenancePageIntent = new Intent(LoginActivity.this, LockOutUserActivity.class);
 		screenType.addExtraToIntent(maintenancePageIntent);
 		startActivity(maintenancePageIntent);
-	}
-	
-	private void handleSuccessfulAuth() {
-		clearInputs();
-		
-		final Intent logIn = new Intent(this, LoggedInLandingPage.class);
-		this.startActivity(logIn);
 	}
 	
 	private void showOkAlertDialog(final String title, final String message) {
@@ -205,9 +193,4 @@ public class LoginActivity extends RoboActivity {
 		this.startActivity(forgotIdAndOrPassActivity);
 	}
 	
-	public void clearInputs() {
-		errorTextView.setText("");
-		passField.setText("");
-		uidField.setText("");
-	}
 }

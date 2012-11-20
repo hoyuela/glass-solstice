@@ -27,8 +27,8 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.forgot.ForgotUserIdCall;
 import com.discover.mobile.common.auth.forgot.UserIdDetails;
+import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.register.AccountInformationConfirmationActivity;
@@ -81,9 +81,9 @@ public class ForgotUserIdActivity extends RoboActivity {
 			InputValidator validator = new InputValidator();
 			
 				@Override
-				public void onFocusChange(View v, boolean hasFocus) {
+				public void onFocusChange(final View v, final boolean hasFocus) {
 					//This is then a user id that must be validated.
-					String acctNbr = ((EditText)v).getText().toString();
+					final String acctNbr = ((EditText)v).getText().toString();
 					if(!hasFocus && !validator.isCardAccountNumberValid(acctNbr)){
 						showLabel( idErrLabel );
 					}
@@ -94,17 +94,17 @@ public class ForgotUserIdActivity extends RoboActivity {
 		cardNumField.addTextChangedListener(new TextWatcher(){
 			InputValidator validator = new InputValidator();
 			@Override
-			public void afterTextChanged(Editable s) {
+			public void afterTextChanged(final Editable s) {
 				if(validator.isCardAccountNumberValid(s.toString())){
 					hideLabel( idErrLabel );
 				}
 			}			
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
+			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {/*Intentionally empty*/}
+			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {/*Intentionally empty*/}
 			
 		});
 	}
@@ -115,9 +115,9 @@ public class ForgotUserIdActivity extends RoboActivity {
 		passField.setOnFocusChangeListener(new OnFocusChangeListener() {
 			
 				@Override
-				public void onFocusChange(View v, boolean hasFocus) {
+				public void onFocusChange(final View v, final boolean hasFocus) {
 					//This is then a user id that must be validated.
-					String pass = ((EditText)v).getText().toString();
+					final String pass = ((EditText)v).getText().toString();
 					if(!hasFocus && pass.length() < 1){
 						showLabel( passErrLabel );
 					}
@@ -128,17 +128,17 @@ public class ForgotUserIdActivity extends RoboActivity {
 		passField.addTextChangedListener(new TextWatcher(){
 
 			@Override
-			public void afterTextChanged(Editable s) {
+			public void afterTextChanged(final Editable s) {
 				if(s.toString().length() > 0){
 					hideLabel( passErrLabel );
 				}
 			}			
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
+			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {/*Intentionally empty*/}
+			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {/*Intentionally empty*/}
 			
 		});
 	}

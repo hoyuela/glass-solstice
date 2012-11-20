@@ -16,7 +16,7 @@ import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.response.AsyncCallback;
+import com.discover.mobile.common.net.callback.AsyncCallback;
 import com.discover.mobile.login.forgot.EnterNewPasswordActivity;
 
 public class ForgotPasswordAccountInformationActivity extends AbstractAccountInformationActivity {
@@ -59,7 +59,7 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 			InputValidator validator = new InputValidator();
 			
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
+			public void onFocusChange(final View v, final boolean hasFocus) {
 				inputField = (EditText)v;
 				
 				if( !hasFocus && !validator.isUidValid( inputField.getText().toString() ) ) {
@@ -72,17 +72,17 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 			InputValidator validator = new InputValidator();
 
 			@Override
-			public void afterTextChanged(Editable s) {
+			public void afterTextChanged(final Editable s) {
 				if( validator.isPassValid( s.toString() ) ) {
 					hideLabel(idErrorLabel);
 				}
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {/*Intentionally empty*/}
+			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {/*Intentionally empty*/}
+			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {/*Intentionally empty*/}
 			
 		});
 		

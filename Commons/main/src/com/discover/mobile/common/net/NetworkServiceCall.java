@@ -90,6 +90,7 @@ public abstract class NetworkServiceCall<R> {
 	}
 
 	protected abstract TypedReferenceHandler<R> getHandler();
+	
 	/**
 	 * Executed in a background thread, needs to be thread-safe.
 	 * 
@@ -109,6 +110,8 @@ public abstract class NetworkServiceCall<R> {
 		final boolean shouldContinue = useAndClearContext();
 		if(!shouldContinue)
 			return;
+		
+		firePreSubmit();
 		
 		NetworkTrafficExecutorHolder.networkTrafficExecutor.submit(new Runnable() {
 			@Override
@@ -130,7 +133,7 @@ public abstract class NetworkServiceCall<R> {
 			setupDeviceIdentifiers();
 		} catch(final ConnectionFailureException e) {
 			// We don't need to catch anything else because this should be executing on the main thread
-			assertMainThreadExecution();
+			assertMainThreadExecution(e);
 			
 			sendResultToHandler(e, RESULT_EXCEPTION);
 			return false;
@@ -167,6 +170,10 @@ public abstract class NetworkServiceCall<R> {
 			sid = telephonyManager.getSimSerialNumber();
 			oid = telephonyManager.getDeviceId();
 		}};
+	}
+	
+	private void firePreSubmit() {
+		getHandler().preSubmit();
 	}
 	
 	// Executes in the background thread, performs the HTTP connection and delegates parsing to subclass

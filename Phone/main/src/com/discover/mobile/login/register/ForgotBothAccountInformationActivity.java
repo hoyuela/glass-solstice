@@ -6,7 +6,7 @@ import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.AccountInformationCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.response.AsyncCallback;
+import com.discover.mobile.common.net.callback.AsyncCallback;
 
 public class ForgotBothAccountInformationActivity extends AbstractAccountInformationActivity {
 	
