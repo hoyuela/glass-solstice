@@ -195,20 +195,6 @@ public final class GenericAsyncCallback<V> implements ExtendedAsyncCallback<V> {
 		public Builder<V> launchIntentOnSuccess(final @Nonnull Class<?> successLaunchIntentClass) {
 			withSuccessListener(new FireIntentSuccessListener<V>(activity, successLaunchIntentClass));
 			
-			// TEMP
-			withCompletionListener(new CompletionListener() {
-				@Override
-				public Order getOrder() {
-					return Order.LAST;
-				}
-				
-				@Override
-				public void complete(final Object result) {
-					final Intent intent = new Intent(activity, successLaunchIntentClass);
-					activity.startActivity(intent);
-				}
-			});
-			
 			return this;
 		}
 		
