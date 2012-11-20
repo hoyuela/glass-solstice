@@ -7,7 +7,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.discover.mobile.commons.R;
+import com.discover.mobile.common.R;
 
 final class ContextNetworkUtility {
 	
