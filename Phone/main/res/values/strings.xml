@@ -41,6 +41,9 @@
 	<string name="go_back">
 	    Go back
 	</string>
+	<string name="logout">
+	    Logout
+	</string>
 	<string name="forgot_password_text">Forgot Password</string>
 	<string name="forgot_both_text">Forgot Both</string>
 	<string name="forgot_password_field_title_text">Credit Card User ID:</string>
