@@ -7,8 +7,8 @@ import com.adobe.adms.measurement.ADMS_Measurement;
 public final class TrackingHelper {
 	
 	// FIXME externalize
-	private static final String TRACKING_RSID = "discovercardmobiledev";
-	private static final String TRACKING_SERVER = "discoverfinancial.d1.sc.omtrdc.net";
+	private static final String TRACKING_RSID = "discovercardmobiledev"; //$NON-NLS-1$
+	private static final String TRACKING_SERVER = "discoverfinancial.d1.sc.omtrdc.net"; //$NON-NLS-1$
 	// params for using Bloodhound
 //	private static final String TRACKING_RSID = "test";
 //	private static final String TRACKING_SERVER = "192.168.4.235:50046";
@@ -33,13 +33,14 @@ public final class TrackingHelper {
 	}
 	
 	public static void trackPageView(final String pageName) {
+		if(measurement == null){return;}
 		measurement.clearVars();
 		measurement.setAppState(pageName);
 		measurement.track();
 	}
 	
 	private TrackingHelper() {
-		throw new UnsupportedOperationException("This class is non-instantiable");
+		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$
 	}
 	
 }
