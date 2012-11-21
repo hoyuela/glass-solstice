@@ -13,10 +13,8 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.DeleteSessionCall;
-import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.net.response.AsyncCallback;
 import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
-import com.discover.mobile.common.net.response.ErrorResponse;
 
 @ContentView(R.layout.logged_in_landing)
 public class LoggedInLandingPage extends RoboActivity {
@@ -41,35 +39,14 @@ public class LoggedInLandingPage extends RoboActivity {
 	}
 	
 	public void logout(View v) {
+		
 		final AsyncCallback<Object> callback = new AsyncCallbackAdapter<Object>() {
+			//TODO Determine how errors are to be handled - no official word on it yet.
+			// Phone gap application doesn't handle any errors. Expects 204 success only.
 			@Override
 			public void success(final Object value) {
 				Log.d(TAG, "Logout Success");
 				navigateToSecureLoginScreen();
-			}
-
-			@Override
-			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				
-				Log.w(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse);
-				
-				switch (errorResponse.getHttpStatusCode()) {
-					
-				}
-				
-				return false;
-			}
-
-			@Override
-			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
-				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-
-				// FIXME add "assertions" for what the HTTP status code should be
-				switch(messageErrorResponse.getMessageStatusCode()){
-				
-						
-				}
-				return false;
 			}
 		};
 

@@ -18,6 +18,7 @@ public class DeleteSessionCall extends NetworkServiceCall<Object> {
 	
 	private static final ServiceCallParams STANDARD_PARAMS = new PostCallParams("/cardsvcs/acs/session/v1/delete") {{
 		requiresSessionForRequest = true;
+		clearsSessionAfterRequest = true;
 	}};
 	
 	private final TypedReferenceHandler<Object> handler;
