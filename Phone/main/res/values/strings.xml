@@ -38,6 +38,12 @@
 	<string name="unkown_error_text">
 	    Unknown error with the server, please try again later.
 	</string>
+	<string name="successful_logout_title_text">
+	    You are now logged out
+	</string>
+	<string name="successful_logout_subtitle_text">
+	    Thank you for using Discover mobile.
+	</string>
 	<string name="go_back">
 	    Go back
 	</string>

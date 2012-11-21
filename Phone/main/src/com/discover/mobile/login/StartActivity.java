@@ -15,8 +15,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -44,10 +46,20 @@ public class StartActivity extends RoboActivity {
 	private static final long DAY_IN_MILLISECONDS = 86400000;
 	
 	private static final String DATETIME_KEY = "com.discover.mobile.optionalupdatedate";
+
+// BUTTONS
 	
 	@InjectView(R.id.card_login_button)
 	private Button creditCardLoginButton;
-
+	
+// TEXT LABELS
+	
+	@InjectView(R.id.title_label)
+	TextView titleLabel;
+	
+	@InjectView(R.id.subtitle_label)
+	TextView subtitleLabel;
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +68,41 @@ public class StartActivity extends RoboActivity {
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
 		
 		setupButtons();
+		
+		final Bundle extras = getIntent().getExtras();
+    	if(extras != null) {
+    		boolean hasUserLoggedOut = extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
+    		showLogoutMessageIfTrue(hasUserLoggedOut);
+    	}
+
+	}
+	
+	@Override
+	public void onStop(){
+		hideErrorLabels();
+	}
+	
+	public void showLogoutMessageIfTrue(boolean hasUserLoggedOut) {
+		if(hasUserLoggedOut) {
+			titleLabel.setText(getString(R.string.successful_logout_title_text));
+			subtitleLabel.setText(getString(R.string.successful_logout_subtitle_text));
+			showLabel(titleLabel);
+			showLabel(subtitleLabel);
+		}
+		else {/*User has not logged out*/}
+	}
+	
+	public void hideErrorLabels(){
+		hideLabel(titleLabel);
+		hideLabel(subtitleLabel);
+	}
+	
+	public void showLabel(View v) {
+		v.setVisibility(View.VISIBLE);
+	}
+	
+	public void hideLabel(View v) {
+		v.setVisibility(View.GONE);
 	}
 	
 	private void setupButtons() {

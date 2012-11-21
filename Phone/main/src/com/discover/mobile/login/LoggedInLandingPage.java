@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.DeleteSessionCall;
@@ -56,7 +57,8 @@ public class LoggedInLandingPage extends RoboActivity {
 	}
 	
 	private void navigateToSecureLoginScreen() {
-		Intent loginScreen = new Intent(this, LoginActivity.class);
+		Intent loginScreen = new Intent(this, StartActivity.class);
+		loginScreen.putExtra(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
 		startActivity(loginScreen);
 	
 	}
