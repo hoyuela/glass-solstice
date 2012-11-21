@@ -28,14 +28,16 @@ public abstract class ServiceCallParams {
 	 * Should never be {@code true} at the same time as {@link #clearsSessionBeforeRequest}.
 	 */
 	public boolean requiresSessionForRequest = true;
+	public boolean clearsSessionAfterRequest = false;
 	
 	public boolean sendDeviceIdentifiers = false;
+	
 	
 	@Struct
 	public static class GetCallParams extends ServiceCallParams {
 		
 		public GetCallParams(final String path) {
-			super("GET", path);
+			super("GET", path); //$NON-NLS-1$
 		}
 		
 	}
@@ -51,13 +53,13 @@ public abstract class ServiceCallParams {
 		public RequestBodySerializer customBodySerializer = null;
 		
 		public PostCallParams(final String path) {
-			super("POST", path);
+			super("POST", path); //$NON-NLS-1$
 		}
 		
 	}
 	
 	private ServiceCallParams(final String httpMethod, final String path) {
-		checkArgument(path != null && !path.isEmpty(), "path cannot be empty");
+		checkArgument(path != null && !path.isEmpty(), "path cannot be empty"); //$NON-NLS-1$
 		
 		this.httpMethod = httpMethod;
 		this.path = path;

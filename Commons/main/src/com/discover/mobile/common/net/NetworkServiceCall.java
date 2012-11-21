@@ -41,7 +41,7 @@ public abstract class NetworkServiceCall<R> {
 	
 	private final String TAG = getClass().getSimpleName();
 	
-	private static final String ID_PREFIX = "%&(()!12[";
+	private static final String ID_PREFIX = "%&(()!12["; //$NON-NLS-1$
 	
 	private static final List<RequestBodySerializer> REQUEST_BODY_SERIALIZERS = createRequestBodySerializers();
 	
@@ -174,6 +174,14 @@ public abstract class NetworkServiceCall<R> {
 	private void executeRequest() throws IOException, NoSuchAlgorithmException {
 		prepareGlobalSessionForConnection();
 		
+		try {
+			executeConnection();
+		} finally {
+			postRequestClearGlobalSessionIfRequested();
+		}
+	}
+	
+	private void executeConnection() throws IOException, NoSuchAlgorithmException {
 		conn = createConnection();
 		try {
 			prepareConnection();
@@ -194,6 +202,11 @@ public abstract class NetworkServiceCall<R> {
 	
 	private void prepareGlobalSessionForConnection() {
 		if(params.clearsSessionBeforeRequest)
+			ServiceCallSessionManager.clearSession();
+	}
+	
+	private void postRequestClearGlobalSessionIfRequested() {
+		if(params.clearsSessionAfterRequest)
 			ServiceCallSessionManager.clearSession();
 	}
 	
