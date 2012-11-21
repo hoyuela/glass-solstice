@@ -69,7 +69,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<com.disc
 		setLoginFields(VALID_USERNAME, VALID_PASSWORD);
 		attemptLogin();
 		
-		Activity nextActivity = nextActivityMonitor.getLastActivity();
+		final Activity nextActivity = nextActivityMonitor.getLastActivity();
 		
 		assertNotNull("Logged in Activity is null", nextActivity); //$NON-NLS-1$
 		assertTrue("Activity is not an instance of LoggedInLandingPage", nextActivity instanceof LoggedInLandingPage); //$NON-NLS-1$

@@ -33,8 +33,6 @@ public final class TrackingHelper {
 	}
 	
 	public static void trackPageView(final String pageName) {
-		
-		//TODO:  THis is here to prevent a null pinter during testing
 		if(measurement == null){return;}
 		measurement.clearVars();
 		measurement.setAppState(pageName);
