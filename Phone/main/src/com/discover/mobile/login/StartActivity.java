@@ -25,9 +25,10 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 
 @ContentView(R.layout.landing)
@@ -66,9 +67,7 @@ public class StartActivity extends RoboActivity {
 		
 		TrackingHelper.startActivity(this);
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
-		
-		setupButtons();
-		
+				
 		final Bundle extras = getIntent().getExtras();
     	if(extras != null) {
     		boolean hasUserLoggedOut = extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
@@ -79,6 +78,7 @@ public class StartActivity extends RoboActivity {
 	
 	@Override
 	public void onStop(){
+		super.onStop();
 		hideErrorLabels();
 	}
 	
@@ -104,7 +104,7 @@ public class StartActivity extends RoboActivity {
 	public void hideLabel(View v) {
 		v.setVisibility(View.GONE);
 	}
-	
+
 	private void setupButtons() {
 		//Setup the button that takes us to the login screen.
 		creditCardLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +115,7 @@ public class StartActivity extends RoboActivity {
 		});
 	}
 	
-	private void startPreAuthCheck() {
+	public void startPreAuthCheck() {
 		final SuccessListener<PreAuthResult> optionalUpdateListener = new SuccessListener<PreAuthResult>() {
 			@Override
 			public CallbackPriority getCallbackPriority() {
@@ -140,33 +140,47 @@ public class StartActivity extends RoboActivity {
 		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback.<PreAuthResult>builder(this)
 				.showProgressDialog("Discover", "Loading...", true)
 				.withSuccessListener(optionalUpdateListener)
+				
+				// FIXME DO NOT COPY THIS CODE
+				.withErrorResponseHandler(new ErrorResponseHandler() {
+					@Override
+					public CallbackPriority getCallbackPriority() {
+						return CallbackPriority.MIDDLE;
+					}
+					
+					@Override
+					public boolean handleFailure(final ErrorResponse<?> errorResponse) {
+						if(errorResponse instanceof JsonMessageErrorResponse)
+							return handleMessageErrorResponse((JsonMessageErrorResponse)errorResponse);
+						
+						return false;
+					}
+					
+					public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
+						// FIXME named constants
+						switch(messageErrorResponse.getMessageStatusCode()) {
+							case 1002: 
+								TrackingHelper.trackPageView(AnalyticsPage.FORCED_UPGRADE);
+								showUpgradeAlertDialog("Upgrade", 
+										"Your Discover app is out of date. You must update before continuing.", 
+										FORCED_UPGRADE);
+								removeDateFromPrefs();
+								return true;
+								
+							case 1006:
+							case 1007: 
+								sendToMaintenancePage();
+								return true;
+							default:
+								break;
+						}
+						
+						return false;
+					}
+				})
+				
 				.build();
 		
-		// FIXME
-		final AsyncCallbackAdapter<PreAuthResult> oldCallback = new AsyncCallbackAdapter<PreAuthResult>() {
-			@Override
-			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
-				// FIXME named constants
-				switch(messageErrorResponse.getMessageStatusCode()) {
-					case 1002: 
-						TrackingHelper.trackPageView(AnalyticsPage.FORCED_UPGRADE);
-						showUpgradeAlertDialog("Upgrade", 
-								"Your Discover app is out of date. You must update before continuing.", 
-								FORCED_UPGRADE);
-						removeDateFromPrefs();
-						return true;
-						
-					case 1006:
-					case 1007: 
-						sendToMaintenancePage();
-						return true;
-					default:
-						break;
-				}
-				
-				return false;
-			}
-		};
 		new PreAuthCheckCall(this, callback).submit();
 	}
 	

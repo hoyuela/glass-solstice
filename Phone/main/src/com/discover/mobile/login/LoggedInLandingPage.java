@@ -14,8 +14,8 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.DeleteSessionCall;
-import com.discover.mobile.common.net.response.AsyncCallback;
-import com.discover.mobile.common.net.response.AsyncCallbackAdapter;
+import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 
 @ContentView(R.layout.logged_in_landing)
 public class LoggedInLandingPage extends RoboActivity {
@@ -47,7 +47,7 @@ public class LoggedInLandingPage extends RoboActivity {
 			@Override
 			public void success(final Object value) {
 				Log.d(TAG, "Logout Success");
-				navigateToSecureLoginScreen();
+				navigateToHomeScreen();
 			}
 		};
 
@@ -56,7 +56,7 @@ public class LoggedInLandingPage extends RoboActivity {
 		
 	}
 	
-	private void navigateToSecureLoginScreen() {
+	private void navigateToHomeScreen() {
 		Intent loginScreen = new Intent(this, StartActivity.class);
 		loginScreen.putExtra(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
 		startActivity(loginScreen);

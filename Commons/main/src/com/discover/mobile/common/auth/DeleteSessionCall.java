@@ -7,12 +7,12 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.response.AsyncCallback;
 
 public class DeleteSessionCall extends NetworkServiceCall<Object> {
 	
@@ -41,24 +41,5 @@ public class DeleteSessionCall extends NetworkServiceCall<Object> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-//	@Override
-//	protected PreAuthResult parseSuccessResponse(final int status, final Map<String,List<String>> headers,
-//			final InputStream responseStream) {
-//
-//		return new PreAuthResult() {{
-//			statusCode = status;
-//			final List<String> descriptions = headers.get("VersionInfo");
-//			
-//			if(descriptions != null && !descriptions.isEmpty())
-//				upgradeDescription = descriptions.get(0);
-//		}};
-//	}
-	
-//	@Struct
-//	public static class PreAuthResult {
-//		public int statusCode;
-//		public String upgradeDescription = null;
-//	}
 	
 }
