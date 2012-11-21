@@ -15,7 +15,7 @@ public enum ScreenType {
 	STRONG_AUTH_LOCKED_OUT,
 	ACCOUNT_LOCKED_FAILED_ATTEMPTS;
 	
-	public static final String INTENT_KEY = "ScreenType";
+	public static final String INTENT_KEY = "ScreenType"; //$NON-NLS-1$
 	
 	public static ScreenType getExtraFromIntent(final Intent intent) {
 		return (ScreenType) intent.getExtras().getSerializable(ScreenType.INTENT_KEY);
