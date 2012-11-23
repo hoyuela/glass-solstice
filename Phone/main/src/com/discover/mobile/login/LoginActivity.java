@@ -16,9 +16,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.ScreenType;
+import com.discover.mobile.common.UserIdPersistance;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
@@ -36,6 +38,9 @@ import com.google.common.base.Strings;
 @ContentView(R.layout.login)
 public class LoginActivity extends RoboActivity {
 
+	@InjectView(R.id.toggle_button_save_user_id)
+	private ToggleButton saveUserButton;
+	
 	@InjectView(R.id.username)
 	private EditText uidField;
 	
@@ -54,6 +59,8 @@ public class LoginActivity extends RoboActivity {
 	@InjectView(R.id.forgot_uid_or_pass_text)
 	private TextView forgotUserIdOrPassText;
 	
+	private UserIdPersistance persistenceSession;
+	
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,6 +68,7 @@ public class LoginActivity extends RoboActivity {
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		
 		setupButtons();
+		setupSavedId();
 	}
 	
 	private void setupButtons() {
@@ -87,6 +95,24 @@ public class LoginActivity extends RoboActivity {
 				forgotIdAndOrPass();
 			}
 		});
+	}
+	
+	@Override
+	public void onStop() {
+		if(saveUserButton.isChecked()) {
+			persistenceSession.saveButtonStateAs(true);
+			persistenceSession.saveId(uidField.getText().toString());
+		}
+		clearInputs();
+	}
+	
+	private void setupSavedId() {
+		persistenceSession = new UserIdPersistance(this);
+		
+		if(persistenceSession.getButtonState()){
+			saveUserButton.setSelected(true);
+			uidField.setText(persistenceSession.getUserId());
+		}
 	}
 	
 	private void logIn() {
