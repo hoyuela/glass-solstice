@@ -3,7 +3,7 @@ package com.discover.mobile.navigation;
 import java.util.List;
 
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
@@ -16,12 +16,19 @@ final class SectionNavigationItem extends NavigationItem {
 	private final SectionInfo sectionInfo;
 	private final List<SubSectionNavigationItem> subSections;
 	
-	SectionNavigationItem(final SectionInfo sectionInfo) {
+	private boolean expanded;
+	
+	SectionNavigationItem(final NavigationItemAdapter adapter, final SectionInfo sectionInfo, final int index) {
+		super(adapter, R.layout.navigation_menu_section_item, index);
+		
 		this.sectionInfo = sectionInfo;
 		
+		final List<SubSectionInfo> subsections = sectionInfo.getSubSections();
 		final ImmutableList.Builder<SubSectionNavigationItem> builder = ImmutableList.builder();
-		for(final SubSectionInfo subSectionInfo : sectionInfo.getSubSections())
-			builder.add(new SubSectionNavigationItem(subSectionInfo));
+		for(int i = 0; i < subsections.size(); i++) {
+			final SubSectionInfo subSectionInfo = subsections.get(i);
+			builder.add(new SubSectionNavigationItem(adapter, subSectionInfo, index + i + 1));
+		}
 		subSections = builder.build();
 	}
 	
@@ -31,19 +38,47 @@ final class SectionNavigationItem extends NavigationItem {
 	}
 	
 	@Override
-	View getView(final NavigationItemAdapter sectionAdapter, final View convertView, final ViewGroup parent) {
-		View view;
-		if(convertView == null)
-			view = sectionAdapter.getLayoutInflater().inflate(R.layout.navigation_menu_section_item, null);
-		else
-			view = convertView;
-		
-		final TextView title = (TextView) view.findViewById(R.id.title);
+	void customizeItemView(final View view, final TextView title) {
 		title.setText(sectionInfo.getTitleResource());
 		
-		// TODO
+		// TEMP
+		title.setText("Section " + absoluteIndex);
 		
-		return view;
+		// TODO show highlight if selected
+	}
+	
+	@Override
+	void onClick(final ListView listView) {
+		if(expanded)
+			collapse();
+		else
+			expand();
+	}
+	
+	private void expand() {
+		if(expanded)
+			return;
+		
+		final SectionNavigationItem expandedSection = navigationItemAdapter.getExpandedSection();
+		if(expandedSection != null)
+			expandedSection.collapse();
+		
+		for(final SubSectionNavigationItem subSection : subSections)
+			subSection.show();
+		
+		navigationItemAdapter.setExpandedSection(this);
+		expanded = true;
+	}
+	
+	private void collapse() {
+		if(!expanded)
+			return;
+		
+		for(final SubSectionNavigationItem subSection : subSections)
+			subSection.hide();
+		
+		navigationItemAdapter.setExpandedSection(null);
+		expanded = false;
 	}
 	
 }

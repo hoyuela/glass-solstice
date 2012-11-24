@@ -5,4 +5,5 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/nav_menu_list_padding"
     android:paddingRight="@dimen/nav_menu_list_padding"
-    android:background="@color/body_copy" />
+    android:background="@color/body_copy"
+    android:divider="@null" />

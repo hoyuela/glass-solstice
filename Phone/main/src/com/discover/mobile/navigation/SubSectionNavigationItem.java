@@ -1,15 +1,21 @@
 package com.discover.mobile.navigation;
 
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.discover.mobile.R;
 import com.discover.mobile.section.SubSectionInfo;
 
 final class SubSectionNavigationItem extends NavigationItem {
 	
 	private final SubSectionInfo subSectionInfo;
 	
-	SubSectionNavigationItem(final SubSectionInfo subSectionInfo) {
+	SubSectionNavigationItem(final NavigationItemAdapter adapter, final SubSectionInfo subSectionInfo,
+			final int absoluteIndex) {
+		
+		super(adapter, R.layout.navigation_menu_sub_section_item, absoluteIndex);
+		
 		this.subSectionInfo = subSectionInfo;
 	}
 	
@@ -19,11 +25,30 @@ final class SubSectionNavigationItem extends NavigationItem {
 	}
 	
 	@Override
-	View getView(final NavigationItemAdapter sectionAdapter, final View convertView, final ViewGroup parent) {
-		// TODO
+	void customizeItemView(final View view, final TextView title) {
+		title.setText(subSectionInfo.getTitleResource());
 		
 		// TEMP
-		return null;
+		title.setText("Sub-Section " + absoluteIndex);
+		
+		// TODO show highlight if selected
+	}
+	
+	@Override
+	void onClick(final ListView listView) {
+		// TODO
+	}
+	
+	void show() {
+		navigationItemAdapter.insert(this, absoluteIndex);
+		
+		// TODO
+	}
+	
+	void hide() {
+		navigationItemAdapter.remove(SubSectionNavigationItem.this);
+		
+		// TODO
 	}
 	
 }

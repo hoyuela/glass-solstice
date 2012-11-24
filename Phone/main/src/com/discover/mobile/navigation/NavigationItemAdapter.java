@@ -1,19 +1,30 @@
 package com.discover.mobile.navigation;
 
+import roboguice.inject.ContextSingleton;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.discover.mobile.section.SectionInfo;
 import com.discover.mobile.section.Sections;
+import com.google.inject.Inject;
 
+@ContextSingleton
 class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 
 	static final int TYPE_SECTION = 0;
 	static final int TYPE_SUB_SECTION = TYPE_SECTION + 1;
+	static final int TYPE_COUNT = TYPE_SUB_SECTION + 1;
 	
+	@Inject
+	private LayoutInflater layoutInflater;
+	
+	private SectionNavigationItem expandedSection;
+	
+	@Inject
 	NavigationItemAdapter(final Context context) {
 		super(context, 0);
 		
@@ -21,13 +32,15 @@ class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 	}
 	
 	private void addSections() {
-		for(final SectionInfo sectionInfo : Sections.SECTIONS)
-			add(new SectionNavigationItem(sectionInfo));
+		for(int i = 0; i < Sections.SECTIONS.size(); i++) {
+			final SectionInfo sectionInfo = Sections.SECTIONS.get(i);
+			add(new SectionNavigationItem(this, sectionInfo, i));
+		}
 	}
 	
 	@Override
 	public int getViewTypeCount() {
-		return 2;
+		return TYPE_COUNT;
 	}
 	
 	@Override
@@ -37,11 +50,23 @@ class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 	
 	@Override
 	public View getView(final int position, final View convertView, final ViewGroup parent) {
-		return getItem(position).getView(this, convertView, parent);
+		return getItem(position).getView(convertView);
 	}
 	
 	LayoutInflater getLayoutInflater() {
-		return (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		return layoutInflater;
+	}
+	
+	void onListItemClick(final ListView listView, final int position) {
+		getItem(position).onClick(listView);
+	}
+
+	SectionNavigationItem getExpandedSection() {
+		return expandedSection;
+	}
+
+	void setExpandedSection(final SectionNavigationItem expandedSection) {
+		this.expandedSection = expandedSection;
 	}
 	
 }
