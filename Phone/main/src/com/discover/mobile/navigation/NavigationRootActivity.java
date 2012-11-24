@@ -1,5 +1,6 @@
 package com.discover.mobile.navigation;
 
+import roboguice.inject.ContentView;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -11,7 +12,8 @@ import com.discover.mobile.R;
 import com.discover.mobile.RoboSlidingFragmentActivity;
 import com.slidingmenu.lib.SlidingMenu;
 
-public class NavigationMenuRootActivity extends RoboSlidingFragmentActivity {
+@ContentView(R.layout.navigation_main_frame)
+public class NavigationRootActivity extends RoboSlidingFragmentActivity implements NavigationRoot {
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -19,21 +21,22 @@ public class NavigationMenuRootActivity extends RoboSlidingFragmentActivity {
 		
 		setupNavMenuList();
 		setupSlidingMenu();
-		setupFirstVisibleFragment();
+//		setupFirstVisibleFragment();
 	}
 	
-	private void setupFirstVisibleFragment() {
-		setContentView(R.layout.navigation_main_frame);
-	}
+//	private void setupFirstVisibleFragment() {
+//		setContentView(R.layout.navigation_main_frame);
+//	}
 	
-	private void replaceMainFragment(final Fragment newFragment) {
+	@Override
+	public void replaceMainFragment(final Fragment newFragment, final boolean closeMenu) {
 		getSupportFragmentManager()
 				.beginTransaction()
 				.replace(R.id.navigation_content, newFragment)
 				.commit();
 		
-		// TODO use this if necessary
-//		getSlidingMenu().showAbove();
+		if(closeMenu)
+			getSlidingMenu().showAbove();
 	}
 	
 	private void setupNavMenuList() {

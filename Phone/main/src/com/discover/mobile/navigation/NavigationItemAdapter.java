@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 
 @ContextSingleton
 class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
-
+	
 	static final int TYPE_SECTION = 0;
 	static final int TYPE_SUB_SECTION = TYPE_SECTION + 1;
 	static final int TYPE_COUNT = TYPE_SUB_SECTION + 1;
@@ -56,10 +56,6 @@ class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 	LayoutInflater getLayoutInflater() {
 		return layoutInflater;
 	}
-	
-	void onListItemClick(final ListView listView, final int position) {
-		getItem(position).onClick(listView);
-	}
 
 	SectionNavigationItem getExpandedSection() {
 		return expandedSection;
@@ -67,6 +63,14 @@ class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 
 	void setExpandedSection(final SectionNavigationItem expandedSection) {
 		this.expandedSection = expandedSection;
+	}
+	
+	NavigationRoot getNavigationRoot() {
+		return (NavigationRoot) getContext();
+	}
+	
+	void onListItemClick(final ListView listView, final int position) {
+		getItem(position).onClick(listView);
 	}
 	
 }

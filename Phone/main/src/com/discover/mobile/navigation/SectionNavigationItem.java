@@ -2,6 +2,7 @@ package com.discover.mobile.navigation;
 
 import java.util.List;
 
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,6 +34,11 @@ final class SectionNavigationItem extends NavigationItem {
 	}
 	
 	@Override
+	Class<? extends Fragment> getFragmentClass() {
+		return sectionInfo.getFragmentClass();
+	}
+	
+	@Override
 	int getViewType() {
 		return NavigationItemAdapter.TYPE_SECTION;
 	}
@@ -40,9 +46,6 @@ final class SectionNavigationItem extends NavigationItem {
 	@Override
 	void customizeItemView(final View view, final TextView title) {
 		title.setText(sectionInfo.getTitleResource());
-		
-		// TEMP
-		title.setText("Section " + absoluteIndex);
 		
 		// TODO show highlight if selected
 	}
@@ -65,6 +68,8 @@ final class SectionNavigationItem extends NavigationItem {
 		
 		for(final SubSectionNavigationItem subSection : subSections)
 			subSection.show();
+		
+		showFragment();
 		
 		navigationItemAdapter.setExpandedSection(this);
 		expanded = true;

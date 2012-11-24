@@ -7,11 +7,12 @@ import com.discover.mobile.section.SubSectionInfo;
 public final class AccountSectionInfo extends SectionInfo {
 	
 	public AccountSectionInfo() {
-		// TEMP titles
-		super(R.string.app_name, AccountHomeFragment.class,
-				new SubSectionInfo(R.string.app_name, AccountHomeFragment.class), // TEMP home
-				new SubSectionInfo(R.string.app_name, AccountHomeFragment.class));
-		// TODO others
+		super(R.string.section_title_account, AccountHomeFragment.class,
+				new SubSectionInfo(R.string.sub_section_title_account_summary, AccountSummaryFragment.class),
+				new SubSectionInfo(R.string.sub_section_title_recent_activity, AccountRecentActivityFragment.class),
+				new SubSectionInfo(R.string.sub_section_title_search_transaction,
+						AccountSearchTransactionFragment.class),
+				new SubSectionInfo(R.string.sub_section_title_statements, AccountStatementsFragment.class));
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.discover.mobile.navigation;
 
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +21,11 @@ final class SubSectionNavigationItem extends NavigationItem {
 	}
 	
 	@Override
+	Class<? extends Fragment> getFragmentClass() {
+		return subSectionInfo.getFragmentClass();
+	}
+	
+	@Override
 	int getViewType() {
 		return NavigationItemAdapter.TYPE_SUB_SECTION;
 	}
@@ -28,14 +34,13 @@ final class SubSectionNavigationItem extends NavigationItem {
 	void customizeItemView(final View view, final TextView title) {
 		title.setText(subSectionInfo.getTitleResource());
 		
-		// TEMP
-		title.setText("Sub-Section " + absoluteIndex);
-		
 		// TODO show highlight if selected
 	}
 	
 	@Override
 	void onClick(final ListView listView) {
+		showFragment();
+		
 		// TODO
 	}
 	

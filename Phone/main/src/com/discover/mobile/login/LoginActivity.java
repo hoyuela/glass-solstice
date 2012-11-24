@@ -30,7 +30,7 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
-import com.discover.mobile.navigation.NavigationMenuRootActivity;
+import com.discover.mobile.navigation.NavigationRootActivity;
 import com.google.common.base.Strings;
 
 @ContentView(R.layout.login)
@@ -104,7 +104,7 @@ public class LoginActivity extends RoboActivity {
 					.showProgressDialog("Discover", "Loading...", true)
 					.clearTextViewsOnComplete(errorTextView, passField, uidField)
 //					.launchIntentOnSuccess(LoggedInLandingPage.class)
-					.launchIntentOnSuccess(NavigationMenuRootActivity.class)
+					.launchIntentOnSuccess(NavigationRootActivity.class)
 					
 					// FIXME DO NOT COPY THIS CODE
 					.withErrorResponseHandler(new ErrorResponseHandler() {
