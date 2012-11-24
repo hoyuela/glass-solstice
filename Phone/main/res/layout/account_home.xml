@@ -3,9 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_bg" >
-
+    
     <TextView
-        android:id="@+id/feedback_text_view"
+        android:text="Account Home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="25dp" />
+    
+    <TextView android:id="@+id/feedback_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/discover_secured_text_view"
@@ -14,16 +20,14 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/blue" />
 
-    <TextView
-        android:id="@+id/discover_secured_text_view"
+    <TextView android:id="@+id/discover_secured_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="@string/discover_secured_text" />
 
-    <ImageView
-        android:id="@+id/lock_image"
+    <ImageView android:id="@+id/lock_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -34,4 +38,4 @@
         android:paddingLeft="8dp"
         android:paddingBottom="3dp"/>
 
-	</RelativeLayout>
+</RelativeLayout>

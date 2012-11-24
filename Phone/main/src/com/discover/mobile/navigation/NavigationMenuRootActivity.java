@@ -8,17 +8,14 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.discover.mobile.R;
+import com.discover.mobile.RoboSlidingFragmentActivity;
 import com.slidingmenu.lib.SlidingMenu;
-import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
-public class NavigationMenuRootActivity extends SlidingFragmentActivity {
+public class NavigationMenuRootActivity extends RoboSlidingFragmentActivity {
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		// TEMP
-		setTitle(R.string.app_name);
 		
 		setupNavMenuList();
 		setupSlidingMenu();
@@ -26,35 +23,21 @@ public class NavigationMenuRootActivity extends SlidingFragmentActivity {
 	}
 	
 	private void setupFirstVisibleFragment() {
-		// TODO make production ready
-		
 		setContentView(R.layout.navigation_main_frame);
-		
-		// TEMP
-		final HomeFragment homeFragment = new HomeFragment();
-		replaceMainFragment(homeFragment, false);
 	}
 	
-	private void replaceMainFragment(final Fragment newFragment, final boolean focus) {
+	private void replaceMainFragment(final Fragment newFragment) {
 		getSupportFragmentManager()
 				.beginTransaction()
-				.replace(R.id.navigation_main_frame, newFragment)
+				.replace(R.id.navigation_content, newFragment)
 				.commit();
 		
-		if(focus)
-			getSlidingMenu().showAbove();
+		// TODO use this if necessary
+//		getSlidingMenu().showAbove();
 	}
 	
 	private void setupNavMenuList() {
 		setBehindContentView(R.layout.navigation_menu_frame);
-		
-		// TODO consider using a shared/persisted instance (to save state)
-		final NavigationMenuFragment navMenuFragment = new NavigationMenuFragment();
-		
-		getSupportFragmentManager()
-				.beginTransaction()
-				.replace(R.id.navigation_menu_frame, navMenuFragment)
-				.commit();
 		
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -76,6 +59,7 @@ public class NavigationMenuRootActivity extends SlidingFragmentActivity {
 		slidingMenu.setFadeDegree(0.35f);
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
+		// enable this for zoom
 //		slidingMenu.setBehindScrollScale(0.0f);
 //		slidingMenu.setBehindCanvasTransformer(new CanvasTransformer() {
 //			@Override
@@ -86,6 +70,7 @@ public class NavigationMenuRootActivity extends SlidingFragmentActivity {
 //		});
 	}
 	
+	// TEMP
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		final MenuInflater inflater = getSupportMenuInflater();

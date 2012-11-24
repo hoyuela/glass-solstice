@@ -1,6 +1,8 @@
 <resources>
+    <!-- Discover Theme -->
+    <color name="body_copy">#3D484D</color>
     
-    <!-- Vairous Colors -->
+    <!-- Various Colors -->
     <color name="white">#ffffff</color>
 	<color name="black">#000</color>
 	<color name="blue">#025D96</color>
@@ -12,11 +14,9 @@
 	<color name="lightRed">#1fff0000</color>
 	<color name="lightBlue">#d0025D96</color>
 	
-    
+    <!-- Old -->
     <color name="primary">#00A8BF</color>
-    <!-- 247 148 30 -->
     <color name="secondary">#F7941E</color>
-    <!-- 250 181 97 -->
     <color name="secondary_light">#FAB561</color>
     <color name="tertiary">#A0A0A0</color>
     <color name="white_transparent">#A0FFFFFF</color>
