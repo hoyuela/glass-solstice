@@ -53,7 +53,6 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 	
 	private ProgressDialog progress;
 	
-	private boolean strongAuthRequired = false;
 	private String strongAuthQuestion;
 	private String strongAuthQuestionId;
 	
@@ -474,18 +473,17 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
 			public void success(final StrongAuthDetails value) {
-				Log.d(TAG, "Success");
+
 				progress.dismiss();
 				strongAuthQuestion = value.questionText;
 				strongAuthQuestionId = value.questionId;
-				strongAuthRequired = true;
 				
 				navToStrongAuth();
 			}
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				Log.w(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse);
+
 				progress.dismiss();
 				
 				switch (errorResponse.getHttpStatusCode()) {
@@ -498,9 +496,8 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 					case HttpURLConnection.HTTP_FORBIDDEN:
 						return true;
 				}
-				
-				//TODO properly handle these ^ v
-				return true;
+				//TODO handle these properly ^ v
+				return false;
 			}
 			
 			@InjectView(R.id.account_info_error_label)
