@@ -240,6 +240,7 @@ public class CreateLoginActivity extends RoboActivity{
 			public void onTextChanged(final CharSequence s, final int start, final int before,
 					final int count) {
 				setInputToLowerCase(s, idConfirmField);
+				
 			}
 			
 		});
@@ -257,14 +258,15 @@ public class CreateLoginActivity extends RoboActivity{
 	}
 	
 	//Currently setup only for a single user id input.
-	public void updateBarsForUID(final CharSequence inputSequence, final View barOne, final View barTwo, final View barThree, final TextView label){
-		boolean hasGoodLength  = false;
-		boolean hasUpperCase   = false;
-		boolean hasLowerCase   = false;
-		boolean hasNonAlphaNum = false;
-		boolean hasInvalidChar = false;
-		boolean hasNumber 	   = false;
-		boolean looksLikeActNum= false;
+	public void updateBarsForUID(final CharSequence inputSequence, final View barOne, final View barTwo, final View barThree, final TextView label) {
+		
+		boolean hasGoodLength   = false;
+		boolean hasUpperCase    = false;
+		boolean hasLowerCase    = false;
+		boolean hasNonAlphaNum  = false;
+		boolean hasInvalidChar  = false;
+		boolean hasNumber 	    = false;
+		boolean looksLikeActNum = false;
 		
 		//Check length of input.
 		if(inputSequence.length() >= 6 && inputSequence.length() <= 16)
@@ -297,7 +299,7 @@ public class CreateLoginActivity extends RoboActivity{
 				looksLikeActNum = true;
 				
 			}
-
+			
 			/*
 			 * Meets minimum requirements and combines a variation of letters, numbers, and special characters.
 			 */

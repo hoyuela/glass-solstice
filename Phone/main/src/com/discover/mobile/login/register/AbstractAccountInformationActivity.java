@@ -34,7 +34,10 @@ import com.discover.mobile.common.auth.strong.StrongAuthDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthErrorResponse;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.common.net.callback.AsyncCallback;
+import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
@@ -385,13 +388,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 				Log.d(TAG, "Success");
 				progress.dismiss();
 				
-				//TODO handle question if strong auth returns one.
 			}
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				
-				Log.w(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse);
+
 				progress.dismiss();
 				
 				if(errorResponse instanceof StrongAuthErrorResponse)
@@ -409,10 +410,16 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 			}
 			
 			private boolean handleStrongAuthErrorResponse(final StrongAuthErrorResponse errorResponse) {
-				// TODO
-				Log.e("====STRONG AUTH RESPONSE====", errorResponse.getResult());
-				// TEMP
-				return false;
+				if(errorResponse.getResult().endsWith("skipped")) {
+					navToFinalScreen();
+					return true;
+				}
+				else if (errorResponse.getResult().endsWith("challenge")) { 
+					getStrongAuthQuestion();
+					return true;
+				}
+				else
+					return false;
 			}
 
 			@Override
@@ -536,18 +543,22 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {		
 		if(requestCode == STRONG_AUTH_ACTIVITY) {
 			if(resultCode == RESULT_OK) {
-				final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
-				createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, accountInformationDetails);
-				if("Forgot Both".equals(activityTitleLabel.getText()))
-					createLoginActivity.putExtra("ScreenType", "forgotBoth");
-				else if("Forgot Password".equals(activityTitleLabel.getText()))
-					createLoginActivity.putExtra("ScreenType", "forgotPass");
-				
-				startActivity(createLoginActivity);
+				navToFinalScreen();
 			} else {
-				// TODO if strong auth fails.
+				// TODO if strong auth exits with failure.
 			}
 		}
+	}
+	
+	private void navToFinalScreen() {
+		final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
+		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, accountInformationDetails);
+		if("Forgot Both".equals(activityTitleLabel.getText())) 			//$NON-NLS-1$
+			createLoginActivity.putExtra("ScreenType", "forgotBoth");   //$NON-NLS-1$ //$NON-NLS-2$
+		else if("Forgot Password".equals(activityTitleLabel.getText())) //$NON-NLS-1$
+			createLoginActivity.putExtra("ScreenType", "forgotPass");   //$NON-NLS-1$ //$NON-NLS-2$
+		
+		startActivity(createLoginActivity);
 	}
 	
 	protected abstract Class<?> getSuccessfulStrongAuthIntentClass();

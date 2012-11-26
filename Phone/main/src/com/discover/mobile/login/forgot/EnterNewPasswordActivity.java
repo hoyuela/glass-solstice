@@ -25,7 +25,9 @@ import com.discover.mobile.common.auth.registration.RegistrationConfirmationDeta
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
+import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.register.AccountInformationConfirmationActivity;
 import com.discover.mobile.login.register.StrengthBarHelpActivity;
 public class EnterNewPasswordActivity extends RoboActivity implements StandardErrorCodes, RegistrationErrorCodes {
