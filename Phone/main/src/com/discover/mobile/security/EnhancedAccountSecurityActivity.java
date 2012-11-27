@@ -118,7 +118,6 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 	public void onBackPressed() {
 		setResult(RESULT_CANCELED);
 		finish();
-	   
 	}
 	
 	private void finishWithResultOK() {

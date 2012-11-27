@@ -554,6 +554,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 			createLoginActivity.putExtra("ScreenType", "forgotPass");   //$NON-NLS-1$ //$NON-NLS-2$
 		
 		startActivity(createLoginActivity);
+		finish();
 	}
 	
 	protected abstract Class<?> getSuccessfulStrongAuthIntentClass();
