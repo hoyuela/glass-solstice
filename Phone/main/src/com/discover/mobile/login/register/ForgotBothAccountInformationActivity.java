@@ -1,5 +1,8 @@
 package com.discover.mobile.login.register;
 
+import android.content.Intent;
+import android.view.View;
+
 import com.discover.mobile.R;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.InputValidator;
@@ -7,6 +10,8 @@ import com.discover.mobile.common.auth.registration.AccountInformationCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.net.callback.AsyncCallback;
+import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 
 public class ForgotBothAccountInformationActivity extends AbstractAccountInformationActivity {
 	
@@ -34,6 +39,18 @@ public class ForgotBothAccountInformationActivity extends AbstractAccountInforma
 			final AccountInformationDetails details) {
 		
 		return new AccountInformationCall(this, callback, details);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		goBack(null);
+	}
+	
+	@Override
+	public void goBack(final View v) {
+		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(forgotCredentials);
+		finish();
 	}
 	
 	@Override

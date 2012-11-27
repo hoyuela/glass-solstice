@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
@@ -25,11 +26,13 @@ import com.discover.mobile.common.auth.registration.CreateLoginDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
+import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 
 @ContentView(R.layout.account_info_two)
-public class CreateLoginActivity extends RoboActivity{
+public class CreateLoginActivity extends RoboActivity implements RegistrationErrorCodes, StandardErrorCodes{
 	
 	@SuppressWarnings("unused")
 	private static final String TAG = CreateLoginActivity.class.getSimpleName();
@@ -55,6 +58,7 @@ public class CreateLoginActivity extends RoboActivity{
 	private TextView passConfirmErrorLabel;
 	
 	private boolean forgotBoth = false;
+	private boolean passAndIdMatch = false;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
@@ -79,19 +83,25 @@ public class CreateLoginActivity extends RoboActivity{
     			titleLabel.setText(getString(R.string.forgot_both_text));
     		}
     	}
-		
-		
+
 		setupTextChangedListeners();
 	}
+	
 	
 	@Override
 	public void onBackPressed() {
 		cancel(null);
 	}
-	
+
 	public void cancel(final View v) {
-		final Intent backToChoices = new Intent(this, ForgotCredentialsActivity.class);
-		startActivity(backToChoices);
+		if("Register".equals(titleLabel.getText())){
+			finish();
+		}
+		else {
+			Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+			startActivity(forgotCredentials);
+			finish();
+		}
 	}
 	
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
@@ -100,8 +110,9 @@ public class CreateLoginActivity extends RoboActivity{
 		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_CONFIRMATION);
-		if(forgotBoth)
+		if(forgotBoth) {
 			confirmationScreen.putExtra("ScreenType", "forgotBoth");
+		}
 		this.startActivity(confirmationScreen);
 	}
 	
@@ -131,18 +142,11 @@ public class CreateLoginActivity extends RoboActivity{
 		}
 	}
 	
-	private void showLabel(final View v){
-		v.setVisibility(View.VISIBLE);
-	}
-	
-	private void hideLabel(final View v){
-		v.setVisibility(View.GONE);
-	}
-	
-	private void updateErrorLabelsUsingValidator(final InputValidator validator){
+	private void updateErrorLabelsUsingValidator(final InputValidator validator) {
+		
 		if( !validator.didIdsMatch ) {
-			showLabel(errorMessageLabel);
-			showLabel(idConfirmErrorLabel);
+			showLabelWithStringResource(errorMessageLabel, R.string.invalid_value);
+			showLabelWithStringResource(idConfirmErrorLabel, R.string.invalid_value);
 		}
 		else {
 			hideLabel(errorMessageLabel);
@@ -150,27 +154,39 @@ public class CreateLoginActivity extends RoboActivity{
 		}
 		
 		if( !validator.didPassesMatch ){
-			hideLabel(passConfirmErrorLabel);
+			showLabelWithStringResource(passConfirmErrorLabel, R.string.invalid_value);
 		}
 		else {
-			showLabel(passConfirmErrorLabel);
+			hideLabel(passConfirmErrorLabel);
 		}
 		
-			
+		if( passAndIdMatch ) {
+			showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
+			showLabelWithStringResource(errorMessageLabel, R.string.id_and_pass_match);
+		}
 		
 	}
+	
+	private static final int PASSWORD_STRENGTH_HELP = 0;
+	private static final int UID_STRENGTH_HELP = 1;
+	
 	public void showPasswordStrengthBarHelp(final View v){
 		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
 		passwordHelpScreen.putExtra("ScreenType", "pass");
 		TrackingHelper.trackPageView(AnalyticsPage.PASSWORD_STRENGTH_HELP);
-		this.startActivity(passwordHelpScreen);
+		startActivityForResult(passwordHelpScreen, PASSWORD_STRENGTH_HELP);
 	}
 	
 	public void showIdStrengthBarHelp(final View v){
-		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-		passwordHelpScreen.putExtra("ScreenType", "id");
+		final Intent uidHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
+		uidHelpScreen.putExtra("ScreenType", "id");
 		TrackingHelper.trackPageView(AnalyticsPage.UID_STRENGTH_HELP);
-		this.startActivity(passwordHelpScreen);
+		startActivityForResult(uidHelpScreen, UID_STRENGTH_HELP);
+	}
+	
+	@Override
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {		
+		//need not do anything we dont care about the result from these screens.
 	}
 	
 	@InjectView (R.id.account_info_two_id_field)
@@ -194,6 +210,7 @@ public class CreateLoginActivity extends RoboActivity{
 			@Override
 			public void onTextChanged(final CharSequence s, final int start, final int before,
 					final int count) {
+				checkMatchingPassAndId();
 				updateBarsForPass(s, findViewById(R.id.account_info_two_pass_bar_one), 
 							  findViewById(R.id.account_info_two_pass_bar_two),
 							  findViewById(R.id.account_info_two_pass_bar_three),
@@ -218,7 +235,7 @@ public class CreateLoginActivity extends RoboActivity{
 			@Override
 			public void onTextChanged(final CharSequence s, final int start, final int before,
 					final int count) {
-				
+				checkMatchingPassAndId();
 				updateBarsForUID(s, findViewById(R.id.account_info_two_uid_bar_one), 
 							  findViewById(R.id.account_info_two_uid_bar_two),
 							  findViewById(R.id.account_info_two_uid_bar_three),
@@ -244,6 +261,18 @@ public class CreateLoginActivity extends RoboActivity{
 			}
 			
 		});
+	}
+		
+	public void checkMatchingPassAndId() {
+		String pass = passField.getText().toString();
+		String id = idField.getText().toString();
+		if(id != null && pass != null && pass.equals(id)) {
+			passAndIdMatch = true;
+		}
+		else {
+			passAndIdMatch = false;
+		}
+			
 	}
 	
 	public void setInputToLowerCase(final CharSequence input, final EditText field){
@@ -303,7 +332,7 @@ public class CreateLoginActivity extends RoboActivity{
 			/*
 			 * Meets minimum requirements and combines a variation of letters, numbers, and special characters.
 			 */
-			if(!looksLikeActNum && !hasInvalidChar && hasGoodLength && (hasLowerCase || hasUpperCase) && hasNonAlphaNum && hasNumber){
+			if(!passAndIdMatch && !looksLikeActNum && !hasInvalidChar && hasGoodLength && (hasLowerCase || hasUpperCase) && hasNonAlphaNum && hasNumber){
 				barOne.setBackgroundColor(getResources().getColor(R.color.green));		
 				barTwo.setBackgroundColor(getResources().getColor(R.color.green));
 				barThree.setBackgroundColor(getResources().getColor(R.color.green));
@@ -312,7 +341,7 @@ public class CreateLoginActivity extends RoboActivity{
 			/*
 			 * Meets minimum requirements but does not include a variation of letters, numbers, and special characters.
 			 */
-			else if(!looksLikeActNum && !hasInvalidChar && hasGoodLength){
+			else if(!passAndIdMatch && !looksLikeActNum && !hasInvalidChar && hasGoodLength){
 				barOne.setBackgroundColor(getResources().getColor(R.color.yellow));		
 				barTwo.setBackgroundColor(getResources().getColor(R.color.yellow));
 				barThree.setBackgroundColor(getResources().getColor(R.color.gray));
@@ -366,7 +395,7 @@ public class CreateLoginActivity extends RoboActivity{
 			 * Meets minimum requirements and combines upper case letters,
 			 * lower case letters, numbers, and special characters.
 			 */
-			if(hasGoodLength && hasUpperAndLowerAndNum && hasNonAlphaNum){
+			if(!passAndIdMatch && hasGoodLength && hasUpperAndLowerAndNum && hasNonAlphaNum){
 				barOne.setBackgroundColor(getResources().getColor(R.color.green));		
 				barTwo.setBackgroundColor(getResources().getColor(R.color.green));
 				barThree.setBackgroundColor(getResources().getColor(R.color.green));
@@ -376,7 +405,7 @@ public class CreateLoginActivity extends RoboActivity{
 			 * Meets minimum requirements but does not include a
 			 * variation of upper case letters, lower case letters, numbers, and special characters.
 			 */
-			else if(hasGoodLength && hasNumber && (hasUpperCase || hasLowerCase)){
+			else if(!passAndIdMatch && hasGoodLength && hasNumber && (hasUpperCase || hasLowerCase)){
 				barOne.setBackgroundColor(getResources().getColor(R.color.yellow));		
 				barTwo.setBackgroundColor(getResources().getColor(R.color.yellow));
 				barThree.setBackgroundColor(getResources().getColor(R.color.gray));
@@ -405,6 +434,7 @@ public class CreateLoginActivity extends RoboActivity{
 			public void success(final RegistrationConfirmationDetails responseData) {
 				progress.dismiss();
 				navigateToConfirmationScreenWithResponseData(responseData);
+				finish();
 			}
 
 			@Override
@@ -424,42 +454,44 @@ public class CreateLoginActivity extends RoboActivity{
 				progress.dismiss();
 				
 				switch(messageErrorResponse.getMessageStatusCode()){
-				case 1906: //Provided information was incorrect.
-					errorMessageLabel
-					.setText(getString(
-							R.string.account_info_bad_input_error_text));
+				case REG_AUTHENTICATION_PROBLEM: //Provided information was incorrect.
+					showLabelWithStringResource(errorMessageLabel, R.string.account_info_bad_input_error_text);
 					return true;
-				case 1907: //Last attemt with this account number warning.
-					errorMessageLabel
-					.setText(getString(
-							R.string.login_attempt_warning));
+				case BAD_ACCOUNT_STATUS: //Last attemt with this account number warning.
+					showLabelWithStringResource(errorMessageLabel, R.string.login_attempt_warning);
 					return true;
-				case 1919:
-					mainErrorMessageLabel
-					.setText(getString(
-							R.string.account_info_bad_input_error_text));
-					errorMessageLabel
-					.setText(getString(
-							R.string.account_info_two_id_matches_pass_error_text));
+				case ID_AND_PASS_EQUAL:
+					showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
+					showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_id_matches_pass_error_text);
 					return true;
-				case 1921:
-					mainErrorMessageLabel
-					.setText(getString(
-							R.string.account_info_bad_input_error_text));
-					errorMessageLabel
-					.setText(getString(
-							R.string.account_info_two_username_in_use_error_text));
+				case ID_AND_SSN_EQUAL:
+					showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
+					showLabelWithStringResource(errorMessageLabel, R.string.id_and_ssn_match_text);
+					return true;
+				case ID_ALREADY_TAKEN:
+					showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
+					showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_username_in_use_error_text);
 					return true;
 				default:
 					return false;
-					
 				}
 			}
 		};
-		
+				
 		final CreateLoginCall registrationCall = 
 				new CreateLoginCall(this, callback, formDataTwo);
 		registrationCall.submit();
 
+	}
+	private void showLabelWithStringResource(TextView label, int id) {
+		label.setText(getString(id));
+		showLabel(label);
+	}
+	private void showLabel(final View v){
+		v.setVisibility(View.VISIBLE);
+	}
+	
+	private void hideLabel(final View v){
+		v.setVisibility(View.GONE);
 	}
 }

@@ -168,7 +168,14 @@ public class ForgotUserIdActivity extends RoboActivity implements StandardErrorC
 		});
 	}
 	
+	@Override
+	public void onBackPressed() {
+		goBack();
+	}
+	
 	public void goBack() {
+		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(forgotCredentials);
 		finish();
 	}
 	

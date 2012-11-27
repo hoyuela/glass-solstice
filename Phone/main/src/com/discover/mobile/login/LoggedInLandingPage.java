@@ -35,12 +35,6 @@ public class LoggedInLandingPage extends RoboActivity {
 		listView.setAdapter(null);
 	}
 	
-	@Override
-	public void onBackPressed() {
-		final Intent navToMain = new Intent(this, LoginActivity.class);
-		startActivity(navToMain);
-	}
-	
 	public void logout(View v) {
 		
 		final AsyncCallback<Object> callback = new AsyncCallbackAdapter<Object>() {

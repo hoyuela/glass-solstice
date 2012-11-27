@@ -89,4 +89,11 @@
 	    Please contact Customer Service at 1&#8211;877&#8211;742&#8211;7822 
 	    for assistance.
 	</string>
+	<string name="id_and_ssn_match_text">
+	    User ID must not look like your social security number. Please choose another one.
+	</string>
+	<string name="id_and_pass_match">
+	    User ID and password must not be the same.
+	</string>
+	    
 </resources>

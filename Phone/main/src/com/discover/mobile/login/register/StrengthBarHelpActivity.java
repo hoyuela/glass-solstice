@@ -23,7 +23,12 @@ public class StrengthBarHelpActivity extends Activity {
 		
 	}
 	
-	public void goBack(final View v) {
+	@Override
+	public void onBackPressed() {
+		goBack(null);
+	}
+	public void goBack(View v){
+		setResult(RESULT_OK);
 		finish();
 	}
 

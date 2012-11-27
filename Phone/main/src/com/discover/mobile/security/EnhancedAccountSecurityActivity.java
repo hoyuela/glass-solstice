@@ -5,7 +5,6 @@ import java.security.NoSuchAlgorithmException;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.discover.mobile.common.auth.strong.StrongAuthAnswerCall;
 import com.discover.mobile.common.auth.strong.StrongAuthAnswerDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
-import com.discover.mobile.login.LoginActivity;
 
 public class EnhancedAccountSecurityActivity extends RoboActivity{
 	
@@ -118,9 +116,8 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 	
 	@Override
 	public void onBackPressed() {
-		
-	   final Intent navToMain = new Intent(this, LoginActivity.class);
-	   startActivity(navToMain);
+		setResult(RESULT_CANCELED);
+		finish();
 	   
 	}
 	

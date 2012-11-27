@@ -3,6 +3,7 @@ package com.discover.mobile.login.forgot;
 import java.net.HttpURLConnection;
 
 import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -30,12 +31,16 @@ import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.net.response.ErrorResponse;
 import com.discover.mobile.login.register.AccountInformationConfirmationActivity;
 import com.discover.mobile.login.register.StrengthBarHelpActivity;
+
+//CONTENT VIEW
+	@ContentView(R.layout.enter_new_password)
+	
 public class EnterNewPasswordActivity extends RoboActivity implements StandardErrorCodes, RegistrationErrorCodes {
 	
 	private static final String TAG = EnterNewPasswordActivity.class.getSimpleName();
 	private static AccountInformationDetails passOneDetails;
 	private ForgotPasswordTwoDetails passTwoDetails;
-	
+		
 //TEXT LABELS
 	
 	@InjectView(R.id.account_info_main_error_label)
@@ -90,8 +95,7 @@ public class EnterNewPasswordActivity extends RoboActivity implements StandardEr
     		passTwoDetails.socialSecurityNumber = passOneDetails.socialSecurityNumber;
     	}
 		
-		final EditText passField = (EditText)findViewById(R.id.account_info_two_pass_field);
-		passField.addTextChangedListener(new TextWatcher(){
+		passOneField.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(final Editable s) {/*Intentionally Empty*/}
 
@@ -266,8 +270,13 @@ public class EnterNewPasswordActivity extends RoboActivity implements StandardEr
 		
 		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
 		passwordHelpScreen.putExtra("helpType", "password");
-		this.startActivity(passwordHelpScreen);
+		this.startActivityForResult(passwordHelpScreen, 0);
 	}
+	
+	@Override
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {		
+	}	
+	
 	
 	public void checkInputsThenSubmit(final View v) {
 		
@@ -294,9 +303,14 @@ public class EnterNewPasswordActivity extends RoboActivity implements StandardEr
 		
 	}
 	
+	@Override public void onBackPressed() {
+		cancel(null);
+	}
+	
 	public void cancel(final View v) {
-		   final Intent navToForgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
-		   startActivity(navToForgotCredentials);
+		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(forgotCredentials);
+		finish();
 	}
 	
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData) {
@@ -306,6 +320,7 @@ public class EnterNewPasswordActivity extends RoboActivity implements StandardEr
 		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
 		confirmationScreen.putExtra("ScreenType", "forgotPass");
 		this.startActivity(confirmationScreen);
+		finish();
 	}
 	
 }

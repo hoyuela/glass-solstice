@@ -97,8 +97,6 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 		ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
 	}
 	
-	
-	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -541,8 +539,8 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 		if(requestCode == STRONG_AUTH_ACTIVITY) {
 			if(resultCode == RESULT_OK) {
 				navToFinalScreen();
-			} else {
-				// TODO if strong auth exits with failure.
+			} else if (resultCode == RESULT_CANCELED){
+				finish();
 			}
 		}
 	}

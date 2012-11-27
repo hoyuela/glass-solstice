@@ -1,6 +1,7 @@
 package com.discover.mobile.login.register;
 
 import roboguice.inject.InjectView;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -19,6 +20,7 @@ import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.callback.AsyncCallback;
 import com.discover.mobile.login.forgot.EnterNewPasswordActivity;
+import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 
 public class ForgotPasswordAccountInformationActivity extends AbstractAccountInformationActivity {
 	
@@ -157,6 +159,17 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 		
 	}
 	
+	@Override
+	public void onBackPressed() {
+		goBack(null);
+	}
+	
+	@Override
+	public void goBack(final View v) {
+		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(forgotCredentials);
+		finish();
+	}
 	
 	@Override
 	protected void doCustomUiSetup() {
