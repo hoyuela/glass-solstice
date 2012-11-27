@@ -1,8 +1,9 @@
 package com.discover.mobile.navigation;
 
-import roboguice.inject.ContentView;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
@@ -12,7 +13,6 @@ import com.discover.mobile.R;
 import com.discover.mobile.RoboSlidingFragmentActivity;
 import com.slidingmenu.lib.SlidingMenu;
 
-@ContentView(R.layout.navigation_main_frame)
 public class NavigationRootActivity extends RoboSlidingFragmentActivity implements NavigationRoot {
 	
 	@Override
@@ -21,33 +21,48 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 		
 		setupNavMenuList();
 		setupSlidingMenu();
-//		setupFirstVisibleFragment();
+		setupFirstVisibleFragment();
 	}
 	
-//	private void setupFirstVisibleFragment() {
-//		setContentView(R.layout.navigation_main_frame);
-//	}
+	private void setupFirstVisibleFragment() {
+		final FrameLayout contentView = new FrameLayout(this);
+		contentView.setId(R.id.navigation_content);
+		setContentView(contentView, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+	}
 	
 	@Override
-	public void replaceMainFragment(final Fragment newFragment, final boolean closeMenu) {
+	public void makeFragmentVisible(final Fragment fragment) {
+		setVisibleFragment(fragment);
+		
+		hideSlidingMenuIfVisible();
+	}
+	
+	private void setVisibleFragment(final Fragment fragment) {
 		getSupportFragmentManager()
 				.beginTransaction()
-				.replace(R.id.navigation_content, newFragment)
+				.replace(R.id.navigation_content, fragment)
 				.commit();
-		
-		if(closeMenu)
-			getSlidingMenu().showAbove();
+	}
+	
+	private void hideSlidingMenuIfVisible() {
+		final SlidingMenu slidingMenu = getSlidingMenu();
+		if(slidingMenu.isBehindShowing())
+			slidingMenu.showAbove();
 	}
 	
 	private void setupNavMenuList() {
 		setBehindContentView(R.layout.navigation_menu_frame);
 		
 		final ActionBar actionBar = getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
 		
+		// TEMP
+		actionBar.setDisplayHomeAsUpEnabled(true);
+
+		// TEMP
 		actionBar.setDisplayUseLogoEnabled(false);
 //		actionBar.setDisplayShowTitleEnabled(false);
-
+		
+		// TEMP
 //		actionBar.setTitle(R.string.member_title_text);
 		actionBar.setTitle("John Doe");
 		actionBar.setSubtitle("Card Ending 4545");
@@ -61,16 +76,6 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 		slidingMenu.setBehindOffsetRes(R.dimen.nav_menu_offset);
 		slidingMenu.setFadeDegree(0.35f);
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		
-		// enable this for zoom
-//		slidingMenu.setBehindScrollScale(0.0f);
-//		slidingMenu.setBehindCanvasTransformer(new CanvasTransformer() {
-//			@Override
-//			public void transformCanvas(final Canvas canvas, final float percentOpen) {
-//				final float scale = (float) (percentOpen*0.25 + 0.75);
-//				canvas.scale(scale, scale, canvas.getWidth()/2, canvas.getHeight()/2);
-//			}
-//		});
 	}
 	
 	// TEMP
@@ -87,6 +92,8 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 			case android.R.id.home:
 				toggle();
 				return true;
+				
+			// TODO
 		}
 		
 		return super.onOptionsItemSelected(item);

@@ -26,14 +26,17 @@ public class NavigationMenuFragment extends RoboSherlockListFragment {
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
+		NavigationItem.initializeAdapterWithSections(navigationItemAdapter);
 		setListAdapter(navigationItemAdapter);
+		
+		// TODO show first section
 	}
 	
 	@Override
 	public void onListItemClick(final ListView listView, final View clickedView, final int position, final long id) {
 		super.onListItemClick(listView, clickedView, position, id);
 		
-		navigationItemAdapter.onListItemClick(listView, position);
+		navigationItemAdapter.getItem(position).onClick(listView);
 	}
 	
 }
