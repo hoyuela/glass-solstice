@@ -132,6 +132,7 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 		validator.doIdsMatch(id1,id2);
 		validator.isEmailValid(email);
 		validator.doPassAndIdMatch(pass1,id1); 
+		validator.isUidValid(id1);
 
 		updateErrorLabelsUsingValidator(validator);
 		

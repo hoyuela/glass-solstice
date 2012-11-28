@@ -46,7 +46,11 @@ public class InputValidator {
 	}
 	
 	public boolean wasAccountTwoInfoComplete(){
-		return !didPassAndIdMatch & didPassesMatch & didIdsMatch & wasEmailValid & wasUidValid; 
+		return !didPassAndIdMatch &&
+				didPassesMatch &&
+				didIdsMatch &&
+				wasEmailValid &&
+				wasUidValid; 
 	}
 	
 	public boolean doPassAndIdMatch(final String pass, final String id){

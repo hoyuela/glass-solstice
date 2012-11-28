@@ -31,7 +31,7 @@
             android:textColor="@color/black"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         
-        <include layout="@layout/not_valid_bar_help"/>
+        <include layout="@layout/not_valid_bar"/>
         
         <TextView
             android:id="@+id/account_info_two_uid_strength_bar_label"
@@ -61,7 +61,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/light_text_size" />
         
-        <include layout="@layout/moderate_bar_help"/>
+        <include layout="@layout/moderate_bar"/>
         
         <TextView
             android:id="@+id/account_info_help_moderate_label"
@@ -115,7 +115,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
              />
         
-        <include layout="@layout/strong_bar_help"/>
+        <include layout="@layout/strong_bar"/>
         
         <TextView
             android:id="@+id/account_info_help_strong_label"
