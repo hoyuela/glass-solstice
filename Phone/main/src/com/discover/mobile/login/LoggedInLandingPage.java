@@ -15,7 +15,7 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 public class LoggedInLandingPage extends RoboActivity {
 	
 	@InjectView(R.id.optionsTable)
-	ListView listView;
+	private ListView listView;
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){

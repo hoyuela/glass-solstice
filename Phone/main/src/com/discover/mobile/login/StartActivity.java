@@ -27,7 +27,10 @@ import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.common.push.PushNotificationService;
+import com.google.inject.Inject;
 
+@SuppressWarnings("deprecation")
 @ContentView(R.layout.landing)
 public class StartActivity extends RoboActivity {
 	
@@ -47,6 +50,9 @@ public class StartActivity extends RoboActivity {
 	
 	@InjectView(R.id.card_login_button)
 	private Button creditCardLoginButton;
+	
+	@Inject
+	private PushNotificationService pushNotificationService;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -56,6 +62,17 @@ public class StartActivity extends RoboActivity {
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
 		
 		setupButtons();
+		
+		pushNotificationService.start();
+		
+		//FIXME
+		//Intent i = new Intent(this, ManagePushNotificationsFragment.class);
+		//startActivity(i);
+	}
+	
+	@Override
+	public void onStart(){
+		super.onStart();
 	}
 	
 	private void setupButtons() {
