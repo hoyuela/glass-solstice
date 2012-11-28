@@ -40,6 +40,8 @@
             android:layout_marginTop="4dp"
             android:text="@string/strength_bar_not_valid"
 			android:textColor="@color/black"
+			android:layout_below="@+id/account_info_two_uid_bar_one_help"
+			android:layout_alignLeft="@+id/account_info_two_uid_bar_one_help"
 			android:textAppearance="?android:attr/textAppearanceSmall"/>
         
         <View
@@ -70,6 +72,8 @@
             android:layout_marginTop="4dp"
             android:text="@string/strength_bar_moderate"
             android:textColor="@color/black"
+            android:layout_below="@+id/account_info_help_moderate_bar_one_help"
+            android:layout_alignLeft="@+id/account_info_help_moderate_bar_one_help"
 			android:textAppearance="?android:attr/textAppearanceSmall"/>
         
         <TextView
@@ -123,6 +127,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@string/strength_bar_strong"
+            android:layout_below="@+id/account_info_help_strong_bar_one_help"
+            android:layout_alignLeft="@+id/account_info_help_strong_bar_one_help"
 			android:textColor="@color/black"
 			android:textAppearance="?android:attr/textAppearanceSmall"/>
         
