@@ -18,8 +18,6 @@ import com.discover.mobile.common.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.login.forgot.EnterNewPasswordActivity;
-import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 
 public class ForgotPasswordAccountInformationActivity extends AbstractAccountInformationActivity {
 	
@@ -165,7 +163,7 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	
 	@Override
 	public void goBack(final View v) {
-		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+		Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
 		startActivity(forgotCredentials);
 		finish();
 	}

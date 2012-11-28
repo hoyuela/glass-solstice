@@ -53,7 +53,6 @@
                 android:textStyle="bold"
                 android:textColor="@color/black" />
             
-            
             <TextView
                 android:id="@+id/account_info_confirm_id_title_label"
                 android:layout_width="wrap_content"
@@ -64,6 +63,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
                 android:textSize="@dimen/light_text_size" />
+            
             <TextView
                 android:id="@+id/account_info_confirm_email_title_label"
                 android:layout_width="wrap_content"
@@ -74,6 +74,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
                 android:textSize="@dimen/light_text_size" />
+            
             <TextView
                 android:id="@+id/account_info_confirm_account_title_label"
                 android:layout_width="wrap_content"
@@ -166,7 +167,7 @@
     	    android:layout_height="100dp"
     	    android:layout_below="@+id/account_info_confirm_home_button" >
     	    
-    	    <include layout="@layout/copyright_footer"/>
+    	    <include layout="@layout/old_general_copyright_footer"/>
     	    
     	</RelativeLayout>
         

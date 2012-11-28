@@ -1,6 +1,6 @@
 package com.discover.mobile.common.auth.registration;
 
-public interface RegistrationErrorCodes {
+public final class RegistrationErrorCodes {
 	
 	public static final int LOCKED_OUT_ACCOUNT = 1402;
 	public static final int SAMS_CLUB_MEMBER = 1905;
@@ -17,5 +17,9 @@ public interface RegistrationErrorCodes {
 	public static final int ID_INVALID = 1924;
 	public static final int PASS_EMPTY = 1925;
 	public static final int PASS_INVALID = 1926;
+	
+	private RegistrationErrorCodes() {
+		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$
+	}
 	
 }

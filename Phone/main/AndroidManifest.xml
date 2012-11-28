@@ -21,10 +21,13 @@
 			android:noHistory="true"
 			android:screenOrientation="portrait"
 			android:theme="@style/AppTheme.NoTitleBar">
+			
+			<!-- TEMP
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
+			-->
 		</activity>
 		
 		<activity android:name=".login.StartActivity"
@@ -44,11 +47,6 @@
 			android:launchMode="standard"
 			android:screenOrientation="portrait"
 			android:noHistory="true" />
-
-		<activity android:name=".login.LoggedInLandingPage"
-			android:label="@string/app_name"
-			android:launchMode="singleTask"
-			android:screenOrientation="portrait" />
 		
 		<activity android:name=".login.LockOutUserActivity"
 			android:label="@string/app_name"
@@ -103,7 +101,12 @@
 			android:launchMode="singleTop"
 			android:screenOrientation="portrait" />
 	
-		<activity android:name="com.discover.mobile.navigation.NavigationRootActivity" />
+		<activity android:name="com.discover.mobile.navigation.NavigationRootActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
 		
 	</application>
 	

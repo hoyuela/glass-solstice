@@ -1,4 +1,4 @@
-package com.discover.mobile.login;
+package com.discover.mobile;
 
 import java.util.Date;
 
@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -30,8 +29,10 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponse
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.login.LockOutUserActivity;
+import com.discover.mobile.login.LoginActivity;
 
-@ContentView(R.layout.landing)
+@ContentView(R.layout.start_landing)
 public class StartActivity extends RoboActivity {
 	
 	private static final String TAG = StartActivity.class.getSimpleName();
@@ -70,7 +71,7 @@ public class StartActivity extends RoboActivity {
 				
 		final Bundle extras = getIntent().getExtras();
     	if(extras != null) {
-    		boolean hasUserLoggedOut = extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
+    		final boolean hasUserLoggedOut = extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
     		showLogoutMessageIfTrue(hasUserLoggedOut);
     	}
     	
@@ -84,7 +85,7 @@ public class StartActivity extends RoboActivity {
 		hideErrorLabels();
 	}
 	
-	public void showLogoutMessageIfTrue(boolean hasUserLoggedOut) {
+	public void showLogoutMessageIfTrue(final boolean hasUserLoggedOut) {
 		if(hasUserLoggedOut) {
 			titleLabel.setText(getString(R.string.successful_logout_title_text));
 			subtitleLabel.setText(getString(R.string.successful_logout_subtitle_text));
@@ -99,11 +100,11 @@ public class StartActivity extends RoboActivity {
 		hideLabel(subtitleLabel);
 	}
 	
-	public void showLabel(View v) {
+	public void showLabel(final View v) {
 		v.setVisibility(View.VISIBLE);
 	}
 	
-	public void hideLabel(View v) {
+	public void hideLabel(final View v) {
 		v.setVisibility(View.GONE);
 	}
 

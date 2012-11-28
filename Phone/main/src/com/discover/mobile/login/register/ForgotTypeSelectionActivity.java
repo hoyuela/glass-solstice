@@ -1,4 +1,4 @@
-package com.discover.mobile.login.forgot;
+package com.discover.mobile.login.register;
 
 import roboguice.activity.RoboListActivity;
 import roboguice.inject.ContentView;
@@ -12,20 +12,18 @@ import android.widget.ListView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.login.register.ForgotBothAccountInformationActivity;
-import com.discover.mobile.login.register.ForgotPasswordAccountInformationActivity;
 
-@ContentView(R.layout.forgot_login)
-public class ForgotCredentialsActivity extends RoboListActivity {
-		
+@ContentView(R.layout.register_forgot_type_select)
+public class ForgotTypeSelectionActivity extends RoboListActivity {
+	
 	private ArrayAdapter<Option> optionAdapter;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 
-		optionAdapter = new ArrayAdapter<Option>(this,
-				R.layout.single_list_item_with_disclosure_indicator, R.id.tv, Option.values());
+		optionAdapter = new ArrayAdapter<Option>(this, R.layout.register_forgot_type_select_option_item, R.id.tv,
+				Option.values());
 		
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_MENU);
 	}

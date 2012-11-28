@@ -2,9 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/account_info_scroll_view"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent" 
-	
-	style="@style/WhiteTheme" >
+	android:layout_height="fill_parent"
+	style="@style/WhiteTheme">
             
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
@@ -244,9 +243,9 @@
     	    android:layout_height="100dp"
     	    android:layout_below="@+id/account_info_button_row" >
     	    
-    	    <include layout="@layout/need_help_footer"/>
+    	    <include layout="@layout/old_general_need_help_footer"/>
 
-   			<include layout="@layout/copyright_footer"/>
+   			<include layout="@layout/old_general_copyright_footer" />
     	    
     	</RelativeLayout>
 

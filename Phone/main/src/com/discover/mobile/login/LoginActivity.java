@@ -29,12 +29,12 @@ import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
+import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.google.common.base.Strings;
 
-@ContentView(R.layout.login)
+@ContentView(R.layout.login_start)
 public class LoginActivity extends RoboActivity {
 
 	@InjectView(R.id.toggle_button_save_user_id)
@@ -205,7 +205,7 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	public void forgotIdAndOrPass(){
-		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotCredentialsActivity.class);
+		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotTypeSelectionActivity.class);
 		this.startActivity(forgotIdAndOrPassActivity);
 	}
 	

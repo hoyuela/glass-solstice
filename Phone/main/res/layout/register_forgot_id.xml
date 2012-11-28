@@ -123,8 +123,8 @@
 
     </TableRow>
 
-    <include layout="@layout/need_help_footer"/>
+    <include layout="@layout/old_general_need_help_footer" />
 
-    <include layout="@layout/copyright_footer"/>
+    <include layout="@layout/old_general_copyright_footer" />
 
 </RelativeLayout>

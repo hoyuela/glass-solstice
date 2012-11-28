@@ -8,6 +8,8 @@ import com.discover.mobile.R;
 
 public class StrengthBarHelpActivity extends Activity {
 	
+	// FIXME hardcoded strings, use ScreenType
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -16,9 +18,9 @@ public class StrengthBarHelpActivity extends Activity {
 		if(extras != null) {
 			final String helpLayout = extras.getString("ScreenType");
 			if("id".equals(helpLayout))
-				setContentView(R.layout.account_info_id_strength_help);
+				setContentView(R.layout.register_help_id_strength);
 			else
-				setContentView(R.layout.account_info_password_strength_help);
+				setContentView(R.layout.register_help_password_strength);
 		}
 		
 	}
@@ -27,9 +29,10 @@ public class StrengthBarHelpActivity extends Activity {
 	public void onBackPressed() {
 		goBack(null);
 	}
-	public void goBack(View v){
+	
+	public void goBack(final View v){
 		setResult(RESULT_OK);
 		finish();
 	}
-
+	
 }

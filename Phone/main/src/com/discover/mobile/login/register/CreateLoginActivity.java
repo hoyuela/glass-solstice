@@ -1,5 +1,11 @@
 package com.discover.mobile.login.register;
 
+import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_ALREADY_TAKEN;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_SSN_EQUAL;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+
 import java.net.HttpURLConnection;
 
 import roboguice.activity.RoboActivity;
@@ -17,7 +23,6 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
@@ -25,18 +30,15 @@ import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.CreateLoginCall;
 import com.discover.mobile.common.auth.registration.CreateLoginDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 
-@ContentView(R.layout.account_info_two)
-public class CreateLoginActivity extends RoboActivity implements RegistrationErrorCodes, StandardErrorCodes{
+@ContentView(R.layout.register_create_credentials)
+public class CreateLoginActivity extends RoboActivity {
 	
-	@SuppressWarnings("unused")
-	private static final String TAG = CreateLoginActivity.class.getSimpleName();
-
+	// FIXME replace all extra sets/gets with ScreenType references (constants)
+	
 	private CreateLoginDetails formDataTwo;
 	
 	@InjectView(R.id.account_info_main_error_label)
@@ -70,7 +72,8 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP2);
 		
 		formDataTwo = new CreateLoginDetails();
-	
+		
+		// FIXME remove the bundle stuff
 		final Bundle extras = getIntent().getExtras();
     	if(extras != null) {
     		final AccountInformationDetails formDataOne = (AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
@@ -101,7 +104,7 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 			finish();
 		}
 		else {
-			Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+			final Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
 			startActivity(forgotCredentials);
 			finish();
 		}
@@ -201,11 +204,11 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 	}
 	
 	@InjectView (R.id.account_info_two_id_field)
-	EditText idField;
+	private EditText idField;
 	@InjectView (R.id.account_info_two_id_confirm_field)
-	EditText idConfirmField;
+	private EditText idConfirmField;
 	@InjectView (R.id.account_info_two_pass_field)
-	EditText passField;
+	private EditText passField;
 
 	private void setupTextChangedListeners(){
 	
@@ -263,7 +266,7 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 			InputValidator validator = new InputValidator();
 			
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
+			public void onFocusChange(final View v, final boolean hasFocus) {
 				// TODO Auto-generated method stub
 				if(!hasFocus && !validator.isUidValid(idField.getText().toString())) {
 					showLabelWithStringResource(errorMessageLabel, R.string.invalid_value);
@@ -275,7 +278,7 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 			InputValidator validator = new InputValidator();
 			
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
+			public void onFocusChange(final View v, final boolean hasFocus) {
 				// TODO Auto-generated method stub
 				if(!hasFocus && !validator.isUidValid(idConfirmField.getText().toString())) {
 					showLabelWithStringResource(idConfirmErrorLabel, R.string.invalid_value);
@@ -307,8 +310,8 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 	}
 		
 	public void checkMatchingPassAndId() {
-		String pass = passField.getText().toString();
-		String id = idField.getText().toString();
+		final String pass = passField.getText().toString();
+		final String id = idField.getText().toString();
 		if(id != null && pass != null && pass.equals(id)) {
 			passAndIdMatch = true;
 		}
@@ -328,6 +331,8 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 		}
 		
 	}
+	
+	// FIXME revise the following gigantic methods
 	
 	//Currently setup only for a single user id input.
 	public void updateBarsForUID(final CharSequence inputSequence, final View barOne, final View barTwo, final View barThree, final TextView label) {
@@ -526,7 +531,7 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 		registrationCall.submit();
 
 	}
-	private void showLabelWithStringResource(TextView label, int id) {
+	private void showLabelWithStringResource(final TextView label, final int id) {
 		label.setText(getString(id));
 		showLabel(label);
 	}

@@ -1,4 +1,9 @@
-package com.discover.mobile.login.forgot;
+package com.discover.mobile.login.register;
+
+import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_ALREADY_TAKEN;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 
 import java.net.HttpURLConnection;
 
@@ -17,25 +22,20 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoCall;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoDetails;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.login.register.AccountInformationConfirmationActivity;
-import com.discover.mobile.login.register.StrengthBarHelpActivity;
 
-//CONTENT VIEW
-	@ContentView(R.layout.enter_new_password)
-	
-public class EnterNewPasswordActivity extends RoboActivity implements StandardErrorCodes, RegistrationErrorCodes {
+@ContentView(R.layout.register_create_password)
+public class EnterNewPasswordActivity extends RoboActivity {
 	
 	private static final String TAG = EnterNewPasswordActivity.class.getSimpleName();
+	
 	private static AccountInformationDetails passOneDetails;
 	private ForgotPasswordTwoDetails passTwoDetails;
 		
@@ -244,23 +244,23 @@ public class EnterNewPasswordActivity extends RoboActivity implements StandardEr
 		hideLabel(errorLabelTwo);
 	}
 	
-	public void showMainErrorLabelWithText(String text) {
+	public void showMainErrorLabelWithText(final String text) {
 		
 		mainErrorMessageLabel.setText(text);
 		showLabel(mainErrorMessageLabel);
 	}
 	
-	private void showErrorMessageLabelWithText(String text) {
+	private void showErrorMessageLabelWithText(final String text) {
 		
 		errorMessageLabel.setText(text);
 		showLabel(errorMessageLabel);
 	}
 	
-	private void showLabel(View v) {
+	private void showLabel(final View v) {
 		v.setVisibility(View.VISIBLE);
 	}
 	
-	private void hideLabel(View v) {
+	private void hideLabel(final View v) {
 		v.setVisibility(View.GONE);
 	}
 	
@@ -306,7 +306,7 @@ public class EnterNewPasswordActivity extends RoboActivity implements StandardEr
 	}
 	
 	public void cancel(final View v) {
-		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+		final Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
 		startActivity(forgotCredentials);
 		finish();
 	}
