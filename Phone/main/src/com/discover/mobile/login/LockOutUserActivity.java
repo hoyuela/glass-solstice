@@ -63,6 +63,12 @@ public class LockOutUserActivity extends RoboActivity {
 				errorTextView.setText(getString(R.string.account_security_locked_out));
 				break;
 				
+			case STRONG_AUTH_NOT_ENROLLED:
+				errorTitleText.setText(getString(R.string.account_security_title_text));
+				errorTextView.setText(getString(R.string.account_security_not_enrolled));
+				errorTextView.setTextColor(getResources().getColor(R.color.black));
+				break;
+				
 			case ACCOUNT_LOCKED_FAILED_ATTEMPTS:
 				errorTitleText.setText(getString(R.string.secure_login));
 				errorTextView.setText(getString(R.string.max_attempts_exceeded_text));

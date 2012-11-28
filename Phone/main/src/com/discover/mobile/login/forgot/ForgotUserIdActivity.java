@@ -265,6 +265,10 @@ public class ForgotUserIdActivity extends RoboActivity implements StandardErrorC
 						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
 						return true;
 						
+					case STRONG_AUTH_NOT_ENROLLED:
+						sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
+						return true;
+						
 					case MAX_LOGIN_ATTEMPTS:
 						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
 						return true;
@@ -283,6 +287,7 @@ public class ForgotUserIdActivity extends RoboActivity implements StandardErrorC
 		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
 		screenType.addExtraToIntent(maintenancePageIntent);
 		startActivity(maintenancePageIntent);
+		finish();
 	}
 	
 	private void showOkAlertDialog(final String title, final String message) {

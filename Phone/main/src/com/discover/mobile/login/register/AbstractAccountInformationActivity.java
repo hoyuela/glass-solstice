@@ -351,6 +351,10 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
 						return true;
 						
+					case STRONG_AUTH_NOT_ENROLLED:
+						sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
+						return true;
+						
 					case FAILED_SECURITY:	
 						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
 						return true;
@@ -433,16 +437,16 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 						sendToErrorPage(ScreenType.STRONG_AUTH_LOCKED_OUT);
 						return true;
 						
+					case STRONG_AUTH_NOT_ENROLLED:
+						sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
+						return true;
+						
 					case SAMS_CLUB_MEMBER:
 						showMainErrorLabelWithText(getString(R.string.account_info_sams_club_card_error_text));
 						return true;
 						
 					case REG_AUTHENTICATION_PROBLEM: // Provided information was incorrect.
 						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-						return true;
-						
-					case BAD_ACCOUNT_STATUS: // Last attemt with this account number warning.
-						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
 						return true;
 						
 					case FAILED_SECURITY:
@@ -464,6 +468,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
 		screenType.addExtraToIntent(maintenancePageIntent);
 		startActivity(maintenancePageIntent);
+		finish();
 	}
 	
 	private void getStrongAuthQuestion() {

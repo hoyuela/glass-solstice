@@ -35,6 +35,10 @@
 	    1&#8211;800&#8211;251&#8211;8003 for information about accessing 
 	    your account online.
 	</string>
+	<string name="account_security_not_enrolled">
+	    Help us keep your account safe by visiting Discover.com on your primary PC to establish
+	    your set of security questions.
+	</string>
 	<string name="account_security_title_text">
 	    Enhanced Account Security
 	</string>

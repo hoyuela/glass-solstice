@@ -2,6 +2,7 @@ package com.discover.mobile.login;
 
 import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_1;
 import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_2;
+import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
 
 import java.net.HttpURLConnection;
 
@@ -158,6 +159,10 @@ public class LoginActivity extends RoboActivity {
 									sendToErrorPage(ScreenType.MAINTENANCE);
 									return true;
 								
+								case STRONG_AUTH_NOT_ENROLLED:
+									sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
+									return true;
+									
 								case 1102:
 									sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
 									return true;
