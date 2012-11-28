@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item type="id" name="account_info_two_uid_bar_one_help" />
+    <item type="id" name="account_info_help_not_valid_detail_label" />
+    <item type="id" name="account_info_help_moderate_bar_one_help" />
+    <item type="id" name="account_info_help_strong_bar_one_help" />
+</resources>

@@ -13,7 +13,7 @@ import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 
-@ContentView(R.layout.lock_out_user)
+@ContentView(R.layout.login_locked_out)
 public class LockOutUserActivity extends RoboActivity {
 	
 	@InjectView(R.id.error_text_view)

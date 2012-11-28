@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/scrollView1"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	style="@style/WhiteTheme" >
-
+	style="@style/WhiteTheme">
+	
 	<RelativeLayout
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-
+	    android:layout_height="wrap_content">
+	    
         <TextView
             android:id="@+id/account_info_help_title_label"
             android:layout_width="wrap_content"
@@ -25,13 +24,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_below="@+id/account_info_help_title_label"
+            android:layout_below="@id/account_info_help_title_label"
             android:paddingTop="8dp"
             android:text="@string/account_info_help_bar_title_text"
             android:textColor="@color/black"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         
-        <include layout="@layout/not_valid_bar"/>
+        <include layout="@layout/register_help_not_valid_bar" />
         
         <TextView
             android:id="@+id/account_info_two_uid_strength_bar_label"
@@ -40,30 +39,30 @@
             android:layout_marginTop="4dp"
             android:text="@string/strength_bar_not_valid"
 			android:textColor="@color/black"
-			android:layout_below="@+id/account_info_two_uid_bar_one_help"
-			android:layout_alignLeft="@+id/account_info_two_uid_bar_one_help"
-			android:textAppearance="?android:attr/textAppearanceSmall"/>
+			android:layout_below="@id/account_info_two_uid_bar_one_help"
+			android:layout_alignLeft="@id/account_info_two_uid_bar_one_help"
+			android:textAppearance="?android:attr/textAppearanceSmall" />
         
         <View
             android:id="@+id/account_info_help_separator_line_one"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:layout_below="@+id/account_info_help_not_valid_detail_label"
+            android:layout_below="@id/account_info_help_not_valid_detail_label"
             android:background="@android:color/darker_gray" />
         
         <TextView
             android:id="@+id/account_info_help_not_valid_detail_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/account_info_help_not_valid_label"
+            android:layout_below="@id/account_info_help_not_valid_label"
             android:layout_marginTop="16dp"
             android:text="@string/account_info_help_id_p1_text"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/black"
             android:textSize="@dimen/light_text_size" />
         
-        <include layout="@layout/moderate_bar"/>
+        <include layout="@layout/register_help_moderate_bar"/>
         
         <TextView
             android:id="@+id/account_info_help_moderate_label"
@@ -72,8 +71,8 @@
             android:layout_marginTop="4dp"
             android:text="@string/strength_bar_moderate"
             android:textColor="@color/black"
-            android:layout_below="@+id/account_info_help_moderate_bar_one_help"
-            android:layout_alignLeft="@+id/account_info_help_moderate_bar_one_help"
+            android:layout_below="@id/account_info_help_moderate_bar_one_help"
+            android:layout_alignLeft="@id/account_info_help_moderate_bar_one_help"
 			android:textAppearance="?android:attr/textAppearanceSmall"/>
         
         <TextView
@@ -81,18 +80,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_below="@+id/account_info_help_separator_line_one"
+            android:layout_below="@id/account_info_help_separator_line_one"
             android:paddingTop="8dp"
             android:text="@string/account_info_help_bar_title_text"
             android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-             />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
         
         <TextView
             android:id="@+id/account_info_help_p2_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/account_info_help_p2_title_label"
+            android:layout_below="@id/account_info_help_p2_title_label"
             android:layout_marginTop="16dp"
             android:text="@string/account_info_help_id_p2_text"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -104,7 +102,7 @@
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:layout_below="@+id/account_info_help_p2_label"
+            android:layout_below="@id/account_info_help_p2_label"
             android:background="@android:color/darker_gray" />
         
         <TextView
@@ -112,14 +110,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_below="@+id/account_info_help_separator_line_two"
+            android:layout_below="@id/account_info_help_separator_line_two"
             android:paddingTop="8dp"
             android:text="@string/account_info_help_bar_title_text"
             android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-             />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
         
-        <include layout="@layout/strong_bar"/>
+        <include layout="@layout/register_help_strong_bar" />
         
         <TextView
             android:id="@+id/account_info_help_strong_label"
@@ -127,8 +124,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@string/strength_bar_strong"
-            android:layout_below="@+id/account_info_help_strong_bar_one_help"
-            android:layout_alignLeft="@+id/account_info_help_strong_bar_one_help"
+            android:layout_below="@id/account_info_help_strong_bar_one_help"
+            android:layout_alignLeft="@id/account_info_help_strong_bar_one_help"
 			android:textColor="@color/black"
 			android:textAppearance="?android:attr/textAppearanceSmall"/>
         
@@ -136,7 +133,7 @@
             android:id="@+id/account_info_help_p3_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/account_info_help_p3_title_label"
+            android:layout_below="@id/account_info_help_p3_title_label"
             android:layout_marginTop="16dp"
             android:text="@string/account_info_help_id_p3_text"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -158,11 +155,11 @@
 		<RelativeLayout
     	    android:layout_width="match_parent"
     	    android:layout_height="100dp"
-    	    android:layout_below="@+id/account_info_help_go_back_label" >
+    	    android:layout_below="@id/account_info_help_go_back_label" >
     	    
-    	    <include layout="@layout/need_help_footer"/>
+    	    <include layout="@layout/old_general_need_help_footer" />
 
-   			<include layout="@layout/copyright_footer"/>
+   			<include layout="@layout/old_general_copyright_footer" />
     	    
     	</RelativeLayout>
             

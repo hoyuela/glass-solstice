@@ -1,4 +1,9 @@
-package com.discover.mobile.login.forgot;
+package com.discover.mobile.login.register;
+
+import static com.discover.mobile.common.StandardErrorCodes.AUTH_BAD_ACCOUNT_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
+import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
 
 import java.net.HttpURLConnection;
 
@@ -22,21 +27,18 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
-import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.forgot.ForgotUserIdCall;
 import com.discover.mobile.common.auth.forgot.UserIdDetails;
-import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
-import com.discover.mobile.login.register.AccountInformationConfirmationActivity;
 
-@ContentView(R.layout.forgot_id)
-public class ForgotUserIdActivity extends RoboActivity implements StandardErrorCodes, RegistrationErrorCodes{
+@ContentView(R.layout.register_forgot_id)
+public class ForgotUserIdActivity extends RoboActivity {
 	
 	private static final String TAG = ForgotUserIdActivity.class.getSimpleName();
 	
@@ -172,7 +174,7 @@ public class ForgotUserIdActivity extends RoboActivity implements StandardErrorC
 	}
 	
 	public void goBack() {
-		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+		final Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
 		startActivity(forgotCredentials);
 		finish();
 	}
@@ -247,7 +249,7 @@ public class ForgotUserIdActivity extends RoboActivity implements StandardErrorC
 				return false;
 			}
 			
-			private void displayOnMainErrorLabel(String text){
+			private void displayOnMainErrorLabel(final String text){
 				mainErrLabel.setText(text);
 				showLabel(mainErrLabel);
 			}

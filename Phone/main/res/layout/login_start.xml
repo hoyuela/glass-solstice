@@ -10,19 +10,19 @@
  	    android:focusable="true" 
 		android:focusableInTouchMode="true">
 	    
-	    <include layout="@layout/discover_banner"/>
+	    <include layout="@layout/old_general_discover_banner" />
 	
 	    <LinearLayout
 	        android:id="@+id/linearLayout1"
 	        android:layout_width="294dp"
 	        android:layout_height="wrap_content"
 	        android:layout_centerInParent="true"
+	        android:layout_below="@+id/title_image"
 	        android:layout_marginTop="32dp"
 	        android:background="@drawable/rounded_table_corners_shape"
-	        android:orientation="vertical" 
-	        >
+	        android:orientation="vertical" >
 	        
-	        <include layout="@layout/card_icon_and_login_label"/>
+	        <include layout="@layout/old_general_card_icon_login_label" />
 	
 	        <TableRow
 	            android:id="@+id/error_row"
@@ -163,8 +163,10 @@
 	        android:layout_width="match_parent"
     	    android:layout_height="100dp"
     	    android:layout_marginTop="64dp"
-    	    android:layout_below="@+id/linearLayout1" >
-	              <include layout="@layout/copyright_footer"/>
+    	    android:layout_below="@+id/linearLayout1">
+	        
+	        <include layout="@layout/old_general_copyright_footer" />
+	        
 	    </RelativeLayout>
 	
 

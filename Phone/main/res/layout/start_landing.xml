@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/include1"
-        layout="@layout/discover_banner" />
+        layout="@layout/old_general_discover_banner" />
 
     <TextView
         android:id="@+id/title_label"

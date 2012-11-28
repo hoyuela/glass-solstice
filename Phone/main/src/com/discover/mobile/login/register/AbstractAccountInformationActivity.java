@@ -1,5 +1,17 @@
 package com.discover.mobile.login.register;
 
+import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.FAILED_SECURITY;
+import static com.discover.mobile.common.StandardErrorCodes.INVALID_EXTERNAL_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.INVALID_ONLINE_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
+import static com.discover.mobile.common.StandardErrorCodes.ONLINE_STATUS_PROHIBITED;
+import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
+
 import java.net.HttpURLConnection;
 
 import roboguice.activity.RoboActivity;
@@ -21,12 +33,10 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
-import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
-import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.auth.strong.StrongAuthCheckCall;
 import com.discover.mobile.common.auth.strong.StrongAuthDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthErrorResponse;
@@ -38,9 +48,8 @@ import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
-@ContentView(R.layout.account_info)
-abstract class AbstractAccountInformationActivity extends RoboActivity implements RegistrationErrorCodes, 
-																						StandardErrorCodes{
+@ContentView(R.layout.register_enter_account_info)
+abstract class AbstractAccountInformationActivity extends RoboActivity {
 	
 	private static final String TAG = AbstractAccountInformationActivity.class.getSimpleName();
 	
@@ -156,9 +165,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 			InputValidator validator = new InputValidator();
 			
 				@Override
-				public void onFocusChange(View v, boolean hasFocus) {
+				public void onFocusChange(final View v, final boolean hasFocus) {
 					
-					String acctNbr = ((EditText)v).getText().toString();
+					final String acctNbr = ((EditText)v).getText().toString();
 					if(!hasFocus && !validator.isCardAccountNumberValid(acctNbr)){
 						showLabel( cardErrorLabel );
 					}
@@ -369,7 +378,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 		serviceCall.submit();
 	}
 	
-	public void showMainErrorLabelWithText(String text) {
+	public void showMainErrorLabelWithText(final String text) {
 		errorMessageLabel.setText(text);
 		showLabel(errorMessageLabel);
 	}
@@ -487,9 +496,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-
 				progress.dismiss();
 				
+				// FIXME
 				switch (errorResponse.getHttpStatusCode()) {
 					case HttpURLConnection.HTTP_BAD_REQUEST:
 						return true;
@@ -500,22 +509,19 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 					case HttpURLConnection.HTTP_FORBIDDEN:
 						return true;
 				}
-				//TODO handle these properly ^ v
+				
 				return false;
 			}
 			
-			@InjectView(R.id.account_info_error_label)
-			TextView errorMessageLabel;
 			@Override
 			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
-
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
 				
+				// FIXME
 				switch(messageErrorResponse.getMessageStatusCode()){
 				
 				default://TODO properly handle these ^ v
 					return true;
-					
 				}
 				
 			}

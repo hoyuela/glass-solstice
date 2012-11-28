@@ -1,6 +1,6 @@
 package com.discover.mobile.common;
 
-public interface StandardErrorCodes {
+public final class StandardErrorCodes {
 
 	public static final int MAINTENANCE_MODE_1 = 1006;
 	public static final int MAINTENANCE_MODE_2 = 1007;
@@ -14,5 +14,9 @@ public interface StandardErrorCodes {
 	public static final int REWARDS_OUTAGE = 1915;
 	public static final int FAILED_SECURITY = 1916;
 	public static final int ACCOUNT_NOT_REGISTERED = 1918;
+	
+	private StandardErrorCodes() {
+		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$
+	}
 	
 }

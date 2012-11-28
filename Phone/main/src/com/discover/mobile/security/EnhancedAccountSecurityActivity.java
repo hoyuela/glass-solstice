@@ -3,6 +3,7 @@ package com.discover.mobile.security;
 import java.security.NoSuchAlgorithmException;
 
 import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -18,7 +19,8 @@ import com.discover.mobile.common.auth.strong.StrongAuthAnswerCall;
 import com.discover.mobile.common.auth.strong.StrongAuthAnswerDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 
-public class EnhancedAccountSecurityActivity extends RoboActivity{
+@ContentView(R.layout.strongauth_page)
+public class EnhancedAccountSecurityActivity extends RoboActivity {
 	
 	private final static String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
 	private TextView detailHelpLabel, statusIconLabel;
@@ -36,7 +38,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.enhanced_account_security);
+		
 		final Bundle extras = getIntent().getExtras();
     	if(extras != null) {
     		final String question = 

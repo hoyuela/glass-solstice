@@ -8,21 +8,21 @@ import roboguice.inject.ContentView;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.discover.mobile.login.StartActivity;
-@ContentView(R.layout.splash)
+@ContentView(R.layout.start_splash)
 public class SplashScreenActivity extends RoboActivity{
 	
 	@Override
-	public void onCreate(Bundle savedInstance){
+	public void onCreate(final Bundle savedInstance){
 		super.onCreate(savedInstance);
 		
 		final Intent mainActivity = new Intent(this, StartActivity.class);
 				
 		new Timer().schedule(new TimerTask(){
-		    public void run() { 
+		    @Override
+			public void run() { 
 		        startActivity(mainActivity);
 		    }
-		}, 2500 );
+		}, 2500);
 	}
 
 }
