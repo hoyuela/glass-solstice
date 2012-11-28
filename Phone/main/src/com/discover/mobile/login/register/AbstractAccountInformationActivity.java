@@ -336,6 +336,10 @@ abstract class AbstractAccountInformationActivity extends RoboActivity implement
 					case BAD_ACCOUNT_STATUS: // Last attemt with this account number warning.
 						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
 						return true;
+					
+					case FINAL_LOGIN_ATTEMPT:
+						showMainErrorLabelWithText(getString(R.string.final_login_attempt));
+						return true;
 						
 					case MAX_LOGIN_ATTEMPTS:
 						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
