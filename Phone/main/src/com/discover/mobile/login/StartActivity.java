@@ -73,6 +73,8 @@ public class StartActivity extends RoboActivity {
     		boolean hasUserLoggedOut = extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
     		showLogoutMessageIfTrue(hasUserLoggedOut);
     	}
+    	
+    	setupButtons();
 
 	}
 	

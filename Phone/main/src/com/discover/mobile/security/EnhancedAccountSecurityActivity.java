@@ -17,7 +17,6 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.strong.StrongAuthAnswerCall;
 import com.discover.mobile.common.auth.strong.StrongAuthAnswerDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 
 public class EnhancedAccountSecurityActivity extends RoboActivity{
 	

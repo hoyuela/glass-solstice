@@ -11,10 +11,7 @@ import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
 import com.discover.mobile.common.net.error.ErrorResponseParser;
-import com.discover.mobile.common.net.callback.AsyncCallback;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.net.response.DelegatingErrorResponseParser;
-import com.discover.mobile.common.net.response.ErrorResponseParser;
 
 public class StrongAuthCheckCall extends JsonResponseMappingNetworkServiceCall<StrongAuthDetails> {
 	

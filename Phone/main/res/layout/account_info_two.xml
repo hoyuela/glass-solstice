@@ -281,11 +281,20 @@
               android:text="@string/account_info_two_email_text"
               android:textColor="@color/black" />
 
+           <TextView 
+           	android:id="@+id/account_info_email_error_label"
+           	android:layout_width="wrap_content"
+           	android:layout_height="wrap_content"
+			android:layout_below="@+id/account_info_two_email_label"
+			android:text="@string/invalid_value"
+			android:textColor="@color/red"
+			android:visibility="gone"/>
+           
           <EditText
               android:id="@+id/account_info_two_email_field"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:layout_below="@+id/account_info_two_email_label"
+              android:layout_below="@+id/account_info_email_error_label"
               android:imeOptions="actionDone"
               android:inputType="textEmailAddress"
               android:paddingTop="8dp" />

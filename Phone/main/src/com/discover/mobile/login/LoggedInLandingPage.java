@@ -16,8 +16,6 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.DeleteSessionCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.net.callback.AsyncCallback;
-import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 
 @ContentView(R.layout.logged_in_landing)
 public class LoggedInLandingPage extends RoboActivity {

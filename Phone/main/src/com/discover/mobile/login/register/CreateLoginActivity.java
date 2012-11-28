@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,10 +25,9 @@ import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.CreateLoginCall;
 import com.discover.mobile.common.auth.registration.CreateLoginDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
+import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
-import com.discover.mobile.common.net.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 
@@ -56,6 +56,9 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 	
 	@InjectView (R.id.account_info_pass_two_confirm_error_label)
 	private TextView passConfirmErrorLabel;
+	
+	@InjectView (R.id.account_info_email_error_label)
+	private TextView emailErrorLabel;
 	
 	private boolean forgotBoth = false;
 	private boolean passAndIdMatch = false;
@@ -160,6 +163,13 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 			hideLabel(passConfirmErrorLabel);
 		}
 		
+		if( !validator.wasEmailValid ){
+			showLabelWithStringResource(emailErrorLabel, R.string.invalid_value);
+		}
+		else {
+			hideLabel(emailErrorLabel);
+		}
+		
 		if( passAndIdMatch ) {
 			showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
 			showLabelWithStringResource(errorMessageLabel, R.string.id_and_pass_match);
@@ -224,7 +234,8 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 		});
 		
 		idField.addTextChangedListener(new TextWatcher(){
-			
+			InputValidator validator = new InputValidator();
+
 			@Override
 			public void afterTextChanged(final Editable s) {/*not used*/}
 			
@@ -241,10 +252,38 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 							  findViewById(R.id.account_info_two_uid_bar_three),
 						      (TextView)findViewById(R.id.account_info_two_uid_strength_bar_label));
 				setInputToLowerCase(s, idField);
+				if(validator.isUidValid(idField.getText().toString())) {
+					hideLabel(errorMessageLabel);
+				}
+			}
+		});
+		
+		idField.setOnFocusChangeListener(new OnFocusChangeListener() {
+			InputValidator validator = new InputValidator();
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				// TODO Auto-generated method stub
+				if(!hasFocus && !validator.isUidValid(idField.getText().toString())) {
+					showLabelWithStringResource(errorMessageLabel, R.string.invalid_value);
+				}
+			}
+		});
+		
+		idConfirmField.setOnFocusChangeListener(new OnFocusChangeListener() {
+			InputValidator validator = new InputValidator();
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				// TODO Auto-generated method stub
+				if(!hasFocus && !validator.isUidValid(idConfirmField.getText().toString())) {
+					showLabelWithStringResource(idConfirmErrorLabel, R.string.invalid_value);
+				}
 			}
 		});
 		
 		idConfirmField.addTextChangedListener(new TextWatcher(){
+			InputValidator validator = new InputValidator();
 
 			@Override
 			public void afterTextChanged(final Editable s) {/*not used*/}
@@ -257,6 +296,9 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 			public void onTextChanged(final CharSequence s, final int start, final int before,
 					final int count) {
 				setInputToLowerCase(s, idConfirmField);
+				if(validator.isUidValid(idConfirmField.getText().toString())) {
+					hideLabel(idConfirmErrorLabel);
+				}
 				
 			}
 			
@@ -326,7 +368,7 @@ public class CreateLoginActivity extends RoboActivity implements RegistrationErr
 			
 			if(inputSequence.toString().startsWith("6011")){
 				looksLikeActNum = true;
-				
+				showLabelWithStringResource(errorMessageLabel, R.string.invalid_value);
 			}
 			
 			/*

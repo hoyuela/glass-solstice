@@ -10,7 +10,6 @@ import com.discover.mobile.common.auth.registration.AccountInformationCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.callback.AsyncCallback;
 import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 
 public class ForgotBothAccountInformationActivity extends AbstractAccountInformationActivity {

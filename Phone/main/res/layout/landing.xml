@@ -33,7 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:onClick="startPreAuthCheck"
         android:text="@string/card_login_button_text" />
 
 </RelativeLayout>

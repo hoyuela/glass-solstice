@@ -20,7 +20,6 @@ import android.widget.ToggleButton;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.ScreenType;
-import com.discover.mobile.common.UserIdPersistance;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
@@ -58,9 +57,7 @@ public class LoginActivity extends RoboActivity {
 	
 	@InjectView(R.id.forgot_uid_or_pass_text)
 	private TextView forgotUserIdOrPassText;
-	
-	private UserIdPersistance persistenceSession;
-	
+		
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,7 +65,6 @@ public class LoginActivity extends RoboActivity {
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		
 		setupButtons();
-		setupSavedId();
 	}
 	
 	private void setupButtons() {
@@ -99,20 +95,15 @@ public class LoginActivity extends RoboActivity {
 	
 	@Override
 	public void onStop() {
-		if(saveUserButton.isChecked()) {
-			persistenceSession.saveButtonStateAs(true);
-			persistenceSession.saveId(uidField.getText().toString());
-		}
+		super.onStop();
 		clearInputs();
 	}
 	
-	private void setupSavedId() {
-		persistenceSession = new UserIdPersistance(this);
-		
-		if(persistenceSession.getButtonState()){
-			saveUserButton.setSelected(true);
-			uidField.setText(persistenceSession.getUserId());
-		}
+	private final static String emptyString = ""; //$NON-NLS-1$
+	
+	private void clearInputs() {
+		uidField.setText(emptyString);
+		passField.setText(emptyString);
 	}
 	
 	private void logIn() {

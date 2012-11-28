@@ -41,12 +41,12 @@ public class InputValidator {
 	
 	public boolean wasAccountInfoComplete(){
 		//bitwise operators FTW
-		return wasSsnValid & wasDobMonthValid & wasDobMonthValid & wasDobDayValid &
+		return wasSsnValid & wasDobMonthValid & wasDobYearValid & wasDobDayValid &
 				wasAccountNumberValid & wasCardExpMonthValid & wasCardExpYearValid;
 	}
 	
 	public boolean wasAccountTwoInfoComplete(){
-		return !didPassAndIdMatch & didPassesMatch & didIdsMatch & wasEmailValid; 
+		return !didPassAndIdMatch & didPassesMatch & didIdsMatch & wasEmailValid & wasUidValid; 
 	}
 	
 	public boolean doPassAndIdMatch(final String pass, final String id){
@@ -204,7 +204,8 @@ public class InputValidator {
 			   !uid.contains("`") &&
 			   !uid.contains("'") &&
 			   !uid.contains("\"")&&
-			   !uid.contains("\\")){
+			   !uid.contains("\\") &&
+			   !uid.startsWith("6011")){
 				wasUidValid = true;
 			}
 		else
