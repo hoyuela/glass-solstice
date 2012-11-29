@@ -280,7 +280,7 @@ public class EnterNewPasswordActivity extends RoboActivity {
 				showLabelWithStringResource(errorLabelOne, R.string.invalid_value);
 			}
 			if(validator.wasPassValid && !validator.didPassesMatch) {
-				showLabelWithStringResource(errorLabelOne, R.string.account_info_two_passwords_dont_match);
+				showLabelWithStringResource(errorLabelOne, R.string.account_info_two_passwords_dont_match_text);
 				showLabelWithStringResource(errorLabelTwo, R.string.invalid_value);
 			}
 		}

@@ -32,7 +32,8 @@
 	<string name="account_info_two_email_info_text">(Used to confirm receipt of your online account registration.)</string>
 	<string name="account_info_two_id_matches_pass_error_text">User ID and password must not be the same.</string>
 	<string name="account_info_two_username_in_use_error_text">User ID is already in use. Please choose another one.</string>
-	<string name="account_info_two_passwords_dont_match">Passwords do not match.</string>
+	<string name="account_info_two_passwords_dont_match_text">Passwords do not match.</string>
+	<string name="account_info_two_ids_must_match_text">User IDs must match.</string>
 	<string name="account_info_two_new_pass_confirm_text">
 	    Confirm New Password:
 	</string>
