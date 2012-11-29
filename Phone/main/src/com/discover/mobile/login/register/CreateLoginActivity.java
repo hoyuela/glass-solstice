@@ -154,9 +154,14 @@ public class CreateLoginActivity extends RoboActivity {
 			formDataTwo.userIdConfirm = formDataTwo.userId;
 			submitFormInfo();
 		}
+		else {
+			showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
+		}
+			
 	}
 	
 	private void updateErrorLabelsUsingValidator(final InputValidator validator) {
+		hideAllErrorLabels();
 		
 		if( !validator.didIdsMatch ) {
 			showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_ids_must_match_text);
@@ -183,9 +188,16 @@ public class CreateLoginActivity extends RoboActivity {
 		}
 		
 		if( passAndIdMatch ) {
-			showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
 			showLabelWithStringResource(errorMessageLabel, R.string.id_and_pass_match);
 		}
+	}
+	
+	private void hideAllErrorLabels() {
+		hideLabel(errorMessageLabel);
+		hideLabel(idConfirmErrorLabel);
+		hideLabel(passErrorLabel);
+		hideLabel(passConfirmErrorLabel);
+		hideLabel(emailErrorLabel);
 		
 	}
 	
