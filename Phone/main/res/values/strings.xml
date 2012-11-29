@@ -35,8 +35,23 @@
 	<string name="could_not_complete_request">
 	    Your Request Could Not Be Completed
 	</string>
+	<string name="unkown_error_text">
+	    Unknown error with the server, please try again later.
+	</string>
+	<string name="successful_logout_title_text">
+	    You are now logged out
+	</string>
+	<string name="successful_logout_subtitle_text">
+	    Thank you for using Discover mobile.
+	</string>
 	<string name="go_back">
 	    Go back
+	</string>
+	<string name="logout">
+	    Logout
+	</string>
+	<string name="final_login_attempt">
+	    You have one more log in attempt today. For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call tel:18777427822 1-877-742-7822.
 	</string>
 	<string name="forgot_password_text">Forgot Password</string>
 	<string name="forgot_both_text">Forgot Both</string>
@@ -77,4 +92,11 @@
 	    Please contact Customer Service at 1&#8211;877&#8211;742&#8211;7822 
 	    for assistance.
 	</string>
+	<string name="id_and_ssn_match_text">
+	    User ID must not look like your social security number. Please choose another one.
+	</string>
+	<string name="id_and_pass_match">
+	    User ID and password must not be the same.
+	</string>
+	    
 </resources>

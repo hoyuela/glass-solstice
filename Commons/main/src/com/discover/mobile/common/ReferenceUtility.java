@@ -1,13 +1,13 @@
 package com.discover.mobile.common;
 
-import java.lang.ref.WeakReference;
+import java.lang.ref.Reference;
 
 import javax.annotation.Nullable;
 
 public final class ReferenceUtility {
 	
 	@SuppressWarnings("hiding")
-	public static @Nullable <R> R safeGetReferenced(final @Nullable WeakReference<R> ref) {
+	public static @Nullable <R> R safeGetReferenced(final @Nullable Reference<R> ref) {
 		if(ref == null)
 			return null;
 		
@@ -15,7 +15,7 @@ public final class ReferenceUtility {
 	}
 	
 	private ReferenceUtility() {
-		throw new UnsupportedOperationException("This class is non-instantiable");
+		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$
 	}
 	
 }

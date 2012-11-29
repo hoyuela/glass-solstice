@@ -1,6 +1,7 @@
 package com.discover.mobile.login.register;
 
 import roboguice.inject.InjectView;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -17,7 +18,6 @@ import com.discover.mobile.common.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.login.forgot.EnterNewPasswordActivity;
 
 public class ForgotPasswordAccountInformationActivity extends AbstractAccountInformationActivity {
 	
@@ -50,7 +50,7 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	@InjectView (R.id.account_info_ssn_error_label)
 	TextView ssnErrorLabel;
 	
-	private EditText inputField;
+	private EditText genericInputField;
 	
 	@Override
 	protected void setupCustomTextChangedListeners(){
@@ -60,9 +60,9 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
-				inputField = (EditText)v;
+				genericInputField = (EditText)v;
 				
-				if(inputField.getText().length() < 4) {
+				if(genericInputField.getText().length() < 4) {
 					//hide error label
 					ssnErrorLabel.setVisibility(View.VISIBLE);
 				}
@@ -91,9 +91,9 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 		yearField.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
-				inputField = (EditText)v;
+				genericInputField = (EditText)v;
 
-				if(inputField.getText().length() < 4) {
+				if(genericInputField.getText().length() < 4) {
 					dobYearErrorLabel.setVisibility(View.VISIBLE);
 				}
 			}
@@ -122,10 +122,10 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 			InputValidator validator = new InputValidator();
 			
 			@Override
-			public void onFocusChange(final View v, final boolean hasFocus) {
-				inputField = (EditText)v;
+			public void onFocusChange(View v, boolean hasFocus) {
+				genericInputField = (EditText)v;
 				
-				if( !hasFocus && !validator.isUidValid( inputField.getText().toString() ) ) {
+				if( !hasFocus && !validator.isUidValid( genericInputField.getText().toString() ) ) {
 					showLabel(idErrorLabel);
 				}
 			}
@@ -156,11 +156,22 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 		
 	}
 	
+	@Override
+	public void onBackPressed() {
+		goBack(null);
+	}
+	
+	@Override
+	public void goBack(final View v) {
+		Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
+		startActivity(forgotCredentials);
+		finish();
+	}
 	
 	@Override
 	protected void doCustomUiSetup() {
 		//Set the detail label under the title to blank.
-		accountIdentifierFieldRestrictionsLabel.setVisibility(View.GONE);
+		hideLabel(accountIdentifierFieldRestrictionsLabel);
 			
 		//Set title label of the input field
 		accountIdentifierFieldLabel.setText(getString(R.string.forgot_password_field_title_text));

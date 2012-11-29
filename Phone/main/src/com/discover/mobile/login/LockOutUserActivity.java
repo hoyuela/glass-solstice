@@ -13,7 +13,7 @@ import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 
-@ContentView(R.layout.lock_out_user)
+@ContentView(R.layout.login_locked_out)
 public class LockOutUserActivity extends RoboActivity {
 	
 	@InjectView(R.id.error_text_view)
@@ -55,13 +55,18 @@ public class LockOutUserActivity extends RoboActivity {
 				
 			case BAD_ACCOUNT_STATUS:
 				// TODO reference lock out text when error map set up
-				errorTitleText.setText(R.string.could_not_complete_request);
 				errorTextView.setText(R.string.zluba_error);
 				break;
 				
 			case STRONG_AUTH_LOCKED_OUT:
 				errorTitleText.setText(getString(R.string.account_security_title_text));
 				errorTextView.setText(getString(R.string.account_security_locked_out));
+				break;
+				
+			case STRONG_AUTH_NOT_ENROLLED:
+				errorTitleText.setText(getString(R.string.account_security_title_text));
+				errorTextView.setText(getString(R.string.account_security_not_enrolled));
+				errorTextView.setTextColor(getResources().getColor(R.color.black));
 				break;
 				
 			case ACCOUNT_LOCKED_FAILED_ATTEMPTS:

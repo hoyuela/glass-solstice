@@ -3,9 +3,9 @@ package com.discover.mobile.security;
 import java.security.NoSuchAlgorithmException;
 
 import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,12 +15,12 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.auth.StrongAuthAnswerCall;
-import com.discover.mobile.common.auth.StrongAuthAnswerDetails;
+import com.discover.mobile.common.auth.strong.StrongAuthAnswerCall;
+import com.discover.mobile.common.auth.strong.StrongAuthAnswerDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.login.LoginActivity;
 
-public class EnhancedAccountSecurityActivity extends RoboActivity{
+@ContentView(R.layout.strongauth_page)
+public class EnhancedAccountSecurityActivity extends RoboActivity {
 	
 	private final static String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
 	private TextView detailHelpLabel, statusIconLabel;
@@ -38,7 +38,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.enhanced_account_security);
+		
 		final Bundle extras = getIntent().getExtras();
     	if(extras != null) {
     		final String question = 
@@ -117,10 +117,8 @@ public class EnhancedAccountSecurityActivity extends RoboActivity{
 	
 	@Override
 	public void onBackPressed() {
-		
-	   final Intent navToMain = new Intent(this, LoginActivity.class);
-	   startActivity(navToMain);
-	   
+		setResult(RESULT_CANCELED);
+		finish();
 	}
 	
 	private void finishWithResultOK() {

@@ -2,6 +2,7 @@ package com.discover.mobile.login;
 
 import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_1;
 import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_2;
+import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
 
 import java.net.HttpURLConnection;
 
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.ScreenType;
@@ -24,20 +26,22 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
+import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.push.PushTermsAndConditionsActivity;
+import com.discover.mobile.navigation.NavigationRootActivity;
 import com.google.common.base.Strings;
 
-@ContentView(R.layout.login)
+@ContentView(R.layout.login_start)
 public class LoginActivity extends RoboActivity {
-	
-	private static final String TAG = LoginActivity.class.getSimpleName();
 
+	@InjectView(R.id.toggle_button_save_user_id)
+	private ToggleButton saveUserButton;
+	
 	@InjectView(R.id.username)
 	private EditText uidField;
 	
@@ -55,7 +59,7 @@ public class LoginActivity extends RoboActivity {
 	
 	@InjectView(R.id.forgot_uid_or_pass_text)
 	private TextView forgotUserIdOrPassText;
-	
+		
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,7 +73,7 @@ public class LoginActivity extends RoboActivity {
 		loginButton.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				errorTextView.setText("");
+				errorTextView.setText(""); //$NON-NLS-1$
 				logIn();
 			}
 		});
@@ -77,7 +81,7 @@ public class LoginActivity extends RoboActivity {
 		registerText.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				errorTextView.setText("");
+				errorTextView.setText(""); //$NON-NLS-1$
 				registerNewUser();
 			}
 		});
@@ -85,10 +89,23 @@ public class LoginActivity extends RoboActivity {
 		forgotUserIdOrPassText.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				errorTextView.setText("");
+				errorTextView.setText(""); //$NON-NLS-1$
 				forgotIdAndOrPass();
 			}
 		});
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		clearInputs();
+	}
+	
+	private final static String emptyString = ""; //$NON-NLS-1$
+	
+	private void clearInputs() {
+		uidField.setText(emptyString);
+		passField.setText(emptyString);
 	}
 	
 	private void logIn() {
@@ -102,56 +119,70 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
-		// FIXME
-		final AsyncCallbackAdapter<AccountDetails> callbackDelegate = new AsyncCallbackAdapter<AccountDetails>() {
-			@Override
-			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				switch(errorResponse.getHttpStatusCode()) {
-					case HttpURLConnection.HTTP_UNAUTHORIZED:
-						errorTextView.setText(getString(R.string.login_error));
-						return true;
-					
-					// FIXME other cases
-				}
-				
-				return false;
-			}
-
-			@Override
-			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
-				TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
-				
-				if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
-					return false;
-				
-				// FIXME convert other error codes to standard constants
-				switch(messageErrorResponse.getMessageStatusCode()) {
-					case MAINTENANCE_MODE_1:
-					case MAINTENANCE_MODE_2: 
-						sendToErrorPage(ScreenType.MAINTENANCE);
-						return true;
-					
-					case 1102:
-						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
-						return true;
-						
-					case 1101:
-					case 1402:
-						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
-						return true;
-						
-					default:
-						errorTextView.setText(messageErrorResponse.getMessage());
-						return true;
-				}
-			}
-		};
-		
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback.<AccountDetails>builder(this)
 					.showProgressDialog("Discover", "Loading...", true)
 					.clearTextViewsOnComplete(errorTextView, passField, uidField)
-//					.launchIntentOnSuccess(LoggedInLandingPage.class)
+        
+                    // TODO launch to NavigationRootActivity if terms already handled
 					.launchIntentOnSuccess(PushTermsAndConditionsActivity.class)
+//					.launchIntentOnSuccess(NavigationRootActivity.class)
+					
+					// FIXME DO NOT COPY THIS CODE
+					.withErrorResponseHandler(new ErrorResponseHandler() {
+						@Override
+						public CallbackPriority getCallbackPriority() {
+							return CallbackPriority.MIDDLE;
+						}
+						
+						@Override
+						public boolean handleFailure(final ErrorResponse<?> errorResponse) {
+							if(errorResponse instanceof JsonMessageErrorResponse)
+								return handleMessageErrorResponse((JsonMessageErrorResponse)errorResponse);
+							
+							switch(errorResponse.getHttpStatusCode()) {
+								case HttpURLConnection.HTTP_UNAUTHORIZED:
+									errorTextView.setText(getString(R.string.login_error));
+									return true;
+								
+								// FIXME other cases
+							}
+							
+							return false;
+						}
+						
+						public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
+							TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
+							
+							if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
+								return false;
+							
+							// FIXME convert other error codes to standard constants
+							switch(messageErrorResponse.getMessageStatusCode()) {
+								case MAINTENANCE_MODE_1:
+								case MAINTENANCE_MODE_2: 
+									sendToErrorPage(ScreenType.MAINTENANCE);
+									return true;
+								
+								case STRONG_AUTH_NOT_ENROLLED:
+									sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
+									return true;
+									
+								case 1102:
+									sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
+									return true;
+									
+								case 1101:
+								case 1402:
+									sendToErrorPage(ScreenType.LOCKED_OUT_USER);
+									return true;
+									
+								default:
+									errorTextView.setText(messageErrorResponse.getMessage());
+									return true;
+							}
+						}
+					})
+					
 					.build();
 		
 		new AuthenticateCall(this, callback, username, password).submit();
@@ -183,7 +214,7 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	public void forgotIdAndOrPass(){
-		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotCredentialsActivity.class);
+		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotTypeSelectionActivity.class);
 		this.startActivity(forgotIdAndOrPassActivity);
 	}
 	

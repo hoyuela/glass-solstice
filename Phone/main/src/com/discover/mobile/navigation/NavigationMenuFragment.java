@@ -4,14 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockListFragment;
 import com.discover.mobile.R;
+import com.discover.mobile.RoboSherlockListFragment;
+import com.google.inject.Inject;
 
-public class NavigationMenuFragment extends SherlockListFragment {
+public class NavigationMenuFragment extends RoboSherlockListFragment {
 	
-	// TODO see if this can be done by just overridding the padding on the default ListView
+	@Inject
+	private NavigationItemAdapter navigationItemAdapter;
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -23,12 +26,17 @@ public class NavigationMenuFragment extends SherlockListFragment {
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		// TEMP
-		final ArrayAdapter<String> tempAdapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_list_item_1,
-				android.R.id.text1,
-				new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" });
-		setListAdapter(tempAdapter);
+		NavigationItem.initializeAdapterWithSections(navigationItemAdapter);
+		setListAdapter(navigationItemAdapter);
+		
+		// TODO show first section
+	}
+	
+	@Override
+	public void onListItemClick(final ListView listView, final View clickedView, final int position, final long id) {
+		super.onListItemClick(listView, clickedView, position, id);
+		
+		navigationItemAdapter.getItem(position).onClick(listView);
 	}
 	
 }

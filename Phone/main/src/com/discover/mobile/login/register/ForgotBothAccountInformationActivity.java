@@ -1,5 +1,8 @@
 package com.discover.mobile.login.register;
 
+import android.content.Intent;
+import android.view.View;
+
 import com.discover.mobile.R;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.InputValidator;
@@ -34,6 +37,18 @@ public class ForgotBothAccountInformationActivity extends AbstractAccountInforma
 			final AccountInformationDetails details) {
 		
 		return new AccountInformationCall(this, callback, details);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		goBack(null);
+	}
+	
+	@Override
+	public void goBack(final View v) {
+		Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
+		startActivity(forgotCredentials);
+		finish();
 	}
 	
 	@Override

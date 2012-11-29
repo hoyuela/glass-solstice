@@ -35,20 +35,17 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 		}
 	}
 	
-	protected static final List<ErrorResponseParser<? extends AbstractErrorResponse<?>>> DEFAULT_PARSER_DELEGATES =
-			createDefaultDelegates();
+	public static final List<ErrorResponseParser<?>> DEFAULT_PARSER_DELEGATES = createDefaultDelegates();
 	
-	private static List<ErrorResponseParser<? extends AbstractErrorResponse<?>>> createDefaultDelegates() {
-		return ImmutableList.<ErrorResponseParser<? extends AbstractErrorResponse<?>>>builder()
+	private static List<ErrorResponseParser<?>> createDefaultDelegates() {
+		return ImmutableList.<ErrorResponseParser<?>>builder()
 				.add(new JsonMessageErrorResponseParser())
 				.add(new EmptyErrorResponseParser()).build();
 	}
 	
-	private List<ErrorResponseParser<? extends AbstractErrorResponse<?>>> parserDelegates;
+	private List<ErrorResponseParser<?>> parserDelegates;
 	
-	protected DelegatingErrorResponseParser(
-			final List<ErrorResponseParser<? extends AbstractErrorResponse<?>>> parserDelegates) {
-		
+	public DelegatingErrorResponseParser(final List<ErrorResponseParser<?>> parserDelegates) {
 		checkNotNull(parserDelegates, "parserDelegates cannot be null");
 		checkArgument(!parserDelegates.isEmpty(), "parserDelegates cannot be empty");
 		
@@ -56,7 +53,7 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 			this.parserDelegates = DEFAULT_PARSER_DELEGATES;  // since its immutable already
 		else
 			this.parserDelegates =
-					ImmutableList.<ErrorResponseParser<? extends AbstractErrorResponse<?>>>copyOf(parserDelegates);
+					ImmutableList.<ErrorResponseParser<?>>copyOf(parserDelegates);
 	}
 	
 	public static boolean isErrorStatus(final int httpStatusCode) {
@@ -67,7 +64,7 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 	public ErrorResponse<?> parseErrorResponse(final int httpStatusCode, final InputStream in,
 			final HttpURLConnection conn) throws IOException {
 		
-		for(final ErrorResponseParser<? extends AbstractErrorResponse<?>> parser : parserDelegates) {
+		for(final ErrorResponseParser<?> parser : parserDelegates) {
 			final ErrorResponse<?> response = tryDelegateParse(parser, httpStatusCode, in, conn);
 			if(response != null)
 				return response;
@@ -76,13 +73,12 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 		throw new UnsupportedOperationException("Unable to parse error response, no compatible parser found");
 	}
 	
-	private static <E extends AbstractErrorResponse<?>> ErrorResponse<?> tryDelegateParse(
-			final ErrorResponseParser<E> parser, final int httpStatusCode, final InputStream in,
-			final HttpURLConnection conn) throws IOException {
+	private static ErrorResponse<?> tryDelegateParse(final ErrorResponseParser<?> parser,
+			final int httpStatusCode, final InputStream in, final HttpURLConnection conn) throws IOException {
 		
-		final AbstractErrorResponse<?> response = parser.parseErrorResponse(httpStatusCode, in, conn);
-		if(response != null)
-			setProtectedFields(response, httpStatusCode);
+		final ErrorResponse<?> response = parser.parseErrorResponse(httpStatusCode, in, conn);
+		if(response != null && response instanceof AbstractErrorResponse)
+			setProtectedFields((AbstractErrorResponse<?>)response, httpStatusCode);
 		return response;
 	}
 	

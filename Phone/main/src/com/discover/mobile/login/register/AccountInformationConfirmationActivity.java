@@ -1,6 +1,7 @@
 package com.discover.mobile.login.register;
 
 import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,27 +10,35 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.login.LoggedInLandingPage;
+import com.discover.mobile.navigation.NavigationRootActivity;
 
+@ContentView(R.layout.register_confirm)
 public class AccountInformationConfirmationActivity extends RoboActivity {
 	
+	// FIXME replace all extra sets/gets with ScreenType references (constants)
+	
 	@InjectView(R.id.account_info_confirm_id_label)
-	TextView userIdLabel;
+	private TextView userIdLabel;
+	
 	@InjectView(R.id.account_info_confirm_email_label)
-	TextView userEmailLabel;
+	private TextView userEmailLabel;
+	
 	@InjectView(R.id.account_info_confirm_account_label)
-	TextView userAcctNbrLabel;
+	private TextView userAcctNbrLabel;
+	
 	@InjectView(R.id.account_info_confirm_step_title_label)
-	TextView titleLabel;
+	private TextView titleLabel;
+	
 	@InjectView(R.id.account_info_confirm_first_paragraph_label)
-	TextView firstParagraph;
+	private TextView firstParagraph;
+	
 	@InjectView(R.id.account_info_confirm_note_label)
-	TextView noteLabel;
+	private TextView noteLabel;
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.account_info_confirm);
+		
 		if (savedInstanceState == null) {
 			final Bundle extras = getIntent().getExtras();
         	if(extras != null) {
@@ -61,7 +70,7 @@ public class AccountInformationConfirmationActivity extends RoboActivity {
 	}
 	
 	public void navigateToHome(final View v){
-		final Intent homeActivity = new Intent(this, LoggedInLandingPage.class);
+		final Intent homeActivity = new Intent(this, NavigationRootActivity.class);
 		this.startActivity(homeActivity);
 	}
 
