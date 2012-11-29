@@ -29,6 +29,8 @@
 		<slidingMenu.version>1.0</slidingMenu.version>
 		
 		<jackson.version>2.1.1</jackson.version>
+		
+		<sonar.skippedModules>ActionBarSherlock,SlidingMenu</sonar.skippedModules>
 	</properties>
 	
 	<dependencies>
