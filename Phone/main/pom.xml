@@ -4,10 +4,10 @@
 	
 	<modelVersion>4.0.0</modelVersion>
 	
-	<artifactId>Discover-Android-Commons</artifactId>
-	<packaging>apklib</packaging>
+	<artifactId>Discover-Android-Phone</artifactId>
+	<packaging>apk</packaging>
 	
-	<name>Discover: Android - Commons</name>
+	<name>Discover: Android - Phone</name>
 	
 	<parent>
 		<groupId>com.discover.mobile</groupId>
@@ -27,13 +27,18 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.actionbarsherlock</groupId>
-			<artifactId>actionbarsherlock</artifactId>
+			<groupId>com.discover.mobile</groupId>
+			<artifactId>Discover-Android-Commons</artifactId>
 			<type>apklib</type>
 		</dependency>
 		<dependency>
 			<groupId>com.slidingmenu.lib</groupId>
 			<artifactId>SlidingMenu</artifactId>
+			<type>apklib</type>
+		</dependency>
+		<dependency>
+			<groupId>com.actionbarsherlock</groupId>
+			<artifactId>actionbarsherlock</artifactId>
 			<type>apklib</type>
 		</dependency>
 		
@@ -44,24 +49,6 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>lib</groupId>
-			<artifactId>admsAppLibrary</artifactId>
-			<version>1.0</version>
 		</dependency>
 	</dependencies>
 	
@@ -76,7 +63,7 @@
 		</plugins>
 	</build>
 	
-	<repositories>
+	<!-- <repositories>
 		<repository>
 			<id>lib</id>
 			<name>lib</name>
@@ -89,6 +76,6 @@
 			</snapshots>
 			<url>file://${project.basedir}/../../Libraries/maven</url>
 		</repository>
-	</repositories>
+	</repositories> -->
 	
 </project>

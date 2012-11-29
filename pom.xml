@@ -14,6 +14,7 @@
 		<module>Libraries/jfeinstein10-SlidingMenu-c3a47530d6/library</module>
 		
 		<module>Commons/main</module>
+		<module>Phone/main</module>
 	</modules>
 
 	<properties>
@@ -29,6 +30,14 @@
 		
 		<jackson.version>2.1.1</jackson.version>
 	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>1.3.9</version>
+		</dependency>
+	</dependencies>
 	
 	<dependencyManagement>
 		<dependencies>
@@ -47,6 +56,18 @@
 			
 			<!-- Submodules -->
 			<dependency>
+				<groupId>com.discover.mobile</groupId>
+				<artifactId>Discover-Android-Commons</artifactId>
+				<version>${project.version}</version>
+				<type>apklib</type>
+			</dependency>
+			<dependency>
+				<groupId>com.slidingmenu.lib</groupId>
+				<artifactId>SlidingMenu</artifactId>
+				<version>${slidingMenu.version}</version>
+				<type>apklib</type>
+			</dependency>
+			<dependency>
 				<groupId>com.actionbarsherlock</groupId>
 				<artifactId>actionbarsherlock</artifactId>
 				<version>${actionBarSherlock.version}</version>
@@ -57,12 +78,6 @@
 						<artifactId>support-v4</artifactId>
 					</exclusion>
 				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>com.slidingmenu.lib</groupId>
-				<artifactId>SlidingMenu</artifactId>
-				<version>${slidingMenu.version}</version>
-				<type>apklib</type>
 			</dependency>
 			
 			<!-- Utilities -->
@@ -97,13 +112,6 @@
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
 				<version>${jackson.version}</version>
-			</dependency>
-			
-			<!-- Documentation -->
-			<dependency>
-				<groupId>com.google.code.findbugs</groupId>
-				<artifactId>jsr305</artifactId>
-				<version>1.3.9</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
