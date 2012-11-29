@@ -8,11 +8,15 @@
     <string name="mobile_device_not_verified">Your mobile device isn\'t verified yet.\nPlease text "Yes" to 347268 to complete text enrollement.</string>
     <string name="enable_texts">Enable Texts</string>
     <string name="enable_push_alerts">Enable Push Alerts</string>
+    <string name="text">Text</string>
+    <string name="push_alerts">Push\n Alerts</string>
     <string name="notification_on">ON</string>
     <string name="notification_off">OFF</string>
     <string name="manage_your_account_title">Manage Your Accounts</string>
     <string name="monitor_your_spending_title">Monitor Your Spending</string>
     <string name="maximize_your_rewards_title">Maximize Your Rewards</string>
+    <string name="show_notification_list">+</string>
+    <string name="hide_notification_list">-</string>
     
     <string name="notifcation_terms_and_condtions_header">Mobile Reminders, Fraud Alerts and Push Alerts Terms of Use</string>
     <string name="notification_terms_agreement">By signing up to receive Mobile Reminders and/or Fraud Alerts (“Text Messages”) or Push Alerts (“Push Alerts”), you agree to the following Terms of Use. By accessing or using Text Messages or Push Alerts, you agree to be bound by these Terms and all terms incorporated by reference.  If you do not agree to these Terms, do not sign up for or use Text Messages or Push Alerts.  DFS means Discover Products Inc. and its affiliates."</string>
@@ -72,6 +76,18 @@
         <item>Account purchase exceeds a specified amount:</item>
 	    <item>Account balance exceeds a specified amount:</item>
 	    <item>Nearing account credit line:</item>
+    </string-array>
+    
+    <string-array
+        name="maximize_your_rewards_headers">
+        <item>Rewards Reminder</item>
+        <item>Cashback Bonus Reaches Specified Amount</item>
+    </string-array>
+    
+    <string-array
+        name="maximize_your_rewards_text">
+        <item>Learn when it\'s time to enroll for a Rewards Program</item>
+        <item></item>
     </string-array>
 	
 	<string-array

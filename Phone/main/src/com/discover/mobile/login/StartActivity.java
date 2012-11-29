@@ -64,10 +64,6 @@ public class StartActivity extends RoboActivity {
 		setupButtons();
 		
 		pushNotificationService.start();
-		
-		//FIXME
-		//Intent i = new Intent(this, ManagePushNotificationsFragment.class);
-		//startActivity(i);
 	}
 	
 	@Override

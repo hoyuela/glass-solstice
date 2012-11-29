@@ -7,4 +7,12 @@
     <dimen name="nav_menu_shadow_width">15dp</dimen>
     <dimen name="nav_menu_offset">48dp</dimen>
     <dimen name="nav_menu_list_padding">10dp</dimen>
+    
+    <!--  Discover Padding -->
+    <dimen name="between_related_elements_padding">14dp</dimen>
+    <dimen name="forms_inner_padding">24dp</dimen>
+    <dimen name="table_inner_padding">30dp</dimen>
+    <dimen name="groups_of_elements_padding">40dp</dimen>
+    <dimen name="call_to_actions_padding">15dp</dimen>
+    <dimen name="orange_button_left_right_padding">30dp</dimen>
 </resources>

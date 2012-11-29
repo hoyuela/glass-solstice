@@ -26,8 +26,8 @@ import com.discover.mobile.common.push.registration.RegisterVenderIdCall;
 import com.discover.mobile.navigation.NavigationMenuRootActivity;
 import com.xtify.sdk.api.XtifySDK;
 
-@ContentView(R.layout.notification_terms_and_conditions)
-public class TermsAndConditionsActivity extends RoboActivity{
+@ContentView(R.layout.push_terms_and_conditions)
+public class PushTermsAndConditionsActivity extends RoboActivity{
 
 	@InjectView(R.id.accept_terms)
 	private Button accept;
