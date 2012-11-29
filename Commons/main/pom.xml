@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<artifactId>Discover-Android-Commons</artifactId>
+	<packaging>apklib</packaging>
+	
+	<name>Discover: Android - Commons</name>
+	
+	<parent>
+		<groupId>com.discover.mobile</groupId>
+		<artifactId>Discover-Android</artifactId>
+		<version>4.0.0-SNAPSHOT</version>
+		<relativePath>../../</relativePath>
+	</parent>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>android.support</groupId>
+			<artifactId>compatibility-v13</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.actionbarsherlock</groupId>
+			<artifactId>actionbarsherlock</artifactId>
+			<type>apklib</type>
+		</dependency>
+		<dependency>
+			<groupId>com.slidingmenu.lib</groupId>
+			<artifactId>SlidingMenu</artifactId>
+			<type>apklib</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.roboguice</groupId>
+			<artifactId>roboguice</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.adobe.adms</groupId>
+			<artifactId>admsAppLibrary</artifactId>
+			<version>1.0</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+        <sourceDirectory>src</sourceDirectory>
+        
+		<plugins>
+            <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.3.1</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                        	<goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>com.adobe.adms</groupId>
+                            <artifactId>admsAppLibrary</artifactId>
+                            <packaging>jar</packaging>
+                            <version>1.0</version>
+                            <file>${project.basedir}/libs/admsAppLibrary.jar</file>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>
