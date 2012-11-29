@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -26,15 +27,20 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
+import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.forgot.ForgotCredentialsActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 
 @ContentView(R.layout.login)
 public class LoginActivity extends RoboActivity {
+	
+	@Inject
+	private CurrentSessionDetails currentSessionDetails;
 
 	@InjectView(R.id.username)
 	private EditText uidField;
@@ -105,6 +111,18 @@ public class LoginActivity extends RoboActivity {
 					.clearTextViewsOnComplete(errorTextView, passField, uidField)
 //					.launchIntentOnSuccess(LoggedInLandingPage.class)
 					.launchIntentOnSuccess(NavigationRootActivity.class)
+					.withSuccessListener(new SuccessListener<AccountDetails>() {
+						
+						@Override
+						public CallbackPriority getCallbackPriority() {
+							return CallbackPriority.MIDDLE;
+						}
+						
+						@Override
+						public void success(AccountDetails value) {
+							currentSessionDetails.setAccountDetails(value);
+						}
+					})
 					
 					// FIXME DO NOT COPY THIS CODE
 					.withErrorResponseHandler(new ErrorResponseHandler() {
