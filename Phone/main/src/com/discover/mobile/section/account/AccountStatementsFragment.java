@@ -16,7 +16,7 @@ public class AccountStatementsFragment extends RoboSherlockFragment {
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		
-		final View view = inflater.inflate(R.layout.account_home, null);
+		final View view = inflater.inflate(R.layout.section_account_home, null);
 		final TextView titleView = (TextView) view.findViewById(R.id.title);
 		titleView.setText(R.string.sub_section_title_statements);
 		return view;

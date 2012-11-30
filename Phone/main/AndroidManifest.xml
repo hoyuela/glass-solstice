@@ -98,8 +98,7 @@
 			android:launchMode="singleTop"
 			android:screenOrientation="portrait" />
 	
-		<activity android:name="com.discover.mobile.navigation.NavigationRootActivity">
-		</activity>
+		<activity android:name="com.discover.mobile.navigation.NavigationRootActivity" />
 		
 	</application>
 	
