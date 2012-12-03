@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="save_changes">Save Changes</string>
-    <string name="terms_text">By ckicking on Save. I agree to the </string>
+    <string name="terms_text">By clicking on Save. I agree to the Terms of Use</string>
     <string name="terms_of_use">Terms of Use.</string> 
     <string name="messages_sent_to">Text messages are sent to:</string>
     <string name="notification_change">Change</string>

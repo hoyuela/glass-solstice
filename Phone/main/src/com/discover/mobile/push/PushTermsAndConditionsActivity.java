@@ -23,7 +23,7 @@ import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail.VidStatus;
 import com.discover.mobile.common.push.registration.RegisterVenderIdCall;
-import com.discover.mobile.navigation.NavigationMenuRootActivity;
+import com.discover.mobile.navigation.NavigationRootActivity;
 import com.xtify.sdk.api.XtifySDK;
 
 @ContentView(R.layout.push_terms_and_conditions)
@@ -127,7 +127,7 @@ public class PushTermsAndConditionsActivity extends RoboActivity{
 	}
 	
 	protected void startNextActivity(){
-		Intent intent = new Intent(this, NavigationMenuRootActivity.class);	
+		Intent intent = new Intent(this, NavigationRootActivity.class);	
 		startActivity(intent);
 	}
 }

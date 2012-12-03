@@ -22,6 +22,10 @@ public class PushManageToogleItem extends RelativeLayout{
 	private TextView titleView;
 	
 	private final Resources res;
+	
+	private boolean isTextChecked = false;
+	
+	private boolean isPushChecked = false;
 
 	public PushManageToogleItem(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -54,15 +58,12 @@ public class PushManageToogleItem extends RelativeLayout{
 
 			@Override
 			public void onClick(View v) {
-				final ImageView toggleImage = (ImageView) v;
-				//FIXME: Item disappears
-				if(toggleImage.getBackground().equals(res.getDrawable(R.drawable.black_gradient_square))){
-					toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
-					toggleImage.setBackgroundResource(-1);
+				ImageView toggleImage = (ImageView) v;
+				if(toggleImage.getId() == textAlert.getId()){
+					toggleTextBox();
 				}
 				else{
-					toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.black_gradient_square));
-					toggleImage.setBackgroundResource(R.drawable.white_check_mark);
+					togglePushBox();
 				}
 			}
 			
@@ -82,15 +83,32 @@ public class PushManageToogleItem extends RelativeLayout{
 	}
 	
 	public boolean isTextAlertEnabled(){
-		return isItemChecked(textAlert);
+		return isTextChecked;
 	}
 	
 	public boolean isPushAlertEnabled(){
-		return isItemChecked(pushAlert);
+		return isPushChecked;
 	}
 	
-	private boolean isItemChecked(ImageView view){
-		return (view.getDrawable().equals(getResources().getDrawable(R.drawable.white_check_mark)));
+	public void toggleTextBox(){
+		toggleBox(textAlert, isTextChecked);
+		isTextChecked = (isTextChecked) ? false : true;
+	}
+	
+	public void togglePushBox(){
+		toggleBox(pushAlert, isPushChecked);
+		isPushChecked = (isPushChecked) ? false : true;
+	}
+	
+	public void toggleBox(final ImageView toggleImage, final boolean isChecked){
+		if(isChecked){
+			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
+			toggleImage.setImageDrawable(res.getDrawable(R.drawable.transparent_square));
+		}
+		else{
+			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.black_gradient_square));
+			toggleImage.setImageDrawable(res.getDrawable(R.drawable.white_check_mark));
+		}
 	}
 
 }

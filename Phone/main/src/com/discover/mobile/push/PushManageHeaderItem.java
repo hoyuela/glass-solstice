@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 
-
 public class PushManageHeaderItem extends RelativeLayout{
 	
 	private LinearLayout list;

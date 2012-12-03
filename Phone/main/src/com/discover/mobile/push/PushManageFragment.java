@@ -78,13 +78,6 @@ public class PushManageFragment extends RoboActivity{
 	
 	private void createList(final String[] headers, final String texts[], final LinearLayout list){
 		int size = headers.length;
-		final PushManageSaveView save_one = new PushManageSaveView(this, null);
-		save_one.setPadding(7, 28, 7, 28);
-		save_one.setBackgroundDrawable(res.getDrawable(R.drawable.notification_transparent_bg_item));
-		final PushManageSaveView save_two = new PushManageSaveView(this, null);
-		save_two.setPadding(7, 28, 7, 28);
-		save_two.setBackgroundDrawable(res.getDrawable(R.drawable.notification_transparent_bg_item));
-		list.addView(save_one);
 		for(int i = 0; i < size; i++){
 			PushManageToogleItem view = new PushManageToogleItem(this, null);
 			view.setHeader(headers[i]);
@@ -94,7 +87,6 @@ public class PushManageFragment extends RoboActivity{
 			list.addView(view);
 			views.add(view);
 		}
-		list.addView(save_two);
 	}
 
 	private void createHeaders() {

@@ -1,20 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>  
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/light_gray_bkgrd"
-    android:padding="@dimen/forms_inner_padding">
+    android:background="@drawable/light_gray_bkgrd">
     
-<RelativeLayout 
+    <ScrollView 
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content" >
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+   		android:layout_height="wrap_content" 
+   		android:padding="@dimen/forms_inner_padding">
     
 	<TextView 
 	    android:id="@+id/sent_to_number"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:textColor="@color/title"
-	    android:textSize="28sp"
+	    android:textSize="14sp"
 	    android:text="@string/messages_sent_to"/>
 	
 	<TextView 
@@ -24,7 +28,7 @@
 	    android:textColor="@color/title"
 	    android:text="312-953-3488"
 	    android:textStyle="bold"
-	    android:textSize="32sp"
+	    android:textSize="16sp"
 	    android:layout_below="@id/sent_to_number"/>
 	
 	<TextView
@@ -34,19 +38,19 @@
 	    android:textColor="@color/blue_link"
 	    android:text="@string/notification_change"
 	    android:textStyle="bold"
-	    android:textSize="28sp"
+	    android:textSize="14sp"
 	    android:layout_below="@id/sent_to_number"
 	    android:layout_alignParentRight="true"/>
 	
 	<TextView
 	    android:id="@+id/not_registered_warning_image"
-	    android:layout_width="35dp"
-	    android:layout_marginTop="50dp"
-	    android:layout_marginRight="14dp"
+	    android:layout_width="17dp"
+	    android:layout_marginTop="25dp"
+	    android:layout_marginRight="7dp"
 	    android:layout_height="wrap_content"
 	    android:textColor="@color/white"
 	    android:text="!"
-	    android:textSize="28sp"
+	    android:textSize="14sp"
 	    android:background="@drawable/yellow_oval"
 	    android:textStyle="bold"
 	    android:gravity="center"
@@ -59,8 +63,8 @@
 	    android:layout_height="wrap_content"
 	    android:textColor="@color/title"
 	    android:text="@string/mobile_device_not_verified" 
-	    android:textSize="28sp"
-	    android:layout_marginTop="40dp"
+	    android:textSize="14sp"
+	    android:layout_marginTop="20dp"
 	    android:layout_below="@+id/phone_number"
 	    android:layout_toRightOf="@+id/not_registered_warning_image"
 	    android:visibility="gone"/>
@@ -75,7 +79,7 @@
 	    android:layout_below="@+id/not_registered_warning_text"
 	    android:text="@string/enable_texts"
 	    android:textColor="@color/body_copy"
-	    android:textSize="28sp" />
+	    android:textSize="14sp" />
 
 	<TextView
 	    android:id="@+id/enable_push"
@@ -88,14 +92,14 @@
         android:layout_marginRight="@dimen/groups_of_elements_padding"
 	    android:layout_marginLeft="@dimen/groups_of_elements_padding"
 	    android:textColor="@color/body_copy"
-	    android:textSize="28sp" />
+	    android:textSize="14sp" />
 
 	<ImageView
 	    android:id="@+id/toggle_enable_texts"
-	    android:layout_width="125dp"
-	    android:layout_height="50dp"
-	    android:layout_marginLeft="12dp"
-	    android:layout_marginRight="100dp"
+	    android:layout_width="75dp"
+	    android:layout_height="25dp"
+	    android:layout_marginLeft="6dp"
+	    android:layout_marginRight="50dp"
 	    android:layout_alignLeft="@+id/enable_texts"
 	    android:layout_below="@+id/enable_texts"
 	    android:background="@drawable/swipe_off"
@@ -103,11 +107,11 @@
 
     <ImageView
         android:id="@+id/toggle_enable_push"
-        android:layout_width="125dp"
-        android:layout_height="50dp"
+        android:layout_width="75dp"
+        android:layout_height="25dp"
         android:layout_alignLeft="@+id/enable_push"
         android:layout_below="@+id/enable_push"
-        android:layout_marginLeft="24dp"
+        android:layout_marginLeft="12dp"
         android:background="@drawable/swipe_off"
         android:textColor="@color/title" />
 	
@@ -118,7 +122,7 @@
 	    android:layout_below="@+id/toggle_enable_push"
 	    android:padding="@dimen/forms_inner_padding"
 	    android:background="@drawable/notification_list_item"
-	    android:layout_marginTop="40dp"/>
+	    android:layout_marginTop="20dp"/>
 	
 	<LinearLayout
 	    android:id="@+id/manage_account_list_preferences"
@@ -135,7 +139,7 @@
 	    android:layout_below="@+id/manage_account_list_preferences"
 	    android:padding="@dimen/forms_inner_padding"
 	    android:background="@drawable/notification_list_item"
-	    android:layout_marginTop="40dp"/>
+	    android:layout_marginTop="20dp"/>
 	
 	<LinearLayout
 	    android:id="@+id/monitor_spending_list_preferences"
@@ -152,7 +156,7 @@
 	    android:layout_below="@+id/monitor_spending_list_preferences"
 	    android:padding="@dimen/forms_inner_padding"
 	    android:background="@drawable/notification_list_item"
-	    android:layout_marginTop="40dp"/>
+	    android:layout_marginTop="20dp"/>
 	
 	<LinearLayout
 	    android:id="@+id/maximize_rewards_list_preferences"
@@ -162,6 +166,14 @@
 	    android:background="@drawable/notification_list_item"
 	    android:orientation="vertical"/>
 
-</RelativeLayout>
+	</RelativeLayout>
+	</ScrollView>
+	
+    <com.discover.mobile.push.PushManageSaveView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray"
+        android:padding="7dp"/>
 
-</ScrollView>
+</RelativeLayout>
