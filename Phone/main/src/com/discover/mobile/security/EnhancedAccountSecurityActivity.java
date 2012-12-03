@@ -23,17 +23,32 @@ import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 public class EnhancedAccountSecurityActivity extends RoboActivity {
 	
 	private final static String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
-	private TextView detailHelpLabel, statusIconLabel;
-	private String questionId;
-	
-	@InjectView(R.id.account_security_question_placeholder_label)
-	private TextView questionLabel;
+	private final static String TRUE = "true"; //$NON-NLS-1$
+	private final static String FALSE = "false"; //$NON-NLS-1$
+	private final static int HELP_DROPDOWN_LINE_HEIGHT = 10;
+
+	private String questionId;	
+
+//INPUT FIELDS
 	
 	@InjectView(R.id.account_security_question_answer_field)
 	private EditText questionAnswerField;
+
+//RADIO BUTTONS AND GROUPS
 	
 	@InjectView(R.id.account_security_choice_radio_group)
 	private RadioGroup securityRadioGroup;
+
+//TEXT LABELS
+	
+	@InjectView (R.id.account_security_whats_this_detail_label)
+	private TextView detailHelpLabel;
+	
+	@InjectView (R.id.account_security_plus_label)
+	private TextView statusIconLabel;
+	
+	@InjectView(R.id.account_security_question_placeholder_label)
+	private TextView questionLabel;
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
@@ -41,46 +56,31 @@ public class EnhancedAccountSecurityActivity extends RoboActivity {
 		
 		final Bundle extras = getIntent().getExtras();
     	if(extras != null) {
-    		final String question = 
-    				extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION);
-    		questionId = 
-    				extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION_ID);
-    		
+    		final String question = extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION);
+    		questionId = extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION_ID);
     		questionLabel.setText(question);
     	}
 	}
-	
-	@Override
-	public void onStart(){
-		super.onStart();
-		setupToggleItems();
-	}
-	private void setupToggleItems(){
-		detailHelpLabel = (TextView)findViewById(R.id.account_security_whats_this_detail_label);
-		statusIconLabel = (TextView)findViewById(R.id.account_security_plus_label);
-
-	}
-	
+		
 	public void expandHelpMenu(final View v){
-			if("+".equals(statusIconLabel.getText())){
-				statusIconLabel.setText(getString(R.string.account_security_minus_text));
-				detailHelpLabel.setMaxLines(10);
-			}
-			else{
-				statusIconLabel.setText(getString(R.string.account_security_plus_text));
-				detailHelpLabel.setMaxLines(0);
-			}
+	    if("+".equals(statusIconLabel.getText())){	//$NON-NLS-1$
+			statusIconLabel.setText(getString(R.string.account_security_minus_text));
+			detailHelpLabel.setMaxLines(HELP_DROPDOWN_LINE_HEIGHT);
+		}
+	    else{
+	    	statusIconLabel.setText(getString(R.string.account_security_plus_text));
+	    	detailHelpLabel.setMaxLines(0);
+	    }
 	}
 	
 	public void submitSecurityInfo(final View v){
 		
-		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
+		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
 			@Override
 			public void success(final Object value) {
 				progress.dismiss();
-				Log.d(TAG, "Strong Auth Succeeded!");
 				finishWithResultOK();
 			}
 		};
@@ -94,10 +94,12 @@ public class EnhancedAccountSecurityActivity extends RoboActivity {
 		final View selectedButton = securityRadioGroup.findViewById(radioButtonId);
 		final int selectedIndex = securityRadioGroup.indexOfChild(selectedButton);
 		
-		if(selectedIndex == 0)
-			answerDetails.bindDevice = "true";
-		else
-			answerDetails.bindDevice = "false";
+		if(selectedIndex == 0) {
+			answerDetails.bindDevice = TRUE;
+		}
+		else {
+			answerDetails.bindDevice = FALSE;
+		}
 		
 		StrongAuthAnswerCall strongAuthAnswer;
 		try {
@@ -106,11 +108,7 @@ public class EnhancedAccountSecurityActivity extends RoboActivity {
 			strongAuthAnswer.submit();
 			
 		} catch (final NoSuchAlgorithmException e) {
-			
-			// TODO Auto-generated catch block
-			Log.e(TAG, "Could not encode strong auth response body.");
-			e.printStackTrace();
-			
+			Log.e(TAG, "Could not B64 encode strong auth response body: " + e);//$NON-NLS-1$
 		}
 		
 	}
@@ -122,13 +120,6 @@ public class EnhancedAccountSecurityActivity extends RoboActivity {
 	}
 	
 	private void finishWithResultOK() {
-//		Intent emptyData = new Intent();
-//		emptyData.setAction("STRONG_AUTH_SUCCESS");
-//		if (getParent() == null) {
-//		    setResult(Activity.RESULT_OK, emptyData);
-//		} else {
-//		    getParent().setResult(Activity.RESULT_OK, emptyData);
-//		}
 		setResult(RESULT_OK);
 		finish();
 	}
