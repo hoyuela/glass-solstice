@@ -12,6 +12,7 @@ import java.io.StreamCorruptedException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 public class UserIdPersistance {
 	
@@ -45,7 +46,6 @@ public class UserIdPersistance {
 		Context upperContext;
 		
 		private static final String FILE_NAME = "Discover"; //$NON-NLS-1$
-		private static final String COULD_NOT_OPEN = "Accessing persitance file failed."; //$NON-NLS-1$
 		
 		private ObjectOutputStream objectOutputStream;
 		private ObjectInputStream objectInputStream;
@@ -80,14 +80,11 @@ public class UserIdPersistance {
 				objectInputStream = new ObjectInputStream(fis);
 				objectOutputStream = new ObjectOutputStream(fos);
 			} catch (StreamCorruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "Stream Corrupted Exception While Opening File: " + e);//$NON-NLS-1$
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "File Not Found Exception While Opening File: " + e);//$NON-NLS-1$
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "IO Exception While Opening File: " + e);//$NON-NLS-1$
 			}
 		}
 		
@@ -96,8 +93,7 @@ public class UserIdPersistance {
 				objectInputStream.close();
 				objectOutputStream.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "IO Exception While Closing File: " + e);//$NON-NLS-1$
 			}
 		}
 		
@@ -111,14 +107,11 @@ public class UserIdPersistance {
 					this.wasSaved = temp.wasSaved;
 				
 			} catch (OptionalDataException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "Optional Data Exception While Loading Object: " + e);//$NON-NLS-1$
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "Class Not Found Exception While Loading Object: " + e);//$NON-NLS-1$
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "IO Exception While Loading Object: " + e);//$NON-NLS-1$
 			}
 		}
 		
@@ -135,8 +128,7 @@ public class UserIdPersistance {
 				objectOutputStream.reset();
 				objectOutputStream.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "IO Exception While Saving Object: " + e); //$NON-NLS-1$
 			}
 		}
 	}
