@@ -34,6 +34,7 @@ import android.util.Log;
  * @author scottseward
  *
  */
+
 public class UserIdPersistance {
 	
 	private static final String TAG = UserIdPersistance.class.getSimpleName();
@@ -41,7 +42,7 @@ public class UserIdPersistance {
 	private ObjectReaderWriter objectReaderWriter;
 	private PersistentObject credentials;
 		
-	public UserIdPersistance(Context context){
+	public UserIdPersistance(Context context) {
 		objectReaderWriter = new ObjectReaderWriter( context );
 		credentials = objectReaderWriter.getObjectFromFile();
 	}
