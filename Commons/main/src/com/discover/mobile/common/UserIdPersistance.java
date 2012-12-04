@@ -12,65 +12,70 @@ import java.io.StreamCorruptedException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
+/** Class Description of UserIdPersistence
+ * 
+ * 	UserIdPersistence handles the saving and retrieving of a user's ID in persistent, internal storage.
+ * 
+ * It is a class that utilizes an inner class to abstract away the fact that the inner class extends Activity.
+ * It provides a higher level set of methods that let you save and retrieve credentials easily.
+ * 
+ * The UserIdPersistence class allows you to get and set the user ID to be saved along with the state of
+ * the save ID button/check box/switch on the login screen. 
+ * 
+ * This class uses its nested class ObjectReaderWriter to save the user ID and button state to a file.
+ * ObjectReaderWriter manages a private file that is associated with the current install of the application. 
+ * If the application is ever uninstalled, this file is deleted along with it.
+ * ObjectReaderWriter is an activity that saves a PersistentObject to file, as a serialized object.
+ * A PersistentObject is a serialized class that stores the user ID and the state of the save button.
+ * It should be able to be extended easily with more attributes.
+ * 
+ * @author scottseward
+ *
+ */
 public class UserIdPersistance {
 	
 	private static final String TAG = UserIdPersistance.class.getSimpleName();
 	
-	private UserCredentials currentCredentials;
+	private ObjectReaderWriter objectReaderWriter;
+	private PersistentObject credentials;
 		
 	public UserIdPersistance(Context context){
-		currentCredentials = new UserCredentials( context );
+		objectReaderWriter = new ObjectReaderWriter( context );
+		credentials = objectReaderWriter.getObjectFromFile();
 	}
 	
 	public void saveId(String newId) {
-		currentCredentials.userId = newId;
+		credentials.setUserId(newId);
+		objectReaderWriter.saveObject(credentials);
 	}
 	
 	public String getUserId() {
-		return currentCredentials.getUserId();
+		return credentials.getUserId();
 	}
 	
 	public boolean getButtonState() {
-		return currentCredentials.getSavedState();
+		return credentials.getSaveButtonState();
 	}
 	
-	public void saveButtonStateAs(boolean wasSaved) {
-		currentCredentials.saveButtonStateAs(wasSaved);
+	public void saveButtonState(boolean wasSaved) {
+		credentials.setSaveButtonState(wasSaved);
+		objectReaderWriter.saveObject(credentials);
 	}
 
-	private class UserCredentials extends Activity implements Serializable {
-		private static final long serialVersionUID = -8462997307297475408L;
-		
-		Context upperContext;
+	private class ObjectReaderWriter extends Activity {
 		
 		private static final String FILE_NAME = "Discover"; //$NON-NLS-1$
-		private static final String COULD_NOT_OPEN = "Accessing persitance file failed."; //$NON-NLS-1$
-		
-		private ObjectOutputStream objectOutputStream;
-		private ObjectInputStream objectInputStream;
-		
-		String userId = ""; //$NON-NLS-1$
-		boolean  wasSaved = false;
 
-		UserCredentials(Context context){
+		private Context upperContext = null;
+		
+		private ObjectOutputStream objectOutputStream = null;
+		private ObjectInputStream objectInputStream = null;
+		
+		ObjectReaderWriter(Context context){
 			upperContext = context;
 			openConnectionToFile();
-			loadObjectFromFile();	
-			closeConnectionToFile();
-		}
-		
-		public String getUserId() {
-			return userId;
-		}
-		
-		public boolean getSavedState() {
-			return wasSaved;
-		}
-		
-		public void saveButtonStateAs(boolean state) {
-			wasSaved = state;
-			saveObject();
 		}
 		
 		private void openConnectionToFile() {
@@ -80,14 +85,11 @@ public class UserIdPersistance {
 				objectInputStream = new ObjectInputStream(fis);
 				objectOutputStream = new ObjectOutputStream(fos);
 			} catch (StreamCorruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "Stream Corrupted Exception While Opening File: " + e);//$NON-NLS-1$
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "File Not Found Exception While Opening File: " + e);//$NON-NLS-1$
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "IO Exception While Opening File: " + e);//$NON-NLS-1$
 			}
 		}
 		
@@ -96,48 +98,68 @@ public class UserIdPersistance {
 				objectInputStream.close();
 				objectOutputStream.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "IO Exception While Closing File: " + e);//$NON-NLS-1$
 			}
 		}
 		
-		private void loadObjectFromFile() {
+		public PersistentObject getObjectFromFile() {
+			PersistentObject credentials = null;
 			try {
 				openConnectionToFile();
-
-					UserCredentials temp = (UserCredentials)objectInputStream.readObject();
-				
-					this.userId = temp.userId;
-					this.wasSaved = temp.wasSaved;
-				
+				credentials = (PersistentObject)objectInputStream.readObject();
+				closeConnectionToFile();
+				return credentials;
 			} catch (OptionalDataException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "Optional Data Exception While Loading Object: " + e);//$NON-NLS-1$
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "Class Not Found Exception While Loading Object: " + e);//$NON-NLS-1$
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "IO Exception While Loading Object: " + e);//$NON-NLS-1$
 			}
+			return credentials;
 		}
 		
-		private void saveObject() {
+		public void saveObject(PersistentObject writeableObject) {
 			openConnectionToFile();
-			writeObjectToFile();
+			writeObjectToFile(writeableObject);
 			closeConnectionToFile();
 		}
 		
-		private void writeObjectToFile() {
+		private void writeObjectToFile(PersistentObject writeableObject) {
 			try {
-				objectOutputStream.writeObject(currentCredentials);
+				objectOutputStream.writeObject(writeableObject);
 				objectOutputStream.flush();
 				objectOutputStream.reset();
-				objectOutputStream.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e(TAG, "IO Exception While Saving Object: " + e); //$NON-NLS-1$
 			}
+		}
+	}
+	
+	private class PersistentObject implements Serializable {
+
+		private static final long serialVersionUID = 8869169406450617064L;
+		private String userId = ""; //$NON-NLS-1$
+		private boolean  wasSaved = false;
+		
+		public String getUserId() {
+			if(userId == null) {
+				return ""; //$NON-NLS-1$
+			}
+			else {
+				return userId; 
+			}
+		}
+		
+		public void setUserId(String userId) {
+			this.userId = userId;
+		}
+		
+		public void setSaveButtonState(boolean wasSaved) {
+			this.wasSaved = wasSaved;
+		}
+		public boolean getSaveButtonState() {
+			return wasSaved;
 		}
 	}
 
