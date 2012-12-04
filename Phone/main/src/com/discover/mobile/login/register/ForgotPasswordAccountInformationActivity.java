@@ -55,67 +55,67 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	@Override
 	protected void setupCustomTextChangedListeners(){
 		final InputValidator validator = new InputValidator();
-		
-		ssnField.setOnFocusChangeListener(new OnFocusChangeListener(){
-
-			@Override
-			public void onFocusChange(final View v, final boolean hasFocus) {
-				genericInputField = (EditText)v;
-				
-				if(genericInputField.getText().length() < 4) {
-					//hide error label
-					ssnErrorLabel.setVisibility(View.VISIBLE);
-				}
-			}
-		});
-		
-		ssnField.addTextChangedListener(new TextWatcher(){
-
-			@Override
-			public void afterTextChanged(final Editable s) {/*Intentionally empty*/}
-
-			@Override
-			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
-
-			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-				if(s.length() == 4) {
-					//hide error label
-					ssnErrorLabel.setVisibility(View.GONE);
-				}
-				
-			}
-			
-		});
-		
-		yearField.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(final View v, final boolean hasFocus) {
-				genericInputField = (EditText)v;
-
-				if(genericInputField.getText().length() < 4) {
-					dobYearErrorLabel.setVisibility(View.VISIBLE);
-				}
-			}
-		});
-		
-		yearField.addTextChangedListener(new TextWatcher(){
-
-			@Override
-			public void afterTextChanged(final Editable s) {/*Intentionally empty*/}
-
-			@Override
-			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
-
-			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-				if(s.length() == 4) {
-					//hide error label
-					dobYearErrorLabel.setVisibility(View.GONE);
-				}
-			}
-			
-		});
+//		
+//		ssnField.setOnFocusChangeListener(new OnFocusChangeListener(){
+//
+//			@Override
+//			public void onFocusChange(final View v, final boolean hasFocus) {
+//				genericInputField = (EditText)v;
+//				
+//				if(!hasFocus && genericInputField.getText().length() < 4) {
+//					//hide error label
+//					ssnErrorLabel.setVisibility(View.VISIBLE);
+//				}
+//			}
+//		});
+//		
+//		ssnField.addTextChangedListener(new TextWatcher(){
+//
+//			@Override
+//			public void afterTextChanged(final Editable s) {/*Intentionally empty*/}
+//
+//			@Override
+//			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
+//
+//			@Override
+//			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+//				if(!hasFocus && s.length() == 4) {
+//					//hide error label
+//					ssnErrorLabel.setVisibility(View.GONE);
+//				}
+//				
+//			}
+//			
+//		});
+//		
+//		yearField.setOnFocusChangeListener(new OnFocusChangeListener() {
+//			@Override
+//			public void onFocusChange(final View v, final boolean hasFocus) {
+//				genericInputField = (EditText)v;
+//
+//				if(genericInputField.getText().length() < 4) {
+//					dobYearErrorLabel.setVisibility(View.VISIBLE);
+//				}
+//			}
+//		});
+//		
+//		yearField.addTextChangedListener(new TextWatcher(){
+//
+//			@Override
+//			public void afterTextChanged(final Editable s) {/*Intentionally empty*/}
+//
+//			@Override
+//			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
+//
+//			@Override
+//			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+//				if(s.length() == 4) {
+//					//hide error label
+//					dobYearErrorLabel.setVisibility(View.GONE);
+//				}
+//			}
+//			
+//		});
 		
 
 		idField.setOnFocusChangeListener(new OnFocusChangeListener() {

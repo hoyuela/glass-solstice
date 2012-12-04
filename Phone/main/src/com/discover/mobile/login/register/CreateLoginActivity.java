@@ -40,27 +40,34 @@ public class CreateLoginActivity extends RoboActivity {
 	// FIXME replace all extra sets/gets with ScreenType references (constants)
 	
 	private CreateLoginDetails formDataTwo;
+
+//ERROR LABELS
 	
 	@InjectView(R.id.account_info_main_error_label)
 	private TextView mainErrorMessageLabel;
 	
 	@InjectView(R.id.account_info_error_label)
 	private TextView errorMessageLabel;
+
+	@InjectView (R.id.account_info_id_confirm_error_label)
+	private TextView idConfirmErrorLabel;
+
+	@InjectView (R.id.account_info_id_pass_error_label)
+	private TextView passErrorLabel;
+	
+	@InjectView (R.id.account_info_pass_two_confirm_error_label)
+	private TextView passConfirmErrorLabel;
+
+	@InjectView (R.id.account_info_email_error_label)
+	private TextView emailErrorLabel;
+
+//TEXT LABELS
 	
 	@InjectView(R.id.account_info_register_label)
 	private TextView titleLabel;
 	
 	@InjectView(R.id.account_info_step_label)
 	private TextView stepLabel;
-	
-	@InjectView (R.id.account_info_id_confirm_error_label)
-	private TextView idConfirmErrorLabel;
-	
-	@InjectView (R.id.account_info_pass_two_confirm_error_label)
-	private TextView passConfirmErrorLabel;
-	
-	@InjectView (R.id.account_info_email_error_label)
-	private TextView emailErrorLabel;
 	
 	private boolean forgotBoth = false;
 	private boolean passAndIdMatch = false;
@@ -147,12 +154,17 @@ public class CreateLoginActivity extends RoboActivity {
 			formDataTwo.userIdConfirm = formDataTwo.userId;
 			submitFormInfo();
 		}
+		else {
+			showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
+		}
+			
 	}
 	
 	private void updateErrorLabelsUsingValidator(final InputValidator validator) {
+		hideAllErrorLabels();
 		
 		if( !validator.didIdsMatch ) {
-			showLabelWithStringResource(errorMessageLabel, R.string.invalid_value);
+			showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_ids_must_match_text);
 			showLabelWithStringResource(idConfirmErrorLabel, R.string.invalid_value);
 		}
 		else {
@@ -161,6 +173,7 @@ public class CreateLoginActivity extends RoboActivity {
 		}
 		
 		if( !validator.didPassesMatch ){
+			showLabelWithStringResource(passErrorLabel, R.string.account_info_two_passwords_dont_match_text);
 			showLabelWithStringResource(passConfirmErrorLabel, R.string.invalid_value);
 		}
 		else {
@@ -175,9 +188,16 @@ public class CreateLoginActivity extends RoboActivity {
 		}
 		
 		if( passAndIdMatch ) {
-			showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
 			showLabelWithStringResource(errorMessageLabel, R.string.id_and_pass_match);
 		}
+	}
+	
+	private void hideAllErrorLabels() {
+		hideLabel(errorMessageLabel);
+		hideLabel(idConfirmErrorLabel);
+		hideLabel(passErrorLabel);
+		hideLabel(passConfirmErrorLabel);
+		hideLabel(emailErrorLabel);
 		
 	}
 	
