@@ -1,4 +1,4 @@
-package com.discover.mobile.section.account;
+package com.discover.mobile.section.home;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import com.discover.mobile.views.GeneralListItemAdapter;
 import com.discover.mobile.views.GeneralListItemModel;
 import com.google.inject.Inject;
 
-public class AccountSummaryFragment extends RoboSherlockFragment {
+public class HomeSummaryFragment extends RoboSherlockFragment {
 	
 	@Inject
 	private CurrentSessionDetails currentSessionDetails;

@@ -1,7 +1,7 @@
 package com.discover.mobile.section;
 
 import com.discover.mobile.section.account.AccountSectionInfo;
-import com.discover.mobile.section.account.HomeSectionInfo;
+import com.discover.mobile.section.home.HomeSectionInfo;
 import com.google.common.collect.ImmutableList;
 
 public final class Sections {

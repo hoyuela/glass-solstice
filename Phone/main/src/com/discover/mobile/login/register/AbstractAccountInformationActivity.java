@@ -197,12 +197,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	
 	private void setupYearTextChangedListeners(){
 		dobYearField.setOnFocusChangeListener(new OnFocusChangeListener() {
-			EditText inputField;
 
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
-				inputField = (EditText)v;
-				if(!hasFocus && inputField.getText().length() < 4) {
+
+				if(!hasFocus && ((EditText)v).getText().length() < 4) {
 					showLabel(dobYearErrorLabel);
 				}
 			}
@@ -236,7 +235,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			public void onFocusChange(final View v, final boolean hasFocus) {
 				inputField = (EditText)v;
 				
-				if(!hasFocus && inputField.getText().length() < 4) {
+				if( !hasFocus && inputField.getText().length() < 4 ) {
 					showLabel(ssnErrorLabel);
 				}
 			}
