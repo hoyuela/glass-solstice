@@ -32,7 +32,6 @@ import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.LoginActivity;
-import com.discover.mobile.push.PushManageFragment;
 import com.google.inject.Inject;
 
 @ContentView(R.layout.start_landing)
@@ -77,11 +76,7 @@ public class StartActivity extends RoboActivity {
 		
 		setupButtons();
 		
-		pushNotificationService.start();
-		
-		//FIXME
-		Intent i = new Intent(this, PushManageFragment.class);
-		startActivity(i);	
+		//pushNotificationService.start();
 	}
 	
 	@Override
