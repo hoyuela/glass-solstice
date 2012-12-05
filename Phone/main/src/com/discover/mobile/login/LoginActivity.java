@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,14 +28,19 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
+import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
+import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail.VidStatus;
 import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
+import com.discover.mobile.push.PushTermsAndConditionsActivity;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
@@ -64,11 +70,13 @@ public class LoginActivity extends RoboActivity {
 	
 	@InjectView(R.id.forgot_uid_or_pass_text)
 	private TextView forgotUserIdOrPassText;
+	
+	private Activity activity;
 		
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		activity = this;
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		
 		setupButtons();
@@ -127,7 +135,6 @@ public class LoginActivity extends RoboActivity {
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback.<AccountDetails>builder(this)
 					.showProgressDialog("Discover", "Loading...", true)
 					.clearTextViewsOnComplete(errorTextView, passField, uidField)
-					.launchIntentOnSuccess(NavigationRootActivity.class)
 					.withSuccessListener(new SuccessListener<AccountDetails>() {
 						
 						@Override
@@ -138,6 +145,7 @@ public class LoginActivity extends RoboActivity {
 						@Override
 						public void success(AccountDetails value) {
 							currentSessionDetails.setAccountDetails(value);
+							getXitifyRegistrationStatus();
 						}
 					})
 					
@@ -232,4 +240,41 @@ public class LoginActivity extends RoboActivity {
 		this.startActivity(forgotIdAndOrPassActivity);
 	}
 	
+	protected void getXitifyRegistrationStatus(){
+		// TODO Auto-generated method stub
+		final AsyncCallbackAdapter<PushRegistrationStatusDetail> callback = new AsyncCallbackAdapter<PushRegistrationStatusDetail>(){
+			@Override
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
+				Intent intent;
+				switch(messageErrorResponse.getHttpStatusCode()) {
+				// TODO: For now nothing really needs to be handled here
+				// The reason for this is because this is all done in the background 
+				// with no implications with the UI. Proper practice is to handle all
+				// the errors.
+					case HttpURLConnection.HTTP_UNAUTHORIZED:
+						intent = new Intent(activity, NavigationRootActivity.class);	
+						startActivity(intent);
+						return true;	
+					default:
+						intent = new Intent(activity, NavigationRootActivity.class);	
+						startActivity(intent);
+						return true;
+				}
+			}
+			
+			@Override
+			public void success(final PushRegistrationStatusDetail value){
+				if(value.vidStatus != VidStatus.MISSING){
+					//TODO: Set a status somewhere
+					Intent intent = new Intent(activity, NavigationRootActivity.class);	
+					startActivity(intent);
+				}else{
+					Intent intent = new Intent(activity, PushTermsAndConditionsActivity.class);	
+					startActivity(intent);
+				}
+			}
+		};
+			
+		new GetPushRegistrationStatus(this, callback).submit();
+	}
 }

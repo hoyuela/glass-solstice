@@ -11,8 +11,6 @@ public class DiscoverApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
-//		EasyTracker.getInstance().setContext(this);
+		//		EasyTracker.getInstance().setContext(this);
 	}
-	
 }

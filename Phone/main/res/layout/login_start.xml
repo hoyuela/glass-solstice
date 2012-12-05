@@ -50,7 +50,7 @@
 	                android:imeOptions="actionNext"
 	                android:inputType="textNoSuggestions"
 	                android:maxLines="@integer/MAX_INPUT_LINES"
-	                android:textColor="@color/black" >
+	                android:textColor="@color/black">
 
 	            </EditText>
 	
@@ -63,7 +63,7 @@
 	                android:hint="@string/password_placeholder"
 	                android:inputType="textPassword"
 	                android:maxLines="@integer/MAX_INPUT_LINES"
-	                android:textColor="@color/black" />
+	                android:textColor="@color/black"/>
 	
 	        </RelativeLayout>
 	
