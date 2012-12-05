@@ -32,7 +32,7 @@ public class PushManageFragment extends RoboActivity{
 	private PushManageHeaderItem maximizeHeader;
 	
 	@InjectView(R.id.maximize_rewards_list_preferences)
-	private LinearLayout maxmizeList;
+	private LinearLayout maximizeList;
 	
 	private Resources res;
 	
@@ -51,34 +51,26 @@ public class PushManageFragment extends RoboActivity{
 	private void setListsInHeader() {
 		manageHeader.setList(manageList);
 		monitorHeader.setList(monitorList);
-		maximizeHeader.setList(maxmizeList);	
+		maximizeHeader.setList(maximizeList);	
 	}
 
 	private void createLists() {
 		views = new ArrayList<PushManageToogleItem>();
-		createManageList(res.getStringArray(R.array.manage_your_accounts_headers),
-						 res.getStringArray(R.array.manage_your_accounts_text));
-		createMonitorList(res.getStringArray(R.array.monitor_your_spending_headers),
-				 		  res.getStringArray(R.array.monitor_your_spending_text));
-		createMaximizeList(res.getStringArray(R.array.maximize_your_rewards_headers),
-				 		   res.getStringArray(R.array.maximize_your_rewards_text));
+		createList(manageList, 
+					res.getStringArray(R.array.manage_your_accounts_headers),
+					res.getStringArray(R.array.manage_your_accounts_text));
+		createList(monitorList, 
+					res.getStringArray(R.array.monitor_your_spending_headers),
+				 	res.getStringArray(R.array.monitor_your_spending_text));
+		createList(maximizeList, 
+					res.getStringArray(R.array.maximize_your_rewards_headers),
+					res.getStringArray(R.array.maximize_your_rewards_text));
 	}
 	
-	private void createManageList(String[] headers, String[] texts){
-		createList(headers, texts, manageList);
-	}
-	
-	private void createMonitorList(String[] headers, String texts[]){
-		createList(headers, texts, monitorList);
-	}
-	
-	private void createMaximizeList(String[] headers, String texts[]){
-		createList(headers, texts, maxmizeList);
-	}
-	
-	private void createList(final String[] headers, final String texts[], final LinearLayout list){
-		int size = headers.length;
-		for(int i = 0; i < size; i++){
+	private void createList(final LinearLayout list, final String[] headers, final String texts[]){
+		final int lengthOfHeaders = headers.length;
+		
+		for(int i = 0; i < lengthOfHeaders; i++) {
 			PushManageToogleItem view = new PushManageToogleItem(this, null);
 			view.setHeader(headers[i]);
 			view.setText(texts[i]);

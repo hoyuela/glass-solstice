@@ -7,6 +7,7 @@ import static com.discover.mobile.common.auth.registration.RegistrationErrorCode
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 
 import java.net.HttpURLConnection;
+import java.util.Locale;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
@@ -69,9 +71,52 @@ public class CreateLoginActivity extends RoboActivity {
 	@InjectView(R.id.account_info_step_label)
 	private TextView stepLabel;
 	
-	private boolean forgotBoth = false;
-	private boolean passAndIdMatch = false;
+	@InjectView(R.id.account_info_two_id_strength_label)
+	private TextView idStrengthBarLabel;
+	
+	@InjectView (R.id.account_info_two_pass_strength_bar_label)
+	private TextView passStrengthBarLabel;
+		
+//INPUT FIELDS
+	
+	@InjectView(R.id.account_info_two_email_field)
+	private EditText emailField;
+	
+	@InjectView(R.id.account_info_two_id_field)
+	private EditText idField;
+	
+	@InjectView (R.id.account_info_two_id_confirm_field)
+	private EditText idConfirmField;
+	
+	@InjectView (R.id.account_info_two_pass_field)
+	private EditText passField;
+	
+	@InjectView (R.id.account_info_two_pass_confirm_field)
+	private EditText passConfirmField;
+	
+//STRENGTH BARS
+	//USER ID
+	@InjectView (R.id.account_info_two_uid_bar_one)
+	private View idBarOne;
+	
+	@InjectView (R.id.account_info_two_uid_bar_two)
+	private View idBarTwo;
+	
+	@InjectView (R.id.account_info_two_uid_bar_three)
+	private View idBarThree;
+	
+	//PASSWORD
+	@InjectView (R.id.account_info_two_pass_bar_one)
+	private View passBarOne;
+	
+	@InjectView (R.id.account_info_two_pass_bar_two)
+	private View passBarTwo;
+	
+	@InjectView (R.id.account_info_two_pass_bar_three)
+	private View passBarThree;
 
+
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -80,26 +125,22 @@ public class CreateLoginActivity extends RoboActivity {
 		
 		formDataTwo = new CreateLoginDetails();
 		
-		// FIXME remove the bundle stuff
-		final Bundle extras = getIntent().getExtras();
-    	if(extras != null) {
-    		final AccountInformationDetails formDataOne = (AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
-    		formDataTwo.acctNbr = formDataOne.acctNbr;
-    		formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
-    		formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
-    		formDataTwo.dateOfBirthYear = formDataOne.dateOfBirthYear;
-    		formDataTwo.expirationMonth = formDataOne.expirationMonth;
-    		formDataTwo.expirationYear = formDataOne.expirationYear;
-    		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
-    		if("forgotBoth".equals(extras.getString("ScreenType"))){
-    			forgotBoth = true;
-    			titleLabel.setText(getString(R.string.forgot_both_text));
-    		}
+		Intent intent = getIntent();
+		
+		final AccountInformationDetails formDataOne = (AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
+		formDataTwo.acctNbr = formDataOne.acctNbr;
+		formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
+		formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
+		formDataTwo.dateOfBirthYear = formDataOne.dateOfBirthYear;
+		formDataTwo.expirationMonth = formDataOne.expirationMonth;
+		formDataTwo.expirationYear = formDataOne.expirationYear;
+		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
+		if(ScreenType.FORGOT_BOTH.equals(ScreenType.getExtraFromIntent(intent))) {
+			titleLabel.setText(getString(R.string.forgot_both_text));
     	}
 
 		setupTextChangedListeners();
 	}
-	
 	
 	@Override
 	public void onBackPressed() {
@@ -123,7 +164,8 @@ public class CreateLoginActivity extends RoboActivity {
 		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_CONFIRMATION);
-		if(forgotBoth) {
+		
+		if(getString(R.string.forgot_both_text).equals(titleLabel.getText())) {
 			confirmationScreen.putExtra("ScreenType", "forgotBoth");
 		}
 		this.startActivity(confirmationScreen);
@@ -132,11 +174,11 @@ public class CreateLoginActivity extends RoboActivity {
 	public void checkInputsThenSubmit(final View v){
 		final InputValidator validator = new InputValidator();
 		
-		final String email = ((EditText)findViewById(R.id.account_info_two_email_field)).getText().toString();
-		final String id1 = ((EditText)findViewById(R.id.account_info_two_id_field)).getText().toString();
-		final String id2 = ((EditText)findViewById(R.id.account_info_two_id_confirm_field)).getText().toString();
-		final String pass1 = ((EditText)findViewById(R.id.account_info_two_pass_field)).getText().toString();
-		final String pass2 = ((EditText)findViewById(R.id.account_info_two_pass_confirm_field)).getText().toString();
+		final String email = emailField.getText().toString();
+		final String id1 = idField.getText().toString();
+		final String id2 = idConfirmField.getText().toString();
+		final String pass1 = passField.getText().toString();
+		final String pass2 = passConfirmField.getText().toString();
 		
 		validator.doPassesMatch(pass1, pass2);
 		validator.doIdsMatch(id1,id2);
@@ -187,7 +229,7 @@ public class CreateLoginActivity extends RoboActivity {
 			hideLabel(emailErrorLabel);
 		}
 		
-		if( passAndIdMatch ) {
+		if( validator.didPassAndIdMatch ) {
 			showLabelWithStringResource(errorMessageLabel, R.string.id_and_pass_match);
 		}
 	}
@@ -222,13 +264,6 @@ public class CreateLoginActivity extends RoboActivity {
 	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {		
 		//need not do anything we dont care about the result from these screens.
 	}
-	
-	@InjectView (R.id.account_info_two_id_field)
-	private EditText idField;
-	@InjectView (R.id.account_info_two_id_confirm_field)
-	private EditText idConfirmField;
-	@InjectView (R.id.account_info_two_pass_field)
-	private EditText passField;
 
 	private void setupTextChangedListeners(){
 	
@@ -237,24 +272,16 @@ public class CreateLoginActivity extends RoboActivity {
 
 			@Override
 			public void beforeTextChanged(final CharSequence s, final int start, final int count,
-					final int after) {
-				// not used
-			}
+					final int after) {/*not used*/}
 
 			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before,
+			public void onTextChanged(final CharSequence inputText, final int start, final int before,
 					final int count) {
-				checkMatchingPassAndId();
-				updateBarsForPass(s, findViewById(R.id.account_info_two_pass_bar_one), 
-							  findViewById(R.id.account_info_two_pass_bar_two),
-							  findViewById(R.id.account_info_two_pass_bar_three),
-						      (TextView)findViewById(R.id.account_info_two_pass_strength_bar_label));
+				updateBarsForPass(inputText, passBarOne, passBarTwo, passBarThree, passStrengthBarLabel);
 			}
 
 			@Override
-			public void afterTextChanged(final Editable s) {
-				//not used				
-			}
+			public void afterTextChanged(final Editable s) {/*not used*/}
 		});
 		
 		idField.addTextChangedListener(new TextWatcher(){
@@ -268,14 +295,10 @@ public class CreateLoginActivity extends RoboActivity {
 					final int after) {/*not used*/}
 
 			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before,
-					final int count) {
-				checkMatchingPassAndId();
-				updateBarsForUID(s, findViewById(R.id.account_info_two_uid_bar_one), 
-							  findViewById(R.id.account_info_two_uid_bar_two),
-							  findViewById(R.id.account_info_two_uid_bar_three),
-						      (TextView)findViewById(R.id.account_info_two_uid_strength_bar_label));
-				setInputToLowerCase(s, idField);
+			public void onTextChanged(final CharSequence inputText, final int start, final int before, 
+			final int count) {
+				updateBarsForUID(inputText, idBarOne, idBarTwo, idBarThree, idStrengthBarLabel);
+				setInputToLowerCase(inputText, idField);
 				if(validator.isUidValid(idField.getText().toString())) {
 					hideLabel(errorMessageLabel);
 				}
@@ -328,22 +351,10 @@ public class CreateLoginActivity extends RoboActivity {
 			
 		});
 	}
-		
-	public void checkMatchingPassAndId() {
-		final String pass = passField.getText().toString();
-		final String id = idField.getText().toString();
-		if(id != null && pass != null && pass.equals(id)) {
-			passAndIdMatch = true;
-		}
-		else {
-			passAndIdMatch = false;
-		}
-			
-	}
-	
+
 	public void setInputToLowerCase(final CharSequence input, final EditText field){
 		final String inputString = input.toString();
-		final String lowerCaseInput = inputString.toLowerCase();
+		final String lowerCaseInput = inputString.toLowerCase(Locale.getDefault());
 		
 		if( !inputString.equals(lowerCaseInput)){
 			field.setText(lowerCaseInput);
@@ -355,7 +366,8 @@ public class CreateLoginActivity extends RoboActivity {
 	// FIXME revise the following gigantic methods
 	
 	//Currently setup only for a single user id input.
-	public void updateBarsForUID(final CharSequence inputSequence, final View barOne, final View barTwo, final View barThree, final TextView label) {
+	public void updateBarsForUID(final CharSequence inputSequence, 
+									final View barOne, final View barTwo, final View barThree, final TextView label) {
 		
 		boolean hasGoodLength   = false;
 		boolean hasUpperCase    = false;
@@ -364,6 +376,8 @@ public class CreateLoginActivity extends RoboActivity {
 		boolean hasInvalidChar  = false;
 		boolean hasNumber 	    = false;
 		boolean looksLikeActNum = false;
+		
+		boolean passAndIdMatch = idField.getText().equals(passField.getText());
 		
 		//Check length of input.
 		if(inputSequence.length() >= 6 && inputSequence.length() <= 16)
@@ -429,12 +443,15 @@ public class CreateLoginActivity extends RoboActivity {
 	}
 
 	
-	public void updateBarsForPass(final CharSequence inputSequence, final View barOne, final View barTwo, final View barThree, final TextView label){
+	public void updateBarsForPass(final CharSequence inputSequence, 
+									final View barOne, final View barTwo, final View barThree, final TextView label){
 		boolean hasGoodLength  = false;
 		boolean hasUpperCase   = false;
 		boolean hasLowerCase   = false;
 		boolean hasNonAlphaNum = false;
 		boolean hasNumber 	   = false;
+		
+		boolean passAndIdMatch = idField.getText().equals(passField.getText());
 				
 		//Check length of input.
 		if(inputSequence.length() >= 8 && inputSequence.length() <= 32)

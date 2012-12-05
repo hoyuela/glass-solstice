@@ -4,13 +4,19 @@ import android.content.Intent;
 import android.view.View;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.AccountInformationCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
-
+/**
+ * 
+ * @author scottseward
+ *
+ */
 public class ForgotBothAccountInformationActivity extends AbstractAccountInformationActivity {
 	
 	public ForgotBothAccountInformationActivity() {
@@ -48,6 +54,15 @@ public class ForgotBothAccountInformationActivity extends AbstractAccountInforma
 	public void goBack(final View v) {
 		Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
 		startActivity(forgotCredentials);
+		finish();
+	}
+	
+	@Override
+	protected void navToNextScreenWithDetails(AccountInformationDetails details) {
+		final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
+		createLoginActivity.putExtra(ScreenType.INTENT_KEY, ScreenType.FORGOT_BOTH);    
+		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, details);
+		startActivity(createLoginActivity);
 		finish();
 	}
 	

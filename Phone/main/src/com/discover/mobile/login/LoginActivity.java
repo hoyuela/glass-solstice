@@ -1,8 +1,11 @@
 package com.discover.mobile.login;
 
+import static com.discover.mobile.common.StandardErrorCodes.AUTH_BAD_ACCOUNT_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_1;
 import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_2;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
 
 import java.net.HttpURLConnection;
 
@@ -49,18 +52,24 @@ public class LoginActivity extends RoboActivity {
 	
 	@Inject
 	private CurrentSessionDetails currentSessionDetails;
-
-	@InjectView(R.id.toggle_button_save_user_id)
-	private ToggleButton saveUserButton;
+	
+//INPUT FIELDS
 	
 	@InjectView(R.id.username)
-	private EditText uidField;
+	private EditText idField;
 	
 	@InjectView(R.id.password)
 	private EditText passField;
 
+//BUTTONS
+	
 	@InjectView(R.id.login_button)
 	private Button loginButton;
+	
+	@InjectView(R.id.toggle_button_save_user_id)
+	private ToggleButton saveUserButton;
+	
+//TEXT LABELS
 	
 	@InjectView(R.id.register_text)
 	private TextView registerText;
@@ -80,13 +89,19 @@ public class LoginActivity extends RoboActivity {
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		
 		setupButtons();
+		addDefaultUser();
+	}
+	
+	private void addDefaultUser() {
+		idField.setText("uidsm7047");
+		passField.setText("solstice123");
 	}
 	
 	private void setupButtons() {
 		loginButton.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				errorTextView.setText(""); //$NON-NLS-1$
+				errorTextView.setText(emptyString); 
 				logIn();
 			}
 		});
@@ -94,7 +109,7 @@ public class LoginActivity extends RoboActivity {
 		registerText.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				errorTextView.setText(""); //$NON-NLS-1$
+				errorTextView.setText(emptyString); 
 				registerNewUser();
 			}
 		});
@@ -102,7 +117,7 @@ public class LoginActivity extends RoboActivity {
 		forgotUserIdOrPassText.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				errorTextView.setText(""); //$NON-NLS-1$
+				errorTextView.setText(emptyString); 
 				forgotIdAndOrPass();
 			}
 		});
@@ -117,24 +132,26 @@ public class LoginActivity extends RoboActivity {
 	private final static String emptyString = ""; //$NON-NLS-1$
 	
 	private void clearInputs() {
-		uidField.setText(emptyString);
+		idField.setText(emptyString);
 		passField.setText(emptyString);
 	}
 	
 	private void logIn() {
 		//If the user id, or password field are effectively blank, do not allow a service call to be made
 		//display the error message for id/pass not matching records.
-		if(Strings.isNullOrEmpty(uidField.getText().toString()) ||
-			Strings.isNullOrEmpty(passField.getText().toString()))
+		if(Strings.isNullOrEmpty(idField.getText().toString()) ||
+			Strings.isNullOrEmpty(passField.getText().toString())) {
 			errorTextView.setText(getString(R.string.login_error));
-		else
-			runAuthWithUsernameAndPassword(uidField.getText().toString(), passField.getText().toString());
+		}
+		else {
+			runAuthWithUsernameAndPassword(idField.getText().toString(), passField.getText().toString());
+		}
 	}
 	
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback.<AccountDetails>builder(this)
 					.showProgressDialog("Discover", "Loading...", true)
-					.clearTextViewsOnComplete(errorTextView, passField, uidField)
+					.clearTextViewsOnComplete(errorTextView, passField, idField)
 					.withSuccessListener(new SuccessListener<AccountDetails>() {
 						
 						@Override
@@ -189,12 +206,12 @@ public class LoginActivity extends RoboActivity {
 									sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
 									return true;
 									
-								case 1102:
+								case AUTH_BAD_ACCOUNT_STATUS:
 									sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
 									return true;
 									
-								case 1101:
-								case 1402:
+								case EXCEEDED_LOGIN_ATTEMPTS:
+								case LOCKED_OUT_ACCOUNT:
 									sendToErrorPage(ScreenType.LOCKED_OUT_USER);
 									return true;
 									

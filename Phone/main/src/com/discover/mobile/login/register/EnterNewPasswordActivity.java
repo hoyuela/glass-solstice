@@ -29,7 +29,11 @@ import com.discover.mobile.common.auth.registration.RegistrationConfirmationDeta
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-
+/**
+ * EnterNewPasswordActivit - this activity inherits from AbstractAccountInformationActivity
+ * @author scottseward
+ *
+ */
 @ContentView(R.layout.register_create_password)
 public class EnterNewPasswordActivity extends RoboActivity {
 	
