@@ -23,6 +23,6 @@ public class PushNotificationService {
 	private NotificationSingleton notificationSingleton;
 
 	public void start() {
-		XtifySDK.start(currentContext, "71245311197", "1278dcfd-2e73-4843-8d10-f3b94cd572a3");
+		XtifySDK.start(currentContext, "71245311197", "35143b88-c85f-4212-a076-279d31792380");
 	}
 }

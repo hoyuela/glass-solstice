@@ -73,10 +73,6 @@ public class StartActivity extends RoboActivity {
 		
 		TrackingHelper.startActivity(this);
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
-		
-		setupButtons();
-		
-		//pushNotificationService.start();
 	}
 	
 	@Override
@@ -90,7 +86,13 @@ public class StartActivity extends RoboActivity {
     	}
     	
     	setupButtons();
-
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		setupButtons();
+		pushNotificationService.start();
 	}
 	
 	@Override
