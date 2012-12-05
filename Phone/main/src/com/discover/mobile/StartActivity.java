@@ -29,11 +29,19 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponse
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.LoginActivity;
-import com.google.inject.Inject;
 
+/**
+ * This is the starting activity for the app.  It shows the button for which login you would like to access
+ * as well as doing the pre-auth call.  The pre-auth call checks to make sure that the app is the latest
+ * version as well as to make sure that the servers are available.
+ * 
+ * *NOTE: App crashes if there is no Internet access.
+ * 
+ * @author jthornton
+ *
+ */
 @ContentView(R.layout.start_landing)
 public class StartActivity extends RoboActivity {
 	
@@ -55,9 +63,6 @@ public class StartActivity extends RoboActivity {
 	
 	@InjectView(R.id.card_login_button)
 	private Button creditCardLoginButton;
-	
-	@Inject
-	private PushNotificationService pushNotificationService;
     
 // TEXT LABELS
 	
@@ -92,7 +97,6 @@ public class StartActivity extends RoboActivity {
 	public void onResume(){
 		super.onResume();
 		setupButtons();
-		pushNotificationService.start();
 	}
 	
 	@Override

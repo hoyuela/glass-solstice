@@ -1,7 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.discover.mobile"
+<manifest package="com.discover.mobile"
 	android:versionCode="1"
-	android:versionName="4.0">
+	android:versionName="4.0" xmlns:android="http://schemas.android.com/apk/res/android">
 	
 	<uses-sdk android:minSdkVersion="10" android:targetSdkVersion="16" />
 	
@@ -129,7 +128,7 @@
             </intent-filter>
         </receiver>
         
-        <receiver android:name="com.discover.mobile.common.push.XtifyNotifier" >
+        <receiver android:name=".common.push.XtifyNotifier">
             <intent-filter>
                 <action android:name="com.xtify.sdk.NOTIFIER" />
             </intent-filter>

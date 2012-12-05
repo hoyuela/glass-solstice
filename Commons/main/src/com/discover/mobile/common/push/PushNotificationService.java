@@ -1,28 +1,25 @@
 package com.discover.mobile.common.push;
 
 import roboguice.inject.ContextSingleton;
-import roboguice.inject.InjectResource;
 import android.content.Context;
 
-import com.google.inject.Inject;
+import com.discover.mobile.common.R;
 import com.xtify.sdk.api.XtifySDK;
 
+/**
+ * Service class for the push notifications.  Right now this is meant to be a singleton as there is
+ * no reason to have more than one of these.  This class currently provides common notification 
+ * service methods including the starting of the Xtify Service.
+ * 
+ * @author jthornton
+ *
+ */
 @ContextSingleton
 public class PushNotificationService {
-	
-	@InjectResource(name="com.discover.mobile:string/push_key")
-	private String pushKey;
-	
-	@InjectResource(name="com.discover.mobile:string/push_id")
-	private String projectId;
-	
-	@Inject
-	private Context currentContext;
-	
-	@Inject
-	private NotificationSingleton notificationSingleton;
 
-	public void start() {
-		XtifySDK.start(currentContext, "71245311197", "35143b88-c85f-4212-a076-279d31792380");
+	public void start(Context context) {
+		final String xtifyAppKey = context.getResources().getString(R.string.push_key);
+		final String googleProjectId = context.getResources().getString(R.string.push_id);
+		XtifySDK.start(context.getApplicationContext(), xtifyAppKey, googleProjectId);
 	}
 }
