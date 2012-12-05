@@ -20,6 +20,15 @@ import com.discover.mobile.common.push.registration.RegisterVenderIdCall;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.xtify.sdk.api.XtifySDK;
 
+/**
+ * The push terms and conditions screen. It shows the terms and conditions
+ * to the user for the push notifications.  Currently is also waits for the user to 
+ * accept or decline.  On that decision the app will then register the Discover either
+ * way.
+ * 
+ * @author jthornton
+ *
+ */
 @ContentView(R.layout.push_terms_and_conditions)
 public class PushTermsAndConditionsActivity extends RoboActivity{
 
@@ -66,6 +75,7 @@ public class PushTermsAndConditionsActivity extends RoboActivity{
 			detail.version = version;
 		}
 		
+		//FIXME: change this to the new way
 		final AsyncCallbackAdapter<DeviceRegistrationDetail> callback = new AsyncCallbackAdapter<DeviceRegistrationDetail>(){
 			@Override
 			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
