@@ -11,6 +11,13 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 
+/**
+ * Push header item.  This will contain the text that is displayed to the user as well
+ * as it will own the list associated with it so that it can be hidden.
+ *  
+ * @author jthornton
+ *
+ */
 public class PushManageHeaderItem extends RelativeLayout{
 	
 	private LinearLayout list;

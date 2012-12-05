@@ -9,12 +9,17 @@ import com.discover.mobile.common.net.VidReferanceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 import com.xtify.sdk.api.XtifySDK;
 
+/**
+ * Get the the registration status of the vendor ID.  It checks to see if the 
+ * Xtify ID has been registered with discover. 
+ * 
+ * @author jthornton
+ *
+ */
 public class GetPushRegistrationStatus extends JsonResponseMappingNetworkServiceCall<PushRegistrationStatusDetail>{
 
 	private final TypedReferenceHandler<PushRegistrationStatusDetail> handler;
 	
-	public static String vid;
-
 	public GetPushRegistrationStatus(final Context context, final AsyncCallback<PushRegistrationStatusDetail> callback){
 		super(context, new GetCallParams(getUrl(context)) {{
 		

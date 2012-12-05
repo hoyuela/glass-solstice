@@ -7,6 +7,13 @@ import android.util.Log;
 import com.xtify.sdk.api.XtifyBroadcastReceiver;
 import com.xtify.sdk.api.XtifySDK;
 
+/**
+ * This is the broadcast receiver for the Xtifty push notifications.  It will receiver the notifications
+ * and then utilize them accordingly.  Meaning that the notifications will be displayed in the notification
+ * tray.
+ * @author jthornton
+ *
+ */
 public class XtifyNotifier extends XtifyBroadcastReceiver{
 
 	private static final String TAG = XtifyNotifier.class.getName();

@@ -5,6 +5,17 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Object representing the response of the server when the application needs to know
+ * if the VID has been registered with Discover.
+ * 
+ * Enum Associated - means the device is present and associated correctly
+ * Enum Not Associated - means the device is present and not associated with this user
+ * Enum Missing - means the device is not registered with Discover's server
+ * 
+ * @author jthornton
+ *
+ */
 public class PushRegistrationStatusDetail implements Serializable{
 	
 	private static final long serialVersionUID = -2209678827958715689L;
