@@ -46,7 +46,7 @@ public class PushManageFragment extends RoboActivity{
 	private List<PushManageToogleItem> views;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		
 		res = this.getResources();
@@ -71,15 +71,15 @@ public class PushManageFragment extends RoboActivity{
 				 		   res.getStringArray(R.array.maximize_your_rewards_text));
 	}
 	
-	private void createManageList(String[] headers, String[] texts){
+	private void createManageList(final String[] headers, final String[] texts){
 		createList(headers, texts, manageList);
 	}
 	
-	private void createMonitorList(String[] headers, String texts[]){
+	private void createMonitorList(final String[] headers, final String texts[]){
 		createList(headers, texts, monitorList);
 	}
 	
-	private void createMaximizeList(String[] headers, String texts[]){
+	private void createMaximizeList(final String[] headers, final String texts[]){
 		createList(headers, texts, maxmizeList);
 	}
 	
@@ -102,7 +102,7 @@ public class PushManageFragment extends RoboActivity{
 		maximizeHeader.setHeader(res.getString(R.string.maximize_your_rewards_title));	
 	}
 	
-	public void savePreferences(View v){
+	public void savePreferences(final View v){
 		
 	}
 }

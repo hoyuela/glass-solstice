@@ -287,7 +287,6 @@ public class CreateLoginActivity extends RoboActivity {
 			
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
-				// TODO Auto-generated method stub
 				if(!hasFocus && !validator.isUidValid(idField.getText().toString())) {
 					showLabelWithStringResource(errorMessageLabel, R.string.invalid_value);
 				}
@@ -299,7 +298,6 @@ public class CreateLoginActivity extends RoboActivity {
 			
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
-				// TODO Auto-generated method stub
 				if(!hasFocus && !validator.isUidValid(idConfirmField.getText().toString())) {
 					showLabelWithStringResource(idConfirmErrorLabel, R.string.invalid_value);
 				}

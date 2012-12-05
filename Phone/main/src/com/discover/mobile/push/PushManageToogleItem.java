@@ -34,7 +34,7 @@ public class PushManageToogleItem extends RelativeLayout{
 	
 	private boolean isPushChecked = false;
 
-	public PushManageToogleItem(Context context, AttributeSet attrs) {
+	public PushManageToogleItem(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		
 		res = context.getResources();
@@ -64,7 +64,7 @@ public class PushManageToogleItem extends RelativeLayout{
 		return new OnClickListener(){
 
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				ImageView toggleImage = (ImageView) v;
 				if(toggleImage.getId() == textAlert.getId()){
 					toggleTextBox();
@@ -78,11 +78,11 @@ public class PushManageToogleItem extends RelativeLayout{
 	}
 
 	
-	public void setHeader(String header){
+	public void setHeader(final String header){
 		headerView.setText(header);
 	}
 	
-	public void setText(String text){
+	public void setText(final String text){
 		if(text.isEmpty()){
 			titleView.setVisibility(View.GONE);
 		}

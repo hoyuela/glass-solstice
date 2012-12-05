@@ -23,7 +23,7 @@ import com.xtify.sdk.api.XtifySDK;
 
 /**
  * The push terms and conditions screen. It shows the terms and conditions
- * to the user for the push notifications.  Currently is also waits for the user to 
+ * to the user for the push notifications. Currently is also waits for the user to 
  * accept or decline.  On that decision the app will then register the Discover either
  * way.
  * 
@@ -44,7 +44,7 @@ public class PushTermsAndConditionsActivity extends RoboActivity{
 	private static final String DECLINE = "P"; //$NON-NLS-1$
 
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		
 		accept.setOnClickListener(new OnClickListener(){
@@ -56,7 +56,7 @@ public class PushTermsAndConditionsActivity extends RoboActivity{
 		
 		decline.setOnClickListener(new OnClickListener(){
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				registerWithDiscover(DECLINE);
 			}		
 		});
@@ -89,7 +89,7 @@ public class PushTermsAndConditionsActivity extends RoboActivity{
 					}
 
 					@Override
-					public boolean handleFailure(ErrorResponse<?> errorResponse) {
+					public boolean handleFailure(final ErrorResponse<?> errorResponse) {
 						// FIXME handle the errors
 						switch(errorResponse.getHttpStatusCode()){
 							default:

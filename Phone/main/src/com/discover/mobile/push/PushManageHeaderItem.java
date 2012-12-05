@@ -28,7 +28,7 @@ public class PushManageHeaderItem extends RelativeLayout{
 
 	private final String showString;
 	
-	public PushManageHeaderItem(Context context, AttributeSet attrs) {
+	public PushManageHeaderItem(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		
 		final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(context)
@@ -46,7 +46,7 @@ public class PushManageHeaderItem extends RelativeLayout{
 		setClickListener();
 	}
 	
-	public void setHeader(String header){
+	public void setHeader(final String header){
 		final TextView title = (TextView) findViewById(R.id.title);
 		title.setText(header);
 	}
@@ -54,7 +54,7 @@ public class PushManageHeaderItem extends RelativeLayout{
 	private void setClickListener() {
 		this.setOnClickListener(new OnClickListener(){
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				final String text = hide.getText().toString();
 				if(hideString.equals(text)){
 					hide.setText(showString);
@@ -67,7 +67,7 @@ public class PushManageHeaderItem extends RelativeLayout{
 		});
 	}
 
-	public void setList(LinearLayout list){
+	public void setList(final LinearLayout list){
 		this.list = list;
 	}
 }
