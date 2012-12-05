@@ -88,13 +88,8 @@ public class LoginActivity extends RoboActivity {
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		
 		setupButtons();
-		addDefaultUser();
 	}
-	
-	private void addDefaultUser() {
-		idField.setText("uidsm7047");
-		passField.setText("solstice123");
-	}
+
 	
 	private void setupButtons() {
 		loginButton.setOnClickListener(new View.OnClickListener(){
