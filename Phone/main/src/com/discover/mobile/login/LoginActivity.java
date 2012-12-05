@@ -31,7 +31,6 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
@@ -258,40 +257,73 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	protected void getXitifyRegistrationStatus(){
-		// TODO Auto-generated method stub
-		final AsyncCallbackAdapter<PushRegistrationStatusDetail> callback = new AsyncCallbackAdapter<PushRegistrationStatusDetail>(){
-			@Override
-			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
-				Intent intent;
-				switch(messageErrorResponse.getHttpStatusCode()) {
-				// TODO: For now nothing really needs to be handled here
-				// The reason for this is because this is all done in the background 
-				// with no implications with the UI. Proper practice is to handle all
-				// the errors.
-					case HttpURLConnection.HTTP_UNAUTHORIZED:
-						intent = new Intent(activity, NavigationRootActivity.class);	
-						startActivity(intent);
-						return true;	
-					default:
-						intent = new Intent(activity, NavigationRootActivity.class);	
-						startActivity(intent);
-						return true;
-				}
-			}
-			
-			@Override
-			public void success(final PushRegistrationStatusDetail value){
-				if(value.vidStatus != VidStatus.MISSING){
-					//TODO: Set a status somewhere
-					Intent intent = new Intent(activity, NavigationRootActivity.class);	
-					startActivity(intent);
-				}else{
-					Intent intent = new Intent(activity, PushTermsAndConditionsActivity.class);	
-					startActivity(intent);
-				}
-			}
-		};
-			
+		final AsyncCallback<PushRegistrationStatusDetail> callback = GenericAsyncCallback.<PushRegistrationStatusDetail>builder(this)
+				//FIXME: extract to strings
+				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
+									getResources().getString(R.string.push_progress_registration_loading), 
+									true)
+				.withSuccessListener(new SuccessListener<PushRegistrationStatusDetail>(){
+
+					@Override
+					public CallbackPriority getCallbackPriority() {
+						return CallbackPriority.LAST;
+					}
+
+					@Override
+					public void success(PushRegistrationStatusDetail value) {
+						if(value.vidStatus != VidStatus.MISSING){
+							//TODO: Set a status somewhere
+							Intent intent = new Intent(activity, NavigationRootActivity.class);	
+							startActivity(intent);
+						}else{
+							Intent intent = new Intent(activity, PushTermsAndConditionsActivity.class);	
+							startActivity(intent);
+						}	
+					}	
+				})
+				
+				.withSuccessListener(new SuccessListener<PushRegistrationStatusDetail>(){
+
+					@Override
+					public CallbackPriority getCallbackPriority() {
+						return CallbackPriority.FIRST;
+					}
+
+					@Override
+					public void success(PushRegistrationStatusDetail value) {
+							//TODO: Set a status somewhere
+					}	
+				})
+		
+				.withErrorResponseHandler(new ErrorResponseHandler(){
+
+					@Override
+					public CallbackPriority getCallbackPriority() {
+						return CallbackPriority.MIDDLE;
+					}
+
+					@Override
+					public boolean handleFailure(ErrorResponse<?> errorResponse) {
+						Intent intent;
+						switch(errorResponse.getHttpStatusCode()) {
+						// TODO: For now nothing really needs to be handled here
+						// The reason for this is because this is all done in the background 
+						// with no implications with the UI. Proper practice is to handle all
+						// the errors.
+							case HttpURLConnection.HTTP_UNAUTHORIZED:
+								intent = new Intent(activity, NavigationRootActivity.class);	
+								startActivity(intent);
+								return true;	
+							default:
+								intent = new Intent(activity, NavigationRootActivity.class);	
+								startActivity(intent);
+								return true;
+						}
+					}
+					
+				})
+				.build();
+	
 		new GetPushRegistrationStatus(this, callback).submit();
 	}
 }

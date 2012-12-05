@@ -13,6 +13,13 @@ import android.widget.LinearLayout;
 
 import com.discover.mobile.R;
 
+/**
+ * Fragment that is the push notification manage screen.  Uses the push save header, 
+ * push toggle item and push save item.  It will compile them into the list.
+ * 
+ * @author jthornton
+ *
+ */
 @ContentView(R.layout.push_manage_main_layout)
 public class PushManageFragment extends RoboActivity{
 

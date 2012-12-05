@@ -11,6 +11,13 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 
+/**
+ * View created to be used in the push notification manage layout.
+ * This is the toggle item along with the information associated with it.
+ * 
+ * @author jthornton
+ *
+ */
 public class PushManageToogleItem extends RelativeLayout{
 
 	private ImageView textAlert;

@@ -9,6 +9,12 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 
+/**
+ * View representing the save item in the push notification manage screen.
+ *  
+ * @author jthornton
+ *
+ */
 public class PushManageSaveView extends RelativeLayout{
 
 	public PushManageSaveView(Context context, AttributeSet attrs) {
