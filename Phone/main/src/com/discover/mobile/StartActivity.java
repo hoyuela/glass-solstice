@@ -29,8 +29,10 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponse
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.LoginActivity;
+import com.google.inject.Inject;
 
 @ContentView(R.layout.start_landing)
 public class StartActivity extends RoboActivity {
@@ -54,13 +56,16 @@ public class StartActivity extends RoboActivity {
 	@InjectView(R.id.card_login_button)
 	private Button creditCardLoginButton;
 	
+	@Inject
+	private PushNotificationService pushNotificationService;
+    
 // TEXT LABELS
 	
 	@InjectView(R.id.title_label)
-	TextView titleLabel;
+	private TextView titleLabel;
 	
 	@InjectView(R.id.subtitle_label)
-	TextView subtitleLabel;
+	private TextView subtitleLabel;
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -68,6 +73,15 @@ public class StartActivity extends RoboActivity {
 		
 		TrackingHelper.startActivity(this);
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
+		
+		setupButtons();
+		
+		//pushNotificationService.start();
+	}
+	
+	@Override
+	public void onStart(){
+		super.onStart();
 				
 		final Bundle extras = getIntent().getExtras();
     	if(extras != null) {
