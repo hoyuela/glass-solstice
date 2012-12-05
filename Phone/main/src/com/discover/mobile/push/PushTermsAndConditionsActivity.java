@@ -1,11 +1,8 @@
 package com.discover.mobile.push;
 
-import java.net.HttpURLConnection;
-
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -19,9 +16,6 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.push.registration.DeviceRegistrationDetail;
-import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
-import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
-import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail.VidStatus;
 import com.discover.mobile.common.push.registration.RegisterVenderIdCall;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.xtify.sdk.api.XtifySDK;
@@ -38,16 +32,10 @@ public class PushTermsAndConditionsActivity extends RoboActivity{
 	private static final String ACCEPT = "Y"; //$NON-NLS-1$
 	
 	private static final String DECLINE = "P"; //$NON-NLS-1$
-	
-	private Activity activity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		this.activity = this;
-		
-		//TODO: We may want to move this somewhere else depending on the speed of the app
-		getRegistrationStatus();
 		
 		accept.setOnClickListener(new OnClickListener(){
 			@Override
@@ -62,35 +50,6 @@ public class PushTermsAndConditionsActivity extends RoboActivity{
 				registerWithDiscover(DECLINE);
 			}		
 		});
-	}
-
-	public void getRegistrationStatus() {
-		// TODO Auto-generated method stub
-		final AsyncCallbackAdapter<PushRegistrationStatusDetail> callback = new AsyncCallbackAdapter<PushRegistrationStatusDetail>(){
-			@Override
-			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
-				switch(messageErrorResponse.getHttpStatusCode()) {
-				// TODO: For now nothing really needs to be handled here
-				// The reason for this is because this is all done in the background 
-				// with no implications with the UI. Proper practice is to handle all
-				// the errors.
-					case HttpURLConnection.HTTP_UNAUTHORIZED:
-						return true;	
-					default:
-						return true;
-				}
-			}
-			
-			@Override
-			public void success(final PushRegistrationStatusDetail value){
-				if(value.vidStatus != VidStatus.MISSING){
-					//TODO: Set a status somewhere
-					startNextActivity();
-				}
-			}
-		};
-		
-		new GetPushRegistrationStatus(activity, callback).submit();
 	}
 	
 	protected void registerWithDiscover(final String regStatus){
