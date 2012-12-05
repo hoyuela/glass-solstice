@@ -13,6 +13,8 @@ import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
 /**
+ * ForgotBothAccountInformationActivity - provides layout customization to the first step of a user forgetting their
+ * credentials.
  * 
  * @author scottseward
  *

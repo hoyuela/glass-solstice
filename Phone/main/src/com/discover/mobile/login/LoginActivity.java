@@ -45,10 +45,17 @@ import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.PushTermsAndConditionsActivity;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
-
+/**
+ * LoginActivity - This is the login screen for the application. It makes two service calls - one to attempt to log the
+ * user into the system and the other to check the Xtify push notification status.
+ * 
+ * @author scottseward
+ *
+ */
 @ContentView(R.layout.login_start)
 public class LoginActivity extends RoboActivity {
-	
+	private final static String emptyString = ""; //$NON-NLS-1$
+
 	@Inject
 	private CurrentSessionDetails currentSessionDetails;
 	
@@ -88,8 +95,13 @@ public class LoginActivity extends RoboActivity {
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		
 		setupButtons();
+		addDefaultUser();
 	}
-
+	
+	private void addDefaultUser() {
+		idField.setText("uidsm7047");
+		passField.setText("solstice123");
+	}
 	
 	private void setupButtons() {
 		loginButton.setOnClickListener(new View.OnClickListener(){
@@ -122,9 +134,7 @@ public class LoginActivity extends RoboActivity {
 		super.onStop();
 		clearInputs();
 	}
-	
-	private final static String emptyString = ""; //$NON-NLS-1$
-	
+		
 	private void clearInputs() {
 		idField.setText(emptyString);
 		passField.setText(emptyString);

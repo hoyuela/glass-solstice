@@ -36,6 +36,14 @@ import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 
+/**
+ * CreateLoginActivity - this is the final step of a user either going through "Forgot Both" or "Register".
+ * This activity takes all of the information submitted from step 1 and adds it to the information gathered on
+ * this activity. Then all of that information together is submitted to register (or re-register) the user.
+ * 
+ * @author scottseward
+ *
+ */
 @ContentView(R.layout.register_create_credentials)
 public class CreateLoginActivity extends RoboActivity {
 	
@@ -568,15 +576,17 @@ public class CreateLoginActivity extends RoboActivity {
 		registrationCall.submit();
 
 	}
+	
 	private void showLabelWithStringResource(final TextView label, final int id) {
 		label.setText(getString(id));
 		showLabel(label);
 	}
-	private void showLabel(final View v){
+	
+	private void showLabel(final View v) {
 		v.setVisibility(View.VISIBLE);
 	}
 	
-	private void hideLabel(final View v){
+	private void hideLabel(final View v) {
 		v.setVisibility(View.GONE);
 	}
 }
