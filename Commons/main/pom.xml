@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<artifactId>Discover-Android-Commons</artifactId>
+	<packaging>apklib</packaging>
+	
+	<name>Discover: Android - Commons</name>
+	
+	<parent>
+		<groupId>com.discover.mobile</groupId>
+		<artifactId>Discover-Android</artifactId>
+		<version>4.0.0-SNAPSHOT</version>
+		<relativePath>../../</relativePath>
+	</parent>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.actionbarsherlock</groupId>
+			<artifactId>actionbarsherlock</artifactId>
+			<type>apklib</type>
+		</dependency>
+		<dependency>
+			<groupId>com.slidingmenu.lib</groupId>
+			<artifactId>SlidingMenu</artifactId>
+			<type>apklib</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.roboguice</groupId>
+			<artifactId>roboguice</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>lib</groupId>
+			<artifactId>admsAppLibrary</artifactId>
+			<version>1.0</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+        <sourceDirectory>src</sourceDirectory>
+        
+		<plugins>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<repositories>
+		<repository>
+			<id>lib</id>
+			<name>lib</name>
+			<releases>
+				<enabled>true</enabled>
+				<checksumPolicy>ignore</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<url>file://${project.basedir}/../../Libraries/maven</url>
+		</repository>
+	</repositories>
+	
+</project>

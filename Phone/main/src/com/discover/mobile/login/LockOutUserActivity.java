@@ -51,6 +51,7 @@ public class LockOutUserActivity extends RoboActivity {
 				TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_LOCKED);
 				// TODO reference lock out text when error map set up
 				errorTextView.setText(Html.fromHtml("<p>For security purposes, your online account has been locked.<p/><p>Please call Discover Customer Service at <a href='tel:18882518003' class='eCertBlueLink'>1-888-251-8003</a> for information about accessing your account online.</p>"));
+				errorTextView.setTextColor(getResources().getColor(R.color.black));
 				break;
 				
 			case BAD_ACCOUNT_STATUS:

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -28,16 +29,20 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
+import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
-import com.discover.mobile.push.PushTermsAndConditionsActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 
 @ContentView(R.layout.login_start)
 public class LoginActivity extends RoboActivity {
+	
+	@Inject
+	private CurrentSessionDetails currentSessionDetails;
 
 	@InjectView(R.id.toggle_button_save_user_id)
 	private ToggleButton saveUserButton;
@@ -122,10 +127,19 @@ public class LoginActivity extends RoboActivity {
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback.<AccountDetails>builder(this)
 					.showProgressDialog("Discover", "Loading...", true)
 					.clearTextViewsOnComplete(errorTextView, passField, uidField)
-        
-                    // TODO launch to NavigationRootActivity if terms already handled
-					.launchIntentOnSuccess(PushTermsAndConditionsActivity.class)
-//					.launchIntentOnSuccess(NavigationRootActivity.class)
+					.launchIntentOnSuccess(NavigationRootActivity.class)
+					.withSuccessListener(new SuccessListener<AccountDetails>() {
+						
+						@Override
+						public CallbackPriority getCallbackPriority() {
+							return CallbackPriority.MIDDLE;
+						}
+						
+						@Override
+						public void success(AccountDetails value) {
+							currentSessionDetails.setAccountDetails(value);
+						}
+					})
 					
 					// FIXME DO NOT COPY THIS CODE
 					.withErrorResponseHandler(new ErrorResponseHandler() {

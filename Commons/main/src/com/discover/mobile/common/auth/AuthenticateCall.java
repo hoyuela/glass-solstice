@@ -20,7 +20,7 @@ public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<Acco
 	public AuthenticateCall(final Context context, final AsyncCallback<AccountDetails> callback,
 			final String username, final String password) {
 		
-		super(context, new GetCallParams("/cardsvcs/acs/acct/v1/account") {{
+		super(context, new GetCallParams("/cardsvcs/acs/acct/v1/account") {{ //$NON-NLS-1$
 			final String authString = getAuthorizationString(username, password);
 			headers = ImmutableMap.<String,String>builder().put("Authorization", authString).build();
 			

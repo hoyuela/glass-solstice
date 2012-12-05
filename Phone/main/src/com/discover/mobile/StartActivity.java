@@ -212,13 +212,15 @@ public class StartActivity extends RoboActivity {
 		startActivity(maintenancePageIntent);
 	}
 	
+	private static final int DOES_NOT_EXIST = 0;
+	
 	private boolean shouldPresentOptionalUpdate(final String updateDescription) {
 		if(updateDescription != null) {
 			final SharedPreferences prefs=getPreferences(Context.MODE_PRIVATE);
 			
-			final long savedDate = prefs.getLong(DATETIME_KEY, 0);
+			final long savedDate = prefs.getLong(DATETIME_KEY, DOES_NOT_EXIST);
 			
-			if (savedDate == 0) {
+			if (savedDate == DOES_NOT_EXIST) {
 				final SharedPreferences.Editor editor=prefs.edit();
 				editor.putLong(DATETIME_KEY, new Date().getTime());
 				editor.commit();
@@ -229,7 +231,8 @@ public class StartActivity extends RoboActivity {
 			final long daysDifference = (currentDate - savedDate)/DAY_IN_MILLISECONDS;
 			
 			if(daysDifference >= OPTIONAL_UPGRADE_DAYS) {
-				removeDateFromPrefs();
+				updateDateInPrefs();
+//				removeDateFromPrefs();
 				return true;
 			}
 			
@@ -239,6 +242,15 @@ public class StartActivity extends RoboActivity {
 		return false;
 	}
 	
+	private void updateDateInPrefs() {
+		final SharedPreferences prefs=getPreferences(Context.MODE_PRIVATE);
+		
+		final SharedPreferences.Editor editor=prefs.edit();
+		editor.putLong(DATETIME_KEY, new Date().getTime());
+		editor.commit();
+	}
+	
+	//TODO why is the date being removed instead of updated? this causes the optional upgrade message to appear >1 time
 	private void removeDateFromPrefs() {
 		final SharedPreferences prefs=getPreferences(Context.MODE_PRIVATE);
 		

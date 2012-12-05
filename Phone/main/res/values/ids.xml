@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <item type="id" name="title" />
+    <item type="id" name="content_text" />
+    <item type="id" name="blue_button_text" />
+    <item type="id" name="bottom_bar_label" />
+    <item type="id" name="bottom_bar_value" />
+    <item type="id" name="general_list_item_separator_line" />
+    <item type="id" name="divider_line" />
     
     <item type="id" name="navigation_content" />
 </resources>
