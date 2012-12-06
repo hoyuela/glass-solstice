@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/light_gray_bkgrd" >
+    
+    <TextView 
+        android:id="@+id/previous_account_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/previous_account_title"
+        android:textSize="12sp"
+        android:textColor="@color/title"/>
+    
+    <TextView 
+        android:id="@+id/keep_current" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/keep_current_settings"
+        android:textSize="12sp"
+        android:textColor="@color/title"
+        android:background="@drawable/notification_list_item"/>
+    
+    <TextView 
+        android:id="@+id/remove_current" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/remove_current_settings"
+        android:textSize="12sp"
+        android:textColor="@color/title"
+        android:background="@drawable/notification_list_item"/>
+
+</LinearLayout>

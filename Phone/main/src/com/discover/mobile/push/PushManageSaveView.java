@@ -17,7 +17,7 @@ import com.discover.mobile.R;
  */
 public class PushManageSaveView extends RelativeLayout{
 
-	public PushManageSaveView(Context context, AttributeSet attrs) {
+	public PushManageSaveView(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 
 

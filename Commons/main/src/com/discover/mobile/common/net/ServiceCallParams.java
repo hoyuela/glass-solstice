@@ -13,6 +13,7 @@ public abstract class ServiceCallParams {
 	public final String httpMethod;
 	public final String path;
 	
+	//If this is null it will use the default error responses
 	public ErrorResponseParser<?> errorResponseParser = null;
 	public Map<String,String> headers = null;
 	
