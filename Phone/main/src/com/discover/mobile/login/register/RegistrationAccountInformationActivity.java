@@ -1,6 +1,9 @@
 package com.discover.mobile.login.register;
 
+import android.content.Intent;
+
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.AccountInformationCall;
@@ -42,4 +45,11 @@ public class RegistrationAccountInformationActivity extends AbstractAccountInfor
 		return CreateLoginActivity.class;
 	}
 	
+	@Override
+	protected void navToNextScreenWithDetails(AccountInformationDetails details) {
+		final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
+		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, details);
+		startActivity(createLoginActivity);
+		finish();
+	}
 }

@@ -4,6 +4,7 @@ public final class StandardErrorCodes {
 
 	public static final int MAINTENANCE_MODE_1 = 1006;
 	public static final int MAINTENANCE_MODE_2 = 1007;
+	public static final int EXCEEDED_LOGIN_ATTEMPTS = 1101;
 	public static final int AUTH_BAD_ACCOUNT_STATUS = 1102;
 	public static final int STRONG_AUTH_NOT_ENROLLED = 1401;
 	public static final int BAD_ACCOUNT_STATUS = 1907;
