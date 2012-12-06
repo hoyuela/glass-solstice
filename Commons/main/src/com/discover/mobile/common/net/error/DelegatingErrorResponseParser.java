@@ -37,6 +37,7 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 	
 	public static final List<ErrorResponseParser<?>> DEFAULT_PARSER_DELEGATES = createDefaultDelegates();
 	
+	//Can add to this list if we want to add defaults (Error Handling)
 	private static List<ErrorResponseParser<?>> createDefaultDelegates() {
 		return ImmutableList.<ErrorResponseParser<?>>builder()
 				.add(new JsonMessageErrorResponseParser())
