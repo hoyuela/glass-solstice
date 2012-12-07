@@ -13,7 +13,8 @@
         android:padding="5dip"
         android:background="@drawable/gray_gradient_square"
         android:src="@drawable/transparent_square"
-    	android:layout_marginLeft="5dip"/> 
+    	android:layout_marginLeft="5dip"
+    	android:onClick="toggleCheckBox"/> 
     
     <TextView
         android:id="@+id/text_enable_text"

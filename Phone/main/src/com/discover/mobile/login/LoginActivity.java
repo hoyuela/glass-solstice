@@ -16,12 +16,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
@@ -61,10 +62,10 @@ public class LoginActivity extends RoboActivity {
 	
 //INPUT FIELDS
 	
-	@InjectView(R.id.username)
+	@InjectView(R.id.username_field)
 	private EditText idField;
 	
-	@InjectView(R.id.password)
+	@InjectView(R.id.password_field)
 	private EditText passField;
 
 //BUTTONS
@@ -72,8 +73,8 @@ public class LoginActivity extends RoboActivity {
 	@InjectView(R.id.login_button)
 	private Button loginButton;
 	
-	@InjectView(R.id.toggle_button_save_user_id)
-	private ToggleButton saveUserButton;
+	@InjectView(R.id.remember_user_id_button)
+	private ImageView saveUserButton;
 	
 //TEXT LABELS
 	
@@ -87,20 +88,17 @@ public class LoginActivity extends RoboActivity {
 	private TextView forgotUserIdOrPassText;
 	
 	private Activity activity;
+	
+	private Resources res;
 		
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		activity = this;
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
-		
+		res = getResources();
+
 		setupButtons();
-		addDefaultUser();
-	}
-	
-	private void addDefaultUser() {
-		idField.setText("uidsm7047");
-		passField.setText("solstice123");
 	}
 	
 	private void setupButtons() {
@@ -137,7 +135,7 @@ public class LoginActivity extends RoboActivity {
 		
 	private void clearInputs() {
 		idField.setText(emptyString);
-		passField.setText(emptyString);
+//		passField.setText(emptyString);
 	}
 	
 	private void logIn() {
@@ -249,6 +247,24 @@ public class LoginActivity extends RoboActivity {
 					}
 				})
 			    .show();
+	}
+	
+	boolean isChecked = false;
+	
+	public void toggleCheckBox(final View v) {
+		ImageView toggleImage = (ImageView)findViewById(R.id.remember_user_id_button);
+		
+			if(isChecked){
+				toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
+				toggleImage.setImageDrawable(res.getDrawable(R.drawable.transparent_square));
+				isChecked = false;
+			}
+			else{
+				toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.black_gradient_square));
+				toggleImage.setImageDrawable(res.getDrawable(R.drawable.white_check_mark));
+				isChecked = true;
+			}
+		
 	}
 	
 	public void registerNewUser() {
