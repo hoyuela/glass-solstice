@@ -31,6 +31,7 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.push.PushEnrollActivity;
 
 /**
  * This is the starting activity for the app.  It shows the button for which login you would like to access
@@ -78,6 +79,10 @@ public class StartActivity extends RoboActivity {
 		
 		TrackingHelper.startActivity(this);
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
+		
+		//FIXME
+		final Intent intent = new Intent(this, PushEnrollActivity.class);
+		startActivity(intent);
 	}
 	
 	@Override

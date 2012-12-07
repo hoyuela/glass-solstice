@@ -32,7 +32,7 @@ public class DeviceRegistrationDetail implements Serializable{
 	@JsonProperty("osVersion")
 	public String version = "4.0"; //$NON-NLS-1$
 	
-	/**Enrollment status (Accepted or devclined terms)*/
+	/**Enrollment status (Accepted or declined terms)*/
 	@JsonProperty("regStatus")
 	public String regStatus;
 	
@@ -57,18 +57,18 @@ public class DeviceRegistrationDetail implements Serializable{
 		
 		public final char RESULT_CODE;
 		
-		private DeviceRegStatus(char resultCode) {
+		private DeviceRegStatus(final char resultCode) {
 			RESULT_CODE = resultCode;
 		}
 		
 		@JsonCreator
-		public static DeviceRegStatus fromJsonResultCode(String resultCode) {
-			char resultCodeChar = resultCode.charAt(0);
+		public static DeviceRegStatus fromJsonResultCode(final String resultCode) {
+			final char resultCodeChar = resultCode.charAt(0);
 			for(DeviceRegStatus status : values()) {
 				if(status.RESULT_CODE == resultCodeChar)
 					return status;
 			}
-			throw new RuntimeException("Unkown result status code for the device registration status.  Code: " + resultCode); //$NON-NLS-1$
+			throw new RuntimeException("Unkown result status code for the device reg status.  Code: " + resultCode); //$NON-NLS-1$
 		}
 	}
 }

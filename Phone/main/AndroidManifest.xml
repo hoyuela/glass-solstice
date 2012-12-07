@@ -154,6 +154,7 @@
         </activity>
         <activity android:name=".push.PushTermsAndConditionsActivity"></activity>
         <activity android:name=".navigation.NavigationRootActivity"></activity>
+        <activity android:name=".push.PushEnrollActivity"></activity>
     </application>
     
 </manifest>

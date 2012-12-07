@@ -49,7 +49,7 @@ public class PushTermsAndConditionsActivity extends RoboActivity{
 		
 		accept.setOnClickListener(new OnClickListener(){
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				registerWithDiscover(ACCEPT);
 			}		
 		});

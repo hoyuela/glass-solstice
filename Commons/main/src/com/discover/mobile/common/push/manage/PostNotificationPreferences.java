@@ -20,7 +20,8 @@ public class PostNotificationPreferences extends JsonResponseMappingNetworkServi
 		super(context, new PostCallParams("cardsvcs/acs/contact/v1/preferences/enrollments") {{ //$NON-NLS-1$
 			requiresSessionForRequest = true;
 			sendDeviceIdentifiers = true;
-		}}, PushNotificationPreferncesDetail.class);
+		}},
+		PushNotificationPreferncesDetail.class);
 		
 		handler = new PushPreferenceReferanceHandler<PushNotificationPreferncesDetail>(callback);
 	}
