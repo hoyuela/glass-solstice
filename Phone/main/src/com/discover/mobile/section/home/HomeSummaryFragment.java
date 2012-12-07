@@ -17,12 +17,8 @@ import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.views.GeneralListItemAdapter;
 import com.discover.mobile.views.GeneralListItemModel;
-import com.google.inject.Inject;
 
 public class HomeSummaryFragment extends RoboSherlockFragment {
-	
-	@Inject
-	private CurrentSessionDetails currentSessionDetails;
 	
 	private final List<GeneralListItemModel> accountSummaryListItems = new ArrayList<GeneralListItemModel>();
 	
@@ -47,7 +43,7 @@ public class HomeSummaryFragment extends RoboSherlockFragment {
 
 	private void buildAccountSummaryListItems() {
 		
-		final AccountDetails accountDetails = currentSessionDetails.getAccountDetails();
+		final AccountDetails accountDetails = CurrentSessionDetails.getCurrentSessionDetails().getAccountDetails();
 		
 		if (accountDetails != null) {
 			
