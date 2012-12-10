@@ -2,24 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/light_gray_bkgrd" >
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="36.5dp"
+        android:orientation="horizontal"
+        android:background="#e8eced"
+        android:paddingBottom="40dp"/>
     
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
     	android:layout_height="wrap_content"
-        android:text="TEMP TEXT -- Push Alerts Are Now Available"/>
+    	android:text="@string/push_alerts_are_available"
+    	android:textColor="@color/title"
+    	android:textSize="@dimen/title_min"
+    	android:textStyle="bold"
+    	android:layout_marginBottom="@dimen/between_related_elements_padding"/>
+    
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/push_alerts_are_available_text"
+        android:textColor="@color/sub_copy"
+        android:textSize="@dimen/body_copy_max"/>
 
     <Button
-        android:id="@+id/manage_alerts_button_accept"
+        android:id="@+id/manage_alerts_button"
         android:layout_width="wrap_content"
     	android:layout_height="wrap_content"
-    	android:text="Accept" />
-    
-    <Button
-        android:id="@+id/manage_alerts_button_decline"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:text="Decline" />
+    	android:text="@string/manage_alerts" 
+  		style="@style/call_to_action_theme"
+  		android:layout_marginTop="@dimen/orange_button_margin_top"/>
 
 </LinearLayout>
