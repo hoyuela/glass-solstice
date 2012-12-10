@@ -169,29 +169,41 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:clickable="true"
+		            android:layout_marginRight="@dimen/content_padding"
 		            android:text="@string/go_to"
 		            android:textColor="@color/title" />
 
 			    <ImageView
 			        android:id="@+id/card_check_mark"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content" />
+			        android:layout_width="15dp"
+			        android:layout_height="15dp" 
+			        android:src="@drawable/black_check"/>
 				
 				<TextView
 		            android:id="@+id/go_to_card_label"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
+		            android:layout_marginRight="@dimen/content_padding"
 		            android:clickable="true"
 		            android:text="@string/card"
-		            android:textColor="@color/title" />
+		            android:textColor="@color/title" 
+		            android:onClick="toggleBankCardLogin"/>
 				
 				<TextView
 		            android:id="@+id/divider"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
+		            android:layout_marginRight="@dimen/content_padding"
 		            android:clickable="true"
 		            android:text="@string/vertical_separator"
 		            android:textColor="@color/title" />
+				
+				<ImageView
+			        android:id="@+id/bank_check_mark"
+			        android:layout_width="15dp"
+			        android:layout_height="15dp" 
+			        android:src="@drawable/black_check"
+			        android:visibility="invisible"/>
 				
 				<TextView
 		            android:id="@+id/go_to_bank_label"
@@ -199,7 +211,8 @@
 		            android:layout_height="wrap_content"
 		            android:clickable="true"
 		            android:text="@string/bank"
-		            android:textColor="@color/title" />
+		            android:onClick="toggleBankCardLogin"
+		            android:textColor="@color/blue_link" />
 	            </LinearLayout>
 
 		        <TextView
@@ -214,15 +227,15 @@
 		            android:text="@string/forgot_id_or_pass_text"
 		            android:textAppearance="?android:attr/textAppearanceSmall"
 		            android:textColor="@color/blue" />
-	
+
 				<TextView
-			        android:id="@+id/copyright_textview"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_centerHorizontal="true"
-			        android:layout_marginTop="14dp"
-			        android:layout_below="@+id/forgot_uid_or_pass_text"
-			        android:text="@string/discover_copyright_text" />
+				    android:id="@+id/copyright_textview"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_alignParentBottom="true"
+				    android:layout_toLeftOf="@+id/remember_user_id_label"
+				    android:text="@string/discover_copyright_text" />
+
 	        </RelativeLayout>
 	    </RelativeLayout>
 	</ScrollView>

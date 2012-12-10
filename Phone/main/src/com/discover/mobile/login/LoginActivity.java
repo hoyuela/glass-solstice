@@ -56,6 +56,7 @@ import com.google.common.base.Strings;
 public class LoginActivity extends RoboActivity {
 	private final static String emptyString = ""; //$NON-NLS-1$
 	
+
 //INPUT FIELDS
 	
 	@InjectView(R.id.username_field)
@@ -85,6 +86,12 @@ public class LoginActivity extends RoboActivity {
 	
 	@InjectView(R.id.toggle_password_visibility_label)
 	private TextView hideButton;
+	
+	@InjectView(R.id.go_to_bank_label)
+	private TextView goToBankLabel;
+	
+	@InjectView(R.id.go_to_card_label)
+	private TextView goToCardLabel;
 	
 	private Activity activity;
 	
@@ -275,13 +282,25 @@ public class LoginActivity extends RoboActivity {
 		
 		if(HIDE.equals(buttonText)) {
 			hideButton.setText(SHOW);
-			passField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+			passField.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 		}
 		else {
 			hideButton.setText(HIDE);
 			passField.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 		}
 
+	}
+	
+	public void toggleBankCardLogin(final View v) {
+//		if(((TextView)v).equals(goToCardLabel)){
+//			
+//		}
+//		else{
+//			
+//			goToBankLabel.setTextColor(getResources().getColor(R.color.blue_link));
+//		}
+//		goToCardLabel;
+//		goToBankLabel;
 	}
 	
 	public void registerNewUser(final View v) {
