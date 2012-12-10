@@ -70,7 +70,7 @@
 		            android:hint="@string/username_placeholder"
 		            android:imeOptions="actionNext"
 		            android:inputType="textNoSuggestions"
-		            android:maxEms="@integer/MAX_ID_LENGTH"
+		            android:maxLength="@integer/MAX_ID_LENGTH"
 		            android:maxLines="@integer/MAX_INPUT_LINES"
 		            android:textColor="@color/black" />
 					
@@ -105,7 +105,7 @@
 		            android:background="@drawable/plain_edit_text"
 		            android:hint="@string/password_placeholder"
 		            android:inputType="textPassword"
-		            android:maxEms="@integer/MAX_PASSWORD_LENGTH"
+		            android:maxLength="@integer/MAX_PASSWORD_LENGTH"
 		            android:maxLines="@integer/MAX_INPUT_LINES"
 		            android:textColor="@color/black" />
 	
@@ -175,9 +175,11 @@
 
 			    <ImageView
 			        android:id="@+id/card_check_mark"
-			        android:layout_width="15dp"
-			        android:layout_height="15dp" 
-			        android:src="@drawable/black_check"/>
+			        android:layout_width="12dp"
+			        android:layout_height="12dp" 
+			        android:layout_marginRight="2dp"
+			        android:src="@drawable/black_check"
+			        android:layout_marginTop="3dp"/>
 				
 				<TextView
 		            android:id="@+id/go_to_card_label"
@@ -200,9 +202,11 @@
 				
 				<ImageView
 			        android:id="@+id/bank_check_mark"
-			        android:layout_width="15dp"
-			        android:layout_height="15dp" 
+			         android:layout_width="12dp"
+			        android:layout_height="12dp" 
+			        android:layout_marginRight="2dp"
 			        android:src="@drawable/black_check"
+			        android:layout_marginTop="3dp"
 			        android:visibility="invisible"/>
 				
 				<TextView
@@ -232,8 +236,8 @@
 				    android:id="@+id/copyright_textview"
 				    android:layout_width="wrap_content"
 				    android:layout_height="wrap_content"
-				    android:layout_alignParentBottom="true"
-				    android:layout_toLeftOf="@+id/remember_user_id_label"
+				    android:layout_below="@+id/forgot_uid_or_pass_text"
+				    android:layout_centerHorizontal="true"
 				    android:text="@string/discover_copyright_text" />
 
 	        </RelativeLayout>

@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
+import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -94,25 +95,44 @@ public class LoginActivity extends RoboActivity {
 	@InjectView(R.id.go_to_card_label)
 	private TextView goToCardLabel;
 	
+//IMAGES
+	
+	@InjectView(R.id.card_check_mark)
+	private ImageView cardCheckMark;
+	
+	@InjectView(R.id.bank_check_mark)
+	private ImageView bankCheckMark;
+	
+//RESOURCES
+	
+	@InjectResource(R.string.hide)
+	private String HIDE;
+	
+	@InjectResource(R.string.show)
+	private String SHOW;
+	
+//INSTANCE VARS
+	
 	private Activity activity;
 	
 	private Resources res;
 	
-	private String HIDE;
-	private String SHOW;
-		
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		activity = this;
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		res = getResources();
-		
-		HIDE = getString(R.string.hide);
-		SHOW = getString(R.string.show);
+
 		setupButtons();
 	}
 	
+	/**
+	 * setupButtons()
+	 * Attach onClickListeners to buttons.
+	 * These buttons will execute the specified functionality in onClick
+	 * when they are clicked...
+	 */
 	private void setupButtons() {
 		loginButton.setOnClickListener(new View.OnClickListener(){
 			@Override
@@ -139,17 +159,32 @@ public class LoginActivity extends RoboActivity {
 		});
 	}
 	
+	/**
+	 * When this activity is stopped, usually when a user navigates away from this screen,
+	 * the input fields will be cleared.
+	 */
 	@Override
 	public void onStop() {
 		super.onStop();
 		clearInputs();
 	}
 		
+	/**
+	 * clearInputs()
+	 * Removes any text in the login input fields.
+	 */
 	private void clearInputs() {
 		idField.setText(emptyString);
-//		passField.setText(emptyString);
+		passField.setText(emptyString);
 	}
 	
+	/**
+	 * logIn()
+	 * If the user has entered some information in both the user id field and the password field
+	 * we will submit this info to the server and attempt to log the user in.
+	 * 
+	 * If not - we don't even try to log in.
+	 */
 	private void logIn() {
 		//If the user id, or password field are effectively blank, do not allow a service call to be made
 		//display the error message for id/pass not matching records.
@@ -162,6 +197,13 @@ public class LoginActivity extends RoboActivity {
 		}
 	}
 	
+	/**
+	 * runAuthWithUsernameAndPassword(final String username, final String password)
+	 * This method submits the users information to the server for verification.
+	 * 
+	 * The AsyncCallback handles the success and failure of the call and is responsible for handling and 
+	 * presenting error messages to the user.
+	 */
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback.<AccountDetails>builder(this)
 					.showProgressDialog("Discover", "Loading...", true)
@@ -241,12 +283,23 @@ public class LoginActivity extends RoboActivity {
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
 	
+	/**
+	 * sendToErrorPage(final ScreenType screenType)
+	 * This method, on a critical login error, will send the user to a screen that will prevent them
+	 * from further action. This is used for various kinda of 'locked out' users.
+	 */
 	private void sendToErrorPage(final ScreenType screenType) {
 		final Intent maintenancePageIntent = new Intent(LoginActivity.this, LockOutUserActivity.class);
 		screenType.addExtraToIntent(maintenancePageIntent);
 		startActivity(maintenancePageIntent);
 	}
 	
+	/**
+	 * showOkAlertDialog(final String title, final String message)
+	 * This method shows a pop-up dialog that the user must dismiss.
+	 * It is usually shown when an error is being directly passed from the server response
+	 * to the user.
+	 */
 	private void showOkAlertDialog(final String title, final String message) {
 		new AlertDialog.Builder(this)
 			    .setTitle(title)
@@ -261,29 +314,42 @@ public class LoginActivity extends RoboActivity {
 			    .show();
 	}
 	
-	boolean isChecked = false;
+	
+	/**
+	 * toggleCheckBox(final View v)
+	 * This method handles the state of the check box on the login screen.
+	 * 
+	 * It changes its image and the state of the saveUserId value.
+	 */
+	boolean saveUserId = false;
 	
 	public void toggleCheckBox(final View v) {
 		ImageView toggleImage = (ImageView)findViewById(R.id.remember_user_id_button);
 		
-			if(isChecked){
+			if(saveUserId){
 				toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
 				toggleImage.setImageDrawable(res.getDrawable(R.drawable.transparent_square));
-				isChecked = false;
+				saveUserId = false;
 			}
 			else{
 				toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.black_gradient_square));
 				toggleImage.setImageDrawable(res.getDrawable(R.drawable.white_check_mark));
-				isChecked = true;
+				saveUserId = true;
 			}	
 	}
 	
+	/**
+	 * togglePasswordVisibility(final View v)
+	 * This method handles showing and hiding of a users password.
+	 * It will show a user's password in plain text if the user taps the Show text label
+	 * on the home screen. And hide it if it says 'Hide'
+	 * 
+	 */
 	public void togglePasswordVisibility(final View v) {
 		String buttonText = hideButton.getText().toString();
-		
 		if(HIDE.equals(buttonText)) {
 			hideButton.setText(SHOW);
-			passField.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+			passField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		}
 		else {
 			hideButton.setText(HIDE);
@@ -292,24 +358,49 @@ public class LoginActivity extends RoboActivity {
 
 	}
 	
+	/**
+	 * toggleBankCardLogin(final View v)
+	 * This method handles the login choices for loging in as a bank user or a card user.
+	 * 
+	 * It merely changes the visible position of a check mark and the color of the labels next
+	 * to it.
+	 */
 	public void toggleBankCardLogin(final View v) {
-//		if(((TextView)v).equals(goToCardLabel)){
-//			
-//		}
-//		else{
-//			
-//			goToBankLabel.setTextColor(getResources().getColor(R.color.blue_link));
-//		}
-//		goToCardLabel;
-//		goToBankLabel;
+		if(((TextView)v).getText().equals("Card")){
+			goToCardLabel.setTextColor(getResources().getColor(R.color.black));
+			cardCheckMark.setVisibility(View.VISIBLE);
+			
+			bankCheckMark.setVisibility(View.INVISIBLE);
+			goToBankLabel.setTextColor(getResources().getColor(R.color.blue_link));
+		}
+		else{
+			
+			goToCardLabel.setTextColor(getResources().getColor(R.color.blue_link));
+			cardCheckMark.setVisibility(View.INVISIBLE);
+			
+			bankCheckMark.setVisibility(View.VISIBLE);
+			goToBankLabel.setTextColor(getResources().getColor(R.color.black));		
+		}
+	
 	}
 	
+	/**
+	 * registerNewUser(final View v)
+	 * This method launches the registration screen when a user taps the register now
+	 * button in the bottom bar. This method is called from the XML layout file onClick.
+	 */
 	public void registerNewUser(final View v) {
 		final Intent accountInformationActivity = new Intent(this, RegistrationAccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);
 	}
 	
-	public void forgotIdAndOrPass(){
+	
+	/**
+	 * forgotIdAndOrPass()
+	 * This method is the same as registerNewUser except that it launches the forgot nav screen
+	 * and is instead called from Java.
+	 */
+	private void forgotIdAndOrPass(){
 		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotTypeSelectionActivity.class);
 		this.startActivity(forgotIdAndOrPassActivity);
 	}
