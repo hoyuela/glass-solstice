@@ -42,4 +42,17 @@
         <item name="android:windowNoTitle">true</item>
     </style>
     
+    <style name="call_to_action_theme">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/body_copy_max</item>
+        <item name="android:paddingLeft">@dimen/orange_button_left_right_padding</item>
+        <item name="android:paddingRight">@dimen/orange_button_left_right_padding</item>
+        <item name="android:background">@drawable/orange_button</item>
+        <item name="android:paddingTop">@dimen/call_to_actions_padding</item>
+        <item name="android:paddingBottom">@dimen/call_to_actions_padding</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textStyle">bold</item>
+        
+    </style>
+    
 </resources>

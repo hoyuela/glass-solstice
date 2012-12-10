@@ -38,7 +38,8 @@ public class PushManageToogleItem extends RelativeLayout{
 		super(context, attrs);
 		
 		res = context.getResources();
-		final RelativeLayout mainView = (RelativeLayout)LayoutInflater.from(context).inflate(R.layout.push_manage_toggle_item, null);
+		final RelativeLayout mainView = 
+				(RelativeLayout)LayoutInflater.from(context).inflate(R.layout.push_manage_toggle_item, null);
 		headerView = (TextView)mainView.findViewById(R.id.header);
 		titleView = (TextView) mainView.findViewById(R.id.sub_header);
 		pushAlert = (ImageView) mainView.findViewById(R.id.push_toggle_view);
@@ -65,11 +66,10 @@ public class PushManageToogleItem extends RelativeLayout{
 
 			@Override
 			public void onClick(final View v) {
-				ImageView toggleImage = (ImageView) v;
+				final ImageView toggleImage = (ImageView) v;
 				if(toggleImage.getId() == textAlert.getId()){
 					toggleTextBox();
-				}
-				else{
+				} else{
 					togglePushBox();
 				}
 			}
@@ -77,7 +77,6 @@ public class PushManageToogleItem extends RelativeLayout{
 		};
 	}
 
-	
 	public void setHeader(final String header){
 		headerView.setText(header);
 	}
@@ -111,8 +110,7 @@ public class PushManageToogleItem extends RelativeLayout{
 		if(isChecked){
 			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
 			toggleImage.setImageDrawable(res.getDrawable(R.drawable.transparent_square));
-		}
-		else{
+		} else{
 			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.black_gradient_square));
 			toggleImage.setImageDrawable(res.getDrawable(R.drawable.white_check_mark));
 		}

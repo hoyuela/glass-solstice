@@ -150,10 +150,9 @@
         <service android:name="com.xtify.sdk.alarm.LocationIntentService" />
 		
 		<!--  End Xtify Setup -->
-        <activity android:name=".push.PushManageFragment">
-        </activity>
         <activity android:name=".push.PushTermsAndConditionsActivity"></activity>
         <activity android:name=".navigation.NavigationRootActivity"></activity>
+        <activity android:name=".push.PushEnrollActivity"></activity>
     </application>
     
 </manifest>

@@ -21,6 +21,7 @@ public class PushRegistrationStatusDetail implements Serializable{
 	private static final long serialVersionUID = -2209678827958715689L;
 	
 	public String httpCode;
+	
 	public String resultMsg;
 	
 	@JsonProperty("resultCode")
@@ -34,13 +35,13 @@ public class PushRegistrationStatusDetail implements Serializable{
 		
 		public final char RESULT_CODE;
 		
-		private VidStatus(char resultCode) {
+		private VidStatus(final char resultCode) {
 			RESULT_CODE = resultCode;
 		}
 		
 		@JsonCreator
-		public static VidStatus fromJsonResultCode(String resultCode) {
-			char resultCodeChar = resultCode.charAt(0);
+		public static VidStatus fromJsonResultCode(final String resultCode) {
+			final char resultCodeChar = resultCode.charAt(0);
 			for(VidStatus status : values()) {
 				if(status.RESULT_CODE == resultCodeChar)
 					return status;

@@ -38,13 +38,11 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
-import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail.VidStatus;
 import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
-import com.discover.mobile.navigation.NavigationRootActivity;
-import com.discover.mobile.push.PushTermsAndConditionsActivity;
+import com.discover.mobile.push.PushRegistrationStatusErrorHandler;
+import com.discover.mobile.push.PushRegistrationStatusSuccessListener;
 import com.google.common.base.Strings;
-import com.google.inject.Inject;
 /**
  * LoginActivity - This is the login screen for the application. It makes two service calls - one to attempt to log the
  * user into the system and the other to check the Xtify push notification status.
@@ -55,9 +53,6 @@ import com.google.inject.Inject;
 @ContentView(R.layout.login_start)
 public class LoginActivity extends RoboActivity {
 	private final static String emptyString = ""; //$NON-NLS-1$
-
-	@Inject
-	private CurrentSessionDetails currentSessionDetails;
 	
 //INPUT FIELDS
 	
@@ -146,8 +141,7 @@ public class LoginActivity extends RoboActivity {
 		if(Strings.isNullOrEmpty(idField.getText().toString()) ||
 			Strings.isNullOrEmpty(passField.getText().toString())) {
 			errorTextView.setText(getString(R.string.login_error));
-		}
-		else {
+		} else {
 			runAuthWithUsernameAndPassword(idField.getText().toString(), passField.getText().toString());
 		}
 	}
@@ -164,8 +158,8 @@ public class LoginActivity extends RoboActivity {
 						}
 						
 						@Override
-						public void success(AccountDetails value) {
-							currentSessionDetails.setAccountDetails(value);
+						public void success(final AccountDetails value) {
+							CurrentSessionDetails.getCurrentSessionDetails().setAccountDetails(value);
 							getXitifyRegistrationStatus();
 						}
 					})
@@ -261,72 +255,18 @@ public class LoginActivity extends RoboActivity {
 		this.startActivity(forgotIdAndOrPassActivity);
 	}
 	
+	/**
+	 * Do a GET request to the server to check to see if this vendor id is registered to this user.
+	 * @author jthornton
+	 */
 	protected void getXitifyRegistrationStatus(){
-		final AsyncCallback<PushRegistrationStatusDetail> callback = GenericAsyncCallback.<PushRegistrationStatusDetail>builder(this)
-				//FIXME: extract to strings
+		final AsyncCallback<PushRegistrationStatusDetail> callback = 
+				GenericAsyncCallback.<PushRegistrationStatusDetail>builder(this)
 				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
 									getResources().getString(R.string.push_progress_registration_loading), 
 									true)
-				.withSuccessListener(new SuccessListener<PushRegistrationStatusDetail>(){
-
-					@Override
-					public CallbackPriority getCallbackPriority() {
-						return CallbackPriority.LAST;
-					}
-
-					@Override
-					public void success(PushRegistrationStatusDetail value) {
-						if(value.vidStatus != VidStatus.MISSING){
-							//TODO: Set a status somewhere
-							Intent intent = new Intent(activity, NavigationRootActivity.class);	
-							startActivity(intent);
-						}else{
-							Intent intent = new Intent(activity, PushTermsAndConditionsActivity.class);	
-							startActivity(intent);
-						}	
-					}	
-				})
-				
-				.withSuccessListener(new SuccessListener<PushRegistrationStatusDetail>(){
-
-					@Override
-					public CallbackPriority getCallbackPriority() {
-						return CallbackPriority.FIRST;
-					}
-
-					@Override
-					public void success(PushRegistrationStatusDetail value) {
-							//TODO: Set a status somewhere
-					}	
-				})
-		
-				.withErrorResponseHandler(new ErrorResponseHandler(){
-
-					@Override
-					public CallbackPriority getCallbackPriority() {
-						return CallbackPriority.MIDDLE;
-					}
-
-					@Override
-					public boolean handleFailure(ErrorResponse<?> errorResponse) {
-						Intent intent;
-						switch(errorResponse.getHttpStatusCode()) {
-						// TODO: For now nothing really needs to be handled here
-						// The reason for this is because this is all done in the background 
-						// with no implications with the UI. Proper practice is to handle all
-						// the errors.
-							case HttpURLConnection.HTTP_UNAUTHORIZED:
-								intent = new Intent(activity, NavigationRootActivity.class);	
-								startActivity(intent);
-								return true;	
-							default:
-								intent = new Intent(activity, NavigationRootActivity.class);	
-								startActivity(intent);
-								return true;
-						}
-					}
-					
-				})
+				.withSuccessListener(new PushRegistrationStatusSuccessListener(this))
+				.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(this))
 				.build();
 	
 		new GetPushRegistrationStatus(this, callback).submit();
