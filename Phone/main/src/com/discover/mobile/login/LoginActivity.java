@@ -42,6 +42,7 @@ import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
+import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.PushRegistrationStatusSuccessListener;
 import com.google.common.base.Strings;
@@ -323,8 +324,9 @@ public class LoginActivity extends RoboActivity {
 				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
 									getResources().getString(R.string.push_progress_registration_loading), 
 									true)
-				.withSuccessListener(new PushRegistrationStatusSuccessListener(this))
+				.withSuccessListener(new PushRegistrationStatusSuccessListener())
 				.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(this))
+				.launchIntentOnSuccess(NavigationRootActivity.class)
 				.build();
 	
 		new GetPushRegistrationStatus(this, callback).submit();

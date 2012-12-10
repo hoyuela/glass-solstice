@@ -28,7 +28,7 @@ public class PushRegistrationStatusErrorHandler implements ErrorResponseHandler{
 	public PushRegistrationStatusErrorHandler(final Context context){
 		this.context = context;
 	}
-	
+
 	/**
 	 * Set the priority level of the error handler
 	 * @return CallbackPriority - the priority of the callback

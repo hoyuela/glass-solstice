@@ -3,7 +3,6 @@ package com.discover.mobile.push;
 import java.util.ArrayList;
 import java.util.List;
 
-import roboguice.inject.InjectView;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -24,22 +23,16 @@ import com.discover.mobile.RoboSherlockFragment;
  */
 public class PushManageFragment extends RoboSherlockFragment{
 
-	@InjectView(R.id.manage_you_account_header)
 	private PushManageHeaderItem manageHeader;
 	
-	@InjectView(R.id.manage_account_list_preferences)
 	private LinearLayout manageList;
 	
-	@InjectView(R.id.monitor_spending_list_header)
 	private PushManageHeaderItem monitorHeader;
 	
-	@InjectView(R.id.monitor_spending_list_preferences)
 	private LinearLayout monitorList;
 	
-	@InjectView(R.id.maximize_rewards_list_header)
 	private PushManageHeaderItem maximizeHeader;
 	
-	@InjectView(R.id.maximize_rewards_list_preferences)
 	private LinearLayout maximizeList;
 	
 	private Resources res;
@@ -54,13 +47,19 @@ public class PushManageFragment extends RoboSherlockFragment{
 		super.onCreate(savedInstanceState);
 		
 		final View mainView = inflater.inflate(R.layout.push_manage_main_layout, null);
+		manageHeader = (PushManageHeaderItem)mainView.findViewById(R.id.manage_you_account_header);
+		manageList = (LinearLayout)mainView.findViewById(R.id.manage_account_list_preferences);
+		monitorHeader = (PushManageHeaderItem)mainView.findViewById(R.id.monitor_spending_list_header);
+		monitorList = (LinearLayout)mainView.findViewById(R.id.monitor_spending_list_preferences);
+		maximizeHeader = (PushManageHeaderItem)mainView.findViewById(R.id.maximize_rewards_list_header);
+		maximizeList = (LinearLayout)mainView.findViewById(R.id.maximize_rewards_list_preferences);
 		
-		context = mainView.getContext();
+		context = this.getActivity();
 		
 		res = context.getResources();
-		//createHeaders();
-		//createLists();
-		//setListsInHeader();
+		createHeaders();
+		createLists();
+		setListsInHeader();
 		
 		return mainView;
 	}

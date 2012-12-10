@@ -4,11 +4,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.discover.mobile.common.callback.AsyncCallback;
 
-public class PushPreferenceReferanceHandler  <V> extends TypedReferenceHandler<V> {
+public class PushPreferenceReferenceHandler  <V> extends TypedReferenceHandler<V> {
 	
 	private final AsyncCallback<V> callback;
 	
-	public PushPreferenceReferanceHandler(final AsyncCallback<V> callback) {
+	public PushPreferenceReferenceHandler(final AsyncCallback<V> callback) {
 		checkNotNull(callback, "callback cannot be null");
 		
 		this.callback = callback;
