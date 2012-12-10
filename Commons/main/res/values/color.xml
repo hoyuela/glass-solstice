@@ -23,7 +23,6 @@
     
     <!-- Discover Primary Colors -->
     <color name="title">#293033</color>
-    <color name="body_copy">#3d484d</color>
     <color name="sub_copy">#576166</color>
     <color name="field_copy">#8a9499</color>
     <color name="field_stroke">#dce3e5</color>

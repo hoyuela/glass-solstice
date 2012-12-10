@@ -1,28 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent" 
- 	    android:focusable="true" 
-		android:focusableInTouchMode="true"
-		style="@style/OrangeTheme">
+    style="@style/OrangeTheme"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 	
-	    <LinearLayout
-	        android:id="@+id/linearLayout1"
-	        android:layout_width="294dp"
-	        android:layout_height="wrap_content"
-	        android:layout_centerInParent="true"
-	        android:background="@drawable/rounded_table_corners_shape"
-	        android:orientation="vertical" >
-
+	<ScrollView 
+	        android:id="@+id/scrollView1"
+	        android:layout_above="@+id/login_bottom_button_row"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:paddingLeft="@dimen/groups_of_elements_padding" 
+			 >
+			 
+	    <RelativeLayout
+	       	android:layout_width="fill_parent"
+	       	android:layout_height="wrap_content" >
+	        
+	        <View
+               android:id="@+id/padding_element"
+               android:layout_width="fill_parent"
+               android:layout_height="@dimen/groups_of_elements_padding"
+			   android:visibility="invisible"/>
+	        
 	        <RelativeLayout
-          	        android:layout_height="wrap_content"
-          	        android:layout_width="wrap_content">
-
+	            android:layout_width="fill_parent"
+	            android:layout_below="@+id/padding_element"
+	            android:layout_height="wrap_content"
+	            android:layout_marginBottom="@dimen/groups_of_elements_padding"
+	            android:layout_marginRight="@dimen/groups_of_elements_padding"
+	            android:background="@drawable/rounded_table_corners_shape" >
+	            
+	            
 	            <ImageView
 	                android:id="@+id/discoverLogo"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_marginTop="16dp"
+	                android:layout_below="@+id/padding_element"
 	                android:src="@drawable/discover_blk_logo_login" 
 	                android:layout_centerHorizontal="true"/>
 	            
@@ -51,13 +65,14 @@
 		            android:layout_width="match_parent"
 		            android:layout_height="48dp"
 		            android:layout_below="@+id/user_id_label"
+		            android:background="@drawable/plain_edit_text"
 		            android:ems="10"
 		            android:hint="@string/username_placeholder"
 		            android:imeOptions="actionNext"
 		            android:inputType="textNoSuggestions"
+		            android:maxEms="@integer/MAX_ID_LENGTH"
 		            android:maxLines="@integer/MAX_INPUT_LINES"
-		            android:textColor="@color/black" 
-		            android:background="@drawable/plain_edit_text"/>
+		            android:textColor="@color/black" />
 					
 		        <TextView
 		            android:id="@+id/password_label"
@@ -65,19 +80,21 @@
 		            android:layout_height="wrap_content"
 		            android:layout_below="@+id/username_field"
 		            android:text="@string/password"
-		            android:layout_marginTop="14dp"
+		            android:layout_marginTop="@dimen/between_related_elements_padding"
 		            android:layout_marginRight="14dp"
 		            android:textAppearance="?android:attr/textAppearanceMedium" 
 		            android:textColor="@color/title"
 		            android:textStyle="bold"/>
 		        
 		        <TextView
-		            android:id="@+id/hide_password_label"
+		            android:id="@+id/toggle_password_visibility_label"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_toRightOf="@+id/password_label"
+		            android:clickable="true"
+		            android:onClick="togglePasswordVisibility"
 		            android:layout_alignBaseline="@+id/password_label"
-		            android:text="@string/hide"
+		            android:text="@string/show"
 		            android:textColor="@color/blue"/>
 	
 		        <EditText
@@ -85,12 +102,12 @@
 		            android:layout_width="match_parent"
 		            android:layout_height="48dp"
 		            android:layout_below="@+id/password_label"
-		            android:ems="10"
+		            android:background="@drawable/plain_edit_text"
 		            android:hint="@string/password_placeholder"
 		            android:inputType="textPassword"
+		            android:maxEms="@integer/MAX_PASSWORD_LENGTH"
 		            android:maxLines="@integer/MAX_INPUT_LINES"
-		            android:textColor="@color/black" 
-		            android:background="@drawable/plain_edit_text"/>
+		            android:textColor="@color/black" />
 	
 	            <TextView
 	                android:id="@+id/remember_user_id_label"
@@ -131,21 +148,20 @@
 
 	            <Button
 	                android:id="@+id/login_button"
-	                android:layout_width="180dp"
+	                style="@style/call_to_action_theme"
+	                android:layout_marginTop="@dimen/orange_button_margin_top"
+	                android:layout_marginBottom="@dimen/orange_button_margin_top"
+	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:layout_marginTop="24dp"
-	                android:text="@string/login_button_text" 
 	                android:layout_below="@+id/remember_user_id_button"
-	                android:background="@drawable/orange_button"
-	                android:textColor="@color/white"
-	                android:textStyle="bold"
-	                android:layout_centerHorizontal="true"/>
+	                android:layout_centerHorizontal="true"
+	                android:text="@string/login_button_text" />
+	            
 			<LinearLayout
 			    	android:id="@+id/goto_row"
 			    	android:layout_below="@+id/login_button"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content" 
-	                android:layout_marginTop="14dp"
 	                android:layout_centerHorizontal="true">
 	                
 			    <TextView
@@ -153,21 +169,20 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:clickable="true"
-		            android:text="Go to:"
+		            android:text="@string/go_to"
 		            android:textColor="@color/title" />
 
 			    <ImageView
 			        android:id="@+id/card_check_mark"
 			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:src="@drawable/black_check_mark" />
+			        android:layout_height="wrap_content" />
 				
 				<TextView
 		            android:id="@+id/go_to_card_label"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:clickable="true"
-		            android:text="Card"
+		            android:text="@string/card"
 		            android:textColor="@color/title" />
 				
 				<TextView
@@ -175,7 +190,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:clickable="true"
-		            android:text="|"
+		            android:text="@string/vertical_separator"
 		            android:textColor="@color/title" />
 				
 				<TextView
@@ -183,10 +198,9 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:clickable="true"
-		            android:text="Bank"
+		            android:text="@string/bank"
 		            android:textColor="@color/title" />
 	            </LinearLayout>
-				
 
 		        <TextView
 		            android:id="@+id/forgot_uid_or_pass_text"
@@ -210,7 +224,41 @@
 			        android:layout_below="@+id/forgot_uid_or_pass_text"
 			        android:text="@string/discover_copyright_text" />
 	        </RelativeLayout>
+	    </RelativeLayout>
+	</ScrollView>
+			
+	<LinearLayout
+	    android:id="@+id/login_bottom_button_row"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentBottom="true" 
+           android:background="@color/transparentGray">
+
+		<Button
+		    android:id="@+id/customer_service_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight=".33"
+		    style="@style/login_bottom_bar_button"
+		    android:text="@string/customer_service" />
+
+		<Button
+		    android:id="@+id/privacy_and_security_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight=".33"
+		    style="@style/login_bottom_bar_button"
+		    android:text="@string/privacy_and_security" />
+
+		<Button
+		    android:id="@+id/register_now_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight=".33"
+		    style="@style/login_bottom_bar_button"
+		    android:text="@string/register_now"
+		    android:onClick="registerNewUser" />
+
+      </LinearLayout>
 	        
-	    </LinearLayout>
 </RelativeLayout>
-	

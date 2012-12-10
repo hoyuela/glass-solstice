@@ -18,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,9 +83,15 @@ public class LoginActivity extends RoboActivity {
 	@InjectView(R.id.forgot_uid_or_pass_text)
 	private TextView forgotUserIdOrPassText;
 	
+	@InjectView(R.id.toggle_password_visibility_label)
+	private TextView hideButton;
+	
 	private Activity activity;
 	
 	private Resources res;
+	
+	private String HIDE;
+	private String SHOW;
 		
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -92,7 +99,9 @@ public class LoginActivity extends RoboActivity {
 		activity = this;
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		res = getResources();
-
+		
+		HIDE = getString(R.string.hide);
+		SHOW = getString(R.string.show);
 		setupButtons();
 	}
 	
@@ -109,7 +118,7 @@ public class LoginActivity extends RoboActivity {
 			@Override
 			public void onClick(final View v){
 				errorTextView.setText(emptyString); 
-				registerNewUser();
+				registerNewUser(v);
 			}
 		});
 		
@@ -139,6 +148,7 @@ public class LoginActivity extends RoboActivity {
 		if(Strings.isNullOrEmpty(idField.getText().toString()) ||
 			Strings.isNullOrEmpty(passField.getText().toString())) {
 			errorTextView.setText(getString(R.string.login_error));
+			
 		} else {
 			runAuthWithUsernameAndPassword(idField.getText().toString(), passField.getText().toString());
 		}
@@ -257,11 +267,24 @@ public class LoginActivity extends RoboActivity {
 				toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.black_gradient_square));
 				toggleImage.setImageDrawable(res.getDrawable(R.drawable.white_check_mark));
 				isChecked = true;
-			}
-		
+			}	
 	}
 	
-	public void registerNewUser() {
+	public void togglePasswordVisibility(final View v) {
+		String buttonText = hideButton.getText().toString();
+		
+		if(HIDE.equals(buttonText)) {
+			hideButton.setText(SHOW);
+			passField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+		}
+		else {
+			hideButton.setText(HIDE);
+			passField.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+		}
+
+	}
+	
+	public void registerNewUser(final View v) {
 		final Intent accountInformationActivity = new Intent(this, RegistrationAccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);
 	}
