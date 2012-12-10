@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.RoboSherlockFragment;
@@ -17,6 +18,7 @@ import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.push.registration.DeviceRegistrationDetail;
 import com.discover.mobile.common.push.registration.RegisterVenderIdCall;
+import com.discover.mobile.section.home.HomeSummaryFragment;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -36,6 +38,9 @@ public class PushNowAvailableFragment extends RoboSherlockFragment{
 	/**String representing that the user opted into the alerts*/
 	private static final String ACCEPT = "Y"; //$NON-NLS-1$
 	
+	/**String representing that the user did not want to opt into the alerts*/
+	private static final String DECLINE = "P"; //$NON-NLS-1$
+	
 	/**
 	 * Creates the fragment, inflates the view and defines the button functionality.
 	 * @param inflater - inflater that will inflate the layout
@@ -50,10 +55,17 @@ public class PushNowAvailableFragment extends RoboSherlockFragment{
 		
 		final View view = inflater.inflate(R.layout.push_now_available, null);
 		final Button manageAlerts = (Button) view.findViewById(R.id.manage_alerts_button);
+		final TextView accountHome = (TextView) view.findViewById(R.id.account_home_view);
 		
 		manageAlerts.setOnClickListener(new OnClickListener(){
 			public void onClick(final View v){
 				registerWithDiscover(ACCEPT);
+			}
+		});
+		
+		accountHome.setOnClickListener(new OnClickListener(){
+			public void onClick(final View v){
+				registerWithDiscover(DECLINE);
 			}
 		});
 
@@ -72,6 +84,17 @@ public class PushNowAvailableFragment extends RoboSherlockFragment{
 	}
 	
 	/**
+	 * Swap out this fragment and replace it with the push manage fragment so that the user can manage his/her alerts
+	 */
+	protected void changeAccountHomeScreen(){
+		this.getSherlockActivity().getSupportFragmentManager()
+		.beginTransaction()
+		.replace(R.id.navigation_content, new HomeSummaryFragment())
+		.addToBackStack(TAG)
+		.commit();
+	}
+	
+	/**
 	 * Registers the device, user and vender id with Discover's server
 	 * @param regStatus - string representing if the user accepted the terms.
 	 */
@@ -80,6 +103,7 @@ public class PushNowAvailableFragment extends RoboSherlockFragment{
 		final TelephonyManager telephonyManager =
 				(TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 		
+		final boolean isOptedIn = (ACCEPT.equals(regStatus)) ? true : false;
 		final DeviceRegistrationDetail detail = new DeviceRegistrationDetail();
 		detail.regStatus = regStatus;
 		detail.vid = XtifySDK.getXidKey(context);
@@ -95,8 +119,8 @@ public class PushNowAvailableFragment extends RoboSherlockFragment{
 				.showProgressDialog(context.getResources().getString(R.string.push_progress_get_title), 
 									context.getResources().getString(R.string.push_progress_registration_loading), 
 									true)
-				.withSuccessListener(new PushRegisterSuccessListener(this))
-				.withErrorResponseHandler(new PushRegisterErrorHandler(this))
+				.withSuccessListener(new PushRegisterSuccessListener(this, isOptedIn))
+				.withErrorResponseHandler(new PushRegisterErrorHandler(this, isOptedIn))
 				.build();
 		
 		new RegisterVenderIdCall(context, callback, detail).submit();

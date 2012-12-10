@@ -40,4 +40,19 @@
   		android:layout_marginTop="@dimen/orange_button_margin_top"
   		android:layout_below="@+id/title_text"
   		android:layout_centerHorizontal="true"/>
+    
+    <TextView
+        android:id="@+id/account_home_view"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:text="@string/account_home" 
+    	android:textColor="@color/blue_link"
+        android:textSize="@dimen/body_copy_max"
+    	android:textStyle="bold"
+  		android:layout_marginRight="@dimen/forms_inner_padding"
+    	android:layout_marginLeft="@dimen/forms_inner_padding"
+  		android:layout_below="@+id/manage_alerts_button"
+  		android:layout_marginTop="@dimen/between_related_elements_padding"
+  		android:layout_centerHorizontal="true"/>
+        
 </RelativeLayout>

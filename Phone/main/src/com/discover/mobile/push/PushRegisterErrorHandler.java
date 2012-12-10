@@ -15,12 +15,16 @@ public class PushRegisterErrorHandler implements ErrorResponseHandler{
 	/**Local instance of the fragment making this call (used to swap the fragment out)*/
 	private PushNowAvailableFragment fragment;
 	
+	/**Boolean set if the user is opting into the push alerts*/
+	private final boolean isOptedIn;
+	
 	/**
 	 * Constructor for the class, letting the handler know the fragment using it
 	 * @param fragment - fragment using this handler
 	 */
-	public PushRegisterErrorHandler(final PushNowAvailableFragment fragment){
+	public PushRegisterErrorHandler(final PushNowAvailableFragment fragment, final boolean isOptedIn){
 		this.fragment = fragment;
+		this.isOptedIn = isOptedIn;
 	}
 
 	/**
@@ -36,8 +40,11 @@ public class PushRegisterErrorHandler implements ErrorResponseHandler{
 	 * Handle when the call fails, in this case send it to the next screen
 	 */
 	@Override
-	public boolean handleFailure(ErrorResponse<?> arg0) {
-		fragment.changeToPushManageScreen();
+	public boolean handleFailure(final ErrorResponse<?> arg0) {
+		if(isOptedIn)
+			fragment.changeToPushManageScreen();
+		else
+			fragment.changeAccountHomeScreen();
 		return true;
 	}
 }
