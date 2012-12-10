@@ -10,7 +10,7 @@ public final class Sections {
 	public static final ImmutableList<ComponentInfo> SECTION_LIST = ImmutableList.<ComponentInfo>builder()
 			.add(new HomeSectionInfo())
 			.add(new AccountSectionInfo())
-			//.add(new ProfileAndSettingsSectionInfo())
+			.add(new ProfileAndSettingsSectionInfo())
 			// TODO other sections
 			.build();
 	

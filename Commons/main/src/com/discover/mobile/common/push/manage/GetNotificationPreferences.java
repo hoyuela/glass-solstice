@@ -3,7 +3,7 @@ package com.discover.mobile.common.push.manage;
 import android.content.Context;
 
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.net.PushPreferenceReferanceHandler;
+import com.discover.mobile.common.net.PushPreferenceReferenceHandler;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
@@ -19,7 +19,7 @@ public class GetNotificationPreferences extends JsonResponseMappingNetworkServic
 			sendDeviceIdentifiers = true;
 		}}, PushNotificationPreferncesDetail.class);
 		
-		handler = new PushPreferenceReferanceHandler<PushNotificationPreferncesDetail>(callback);
+		handler = new PushPreferenceReferenceHandler<PushNotificationPreferncesDetail>(callback);
 	}
 
 	@Override

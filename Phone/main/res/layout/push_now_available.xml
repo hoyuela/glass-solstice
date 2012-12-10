@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/light_gray_bkgrd" >
-    
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_height="36.5dp"
-        android:orientation="horizontal"
-        android:background="#e8eced"
-        android:paddingBottom="40dp"/>
     
     <TextView
         android:id="@+id/title"
@@ -18,8 +11,11 @@
     	android:layout_height="wrap_content"
     	android:text="@string/push_alerts_are_available"
     	android:textColor="@color/title"
-    	android:textSize="@dimen/title_min"
+    	android:textSize="@dimen/title_max"
     	android:textStyle="bold"
+    	android:layout_marginRight="@dimen/forms_inner_padding"
+    	android:layout_marginLeft="@dimen/forms_inner_padding"
+    	android:layout_marginTop="@dimen/groups_of_elements_padding"
     	android:layout_marginBottom="@dimen/between_related_elements_padding"/>
     
     <TextView
@@ -28,7 +24,10 @@
         android:layout_height="wrap_content"
         android:text="@string/push_alerts_are_available_text"
         android:textColor="@color/sub_copy"
-        android:textSize="@dimen/body_copy_max"/>
+        android:layout_marginRight="@dimen/forms_inner_padding"
+    	android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:textSize="@dimen/body_copy_max"
+        android:layout_below="@+id/title"/>
 
     <Button
         android:id="@+id/manage_alerts_button"
@@ -36,6 +35,24 @@
     	android:layout_height="wrap_content"
     	android:text="@string/manage_alerts" 
   		style="@style/call_to_action_theme"
-  		android:layout_marginTop="@dimen/orange_button_margin_top"/>
-
-</LinearLayout>
+  		android:layout_marginRight="@dimen/forms_inner_padding"
+    	android:layout_marginLeft="@dimen/forms_inner_padding"
+  		android:layout_marginTop="@dimen/orange_button_margin_top"
+  		android:layout_below="@+id/title_text"
+  		android:layout_centerHorizontal="true"/>
+    
+    <TextView
+        android:id="@+id/account_home_view"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:text="@string/account_home" 
+    	android:textColor="@color/blue_link"
+        android:textSize="@dimen/body_copy_max"
+    	android:textStyle="bold"
+  		android:layout_marginRight="@dimen/forms_inner_padding"
+    	android:layout_marginLeft="@dimen/forms_inner_padding"
+  		android:layout_below="@+id/manage_alerts_button"
+  		android:layout_marginTop="@dimen/between_related_elements_padding"
+  		android:layout_centerHorizontal="true"/>
+        
+</RelativeLayout>
