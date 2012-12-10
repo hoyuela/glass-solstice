@@ -11,10 +11,12 @@ import android.widget.RelativeLayout;
 import com.discover.mobile.common.R;
 
 public class CustomEditText extends RelativeLayout{
+	
 private EditText field;
+
 	public CustomEditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		this.setBackgroundDrawable(getResources().getDrawable(R.drawable.green_test_box));
+		this.setBackgroundDrawable(getResources().getDrawable(R.drawable.plain_edit_text));
 		final LinearLayout mainView = (LinearLayout) LayoutInflater.from(context)
                 .inflate(R.layout.custom_edit_text, null);
 		

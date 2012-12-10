@@ -23,8 +23,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_marginTop="16dp"
-	                android:src="@drawable/discover_logo" 
-	                android:background="@color/black"
+	                android:src="@drawable/discover_blk_logo_login" 
 	                android:layout_centerHorizontal="true"/>
 	            
 		    	<TextView
@@ -100,7 +99,8 @@
 	                android:layout_marginTop="17dp"
 	                android:layout_below="@+id/password_field"
 	                android:layout_toLeftOf="@+id/remember_user_id_button"
-	                android:text="@string/remember_user_id" />
+	                android:text="@string/remember_user_id" 
+	                android:textColor="#576166"/>
 	
 	            
 	            <ImageView
