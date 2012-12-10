@@ -11,6 +11,8 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.discover.mobile.R;
 import com.discover.mobile.RoboSlidingFragmentActivity;
+import com.discover.mobile.common.CurrentSessionDetails;
+import com.discover.mobile.push.PushNowAvailableFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
 public class NavigationRootActivity extends RoboSlidingFragmentActivity implements NavigationRoot {
@@ -18,10 +20,18 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setupNavMenuList();
 		setupSlidingMenu();
 		setupFirstVisibleFragment();
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		
+		if(!CurrentSessionDetails.getCurrentSessionDetails().isNotCurrentUserRegisteredForPush())
+			makeFragmentVisible(new PushNowAvailableFragment());
 	}
 	
 	private void setupFirstVisibleFragment() {

@@ -1,13 +1,9 @@
 package com.discover.mobile.push;
 
-import android.content.Context;
-import android.content.Intent;
-
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail.VidStatus;
-import com.discover.mobile.navigation.NavigationRootActivity;
 
 /**
  * This is the success listener for when the app tries to get information from Discover's server
@@ -19,15 +15,11 @@ import com.discover.mobile.navigation.NavigationRootActivity;
  */
 public class PushRegistrationStatusSuccessListener implements SuccessListener<PushRegistrationStatusDetail>{
 	
-	/**Activity context*/
-	private Context context;
-	
 	/**
 	 * Constructor that takes in a context so that it can manipulate the flow of the app.
 	 * @param context - activity context
 	 */
-	public PushRegistrationStatusSuccessListener(final Context context){
-		this.context = context;
+	public PushRegistrationStatusSuccessListener(){
 	}
 
 	/**
@@ -45,26 +37,13 @@ public class PushRegistrationStatusSuccessListener implements SuccessListener<Pu
 	 */
 	@Override
 	public void success(final PushRegistrationStatusDetail value) {
-		Intent intent;
-		
 		if(value.vidStatus == VidStatus.MISSING){
 			CurrentSessionDetails.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(false);
-			intent = new Intent(context, NavigationRootActivity.class);	
-			
 		}else if(value.vidStatus == VidStatus.NOT_ASSOCIATED){
 			CurrentSessionDetails.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(true);
-			intent = new Intent(context, NavigationRootActivity.class);	
-
 		}else if(value.vidStatus == VidStatus.ASSOCIATED){
 			CurrentSessionDetails.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(false);
-			intent = new Intent(context, NavigationRootActivity.class);
-		
-		}else{
-			intent = new Intent(context, NavigationRootActivity.class);
-
 		}
-		context.startActivity(intent);
-		context = null;
 	}
 
 }

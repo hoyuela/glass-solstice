@@ -3,7 +3,7 @@ package com.discover.mobile.common.push.manage;
 import android.content.Context;
 
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.net.PushPreferenceReferanceHandler;
+import com.discover.mobile.common.net.PushPreferenceReferenceHandler;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
@@ -23,7 +23,7 @@ public class PostNotificationPreferences extends JsonResponseMappingNetworkServi
 		}},
 		PushNotificationPreferncesDetail.class);
 		
-		handler = new PushPreferenceReferanceHandler<PushNotificationPreferncesDetail>(callback);
+		handler = new PushPreferenceReferenceHandler<PushNotificationPreferncesDetail>(callback);
 	}
 
 	@Override
