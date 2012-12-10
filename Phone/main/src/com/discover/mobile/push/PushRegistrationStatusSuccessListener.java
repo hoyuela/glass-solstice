@@ -49,7 +49,7 @@ public class PushRegistrationStatusSuccessListener implements SuccessListener<Pu
 		
 		if(value.vidStatus == VidStatus.MISSING){
 			CurrentSessionDetails.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(false);
-			intent = new Intent(context, PushNowAvailableActivity.class);	
+			intent = new Intent(context, NavigationRootActivity.class);	
 			
 		}else if(value.vidStatus == VidStatus.NOT_ASSOCIATED){
 			CurrentSessionDetails.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(true);

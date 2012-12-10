@@ -58,9 +58,9 @@ public class PushManageFragment extends RoboSherlockFragment{
 		context = mainView.getContext();
 		
 		res = context.getResources();
-		createHeaders();
-		createLists();
-		setListsInHeader();
+		//createHeaders();
+		//createLists();
+		//setListsInHeader();
 		
 		return mainView;
 	}
