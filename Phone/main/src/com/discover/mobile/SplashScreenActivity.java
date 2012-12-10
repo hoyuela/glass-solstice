@@ -31,10 +31,14 @@ public class SplashScreenActivity extends RoboActivity{
 		}, 2500);
 	}
 	
+	/**
+	 * Ran at the start of an activity when an activity is brought to the front.  This also will trigger the 
+	 * Xtify SDK to start.
+	 */
 	@Override
 	public void onStart(){
 		super.onStart();
+		
 		pushNotificationService.start(this);
 	}
-
 }

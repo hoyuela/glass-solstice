@@ -9,10 +9,26 @@
     <dimen name="nav_menu_list_padding">10dp</dimen>
     
     <!--  Discover Padding -->
-    <dimen name="between_related_elements_padding">14dp</dimen>
-    <dimen name="forms_inner_padding">24dp</dimen>
-    <dimen name="table_inner_padding">30dp</dimen>
-    <dimen name="groups_of_elements_padding">40dp</dimen>
+    <dimen name="between_related_elements_padding">7dp</dimen>
+    <dimen name="forms_inner_padding">12dp</dimen>
+    <dimen name="table_inner_padding">15dp</dimen>
+    <dimen name="groups_of_elements_padding">20dp</dimen>
     <dimen name="call_to_actions_padding">15dp</dimen>
     <dimen name="orange_button_left_right_padding">30dp</dimen>
+    <dimen name="orange_button_margin_top">40dp</dimen>
+    
+    <!-- Discover Font Sizes -->
+    <dimen name="title_max">27sp</dimen>
+    <dimen name="title_min">25sp</dimen>
+    <dimen name="title_mid">26sp</dimen>
+    
+    <dimen name="body_copy_max">21sp</dimen>
+    <dimen name="body_copy_min">17sp</dimen>
+    <dimen name="body_copy_mid">19sp</dimen>
+    
+    <dimen name="small_copy_max">17sp</dimen>
+    <dimen name="small_copy_min">14sp</dimen>
+    <dimen name="small_copy_mid">15sp</dimen>
+    
+    
 </resources>

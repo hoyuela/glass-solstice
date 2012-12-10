@@ -3,15 +3,17 @@ package com.discover.mobile.push;
 import java.util.ArrayList;
 import java.util.List;
 
-import roboguice.activity.RoboActivity;
-import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.discover.mobile.R;
+import com.discover.mobile.RoboSherlockFragment;
 
 /**
  * Fragment that is the push notification manage screen.  Uses the push save header, 
@@ -20,8 +22,7 @@ import com.discover.mobile.R;
  * @author jthornton
  *
  */
-@ContentView(R.layout.push_manage_main_layout)
-public class PushManageFragment extends RoboActivity{
+public class PushManageFragment extends RoboSherlockFragment{
 
 	@InjectView(R.id.manage_you_account_header)
 	private PushManageHeaderItem manageHeader;
@@ -43,16 +44,25 @@ public class PushManageFragment extends RoboActivity{
 	
 	private Resources res;
 	
+	private Context context;
+	
 	private List<PushManageToogleItem> views;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+			final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		res = this.getResources();
-		createHeaders();
-		createLists();
-		setListsInHeader();
+		final View mainView = inflater.inflate(R.layout.push_manage_main_layout, null);
+		
+		context = mainView.getContext();
+		
+		res = context.getResources();
+		//createHeaders();
+		//createLists();
+		//setListsInHeader();
+		
+		return mainView;
 	}
 
 	private void setListsInHeader() {
@@ -74,14 +84,15 @@ public class PushManageFragment extends RoboActivity{
 					res.getStringArray(R.array.maximize_your_rewards_text));
 	}
 	
-	private void createList(final LinearLayout list, final String[] headers, final String texts[]){
+	private void createList(final LinearLayout list, final String[] headers, final String[] texts){
 		final int lengthOfHeaders = headers.length;
 		
 		for(int i = 0; i < lengthOfHeaders; i++) {
-			PushManageToogleItem view = new PushManageToogleItem(this, null);
+			final PushManageToogleItem view = new PushManageToogleItem(context, null);
 			view.setHeader(headers[i]);
 			view.setText(texts[i]);
 			view.setBackgroundDrawable(res.getDrawable(R.drawable.notification_list_item));
+			//FIXME: Pull these out into a dimensions file
 			view.setPadding(14, 28, 14 ,28);
 			list.addView(view);
 			views.add(view);
@@ -94,7 +105,7 @@ public class PushManageFragment extends RoboActivity{
 		maximizeHeader.setHeader(res.getString(R.string.maximize_your_rewards_title));	
 	}
 	
-	public void savePreferences(View v){
+	public void savePreferences(final View v){
 		
 	}
 }

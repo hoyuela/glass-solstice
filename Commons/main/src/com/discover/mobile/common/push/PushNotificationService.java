@@ -17,7 +17,7 @@ import com.xtify.sdk.api.XtifySDK;
 @ContextSingleton
 public class PushNotificationService {
 
-	public void start(Context context) {
+	public void start(final Context context) {
 		final String xtifyAppKey = context.getResources().getString(R.string.push_key);
 		final String googleProjectId = context.getResources().getString(R.string.push_id);
 		XtifySDK.start(context.getApplicationContext(), xtifyAppKey, googleProjectId);

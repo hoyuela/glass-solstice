@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="section_title_profile_and_settings">Profile &amp; Settings</string>
+    <string name="sub_section_personalize_cash">Personalize Cash PIN</string>
+    <string name="sub_section_manage_contact_info">Manage Contact Information</string>
+    <string name="sub_section_manage_alerts">Manage Text and Push Alerts</string>
+    <string name="sub_section_alert_history">Push Alerts History</string>
+    
+</resources>
