@@ -41,6 +41,10 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 		
 	}
 	
+	/**
+	 * Sets up the fragment that was visible before the app went into the background
+	 * @param savedInstanceState - bundle containing the state
+	 */
 	private void setUpCurrentFragment(final Bundle savedInstanceState) {
 		if(null == savedInstanceState){return;}
 		final Fragment fragment = this.getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT);
@@ -65,7 +69,7 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 	
 	/**
 	 * Save the state of the activity when it goes to the background.
-	 * @param outState - bundle containgin the out state of the acitivty
+	 * @param outState - bundle containing the out state of the activity
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState){

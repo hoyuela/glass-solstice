@@ -42,7 +42,7 @@ public interface AnalyticsPage {
 	static final String PUSH_MANAGE_ALERTS_OVERRIDE = "manageAlertsOverride-pg";
 
 	/**Analytic for going to the push what now page */
-	static final String PUSH_WHAT_NOW = "manageAlertsTermsAndConditions-pg";
+	static final String PUSH_NOW_AVAILABLE = "manageAlertsTermsAndConditions-pg";
 
 	/**Analytic for going to the push diagnostic page*/
 	static final String PUSH_DIAGONSTIC = "pushDiagonstic-pg";
