@@ -430,10 +430,6 @@ public class LoginActivity extends RoboActivity {
 		
 		new PreAuthCheckCall(this, callback).submit();
 		preAuthHasRun = true;
-
+		
 	}
-		
-		
-		
-		
 }

@@ -3,6 +3,7 @@ package com.discover.mobile.login;
 import java.util.Date;
 
 import roboguice.activity.RoboActivity;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,7 +26,7 @@ import com.discover.mobile.common.ScreenType;
  */
 public abstract class AbstractPreAuthCallHandler extends RoboActivity {
 	
-	protected Context context;
+	protected Activity activity;
 	
 	private AlertDialog.Builder alertBuilder;
 	
@@ -52,9 +53,9 @@ public abstract class AbstractPreAuthCallHandler extends RoboActivity {
 	 * themed window that presents the user with an error message.
 	 */
 	protected final void sendToMaintenancePage() {
-		final Intent maintenancePageIntent = new Intent(context, LockOutUserActivity.class);
+		final Intent maintenancePageIntent = new Intent(activity, LockOutUserActivity.class);
 		ScreenType.MAINTENANCE.addExtraToIntent(maintenancePageIntent);
-		context.startActivity(maintenancePageIntent);
+		activity.startActivity(maintenancePageIntent);
 	}
 	
 	/**
@@ -65,7 +66,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboActivity {
 	 * @param message The message to be presented in the alert dialog.
 	 */
 	protected final void showOptionalUpgradeAlertDialog(final String message) {
-		alertBuilder = new AlertDialog.Builder(context);
+		alertBuilder = new AlertDialog.Builder(activity);
 		
 		alertBuilder.setTitle(UPGRADE_TITLE)
 	    		.setMessage(message)
@@ -90,7 +91,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboActivity {
 	 * if update was chosen, they are directed to the Google Play store page for the Discover app.
 	 */
 	protected final void showForcedUpgradeAlertDialog() {
-		alertBuilder = new AlertDialog.Builder(context);
+		alertBuilder = new AlertDialog.Builder(activity);
 
 		alertBuilder.setTitle(UPGRADE_TITLE)
 		.setMessage(FORCED_UPGRADE_MESSAGE)
@@ -111,6 +112,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboActivity {
 				android.os.Process.killProcess(android.os.Process.myPid());
 			}
 		});	
+
 		alertBuilder.show();
 	}
 	
@@ -121,7 +123,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboActivity {
 	 */
 	protected final boolean shouldPresentOptionalUpdate(final String updateDescription) {
 		if(updateDescription != null) {
-			final SharedPreferences prefs = context.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
+			final SharedPreferences prefs = activity.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
 			
 			final long savedDate = prefs.getLong(DATETIME_KEY, DOES_NOT_EXIST);
 			
@@ -153,7 +155,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboActivity {
 	protected void upgrade() {
 		final Uri marketUri = Uri.parse("market://details?id=" + PACKAGE_NAME);
 		final Intent androidMarketplaceIntent = new Intent(Intent.ACTION_VIEW, marketUri);
-		context.startActivity(androidMarketplaceIntent);
+		activity.startActivity(androidMarketplaceIntent);
 	}
 
 	/**
@@ -162,7 +164,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboActivity {
 	 * messsage was shown.
 	 */
 	protected void updateDateInPrefs() {
-		final SharedPreferences prefs = context.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
+		final SharedPreferences prefs = activity.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
 		
 		final SharedPreferences.Editor editor = prefs.edit();
 		editor.putLong(DATETIME_KEY, new Date().getTime());

@@ -1,6 +1,6 @@
 package com.discover.mobile.login;
 
-import android.content.Context;
+import android.app.Activity;
 import android.util.Log;
 
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -19,8 +19,8 @@ public class PreAuthSuccessResponseHandler extends AbstractPreAuthCallHandler im
 
 	private final static String TAG = PreAuthErrorResponseHandler.class.getSimpleName();
 	
-	public PreAuthSuccessResponseHandler(final Context context) {
-		this.context = context;
+	public PreAuthSuccessResponseHandler(final Activity activity) {
+		this.activity = activity;
 	}
 	
 	@Override

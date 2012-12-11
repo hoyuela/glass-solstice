@@ -3,7 +3,7 @@ package com.discover.mobile.login;
 import static com.discover.mobile.common.StandardErrorCodes.FORCED_UPGRADE_REQUIRED;
 import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_1;
 import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_2;
-import android.content.Context;
+import android.app.Activity;
 
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -22,10 +22,10 @@ public class PreAuthErrorResponseHandler extends AbstractPreAuthCallHandler impl
 	/**
 	 * Create a PreAuthErrorResponseHandler to handle error responses generated
 	 * 
-	 * @param context Pass the calling Activity context to this handler.
+	 * @param activity Pass the calling Activity activity to this handler.
 	 */
-	public PreAuthErrorResponseHandler(final Context context) {
-		this.context = context;
+	public PreAuthErrorResponseHandler(final Activity activity) {
+		this.activity = activity;
 	}
 	
 	@Override
