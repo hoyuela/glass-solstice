@@ -25,6 +25,10 @@ public class PushRegistrationStatusErrorHandler implements ErrorResponseHandler{
 	/**Activity context*/
 	private Context context;
 	
+	/**
+	 * Constructor for the class
+	 * @param context - activity context
+	 */
 	public PushRegistrationStatusErrorHandler(final Context context){
 		this.context = context;
 	}

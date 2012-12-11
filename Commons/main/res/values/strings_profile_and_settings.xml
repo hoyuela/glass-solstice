@@ -6,5 +6,6 @@
     <string name="sub_section_manage_contact_info">Manage Contact Information</string>
     <string name="sub_section_manage_alerts">Manage Text and Push Alerts</string>
     <string name="sub_section_alert_history">Push Alerts History</string>
+    <string name="sub_section_enroll">Enroll in Reminders</string>
     
 </resources>

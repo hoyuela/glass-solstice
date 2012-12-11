@@ -17,6 +17,12 @@ import com.discover.mobile.R;
  */
 public class PushManageSaveView extends RelativeLayout{
 
+	/**
+	 * Creates the view, including removing the child elements from their parent view and adding them to the
+	 * current view being displayed
+	 * @param context - activity context
+	 * @param attrs - attributes of the current layout
+	 */
 	public PushManageSaveView(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 

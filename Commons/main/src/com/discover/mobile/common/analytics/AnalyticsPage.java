@@ -26,6 +26,34 @@ public interface AnalyticsPage {
 	static final String FORCED_UPGRADE = "forceUpgrade-pg";
 	static final String OPTIONAL_UPGRADE = "optionalUpgrade-pg";
 	
+	/**Analytic for going to the push alert history*/
+	static final String PUSH_ALERT_HISTORY = "alertHistory-pg";
+	
+	/**Analytic for going to the external email alert*/
+	static final String PUSH_EXTERNAL_EMAIL_ALERTS = "externalEmailAlerts-pg";
+
+	/**Analytic for going to the push FAQ page*/
+	static final String PUSH_FAQ = "faqDeviceAlerts-pg";
+
+	/**Analytic for going to the push manage alerts page*/
+	static final String PUSH_MANAGE_ALERTS = "manageAlerts-pg";
+
+	/**Analytic for going to the push manage alert override*/
+	static final String PUSH_MANAGE_ALERTS_OVERRIDE = "manageAlertsOverride-pg";
+
+	/**Analytic for going to the push what now page */
+	static final String PUSH_WHAT_NOW = "manageAlertsTermsAndConditions-pg";
+
+	/**Analytic for going to the push diagnostic page*/
+	static final String PUSH_DIAGONSTIC = "pushDiagonstic-pg";
+
+	/**Analytic for going to the push terms and conditions page*/
+	static final String PUSH_TERMS_AND_CONDITIONS = "pushTermsAndConditions-pg";
+	
+	/**Analytic for going to the enroll profile screen*/
+	static final String PROFILE_ENROLL = "profileEnroll-pg";
+
+	
 	//not used yet
 	static final String ACCOUNT_CREDIT_LINE_AVAILABLE = "accountCreditLineAvail-pg";
 	static final String ACCOUNT_SUMMARY = "accountSummary-pg";

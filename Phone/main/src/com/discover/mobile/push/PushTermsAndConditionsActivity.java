@@ -12,9 +12,12 @@ import android.os.Bundle;
  */
 public class PushTermsAndConditionsActivity extends RoboActivity{
 
+	/**
+	 * Sets up the UI when the activity is created
+	 * @param savedInstanceState - bundle containing the saved information of the fragment
+	 */
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-	
+		super.onCreate(savedInstanceState);	
 	}
 }
