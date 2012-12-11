@@ -1,14 +1,8 @@
 package com.discover.mobile.login;
 
-import static com.discover.mobile.common.StandardErrorCodes.AUTH_BAD_ACCOUNT_STATUS;
-import static com.discover.mobile.common.StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS;
-import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_1;
-import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_2;
-import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
-
-import java.net.HttpURLConnection;
-
+import static com.discover.mobile.common.CommonMethods.setViewGone;
+import static com.discover.mobile.common.CommonMethods.setViewInvisible;
+import static com.discover.mobile.common.CommonMethods.setViewVisible;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
@@ -28,17 +22,15 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
-import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
+import com.discover.mobile.common.auth.PreAuthCheckCall;
+import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
@@ -48,8 +40,8 @@ import com.discover.mobile.push.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.PushRegistrationStatusSuccessListener;
 import com.google.common.base.Strings;
 /**
- * LoginActivity - This is the login screen for the application. It makes two service calls - one to attempt to log the
- * user into the system and the other to check the Xtify push notification status.
+ * LoginActivity - This is the login screen for the application. It makes three service calls - 
+ * The first call is 
  * 
  * @author scottseward
  *
@@ -58,7 +50,16 @@ import com.google.common.base.Strings;
 public class LoginActivity extends RoboActivity {
 	private final static String emptyString = ""; //$NON-NLS-1$
 	
-
+	private final static String TAG = LoginActivity.class.getSimpleName();
+	
+	private final static String PASS_KEY          = "pass";
+	private final static String ID_KEY            = "id";
+	private final static String SAVE_ID_KEY       = "save";
+	private final static String LOGIN_TYPE_KEY    = "type";
+	private final static String PRE_AUTH_KEY      = "pauth";
+	private final static String PW_INPUT_TYPE_KEY = "secrets";
+	private final static String HIDE_LABEL_KEY    = "hide";
+	
 //INPUT FIELDS
 	
 	@InjectView(R.id.username_field)
@@ -75,10 +76,10 @@ public class LoginActivity extends RoboActivity {
 	@InjectView(R.id.remember_user_id_button)
 	private ImageView saveUserButton;
 	
-//TEXT LABELS
+	@InjectView(R.id.register_now_button)
+	private Button registerButton;
 	
-	@InjectView(R.id.register_text)
-	private TextView registerText;
+//TEXT LABELS
 
 	@InjectView(R.id.error_text_view)
 	private TextView errorTextView;
@@ -117,6 +118,8 @@ public class LoginActivity extends RoboActivity {
 	
 	private Resources res;
 	
+	private boolean preAuthHasRun = false;
+	
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -124,8 +127,49 @@ public class LoginActivity extends RoboActivity {
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		res = getResources();
 
+		restoreState(savedInstanceState);
 		setupButtons();
+
+		if(!preAuthHasRun){
+			startPreAuthCheck();
+		}
 	}
+	
+	@Override
+	public void onSaveInstanceState(final Bundle outState) {
+		outState.putString(ID_KEY, idField.getText().toString());
+		outState.putString(PASS_KEY, passField.getText().toString());
+		outState.putBoolean(SAVE_ID_KEY, saveUserId);
+		outState.putBoolean(PRE_AUTH_KEY, preAuthHasRun);
+		outState.putInt(PW_INPUT_TYPE_KEY, passField.getInputType());
+		outState.putString(HIDE_LABEL_KEY, hideButton.getText().toString());
+		outState.putInt(LOGIN_TYPE_KEY, cardCheckMark.getVisibility());
+		
+		super.onSaveInstanceState(outState);
+	}
+	
+	/**
+	 * Restore the state of the screen on oreintation change.
+	 * @param savedInstanceState
+	 */
+	public void restoreState(final Bundle savedInstanceState) {
+		if(savedInstanceState == null) {return;}
+		idField.setText(savedInstanceState.getString(ID_KEY));
+		passField.setText(savedInstanceState.getString(PASS_KEY));
+		preAuthHasRun = savedInstanceState.getBoolean(PRE_AUTH_KEY);
+		
+		passField.setInputType(savedInstanceState.getInt(PW_INPUT_TYPE_KEY));
+		
+		if(View.VISIBLE == savedInstanceState.getInt(LOGIN_TYPE_KEY))
+			toggleBankCardLogin(goToCardLabel);
+		else
+			toggleBankCardLogin(goToBankLabel);
+		hideButton.setText(savedInstanceState.getString(HIDE_LABEL_KEY));
+		saveUserId = !savedInstanceState.getBoolean(SAVE_ID_KEY);
+		toggleCheckBox(null);
+		
+	}
+	
 	
 	/**
 	 * setupButtons()
@@ -137,36 +181,27 @@ public class LoginActivity extends RoboActivity {
 		loginButton.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				errorTextView.setText(emptyString); 
+				setViewGone(errorTextView); 
 				logIn();
 			}
 		});
 		
-		registerText.setOnClickListener(new View.OnClickListener(){
+		registerButton.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				errorTextView.setText(emptyString); 
-				registerNewUser(v);
+				setViewGone(errorTextView); 
+				registerNewUser();
 			}
 		});
 		
 		forgotUserIdOrPassText.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				errorTextView.setText(emptyString); 
+				setViewGone(errorTextView); 
 				forgotIdAndOrPass();
 			}
 		});
-	}
-	
-	/**
-	 * When this activity is stopped, usually when a user navigates away from this screen,
-	 * the input fields will be cleared.
-	 */
-	@Override
-	public void onStop() {
-		super.onStop();
-		clearInputs();
+		
 	}
 		
 	/**
@@ -176,23 +211,20 @@ public class LoginActivity extends RoboActivity {
 	private void clearInputs() {
 		idField.setText(emptyString);
 		passField.setText(emptyString);
+		idField.setError(null);
+		passField.setError(null);
 	}
+
 	
 	/**
 	 * logIn()
-	 * If the user has entered some information in both the user id field and the password field
-	 * we will submit this info to the server and attempt to log the user in.
-	 * 
-	 * If not - we don't even try to log in.
+	 * If the user id, or password field are effectively blank, do not allow a service call to be made
+	 * display the error message for id/pass not matching records.
+	 * If the fields have data - submit it to the server for validation.
 	 */
 	private void logIn() {
-		//If the user id, or password field are effectively blank, do not allow a service call to be made
-		//display the error message for id/pass not matching records.
-		if(Strings.isNullOrEmpty(idField.getText().toString()) ||
-			Strings.isNullOrEmpty(passField.getText().toString())) {
-			errorTextView.setText(getString(R.string.login_error));
-			
-		} else {
+		if(!showErrorIfAnyFieldsAreEmpty()) {
+			clearInputs();
 			runAuthWithUsernameAndPassword(idField.getText().toString(), passField.getText().toString());
 		}
 	}
@@ -207,7 +239,6 @@ public class LoginActivity extends RoboActivity {
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback.<AccountDetails>builder(this)
 					.showProgressDialog("Discover", "Loading...", true)
-					.clearTextViewsOnComplete(errorTextView, passField, idField)
 					.withSuccessListener(new SuccessListener<AccountDetails>() {
 						
 						@Override
@@ -223,75 +254,10 @@ public class LoginActivity extends RoboActivity {
 					})
 					
 					// FIXME DO NOT COPY THIS CODE
-					.withErrorResponseHandler(new ErrorResponseHandler() {
-						@Override
-						public CallbackPriority getCallbackPriority() {
-							return CallbackPriority.MIDDLE;
-						}
-						
-						@Override
-						public boolean handleFailure(final ErrorResponse<?> errorResponse) {
-							if(errorResponse instanceof JsonMessageErrorResponse)
-								return handleMessageErrorResponse((JsonMessageErrorResponse)errorResponse);
-							
-							switch(errorResponse.getHttpStatusCode()) {
-								case HttpURLConnection.HTTP_UNAUTHORIZED:
-									errorTextView.setText(getString(R.string.login_error));
-									return true;
-								
-								// FIXME other cases
-							}
-							
-							return false;
-						}
-						
-						public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
-							TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
-							
-							if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
-								return false;
-							
-							// FIXME convert other error codes to standard constants
-							switch(messageErrorResponse.getMessageStatusCode()) {
-								case MAINTENANCE_MODE_1:
-								case MAINTENANCE_MODE_2: 
-									sendToErrorPage(ScreenType.MAINTENANCE);
-									return true;
-								
-								case STRONG_AUTH_NOT_ENROLLED:
-									sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
-									return true;
-									
-								case AUTH_BAD_ACCOUNT_STATUS:
-									sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
-									return true;
-									
-								case EXCEEDED_LOGIN_ATTEMPTS:
-								case LOCKED_OUT_ACCOUNT:
-									sendToErrorPage(ScreenType.LOCKED_OUT_USER);
-									return true;
-									
-								default:
-									errorTextView.setText(messageErrorResponse.getMessage());
-									return true;
-							}
-						}
-					})
-					
+					.withErrorResponseHandler(new LoginErrorResponseHandler(activity, errorTextView, idField, passField))
 					.build();
 		
 		new AuthenticateCall(this, callback, username, password).submit();
-	}
-	
-	/**
-	 * sendToErrorPage(final ScreenType screenType)
-	 * This method, on a critical login error, will send the user to a screen that will prevent them
-	 * from further action. This is used for various kinda of 'locked out' users.
-	 */
-	private void sendToErrorPage(final ScreenType screenType) {
-		final Intent maintenancePageIntent = new Intent(LoginActivity.this, LockOutUserActivity.class);
-		screenType.addExtraToIntent(maintenancePageIntent);
-		startActivity(maintenancePageIntent);
 	}
 	
 	/**
@@ -343,7 +309,6 @@ public class LoginActivity extends RoboActivity {
 	 * This method handles showing and hiding of a users password.
 	 * It will show a user's password in plain text if the user taps the Show text label
 	 * on the home screen. And hide it if it says 'Hide'
-	 * 
 	 */
 	public void togglePasswordVisibility(final View v) {
 		String buttonText = hideButton.getText().toString();
@@ -366,30 +331,31 @@ public class LoginActivity extends RoboActivity {
 	 * to it.
 	 */
 	public void toggleBankCardLogin(final View v) {
-		if(((TextView)v).getText().equals("Card")){
+		
+		if(v.equals(goToCardLabel)){
 			goToCardLabel.setTextColor(getResources().getColor(R.color.black));
-			cardCheckMark.setVisibility(View.VISIBLE);
+			setViewVisible(cardCheckMark);
 			
-			bankCheckMark.setVisibility(View.INVISIBLE);
+			setViewInvisible(bankCheckMark);
 			goToBankLabel.setTextColor(getResources().getColor(R.color.blue_link));
 		}
 		else{
 			
 			goToCardLabel.setTextColor(getResources().getColor(R.color.blue_link));
-			cardCheckMark.setVisibility(View.INVISIBLE);
-			
-			bankCheckMark.setVisibility(View.VISIBLE);
+			setViewInvisible(cardCheckMark);
+			setViewVisible(bankCheckMark);
 			goToBankLabel.setTextColor(getResources().getColor(R.color.black));		
 		}
 	
 	}
 	
 	/**
-	 * registerNewUser(final View v)
+	 * registerNewUser()
 	 * This method launches the registration screen when a user taps the register now
-	 * button in the bottom bar. This method is called from the XML layout file onClick.
+	 * button in the bottom bar.
 	 */
-	public void registerNewUser(final View v) {
+	public void registerNewUser() {
+		clearInputs();
 		final Intent accountInformationActivity = new Intent(this, RegistrationAccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);
 	}
@@ -401,6 +367,7 @@ public class LoginActivity extends RoboActivity {
 	 * and is instead called from Java.
 	 */
 	private void forgotIdAndOrPass(){
+		clearInputs();
 		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotTypeSelectionActivity.class);
 		this.startActivity(forgotIdAndOrPassActivity);
 	}
@@ -422,4 +389,51 @@ public class LoginActivity extends RoboActivity {
 	
 		new GetPushRegistrationStatus(this, callback).submit();
 	}
+	
+	/**
+	 * showErrorIfAnyFieldsAreEmpty()
+	 * Sets error tags for input fields if a field is empty.
+	 * 
+	 * @return boolean value to show if any errors should be shown.
+	 */
+	private boolean showErrorIfAnyFieldsAreEmpty() {
+		boolean wasIdEmpty, wasPassEmpty;
+		wasIdEmpty = Strings.isNullOrEmpty(idField.getText().toString());
+		wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
+		
+		if(wasIdEmpty || wasPassEmpty) {	
+			if(wasIdEmpty) {
+				idField.setError("Your ID Cannot be Empty!");
+			}
+			if(wasPassEmpty) {
+				passField.setError("Your Password Cannot be Empty!");
+			} 
+			return true;
+		}
+		//All fields were populated.
+		return false;
+	}
+	
+	/**
+	 * Run the pre-auth call.
+	 * Check with the server if the version of the application we are running is OK.
+	 * Also checks to see if the server is available and will allow users to login.
+	 */
+	public void startPreAuthCheck() {
+		final SuccessListener<PreAuthResult> optionalUpdateListener = new PreAuthSuccessResponseHandler(activity);
+		
+		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback.<PreAuthResult>builder(this)
+				.showProgressDialog("Discover", "Loading...", true)
+				.withSuccessListener(optionalUpdateListener)
+				.withErrorResponseHandler(new PreAuthErrorResponseHandler(activity))
+				.build();
+		
+		new PreAuthCheckCall(this, callback).submit();
+		preAuthHasRun = true;
+
+	}
+		
+		
+		
+		
 }
