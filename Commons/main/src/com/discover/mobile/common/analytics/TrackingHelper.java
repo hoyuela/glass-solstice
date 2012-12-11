@@ -37,7 +37,7 @@ public final class TrackingHelper {
 	public static void trackPageView(final String pageName) {
 		if(measurement == null){return;}
 		measurement.clearVars();
-		Hashtable<String, Object> contextData = new Hashtable<String, Object>();
+		final Hashtable<String, Object> contextData = new Hashtable<String, Object>();
 		contextData.put("eVar56", "DiscoverCard:Native:Android");  //$NON-NLS-1$//$NON-NLS-2$
 		measurement.setAppState(pageName);
 		measurement.track(contextData);
