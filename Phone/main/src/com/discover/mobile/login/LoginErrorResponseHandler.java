@@ -2,6 +2,7 @@ package com.discover.mobile.login;
 
 import static com.discover.mobile.common.StandardErrorCodes.AUTH_BAD_ACCOUNT_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS;
+import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
 import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_1;
 import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_2;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
@@ -67,15 +68,17 @@ public class LoginErrorResponseHandler implements ErrorResponseHandler{
 	
 	public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
-		clearInputs();
-		if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
-			return false;
 		
-		// FIXME convert other error codes to standard constants
+		clearInputs();
+
 		switch(messageErrorResponse.getMessageStatusCode()) {
 			case MAINTENANCE_MODE_1:
 			case MAINTENANCE_MODE_2: 
 				sendToErrorPage(ScreenType.MAINTENANCE);
+				return true;
+				
+			case LAST_ATTEMPT_WARNING:
+				showLabelWithTextResource(errorLabel, R.string.login_attempt_warning);
 				return true;
 			
 			case STRONG_AUTH_NOT_ENROLLED:
@@ -87,6 +90,9 @@ public class LoginErrorResponseHandler implements ErrorResponseHandler{
 				return true;
 				
 			case EXCEEDED_LOGIN_ATTEMPTS:
+				sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
+				return true;
+				
 			case LOCKED_OUT_ACCOUNT:
 				sendToErrorPage(ScreenType.LOCKED_OUT_USER);
 				return true;
