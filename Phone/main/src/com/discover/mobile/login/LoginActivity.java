@@ -31,6 +31,7 @@ import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
@@ -39,6 +40,7 @@ import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.PushRegistrationStatusSuccessListener;
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 /**
  * LoginActivity - This is the login screen for the application. It makes three service calls - 
  * The first call is 
@@ -120,6 +122,9 @@ public class LoginActivity extends RoboActivity {
 	
 	private boolean preAuthHasRun = false;
 	
+	@Inject
+	private PushNotificationService pushNotificationService;
+	
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -135,6 +140,17 @@ public class LoginActivity extends RoboActivity {
 		if(!preAuthHasRun){
 			startPreAuthCheck();
 		}
+	}
+	
+	/**
+	 * Ran at the start of an activity when an activity is brought to the front.  This also will trigger the 
+	 * Xtify SDK to start.
+	 */
+	@Override
+	public void onStart(){
+		super.onStart();
+		
+		pushNotificationService.start(this);
 	}
 	
 	@Override
