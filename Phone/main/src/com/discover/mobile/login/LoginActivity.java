@@ -224,7 +224,6 @@ public class LoginActivity extends RoboActivity {
 	 */
 	private void logIn() {
 		if(!showErrorIfAnyFieldsAreEmpty()) {
-			clearInputs();
 			runAuthWithUsernameAndPassword(idField.getText().toString(), passField.getText().toString());
 		}
 	}
@@ -258,6 +257,7 @@ public class LoginActivity extends RoboActivity {
 					.build();
 		
 		new AuthenticateCall(this, callback, username, password).submit();
+		clearInputs();
 	}
 	
 	/**
@@ -397,9 +397,9 @@ public class LoginActivity extends RoboActivity {
 	 * @return boolean value to show if any errors should be shown.
 	 */
 	private boolean showErrorIfAnyFieldsAreEmpty() {
-		boolean wasIdEmpty, wasPassEmpty;
-		wasIdEmpty = Strings.isNullOrEmpty(idField.getText().toString());
-		wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
+
+		boolean wasIdEmpty = Strings.isNullOrEmpty(idField.getText().toString());
+		boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 		
 		if(wasIdEmpty || wasPassEmpty) {	
 			if(wasIdEmpty) {
