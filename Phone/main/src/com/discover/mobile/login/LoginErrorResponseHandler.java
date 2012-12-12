@@ -60,9 +60,14 @@ public class LoginErrorResponseHandler implements ErrorResponseHandler{
 		return false;
 	}
 	
+	private void clearInputs() {
+		idField.setText("");
+		passField.setText("");
+	}
+	
 	public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
-		
+		clearInputs();
 		if(messageErrorResponse.getHttpStatusCode() != HttpURLConnection.HTTP_FORBIDDEN)
 			return false;
 		

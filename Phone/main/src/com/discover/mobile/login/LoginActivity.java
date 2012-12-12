@@ -322,9 +322,8 @@ public class LoginActivity extends RoboActivity {
 						clearInputs();
 					}
 				})
-				.withErrorResponseHandler(
-						new LoginErrorResponseHandler(activity, errorTextView,
-								idField, passField)).build();
+				.withErrorResponseHandler(new LoginErrorResponseHandler(activity, errorTextView, idField, passField))
+								.build();
 
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
