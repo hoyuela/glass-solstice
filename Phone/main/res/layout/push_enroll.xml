@@ -14,7 +14,6 @@
         android:textColor="@color/title"
         android:textSize="@dimen/title_max"
         android:textStyle="bold"
-        android:gravity="center"
         android:layout_marginBottom="@dimen/between_related_elements_padding"/>    
     
     
@@ -23,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/enroll_in_reminders_text"
-        android:textColor="@color/body_copy"
+        android:textColor="@color/sub_copy"
         android:textSize="@dimen/body_copy_min"
         android:layout_below="@+id/enroll_title"
         android:layout_marginBottom="@dimen/forms_inner_padding"/>
@@ -33,16 +32,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/fees_may_apply"
-        android:textColor="@color/body_copy"
+        android:textColor="@color/sub_copy"
         android:textSize="@dimen/body_copy_min"
         android:layout_below="@+id/enroll_title_text"/>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_alignParentBottom="true">
     
     <Button 
         android:id="@+id/enroll_accept"
@@ -50,15 +42,20 @@
         android:layout_height="wrap_content"
         android:text="@string/push_enroll"
         style="@style/call_to_action_theme"
-        android:layout_marginRight="10dp"/>
+        android:layout_below="@+id/fees_text"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+    	android:layout_marginLeft="@dimen/forms_inner_padding"
+  		android:layout_marginTop="@dimen/orange_button_margin_top"
+        android:layout_centerHorizontal="true"/>
     
-    <Button 
+    <TextView 
         android:id="@+id/enroll_decline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/push_cancel"
-        style="@style/call_to_action_theme"/>
-    
-    </LinearLayout>
+        style="@style/blue_hyperlink"
+        android:layout_marginTop="@dimen/between_related_elements_padding"
+        android:layout_below="@+id/enroll_accept"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

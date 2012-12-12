@@ -8,9 +8,7 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -320,7 +318,7 @@ public class LoginActivity extends RoboActivity {
 						saveCredentials();
 						CurrentSessionDetails.getCurrentSessionDetails()
 								.setAccountDetails(value);
-						getXitifyRegistrationStatus();
+						getXtifyRegistrationStatus();
 						clearInputs();
 					}
 				})
@@ -329,24 +327,6 @@ public class LoginActivity extends RoboActivity {
 								idField, passField)).build();
 
 		new AuthenticateCall(this, callback, username, password).submit();
-	}
-
-	/**
-	 * showOkAlertDialog(final String title, final String message) This method
-	 * shows a pop-up dialog that the user must dismiss. It is usually shown
-	 * when an error is being directly passed from the server response to the
-	 * user.
-	 */
-	private void showOkAlertDialog(final String title, final String message) {
-		new AlertDialog.Builder(this).setTitle(title).setMessage(message)
-				.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(final DialogInterface dialog,
-							final int which) {
-						dialog.dismiss();
-						finish();
-					}
-				}).show();
 	}
 	
 	public void saveCredentials() {
@@ -391,11 +371,10 @@ public class LoginActivity extends RoboActivity {
 	 * it says 'Hide'
 	 */
 	public void togglePasswordVisibility(final View v) {
-		String buttonText = hideButton.getText().toString();
-		if (HIDE.equals(buttonText)) {
+		final String buttonText = hideButton.getText().toString();
+		if(HIDE.equals(buttonText)) {
 			hideButton.setText(SHOW);
-			passField.setInputType(InputType.TYPE_CLASS_TEXT
-					| InputType.TYPE_TEXT_VARIATION_PASSWORD);
+			passField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		} else {
 			hideButton.setText(HIDE);
 			passField.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
@@ -417,8 +396,7 @@ public class LoginActivity extends RoboActivity {
 			setViewVisible(cardCheckMark);
 
 			setViewInvisible(bankCheckMark);
-			goToBankLabel.setTextColor(getResources().getColor(
-					R.color.blue_link));
+			goToBankLabel.setTextColor(getResources().getColor(R.color.blue_link));
 		} else {
 
 			goToCardLabel.setTextColor(getResources().getColor(
@@ -436,8 +414,7 @@ public class LoginActivity extends RoboActivity {
 	 */
 	public void registerNewUser() {
 		clearInputs();
-		final Intent accountInformationActivity = new Intent(this,
-				RegistrationAccountInformationActivity.class);
+		final Intent accountInformationActivity = new Intent(this, RegistrationAccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);
 	}
 
@@ -447,8 +424,7 @@ public class LoginActivity extends RoboActivity {
 	 */
 	private void forgotIdAndOrPass() {
 		clearInputs();
-		final Intent forgotIdAndOrPassActivity = new Intent(this,
-				ForgotTypeSelectionActivity.class);
+		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotTypeSelectionActivity.class);
 		this.startActivity(forgotIdAndOrPassActivity);
 	}
 
@@ -458,21 +434,17 @@ public class LoginActivity extends RoboActivity {
 	 * 
 	 * @author jthornton
 	 */
-	protected void getXitifyRegistrationStatus() {
-		final AsyncCallback<PushRegistrationStatusDetail> callback = GenericAsyncCallback
-				.<PushRegistrationStatusDetail> builder(this)
-				.showProgressDialog(
-						getResources().getString(
-								R.string.push_progress_get_title),
-						getResources().getString(
-								R.string.push_progress_registration_loading),
-						true)
-				.withSuccessListener(
-						new PushRegistrationStatusSuccessListener())
-				.withErrorResponseHandler(
-						new PushRegistrationStatusErrorHandler(this))
-				.launchIntentOnSuccess(NavigationRootActivity.class).build();
-
+	protected void getXtifyRegistrationStatus(){
+		final AsyncCallback<PushRegistrationStatusDetail> callback = 
+				GenericAsyncCallback.<PushRegistrationStatusDetail>builder(this)
+				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
+									getResources().getString(R.string.push_progress_registration_loading), 
+									true)
+				.withSuccessListener(new PushRegistrationStatusSuccessListener())
+				.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(this))
+				.launchIntentOnSuccess(NavigationRootActivity.class)
+				.build();
+	
 		new GetPushRegistrationStatus(this, callback).submit();
 	}
 
@@ -484,13 +456,11 @@ public class LoginActivity extends RoboActivity {
 	 */
 	private boolean showErrorIfAnyFieldsAreEmpty() {
 
-		boolean wasIdEmpty = Strings
-				.isNullOrEmpty(idField.getText().toString());
-		boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText()
-				.toString());
-
-		if (wasIdEmpty || wasPassEmpty) {
-			if (wasIdEmpty) {
+		final boolean wasIdEmpty = Strings.isNullOrEmpty(idField.getText().toString());
+		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
+		
+		if(wasIdEmpty || wasPassEmpty) {	
+			if(wasIdEmpty) {
 				idField.setError("Your ID Cannot be Empty!");
 			}
 			if (wasPassEmpty) {
