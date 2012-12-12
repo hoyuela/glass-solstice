@@ -61,7 +61,6 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	@InjectView (R.id.account_info_ssn_error_label)
 	TextView ssnErrorLabel;
 	
-	private EditText genericInputField;
 	
 	@Override
 	protected void setupCustomTextChangedListeners(){
@@ -72,9 +71,8 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 			
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				genericInputField = (EditText)v;
 				
-				if( !hasFocus && !validator.isUidValid( genericInputField.getText().toString() ) ) {
+				if( !hasFocus && !validator.isUidValid( idField.getText().toString() ) ) {
 					showLabel(idErrorLabel);
 				}
 			}

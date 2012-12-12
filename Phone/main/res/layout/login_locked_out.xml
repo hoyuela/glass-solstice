@@ -38,7 +38,6 @@
         android:layout_below="@id/linearLayout1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="1dp"
-        android:background="@drawable/login_box_reflection"
         android:orientation="vertical" />
 
     <include layout="@layout/old_general_copyright_footer" />

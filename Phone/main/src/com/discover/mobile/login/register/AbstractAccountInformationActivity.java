@@ -72,6 +72,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	private String strongAuthQuestion;
 	private String strongAuthQuestionId;
 	
+	private static final int SSN_LENGTH_OK = 4;
+	private static final int YEAR_LENGTH_OK = 4;
+	
 	
 //TEXT LABELS
 	
@@ -179,7 +182,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				@Override
 				public void onFocusChange(final View v, final boolean hasFocus) {
 					
-					final String acctNbr = ((EditText)v).getText().toString();
+					final String acctNbr = accountIdentifierField.getText().toString();
 					if(!hasFocus && !validator.isCardAccountNumberValid(acctNbr)){
 						showLabel( cardErrorLabel );
 					}
@@ -212,8 +215,8 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
-
-				if(!hasFocus && ((EditText)v).getText().length() < 4) {
+				
+				if(!hasFocus && dobYearField.getText().length() < YEAR_LENGTH_OK) {
 					showLabel(dobYearErrorLabel);
 				}
 			}
@@ -223,7 +226,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			
 			@Override
 			public void afterTextChanged(final Editable s) {
-				if(s.length() == 4) {
+				if(s.length() == YEAR_LENGTH_OK) {
 					//hide error label
 					hideLabel(dobYearErrorLabel);
 				}
@@ -243,13 +246,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	private void setupSsnTextChangedListeners(){
 		
 		ssnField.setOnFocusChangeListener(new OnFocusChangeListener(){
-			EditText inputField;
 
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
-				inputField = (EditText)v;
 				
-				if( !hasFocus && inputField.getText().length() < 4 ) {
+				if( !hasFocus && ssnField.getText().length() < SSN_LENGTH_OK ) {
 					showLabel(ssnErrorLabel);
 				}
 			}
@@ -259,7 +260,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 
 			@Override
 			public void afterTextChanged(final Editable s) {
-				if(s.length() == 4) {
+				if(s.length() == SSN_LENGTH_OK) {
 					//hide error label
 					hideLabel(ssnErrorLabel);
 				}

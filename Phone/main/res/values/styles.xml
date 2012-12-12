@@ -21,12 +21,12 @@
     <style name="AppTheme.NoTitleBar" parent="Theme.Sherlock.NoActionBar">
     </style>
     
-    <style name="BlackTheme">
+    <style name="OrangeTheme">
         <item name="android:background">@drawable/login_bkgd</item>
     </style>
 
     <style name="WhiteTheme">
-        <item name="android:background">@drawable/gradient_bg</item>
+        <item name="android:background">@drawable/light_gray_bkgrd</item>
         <item name="android:paddingBottom">@dimen/content_padding</item>
         <item name="android:paddingLeft">@dimen/content_padding</item>
         <item name="android:paddingRight">@dimen/content_padding</item>
@@ -52,7 +52,13 @@
         <item name="android:paddingBottom">@dimen/call_to_actions_padding</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:textStyle">bold</item>
-        
     </style>
     
+    <style name="login_bottom_bar_button">
+        <item name="android:padding">@dimen/content_padding</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+        <item name="android:background">@drawable/login_bottom_bar_button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:height">@dimen/login_bottom_button_height</item>
+    </style>    
 </resources>

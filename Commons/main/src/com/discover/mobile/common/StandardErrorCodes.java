@@ -2,6 +2,7 @@ package com.discover.mobile.common;
 
 public final class StandardErrorCodes {
 
+	public static final int FORCED_UPGRADE_REQUIRED = 1002;
 	public static final int MAINTENANCE_MODE_1 = 1006;
 	public static final int MAINTENANCE_MODE_2 = 1007;
 	public static final int EXCEEDED_LOGIN_ATTEMPTS = 1101;

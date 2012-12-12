@@ -2,4 +2,6 @@
 <resources>
     <integer name="MAX_INPUT_LINES">1</integer>
     <integer name="ZERO">0</integer>
+    <integer name="MAX_ID_LENGTH">16</integer>
+    <integer name="MAX_PASSWORD_LENGTH">32</integer>
 </resources>
