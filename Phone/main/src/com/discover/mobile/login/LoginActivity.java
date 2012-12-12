@@ -8,8 +8,6 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -266,7 +264,7 @@ public class LoginActivity extends RoboActivity {
 						@Override
 						public void success(final AccountDetails value) {
 							CurrentSessionDetails.getCurrentSessionDetails().setAccountDetails(value);
-							getXitifyRegistrationStatus();
+							getXtifyRegistrationStatus();
 						}
 					})
 					
@@ -276,28 +274,7 @@ public class LoginActivity extends RoboActivity {
 		
 		new AuthenticateCall(this, callback, username, password).submit();
 		clearInputs();
-	}
-	
-	/**
-	 * showOkAlertDialog(final String title, final String message)
-	 * This method shows a pop-up dialog that the user must dismiss.
-	 * It is usually shown when an error is being directly passed from the server response
-	 * to the user.
-	 */
-	private void showOkAlertDialog(final String title, final String message) {
-		new AlertDialog.Builder(this)
-			    .setTitle(title)
-			    .setMessage(message)
-			    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(final DialogInterface dialog, final int which) {
-						dialog.dismiss();
-						finish();
-					}
-				})
-			    .show();
-	}
-	
+	}	
 	
 	/**
 	 * toggleCheckBox(final View v)
@@ -308,18 +285,18 @@ public class LoginActivity extends RoboActivity {
 	boolean saveUserId = false;
 	
 	public void toggleCheckBox(final View v) {
-		ImageView toggleImage = (ImageView)findViewById(R.id.remember_user_id_button);
+		final ImageView toggleImage = (ImageView)findViewById(R.id.remember_user_id_button);
 		
-			if(saveUserId){
-				toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
-				toggleImage.setImageDrawable(res.getDrawable(R.drawable.transparent_square));
-				saveUserId = false;
-			}
-			else{
-				toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.black_gradient_square));
-				toggleImage.setImageDrawable(res.getDrawable(R.drawable.white_check_mark));
-				saveUserId = true;
-			}	
+		if(saveUserId){
+			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
+			toggleImage.setImageDrawable(res.getDrawable(R.drawable.transparent_square));
+			saveUserId = false;
+		}
+		else{
+			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.black_gradient_square));
+			toggleImage.setImageDrawable(res.getDrawable(R.drawable.white_check_mark));
+			saveUserId = true;
+		}	
 	}
 	
 	/**
@@ -329,7 +306,7 @@ public class LoginActivity extends RoboActivity {
 	 * on the home screen. And hide it if it says 'Hide'
 	 */
 	public void togglePasswordVisibility(final View v) {
-		String buttonText = hideButton.getText().toString();
+		final String buttonText = hideButton.getText().toString();
 		if(HIDE.equals(buttonText)) {
 			hideButton.setText(SHOW);
 			passField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -394,7 +371,7 @@ public class LoginActivity extends RoboActivity {
 	 * Do a GET request to the server to check to see if this vendor id is registered to this user.
 	 * @author jthornton
 	 */
-	protected void getXitifyRegistrationStatus(){
+	protected void getXtifyRegistrationStatus(){
 		final AsyncCallback<PushRegistrationStatusDetail> callback = 
 				GenericAsyncCallback.<PushRegistrationStatusDetail>builder(this)
 				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
@@ -416,8 +393,8 @@ public class LoginActivity extends RoboActivity {
 	 */
 	private boolean showErrorIfAnyFieldsAreEmpty() {
 
-		boolean wasIdEmpty = Strings.isNullOrEmpty(idField.getText().toString());
-		boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
+		final boolean wasIdEmpty = Strings.isNullOrEmpty(idField.getText().toString());
+		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 		
 		if(wasIdEmpty || wasPassEmpty) {	
 			if(wasIdEmpty) {

@@ -140,7 +140,7 @@
 		<!--  End Xtify Setup -->
         <activity android:name=".push.PushTermsAndConditionsActivity"></activity>
         <activity android:name=".navigation.NavigationRootActivity"></activity>
-        <activity android:name=".push.PushEnrollActivity"></activity>
+        <activity android:name="com.discover.mobile.push.PushEnrollFragment"></activity>
     </application>
     
 </manifest>

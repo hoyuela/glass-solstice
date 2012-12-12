@@ -17,10 +17,8 @@ public class PushRegistrationStatusSuccessListener implements SuccessListener<Pu
 	
 	/**
 	 * Constructor that takes in a context so that it can manipulate the flow of the app.
-	 * @param context - activity context
 	 */
-	public PushRegistrationStatusSuccessListener(){
-	}
+	public PushRegistrationStatusSuccessListener(){}
 
 	/**
 	 * Set the priority level of the success handler
@@ -45,5 +43,4 @@ public class PushRegistrationStatusSuccessListener implements SuccessListener<Pu
 			CurrentSessionDetails.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(false);
 		}
 	}
-
 }

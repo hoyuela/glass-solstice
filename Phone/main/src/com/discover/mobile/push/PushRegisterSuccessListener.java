@@ -13,7 +13,7 @@ import com.discover.mobile.common.push.registration.DeviceRegistrationDetail;
 public class PushRegisterSuccessListener implements SuccessListener<DeviceRegistrationDetail>{
 	
 	/**Local instance of the fragment making this call (used to swap the fragment out)*/
-	private final PushNowAvailableFragment fragment;
+	private final PushRegistrationUI fragment;
 	
 	/**Boolean set if the user is opting into the push alerts*/
 	private final boolean isOptedIn;
@@ -21,8 +21,9 @@ public class PushRegisterSuccessListener implements SuccessListener<DeviceRegist
 	/**
 	 * Constructor for the class, letting the listener know the fragment using it
 	 * @param fragment - fragment using this listener
+	 * @param isOptedIn - true is the user is opting into push alerts
 	 */
-	public PushRegisterSuccessListener(final PushNowAvailableFragment fragment, final boolean isOptedIn){
+	public PushRegisterSuccessListener(final PushRegistrationUI fragment, final boolean isOptedIn){
 		this.fragment = fragment;
 		this.isOptedIn = isOptedIn;
 	}
@@ -42,8 +43,8 @@ public class PushRegisterSuccessListener implements SuccessListener<DeviceRegist
 	@Override
 	public void success(final DeviceRegistrationDetail detail) {
 		if(isOptedIn)
-			fragment.changeToPushManageScreen();
+			fragment.changeToAcceptScreen();
 		else
-			fragment.changeAccountHomeScreen();
+			fragment.changeToDeclineScreen();
 	}
 }
