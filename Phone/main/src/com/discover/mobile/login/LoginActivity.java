@@ -124,6 +124,8 @@ public class LoginActivity extends RoboActivity {
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		activity = this;
+		TrackingHelper.startActivity(this);
+		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		res = getResources();
 
