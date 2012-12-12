@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="customer_service">
+        Customer Service
+    </string>
+    <string name="privacy_and_security">
+        Privacy &amp; Security
+    </string>
+    <string name="register_now">
+        Register Now
+    </string>
+    <string name="forgot_id_or_pass_text">
+        Forgot User ID/Password?
+    </string>
+    <string name="card">
+        Card
+    </string>
+    <string name="bank">
+        Bank
+    </string>
+    <string name="go_to">
+        Go to:
+    </string>
+    <string name="login_button_text">
+        Secure Login
+    </string>
+    <string name="hide">
+        Hide
+    </string>
+    <string name="show">
+        Show
+    </string>
+    <string name="remember_user_id">
+        Remember User ID
+    </string>
+    <string name="password_placeholder">
+        Password
+    </string>
+    <string name="password">
+        Password:
+    </string>
+    <string name="username_placeholder">
+        Username
+    </string>
+    <string name="user_id">
+        User ID:
+    </string>
+    <string name="vertical_separator">
+        |
+    </string>
+</resources>

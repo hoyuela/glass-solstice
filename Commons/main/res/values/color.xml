@@ -13,8 +13,6 @@
 	<color name="gray">#CCCCCC</color>
 	<color name="lightRed">#1fff0000</color>
 	<color name="lightBlue">#d0025D96</color>
-	<color name="transparentGray">#50000000</color>
-	<color name="none">#00000000</color>
 	
     <!-- Old -->
     <color name="primary">#00A8BF</color>
@@ -25,7 +23,6 @@
     
     <!-- Discover Primary Colors -->
     <color name="title">#293033</color>
-    <color name="body_copy">#3d484d</color>
     <color name="sub_copy">#576166</color>
     <color name="field_copy">#8a9499</color>
     <color name="field_stroke">#dce3e5</color>
