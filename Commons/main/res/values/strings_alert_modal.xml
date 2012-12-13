@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="logout_confirm_title">Are You Sure You Want to Log Out?</string>
+    <string name="logout_confirm_text">
+        Thank you for visiting. 
+        Please tap Stay Logged In to continue using the Disccover App.
+        Tap Log Out to finish your session.
+    </string>
+    <string name="logout_ok_button_text">Log Out</string>
+    <string name="logout_cancel_button_text">Stay Logged In</string>
+    <string name="logout_toggle_item_text">Do not ask again</string> 
+</resources>

@@ -45,13 +45,13 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 		
 		manageAlerts.setOnClickListener(new OnClickListener(){
 			public void onClick(final View v){
-				registerWithDiscover(ACCEPT);
+				registerWithDiscover(DECLINE, true);
 			}
 		});
 		
 		accountHome.setOnClickListener(new OnClickListener(){
 			public void onClick(final View v){
-				registerWithDiscover(DECLINE);
+				registerWithDiscover(DECLINE, false);
 			}
 		});
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="log_out">Log Out</string>
+    <string name="push_manage_alerts_title">Manage Text &amp; Push Alerts</string>
+    
+</resources>

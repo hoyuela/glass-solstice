@@ -149,6 +149,14 @@ public class LoginActivity extends RoboActivity {
 		super.onStart();
 		
 		pushNotificationService.start(this);
+		
+		//FIXME: get rid of this
+		setLogin();
+	}
+
+	private void setLogin(){
+		this.idField.setText("uidsm8461");
+		this.passField.setText("solstice135");
 	}
 	
 	@Override

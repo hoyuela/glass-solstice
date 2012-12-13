@@ -2,13 +2,15 @@ package com.discover.mobile.navigation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.discover.mobile.R;
 import com.discover.mobile.RoboSherlockFragment;
 import com.discover.mobile.RoboSlidingFragmentActivity;
@@ -30,6 +32,9 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 	/**String that is the key to getting the current fragment out of the saved bundle.*/
 	private static final String CURRENT_FRAGMENT = "currentFragment";
 	
+	/**String that is the key to getting the current fragment title out of the saved bundle.*/
+	private static final String TITLE = "title";
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,6 +53,7 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 	private void setUpCurrentFragment(final Bundle savedInstanceState) {
 		if(null == savedInstanceState){return;}
 		final Fragment fragment = this.getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT);
+		setActionBarTitle(savedInstanceState.getString(TITLE));
 		if(null != fragment){
 			resumeFragment = fragment;
 		}
@@ -74,6 +80,7 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		this.getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT, currentFragment);
+		outState.putString(TITLE, getActionBarTitle());
 		super.onSaveInstanceState(outState);
 	}
 	
@@ -120,22 +127,55 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 			slidingMenu.showAbove();
 	}
 	
+	/**
+	 * Set up the action bar for navigation.
+	 */
 	private void setupNavMenuList() {
 		setBehindContentView(R.layout.navigation_menu_frame);
 		
 		final ActionBar actionBar = getSupportActionBar();
-		
-		// TEMP
-		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		// TEMP
-		actionBar.setDisplayUseLogoEnabled(false);
-//		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setCustomView(getLayoutInflater().inflate(R.layout.action_bar_menu_layout, null));
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		
-		// TEMP
-//		actionBar.setTitle(R.string.member_title_text);
-		actionBar.setTitle("John Doe");
-		actionBar.setSubtitle("Card Ending 4545");
+		final ImageView navigationToggle = (ImageView)this.findViewById(R.id.navigation_button);
+		final Button logout = (Button)this.findViewById(R.id.logout_button);
+		
+		navigationToggle.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				toggle();
+			}
+		});
+		
+		logout.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				logout();
+			}
+		});		
+	}
+	
+	public void logout(){
+		//TOD: implement me
+	}
+	
+	/**
+	 * Set the title in the action bar for display
+	 * @param title - title to show in the display
+	 */
+	public void setActionBarTitle(final String title){
+		final TextView titleView= (TextView)findViewById(R.id.title_view);
+		titleView.setText(title);
+	}
+	
+	/**
+	 * Get the current title in the action bar 
+	 * @return the current title in the action bar
+	 */
+	public String getActionBarTitle(){
+		final TextView titleView= (TextView)findViewById(R.id.title_view);
+		return titleView.getText().toString();
 	}
 	
 	// TODO customize these values
@@ -148,27 +188,6 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 	
-	// TEMP
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-		final MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.nav_root_menu, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(final MenuItem item) {
-		switch (item.getItemId()) {
-			case android.R.id.home:
-				toggle();
-				return true;
-				
-			// TODO
-		}
-		
-		return super.onOptionsItemSelected(item);
-	}
-	
 	/**
 	 * Set the current fragment that is being shown
 	 * @param fragment - fragment that is currently shown
@@ -176,5 +195,4 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 	public void setCurrentFragment(final RoboSherlockFragment fragment){
 		this.currentFragment = fragment;
 	}
-	
 }

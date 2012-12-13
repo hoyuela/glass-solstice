@@ -40,7 +40,7 @@ public class PushRegistrationStatusSuccessListener implements SuccessListener<Pu
 		}else if(value.vidStatus == VidStatus.NOT_ASSOCIATED){
 			CurrentSessionDetails.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(true);
 		}else if(value.vidStatus == VidStatus.ASSOCIATED){
-			CurrentSessionDetails.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(false);
+			CurrentSessionDetails.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(true);
 		}
 	}
 }

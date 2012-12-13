@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.discover.mobile.R;
 import com.discover.mobile.RoboSherlockFragment;
+import com.discover.mobile.navigation.NavigationRootActivity;
 
 /**
  * Fragment that is the push notification manage screen.  Uses the push save header, 
@@ -41,6 +42,9 @@ public class PushManageFragment extends RoboSherlockFragment{
 	
 	private List<PushManageToogleItem> views;
 	
+	//FIXME: Externalize me
+	private static final String TITLE = "Manage Text & Push Alerts";
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -62,6 +66,13 @@ public class PushManageFragment extends RoboSherlockFragment{
 		setListsInHeader();
 		
 		return mainView;
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
+		activity.setActionBarTitle(TITLE);
 	}
 
 	private void setListsInHeader() {

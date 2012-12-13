@@ -30,12 +30,11 @@ public abstract class BasePushRegistrationUI extends RoboSherlockFragment implem
 	 * Registers the device, user and vender id with Discover's server
 	 * @param regStatus - string representing if the user accepted the terms.
 	 */
-	protected void registerWithDiscover(final String regStatus){
+	protected void registerWithDiscover(final String regStatus, final boolean sendToMange){
 		final Context context = this.getActivity();
 		final TelephonyManager telephonyManager =
 				(TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 		
-		final boolean isOptedIn = (ACCEPT.equals(regStatus)) ? true : false;
 		final DeviceRegistrationDetail detail = new DeviceRegistrationDetail();
 		detail.regStatus = regStatus;
 		detail.vid = XtifySDK.getXidKey(context);
@@ -51,8 +50,8 @@ public abstract class BasePushRegistrationUI extends RoboSherlockFragment implem
 				.showProgressDialog(context.getResources().getString(R.string.push_progress_get_title), 
 									context.getResources().getString(R.string.push_progress_registration_loading), 
 									true)
-				.withSuccessListener(new PushRegisterSuccessListener(this, isOptedIn))
-				.withErrorResponseHandler(new PushRegisterErrorHandler(this, isOptedIn))
+				.withSuccessListener(new PushRegisterSuccessListener(this, sendToMange))
+				.withErrorResponseHandler(new PushRegisterErrorHandler(this, sendToMange))
 				.build();
 		
 		new RegisterVenderIdCall(context, callback, detail).submit();
