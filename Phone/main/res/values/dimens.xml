@@ -19,6 +19,7 @@
     <dimen name="orange_button_margin_top">40dp</dimen>
     <dimen name="white_button_left_right_padding">10dp</dimen>
     <dimen name="white_button_margin_top">15dp</dimen>
+    <dimen name="modal_top_padding">17dp</dimen>
     
     <!--  Login Bottom Buttons -->
     <dimen name="login_bottom_button_height">50dp</dimen>

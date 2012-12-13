@@ -1,10 +1,11 @@
 package com.discover.mobile.navigation;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -71,6 +72,10 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 		
 		if(!CurrentSessionDetails.getCurrentSessionDetails().isNotCurrentUserRegisteredForPush())
 			makeFragmentVisible(new PushNowAvailableFragment());
+		
+		//TEMP:
+		final AlertDialog alert = new ModalAlert(this);
+		alert.show();
 	}
 	
 	/**
@@ -140,6 +145,13 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 		
 		final ImageView navigationToggle = (ImageView)this.findViewById(R.id.navigation_button);
 		final Button logout = (Button)this.findViewById(R.id.logout_button);
+		final ImageView back = (ImageView)this.findViewById(R.id.navigation_back_button);
+		final TextView titleView = (TextView)findViewById(R.id.title_view);
+		
+		navigationToggle.setVisibility(View.VISIBLE);
+		logout.setVisibility(View.VISIBLE);
+		navigationToggle.setVisibility(View.VISIBLE);
+		titleView.setVisibility(View.VISIBLE);
 		
 		navigationToggle.setOnClickListener(new OnClickListener(){
 			@Override
@@ -153,11 +165,20 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 			public void onClick(final View v) {
 				logout();
 			}
-		});		
+		});	
+		
+		back.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				logout();
+			}
+		});	
+		
+	
 	}
 	
 	public void logout(){
-		//TOD: implement me
+		//TODO: implement me
 	}
 	
 	/**

@@ -97,7 +97,7 @@
     </style>
     
     <style name="white_button">
-        <item name="android:textColor">@color/body_copy</item>
+        <item name="android:textColor">@color/sub_copy</item>
         <item name="android:textSize">@dimen/body_copy_min</item>
         <item name="android:background">@drawable/white_button</item>
         <item name="android:layout_gravity">center_horizontal</item>

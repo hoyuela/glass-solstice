@@ -2,50 +2,64 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="#75000000">
     
-    <TextView 
-        android:id="@+id/modal_alert_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="title"
-        android:textColor="@color/title"
-        android:textSize="@dimen/title_max"
-        android:textStyle="bold"/>
-    
-    <TextView
-        android:id="@+id/modal_alert_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="title text"
-        android:textColor="@color/sub_copy"
-        android:textSize="@dimen/small_copy_max"
-        android:layout_below="@+id/modal_alert_title"/>
-    
-    <ImageView
-        android:id="@+id/modal_alert_divder"
-        android:layout_width="fill_parent"
-        android:layout_height="5dp"
-        android:background="@drawable/modal_divider_line"
-        android:layout_above="@+id/modal_alert_ok"/>
-    
-    <Button
-        android:id="@+id/modal_alert_ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Continue Without Saving"
-        style="@style/call_to_action_theme"
-        android:layout_above="@+id/modal_alert_cancel"
-        android:layout_centerHorizontal="true"/>
-    
-   	<TextView
-        android:id="@+id/modal_alert_cancel"
-       	android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        style="@style/blue_hyperlink"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
-    
-
+	<RelativeLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_alignParentTop="true"
+	    android:background="@drawable/rounded_white_background"
+	    android:layout_centerVertical="true"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="@dimen/table_inner_padding" >
+	    
+	    <TextView 
+	        android:id="@+id/modal_alert_title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="title"
+	        android:textColor="@color/title"
+	        android:textSize="@dimen/title_max"
+	        android:layout_marginTop="@dimen/modal_top_padding"
+	        android:layout_marginRight="@dimen/modal_top_padding"
+	        android:layout_marginLeft="@dimen/modal_top_padding"
+	        android:layout_marginBottom="@dimen/table_inner_padding"
+	        android:textStyle="bold"/>
+	    
+	    <TextView
+	        android:id="@+id/modal_alert_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="title text"
+	        android:textColor="@color/sub_copy"
+	        android:textSize="@dimen/small_copy_max"
+	        android:layout_below="@+id/modal_alert_title"/>
+	    
+	    <ImageView
+	        android:id="@+id/modal_alert_divder"
+	        android:layout_width="fill_parent"
+	        android:layout_height="5dp"
+	        android:background="@drawable/modal_divider_line"
+	        android:layout_above="@+id/modal_alert_ok"/>
+	    
+	    <Button
+	        android:id="@+id/modal_alert_ok"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Continue Without Saving"
+	        style="@style/call_to_action_theme"
+	        android:layout_above="@+id/modal_alert_cancel"
+	        android:layout_centerHorizontal="true"/>
+	    
+	   	<TextView
+	        android:id="@+id/modal_alert_cancel"
+	       	android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Cancel"
+	        style="@style/blue_hyperlink"
+	        android:layout_alignParentBottom="true"
+	        android:layout_centerHorizontal="true"/>
+	    
+	
+	</RelativeLayout>
 </RelativeLayout>
