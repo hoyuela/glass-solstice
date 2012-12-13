@@ -70,30 +70,64 @@
         <item name="android:height">@dimen/login_bottom_button_height</item>
     </style>  
     
-    <style name="title_copy">
+    <!--  FROM STYLE GUIDE 
+    
+    All typography for Android to be set in Roboto Bold and Roboto Regular. 
+    Leading/Line-Height is defined for each type size to the right. 
+    Tracking/Letter-Spacing will be defined at the default 0.
+
+	The secondary smallest font sizes used sparsely are 28px and 24px for legal lines, sub-copy, and header links.
+	
+
+	The font sizes specified are for .PSD purposes and will be converted on-screen to 1/2 the specified font size.
+	For instance, 50px in Photoshop will appear as 25px on Android.
+    -->
+    
+    <style name="discover_text">
+        <item name="android:layout_width">wrap_content</item>
+	    <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="title_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
 	    <item name="android:textColor">#293033</item>
-	    <item name="android:textStyle">bold</item>
+	    <item name="android:textStyle">bold</item>	
     </style>
     
-    <style name="body_copy">
+    <!--   5. BODY COPY / #3d484d / 34px font-size / 42px line-height / regular -->
+    <style name="body_copy"  parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
 	    <item name="android:textColor">#3d484d</item>
-    </style>
+	    <item name="android:typeface">normal</item>
+	</style>
     
-    <style name="small_copy">
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    <style name="small_copy"  parent="discover_text">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
 	  	<item name="android:textColor">#576166</item>
+	  	
     </style>
     
-    <style name="field_copy">
+    <style name="sub_copy"  parent="discover_text">
+        <item name="android:textSize">24sp</item>
+	  	<item name="android:textColor">#576166</item>
+	 
+    </style>
+    
+    <style name="field_copy"  parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-	  	<item name="android:textColor">#8a9499</item>
+	  	<item name="android:textColor">#8a9499</item>  
     </style>
    
-    <style name="field_stroke">
+    <style name="field_stroke"  parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-	  	<item name="android:textColor">#dce3e5</item>
+	  	<item name="android:textColor">#dce3e5</item>	   
+    </style>
+    
+    <style name="error_label" parent="discover_text">
+       
+	    <item name="android:textColor">#ed1c24</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>        
     </style>
     
     <style name="white_button">
