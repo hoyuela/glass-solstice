@@ -8,7 +8,6 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -70,6 +69,9 @@ public class LoginActivity extends RoboActivity {
 	private final static String PW_INPUT_TYPE_KEY = "secrets";
 	private final static String HIDE_LABEL_KEY = "hide";
 
+	/**
+	 * Roboguise injections of android interface element references.
+	 */
 	// INPUT FIELDS
 
 	@InjectView(R.id.username_field)
@@ -125,11 +127,12 @@ public class LoginActivity extends RoboActivity {
 	@InjectResource(R.string.show)
 	private String SHOW;
 
+	/**
+	 * Non roboguise attributes
+	 */
 	// INSTANCE VARS
 
 	private Activity activity;
-
-	private Context context;
 
 	private Resources res;
 
@@ -145,7 +148,6 @@ public class LoginActivity extends RoboActivity {
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		activity = this;
-		context = this;
 		TrackingHelper.startActivity(this);
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
@@ -170,6 +172,10 @@ public class LoginActivity extends RoboActivity {
 		pushNotificationService.start(this);
 	}
 
+	/**
+	 * Place all necessary information to be restored in a bundle.
+	 * This info is used when the screen orientation changes.
+	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		outState.putString(ID_KEY, idField.getText().toString());
@@ -184,9 +190,9 @@ public class LoginActivity extends RoboActivity {
 	}
 
 	/**
-	 * Restore the state of the screen on oreintation change.
+	 * Restore the state of the screen on orientation change.
 	 * 
-	 * @param savedInstanceState
+	 * @param savedInstanceState A bundle of state information to be restored to the screen.
 	 */
 	public void restoreState(final Bundle savedInstanceState) {
 		if (savedInstanceState == null) {
@@ -201,7 +207,6 @@ public class LoginActivity extends RoboActivity {
 
 		setLoginType(savedInstanceState.getInt(LOGIN_TYPE_KEY));
 		setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY));
-
 	}
 	
 	/**
@@ -214,29 +219,6 @@ public class LoginActivity extends RoboActivity {
 			idField.setText(persistentId.getUserId());
 			setCheckMark(persistentId.getButtonState());
 		}
-	}
-	
-	/**
-	 * Sets the check mark on the login screen to the given boolean (checked/unchecked) state.
-	 * 
-	 * @param shouldBeChecked Sets the check mark to checked or unchecked for true or false respectively.
-	 */
-	private void setCheckMark(boolean shouldBeChecked) {
-		saveUserId = !shouldBeChecked;
-		toggleCheckBox(toggleImage);
-	}
-	
-	/**
-	 * Sets the login type of the login screen. This is for users who want to log in with their "Card" or "Bank" info.
-	 * 
-	 * @param loginType The visibility of the Card login check mark. If visible - then login as Card, else Bank.
-	 */
-	private void setLoginType(int loginType) {
-		if (View.VISIBLE == loginType)
-			toggleBankCardLogin(goToCardLabel);		
-		else
-			toggleBankCardLogin(goToBankLabel);
-
 	}
 
 	/**
@@ -268,16 +250,6 @@ public class LoginActivity extends RoboActivity {
 			}
 		});
 
-	}
-
-	/**
-	 * clearInputs() Removes any text in the login input fields.
-	 */
-	private void clearInputs() {
-		idField.setText(emptyString);
-		passField.setText(emptyString);
-		idField.setError(null);
-		passField.setError(null);
 	}
 
 	/**
@@ -348,16 +320,12 @@ public class LoginActivity extends RoboActivity {
 	public void toggleCheckBox(final View v) {
 	
 		if (saveUserId) {
-			toggleImage.setBackgroundDrawable(res
-					.getDrawable(R.drawable.gray_gradient_square));
-			toggleImage.setImageDrawable(res
-					.getDrawable(R.drawable.transparent_square));
+			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
+			toggleImage.setImageDrawable(res.getDrawable(R.drawable.transparent_square));
 			saveUserId = false;
 		} else {
-			toggleImage.setBackgroundDrawable(res
-					.getDrawable(R.drawable.black_gradient_square));
-			toggleImage.setImageDrawable(res
-					.getDrawable(R.drawable.white_check_mark));
+			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.black_gradient_square));
+			toggleImage.setImageDrawable(res.getDrawable(R.drawable.white_check_mark));
 			saveUserId = true;
 		}
 		persistentId.saveButtonState(saveUserId);
@@ -404,6 +372,39 @@ public class LoginActivity extends RoboActivity {
 			setViewVisible(bankCheckMark);
 			goToBankLabel.setTextColor(getResources().getColor(R.color.black));
 		}
+
+	}
+	
+
+	/**
+	 * clearInputs() Removes any text in the login input fields.
+	 */
+	private void clearInputs() {
+		idField.setText(emptyString);
+		passField.setText(emptyString);
+		idField.setError(null);
+		passField.setError(null);
+	}
+	/**
+	 * Sets the check mark on the login screen to the given boolean (checked/unchecked) state.
+	 * 
+	 * @param shouldBeChecked Sets the check mark to checked or unchecked for true or false respectively.
+	 */
+	private void setCheckMark(boolean shouldBeChecked) {
+		saveUserId = !shouldBeChecked;
+		toggleCheckBox(toggleImage);
+	}
+	
+	/**
+	 * Sets the login type of the login screen. This is for users who want to log in with their "Card" or "Bank" info.
+	 * 
+	 * @param loginType The visibility of the Card login check mark. If visible - then login as Card, else Bank.
+	 */
+	private void setLoginType(int loginType) {
+		if (View.VISIBLE == loginType)
+			toggleBankCardLogin(goToCardLabel);		
+		else
+			toggleBankCardLogin(goToBankLabel);
 
 	}
 

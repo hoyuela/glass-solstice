@@ -2,7 +2,6 @@ package com.discover.mobile.common;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,11 +16,11 @@ import android.util.Log;
  * Class Description of UserIdPersistence
  * 
  * UserIdPersistence handles the saving and retrieving of a user's ID in
- * persistent, internal storage.
+ * persistent, internal, private storage.
  * 
  * It is a class that utilizes an inner class to abstract away the fact that the
  * inner class extends Activity. It provides a higher level set of methods that
- * let you save and retrieve credentials easily.
+ * let you save and retrieve the attributes of the persistent object easily.
  * 
  * The UserIdPersistence class allows you to get and set the user ID to be saved
  * along with the state of the save ID button/check box/switch on the login
@@ -30,11 +29,12 @@ import android.util.Log;
  * This class uses its nested class ObjectReaderWriter to save the user ID and
  * button state to a file. ObjectReaderWriter manages a private file that is
  * associated with the current install of the application. If the application is
- * ever uninstalled, this file is deleted along with it. ObjectReaderWriter is
- * an activity that saves a SerializableData to file, as a serialized object. A
- * SerializableData is a serialized class that stores the user ID and the state
- * of the save button. It should be able to be extended easily with more
- * attributes.
+ * ever un-installed, this file is deleted along with it. ObjectReaderWriter is
+ * an activity that saves a SerializableData object to file.
+ * A SerializableData object is a serialized class that stores the user ID and the state
+ * of the save button. It should be able to be extended easily with more attributes.
+ * 
+ * If this class gets much larger it should be run on another thread (not the UI thread).
  * 
  * @author scottseward
  * 
@@ -47,29 +47,62 @@ public class UserIdPersistance {
 	private ObjectReaderWriter objectReaderWriter;
 	private SerializableData credentials;
 
+	/**
+	 * When a UserIdPersistance object is created, it automatically loads the saved object from file,
+	 * or is initialized with an empty object. This is so that its getter methods can immediately return usable
+	 * data.
+	 * 
+	 * @param context The context in which the persistence file is to be accessed.
+	 */
 	public UserIdPersistance(Context context) {
 		objectReaderWriter = new ObjectReaderWriter(context);
 		credentials = objectReaderWriter.getObjectFromFile();
 	}
 
+	/**
+	 * Write a user ID to persistent storage.
+	 * 
+	 * @param newId The user ID to be written to storage.
+	 */
 	public void saveId(String newId) {
 		credentials.setUserId(newId);
 		objectReaderWriter.saveObject(credentials);
 	}
 
+	/**
+	 * Gets the user ID that was loaded from file.
+	 * 
+	 * @return A String representing the saved ID.
+	 */
 	public String getUserId() {
 		return credentials.getUserId();
 	}
 
+	/**
+	 * Gets the saved state of the save-user-ID button that was loaded from file.
+	 * 
+	 * @return A boolean value representing the saved state of the save-user-ID button.
+	 */
 	public boolean getButtonState() {
 		return credentials.getSaveState();
 	}
 
+	/**
+	 * Write the state of the save-user-ID button to file.
+	 * 
+	 * @param wasSaved A boolean representing the state of the save-user-ID button.
+	 */
 	public void saveButtonState(boolean wasSaved) {
 		credentials.setSaveState(wasSaved);
 		objectReaderWriter.saveObject(credentials);
 	}
 
+	/**
+	 * The class responsible for saving and loading a SerializableData object to protected, persistent, storage.
+	 * 
+	 * @author scottseward
+	 *
+	 */
 	private class ObjectReaderWriter extends Activity {
 
 		private static final String FILE_NAME = "Discover"; //$NON-NLS-1$
@@ -79,42 +112,26 @@ public class UserIdPersistance {
 		private ObjectOutputStream objectOutputStream = null;
 		private ObjectInputStream objectInputStream = null;
 
+		/**
+		 * Setup the ObjectReaderWriter with the context that it will be accessing the file from.
+		 * 
+		 * @param context The context where the file is to be accessed from.
+		 */
 		ObjectReaderWriter(Context context) {
 			upperContext = context;
 		}
 
-		private void openConnectionToFile() {
-			try {
-				FileOutputStream fos = upperContext.openFileOutput(FILE_NAME,
-						Context.MODE_PRIVATE);
-				FileInputStream fis = upperContext.openFileInput(FILE_NAME);
-				objectInputStream = new ObjectInputStream(fis);
-				objectOutputStream = new ObjectOutputStream(fos);
-			} catch (StreamCorruptedException e) {
-				Log.e(TAG,
-						"Stream Corrupted Exception While Opening File: " + e);//$NON-NLS-1$
-			} catch (FileNotFoundException e) {
-				Log.e(TAG, "File Not Found Exception While Opening File: " + e);//$NON-NLS-1$
-			} catch (IOException e) {
-				Log.e(TAG, "IO Exception While Opening File: " + e);//$NON-NLS-1$
-			}
-		}
-
-		private void closeConnectionToFile() {
-			try {
-				objectInputStream.close();
-				objectOutputStream.close();
-			} catch (IOException e) {
-				Log.e(TAG, "IO Exception While Closing File: " + e);//$NON-NLS-1$
-			}
-		}
-
-		public SerializableData getObjectFromFile() {
+		/**
+		 * This method gets the first serializable object from the file.
+		 * 
+		 * @return A SerializeableData object.
+		 */
+		private SerializableData getObjectFromFile() {
 			SerializableData credentials = new SerializableData();
 			try {
 				FileInputStream fis = upperContext.openFileInput(FILE_NAME);
 				objectInputStream = new ObjectInputStream(fis);
-				credentials = (SerializableData) objectInputStream.readObject();
+				credentials = (SerializableData)objectInputStream.readObject();
 				clearIdIfNotSaved(credentials);
 				fis.close();
 				objectInputStream.close();
@@ -130,12 +147,24 @@ public class UserIdPersistance {
 			return credentials;
 		}
 		
+		/**
+		 * If an ID is saved in the file and the user un-checks save-user-ID, then this will clear the ID.
+		 * 
+		 * This effectively deletes the user ID if the save-user-ID check mark is not checked and the user quits the app
+		 * 
+		 * @param credentials A SerializableData object with some data.
+		 */
 		private void clearIdIfNotSaved(SerializableData credentials) {
 			if(!credentials.getSaveState() && !"".equals(credentials.getUserId()))
 				credentials.setUserId("");
 		}
 
-		public void saveObject(SerializableData writeableObject) {
+		/**
+		 * Writes a serializable object to file, overwriting any previous object.
+		 * 
+		 * @param writeableObject A serializeable data object to write to file.
+		 */
+		private void saveObject(SerializableData writeableObject) {
 			try {
 				ObjectOutputStream oos = 
 						new ObjectOutputStream(upperContext.openFileOutput(FILE_NAME, Context.MODE_PRIVATE));
@@ -153,16 +182,6 @@ public class UserIdPersistance {
 				e.printStackTrace();
 			}
 
-		}
-
-		private void writeObjectToFile(SerializableData writeableObject) {
-			try {
-				objectOutputStream.writeObject(writeableObject);
-				objectOutputStream.flush();
-				objectOutputStream.reset();
-			} catch (IOException e) {
-				Log.e(TAG, "IO Exception While Saving Object: " + e); //$NON-NLS-1$
-			}
 		}
 	}
 
