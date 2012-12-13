@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="48dp"
+    android:background="@drawable/action_bar_background"
+    android:paddingRight="@dimen/between_related_elements_padding">
+    
+	<ImageView
+	    android:id="@+id/navigation_button"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textColor="@color/white"
+	    android:textSize="@dimen/title_max"
+	    android:textStyle="bold"
+	    android:padding="5dp"
+	    android:layout_above="@+id/gradient_line"
+	    android:background="@drawable/square_button"
+	    android:layout_alignParentLeft="true"
+	    android:layout_marginBottom="3dp"
+	    android:layout_marginLeft="@dimen/between_related_elements_padding"/>
+	
+	<ImageView
+	    android:id="@+id/back_button"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textColor="@color/white"
+	    android:textSize="@dimen/title_max"
+	    android:textStyle="bold"
+	    android:padding="5dp"
+	    android:layout_above="@+id/gradient_line"
+	    android:background="@drawable/square_button"
+	    android:layout_alignParentLeft="true"
+	    android:visibility="gone"/>
+	
+	<TextView
+	    android:id="@+id/title_view"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:maxLines="1"
+	    android:text="title"
+	    android:layout_marginTop="@dimen/table_inner_padding"
+	    android:textSize="@dimen/body_copy_min"
+	    android:textColor="@color/title"
+	    android:gravity="center"
+	    android:textStyle="bold"
+	   	android:layout_centerInParent="true"
+	    android:layout_alignParentTop="true"
+	    android:layout_toLeftOf="@+id/logout_button"
+	    android:layout_toRightOf="@+id/navigation_button"
+	    android:visibility="visible"/> 
+	    
+	<ImageView
+	    android:id="@+id/discover_logo"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerInParent="true"
+	    android:layout_alignParentTop="true"
+	    android:background="@drawable/discover_blk_logo_login"
+	    android:layout_marginTop="@dimen/table_inner_padding"
+	    android:visibility="gone"/>
+	    
+	
+	<Button
+	    android:id="@+id/logout_button"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignTop="@+id/navigation_button"
+	    android:layout_alignParentRight="true"
+	    android:layout_above="@+id/gradient_line"
+	    android:text="@string/log_out" 
+	    style="@style/white_button"
+	    android:layout_marginBottom="5dp"
+	    android:layout_marginTop="3dp"/>
+	
+	<ImageView
+	    android:id="@+id/gradient_line"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:src="@drawable/gradiant_line"
+	    android:layout_centerInParent="true"
+	    android:layout_alignParentBottom="true"/>
+	
+</RelativeLayout>

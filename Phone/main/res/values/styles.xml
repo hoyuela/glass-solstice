@@ -95,5 +95,18 @@
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
 	  	<item name="android:textColor">#dce3e5</item>
     </style>
-        
+    
+    <style name="white_button">
+        <item name="android:textColor">@color/body_copy</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:background">@drawable/white_button</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:paddingLeft">@dimen/white_button_left_right_padding</item>
+        <item name="android:paddingRight">@dimen/white_button_left_right_padding</item>
+        <item name="android:layout_marginBottom">@dimen/between_related_elements_padding</item>
+	    <item name="android:layout_marginRight">@dimen/between_related_elements_padding</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>
