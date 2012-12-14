@@ -22,4 +22,12 @@ public class AccountRecentActivityFragment extends RoboSherlockFragment {
 		return view;
 	}
 	
+	/**
+	 * Return the integer value of the string that needs to be displayed in the title
+	 */
+	@Override
+	public int getActionBarTitle() {
+		return R.string.recent_activity_title;
+	}
+	
 }

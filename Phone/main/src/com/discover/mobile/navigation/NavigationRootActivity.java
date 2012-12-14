@@ -6,25 +6,17 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.LoggedInRoboActvity;
+import com.discover.mobile.LoggedInRoboActivity;
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSherlockFragment;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.push.PushNowAvailableFragment;
-import com.slidingmenu.lib.SlidingMenu;
 
 /**
- * Root activity for the application after login. This will transition fargment on and off the screen
+ * Root activity for the application after login. This will transition fragment on and off the screen
  * as well as show the sliding bar as well as the action bar.
  *
  */
-public class NavigationRootActivity extends LoggedInRoboActvity implements NavigationRoot {
-	
-	/**Pulled out variable for the fade of the sliding menu*/
-	private static final float FADE = 0.35f;
-	
-	/**Fragment that is currently being shown to the user*/
-	private Fragment currentFragment;
+public class NavigationRootActivity extends LoggedInRoboActivity implements NavigationRoot {
 	
 	/**Fragment that needs to be resumed**/
 	private Fragment resumeFragment;
@@ -43,10 +35,8 @@ public class NavigationRootActivity extends LoggedInRoboActvity implements Navig
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setupSlidingMenu();
 		setupFirstVisibleFragment();
 		setUpCurrentFragment(savedInstanceState);
-		
 	}
 	
 	/**
@@ -95,16 +85,6 @@ public class NavigationRootActivity extends LoggedInRoboActvity implements Navig
 		contentView.setId(R.id.navigation_content);
 		setContentView(contentView, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 	}
-
-	
-	/**
-	 * Set the title in the action bar for display
-	 * @param title - title to show in the display
-	 */
-	public void setActionBarTitle(final String title){
-		final TextView titleView= (TextView)findViewById(R.id.title_view);
-		titleView.setText(title);
-	}
 	
 	/**
 	 * Get the current title in the action bar 
@@ -113,23 +93,5 @@ public class NavigationRootActivity extends LoggedInRoboActvity implements Navig
 	public String getActionBarTitle(){
 		final TextView titleView= (TextView)findViewById(R.id.title_view);
 		return titleView.getText().toString();
-	}
-	
-	// TODO customize these values
-	private void setupSlidingMenu() {
-		final SlidingMenu slidingMenu = getSlidingMenu();
-		slidingMenu.setShadowWidthRes(R.dimen.nav_menu_shadow_width);
-		slidingMenu.setShadowDrawable(R.drawable.nav_menu_shadow);
-		slidingMenu.setBehindOffsetRes(R.dimen.nav_menu_offset);
-		slidingMenu.setFadeDegree(FADE);
-		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-	}
-	
-	/**
-	 * Set the current fragment that is being shown
-	 * @param fragment - fragment that is currently shown
-	 */
-	public void setCurrentFragment(final RoboSherlockFragment fragment){
-		this.currentFragment = fragment;
 	}
 }

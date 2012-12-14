@@ -17,18 +17,29 @@ import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.logout.LogOutErrorHandler;
 import com.discover.mobile.logout.LogOutSuccessListner;
+import com.slidingmenu.lib.SlidingMenu;
 
 /**
+ * This is used as the base activity for when the user has logged in.  Extending this will show the action bar
+ * with the sliding bar as well as the title text and logout button.
  * 
  * @author jthornton
  *
  */
-public class LoggedInRoboActvity extends RoboSlidingFragmentActivity{
+public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
+	
+	/**Pulled out variable for the fade of the sliding menu*/
+	private static final float FADE = 0.35f;
 
+	/**
+	 * Create the activity, set up the action bar and sliding menu
+	 * @param savedInstanceState - saved State of the activity
+	 */
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		showActionBar();
+		setupSlidingMenu();
 	}
 	
 	 /**
@@ -41,9 +52,9 @@ public class LoggedInRoboActvity extends RoboSlidingFragmentActivity{
 		actionBar.setCustomView(getLayoutInflater().inflate(R.layout.action_bar_menu_layout, null));
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		
-		final TextView titleView = (TextView)findViewById(R.id.title_view);
-		final ImageView navigationToggle = (ImageView)this.findViewById(R.id.navigation_button);
-		final Button logout = (Button)this.findViewById(R.id.logout_button);
+		final TextView titleView = (TextView) findViewById(R.id.title_view);
+		final ImageView navigationToggle = (ImageView) findViewById(R.id.navigation_button);
+		final Button logout = (Button) findViewById(R.id.logout_button);
 		
 		navigationToggle.setVisibility(View.VISIBLE);
 		logout.setVisibility(View.VISIBLE);
@@ -60,14 +71,17 @@ public class LoggedInRoboActvity extends RoboSlidingFragmentActivity{
 		logout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				logout();
+				maybeShowModalAlert();
 			}
 		});	
     }
     
-    public void logout(){
+    /**
+     * Show the modal if the user wants it shown
+     */
+    public void maybeShowModalAlert(){
 		if(getValueFromSharedPrefs(SharedPreferencesKey.SHOW_LOGIN_MODAL, false)){
-			clearSession();
+			logout();
 		} else{
 			final LogoutModalAlert alert = new LogoutModalAlert(this);
 			alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -77,13 +91,16 @@ public class LoggedInRoboActvity extends RoboSlidingFragmentActivity{
 				@Override
 				public void onClick(final View v) {
 					saveToSharedPrefs(SharedPreferencesKey.SHOW_LOGIN_MODAL, alert.getShowAgain());
-					clearSession();
+					logout();
 				}
 			});
 		}
 	}
     
-    public void clearSession(){
+    /**
+     * Log the user out
+     */
+    public void logout(){
 		final AsyncCallback<Object> callback = 
 				GenericAsyncCallback.<Object>builder(this)
 				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
@@ -94,5 +111,27 @@ public class LoggedInRoboActvity extends RoboSlidingFragmentActivity{
 				.build();
 	
 		new LogOutCall(this, callback).submit();
-	}   
+	} 
+    
+	/**
+	 * Set up and style the sliding menu
+	 */
+	private void setupSlidingMenu() {
+		// TODO customize these values
+		final SlidingMenu slidingMenu = getSlidingMenu();
+		slidingMenu.setShadowWidthRes(R.dimen.nav_menu_shadow_width);
+		slidingMenu.setShadowDrawable(R.drawable.nav_menu_shadow);
+		slidingMenu.setBehindOffsetRes(R.dimen.nav_menu_offset);
+		slidingMenu.setFadeDegree(FADE);
+		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+	}
+	
+	/**
+	 * Set the title in the action bar for display
+	 * @param title - title to show in the display
+	 */
+	public void setActionBarTitle(final String title){
+		final TextView titleView= (TextView)findViewById(R.id.title_view);
+		titleView.setText(title);
+	}
 }

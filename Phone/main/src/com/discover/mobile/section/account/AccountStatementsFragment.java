@@ -22,4 +22,13 @@ public class AccountStatementsFragment extends RoboSherlockFragment {
 		return view;
 	}
 	
+	/**
+	 * Return the integer value of the string that needs to be displayed in the title
+	 */
+	@Override
+	public int getActionBarTitle() {
+		//FIXME: Put the correct title here
+		return R.string.account_summary_title;
+	}
+	
 }
