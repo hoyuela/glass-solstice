@@ -6,8 +6,7 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.R;
-import com.discover.mobile.LoggedInRoboActvity;
+import com.discover.mobile.LoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.push.PushNowAvailableFragment;
@@ -18,12 +17,6 @@ import com.discover.mobile.push.PushNowAvailableFragment;
  *
  */
 public class NavigationRootActivity extends LoggedInRoboActivity implements NavigationRoot {
-	
-	/**Pulled out variable for the fade of the sliding menu*/
-	private static final float FADE = 0.35f;
-	
-	/**Fragment that is currently being shown to the user*/
-	private Fragment currentFragment;
 	
 	/**Fragment that needs to be resumed**/
 	private Fragment resumeFragment;
@@ -91,15 +84,6 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 		final FrameLayout contentView = new FrameLayout(this);
 		contentView.setId(R.id.navigation_content);
 		setContentView(contentView, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-	}
-	
-	/**
-	 * Set the title in the action bar for display
-	 * @param title - title to show in the display
-	 */
-	public void setActionBarTitle(final String title){
-		final TextView titleView= (TextView)findViewById(R.id.title_view);
-		titleView.setText(title);
 	}
 	
 	/**

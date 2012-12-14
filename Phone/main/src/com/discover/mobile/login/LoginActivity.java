@@ -22,7 +22,6 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.UserIdPersistance;
-import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
@@ -162,10 +161,8 @@ public class LoginActivity extends RoboActivity {
 			startPreAuthCheck();
 		}
 	}
-
+	
 	/**
-	 * Ran at the start of an activity when an activity is brought to the front.
-	 * This also will trigger the Xtify SDK to start.
 	 * Check to see if the user just logged out, if the user just logged out show the message.
 	 */
 	private void maybeShowUserLoggedOut(){
@@ -179,7 +176,7 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	/**
-	 * Resume the activIty
+	 * Resume the activity
 	 */
 	@Override
 	public void onResume(){
@@ -188,22 +185,15 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	/**
-	 * Ran at the start of an activity when an activity is brought to the front.  This also will trigger the 
-	 * Xtify SDK to start.
+	 * Ran at the start of an activity when an activity is brought to the front.
+	 * This also will trigger the Xtify SDK to start.
+	 * Check to see if the user just logged out, if the user just logged out show the message.
 	 */
 	@Override
 	public void onStart() {
 		super.onStart();
 		loadSavedCredentials();
 		pushNotificationService.start(this);
-		
-		//FIXME: get rid of this
-		setLogin();
-	}
-
-	private void setLogin(){
-		this.idField.setText("uidsm8461");
-		this.passField.setText("solstice135");
 	}
 
 	/**
