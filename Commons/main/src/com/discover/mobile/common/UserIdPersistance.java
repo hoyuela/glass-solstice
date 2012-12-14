@@ -1,6 +1,5 @@
 package com.discover.mobile.common;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -107,10 +106,7 @@ public class UserIdPersistance {
 
 		private static final String FILE_NAME = "Discover"; //$NON-NLS-1$
 
-		private Context upperContext = null;
-
-		private ObjectOutputStream objectOutputStream = null;
-		private ObjectInputStream objectInputStream = null;
+		private final Context upperContext;
 
 		/**
 		 * Setup the ObjectReaderWriter with the context that it will be accessing the file from.
@@ -129,11 +125,10 @@ public class UserIdPersistance {
 		private SerializableData getObjectFromFile() {
 			SerializableData credentials = new SerializableData();
 			try {
-				FileInputStream fis = upperContext.openFileInput(FILE_NAME);
-				objectInputStream = new ObjectInputStream(fis);
+				ObjectInputStream objectInputStream
+							= new ObjectInputStream(upperContext.openFileInput(FILE_NAME));
 				credentials = (SerializableData)objectInputStream.readObject();
 				clearIdIfNotSaved(credentials);
-				fis.close();
 				objectInputStream.close();
 				return credentials;
 			} catch (OptionalDataException e) {
