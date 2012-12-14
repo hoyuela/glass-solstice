@@ -5,11 +5,15 @@
     <string name="menu_notifications">Notifications</string>
     <string name="menu_logout">Logout</string>
     
-	<string name="forgot_id_or_pass_label">Forgot User ID or Password?</string>
-	<string name="login_error">Sorry. The User ID and/or Password does not match our records, or you are not registered. Please try again.</string>
-	<string name="login_attempt_warning">You have one more log in attempt today. For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call 1\-877\-742\-7822.</string>
+	<string name="login_error">
+	    Sorry. The User ID and/or Password does not match our records, or you are not registered. Please try again.
+	</string>
+	<string name="login_attempt_warning">
+	    You have one more log in attempt today. For security purposes, we limit the number of attempts to enter your 
+	    information. If you think you are receiving this message in error, call 1&#8211;877&#8211;742&#8211;7822.
+	</string>
 	<string name="feedback_text">Provide Feedback</string>
-	<string name="discover_copyright_text">© 2012 Discover Bank, Member FDIC</string>
+	<string name="discover_copyright_text">© 2013 Discover Bank, Member FDIC</string>
 	<string name="member_title_text">MST0 23075 CARDMEMBER</string>
 	<string name="member_id_text">Discover Card Ending 4545</string>
 	<string name="discover_secured_text">Discover Bank, Member FDIC | SECURED</string>
@@ -50,9 +54,6 @@
 	<string name="logout">
 	    Logout
 	</string>
-	<string name="final_login_attempt">
-	    You have one more log in attempt today. For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call tel:18777427822 1-877-742-7822.
-	</string>
 	<string name="forgot_password_text">Forgot Password</string>
 	<string name="forgot_both_text">Forgot Both</string>
 	<string name="forgot_password_field_title_text">Credit Card User ID:</string>
@@ -72,11 +73,7 @@
 	<string name="ssn_prefix">XXX &#8211; XX &#8211;</string>
 	<string name="secure_login">Secure Credit Card Log In</string>
 	<string name="register_now">Register Now </string>
-	<string name="username_placeholder">Credit Card User ID</string>
-	<string name="password_placeholder">Credit Card Password</string>
-	<string name="login_button_text">Log In</string>
 	<string name="card_login_button_text">Secure Credit Card Login</string>
-	<string name="remember_user_id">Remember Card User ID</string>
 	<string name="image_description">Discover</string>
 	<string name="strength_bar_text">Strength!</string>
 	<string name="strength_bar_not_valid">Not Valid</string>
@@ -97,6 +94,12 @@
 	</string>
 	<string name="id_and_pass_match">
 	    User ID and password must not be the same.
+	</string>
+	<string name="hide">
+	    Hide
+	</string>
+	<string name="show">
+	    Show
 	</string>
 	    
 </resources>

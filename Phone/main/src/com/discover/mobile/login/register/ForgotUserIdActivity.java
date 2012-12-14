@@ -92,7 +92,7 @@ public class ForgotUserIdActivity extends RoboActivity {
 				@Override
 				public void onFocusChange(final View v, final boolean hasFocus) {
 					//This is then a user id that must be validated.
-					final String acctNbr = ((EditText)v).getText().toString();
+					final String acctNbr = cardNumField.getText().toString();
 					if(!hasFocus && !validator.isCardAccountNumberValid(acctNbr)){
 						showLabel( idErrLabel );
 					}
@@ -126,8 +126,8 @@ public class ForgotUserIdActivity extends RoboActivity {
 				@Override
 				public void onFocusChange(final View v, final boolean hasFocus) {
 					//This is then a user id that must be validated.
-					final String pass = ((EditText)v).getText().toString();
-					if(!hasFocus && pass.length() < 1){
+					final String pass = passField.getText().toString();
+					if(!hasFocus && pass.length() == 0){
 						showLabel( passErrLabel );
 					}
 				}
@@ -144,10 +144,12 @@ public class ForgotUserIdActivity extends RoboActivity {
 			}			
 
 			@Override
-			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
+			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) 
+			{/*Intentionally empty*/}
 
 			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {/*Intentionally empty*/}
+			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) 
+			{/*Intentionally empty*/}
 			
 		});
 	}

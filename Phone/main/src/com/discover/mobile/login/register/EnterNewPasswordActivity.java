@@ -1,7 +1,6 @@
 package com.discover.mobile.login.register;
 
 import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_ALREADY_TAKEN;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 
@@ -30,7 +29,11 @@ import com.discover.mobile.common.auth.registration.RegistrationConfirmationDeta
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-
+/**
+ * EnterNewPasswordActivit - this activity inherits from AbstractAccountInformationActivity
+ * @author scottseward
+ *
+ */
 @ContentView(R.layout.register_create_password)
 public class EnterNewPasswordActivity extends RoboActivity {
 	
@@ -47,7 +50,7 @@ public class EnterNewPasswordActivity extends RoboActivity {
 	@InjectView(R.id.account_info_error_label)
 	TextView errorMessageLabel;
 	
-	@InjectView(R.id.enter_new_pass_error_two_label)
+	@InjectView(R.id.enter_new_pass_error_one_label)
 	TextView errorLabelOne;
 	
 	@InjectView(R.id.enter_new_pass_error_two_label)
@@ -137,7 +140,6 @@ public class EnterNewPasswordActivity extends RoboActivity {
 				}
 			}
 			
-			final boolean hasUpperAndLowerAndNum = hasLowerCase && hasUpperCase && hasNumber;
 			/*
 			 * Meets minimum requirements and combines upper case letters,
 			 * lower case letters, numbers, and special characters.
@@ -206,21 +208,16 @@ public class EnterNewPasswordActivity extends RoboActivity {
 				switch(messageErrorResponse.getMessageStatusCode()){
 
 				case REG_AUTHENTICATION_PROBLEM: 
-					showErrorMessageLabelWithText(getString(R.string.account_info_bad_input_error_text));
+					showLabelWithStringResource(errorMessageLabel, R.string.account_info_bad_input_error_text);
 					return true;
 					
 				case BAD_ACCOUNT_STATUS: //Last attemt with this account number warning.
-					showErrorMessageLabelWithText(getString(R.string.login_attempt_warning));
+					showLabelWithStringResource(errorMessageLabel,R.string.login_attempt_warning);
 					return true;
 					
 				case ID_AND_PASS_EQUAL:
-					showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-					showErrorMessageLabelWithText(getString(R.string.account_info_two_id_matches_pass_error_text));
-					return true;
-					
-				case ID_ALREADY_TAKEN:
-					showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-					showErrorMessageLabelWithText(getString(R.string.account_info_two_username_in_use_error_text));
+					showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
+					showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_id_matches_pass_error_text);
 					return true;
 					
 				default:
@@ -244,16 +241,9 @@ public class EnterNewPasswordActivity extends RoboActivity {
 		hideLabel(errorLabelTwo);
 	}
 	
-	public void showMainErrorLabelWithText(final String text) {
-		
-		mainErrorMessageLabel.setText(text);
-		showLabel(mainErrorMessageLabel);
-	}
-	
-	private void showErrorMessageLabelWithText(final String text) {
-		
-		errorMessageLabel.setText(text);
-		showLabel(errorMessageLabel);
+	private void showLabelWithStringResource(TextView label, int id) {
+		label.setText(getString(id));
+		showLabel(label);
 	}
 	
 	private void showLabel(final View v) {
@@ -291,10 +281,11 @@ public class EnterNewPasswordActivity extends RoboActivity {
 		}
 		else {
 			if(!validator.wasPassValid) {
-				showLabel(errorLabelOne);
+				showLabelWithStringResource(errorLabelOne, R.string.invalid_value);
 			}
 			if(validator.wasPassValid && !validator.didPassesMatch) {
-				showLabel(errorLabelTwo);
+				showLabelWithStringResource(errorLabelOne, R.string.account_info_two_passwords_dont_match_text);
+				showLabelWithStringResource(errorLabelTwo, R.string.invalid_value);
 			}
 		}
 			

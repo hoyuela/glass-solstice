@@ -1,5 +1,7 @@
 package com.discover.mobile.common.analytics;
 
+import java.util.Hashtable;
+
 import android.app.Activity;
 
 import com.adobe.adms.measurement.ADMS_Measurement;
@@ -11,7 +13,7 @@ public final class TrackingHelper {
 	private static final String TRACKING_SERVER = "discoverfinancial.d1.sc.omtrdc.net"; //$NON-NLS-1$
 	// params for using Bloodhound
 //	private static final String TRACKING_RSID = "test";
-//	private static final String TRACKING_SERVER = "192.168.4.235:50046";
+//	private static final String TRACKING_SERVER = "192.168.4.172:50046";
 	
 	private static ADMS_Measurement measurement;
 	
@@ -35,8 +37,10 @@ public final class TrackingHelper {
 	public static void trackPageView(final String pageName) {
 		if(measurement == null){return;}
 		measurement.clearVars();
+		final Hashtable<String, Object> contextData = new Hashtable<String, Object>();
+		contextData.put("eVar56", "DiscoverCard:Native:Android");  //$NON-NLS-1$//$NON-NLS-2$
 		measurement.setAppState(pageName);
-		measurement.track();
+		measurement.track(contextData);
 	}
 	
 	private TrackingHelper() {

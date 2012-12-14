@@ -24,19 +24,9 @@ public class ForgotTypeSelectionActivity extends RoboListActivity {
 
 		optionAdapter = new ArrayAdapter<Option>(this, R.layout.register_forgot_type_select_option_item, R.id.tv,
 				Option.values());
-		
-		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_MENU);
-	}
-	
-	/**
-	 * Using onResume so that if a user presses the back button
-	 * the list fields will get reset instead of staying blue.
-	 */
-	@Override
-	public void onResume(){
-		super.onResume();
-		
 		setListAdapter(optionAdapter);
+
+		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_MENU);
 	}
 
 	@Override

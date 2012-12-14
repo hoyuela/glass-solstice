@@ -47,7 +47,17 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
-
+/**
+ * AbstractAccountInformationActivity this activity handles the forgot user password, both, or registration.
+ * 
+ * It is an abstract class that is inherited by ForgotPasswordAccountInformationActivity, 
+ * ForgotBothAccountInformationActivity, and RegistrationAccountInformationActivity.
+ * 
+ * All of these steps are similar and only require minor adjustments to the UI, so they all use the same basic layout.
+ * 
+ * @author scottseward
+ *
+ */
 @ContentView(R.layout.register_enter_account_info)
 abstract class AbstractAccountInformationActivity extends RoboActivity {
 	
@@ -61,6 +71,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	
 	private String strongAuthQuestion;
 	private String strongAuthQuestionId;
+	
+	private static final int SSN_LENGTH_OK = 4;
+	private static final int YEAR_LENGTH_OK = 4;
 	
 	
 //TEXT LABELS
@@ -99,6 +112,20 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	@InjectView (R.id.account_info_dob_year_error_label)
 	TextView dobYearErrorLabel;
 	
+//SPINNERS
+	
+	@InjectView(R.id.account_info_month_spinner)
+	private Spinner expirationMonthSpinner;
+
+	@InjectView(R.id.account_info_year_spinner)
+	private Spinner expirationYearSpinner;
+
+	@InjectView(R.id.account_info_dob_month_spinner)
+	private Spinner birthMonthSpinner;
+
+	@InjectView(R.id.account_info_dob_day_spinner)
+	private Spinner birthDaySpinner;
+	
 	protected AbstractAccountInformationActivity(final String analyticsPageIdentifier) {
 		ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
 	}
@@ -113,27 +140,15 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
     	
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 	}
-
-	@InjectView(R.id.account_info_month_spinner)
-	private Spinner expirationMonthSpinner;
-
-	@InjectView(R.id.account_info_year_spinner)
-	private Spinner expirationYearSpinner;
-
-	@InjectView(R.id.account_info_dob_month_spinner)
-	private Spinner birthMonthSpinner;
-
-	@InjectView(R.id.account_info_dob_day_spinner)
-	private Spinner birthDaySpinner;
 	
 	private void setupSpinnerAdapters() {
-		setupTimeSpinner(expirationMonthSpinner, R.array.month_array);
-		setupTimeSpinner(expirationYearSpinner, R.array.year_array);
-		setupTimeSpinner(birthMonthSpinner, R.array.month_array);
-		setupTimeSpinner(birthDaySpinner, R.array.day_array);
+		setupSpinnerWithArray(expirationMonthSpinner, R.array.month_array);
+		setupSpinnerWithArray(expirationYearSpinner, R.array.year_array);
+		setupSpinnerWithArray(birthMonthSpinner, R.array.month_array);
+		setupSpinnerWithArray(birthDaySpinner, R.array.day_array);
 	}
 	
-	private void setupTimeSpinner(final Spinner spinner, final int timeResId) {
+	private void setupSpinnerWithArray(final Spinner spinner, final int timeResId) {
 		final ArrayAdapter<CharSequence> adapter =
 				ArrayAdapter.createFromResource(this, timeResId, android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -167,7 +182,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				@Override
 				public void onFocusChange(final View v, final boolean hasFocus) {
 					
-					final String acctNbr = ((EditText)v).getText().toString();
+					final String acctNbr = accountIdentifierField.getText().toString();
 					if(!hasFocus && !validator.isCardAccountNumberValid(acctNbr)){
 						showLabel( cardErrorLabel );
 					}
@@ -197,12 +212,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	
 	private void setupYearTextChangedListeners(){
 		dobYearField.setOnFocusChangeListener(new OnFocusChangeListener() {
-			EditText inputField;
 
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
-				inputField = (EditText)v;
-				if(!hasFocus && inputField.getText().length() < 4) {
+				
+				if(!hasFocus && dobYearField.getText().length() < YEAR_LENGTH_OK) {
 					showLabel(dobYearErrorLabel);
 				}
 			}
@@ -212,17 +226,19 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			
 			@Override
 			public void afterTextChanged(final Editable s) {
-				if(s.length() == 4) {
+				if(s.length() == YEAR_LENGTH_OK) {
 					//hide error label
 					hideLabel(dobYearErrorLabel);
 				}
 			}
 
 			@Override
-			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
+			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) 
+			{/*Intentionally empty*/}
 
 			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {/*Intentionally empty*/}
+			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) 
+			{/*Intentionally empty*/}
 			
 		});
 	}
@@ -230,13 +246,11 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	private void setupSsnTextChangedListeners(){
 		
 		ssnField.setOnFocusChangeListener(new OnFocusChangeListener(){
-			EditText inputField;
 
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
-				inputField = (EditText)v;
 				
-				if(!hasFocus && inputField.getText().length() < 4) {
+				if( !hasFocus && ssnField.getText().length() < SSN_LENGTH_OK ) {
 					showLabel(ssnErrorLabel);
 				}
 			}
@@ -246,17 +260,19 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 
 			@Override
 			public void afterTextChanged(final Editable s) {
-				if(s.length() == 4) {
+				if(s.length() == SSN_LENGTH_OK) {
 					//hide error label
 					hideLabel(ssnErrorLabel);
 				}
 			}
 
 			@Override
-			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
+			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) 
+			{/*Intentionally empty*/}
 
 			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {/*Intentionally empty*/}
+			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) 
+			{/*Intentionally empty*/}
 			
 		});
 	}
@@ -292,8 +308,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		accountInformationDetails.expirationYear  = cardYearExpString;
 		accountInformationDetails.socialSecurityNumber = memberSsnNumString;
 		
-		if(areDetailsValid(validator))
+		if(areDetailsValid(validator)) {
 			submitFormInfo();
+		}
 	}
 	
 	protected abstract void addCustomFieldToDetails(AccountInformationDetails details, String value);
@@ -347,7 +364,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 						return true;
 					
 					case FINAL_LOGIN_ATTEMPT:
-						showMainErrorLabelWithText(getString(R.string.final_login_attempt));
+						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
 						return true;
 						
 					case MAX_LOGIN_ATTEMPTS:
@@ -422,7 +439,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			
 			private boolean handleStrongAuthErrorResponse(final StrongAuthErrorResponse errorResponse) {
 				if(errorResponse.getResult().endsWith("skipped")) {
-					navToFinalScreen();
+					navToNextScreenWithDetails(accountInformationDetails);
 					return true;
 				}
 				else if (errorResponse.getResult().endsWith("challenge")) { 
@@ -438,7 +455,6 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				progress.dismiss();
 				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
 
-				// FIXME convert literals to RegistrationErrorCodes
 				// FIXME add "assertions" for what the HTTP status code should be
 				switch(messageErrorResponse.getMessageStatusCode()){
 				
@@ -462,7 +478,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
 						return true;
 						
-					default:// TODO properly handle these ^ v
+					default:
 						return false;
 				}
 			}
@@ -550,24 +566,14 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {		
 		if(requestCode == STRONG_AUTH_ACTIVITY) {
 			if(resultCode == RESULT_OK) {
-				navToFinalScreen();
+				navToNextScreenWithDetails(accountInformationDetails);
 			} else if (resultCode == RESULT_CANCELED){
 				finish();
 			}
 		}
 	}
 	
-	private void navToFinalScreen() {
-		final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
-		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, accountInformationDetails);
-		if("Forgot Both".equals(activityTitleLabel.getText())) 			//$NON-NLS-1$
-			createLoginActivity.putExtra("ScreenType", "forgotBoth");   //$NON-NLS-1$ //$NON-NLS-2$
-		else if("Forgot Password".equals(activityTitleLabel.getText())) //$NON-NLS-1$
-			createLoginActivity.putExtra("ScreenType", "forgotPass");   //$NON-NLS-1$ //$NON-NLS-2$
-		
-		startActivity(createLoginActivity);
-		finish();
-	}
+	protected abstract void navToNextScreenWithDetails(AccountInformationDetails details);
 	
 	protected abstract Class<?> getSuccessfulStrongAuthIntentClass();
 	

@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordCall;
@@ -19,6 +21,15 @@ import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
 
+/**
+ * ForgotPasswordAccountInformationActivity - This activity extends the AbstractAccountInformationActivity
+ * and provides the functionality for the first step of a user forgetting their password.
+ * 
+ * It implements and overrides methods from AbstractAccountInformationActivity
+ * 
+ * @author scottseward
+ *
+ */
 public class ForgotPasswordAccountInformationActivity extends AbstractAccountInformationActivity {
 	
 	public ForgotPasswordAccountInformationActivity() {
@@ -50,82 +61,18 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	@InjectView (R.id.account_info_ssn_error_label)
 	TextView ssnErrorLabel;
 	
-	private EditText genericInputField;
 	
 	@Override
 	protected void setupCustomTextChangedListeners(){
 		final InputValidator validator = new InputValidator();
-		
-		ssnField.setOnFocusChangeListener(new OnFocusChangeListener(){
-
-			@Override
-			public void onFocusChange(final View v, final boolean hasFocus) {
-				genericInputField = (EditText)v;
-				
-				if(genericInputField.getText().length() < 4) {
-					//hide error label
-					ssnErrorLabel.setVisibility(View.VISIBLE);
-				}
-			}
-		});
-		
-		ssnField.addTextChangedListener(new TextWatcher(){
-
-			@Override
-			public void afterTextChanged(final Editable s) {/*Intentionally empty*/}
-
-			@Override
-			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
-
-			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-				if(s.length() == 4) {
-					//hide error label
-					ssnErrorLabel.setVisibility(View.GONE);
-				}
-				
-			}
-			
-		});
-		
-		yearField.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(final View v, final boolean hasFocus) {
-				genericInputField = (EditText)v;
-
-				if(genericInputField.getText().length() < 4) {
-					dobYearErrorLabel.setVisibility(View.VISIBLE);
-				}
-			}
-		});
-		
-		yearField.addTextChangedListener(new TextWatcher(){
-
-			@Override
-			public void afterTextChanged(final Editable s) {/*Intentionally empty*/}
-
-			@Override
-			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
-
-			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-				if(s.length() == 4) {
-					//hide error label
-					dobYearErrorLabel.setVisibility(View.GONE);
-				}
-			}
-			
-		});
-		
 
 		idField.setOnFocusChangeListener(new OnFocusChangeListener() {
 			InputValidator validator = new InputValidator();
 			
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				genericInputField = (EditText)v;
 				
-				if( !hasFocus && !validator.isUidValid( genericInputField.getText().toString() ) ) {
+				if( !hasFocus && !validator.isUidValid( idField.getText().toString() ) ) {
 					showLabel(idErrorLabel);
 				}
 			}
@@ -154,6 +101,15 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 			
 		});
 		
+	}
+	
+	@Override
+	protected void navToNextScreenWithDetails(AccountInformationDetails details) {
+		final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
+		createLoginActivity.putExtra(ScreenType.INTENT_KEY, ScreenType.FORGOT_PASSWORD);
+		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, details);
+		startActivity(createLoginActivity);
+		finish();
 	}
 	
 	@Override

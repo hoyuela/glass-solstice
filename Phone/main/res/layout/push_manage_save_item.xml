@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" 
+    android:background="@color/white"
+    android:padding="7dp">
+    
+    <Button
+        android:id="@+id/notificaiton_save_button"
+        android:layout_width="wrap_content"
+   		android:layout_height="wrap_content"
+		android:text="@string/save_changes"
+		android:textSize="14sp"
+		android:textColor="@color/white"
+		android:textStyle="bold"
+		android:paddingTop="7dip"
+		android:paddingBottom="7dip"
+		android:paddingLeft="@dimen/orange_button_left_right_padding"
+		android:paddingRight="@dimen/orange_button_left_right_padding"
+		android:layout_marginRight="10dip"
+   		android:background="@drawable/orange_button"
+   		android:onClick="savePreferences"/>
+    
+    <TextView
+        android:id="@+id/terms_of_use_view"
+        android:layout_width="wrap_content"
+   		android:layout_height="wrap_content"
+   		android:text="@string/terms_text"
+   		android:textColor="@color/blue_link"
+   		android:gravity="center_vertical"
+   		android:layout_alignParentTop="true"
+   		android:textSize="14dip"
+   		android:layout_toRightOf="@+id/notificaiton_save_button"
+   		android:layout_alignBottom="@+id/notificaiton_save_button"/>
+
+</RelativeLayout>
