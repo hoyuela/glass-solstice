@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
@@ -138,6 +139,28 @@ public class LoginActivity extends RoboActivity {
 		if(!preAuthHasRun){
 			startPreAuthCheck();
 		}
+	}
+	
+	/**
+	 * Check to see if the user just logged out, if the user just logged out show the message.
+	 */
+	private void maybeShowUserLoggedOut(){
+		final Intent intent = this.getIntent();
+		final Bundle extras = intent.getExtras();
+		if(null == extras){return;}
+		if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
+			errorTextView.setText(getString(R.string.logout_sucess));
+			errorTextView.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	/**
+	 * Resume the activIty
+	 */
+	@Override
+	public void onResume(){
+		super.onResume();
+		maybeShowUserLoggedOut();
 	}
 	
 	/**

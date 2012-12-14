@@ -1,25 +1,24 @@
 package com.discover.mobile.navigation;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.ActionBar;
+import com.discover.mobile.LoggedInRoboActvity;
 import com.discover.mobile.R;
 import com.discover.mobile.RoboSherlockFragment;
-import com.discover.mobile.RoboSlidingFragmentActivity;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.push.PushNowAvailableFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
-public class NavigationRootActivity extends RoboSlidingFragmentActivity implements NavigationRoot {
+/**
+ * Root activity for the application after login. This will transition fargment on and off the screen
+ * as well as show the sliding bar as well as the action bar.
+ *
+ */
+public class NavigationRootActivity extends LoggedInRoboActvity implements NavigationRoot {
 	
 	/**Pulled out variable for the fade of the sliding menu*/
 	private static final float FADE = 0.35f;
@@ -36,11 +35,14 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 	/**String that is the key to getting the current fragment title out of the saved bundle.*/
 	private static final String TITLE = "title";
 	
+	/**
+	 * Create the activity
+	 * @param savedInstatnceState - saved state of the activity
+	 */
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setupNavMenuList();
 		setupSlidingMenu();
 		setupFirstVisibleFragment();
 		setUpCurrentFragment(savedInstanceState);
@@ -71,11 +73,7 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 			makeFragmentVisible(resumeFragment);
 		
 		if(!CurrentSessionDetails.getCurrentSessionDetails().isNotCurrentUserRegisteredForPush())
-			makeFragmentVisible(new PushNowAvailableFragment());
-		
-		//TEMP:
-		final AlertDialog alert = new ModalAlert(this);
-		alert.show();
+			makeFragmentVisible(new PushNowAvailableFragment());		
 	}
 	
 	/**
@@ -97,89 +95,7 @@ public class NavigationRootActivity extends RoboSlidingFragmentActivity implemen
 		contentView.setId(R.id.navigation_content);
 		setContentView(contentView, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 	}
-	
-	/**
-	 * Make the fragment visible
-	 * @param fragment - fragment to be made visible
-	 */
-	@Override
-	public void makeFragmentVisible(final Fragment fragment) {
-		setVisibleFragment(fragment);
-		hideSlidingMenuIfVisible();
-	}
-	
-	/**
-	 * Sets the fragment seen by the user
-	 * @param fragment - fragment to be shown
-	 */
-	private void setVisibleFragment(final Fragment fragment) {
-		this.currentFragment = fragment;
-		getSupportFragmentManager()
-				.beginTransaction()
-				.replace(R.id.navigation_content, fragment)
-				//Adds the class name and fragment to the back stack
-				.addToBackStack(fragment.getClass().getSimpleName())
-				.commit();
-		hideSlidingMenuIfVisible();
-	}
-	
-	/**
-	 * Hides the sliding menu is it is currently visible
-	 */
-	private void hideSlidingMenuIfVisible() {
-		final SlidingMenu slidingMenu = getSlidingMenu();
-		if(slidingMenu.isBehindShowing())
-			slidingMenu.showAbove();
-	}
-	
-	/**
-	 * Set up the action bar for navigation.
-	 */
-	private void setupNavMenuList() {
-		setBehindContentView(R.layout.navigation_menu_frame);
-		
-		final ActionBar actionBar = getSupportActionBar();
 
-		actionBar.setCustomView(getLayoutInflater().inflate(R.layout.action_bar_menu_layout, null));
-		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-		
-		final ImageView navigationToggle = (ImageView)this.findViewById(R.id.navigation_button);
-		final Button logout = (Button)this.findViewById(R.id.logout_button);
-		final ImageView back = (ImageView)this.findViewById(R.id.navigation_back_button);
-		final TextView titleView = (TextView)findViewById(R.id.title_view);
-		
-		navigationToggle.setVisibility(View.VISIBLE);
-		logout.setVisibility(View.VISIBLE);
-		navigationToggle.setVisibility(View.VISIBLE);
-		titleView.setVisibility(View.VISIBLE);
-		
-		navigationToggle.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				toggle();
-			}
-		});
-		
-		logout.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				logout();
-			}
-		});	
-		
-		back.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				logout();
-			}
-		});	
-		
-	
-	}
-	
-	public void logout(){
-		//TODO: implement me
-	}
 	
 	/**
 	 * Set the title in the action bar for display
