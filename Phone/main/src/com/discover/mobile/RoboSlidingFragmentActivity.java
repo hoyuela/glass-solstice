@@ -134,6 +134,12 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
     public Map<Key<?>, Object> getScopedObjectMap() {
         return scopedObjects;
     }
+    
+   
+    
+    public void goBack(){
+    	onBackPressed();
+    } 
 	
 	/**
 	 * Sets the fragment seen by the user
@@ -148,8 +154,7 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
 				.addToBackStack(fragment.getClass().getSimpleName())
 				.commit();
 		hideSlidingMenuIfVisible();
-	}
-	
+	}	
 	
 	/**
 	 * Set the current fragment that is being shown

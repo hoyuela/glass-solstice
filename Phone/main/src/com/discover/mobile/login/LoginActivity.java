@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.UserIdPersistance;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
