@@ -118,4 +118,12 @@ public class PushManageFragment extends RoboSherlockFragment{
 	public void savePreferences(final View v){
 		
 	}
+	
+	/**
+	 * Return the integer value of the string that needs to be displayed in the title
+	 */
+	@Override
+	public int getActionBarTitle() {
+		return R.string.manage_push_fragment_title;
+	}
 }

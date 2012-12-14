@@ -107,4 +107,12 @@ public class HomeSummaryFragment extends RoboSherlockFragment {
 			}};
 		}};
 	}
+
+	/**
+	 * Return the integer value of the string that needs to be displayed in the title
+	 */
+	@Override
+	public int getActionBarTitle() {
+		return R.string.account_summary_title;
+	}
 }
