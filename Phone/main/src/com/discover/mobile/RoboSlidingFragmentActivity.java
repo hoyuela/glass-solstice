@@ -41,6 +41,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  */
 public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivity implements RoboContext {
 	
+	/**Fragment that is currently being shown to the user*/
 	protected Fragment currentFragment;
 	
     protected EventManager eventManager;
@@ -153,8 +154,15 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
 				.addToBackStack(fragment.getClass().getSimpleName())
 				.commit();
 		hideSlidingMenuIfVisible();
-	}
-    
+	}	
+	
+	/**
+	 * Set the current fragment that is being shown
+	 * @param fragment - fragment that is currently shown
+	 */
+	public void setCurrentFragment(final RoboSherlockFragment fragment){
+		this.currentFragment = fragment;
+	}    
 	
 	/**
 	 * Make the fragment visible
