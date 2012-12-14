@@ -19,15 +19,29 @@ import roboguice.event.EventManager;
 import roboguice.inject.ContentViewListener;
 import roboguice.inject.RoboInjector;
 import roboguice.util.RoboContext;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
+import com.discover.mobile.common.SharedPreferencesKey;
 import com.google.inject.Inject;
 import com.google.inject.Key;
+import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
+/**
+ * Base class for anything that is going to use the sliding fragment or the action bar.
+ * This also provides a subset of of methods that can be used.
+ * 
+ * @author jthornton
+ *
+ */
 public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivity implements RoboContext {
+	
+	protected Fragment currentFragment;
 	
     protected EventManager eventManager;
     protected HashMap<Key<?>,Object> scopedObjects = new HashMap<Key<?>, Object>();
@@ -119,5 +133,88 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
     public Map<Key<?>, Object> getScopedObjectMap() {
         return scopedObjects;
     }
+    
+   
+    
+    public void goBack(){
+    	onBackPressed();
+    } 
 	
+	/**
+	 * Sets the fragment seen by the user
+	 * @param fragment - fragment to be shown
+	 */
+	private void setVisibleFragment(final Fragment fragment) {
+		this.currentFragment = fragment;
+		getSupportFragmentManager()
+				.beginTransaction()
+				.replace(R.id.navigation_content, fragment)
+				//Adds the class name and fragment to the back stack
+				.addToBackStack(fragment.getClass().getSimpleName())
+				.commit();
+		hideSlidingMenuIfVisible();
+	}
+    
+	
+	/**
+	 * Make the fragment visible
+	 * @param fragment - fragment to be made visible
+	 */
+	public void makeFragmentVisible(final Fragment fragment) {
+		setVisibleFragment(fragment);
+		hideSlidingMenuIfVisible();
+	}
+	
+	/**
+	 * Hides the sliding menu is it is currently visible
+	 */
+	private void hideSlidingMenuIfVisible() {
+		final SlidingMenu slidingMenu = getSlidingMenu();
+		if(slidingMenu.isBehindShowing())
+			slidingMenu.showAbove();
+	}
+
+    /**
+     * Save a boolean value to the shared preferences
+     * @param key - key of the value to store
+     * @param value - boolean value 
+     */
+    public void saveToSharedPrefs(final String key, final boolean value){
+    	final SharedPreferences settings = getSharedPreferences(SharedPreferencesKey.FILE_NAME, Context.MODE_PRIVATE);
+		final SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean(key, value);
+		editor.commit(); 
+    }
+    
+    /**
+     * Get a boolean value to the shared preferences
+     * @param key - key of the value to get
+     * @param defaultValue - default boolean value 
+     */
+    public boolean getValueFromSharedPrefs(final String key, final boolean defaultValue){
+    	final SharedPreferences settings = getSharedPreferences(SharedPreferencesKey.FILE_NAME, Context.MODE_PRIVATE);
+    	return settings.getBoolean(key, defaultValue);
+    }
+    
+    /**
+     * Save a string value to the shared preferences
+     * @param key - key of the value to store
+     * @param value - boolean value 
+     */
+    public void saveToSharedPrefs(final String key, final String value){
+    	final SharedPreferences settings = getSharedPreferences(SharedPreferencesKey.FILE_NAME, Context.MODE_PRIVATE);
+		final SharedPreferences.Editor editor = settings.edit();
+		editor.putString(key, value);
+		editor.commit(); 
+    }
+    
+    /**
+     * Get a boolean value to the shared preferences
+     * @param key - key of the value to get
+     * @param defaultValue - default string value 
+     */
+    public String getValueFromSharedPrefs(final String key, final String defaultValue){
+    	final SharedPreferences settings = getSharedPreferences(SharedPreferencesKey.FILE_NAME, Context.MODE_PRIVATE);
+    	return settings.getString(key, defaultValue);
+    }
 }
