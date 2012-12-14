@@ -41,6 +41,9 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  */
 public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivity implements RoboContext {
 	
+	/**Fragment that is currently being shown to the user*/
+	protected Fragment currentFragment;
+	
     protected EventManager eventManager;
     protected HashMap<Key<?>,Object> scopedObjects = new HashMap<Key<?>, Object>();
     
@@ -131,12 +134,6 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
     public Map<Key<?>, Object> getScopedObjectMap() {
         return scopedObjects;
     }
-    
-   
-    
-    public void goBack(){
-    	onBackPressed();
-    } 
 	
 	/**
 	 * Sets the fragment seen by the user
@@ -152,7 +149,15 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
 				.commit();
 		hideSlidingMenuIfVisible();
 	}
-    
+	
+	
+	/**
+	 * Set the current fragment that is being shown
+	 * @param fragment - fragment that is currently shown
+	 */
+	public void setCurrentFragment(final RoboSherlockFragment fragment){
+		this.currentFragment = fragment;
+	}    
 	
 	/**
 	 * Make the fragment visible

@@ -83,4 +83,12 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 		.addToBackStack(TAG)
 		.commit();
 	}
+	
+	/**
+	 * Return the integer value of the string that needs to be displayed in the title
+	 */
+	@Override
+	public int getActionBarTitle() {
+		return R.string.manage_push_fragment_title;
+	}
 }

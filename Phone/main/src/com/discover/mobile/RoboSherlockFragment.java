@@ -12,7 +12,7 @@ import com.discover.mobile.navigation.NavigationRootActivity;
  * @author jthornton
  *
  */
-public abstract class RoboSherlockFragment extends SherlockFragment {
+public abstract class RoboSherlockFragment extends SherlockFragment{
 	
 	/**
 	 * Create the fragment
@@ -21,6 +21,7 @@ public abstract class RoboSherlockFragment extends SherlockFragment {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setActionBarTitle(getActionBarTitle());
         RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
     }
     
@@ -44,5 +45,20 @@ public abstract class RoboSherlockFragment extends SherlockFragment {
     	final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
     	activity.setCurrentFragment(this);
     }
+    
+    /**
+	 * Set the title in the action bar for display
+	 * @param title - title to show in the display
+	 */
+    public void setActionBarTitle(final int title){
+    	final LoggedInRoboActivity activity = (LoggedInRoboActivity)this.getActivity();
+    	activity.setActionBarTitle(activity.getResources().getString(title));
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public abstract int getActionBarTitle();
 	
 }
