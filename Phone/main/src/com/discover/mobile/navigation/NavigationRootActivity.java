@@ -6,11 +6,9 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.LoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.LoggedInRoboActvity;
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSherlockFragment;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.push.PushNowAvailableFragment;
 
@@ -44,7 +42,6 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setupSlidingMenu();
 		setupFirstVisibleFragment();
 		setUpCurrentFragment(savedInstanceState);
 	}
