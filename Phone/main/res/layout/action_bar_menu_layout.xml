@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="48dp"
-    android:background="@drawable/action_bar_background">
-    
+    android:layout_width="match_parent"
+	android:layout_height="48dp"
+	android:background="@drawable/action_bar_background">
+	    
 	<ImageView
 	    android:id="@+id/navigation_button"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:textColor="@color/white"
-	    android:textSize="@dimen/title_max"
-	    android:textStyle="bold" 
 	    android:padding="12dp"
-	    android:layout_above="@+id/gradient_line"
 	    android:background="@drawable/square_button"
 	    android:layout_alignParentLeft="true"
 	    android:layout_marginBottom="3dp"
@@ -21,12 +17,9 @@
 	    android:visibility="gone"/>
 	
 	<ImageView
-	     android:id="@+id/navigation_back_button"
+	    android:id="@+id/navigation_back_button"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:textColor="@color/white"
-	    android:textSize="@dimen/title_max"
-	    android:textStyle="bold" 
 	    android:padding="12dp"
 	    android:layout_above="@+id/gradient_line"
 	    android:background="@drawable/square_button"
@@ -41,7 +34,6 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:maxLines="1"
-	    android:text="Manage Text &amp; Push Alerts"
 	    android:layout_marginTop="@dimen/table_inner_padding"
 	    android:textSize="@dimen/body_copy_min"
 	    android:textColor="@color/title"
@@ -68,8 +60,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignTop="@+id/navigation_button"
-	    android:layout_alignParentRight="true"
-	    android:layout_above="@+id/gradient_line"
+	    android:layout_toLeftOf="@+id/dunmmy_view"
 	    android:text="@string/log_out" 
 	    style="@style/white_button"
 	    android:layout_marginBottom="5dp"
@@ -77,14 +68,21 @@
 	    android:layout_marginRight="@dimen/between_related_elements_padding"
 	    android:visibility="gone"/>
 	
+	<!-- This view allows for the spacing between the logout button and the right side of the screen -->
+	<TextView
+	    android:id="@+id/dunmmy_view"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:visibility="invisible"/>
+	
+	
 	<ImageView
 	    android:id="@+id/gradient_line"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:src="@drawable/gradiant_line"
 	    android:background="@color/stroke_ruling_line"
-	    android:layout_alignParentRight="true"
-	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentBottom="true"/>
-	
+
 </RelativeLayout>

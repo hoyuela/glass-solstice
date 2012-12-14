@@ -14,7 +14,7 @@ import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 
-public class DeleteSessionCall extends NetworkServiceCall<Object> {
+public class LogOutCall extends NetworkServiceCall<Object> {
 	
 	private static final ServiceCallParams STANDARD_PARAMS = new PostCallParams("/cardsvcs/acs/session/v1/delete") {{
 		requiresSessionForRequest = true;
@@ -23,7 +23,7 @@ public class DeleteSessionCall extends NetworkServiceCall<Object> {
 	
 	private final TypedReferenceHandler<Object> handler;
 	
-	public DeleteSessionCall(final Context context, final AsyncCallback<Object> callback) {
+	public LogOutCall(final Context context, final AsyncCallback<Object> callback) {
 		super(context, STANDARD_PARAMS);
 		
 		handler = new StrongReferenceHandler<Object>(callback);
@@ -35,10 +35,9 @@ public class DeleteSessionCall extends NetworkServiceCall<Object> {
 	}
 
 	@Override
-	protected Object parseSuccessResponse(int status,
-			Map<String, List<String>> headers, InputStream body)
-			throws IOException {
-		// TODO Auto-generated method stub
+	protected Object parseSuccessResponse(final int status,
+				final Map<String, List<String>> headers, final InputStream body)
+				throws IOException {
 		return null;
 	}
 	
