@@ -364,7 +364,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 						return true;
 					
 					case FINAL_LOGIN_ATTEMPT:
-						showMainErrorLabelWithText(getString(R.string.final_login_attempt));
+						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
 						return true;
 						
 					case MAX_LOGIN_ATTEMPTS:

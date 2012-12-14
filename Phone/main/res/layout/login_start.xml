@@ -75,7 +75,7 @@
 		            android:inputType="textNoSuggestions"
 		            android:maxLength="@integer/MAX_ID_LENGTH"
 		            android:maxLines="@integer/MAX_INPUT_LINES"
-		            android:textColor="@color/black" />
+		            android:textColor="@color/black"/>
 					
 		        <TextView
 		            android:id="@+id/password_label"
@@ -111,7 +111,7 @@
 		            android:inputType="textPassword"
 		            android:maxLength="@integer/MAX_PASSWORD_LENGTH"
 		            android:maxLines="@integer/MAX_INPUT_LINES"
-		            android:textColor="@color/black" />
+		            android:textColor="@color/black"/>
 	
 	            <TextView
 	                android:id="@+id/remember_user_id_label"
@@ -181,7 +181,7 @@
 			    <ImageView
 			        android:id="@+id/card_check_mark"
 			        android:layout_width="12dp"
-			        android:layout_height="12dp" 
+			        android:layout_height="13dp" 
 			        android:layout_marginRight="2dp"
 			        android:src="@drawable/black_check"
 			        android:layout_marginTop="3dp"/>
@@ -208,7 +208,7 @@
 				<ImageView
 			        android:id="@+id/bank_check_mark"
 			         android:layout_width="12dp"
-			        android:layout_height="12dp" 
+			        android:layout_height="13dp" 
 			        android:layout_marginRight="2dp"
 			        android:src="@drawable/black_check"
 			        android:layout_marginTop="3dp"
