@@ -24,6 +24,18 @@
     <style name="OrangeTheme">
         <item name="android:background">@drawable/login_bkgd</item>
     </style>
+    
+    <style name="alert_modal_black_bg">
+        <item name="android:background">#50000000</item>
+    </style>
+    
+    <style name="alert_modal_white_bg">
+        <item name="android:background">@drawable/rounded_white_background</item>
+        <item name="android:layout_marginTop">@dimen/modal_top_margin</item>
+        <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
+        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
+        <item name="android:layout_marginBottom">@dimen/modal_bottom_margin</item>
+    </style>
 
     <style name="WhiteTheme">
         <item name="android:background">@drawable/light_gray_bkgrd</item>
@@ -52,7 +64,30 @@
         <item name="android:paddingBottom">@dimen/call_to_actions_padding</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:textStyle">bold</item>
-
+    </style>
+    
+    <style name="action_bar_theme">
+        <item name="android:visibility">gone</item>
+    </style>
+    
+    <style name="orange_action_bar_buttons" parent = "action_bar_theme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/square_button</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginLeft">@dimen/between_related_elements_padding</item>
+    </style>
+    
+    <style name="action_bar_text" parent="action_bar_theme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_marginTop">@dimen/table_inner_padding</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:textColor">@color/title</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
     </style>
     
     <style name="blue_hyperlink">
@@ -90,8 +125,22 @@
     
     <style name="title_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
-	    <item name="android:textColor">#293033</item>
+	    <item name="android:textColor">@color/title</item>
 	    <item name="android:textStyle">bold</item>	
+    </style>
+    
+    <style name="modal_title_text" parent = "title_copy">
+        <item name="android:layout_marginTop">@dimen/modal_top_padding</item>
+        <item name="android:layout_marginLeft">@dimen/modal_left_padding</item>
+        <item name="android:layout_marginRight">@dimen/modal_right_padding</item>
+        <item name="android:layout_marginBottom">@dimen/modal_bottom_padding</item>
+        <item name="android:textSize">@dimen/title_min</item>
+    </style>
+    
+    <style name="modal_content_text" parent = "sub_copy">
+        <item name="android:layout_marginLeft">@dimen/modal_left_padding</item>
+        <item name="android:layout_marginRight">@dimen/modal_right_padding</item>
+        <item name="android:textSize">@dimen/small_copy_max</item>
     </style>
     
     <!--   5. BODY COPY / #3d484d / 34px font-size / 42px line-height / regular -->
@@ -103,7 +152,7 @@
     
     <style name="small_copy"  parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-	  	<item name="android:textColor">#576166</item>
+	  	<item name="android:textColor">@color/sub_copy</item>
 	  	
     </style>
     

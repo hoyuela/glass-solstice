@@ -8,50 +8,35 @@
 	    android:id="@+id/navigation_button"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:padding="12dp"
-	    android:background="@drawable/square_button"
 	    android:layout_alignParentLeft="true"
-	    android:layout_marginBottom="3dp"
+	    android:layout_above="@+id/gradient_line"
 	    android:src="@drawable/sliding_drawer_white_icons"
-	    android:layout_marginLeft="@dimen/between_related_elements_padding"
-	    android:visibility="gone"/>
+	    style="@style/orange_action_bar_buttons"/>
 	
 	<ImageView
 	    android:id="@+id/navigation_back_button"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:padding="12dp"
 	    android:layout_above="@+id/gradient_line"
-	    android:background="@drawable/square_button"
-	    android:layout_alignParentLeft="true"
-	    android:layout_marginBottom="3dp"
 	    android:src="@drawable/back_arrow_white_icon"
-	    android:layout_marginLeft="@dimen/between_related_elements_padding"
-	    android:visibility="gone"/>
+	    style="@style/orange_action_bar_buttons"/>
 	
 	<TextView
 	    android:id="@+id/title_view"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:maxLines="1"
-	    android:layout_marginTop="@dimen/table_inner_padding"
-	    android:textSize="@dimen/body_copy_min"
-	    android:textColor="@color/title"
-	    android:gravity="center"
-	    android:textStyle="bold"
 	    android:layout_alignParentTop="true"
 	    android:layout_toLeftOf="@+id/logout_button"
 	    android:layout_toRightOf="@+id/navigation_button"
-	    android:visibility="gone"/> 
+	    style="@style/action_bar_text"/> 
 	    
 	<ImageView
 	    android:id="@+id/action_bar_discover_logo"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_centerInParent="true"
-	    android:layout_alignParentTop="true"
 	    android:background="@drawable/discover_blk_logo_login"
-	    android:layout_marginTop="@dimen/table_inner_padding"
+	    android:layout_marginBottom="3dp"
 	    android:visibility="gone"/>
 	    
 	
@@ -60,7 +45,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignTop="@+id/navigation_button"
-	    android:layout_toLeftOf="@+id/dunmmy_view"
+	    android:layout_toLeftOf="@+id/dummy_view"
 	    android:text="@string/log_out" 
 	    style="@style/white_button"
 	    android:layout_marginBottom="5dp"
@@ -70,12 +55,11 @@
 	
 	<!-- This view allows for the spacing between the logout button and the right side of the screen -->
 	<TextView
-	    android:id="@+id/dunmmy_view"
+	    android:id="@+id/dummy_view"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentRight="true"
 	    android:visibility="invisible"/>
-	
 	
 	<ImageView
 	    android:id="@+id/gradient_line"

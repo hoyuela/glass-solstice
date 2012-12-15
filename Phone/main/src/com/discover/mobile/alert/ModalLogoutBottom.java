@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,6 +51,13 @@ public class ModalLogoutBottom extends RelativeLayout implements ModalBottomTwoB
 		final LinearLayout rememberLayout = (LinearLayout) mainView.findViewById(R.id.show_view);
 		ok = (Button) mainView.findViewById(R.id.modal_alert_ok);
 		cancel = (Button) mainView.findViewById(R.id.modal_alert_cancel);
+		checkbox = (ImageView) mainView.findViewById(R.id.show_again);
+		checkbox.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				toggleCheckBox();				
+			}
+		});
 		
 		mainView.removeAllViews();
 		addView(divider);
@@ -61,7 +69,7 @@ public class ModalLogoutBottom extends RelativeLayout implements ModalBottomTwoB
 	/**
 	 * Toggle the checkbox
 	 */
-	public void toggleCheckBox(){
+	protected void toggleCheckBox(){
 		toggleBox(isTextChecked);
 		isTextChecked = (isTextChecked) ? false : true;
 	}
@@ -70,7 +78,7 @@ public class ModalLogoutBottom extends RelativeLayout implements ModalBottomTwoB
 	 * Toggle the checkbox drawables
 	 * @param isChecked - boolean if the box is already checked
 	 */
-	public void toggleBox(final boolean isChecked){
+	private void toggleBox(final boolean isChecked){
 		if(isChecked){
 			checkbox.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
 			checkbox.setImageDrawable(res.getDrawable(R.drawable.transparent_square));

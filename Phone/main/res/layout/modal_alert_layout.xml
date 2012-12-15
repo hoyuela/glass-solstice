@@ -2,20 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#50000000">
+    style="alert_modal_black_bg">
     
 	<RelativeLayout
 	    android:id="@+id/modal_linear_layout"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentTop="true"
-	    android:background="@drawable/rounded_white_background"
 	    android:layout_centerVertical="true"
 	    android:layout_centerHorizontal="true"
-	    android:layout_marginBottom="@dimen/moadal_bottom_margin" 
-	    android:layout_marginRight="@dimen/forms_inner_padding"
-	    android:layout_marginLeft="@dimen/forms_inner_padding"
-	    android:layout_marginTop="@dimen/moadal_bottom_margin"
-	   	android:orientation="vertical"/>
+	   	android:orientation="vertical"
+	   	style="@style/alert_modal_white_bg"/>
 
 </RelativeLayout>

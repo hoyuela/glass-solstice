@@ -3,10 +3,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
-    android:layout_marginBottom="@dimen/moadal_bottom_margin" 
+    android:layout_marginBottom="@dimen/modal_bottom_margin" 
     android:layout_marginRight="@dimen/forms_inner_padding"
     android:layout_marginLeft="@dimen/forms_inner_padding"
-    android:layout_marginTop="@dimen/moadal_bottom_margin">
+    android:layout_marginTop="@dimen/modal_bottom_margin">
     
     <ImageView
         android:id="@+id/modal_alert_divider"

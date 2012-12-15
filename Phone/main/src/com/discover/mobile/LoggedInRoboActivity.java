@@ -17,7 +17,7 @@ import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.logout.LogOutErrorHandler;
-import com.discover.mobile.logout.LogOutSuccessListner;
+import com.discover.mobile.logout.LogOutSuccessListener;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
@@ -126,7 +126,7 @@ public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
 				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
 									getResources().getString(R.string.push_progress_registration_loading), 
 									true)
-				.withSuccessListener(new LogOutSuccessListner(this))
+				.withSuccessListener(new LogOutSuccessListener(this))
 				.withErrorResponseHandler(new LogOutErrorHandler(this))
 				.build();
 	
