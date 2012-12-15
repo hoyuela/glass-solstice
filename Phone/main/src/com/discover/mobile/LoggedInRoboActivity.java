@@ -1,16 +1,17 @@
 package com.discover.mobile;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.discover.mobile.alert.LogoutModalAlert;
+import com.discover.mobile.alert.ModalAlertWithTwoButtons;
+import com.discover.mobile.alert.ModalDefaultTopView;
+import com.discover.mobile.alert.ModalLogoutBottom;
 import com.discover.mobile.common.SharedPreferencesKey;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
@@ -83,21 +84,40 @@ public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
 		if(getValueFromSharedPrefs(SharedPreferencesKey.SHOW_LOGIN_MODAL, false)){
 			logout();
 		} else{
-			final LogoutModalAlert alert = new LogoutModalAlert(this);
-			alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
-			alert.show();
-			alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-			alert.setOkClickListener(new OnClickListener(){
-				@Override
-				public void onClick(final View v) {
-					saveToSharedPrefs(SharedPreferencesKey.SHOW_LOGIN_MODAL, alert.getShowAgain());
-					logout();
-				}
-			});
+			showAlert(setUpLogoutAlert());
 		}
 	}
     
     /**
+     * Set up the modal alert that will be displayed for logout confirmation
+     * @return the modal alert that will be displayed for logout confirmation
+     */
+    private AlertDialog setUpLogoutAlert() {
+    	final ModalDefaultTopView topView = new ModalDefaultTopView(this, null);
+		final ModalLogoutBottom bottomView = new ModalLogoutBottom(this, null);
+		final ModalAlertWithTwoButtons alert = new ModalAlertWithTwoButtons(this, topView, bottomView);
+		topView.setTitle(R.string.logout_confirm_title);
+		topView.setContent(R.string.logout_confirm_text);
+		bottomView.setOkButtonText(R.string.logout_ok_button_text);
+		bottomView.setCancelButtonText(R.string.logout_cancel_button_text);
+		bottomView.getOkButton().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				saveToSharedPrefs(SharedPreferencesKey.SHOW_LOGIN_MODAL, bottomView.isShowAgainSelected());
+				logout();
+			}
+		});
+		
+		bottomView.getCancelButton().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				alert.dismiss();
+			}
+		});
+		return alert;
+	}
+
+	/**
      * Log the user out
      */
     public void logout(){

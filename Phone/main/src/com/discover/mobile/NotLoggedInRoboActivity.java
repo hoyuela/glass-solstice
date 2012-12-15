@@ -48,11 +48,4 @@ public abstract class NotLoggedInRoboActivity extends RoboSlidingFragmentActivit
 			}
 		});
     }
-    
-    /**
-     * Go back to the previous screen
-     */
-	public void goBack(){
-		onBackPressed();
-	} 
 }

@@ -1,6 +1,7 @@
 package com.discover.mobile;
 
 import roboguice.RoboGuice;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 
@@ -56,9 +57,58 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
     }
     
     /**
-     * 
-     * @return
+     * Show a modal alert dialog for the fragment
+     * @param alert - the modal alert to be shown
+     */
+    public void showAlertDialog(final AlertDialog alert){
+    	final RoboSlidingFragmentActivity activity= (RoboSlidingFragmentActivity)this.getActivity();
+    	activity.showAlert(alert);
+    }
+    
+    /**
+     * Get the resource id of the string that should be shown in the action bar
+     * @return the resource id of the string that should be shown in the action bar
      */
     public abstract int getActionBarTitle();
+    
+    /**
+     * Save a boolean value to the shared preferences
+     * @param key - key of the value to store
+     * @param value - boolean value 
+     */
+    public void saveToSharedPrefs(final String key, final boolean value){
+    	final RoboSlidingFragmentActivity activity= (RoboSlidingFragmentActivity)this.getActivity();
+    	activity.saveToSharedPrefs(key, value);
+    }
+    
+    /**
+     * Get a boolean value to the shared preferences
+     * @param key - key of the value to get
+     * @param defaultValue - default boolean value 
+     */
+    public boolean getValueFromSharedPrefs(final String key, final boolean defaultValue){
+    	final RoboSlidingFragmentActivity activity= (RoboSlidingFragmentActivity)this.getActivity();
+    	return activity.getValueFromSharedPrefs(key, defaultValue);
+    }
+    
+    /**
+     * Save a string value to the shared preferences
+     * @param key - key of the value to store
+     * @param value - boolean value 
+     */
+    public void saveToSharedPrefs(final String key, final String value){
+    	final RoboSlidingFragmentActivity activity= (RoboSlidingFragmentActivity)this.getActivity();
+    	activity.saveToSharedPrefs(key, value);
+    }
+    
+    /**
+     * Get a boolean value to the shared preferences
+     * @param key - key of the value to get
+     * @param defaultValue - default string value 
+     */
+    public String getValueFromSharedPrefs(final String key, final String defaultValue){
+    	final RoboSlidingFragmentActivity activity= (RoboSlidingFragmentActivity)this.getActivity();
+    	return activity.getValueFromSharedPrefs(key, defaultValue);
+    }
 	
 }

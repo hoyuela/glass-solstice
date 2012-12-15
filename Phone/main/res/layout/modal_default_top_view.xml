@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+   	android:layout_height="wrap_content"
+    android:orientation="vertical" >
+   
+   	<TextView 
+        android:id="@+id/modal_alert_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="title"
+        android:layout_marginTop="@dimen/modal_top_padding"
+        android:layout_marginRight="@dimen/modal_top_padding"
+        android:layout_marginLeft="@dimen/modal_top_padding"
+        android:layout_marginBottom="@dimen/table_inner_padding"
+        android:layout_alignParentTop="true"
+        style="@style/title_copy"
+        android:textSize="@dimen/title_min"/>
+    
+    <TextView
+        android:id="@+id/modal_alert_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="title text"
+        android:textColor="@color/sub_copy"
+        android:textSize="@dimen/small_copy_max"
+        android:layout_marginRight="@dimen/modal_top_padding"
+        android:layout_marginLeft="@dimen/modal_top_padding"
+        android:layout_below="@+id/modal_alert_title"/>
+   
+</RelativeLayout>

@@ -19,12 +19,15 @@ import roboguice.event.EventManager;
 import roboguice.inject.ContentViewListener;
 import roboguice.inject.RoboInjector;
 import roboguice.util.RoboContext;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Window;
+import android.view.WindowManager.LayoutParams;
 
 import com.discover.mobile.common.SharedPreferencesKey;
 import com.google.inject.Inject;
@@ -134,12 +137,6 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
     public Map<Key<?>, Object> getScopedObjectMap() {
         return scopedObjects;
     }
-    
-   
-    
-    public void goBack(){
-    	onBackPressed();
-    } 
 	
 	/**
 	 * Sets the fragment seen by the user
@@ -224,5 +221,22 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
     public String getValueFromSharedPrefs(final String key, final String defaultValue){
     	final SharedPreferences settings = getSharedPreferences(SharedPreferencesKey.FILE_NAME, Context.MODE_PRIVATE);
     	return settings.getString(key, defaultValue);
+    }
+    
+    /**
+     * Go back to the previous screen
+     */
+	public void goBack(){
+		onBackPressed();
+	} 
+    
+	/**
+     * Show a modal alert dialog for the activity
+     * @param alert - the modal alert to be shown
+     */
+    public void showAlert(final AlertDialog alert){
+    	alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		alert.show();
+		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
     }
 }

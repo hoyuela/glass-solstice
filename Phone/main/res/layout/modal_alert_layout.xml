@@ -5,6 +5,7 @@
     android:background="#50000000">
     
 	<RelativeLayout
+	    android:id="@+id/modal_linear_layout"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentTop="true"
@@ -14,87 +15,7 @@
 	    android:layout_marginBottom="@dimen/moadal_bottom_margin" 
 	    android:layout_marginRight="@dimen/forms_inner_padding"
 	    android:layout_marginLeft="@dimen/forms_inner_padding"
-	    android:layout_marginTop="@dimen/moadal_bottom_margin">
-	    
-	    <TextView 
-	        android:id="@+id/modal_alert_title"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="title"
-	        android:layout_marginTop="@dimen/modal_top_padding"
-	        android:layout_marginRight="@dimen/modal_top_padding"
-	        android:layout_marginLeft="@dimen/modal_top_padding"
-	        android:layout_marginBottom="@dimen/table_inner_padding"
-	        style="@style/title_copy"
-	        android:textSize="@dimen/title_min"/>
-	    
-	    <TextView
-	        android:id="@+id/modal_alert_text"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="title text"
-	        android:textColor="@color/sub_copy"
-	        android:textSize="@dimen/small_copy_max"
-	        android:layout_marginRight="@dimen/modal_top_padding"
-	        android:layout_marginLeft="@dimen/modal_top_padding"
-	        android:layout_below="@+id/modal_alert_title"/>
-	    
-	    <ImageView
-	        android:id="@+id/modal_alert_divider"
-	        android:layout_width="fill_parent"
-	        android:layout_height="5dp"
-	        android:background="@drawable/modal_divider_line"
-	        android:layout_above="@+id/show_view"/>
-	    
-	    <LinearLayout
-	        android:id="@+id/show_view"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal"
-	        android:layout_centerHorizontal="true"
-	        android:layout_above="@+id/modal_alert_ok"
-	        android:layout_marginTop="@dimen/modal_orange_margin_top">
-	    
-		    <TextView
-		        android:id="@+id/show_again_text"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="Do not ask me again"
-		        android:textColor="@color/field_copy"
-		        android:layout_marginRight="3dp"/>
-		    
-		    <ImageView
-		        android:id="@+id/show_again"
-		        android:layout_width="20dip"
-		        android:layout_height="20dip"
-		        android:padding="5dip"
-		        android:src="@drawable/transparent_square"
-		        android:background="@drawable/gray_gradient_square"
-		        android:layout_marginLeft="@dimen/between_related_elements_padding"/>
-	    
-	    </LinearLayout>
-	    
-	    <Button
-	        android:id="@+id/modal_alert_ok"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Continue Without Saving"
-	        style="@style/call_to_action_theme"
-	        android:layout_above="@+id/modal_alert_cancel"
-	        android:layout_marginTop="@dimen/modal_orange_margin_top"
-	        android:layout_centerHorizontal="true"/>
-	    
-	   	<TextView
-	        android:id="@+id/modal_alert_cancel"
-	       	android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Cancel"
-	        style="@style/blue_hyperlink"
-	        android:layout_marginTop="@dimen/white_button_margin_top"
-	        android:paddingBottom="@dimen/modal_orange_margin_top"
-	        android:layout_alignParentBottom="true"
-	        android:layout_centerHorizontal="true"/>
-	    
-	
-	</RelativeLayout>
+	    android:layout_marginTop="@dimen/moadal_bottom_margin"
+	   	android:orientation="vertical"/>
+
 </RelativeLayout>
