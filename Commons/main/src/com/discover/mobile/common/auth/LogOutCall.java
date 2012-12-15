@@ -15,7 +15,7 @@ import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 
 /**
- * Logout call for the application.  This wil make a call to the servicves that will terminate the session
+ * Logout call for the application.  This will make a call to the services that will terminate the session
  * 
  * @author sseward
  *
