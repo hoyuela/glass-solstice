@@ -290,6 +290,12 @@ public class LoginActivity extends RoboActivity {
 		}
 	}
 	
+	/**
+	 * If a user tries to save their login ID but provides an account number, we need to show an error
+	 * clear the input fields and un-check the save-user-id box.
+	 * 
+	 * @return a boolean that represents if an error was displayed or not.
+	 */
 	private boolean showErrorWhenAttemptingToSaveAccountNumber() {
 		String inputId = idField.getText().toString();
 		InputValidator validator = new InputValidator();
@@ -343,13 +349,16 @@ public class LoginActivity extends RoboActivity {
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
 	
+	/**
+	 * Saves a successful user id to to file for use later. Also saves the state of the check box.
+	 * If the checkbox was not checked when we log in, any previously saved ID will be deleted.
+	 */
 	public void saveCredentials() {
 		if(saveUserId){
 			persistentId.saveId(idField.getText().toString());
 			persistentId.saveButtonState(saveUserId);
 		}
 		else{
-			persistentId.saveId("");
 			persistentId.saveButtonState(false);
 		}
 	}

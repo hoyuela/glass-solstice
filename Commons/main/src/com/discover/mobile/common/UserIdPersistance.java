@@ -163,6 +163,7 @@ public class UserIdPersistance {
 			try {
 				ObjectOutputStream oos = 
 						new ObjectOutputStream(upperContext.openFileOutput(FILE_NAME, Context.MODE_PRIVATE));
+				clearIdIfNotSaved(writeableObject);
 				oos.writeObject(writeableObject);
 				oos.flush();
 				oos.close();
