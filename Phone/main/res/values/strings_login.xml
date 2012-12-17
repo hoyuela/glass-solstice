@@ -48,6 +48,9 @@
     <string name="vertical_separator">
         |
     </string>
+    <string name="logout_sucess">
+        You are now logged out. Thank you for using Discover Mobile.
+    </string>
 <!--  LOGIN ERRORS -->
 	<string name="account_number_reregistered">
 	    We\'re sorry, you may no longer use this Discover card account number to access Discover.com Mobile. 

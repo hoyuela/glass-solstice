@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.UserIdPersistance;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -159,15 +160,34 @@ public class LoginActivity extends RoboActivity {
 			startPreAuthCheck();
 		}
 	}
-
+	
+	/**
+	 * Check to see if the user just logged out, if the user just logged out show the message.
+	 */
+	private void maybeShowUserLoggedOut(){
+		final Intent intent = this.getIntent();
+		final Bundle extras = intent.getExtras();
+		if(null == extras){return;}
+		if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
+			errorTextView.setText(getString(R.string.logout_sucess));
+			errorTextView.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	/**
+	 * Resume the activity
+	 */
 	@Override
-	public void onResume() {
+	public void onResume(){
 		super.onResume();
+		maybeShowUserLoggedOut();
 		loadSavedCredentials();
 	}
+	
 	/**
 	 * Ran at the start of an activity when an activity is brought to the front.
 	 * This also will trigger the Xtify SDK to start.
+	 * Check to see if the user just logged out, if the user just logged out show the message.
 	 */
 	@Override
 	public void onStart() {
