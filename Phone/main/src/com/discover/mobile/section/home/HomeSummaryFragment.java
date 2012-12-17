@@ -3,6 +3,7 @@ package com.discover.mobile.section.home;
 import java.util.ArrayList;
 import java.util.List;
 
+import roboguice.RoboGuice;
 import roboguice.inject.InjectView;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,12 @@ public class HomeSummaryFragment extends RoboSherlockFragment {
 	@InjectView(R.id.account_summary_items)
 	private ListView accountSummaryList;
 
+	@Override
+	public void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		buildAccountSummaryListItems();
+	}
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
