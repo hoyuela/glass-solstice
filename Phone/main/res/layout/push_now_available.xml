@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/light_gray_bkgrd" >
+    android:background="@drawable/light_gray_bkgrd" 
+    android:padding="@dimen/forms_inner_padding">
     
     <TextView
         android:id="@+id/title"
@@ -13,9 +14,6 @@
     	android:textColor="@color/title"
     	android:textSize="@dimen/title_max"
     	android:textStyle="bold"
-    	android:layout_marginRight="@dimen/forms_inner_padding"
-    	android:layout_marginLeft="@dimen/forms_inner_padding"
-    	android:layout_marginTop="@dimen/groups_of_elements_padding"
     	android:layout_marginBottom="@dimen/between_related_elements_padding"/>
     
     <TextView
@@ -24,8 +22,6 @@
         android:layout_height="wrap_content"
         android:text="@string/push_alerts_are_available_text"
         android:textColor="@color/sub_copy"
-        android:layout_marginRight="@dimen/forms_inner_padding"
-    	android:layout_marginLeft="@dimen/forms_inner_padding"
         android:textSize="@dimen/body_copy_max"
         android:layout_below="@+id/title"/>
 

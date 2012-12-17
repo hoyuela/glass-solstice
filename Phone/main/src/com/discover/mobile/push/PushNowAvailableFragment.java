@@ -45,13 +45,13 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 		
 		manageAlerts.setOnClickListener(new OnClickListener(){
 			public void onClick(final View v){
-				registerWithDiscover(ACCEPT);
+				registerWithDiscover(DECLINE, true);
 			}
 		});
 		
 		accountHome.setOnClickListener(new OnClickListener(){
 			public void onClick(final View v){
-				registerWithDiscover(DECLINE);
+				registerWithDiscover(DECLINE, false);
 			}
 		});
 
@@ -82,5 +82,13 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 		.replace(R.id.navigation_content, new HomeSummaryFragment())
 		.addToBackStack(TAG)
 		.commit();
+	}
+	
+	/**
+	 * Return the integer value of the string that needs to be displayed in the title
+	 */
+	@Override
+	public int getActionBarTitle() {
+		return R.string.manage_push_fragment_title;
 	}
 }

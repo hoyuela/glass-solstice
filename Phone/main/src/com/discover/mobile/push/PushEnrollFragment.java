@@ -44,7 +44,7 @@ public class PushEnrollFragment extends BasePushRegistrationUI{
 		
 		enroll.setOnClickListener(new OnClickListener(){
 			public void onClick(final View v){
-				registerWithDiscover(ACCEPT);
+				registerWithDiscover(ACCEPT, true);
 			}
 		});
 		
@@ -79,5 +79,13 @@ public class PushEnrollFragment extends BasePushRegistrationUI{
 	@Override
 	public void changeToDeclineScreen() {
 		this.getActivity().onBackPressed();
+	}
+
+	/**
+	 * Return the integer value of the string that needs to be displayed in the title
+	 */
+	@Override
+	public int getActionBarTitle() {
+		return R.string.enroll_fragment_title;
 	}
 }
