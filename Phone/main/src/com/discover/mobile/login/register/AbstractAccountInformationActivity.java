@@ -4,6 +4,7 @@ import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.FAILED_SECURITY;
 import static com.discover.mobile.common.StandardErrorCodes.INVALID_EXTERNAL_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.INVALID_ONLINE_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
 import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.ONLINE_STATUS_PROHIBITED;
 import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
@@ -491,6 +492,16 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 					
 					case UNSCHEDULED_MAINTENANCE:
 						sendToErrorPage(ScreenType.UNSCHEDULED_MAINTENANCE);
+						return true;
+						
+					case MAX_LOGIN_ATTEMPTS:
+						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
+						return true;
+						
+					case LAST_ATTEMPT_WARNING:
+						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
+						return true;
+						
 					default:
 						return false;
 				}
