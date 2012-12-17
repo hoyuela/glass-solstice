@@ -19,8 +19,7 @@
 		android:paddingLeft="@dimen/orange_button_left_right_padding"
 		android:paddingRight="@dimen/orange_button_left_right_padding"
 		android:layout_marginRight="10dip"
-   		android:background="@drawable/orange_button"
-   		android:onClick="savePreferences"/>
+   		android:background="@drawable/orange_button"/>
     
     <TextView
         android:id="@+id/terms_of_use_view"
