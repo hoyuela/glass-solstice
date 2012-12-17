@@ -3,7 +3,6 @@ package com.discover.mobile.login;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.widget.TextView;
@@ -27,12 +26,6 @@ public class LockOutUserActivity extends RoboActivity {
 		super.onCreate(savedInstanceState);
 		
 		setScreenType();
-	}
-	
-	@Override
-	public void onBackPressed() {
-		final Intent navToMain = new Intent(this, LoginActivity.class);
-		startActivity(navToMain);
 	}
 	
 	private void setScreenType() {
