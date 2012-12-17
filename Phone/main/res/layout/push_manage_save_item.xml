@@ -7,7 +7,7 @@
     android:padding="7dp">
     
     <Button
-        android:id="@+id/notificaiton_save_button"
+        android:id="@+id/notification_save_button"
         android:layout_width="wrap_content"
    		android:layout_height="wrap_content"
 		android:text="@string/save_changes"
@@ -22,15 +22,39 @@
    		android:background="@drawable/orange_button"/>
     
     <TextView
-        android:id="@+id/terms_of_use_view"
+        android:id="@+id/terms_of_use_view_1"
         android:layout_width="wrap_content"
    		android:layout_height="wrap_content"
-   		android:text="@string/terms_text"
+   		android:text="@string/terms_text_1"
    		android:textColor="@color/blue_link"
    		android:gravity="center_vertical"
-   		android:layout_alignParentTop="true"
    		android:textSize="14dip"
-   		android:layout_toRightOf="@+id/notificaiton_save_button"
-   		android:layout_alignBottom="@+id/notificaiton_save_button"/>
+   		android:layout_toRightOf="@+id/notification_save_button"
+   		android:layout_alignTop="@+id/notification_save_button"
+   		android:paddingTop="2dp"/>
+    
+    <TextView
+        android:id="@+id/terms_of_use_view_2"
+        android:layout_width="wrap_content"
+   		android:layout_height="wrap_content"
+   		android:text="@string/terms_text_2"
+   		android:textColor="@color/blue_link"
+   		android:gravity="center_vertical"
+   		android:textSize="14dip"
+   		android:layout_toRightOf="@+id/notification_save_button"
+   		android:layout_alignBottom="@+id/notification_save_button"
+   		android:layout_alignLeft="@+id/terms_of_use_view_1"/>
+    
+    <TextView
+        android:id="@+id/terms_of_use_view_3"
+        android:layout_width="wrap_content"
+   		android:layout_height="wrap_content"
+   		android:text="@string/terms_text_3"
+   		android:textColor="@color/blue_link"
+   		android:gravity="center_vertical"
+   		android:textSize="14dip"
+   		android:maxLines="1"
+   		android:layout_toRightOf="@+id/terms_of_use_view_2"
+   		android:layout_alignBottom="@+id/notification_save_button"/>
 
 </RelativeLayout>

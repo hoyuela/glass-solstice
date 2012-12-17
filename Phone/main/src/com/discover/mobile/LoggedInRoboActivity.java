@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.discover.mobile.alert.ModalAlertWithTwoButtons;
+import com.discover.mobile.alert.ModalBottomTwoButtonView;
 import com.discover.mobile.alert.ModalDefaultTopView;
 import com.discover.mobile.alert.ModalLogoutBottom;
 import com.discover.mobile.common.SharedPreferencesKey;

@@ -30,12 +30,17 @@ public class PushManageSaveView extends RelativeLayout{
 		final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(context)
                 .inflate(R.layout.push_manage_save_item, null);
 
-		final Button save = (Button) mainView.findViewById(R.id.notificaiton_save_button);
-		final TextView text = (TextView) mainView.findViewById(R.id.terms_of_use_view);
+		final Button save = (Button) mainView.findViewById(R.id.notification_save_button);
+		final TextView textView1 = (TextView) mainView.findViewById(R.id.terms_of_use_view_1);
+		final TextView textView2 = (TextView) mainView.findViewById(R.id.terms_of_use_view_2);
+		//FIXME: fix the ugly layout
+		final TextView textView3 = (TextView) mainView.findViewById(R.id.terms_of_use_view_3);
 
 		mainView.removeAllViews();
 		addView(save);
-		addView(text);
+		addView(textView1);
+		addView(textView2);
+		addView(textView3);
 	}
 
 }

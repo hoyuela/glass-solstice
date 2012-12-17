@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.section.home.HomeSummaryFragment;
 
 /**
@@ -56,12 +54,6 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 		});
 
 		return view;
-	}
-	
-	@Override
-	public void onResume(){
-		super.onResume();
-		TrackingHelper.trackPageView(AnalyticsPage.PUSH_NOW_AVAILABLE);
 	}
 
 	/**
