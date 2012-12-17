@@ -113,4 +113,8 @@
 	         <a href='tel:18882518003'>1&#8211;888&#8211;251&#8211;8003</a> 
 	         for information about accessing your account online.
 	</string>
+	<string name="cannot_save_account_number">
+	    To protect the security of your Account, we do not save your Discover card Account number
+	     with the "Remember My User ID" feature. It is only available when you use a user ID to log in.
+	</string>
 </resources>

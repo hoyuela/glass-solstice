@@ -26,6 +26,7 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
+import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.callback.AsyncCallback;
@@ -283,9 +284,27 @@ public class LoginActivity extends RoboActivity {
 	 * validation.
 	 */
 	private void logIn() {
-		if (!showErrorIfAnyFieldsAreEmpty()) {
+		if (!showErrorIfAnyFieldsAreEmpty() && !showErrorWhenAttemptingToSaveAccountNumber()) {
 			runAuthWithUsernameAndPassword(idField.getText().toString(),
 					passField.getText().toString());
+		}
+	}
+	
+	private boolean showErrorWhenAttemptingToSaveAccountNumber() {
+		String inputId = idField.getText().toString();
+		InputValidator validator = new InputValidator();
+		validator.isCardAccountNumberValid(inputId);
+		
+		if(saveUserId && validator.wasAccountNumberValid) {
+			errorTextView.setText(getString(R.string.cannot_save_account_number));
+			errorTextView.setVisibility(View.VISIBLE);
+			clearInputs();
+			toggleCheckBox(idField);
+			return true;
+		}
+		else{
+			return false;
+	
 		}
 	}
 
