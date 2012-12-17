@@ -99,4 +99,15 @@
 	    For more assistance, please contact Customer Service at 
 		<a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a>.
 	</string>
+	<string name="unscheduled_maintenance">
+	    We\'re sorry. We are currently updating our system and cannot complete your request at this time. 
+	    We apologize for any inconvenience. Please try again later or, for immediate assistance call 
+	    <a href='tel:18003472683'>1&#8211;800&#8211;347&#8211;2683</a>.
+	</string>
+	<string name="locked_account">
+	    For security purposes, your online account has been locked.<br/>Please call Discover
+	         Customer Service at 
+	         <a href='tel:18882518003'>1&#8211;888&#8211;251&#8211;8003</a> 
+	         for information about accessing your account online.
+	</string>
 </resources>

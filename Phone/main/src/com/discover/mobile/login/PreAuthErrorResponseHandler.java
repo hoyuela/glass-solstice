@@ -1,10 +1,12 @@
 package com.discover.mobile.login;
 
 import static com.discover.mobile.common.StandardErrorCodes.FORCED_UPGRADE_REQUIRED;
-import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_1;
-import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_2;
+import static com.discover.mobile.common.StandardErrorCodes.SCHEDULED_MAINTENANCE;
+import static com.discover.mobile.common.StandardErrorCodes.UNSCHEDULED_MAINTENANCE;
 import android.app.Activity;
+import android.content.Intent;
 
+import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
@@ -56,16 +58,23 @@ public class PreAuthErrorResponseHandler extends AbstractPreAuthCallHandler impl
 				updateDateInPrefs();
 				return true;
 				
-			case MAINTENANCE_MODE_1:
-			case MAINTENANCE_MODE_2: 
-				sendToMaintenancePage();
+			case UNSCHEDULED_MAINTENANCE:
+				sendToErrorPage(ScreenType.UNSCHEDULED_MAINTENANCE);
+			
+			case SCHEDULED_MAINTENANCE:
+				sendToErrorPage(ScreenType.SCHEDULED_MAINTENANCE);
 				return true;
+				
 			default:
 				break;
 		}
 		
 		return false;
 	}
-	
+	private void sendToErrorPage(final ScreenType screenType) {
+		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
+		screenType.addExtraToIntent(maintenancePageIntent);
+		startActivity(maintenancePageIntent);
+	}
 
 }

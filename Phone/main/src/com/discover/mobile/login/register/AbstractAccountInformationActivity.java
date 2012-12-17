@@ -8,6 +8,7 @@ import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.ONLINE_STATUS_PROHIBITED;
 import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
+import static com.discover.mobile.common.StandardErrorCodes.UNSCHEDULED_MAINTENANCE;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.NOT_PRIMARY_CARDHOLDER;
@@ -384,7 +385,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 						return true;
 						
 					case PLANNED_OUTAGE:
-						sendToErrorPage(ScreenType.PLANNED_OUTAGE);
+						sendToErrorPage(ScreenType.SCHEDULED_MAINTENANCE);
 						return true;
 						
 					case FAILED_SECURITY:	
@@ -487,7 +488,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 					case NOT_PRIMARY_CARDHOLDER:
 						sendToErrorPage(ScreenType.NOT_PRIMARY_CARDHOLDER);
 						return true;
-						
+					
+					case UNSCHEDULED_MAINTENANCE:
+						sendToErrorPage(ScreenType.UNSCHEDULED_MAINTENANCE);
 					default:
 						return false;
 				}
