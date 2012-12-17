@@ -3,7 +3,6 @@ package com.discover.mobile.section.home;
 import java.util.ArrayList;
 import java.util.List;
 
-import roboguice.RoboGuice;
 import roboguice.inject.InjectView;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,13 +24,7 @@ public class HomeSummaryFragment extends RoboSherlockFragment {
 	
 	@InjectView(R.id.account_summary_items)
 	private ListView accountSummaryList;
-	
-	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		buildAccountSummaryListItems();
-	}
-	
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -40,6 +33,13 @@ public class HomeSummaryFragment extends RoboSherlockFragment {
 		final GeneralListItemAdapter generalListItemAdapter = 
 				new GeneralListItemAdapter(getActivity(), accountSummaryListItems);
 		
+		/**
+		 * Clearing the adapter before populating with new data. Since onCreateView will get called 
+		 * every time you return to the home screen, this will allow the list to get updated with new data.
+		 */
+		generalListItemAdapter.clear();
+		
+		buildAccountSummaryListItems();
 		ListView listView = (ListView) view.findViewById(R.id.account_summary_items);
 		listView.setAdapter(generalListItemAdapter);
 				
@@ -49,7 +49,6 @@ public class HomeSummaryFragment extends RoboSherlockFragment {
 	private void buildAccountSummaryListItems() {
 		
 		final AccountDetails accountDetails = CurrentSessionDetails.getCurrentSessionDetails().getAccountDetails();
-		
 		if (accountDetails != null) {
 			
 			GeneralListItemModel generalListItem = createCurrentBalanceItem(accountDetails);
