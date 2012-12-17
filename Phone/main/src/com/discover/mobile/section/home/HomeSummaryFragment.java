@@ -27,12 +27,6 @@ public class HomeSummaryFragment extends RoboSherlockFragment {
 	private ListView accountSummaryList;
 
 	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		buildAccountSummaryListItems();
-	}
-	
-	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.section_account_summary_landing, null);
