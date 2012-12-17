@@ -1,10 +1,15 @@
 package com.discover.mobile.login;
 
+import static com.discover.mobile.common.StandardErrorCodes.ACCOUNT_NUMBER_CHANGED;
+import static com.discover.mobile.common.StandardErrorCodes.ACCOUNT_NUMBER_REREGISTERED;
+import static com.discover.mobile.common.StandardErrorCodes.ACCOUNT_SETUP_PENDING;
 import static com.discover.mobile.common.StandardErrorCodes.AUTH_BAD_ACCOUNT_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
 import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_1;
 import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_2;
+import static com.discover.mobile.common.StandardErrorCodes.NO_DATA_FOUND;
+import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
 
@@ -54,7 +59,18 @@ public class LoginErrorResponseHandler implements ErrorResponseHandler{
 				idField.setError("Please Check your ID and Try Again");
 				passField.setError("Please Check your Password and Try Again");
 				return true;
-			
+			case HttpURLConnection.HTTP_INTERNAL_ERROR:
+				sendToErrorPage(ScreenType.INTERNAL_SERVER_ERROR_500);
+				return true;
+			case HttpURLConnection.HTTP_UNAVAILABLE:
+				sendToErrorPage(ScreenType.INTERNAL_SERVER_ERROR_503);
+				return true;
+			case HttpURLConnection.HTTP_FORBIDDEN:
+				sendToErrorPage(ScreenType.HTTP_FORBIDDEN);
+				return true;
+			case 0:
+				sendToErrorPage(ScreenType.TEMPORARY_OUTAGE);
+				return true;
 			// FIXME other cases
 		}
 		
@@ -89,12 +105,32 @@ public class LoginErrorResponseHandler implements ErrorResponseHandler{
 				sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
 				return true;
 				
+			case ACCOUNT_NUMBER_REREGISTERED:
+				sendToErrorPage(ScreenType.ACCOUNT_NUMBER_REREGISTERED);
+				return true;
+				
 			case EXCEEDED_LOGIN_ATTEMPTS:
 				sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
 				return true;
 				
 			case LOCKED_OUT_ACCOUNT:
 				sendToErrorPage(ScreenType.LOCKED_OUT_USER);
+				return true;
+				
+			case ACCOUNT_SETUP_PENDING:
+				sendToErrorPage(ScreenType.ACCOUNT_NOT_YET_SETUP);
+				return true;
+				
+			case ACCOUNT_NUMBER_CHANGED:
+				sendToErrorPage(ScreenType.ACCOUNT_NUMBER_CHANGED);
+				return true;
+				
+			case PLANNED_OUTAGE:
+				sendToErrorPage(ScreenType.PLANNED_OUTAGE);
+				return true;
+				
+			case NO_DATA_FOUND:
+				sendToErrorPage(ScreenType.NO_DATA_FOUND);
 				return true;
 				
 			default:

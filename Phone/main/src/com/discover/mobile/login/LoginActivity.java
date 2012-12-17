@@ -153,7 +153,6 @@ public class LoginActivity extends RoboActivity {
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		res = getResources();
-		loadSavedCredentials();
 		restoreState(savedInstanceState);
 		setupButtons();
 
@@ -182,8 +181,10 @@ public class LoginActivity extends RoboActivity {
 	public void onResume(){
 		super.onResume();
 		maybeShowUserLoggedOut();
+		loadSavedCredentials();
+
 	}
-	
+
 	/**
 	 * Ran at the start of an activity when an activity is brought to the front.
 	 * This also will trigger the Xtify SDK to start.
@@ -192,7 +193,6 @@ public class LoginActivity extends RoboActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
-		loadSavedCredentials();
 		pushNotificationService.start(this);
 	}
 
@@ -352,7 +352,11 @@ public class LoginActivity extends RoboActivity {
 			toggleImage.setImageDrawable(res.getDrawable(R.drawable.white_check_mark));
 			saveUserId = true;
 		}
+		if(persistentId == null) {
+			persistentId = new UserIdPersistance(this);
+		}
 		persistentId.saveButtonState(saveUserId);
+
 	}
 
 	/**

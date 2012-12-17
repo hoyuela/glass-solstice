@@ -74,9 +74,55 @@ public class LockOutUserActivity extends RoboActivity {
 				errorTitleText.setText(getString(R.string.secure_login));
 				errorTextView.setText(getString(R.string.max_attempts_exceeded_text));
 				break;
+			
+			case ACCOUNT_NUMBER_REREGISTERED:
+				errorTitleText.setText(getString(R.string.secure_login));
+				errorTextView.setText(Html.fromHtml("We're sorry, you may no longer use this Discover card account number to access Discover.com Mobile. Instead, please visit www.discover.com to create a User ID and password. If you have any questions, please contact Customer Service at <a href='tel:1-877-742-7822' class='eCertBlueLink' >1-877-742-7822</a> ."));
+				break;
+			
+			case ACCOUNT_NOT_YET_SETUP:
+				errorTitleText.setText(getString(R.string.secure_login));
+				errorTextView.setText(getString(R.string.account_setup_pending));
+				break;
+				
+			case ACCOUNT_NUMBER_CHANGED:
+				setAlertBodyText(R.string.account_number_changed);
+				break;
+				
+			case INTERNAL_SERVER_ERROR_500:
+				setAlertBodyText(R.string.internal_server_error_500);
+				errorTextView.setTextColor(getResources().getColor(R.color.black));
+				break;
+			
+			case INTERNAL_SERVER_ERROR_503:
+				setAlertBodyText(R.string.internal_server_error_503);
+				errorTextView.setTextColor(getResources().getColor(R.color.black));
+				break;
+				
+			case HTTP_FORBIDDEN:
+				setAlertBodyText(R.string.forbidden_403);
+				break;
+				
+			case TEMPORARY_OUTAGE:
+				errorTextView.setTextColor(getResources().getColor(R.color.black));
+				setAlertBodyText(R.string.temporary_outage);
+				break;
+				
+			case PLANNED_OUTAGE:
+				errorTextView.setTextColor(getResources().getColor(R.color.black));
+				setAlertBodyText(R.string.planned_outage_one);
+				break;
+			
+			case NO_DATA_FOUND:
+				setAlertBodyText(R.string.no_data_found);
+				break;
 				
 			default:
 				throw new UnsupportedOperationException("Unable to handle ScreenType: " + screenType);
 		}
+	}
+	
+	public void setAlertBodyText( final int bodyText ){
+		errorTextView.setText( Html.fromHtml(getString(bodyText)));
 	}
 }
