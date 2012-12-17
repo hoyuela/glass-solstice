@@ -1,7 +1,7 @@
 package com.discover.mobile.login.register;
 
 import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
-import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
+import static com.discover.mobile.common.StandardErrorCodes.SCHEDULED_MAINTENANCE;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 
@@ -223,8 +223,8 @@ public class EnterNewPasswordActivity extends RoboActivity {
 					showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_id_matches_pass_error_text);
 					return true;
 					
-				case PLANNED_OUTAGE:
-					sendToErrorPage(ScreenType.PLANNED_OUTAGE);
+				case SCHEDULED_MAINTENANCE:
+					sendToErrorPage(ScreenType.SCHEDULED_MAINTENANCE);
 					return true;
 					
 				default:

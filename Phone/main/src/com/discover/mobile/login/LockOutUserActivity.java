@@ -41,17 +41,11 @@ public class LockOutUserActivity extends RoboActivity {
 			throw new NullPointerException("No ScreenType found in intent");
 		
 		switch(screenType) {
-			case MAINTENANCE:
-				// TODO find out analytics for maintenance mode
-				// TODO reference maintenance text when error map set up
-				errorTextView.setText(Html.fromHtml("We're sorry. We are currently updating our system and cannot complete your request at this time. We apologize for any inconvenience. Please try again later or, for immediate assistance call <a href='tel:18003472683' class='eCertBlueLink'>1-800-347-2683</a>."));
-				break;
 				
 			case LOCKED_OUT_USER:
 				TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_LOCKED);
 				// TODO reference lock out text when error map set up
-				errorTextView.setText(Html.fromHtml("<p>For security purposes, your online account has been locked.<p/><p>Please call Discover Customer Service at <a href='tel:18882518003' class='eCertBlueLink'>1-888-251-8003</a> for information about accessing your account online.</p>"));
-				errorTextView.setTextColor(getResources().getColor(R.color.black));
+				errorTextView.setText(R.string.locked_account);
 				break;
 				
 			case BAD_ACCOUNT_STATUS:
@@ -76,8 +70,7 @@ public class LockOutUserActivity extends RoboActivity {
 				break;
 			
 			case ACCOUNT_NUMBER_REREGISTERED:
-				errorTitleText.setText(getString(R.string.secure_login));
-				errorTextView.setText(Html.fromHtml("We're sorry, you may no longer use this Discover card account number to access Discover.com Mobile. Instead, please visit www.discover.com to create a User ID and password. If you have any questions, please contact Customer Service at <a href='tel:1-877-742-7822' class='eCertBlueLink' >1-877-742-7822</a> ."));
+				setAlertBodyText(R.string.account_number_reregistered);
 				break;
 			
 			case ACCOUNT_NOT_YET_SETUP:
@@ -103,12 +96,13 @@ public class LockOutUserActivity extends RoboActivity {
 				setAlertBodyText(R.string.forbidden_403);
 				break;
 				
+			case UNSCHEDULED_MAINTENANCE:
 			case TEMPORARY_OUTAGE:
 				errorTextView.setTextColor(getResources().getColor(R.color.black));
 				setAlertBodyText(R.string.temporary_outage);
 				break;
-				
-			case PLANNED_OUTAGE:
+			
+			case SCHEDULED_MAINTENANCE:
 				errorTextView.setTextColor(getResources().getColor(R.color.black));
 				setAlertBodyText(R.string.planned_outage_one);
 				break;

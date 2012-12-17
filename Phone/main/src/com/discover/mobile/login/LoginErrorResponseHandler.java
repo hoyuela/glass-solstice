@@ -6,11 +6,11 @@ import static com.discover.mobile.common.StandardErrorCodes.ACCOUNT_SETUP_PENDIN
 import static com.discover.mobile.common.StandardErrorCodes.AUTH_BAD_ACCOUNT_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
-import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_1;
-import static com.discover.mobile.common.StandardErrorCodes.MAINTENANCE_MODE_2;
 import static com.discover.mobile.common.StandardErrorCodes.NO_DATA_FOUND;
 import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
+import static com.discover.mobile.common.StandardErrorCodes.SCHEDULED_MAINTENANCE;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
+import static com.discover.mobile.common.StandardErrorCodes.UNSCHEDULED_MAINTENANCE;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
 
 import java.net.HttpURLConnection;
@@ -88,9 +88,12 @@ public class LoginErrorResponseHandler implements ErrorResponseHandler{
 		clearInputs();
 
 		switch(messageErrorResponse.getMessageStatusCode()) {
-			case MAINTENANCE_MODE_1:
-			case MAINTENANCE_MODE_2: 
-				sendToErrorPage(ScreenType.MAINTENANCE);
+			case UNSCHEDULED_MAINTENANCE:
+				sendToErrorPage(ScreenType.UNSCHEDULED_MAINTENANCE);
+				return true;
+				
+			case SCHEDULED_MAINTENANCE: 
+				sendToErrorPage(ScreenType.SCHEDULED_MAINTENANCE);
 				return true;
 				
 			case LAST_ATTEMPT_WARNING:
@@ -126,7 +129,7 @@ public class LoginErrorResponseHandler implements ErrorResponseHandler{
 				return true;
 				
 			case PLANNED_OUTAGE:
-				sendToErrorPage(ScreenType.PLANNED_OUTAGE);
+				sendToErrorPage(ScreenType.SCHEDULED_MAINTENANCE);
 				return true;
 				
 			case NO_DATA_FOUND:

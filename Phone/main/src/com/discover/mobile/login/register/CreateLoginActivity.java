@@ -566,7 +566,7 @@ public class CreateLoginActivity extends RoboActivity {
 					showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_username_in_use_error_text);
 					return true;
 				case PLANNED_OUTAGE:
-					sendToErrorPage(ScreenType.PLANNED_OUTAGE);
+					sendToErrorPage(ScreenType.SCHEDULED_MAINTENANCE);
 					return true;
 					
 				default:
