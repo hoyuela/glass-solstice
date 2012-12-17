@@ -1,6 +1,7 @@
 package com.discover.mobile.login.register;
 
 import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_ALREADY_TAKEN;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_SSN_EQUAL;
@@ -35,6 +36,7 @@ import com.discover.mobile.common.auth.registration.RegistrationConfirmationDeta
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.login.LockOutUserActivity;
 
 /**
  * CreateLoginActivity - this is the final step of a user either going through "Forgot Both" or "Register".
@@ -563,6 +565,10 @@ public class CreateLoginActivity extends RoboActivity {
 					showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
 					showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_username_in_use_error_text);
 					return true;
+				case PLANNED_OUTAGE:
+					sendToErrorPage(ScreenType.PLANNED_OUTAGE);
+					return true;
+					
 				default:
 					return false;
 				}
@@ -574,6 +580,14 @@ public class CreateLoginActivity extends RoboActivity {
 		registrationCall.submit();
 
 	}
+	
+	private void sendToErrorPage(final ScreenType screenType) {
+		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
+		screenType.addExtraToIntent(maintenancePageIntent);
+		startActivity(maintenancePageIntent);
+		finish();
+	}
+	
 	
 	private void showLabelWithStringResource(final TextView label, final int id) {
 		label.setText(getString(id));

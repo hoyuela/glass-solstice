@@ -1,6 +1,7 @@
 package com.discover.mobile.login.register;
 
 import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoCall;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoDetails;
@@ -29,6 +31,7 @@ import com.discover.mobile.common.auth.registration.RegistrationConfirmationDeta
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.login.LockOutUserActivity;
 /**
  * EnterNewPasswordActivit - this activity inherits from AbstractAccountInformationActivity
  * @author scottseward
@@ -220,6 +223,10 @@ public class EnterNewPasswordActivity extends RoboActivity {
 					showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_id_matches_pass_error_text);
 					return true;
 					
+				case PLANNED_OUTAGE:
+					sendToErrorPage(ScreenType.PLANNED_OUTAGE);
+					return true;
+					
 				default:
 					return false;
 					
@@ -239,6 +246,13 @@ public class EnterNewPasswordActivity extends RoboActivity {
 		hideLabel(errorMessageLabel);
 		hideLabel(errorLabelOne);
 		hideLabel(errorLabelTwo);
+	}
+	
+	private void sendToErrorPage(final ScreenType screenType) {
+		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
+		screenType.addExtraToIntent(maintenancePageIntent);
+		startActivity(maintenancePageIntent);
+		finish();
 	}
 	
 	private void showLabelWithStringResource(TextView label, int id) {

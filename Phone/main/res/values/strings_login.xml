@@ -55,7 +55,8 @@
 	<string name="account_number_reregistered">
 	    We\'re sorry, you may no longer use this Discover card account number to access Discover.com Mobile. 
 	    Instead, please visit www.discover.com to create a User ID and password. If you have any questions, 
-	    please contact Customer Service at 1&#8211;877&#8211;742&#8211;7822 .
+	    please contact Customer Service at 
+		<a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a> .
 	</string>
 	<string name="account_setup_pending">
 	    Your online access is still being set up. Please try back again later.
@@ -64,13 +65,13 @@
 	    Your Discover Card Account Number has been changed. In order to access your account through the 
 	    mobile channel, you must first log in to the Account Center on www.discover.com. For more information, 
 	    please contact Customer Service at 
-	    <a href='tel:18777427822' class='eCertBlueLink'>1&#8211;877&#8211;742&#8211;7822</a>
+	    <a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a>
 	</string>
 	<string name="internal_server_error_500">
 	    <h3>Discover.com Mobile Error</h3>We\'re sorry. Your request cannot be completed at this time. 
 	    We sincerely apologize for this inconvenience and are working to resolve this issue soon.
 	     For further assistance please call 
-	     <a href='tel:18777427822' class='eCertBlueLink'>1&#8211;877&#8211;742&#8211;7822</a>
+	     <a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a>
 	</string>
 	<string name="internal_server_error_503">
 	    We\'re sorry. Our services are unavailable at this time. <br/>We apologize for any inconvenience.
@@ -85,12 +86,20 @@
 	<string name="planned_outage_one">
 	    We\'re sorry. We will be performing a system maintenance between 1 a.m. and 6 a.m. Eastern Time.
 	     We apologize for any inconvenience. Please try again later, or for immediate assistance call 
-		 <a href='tel:18777427822' class='eCertBlueLink'>1&#8211;877&#8211;742&#8211;7822</a>.
+		 <a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a>.
 	</string>
 	<string name="cashback_bonus_unavailable">
 	    Cashback Bonus is currently unavailable. We apologize for the inconvenience. Please try again later.
 	</string>
 	<string name="no_data_found">
 	    No data found.
+	</string>
+	<string name="contact_customer_service">
+	    Contact Customer Service
+	</string>
+	<string name="not_primary_cardholder">
+	    At this time, only the primary cardholder can register for and access Account Center.  
+	    For more assistance, please contact Customer Service at 
+		<a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a>.
 	</string>
 </resources>

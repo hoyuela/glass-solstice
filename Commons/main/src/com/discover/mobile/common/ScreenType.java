@@ -23,7 +23,8 @@ public enum ScreenType {
 	HTTP_FORBIDDEN,
 	TEMPORARY_OUTAGE,
 	PLANNED_OUTAGE,
-	NO_DATA_FOUND;
+	NO_DATA_FOUND,
+	NOT_PRIMARY_CARDHOLDER;
 	
 	public static final String INTENT_KEY = "ScreenType"; //$NON-NLS-1$
 	
