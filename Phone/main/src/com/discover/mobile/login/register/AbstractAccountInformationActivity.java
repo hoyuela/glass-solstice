@@ -6,9 +6,11 @@ import static com.discover.mobile.common.StandardErrorCodes.INVALID_EXTERNAL_STA
 import static com.discover.mobile.common.StandardErrorCodes.INVALID_ONLINE_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.ONLINE_STATUS_PROHIBITED;
+import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.NOT_PRIMARY_CARDHOLDER;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
 
@@ -381,6 +383,10 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 						sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
 						return true;
 						
+					case PLANNED_OUTAGE:
+						sendToErrorPage(ScreenType.PLANNED_OUTAGE);
+						return true;
+						
 					case FAILED_SECURITY:	
 						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
 						return true;
@@ -476,6 +482,10 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 						
 					case FAILED_SECURITY:
 						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+						return true;
+					
+					case NOT_PRIMARY_CARDHOLDER:
+						sendToErrorPage(ScreenType.NOT_PRIMARY_CARDHOLDER);
 						return true;
 						
 					default:

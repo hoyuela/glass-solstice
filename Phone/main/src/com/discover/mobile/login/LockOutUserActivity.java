@@ -117,6 +117,11 @@ public class LockOutUserActivity extends RoboActivity {
 				setAlertBodyText(R.string.no_data_found);
 				break;
 				
+			case NOT_PRIMARY_CARDHOLDER:
+				errorTitleText.setText(R.string.contact_customer_service);
+				setAlertBodyText(R.string.not_primary_cardholder);
+				break;
+				
 			default:
 				throw new UnsupportedOperationException("Unable to handle ScreenType: " + screenType);
 		}
