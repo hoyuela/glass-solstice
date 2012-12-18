@@ -12,7 +12,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.discover.mobile.alert.ModalAlertWithTwoButtons;
 import com.discover.mobile.alert.ModalDefaultTopView;
 import com.discover.mobile.alert.ModalLogoutBottom;
-import com.discover.mobile.common.SharedPreferencesKey;
+import com.discover.mobile.common.SharedPreferencesWrapper;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
@@ -81,7 +81,7 @@ public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
      * Show the modal if the user wants it shown
      */
     public void maybeShowModalAlert(){
-		if(getValueFromSharedPrefs(SharedPreferencesKey.SHOW_LOGIN_MODAL, false)){
+		if(getValueFromSharedPrefs(SharedPreferencesWrapper.SHOW_LOGIN_MODAL, false)){
 			logout();
 		} else{
 			showAlert(setUpLogoutAlert());
@@ -103,7 +103,7 @@ public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
 		bottomView.getOkButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				saveToSharedPrefs(SharedPreferencesKey.SHOW_LOGIN_MODAL, bottomView.isShowAgainSelected());
+				saveToSharedPrefs(SharedPreferencesWrapper.SHOW_LOGIN_MODAL, bottomView.isShowAgainSelected());
 				logout();
 			}
 		});

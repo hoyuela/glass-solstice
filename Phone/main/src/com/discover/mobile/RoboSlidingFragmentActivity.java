@@ -20,16 +20,14 @@ import roboguice.inject.ContentViewListener;
 import roboguice.inject.RoboInjector;
 import roboguice.util.RoboContext;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 
-import com.discover.mobile.common.SharedPreferencesKey;
+import com.discover.mobile.common.SharedPreferencesWrapper;
 import com.google.inject.Inject;
 import com.google.inject.Key;
 import com.slidingmenu.lib.SlidingMenu;
@@ -185,10 +183,7 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
      * @param value - boolean value 
      */
     public void saveToSharedPrefs(final String key, final boolean value){
-    	final SharedPreferences settings = getSharedPreferences(SharedPreferencesKey.FILE_NAME, Context.MODE_PRIVATE);
-		final SharedPreferences.Editor editor = settings.edit();
-		editor.putBoolean(key, value);
-		editor.commit(); 
+    	SharedPreferencesWrapper.saveToSharedPrefs(this, key, value);
     }
     
     /**
@@ -197,8 +192,7 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
      * @param defaultValue - default boolean value 
      */
     public boolean getValueFromSharedPrefs(final String key, final boolean defaultValue){
-    	final SharedPreferences settings = getSharedPreferences(SharedPreferencesKey.FILE_NAME, Context.MODE_PRIVATE);
-    	return settings.getBoolean(key, defaultValue);
+    	return SharedPreferencesWrapper.getValueFromSharedPrefs(this, key, defaultValue);
     }
     
     /**
@@ -207,10 +201,7 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
      * @param value - boolean value 
      */
     public void saveToSharedPrefs(final String key, final String value){
-    	final SharedPreferences settings = getSharedPreferences(SharedPreferencesKey.FILE_NAME, Context.MODE_PRIVATE);
-		final SharedPreferences.Editor editor = settings.edit();
-		editor.putString(key, value);
-		editor.commit(); 
+    	SharedPreferencesWrapper.saveToSharedPrefs(this, key, value);
     }
     
     /**
@@ -219,8 +210,7 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
      * @param defaultValue - default string value 
      */
     public String getValueFromSharedPrefs(final String key, final String defaultValue){
-    	final SharedPreferences settings = getSharedPreferences(SharedPreferencesKey.FILE_NAME, Context.MODE_PRIVATE);
-    	return settings.getString(key, defaultValue);
+    	return SharedPreferencesWrapper.getValueFromSharedPrefs(this, key, defaultValue);
     }
     
     /**
