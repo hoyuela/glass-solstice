@@ -181,7 +181,6 @@ public class LoginActivity extends RoboActivity {
 		super.onResume();
 		maybeShowUserLoggedOut();
 		loadSavedCredentials();
-
 	}
 
 	/**
