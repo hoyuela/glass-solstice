@@ -52,6 +52,12 @@
         You are now logged out. Thank you for using Discover Mobile.
     </string>
 <!--  LOGIN ERRORS -->
+	<string name="id_invalid">
+	    Please check your ID and try again.
+	</string>
+	<string name="pass_invalid">
+	    Please check your password and try again.
+	</string>
 	<string name="account_number_reregistered">
 	    We\'re sorry, you may no longer use this Discover card account number to access Discover.com Mobile. 
 	    Instead, please visit www.discover.com to create a User ID and password. If you have any questions, 
