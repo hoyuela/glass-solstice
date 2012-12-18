@@ -352,7 +352,6 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				progress.dismiss();
 				Log.d(TAG, "Error message: " + messageErrorResponse.getMessage());
 				
-				// FIXME convert literals to RegistrationErrorCodes
 				// FIXME add "assertions" for what the HTTP status code should be
 				switch (messageErrorResponse.getMessageStatusCode()) {
 					case SAMS_CLUB_MEMBER: // Wrong type of account info provided.

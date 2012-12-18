@@ -60,6 +60,7 @@ public class PreAuthErrorResponseHandler extends AbstractPreAuthCallHandler impl
 				
 			case UNSCHEDULED_MAINTENANCE:
 				sendToErrorPage(ScreenType.UNSCHEDULED_MAINTENANCE);
+				return true;
 			
 			case SCHEDULED_MAINTENANCE:
 				sendToErrorPage(ScreenType.SCHEDULED_MAINTENANCE);
