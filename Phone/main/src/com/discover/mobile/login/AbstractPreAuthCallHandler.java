@@ -2,7 +2,6 @@ package com.discover.mobile.login;
 
 import java.util.Date;
 
-import roboguice.activity.RoboActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,6 +10,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 
+import com.discover.mobile.R;
+import com.discover.mobile.RoboSlidingFragmentActivity;
+import com.discover.mobile.alert.ModalAlertWithOneButton;
+import com.discover.mobile.alert.ModalDefaultOneButtonBottomView;
+import com.discover.mobile.alert.ModalDefaultTopView;
 import com.discover.mobile.common.ScreenType;
 
 
@@ -24,7 +28,7 @@ import com.discover.mobile.common.ScreenType;
  * @author scottseward
  *
  */
-public abstract class AbstractPreAuthCallHandler extends RoboActivity {
+public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActivity {
 	
 	protected Activity activity;
 	
@@ -66,20 +70,31 @@ public abstract class AbstractPreAuthCallHandler extends RoboActivity {
 	 * @param message The message to be presented in the alert dialog.
 	 */
 	protected final void showOptionalUpgradeAlertDialog(final String message) {
-		alertBuilder = new AlertDialog.Builder(activity);
+//		alertBuilder = new AlertDialog.Builder(activity);
+//		
+//		alertBuilder.setTitle(UPGRADE_TITLE)
+//	    		.setMessage(message)
+//	    		.setPositiveButton("Upgrade", new DialogInterface.OnClickListener() {
+//					
+//					@Override
+//					public void onClick(final DialogInterface dialog, final int which) {
+//						upgrade();
+//					}
+//				});
+//			alertBuilder.setNegativeButton("Cancel", null);
+//
+//	    alertBuilder.show();
+		ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(activity, null);
+		ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(activity, null);
 		
-		alertBuilder.setTitle(UPGRADE_TITLE)
-	    		.setMessage(message)
-	    		.setPositiveButton("Upgrade", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(final DialogInterface dialog, final int which) {
-						upgrade();
-					}
-				});
-			alertBuilder.setNegativeButton("Cancel", null);
-
-	    alertBuilder.show();
+		titleAndContentForDialog.setTitle(R.string.upgrade_dialog_title);
+		titleAndContentForDialog.setContent(R.string.optional_upgrade_dialog_body);
+		
+		singleButtonBottomView.setButtonText(R.string.upgrade_dialog_button_text);
+				
+		ModalAlertWithOneButton optionalUpgradeDialog = 
+				new ModalAlertWithOneButton(activity, titleAndContentForDialog, singleButtonBottomView);
+		showAlert(optionalUpgradeDialog);
 	}
 	
 	

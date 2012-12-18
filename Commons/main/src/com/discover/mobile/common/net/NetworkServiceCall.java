@@ -257,7 +257,7 @@ public abstract class NetworkServiceCall<R> {
 	
 	private void setDefaultHeaders() {
 		conn.setRequestProperty("X-Client-Platform", "Android");
-		conn.setRequestProperty("X-Application-Version", "4.00");
+		conn.setRequestProperty("X-Application-Version", "3.50");
 	}
 	
 	private void setSessionHeaders() throws IOException {

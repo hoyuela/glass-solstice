@@ -4,7 +4,6 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import android.os.Bundle;
-import android.text.Html;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
@@ -115,6 +114,6 @@ public class LockOutUserActivity extends RoboActivity {
 	}
 	
 	public void setAlertBodyText( final int bodyText ){
-		errorTextView.setText( Html.fromHtml(getString(bodyText)));
+		errorTextView.setText(getString(bodyText));
 	}
 }

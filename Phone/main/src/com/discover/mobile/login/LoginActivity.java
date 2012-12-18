@@ -159,7 +159,7 @@ public class LoginActivity extends RoboActivity {
 			startPreAuthCheck();
 		}
 	}
-	
+
 	/**
 	 * Check to see if the user just logged out, if the user just logged out show the message.
 	 */
