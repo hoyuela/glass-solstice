@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 
 /**
  * This is the fragment that allows the user to enroll in push alerts.  This is will be displayed when the user goes
@@ -54,15 +52,6 @@ public class PushEnrollFragment extends BasePushRegistrationUI{
 			}
 		});
 		return view;
-	}
-	
-	/**
-	 * When the fragment gets restarted track that the page was visited.
-	 */
-	@Override
-	public void onResume(){
-		super.onResume();
-		TrackingHelper.trackPageView(AnalyticsPage.PROFILE_ENROLL);
 	}
 
 	/**

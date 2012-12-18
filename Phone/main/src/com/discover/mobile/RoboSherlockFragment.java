@@ -48,6 +48,15 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
     }
     
     /**
+	 * Make the fragment visible
+	 * @param fragment - fragment to be made visible
+	 */
+    public void makeFragmentVisible(final RoboSherlockFragment fragment){
+    	final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
+    	activity.makeFragmentVisible(fragment);
+    }
+    
+    /**
 	 * Set the title in the action bar for display
 	 * @param title - title to show in the display
 	 */
