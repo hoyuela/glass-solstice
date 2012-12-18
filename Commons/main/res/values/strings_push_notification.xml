@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="save_changes">Save Changes</string>
-    <string name="terms_text_1">By clicking on Save. I </string>
-    <string name="terms_text_2">agree to the</string>
-    <string name="terms_text_3"> Terms of Use</string>
-    <string name="terms_of_use">Terms of Use.</string> 
+    <string name="terms_text_manage">By clicking on Save. I &lt;br&gt;agree to the &lt;a&gt;&lt;font color="#0267b1"&gt;Terms of Use&lt;/font&gt;&lt;/a&gt;</string> 
     <string name="messages_sent_to">Text messages are sent to:</string>
     <string name="notification_change">Change</string>
     <string name="mobile_device_not_verified">Your mobile device isn\'t verified yet.\nPlease text "Yes" to 347268 to complete text enrollement.</string>

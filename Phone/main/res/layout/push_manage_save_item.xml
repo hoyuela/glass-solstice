@@ -25,36 +25,18 @@
         android:id="@+id/terms_of_use_view_1"
         android:layout_width="wrap_content"
    		android:layout_height="wrap_content"
-   		android:text="@string/terms_text_1"
-   		android:textColor="@color/blue_link"
-   		android:gravity="center_vertical"
+   		android:textColor="@color/sub_copy"
+   		android:layout_centerVertical="true"
    		android:textSize="14dip"
    		android:layout_toRightOf="@+id/notification_save_button"
    		android:layout_alignTop="@+id/notification_save_button"
-   		android:paddingTop="2dp"/>
+   		android:paddingTop="6dp"/>
     
-    <TextView
-        android:id="@+id/terms_of_use_view_2"
-        android:layout_width="wrap_content"
+    <TextView 
+        android:id="@+id/clickable_view"
+        android:layout_width="100dp"
    		android:layout_height="wrap_content"
-   		android:text="@string/terms_text_2"
-   		android:textColor="@color/blue_link"
-   		android:gravity="center_vertical"
-   		android:textSize="14dip"
-   		android:layout_toRightOf="@+id/notification_save_button"
-   		android:layout_alignBottom="@+id/notification_save_button"
-   		android:layout_alignLeft="@+id/terms_of_use_view_1"/>
-    
-    <TextView
-        android:id="@+id/terms_of_use_view_3"
-        android:layout_width="wrap_content"
-   		android:layout_height="wrap_content"
-   		android:text="@string/terms_text_3"
-   		android:textColor="@color/blue_link"
-   		android:gravity="center_vertical"
-   		android:textSize="14dip"
-   		android:maxLines="1"
-   		android:layout_toRightOf="@+id/terms_of_use_view_2"
-   		android:layout_alignBottom="@+id/notification_save_button"/>
+   		android:layout_alignRight="@+id/terms_of_use_view_1"
+   		android:layout_alignBottom="@+id/terms_of_use_view_1"/>
 
 </RelativeLayout>

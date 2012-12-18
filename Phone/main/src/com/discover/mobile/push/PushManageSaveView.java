@@ -1,6 +1,7 @@
 package com.discover.mobile.push;
 
 import android.content.Context;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.Button;
@@ -31,16 +32,16 @@ public class PushManageSaveView extends RelativeLayout{
                 .inflate(R.layout.push_manage_save_item, null);
 
 		final Button save = (Button) mainView.findViewById(R.id.notification_save_button);
-		final TextView textView1 = (TextView) mainView.findViewById(R.id.terms_of_use_view_1);
-		final TextView textView2 = (TextView) mainView.findViewById(R.id.terms_of_use_view_2);
-		//FIXME: fix the ugly layout
-		final TextView textView3 = (TextView) mainView.findViewById(R.id.terms_of_use_view_3);
-
+		final TextView termsView = (TextView) mainView.findViewById(R.id.terms_of_use_view_1);
+		final TextView clickableView = (TextView) mainView.findViewById(R.id.clickable_view);
+		
+		termsView.setText(Html.fromHtml(context.getResources().getString(R.string.terms_text_manage)));
+		
+		
 		mainView.removeAllViews();
 		addView(save);
-		addView(textView1);
-		addView(textView2);
-		addView(textView3);
+		addView(termsView);
+		addView(clickableView);
 	}
 
 }

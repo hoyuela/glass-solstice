@@ -56,7 +56,7 @@ public class PushManageFragment extends RoboSherlockFragment{
 		monitorList = (LinearLayout)mainView.findViewById(R.id.monitor_spending_list_preferences);
 		maximizeHeader = (PushManageHeaderItem)mainView.findViewById(R.id.maximize_rewards_list_header);
 		maximizeList = (LinearLayout)mainView.findViewById(R.id.maximize_rewards_list_preferences);
-		final TextView termsLaunch = (TextView) mainView.findViewById(R.id.terms_of_use_view_3);
+		final TextView termsLaunch = (TextView) mainView.findViewById(R.id.clickable_view);
 		
 		final Button save = (Button) mainView.findViewById(R.id.notification_save_button);
 		save.setOnClickListener(new OnClickListener(){
