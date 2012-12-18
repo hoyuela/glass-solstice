@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.discover.mobile.R;
@@ -44,10 +45,12 @@ public class ModalDefaultOneButtonBottomView extends RelativeLayout implements M
 				.inflate(R.layout.modal_default_one_button_bottom, null);
 		
 		mainCallToActionButton = (Button) buttonView.findViewById(R.id.modal_alert_single_button);
+		ImageView testImageView = (ImageView)buttonView.findViewById(R.id.modal_alert_divider);
 		
 		buttonView.removeAllViews();
+		addView(buttonView);
 		addView(mainCallToActionButton);
-		
+		addView(testImageView);
 	}
 
 }

@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
     android:layout_marginBottom="@dimen/modal_bottom_margin" 
     android:layout_marginRight="@dimen/forms_inner_padding"
     android:layout_marginLeft="@dimen/forms_inner_padding"
     android:layout_marginTop="@dimen/modal_bottom_margin">
 
+    
+        <ImageView
+        android:id="@+id/modal_alert_divider"
+        android:layout_width="fill_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/modal_divider_line"
+        android:layout_above="@+id/modal_alert_single_button"/>
+        
     <Button
         android:id="@+id/modal_alert_single_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/call_to_action_theme"
-        android:text="@string/continue_text"
         android:layout_marginTop="@dimen/modal_orange_margin_top"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/modal_orange_margin_top"
+        />
     
 </RelativeLayout>
