@@ -9,25 +9,25 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 import com.xtify.sdk.api.XtifySDK;
 
-public class GetNotificationPreferences extends JsonResponseMappingNetworkServiceCall<PushNotificationPreferncesDetail>{
+public class GetNotificationPreferences extends JsonResponseMappingNetworkServiceCall<PushNotificationPrefsDetail>{
 
-	private final TypedReferenceHandler<PushNotificationPreferncesDetail> handler;
+	private final TypedReferenceHandler<PushNotificationPrefsDetail> handler;
 	
-	public GetNotificationPreferences(final Context context, final AsyncCallback<PushNotificationPreferncesDetail> callback){
+	public GetNotificationPreferences(final Context context, final AsyncCallback<PushNotificationPrefsDetail> callback){
 		super(context, new GetCallParams(getUrl(context)) {{
 		
 			sendDeviceIdentifiers = true;
-		}}, PushNotificationPreferncesDetail.class);
+		}}, PushNotificationPrefsDetail.class);
 		
-		handler = new PushPreferenceReferenceHandler<PushNotificationPreferncesDetail>(callback);
+		handler = new PushPreferenceReferenceHandler<PushNotificationPrefsDetail>(callback);
 	}
 
 	@Override
-	protected TypedReferenceHandler<PushNotificationPreferncesDetail> getHandler() {
+	protected TypedReferenceHandler<PushNotificationPrefsDetail> getHandler() {
 		return handler;
 	}
 	
 	private static String getUrl(final Context context){
-		return "cardsvcs/acs/contact/v1/preferences/enrollments?vid=" + XtifySDK.getXidKey(context) ; //$NON-NLS-1$
+		return "/cardsvcs/acs/contact/v1/preferences/enrollments?vid=" + XtifySDK.getXidKey(context) ; //$NON-NLS-1$
 	}
 }

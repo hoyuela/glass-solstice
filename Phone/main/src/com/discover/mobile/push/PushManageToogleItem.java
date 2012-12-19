@@ -20,6 +20,8 @@ import com.discover.mobile.R;
  */
 public class PushManageToogleItem extends RelativeLayout{
 
+	private String category;
+	
 	private ImageView textAlert;
 
 	private ImageView pushAlert;
@@ -116,4 +118,11 @@ public class PushManageToogleItem extends RelativeLayout{
 		}
 	}
 
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
 }
