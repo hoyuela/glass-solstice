@@ -72,20 +72,6 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	 * @param message The message to be presented in the alert dialog.
 	 */
 	protected final void showOptionalUpgradeAlertDialog(final String message) {
-//		alertBuilder = new AlertDialog.Builder(activity);
-//		
-//		alertBuilder.setTitle(UPGRADE_TITLE)
-//	    		.setMessage(message)
-//	    		.setPositiveButton("Upgrade", new DialogInterface.OnClickListener() {
-//					
-//					@Override
-//					public void onClick(final DialogInterface dialog, final int which) {
-//						upgrade();
-//					}
-//				});
-//			alertBuilder.setNegativeButton("Cancel", null);
-//
-//	    alertBuilder.show();
 		ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(activity, null);
 		ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(activity, null);
 		
