@@ -82,8 +82,8 @@ public class LoginErrorResponseHandler implements ErrorResponseHandler{
 		switch(errorResponse.getHttpStatusCode()) {
 			case HttpURLConnection.HTTP_UNAUTHORIZED:
 				showLabelWithTextResource(errorLabel, R.string.login_error);
-				idField.setError(context.getResources().getString(R.string.id_invalid));
-				passField.setError(context.getResources().getString(R.string.pass_invalid));
+				setInputFieldsDrawableToRed();
+				clearInputs();
 				return true;
 				
 			case HttpURLConnection.HTTP_INTERNAL_ERROR:
@@ -109,10 +109,19 @@ public class LoginErrorResponseHandler implements ErrorResponseHandler{
 	
 	/**
 	 * Clear the input fields.
+	 * Set the input fields to empty.
 	 */
 	private void clearInputs() {
 		idField.setText("");
 		passField.setText("");
+	}
+	
+	/**
+	 * Set the input fields to be highlighted in red.
+	 */
+	private void setInputFieldsDrawableToRed() {
+		idField.setBackgroundResource(R.drawable.edit_text_red);
+		passField.setBackgroundResource(R.drawable.edit_text_red);
 	}
 	
 	/**

@@ -1,61 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/light_gray_bkgrd"
-    android:padding="@dimen/forms_inner_padding" >
-    
-    <TextView 
-        android:id="@+id/enroll_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/enroll_in_reminders"
-        android:textColor="@color/title"
-        android:textSize="@dimen/title_max"
-        android:textStyle="bold"
-        android:layout_marginBottom="@dimen/between_related_elements_padding"/>    
-    
-    
-    <TextView 
-        android:id="@+id/enroll_title_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/enroll_in_reminders_text"
-        android:textColor="@color/sub_copy"
-        android:textSize="@dimen/body_copy_min"
-        android:layout_below="@+id/enroll_title"
-        android:layout_marginBottom="@dimen/forms_inner_padding"/>
-    
-    <TextView 
-        android:id="@+id/fees_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/fees_may_apply"
-        android:textColor="@color/sub_copy"
-        android:textSize="@dimen/body_copy_min"
-        android:layout_below="@+id/enroll_title_text"/>
-    
-    <Button 
-        android:id="@+id/enroll_accept"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/push_enroll"
-        style="@style/call_to_action_theme"
-        android:layout_below="@+id/fees_text"
-        android:layout_marginRight="@dimen/forms_inner_padding"
-    	android:layout_marginLeft="@dimen/forms_inner_padding"
-  		android:layout_marginTop="@dimen/orange_button_margin_top"
-        android:layout_centerHorizontal="true"/>
-    
-    <TextView 
-        android:id="@+id/enroll_decline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/push_cancel"
-        style="@style/blue_hyperlink"
-        android:layout_marginTop="@dimen/between_related_elements_padding"
-        android:layout_below="@+id/enroll_accept"
-        android:layout_centerHorizontal="true"/>
 
-</RelativeLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:background="@drawable/light_gray_bkgrd"
+	    android:padding="@dimen/forms_inner_padding" >
+	    
+	    <TextView 
+	        android:id="@+id/enroll_title"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/enroll_in_reminders"
+	        android:textColor="@color/title"
+	        android:textSize="@dimen/title_max"
+	        android:textStyle="bold"
+	        android:layout_marginBottom="@dimen/between_related_elements_padding"/>    
+	    
+	    
+	    <TextView 
+	        android:id="@+id/enroll_title_text"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/enroll_in_reminders_text"
+	        android:textColor="@color/sub_copy"
+	        android:textSize="@dimen/body_copy_min"
+	        android:layout_below="@+id/enroll_title"
+	        android:layout_marginBottom="@dimen/forms_inner_padding"/>
+	    
+	    <TextView 
+	        android:id="@+id/fees_text"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/fees_may_apply"
+	        android:textColor="@color/sub_copy"
+	        android:textSize="@dimen/body_copy_min"
+	        android:layout_below="@+id/enroll_title_text"/>
+	    
+	    <Button 
+	        android:id="@+id/enroll_accept"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/push_enroll"
+	        style="@style/call_to_action_theme"
+	        android:layout_below="@+id/fees_text"
+	        android:layout_marginRight="@dimen/forms_inner_padding"
+	    	android:layout_marginLeft="@dimen/forms_inner_padding"
+	  		android:layout_marginTop="@dimen/orange_button_margin_top"
+	        android:layout_centerHorizontal="true"/>
+	    
+	    <TextView 
+	        android:id="@+id/enroll_decline"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/push_cancel"
+	        style="@style/blue_hyperlink"
+	        android:layout_marginTop="@dimen/between_related_elements_padding"
+	        android:layout_below="@+id/enroll_accept"
+	        android:layout_centerHorizontal="true"/>
+	
+	</RelativeLayout>
+</ScrollView>
