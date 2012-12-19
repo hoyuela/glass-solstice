@@ -27,6 +27,7 @@ public class ModalDefaultTopView extends LinearLayout implements ModalTopView{
 	
 	/**View that holds the content text*/
 	private TextView text;
+	
 
 	/**
 	 * Constructor for the view

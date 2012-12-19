@@ -2,6 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     
     <item android:state_focused="true"
-        android:drawable="@drawable/orange_edit_text"/>
-	<item android:drawable="@drawable/plain_edit_text"/>
+        android:drawable="@drawable/text_field_yellow"/>
+	<item android:drawable="@drawable/text_field_gray"/>
 </selector>
