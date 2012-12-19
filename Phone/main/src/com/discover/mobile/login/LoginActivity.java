@@ -240,10 +240,12 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	/**
-	 * Set the input fields to red if an error is being displayed.
+	 * If the message in the error text field is not the logout success message and is visible,
+	 * set input fields to be highlighted in red.
 	 */
-	private void resetInputFieldColors() {		
-		if(errorIsVisible()) {
+	private void resetInputFieldColors() {
+		if(errorTextView.getVisibility() == View.VISIBLE &&
+			!getResources().getString(R.string.logout_sucess).equals(errorTextView.getText().toString())) {
 			setInputFieldsDrawableToRed();
 		}
 	}
