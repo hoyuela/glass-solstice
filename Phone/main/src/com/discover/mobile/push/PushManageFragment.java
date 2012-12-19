@@ -16,6 +16,10 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.RoboSherlockFragment;
+import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.push.manage.GetNotificationPreferences;
+import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
 
 /**
  * Fragment that is the push notification manage screen.  Uses the push save header, 
@@ -26,6 +30,8 @@ import com.discover.mobile.RoboSherlockFragment;
  */
 public class PushManageFragment extends RoboSherlockFragment{
 
+	private PushNotificationPrefsDetail prefs;
+	
 	private PushManageHeaderItem manageHeader;
 	
 	private LinearLayout manageList;
@@ -42,7 +48,7 @@ public class PushManageFragment extends RoboSherlockFragment{
 	
 	private Context context;
 	
-	private List<PushManageToogleItem> views;
+	private List<PushManageToogleItem> categoriesList;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -81,43 +87,54 @@ public class PushManageFragment extends RoboSherlockFragment{
 		
 		res = context.getResources();
 		createHeaders();
-		createLists();
 		setListsInHeader();
 		
 		return mainView;
 	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		categoriesList = new ArrayList<PushManageToogleItem>();
+		
+		final AsyncCallback<PushNotificationPrefsDetail> callback = 
+				GenericAsyncCallback.<PushNotificationPrefsDetail>builder(this.getActivity())
+				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
+									getResources().getString(R.string.push_progress_registration_loading), 
+									true)
+				.withSuccessListener(new GetPushPrefsSuccessListener(this))
+				.withErrorResponseHandler(new GetPushPrefsErrorResponseHandler())
+				.build();
+		
+		new GetNotificationPreferences(this.context, callback).submit();
+	}
+	
+	
 
 	private void setListsInHeader() {
 		manageHeader.setList(manageList);
 		monitorHeader.setList(monitorList);
 		maximizeHeader.setList(maximizeList);	
 	}
-
-	private void createLists() {
-		views = new ArrayList<PushManageToogleItem>();
-		createList(manageList, 
-					res.getStringArray(R.array.manage_your_accounts_headers),
-					res.getStringArray(R.array.manage_your_accounts_text));
-		createList(monitorList, 
-					res.getStringArray(R.array.monitor_your_spending_headers),
-				 	res.getStringArray(R.array.monitor_your_spending_text));
-		createList(maximizeList, 
-					res.getStringArray(R.array.maximize_your_rewards_headers),
-					res.getStringArray(R.array.maximize_your_rewards_text));
-	}
 	
-	private void createList(final LinearLayout list, final String[] headers, final String[] texts){
+	private void createList(final LinearLayout list, 
+			final String[] categories, 
+			final String[] headers, 
+			final String[] texts){
+		
 		final int lengthOfHeaders = headers.length;
 		
 		for(int i = 0; i < lengthOfHeaders; i++) {
 			final PushManageToogleItem view = new PushManageToogleItem(context, null);
+			view.setCategory(categories[i]);
 			view.setHeader(headers[i]);
 			view.setText(texts[i]);
 			view.setBackgroundDrawable(res.getDrawable(R.drawable.notification_list_item));
 			//FIXME: Pull these out into a dimensions file
 			view.setPadding(14, 28, 14 ,28);
+			//TODO: check to see if that is in the list of categories to show
 			list.addView(view);
-			views.add(view);
+			categoriesList.add(view);
 		}
 	}
 
@@ -128,9 +145,17 @@ public class PushManageFragment extends RoboSherlockFragment{
 	}
 	
 	public void savePreferences(){
-		
+		categoriesList.clear();
+		clearLists();
+		displayPrefs();
 	}
 	
+	private void clearLists() {
+		this.manageList.removeAllViews();
+		this.maximizeList.removeAllViews();
+		this.monitorList.removeAllViews();
+	}
+
 	public void showTermsAndConditions(){
 		makeFragmentVisible(new PushTermsAndConditionsFragment());
 	}
@@ -141,5 +166,24 @@ public class PushManageFragment extends RoboSherlockFragment{
 	@Override
 	public int getActionBarTitle() {
 		return R.string.manage_push_fragment_title;
+	}
+	
+	public void setPrefs(final PushNotificationPrefsDetail detail){
+		this.prefs = detail;
+	}
+	
+	public void displayPrefs(){
+		createList(manageList, 
+				res.getStringArray(R.array.manage_you_accounts_categories),
+				res.getStringArray(R.array.manage_your_accounts_headers),
+				res.getStringArray(R.array.manage_your_accounts_text));
+		createList(monitorList, 
+				res.getStringArray(R.array.monitor_your_spending_categories),
+				res.getStringArray(R.array.monitor_your_spending_headers),
+			 	res.getStringArray(R.array.monitor_your_spending_text));
+		createList(maximizeList, 
+				res.getStringArray(R.array.maximize_you_rewards_categories),
+				res.getStringArray(R.array.maximize_your_rewards_headers),
+				res.getStringArray(R.array.maximize_your_rewards_text));
 	}
 }

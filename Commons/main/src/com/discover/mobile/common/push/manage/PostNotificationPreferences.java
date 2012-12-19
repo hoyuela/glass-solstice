@@ -8,26 +8,26 @@ import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 
-public class PostNotificationPreferences extends JsonResponseMappingNetworkServiceCall<PushNotificationPreferncesDetail>{
+public class PostNotificationPreferences extends JsonResponseMappingNetworkServiceCall<PushNotificationPrefsDetail>{
 
 	@SuppressWarnings("unused")
 	private static final String TAG = PostNotificationPreferences.class.getSimpleName();
 	
-	private final TypedReferenceHandler<PushNotificationPreferncesDetail> handler;
+	private final TypedReferenceHandler<PushNotificationPrefsDetail> handler;
 	
-	public PostNotificationPreferences(final Context context, final AsyncCallback<PushNotificationPreferncesDetail> callback,
-			final PushNotificationPreferncesDetail formData){
+	public PostNotificationPreferences(final Context context, final AsyncCallback<PushNotificationPrefsDetail> callback,
+			final PushNotificationPrefsDetail formData){
 		super(context, new PostCallParams("cardsvcs/acs/contact/v1/preferences/enrollments") {{ //$NON-NLS-1$
 			requiresSessionForRequest = true;
 			sendDeviceIdentifiers = true;
 		}},
-		PushNotificationPreferncesDetail.class);
+		PushNotificationPrefsDetail.class);
 		
-		handler = new PushPreferenceReferenceHandler<PushNotificationPreferncesDetail>(callback);
+		handler = new PushPreferenceReferenceHandler<PushNotificationPrefsDetail>(callback);
 	}
 
 	@Override
-	protected TypedReferenceHandler<PushNotificationPreferncesDetail> getHandler() {
+	protected TypedReferenceHandler<PushNotificationPrefsDetail> getHandler() {
 		return handler;
 	}
 }
