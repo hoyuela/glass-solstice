@@ -46,9 +46,9 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	private void setUpCurrentFragment(final Bundle savedInstanceState) {
 		if(null == savedInstanceState){return;}
 		final Fragment fragment = this.getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT);
-		setActionBarTitle(savedInstanceState.getString(TITLE));
 		if(null != fragment){
 			resumeFragment = fragment;
+			setActionBarTitle(savedInstanceState.getString(TITLE));
 		}
 	}
 

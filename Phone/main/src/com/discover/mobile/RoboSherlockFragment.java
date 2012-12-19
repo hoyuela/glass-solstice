@@ -22,7 +22,6 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setActionBarTitle(getActionBarTitle());
         RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
     }
     
@@ -45,6 +44,7 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
     	super.onResume();
     	final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
     	activity.setCurrentFragment(this);
+        setActionBarTitle(getActionBarTitle());
     }
     
     /**
