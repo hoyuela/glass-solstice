@@ -11,7 +11,7 @@ public interface ModalBottomOneButtonView {
 
 	/**
 	 * Get the button
-	 * @return thehe button in the view
+	 * @return the button in the view
 	 */
 	public Button getButton();
 	

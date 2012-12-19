@@ -105,6 +105,20 @@
         <item name="android:height">@dimen/login_bottom_button_height</item>
     </style>  
     
+    <style name="terms_and_conditions_title" parent = "title_copy">
+        <item name="android:textSize">@dimen/title_max</item>
+        <item name="android:layout_marginTop">@dimen/groups_of_elements_padding</item>
+        <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
+        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
+    </style>
+    
+    <style name="terms_and_conditions_content" parent = "sub_copy">
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:layout_marginTop">@dimen/groups_of_elements_padding</item>
+        <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
+        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
+    </style>
+    
     <!--  FROM STYLE GUIDE 
     
     All typography for Android to be set in Roboto Bold and Roboto Regular. 

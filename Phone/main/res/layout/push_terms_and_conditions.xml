@@ -1,28 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="#ffffff">
+    android:paddingBottom="@dimen/forms_inner_padding"
+    android:background="@drawable/light_gray_bkgrd">
 
     
     <LinearLayout
-        android:id="@+id/button_panel"
+        android:id="@+id/text"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 	    
-	    <Button
-	        android:id="@+id/accept_terms"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Accept" />
-	
-	    <Button
-	        android:id="@+id/decline_terms"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Decline" />
-    
+	    <TextView     
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/notifcation_terms_and_condtions_header"
+        	style="@style/terms_and_conditions_title"/>
+	    
+	    <TextView      
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/notification_terms_agreement"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/use_of_texts_header"
+        	style="@style/terms_and_conditions_title"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/use_of_texts_text_1"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/use_of_push_header"
+        	style="@style/terms_and_conditions_title"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/use_of_push_text_1"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/use_of_push_text_2"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/use_of_push_text_3"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/use_of_push_text_4"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/usage_period_header"
+        	style="@style/terms_and_conditions_title"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/usage_period_text"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/ownership_header"
+        	style="@style/terms_and_conditions_title"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/ownership_text_1"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/ownership_text_2"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/privacy_header"
+        	style="@style/terms_and_conditions_title"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/privacy_text_1"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/privacy_text_2"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/disclaimer_header"
+        	style="@style/terms_and_conditions_title"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/disclaimer_text"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/indemnification_header"
+        	style="@style/terms_and_conditions_title"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/indemnification_text"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/service_modification_header"
+        	style="@style/terms_and_conditions_title"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/service_modification_text"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/change_terms_header"
+        	style="@style/terms_and_conditions_title"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/change_terms_text"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/misc_header"
+        	style="@style/terms_and_conditions_title"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/mis_text_1"
+        	style="@style/terms_and_conditions_content"/>
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+        	android:layout_height="wrap_content" 
+        	android:text="@string/mis_text_2"
+        	style="@style/terms_and_conditions_content"/>    
+
 	</LinearLayout>
-</LinearLayout>
+</ScrollView>

@@ -8,12 +8,14 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.RoboSherlockFragment;
-import com.discover.mobile.navigation.NavigationRootActivity;
 
 /**
  * Fragment that is the push notification manage screen.  Uses the push save header, 
@@ -42,9 +44,6 @@ public class PushManageFragment extends RoboSherlockFragment{
 	
 	private List<PushManageToogleItem> views;
 	
-	//FIXME: Externalize me
-	private static final String TITLE = "Manage Text & Push Alerts";
-	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -57,6 +56,26 @@ public class PushManageFragment extends RoboSherlockFragment{
 		monitorList = (LinearLayout)mainView.findViewById(R.id.monitor_spending_list_preferences);
 		maximizeHeader = (PushManageHeaderItem)mainView.findViewById(R.id.maximize_rewards_list_header);
 		maximizeList = (LinearLayout)mainView.findViewById(R.id.maximize_rewards_list_preferences);
+		final TextView termsLaunch = (TextView) mainView.findViewById(R.id.clickable_view);
+		
+		final Button save = (Button) mainView.findViewById(R.id.notification_save_button);
+		save.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(final View v) {
+				savePreferences();
+			}
+			
+		});
+		
+		termsLaunch.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(final View v) {
+				showTermsAndConditions();
+			}
+			
+		});
 		
 		context = this.getActivity();
 		
@@ -66,13 +85,6 @@ public class PushManageFragment extends RoboSherlockFragment{
 		setListsInHeader();
 		
 		return mainView;
-	}
-	
-	@Override
-	public void onResume(){
-		super.onResume();
-		final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
-		activity.setActionBarTitle(TITLE);
 	}
 
 	private void setListsInHeader() {
@@ -115,8 +127,12 @@ public class PushManageFragment extends RoboSherlockFragment{
 		maximizeHeader.setHeader(res.getString(R.string.maximize_your_rewards_title));	
 	}
 	
-	public void savePreferences(final View v){
+	public void savePreferences(){
 		
+	}
+	
+	public void showTermsAndConditions(){
+		makeFragmentVisible(new PushTermsAndConditionsFragment());
 	}
 	
 	/**
