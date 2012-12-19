@@ -47,7 +47,7 @@ public class PreAuthErrorResponseHandler extends AbstractPreAuthCallHandler impl
 	 * Navigate the user to either the maintenance page, or show them a force upgrade dialog.
 	 * 
 	 * @param messageErrorResponse
-	 * @return
+	 * @return returns true if the given error can be handled here, false otherwise.
 	 */
 	public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 		// FIXME named constants

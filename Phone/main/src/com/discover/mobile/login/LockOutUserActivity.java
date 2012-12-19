@@ -4,7 +4,6 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import android.os.Bundle;
-import android.text.Html;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
@@ -12,12 +11,28 @@ import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 
+/**
+ * LockOutUserActivity
+ * A modal style screen that notifies the user of some error that is preventing them from using the application further.
+ * 
+ * This class handles a ScreenType parameter from an intent extra and sets the text on this screen to display
+ * the proper error message.
+ * 
+ * @author scottseward
+ *
+ */
 @ContentView(R.layout.login_locked_out)
 public class LockOutUserActivity extends RoboActivity {
 	
+	/**
+	 * The body text on the screen. Used for a long error message.
+	 */
 	@InjectView(R.id.error_text_view)
 	private TextView errorTextView;
 	
+	/**
+	 * The title of the error dialog. Defaults to "Secure Credit Card Login"
+	 */
 	@InjectView(R.id.secure_card_login_label)
 	private TextView errorTitleText;
 
@@ -28,6 +43,9 @@ public class LockOutUserActivity extends RoboActivity {
 		setScreenType();
 	}
 	
+	/**
+	 * Determines and sets up the screen for the type of message that is to be presented.
+	 */
 	private void setScreenType() {
 		final ScreenType screenType = ScreenType.getExtraFromIntent(getIntent());
 		if(screenType == null)
@@ -114,7 +132,12 @@ public class LockOutUserActivity extends RoboActivity {
 		}
 	}
 	
+	/**
+	 * Sets the large error label to the given string resource.
+	 * 
+	 * @param bodyText the text resource to be used to set the error body text to.
+	 */
 	public void setAlertBodyText( final int bodyText ){
-		errorTextView.setText( Html.fromHtml(getString(bodyText)));
+		errorTextView.setText(getString(bodyText));
 	}
 }

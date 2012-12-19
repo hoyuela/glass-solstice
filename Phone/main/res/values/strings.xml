@@ -101,5 +101,17 @@
 	<string name="show">
 	    Show
 	</string>
+	<string name="upgrade_dialog_title">
+	    Upgrade Your Discover App
+	</string>
+	<string name="forced_upgrade_dialog_body">
+	    Don\'t get stuck in the past. Update your version of the app to access your account.
+	</string>
+	<string name="optional_upgrade_dialog_body">
+	    Please update your mobile app for great new features that make managing your accounts even easier.
+	</string>
+	<string name="upgrade_dialog_button_text">
+	    Get the Latest App
+	</string>
 	    
 </resources>

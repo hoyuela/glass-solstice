@@ -70,6 +70,8 @@ public class LoginActivity extends RoboActivity {
 	private final static String PRE_AUTH_KEY = "pauth";
 	private final static String PW_INPUT_TYPE_KEY = "secrets";
 	private final static String HIDE_LABEL_KEY = "hide";
+	private final static String ERROR_MESSAGE_KEY = "errorText";
+	private final static String ERROR_MESSAGE_VISIBILITY = "errorVisibility";
 
 	/**
 	 * Roboguise injections of android interface element references.
@@ -159,7 +161,7 @@ public class LoginActivity extends RoboActivity {
 			startPreAuthCheck();
 		}
 	}
-	
+
 	/**
 	 * Check to see if the user just logged out, if the user just logged out show the message.
 	 */
@@ -207,7 +209,8 @@ public class LoginActivity extends RoboActivity {
 		outState.putInt(PW_INPUT_TYPE_KEY, passField.getInputType());
 		outState.putString(HIDE_LABEL_KEY, hideButton.getText().toString());
 		outState.putInt(LOGIN_TYPE_KEY, cardCheckMark.getVisibility());
-
+		outState.putString(ERROR_MESSAGE_KEY, errorTextView.getText().toString());
+		outState.putInt(ERROR_MESSAGE_VISIBILITY, errorTextView.getVisibility());
 		super.onSaveInstanceState(outState);
 	}
 
@@ -229,6 +232,14 @@ public class LoginActivity extends RoboActivity {
 
 		setLoginType(savedInstanceState.getInt(LOGIN_TYPE_KEY));
 		setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY));
+		
+		errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
+		errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
+		
+		//If an error message is displayed, update the input fields to highlighted in red
+		if(!"".equals(errorTextView.getText().toString()) && errorTextView.getVisibility() == View.VISIBLE){
+			setInputFieldsDrawableToRed();
+		}
 	}
 	
 	/**
@@ -283,10 +294,27 @@ public class LoginActivity extends RoboActivity {
 	 * validation.
 	 */
 	private void logIn() {
+		setInputFieldsDrawablesToDefault();
 		if (!showErrorIfAnyFieldsAreEmpty() && !showErrorWhenAttemptingToSaveAccountNumber()) {
 			runAuthWithUsernameAndPassword(idField.getText().toString(),
 					passField.getText().toString());
 		}
+	}
+	
+	/**
+	 * Set the background color of the input fields back to their default values
+	 */
+	private void setInputFieldsDrawablesToDefault() {
+		idField.setBackgroundResource(R.drawable.edit_text_default);
+		passField.setBackgroundResource(R.drawable.edit_text_default);
+	}
+	
+	/**
+	 * Set the input fields to be highlighted in red.
+	 */
+	private void setInputFieldsDrawableToRed() {
+		idField.setBackgroundResource(R.drawable.edit_text_red);
+		passField.setBackgroundResource(R.drawable.edit_text_red);
 	}
 	
 	/**
@@ -305,6 +333,7 @@ public class LoginActivity extends RoboActivity {
 			errorTextView.setVisibility(View.VISIBLE);
 			clearInputs();
 			toggleCheckBox(idField);
+			setInputFieldsDrawableToRed();
 			return true;
 		}
 		else{
@@ -427,7 +456,6 @@ public class LoginActivity extends RoboActivity {
 		}
 
 	}
-	
 
 	/**
 	 * clearInputs() Removes any text in the login input fields.
@@ -435,8 +463,6 @@ public class LoginActivity extends RoboActivity {
 	private void clearInputs() {
 		idField.setText(emptyString);
 		passField.setText(emptyString);
-		idField.setError(null);
-		passField.setError(null);
 	}
 	/**
 	 * Sets the check mark on the login screen to the given boolean (checked/unchecked) state.
@@ -513,12 +539,9 @@ public class LoginActivity extends RoboActivity {
 		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 		
 		if(wasIdEmpty || wasPassEmpty) {	
-			if(wasIdEmpty) {
-				idField.setError("Your ID Cannot be Empty!");
-			}
-			if (wasPassEmpty) {
-				passField.setError("Your Password Cannot be Empty!");
-			}
+			errorTextView.setText(R.string.login_error);
+			errorTextView.setVisibility(View.VISIBLE);
+			setInputFieldsDrawableToRed();
 			return true;
 		}
 		// All fields were populated.
