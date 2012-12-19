@@ -4,11 +4,15 @@ import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.FAILED_SECURITY;
 import static com.discover.mobile.common.StandardErrorCodes.INVALID_EXTERNAL_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.INVALID_ONLINE_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
 import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.ONLINE_STATUS_PROHIBITED;
+import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
+import static com.discover.mobile.common.StandardErrorCodes.UNSCHEDULED_MAINTENANCE;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.NOT_PRIMARY_CARDHOLDER;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
 
@@ -348,7 +352,6 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				progress.dismiss();
 				Log.d(TAG, "Error message: " + messageErrorResponse.getMessage());
 				
-				// FIXME convert literals to RegistrationErrorCodes
 				// FIXME add "assertions" for what the HTTP status code should be
 				switch (messageErrorResponse.getMessageStatusCode()) {
 					case SAMS_CLUB_MEMBER: // Wrong type of account info provided.
@@ -379,6 +382,10 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 						
 					case STRONG_AUTH_NOT_ENROLLED:
 						sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
+						return true;
+						
+					case PLANNED_OUTAGE:
+						sendToErrorPage(ScreenType.SCHEDULED_MAINTENANCE);
 						return true;
 						
 					case FAILED_SECURITY:	
@@ -476,6 +483,22 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 						
 					case FAILED_SECURITY:
 						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+						return true;
+					
+					case NOT_PRIMARY_CARDHOLDER:
+						sendToErrorPage(ScreenType.NOT_PRIMARY_CARDHOLDER);
+						return true;
+					
+					case UNSCHEDULED_MAINTENANCE:
+						sendToErrorPage(ScreenType.UNSCHEDULED_MAINTENANCE);
+						return true;
+						
+					case MAX_LOGIN_ATTEMPTS:
+						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
+						return true;
+						
+					case LAST_ATTEMPT_WARNING:
+						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
 						return true;
 						
 					default:

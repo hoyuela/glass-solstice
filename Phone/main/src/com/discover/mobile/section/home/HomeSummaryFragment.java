@@ -3,6 +3,7 @@ package com.discover.mobile.section.home;
 import java.util.ArrayList;
 import java.util.List;
 
+import roboguice.RoboGuice;
 import roboguice.inject.InjectView;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,17 +25,22 @@ public class HomeSummaryFragment extends RoboSherlockFragment {
 	
 	@InjectView(R.id.account_summary_items)
 	private ListView accountSummaryList;
-	
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.section_account_summary_landing, null);
 		
-		buildAccountSummaryListItems();
-		
 		final GeneralListItemAdapter generalListItemAdapter = 
 				new GeneralListItemAdapter(getActivity(), accountSummaryListItems);
 		
+		/**
+		 * Clearing the adapter before populating with new data. Since onCreateView will get called 
+		 * every time you return to the home screen, this will allow the list to get updated with new data.
+		 */
+		generalListItemAdapter.clear();
+		
+		buildAccountSummaryListItems();
 		ListView listView = (ListView) view.findViewById(R.id.account_summary_items);
 		listView.setAdapter(generalListItemAdapter);
 				
@@ -44,7 +50,6 @@ public class HomeSummaryFragment extends RoboSherlockFragment {
 	private void buildAccountSummaryListItems() {
 		
 		final AccountDetails accountDetails = CurrentSessionDetails.getCurrentSessionDetails().getAccountDetails();
-		
 		if (accountDetails != null) {
 			
 			GeneralListItemModel generalListItem = createCurrentBalanceItem(accountDetails);
@@ -106,5 +111,13 @@ public class HomeSummaryFragment extends RoboSherlockFragment {
 				buttonTextRes = R.string.redeem_blue_button_text;
 			}};
 		}};
+	}
+
+	/**
+	 * Return the integer value of the string that needs to be displayed in the title
+	 */
+	@Override
+	public int getActionBarTitle() {
+		return R.string.account_summary_title;
 	}
 }

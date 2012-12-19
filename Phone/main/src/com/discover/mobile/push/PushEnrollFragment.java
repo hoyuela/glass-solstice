@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 
 /**
  * This is the fragment that allows the user to enroll in push alerts.  This is will be displayed when the user goes
@@ -44,7 +42,7 @@ public class PushEnrollFragment extends BasePushRegistrationUI{
 		
 		enroll.setOnClickListener(new OnClickListener(){
 			public void onClick(final View v){
-				registerWithDiscover(ACCEPT);
+				registerWithDiscover(ACCEPT, true);
 			}
 		});
 		
@@ -54,15 +52,6 @@ public class PushEnrollFragment extends BasePushRegistrationUI{
 			}
 		});
 		return view;
-	}
-	
-	/**
-	 * When the fragment gets restarted track that the page was visited.
-	 */
-	@Override
-	public void onResume(){
-		super.onResume();
-		TrackingHelper.trackPageView(AnalyticsPage.PROFILE_ENROLL);
 	}
 
 	/**
@@ -79,5 +68,13 @@ public class PushEnrollFragment extends BasePushRegistrationUI{
 	@Override
 	public void changeToDeclineScreen() {
 		this.getActivity().onBackPressed();
+	}
+
+	/**
+	 * Return the integer value of the string that needs to be displayed in the title
+	 */
+	@Override
+	public int getActionBarTitle() {
+		return R.string.enroll_fragment_title;
 	}
 }

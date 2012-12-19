@@ -7,7 +7,7 @@
     android:padding="7dp">
     
     <Button
-        android:id="@+id/notificaiton_save_button"
+        android:id="@+id/notification_save_button"
         android:layout_width="wrap_content"
    		android:layout_height="wrap_content"
 		android:text="@string/save_changes"
@@ -19,19 +19,24 @@
 		android:paddingLeft="@dimen/orange_button_left_right_padding"
 		android:paddingRight="@dimen/orange_button_left_right_padding"
 		android:layout_marginRight="10dip"
-   		android:background="@drawable/orange_button"
-   		android:onClick="savePreferences"/>
+   		android:background="@drawable/orange_button"/>
     
     <TextView
-        android:id="@+id/terms_of_use_view"
+        android:id="@+id/terms_of_use_view_1"
         android:layout_width="wrap_content"
    		android:layout_height="wrap_content"
-   		android:text="@string/terms_text"
-   		android:textColor="@color/blue_link"
-   		android:gravity="center_vertical"
-   		android:layout_alignParentTop="true"
+   		android:textColor="@color/sub_copy"
+   		android:layout_centerVertical="true"
    		android:textSize="14dip"
-   		android:layout_toRightOf="@+id/notificaiton_save_button"
-   		android:layout_alignBottom="@+id/notificaiton_save_button"/>
+   		android:layout_toRightOf="@+id/notification_save_button"
+   		android:layout_alignTop="@+id/notification_save_button"
+   		android:paddingTop="6dp"/>
+    
+    <TextView 
+        android:id="@+id/clickable_view"
+        android:layout_width="100dp"
+   		android:layout_height="wrap_content"
+   		android:layout_alignRight="@+id/terms_of_use_view_1"
+   		android:layout_alignBottom="@+id/terms_of_use_view_1"/>
 
 </RelativeLayout>

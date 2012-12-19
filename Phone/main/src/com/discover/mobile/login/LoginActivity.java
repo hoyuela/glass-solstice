@@ -20,11 +20,13 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
-import com.discover.mobile.common.UserIdPersistance;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.SharedPreferencesWrapper;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
+import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.callback.AsyncCallback;
@@ -139,20 +141,17 @@ public class LoginActivity extends RoboActivity {
 	private boolean preAuthHasRun = false;
 	boolean saveUserId = false;
 	
-	UserIdPersistance persistentId;
-
 	@Inject
 	private PushNotificationService pushNotificationService;
 
 	@Override
-	protected void onCreate(final Bundle savedInstanceState) {
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		activity = this;
 		TrackingHelper.startActivity(this);
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 		res = getResources();
-		loadSavedCredentials();
 		restoreState(savedInstanceState);
 		setupButtons();
 
@@ -160,15 +159,38 @@ public class LoginActivity extends RoboActivity {
 			startPreAuthCheck();
 		}
 	}
+	
+	/**
+	 * Check to see if the user just logged out, if the user just logged out show the message.
+	 */
+	private void maybeShowUserLoggedOut(){
+		final Intent intent = this.getIntent();
+		final Bundle extras = intent.getExtras();
+		if(null == extras){return;}
+		if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
+			errorTextView.setText(getString(R.string.logout_sucess));
+			errorTextView.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	/**
+	 * Resume the activity
+	 */
+	@Override
+	public void onResume(){
+		super.onResume();
+		maybeShowUserLoggedOut();
+		loadSavedCredentials();
+	}
 
 	/**
 	 * Ran at the start of an activity when an activity is brought to the front.
 	 * This also will trigger the Xtify SDK to start.
+	 * Check to see if the user just logged out, if the user just logged out show the message.
 	 */
 	@Override
 	public void onStart() {
 		super.onStart();
-		loadSavedCredentials();
 		pushNotificationService.start(this);
 	}
 
@@ -210,14 +232,16 @@ public class LoginActivity extends RoboActivity {
 	}
 	
 	/**
-	 * Load user credentials from the private ID file.
+	 * Load user credentials from shared preferences.
 	 * Set user ID field to the saved value, if it was supposed to be saved.
 	 */
 	private void loadSavedCredentials() {
-		persistentId = new UserIdPersistance(this);
-		if(persistentId.getButtonState()){
-			idField.setText(persistentId.getUserId());
-			setCheckMark(persistentId.getButtonState());
+		boolean rememberIdCheckState = 
+				SharedPreferencesWrapper.getValueFromSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, false);
+		
+		if(rememberIdCheckState){
+			idField.setText(SharedPreferencesWrapper.getValueFromSharedPrefs(this, SharedPreferencesWrapper.USER_ID, ""));
+			setCheckMark(rememberIdCheckState);
 		}
 	}
 
@@ -259,9 +283,33 @@ public class LoginActivity extends RoboActivity {
 	 * validation.
 	 */
 	private void logIn() {
-		if (!showErrorIfAnyFieldsAreEmpty()) {
+		if (!showErrorIfAnyFieldsAreEmpty() && !showErrorWhenAttemptingToSaveAccountNumber()) {
 			runAuthWithUsernameAndPassword(idField.getText().toString(),
 					passField.getText().toString());
+		}
+	}
+	
+	/**
+	 * If a user tries to save their login ID but provides an account number, we need to show an error
+	 * clear the input fields and un-check the save-user-id box.
+	 * 
+	 * @return a boolean that represents if an error was displayed or not.
+	 */
+	private boolean showErrorWhenAttemptingToSaveAccountNumber() {
+		String inputId = idField.getText().toString();
+		InputValidator validator = new InputValidator();
+		validator.isCardAccountNumberValid(inputId);
+		
+		if(saveUserId && validator.wasAccountNumberValid) {
+			errorTextView.setText(getString(R.string.cannot_save_account_number));
+			errorTextView.setVisibility(View.VISIBLE);
+			clearInputs();
+			toggleCheckBox(idField);
+			return true;
+		}
+		else{
+			return false;
+	
 		}
 	}
 
@@ -300,15 +348,19 @@ public class LoginActivity extends RoboActivity {
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
 	
+	/**
+	 * Saves a successful user id to to file for use later. Also saves the state of the check box.
+	 * If the checkbox was not checked when we log in, any previously saved ID will be deleted.
+	 */
 	public void saveCredentials() {
+		
 		if(saveUserId){
-			persistentId.saveId(idField.getText().toString());
-			persistentId.saveButtonState(saveUserId);
+			SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.USER_ID, idField.getText().toString());
 		}
 		else{
-			persistentId.saveId("");
-			persistentId.saveButtonState(false);
+			SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.USER_ID, emptyString);
 		}
+		SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, saveUserId);
 	}
 
 	/**
@@ -328,7 +380,8 @@ public class LoginActivity extends RoboActivity {
 			toggleImage.setImageDrawable(res.getDrawable(R.drawable.white_check_mark));
 			saveUserId = true;
 		}
-		persistentId.saveButtonState(saveUserId);
+
+		SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, saveUserId);
 	}
 
 	/**
