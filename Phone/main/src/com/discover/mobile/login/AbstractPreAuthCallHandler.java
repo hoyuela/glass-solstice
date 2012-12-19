@@ -54,7 +54,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboActivity {
 	 */
 	protected final void sendToMaintenancePage() {
 		final Intent maintenancePageIntent = new Intent(activity, LockOutUserActivity.class);
-		ScreenType.MAINTENANCE.addExtraToIntent(maintenancePageIntent);
+		ScreenType.UNSCHEDULED_MAINTENANCE.addExtraToIntent(maintenancePageIntent);
 		activity.startActivity(maintenancePageIntent);
 	}
 	

@@ -7,7 +7,7 @@ public final class RegistrationErrorCodes {
 	public static final int REG_AUTHENTICATION_PROBLEM = 1906;
 	public static final int PASS_RESET_FAIL = 1908;
 	public static final int CANT_GET_ACCT_INFO = 1909;
-	public static final int CANT_REGISTER_NON_AUTH_BUYER = 1914;
+	public static final int NOT_PRIMARY_CARDHOLDER = 1914;
 	public static final int FINAL_LOGIN_ATTEMPT = 1917;
 	public static final int ID_AND_PASS_EQUAL = 1919;
 	public static final int ID_AND_SSN_EQUAL = 1920;
