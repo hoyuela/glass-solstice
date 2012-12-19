@@ -45,7 +45,6 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	protected static final int NO_DATE = 0;
 	protected static final int OPTIONAL_UPGRADE = 1;
 	protected static final int FORCED_UPGRADE = 2;
-	
 	protected static final int DOES_NOT_EXIST = 0;
 	
 	protected static final long DAY_IN_MILLISECONDS = 86400000;

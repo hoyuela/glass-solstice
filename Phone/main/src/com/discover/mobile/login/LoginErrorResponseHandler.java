@@ -109,6 +109,7 @@ public class LoginErrorResponseHandler implements ErrorResponseHandler{
 	
 	/**
 	 * Clear the input fields.
+	 * Set the input fields to empty.
 	 */
 	private void clearInputs() {
 		idField.setText("");
