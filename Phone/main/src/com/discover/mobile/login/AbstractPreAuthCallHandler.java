@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.discover.mobile.R;
 import com.discover.mobile.RoboSlidingFragmentActivity;
@@ -94,6 +96,12 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 				
 		ModalAlertWithOneButton optionalUpgradeDialog = 
 				new ModalAlertWithOneButton(activity, titleAndContentForDialog, singleButtonBottomView);
+		
+		singleButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) { upgrade(); }
+		});
+		
 		showAlert(optionalUpgradeDialog);
 	}
 	

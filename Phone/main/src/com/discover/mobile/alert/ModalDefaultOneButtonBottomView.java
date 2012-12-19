@@ -1,7 +1,6 @@
 package com.discover.mobile.alert;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.Button;
@@ -19,9 +18,6 @@ public class ModalDefaultOneButtonBottomView extends RelativeLayout implements M
 
 	/**The main call to action button in the bottom center of the dialog*/
 	private Button mainCallToActionButton;
-	
-	/**Resources for the view*/
-	private Resources res;
 
 	/**Return the button so that a click listener can be added to it*/
 	@Override
@@ -35,22 +31,22 @@ public class ModalDefaultOneButtonBottomView extends RelativeLayout implements M
 	 */
 	@Override
 	public void setButtonText(final int resource) {
-		mainCallToActionButton.setText(res.getString(resource));
+		mainCallToActionButton.setText(getResources().getString(resource));
 	}
 
 	public ModalDefaultOneButtonBottomView(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		res = context.getResources();
+
 		final RelativeLayout buttonView = (RelativeLayout) LayoutInflater.from(context)
 				.inflate(R.layout.modal_default_one_button_bottom, null);
 		
-		mainCallToActionButton = (Button) buttonView.findViewById(R.id.modal_alert_single_button);
+		mainCallToActionButton = (Button)buttonView.findViewById(R.id.button);
 		ImageView testImageView = (ImageView)buttonView.findViewById(R.id.modal_alert_divider);
 		
 		buttonView.removeAllViews();
 		addView(buttonView);
-		addView(mainCallToActionButton);
 		addView(testImageView);
+		addView(mainCallToActionButton);
 	}
 
 }
