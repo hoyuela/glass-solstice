@@ -6,6 +6,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
 
 /**
  * This is the base activity for any activity that wants to use the Action bar that is not logged in.
@@ -14,7 +15,7 @@ import com.actionbarsherlock.app.ActionBar;
  * @author jthornton
  *
  */
-public abstract class NotLoggedInRoboActivity extends RoboSlidingFragmentActivity{
+public abstract class NotLoggedInRoboActivity extends SherlockActivity {
 
 	/**
 	 * Create the activity and show the action bar
@@ -29,9 +30,11 @@ public abstract class NotLoggedInRoboActivity extends RoboSlidingFragmentActivit
      *	Show the action bar with the custom layout
      */
     public void showActionBar(){
-    	setBehindContentView(R.layout.navigation_menu_frame);
-		
+  
+    	//setBehindContentView(R.layout.navigation_menu_frame);
+   	
 		final ActionBar actionBar = getSupportActionBar();
+		
 		actionBar.setCustomView(getLayoutInflater().inflate(R.layout.action_bar_menu_layout, null));
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		
@@ -44,8 +47,10 @@ public abstract class NotLoggedInRoboActivity extends RoboSlidingFragmentActivit
 		back.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				goBack();
+				//goBack();
 			}
 		});
+	
+
     }
 }

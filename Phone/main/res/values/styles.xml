@@ -17,10 +17,10 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    
-    <style name="AppTheme.NoTitleBar" parent="Theme.Sherlock.NoActionBar">
+  
+	<style name="AppTheme.NoTitleBar" parent="Theme.Sherlock.NoActionBar">
     </style>
-    
+   
     <style name="OrangeTheme">
         <item name="android:background">@drawable/login_bkgd</item>
     </style>

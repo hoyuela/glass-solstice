@@ -12,23 +12,5 @@
 	    android:layout_alignTop="@+id/account_info_help_p2_title_label"
 	    android:layout_marginTop="8dp"
 	    android:background="@color/yellow" />
-        
-	<View
-	    android:id="@+id/account_info_help_moderate_bar_two_help"
-	    android:layout_width="32dp"
-	    android:layout_height="4dp"
-	    android:layout_alignTop="@+id/account_info_help_moderate_bar_one_help"
-	    android:layout_marginLeft="8dp"
-	    android:layout_toRightOf="@+id/account_info_help_moderate_bar_one_help"
-	    android:background="@color/yellow" />
-        
-    <View
-        android:id="@+id/account_info_help_moderate_bar_three_help"
-        android:layout_alignTop="@+id/account_info_help_moderate_bar_one_help"
-        android:layout_width="32dp"
-        android:layout_height="4dp"
-        android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@+id/account_info_help_moderate_bar_two_help"
-        android:background="@android:color/darker_gray" />
 
 </merge>

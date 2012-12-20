@@ -3,7 +3,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	style="@style/WhiteTheme">
-	
+<!--
 	<RelativeLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content">
@@ -29,8 +29,21 @@
             android:text="@string/account_info_help_bar_title_text"
             android:textColor="@color/black"
             android:textAppearance="?android:attr/textAppearanceSmall" />
+   
+        <include
+            android:layout_alignRight="@+id/account_info_help_strong_label"
+            layout="@layout/register_help_not_valid_bar" />
+
         
-        <include layout="@layout/register_help_not_valid_bar" />
+          <View
+	      android:id="@+id/account_info_weak_bar"
+	      android:layout_width="32dp"
+	      android:layout_height="4dp"
+	      android:layout_alignTop="@id/account_info_help_not_valid_label"
+	      android:layout_marginLeft="32dp"
+	      android:layout_marginTop="8dp"
+	      android:layout_toRightOf="@+id/account_info_help_not_valid_label"
+	      android:background="@color/red" />
         
         <TextView
             android:id="@+id/account_info_two_uid_strength_bar_label"
@@ -43,21 +56,13 @@
 			android:layout_alignLeft="@id/account_info_two_uid_bar_one_help"
 			android:textAppearance="?android:attr/textAppearanceSmall" />
         
-        <View
-            android:id="@+id/account_info_help_separator_line_one"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:layout_below="@id/account_info_help_not_valid_detail_label"
-            android:background="@android:color/darker_gray" />
-        
         <TextView
             android:id="@+id/account_info_help_not_valid_detail_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/account_info_help_not_valid_label"
             android:layout_marginTop="16dp"
-            android:text="@string/account_info_help_id_p1_text"
+            android:text="@string/account_info_help_msg1"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/black"
             android:textSize="@dimen/light_text_size" />
@@ -79,12 +84,12 @@
             android:id="@+id/account_info_help_p2_title_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/account_info_help_not_valid_detail_label"
             android:layout_marginTop="8dp"
-            android:layout_below="@id/account_info_help_separator_line_one"
             android:paddingTop="8dp"
             android:text="@string/account_info_help_bar_title_text"
-            android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/black" />
         
         <TextView
             android:id="@+id/account_info_help_p2_label"
@@ -92,29 +97,21 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/account_info_help_p2_title_label"
             android:layout_marginTop="16dp"
-            android:text="@string/account_info_help_id_p2_text"
+            android:text="@string/account_info_help_msg1"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/black"
             android:textSize="@dimen/light_text_size" />
-        
-        <View
-            android:id="@+id/account_info_help_separator_line_two"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:layout_below="@id/account_info_help_p2_label"
-            android:background="@android:color/darker_gray" />
         
         <TextView
             android:id="@+id/account_info_help_p3_title_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/account_info_help_p2_label"
             android:layout_marginTop="8dp"
-            android:layout_below="@id/account_info_help_separator_line_two"
             android:paddingTop="8dp"
             android:text="@string/account_info_help_bar_title_text"
-            android:textColor="@color/black"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/black" />
         
         <include layout="@layout/register_help_strong_bar" />
         
@@ -129,33 +126,11 @@
 			android:textColor="@color/black"
 			android:textAppearance="?android:attr/textAppearanceSmall"/>
         
-        <TextView
-            android:id="@+id/account_info_help_p3_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/account_info_help_p3_title_label"
-            android:layout_marginTop="16dp"
-            android:text="@string/account_info_help_id_p3_text"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/black"
-            android:textSize="@dimen/light_text_size" />
-        
-        <TextView
-            android:id="@+id/account_info_help_go_back_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_below="@id/account_info_help_p3_label"
-            android:clickable="true"
-            android:onClick="goBack"
-            android:padding="8dp"
-            android:text="@string/go_back"
-            android:textColor="@color/blue"/>
         
 		<RelativeLayout
-    	    android:layout_width="match_parent"
-    	    android:layout_height="100dp"
-    	    android:layout_below="@id/account_info_help_go_back_label" >
+		    android:layout_width="match_parent"
+		    android:layout_height="100dp"
+		    android:layout_below="@id/account_info_help_p3_label" >
     	    
     	    <include layout="@layout/old_general_need_help_footer" />
 
@@ -164,5 +139,5 @@
     	</RelativeLayout>
             
 	</RelativeLayout>
-
+-->
 </ScrollView>
