@@ -2,9 +2,6 @@ package com.discover.mobile.navigation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.widget.TextView;
 
 import com.discover.mobile.LoggedInRoboActivity;
@@ -21,7 +18,6 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	
 	/**Fragment that needs to be resumed**/
 	private Fragment resumeFragment;
-	private StatusBarFragment statusBarFragment;
 	
 	/**String that is the key to getting the current fragment out of the saved bundle.*/
 	private static final String CURRENT_FRAGMENT = "currentFragment";
