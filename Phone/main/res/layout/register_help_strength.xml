@@ -8,8 +8,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_marginBottom="@dimen/modal_bottom_margin" 
-    	android:layout_marginRight="@dimen/forms_inner_padding"
-    	android:layout_marginLeft="@dimen/forms_inner_padding"
+    	android:paddingLeft="@dimen/forms_inner_padding"
+    	android:paddingRight="@dimen/forms_inner_padding"
     	android:layout_marginTop="@dimen/modal_bottom_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -28,7 +28,7 @@
 
         <include
             android:id="@+id/reg_help_footer"
-            android:layout_marginTop="20dp"
+            android:layout_height="fill_parent"
             layout="@layout/new_general_need_help_footer" />
 
 

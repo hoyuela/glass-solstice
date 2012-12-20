@@ -288,13 +288,8 @@ public class LoginActivity extends RoboActivity {
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				final Intent passwordHelpScreen = new Intent(LoginActivity.this, StrengthBarHelpActivity.class);
-				passwordHelpScreen.putExtra("helpType", "password");
-				LoginActivity.this.startActivityForResult(passwordHelpScreen, 0);
-				/*TODO PUT THIS BACK Henry
 				setViewGone(errorTextView);
 				logIn();
-				*/
 			}
 		});
 
