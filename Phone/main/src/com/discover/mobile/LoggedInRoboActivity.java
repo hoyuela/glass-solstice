@@ -2,6 +2,7 @@ package com.discover.mobile;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -154,5 +155,13 @@ public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
 	public void setActionBarTitle(final String title){
 		final TextView titleView= (TextView)findViewById(R.id.title_view);
 		titleView.setText(title);
+	}
+	
+	public void hideStatusBar(){
+		FragmentTransaction ft = this.getSupportFragmentManager()
+				.beginTransaction();
+		ft.hide(this.getSupportFragmentManager().findFragmentById(
+				R.id.status_bar));
+		ft.commit();
 	}
 }

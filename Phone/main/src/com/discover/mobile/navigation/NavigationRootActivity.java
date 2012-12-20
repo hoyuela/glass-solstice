@@ -2,8 +2,9 @@ package com.discover.mobile.navigation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.WindowManager.LayoutParams;
-import android.widget.FrameLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.view.View;
 import android.widget.TextView;
 
 import com.discover.mobile.LoggedInRoboActivity;
@@ -20,6 +21,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	
 	/**Fragment that needs to be resumed**/
 	private Fragment resumeFragment;
+	private StatusBarFragment statusBarFragment;
 	
 	/**String that is the key to getting the current fragment out of the saved bundle.*/
 	private static final String CURRENT_FRAGMENT = "currentFragment";
@@ -34,7 +36,6 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setupFirstVisibleFragment();
 		setUpCurrentFragment(savedInstanceState);
 	}
@@ -81,9 +82,12 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	 * Set up the first visible fragment
 	 */
 	private void setupFirstVisibleFragment() {
-		final FrameLayout contentView = new FrameLayout(this);
-		contentView.setId(R.id.navigation_content);
-		setContentView(contentView, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		/**
+		 * Loading the content_view layout as the first fragment. This layout contains a frame view
+		 * that will handle swapping the fragments in and out as well as a static fragment for the 
+		 * status bar.
+		 */
+		setContentView(R.layout.content_view);
 	}
 	
 	/**
@@ -94,4 +98,14 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 		final TextView titleView= (TextView)findViewById(R.id.title_view);
 		return titleView.getText().toString();
 	}
+	
+	/**
+	 * Sets the account name that is displayed in the status bar.
+	 * @param name
+	 */
+	public void setAccountName(String name){
+		statusBarFragment.setAccountName(name);
+	}
+	
+	
 }
