@@ -68,9 +68,9 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
     /**
      * Set the visibility of the status bar
      */
-    public void hideStatusBar(){
+    public void setStatusBarVisibility(){
     	final LoggedInRoboActivity activity = (LoggedInRoboActivity)this.getActivity();
-    	activity.hideStatusBar();
+    	activity.setStatusBarVisbility();
     }
     
     /**

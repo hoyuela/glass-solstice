@@ -38,6 +38,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 		super.onCreate(savedInstanceState);
 		setupFirstVisibleFragment();
 		setUpCurrentFragment(savedInstanceState);
+		setStatusBarVisbility();
 	}
 	
 	/**
@@ -97,14 +98,6 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	public String getActionBarTitle(){
 		final TextView titleView= (TextView)findViewById(R.id.title_view);
 		return titleView.getText().toString();
-	}
-	
-	/**
-	 * Sets the account name that is displayed in the status bar.
-	 * @param name
-	 */
-	public void setAccountName(String name){
-		statusBarFragment.setAccountName(name);
 	}
 	
 	
