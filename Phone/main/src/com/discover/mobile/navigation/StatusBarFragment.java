@@ -28,7 +28,7 @@ public class StatusBarFragment extends Fragment {
 		
 		final View view = inflater.inflate(R.layout.status_bar_layout, container);
 		accountName = (TextView) view.findViewById(R.id.account_name);
-		setAccountName(null);
+		setAccountName();
 		return view;
 	}
 	
@@ -36,8 +36,8 @@ public class StatusBarFragment extends Fragment {
 	 * Used for setting the account name title in the status bar. 
 	 * @param account
 	 */
-	private void setAccountName(String account){
-		//TODO THis is temporary and used just to populate something in the account Name
+	private void setAccountName(){
+		//TODO This is temporary and used just to populate something in the account Name
 		final AccountDetails accountDetails = CurrentSessionDetails.getCurrentSessionDetails().getAccountDetails();
 		
 		accountName.setText(accountDetails.primaryCardMember.nameOnCard);

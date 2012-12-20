@@ -31,19 +31,10 @@
         android:layout_alignBaseline="@+id/account_name"
         android:layout_alignBottom="@+id/account_name"
         android:layout_alignLeft="@+id/divider_line"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="10dp"
         android:gravity="center_vertical"
         android:textStyle="bold"
         android:text="Help" />
-
-    <ImageView
-        android:id="@+id/question_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_alignTop="@+id/help_text"
-        android:layout_toRightOf="@+id/help_text"
-        android:src="@drawable/question_mark_icon" />
 
     <TextView
         android:id="@+id/account_name"
@@ -62,5 +53,23 @@
 	    android:layout_height="1dp"
 	    android:src="@drawable/gray_line"
 	    android:layout_alignParentBottom="true"/>
+
+    <ImageView
+        android:id="@+id/question_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/help_text"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/question_mark_icon" />
+
+    <ImageView
+        android:id="@+id/cardBankIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="14dp"
+        android:layout_toLeftOf="@+id/divider_line"
+        android:src="@drawable/card_icon" />
 
 </RelativeLayout>

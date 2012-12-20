@@ -2,6 +2,7 @@ package com.discover.mobile;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -62,6 +63,13 @@ public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
 		logout.setVisibility(View.VISIBLE);
 		navigationToggle.setVisibility(View.VISIBLE);
 		titleView.setVisibility(View.VISIBLE);
+		
+		titleView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				updateStatusBarVisibility();
+			}
+		});
 		
 		navigationToggle.setOnClickListener(new OnClickListener(){
 			@Override
@@ -156,19 +164,43 @@ public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
 		titleView.setText(title);
 	}
 	
+	/**
+	 * Checks the shared pref to get the visibility for the status bar and 
+	 * sets the visibility
+	 */
 	public void setStatusBarVisbility(){
 		FragmentTransaction ft = this.getSupportFragmentManager()
 				.beginTransaction();
 		boolean statusBarVisitility = getValueFromSharedPrefs(SharedPreferencesWrapper.STATUS_BAR_VISIBILITY, true);
+		Fragment statusBar = this.getSupportFragmentManager().findFragmentById(
+				R.id.status_bar);
 		
+		/**
+		 * If its set to false hide the fragment, else show it.
+		 */
 		if (!statusBarVisitility){
-			
-			ft.hide(this.getSupportFragmentManager().findFragmentById(
-					R.id.status_bar));
-			
+			ft.hide(statusBar);
 		}else {
-			ft.show(this.getSupportFragmentManager().findFragmentById(R.id.status_bar));
+			ft.show(statusBar);
 		}
 		ft.commit();
+	}
+	
+	/**
+	 * Updates the shared preference for the status bar visibility and then calls 
+	 * setStatusBarVisibility to update the visibility
+	 * @param visible - boolean for setting the shared pref
+	 */
+	public void updateStatusBarVisibility(){
+		Fragment statusBar = this.getSupportFragmentManager().findFragmentById(
+				R.id.status_bar);
+		boolean visible = true;
+		if (statusBar.isVisible()){
+			visible = false;
+		}else if (statusBar.isHidden()){
+			visible=true;
+		}
+		saveToSharedPrefs(SharedPreferencesWrapper.STATUS_BAR_VISIBILITY, visible);
+		setStatusBarVisbility();
 	}
 }
