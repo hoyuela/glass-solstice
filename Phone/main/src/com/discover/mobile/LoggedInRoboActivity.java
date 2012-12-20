@@ -156,11 +156,19 @@ public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
 		titleView.setText(title);
 	}
 	
-	public void hideStatusBar(){
+	public void setStatusBarVisbility(){
 		FragmentTransaction ft = this.getSupportFragmentManager()
 				.beginTransaction();
-		ft.hide(this.getSupportFragmentManager().findFragmentById(
-				R.id.status_bar));
+		boolean statusBarVisitility = getValueFromSharedPrefs(SharedPreferencesWrapper.STATUS_BAR_VISIBILITY, true);
+		
+		if (!statusBarVisitility){
+			
+			ft.hide(this.getSupportFragmentManager().findFragmentById(
+					R.id.status_bar));
+			
+		}else {
+			ft.show(this.getSupportFragmentManager().findFragmentById(R.id.status_bar));
+		}
 		ft.commit();
 	}
 }

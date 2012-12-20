@@ -36,11 +36,13 @@ public class StatusBarFragment extends Fragment {
 	 * Used for setting the account name title in the status bar. 
 	 * @param account
 	 */
-	public void setAccountName(String account){
+	private void setAccountName(String account){
 		//TODO THis is temporary and used just to populate something in the account Name
 		final AccountDetails accountDetails = CurrentSessionDetails.getCurrentSessionDetails().getAccountDetails();
 		
 		accountName.setText(accountDetails.primaryCardMember.nameOnCard);
 	}
+	
+	
 
 }
