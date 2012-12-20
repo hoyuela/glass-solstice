@@ -8,23 +8,32 @@ import android.widget.TextView;
 
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
+import com.discover.mobile.common.ScreenType;
 
+/**
+ * Activity definition used to display a help guide for either User ID
+ * or Password Strength to the user. A single layout is defined in 
+ * res\layout\register_help_strength. The attributes for the views are
+ * dynamically set at runtime. The attribute values are determined based
+ * on whether the user opened the User ID Strength Guide or the Password
+ * Strength Guide. The type of guide open will be based on the "ScreenType"
+ * extra put in the INTENT that opens this activity
+ * 
+ * @author henryoyuela
+ *
+ */
 public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 	private static final String TAG = StrengthBarHelpActivity.class.getSimpleName();
-
-	
-	// FIXME hardcoded strings, use ScreenType
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 			
-		
-		setContentView(R.layout.register_help_id_strength_new);
+		setContentView(R.layout.register_help_strength);
 	
 		final Bundle extras = getIntent().getExtras();
 		if(extras != null) {
-			final String helpLayout = extras.getString("ScreenType");
+			final String helpLayout = extras.getString(ScreenType.INTENT_KEY);
 			
 			if("id".equals(helpLayout)) {					
 				setHelpIdStrengthViewAttr();
@@ -33,14 +42,13 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 			}
 		} else {
 			Log.v(TAG, "No Extras Found");
-		}
-		
-
-		setHelpIdStrengthViewAttr();
-
-		
+		}	
 	}
 	
+	/**
+	 * Method called when StrengthBarHelpActivity is opened with ScreenType
+	 * equal to "id" in order to set view attribute values.
+	 */
 	private void setHelpIdStrengthViewAttr() {
 	
 		
@@ -64,6 +72,10 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 		}
 	}
 	
+	/**
+	 * Method called when StrengthBarHelpActivity is opened with ScreenType
+	 * NOT equal to "id" in order to set view attribute values.
+	 */
 	private void setHelpPswdStrengthViewAttr() {
 		//Set Weak View Attributes
 		View view = (View)this.findViewById(R.id.reg_help_weak_pswd);
@@ -95,6 +107,9 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 		}
 	}
 	
+	/**
+	 * Generic Method called when StrengthBarHelpActivity is opened to set view attribute values.
+	 */
 	private void setViewItemAttr(View view, int level, int action, int msg, int image, boolean check ) {	
 		if( null != view ) {
 			TextView levelTxtVw = (TextView)view.findViewById(R.id.reg_help_strength_level);
@@ -126,7 +141,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 				}
 			}
 		} else {
-		
+			Log.v(TAG, "Unable to set view attributes");
 		}
 	}
 	
@@ -135,11 +150,20 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 		goBack(null);
 	}
 	
+	/**
+	 * Method called when user hits the back hardware button on the device
+	 */
 	public void goBack(final View v){
 		setResult(RESULT_OK);
 		finish();
 	}
-	
 
+	/**
+	 * Method called when user hits the back soft-key in the action bar
+	 */
+	public void goBack() {
+		setResult(RESULT_OK);
+		finish();
+	}
 	
 }

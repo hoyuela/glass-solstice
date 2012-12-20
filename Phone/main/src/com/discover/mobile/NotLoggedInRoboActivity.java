@@ -47,10 +47,12 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity {
 		back.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				//goBack();
+				goBack();
 			}
 		});
-	
-
     }
+    
+    public abstract void goBack();
+    
+    
 }
