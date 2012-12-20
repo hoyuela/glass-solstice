@@ -10,7 +10,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListen
 /**
  * Handles the success response from a PreAuth call.
  * Will present optional upgrade message to the user if the server sees that the application
- * is slightly old.
+ * is not up to date.
  * 
  * @author scottseward
  *
@@ -37,7 +37,6 @@ public class PreAuthSuccessResponseHandler extends AbstractPreAuthCallHandler im
 	public void success(final PreAuthResult value) {
 		Log.d(TAG, "Pre-auth status code: " + value.statusCode);
 		
-		//check if optional upgrade available
 		if(shouldPresentOptionalUpdate(value.upgradeDescription)) {
 			TrackingHelper.trackPageView(AnalyticsPage.OPTIONAL_UPGRADE);
 			showOptionalUpgradeAlertDialog(value.upgradeDescription);

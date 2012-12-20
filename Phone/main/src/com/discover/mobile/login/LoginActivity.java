@@ -236,10 +236,32 @@ public class LoginActivity extends RoboActivity {
 		errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
 		errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
 		
-		//If an error message is displayed, update the input fields to highlighted in red
-		if(!"".equals(errorTextView.getText().toString()) && errorTextView.getVisibility() == View.VISIBLE){
+		resetInputFieldColors();
+	}
+	
+	/**
+	 * Set the input fields to red if an error is being displayed.
+	 */
+	private void resetInputFieldColors() {		
+		if(errorIsVisible()) {
 			setInputFieldsDrawableToRed();
 		}
+	}
+	
+	/**
+	 * Checks to see if an error message is displayed.
+	 * 
+	 * @return returns true if an error is being displayed in the errorTextView
+	 */
+	private boolean errorIsVisible() {
+		boolean errorTextViewIsVisible = errorTextView.getVisibility() == View.VISIBLE;
+		boolean errorTextIsNotLogoutMessage = 
+				!getResources().getString(R.string.logout_sucess).equals(errorTextView.getText().toString());
+				
+		if( errorTextViewIsVisible & errorTextIsNotLogoutMessage )
+			return true;
+		else
+			return false;
 	}
 	
 	/**
