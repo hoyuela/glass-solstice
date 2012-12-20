@@ -35,6 +35,9 @@ public class PreAuthErrorResponseHandler extends AbstractPreAuthCallHandler impl
 		return CallbackPriority.MIDDLE;
 	}
 	
+	/**
+	 * If the server responds with a JSON error message, attempt to handle it with handleMessageErrorResponse
+	 */
 	@Override
 	public boolean handleFailure(final ErrorResponse<?> errorResponse) {
 		if(errorResponse instanceof JsonMessageErrorResponse)
@@ -72,6 +75,12 @@ public class PreAuthErrorResponseHandler extends AbstractPreAuthCallHandler impl
 		
 		return false;
 	}
+	
+	/**
+	 * If an error was encountered, such as the services are down, this method will direct the user to a 
+	 * specified error page.
+	 * @param screenType - the type of error screen to navigate to.
+	 */
 	private void sendToErrorPage(final ScreenType screenType) {
 		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
 		screenType.addExtraToIntent(maintenancePageIntent);
