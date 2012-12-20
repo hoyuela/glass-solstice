@@ -90,38 +90,38 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 		showAlert(optionalUpgradeDialog);
 	}
 	
-	
 	/**
 	 * showForcedUpgradeAlertDialog()
 	 * This method, when called, shows an alert dialog with the forced upgrade text.
 	 * This dialog needs to prevent the user from using the application.
-	 * If the user chooses upgrade or presses the back button the application is force quit and then
-	 * if update was chosen, they are directed to the Google Play store page for the Discover app.
+	 * If the user chooses upgrade, they are directed to the Google Play store page for the Discover application.
+	 * If the user cancels the dialog by pressing the back button or otherwise, the application is force quit.
 	 */
 	protected final void showForcedUpgradeAlertDialog() {
-		alertBuilder = new AlertDialog.Builder(activity);
-
-		alertBuilder.setTitle(UPGRADE_TITLE)
-		.setMessage(FORCED_UPGRADE_MESSAGE)
-		.setPositiveButton("Upgrade", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(final DialogInterface dialog, final int which) {
-				upgrade();
-				android.os.Process.killProcess(android.os.Process.myPid());
-			}
-		});
-		alertBuilder.setOnCancelListener(new DialogInterface.OnCancelListener(){
-			
+		ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(activity, null);
+		ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(activity, null);
+		
+		titleAndContentForDialog.setTitle(R.string.upgrade_dialog_title);
+		titleAndContentForDialog.setContent(R.string.forced_upgrade_dialog_body);
+		titleAndContentForDialog.showErrorIcon(true);
+		
+		singleButtonBottomView.setButtonText(R.string.upgrade_dialog_button_text);
 				
-
+		ModalAlertWithOneButton optionalUpgradeDialog = 
+				new ModalAlertWithOneButton(activity, titleAndContentForDialog, singleButtonBottomView);
+		
+		singleButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
 			@Override
-			public void onCancel(DialogInterface dialog) {
-				android.os.Process.killProcess(android.os.Process.myPid());
-			}
+			public void onClick(View v) { upgrade(); }
+		});
+		optionalUpgradeDialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
+		@Override
+		public void onCancel(DialogInterface dialog) {
+			android.os.Process.killProcess(android.os.Process.myPid());
+		}
 		});	
-
-		alertBuilder.show();
+		
+		showAlert(optionalUpgradeDialog);
 	}
 	
 	/**
