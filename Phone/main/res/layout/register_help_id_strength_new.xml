@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/WhiteTheme"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/modal_bottom_margin" 
+    	android:layout_marginRight="@dimen/forms_inner_padding"
+    	android:layout_marginLeft="@dimen/forms_inner_padding"
+    	android:layout_marginTop="@dimen/modal_bottom_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/reg_help_weak_pswd"
+            layout="@layout/register_help_strength_item" />
+        
+        <include
+            android:id="@+id/reg_help_mod_pswd"
+            layout="@layout/register_help_strength_item" />
+        
+        <include
+            android:id="@+id/reg_help_strong_pswd"
+            layout="@layout/register_help_strength_item" />
+
+        <include
+            android:id="@+id/reg_help_footer"
+            android:layout_marginTop="20dp"
+            layout="@layout/new_general_need_help_footer" />
+
+
+        <!--  
+        <include
+            android:id="@+id/reg_help_copyright"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/reg_help_weak_pswd"
+            layout="@layout/old_general_copyright_footer" />
+		-->
+    </LinearLayout>
+
+</ScrollView>

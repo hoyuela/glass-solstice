@@ -37,6 +37,7 @@ import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
+import com.discover.mobile.login.register.StrengthBarHelpActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.PushRegistrationStatusSuccessListener;
@@ -283,11 +284,17 @@ public class LoginActivity extends RoboActivity {
 	 * execute the specified functionality in onClick when they are clicked...
 	 */
 	private void setupButtons() {
+	
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
+				final Intent passwordHelpScreen = new Intent(LoginActivity.this, StrengthBarHelpActivity.class);
+				passwordHelpScreen.putExtra("helpType", "password");
+				LoginActivity.this.startActivityForResult(passwordHelpScreen, 0);
+				/*TODO PUT THIS BACK Henry
 				setViewGone(errorTextView);
 				logIn();
+				*/
 			}
 		});
 

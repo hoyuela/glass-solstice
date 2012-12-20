@@ -48,7 +48,7 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
     protected EventManager eventManager;
     protected HashMap<Key<?>,Object> scopedObjects = new HashMap<Key<?>, Object>();
     
-    @Inject ContentViewListener ignored; // BUG find a better place to put this
+ //   @Inject ContentViewListener ignored; // BUG find a better place to put this
     
     @Override
     public void onCreate(final Bundle savedInstanceState) {

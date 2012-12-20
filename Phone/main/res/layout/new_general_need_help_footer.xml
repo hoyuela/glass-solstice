@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <LinearLayout
+	    android:id="@+id/account_info_help_footer"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_centerHorizontal="true"
+	    android:layout_alignParentBottom="true"
+	    android:orientation="vertical"
+        android:layout_marginBottom="65dp"
+	    android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/need_help_label"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/need_help_text"
+ 			android:gravity="center_horizontal"
+            android:textStyle="bold" />
+
+	    <TextView
+	        android:id="@+id/help_number_label"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/need_help_number_text"
+	        android:textColor="@color/blue"
+	        android:autoLink="phone"
+	        android:linksClickable="true" 
+	        android:gravity="center_horizontal"/>
+            
+    </LinearLayout>
+
+</merge>

@@ -43,3 +43,7 @@ tmp/**/*
 
 # PDT-specific
 .buildpath
+
+# Ignore Project Files Causing Building Issues
+.Phone/main/project.properties
+.project
