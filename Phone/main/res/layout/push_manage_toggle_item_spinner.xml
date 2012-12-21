@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/notifcation_alert_toggle" 
+    android:background="@color/white"
+    android:padding="14dip">
+    
+    <ImageView
+        android:id="@+id/text_toggle_view"
+        android:layout_width="20dip"
+        android:layout_height="20dip"
+        android:padding="5dip"
+        android:background="@drawable/gray_gradient_square"
+        android:src="@drawable/transparent_square"
+    	android:layout_marginLeft="5dip"
+    	android:onClick="toggleCheckBox"/> 
+    
+    <TextView
+        android:id="@+id/text_enable_text"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@+id/text_toggle_view"
+    	android:text="@string/text"
+    	android:textColor="@color/title"
+    	android:textStyle="bold"
+    	android:textSize="14dip"
+    	android:padding="0dip"
+    	android:gravity="center"/>
+    
+    <ImageView
+        android:id="@+id/push_toggle_view"
+        android:layout_width="20dip"
+        android:layout_height="20dip"
+        android:padding="5dip"
+        android:src="@drawable/white_check_mark"
+        android:layout_toRightOf="@+id/text_toggle_view"
+        android:layout_alignTop="@+id/text_toggle_view"
+        android:background="@drawable/black_gradient_square"
+        android:layout_marginLeft="26dip"/>
+    
+    <TextView
+        android:id="@+id/push_enable_text"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_toRightOf="@+id/text_enable_text"
+    	android:layout_below="@+id/text_toggle_view"
+    	android:text="@string/push_alerts"
+    	android:textColor="@color/title"
+    	android:textStyle="bold"
+    	android:textSize="14dip"
+    	android:padding="0dip"
+    	android:gravity="center"
+    	android:layout_marginLeft="12dip"/>
+
+	<TextView
+	    android:id="@+id/header" 
+	    android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+		android:text="Title, if you see this it messed up"
+		android:textColor="@color/title"
+		android:textStyle="bold"
+		android:textSize="14dip"
+		android:layout_toRightOf="@+id/push_enable_text"
+		android:layout_alignTop="@+id/text_toggle_view"
+		android:layout_marginLeft="30dip"/>
+	
+	<TextView
+	    android:id="@+id/sub_header"
+	    android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_alignLeft="@+id/header"
+    	android:layout_below="@+id/header"
+    	android:textColor="@color/field_copy"
+    	android:text="Sub Header, if you see this it messed up"
+    	android:textSize="14dip"/>
+	
+	<Spinner
+	    android:id="@+id/amount_spinner"
+	    android:layout_width="100dp"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/sub_header"
+	    android:layout_below="@+id/sub_header" 
+    	/>
+	
+	<TextView
+	    android:id="@+id/amount_spinner_text"
+	    android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_toRightOf="@+id/amount_spinner"
+    	android:layout_alignTop="@+id/amount_spinner"
+    	android:layout_alignBottom="@+id/amount_spinner"
+    	android:gravity="center_vertical"
+    	android:textColor="@color/sub_copy"
+    	android:textSize="14dip"
+    	android:text="of your credit line"/>
+	
+</RelativeLayout>

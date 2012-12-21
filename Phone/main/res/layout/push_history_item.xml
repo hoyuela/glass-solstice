@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/white">
+    
+    <ImageView
+        android:id="@+id/delete_box"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:padding="5dip"
+        android:background="@drawable/gray_gradient_square"
+        android:src="@drawable/transparent_square"
+    	android:layout_marginLeft="5dip"
+    	android:visibility="gone"/>
+    
+    <TextView
+        android:id="@+id/date_view"
+        android:layout_width="wrap_content"
+   	 	android:layout_height="wrap_content"
+   	 	style="@style/field_copy"
+   	 	android:text="00/00/00"
+   	 	android:layout_toRightOf="@+id/delete_box"/>
+    
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+   	 	android:layout_height="wrap_content"
+   	 	android:layout_below="@+id/date_view"
+   	 	android:layout_alignLeft="@+id/date_view"
+   	 	style="@style/field_copy"
+   	 	android:text="00:00"/>
+    
+    <TextView 
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+   	 	android:layout_height="wrap_content"
+   	 	android:layout_toRightOf="@+id/date_view"
+   	 	style="@style/body_copy"
+   	 	android:text="Test Discover"/>
+    
+    <TextView
+        android:id="@+id/action_view"
+        android:layout_width="wrap_content"
+   	 	android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+   	 	style="@style/blue_hyperlink"
+   	 	android:text="View +"/>
+    
+    <TextView
+        android:id="@+id/expanded_text"
+        android:layout_width="wrap_content"
+   	 	android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_alignLeft="@+id/text"
+		android:layout_below="@+id/time"
+		style="@style/field_copy"
+		android:visibility="gone"/>
+        
+    
+
+</RelativeLayout>

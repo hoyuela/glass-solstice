@@ -81,18 +81,6 @@
 	    <item>Fraud Alert</item>
     </string-array>
     
-    <string-array name="monitor_your_spending_categories">
-        <item>TAMT</item>
-        <item>BALA</item>
-        <item>CRLT</item>
-    </string-array>
-    
-    <string-array name="monitor_your_spending_headers">
-        <item>Account purchase exceeds a specified amount:</item>
-	    <item>Account balance exceeds a specified amount:</item>
-	    <item>Nearing account credit line:</item>
-    </string-array>
-    
     <string-array name="manage_your_accounts_text">
         <item>Notify me when a new statement is available to view.</item>
 	    <item>Get a reminder before your payment is due if the minimum amount has not been received.</item>
@@ -102,12 +90,15 @@
 	    <item>Be immediately notified if we detect any unusual activity.</item>
     </string-array>
     
-    <string-array name="monitor_your_spending_text">
-        <item>Monitor Your Spending</item>
-        <item>Account purchase exceeds a specified amount:</item>
-	    <item>Account balance exceeds a specified amount:</item>
-	    <item>Nearing account credit line:</item>
-    </string-array>
+    <string name="purchase_amount_category">TAMT</string>
+    <string name="balance_amount_category">BALA</string>
+    <string name="credit_line_ammount_category">CRLT</string>
+    
+    <string name="purchase_amount_header">Account purchase exceeds a specified amount:</string>
+    <string name="balance_amount_header">Account balance exceeds a specified amount:</string>
+    <string name="credit_line_ammount_header">Nearing account credit line:</string>
+
+	<string name="credit_line_ammount_text">Learn when your account balance is within</string>
     
     <string-array name="maximize_you_rewards_categories">
         <item>SCBB</item>
@@ -123,4 +114,10 @@
         <item>Learn when it\'s time to enroll for a Rewards Program</item>
         <item></item>
     </string-array>
+    
+    <string name="history_title">History</string>
+    <string name="manage">Manage</string>
+    <string name="edit">Edit</string>
+    <string name="older_alerts">Alerts over 45 days old will be automatically deleted.</string>
+    <string name="delete">Delete</string>
 </resources>

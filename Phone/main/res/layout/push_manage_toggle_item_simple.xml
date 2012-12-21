@@ -74,4 +74,5 @@
     	android:textColor="@color/field_copy"
     	android:text="Sub Header, if you see this it messed up"
     	android:textSize="14dip"/>
+	
 </RelativeLayout>

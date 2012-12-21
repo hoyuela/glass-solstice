@@ -19,5 +19,6 @@ public class GetPushPrefsSuccessListener implements SuccessListener<PushNotifica
 	@Override
 	public void success(final PushNotificationPrefsDetail detail) {
 		fragment.setPrefs(detail);
+		fragment.displayPrefs();
 	}
 }
