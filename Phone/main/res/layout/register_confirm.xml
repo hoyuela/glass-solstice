@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <com.discover.mobile.navigation.HeaderProgressIndicator
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
         android:id="@+id/scrollView1"
+        style="@style/WhiteTheme"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        style="@style/WhiteTheme" >
+        android:layout_height="fill_parent" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -29,7 +38,7 @@
                 android:text="@string/account_info_confirm_first_paragraph_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black" />
-            
+
             <TextView
                 android:id="@+id/account_info_confirm_security_precaution_label"
                 android:layout_width="wrap_content"
@@ -49,10 +58,10 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/account_info_confirm_summary_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="@dimen/light_text_size" 
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-            
+                android:textColor="@color/black"
+                android:textSize="@dimen/light_text_size"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/account_info_confirm_id_title_label"
                 android:layout_width="wrap_content"
@@ -63,7 +72,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
                 android:textSize="@dimen/light_text_size" />
-            
+
             <TextView
                 android:id="@+id/account_info_confirm_email_title_label"
                 android:layout_width="wrap_content"
@@ -74,7 +83,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
                 android:textSize="@dimen/light_text_size" />
-            
+
             <TextView
                 android:id="@+id/account_info_confirm_account_title_label"
                 android:layout_width="wrap_content"
@@ -85,7 +94,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
                 android:textSize="@dimen/light_text_size" />
-            
+
             <TextView
                 android:id="@+id/account_info_confirm_id_label"
                 android:layout_width="wrap_content"
@@ -96,9 +105,9 @@
                 android:text="@string/account_info_confirm_id_placeholder_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
-                android:textSize="@dimen/very_light_text_size" 
-                android:textStyle="bold"/>
-            
+                android:textSize="@dimen/very_light_text_size"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/account_info_confirm_email_label"
                 android:layout_width="wrap_content"
@@ -112,13 +121,13 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/very_light_text_size"
                 android:textStyle="bold" />
-            
+
             <TextView
                 android:id="@+id/account_info_confirm_account_stars_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
                 android:layout_alignBaseline="@id/account_info_confirm_account_title_label"
+                android:layout_marginLeft="4dp"
                 android:layout_toRightOf="@id/account_info_confirm_account_title_label"
                 android:paddingTop="4dp"
                 android:text="@string/account_info_confirm_account_stars_text"
@@ -131,17 +140,17 @@
                 android:id="@+id/account_info_confirm_account_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/account_info_confirm_account_stars_label"
                 android:layout_below="@+id/account_info_confirm_email_title_label"
-                android:paddingTop="4dp"
                 android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/account_info_confirm_account_stars_label"
+                android:paddingTop="4dp"
                 android:text="@string/account_info_confirm_account_text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
                 android:textSize="@dimen/very_light_text_size"
                 android:textStyle="bold" />
-            
-			<TextView
+
+            <TextView
                 android:id="@+id/account_info_confirm_note_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,26 +160,25 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/black"
                 android:textSize="@dimen/light_text_size" />
-			
+
             <Button
                 android:id="@+id/account_info_confirm_home_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_confirm_note_label"
                 android:layout_centerHorizontal="true"
-                android:text="@string/home_text" 
                 android:layout_marginTop="16dp"
-                android:onClick="navigateToHome"/>
-            
-          <RelativeLayout
-    	    android:layout_width="match_parent"
-    	    android:layout_height="100dp"
-    	    android:layout_below="@+id/account_info_confirm_home_button" >
-    	    
-    	    <include layout="@layout/old_general_copyright_footer"/>
-    	    
-    	</RelativeLayout>
-        
-	</RelativeLayout>
+                android:onClick="navigateToHome"
+                android:text="@string/home_text" />
 
-</ScrollView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@+id/account_info_confirm_home_button" >
+
+                <include layout="@layout/old_general_copyright_footer" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

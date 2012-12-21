@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 import com.discover.mobile.navigation.NavigationRootActivity;
 
 @ContentView(R.layout.register_confirm)
@@ -61,6 +62,8 @@ public class AccountInformationConfirmationActivity extends RoboActivity {
         			noteLabel.setVisibility(View.INVISIBLE);
         		}
         	}
+        	HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
+        	progress.initChangePasswordHeader(2);
 		}
 	}
 	
