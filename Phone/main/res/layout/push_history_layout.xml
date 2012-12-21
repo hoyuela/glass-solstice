@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/light_gray_bkgrd">
+    
+    <TextView
+        android:id="@+id/history_title"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	style="@style/title_copy"
+    	android:text="@string/history_title"/>
+    
+     <TextView
+        android:id="@+id/edit"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	style="@style/blue_hyperlink"
+    	android:layout_alignParentRight="true"
+    	android:layout_alignBottom="@+id/history_title"
+    	android:text="@string/edit"/>
+     
+    <TextView  
+        android:id="@+id/divider"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_toLeftOf="@+id/edit"
+    	android:layout_alignBottom="@+id/history_title"
+    	style="@style/blue_hyperlink"
+    	android:text=" | "/>  
+    
+    <TextView
+        android:id="@+id/manage"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_toLeftOf="@+id/divider"
+    	android:layout_alignBottom="@+id/history_title"
+    	style="@style/blue_hyperlink"
+    	android:text="@string/manage"/>
+    
+    <LinearLayout
+        android:id="@+id/history_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/history_title"
+        android:background="@color/white"/>
+    
+    <TextView 
+        android:id="@+id/older_alerts"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@+id/history_list"
+    	style="@style/field_copy"
+    	android:text="@string/older_alerts"/>
+    
+    <Button
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_button"
+        android:layout_below="@+id/older_alerts"
+        android:text="@string/delete"
+        android:layout_centerHorizontal="true"
+        style="@style/white_button"/>
+    
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/transparent_square"
+        android:layout_below="@+id/delete_button"
+        android:text="@string/cancel_text"
+        android:layout_centerHorizontal="true"
+        style="@style/blue_hyperlink"/>
+    
+
+</RelativeLayout>

@@ -5,6 +5,8 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PushManageCategoryParamDetail implements Serializable{
+	
+	public static final String AMOUNT_CODE = "AMT";
 
 	private static final long serialVersionUID = 3094405120334743575L;
 

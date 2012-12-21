@@ -5,12 +5,15 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,7 +22,11 @@ import com.discover.mobile.RoboSherlockFragment;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.push.manage.GetNotificationPreferences;
+import com.discover.mobile.common.push.manage.PostNotificationPreferences;
+import com.discover.mobile.common.push.manage.PostPreferencesDetail;
+import com.discover.mobile.common.push.manage.PreferencesDetail;
 import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
+import com.xtify.sdk.api.XtifySDK;
 
 /**
  * Fragment that is the push notification manage screen.  Uses the push save header, 
@@ -29,8 +36,19 @@ import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
  *
  */
 public class PushManageFragment extends RoboSherlockFragment{
-
+	
+	/**Push prefs retrieved from the server*/
 	private PushNotificationPrefsDetail prefs;
+	
+	private boolean isTextEnabled = false;
+
+	private boolean isPushEnabled = false;
+	
+	private ImageView enableText;
+	
+	private ImageView enablePush;
+	
+	private TextView phoneNumber;
 	
 	private PushManageHeaderItem manageHeader;
 	
@@ -48,7 +66,7 @@ public class PushManageFragment extends RoboSherlockFragment{
 	
 	private Context context;
 	
-	private List<PushManageToogleItem> categoriesList;
+	private List<PushManageCategoryItem> categoriesList;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -62,25 +80,38 @@ public class PushManageFragment extends RoboSherlockFragment{
 		monitorList = (LinearLayout)mainView.findViewById(R.id.monitor_spending_list_preferences);
 		maximizeHeader = (PushManageHeaderItem)mainView.findViewById(R.id.maximize_rewards_list_header);
 		maximizeList = (LinearLayout)mainView.findViewById(R.id.maximize_rewards_list_preferences);
+		phoneNumber = (TextView)mainView.findViewById(R.id.phone_number);
+		enableText = (ImageView)mainView.findViewById(R.id.toggle_enable_texts);
+		enablePush = (ImageView)mainView.findViewById(R.id.toggle_enable_push);
 		final TextView termsLaunch = (TextView) mainView.findViewById(R.id.clickable_view);
 		
 		final Button save = (Button) mainView.findViewById(R.id.notification_save_button);
 		save.setOnClickListener(new OnClickListener(){
-
 			@Override
 			public void onClick(final View v) {
 				savePreferences();
 			}
-			
+		});
+		
+		enablePush.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				togglePushSwitch();
+			}
+		});
+		
+		enableText.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				toggleTextSwitch();
+			}	
 		});
 		
 		termsLaunch.setOnClickListener(new OnClickListener(){
-
 			@Override
 			public void onClick(final View v) {
 				showTermsAndConditions();
-			}
-			
+			}	
 		});
 		
 		context = this.getActivity();
@@ -92,10 +123,44 @@ public class PushManageFragment extends RoboSherlockFragment{
 		return mainView;
 	}
 	
+
+	/**
+	 * Toggle the master push enable switch of and on
+	 */
+	protected void togglePushSwitch() {
+		isPushEnabled = (isPushEnabled) ? false : true;
+		toggleSwitch(enablePush, isPushEnabled);
+	}
+	
+	/**
+	 * Toggle the master text enable switch of and on
+	 */
+	protected void toggleTextSwitch() {
+		isTextEnabled = (isTextEnabled) ? false : true;
+		toggleSwitch(enableText, isTextEnabled);
+		
+	}
+	
+	/**
+	 * Toggle a switch according to its current state
+	 * @param image - imageview of the state to switch
+	 * @param isEnabled - if the image view is currently enabled
+	 */
+	private void toggleSwitch(final ImageView image, final boolean isEnabled){
+		if(isEnabled){
+			image.setBackgroundDrawable(res.getDrawable(R.drawable.swipe_on));
+		}else{
+			image.setBackgroundDrawable(res.getDrawable(R.drawable.swipe_off));
+		}
+	}
+	
+	/**
+	 * On resume of the page make sure the fragment gets an updated version of the prefs
+	 */
 	@Override
 	public void onResume(){
 		super.onResume();
-		categoriesList = new ArrayList<PushManageToogleItem>();
+		categoriesList = new ArrayList<PushManageCategoryItem>();
 		
 		final AsyncCallback<PushNotificationPrefsDetail> callback = 
 				GenericAsyncCallback.<PushNotificationPrefsDetail>builder(this.getActivity())
@@ -109,14 +174,22 @@ public class PushManageFragment extends RoboSherlockFragment{
 		new GetNotificationPreferences(this.context, callback).submit();
 	}
 	
-	
-
+	/**
+	 * Associate the correct linear layout with it's header
+	 */
 	private void setListsInHeader() {
 		manageHeader.setList(manageList);
 		monitorHeader.setList(monitorList);
 		maximizeHeader.setList(maximizeList);	
 	}
 	
+	/**
+	 * Create a list from the information
+	 * @param list - list to put the items in
+	 * @param categories - list of categories to associate with the items
+	 * @param headers - list of headers to display in the items
+	 * @param texts - list of text values to display in the items
+	 */
 	private void createList(final LinearLayout list, 
 			final String[] categories, 
 			final String[] headers, 
@@ -125,17 +198,129 @@ public class PushManageFragment extends RoboSherlockFragment{
 		final int lengthOfHeaders = headers.length;
 		
 		for(int i = 0; i < lengthOfHeaders; i++) {
-			final PushManageToogleItem view = new PushManageToogleItem(context, null);
-			view.setCategory(categories[i]);
-			view.setHeader(headers[i]);
-			view.setText(texts[i]);
-			view.setBackgroundDrawable(res.getDrawable(R.drawable.notification_list_item));
-			//FIXME: Pull these out into a dimensions file
-			view.setPadding(14, 28, 14 ,28);
-			//TODO: check to see if that is in the list of categories to show
-			list.addView(view);
-			categoriesList.add(view);
+			final PushManageToogleItemSimple item = createSimpleTextItem(categories[i], headers[i], texts[i]);
+			item.setPushChecked(isParamEnabled(item.getCategory(), PreferencesDetail.PUSH_PARAM));
+			item.setTextChecked(isParamEnabled(item.getCategory(), PreferencesDetail.TEXT_PARAM));
+			if(showCategory(item.getCategory())){
+				list.addView(item);
+			}
+			categoriesList.add(item);
 		}
+	}
+	
+	private void createMonitorList() {
+		final PushManageToggleItemEditText purchase = createEditTextItem(
+				res.getString(R.string.purchase_amount_category), 
+				res.getString(R.string.purchase_amount_header),
+				prefs.remindersEnrollResults.tamtDefAmt,
+				prefs.remindersEnrollResults.tamtMinAmt);
+		
+		purchase.setPushChecked(isParamEnabled(purchase.getCategory(), PreferencesDetail.PUSH_PARAM));
+		purchase.setTextChecked(isParamEnabled(purchase.getCategory(), PreferencesDetail.TEXT_PARAM));
+		
+		final PushManageToggleItemEditText balance = createEditTextItem(
+				res.getString(R.string.balance_amount_category), 
+				res.getString(R.string.balance_amount_header),
+				prefs.remindersEnrollResults.balanceDefAmt,
+				prefs.remindersEnrollResults.balanaceMinAmt);
+		
+		balance.setPushChecked(isParamEnabled(balance.getCategory(), PreferencesDetail.PUSH_PARAM));
+		balance.setTextChecked(isParamEnabled(balance.getCategory(), PreferencesDetail.TEXT_PARAM));
+		
+		final PushManageToogleItemSpinner creditLine = createSpinnerItem(
+				res.getString(R.string.credit_line_ammount_category), 
+				res.getString(R.string.credit_line_ammount_header),
+				res.getString(R.string.credit_line_ammount_text),
+				prefs.remindersEnrollResults.crltAmtOptions);
+		
+		creditLine.setPushChecked(isParamEnabled(creditLine.getCategory(), PreferencesDetail.PUSH_PARAM));
+		creditLine.setTextChecked(isParamEnabled(creditLine.getCategory(), PreferencesDetail.TEXT_PARAM));
+		
+		if(showCategory(purchase.getCategory())){
+			monitorList.addView(purchase);
+		}
+		categoriesList.add(purchase);
+		if(showCategory(balance.getCategory())){
+			monitorList.addView(balance);
+		}
+		categoriesList.add(balance);
+		if(showCategory(creditLine.getCategory())){
+			monitorList.addView(creditLine);
+		}
+		categoriesList.add(creditLine);
+		
+	}
+	
+	private boolean showCategory(final String category){
+		return prefs.remindersEnrollResults.codesToDisplay.contains(category);
+	}
+
+	private boolean isParamEnabled(final String category, final String paramType){
+		final List<PreferencesDetail> items = prefs.remindersEnrollResults.preferences;
+		boolean isEnabled = false;
+		for(PreferencesDetail item : items){
+			if(category.equalsIgnoreCase(item.prefTypeCode) && paramType.equals(item.categoryId)){
+				isEnabled = true;
+			}
+		}
+		return isEnabled;
+	}
+	
+	private PushManageToogleItemSimple createSimpleTextItem(final String category, 
+			final String header, 
+			final String text ){
+		
+		final PushManageToogleItemSimple view = new PushManageToogleItemSimple(context, null);
+		view.setCategory(category);
+		view.setHeader(header);
+		view.setText(text);
+		view.setBackgroundDrawable(res.getDrawable(R.drawable.notification_list_item));
+		//FIXME: Pull these out into a dimensions file
+		view.setPadding(14, 28, 14 ,28);
+		//TODO: check to see if that is in the list of categories to show
+		return view;
+	}
+	
+	
+	private PushManageToggleItemEditText createEditTextItem(final String category, 
+			final String header, 
+			final int definedAmount, 
+			final int minAmount){
+		
+		final PushManageToggleItemEditText view = new PushManageToggleItemEditText(context, null);
+		view.setCategory(category);
+		view.setHeader(header);
+		view.setAmount(Integer.toString(definedAmount));
+		view.setMinimumAmountText(Integer.toString(minAmount));
+		view.setBackgroundDrawable(res.getDrawable(R.drawable.notification_list_item));
+		//FIXME: Pull these out into a dimensions file
+		view.setPadding(14, 28, 14 ,28);
+		return view;
+	}
+	
+	private PushManageToogleItemSpinner createSpinnerItem(final String category, 
+			final String header,
+			final String text,
+			final List<Integer> displayValues){
+		
+		final PushManageToogleItemSpinner view = new PushManageToogleItemSpinner(context, null);
+		view.setCategory(category);
+		view.setHeader(header);
+		view.setText(text);
+		view.setSpinnerDropdown(convertFromIntArray(displayValues));
+		//TODO: check to see if that is in the list of categories to show
+		view.setBackgroundDrawable(res.getDrawable(R.drawable.notification_list_item));
+		//FIXME: Pull these out into a dimensions file
+		view.setPadding(14, 28, 14 ,28);
+		return view;
+	}
+	
+	private ArrayList<String> convertFromIntArray(final List<Integer> displayValues){
+		ArrayList<String> strings = new ArrayList<String>();
+		for(Integer i : displayValues){
+			strings.add("$ " + Integer.toString(i));
+		}
+		return strings;
 	}
 
 	private void createHeaders() {
@@ -144,11 +329,11 @@ public class PushManageFragment extends RoboSherlockFragment{
 		maximizeHeader.setHeader(res.getString(R.string.maximize_your_rewards_title));	
 	}
 	
-	public void savePreferences(){
-		categoriesList.clear();
-		clearLists();
-		displayPrefs();
+	private String toPhoneNumber(final String number){
+		return number.substring(0, 3) + "-" + number.substring(3, 6) + "-" + number.substring(6, 10);
 	}
+	
+	
 	
 	private void clearLists() {
 		this.manageList.removeAllViews();
@@ -173,17 +358,77 @@ public class PushManageFragment extends RoboSherlockFragment{
 	}
 	
 	public void displayPrefs(){
+		if(null == this.prefs){return;}
+		clearLists();
+		categoriesList.clear();
+		phoneNumber.setText(toPhoneNumber(prefs.remindersEnrollResults.phoneNumber));
 		createList(manageList, 
 				res.getStringArray(R.array.manage_you_accounts_categories),
 				res.getStringArray(R.array.manage_your_accounts_headers),
 				res.getStringArray(R.array.manage_your_accounts_text));
-		createList(monitorList, 
-				res.getStringArray(R.array.monitor_your_spending_categories),
-				res.getStringArray(R.array.monitor_your_spending_headers),
-			 	res.getStringArray(R.array.monitor_your_spending_text));
+		createMonitorList();
 		createList(maximizeList, 
 				res.getStringArray(R.array.maximize_you_rewards_categories),
 				res.getStringArray(R.array.maximize_your_rewards_headers),
 				res.getStringArray(R.array.maximize_your_rewards_text));
+	}
+	
+	public void savePreferences(){
+		final AsyncCallback<PostPreferencesDetail> callback = 
+				GenericAsyncCallback.<PostPreferencesDetail>builder(this.getActivity())
+				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
+									getResources().getString(R.string.push_progress_registration_loading), 
+									true)
+				.withSuccessListener(null)
+				.withErrorResponseHandler(null)
+				.build();
+		
+		new PostNotificationPreferences(this.context, callback, getPreferences()).submit();
+	}
+	
+	private PostPreferencesDetail getPreferences(){
+		final TelephonyManager telephonyManager =
+				(TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+		final PostPreferencesDetail post = new PostPreferencesDetail();
+		post.setVid(XtifySDK.getXidKey(context));
+		post.setOs(PostPreferencesDetail.DEFAULT_OS);
+		//TODO: set osVersion and deviceId
+		final String version = Build.VERSION.RELEASE;
+		if(null != version){
+			post.setOsVersion(version);
+		} else{
+			post.setOsVersion(PostPreferencesDetail.DEFAULT_VERSION);
+		}
+		post.setDeviceID(telephonyManager.getDeviceId());
+		post.setRegStatus(PostPreferencesDetail.ACCEPT);
+		post.setAccntOverrideInd(PostPreferencesDetail.OVERRIDE_YES);
+		post.setPhoneNumber(phoneNumber.getText().toString());
+		post.setCarrier(getCarrier());
+		post.setPrefs(getPrefs());
+		return post;
+	}
+	
+
+
+	private List<PreferencesDetail> getPrefs() {
+		final List<PreferencesDetail> newPrefs = new ArrayList<PreferencesDetail>();
+		final boolean textIsEnabled = (this.isTextEnabled || (null != prefs.remindersEnrollResults.phoneNumber));
+		for(PushManageCategoryItem item : categoriesList){
+			final PreferencesDetail textDetail = item.getTextPreferencesDetail(textIsEnabled);
+			final PreferencesDetail pushDetail = item.getPushPreferencesDetail(this.isPushEnabled);
+			if(null != textDetail){
+				newPrefs.add(textDetail);
+			}
+			if(null != pushDetail){
+				newPrefs.add(pushDetail);
+			}
+		}
+		return newPrefs;
+	}
+
+
+	private String getCarrier() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
