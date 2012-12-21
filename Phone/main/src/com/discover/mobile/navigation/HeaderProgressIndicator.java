@@ -25,6 +25,9 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	private TextView step3;
 	private ImageView step1Confirm;
 	private ImageView step2Confirm;
+	private TextView indicator1;
+	private TextView indicator2;
+	private TextView indicator3;
 	
 
 	public HeaderProgressIndicator(Context context) {
@@ -48,21 +51,22 @@ public class HeaderProgressIndicator extends RelativeLayout {
 		setTitle("Enter Info", "Change Password", "Confirmation");
 		setPosition(position);
 	}
-	
-	
 
 	private void inflateHeader() {
 		LayoutInflater inflater = (LayoutInflater) getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		inflater.inflate(R.layout.progress_indication, this);
-		step1 = (TextView) findViewById(R.id.step_1);
+		inflater.inflate(R.layout.header_progress_indication, this);
+		step1 = (TextView) findViewById(R.id.step1_title);
 		step1Confirm = (ImageView) findViewById(R.id.step1_confirm);
+		indicator1 = (TextView) findViewById(R.id.first_indicator);
 		
-		step2 = (TextView) findViewById(R.id.step_2);
+		step2 = (TextView) findViewById(R.id.step2_title);
 		step2Confirm = (ImageView) findViewById(R.id.step2_confirm);
+		indicator2 = (TextView) findViewById(R.id.middle_indicator);
 		
-		step3 = (TextView) findViewById(R.id.step_3);
+		step3 = (TextView) findViewById(R.id.step3_title);
+		indicator3 = (TextView) findViewById(R.id.last_indicator);
 
 	}
 
@@ -70,11 +74,9 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	 * Sets the titles for the header
 	 */
 	private void setTitle(String title1, String title2, String title3) {
-
 		step1.setText(title1);
 		step2.setText(title2);
 		step3.setText(title3);
-
 	}
 	
 	/**
@@ -88,6 +90,23 @@ public class HeaderProgressIndicator extends RelativeLayout {
 		if (position == 2){
 			step1Confirm.setVisibility(View.VISIBLE);
 			step2Confirm.setVisibility(View.VISIBLE);
+		}
+		setIndicatorVisibility(position);
+	}
+	
+	private void setIndicatorVisibility(int position){
+		if (position == 0){
+			indicator1.setVisibility(View.VISIBLE);
+			indicator2.setVisibility(View.INVISIBLE);
+			indicator3.setVisibility(View.INVISIBLE);
+		}else if (position == 1){
+			indicator1.setVisibility(View.INVISIBLE);
+			indicator2.setVisibility(View.VISIBLE);
+			indicator3.setVisibility(View.INVISIBLE);
+		}else {
+			indicator1.setVisibility(View.INVISIBLE);
+			indicator2.setVisibility(View.INVISIBLE);
+			indicator3.setVisibility(View.VISIBLE);
 		}
 	}
 }
