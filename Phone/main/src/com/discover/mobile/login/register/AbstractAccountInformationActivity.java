@@ -50,6 +50,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 /**
  * AbstractAccountInformationActivity this activity handles the forgot user password, both, or registration.
@@ -141,6 +142,8 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		setupSpinnerAdapters();
     	setupFieldsAndLabels();
     	setupTextChangedListeners();
+    	HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
+    	progress.initChangePasswordHeader(0);
     	
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 	}
