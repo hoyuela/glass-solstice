@@ -52,7 +52,7 @@
         android:layout_below="@id/account_information_input_info_label"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:visibility="gone"
-        android:text="@string/invalid_value"
+        android:text="@string/doesnt_match_records"
         android:textColor="@color/red" />
 
     <EditText
@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/forgot_id_password_label"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/invalid_value"
+        android:text="@string/doesnt_match_records"
         android:visibility="gone"
         android:textColor="@color/red" />
 
@@ -119,12 +119,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginLeft="32dp"
-            android:text="@string/submit_text" />
+            android:text="@string/submit_text"
+            style="@style/call_to_action_theme" />
 
     </TableRow>
 
-    <include layout="@layout/old_general_need_help_footer" />
-
-    <include layout="@layout/old_general_copyright_footer" />
+<RelativeLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true" >	
+	                
+		    <include 
+		        layout="@layout/old_general_need_help_footer" />
+		
+		   
+		    
+		</RelativeLayout>
 
 </RelativeLayout>

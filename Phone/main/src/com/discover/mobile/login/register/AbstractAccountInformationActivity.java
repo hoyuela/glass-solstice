@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,9 +30,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
-import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
@@ -46,6 +46,7 @@ import com.discover.mobile.common.auth.strong.StrongAuthDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthErrorResponse;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.customui.CustomDatePickerDialog;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
@@ -79,6 +80,12 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	private static final int SSN_LENGTH_OK = 4;
 	private static final int YEAR_LENGTH_OK = 4;
 	
+	private String dobYear = "";
+	private String dobMonth = "";
+	private String dobDay = "";
+	
+	private String expirationYear = "";
+	private String expirationMonth = "";
 	
 //TEXT LABELS
 	
@@ -99,9 +106,6 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	@InjectView(R.id.account_info_ssn_input_field)
 	EditText ssnField;
 	
-	@InjectView(R.id.account_info_dob_year_field)
-	EditText dobYearField;
-	
 //ERROR LABELS
 	
 	@InjectView(R.id.account_info_error_label)
@@ -116,19 +120,20 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	@InjectView (R.id.account_info_dob_year_error_label)
 	TextView dobYearErrorLabel;
 	
-//SPINNERS
+	@InjectView(R.id.account_info_expiration_date_error_label)
+	TextView expirationDateErrorLabel;
 	
-	@InjectView(R.id.account_info_month_spinner)
-	private Spinner expirationMonthSpinner;
-
-	@InjectView(R.id.account_info_year_spinner)
-	private Spinner expirationYearSpinner;
-
-	@InjectView(R.id.account_info_dob_month_spinner)
-	private Spinner birthMonthSpinner;
-
-	@InjectView(R.id.account_info_dob_day_spinner)
-	private Spinner birthDaySpinner;
+//DATE PICKER ELEMENTS
+	@InjectView(R.id.account_info_card_exp_date_picker)
+	EditText cardExpDatePicker;
+	
+	@InjectView(R.id.account_info_birth_date_picker)
+	EditText birthDatePicker;
+	
+//DATE PICKER DIALOGS
+	CustomDatePickerDialog dobPickerDialog;
+	CustomDatePickerDialog cardPickerDialog;
+	
 	
 	protected AbstractAccountInformationActivity(final String analyticsPageIdentifier) {
 		ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
@@ -138,31 +143,103 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		
-		setupSpinnerAdapters();
     	setupFieldsAndLabels();
     	setupTextChangedListeners();
     	
+    	setupCardDatePicker();
+    	setupDatePicker();
+    	
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 	}
-	
-	private void setupSpinnerAdapters() {
-		setupSpinnerWithArray(expirationMonthSpinner, R.array.month_array);
-		setupSpinnerWithArray(expirationYearSpinner, R.array.year_array);
-		setupSpinnerWithArray(birthMonthSpinner, R.array.month_array);
-		setupSpinnerWithArray(birthDaySpinner, R.array.day_array);
-	}
-	
-	private void setupSpinnerWithArray(final Spinner spinner, final int timeResId) {
-		final ArrayAdapter<CharSequence> adapter =
-				ArrayAdapter.createFromResource(this, timeResId, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
-	}
-	
+
+	/**
+	 * Set the title of the screen to the title that a subclass of this activity responds with.
+	 * Then do any custom UI setup that is required.
+	 */
 	private void setupFieldsAndLabels() {
 		activityTitleLabel.setText(getString(getActivityTitleLabelResourceId()));
 		
 		doCustomUiSetup();
+	}
+	
+	private void setupCardDatePicker() {
+		cardPickerDialog = new CustomDatePickerDialog(this, new OnDateSetListener() {
+			
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				cardExpDatePicker.setText( getFormattedDate(monthOfYear, year) );
+				cardExpDatePicker.setBackgroundResource(R.drawable.edit_text_default);
+				hideLabel(expirationDateErrorLabel );
+				expirationYear = String.valueOf( year );
+				expirationMonth = String.valueOf( monthOfYear + 1 );
+			}
+		}, 2011, 10, 10);
+		cardPickerDialog.setTitle(removeLastChar(R.string.card_expiration_date_text));
+		cardPickerDialog.hideDayPicker();
+	}
+	
+	private String removeLastChar(final int res) {
+		final String subStr = getResources().getString(res);
+		return subStr.substring(0, subStr.length() - 1);
+	}
+	
+	private void setupDatePicker() {
+		dobPickerDialog = new CustomDatePickerDialog(this, new OnDateSetListener() {
+			
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				birthDatePicker.setText( getFormattedDate(monthOfYear, dayOfMonth, year) );
+				dobDay = String.valueOf( dayOfMonth );
+				dobMonth = String.valueOf( monthOfYear );
+				dobYear = String.valueOf( year );
+				birthDatePicker.setBackgroundResource(R.drawable.edit_text_default);
+				hideLabel(dobYearErrorLabel);
+			}
+		}, 2011, 10, 10) ;
+		dobPickerDialog.setTitle(removeLastChar(R.string.account_info_dob_text));
+		
+	}
+	
+	protected String getFormattedDate(final int monthOfYear, final int dayOfMonth, final int year) {
+		int month = monthOfYear + 1;
+		
+		String yearString = String.valueOf(year);
+		
+		//Get the last 2 digits of the year
+		if(yearString.length() > 2){
+			yearString = yearString.substring(yearString.length() - 2, yearString.length());
+		}
+		
+		//If the month is a single digit, append a 0 to the front of it.
+		if(month < 10) {
+			yearString = "0" + month + "/" + yearString;
+		}else {
+			yearString = month + "/" + dayOfMonth + "/" + yearString;
+		}
+		
+		return yearString;
+	}
+	
+	protected String getFormattedDate(final int monthOfYear, final int year) {
+		int month = monthOfYear + 1;
+		
+		String yearString = String.valueOf(year);
+		
+		//Get the last 2 digits of the year
+		if(yearString.length() > 2){
+			yearString = yearString.substring(yearString.length() - 2, yearString.length());
+		}
+		
+		//If the month is a single digit, append a 0 to the front of it.
+		if(month < 10) {
+			yearString = "0" + month + "/" + yearString;
+		}else {
+			yearString = month + "/" + yearString;
+		}
+		
+		return yearString;
 	}
 	
 	protected abstract int getActivityTitleLabelResourceId();
@@ -172,7 +249,6 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	}
 	
 	protected void setupTextChangedListeners(){
-    	setupYearTextChangedListeners();
     	setupSsnTextChangedListeners();
     	setupCustomTextChangedListeners();
 	}
@@ -189,6 +265,10 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 					final String acctNbr = accountIdentifierField.getText().toString();
 					if(!hasFocus && !validator.isCardAccountNumberValid(acctNbr)){
 						showLabel( cardErrorLabel );
+						accountIdentifierField.setBackgroundResource(R.drawable.edit_text_red);
+						accountIdentifierField.
+						setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.x_red), null);
+
 					}
 				}
 				
@@ -200,6 +280,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 			public void afterTextChanged(final Editable s) {
 				if(validator.isCardAccountNumberValid(s.toString())){
 					hideLabel( cardErrorLabel );
+					accountIdentifierField.setBackgroundResource(R.drawable.edit_text_default);
+					accountIdentifierField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+
 				}
 			}
 
@@ -214,38 +297,6 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 
 	}
 	
-	private void setupYearTextChangedListeners(){
-		dobYearField.setOnFocusChangeListener(new OnFocusChangeListener() {
-
-			@Override
-			public void onFocusChange(final View v, final boolean hasFocus) {
-				
-				if(!hasFocus && dobYearField.getText().length() < YEAR_LENGTH_OK) {
-					showLabel(dobYearErrorLabel);
-				}
-			}
-		});
-		
-		dobYearField.addTextChangedListener(new TextWatcher(){
-			
-			@Override
-			public void afterTextChanged(final Editable s) {
-				if(s.length() == YEAR_LENGTH_OK) {
-					//hide error label
-					hideLabel(dobYearErrorLabel);
-				}
-			}
-
-			@Override
-			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) 
-			{/*Intentionally empty*/}
-
-			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) 
-			{/*Intentionally empty*/}
-			
-		});
-	}
 	
 	private void setupSsnTextChangedListeners(){
 		
@@ -256,6 +307,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				
 				if( !hasFocus && ssnField.getText().length() < SSN_LENGTH_OK ) {
 					showLabel(ssnErrorLabel);
+					ssnField.setBackgroundResource(R.drawable.edit_text_red);
 				}
 			}
 		});
@@ -267,6 +319,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 				if(s.length() == SSN_LENGTH_OK) {
 					//hide error label
 					hideLabel(ssnErrorLabel);
+					ssnField.setBackgroundResource(R.drawable.edit_text_default);
 				}
 			}
 
@@ -281,38 +334,44 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		});
 	}
 	
+	public void showBirthDatePickerDialog(final View v) {
+		dobPickerDialog.show();
+	}
+	
+	public void showCardDatePickerDialog(final View v) {
+		
+		cardPickerDialog.show();
+	}
+	
 	public void validateInfoAndSubmitOnSuccess(final View v){
 		final InputValidator validator = new InputValidator();
 		
 		final String accountNumString = accountIdentifierField.getText().toString();
-		final String cardMonthExpString = expirationMonthSpinner.getSelectedItem().toString();
-		final String cardYearExpString = expirationYearSpinner.getSelectedItem().toString();
-		final String memberDobMonthString = birthMonthSpinner.getSelectedItem().toString();
-		final String memberDobDayString = birthDaySpinner.getSelectedItem().toString();
-		final String memberDobYearString = dobYearField.getText().toString();
 		final String memberSsnNumString =  ssnField.getText().toString();
-					
+						
+		validator.isDobDayValid(dobDay);
+		validator.isDobMonthValid(dobMonth);
+		validator.isDobYearValid(dobYear);
+		validator.isCardExpMonthValid(expirationMonth);
+		validator.isCardExpYearValid(expirationYear);
+		
 		validator.isUidValid(accountNumString);
 		validator.isCardAccountNumberValid(accountNumString);
-		validator.isCardExpMonthValid(cardMonthExpString);
-		validator.isCardExpYearValid(cardYearExpString);
-		validator.isDobYearValid(memberDobYearString);
-		validator.isDobMonthValid(memberDobMonthString);
-		validator.isDobDayValid(memberDobDayString);
 		validator.isSsnValid(memberSsnNumString);
 		
 		updateLabelsUsingValidator(validator);
 
+		if(areDetailsValid(validator)) {
+
 		accountInformationDetails = new AccountInformationDetails();
 		addCustomFieldToDetails(accountInformationDetails, accountNumString);
-		accountInformationDetails.dateOfBirthDay = memberDobDayString;
-		accountInformationDetails.dateOfBirthMonth = memberDobMonthString;
-		accountInformationDetails.dateOfBirthYear = memberDobYearString;
-		accountInformationDetails.expirationMonth = cardMonthExpString;
-		accountInformationDetails.expirationYear  = cardYearExpString;
 		accountInformationDetails.socialSecurityNumber = memberSsnNumString;
+		accountInformationDetails.dateOfBirthDay = dobDay;
+		accountInformationDetails.dateOfBirthMonth = dobMonth;
+		accountInformationDetails.dateOfBirthYear = dobYear;
+		accountInformationDetails.expirationMonth = expirationMonth;
+		accountInformationDetails.expirationYear = expirationYear;
 		
-		if(areDetailsValid(validator)) {
 			submitFormInfo();
 		}
 	}
@@ -609,25 +668,47 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		 */
 		if("Forgot Password".equals(activityTitleLabel.getText()) && !validator.wasUidValid){
 			showLabel(cardErrorLabel);
+			accountIdentifierField.setBackgroundResource(R.drawable.edit_text_red);
 		}
 		else if(!"Forgot Password".equals(activityTitleLabel.getText()) && !validator.wasAccountNumberValid){
 			showLabel(cardErrorLabel);
+			accountIdentifierField.setBackgroundResource(R.drawable.edit_text_red);
+			accountIdentifierField.setCompoundDrawablesWithIntrinsicBounds(null, null, 
+					getResources().getDrawable(R.drawable.x_red), null);
 		}
 		else{
 			hideLabel(cardErrorLabel);
+			accountIdentifierField.setBackgroundResource(R.drawable.edit_text_default);
+			accountIdentifierField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);		
+		}
+		
+		if(!validator.wasCardExpMonthValid || !validator.wasCardExpYearValid){
+			showLabel(expirationDateErrorLabel);
+			cardExpDatePicker.setBackgroundResource(R.drawable.edit_text_red);
+		}else{
+			hideLabel(expirationDateErrorLabel);
+			cardExpDatePicker.setBackgroundResource(R.drawable.edit_text_default);
 		}
 		
 		if(!validator.wasSsnValid){
 			showLabel(ssnErrorLabel);
+			ssnField.setBackgroundResource(R.drawable.edit_text_red);
 		}
-		else
+		else{
 			hideLabel(ssnErrorLabel);
-		
-		if(!validator.wasDobYearValid){
-			showLabel(dobYearErrorLabel);
+			ssnField.setBackgroundResource(R.drawable.edit_text_default);
+
 		}
-		else
+		
+		if(!validator.wasDobYearValid || !validator.wasDobDayValid || !validator.wasDobMonthValid){
+			showLabel(dobYearErrorLabel);
+			birthDatePicker.setBackgroundResource(R.drawable.edit_text_red);
+		}
+		else{
 			hideLabel(dobYearErrorLabel);
+			birthDatePicker.setBackgroundResource(R.drawable.edit_text_default);
+
+		}
 	}
 	
 	public void showLabel(final View v){

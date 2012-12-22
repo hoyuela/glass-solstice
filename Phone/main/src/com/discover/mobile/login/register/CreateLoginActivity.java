@@ -217,7 +217,7 @@ public class CreateLoginActivity extends RoboActivity {
 		
 		if( !validator.didIdsMatch ) {
 			showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_ids_must_match_text);
-			showLabelWithStringResource(idConfirmErrorLabel, R.string.invalid_value);
+			showLabelWithStringResource(idConfirmErrorLabel, R.string.doesnt_match_records);
 		}
 		else {
 			hideLabel(errorMessageLabel);
@@ -226,14 +226,14 @@ public class CreateLoginActivity extends RoboActivity {
 		
 		if( !validator.didPassesMatch ){
 			showLabelWithStringResource(passErrorLabel, R.string.account_info_two_passwords_dont_match_text);
-			showLabelWithStringResource(passConfirmErrorLabel, R.string.invalid_value);
+			showLabelWithStringResource(passConfirmErrorLabel, R.string.doesnt_match_records);
 		}
 		else {
 			hideLabel(passConfirmErrorLabel);
 		}
 		
 		if( !validator.wasEmailValid ){
-			showLabelWithStringResource(emailErrorLabel, R.string.invalid_value);
+			showLabelWithStringResource(emailErrorLabel, R.string.doesnt_match_records);
 		}
 		else {
 			hideLabel(emailErrorLabel);
@@ -321,7 +321,7 @@ public class CreateLoginActivity extends RoboActivity {
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
 				if(!hasFocus && !validator.isUidValid(idField.getText().toString())) {
-					showLabelWithStringResource(errorMessageLabel, R.string.invalid_value);
+					showLabelWithStringResource(errorMessageLabel, R.string.doesnt_match_records);
 				}
 			}
 		});
@@ -332,7 +332,7 @@ public class CreateLoginActivity extends RoboActivity {
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
 				if(!hasFocus && !validator.isUidValid(idConfirmField.getText().toString())) {
-					showLabelWithStringResource(idConfirmErrorLabel, R.string.invalid_value);
+					showLabelWithStringResource(idConfirmErrorLabel, R.string.doesnt_match_records);
 				}
 			}
 		});
@@ -416,7 +416,7 @@ public class CreateLoginActivity extends RoboActivity {
 			
 			if(inputSequence.toString().startsWith("6011")){
 				looksLikeActNum = true;
-				showLabelWithStringResource(errorMessageLabel, R.string.invalid_value);
+				showLabelWithStringResource(errorMessageLabel, R.string.doesnt_match_records);
 			}
 			
 			/*

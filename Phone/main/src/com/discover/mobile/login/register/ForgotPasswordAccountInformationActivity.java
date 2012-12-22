@@ -48,9 +48,6 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	@InjectView (R.id.account_info_ssn_input_field)
 	EditText ssnField;
 	
-	@InjectView (R.id.account_info_dob_year_field)
-	EditText yearField;
-	
 //ERROR LABELS
 	@InjectView (R.id.account_info_card_account_number_error_label)
 	TextView idErrorLabel;

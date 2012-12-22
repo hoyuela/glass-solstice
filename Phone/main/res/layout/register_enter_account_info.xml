@@ -21,6 +21,7 @@
         
         <TextView
             android:id="@+id/account_info_label_one_label"
+            android:layout_below="@+id/account_info_error_label"
             style="@style/title_copy"
             android:text="@string/account_info_label_one" />
          
@@ -28,22 +29,23 @@
             android:id="@+id/account_info_main_input_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/account_information_input_info_label"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
             android:layout_below="@+id/account_info_label_one_label"
             android:ems="16"
             android:inputType="number"
             android:maxLength="16"
             android:paddingTop="8dp" 
             android:imeOptions="actionDone"
-            style="@style/edit_copy"
+            android:background="@drawable/edit_text_default"
+            android:textColor="@color/field_copy"
          >
            
         </EditText>
         
         <TextView
             android:id="@+id/account_information_input_info_label"
-            android:layout_below="@+id/account_info_main_input_field"
-            android:paddingTop="4dp"
+            android:layout_below="@+id/account_info_card_account_number_error_label"
+            android:paddingTop="@dimen/between_related_elements_padding"
             android:text="@string/account_info_input_restrictions_label"
             style="@style/field_copy"
         />
@@ -51,31 +53,29 @@
         <TextView
             android:id="@+id/account_info_card_account_number_error_label"
             style="@style/error_label"
-            android:layout_below="@+id/account_information_input_info_label"
-            android:text="@string/invalid_value" >
+            android:layout_below="@+id/account_info_main_input_field"
+            android:text="@string/doesnt_match_records" >
             <requestFocus />
         </TextView>
         
         <TextView 
             android:id="@+id/account_info_error_label"
-			android:layout_below="@+id/account_information_input_info_label"
 			android:visibility="gone"
 			style="@style/error_label"
 		/>
 
-        
-        
       	<TextView
             android:id="@+id/account_info_card_expiration_date_label"
             style="@style/title_copy"
             android:layout_below="@+id/account_information_input_info_label"
-            android:text="@string/card_expiration_date_text" />
-        
+            android:text="@string/card_expiration_date_text" 
+            android:layout_marginTop="@dimen/forms_inner_padding"/>
         
         <TextView
             android:id="@+id/account_info_ssn_info_label"
             style="@style/title_copy"
-            android:layout_below="@+id/account_info_month_spinner"
+            android:layout_below="@+id/account_info_expiration_date_error_label"
+            android:layout_marginTop="@dimen/table_inner_padding"
             android:text="@string/account_info_ssn_info_text" />
 
         <EditText
@@ -83,12 +83,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_info_ssn_info_label"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
             android:layout_toRightOf="@+id/account_info_ssn_prefix_label"
+            android:background="@drawable/edit_text_default"
             android:ems="4"
             android:imeOptions="actionDone"
             android:inputType="number"
             android:maxLength="4" 
-            style="@style/edit_copy"
+            android:textColor="@color/field_copy"
         />
 
         <TextView
@@ -100,90 +102,104 @@
             android:layout_below="@+id/account_info_ssn_info_label"
             android:paddingTop="8dp"
             android:text="@string/ssn_prefix"
-            android:textColor="@color/black" />
+            android:textColor="@color/field_copy" />
 
         <TextView
             android:id="@+id/account_info_ssn_error_label"
             style="@style/error_label"
-            android:layout_alignRight="@id/account_info_ssn_input_field"
-            android:layout_below="@+id/account_info_ssn_info_label"
-            android:text="@string/invalid_value" />
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_ssn_input_field"
+            android:text="@string/doesnt_match_records" />
         
         <TextView
             android:id="@+id/account_info_dob_label"
             style="@style/title_copy"
-            android:layout_below="@+id/account_info_ssn_input_field"
+            android:layout_below="@+id/account_info_ssn_error_label"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
             android:text="@string/account_info_dob_text" />
 
         <TextView
             android:id="@+id/account_info_dob_year_error_label"
             style="@style/error_label"
-            android:layout_alignRight="@+id/account_info_dob_year_field"
-            android:layout_below="@+id/account_info_dob_label"
-            android:text="@string/invalid_value" />
-        
-        <Spinner
-            android:id="@+id/account_info_year_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/account_info_month_spinner"
-            android:layout_toRightOf="@+id/account_info_month_spinner" />
+            android:layout_below="@+id/account_info_birth_date_picker"
+            android:text="@string/doesnt_match_records" />
 
-        <Spinner
-            android:id="@+id/account_info_dob_day_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/account_info_dob_month_spinner"
-            android:layout_toRightOf="@+id/account_info_dob_month_spinner" />
+       
 
-        <EditText
-            android:id="@+id/account_info_dob_year_field"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/account_info_dob_day_spinner"
-            android:layout_toRightOf="@+id/account_info_dob_day_spinner"
-            android:ems="4"
-            android:hint="@string/year_hint"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:maxLength="4" 
-            style="@style/edit_copy"
-            />
-
-        <TableRow
+        <LinearLayout
             android:id="@+id/account_info_button_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/account_info_dob_year_field"
+            android:layout_below="@+id/account_info_birth_date_picker"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp" >
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/orange_button_margin_top" >
 
 	        <Button
 	                android:id="@+id/account_info_continue_button"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:layout_marginLeft="16dp"
+	                style="@style/call_to_action_theme"
 	                android:onClick="validateInfoAndSubmitOnSuccess"
 	                android:text="@string/continue_text" />
+	        
+	        <Button
+	                android:id="@+id/account_info_cancel_button"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:background="@color/none"
+	                android:onClick="goBack"
+	                style="@style/blue_hyperlink"
+	                android:text="@string/cancel_text" />
         
-        </TableRow>
+        </LinearLayout>
 
-        <Spinner
-            android:id="@+id/account_info_month_spinner"
+        <EditText
+            android:id="@+id/account_info_card_exp_date_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/account_info_card_expiration_date_label" />
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:focusable="false"
+            android:ems="11"
+            android:hint="@string/exp_date_placeholder"
+            android:background="@drawable/edit_text_default"
+            android:drawableRight="@drawable/down_arrow"
+            android:layout_below="@+id/account_info_card_expiration_date_label" 
+            android:onClick="showCardDatePickerDialog"
+            android:textColor="@color/field_copy"/>
+        
+        <TextView
+            android:id="@+id/account_info_expiration_date_error_label"
+            style="@style/error_label"
+            android:layout_below="@+id/account_info_card_exp_date_picker"
+            android:text="@string/doesnt_match_records" />
 
-        <Spinner
-            android:id="@+id/account_info_dob_month_spinner"
+        <EditText
+            android:id="@+id/account_info_birth_date_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/account_info_dob_label" />
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+			android:focusable="false"            
+			android:ems="11"
+			android:background="@drawable/edit_text_default"
+			android:drawableRight="@drawable/down_arrow"
+			android:hint="@string/birth_date_placeholder"
+            android:layout_below="@+id/account_info_dob_label" 
+            android:onClick="showBirthDatePickerDialog"
+            android:textColor="@color/field_copy"/>
         
-
+            
+   <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/account_info_button_row"
+        android:layout_marginTop="@dimen/orange_button_margin_top">
+	        
+		<include
+		    layout="@layout/old_general_need_help_footer"/>
+	
+	</RelativeLayout>
     </RelativeLayout>
 
 </ScrollView>
