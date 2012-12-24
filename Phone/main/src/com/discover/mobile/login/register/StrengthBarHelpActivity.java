@@ -31,6 +31,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 			
 		setContentView(R.layout.register_help_strength);
 	
+		//Determine what help guide to configure the screen for based on extra in INTENT
 		final Bundle extras = getIntent().getExtras();
 		if(extras != null) {
 			final String helpLayout = extras.getString(ScreenType.INTENT_KEY);
@@ -41,7 +42,8 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 				setHelpPswdStrengthViewAttr();
 			}
 		} else {
-			Log.v(TAG, "No Extras Found");
+			//Use Password Help Guide as the default help guide
+			setHelpPswdStrengthViewAttr();
 		}	
 	}
 	
@@ -109,6 +111,13 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 	
 	/**
 	 * Generic Method called when StrengthBarHelpActivity is opened to set view attribute values.
+	 * 
+	 * @param view Reference to view used by the Activity to display help guide
+	 * @param level Resource ID to string used to specify strength level (Strong, Moderate, Weak)
+	 * @param action Resource ID to string used to specify what action user should take to improve password or user id strength
+	 * @param msg Resource ID to message used to specify the criteria used to determine the strength level
+	 * @param image Resource ID to image to display for the strength bar
+	 * @param check Specifies whether to show a check mark image next to strength bar. Used only for Strong green bar.
 	 */
 	private void setViewItemAttr(View view, int level, int action, int msg, int image, boolean check ) {	
 		if( null != view ) {
