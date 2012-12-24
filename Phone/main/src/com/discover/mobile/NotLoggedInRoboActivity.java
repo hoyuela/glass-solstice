@@ -30,9 +30,6 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity {
      *	Show the action bar with the custom layout
      */
     public void showActionBar(){
-  
-    	//setBehindContentView(R.layout.navigation_menu_frame);
-   	
 		final ActionBar actionBar = getSupportActionBar();
 		
 		actionBar.setCustomView(getLayoutInflater().inflate(R.layout.action_bar_menu_layout, null));
