@@ -9,7 +9,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="4dp"
         android:text="@string/account_info_help_level1"
-        style="@style/title_copy"/>
+        style="@style/strength_help_level_message"/>
 
     <View
         android:id="@+id/reg_help_strength_image"
@@ -39,7 +39,7 @@
         android:layout_below="@id/reg_help_strength_level"
         android:layout_marginTop="4dp"
         android:text="@string/account_info_help_action1"
-        style="@style/body_copy" />
+        style="@style/action_message" />
 
     <TextView
         android:id="@+id/reg_help_strength_msg"
