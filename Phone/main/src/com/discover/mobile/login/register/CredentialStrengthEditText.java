@@ -22,6 +22,17 @@ import com.discover.mobile.common.analytics.TrackingHelper;
  * Editable View which validates the text entered with a password or user id strength algorithm.
  * 
  * Must call setCredentialType() and setOtherCredential().
+ * 
+ * Here is an example of how to include this control in the layout of a view:
+ *     <com.discover.mobile.login.register.CredentialStrengthEditText
+ *       android:id="@+id/passwordTxtView" 
+ *       android:layout_width="fill_parent"
+ *       android:layout_height="wrap_content"
+ *       android:layout_marginTop="100dp"
+ *       android:maxWidth="100dp"
+ *       android:ems="32"
+ *       android:maxEms="32"/>
+ *       
  * @author henryoyuela
  * 
  */
@@ -39,10 +50,6 @@ public class CredentialStrengthEditText extends EditText {
 	 **/
 	public static final int USERID = PASSWORD + 1;
 	/**
-	 * Used for painting strength meter in onDraw method
-	 */
-	private Paint mPaint = new Paint();
-	/**
 	 * Maximum length for a password
 	 */
 	public static final int MAX_PSWD_LENGTH=32;
@@ -54,38 +61,42 @@ public class CredentialStrengthEditText extends EditText {
 	private static final int UID_STRENGTH_HELP = 1;
 	
 	/**
+	 * Used for painting strength meter in onDraw method
+	 */
+	private Paint mPaint = new Paint();
+	/**
 	 * Bitmap used to indicate that the text entered qualifies as a strong
 	 * password
 	 **/
-	private Bitmap mStrongImage = BitmapFactory.decodeResource(
-			this.getResources(), R.drawable.strength_meter_green);
+	private Bitmap mStrongImage = null;
 	/**
 	 * Bitmap used to indicate that the text entered qualifies as a moderate
 	 * strength password
 	 **/
-	private Bitmap mModerateImage = BitmapFactory.decodeResource(
-			this.getResources(), R.drawable.strength_meter_yellow);
+	private Bitmap mModerateImage = null;
 	/**
 	 * Bitmap used to indicate that the text entered qualifies as a weak
 	 * strength password
 	 **/
-	private Bitmap mWeakImage = BitmapFactory.decodeResource(
-			this.getResources(), R.drawable.strength_meter_red);
+	private Bitmap mWeakImage = null;
 	/**
 	 * Bitmap used to indicate that no text to be evaluated
 	 **/
-	private Bitmap mNoTextImage = BitmapFactory.decodeResource(
-			this.getResources(), R.drawable.strength_meter_grey);
+	private Bitmap mNoTextImage = null;
 	/**
 	 * Bitmap rendered by EditText onDraw method based on strength of entered
 	 * text (rules vary based on whether id or password)
 	 **/
-	private Bitmap mStrengthMeter = mNoTextImage;
+	private Bitmap mStrengthMeter;
 	/**
 	 * Contains the boundaries used to determine whether a help guide should be
 	 * opened
 	 **/
 	private Rect mTouchRegion = new Rect();
+	/**
+	 * Used for drawing when OnDraw is called
+	 */
+	private Rect mRect = new Rect();
 	/**
 	 * Contains what rules to use for evaluating strength of entered text. By
 	 * default set to password
@@ -109,10 +120,7 @@ public class CredentialStrengthEditText extends EditText {
 	public CredentialStrengthEditText(Context context) {
 		super(context);
 	}
-
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-	}
+	
 
 	/**
 	 * Returns USERID or PASSWORD depending on what rule is being used to
@@ -123,7 +131,8 @@ public class CredentialStrengthEditText extends EditText {
 	public int getCredentialType() {
 		return mCredentialType;
 	}
-
+	
+	
 	/**
 	 * Sets what rules to use to evaluate strength of the text entered. In addition,
 	 * will set the max length of characters that can be entered for the text field.
@@ -151,8 +160,10 @@ public class CredentialStrengthEditText extends EditText {
 		}	
 		
 		this.setSingleLine();
+		mNoTextImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.strength_meter_grey);
 		mStrengthMeter = mNoTextImage;
 		this.setBackgroundResource(R.drawable.text_field_gray);
+		
 	}
 	
 	/**
@@ -411,32 +422,100 @@ public class CredentialStrengthEditText extends EditText {
 
 		return ret;
 	}
-
+	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-
+		
+		//Fetch information on canvas position within the control
+		canvas.getClipBounds(mRect);
+		
 		//Calculate Position of Strength Meter
-		float xoffset = 14;
 		float yoffset = 1.25f;
-		float padding = 4;
-		float h = getHeight() - padding;
-		float w = mStrengthMeter.getWidth() * h / getHeight();
-		float x = getRight() - w - xoffset;
+		float x = this.getWidth() - mStrengthMeter.getWidth() + mRect.left;
 		float y = this.getScrollY() + yoffset;
 		
+		//Disable Blinking cursor when it reaches the strength meter
+		if( mRect.left != 0 ) {
+			this.setCursorVisible(false);
+		} else {
+			this.setCursorVisible(true);
+		}
+			
+		//Draw Strength meter in the tail of the EditText
+		canvas.drawBitmap(mStrengthMeter, x, y, mPaint);
+	}
+	
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		super.onSizeChanged(w, h, oldw, oldh);
 		
-		//Paint Strength Meter
-		Bitmap scaledSM = Bitmap.createScaledBitmap(mStrengthMeter, (int) w, (int) h, true);
-		canvas.drawBitmap(scaledSM, x, y, mPaint);
-
+		//Temporarily Cache Strength Meter images in its original size
+		Bitmap oldStrongImage = mStrongImage;
+		Bitmap oldModerateImage = mModerateImage;
+		Bitmap oldWeakImage = mWeakImage;
+		Bitmap oldNoTextImage = mNoTextImage;
+		
+		//Scale Strength meter Images to fit within the EditText 
+		scaleAllImages(h, w);
+		
+		//Set current strength meter image in its scaled version
+		if( oldStrongImage == mStrengthMeter ) {
+			mStrengthMeter = mStrongImage;
+		} else if (oldModerateImage == mStrengthMeter ) {
+			mStrengthMeter = mModerateImage;
+		} else if( oldWeakImage == mStrengthMeter) {
+			mStrengthMeter = mWeakImage;
+		} else if(oldNoTextImage == mStrengthMeter) {
+			mStrengthMeter = mNoTextImage;
+		}
+		
+	}
+	
+	/**
+	 * Scale Strength Meter images to fit within the textfield
+	 * @param height The height to use for scaling the images
+	 * @param width  The width to use for scaling the images
+	 */
+	private void scaleAllImages(int height, int width) {
+		//Load All Images
+		mStrongImage = BitmapFactory.decodeResource(
+				this.getResources(), R.drawable.strength_meter_green);
+		mModerateImage = BitmapFactory.decodeResource(
+				this.getResources(), R.drawable.strength_meter_yellow);
+		mWeakImage = BitmapFactory.decodeResource(
+				this.getResources(), R.drawable.strength_meter_red);
+		mNoTextImage = BitmapFactory.decodeResource(
+				this.getResources(), R.drawable.strength_meter_grey);
+		
+		//Scale Images
+		mNoTextImage = scaleImage(mNoTextImage, height, width);
+		mStrongImage = scaleImage(mStrongImage, height, width);
+		mModerateImage = scaleImage(mModerateImage, height, width);
+		mWeakImage = scaleImage(mWeakImage, height, width);
+		
 		// Define touch region based on current control size
 		mTouchRegion.left = (int) getRight() - 60;
 		mTouchRegion.top = 0;
 		mTouchRegion.right = mTouchRegion.left + 60;
-		mTouchRegion.bottom = (int) h;
+		mTouchRegion.bottom = (int) mStrengthMeter.getHeight();
 		
-		Log.v(TAG, "Right=" +x);
 	}
-
+	
+	/**
+	 * Utility function to scale an image
+	 * 
+	 * @param bitmap Reference to the image to be scaled
+	 * @param height The height to use for scaling the image
+	 * @param width The width to use for scaling the image
+	 * @return
+	 */
+	public Bitmap scaleImage(Bitmap bitmap, int height, int width) {
+		float padding = 4;
+		float h = height - padding;
+		float w = bitmap.getWidth() * h / height;
+		
+		return Bitmap.createScaledBitmap(bitmap, (int) w, (int) h, true);
+		
+	}
 }
