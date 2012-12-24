@@ -385,9 +385,18 @@ public class CredentialStrengthEditText extends EditText {
 
 	}
 
+	/**
+	 * This function is a Android View function that has been overridden to detect when the user 
+	 * taps the region of the strength meter that is meant to open a help guide.
+	 * 
+	 * @params  The motion event which provides details of where the user last touched
+	 * @returns True if the event was handled, false otherwise. If the user does not tap within the touchable region, 
+	 * then the base class result is returned; otherwise, false is returned to avoid opening the keyboard.
+	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		boolean ret = false;
+		
 		// Check if touchable region was tapped by user
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			final int x = (int) event.getX();
@@ -423,6 +432,9 @@ public class CredentialStrengthEditText extends EditText {
 		return ret;
 	}
 	
+	/**
+	 * Overridden to paint strength meter over the text field
+	 */
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
@@ -446,6 +458,9 @@ public class CredentialStrengthEditText extends EditText {
 		canvas.drawBitmap(mStrengthMeter, x, y, mPaint);
 	}
 	
+	/**
+	 * Overridden to adjust the strength meter image to the size of the text field
+	 */
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
