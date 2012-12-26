@@ -14,37 +14,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.push.manage.PostPrefDetail;
 import com.discover.mobile.common.push.manage.PostPrefParam;
 import com.discover.mobile.common.push.manage.PostPreferencesDetail;
+import com.discover.mobile.common.push.manage.PreferencesDetail;
 import com.discover.mobile.common.push.manage.PushManageCategoryParamDetail;
 
-/**
- * View created to be used in the push notification manage layout.
- * This is the toggle item along with the information associated with it.
- * 
- * @author jthornton
- *
- */
 public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 
-	/**Category of the item*/
 	private String category;
 
-	/**TitleView of the item*/
 	private TextView titleView;
 	
-	/**Spinner holding the viable amounts*/
 	private Spinner amountSpinner;
 	
-	/**Context of the activity*/
 	private Context context;
-	
-	/**
-	 * Constructor of the class
-	 * @param context - activity context
-	 * @param attrs - layout attributes
-	 */
+
 	public PushManageToogleItemSpinner(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		this.context = context;
@@ -76,10 +60,6 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
         addView(amountText);
 	}
 	
-	/**
-	 * Set the spinner drop down values
-	 * @param values - the values to be displayed in the spinner
-	 */
 	public void setSpinnerDropdown(final List<String> values){
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, 
 																	  R.layout.push_simple_spinner_view,
@@ -88,18 +68,11 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 		amountSpinner.setAdapter(adapter);
 	}
 	
-	/**
-	 * Set the header text
-	 * @param header - string to be shown in the header
-	 */
+
 	public void setHeader(final String header){
 		getHeaderView().setText(header);
 	}
 	
-	/**
-	 * Set the text of the item
-	 * @param text - the text of the item
-	 */
 	public void setText(final String text){
 		if(text.isEmpty()){
 			titleView.setVisibility(View.GONE);
@@ -107,26 +80,14 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 		titleView.setText(text);
 	}
 
-	/**
-	 * Get the category of the item
-	 * @return - the category of the item
-	 */
 	public String getCategory() {
 		return category;
 	}
 
-	/**
-	 * Set if the push item is supposed to be checked
-	 * @param isChecked - true if the push item is supposed to be checked
-	 */
 	public void setCategory(final String category) {
 		this.category = category;
 	}
 	
-	/**
-	 * Get the amount in the spinner
-	 * @return the amount in the spinner
-	 */
 	private String getAmount(){
 		final String amount = amountSpinner.getSelectedItem().toString();
 		if(amount.contains("$")){
@@ -136,32 +97,19 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 		}
 	}
 	
-	/**
-	 * Set if the push item is supposed to be checked
-	 * @param isChecked - true if the push item is supposed to be checked
-	 */
 	@Override
 	public void setPushChecked(final boolean isChecked) {
 		super.setPushAlertBox(isChecked);
 	}
 
-	/**
-	 * Set if the text item is supposed to be checked
-	 * @param isChecked - true if the text item is supposed to be checked
-	 */
 	@Override
 	public void setTextChecked(final boolean isChecked) {
 		super.setTextAlertBox(isChecked);
 	}
 
-	/**
-	 * Get the push preference detail
-	 * @param isMasterPushEnabled - if the master push switch is on
-	 * @return the push preference detail
-	 */
 	@Override
-	public PostPrefDetail getPushPreferencesDetail(final boolean isMasterPushEnabled) {		
-		final PostPrefDetail detail = new PostPrefDetail();
+	public PreferencesDetail getPushPreferencesDetail(final boolean isMasterPushEnabled) {		
+		final PreferencesDetail detail = new PreferencesDetail();
 		detail.prefTypeCode = this.getCategory();
 		if(isMasterPushEnabled && isPushAlertEnabled()){
 			detail.accepted = PostPreferencesDetail.ACCEPT;
@@ -170,7 +118,7 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 		} else{
 			detail.accepted = PostPreferencesDetail.DECLINE;
 		}
-		detail.categoryId = PostPrefDetail.PUSH_PARAM;
+		detail.categoryId = PreferencesDetail.PUSH_PARAM;
 		final List<PostPrefParam> params = new ArrayList<PostPrefParam>();
 		final PostPrefParam param = new PostPrefParam();
 		param.code = PushManageCategoryParamDetail.AMOUNT_CODE;
@@ -180,14 +128,9 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 		return detail;
 	}
 
-	/**
-	 * Get the text preference detail
-	 * @param isMasterTextEnabled - if the master text switch is on
-	 * @return the text preference detail
-	 */
 	@Override
-	public PostPrefDetail getTextPreferencesDetail(final boolean isMasterTextEnabled) {
-		final PostPrefDetail detail = new PostPrefDetail();
+	public PreferencesDetail getTextPreferencesDetail(final boolean isMasterTextEnabled) {
+		final PreferencesDetail detail = new PreferencesDetail();
 		detail.prefTypeCode = this.getCategory();
 		if(isMasterTextEnabled && isTextAlertEnabled() && isWasTextAlreadySet()){
 			detail.accepted = PostPreferencesDetail.ACCEPT;
@@ -198,7 +141,7 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 		} else{
 			detail.accepted = PostPreferencesDetail.DECLINE;
 		}
-		detail.categoryId = PostPrefDetail.TEXT_PARAM;
+		detail.categoryId = PreferencesDetail.TEXT_PARAM;
 		final List<PostPrefParam> params = new ArrayList<PostPrefParam>();
 		final PostPrefParam param = new PostPrefParam();
 		param.code = PostPrefParam.AMOUNT_CODE;

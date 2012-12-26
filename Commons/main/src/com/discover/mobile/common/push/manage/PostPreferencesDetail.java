@@ -32,6 +32,8 @@ public class PostPreferencesDetail implements Serializable{
 
 	/**String representing the user acceptance of the T&C is pending*/
 	public static final String PENDING = "P";
+	
+	public static final String DECLINE = "N";
 
 	/**String representing the user declined the T&C*/
 	public static final String DECLINE = "N";
