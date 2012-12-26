@@ -1,4 +1,4 @@
-package com.discover.mobile.push;
+package com.discover.mobile.push.manage;
 
 import android.content.Context;
 import android.content.res.Resources;

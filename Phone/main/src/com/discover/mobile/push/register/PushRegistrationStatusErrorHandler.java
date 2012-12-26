@@ -1,4 +1,4 @@
-package com.discover.mobile.push;
+package com.discover.mobile.push.register;
 
 import android.content.Context;
 import android.content.Intent;

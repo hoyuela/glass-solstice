@@ -18,7 +18,7 @@ public class PreferencesDetail implements Serializable{
 	private static final long serialVersionUID = 4993285719297737090L;
 
 	@JsonProperty("params")
-	public List<PushManageCategoryParamDetail> params;
+	public List<PostPrefParam> params;
 	
 	@JsonProperty("categoryId")
 	public String categoryId;

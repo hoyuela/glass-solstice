@@ -1,8 +1,8 @@
 package com.discover.mobile.profile;
 
 import com.discover.mobile.common.R;
-import com.discover.mobile.push.PushEnrollFragment;
-import com.discover.mobile.push.PushManageFragment;
+import com.discover.mobile.push.manage.PushManageFragment;
+import com.discover.mobile.push.register.PushEnrollFragment;
 import com.discover.mobile.section.FragmentComponentInfo;
 import com.discover.mobile.section.GroupComponentInfo;
 

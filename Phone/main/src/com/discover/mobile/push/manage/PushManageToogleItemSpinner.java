@@ -1,4 +1,4 @@
-package com.discover.mobile.push;
+package com.discover.mobile.push.manage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.push.manage.PostPrefParam;
+import com.discover.mobile.common.push.manage.PostPreferencesDetail;
 import com.discover.mobile.common.push.manage.PreferencesDetail;
 import com.discover.mobile.common.push.manage.PushManageCategoryParamDetail;
 
@@ -106,15 +108,19 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 	}
 
 	@Override
-	public PreferencesDetail getPushPreferencesDetail(final boolean isMasterPushEnabled) {
-		if(!isPushAlertEnabled()){return null;}
-		
+	public PreferencesDetail getPushPreferencesDetail(final boolean isMasterPushEnabled) {		
 		final PreferencesDetail detail = new PreferencesDetail();
 		detail.prefTypeCode = this.getCategory();
-		detail.accepted = (isMasterPushEnabled) ? PreferencesDetail.ACCEPTED : PreferencesDetail.PENDING; 
+		if(isMasterPushEnabled && isPushAlertEnabled()){
+			detail.accepted = PostPreferencesDetail.ACCEPT;
+		} else if(!isMasterPushEnabled && isPushAlertEnabled()){
+			detail.accepted = PostPreferencesDetail.PENDING;
+		} else{
+			detail.accepted = PostPreferencesDetail.DECLINE;
+		}
 		detail.categoryId = PreferencesDetail.PUSH_PARAM;
-		final List<PushManageCategoryParamDetail> params = new ArrayList<PushManageCategoryParamDetail>();
-		final PushManageCategoryParamDetail param = new PushManageCategoryParamDetail();
+		final List<PostPrefParam> params = new ArrayList<PostPrefParam>();
+		final PostPrefParam param = new PostPrefParam();
 		param.code = PushManageCategoryParamDetail.AMOUNT_CODE;
 		param.value = getAmount();
 		params.add(param);
@@ -124,15 +130,21 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 
 	@Override
 	public PreferencesDetail getTextPreferencesDetail(final boolean isMasterTextEnabled) {
-		if(!isPushAlertEnabled()){return null;}
-		
 		final PreferencesDetail detail = new PreferencesDetail();
 		detail.prefTypeCode = this.getCategory();
-		detail.accepted = (isMasterTextEnabled) ? PreferencesDetail.ACCEPTED : PreferencesDetail.PENDING; 
-		detail.categoryId = PreferencesDetail.PUSH_PARAM;
-		final List<PushManageCategoryParamDetail> params = new ArrayList<PushManageCategoryParamDetail>();
-		final PushManageCategoryParamDetail param = new PushManageCategoryParamDetail();
-		param.code = PushManageCategoryParamDetail.AMOUNT_CODE;
+		if(isMasterTextEnabled && isTextAlertEnabled() && isWasTextAlreadySet()){
+			detail.accepted = PostPreferencesDetail.ACCEPT;
+		} else if(isMasterTextEnabled && isTextAlertEnabled() && !isWasTextAlreadySet()){
+			detail.accepted = PostPreferencesDetail.PENDING;
+		} else if(!isMasterTextEnabled && isTextAlertEnabled()){
+			detail.accepted = PostPreferencesDetail.PENDING;
+		} else{
+			detail.accepted = PostPreferencesDetail.DECLINE;
+		}
+		detail.categoryId = PreferencesDetail.TEXT_PARAM;
+		final List<PostPrefParam> params = new ArrayList<PostPrefParam>();
+		final PostPrefParam param = new PostPrefParam();
+		param.code = PostPrefParam.AMOUNT_CODE;
 		param.value = getAmount();
 		params.add(param);
 		detail.params = params;

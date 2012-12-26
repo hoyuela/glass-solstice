@@ -1,4 +1,4 @@
-package com.discover.mobile.push;
+package com.discover.mobile.push.register;
 
 /**
  * This is an interface for any class that is going to register the vendor id with Discvoer's server.
