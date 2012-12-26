@@ -37,8 +37,8 @@ import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail
 import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
-import com.discover.mobile.push.PushRegistrationStatusErrorHandler;
-import com.discover.mobile.push.PushRegistrationStatusSuccessListener;
+import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
+import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 

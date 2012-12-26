@@ -20,28 +20,22 @@
 		    android:id="@+id/sent_to_number"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:textColor="@color/title"
-		    android:textSize="14sp"
+		    style="@style/push_phone_number_text"
 		    android:text="@string/messages_sent_to"/>
 		
 		<TextView 
 		    android:id="@+id/phone_number"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:textColor="@color/title"
-		    android:text="312-953-3488"
-		    android:textStyle="bold"
-		    android:textSize="16sp"
+		    style="@style/push_phone_number"
 		    android:layout_below="@id/sent_to_number"/>
 		
 		<TextView
 		    android:id="@+id/change_notifications"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:textColor="@color/blue_link"
+		    style="@style/push_change_number"
 		    android:text="@string/notification_change"
-		    android:textStyle="bold"
-		    android:textSize="14sp"
 		    android:layout_below="@id/sent_to_number"
 		    android:layout_alignParentRight="true"/>
 		
@@ -52,7 +46,7 @@
 		    android:layout_marginRight="7dp"
 		    android:layout_height="wrap_content"
 		    android:textColor="@color/white"
-		    android:text="!"
+		    android:text="@string/exclamation"
 		    android:textSize="14sp"
 		    android:background="@drawable/yellow_oval"
 		    android:textStyle="bold"
@@ -76,13 +70,11 @@
 		    android:id="@+id/enable_texts"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:layout_marginRight="@dimen/groups_of_elements_padding"
-		    android:layout_marginLeft="@dimen/groups_of_elements_padding"
+		    android:paddingRight="@dimen/push_toggle_text_from_center"
 		    android:layout_marginTop="@dimen/groups_of_elements_padding"
 		    android:layout_below="@+id/not_registered_warning_text"
 		    android:text="@string/enable_texts"
-		    android:textColor="@color/body_copy"
-		    android:textSize="14sp" />
+		    style="@style/push_toggle_text" />
 	
 		<TextView
 		    android:id="@+id/enable_push"
@@ -91,41 +83,37 @@
 		    android:text="@string/enable_push_alerts"
 		    android:layout_marginTop="@dimen/groups_of_elements_padding"
 		    android:layout_below="@+id/not_registered_warning_text"
-	        android:layout_alignParentRight="true"
-	        android:layout_marginRight="@dimen/groups_of_elements_padding"
-		    android:layout_marginLeft="@dimen/groups_of_elements_padding"
-		    android:textColor="@color/body_copy"
-		    android:textSize="14sp" />
+		    android:paddingLeft="@dimen/push_toggle_text_from_center"
+		    style="@style/push_toggle_text" />
 	
 		<ImageView
 		    android:id="@+id/toggle_enable_texts"
-		    android:layout_width="75dp"
-		    android:layout_height="25dp"
-		    android:layout_marginLeft="6dp"
-		    android:layout_marginRight="50dp"
+		    android:layout_width="@dimen/push_master_toggle_width"
+		    android:layout_height="@dimen/push_master_toggle_height"
+		    android:layout_marginRight="@dimen/text_master_toggle_margin_right"
 		    android:layout_alignLeft="@+id/enable_texts"
 		    android:layout_below="@+id/enable_texts"
+		    android:layout_centerHorizontal="true"
 		    android:background="@drawable/swipe_off"
 		    android:textColor="@color/title" />
-	
-	    <ImageView
-	        android:id="@+id/toggle_enable_push"
-	        android:layout_width="75dp"
-	        android:layout_height="25dp"
-	        android:layout_alignLeft="@+id/enable_push"
-	        android:layout_below="@+id/enable_push"
-	        android:layout_marginLeft="12dp"
-	        android:background="@drawable/swipe_off"
-	        android:textColor="@color/title" />
 		
-		<com.discover.mobile.push.PushManageHeaderItem
+		
+		<ImageView
+		    android:id="@+id/toggle_enable_push"
+		    android:layout_width="@dimen/push_master_toggle_width"
+		    android:layout_height="@dimen/push_master_toggle_height"
+		    android:layout_alignBottom="@+id/toggle_enable_texts"
+		    android:layout_alignRight="@+id/enable_push"
+		    android:layout_marginRight="@dimen/push_master_toggle_margin_right"
+		    android:background="@drawable/swipe_off"
+		    android:textColor="@color/title" />
+		
+		<com.discover.mobile.push.manage.PushManageHeaderItem
 		    android:id="@+id/manage_you_account_header"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_below="@+id/toggle_enable_push"
-		    android:padding="@dimen/forms_inner_padding"
-		    android:background="@drawable/notification_list_item"
-		    android:layout_marginTop="20dp"/>
+		    style="@style/push_manage_header_style"/>
 		
 		<LinearLayout
 		    android:id="@+id/manage_account_list_preferences"
@@ -135,14 +123,12 @@
 		    android:background="@drawable/notification_list_item"
 		    android:orientation="vertical"/>
 		
-		<com.discover.mobile.push.PushManageHeaderItem
+		<com.discover.mobile.push.manage.PushManageHeaderItem
 		    android:id="@+id/monitor_spending_list_header"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_below="@+id/manage_account_list_preferences"
-		    android:padding="@dimen/forms_inner_padding"
-		    android:background="@drawable/notification_list_item"
-		    android:layout_marginTop="20dp"/>
+		    style="@style/push_manage_header_style"/>
 		
 		<LinearLayout
 		    android:id="@+id/monitor_spending_list_preferences"
@@ -152,14 +138,12 @@
 		    android:background="@drawable/notification_list_item"
 		    android:orientation="vertical"/>
 		
-		<com.discover.mobile.push.PushManageHeaderItem
+		<com.discover.mobile.push.manage.PushManageHeaderItem
 		    android:id="@+id/maximize_rewards_list_header"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_below="@+id/monitor_spending_list_preferences"
-		    android:padding="@dimen/forms_inner_padding"
-		    android:background="@drawable/notification_list_item"
-		    android:layout_marginTop="20dp"/>
+		    style="@style/push_manage_header_style"/>
 		
 		<LinearLayout
 		    android:id="@+id/maximize_rewards_list_preferences"
@@ -172,12 +156,13 @@
 		</RelativeLayout>
 	</ScrollView>
 	
-    <com.discover.mobile.push.PushManageSaveView
+    <com.discover.mobile.push.manage.PushManageSaveView
         android:id="@+id/save_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/gray"
-        android:padding="7dp"/>
+        android:background="#EDF1F2"
+        android:padding="@dimen/between_related_elements_padding"
+        android:gravity="center_horizontal"/>
 
 </RelativeLayout>

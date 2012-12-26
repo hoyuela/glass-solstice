@@ -17,9 +17,11 @@ public class PostNotificationPreferences extends JsonResponseMappingNetworkServi
 	
 	public PostNotificationPreferences(final Context context, final AsyncCallback<PostPreferencesDetail> callback,
 			final PostPreferencesDetail formData){
-		super(context, new PostCallParams("cardsvcs/acs/contact/v1/preferences/enrollments") {{ //$NON-NLS-1$
+		super(context, new PostCallParams("/cardsvcs/acs/contact/v1/preferences/enrollments") {{ //$NON-NLS-1$
 			requiresSessionForRequest = true;
 			sendDeviceIdentifiers = true;
+			
+			body = formData;
 		}},
 		PostPreferencesDetail.class);
 		

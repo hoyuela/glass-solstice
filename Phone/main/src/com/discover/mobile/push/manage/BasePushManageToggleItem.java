@@ -1,4 +1,4 @@
-package com.discover.mobile.push;
+package com.discover.mobile.push.manage;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -22,6 +22,8 @@ public abstract class BasePushManageToggleItem extends RelativeLayout implements
 	private boolean isTextChecked = false;
 	
 	private boolean isPushChecked = false;
+	
+	private boolean wasTextAlreadySet = false;
 
 	private final Resources res;
 	
@@ -38,27 +40,27 @@ public abstract class BasePushManageToggleItem extends RelativeLayout implements
 			public void onClick(final View v) {
 				final ImageView toggleImage = (ImageView) v;
 				if(toggleImage.getId() == textAlert.getId()){
-					toggleTextBox();
+					toggleTextBox(!isTextChecked);
 				} else{
-					togglePushBox();
+					togglePushBox(!isPushChecked);
 				}
 			}
 			
 		};
 	}
 	
-	protected void toggleTextBox(){
-		toggleBox(textAlert, isTextChecked);
-		isTextChecked = (isTextChecked) ? false : true;
+	protected void toggleTextBox(final boolean isChecked){
+		toggleBox(textAlert, isChecked);
+		isTextChecked = isChecked;
 	}
 	
-	protected void togglePushBox(){
-		toggleBox(pushAlert, isPushChecked);
-		isPushChecked = (isPushChecked) ? false : true;
+	protected void togglePushBox(final boolean isChecked){
+		toggleBox(pushAlert, isChecked);
+		isPushChecked = isChecked;
 	}
 	
 	protected void toggleBox(final ImageView toggleImage, final boolean isChecked){
-		if(isChecked){
+		if(!isChecked){
 			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
 			toggleImage.setImageDrawable(res.getDrawable(R.drawable.transparent_square));
 		} else{
@@ -76,13 +78,13 @@ public abstract class BasePushManageToggleItem extends RelativeLayout implements
 	}
 	
 	public void setTextAlertBox(final boolean isEnabled){
-		toggleBox(textAlert, isEnabled);
 		isTextChecked = isEnabled;
+		toggleBox(textAlert, isEnabled);
 	}
 	
 	public void setPushAlertBox(final boolean isEnabled){
-		toggleBox(pushAlert, isEnabled);
 		isTextChecked = isEnabled;
+		toggleBox(pushAlert, isEnabled);
 	}	
 	
 	protected ImageView getTextToggleView(){
@@ -109,7 +111,15 @@ public abstract class BasePushManageToggleItem extends RelativeLayout implements
 		return headerView;
 	}
 
-	public void setHeaderView(TextView headerView) {
+	public void setHeaderView(final TextView headerView) {
 		this.headerView = headerView;
+	}
+
+	public boolean isWasTextAlreadySet() {
+		return wasTextAlreadySet;
+	}
+
+	public void setWasTextAlreadySet(final boolean wasTextAlreadySet) {
+		this.wasTextAlreadySet = wasTextAlreadySet;
 	}
 }

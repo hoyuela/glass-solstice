@@ -20,6 +20,8 @@ public class PostPreferencesDetail implements Serializable{
 	public static final String ACCEPT = "Y";
 	
 	public static final String PENDING = "P";
+	
+	public static final String DECLINE = "N";
 
 	@JsonProperty("preferences")
 	private List<PreferencesDetail> prefs;

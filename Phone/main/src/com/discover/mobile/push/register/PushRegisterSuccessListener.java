@@ -1,4 +1,4 @@
-package com.discover.mobile.push;
+package com.discover.mobile.push.register;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.push.registration.DeviceRegistrationDetail;

@@ -1,4 +1,4 @@
-package com.discover.mobile.push;
+package com.discover.mobile.push.manage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +68,8 @@ public class PushManageFragment extends RoboSherlockFragment{
 	
 	private List<PushManageCategoryItem> categoriesList;
 	
+	private PushManageSaveView saveItem;
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class PushManageFragment extends RoboSherlockFragment{
 		phoneNumber = (TextView)mainView.findViewById(R.id.phone_number);
 		enableText = (ImageView)mainView.findViewById(R.id.toggle_enable_texts);
 		enablePush = (ImageView)mainView.findViewById(R.id.toggle_enable_push);
+		saveItem = (PushManageSaveView)mainView.findViewById(R.id.save_view);
 		final TextView termsLaunch = (TextView) mainView.findViewById(R.id.clickable_view);
 		
 		final Button save = (Button) mainView.findViewById(R.id.notification_save_button);
@@ -199,8 +202,6 @@ public class PushManageFragment extends RoboSherlockFragment{
 		
 		for(int i = 0; i < lengthOfHeaders; i++) {
 			final PushManageToogleItemSimple item = createSimpleTextItem(categories[i], headers[i], texts[i]);
-			item.setPushChecked(isParamEnabled(item.getCategory(), PreferencesDetail.PUSH_PARAM));
-			item.setTextChecked(isParamEnabled(item.getCategory(), PreferencesDetail.TEXT_PARAM));
 			if(showCategory(item.getCategory())){
 				list.addView(item);
 			}
@@ -213,10 +214,7 @@ public class PushManageFragment extends RoboSherlockFragment{
 				res.getString(R.string.purchase_amount_category), 
 				res.getString(R.string.purchase_amount_header),
 				prefs.remindersEnrollResults.tamtDefAmt,
-				prefs.remindersEnrollResults.tamtMinAmt);
-		
-		purchase.setPushChecked(isParamEnabled(purchase.getCategory(), PreferencesDetail.PUSH_PARAM));
-		purchase.setTextChecked(isParamEnabled(purchase.getCategory(), PreferencesDetail.TEXT_PARAM));
+				prefs.remindersEnrollResults.tamtMinAmt);		
 		
 		final PushManageToggleItemEditText balance = createEditTextItem(
 				res.getString(R.string.balance_amount_category), 
@@ -224,17 +222,11 @@ public class PushManageFragment extends RoboSherlockFragment{
 				prefs.remindersEnrollResults.balanceDefAmt,
 				prefs.remindersEnrollResults.balanaceMinAmt);
 		
-		balance.setPushChecked(isParamEnabled(balance.getCategory(), PreferencesDetail.PUSH_PARAM));
-		balance.setTextChecked(isParamEnabled(balance.getCategory(), PreferencesDetail.TEXT_PARAM));
-		
 		final PushManageToogleItemSpinner creditLine = createSpinnerItem(
 				res.getString(R.string.credit_line_ammount_category), 
 				res.getString(R.string.credit_line_ammount_header),
 				res.getString(R.string.credit_line_ammount_text),
 				prefs.remindersEnrollResults.crltAmtOptions);
-		
-		creditLine.setPushChecked(isParamEnabled(creditLine.getCategory(), PreferencesDetail.PUSH_PARAM));
-		creditLine.setTextChecked(isParamEnabled(creditLine.getCategory(), PreferencesDetail.TEXT_PARAM));
 		
 		if(showCategory(purchase.getCategory())){
 			monitorList.addView(purchase);
@@ -248,6 +240,30 @@ public class PushManageFragment extends RoboSherlockFragment{
 			monitorList.addView(creditLine);
 		}
 		categoriesList.add(creditLine);
+		
+	}
+	
+	
+	private void createRewardsList() {
+		final PushManageToogleItemSimple rewardsReminder = createSimpleTextItem(
+																res.getString(R.string.rewards_reminder_category),
+																res.getString(R.string.rewards_reminder_header),
+																res.getString(R.string.rewards_reminder_text));
+		
+		final PushManageToggleItemEditText cashBackBonus = createEditTextItem(
+																res.getString(R.string.cashback_bonus_category),
+																res.getString(R.string.cashback_bonus_header),
+																prefs.remindersEnrollResults.mrrwDefAmt,
+																prefs.remindersEnrollResults.mrrwMinAmt);
+		cashBackBonus.hideMinimumAmount();
+		if(showCategory(rewardsReminder.getCategory())){
+			maximizeList.addView(rewardsReminder);
+		}
+		categoriesList.add(rewardsReminder);
+		if(showCategory(cashBackBonus.getCategory())){
+			maximizeList.addView(cashBackBonus);
+		}
+		categoriesList.add(cashBackBonus);
 		
 	}
 	
@@ -277,7 +293,9 @@ public class PushManageFragment extends RoboSherlockFragment{
 		view.setBackgroundDrawable(res.getDrawable(R.drawable.notification_list_item));
 		//FIXME: Pull these out into a dimensions file
 		view.setPadding(14, 28, 14 ,28);
-		//TODO: check to see if that is in the list of categories to show
+		view.setPushChecked(isParamEnabled(category, PreferencesDetail.PUSH_PARAM));
+		view.setTextChecked(isParamEnabled(category, PreferencesDetail.TEXT_PARAM));
+		view.setWasTextAlreadySet(isParamEnabled(category, PreferencesDetail.TEXT_PARAM));
 		return view;
 	}
 	
@@ -295,6 +313,9 @@ public class PushManageFragment extends RoboSherlockFragment{
 		view.setBackgroundDrawable(res.getDrawable(R.drawable.notification_list_item));
 		//FIXME: Pull these out into a dimensions file
 		view.setPadding(14, 28, 14 ,28);
+		view.setPushChecked(isParamEnabled(category, PreferencesDetail.PUSH_PARAM));
+		view.setTextChecked(isParamEnabled(category, PreferencesDetail.TEXT_PARAM));
+		view.setWasTextAlreadySet(isParamEnabled(category, PreferencesDetail.TEXT_PARAM));
 		return view;
 	}
 	
@@ -312,11 +333,14 @@ public class PushManageFragment extends RoboSherlockFragment{
 		view.setBackgroundDrawable(res.getDrawable(R.drawable.notification_list_item));
 		//FIXME: Pull these out into a dimensions file
 		view.setPadding(14, 28, 14 ,28);
+		view.setPushChecked(isParamEnabled(category, PreferencesDetail.PUSH_PARAM));
+		view.setTextChecked(isParamEnabled(category, PreferencesDetail.TEXT_PARAM));
+		view.setWasTextAlreadySet(isParamEnabled(category, PreferencesDetail.TEXT_PARAM));
 		return view;
 	}
 	
 	private ArrayList<String> convertFromIntArray(final List<Integer> displayValues){
-		ArrayList<String> strings = new ArrayList<String>();
+		final ArrayList<String> strings = new ArrayList<String>();
 		for(Integer i : displayValues){
 			strings.add("$ " + Integer.toString(i));
 		}
@@ -333,8 +357,9 @@ public class PushManageFragment extends RoboSherlockFragment{
 		return number.substring(0, 3) + "-" + number.substring(3, 6) + "-" + number.substring(6, 10);
 	}
 	
-	
-	
+	/**
+	 * Clear all the lists so that they can be repopulated
+	 */
 	private void clearLists() {
 		this.manageList.removeAllViews();
 		this.maximizeList.removeAllViews();
@@ -367,20 +392,19 @@ public class PushManageFragment extends RoboSherlockFragment{
 				res.getStringArray(R.array.manage_your_accounts_headers),
 				res.getStringArray(R.array.manage_your_accounts_text));
 		createMonitorList();
-		createList(maximizeList, 
-				res.getStringArray(R.array.maximize_you_rewards_categories),
-				res.getStringArray(R.array.maximize_your_rewards_headers),
-				res.getStringArray(R.array.maximize_your_rewards_text));
+		createRewardsList();;
+		//hideSavebar();
 	}
-	
+
 	public void savePreferences(){
 		final AsyncCallback<PostPreferencesDetail> callback = 
 				GenericAsyncCallback.<PostPreferencesDetail>builder(this.getActivity())
 				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
 									getResources().getString(R.string.push_progress_registration_loading), 
 									true)
-				.withSuccessListener(null)
-				.withErrorResponseHandler(null)
+				.withSuccessListener(new PostPrefsSuccessListener(this))
+				//TODO:  Handle this error appropriately
+				.withErrorResponseHandler(new PushPrefsErrorHandler(this))
 				.build();
 		
 		new PostNotificationPreferences(this.context, callback, getPreferences()).submit();
@@ -390,10 +414,12 @@ public class PushManageFragment extends RoboSherlockFragment{
 		final TelephonyManager telephonyManager =
 				(TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 		final PostPreferencesDetail post = new PostPreferencesDetail();
+		final String version = Build.VERSION.RELEASE;
+		final String phone = phoneNumber.getText().toString().replaceAll("-", "");
+		
 		post.setVid(XtifySDK.getXidKey(context));
 		post.setOs(PostPreferencesDetail.DEFAULT_OS);
-		//TODO: set osVersion and deviceId
-		final String version = Build.VERSION.RELEASE;
+		
 		if(null != version){
 			post.setOsVersion(version);
 		} else{
@@ -402,7 +428,7 @@ public class PushManageFragment extends RoboSherlockFragment{
 		post.setDeviceID(telephonyManager.getDeviceId());
 		post.setRegStatus(PostPreferencesDetail.ACCEPT);
 		post.setAccntOverrideInd(PostPreferencesDetail.OVERRIDE_YES);
-		post.setPhoneNumber(phoneNumber.getText().toString());
+		post.setPhoneNumber(phone);
 		post.setCarrier(getCarrier());
 		post.setPrefs(getPrefs());
 		return post;
@@ -412,16 +438,10 @@ public class PushManageFragment extends RoboSherlockFragment{
 
 	private List<PreferencesDetail> getPrefs() {
 		final List<PreferencesDetail> newPrefs = new ArrayList<PreferencesDetail>();
-		final boolean textIsEnabled = (this.isTextEnabled || (null != prefs.remindersEnrollResults.phoneNumber));
+		final boolean textIsEnabled = (this.isTextEnabled && (null != prefs.remindersEnrollResults.phoneNumber));
 		for(PushManageCategoryItem item : categoriesList){
-			final PreferencesDetail textDetail = item.getTextPreferencesDetail(textIsEnabled);
-			final PreferencesDetail pushDetail = item.getPushPreferencesDetail(this.isPushEnabled);
-			if(null != textDetail){
-				newPrefs.add(textDetail);
-			}
-			if(null != pushDetail){
-				newPrefs.add(pushDetail);
-			}
+			newPrefs.add(item.getTextPreferencesDetail(textIsEnabled));
+			newPrefs.add(item.getPushPreferencesDetail(isPushEnabled));
 		}
 		return newPrefs;
 	}
@@ -430,5 +450,10 @@ public class PushManageFragment extends RoboSherlockFragment{
 	private String getCarrier() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	public void hideSavebar() {
+		saveItem.setVisibility(View.GONE);
 	}
 }

@@ -1,4 +1,4 @@
-package com.discover.mobile.push;
+package com.discover.mobile.push.register;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.error.ErrorResponse;
