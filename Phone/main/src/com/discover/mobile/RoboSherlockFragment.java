@@ -66,6 +66,14 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
     }
     
     /**
+     * Set the visibility of the status bar
+     */
+    public void setStatusBarVisibility(){
+    	final LoggedInRoboActivity activity = (LoggedInRoboActivity)this.getActivity();
+    	activity.setStatusBarVisbility();
+    }
+    
+    /**
      * Show a modal alert dialog for the fragment
      * @param alert - the modal alert to be shown
      */
