@@ -39,9 +39,6 @@ import com.xtify.sdk.api.XtifySDK;
  */
 public class PushManageFragment extends RoboSherlockFragment{
 	
-	//TODO in this class:
-	// 7. Handle rotation
-	
 	/**Static string representing a - */
 	private static final String HYPEN = "-";
 	
@@ -359,8 +356,7 @@ public class PushManageFragment extends RoboSherlockFragment{
 	 * @return the formatted phone number
 	 */
 	private String toPhoneNumber(final String number){
-		//TODO:There must be an easier way
-		return number.substring(0, 3) + HYPEN + number.substring(3, 6) + HYPEN + number.substring(6, 10);
+		return String.format("(%s) %s-%s", number.substring(0, 3), number.substring(3, 6), number.substring(6, 10));
 	}
 	
 	/**
