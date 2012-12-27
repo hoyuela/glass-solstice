@@ -1,6 +1,6 @@
 package com.discover.mobile.push;
 
-import com.discover.mobile.RoboSherlockFragment;
+import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.BaseErrorResponseHandler;
 
@@ -31,10 +31,11 @@ public class PushRegisterErrorHandler extends BaseErrorResponseHandler {
 	 * @param isOptedIn
 	 *            - true if the user is opting into push alerts
 	 */
-	public PushRegisterErrorHandler(final PushRegistrationUI fragment, final boolean isOptedIn) {
-		super((RoboSherlockFragment) fragment);
+	public PushRegisterErrorHandler(final ErrorHandlerUi errorHandlerUi, final PushRegistrationUI fragment, final boolean isOptedIn) {
+		super(errorHandlerUi);
 		this.fragment = fragment;
 		this.isOptedIn = isOptedIn;
+		
 	}
 
 	/**

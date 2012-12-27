@@ -1,8 +1,8 @@
 package com.discover.mobile.login;
 
 import static com.discover.mobile.common.StandardErrorCodes.FORCED_UPGRADE_REQUIRED;
+import android.app.Activity;
 
-import com.discover.mobile.RoboSlidingFragmentActivity;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
@@ -19,14 +19,17 @@ import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
  */
 public class PreAuthErrorResponseHandler extends BaseErrorResponseHandler implements ErrorResponseHandler {
 
+	
+	
 	/**
 	 * Create a PreAuthErrorResponseHandler to handle error responses generated
 	 * 
-	 * @param activity
+	 * @param loginActivity
 	 *            Pass the calling Activity activity to this handler.
 	 */
-	public PreAuthErrorResponseHandler(final RoboSlidingFragmentActivity activity) {
-		super(activity);
+	public PreAuthErrorResponseHandler(final LoginActivity loginActivity) {
+		super(loginActivity);
+		
 	}
 
 	/**
@@ -42,8 +45,8 @@ public class PreAuthErrorResponseHandler extends BaseErrorResponseHandler implem
 		case FORCED_UPGRADE_REQUIRED:
 			TrackingHelper.trackPageView(AnalyticsPage.FORCED_UPGRADE);
 
-			PreAuthCallHelper.showForcedUpgradeAlertDialog(activity);
-			PreAuthCallHelper.updateDateInPrefs(activity);
+			PreAuthCallHelper.showForcedUpgradeAlertDialog(errorHandlerUi);
+			PreAuthCallHelper.updateDateInPrefs(errorHandlerUi.getContext());
 			return true;
 		}
 

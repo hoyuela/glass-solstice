@@ -20,8 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.discover.mobile.ErrorHandlerUi;
-import com.discover.mobile.NotLoggedInRoboActivity;
+import com.discover.mobile.BaseActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.IntentExtraKey;
@@ -41,7 +40,6 @@ import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
-import com.discover.mobile.login.register.StrengthBarHelpActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.PushRegistrationStatusSuccessListener;
@@ -58,7 +56,7 @@ import com.google.inject.Inject;
  * 
  */
 @ContentView(R.layout.login_start)
-public class LoginActivity extends NotLoggedInRoboActivity implements ErrorHandlerUi {
+public class LoginActivity extends BaseActivity  {
 	private final static String emptyString = ""; //$NON-NLS-1$
 
 	/**
@@ -75,16 +73,6 @@ public class LoginActivity extends NotLoggedInRoboActivity implements ErrorHandl
 	private final static String HIDE_LABEL_KEY = "hide";
 	private final static String ERROR_MESSAGE_KEY = "errorText";
 	private final static String ERROR_MESSAGE_VISIBILITY = "errorVisibility";
-	
-	
-	/**
-     *	Hide the action bar 
-     */
-    public void showActionBar(){
-    	super.showActionBar();
-    	getSupportActionBar().hide();
-    }
-	
 	
 	/**
 	 * Roboguise injections of android interface element references.
@@ -620,4 +608,6 @@ public class LoginActivity extends NotLoggedInRoboActivity implements ErrorHandl
 		inputFields.add(passField);
 		return inputFields;
 	}
+
+	
 }

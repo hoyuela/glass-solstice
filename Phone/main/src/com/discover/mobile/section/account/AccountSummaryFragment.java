@@ -12,14 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSherlockFragment;
+import com.discover.mobile.BaseFragment;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.views.GeneralListItemAdapter;
 import com.discover.mobile.views.GeneralListItemModel;
 import com.google.inject.Inject;
 
-public class AccountSummaryFragment extends RoboSherlockFragment {
+public class AccountSummaryFragment extends BaseFragment {
 	
 	@Inject
 	private CurrentSessionDetails currentSessionDetails;

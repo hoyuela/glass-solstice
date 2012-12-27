@@ -2,6 +2,7 @@ package com.discover.mobile.login;
 
 import java.util.Date;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,8 +11,9 @@ import android.net.Uri;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.discover.mobile.BaseFragmentActivity;
+import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSlidingFragmentActivity;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.alert.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.alert.ModalDefaultTopView;
@@ -51,8 +53,9 @@ public class PreAuthCallHelper  {
 	 * upgrade, which will take them to the Google Play store and the Discover app page.
 	 * 
 	 * @param message The message to be presented in the alert dialog.
+	 * 
 	 */
-	public static final void showOptionalUpgradeAlertDialog(final RoboSlidingFragmentActivity activity, final String message) {
+	public static final void showOptionalUpgradeAlertDialog(final Activity activity, final String message) {
 		ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(activity, null);
 		ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(activity, null);
 		
@@ -69,7 +72,7 @@ public class PreAuthCallHelper  {
 			public void onClick(View v) { upgrade(activity); }
 		});
 		
-		activity.showCustomAlert(optionalUpgradeDialog);
+		((BaseFragmentActivity) activity).showCustomAlert(optionalUpgradeDialog);
 	}
 	
 	/**
@@ -79,9 +82,10 @@ public class PreAuthCallHelper  {
 	 * If the user chooses upgrade, they are directed to the Google Play store page for the Discover application.
 	 * If the user cancels the dialog by pressing the back button or otherwise, the application is force quit.
 	 */
-	public static  final void showForcedUpgradeAlertDialog(final RoboSlidingFragmentActivity activity) {
-		ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(activity, null);
-		ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(activity, null);
+	public static  final void showForcedUpgradeAlertDialog(final ErrorHandlerUi errorHandlerUi) {
+		final Context context = errorHandlerUi.getContext();
+		ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(context, null);
+		ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(context, null);
 		
 		titleAndContentForDialog.setTitle(R.string.upgrade_dialog_title);
 		titleAndContentForDialog.setContent(R.string.forced_upgrade_dialog_body);
@@ -90,11 +94,11 @@ public class PreAuthCallHelper  {
 		singleButtonBottomView.setButtonText(R.string.upgrade_dialog_button_text);
 				
 		ModalAlertWithOneButton optionalUpgradeDialog = 
-				new ModalAlertWithOneButton(activity, titleAndContentForDialog, singleButtonBottomView);
+				new ModalAlertWithOneButton(context, titleAndContentForDialog, singleButtonBottomView);
 		
 		singleButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) { upgrade(activity); }
+			public void onClick(View v) { upgrade(context); }
 		});
 		optionalUpgradeDialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
 		@Override
@@ -103,7 +107,7 @@ public class PreAuthCallHelper  {
 		}
 		});	
 		
-		activity.showCustomAlert(optionalUpgradeDialog);
+		errorHandlerUi.showCustomAlert(optionalUpgradeDialog);
 	}
 	
 	/**
@@ -111,7 +115,7 @@ public class PreAuthCallHelper  {
 	 * @param updateDescription The upgrade message to be displayed in the dialog.
 	 * @return 
 	 */
-	protected static final boolean shouldPresentOptionalUpdate(final RoboSlidingFragmentActivity activity, final String updateDescription) {
+	protected static final boolean shouldPresentOptionalUpdate(final Activity activity, final String updateDescription) {
 		if(updateDescription != null) {
 			final SharedPreferences prefs = activity.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
 			
@@ -142,10 +146,10 @@ public class PreAuthCallHelper  {
 	 * Sends the user to the Google Play page for the Discover app.
 	 * Used when a user wants or needs to upgrade their application.
 	 */
-	protected static void upgrade(final RoboSlidingFragmentActivity activity) {
+	protected static void upgrade(final Context context) {
 		final Uri marketUri = Uri.parse("market://details?id=" + PACKAGE_NAME);
 		final Intent androidMarketplaceIntent = new Intent(Intent.ACTION_VIEW, marketUri);
-		activity.startActivity(androidMarketplaceIntent);
+		context.startActivity(androidMarketplaceIntent);
 	}
 
 	/**
@@ -153,8 +157,8 @@ public class PreAuthCallHelper  {
 	 * Used to when determining if it has been 30 days since the last optional upgrade
 	 * messsage was shown.
 	 */
-	protected static void updateDateInPrefs(final RoboSlidingFragmentActivity activity) {
-		final SharedPreferences prefs = activity.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
+	protected static void updateDateInPrefs(final Context context) {
+		final SharedPreferences prefs = context.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
 		
 		final SharedPreferences.Editor editor = prefs.edit();
 		editor.putLong(DATETIME_KEY, new Date().getTime());

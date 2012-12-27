@@ -29,7 +29,7 @@ import com.slidingmenu.lib.SlidingMenu;
  * @author jthornton
  *
  */
-public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
+public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 	
 	/**Pulled out variable for the fade of the sliding menu*/
 	private static final float FADE = 0.35f;
@@ -136,7 +136,7 @@ public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
 									getResources().getString(R.string.push_progress_registration_loading), 
 									true)
 				.withSuccessListener(new LogOutSuccessListener(this))
-				.withErrorResponseHandler(new BaseErrorResponseHandler(this))
+				.withErrorResponseHandler(new BaseErrorResponseHandler((ErrorHandlerUi) this))
 				.build();
 	
 		new LogOutCall(this, callback).submit();

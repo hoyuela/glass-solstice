@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSherlockFragment;
+import com.discover.mobile.BaseFragment;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.views.GeneralListItemAdapter;
 import com.discover.mobile.views.GeneralListItemModel;
 
-public class HomeSummaryFragment extends RoboSherlockFragment {
+public class HomeSummaryFragment extends BaseFragment {
 	
 	private final List<GeneralListItemModel> accountSummaryListItems = new ArrayList<GeneralListItemModel>();
 	

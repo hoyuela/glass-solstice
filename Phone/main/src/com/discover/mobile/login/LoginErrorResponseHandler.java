@@ -8,10 +8,9 @@ import static com.discover.mobile.common.StandardErrorCodes.EXCEEDED_LOGIN_ATTEM
 import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
-import android.content.Context;
 
+import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSlidingFragmentActivity;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
@@ -33,8 +32,8 @@ public class LoginErrorResponseHandler extends BaseErrorResponseHandler {
 	 * 
 	 * @param context - the context of use, expected to be the login screen
 	 */
-	public LoginErrorResponseHandler(final Context context) {
-		super((RoboSlidingFragmentActivity) context);
+	public LoginErrorResponseHandler(final ErrorHandlerUi context) {
+		super(context);
 	}
 	
 	/**
