@@ -18,7 +18,8 @@
     	style="@style/blue_hyperlink"
     	android:layout_alignParentRight="true"
     	android:layout_alignBottom="@+id/history_title"
-    	android:text="@string/edit"/>
+    	android:text="@string/edit"
+        android:visibility="gone"/>
      
     <TextView  
         android:id="@+id/divider"
@@ -27,7 +28,8 @@
     	android:layout_toLeftOf="@+id/edit"
     	android:layout_alignBottom="@+id/history_title"
     	style="@style/blue_hyperlink"
-    	android:text=" | "/>  
+    	android:text=" | "
+        android:visibility="gone"/>  
     
     <TextView
         android:id="@+id/manage"
@@ -36,14 +38,16 @@
     	android:layout_toLeftOf="@+id/divider"
     	android:layout_alignBottom="@+id/history_title"
     	style="@style/blue_hyperlink"
-    	android:text="@string/manage"/>
+    	android:text="@string/manage"
+        android:visibility="gone"/>
     
     <LinearLayout
         android:id="@+id/history_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/history_title"
-        android:background="@color/white"/>
+        android:background="@color/white"
+        android:visibility="gone"/>
     
     <TextView 
         android:id="@+id/older_alerts"
@@ -51,7 +55,8 @@
     	android:layout_height="wrap_content"
     	android:layout_below="@+id/history_list"
     	style="@style/field_copy"
-    	android:text="@string/older_alerts"/>
+    	android:text="@string/older_alerts"
+        android:visibility="gone"/>
     
     <Button
         android:id="@+id/delete_button"
@@ -61,7 +66,8 @@
         android:layout_below="@+id/older_alerts"
         android:text="@string/delete"
         android:layout_centerHorizontal="true"
-        style="@style/white_button"/>
+        style="@style/white_button"
+        android:visibility="gone"/>
     
     <Button
         android:id="@+id/cancel_button"
@@ -71,7 +77,8 @@
         android:layout_below="@+id/delete_button"
         android:text="@string/cancel_text"
         android:layout_centerHorizontal="true"
-        style="@style/blue_hyperlink"/>
+        style="@style/blue_hyperlink"
+        android:visibility="gone"/>
     
 
 </RelativeLayout>
