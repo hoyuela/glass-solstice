@@ -19,9 +19,15 @@ import com.discover.mobile.common.auth.AccountDetails;
  */
 public class StatusBarFragment extends Fragment {
 	
+	/**Text view holding the account name*/
 	private TextView accountName;
-	public final static String TAG = "StatusBarFragment";
-	
+
+	/**
+	 * Create the fragment view
+	 * @param inflater - inflater that will inflate the layout
+	 * @param container - container holding the fragment
+	 * @return the view 
+	 */
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -40,9 +46,14 @@ public class StatusBarFragment extends Fragment {
 		//TODO This is temporary and used just to populate something in the account Name
 		final AccountDetails accountDetails = CurrentSessionDetails.getCurrentSessionDetails().getAccountDetails();
 		
-		accountName.setText(accountDetails.primaryCardMember.nameOnCard);
+		setStatusBarText(accountDetails.primaryCardMember.nameOnCard);
 	}
 	
-	
-
+	/**
+	 * Set the text in the status bar
+	 * @param text - text to set in the status bar
+	 */
+	public void setStatusBarText(final String text){
+		accountName.setText(text);
+	}
 }

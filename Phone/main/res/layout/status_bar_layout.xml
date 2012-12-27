@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="5dp"
         android:gravity="center_vertical"
-        android:text="- - -" />
+        android:text="@string/status_bar_indicators" />
 
     <ImageView
         android:id="@+id/divider_line"
@@ -34,7 +34,7 @@
         android:layout_marginLeft="10dp"
         android:gravity="center_vertical"
         android:textStyle="bold"
-        android:text="Help" />
+        android:text="@string/status_bar_help" />
 
     <TextView
         android:id="@+id/account_name"
