@@ -1,6 +1,7 @@
 package com.discover.mobile.common;
 
 import com.discover.mobile.common.auth.AccountDetails;
+import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
 
 public final class CurrentSessionDetails {
 	
@@ -9,6 +10,9 @@ public final class CurrentSessionDetails {
 	private AccountDetails accountDetails;
 	
 	private boolean isNotCurrentUserRegisteredForPush = false;
+	
+	/**Push prefs retrieved from the server*/
+	private PushNotificationPrefsDetail prefs; 
 	
 	private CurrentSessionDetails(){
 		
@@ -37,6 +41,14 @@ public final class CurrentSessionDetails {
 	public void setNotCurrentUserRegisteredForPush(
 			final boolean isNotCurrentUserRegisteredForPush) {
 		this.isNotCurrentUserRegisteredForPush = isNotCurrentUserRegisteredForPush;
+	}
+
+	public PushNotificationPrefsDetail getPrefs() {
+		return prefs;
+	}
+
+	public void setPrefs(PushNotificationPrefsDetail prefs) {
+		this.prefs = prefs;
 	}
 	
 }

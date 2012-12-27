@@ -33,6 +33,7 @@
    	<string name="another_user_registered">A previous account has set up Push Alerts on this phone. What would you like to do?</string>
    	<string name="keep_current_settings">Keep current account settings</string>
    	<string name="remove_current_settings">Remove previous account settings</string>
+   	<string name="push_manage_save_success">Text and Push Alerts settings have been updated.</string>
     
     <string name="notifcation_terms_and_condtions_header">Mobile Reminders, Fraud Alerts and Push Alerts Terms of Use</string>
     <string name="notification_terms_agreement">By signing up to receive Mobile Reminders and/or Fraud Alerts (“Text Messages”) or Push Alerts (“Push Alerts”), you agree to the following Terms of Use. By accessing or using Text Messages or Push Alerts, you agree to be bound by these Terms and all terms incorporated by reference.  If you do not agree to these Terms, do not sign up for or use Text Messages or Push Alerts.  DFS means Discover Products Inc. and its affiliates."</string>
