@@ -446,16 +446,10 @@ public class CredentialStrengthEditText extends EditText {
 		float yoffset = 1.25f;
 		float x = this.getWidth() - mStrengthMeter.getWidth() + mRect.left;
 		float y = this.getScrollY() + yoffset;
-		
-		//Disable Blinking cursor when it reaches the strength meter
-		if( mRect.left != 0 ) {
-			this.setCursorVisible(false);
-		} else {
-			this.setCursorVisible(true);
-		}
 			
 		//Draw Strength meter in the tail of the EditText
 		canvas.drawBitmap(mStrengthMeter, x, y, mPaint);
+		
 	}
 	
 	/**
@@ -485,6 +479,12 @@ public class CredentialStrengthEditText extends EditText {
 			mStrengthMeter = mNoTextImage;
 		}
 		
+		//Add padding to the right that is equal to the width of the strength meter image,
+		//so that if the text entered is long enough to reach to the strength meter
+		//it does not go under the strength meter image, and instead begins to scroll to the right
+		if( this.getPaddingRight() < mStrengthMeter.getWidth() ) {
+			this.setPadding(this.getPaddingLeft(), this.getPaddingTop(), this.getPaddingRight() + mStrengthMeter.getWidth(), this.getPaddingBottom());
+		}
 	}
 	
 	/**
