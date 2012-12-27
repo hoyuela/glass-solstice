@@ -27,10 +27,11 @@ abstract class NavigationItem {
 	static void initializeAdapterWithSections(final NavigationItemAdapter adapter) {
 		final FragmentNavigationItem firstItem = initializeAdapterWithFirstSection(adapter);
 		initializeAdapterWithRemainingSections(adapter);
-		
+
 		adapter.setSelectedItem(firstItem);
 		adapter.getNavigationRoot().makeFragmentVisible(firstItem.getCachedOrCreateFragment());
-		// TODO set first section as selected
+		// TODO set first section as selected	 
+		
 	}
 	
 	private static FragmentNavigationItem initializeAdapterWithFirstSection(final NavigationItemAdapter adapter) {

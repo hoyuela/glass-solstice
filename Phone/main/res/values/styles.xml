@@ -17,10 +17,10 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    
-    <style name="AppTheme.NoTitleBar" parent="Theme.Sherlock.NoActionBar">
+  
+	<style name="AppTheme.NoTitleBar" parent="Theme.Sherlock.NoActionBar">
     </style>
-    
+   
     <style name="OrangeTheme">
         <item name="android:background">@drawable/login_bkgd</item>
     </style>
@@ -216,4 +216,27 @@
         <item name="android:layout_marginLeft">@dimen/modal_left_padding</item>
     </style>
 
+    <!--Style for strength level in help guide -->
+	<style name="strength_help_level_message"  parent="title_copy">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+    
+    <!--Style for action message in help guide -->
+	<style name="action_message"  parent="small_copy">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+	  	<item name="android:textColor">@color/sub_copy</item> 	
+	  	<item name="android:textStyle">bold</item>
+    </style>
+    
+    <!--NEED HELP? TEXT / #3d484d / 34pt font-size / centered / bold -->
+	<style name="need_help_text"  parent="body_copy">
+	    <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+	
+	<!--1-800-347-2683 NUMBER LINK / #0267b1 / 34pt / regular-->
+	<style name="need_help_number_link"  parent="body_copy">
+	    <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+	    <item name="android:textColor">#0267b1</item>
+	</style>
 </resources>

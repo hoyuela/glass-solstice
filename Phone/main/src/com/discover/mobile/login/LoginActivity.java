@@ -41,6 +41,7 @@ import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
+import com.discover.mobile.login.register.StrengthBarHelpActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.PushRegistrationStatusSuccessListener;
@@ -292,6 +293,7 @@ public class LoginActivity extends NotLoggedInRoboActivity implements ErrorHandl
 	 * execute the specified functionality in onClick when they are clicked...
 	 */
 	private void setupButtons() {
+	
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
