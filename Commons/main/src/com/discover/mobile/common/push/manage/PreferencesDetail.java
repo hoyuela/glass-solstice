@@ -29,7 +29,7 @@ public class PreferencesDetail implements Serializable{
 
 	/**List of params associated with this preference*/
 	@JsonProperty("params")
-	public List<PostPrefParam> params;
+	public List<PushManageCategoryParamDetail> params;
 	
 	/**Category of this preference*/
 	@JsonProperty("categoryId")
