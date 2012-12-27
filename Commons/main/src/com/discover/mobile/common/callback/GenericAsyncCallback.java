@@ -21,6 +21,13 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFail
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.error.ErrorResponse;
 
+/**
+ * 
+ * 
+ * @author ghayworth,ekaram
+ *
+ * @param <V>
+ */
 public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	
 	// FIXME make ALL callbacks with the same priority happen in appropriate order, not just the order for that type of
@@ -31,13 +38,17 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	private final @Nonnull List<CompletionListener> completionListeners;
 	private final @Nonnull List<SuccessListener<V>> successListeners;
 	private final @Nonnull List<ExceptionFailureHandler> exceptionFailureHandlers;
-	private final @Nonnull List<ErrorResponseHandler> errorResponseHandlers;
+	/**
+	 * We only need one error response handler; we will use inheritance 
+	 * @see BaseErrorResponseHandler
+	 */
+	private final @Nonnull ErrorResponseHandler errorResponseHandler;
 	
 	private GenericAsyncCallback(final Builder<V> builder) {
 		completionListeners = safeSortedCopy(builder.completionListeners);
 		successListeners = safeSortedCopy(builder.successListeners);
 		exceptionFailureHandlers = safeSortedCopy(builder.exceptionFailureHandlers);
-		errorResponseHandlers = safeSortedCopy(builder.errorResponseHandlers);
+		errorResponseHandler = builder.errorResponseHandler;
 	}
 
 	@Override
@@ -60,8 +71,6 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	public void failure(final Throwable executionException) {
 		Log.w(TAG, "caught throwable during execution", executionException);
 		
-		// TODO generic handling, error message, throw exception if not handled
-		
 		boolean handled = false;
 		for(final ExceptionFailureHandler handler : exceptionFailureHandlers) {
 			handled = handler.handleFailure(executionException);
@@ -79,19 +88,11 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	public void failure(final ErrorResponse<?> errorResponse) {
 		Log.w(TAG, "server returned errorResponse: " + errorResponse);
 		
-		// TODO generic handling, error message, throw exception if not handled
-
 		boolean handled = false;
-		for(final ErrorResponseHandler handler : errorResponseHandlers) {
-			handled = handler.handleFailure(errorResponse);
-			if(handled)
-				break;
-		}
-		
-		safeClear(errorResponseHandlers);
+		handled = errorResponseHandler.handleFailure(errorResponse);
 		
 		if(!handled)
-			throw new UnsupportedOperationException("No handler for errorResponse: " + errorResponse);
+			Log.e(TAG,"No handler for errorResponse: " + errorResponse);
 	}
 	
 	@SuppressWarnings("null")
@@ -118,12 +119,14 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	
 	public static final class Builder<V> {
 		
+
 		private final @Nonnull Activity activity;
 		
 		private @Nullable List<CompletionListener> completionListeners;
 		private @Nullable List<SuccessListener<V>> successListeners;
 		private @Nullable List<ExceptionFailureHandler> exceptionFailureHandlers;
-		private @Nullable List<ErrorResponseHandler> errorResponseHandlers;
+		public ErrorResponseHandler errorResponseHandler;
+
 		
 		public Builder(final @Nonnull Activity activity) {
 			this.activity = activity;
@@ -158,10 +161,8 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		}
 		
 		public Builder<V> withErrorResponseHandler(final ErrorResponseHandler errorResponseHandler) {
-			if(errorResponseHandlers == null)
-				errorResponseHandlers = new LinkedList<ErrorResponseHandler>();
-			errorResponseHandlers.add(errorResponseHandler);
-			
+			this.errorResponseHandler = errorResponseHandler;
+		
 			return this;
 		}
 		

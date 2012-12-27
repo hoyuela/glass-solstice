@@ -83,7 +83,17 @@ public class ModalDefaultTopView extends LinearLayout implements ModalTopView{
 			errorImage.setVisibility(View.GONE);
 		}
 		
-			
+	}
+	/**
+	 * Set the content of the view with dynamic text 
+	 * 
+	 * DO NOT USE WITH STATIC TEXT, PLEASE USE INT METHOD 
+	 * and pull from resource file
+	 * 
+	 * @param resource - int representing the resource to be displayed
+	 */
+	public void setDynamicContent(final String content) {
+		text.setText(content);
 	}
 
 }

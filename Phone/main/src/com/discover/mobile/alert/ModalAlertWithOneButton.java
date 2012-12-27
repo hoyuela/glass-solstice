@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.discover.mobile.R;
@@ -36,6 +37,71 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		super(context);
 		this.top = top;
 		this.bottom = bottom;
+	}
+
+	/**
+	 * An alternate way to create a modal alert with one button 
+	 * by supplying content only
+	 * 
+	 * @param context 
+	 * @param title - the title for the alert
+	 * @param content - the body text for the alert
+	 * @param buttonText - the button text for the alert
+	 */
+	public ModalAlertWithOneButton(final Context context, 
+			final int title, final int content, 
+			final int buttonText) {
+		
+		super(context);
+		
+		final ModalDefaultTopView topView = new ModalDefaultTopView(context, null);
+		final ModalDefaultOneButtonBottomView bottomView = new ModalDefaultOneButtonBottomView(context, null);
+		
+		topView.setTitle(title);
+		topView.setContent(content);
+		bottomView.setButtonText(buttonText);
+		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				dismiss();
+			}
+			
+		});
+		
+		this.top = topView;
+		this.bottom = bottomView;
+	}
+	
+	/**
+	 * Constructor for the alert
+	 * @param context - activity context
+	 * @param top - top piece to be displayed
+	 * @param bottom - bottom piece to be displayed
+	 */
+	public ModalAlertWithOneButton(final Context context, 
+			final int title, final String content, 
+			final int buttonText) {
+		
+		super(context);
+		
+		final ModalDefaultTopView topView = new ModalDefaultTopView(context, null);
+		final ModalDefaultOneButtonBottomView bottomView = new ModalDefaultOneButtonBottomView(context, null);
+		
+		topView.setTitle(title);
+		topView.setDynamicContent(content);
+		bottomView.setButtonText(buttonText);
+		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				dismiss();
+			}
+			
+		});
+		
+		this.top = topView;
+		this.bottom = bottomView;
 	}
 	
 	/**
