@@ -215,7 +215,7 @@
         <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item>
         <item name="android:layout_marginLeft">@dimen/modal_left_padding</item>
 	</style>
-	
+
     <style name="push_toggle_box_default">
         <item name="android:padding">@dimen/between_related_elements_padding</item>
         <item name="android:layout_marginLeft">@dimen/between_related_elements_padding</item>
