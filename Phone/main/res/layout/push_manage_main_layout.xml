@@ -15,13 +15,23 @@
 	        android:layout_width="match_parent"
 	   		android:layout_height="wrap_content" 
 	   		android:padding="@dimen/forms_inner_padding">
+	   		
+	    <TextView
+	        android:id="@+id/hidden_field"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/push_manage_save_success"
+	        style="@style/push_manage_save_success"
+	        android:layout_marginBottom="@dimen/between_related_elements_padding"
+	        android:visibility="gone"/>
 	    
 		<TextView 
 		    android:id="@+id/sent_to_number"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    style="@style/push_phone_number_text"
-		    android:text="@string/messages_sent_to"/>
+		    android:text="@string/messages_sent_to"
+		    android:layout_below="@+id/hidden_field"/>
 		
 		<TextView 
 		    android:id="@+id/phone_number"

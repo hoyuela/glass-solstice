@@ -276,5 +276,11 @@
         <item name="android:maxLines">1</item>
         <item name="android:layout_centerHorizontal">true</item>
     </style>
+    
+    <style name="push_manage_save_success">
+        <item name="android:textColor">@color/orange_link_idicator</item>
+	    <item name="android:textStyle">bold</item>	
+        <item name="android:textSize">18sp</item>
+    </style>
 
 </resources>
