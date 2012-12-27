@@ -1,9 +1,10 @@
 package com.discover.mobile.push.register;
 
+import android.app.Activity;
 import android.content.Intent;
 
-import com.discover.mobile.RoboSlidingFragmentActivity;
 import com.discover.mobile.login.BaseErrorResponseHandler;
+import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 
 /**
@@ -17,14 +18,17 @@ import com.discover.mobile.navigation.NavigationRootActivity;
  */
 public class PushRegistrationStatusErrorHandler extends BaseErrorResponseHandler  {
 
+	Activity activity;
+	
 	/**
 	 * Constructor for the class
 	 * 
-	 * @param activity
+	 * @param loginActivity
 	 *            - activity context
 	 */
-	public PushRegistrationStatusErrorHandler(RoboSlidingFragmentActivity activity) {
-		super(activity);
+	public PushRegistrationStatusErrorHandler(LoginActivity loginActivity) {
+		super(loginActivity);
+		this.activity=loginActivity;
 	}
 
 	/**
@@ -45,6 +49,7 @@ public class PushRegistrationStatusErrorHandler extends BaseErrorResponseHandler
 	 */
 	@Override
 	protected boolean handleJsonErrorCode(com.discover.mobile.common.net.json.JsonMessageErrorResponse messageErrorResponse) {
+		
 		//FIXME are we sure we want to suppress this error code
 		final Intent intent = new Intent(activity, NavigationRootActivity.class);
 		activity.startActivity(intent);

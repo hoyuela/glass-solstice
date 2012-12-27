@@ -7,15 +7,17 @@ import static com.discover.mobile.common.StandardErrorCodes.UNSCHEDULED_MAINTENA
 
 import java.net.HttpURLConnection;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSherlockFragment;
-import com.discover.mobile.RoboSlidingFragmentActivity;
+import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -39,28 +41,14 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	/**
 	 * The Parent RoboSlidingFragmentActvitiy that made the service call
 	 */
-	protected RoboSlidingFragmentActivity activity = null;
+	protected ErrorHandlerUi errorHandlerUi = null;
+	
 	/**
-	 * The Parent activity that made the service call
+	 * Private constructor to prevent construction without a fragment or
+	 * activity
 	 */
-	protected RoboSherlockFragment fragment = null;
-
-	/**
-	 * Constructor takes the parent activity that made the service call
-	 * 
-	 * @param activity
-	 */
-	public BaseErrorResponseHandler(final RoboSlidingFragmentActivity pActivity) {
-		this.activity = pActivity;
-	}
-
-	/**
-	 * Constructor takes the parent activity that made the service call
-	 * 
-	 * @param activity
-	 */
-	public BaseErrorResponseHandler(final RoboSherlockFragment pfragment) {
-		this.fragment = pfragment;
+	public BaseErrorResponseHandler(ErrorHandlerUi errorHandlerUi) {
+		this.errorHandlerUi = errorHandlerUi;
 	}
 
 	/**
@@ -98,19 +86,19 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 			// FIRST we will try for common status code generic handling
 			switch (messageErrorResponse.getMessageStatusCode()) {
 			case UNSCHEDULED_MAINTENANCE:
-				sendToErrorPage(R.string.temporary_outage);
+				getErrorFieldUi().sendToErrorPage(R.string.temporary_outage);
 				return true;
 
 			case SCHEDULED_MAINTENANCE:
-				sendToErrorPage(R.string.planned_outage_one);
+				getErrorFieldUi().sendToErrorPage(R.string.planned_outage_one);
 				return true;
 
 			case PLANNED_OUTAGE:
-				sendToErrorPage(R.string.planned_outage_one);
+				getErrorFieldUi().sendToErrorPage(R.string.planned_outage_one);
 				return true;
 
 			case NO_DATA_FOUND:
-				sendToErrorPage(R.string.no_data_found);
+				getErrorFieldUi().sendToErrorPage(R.string.no_data_found);
 				return true;
 
 			}
@@ -144,7 +132,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 */
 	protected void setInputFieldsDrawableToRed() {
 		ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
-		if (errorHandlerUi != null) {
+		if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
 			for (EditText text : errorHandlerUi.getInputFields()) {
 				text.setBackgroundResource(R.drawable.edit_text_red);
 			}
@@ -158,7 +146,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	protected void clearInputs() {
 
 		ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
-		if (errorHandlerUi != null) {
+		if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
 			for (EditText text : errorHandlerUi.getInputFields()) {
 				text.setText("");
 			}
@@ -200,44 +188,21 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 			return true;
 
 		case HttpURLConnection.HTTP_INTERNAL_ERROR:
-			sendToErrorPage(R.string.internal_server_error_500);
+			getErrorFieldUi().sendToErrorPage(R.string.internal_server_error_500);
 			return true;
 
 		case HttpURLConnection.HTTP_UNAVAILABLE:
-			sendToErrorPage(R.string.internal_server_error_503);
+			getErrorFieldUi().sendToErrorPage(R.string.internal_server_error_503);
 			return true;
 
 		case HttpURLConnection.HTTP_FORBIDDEN:
-			sendToErrorPage(R.string.forbidden_403);
+			getErrorFieldUi().sendToErrorPage(R.string.forbidden_403);
 			return true;
 		}
 		return false;
 	}
 
-	/**
-	 * A common method used to forward user to error page with a given static
-	 * string text message
-	 * 
-	 * @param errorText
-	 */
-	protected void sendToErrorPage(int titleText, int errorText) {
-		final Intent maintenancePageIntent = new Intent((Context) activity, LockOutUserActivity.class);
-		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
-		getActivity().startActivity(maintenancePageIntent);
-		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
-	}
-
-	/**
-	 * A common method used to forward user to error page with a given static
-	 * string text message
-	 * 
-	 * @param errorText
-	 */
-	protected void sendToErrorPage(int errorText) {
-		final Intent maintenancePageIntent = new Intent((Context) activity, LockOutUserActivity.class);
-		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
-		getActivity().startActivity(maintenancePageIntent);
-	}
+	
 
 	/**
 	 * A common method used to display a modal dialog with an error message
@@ -245,7 +210,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * @param stringResource
 	 */
 	protected void showModalErrorDialog(int title, int content, int buttonText) {
-		getActivity().showOneButtonAlert(title, content, buttonText);
+		getErrorFieldUi().showOneButtonAlert(title, content, buttonText);
 	}
 
 	/**
@@ -254,7 +219,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * @param stringResource
 	 */
 	protected void showDynamicModalErrorDialog(int title, String content, int buttonText) {
-		getActivity().showDynamicOneButtonAlert(title, content, buttonText);
+		getErrorFieldUi().showDynamicOneButtonAlert(title, content, buttonText);
 	}
 
 	/**
@@ -270,7 +235,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	protected void setErrorText(int errorText) {
 		ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
 		if (errorHandlerUi != null) {
-			errorHandlerUi.getErrorLabel().setText(((Context) activity).getResources().getString(errorText));
+			errorHandlerUi.getErrorLabel().setText(((Context) errorHandlerUi).getResources().getString(errorText));
 			errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
 		}
 	}
@@ -303,26 +268,71 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * 
 	 * @return
 	 */
-	private ErrorHandlerUi getErrorFieldUi() {
-		if (activity != null && activity instanceof ErrorHandlerUi) {
-			return (ErrorHandlerUi) activity;
-		} else if (fragment != null && fragment instanceof ErrorHandlerUi) {
-			return (ErrorHandlerUi) fragment;
-		}
-		return null;
+	protected ErrorHandlerUi getErrorFieldUi() {
+		return errorHandlerUi;
+	}
+
+
+	/**
+     * Show a custom modal alert dialog for the activity
+     * @param alert - the modal alert to be shown
+     */
+    public void showCustomAlert(final AlertDialog alert){
+    	alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		alert.show();
+		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+    }
+    
+    /**
+     * Show the default one-button alert with a custom title, content an button text
+     * 
+     * Uses the orange button
+     * 
+     * @param title - the resource id for title for the alert
+     * @param content - the resource id for content to display on the box
+     * @param buttonText - the resource id for button text to display on the button
+     */
+    public void showOneButtonAlert(int title, int content, int buttonText){    	
+		showCustomAlert(new ModalAlertWithOneButton(getErrorFieldUi().getContext(),title,content,buttonText));
+    }
+    
+    /**
+     * Show the default one-button alert with a custom title, content an button text
+     * 
+     * Uses the orange button
+     * 
+     * @param title - the resource id for title for the alert
+     * @param content - the resource id for content to display on the box
+     * @param buttonText - the resource id for button text to display on the button
+     */
+    public void showDynamicOneButtonAlert(int title, String content, int buttonText){    	
+		showCustomAlert(new ModalAlertWithOneButton(getErrorFieldUi().getContext(),title,content,buttonText));
+    }
+    
+    
+    /**
+	 * A common method used to forward user to error page with a given static
+	 * string text message
+	 * 
+	 * @param errorText
+	 */
+	protected void sendToErrorPage(int titleText, int errorText) {
+		final Intent maintenancePageIntent = new Intent(getErrorFieldUi().getContext(), LockOutUserActivity.class);
+		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
+		getErrorFieldUi().getContext().startActivity(maintenancePageIntent);
+		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 	}
 
 	/**
+	 * A common method used to forward user to error page with a given static
+	 * string text message
 	 * 
-	 * @return
+	 * @param errorText
 	 */
-	private RoboSlidingFragmentActivity getActivity() {
-		if (activity != null)
-			return activity;
-		if (fragment != null)
-			return ((RoboSlidingFragmentActivity) fragment.getActivity());
-		// unreachable code due to private constructor
-		throw new RuntimeException("Improper instantiation of the ErrorResponseHandler");
+	protected void sendToErrorPage(int errorText) {
+		final Intent maintenancePageIntent = new Intent(getErrorFieldUi().getContext(), LockOutUserActivity.class);
+		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
+		getErrorFieldUi().getContext().startActivity(maintenancePageIntent);
 	}
 
 }

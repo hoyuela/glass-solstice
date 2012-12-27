@@ -1,8 +1,8 @@
 package com.discover.mobile.login;
 
+import android.app.Activity;
 import android.util.Log;
 
-import com.discover.mobile.RoboSlidingFragmentActivity;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
@@ -17,11 +17,11 @@ import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListen
  */
 public class PreAuthSuccessResponseHandler extends PreAuthCallHelper implements SuccessListener<PreAuthResult>{
 	
-	RoboSlidingFragmentActivity activity;
+	Activity activity;
 
 	private final static String TAG = PreAuthErrorResponseHandler.class.getSimpleName();
 	
-	public PreAuthSuccessResponseHandler(final RoboSlidingFragmentActivity activity) {
+	public PreAuthSuccessResponseHandler(final Activity activity) {
 		this.activity = activity;
 	}
 	

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSherlockFragment;
+import com.discover.mobile.BaseFragment;
 
 /**
  * The push terms and conditions screen. It shows the terms and conditions
@@ -15,7 +15,7 @@ import com.discover.mobile.RoboSherlockFragment;
  * @author jthornton
  *
  */
-public class PushTermsAndConditionsFragment extends RoboSherlockFragment{
+public class PushTermsAndConditionsFragment extends BaseFragment{
 
 	/**
 	 * Creates the fragment, inflates the view and defines the button functionality.

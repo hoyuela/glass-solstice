@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSherlockFragment;
+import com.discover.mobile.BaseFragment;
 
-public class AccountStatementsFragment extends RoboSherlockFragment {
+public class AccountStatementsFragment extends BaseFragment {
 	
 	// TEMP
 	@Override

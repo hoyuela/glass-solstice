@@ -5,8 +5,9 @@ import android.content.Context;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 
+import com.discover.mobile.BaseFragment;
+import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSherlockFragment;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.push.registration.DeviceRegistrationDetail;
@@ -19,7 +20,7 @@ import com.xtify.sdk.api.XtifySDK;
  * @author jthornton
  *
  */
-public abstract class BasePushRegistrationUI extends RoboSherlockFragment implements PushRegistrationUI{
+public abstract class BasePushRegistrationUI extends BaseFragment implements PushRegistrationUI{
 		
 	/**String representing that the user opted into the alerts*/
 	public static final String ACCEPT = "Y"; //$NON-NLS-1$
@@ -52,7 +53,7 @@ public abstract class BasePushRegistrationUI extends RoboSherlockFragment implem
 									context.getResources().getString(R.string.push_progress_registration_loading), 
 									true)
 				.withSuccessListener(new PushRegisterSuccessListener(this, sendToMange))
-				.withErrorResponseHandler(new PushRegisterErrorHandler(this, sendToMange))
+				.withErrorResponseHandler(new PushRegisterErrorHandler((ErrorHandlerUi)this.getActivity(),this, sendToMange))
 				.build();
 		
 		new RegisterVenderIdCall(context, callback, detail).submit();
