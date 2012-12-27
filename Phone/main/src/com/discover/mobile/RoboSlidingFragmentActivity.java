@@ -1,3 +1,4 @@
+
 package com.discover.mobile;
 
 import java.util.HashMap;
@@ -16,7 +17,6 @@ import roboguice.activity.event.OnResumeEvent;
 import roboguice.activity.event.OnStartEvent;
 import roboguice.activity.event.OnStopEvent;
 import roboguice.event.EventManager;
-import roboguice.inject.ContentViewListener;
 import roboguice.inject.RoboInjector;
 import roboguice.util.RoboContext;
 import android.app.AlertDialog;
@@ -27,8 +27,8 @@ import android.support.v4.app.Fragment;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 
+import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.common.SharedPreferencesWrapper;
-import com.google.inject.Inject;
 import com.google.inject.Key;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -47,8 +47,6 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
 	
     protected EventManager eventManager;
     protected HashMap<Key<?>,Object> scopedObjects = new HashMap<Key<?>, Object>();
-    
-    @Inject ContentViewListener ignored; // BUG find a better place to put this
     
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -221,12 +219,38 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
 	} 
     
 	/**
-     * Show a modal alert dialog for the activity
+     * Show a custom modal alert dialog for the activity
      * @param alert - the modal alert to be shown
      */
-    public void showAlert(final AlertDialog alert){
+    public void showCustomAlert(final AlertDialog alert){
     	alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+    }
+    
+    /**
+     * Show the default one-button alert with a custom title, content an button text
+     * 
+     * Uses the orange button
+     * 
+     * @param title - the resource id for title for the alert
+     * @param content - the resource id for content to display on the box
+     * @param buttonText - the resource id for button text to display on the button
+     */
+    public void showOneButtonAlert(int title, int content, int buttonText){    	
+		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
+    }
+    
+    /**
+     * Show the default one-button alert with a custom title, content an button text
+     * 
+     * Uses the orange button
+     * 
+     * @param title - the resource id for title for the alert
+     * @param content - the resource id for content to display on the box
+     * @param buttonText - the resource id for button text to display on the button
+     */
+    public void showDynamicOneButtonAlert(int title, String content, int buttonText){    	
+		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
     }
 }

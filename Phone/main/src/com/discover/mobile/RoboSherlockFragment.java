@@ -71,7 +71,7 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
      */
     public void showAlertDialog(final AlertDialog alert){
     	final RoboSlidingFragmentActivity activity= (RoboSlidingFragmentActivity)this.getActivity();
-    	activity.showAlert(alert);
+    	activity.showCustomAlert(alert);
     }
     
     /**

@@ -1,8 +1,8 @@
 package com.discover.mobile.login;
 
-import android.app.Activity;
 import android.util.Log;
 
+import com.discover.mobile.RoboSlidingFragmentActivity;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
@@ -15,11 +15,13 @@ import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListen
  * @author scottseward
  *
  */
-public class PreAuthSuccessResponseHandler extends AbstractPreAuthCallHandler implements SuccessListener<PreAuthResult>{
+public class PreAuthSuccessResponseHandler extends PreAuthCallHelper implements SuccessListener<PreAuthResult>{
+	
+	RoboSlidingFragmentActivity activity;
 
 	private final static String TAG = PreAuthErrorResponseHandler.class.getSimpleName();
 	
-	public PreAuthSuccessResponseHandler(final Activity activity) {
+	public PreAuthSuccessResponseHandler(final RoboSlidingFragmentActivity activity) {
 		this.activity = activity;
 	}
 	
@@ -36,10 +38,9 @@ public class PreAuthSuccessResponseHandler extends AbstractPreAuthCallHandler im
 	@Override
 	public void success(final PreAuthResult value) {
 		Log.d(TAG, "Pre-auth status code: " + value.statusCode);
-		
-		if(shouldPresentOptionalUpdate(value.upgradeDescription)) {
+		if(PreAuthCallHelper.shouldPresentOptionalUpdate(activity,value.upgradeDescription)) {
 			TrackingHelper.trackPageView(AnalyticsPage.OPTIONAL_UPGRADE);
-			showOptionalUpgradeAlertDialog(value.upgradeDescription);
+			PreAuthCallHelper.showOptionalUpgradeAlertDialog(activity,value.upgradeDescription);
 		} 		
 	}
 	

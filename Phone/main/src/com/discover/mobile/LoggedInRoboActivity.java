@@ -10,14 +10,13 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.discover.mobile.alert.ModalAlertWithTwoButtons;
-import com.discover.mobile.alert.ModalBottomTwoButtonView;
 import com.discover.mobile.alert.ModalDefaultTopView;
 import com.discover.mobile.alert.ModalLogoutBottom;
 import com.discover.mobile.common.SharedPreferencesWrapper;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.logout.LogOutErrorHandler;
+import com.discover.mobile.login.BaseErrorResponseHandler;
 import com.discover.mobile.logout.LogOutSuccessListener;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -85,7 +84,7 @@ public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
 		if(getValueFromSharedPrefs(SharedPreferencesWrapper.SHOW_LOGIN_MODAL, false)){
 			logout();
 		} else{
-			showAlert(setUpLogoutAlert());
+			showCustomAlert(setUpLogoutAlert());
 		}
 	}
     
@@ -128,7 +127,7 @@ public abstract class LoggedInRoboActivity extends RoboSlidingFragmentActivity{
 									getResources().getString(R.string.push_progress_registration_loading), 
 									true)
 				.withSuccessListener(new LogOutSuccessListener(this))
-				.withErrorResponseHandler(new LogOutErrorHandler(this))
+				.withErrorResponseHandler(new BaseErrorResponseHandler(this))
 				.build();
 	
 		new LogOutCall(this, callback).submit();

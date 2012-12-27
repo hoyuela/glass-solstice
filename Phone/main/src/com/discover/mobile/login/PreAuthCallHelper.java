@@ -2,8 +2,6 @@ package com.discover.mobile.login;
 
 import java.util.Date;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,28 +15,20 @@ import com.discover.mobile.RoboSlidingFragmentActivity;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.alert.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.alert.ModalDefaultTopView;
-import com.discover.mobile.common.ScreenType;
 
 
 /**
- * AbstractPreAuthCallHandler
+ * PreAuthCallHelper
  * 
- * This is the abstract super class of the success and error response parsers for preauth.
+ * This is the helper class of the success and error response parsers for preauth.
  * This class handles the reading and writing of the dates to the preferences file so that we can check
  * when an optional update is required (30 days since last seen)
  * 
- * @author scottseward
+ * @author scottseward, ekaram
  *
  */
-public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActivity {
+public class PreAuthCallHelper  {
 	
-	protected Activity activity;
-	
-	private AlertDialog.Builder alertBuilder;
-	
-	private static final String UPGRADE_TITLE = "Upgrade";
-	private static final String FORCED_UPGRADE_MESSAGE =
-			"Your Discover app is out of date. You must update before continuing.";
 	
 	protected static final String DATETIME_KEY = "com.discover.mobile.optionalupdatedate";
 
@@ -53,15 +43,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	
 	protected static final String PREFS_FILE = "UpdatePreferences";
 
-	/**
-	 * Send a user to a maintenance page - this is similar to a popup dialog but shows a discover
-	 * themed window that presents the user with an error message.
-	 */
-	protected final void sendToMaintenancePage() {
-		final Intent maintenancePageIntent = new Intent(activity, LockOutUserActivity.class);
-		ScreenType.UNSCHEDULED_MAINTENANCE.addExtraToIntent(maintenancePageIntent);
-		activity.startActivity(maintenancePageIntent);
-	}
+	
 	
 	/**
 	 * Shows the optional upgrade message to the user.
@@ -70,7 +52,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	 * 
 	 * @param message The message to be presented in the alert dialog.
 	 */
-	protected final void showOptionalUpgradeAlertDialog(final String message) {
+	public static final void showOptionalUpgradeAlertDialog(final RoboSlidingFragmentActivity activity, final String message) {
 		ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(activity, null);
 		ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(activity, null);
 		
@@ -84,10 +66,10 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 		
 		singleButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) { upgrade(); }
+			public void onClick(View v) { upgrade(activity); }
 		});
 		
-		showAlert(optionalUpgradeDialog);
+		activity.showCustomAlert(optionalUpgradeDialog);
 	}
 	
 	/**
@@ -97,7 +79,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	 * If the user chooses upgrade, they are directed to the Google Play store page for the Discover application.
 	 * If the user cancels the dialog by pressing the back button or otherwise, the application is force quit.
 	 */
-	protected final void showForcedUpgradeAlertDialog() {
+	public static  final void showForcedUpgradeAlertDialog(final RoboSlidingFragmentActivity activity) {
 		ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(activity, null);
 		ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(activity, null);
 		
@@ -112,7 +94,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 		
 		singleButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) { upgrade(); }
+			public void onClick(View v) { upgrade(activity); }
 		});
 		optionalUpgradeDialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
 		@Override
@@ -121,7 +103,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 		}
 		});	
 		
-		showAlert(optionalUpgradeDialog);
+		activity.showCustomAlert(optionalUpgradeDialog);
 	}
 	
 	/**
@@ -129,7 +111,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	 * @param updateDescription The upgrade message to be displayed in the dialog.
 	 * @return 
 	 */
-	protected final boolean shouldPresentOptionalUpdate(final String updateDescription) {
+	protected static final boolean shouldPresentOptionalUpdate(final RoboSlidingFragmentActivity activity, final String updateDescription) {
 		if(updateDescription != null) {
 			final SharedPreferences prefs = activity.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
 			
@@ -146,7 +128,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 			final long daysDifference = (currentDate - savedDate)/DAY_IN_MILLISECONDS;
 			
 			if(daysDifference >= OPTIONAL_UPGRADE_DAYS) {
-				updateDateInPrefs();
+				updateDateInPrefs(activity);
 				return true;
 			}
 			
@@ -160,7 +142,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	 * Sends the user to the Google Play page for the Discover app.
 	 * Used when a user wants or needs to upgrade their application.
 	 */
-	protected void upgrade() {
+	protected static void upgrade(final RoboSlidingFragmentActivity activity) {
 		final Uri marketUri = Uri.parse("market://details?id=" + PACKAGE_NAME);
 		final Intent androidMarketplaceIntent = new Intent(Intent.ACTION_VIEW, marketUri);
 		activity.startActivity(androidMarketplaceIntent);
@@ -171,7 +153,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	 * Used to when determining if it has been 30 days since the last optional upgrade
 	 * messsage was shown.
 	 */
-	protected void updateDateInPrefs() {
+	protected static void updateDateInPrefs(final RoboSlidingFragmentActivity activity) {
 		final SharedPreferences prefs = activity.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
 		
 		final SharedPreferences.Editor editor = prefs.edit();

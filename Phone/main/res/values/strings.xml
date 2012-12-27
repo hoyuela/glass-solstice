@@ -113,5 +113,13 @@
 	<string name="upgrade_dialog_button_text">
 	    Get the Latest App
 	</string>
+	
+	<string name="ok">
+	   OK
+	</string>
+	
+	<string name="generic_error_title">
+	    An unexpected problem occurred
+	</string>
 	    
 </resources>
