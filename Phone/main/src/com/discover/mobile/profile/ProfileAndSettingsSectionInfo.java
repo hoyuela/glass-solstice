@@ -1,6 +1,7 @@
 package com.discover.mobile.profile;
 
 import com.discover.mobile.common.R;
+import com.discover.mobile.push.history.PushHistoryFragment;
 import com.discover.mobile.push.manage.PushManageFragment;
 import com.discover.mobile.push.register.PushEnrollFragment;
 import com.discover.mobile.section.FragmentComponentInfo;
@@ -19,6 +20,7 @@ public class ProfileAndSettingsSectionInfo extends GroupComponentInfo{
 	public ProfileAndSettingsSectionInfo(){
 		super(R.string.section_title_profile_and_settings,
 				new FragmentComponentInfo(R.string.manage_alerts, PushManageFragment.class),
+				new FragmentComponentInfo(R.string.sub_section_alert_history, PushHistoryFragment.class),
 				new FragmentComponentInfo(R.string.sub_section_enroll, PushEnrollFragment.class));
 		
 	}

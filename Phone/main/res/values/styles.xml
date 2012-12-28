@@ -94,7 +94,12 @@
         <item name="android:textColor">@color/blue_link</item>
         <item name="android:textSize">@dimen/body_copy_max</item>
         <item name="android:textStyle">bold</item>
-
+    </style>
+    
+    <style name="blue_hyperlink_small">
+        <item name="android:textColor">@color/blue_link</item>
+        <item name="android:textSize">@dimen/small_copy_max</item>
+        <item name="android:textStyle">bold</item>
     </style>
     
     <style name="login_bottom_bar_button">

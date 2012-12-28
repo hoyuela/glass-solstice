@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" 
     android:background="@color/white">
     
@@ -20,8 +20,8 @@
         android:layout_width="wrap_content"
    	 	android:layout_height="wrap_content"
    	 	style="@style/field_copy"
-   	 	android:text="00/00/00"
-   	 	android:layout_toRightOf="@+id/delete_box"/>
+   	 	android:layout_toRightOf="@+id/delete_box"
+   	 	android:textStyle="bold"/>
     
     <TextView
         android:id="@+id/time"
@@ -30,34 +30,47 @@
    	 	android:layout_below="@+id/date_view"
    	 	android:layout_alignLeft="@+id/date_view"
    	 	style="@style/field_copy"
-   	 	android:text="00:00"/>
+   	 	android:textStyle="bold"/>
     
     <TextView 
         android:id="@+id/text"
         android:layout_width="wrap_content"
    	 	android:layout_height="wrap_content"
    	 	android:layout_toRightOf="@+id/date_view"
+   	 	android:layout_toLeftOf="@+id/action_view"
    	 	style="@style/body_copy"
-   	 	android:text="Test Discover"/>
+   	 	android:layout_marginRight="@dimen/forms_inner_padding"
+   	 	android:layout_marginLeft="@dimen/forms_inner_padding"
+   	 	android:textStyle="bold"/>
     
     <TextView
         android:id="@+id/action_view"
         android:layout_width="wrap_content"
    	 	android:layout_height="wrap_content"
+		android:layout_toLeftOf="@+id/collapse_view"
+   	 	style="@style/blue_hyperlink_small"
+   	 	android:textStyle="bold"/>
+    
+    <TextView
+        android:id="@+id/collapse_view"
+        android:layout_width="wrap_content"
+   	 	android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
-   	 	style="@style/blue_hyperlink"
-   	 	android:text="View +"/>
+   	 	style="@style/blue_hyperlink_small"
+   	 	android:text="@string/show_more_text"
+   	 	android:layout_marginLeft="3dp"
+   	 	android:textStyle="bold"/>
     
     <TextView
         android:id="@+id/expanded_text"
         android:layout_width="wrap_content"
    	 	android:layout_height="wrap_content"
-		android:layout_alignParentRight="true"
-		android:layout_alignLeft="@+id/text"
 		android:layout_below="@+id/time"
 		style="@style/field_copy"
-		android:visibility="gone"/>
-        
-    
-
+   	 	android:layout_toRightOf="@+id/date_view"
+   	 	android:layout_toLeftOf="@+id/action_view"
+   	 	android:layout_marginRight="@dimen/forms_inner_padding"
+   	 	android:layout_marginLeft="@dimen/forms_inner_padding"
+		android:visibility="gone"
+		android:textStyle="bold"/>
 </RelativeLayout>
