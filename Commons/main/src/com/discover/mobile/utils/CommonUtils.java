@@ -13,6 +13,7 @@ public class CommonUtils {
 	 * @return the formatted phone number
 	 */
 	public static String toPhoneNumber(final String number){
+		if(number == null){return new String();}
 		return String.format("%s-%s-%s", number.substring(0, 3), number.substring(3, 6), number.substring(6, 10));
 	}
 	
