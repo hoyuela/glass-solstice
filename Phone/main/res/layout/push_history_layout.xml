@@ -1,85 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/light_gray_bkgrd"
-    android:padding="@dimen/between_related_elements_padding">
+    android:layout_height="fill_parent"
+    android:background="@drawable/light_gray_bkgrd">
     
-    <TextView
-        android:id="@+id/history_title"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	style="@style/title_copy"
-    	android:text="@string/history_title"/>
-    
-     <TextView
-        android:id="@+id/edit"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	style="@style/blue_hyperlink"
-    	android:layout_alignParentRight="true"
-    	android:layout_alignBottom="@+id/history_title"
-    	android:text="@string/edit"
-        android:visibility="gone"/>
-     
-    <TextView  
-        android:id="@+id/divider"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_toLeftOf="@+id/edit"
-    	android:layout_alignBottom="@+id/history_title"
-    	style="@style/blue_hyperlink"
-    	android:text=" | "
-        android:visibility="gone"/>  
-    
-    <TextView
-        android:id="@+id/manage"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_toLeftOf="@+id/divider"
-    	android:layout_alignBottom="@+id/history_title"
-    	style="@style/blue_hyperlink"
-    	android:text="@string/manage"
-        android:visibility="gone"/>
-    
-    <LinearLayout
-        android:id="@+id/history_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/history_title"
-        android:background="@color/white"
-        android:visibility="gone"/>
-    
-    <TextView 
-        android:id="@+id/older_alerts"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_below="@+id/history_list"
-    	style="@style/field_copy"
-    	android:text="@string/older_alerts"
-        android:visibility="gone"/>
-    
-    <Button
-        android:id="@+id/delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/white_button"
-        android:layout_below="@+id/older_alerts"
-        android:text="@string/delete"
-        android:layout_centerHorizontal="true"
-        style="@style/white_button"
-        android:visibility="gone"/>
-    
-    <Button
-        android:id="@+id/cancel_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/transparent_square"
-        android:layout_below="@+id/delete_button"
-        android:text="@string/cancel_text"
-        android:layout_centerHorizontal="true"
-        style="@style/blue_hyperlink"
-        android:visibility="gone"/>
-    
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="@dimen/forms_inner_padding">
+	    
+	    <TextView
+	        android:id="@+id/history_title"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	style="@style/title_copy"
+	    	android:textSize="@dimen/title_max"
+	    	android:text="@string/history_title"
+	    	android:layout_marginBottom="@dimen/table_inner_padding"/>
+	    
+	     <TextView
+	        android:id="@+id/edit"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	style="@style/blue_hyperlink_small"
+	    	android:layout_alignParentRight="true"
+	    	android:layout_alignBottom="@+id/history_title"
+	    	android:text="@string/edit"
+	        android:visibility="visible"/>
+	     
+	    <TextView  
+	        android:id="@+id/divider"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_toLeftOf="@+id/edit"
+	    	android:layout_alignBottom="@+id/history_title"
+	    	style="@style/blue_hyperlink_small"
+	    	android:text=" | "
+	        android:visibility="visible"/>  
+	    
+	    <TextView
+	        android:id="@+id/manage"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_toLeftOf="@+id/divider"
+	    	android:layout_alignBottom="@+id/history_title"
+	    	style="@style/blue_hyperlink_small"
+	    	android:text="@string/manage"
+	        android:visibility="visible"/>
+	    
+	    <LinearLayout
+	        android:id="@+id/history_list"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/history_title"
+	        android:orientation="vertical"
+	        android:layout_marginBottom="@dimen/between_related_elements_padding"
+	        android:background="@drawable/notification_list_item"
+	        android:visibility="visible"/>
+	    
+	    <TextView
+	        android:id="@+id/load_more"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_below="@+id/history_list"
+	    	android:layout_alignRight="@+id/history_list"
+	    	style="@style/blue_hyperlink_small"
+	    	android:text="@string/load_more_alerts"
+	        android:visibility="visible"
+	    	android:layout_marginBottom="@dimen/table_inner_padding"/>
+	    
+	    <TextView 
+	        android:id="@+id/older_alerts"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_below="@+id/load_more"
+	    	style="@style/field_copy"
+	    	android:text="@string/older_alerts"
+	        android:visibility="visible"/>
+	    
+	    <Button
+	        android:id="@+id/delete_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/white_button"
+	        android:layout_below="@+id/older_alerts"
+	        android:text="@string/delete"
+	        android:layout_centerHorizontal="true"
+	        style="@style/white_button"
+	        android:visibility="gone"/>
+	    
+	    <Button
+	        android:id="@+id/cancel_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/transparent_square"
+	        android:layout_below="@+id/delete_button"
+	        android:text="@string/cancel_text"
+	        android:layout_centerHorizontal="true"
+	        style="@style/blue_hyperlink"
+	        android:visibility="gone"/>
+	    
+	
+	</RelativeLayout>
 
-</RelativeLayout>
+</ScrollView>
