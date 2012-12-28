@@ -6,6 +6,11 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponse
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.push.manage.GetPushPrefsErrorResponseHandler;
 
+/**
+ * Error handler for when the application retrieves alert history from the server
+ * @author jthornton
+ *
+ */
 public class PushHistoryErrorHandler implements ErrorResponseHandler {
 
 	/**Tag labeling the class for errors*/

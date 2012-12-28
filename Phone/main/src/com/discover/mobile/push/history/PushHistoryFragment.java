@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.RoboSherlockFragment;
+import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.push.history.GetAlertHistory;
@@ -28,22 +29,43 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 	/**Top/Bottom padding of the items*/
 	private static final int PADDING_TB = 28;
 	
-	public static final int ALERT_AMOUNT_TO_GET = 10;
+	/**Static int for the amount of notifications to get from the server*/
+	private static final int ALERT_AMOUNT_TO_GET = 10;
 	
+	/**Key to get the rotated value from the bundle*/
+	private static final String ROTATED = "rotated";
+	
+	/**Key to get the current index from the bundle*/
+	private static final String INDEX = "index";
+	
+	/**String representing a space*/
 	private static final String SPACE = " ";
 	
+	/**List of notifications retrieved from the server*/
 	private List<NotificationDetail> notifications;
 	
+	/**List displaying the notifications*/
 	private LinearLayout list;
 	
+	/**Text view used for loading more notifications*/
 	private TextView loadMore;
 	
-	private int currentIndex;
+	/**Current index for of the notifications on the server*/
+	private int currentIndex = 0;
 	
+	/**Text view that hold the older alerts text*/
 	private TextView olderAlerts;
 	
+	/**Text view holding the no alerts text*/
 	private TextView noAlerts;
 	 
+	/**
+	 * Create the view
+	 * @param inflater - inflater that will inflate the layout
+	 * @param container - container holding the fragment
+	 * @param savedInstanceState - bundle holding the state of the app
+	 * @return the view
+	 */
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -60,7 +82,7 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 		loadMore.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				getAlertHistory(currentIndex, currentIndex + ALERT_AMOUNT_TO_GET);
+				getAlertHistory(currentIndex, ALERT_AMOUNT_TO_GET);
 			}
 		});
 	
@@ -68,10 +90,44 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 		olderAlerts = (TextView) mainView.findViewById(R.id.older_alerts);
 		noAlerts = (TextView) mainView.findViewById(R.id.no_alerts);
 		notifications = new ArrayList<NotificationDetail>();
-		getAlertHistory(0, ALERT_AMOUNT_TO_GET);
+		
+		if(null != savedInstanceState){
+			resumeFragment(savedInstanceState);
+		} else{
+			getAlertHistory(0, ALERT_AMOUNT_TO_GET);
+		}
+			
 		return mainView;
 	}
+
+	/**
+	 * Save the state of the fragment
+	 * @param outState - bundle to put the state in
+	 */
+	@Override
+	public void onSaveInstanceState(final Bundle outState){
+		outState.putBoolean(ROTATED, true);
+		CurrentSessionDetails.getCurrentSessionDetails().setNotifications(notifications);
+		outState.putInt(INDEX, currentIndex);
+		super.onSaveInstanceState(outState);
+	}
 	
+	/**
+	 * Resume the fragment
+	 * @param savedInstanceState - bundle holding the state of the fragment
+	 */
+	private void resumeFragment(final Bundle savedInstanceState) {
+		currentIndex = savedInstanceState.getInt(INDEX);
+		notifications = CurrentSessionDetails.getCurrentSessionDetails().getNotifications();
+		final NotificationListDetail details = new NotificationListDetail();
+		details.notifications = this.notifications;
+		addToList(details);
+		CurrentSessionDetails.getCurrentSessionDetails().getNotifications().clear();
+	}
+	
+	/**
+	 * Replace this fragment with the manage alerts fragment
+	 */
 	public void showManageFragment(){
 		this.getSherlockActivity().getSupportFragmentManager()
 		.beginTransaction()
@@ -80,8 +136,13 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 		.commit();
 	}
 	
-	public void getAlertHistory(final int begin, final int end){
-		currentIndex = end;
+	/**
+	 * Get some of the alert history
+	 * @param begin - index to start at
+	 * @param amount - number of notifications to get
+	 */
+	public void getAlertHistory(final int begin, final int amount){
+		currentIndex += amount;
 		final AsyncCallback<NotificationListDetail> callback = 
 				GenericAsyncCallback.<NotificationListDetail>builder(this.getActivity())
 				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
@@ -91,11 +152,15 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 				.withErrorResponseHandler(new PushHistoryErrorHandler())
 				.build();
 		
-		new GetAlertHistory(getActivity(), callback, begin, end).submit();
+		new GetAlertHistory(getActivity(), callback, begin, amount).submit();
 	}
 	
+	/**
+	 * Add the new details to the list
+	 * @param details details to add to the list
+	 */
 	public void addToList(final NotificationListDetail details){
-		if(notifications.isEmpty()){
+		if(details.notifications.isEmpty()){
 			showNoAlertsView();
 		}else{
 			notifications.addAll(details.notifications);
@@ -108,6 +173,9 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 		}
 	}
 
+	/**
+	 * Show the no alerts view 
+	 */
 	private void showNoAlertsView() {
 		list.setVisibility(View.GONE);
 		loadMore.setVisibility(View.GONE);
@@ -115,12 +183,21 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 		noAlerts.setVisibility(View.VISIBLE);
 	}
 
+	/**
+	 * Update the list from the list of items
+	 * @param details - list of items that will be used to updated the list
+	 */
 	private void updateList(final NotificationListDetail details) {
 		for(NotificationDetail detail : details.notifications){
 			list.addView(createListItem(detail));
 		}
 	}
 	
+	/**
+	 * Create a push history item
+	 * @param detail - detail to create the item from
+	 * @return the push history item
+	 */
 	private PushHistoryItem createListItem(final NotificationDetail detail){
 		final PushHistoryItem item = new PushHistoryItem(this.getActivity(), null, this);
 		final String[] dateString = detail.sentDate.split(SPACE);
@@ -142,6 +219,9 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 		return item;
 	}
 
+	/**
+	 * Set the action bar title
+	 */
 	@Override
 	public int getActionBarTitle() {
 		return R.string.push_alert_history_title;

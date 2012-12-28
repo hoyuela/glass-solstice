@@ -6,6 +6,11 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponse
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.push.manage.GetPushPrefsErrorResponseHandler;
 
+/**
+ * Error handler for when the application contacts the server letting it know a notification was read
+ * @author jthornton
+ *
+ */
 public class ReadNotificationErrorHandler implements ErrorResponseHandler {
 
 	/**Tag labeling the class for errors*/

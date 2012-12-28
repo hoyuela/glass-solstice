@@ -3,6 +3,11 @@ package com.discover.mobile.push.history;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.push.history.NotificationListDetail;
 
+/**
+ * Success listener for when the application retrieves alert history from the server
+ * @author jthornton
+ *
+ */
 public class PushHistorySuccessListener implements SuccessListener<NotificationListDetail>{
 	
 	/**Fragment to return the successful nature of the call*/

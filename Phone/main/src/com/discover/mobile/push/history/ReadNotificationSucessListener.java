@@ -3,6 +3,11 @@ package com.discover.mobile.push.history;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.push.history.PostReadDetail;
 
+/**
+ * Success listener for when the application contacts the server letting it know a notification was read
+ * @author jthornton
+ *
+ */
 public class ReadNotificationSucessListener implements SuccessListener<PostReadDetail>{
 	
 	/**Fragment to return the successful nature of the call*/

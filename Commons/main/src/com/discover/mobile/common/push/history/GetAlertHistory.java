@@ -8,6 +8,11 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 
+/**
+ * Get the alert history
+ * @author jthornton
+ *
+ */
 public class GetAlertHistory  extends JsonResponseMappingNetworkServiceCall<NotificationListDetail>{
 
 	/**Reference handler to allow the call to be back on the UI*/
@@ -17,12 +22,14 @@ public class GetAlertHistory  extends JsonResponseMappingNetworkServiceCall<Noti
 	 * Constructor for the call
 	 * @param context - activity context
 	 * @param callback - callback to run the call in
+	 * @param begin - spot to start getting notifications
+	 * @param amount - amount to get
 	 */
 	public GetAlertHistory(final Context context, 
 						   final AsyncCallback<NotificationListDetail> callback,
 						   final int begin,
-						   final int end){
-		super(context, new GetCallParams(getUrl(begin, end)){{
+						   final int amount){
+		super(context, new GetCallParams(getUrl(begin, amount)){{
 		
 			sendDeviceIdentifiers = true;
 		}}, NotificationListDetail.class);
@@ -41,10 +48,10 @@ public class GetAlertHistory  extends JsonResponseMappingNetworkServiceCall<Noti
 	
 	/**
 	 * Get the url of the call
-	 * @param context - activity context
-	 * @return the url of the call
+	 * @param begin - spot to start getting notifications
+	 * @param amount - amount to get
 	 */
-	private static String getUrl(final int begin, final int end){
-		return "/cardsvcs/acs/msghist/v1/notification/history?size="+begin+"&fromMsg="+end;
+	private static String getUrl(final int begin, final int amount){
+		return "/cardsvcs/acs/msghist/v1/notification/history?start="+begin+"&size="+amount;
 	}
 }

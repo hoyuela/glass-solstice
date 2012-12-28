@@ -8,6 +8,11 @@ import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 
+/**
+ * Call to post a notification as read
+ * @author jthornton
+ *
+ */
 public class PostNotificationRead extends JsonResponseMappingNetworkServiceCall<PostReadDetail>{
 
 	/**Reference handler to allow the call to be back on the UI*/
