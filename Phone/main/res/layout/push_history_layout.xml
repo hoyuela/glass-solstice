@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/light_gray_bkgrd">
+    android:background="@drawable/light_gray_bkgrd"
+    android:padding="@dimen/between_related_elements_padding">
     
     <TextView
         android:id="@+id/history_title"
