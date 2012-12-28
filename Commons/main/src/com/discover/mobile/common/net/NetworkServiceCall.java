@@ -32,6 +32,7 @@ import com.discover.mobile.common.net.json.JsonMappingRequestBodySerializer;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
+
 /**
  * An abstract wrapper for network calls that should simplify common HTTP connection-related patterns for implementors.
  * 
@@ -256,8 +257,8 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private void setDefaultHeaders() {
-		conn.setRequestProperty("X-Client-Platform", "Android");
-		conn.setRequestProperty("X-Application-Version", "4.00");
+		conn.setRequestProperty("X-Client-Platform", this.context.getResources().getString(com.discover.mobile.common.R.string.xClientPlatform));
+		conn.setRequestProperty("X-Application-Version",this.context.getResources().getString(com.discover.mobile.common.R.string.xApplicationVersion));
 	}
 	
 	private void setSessionHeaders() throws IOException {

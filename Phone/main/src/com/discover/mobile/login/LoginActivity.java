@@ -580,7 +580,7 @@ public class LoginActivity extends BaseActivity  {
 
 		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback
 				.<PreAuthResult> builder(this)
-				.showProgressDialog("Discover", "Loading...", true)
+				.showProgressDialog("Discover", "Loading...", true) //FIXME externalize this
 				.withSuccessListener(optionalUpdateListener)
 				.withErrorResponseHandler(
 						new PreAuthErrorResponseHandler(this)).build();
