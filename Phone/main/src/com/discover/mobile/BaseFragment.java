@@ -1,7 +1,6 @@
 package com.discover.mobile;
 
 import roboguice.RoboGuice;
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,7 +12,7 @@ import com.discover.mobile.navigation.NavigationRootActivity;
  * @author jthornton
  *
  */
-public abstract class RoboSherlockFragment extends SherlockFragment{
+public abstract class BaseFragment extends SherlockFragment{
 	
 	/**
 	 * Create the fragment
@@ -51,7 +50,7 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
 	 * Make the fragment visible
 	 * @param fragment - fragment to be made visible
 	 */
-    public void makeFragmentVisible(final RoboSherlockFragment fragment){
+    public void makeFragmentVisible(final BaseFragment fragment){
     	final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
     	activity.makeFragmentVisible(fragment);
     }
@@ -66,13 +65,13 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
     }
     
     /**
-     * Show a modal alert dialog for the fragment
-     * @param alert - the modal alert to be shown
+     * Set the visibility of the status bar
      */
-    public void showAlertDialog(final AlertDialog alert){
-    	final RoboSlidingFragmentActivity activity= (RoboSlidingFragmentActivity)this.getActivity();
-    	activity.showAlert(alert);
+    public void setStatusBarVisibility(){
+    	final LoggedInRoboActivity activity = (LoggedInRoboActivity)this.getActivity();
+    	activity.setStatusBarVisbility();
     }
+    
     
     /**
      * Get the resource id of the string that should be shown in the action bar
@@ -86,7 +85,7 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
      * @param value - boolean value 
      */
     public void saveToSharedPrefs(final String key, final boolean value){
-    	final RoboSlidingFragmentActivity activity= (RoboSlidingFragmentActivity)this.getActivity();
+    	final BaseFragmentActivity activity= (BaseFragmentActivity)this.getActivity();
     	activity.saveToSharedPrefs(key, value);
     }
     
@@ -96,7 +95,7 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
      * @param defaultValue - default boolean value 
      */
     public boolean getValueFromSharedPrefs(final String key, final boolean defaultValue){
-    	final RoboSlidingFragmentActivity activity= (RoboSlidingFragmentActivity)this.getActivity();
+    	final BaseFragmentActivity activity= (BaseFragmentActivity)this.getActivity();
     	return activity.getValueFromSharedPrefs(key, defaultValue);
     }
     
@@ -106,7 +105,7 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
      * @param value - boolean value 
      */
     public void saveToSharedPrefs(final String key, final String value){
-    	final RoboSlidingFragmentActivity activity= (RoboSlidingFragmentActivity)this.getActivity();
+    	final BaseFragmentActivity activity= (BaseFragmentActivity)this.getActivity();
     	activity.saveToSharedPrefs(key, value);
     }
     
@@ -116,7 +115,7 @@ public abstract class RoboSherlockFragment extends SherlockFragment{
      * @param defaultValue - default string value 
      */
     public String getValueFromSharedPrefs(final String key, final String defaultValue){
-    	final RoboSlidingFragmentActivity activity= (RoboSlidingFragmentActivity)this.getActivity();
+    	final BaseFragmentActivity activity= (BaseFragmentActivity)this.getActivity();
     	return activity.getValueFromSharedPrefs(key, defaultValue);
     }
 	

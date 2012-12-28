@@ -39,7 +39,7 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		
+	
 		<activity android:name=".security.EnhancedAccountSecurityActivity"
 			android:label="@string/app_name"
 			android:launchMode="standard"
@@ -76,12 +76,12 @@
 			android:launchMode="singleTask"
 			android:screenOrientation="portrait"
 			android:noHistory="true" />
-		
+
 		<activity android:name=".login.register.StrengthBarHelpActivity"
 			android:label="@string/app_name"
 			android:launchMode="singleTask"
 			android:screenOrientation="portrait" />
-		
+	
 		<activity android:name=".login.register.ForgotTypeSelectionActivity"
 			android:label="@string/app_name"
 			android:launchMode="singleTask"

@@ -3,11 +3,22 @@
     android:layout_width="match_parent"
    	android:layout_height="wrap_content"
     android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/error_icon"
+        android:contentDescription="@string/discover_copyright_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/modal_alert_title"
+        android:src="@drawable/error_icon_red" 
+        android:visibility="gone"
+        style="@style/modal_error_image"/>
     
    	<TextView 
         android:id="@+id/modal_alert_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/error_icon"
         style="@style/modal_title_text"/>
    	
     <TextView

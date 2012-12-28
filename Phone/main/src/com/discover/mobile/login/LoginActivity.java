@@ -3,11 +3,13 @@ package com.discover.mobile.login;
 import static com.discover.mobile.common.CommonMethods.setViewGone;
 import static com.discover.mobile.common.CommonMethods.setViewInvisible;
 import static com.discover.mobile.common.CommonMethods.setViewVisible;
-import roboguice.activity.RoboActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.discover.mobile.BaseActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.IntentExtraKey;
@@ -49,14 +52,12 @@ import com.google.inject.Inject;
  * for push notifications And the third is the login call when a user tries to
  * login.
  * 
- * @author scottseward
+ * @author scottseward, ekaram
  * 
  */
 @ContentView(R.layout.login_start)
-public class LoginActivity extends RoboActivity {
+public class LoginActivity extends BaseActivity  {
 	private final static String emptyString = ""; //$NON-NLS-1$
-
-	private final static String TAG = LoginActivity.class.getSimpleName();
 
 	/**
 	 * These are string values used when passing extras to the saved instance
@@ -72,7 +73,7 @@ public class LoginActivity extends RoboActivity {
 	private final static String HIDE_LABEL_KEY = "hide";
 	private final static String ERROR_MESSAGE_KEY = "errorText";
 	private final static String ERROR_MESSAGE_VISIBILITY = "errorVisibility";
-
+	
 	/**
 	 * Roboguise injections of android interface element references.
 	 */
@@ -134,10 +135,7 @@ public class LoginActivity extends RoboActivity {
 	/**
 	 * Non roboguise attributes
 	 */
-	// INSTANCE VARS
-
-	private Activity activity;
-
+	
 	private Resources res;
 
 	private boolean preAuthHasRun = false;
@@ -149,7 +147,7 @@ public class LoginActivity extends RoboActivity {
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		activity = this;
+		
 		TrackingHelper.startActivity(this);
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
@@ -236,10 +234,32 @@ public class LoginActivity extends RoboActivity {
 		errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
 		errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
 		
-		//If an error message is displayed, update the input fields to highlighted in red
-		if(!"".equals(errorTextView.getText().toString()) && errorTextView.getVisibility() == View.VISIBLE){
+		resetInputFieldColors();
+	}
+	
+	/**
+	 * Set the input fields to red if an error is being displayed.
+	 */
+	private void resetInputFieldColors() {		
+		if(errorIsVisible()) {
 			setInputFieldsDrawableToRed();
 		}
+	}
+	
+	/**
+	 * Checks to see if an error message is displayed.
+	 * 
+	 * @return returns true if an error is being displayed in the errorTextView
+	 */
+	private boolean errorIsVisible() {
+		boolean errorTextViewIsVisible = errorTextView.getVisibility() == View.VISIBLE;
+		boolean errorTextIsNotLogoutMessage = 
+				!getResources().getString(R.string.logout_sucess).equals(errorTextView.getText().toString());
+				
+		if( errorTextViewIsVisible & errorTextIsNotLogoutMessage )
+			return true;
+		else
+			return false;
 	}
 	
 	/**
@@ -261,6 +281,7 @@ public class LoginActivity extends RoboActivity {
 	 * execute the specified functionality in onClick when they are clicked...
 	 */
 	private void setupButtons() {
+	
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -371,7 +392,7 @@ public class LoginActivity extends RoboActivity {
 						clearInputs();
 					}
 				})
-				.withErrorResponseHandler(new LoginErrorResponseHandler(activity, errorTextView, idField, passField))
+				.withErrorResponseHandler(new LoginErrorResponseHandler(this))
 								.build();
 
 		new AuthenticateCall(this, callback, username, password).submit();
@@ -555,17 +576,38 @@ public class LoginActivity extends RoboActivity {
 	 */
 	public void startPreAuthCheck() {
 		final SuccessListener<PreAuthResult> optionalUpdateListener = new PreAuthSuccessResponseHandler(
-				activity);
+				this);
 
 		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback
 				.<PreAuthResult> builder(this)
 				.showProgressDialog("Discover", "Loading...", true)
 				.withSuccessListener(optionalUpdateListener)
 				.withErrorResponseHandler(
-						new PreAuthErrorResponseHandler(activity)).build();
+						new PreAuthErrorResponseHandler(this)).build();
 
 		new PreAuthCheckCall(this, callback).submit();
 		preAuthHasRun = true;
 
 	}
+
+	/* (non-Javadoc)
+	 * @see com.discover.mobile.ErrorHandlerUi#getErrorLabel()
+	 */
+	@Override
+	public TextView getErrorLabel() {
+		return errorTextView;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.discover.mobile.ErrorHandlerUi#getInputFields()
+	 */
+	@Override
+	public List<EditText> getInputFields() {
+		List<EditText> inputFields = new ArrayList<EditText>();
+		inputFields.add(idField);
+		inputFields.add(passField);
+		return inputFields;
+	}
+
+	
 }

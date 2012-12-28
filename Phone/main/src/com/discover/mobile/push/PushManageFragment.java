@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSherlockFragment;
+import com.discover.mobile.BaseFragment;
 
 /**
  * Fragment that is the push notification manage screen.  Uses the push save header, 
@@ -24,7 +24,7 @@ import com.discover.mobile.RoboSherlockFragment;
  * @author jthornton
  *
  */
-public class PushManageFragment extends RoboSherlockFragment{
+public class PushManageFragment extends BaseFragment{
 
 	private PushManageHeaderItem manageHeader;
 	

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +23,9 @@ public class ModalDefaultTopView extends LinearLayout implements ModalTopView{
 	
 	/**Resources for showing strings*/
 	private Resources res;
+	
+	/**Optional error image to be placed to the left of the title*/
+	private ImageView errorImage;
 	
 	/**View that holds the title*/
 	private TextView title;
@@ -42,6 +47,7 @@ public class ModalDefaultTopView extends LinearLayout implements ModalTopView{
 		
 		res = context.getResources();
 		
+		errorImage = (ImageView) mainView.findViewById(R.id.error_icon);
 		title = (TextView) mainView.findViewById(R.id.modal_alert_title);
 		text = (TextView) mainView.findViewById(R.id.modal_alert_text);
 		
@@ -64,6 +70,30 @@ public class ModalDefaultTopView extends LinearLayout implements ModalTopView{
 	@Override
 	public void setContent(final int resource) {
 		text.setText(res.getString(resource));
+	}
+	
+	/**
+	 * Show an error icon to the left of the modal dialog title.
+	 * @param isError - tells the dialog to show an error icon or not.
+	 */
+	public void showErrorIcon(final boolean isError) {
+		if(isError) {
+			errorImage.setVisibility(View.VISIBLE);
+		}else {
+			errorImage.setVisibility(View.GONE);
+		}
+		
+	}
+	/**
+	 * Set the content of the view with dynamic text 
+	 * 
+	 * DO NOT USE WITH STATIC TEXT, PLEASE USE INT METHOD 
+	 * and pull from resource file
+	 * 
+	 * @param resource - int representing the resource to be displayed
+	 */
+	public void setDynamicContent(final String content) {
+		text.setText(content);
 	}
 
 }

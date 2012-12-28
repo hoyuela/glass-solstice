@@ -3,7 +3,6 @@ package com.discover.mobile.login;
 import java.util.Date;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,33 +11,26 @@ import android.net.Uri;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.discover.mobile.BaseFragmentActivity;
+import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSlidingFragmentActivity;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.alert.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.alert.ModalDefaultTopView;
-import com.discover.mobile.common.ScreenType;
 
 
 /**
- * AbstractPreAuthCallHandler
+ * PreAuthCallHelper
  * 
- * This is the abstract super class of the success and error response parsers for preauth.
+ * This is the helper class of the success and error response parsers for preauth.
  * This class handles the reading and writing of the dates to the preferences file so that we can check
  * when an optional update is required (30 days since last seen)
  * 
- * @author scottseward
+ * @author scottseward, ekaram
  *
  */
-public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActivity {
+public class PreAuthCallHelper  {
 	
-	protected Activity activity;
-	
-	private AlertDialog.Builder alertBuilder;
-	
-	private static final String UPGRADE_TITLE = "Upgrade";
-	private static final String FORCED_UPGRADE_MESSAGE =
-			"Your Discover app is out of date. You must update before continuing.";
 	
 	protected static final String DATETIME_KEY = "com.discover.mobile.optionalupdatedate";
 
@@ -53,15 +45,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	
 	protected static final String PREFS_FILE = "UpdatePreferences";
 
-	/**
-	 * Send a user to a maintenance page - this is similar to a popup dialog but shows a discover
-	 * themed window that presents the user with an error message.
-	 */
-	protected final void sendToMaintenancePage() {
-		final Intent maintenancePageIntent = new Intent(activity, LockOutUserActivity.class);
-		ScreenType.UNSCHEDULED_MAINTENANCE.addExtraToIntent(maintenancePageIntent);
-		activity.startActivity(maintenancePageIntent);
-	}
+	
 	
 	/**
 	 * Shows the optional upgrade message to the user.
@@ -69,8 +53,9 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	 * upgrade, which will take them to the Google Play store and the Discover app page.
 	 * 
 	 * @param message The message to be presented in the alert dialog.
+	 * 
 	 */
-	protected final void showOptionalUpgradeAlertDialog(final String message) {
+	public static final void showOptionalUpgradeAlertDialog(final Activity activity, final String message) {
 		ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(activity, null);
 		ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(activity, null);
 		
@@ -84,44 +69,45 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 		
 		singleButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) { upgrade(); }
+			public void onClick(View v) { upgrade(activity); }
 		});
 		
-		showAlert(optionalUpgradeDialog);
+		((BaseFragmentActivity) activity).showCustomAlert(optionalUpgradeDialog);
 	}
-	
 	
 	/**
 	 * showForcedUpgradeAlertDialog()
 	 * This method, when called, shows an alert dialog with the forced upgrade text.
 	 * This dialog needs to prevent the user from using the application.
-	 * If the user chooses upgrade or presses the back button the application is force quit and then
-	 * if update was chosen, they are directed to the Google Play store page for the Discover app.
+	 * If the user chooses upgrade, they are directed to the Google Play store page for the Discover application.
+	 * If the user cancels the dialog by pressing the back button or otherwise, the application is force quit.
 	 */
-	protected final void showForcedUpgradeAlertDialog() {
-		alertBuilder = new AlertDialog.Builder(activity);
-
-		alertBuilder.setTitle(UPGRADE_TITLE)
-		.setMessage(FORCED_UPGRADE_MESSAGE)
-		.setPositiveButton("Upgrade", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(final DialogInterface dialog, final int which) {
-				upgrade();
-				android.os.Process.killProcess(android.os.Process.myPid());
-			}
-		});
-		alertBuilder.setOnCancelListener(new DialogInterface.OnCancelListener(){
-			
+	public static  final void showForcedUpgradeAlertDialog(final ErrorHandlerUi errorHandlerUi) {
+		final Context context = errorHandlerUi.getContext();
+		ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(context, null);
+		ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(context, null);
+		
+		titleAndContentForDialog.setTitle(R.string.upgrade_dialog_title);
+		titleAndContentForDialog.setContent(R.string.forced_upgrade_dialog_body);
+		titleAndContentForDialog.showErrorIcon(true);
+		
+		singleButtonBottomView.setButtonText(R.string.upgrade_dialog_button_text);
 				
-
+		ModalAlertWithOneButton optionalUpgradeDialog = 
+				new ModalAlertWithOneButton(context, titleAndContentForDialog, singleButtonBottomView);
+		
+		singleButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
 			@Override
-			public void onCancel(DialogInterface dialog) {
-				android.os.Process.killProcess(android.os.Process.myPid());
-			}
+			public void onClick(View v) { upgrade(context); }
+		});
+		optionalUpgradeDialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
+		@Override
+		public void onCancel(DialogInterface dialog) {
+			android.os.Process.killProcess(android.os.Process.myPid());
+		}
 		});	
-
-		alertBuilder.show();
+		
+		errorHandlerUi.showCustomAlert(optionalUpgradeDialog);
 	}
 	
 	/**
@@ -129,7 +115,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	 * @param updateDescription The upgrade message to be displayed in the dialog.
 	 * @return 
 	 */
-	protected final boolean shouldPresentOptionalUpdate(final String updateDescription) {
+	protected static final boolean shouldPresentOptionalUpdate(final Activity activity, final String updateDescription) {
 		if(updateDescription != null) {
 			final SharedPreferences prefs = activity.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
 			
@@ -146,7 +132,7 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 			final long daysDifference = (currentDate - savedDate)/DAY_IN_MILLISECONDS;
 			
 			if(daysDifference >= OPTIONAL_UPGRADE_DAYS) {
-				updateDateInPrefs();
+				updateDateInPrefs(activity);
 				return true;
 			}
 			
@@ -160,10 +146,10 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	 * Sends the user to the Google Play page for the Discover app.
 	 * Used when a user wants or needs to upgrade their application.
 	 */
-	protected void upgrade() {
+	protected static void upgrade(final Context context) {
 		final Uri marketUri = Uri.parse("market://details?id=" + PACKAGE_NAME);
 		final Intent androidMarketplaceIntent = new Intent(Intent.ACTION_VIEW, marketUri);
-		activity.startActivity(androidMarketplaceIntent);
+		context.startActivity(androidMarketplaceIntent);
 	}
 
 	/**
@@ -171,8 +157,8 @@ public abstract class AbstractPreAuthCallHandler extends RoboSlidingFragmentActi
 	 * Used to when determining if it has been 30 days since the last optional upgrade
 	 * messsage was shown.
 	 */
-	protected void updateDateInPrefs() {
-		final SharedPreferences prefs = activity.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
+	protected static void updateDateInPrefs(final Context context) {
+		final SharedPreferences prefs = context.getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
 		
 		final SharedPreferences.Editor editor = prefs.edit();
 		editor.putLong(DATETIME_KEY, new Date().getTime());

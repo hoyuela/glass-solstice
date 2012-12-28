@@ -1,6 +1,8 @@
+
 package com.discover.mobile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import roboguice.RoboGuice;
@@ -16,19 +18,25 @@ import roboguice.activity.event.OnResumeEvent;
 import roboguice.activity.event.OnStartEvent;
 import roboguice.activity.event.OnStopEvent;
 import roboguice.event.EventManager;
-import roboguice.inject.ContentViewListener;
 import roboguice.inject.RoboInjector;
 import roboguice.util.RoboContext;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.discover.mobile.alert.ModalAlertWithOneButton;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.SharedPreferencesWrapper;
-import com.google.inject.Inject;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.login.LockOutUserActivity;
 import com.google.inject.Key;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -40,15 +48,13 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  * @author jthornton
  *
  */
-public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivity implements RoboContext {
+public class BaseFragmentActivity extends SlidingFragmentActivity implements RoboContext, ErrorHandlerUi{
 	
 	/**Fragment that is currently being shown to the user*/
 	protected Fragment currentFragment;
 	
     protected EventManager eventManager;
     protected HashMap<Key<?>,Object> scopedObjects = new HashMap<Key<?>, Object>();
-    
-    @Inject ContentViewListener ignored; // BUG find a better place to put this
     
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -155,7 +161,7 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
 	 * Set the current fragment that is being shown
 	 * @param fragment - fragment that is currently shown
 	 */
-	public void setCurrentFragment(final RoboSherlockFragment fragment){
+	public void setCurrentFragment(final BaseFragment fragment){
 		this.currentFragment = fragment;
 	}    
 	
@@ -218,15 +224,96 @@ public abstract class RoboSlidingFragmentActivity extends SlidingFragmentActivit
      */
 	public void goBack(){
 		onBackPressed();
-	} 
-    
+	}
+
 	/**
-     * Show a modal alert dialog for the activity
+     * Show a custom modal alert dialog for the activity
      * @param alert - the modal alert to be shown
      */
-    public void showAlert(final AlertDialog alert){
+    public void showCustomAlert(final AlertDialog alert){
     	alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
     }
+    
+    /**
+     * Show the default one-button alert with a custom title, content an button text
+     * 
+     * Uses the orange button
+     * 
+     * @param title - the resource id for title for the alert
+     * @param content - the resource id for content to display on the box
+     * @param buttonText - the resource id for button text to display on the button
+     */
+    public void showOneButtonAlert(int title, int content, int buttonText){    	
+		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
+    }
+    
+    /**
+     * Show the default one-button alert with a custom title, content an button text
+     * 
+     * Uses the orange button
+     * 
+     * @param title - the resource id for title for the alert
+     * @param content - the resource id for content to display on the box
+     * @param buttonText - the resource id for button text to display on the button
+     */
+    public void showDynamicOneButtonAlert(int title, String content, int buttonText){    	
+		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
+    }
+    
+    
+    /**
+	 * A common method used to forward user to error page with a given static
+	 * string text message
+	 * 
+	 * @param errorText
+	 */
+	public void sendToErrorPage(int titleText, int errorText) {
+		final Intent maintenancePageIntent = new Intent((Context) this, LockOutUserActivity.class);
+		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
+		startActivity(maintenancePageIntent);
+		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
+	}
+
+	/**
+	 * A common method used to forward user to error page with a given static
+	 * string text message
+	 * 
+	 * @param errorText
+	 */
+	public void sendToErrorPage(int errorText) {
+		final Intent maintenancePageIntent = new Intent((Context) this, LockOutUserActivity.class);
+		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
+		startActivity(maintenancePageIntent);
+	}
+
+	/* 
+	 * Child classes should override this to implement error handling behavior
+	 * (non-Javadoc)
+	 * @see com.discover.mobile.ErrorHandlerUi#getErrorLabel()
+	 */
+	@Override
+	public TextView getErrorLabel() {
+		return null;
+	}
+
+	/*
+	 * Child classes should override this to implement error handling behavior
+	 *  (non-Javadoc)
+	 * @see com.discover.mobile.ErrorHandlerUi#getInputFields()
+	 */
+	@Override
+	public List<EditText> getInputFields(){
+		return null;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.discover.mobile.ErrorHandlerUi#getContext()
+	 */
+	@Override
+	public Context getContext() {
+		return this;
+	}
+    
 }

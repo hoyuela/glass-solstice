@@ -354,9 +354,27 @@ public abstract class NetworkServiceCall<R> {
 		}
 	}
 	
+	/**
+	 * Parses response (success or failure) and sends result to the handler
+	 * @param statusCode
+	 * @throws IOException
+	 */
 	private void parseResponseAndSendResult(final int statusCode) throws IOException {
+		
 		if(DelegatingErrorResponseParser.isErrorStatus(statusCode)) {
-			parseErrorResponseAndSendResult(statusCode);
+			
+			final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();
+			
+			final ErrorResponse<?> errorResult;
+			final InputStream errorStream = getMarkSupportedErrorStream(conn);
+			try {
+				errorResult = chosenErrorParser.parseErrorResponse(statusCode, errorStream, conn);
+			} finally {
+				errorStream.close();
+			}
+			
+			sendResultToHandler(errorResult, RESULT_PARSED_ERROR);
+			
 		} else {
 			final R result;
 			final InputStream in = conn.getInputStream();
@@ -369,19 +387,7 @@ public abstract class NetworkServiceCall<R> {
 		}
 	}
 	
-	private void parseErrorResponseAndSendResult(final int statusCode) throws IOException {
-		final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();
-		
-		final ErrorResponse errorResult;
-		final InputStream errorStream = getMarkSupportedErrorStream(conn);
-		try {
-			errorResult = chosenErrorParser.parseErrorResponse(statusCode, errorStream, conn);
-		} finally {
-			errorStream.close();
-		}
-		
-		sendResultToHandler(errorResult, RESULT_PARSED_ERROR);
-	}
+	
 	
 	private ErrorResponseParser<?> getErrorResponseParser() {
 		return params.errorResponseParser == null ?

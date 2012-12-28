@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <TextView
+        android:id="@+id/reg_help_strength_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="4dp"
+        android:text="@string/account_info_help_level1"
+        style="@style/strength_help_level_message"/>
+
+    <View
+        android:id="@+id/reg_help_strength_image"
+        android:layout_width="75dp"
+        android:layout_height="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/reg_help_strength_level"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/rounded_red_bar" />
+
+    <View
+        android:id="@+id/reg_help_strong_check"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_alignBottom="@id/reg_help_strength_image"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/reg_help_strength_image"
+        android:background="@drawable/checkmark_green"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/reg_help_strength_action"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/reg_help_strength_level"
+        android:layout_marginTop="4dp"
+        android:text="@string/account_info_help_action1"
+        style="@style/action_message" />
+
+    <TextView
+        android:id="@+id/reg_help_strength_msg"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/reg_help_strength_action"
+        android:text="@string/account_info_help_msg1"
+        style="@style/small_copy" />
+
+</RelativeLayout>

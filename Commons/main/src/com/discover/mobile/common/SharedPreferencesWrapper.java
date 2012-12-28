@@ -22,6 +22,9 @@ public final class SharedPreferencesWrapper {
 	
 	/**Key for if we need to be saving a user's ID*/
 	public static final String REMEMBER_USER_ID = "rememberId";
+	
+	/**Key for whether or not the status bar should be shown */
+	public static final String STATUS_BAR_VISIBILITY = "statusBarVisibility";
 
 	/**
 	 * Constructor that will prevent this class from being instantiated
