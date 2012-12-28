@@ -1,5 +1,6 @@
 package com.discover.mobile.push.manage;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,8 +91,8 @@ public class PushManageItemFactory {
 		final PushManageToggleItemEditText view = new PushManageToggleItemEditText(context, null);
 		view.setCategory(category);
 		view.setHeader(header);
-		view.setAmount(Integer.toString(definedAmount));
-		view.setMinimumAmountText(Integer.toString(minAmount));
+		view.setAmount(definedAmount);
+		view.setMinimumAmountText(minAmount);
 		view.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.notification_list_item));
 		view.setPadding(PADDING_LR, PADDING_TB, PADDING_LR ,PADDING_TB);
 		view.setPushChecked(isParamEnabled(prefs, category, PreferencesDetail.PUSH_PARAM));
@@ -159,7 +160,7 @@ public class PushManageItemFactory {
 	private ArrayList<String> convertFromIntArray(final List<Integer> displayValues){
 		final ArrayList<String> strings = new ArrayList<String>();
 		for(Integer i : displayValues){
-			strings.add(DOLLAR + Integer.toString(i));
+			strings.add(NumberFormat.getCurrencyInstance().format(i));
 		}
 		return strings;
 	}

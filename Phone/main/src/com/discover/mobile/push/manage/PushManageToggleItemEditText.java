@@ -1,10 +1,13 @@
 package com.discover.mobile.push.manage;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -24,6 +27,9 @@ import com.discover.mobile.common.push.manage.PreferencesDetail;
  *
  */
 public class PushManageToggleItemEditText extends BasePushManageToggleItem {
+	
+	/**Tag for error logging*/
+	private static final String TAG = PushManageToggleItemEditText.class.getSimpleName();
 
 	/**Category of the item*/
 	private String category;
@@ -104,8 +110,8 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 	 * Set the current amount of the users setting
 	 * @param amount - the current amount of the users setting
 	 */
-	public void setAmount(final String amount){
-		this.amountBox.setText(DOLLAR+amount);
+	public void setAmount(final int amount){
+		this.amountBox.setText(NumberFormat.getCurrencyInstance().format(amount));
 	}
 	
 	/**
@@ -114,20 +120,22 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 	 */
 	private String getAmount(){
 		final String amount = amountBox.getText().toString();
-		if(amount.contains(DOLLAR)){
-			return amount.substring(1, amount.length());
-		}else{
-			return amount;
-		}
+		String number = Integer.toString(0);
+		try {
+			number =  NumberFormat.getCurrencyInstance().parse(amount).toString();
+		} catch (ParseException e) {
+			Log.e(TAG, e.getMessage());
+		}	
+		return number;
 	}
 	
 	/**
 	 * Set the minimum amount text
 	 * @param amount - the amount to put in the current string
 	 */
-	public void setMinimumAmountText(final String amount){
+	public void setMinimumAmountText(final int amount){
 		final String currentText = minAmount.getText().toString();
-		minAmount.setText(currentText + DOLLAR + amount + DOLLAR_ENDING);
+		minAmount.setText(currentText + " " + NumberFormat.getCurrencyInstance().format(amount));
 	}
 	
 	/**

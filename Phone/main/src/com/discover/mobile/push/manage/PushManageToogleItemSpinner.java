@@ -1,10 +1,13 @@
 package com.discover.mobile.push.manage;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -27,6 +30,9 @@ import com.discover.mobile.common.push.manage.PushManageCategoryParamDetail;
  *
  */
 public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
+	
+	/**Tag for error logging*/
+	private static final String TAG = PushManageToogleItemSpinner.class.getSimpleName();
 
 	/**Category of the item*/
 	private String category;
@@ -129,11 +135,13 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 	 */
 	private String getAmount(){
 		final String amount = amountSpinner.getSelectedItem().toString();
-		if(amount.contains("$")){
-			return amount.substring(1, amount.length());
-		}else{
-			return amount;
-		}
+		String number = Integer.toString(0);
+		try {
+			number =  NumberFormat.getCurrencyInstance().parse(amount).toString();
+		} catch (ParseException e) {
+			Log.e(TAG, e.getMessage());
+		}	
+		return number;
 	}
 	
 	/**

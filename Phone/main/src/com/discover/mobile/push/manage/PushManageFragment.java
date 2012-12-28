@@ -28,6 +28,7 @@ import com.discover.mobile.common.push.manage.PostPrefDetail;
 import com.discover.mobile.common.push.manage.PostPreferencesDetail;
 import com.discover.mobile.common.push.manage.PreferencesDetail;
 import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
+import com.discover.mobile.utils.CommonUtils;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -351,15 +352,6 @@ public class PushManageFragment extends RoboSherlockFragment{
 	}
 	
 	/**
-	 * Convert the simple number into a phone number string
-	 * @param number - number to be changed
-	 * @return the formatted phone number
-	 */
-	private String toPhoneNumber(final String number){
-		return String.format("(%s) %s-%s", number.substring(0, 3), number.substring(3, 6), number.substring(6, 10));
-	}
-	
-	/**
 	 * Clear all the lists so that they can be repopulated
 	 */
 	private void clearLists() {
@@ -399,7 +391,7 @@ public class PushManageFragment extends RoboSherlockFragment{
 		factory = new PushManageItemFactory(context, prefs, this);
 		clearLists();
 		categoriesList.clear();
-		phoneNumber.setText(toPhoneNumber(prefs.remindersEnrollResults.phoneNumber));
+		phoneNumber.setText(CommonUtils.toPhoneNumber(prefs.remindersEnrollResults.phoneNumber));
 		createList(manageList, 
 				res.getStringArray(R.array.manage_you_accounts_categories),
 				res.getStringArray(R.array.manage_your_accounts_headers),

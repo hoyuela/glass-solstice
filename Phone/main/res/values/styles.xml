@@ -252,7 +252,7 @@
         <item name="android:gravity">center</item>
     </style>
     
-    <style name="push_save_text">
+    <style name="sub_copy_small">
         <item name="android:textColor">@color/sub_copy</item>
         <item name="android:textSize">@dimen/small_copy_mid</item>
         <item name="android:paddingTop">@dimen/between_related_elements_padding</item>

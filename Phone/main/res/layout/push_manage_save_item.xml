@@ -21,7 +21,7 @@
    		android:layout_alignTop="@+id/notification_save_button"
    		android:layout_alignBottom="@+id/notification_save_button"
    		android:maxLines="2"
-   		style="@style/push_save_text"/>
+   		style="@style/sub_copy_small"/>
     
     <TextView 
         android:id="@+id/clickable_view"
