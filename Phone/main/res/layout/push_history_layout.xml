@@ -18,6 +18,16 @@
 	    	android:text="@string/history_title"
 	    	android:layout_marginBottom="@dimen/table_inner_padding"/>
 	    
+	    <TextView
+	        android:id="@+id/no_alerts"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	style="@style/field_copy"
+	        android:layout_below="@+id/history_title"
+	    	android:text="@string/no_alerts"
+	    	android:layout_marginBottom="@dimen/table_inner_padding"
+	    	android:visibility="gone"/>
+	    
 	     <TextView
 	        android:id="@+id/edit"
 	        android:layout_width="wrap_content"

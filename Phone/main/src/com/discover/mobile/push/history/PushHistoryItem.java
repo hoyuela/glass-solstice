@@ -1,7 +1,12 @@
 package com.discover.mobile.push.history;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +15,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.push.history.NotificationDetail;
+import com.discover.mobile.common.push.history.PostNotificationRead;
+import com.discover.mobile.common.push.history.PostReadDetail;
 
 public class PushHistoryItem extends RelativeLayout{
 	
-	final Context context;
+	final Activity activity;
 	
 	private String id;
 	
@@ -35,9 +45,9 @@ public class PushHistoryItem extends RelativeLayout{
 	
 	final TextView collapseView;
 
-	public PushHistoryItem(final Context context, final AttributeSet attrs){
+	public PushHistoryItem(final Context context, final AttributeSet attrs, final Fragment fragment){
 		super(context, attrs);
-		this.context = context;
+		this.activity = fragment.getActivity();
 		final RelativeLayout mainView = 
 				(RelativeLayout)LayoutInflater.from(context).inflate(R.layout.push_history_item, null);
 		
@@ -53,21 +63,39 @@ public class PushHistoryItem extends RelativeLayout{
 			@Override
 			public void onClick(final View v) {
 				toggleCollapseView();
+				if(messageReadStatus.equals(NotificationDetail.UNREAD)){
+					markItemRead();
+				}
 			}
 		});
 
-		mainView.removeAllViews();
-		addView(deleteBox);
-		addView(dateView);
-		addView(timeView);
-		addView(textView);
-		addView(actionView);
-		addView(expandedTextView);
-		addView(collapseView);
+		addView(mainView);
+
 	}
 	
+	public void markItemRead(){
+		setMessageReadStatus(NotificationDetail.READ);
+		final PostReadDetail detail = new PostReadDetail();
+		final List<String> messageIds = new ArrayList<String>();
+		
+		detail.action = PostReadDetail.MARK_READ;
+		messageIds.add(id);
+		detail.messageId = messageIds;
+		
+		final AsyncCallback<PostReadDetail> callback = 
+				GenericAsyncCallback.<PostReadDetail>builder(activity)
+				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
+									getResources().getString(R.string.push_progress_registration_loading), 
+									true)
+				.withSuccessListener(new ReadNotificationSucessListener(this))
+				.withErrorResponseHandler(new ReadNotificationErrorHandler())
+				.build();
+		
+		new PostNotificationRead(activity, callback, detail).submit();
+	}
+
 	public void toggleCollapseView(){
-		if(collapseView.getText().toString().equals(context.getResources().getString(R.string.show_more_text))){
+		if(collapseView.getText().toString().equals(activity.getResources().getString(R.string.show_more_text))){
 			collapseView.setText(R.string.show_less_text);
 			expandedTextView.setVisibility(View.VISIBLE);
 		} else{

@@ -18,6 +18,7 @@ import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.push.history.GetAlertHistory;
 import com.discover.mobile.common.push.history.NotificationDetail;
 import com.discover.mobile.common.push.history.NotificationListDetail;
+import com.discover.mobile.push.manage.PushManageFragment;
 
 public class PushHistoryFragment extends RoboSherlockFragment{
 	
@@ -38,11 +39,22 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 	private TextView loadMore;
 	
 	private int currentIndex;
+	
+	private TextView olderAlerts;
+	
+	private TextView noAlerts;
 	 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		final View mainView = inflater.inflate(R.layout.push_history_layout, null);
+		final TextView manage = (TextView) mainView.findViewById(R.id.manage);
+		manage.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				showManageFragment();
+			}
+		});
 		
 		loadMore = (TextView) mainView.findViewById(R.id.load_more);
 		loadMore.setOnClickListener(new OnClickListener(){
@@ -53,9 +65,19 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 		});
 	
 		list = (LinearLayout) mainView.findViewById(R.id.history_list);
+		olderAlerts = (TextView) mainView.findViewById(R.id.older_alerts);
+		noAlerts = (TextView) mainView.findViewById(R.id.no_alerts);
 		notifications = new ArrayList<NotificationDetail>();
 		getAlertHistory(0, ALERT_AMOUNT_TO_GET);
 		return mainView;
+	}
+	
+	public void showManageFragment(){
+		this.getSherlockActivity().getSupportFragmentManager()
+		.beginTransaction()
+		.replace(R.id.navigation_content, new PushManageFragment())
+		.addToBackStack(PushHistoryFragment.class.getSimpleName())
+		.commit();
 	}
 	
 	public void getAlertHistory(final int begin, final int end){
@@ -73,22 +95,24 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 	}
 	
 	public void addToList(final NotificationListDetail details){
-		notifications.addAll(details.notifications);
 		if(notifications.isEmpty()){
 			showNoAlertsView();
 		}else{
+			notifications.addAll(details.notifications);
 			list.setVisibility(View.VISIBLE);
 			updateList(details);
-		}
-		
-		if(details.notifications.size() < ALERT_AMOUNT_TO_GET){
-			loadMore.setVisibility(View.INVISIBLE);
+			
+			if(details.notifications.size() < ALERT_AMOUNT_TO_GET){
+				loadMore.setVisibility(View.INVISIBLE);
+			}
 		}
 	}
 
 	private void showNoAlertsView() {
-		// TODO Auto-generated method stub
-		
+		list.setVisibility(View.GONE);
+		loadMore.setVisibility(View.GONE);
+		olderAlerts.setVisibility(View.GONE);
+		noAlerts.setVisibility(View.VISIBLE);
 	}
 
 	private void updateList(final NotificationListDetail details) {
@@ -98,10 +122,15 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 	}
 	
 	private PushHistoryItem createListItem(final NotificationDetail detail){
-		final PushHistoryItem item = new PushHistoryItem(this.getActivity(), null);
+		final PushHistoryItem item = new PushHistoryItem(this.getActivity(), null, this);
 		final String[] dateString = detail.sentDate.split(SPACE);
 		item.setNotificationId(detail.messageId);
 		item.setMessageReadStatus(detail.messageReadInd);
+		
+		if(detail.messageReadInd.equals(NotificationDetail.READ)){
+			item.setItemRead();
+		}
+		
 		item.setText(detail.subject);
 		item.setActionViewText(detail.getActionButtonText());
 		item.setExpandedText(detail.text);
@@ -110,8 +139,6 @@ public class PushHistoryFragment extends RoboSherlockFragment{
 		item.setTime(dateString[1] + SPACE + dateString[2]);
 		item.setBackgroundDrawable(this.getActivity().getResources().getDrawable(R.drawable.notification_list_item));
 		item.setPadding(PADDING_LR, PADDING_TB, PADDING_LR ,PADDING_TB);
-		//TODO: Set times and date
-		
 		return item;
 	}
 
