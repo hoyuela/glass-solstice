@@ -173,6 +173,7 @@
         android:layout_alignParentBottom="true"
         android:background="#EDF1F2"
         android:padding="@dimen/between_related_elements_padding"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:visibility="gone"/>
 
 </RelativeLayout>
