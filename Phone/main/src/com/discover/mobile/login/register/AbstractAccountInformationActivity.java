@@ -14,9 +14,6 @@ import static com.discover.mobile.common.auth.registration.RegistrationErrorCode
 
 import java.net.HttpURLConnection;
 
-import roboguice.activity.RoboActivity;
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -27,6 +24,7 @@ import android.widget.DatePicker;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -53,8 +51,8 @@ import com.discover.mobile.login.LockOutUserActivity;
  * @author scottseward
  *
  */
-@ContentView(R.layout.register_enter_account_info)
-abstract class AbstractAccountInformationActivity extends RoboActivity {
+
+abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivity {
 	
 	private static final String TAG = AbstractAccountInformationActivity.class.getSimpleName();
 	
@@ -71,59 +69,40 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	 * Keys for use when saving a restoring activity state on screen rotation.
 	 */
 	private final static String MAIN_FIELD_KEY = "mfk";
+	private static final String MAIN_ERROR_KEY = "mek";
+
 	private static final String EXP_MONTH_KEY = "expmk";
 	private static final String EXP_YEAR_KEY = "expyk";
+	private static final String EXP_ERROR_KEY = "expek";
+	
 	private static final String DOB_DAY_KEY = "dobdk";
 	private static final String DOB_MONTH_KEY = "dobmk";
 	private static final String DOB_YEAR_KEY = "dobyk";
+	private static final String DOB_ERROR_KEY = "dobek";
+	
 	private static final String SSN_KEY = "ssnk";
-	private static final String MAIN_ERROR_KEY = "mek";
+	private static final String SSN_ERROR_KEY = "ssnek";
 	
 //TEXT LABELS
-	
-	@InjectView(R.id.account_info_title_label)
-	private TextView activityTitleLabel;
-	
-	@InjectView(R.id.account_info_label_one_label)
 	protected TextView accountIdentifierFieldLabel;
-	
-	@InjectView(R.id.account_information_input_info_label)
 	protected TextView accountIdentifierFieldRestrictionsLabel;
 
 //INPUT FIELDS
-	
-	@InjectView(R.id.account_info_main_input_field)
 	protected UsernameOrAccountNumberEditText accountIdentifierField;
-	
-	@InjectView(R.id.account_info_ssn_input_field)
 	protected SsnEditText ssnField;
 	
 //ERROR LABELS
-	
-	@InjectView(R.id.account_info_error_label)
 	protected TextView errorMessageLabel;
-	
-	@InjectView(R.id.account_info_card_account_number_error_label)
 	protected TextView cardErrorLabel;
-	
-	@InjectView (R.id.account_info_ssn_error_label)
 	protected TextView ssnErrorLabel;
-	
-	@InjectView (R.id.account_info_dob_year_error_label)
 	protected TextView dobErrorLabel;
-	
-	@InjectView(R.id.account_info_expiration_date_error_label)
 	protected TextView expirationDateErrorLabel;
 	
 //SCROLL VIEW
-	@InjectView(R.id.account_info_scroll_view)
 	private ScrollView mainScrollView;
 	
 //DATE PICKER ELEMENTS
-	@InjectView(R.id.account_info_card_exp_date_picker)
 	protected CardExpirationDatePicker cardExpDatePicker;
-	
-	@InjectView(R.id.account_info_birth_date_picker)
 	protected DobDatePicker birthDatePicker;
 	
 //DATE PICKER DIALOGS
@@ -132,7 +111,7 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	
 	// TODO go through old code and make sure this is called every time
 	protected void checkForStrongAuth() {}
-	protected void doCustomUiSetup(){/*Intentionally empty*/};
+	protected void doCustomUiSetup(){/*Intentionally empty*/}
 
 	protected abstract void addCustomFieldToDetails(AccountInformationDetails details, String value);
 	protected abstract void navToNextScreenWithDetails(AccountInformationDetails details);
@@ -147,7 +126,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.register_enter_account_info);
 		
+		loadAllViews();
 		setupFieldsAndLabels();
     	setupCustomTextChangedListeners();
     	setupCardDatePicker();
@@ -155,6 +136,21 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
     	    	
     	restoreState(savedInstanceState);
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
+	}
+	
+	public void loadAllViews() {
+		accountIdentifierFieldLabel = (TextView)findViewById(R.id.account_info_label_one_label);
+		accountIdentifierFieldRestrictionsLabel  = (TextView)findViewById(R.id.account_information_input_info_label);
+		accountIdentifierField = (UsernameOrAccountNumberEditText)findViewById(R.id.account_info_main_input_field);
+		ssnField = (SsnEditText)findViewById(R.id.account_info_ssn_input_field);
+		errorMessageLabel = (TextView)findViewById(R.id.account_info_error_label);
+		cardErrorLabel = (TextView)findViewById(R.id.account_info_card_account_number_error_label);
+		ssnErrorLabel = (TextView)findViewById(R.id.account_info_ssn_error_label);
+		dobErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
+		expirationDateErrorLabel = (TextView)findViewById(R.id.account_info_expiration_date_error_label);
+		mainScrollView = (ScrollView)findViewById(R.id.account_info_scroll_view);
+		birthDatePicker =(DobDatePicker)findViewById(R.id.account_info_birth_date_picker);
+		cardExpDatePicker = (CardExpirationDatePicker)findViewById(R.id.account_info_card_exp_date_picker);
 	}
     
 	/**
@@ -170,6 +166,9 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		outState.putString(SSN_KEY, ssnField.getText().toString());
 		
 		outState.putInt(MAIN_ERROR_KEY, cardErrorLabel.getVisibility());
+		outState.putInt(DOB_ERROR_KEY, dobErrorLabel.getVisibility());
+		outState.putInt(EXP_ERROR_KEY, expirationDateErrorLabel.getVisibility());
+		outState.putInt(SSN_ERROR_KEY, ssnErrorLabel.getVisibility());
 	}
 
 	/**
@@ -208,7 +207,14 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		if(savedInstanceState != null){
 			accountIdentifierField.setText(savedInstanceState.getString(MAIN_FIELD_KEY));
 			ssnField.setText(savedInstanceState.getString(SSN_KEY));
+			
 			cardErrorLabel.setVisibility(savedInstanceState.getInt(MAIN_ERROR_KEY));
+			if(cardErrorLabel.getVisibility() == View.VISIBLE)
+				accountIdentifierField.updateAppearanceForInput();
+			
+			ssnErrorLabel.setVisibility(savedInstanceState.getInt(SSN_ERROR_KEY));
+			if(ssnErrorLabel.getVisibility() == View.VISIBLE)
+				ssnField.updateAppearanceForInput();
 			
 			restoreCardExpDatePicker(savedInstanceState);
 			restoreDobDatePicker(savedInstanceState);
@@ -227,11 +233,15 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 		birthDatePicker.setDobDay(savedInstanceState.getInt(DOB_DAY_KEY));
 		birthDatePicker.setDobMonth(savedInstanceState.getInt(DOB_MONTH_KEY));
 		birthDatePicker.setDobYear(savedInstanceState.getInt(DOB_YEAR_KEY));
-		
+		dobErrorLabel.setVisibility(savedInstanceState.getInt(DOB_ERROR_KEY));
+
 		if(birthDatePicker.isValid()){
 			birthDatePicker.updateLabelWithSavedDate();
+			birthDatePicker.updateAppearanceForInput();
 		}else{
 			birthDatePicker.clearData();
+			if(dobErrorLabel.getVisibility() == View.VISIBLE)
+				birthDatePicker.updateAppearanceForInput();		
 		}
 	}
 	
@@ -244,11 +254,15 @@ abstract class AbstractAccountInformationActivity extends RoboActivity {
 	private void restoreCardExpDatePicker(final Bundle savedInstanceState) {
 		cardExpDatePicker.setExpirationMonth(savedInstanceState.getInt(EXP_MONTH_KEY));
 		cardExpDatePicker.setExpirationYear(savedInstanceState.getInt(EXP_YEAR_KEY));
+		expirationDateErrorLabel.setVisibility(savedInstanceState.getInt(EXP_ERROR_KEY));
 		
 		if(cardExpDatePicker.isValid()) {
 			cardExpDatePicker.updateLabelWithSavedDate();
+			cardExpDatePicker.updateAppearanceForInput();
 		}else{
 			cardExpDatePicker.clearData();
+			if(expirationDateErrorLabel.getVisibility() == View.VISIBLE)
+				cardExpDatePicker.updateAppearanceForInput();
 		}
 	}
 	

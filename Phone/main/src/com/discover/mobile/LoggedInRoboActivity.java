@@ -156,15 +156,6 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 	}
 	
 	/**
-	 * Set the title in the action bar for display
-	 * @param title - title to show in the display
-	 */
-	public void setActionBarTitle(final String title){
-		final TextView titleView= (TextView)findViewById(R.id.title_view);
-		titleView.setText(title);
-	}
-	
-	/**
 	 * Checks the shared pref to get the visibility for the status bar and 
 	 * sets the visibility
 	 */

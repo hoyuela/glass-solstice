@@ -98,5 +98,12 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	protected Class<?> getSuccessfulStrongAuthIntentClass() {
 		return EnterNewPasswordActivity.class;
 	}
+
+	@Override
+	public void goBack() {
+		Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
+		startActivity(forgotCredentials);
+		finish();		
+	}
 	
 }

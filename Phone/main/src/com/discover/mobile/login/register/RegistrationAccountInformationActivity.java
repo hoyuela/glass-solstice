@@ -69,6 +69,11 @@ public class RegistrationAccountInformationActivity extends AbstractAccountInfor
 		startActivity(createLoginActivity);
 		finish();
 	}
+
+	@Override
+	public void goBack() {
+		finish();
+	}
 	
 	
 }
