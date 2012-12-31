@@ -1,4 +1,4 @@
-package com.discover.mobile.push;
+package com.discover.mobile.push.register;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,7 @@ import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.push.registration.DeviceRegistrationDetail;
 import com.discover.mobile.common.push.registration.RegisterVenderIdCall;
+import com.discover.mobile.push.manage.PushManageFragment;
 import com.xtify.sdk.api.XtifySDK;
 
 /**

@@ -1,4 +1,4 @@
-package com.discover.mobile.push;
+package com.discover.mobile.push.manage;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -20,14 +20,26 @@ import com.discover.mobile.R;
  */
 public class PushManageHeaderItem extends RelativeLayout{
 	
+	/**List associated with the list*/
 	private LinearLayout list;
 	
+	/**TextView signifying that the elements should be hidden*/
 	private TextView hide;
 
+	/**String representing the item needs to be hidden*/
 	private final String hideString; 
 
+	/**String representing the item should be shown*/
 	private final String showString;
 	
+	/**Title of the header*/
+	private TextView title;
+	
+	/**
+	 * Constructor of the class
+	 * @param context - activity context
+	 * @param attrs - attributes to give to the layout
+	 */
 	public PushManageHeaderItem(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		
@@ -38,7 +50,7 @@ public class PushManageHeaderItem extends RelativeLayout{
 		showString = res.getString(R.string.show_notification_list);
 		
 		hide = (TextView) mainView.findViewById(R.id.hide_view);
-		final TextView title = (TextView) mainView.findViewById(R.id.title);
+		title = (TextView) mainView.findViewById(R.id.title);
 		
 		mainView.removeAllViews();
 		addView(hide);
@@ -46,11 +58,18 @@ public class PushManageHeaderItem extends RelativeLayout{
 		setClickListener();
 	}
 	
+	/**
+	 * Set the text of the header
+	 * @param header - the text to be set in the header
+	 */
 	public void setHeader(final String header){
-		final TextView title = (TextView) findViewById(R.id.title);
+		title = (TextView) findViewById(R.id.title);
 		title.setText(header);
 	}
 	
+	/**
+	 * Set the on click listener of the show/hide button
+	 */
 	private void setClickListener() {
 		this.setOnClickListener(new OnClickListener(){
 			@Override
@@ -67,6 +86,10 @@ public class PushManageHeaderItem extends RelativeLayout{
 		});
 	}
 
+	/**
+	 * Set the list associated with this header
+	 * @param list - the list associated with this header
+	 */
 	public void setList(final LinearLayout list){
 		this.list = list;
 	}

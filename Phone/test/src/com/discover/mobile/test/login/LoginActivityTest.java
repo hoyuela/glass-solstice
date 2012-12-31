@@ -1,10 +1,5 @@
 package com.discover.mobile.test.login;
 
-import com.discover.mobile.R;
-import com.discover.mobile.login.LoggedInLandingPage;
-import com.discover.mobile.login.LoginActivity;
-import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
-
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
@@ -14,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 
 public class LoginActivityTest extends ActivityInstrumentationTestCase2<com.discover.mobile.login.LoginActivity>{
 	

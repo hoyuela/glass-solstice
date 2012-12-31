@@ -91,7 +91,12 @@
         <item name="android:textColor">@color/blue_link</item>
         <item name="android:textSize">@dimen/body_copy_max</item>
         <item name="android:textStyle">bold</item>
-
+    </style>
+    
+    <style name="blue_hyperlink_small">
+        <item name="android:textColor">@color/blue_link</item>
+        <item name="android:textSize">@dimen/small_copy_max</item>
+        <item name="android:textStyle">bold</item>
     </style>
     
     <style name="login_bottom_bar_button">
@@ -211,6 +216,83 @@
     <style name="modal_error_image">
         <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item>
         <item name="android:layout_marginLeft">@dimen/modal_left_padding</item>
+	</style>
+
+    <style name="push_toggle_box_default">
+        <item name="android:padding">@dimen/between_related_elements_padding</item>
+        <item name="android:layout_marginLeft">@dimen/between_related_elements_padding</item>
+        <item name="android:background">@drawable/gray_gradient_square</item>
+        <item name="android:src">@drawable/transparent_square</item>
+    </style>
+    
+    <style name="push_toggle_box_text_style">
+        <item name="android:textColor">@color/title</item>
+	    <item name="android:textStyle">bold</item>	
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    
+    <style name="push_header_text_style">
+        <item name="android:textColor">@color/title</item>
+	    <item name="android:textStyle">bold</item>	
+        <item name="android:textSize">@dimen/body_copy_min</item>
+    </style>
+    
+    <style name="push_toggle_item_secondary_text">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    
+    <style name="push_expand_item" parent="@style/blue_hyperlink">	
+        <item name="android:textSize">18sp</item>
+    </style>
+    
+    <style name="push_header_item_text">
+        <item name="android:textColor">@color/title</item>
+	    <item name="android:textStyle">bold</item>	
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+    
+    <style name="sub_copy_small">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_mid</item>
+        <item name="android:paddingTop">@dimen/between_related_elements_padding</item>
+    </style>
+    
+    <style name="push_phone_number_text">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+    
+    <style name="push_phone_number">
+        <item name="android:textColor">@color/title</item>
+	    <item name="android:textStyle">bold</item>	
+        <item name="android:textSize">18sp</item>
+    </style>
+    
+    <style name="push_change_number">
+        <item name="android:textColor">@color/blue_link</item>
+        <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+    
+    <style name="push_manage_header_style">
+        <item name="android:padding">@dimen/forms_inner_padding</item>
+        <item name="android:background">@drawable/notification_list_item</item>
+        <item name="android:layout_marginTop">@dimen/groups_of_elements_padding</item>
+    </style>
+    
+    <style name="push_toggle_text">
+        <item name="android:textColor">@color/body_copy</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+    
+    <style name="push_manage_save_success">
+        <item name="android:textColor">@color/orange_link_idicator</item>
+	    <item name="android:textStyle">bold</item>	
+        <item name="android:textSize">18sp</item>
     </style>
 
     <!--Style for strength level in help guide -->

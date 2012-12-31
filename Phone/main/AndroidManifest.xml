@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CALL_PHONE"/>
-    
+	<uses-permission android:name="android.permission.VIBRATE"/>   
 	
 	<application android:name=".DiscoverApplication"
 		android:icon="@drawable/discove_mobile_icn"
@@ -116,7 +116,7 @@
             </intent-filter>
         </receiver>
         
-        <receiver android:name=".common.push.XtifyNotifier">
+        <receiver android:name="com.discover.mobile.push.receive.XtifyNotifier">
             <intent-filter>
                 <action android:name="com.xtify.sdk.NOTIFIER" />
             </intent-filter>

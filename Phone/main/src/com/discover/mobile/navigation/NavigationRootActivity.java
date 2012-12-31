@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.discover.mobile.LoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
-import com.discover.mobile.push.PushNowAvailableFragment;
+import com.discover.mobile.push.register.PushNowAvailableFragment;
 
 /**
  * Root activity for the application after login. This will transition fragment on and off the screen

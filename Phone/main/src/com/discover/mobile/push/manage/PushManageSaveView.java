@@ -1,4 +1,4 @@
-package com.discover.mobile.push;
+package com.discover.mobile.push.manage;
 
 import android.content.Context;
 import android.text.Html;
@@ -26,17 +26,13 @@ public class PushManageSaveView extends RelativeLayout{
 	 */
 	public PushManageSaveView(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-
-
 		final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(context)
                 .inflate(R.layout.push_manage_save_item, null);
 
 		final Button save = (Button) mainView.findViewById(R.id.notification_save_button);
 		final TextView termsView = (TextView) mainView.findViewById(R.id.terms_of_use_view_1);
 		final TextView clickableView = (TextView) mainView.findViewById(R.id.clickable_view);
-		
 		termsView.setText(Html.fromHtml(context.getResources().getString(R.string.terms_text_manage)));
-		
 		
 		mainView.removeAllViews();
 		addView(save);
