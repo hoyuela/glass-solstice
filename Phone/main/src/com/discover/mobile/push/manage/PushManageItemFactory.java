@@ -158,6 +158,7 @@ public class PushManageItemFactory {
 		final ArrayList<String> strings = new ArrayList<String>();
 		if(null == displayValues || displayValues.isEmpty()){return strings;}
 		for(Integer i : displayValues){
+			if(i == null){continue;}
 			strings.add(NumberFormat.getCurrencyInstance().format(i));
 		}
 		return strings;
