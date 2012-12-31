@@ -39,12 +39,6 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 	
 	/**TextView holding the minimum amount text*/
 	private TextView minAmount;
-	
-	/**String representing a $*/
-	private final static String DOLLAR = "$";
-	
-	/**String representing the end of a dollar string*/
-	private final static String DOLLAR_ENDING = ".00";
 
 	/**
 	 * Constructor of the class
@@ -121,10 +115,11 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 	private String getAmount(){
 		final String amount = amountBox.getText().toString();
 		String number = Integer.toString(0);
+		if(null == amount){return number;}
 		try {
 			number =  NumberFormat.getCurrencyInstance().parse(amount).toString();
 		} catch (ParseException e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, "Error parsing string amount, reason: " + e.getMessage());
 		}	
 		return number;
 	}

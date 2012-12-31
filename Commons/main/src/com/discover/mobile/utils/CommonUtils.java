@@ -6,14 +6,20 @@ package com.discover.mobile.utils;
  *
  */
 public class CommonUtils {
+	
+	/**Static int for the minimum length of a phone number*/
+	private static int PHONE_NUMBER_MIN = 10;
 
 	/**
 	 * Convert the simple number into a phone number string
+	 * 
+	 * If the number is not at least 10 digits in length or it is null this will return an empty string
+	 * 
 	 * @param number - number to be changed
 	 * @return the formatted phone number
 	 */
 	public static String toPhoneNumber(final String number){
-		if(number == null){return new String();}
+		if(number == null || number.length() < PHONE_NUMBER_MIN){return new String();}
 		return String.format("%s-%s-%s", number.substring(0, 3), number.substring(3, 6), number.substring(6, 10));
 	}
 	

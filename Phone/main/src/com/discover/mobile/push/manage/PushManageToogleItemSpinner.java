@@ -136,10 +136,11 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 	private String getAmount(){
 		final String amount = amountSpinner.getSelectedItem().toString();
 		String number = Integer.toString(0);
+		if(null == amount){return number;}
 		try {
 			number =  NumberFormat.getCurrencyInstance().parse(amount).toString();
 		} catch (ParseException e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, "Error parsing string amount, reason: " + e.getMessage());
 		}	
 		return number;
 	}

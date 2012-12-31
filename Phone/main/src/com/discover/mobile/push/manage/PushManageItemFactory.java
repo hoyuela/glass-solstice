@@ -23,9 +23,6 @@ public class PushManageItemFactory {
 	/**Top/Bottom padding of the items*/
 	private static final int PADDING_TB = 28;
 	
-	/**String representing the $ text*/
-	private static final String DOLLAR = "$ ";
-	
 	/**Activity context*/
 	private Context context;
 	
@@ -159,6 +156,7 @@ public class PushManageItemFactory {
 	 */
 	private ArrayList<String> convertFromIntArray(final List<Integer> displayValues){
 		final ArrayList<String> strings = new ArrayList<String>();
+		if(null == displayValues || displayValues.isEmpty()){return strings;}
 		for(Integer i : displayValues){
 			strings.add(NumberFormat.getCurrencyInstance().format(i));
 		}
