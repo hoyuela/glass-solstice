@@ -1,4 +1,4 @@
-package com.discover.mobile.push;
+package com.discover.mobile.push.register;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,21 +9,22 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.section.home.HomeSummaryFragment;
 
 /**
- * This is the fragment that allows the user to enroll in push alerts.  This is will be displayed when the user goes
- * through profile and settings and then clicks on enroll in reminders.  If the user clicks enroll then the app
- * will register the acceptance of the notification with Discover's server.  If the user clicks cancel it will just 
- * go back to the last fragment displayed.
+ * This is the screen that is showed to the user immediately following the login of the activity.
+ * This will only be shown if the user has not chosen or denied the use of push notifications. If the user
+ * has chosen to deny or opt into the alerts then this will not be shown and the user will be forwarded to
+ * the account home.
  * 
  * @author jthornton
  *
  */
-public class PushEnrollFragment extends BasePushRegistrationUI{
+public class PushNowAvailableFragment extends BasePushRegistrationUI{
 	
 	/**String representing this class to enter into the back stack*/
-	private static final String TAG = PushEnrollFragment.class.getSimpleName();
-
+	private static final String TAG = PushNowAvailableFragment.class.getSimpleName();
+	
 	/**
 	 * Creates the fragment, inflates the view and defines the button functionality.
 	 * @param inflater - inflater that will inflate the layout
@@ -36,21 +37,22 @@ public class PushEnrollFragment extends BasePushRegistrationUI{
 			final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		final View view = inflater.inflate(R.layout.push_enroll, null);
-		final Button enroll = (Button) view.findViewById(R.id.enroll_accept);
-		final TextView cancel = (TextView) view.findViewById(R.id.enroll_decline);
+		final View view = inflater.inflate(R.layout.push_now_available, null);
+		final Button manageAlerts = (Button) view.findViewById(R.id.manage_alerts_button);
+		final TextView accountHome = (TextView) view.findViewById(R.id.account_home_view);
 		
-		enroll.setOnClickListener(new OnClickListener(){
+		manageAlerts.setOnClickListener(new OnClickListener(){
 			public void onClick(final View v){
-				registerWithDiscover(ACCEPT, true);
+				registerWithDiscover(DECLINE, true);
 			}
 		});
 		
-		cancel.setOnClickListener(new OnClickListener(){
+		accountHome.setOnClickListener(new OnClickListener(){
 			public void onClick(final View v){
-				changeToDeclineScreen();
+				registerWithDiscover(DECLINE, false);
 			}
 		});
+
 		return view;
 	}
 
@@ -63,18 +65,22 @@ public class PushEnrollFragment extends BasePushRegistrationUI{
 	}
 
 	/**
-	 * Swap out this fragment for the last fragment displayed in the app
+	 * Swap out this fragment and replace it with the push manage fragment so that the user can manage his/her alerts
 	 */
 	@Override
 	public void changeToDeclineScreen() {
-		this.getActivity().onBackPressed();
+		this.getSherlockActivity().getSupportFragmentManager()
+		.beginTransaction()
+		.replace(R.id.navigation_content, new HomeSummaryFragment())
+		.addToBackStack(TAG)
+		.commit();
 	}
-
+	
 	/**
 	 * Return the integer value of the string that needs to be displayed in the title
 	 */
 	@Override
 	public int getActionBarTitle() {
-		return R.string.enroll_fragment_title;
+		return R.string.manage_push_fragment_title;
 	}
 }
