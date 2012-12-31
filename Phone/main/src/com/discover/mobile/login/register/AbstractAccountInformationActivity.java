@@ -206,12 +206,13 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	public void restoreState(final Bundle savedInstanceState) {
 		if(savedInstanceState != null){
 			accountIdentifierField.setText(savedInstanceState.getString(MAIN_FIELD_KEY));
-			ssnField.setText(savedInstanceState.getString(SSN_KEY));
 			
 			cardErrorLabel.setVisibility(savedInstanceState.getInt(MAIN_ERROR_KEY));
 			if(cardErrorLabel.getVisibility() == View.VISIBLE)
 				accountIdentifierField.updateAppearanceForInput();
 			
+			ssnField.setText(savedInstanceState.getString(SSN_KEY));
+
 			ssnErrorLabel.setVisibility(savedInstanceState.getInt(SSN_ERROR_KEY));
 			if(ssnErrorLabel.getVisibility() == View.VISIBLE)
 				ssnField.updateAppearanceForInput();
@@ -375,7 +376,6 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 				cardExpDatePicker.isValid() &&
 				ssnField.isValid();	
 		
-		//Hide all error labels and states, then update any fields or labels if they are erroneous.
 		updateLabelsForInput();
 		
 		if(formIsComplete){

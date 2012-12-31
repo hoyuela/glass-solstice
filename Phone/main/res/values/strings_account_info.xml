@@ -14,7 +14,7 @@
 	    Please contact customer service at 1&#8211;866&#8211;221&#8211;1126 for more information. 
 	</string>
 	
-	<string name="account_info_input_restrictions_label">This is a 16&#8211;
+	<string name="account_info_input_restrictions_label">This is a 16 &#8211;
 	    digit number starting with 6011. Do not include space or hyphens.
 	</string>
 	
@@ -27,12 +27,16 @@
 	    8&#8211;32 characters. At least one number. Case sensitive. Special characters can be used. 
 	    Password is used for Account Center home.
 	</string>
+	
+	<string name="email_sub_copy">
+	    You\'ll be sent an email confirming your online account registration.
+	</string>
+	
 	<string name="account_info_two_confirm_id_text">Confirm User ID:</string>
 	<string name="account_info_two_id_strength_text">User ID Strength:</string>
 	<string name="account_info_two_pass_strength_text">Password Strength:</string>
 	<string name="account_info_two_pass_confirm_text">Confirm Password:</string>
 	<string name="account_info_two_email_text">Email Address:</string>
-	<string name="account_info_two_email_info_text">(Used to confirm receipt of your online account registration.)</string>
 	<string name="account_info_two_id_matches_pass_error_text">User ID and password must not be the same.</string>
 	<string name="account_info_two_username_in_use_error_text">User ID is already in use. Please choose another one.</string>
 	<string name="account_info_two_passwords_dont_match_text">Passwords do not match.</string>

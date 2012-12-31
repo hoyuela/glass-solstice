@@ -27,6 +27,7 @@ public class RegistrationAccountInformationActivity extends AbstractAccountInfor
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		accountIdentifierField.setFieldAccountNumber();
+		
 	}
 	
 	public RegistrationAccountInformationActivity() {
