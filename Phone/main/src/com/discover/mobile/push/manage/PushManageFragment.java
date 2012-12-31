@@ -18,8 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSherlockFragment;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.push.manage.GetNotificationPreferences;
@@ -38,7 +38,7 @@ import com.xtify.sdk.api.XtifySDK;
  * @author jthornton
  *
  */
-public class PushManageFragment extends RoboSherlockFragment{
+public class PushManageFragment extends BaseFragment{
 	
 	/**Static string representing a - */
 	private static final String HYPEN = "-";

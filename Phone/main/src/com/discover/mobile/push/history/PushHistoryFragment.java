@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
-import com.discover.mobile.RoboSherlockFragment;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
@@ -21,7 +21,7 @@ import com.discover.mobile.common.push.history.NotificationDetail;
 import com.discover.mobile.common.push.history.NotificationListDetail;
 import com.discover.mobile.push.manage.PushManageFragment;
 
-public class PushHistoryFragment extends RoboSherlockFragment{
+public class PushHistoryFragment extends BaseFragment{
 	
 	/**Left/Right padding of the items*/
 	private static final int PADDING_LR = 14;
