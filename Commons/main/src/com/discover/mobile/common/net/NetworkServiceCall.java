@@ -58,6 +58,8 @@ public abstract class NetworkServiceCall<R> {
 	
 	private final ServiceCallParams params;
 	private final String BASE_URL;
+	private final String X_APP_VERSION;
+	private final String X_CLIENT_PLATFORM;
 	
 	private Context context;
 	private HttpURLConnection conn;
@@ -72,7 +74,9 @@ public abstract class NetworkServiceCall<R> {
 		this.context = context;
 		this.params = params;
 		
-		BASE_URL = ContextNetworkUtility.getBaseUrl(context);
+		BASE_URL = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.base_url );
+		X_APP_VERSION = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xApplicationVersion);
+		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xClientPlatform);
 	}
 	
 	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {
@@ -257,8 +261,8 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private void setDefaultHeaders() {
-		conn.setRequestProperty("X-Client-Platform", this.context.getResources().getString(com.discover.mobile.common.R.string.xClientPlatform));
-		conn.setRequestProperty("X-Application-Version",this.context.getResources().getString(com.discover.mobile.common.R.string.xApplicationVersion));
+		conn.setRequestProperty("X-Client-Platform", X_CLIENT_PLATFORM);
+		conn.setRequestProperty("X-Application-Version",X_APP_VERSION);
 	}
 	
 	private void setSessionHeaders() throws IOException {

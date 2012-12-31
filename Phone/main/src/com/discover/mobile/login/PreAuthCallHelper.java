@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -41,7 +42,7 @@ public class PreAuthCallHelper  {
 	
 	protected static final long DAY_IN_MILLISECONDS = 86400000;
 	protected static final int OPTIONAL_UPGRADE_DAYS = 30;
-	protected static final String PACKAGE_NAME = "com.discover.mobile.DiscoverMobileActivity";
+	
 	
 	protected static final String PREFS_FILE = "UpdatePreferences";
 
@@ -147,7 +148,11 @@ public class PreAuthCallHelper  {
 	 * Used when a user wants or needs to upgrade their application.
 	 */
 	protected static void upgrade(final Context context) {
-		final Uri marketUri = Uri.parse("market://details?id=" + PACKAGE_NAME);
+		String packageName = context.getString(com.discover.mobile.common.R.string.upgrade_package_id);
+		if( packageName == null ){ 
+			Log.e(PreAuthCallHelper.class.getName(), "Required property NOT FOUND: " + com.discover.mobile.common.R.string.upgrade_package_id);
+		}
+		final Uri marketUri = Uri.parse("market://details?id=" + packageName);
 		final Intent androidMarketplaceIntent = new Intent(Intent.ACTION_VIEW, marketUri);
 		context.startActivity(androidMarketplaceIntent);
 	}
