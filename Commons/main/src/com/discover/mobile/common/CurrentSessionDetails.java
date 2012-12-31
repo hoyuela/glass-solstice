@@ -1,6 +1,10 @@
 package com.discover.mobile.common;
 
+import java.util.List;
+
 import com.discover.mobile.common.auth.AccountDetails;
+import com.discover.mobile.common.push.history.NotificationDetail;
+import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
 
 public final class CurrentSessionDetails {
 	
@@ -9,6 +13,12 @@ public final class CurrentSessionDetails {
 	private AccountDetails accountDetails;
 	
 	private boolean isNotCurrentUserRegisteredForPush = false;
+	
+	/**Push prefs retrieved from the server*/
+	private PushNotificationPrefsDetail prefs; 
+	
+	/**List of notifications (used to help with rotation)*/
+	private List<NotificationDetail> notifications;
 	
 	private CurrentSessionDetails(){
 		
@@ -38,5 +48,24 @@ public final class CurrentSessionDetails {
 			final boolean isNotCurrentUserRegisteredForPush) {
 		this.isNotCurrentUserRegisteredForPush = isNotCurrentUserRegisteredForPush;
 	}
+
+	public PushNotificationPrefsDetail getPrefs() {
+		return prefs;
+	}
+
+	public void setPrefs(final PushNotificationPrefsDetail prefs) {
+		this.prefs = prefs;
+	}
+
+	public List<NotificationDetail> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(final List<NotificationDetail> notifications) {
+		this.notifications = notifications;
+	}
 	
+	public void clearNotifications(){
+		this.notifications.clear();
+	}
 }

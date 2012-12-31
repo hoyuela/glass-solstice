@@ -3,38 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" 
-    android:background="@color/white"
-    android:padding="7dp">
+    android:background="#EDF1F2">
     
     <Button
         android:id="@+id/notification_save_button"
         android:layout_width="wrap_content"
    		android:layout_height="wrap_content"
 		android:text="@string/save_changes"
-		android:textSize="14sp"
-		android:textColor="@color/white"
-		android:textStyle="bold"
-		android:paddingTop="7dip"
-		android:paddingBottom="7dip"
-		android:paddingLeft="@dimen/orange_button_left_right_padding"
-		android:paddingRight="@dimen/orange_button_left_right_padding"
-		android:layout_marginRight="10dip"
-   		android:background="@drawable/orange_button"/>
+		style="@style/call_to_action_theme"/>
     
     <TextView
         android:id="@+id/terms_of_use_view_1"
         android:layout_width="wrap_content"
    		android:layout_height="wrap_content"
-   		android:textColor="@color/sub_copy"
    		android:layout_centerVertical="true"
-   		android:textSize="14dip"
    		android:layout_toRightOf="@+id/notification_save_button"
    		android:layout_alignTop="@+id/notification_save_button"
-   		android:paddingTop="6dp"/>
+   		android:layout_alignBottom="@+id/notification_save_button"
+   		android:maxLines="2"
+   		style="@style/sub_copy_small"/>
     
     <TextView 
         android:id="@+id/clickable_view"
-        android:layout_width="100dp"
+        android:layout_width="@dimen/dummy_push_box_width"
    		android:layout_height="wrap_content"
    		android:layout_alignRight="@+id/terms_of_use_view_1"
    		android:layout_alignBottom="@+id/terms_of_use_view_1"/>
