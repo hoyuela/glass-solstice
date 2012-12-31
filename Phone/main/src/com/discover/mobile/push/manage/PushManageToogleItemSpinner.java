@@ -140,7 +140,7 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 		try {
 			number =  NumberFormat.getCurrencyInstance().parse(amount).toString();
 		} catch (ParseException e) {
-			Log.e(TAG, "Error parsing string amount, reason: " + e.getMessage());
+			Log.e(TAG, "Error parsing string "+ amount + " , reason: " + e.getMessage());
 		}	
 		return number;
 	}
