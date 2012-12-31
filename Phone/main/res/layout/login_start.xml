@@ -60,8 +60,7 @@
 		            android:layout_below="@+id/error_text_view"
 		            android:text="@string/user_id"
 		            android:textAppearance="?android:attr/textAppearanceMedium"
-		            android:textColor="@color/title" 
-		            android:textStyle="bold"/>
+		             style="@style/body_copy"/>
 	
 		        <EditText
 		            android:id="@+id/username_field"
@@ -86,8 +85,7 @@
 		            android:layout_marginTop="@dimen/between_related_elements_padding"
 		            android:layout_marginRight="14dp"
 		            android:textAppearance="?android:attr/textAppearanceMedium" 
-		            android:textColor="@color/title"
-		            android:textStyle="bold"/>
+		            style="@style/body_copy"/>
 		        
 		        <TextView
 		            android:id="@+id/toggle_password_visibility_label"

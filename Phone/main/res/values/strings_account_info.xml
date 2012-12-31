@@ -20,10 +20,13 @@
 	
 	<!-- Account Info Screen 2 -->
 	<string name="account_info_two_step_text">Step 2 of 2: Create Account Login</string>
-    <string name="account_info_two_id_detail_info_text">(Must be 6&#8211;16 characters and must not look like an account number. User ID can contain most special characters except for: (\"), (\'), (\\) and spaces)</string>
-	<string name="account_info_two_create_id_text">Create a User ID:</string>
-	<string name="account_info_two_pass_text">Create a Password:</string>
-	<string name="account_info_two_pass_info_text">(Must be 8&#8211;32 characters and have at least one letter and one number. Your password is case sensitivie and can also use all special characters.)</string>
+    <string name="account_info_two_id_detail_info_text">6&#8211;16 characters can contain most special characters except: (\"), (\'), (\\) and spaces.</string>
+	<string name="account_info_two_create_id_text">New User ID:</string>
+	<string name="account_info_two_pass_text">New Password:</string>
+	<string name="account_info_two_pass_info_text">
+	    8&#8211;32 characters. At least one number. Case sensitive. Special characters can be used. 
+	    Password is used for Account Center home.
+	</string>
 	<string name="account_info_two_confirm_id_text">Confirm User ID:</string>
 	<string name="account_info_two_id_strength_text">User ID Strength:</string>
 	<string name="account_info_two_pass_strength_text">Password Strength:</string>
