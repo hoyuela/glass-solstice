@@ -47,15 +47,17 @@ public abstract class ValidatedInputField extends EditText{
 	/**
 	 * Default constructor
 	 * @param context the context of use for the EditText.
-	 */
+	 */ 
 	public ValidatedInputField(Context context) {
 		super(context);	
 		basicSetup();
 	}
+	
 	public ValidatedInputField(Context context, AttributeSet attrs) {
 		super(context, attrs);	
 		basicSetup();
 	}
+	
 	public ValidatedInputField(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		basicSetup();
