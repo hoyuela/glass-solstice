@@ -39,10 +39,7 @@
 
     <style name="WhiteTheme">
         <item name="android:background">@drawable/light_gray_bkgrd</item>
-        <item name="android:paddingBottom">@dimen/content_padding</item>
-        <item name="android:paddingLeft">@dimen/content_padding</item>
-        <item name="android:paddingRight">@dimen/content_padding</item>
-        <item name="android:paddingTop">@dimen/content_padding</item>
+        <item name="android:padding">@dimen/content_padding</item>
     </style>
     
     <style name="WhiteThemeFooter">

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/account_info_scroll_view"
-   	style="@style/WhiteTheme"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent" 
+    android:background="@drawable/light_gray_bkgrd">
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
+		android:padding="@dimen/forms_inner_padding"
         android:focusableInTouchMode="true" >
         
         <TextView
@@ -25,30 +26,20 @@
             style="@style/title_copy"
             android:text="@string/account_info_label_one" />
          
-        <EditText
+        <com.discover.mobile.common.customui.UsernameOrAccountNumberEditText
             android:id="@+id/account_info_main_input_field"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:layout_below="@+id/account_info_label_one_label"
-            android:ems="16"
-            android:inputType="number"
-            android:maxLength="16"
-            android:paddingTop="8dp" 
-            android:imeOptions="actionDone"
-            android:background="@drawable/edit_text_default"
-            android:textColor="@color/field_copy"
-         >
-           
-        </EditText>
+            android:imeOptions="actionDone"/>
         
         <TextView
             android:id="@+id/account_information_input_info_label"
             android:layout_below="@+id/account_info_card_account_number_error_label"
             android:paddingTop="@dimen/between_related_elements_padding"
             android:text="@string/account_info_input_restrictions_label"
-            style="@style/field_copy"
-        />
+            style="@style/field_copy"/>
         
         <TextView
             android:id="@+id/account_info_card_account_number_error_label"
@@ -78,20 +69,14 @@
             android:layout_marginTop="@dimen/table_inner_padding"
             android:text="@string/account_info_ssn_info_text" />
 
-        <EditText
+        <com.discover.mobile.common.customui.SsnEditText
             android:id="@+id/account_info_ssn_input_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_info_ssn_info_label"
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:layout_toRightOf="@+id/account_info_ssn_prefix_label"
-            android:background="@drawable/edit_text_default"
-            android:ems="4"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:maxLength="4" 
-            android:textColor="@color/field_copy"
-        />
+            android:imeOptions="actionDone"/>
 
         <TextView
             android:id="@+id/account_info_ssn_prefix_label"
@@ -110,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_info_ssn_input_field"
-            android:text="@string/doesnt_match_records" />
+            android:text="@string/doesnt_match_records"/>
         
         <TextView
             android:id="@+id/account_info_dob_label"
@@ -155,19 +140,13 @@
         
         </LinearLayout>
 
-        <EditText
+        <com.discover.mobile.common.customui.CardExpirationDatePicker
             android:id="@+id/account_info_card_exp_date_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_related_elements_padding"
-            android:focusable="false"
-            android:ems="11"
-            android:hint="@string/exp_date_placeholder"
-            android:background="@drawable/edit_text_default"
-            android:drawableRight="@drawable/down_arrow"
             android:layout_below="@+id/account_info_card_expiration_date_label" 
-            android:onClick="showCardDatePickerDialog"
-            android:textColor="@color/field_copy"/>
+            android:onClick="showCardDatePickerDialog"/>
         
         <TextView
             android:id="@+id/account_info_expiration_date_error_label"
@@ -175,19 +154,13 @@
             android:layout_below="@+id/account_info_card_exp_date_picker"
             android:text="@string/doesnt_match_records" />
 
-        <EditText
+        <com.discover.mobile.common.customui.DobDatePicker
             android:id="@+id/account_info_birth_date_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/between_related_elements_padding"
-			android:focusable="false"            
-			android:ems="11"
-			android:background="@drawable/edit_text_default"
-			android:drawableRight="@drawable/down_arrow"
-			android:hint="@string/birth_date_placeholder"
             android:layout_below="@+id/account_info_dob_label" 
-            android:onClick="showBirthDatePickerDialog"
-            android:textColor="@color/field_copy"/>
+            android:onClick="showBirthDatePickerDialog"/>
         
             
    <RelativeLayout
