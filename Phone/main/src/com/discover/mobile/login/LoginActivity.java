@@ -139,7 +139,7 @@ public class LoginActivity extends BaseActivity  {
 	private Resources res;
 
 	private boolean preAuthHasRun = false;
-	boolean saveUserId = false;
+	private boolean saveUserId = false;
 	
 	@Inject
 	private PushNotificationService pushNotificationService;
@@ -442,6 +442,8 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	public void togglePasswordVisibility(final View v) {
 		final String buttonText = hideButton.getText().toString();
+		//Retain the position of the selector.
+		int selectionPosition = passField.getSelectionStart();
 		if(HIDE.equals(buttonText)) {
 			hideButton.setText(SHOW);
 			passField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -449,7 +451,9 @@ public class LoginActivity extends BaseActivity  {
 			hideButton.setText(HIDE);
 			passField.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 		}
-
+		//Restore the position of the selector.
+		passField.setSelection(selectionPosition);
+		
 	}
 
 	/**
@@ -490,10 +494,11 @@ public class LoginActivity extends BaseActivity  {
 	 * 
 	 * @param shouldBeChecked Sets the check mark to checked or unchecked for true or false respectively.
 	 */
-	private void setCheckMark(boolean shouldBeChecked) {
+	public void setCheckMark(boolean shouldBeChecked) {
 		saveUserId = !shouldBeChecked;
 		toggleCheckBox(toggleImage);
 	}
+	
 	
 	/**
 	 * Sets the login type of the login screen. This is for users who want to log in with their "Card" or "Bank" info.
@@ -513,9 +518,9 @@ public class LoginActivity extends BaseActivity  {
 	 * user taps the register now button in the bottom bar.
 	 */
 	public void registerNewUser() {
-		clearInputs();
 		final Intent accountInformationActivity = new Intent(this, RegistrationAccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);
+		clearInputs();
 	}
 
 	/**
@@ -523,9 +528,9 @@ public class LoginActivity extends BaseActivity  {
 	 * that it launches the forgot nav screen and is instead called from Java.
 	 */
 	private void forgotIdAndOrPass() {
-		clearInputs();
 		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotTypeSelectionActivity.class);
 		this.startActivity(forgotIdAndOrPassActivity);
+		clearInputs();
 	}
 
 	/**

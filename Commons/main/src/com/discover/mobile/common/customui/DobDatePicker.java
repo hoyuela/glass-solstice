@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 
 import com.discover.mobile.common.R;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.auth.registration.DatePickerDateFormatter;
+import com.discover.mobile.utils.CommonUtils;
 
 /**
  * The date of birth date picker.
@@ -96,7 +96,7 @@ public class DobDatePicker extends ValidatedInputField{
 	 */
 	public void updateLabelWithSavedDate(){
 		if(this.isValid())
-			this.setText( DatePickerDateFormatter.getFormattedDate(dobMonth, dobDay, dobYear) );
+			this.setText( CommonUtils.getFormattedDate(dobMonth, dobDay, dobYear) );
 	}
 
 	/**

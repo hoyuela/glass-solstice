@@ -51,9 +51,8 @@
         
         <TextView 
             android:id="@+id/account_info_error_label"
-			android:visibility="gone"
 			style="@style/error_label"
-		/>
+			/>
 
       	<TextView
             android:id="@+id/account_info_card_expiration_date_label"
@@ -92,8 +91,6 @@
         <TextView
             android:id="@+id/account_info_ssn_error_label"
             style="@style/error_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_below="@+id/account_info_ssn_input_field"
             android:text="@string/doesnt_match_records"/>
         
@@ -109,8 +106,6 @@
             style="@style/error_label"
             android:layout_below="@+id/account_info_birth_date_picker"
             android:text="@string/doesnt_match_records" />
-
-       
 
         <LinearLayout
             android:id="@+id/account_info_button_row"

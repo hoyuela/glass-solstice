@@ -196,7 +196,7 @@
        
 	    <item name="android:textColor">#ed1c24</item>
         <item name="android:visibility">gone</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>        
+		<item name="android:textSize">@dimen/body_copy_min</item>
     </style>
     
     <style name="edit_copy" parent="discover_text">

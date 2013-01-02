@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 
 import com.discover.mobile.common.R;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.auth.registration.DatePickerDateFormatter;
+import com.discover.mobile.utils.CommonUtils;
 
 /**
  * The card expiration date picker.
@@ -85,7 +85,7 @@ public class CardExpirationDatePicker extends ValidatedInputField{
 	 */
 	public void updateLabelWithSavedDate(){
 		if(this.isValid())
-			this.setText(DatePickerDateFormatter.getFormattedDate(expirationMonth, expirationYear));
+			this.setText(CommonUtils.getFormattedDate(expirationMonth, expirationYear));
 	}
 		
 	/**
