@@ -389,7 +389,6 @@ public class LoginActivity extends BaseActivity  {
 						CurrentSessionDetails.getCurrentSessionDetails()
 								.setAccountDetails(value);
 						getXtifyRegistrationStatus();
-//						clearInputs();
 					}
 				})
 				.withErrorResponseHandler(new LoginErrorResponseHandler(this))
