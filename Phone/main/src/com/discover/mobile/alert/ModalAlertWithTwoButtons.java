@@ -48,8 +48,6 @@ public class ModalAlertWithTwoButtons extends AlertDialog{
 		this.setContentView(mainView);
 		
 		final LinearLayout linearLayout = (LinearLayout) mainView.findViewById(R.id.modal_linear_layout);
-		//final LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		//params.addRule(RelativeLayout.ABOVE,  ((View)bottom).getId());
 		linearLayout.addView((View)top);
 		linearLayout.addView((View)bottom);
 	}
