@@ -32,6 +32,7 @@ import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 /**
  * EnterNewPasswordActivit - this activity inherits from AbstractAccountInformationActivity
  * @author scottseward
@@ -111,6 +112,10 @@ public class EnterNewPasswordActivity extends RoboActivity {
 				updateBarsForPass(s, passBarOne, passBarTwo, passBarThree, strengthBarLabel);
 			}
 		});
+		
+		HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
+    	progress.initChangePasswordHeader(1);
+    	
 	}
 
 	

@@ -20,6 +20,7 @@ import com.discover.mobile.common.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 
 /**
  * ForgotPasswordAccountInformationActivity - This activity extends the AbstractAccountInformationActivity
@@ -100,7 +101,8 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 			}
 			
 		});
-		
+		HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
+    	progress.initChangePasswordHeader(1);
 	}
 	
 	@Override
