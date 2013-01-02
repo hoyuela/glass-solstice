@@ -13,12 +13,8 @@
 	    at Discovercard.com. To manage your account you may register at the Sam\'s Club Web Site.
 	    Please contact customer service at 1&#8211;866&#8211;221&#8211;1126 for more information. 
 	</string>
-	
-<<<<<<< HEAD
-	<string name="account_info_input_restrictions_label">This is a 16 &#8211;
-=======
+
 	<string name="account_info_input_restrictions_label">This is a 16&#8211;
->>>>>>> US3745 Register Step 1 of 3 : Made UI updates for register step 1 to reflect 13.2 comps. Still needs nav bar and the step bar that AJ made. Should be reviewed to ensure that it meets 13.2 'requirements'.
 	    digit number starting with 6011. Do not include space or hyphens.
 	</string>
 	
