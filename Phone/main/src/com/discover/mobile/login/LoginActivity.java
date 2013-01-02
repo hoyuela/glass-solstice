@@ -25,6 +25,7 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.SharedPreferencesWrapper;
+import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
@@ -32,6 +33,7 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
@@ -180,7 +182,22 @@ public class LoginActivity extends BaseActivity  {
 	public void onResume(){
 		super.onResume();
 		maybeShowUserLoggedOut();
-		loadSavedCredentials();
+		
+		int lastError = getLastError();
+		
+		//Do not load saved credentials if there was a previous login attempt 
+		//which failed because of a lock out
+		if( StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS != lastError &&
+			RegistrationErrorCodes.LOCKED_OUT_ACCOUNT != lastError) {
+			loadSavedCredentials();
+		} else {
+			//Clear Text Fields for username and password
+			clearInputs();
+			
+			//Uncheck remember user id checkbox without remembering change
+			setCheckMark(false, false);
+		}
+			
 	}
 
 	/**
@@ -229,7 +246,7 @@ public class LoginActivity extends BaseActivity  {
 		hideButton.setText(savedInstanceState.getString(HIDE_LABEL_KEY));
 
 		setLoginType(savedInstanceState.getInt(LOGIN_TYPE_KEY));
-		setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY));
+		setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY), true);
 		
 		errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
 		errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
@@ -267,13 +284,15 @@ public class LoginActivity extends BaseActivity  {
 	 * Set user ID field to the saved value, if it was supposed to be saved.
 	 */
 	private void loadSavedCredentials() {
-		boolean rememberIdCheckState = 
-				SharedPreferencesWrapper.getValueFromSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, false);
+		boolean rememberIdCheckState = false;
+	
+		rememberIdCheckState = SharedPreferencesWrapper.getValueFromSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, false);
 		
 		if(rememberIdCheckState){
 			idField.setText(SharedPreferencesWrapper.getValueFromSharedPrefs(this, SharedPreferencesWrapper.USER_ID, ""));
-			setCheckMark(rememberIdCheckState);
+			setCheckMark(rememberIdCheckState, true);
 		}
+
 	}
 
 	/**
@@ -286,6 +305,10 @@ public class LoginActivity extends BaseActivity  {
 			@Override
 			public void onClick(final View v) {
 				setViewGone(errorTextView);
+				
+				//Clear the last error that occurred
+				setLastError(0);
+				
 				logIn();
 			}
 		});
@@ -353,7 +376,7 @@ public class LoginActivity extends BaseActivity  {
 			errorTextView.setText(getString(R.string.cannot_save_account_number));
 			errorTextView.setVisibility(View.VISIBLE);
 			clearInputs();
-			toggleCheckBox(idField);
+			toggleCheckBox(idField, true);
 			setInputFieldsDrawableToRed();
 			return true;
 		}
@@ -418,8 +441,11 @@ public class LoginActivity extends BaseActivity  {
 	 * box on the login screen.
 	 * 
 	 * It changes its image and the state of the saveUserId value.
+	 * 
+	 * @param v Reference to view which contains the remember user id check
+	 * @param cache Specifies whether to remember the state change
 	 */
-	public void toggleCheckBox(final View v) {
+	public void toggleCheckBox(final View v, boolean cache) {
 	
 		if (saveUserId) {
 			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
@@ -431,7 +457,10 @@ public class LoginActivity extends BaseActivity  {
 			saveUserId = true;
 		}
 
-		SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, saveUserId);
+		//Check whether to save change in persistent storage
+		if(cache) {
+			SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, saveUserId);
+		}
 	}
 
 	/**
@@ -489,10 +518,11 @@ public class LoginActivity extends BaseActivity  {
 	 * Sets the check mark on the login screen to the given boolean (checked/unchecked) state.
 	 * 
 	 * @param shouldBeChecked Sets the check mark to checked or unchecked for true or false respectively.
+	 * @param cached Sets whether the state change should be remembered
 	 */
-	private void setCheckMark(boolean shouldBeChecked) {
+	private void setCheckMark(boolean shouldBeChecked, boolean cached) {
 		saveUserId = !shouldBeChecked;
-		toggleCheckBox(toggleImage);
+		toggleCheckBox(toggleImage, cached);
 	}
 	
 	/**

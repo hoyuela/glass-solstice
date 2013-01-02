@@ -49,6 +49,11 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  *
  */
 public class BaseFragmentActivity extends SlidingFragmentActivity implements RoboContext, ErrorHandlerUi{
+	/**
+	* Contains the last error that occurred with the activity. 
+	* An object that holds a reference to an instance of BaseActivity can set its value by using setLastError.
+	*/
+	private int mLastError = 0;
 	
 	/**Fragment that is currently being shown to the user*/
 	protected Fragment currentFragment;
@@ -314,6 +319,22 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 	@Override
 	public Context getContext() {
 		return this;
+	}
+	
+	/* (non-Javadoc)
+	* @see com.discover.mobile.ErrorHandlerUi#setLastError()
+	*/
+	@Override
+	public void setLastError(int errorCode) {
+		mLastError = errorCode;
+	}
+
+	/* (non-Javadoc)
+	* @see com.discover.mobile.ErrorHandlerUi#getLastError()
+	*/
+	@Override
+	public int getLastError() {
+		return mLastError;
 	}
     
 }
