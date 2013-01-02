@@ -63,10 +63,6 @@ public abstract class BasePushRegistrationUI extends BaseFragment implements Pus
 	 * Swap out this fragment and replace it with the push manage fragment so that the user can manage his/her alerts
 	 */
 	public void changeToAcceptScreen(final String tag) {
-		this.getSherlockActivity().getSupportFragmentManager()
-		.beginTransaction()
-		.replace(R.id.navigation_content, new PushManageFragment())
-		.addToBackStack(tag)
-		.commit();
+		this.makeFragmentVisible(new PushManageFragment());
 	}
 }

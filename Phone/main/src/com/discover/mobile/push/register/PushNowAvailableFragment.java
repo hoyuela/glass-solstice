@@ -69,11 +69,7 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 	 */
 	@Override
 	public void changeToDeclineScreen() {
-		this.getSherlockActivity().getSupportFragmentManager()
-		.beginTransaction()
-		.replace(R.id.navigation_content, new HomeSummaryFragment())
-		.addToBackStack(TAG)
-		.commit();
+		this.makeFragmentVisible(new HomeSummaryFragment());
 	}
 	
 	/**

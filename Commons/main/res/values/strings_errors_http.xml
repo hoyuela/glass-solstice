@@ -4,4 +4,7 @@
 	<string name="error_415">Unsupported Media Type</string>
 	<!-- <string name="error_500"><h3>Discover.com Mobile Error</h3>We're sorry. Your request cannot be completed at this time. We sincerely apologize for this inconvenience and are working to resolve this issue soon. For further assistance please call 1&#8211;877&#8211;742&#8211;7822</string>
 	<string name="error_503">We're sorry. Our services are unavailable at this time. <br/>We apologize for any inconvenience.</string> -->
+	<string name="error_generic_content">We\'re sorry. Your request cannot be completed at this time. We sincerely apologize for this inconvenience and are working to resolve this issue soon. For further assistance please call 1-877-742-7822</string>
+	<string name="error_generic_title">Discover.com Mobile Error</string>
+	<string name="error_generic_button_text">OK</string>
 </resources>

@@ -160,7 +160,7 @@ public class PushHistoryFragment extends BaseFragment{
 	 * @param details details to add to the list
 	 */
 	public void addToList(final NotificationListDetail details){
-		if(details.notifications.isEmpty()){
+		if(null == details || null == details.notifications){
 			showNoAlertsView();
 		}else{
 			notifications.addAll(details.notifications);

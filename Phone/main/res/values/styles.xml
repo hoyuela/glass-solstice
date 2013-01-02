@@ -30,10 +30,8 @@
 
     <style name="alert_modal_white_bg">
         <item name="android:background">@drawable/rounded_white_background</item>
-        <item name="android:layout_marginTop">@dimen/modal_top_margin</item>
         <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
         <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
-        <item name="android:layout_marginBottom">@dimen/modal_bottom_margin</item>
     </style>
 
     <style name="WhiteTheme">

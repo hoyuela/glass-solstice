@@ -28,6 +28,7 @@ import com.discover.mobile.common.push.manage.PostPrefDetail;
 import com.discover.mobile.common.push.manage.PostPreferencesDetail;
 import com.discover.mobile.common.push.manage.PreferencesDetail;
 import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
+import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.utils.CommonUtils;
 import com.xtify.sdk.api.XtifySDK;
 
@@ -432,7 +433,7 @@ public class PushManageFragment extends BaseFragment{
 									getResources().getString(R.string.push_progress_registration_loading), 
 									true)
 				.withSuccessListener(new PostPrefsSuccessListener(this))
-				.withErrorResponseHandler(new PushPrefsErrorHandler())
+				.withErrorResponseHandler(new PushPrefsErrorHandler((NavigationRootActivity)this.getActivity()))
 				.build();
 		
 		new PostNotificationPreferences(this.context, callback, getPreferences()).submit();

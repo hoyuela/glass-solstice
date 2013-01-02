@@ -163,6 +163,19 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 	}	
 	
 	/**
+	 * Sets the fragment seen by the user, but does not add it to the history
+	 * @param fragment - fragment to be shown
+	 */
+	private void setVisibleFragmentNoHistory(final Fragment fragment) {
+		this.currentFragment = fragment;
+		getSupportFragmentManager()
+				.beginTransaction()
+				.replace(R.id.navigation_content, fragment)
+				.commit();
+		hideSlidingMenuIfVisible();
+	}	
+	
+	/**
 	 * Set the current fragment that is being shown
 	 * @param fragment - fragment that is currently shown
 	 */
@@ -176,6 +189,20 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 	 */
 	public void makeFragmentVisible(final Fragment fragment) {
 		setVisibleFragment(fragment);
+		hideSlidingMenuIfVisible();
+	}
+	
+	/**
+	 * Make the fragment visible
+	 * @param fragment - fragment to be made visible
+	 * @param addToHistory - boolean indicating if the fragment should be added to the back stack
+	 */
+	public void makeFragmentVisible(final Fragment fragment, final boolean addToHistory) {
+		if(addToHistory){
+			setVisibleFragment(fragment);
+		}else{
+			setVisibleFragmentNoHistory(fragment);
+		}
 		hideSlidingMenuIfVisible();
 	}
 	
