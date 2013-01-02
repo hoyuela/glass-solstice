@@ -123,7 +123,8 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_below="@+id/toggle_enable_push"
-		    style="@style/push_manage_header_style"/>
+		    style="@style/push_manage_header_style"
+		    android:visibility="gone"/>
 		
 		<LinearLayout
 		    android:id="@+id/manage_account_list_preferences"
@@ -138,7 +139,8 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_below="@+id/manage_account_list_preferences"
-		    style="@style/push_manage_header_style"/>
+		    style="@style/push_manage_header_style"
+		    android:visibility="gone"/>
 		
 		<LinearLayout
 		    android:id="@+id/monitor_spending_list_preferences"
@@ -153,7 +155,8 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_below="@+id/monitor_spending_list_preferences"
-		    style="@style/push_manage_header_style"/>
+		    style="@style/push_manage_header_style"
+		    android:visibility="gone"/>
 		
 		<LinearLayout
 		    android:id="@+id/maximize_rewards_list_preferences"
@@ -173,6 +176,7 @@
         android:layout_alignParentBottom="true"
         android:background="#EDF1F2"
         android:padding="@dimen/between_related_elements_padding"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:visibility="gone"/>
 
 </RelativeLayout>

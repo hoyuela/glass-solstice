@@ -38,7 +38,7 @@
     	android:layout_below="@+id/text_toggle_view"
     	android:text="@string/push_alerts"
     	style="@style/push_toggle_box_text_style"
-    	android:layout_marginLeft="@dimen/second_toggle_text_margin_left"/>
+    	android:layout_marginLeft="@dimen/second_toggle_text_margin_left"/> 
 
 	<TextView
 	    android:id="@+id/header" 
@@ -57,7 +57,7 @@
     	android:layout_below="@+id/header"
     	android:inputType="number"
     	android:textColor="@color/sub_copy"
-    	android:textSize="14dip"/>
+    	android:textSize="12dp"/>
 	
 	<TextView
 	    android:id="@+id/amount_text_box_view"
