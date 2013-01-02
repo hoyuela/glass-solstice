@@ -14,7 +14,7 @@
     <dimen name="push_toggle_box_height">25dp</dimen>
     <dimen name="second_toggle_margin_left">20dp</dimen>
    	<dimen name="first_toggle_text_margin_left">9dp</dimen>
-    <dimen name="second_toggle_text_margin_left">15dp</dimen>
+    <dimen name="second_toggle_text_margin_left">17dp</dimen>
     <dimen name="push_header_margin_left">20dp</dimen>
     <dimen name="push_spinner_width">75dp</dimen>
     <dimen name="dummy_push_box_width">100dp</dimen>

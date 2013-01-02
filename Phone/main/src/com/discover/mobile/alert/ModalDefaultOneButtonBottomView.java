@@ -41,7 +41,7 @@ public class ModalDefaultOneButtonBottomView extends RelativeLayout implements M
 				.inflate(R.layout.modal_default_one_button_bottom, null);
 		
 		mainCallToActionButton = (Button)buttonView.findViewById(R.id.button);
-		ImageView testImageView = (ImageView)buttonView.findViewById(R.id.modal_alert_divider);
+		final ImageView testImageView = (ImageView)buttonView.findViewById(R.id.modal_alert_divider);
 		
 		buttonView.removeAllViews();
 		addView(buttonView);
