@@ -52,15 +52,23 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 	 * equal to "id" in order to set view attribute values.
 	 */
 	private void setHelpIdStrengthViewAttr() {
-	
+		//Set Weak View Attributes
+		View view = (View)this.findViewById(R.id.reg_help_weak_pswd);
+		if( null != view ) {
+			setViewItemAttr(view, 
+					R.string.account_info_help_level1, 
+					R.string.account_info_help_action1, 
+					R.string.account_info_help_msg1, R.drawable.rounded_red_bar, R.drawable.x_red);		
+			
+		}
 		
 		//Set Moderate View Attributes
-		View view = (View)this.findViewById(R.id.reg_help_mod_pswd);
+		view = (View)this.findViewById(R.id.reg_help_mod_pswd);
 		if( null != view ) {
 			setViewItemAttr(view, 
 					R.string.account_info_help_level2, 
 					R.string.account_info_help_action2, 
-					R.string.account_info_help_msg2, R.drawable.rounded_yellow_bar, false);
+					R.string.account_info_help_msg2, R.drawable.rounded_yellow_bar, 0);
 			
 		}
 		
@@ -70,7 +78,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 			setViewItemAttr(view, 
 					R.string.account_info_help_level3, 
 					R.string.account_info_help_action3, 
-					R.string.account_info_help_msg3, R.drawable.rounded_green_bar, true);	
+					R.string.account_info_help_msg3, R.drawable.rounded_green_bar, R.drawable.checkmark_green);	
 		}
 	}
 	
@@ -85,7 +93,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 			setViewItemAttr(view, 
 					R.string.account_info_help_level1, 
 					R.string.account_info_help_action1, 
-					R.string.account_info_help_pswd_msg1, R.drawable.rounded_red_bar, false);		
+					R.string.account_info_help_pswd_msg1, R.drawable.rounded_red_bar, R.drawable.x_red);		
 			
 		}
 		
@@ -95,7 +103,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 			setViewItemAttr(view, 
 					R.string.account_info_help_level2, 
 					R.string.account_info_help_action2, 
-					R.string.account_info_help_msg2, R.drawable.rounded_yellow_bar, false);		
+					R.string.account_info_help_msg2, R.drawable.rounded_yellow_bar, 0);		
 			
 		}
 		
@@ -105,7 +113,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 			setViewItemAttr(view, 
 					R.string.account_info_help_level3, 
 					R.string.account_info_help_action3, 
-					R.string.account_info_help_msg3, R.drawable.rounded_green_bar, true);	
+					R.string.account_info_help_msg3, R.drawable.rounded_green_bar, R.drawable.checkmark_green);	
 		}
 	}
 	
@@ -117,9 +125,9 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 	 * @param action Resource ID to string used to specify what action user should take to improve password or user id strength
 	 * @param msg Resource ID to message used to specify the criteria used to determine the strength level
 	 * @param image Resource ID to image to display for the strength bar
-	 * @param check Specifies whether to show a check mark image next to strength bar. Used only for Strong green bar.
+	 * @param image2 Resource ID to image to display next to the strength bar
 	 */
-	private void setViewItemAttr(View view, int level, int action, int msg, int image, boolean check ) {	
+	private void setViewItemAttr(View view, int level, int action, int msg, int image, int image2 ) {	
 		if( null != view ) {
 			TextView levelTxtVw = (TextView)view.findViewById(R.id.reg_help_strength_level);
 			TextView actionTxtVw = (TextView)view.findViewById(R.id.reg_help_strength_action);
@@ -143,9 +151,12 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 				
 			}	
 			
-			if( check ) {
+			//If resource id is not 0 then display image
+			if( 0 != image2 ) {
 				View checkVw = (View)view.findViewById(R.id.reg_help_strong_check);
 				if( null != checkVw)  {
+					Drawable strengthIcon = (Drawable)getResources().getDrawable( image2 );
+					checkVw.setBackgroundDrawable(strengthIcon);		
 					checkVw.setVisibility(View.VISIBLE);
 				}
 			}
