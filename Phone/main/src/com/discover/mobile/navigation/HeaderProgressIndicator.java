@@ -1,6 +1,7 @@
 package com.discover.mobile.navigation;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +26,9 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	private TextView step3;
 	private ImageView step1Confirm;
 	private ImageView step2Confirm;
-	private TextView indicator1;
-	private TextView indicator2;
-	private TextView indicator3;
+	private ImageView indicator1;
+	private ImageView indicator2;
+	private ImageView indicator3;
 	
 
 	public HeaderProgressIndicator(Context context) {
@@ -59,14 +60,14 @@ public class HeaderProgressIndicator extends RelativeLayout {
 		inflater.inflate(R.layout.header_progress_indication, this);
 		step1 = (TextView) findViewById(R.id.step1_title);
 		step1Confirm = (ImageView) findViewById(R.id.step1_confirm);
-		indicator1 = (TextView) findViewById(R.id.first_indicator);
+		indicator1 = (ImageView) findViewById(R.id.first_indicator);
 		
 		step2 = (TextView) findViewById(R.id.step2_title);
 		step2Confirm = (ImageView) findViewById(R.id.step2_confirm);
-		indicator2 = (TextView) findViewById(R.id.middle_indicator);
+		indicator2 = (ImageView) findViewById(R.id.middle_indicator);
 		
 		step3 = (TextView) findViewById(R.id.step3_title);
-		indicator3 = (TextView) findViewById(R.id.last_indicator);
+		indicator3 = (ImageView) findViewById(R.id.last_indicator);
 
 	}
 
@@ -96,14 +97,19 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	
 	private void setIndicatorVisibility(int position){
 		if (position == 0){
+			step1.setTypeface(null, Typeface.BOLD);
 			indicator1.setVisibility(View.VISIBLE);
 			indicator2.setVisibility(View.INVISIBLE);
 			indicator3.setVisibility(View.INVISIBLE);
 		}else if (position == 1){
+			step2.setTypeface(null, Typeface.BOLD);
+			step1.setTypeface(null, Typeface.NORMAL);
 			indicator1.setVisibility(View.INVISIBLE);
 			indicator2.setVisibility(View.VISIBLE);
 			indicator3.setVisibility(View.INVISIBLE);
 		}else {
+			step3.setTypeface(null, Typeface.BOLD);
+			step2.setTypeface(null, Typeface.NORMAL);
 			indicator1.setVisibility(View.INVISIBLE);
 			indicator2.setVisibility(View.INVISIBLE);
 			indicator3.setVisibility(View.VISIBLE);

@@ -14,8 +14,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/black_check"
+            android:layout_centerVertical="true"
+            android:src="@drawable/gray_check_mark"
             android:visibility="invisible" />
 
         <LinearLayout
@@ -25,15 +25,14 @@
             android:layout_toRightOf="@+id/step1_confirm"
             android:orientation="vertical" >
 
-            <TextView
+            <ImageView
                 android:id="@+id/first_indicator"
                 android:layout_width="wrap_content"
-                android:layout_height="10dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="0dp"
-                android:lines="1"
                 android:padding="0dp"
-                android:text="^"
+                android:src="@drawable/orange_down_arrow"
                 android:visibility="invisible" />
 
             <TextView
@@ -43,7 +42,7 @@
                 android:layout_margin="0dp"
                 android:lines="1"
                 android:padding="0dp"
-                android:text="Enter Info" />
+                android:text="@string/enter_info" />
         </LinearLayout>
 
         <LinearLayout
@@ -54,15 +53,14 @@
             android:layout_gravity="center_horizontal"
             android:orientation="vertical" >
 
-            <TextView
+            <ImageView
                 android:id="@+id/middle_indicator"
                 android:layout_width="wrap_content"
-                android:layout_height="10dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="0dp"
-                android:lines="1"
                 android:padding="0dp"
-                android:text="^"
+                android:src="@drawable/orange_down_arrow"
                 android:visibility="invisible" />
 
             <TextView
@@ -71,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
                 android:lines="1"
-                android:text="Create Password" />
+                android:text="@string/create_password" />
         </LinearLayout>
 
         <LinearLayout
@@ -83,15 +81,14 @@
             android:orientation="vertical"
             android:paddingRight="5dp" >
 
-            <TextView
+            <ImageView
                 android:id="@+id/last_indicator"
                 android:layout_width="wrap_content"
-                android:layout_height="10dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="0dp"
-                android:lines="1"
                 android:padding="0dp"
-                android:text="^"
+                android:src="@drawable/orange_down_arrow"
                 android:visibility="invisible" />
 
             <TextView
@@ -100,16 +97,16 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
                 android:lines="1"
-                android:text="Confirmation" />
+                android:text="@string/confirm" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/step2_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/step_2"
-            android:src="@drawable/black_check"
+            android:src="@drawable/gray_check_mark"
             android:visibility="invisible" />
     </RelativeLayout>
 
