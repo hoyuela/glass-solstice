@@ -65,6 +65,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="special_push_orange_button" parent="call_to_action_theme">
+        <item name="android:textSize">@dimen/small_copy_mid</item>
+    </style>
+    
     <style name="action_bar_theme">
         <item name="android:visibility">gone</item>
     </style>
