@@ -4,7 +4,7 @@
     <string name="logout_confirm_title">Are You Sure You Want to Log Out?</string>
     <string name="logout_confirm_text">
         Thank you for visiting. 
-        Please tap Stay Logged In to continue using the Disccover App.
+        Please tap Stay Logged In to continue using the Discover App.
         Tap Log Out to finish your session.
     </string>
     <string name="logout_ok_button_text">Log Out</string>
