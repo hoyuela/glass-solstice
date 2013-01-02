@@ -47,6 +47,14 @@ public abstract class BaseFragment extends SherlockFragment{
     }
     
     /**
+     * Show the logout alert dialog
+     */
+    public void showLogoutDialog(){
+    	final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
+    	activity.showAlertDialog();
+    }
+    
+    /**
 	 * Make the fragment visible
 	 * @param fragment - fragment to be made visible
 	 */
