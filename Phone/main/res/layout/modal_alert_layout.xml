@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="alert_modal_black_bg">
+    style="alert_modal_black_bg"
+    android:layout_gravity="center">
     
-	<RelativeLayout
-	    android:id="@+id/modal_linear_layout"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentTop="true"
-	    android:layout_centerVertical="true"
-	    android:layout_centerHorizontal="true"
-	   	android:orientation="vertical"
-	   	style="@style/alert_modal_white_bg"/>
-
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+		android:layout_gravity="center">
+		
+        	<TextView 
+        	    android:id="@+id/dummy_view"
+        	    android:layout_width="match_parent"
+        		android:layout_height="@dimen/modal_top_dummy_view"
+			   	android:layout_centerInParent="true" />
+        
+			<LinearLayout
+			    android:id="@+id/modal_linear_layout"
+			    android:layout_width="wrap_content"
+			    android:layout_height="match_parent"
+			   	android:orientation="vertical"
+				style="@style/alert_modal_white_bg"
+			    android:layout_below="@+id/dummy_view"/>
+			    
+	</RelativeLayout>
+</ScrollView>
