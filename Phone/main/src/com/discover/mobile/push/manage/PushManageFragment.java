@@ -265,6 +265,7 @@ public class PushManageFragment extends BaseFragment{
 					factory.createItem(categories[i], headers[i], texts[i]);
 			if(showCategory(item.getCategory())){
 				list.addView((RelativeLayout)item);
+				manageHeader.setVisibility(View.VISIBLE);
 			}
 			categoriesList.add(item);
 		}
@@ -294,17 +295,19 @@ public class PushManageFragment extends BaseFragment{
 		
 		if(showCategory(purchase.getCategory())){
 			monitorList.addView((RelativeLayout)purchase);
+			monitorHeader.setVisibility(View.VISIBLE);
 		}
 		categoriesList.add(purchase);
 		if(showCategory(balance.getCategory())){
 			monitorList.addView((RelativeLayout)balance);
+			monitorHeader.setVisibility(View.VISIBLE);
 		}
 		categoriesList.add(balance);
 		if(showCategory(creditLine.getCategory())){
 			monitorList.addView((RelativeLayout)creditLine);
+			monitorHeader.setVisibility(View.VISIBLE);
 		}
 		categoriesList.add(creditLine);
-		
 	}
 	
 	/**
@@ -324,10 +327,12 @@ public class PushManageFragment extends BaseFragment{
 		((PushManageToggleItemEditText)cashBackBonus).hideMinimumAmount();
 		if(showCategory(rewardsReminder.getCategory())){
 			maximizeList.addView((RelativeLayout)rewardsReminder);
+			maximizeHeader.setVisibility(View.VISIBLE);
 		}
 		categoriesList.add(rewardsReminder);
 		if(showCategory(cashBackBonus.getCategory())){
 			maximizeList.addView((RelativeLayout)cashBackBonus);
+			maximizeHeader.setVisibility(View.VISIBLE);
 		}
 		categoriesList.add(cashBackBonus);
 		
