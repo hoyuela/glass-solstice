@@ -172,6 +172,7 @@ public class LoginActivity extends BaseActivity  {
 		if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
 			errorTextView.setText(getString(R.string.logout_sucess));
 			errorTextView.setVisibility(View.VISIBLE);
+			errorTextView.setTextColor(getResources().getColor(R.color.body_copy));
 		}
 	}
 	
@@ -370,9 +371,9 @@ public class LoginActivity extends BaseActivity  {
 	private boolean showErrorWhenAttemptingToSaveAccountNumber() {
 		String inputId = idField.getText().toString();
 		InputValidator validator = new InputValidator();
-		validator.isCardAccountNumberValid(inputId);
 		
-		if(saveUserId && validator.wasAccountNumberValid) {
+		if(saveUserId && validator.isCardAccountNumberValid(inputId)) {
+			errorTextView.setTextColor(getResources().getColor(R.color.red));
 			errorTextView.setText(getString(R.string.cannot_save_account_number));
 			errorTextView.setVisibility(View.VISIBLE);
 			clearInputs();
@@ -382,7 +383,6 @@ public class LoginActivity extends BaseActivity  {
 		}
 		else{
 			return false;
-	
 		}
 	}
 
@@ -476,7 +476,7 @@ public class LoginActivity extends BaseActivity  {
 			passField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		} else {
 			hideButton.setText(HIDE);
-			passField.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+			passField.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 		}
 
 	}
@@ -513,7 +513,9 @@ public class LoginActivity extends BaseActivity  {
 	private void clearInputs() {
 		idField.setText(emptyString);
 		passField.setText(emptyString);
+		setInputFieldsDrawablesToDefault();
 	}
+	
 	/**
 	 * Sets the check mark on the login screen to the given boolean (checked/unchecked) state.
 	 * 
@@ -590,6 +592,7 @@ public class LoginActivity extends BaseActivity  {
 		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 		
 		if(wasIdEmpty || wasPassEmpty) {	
+			errorTextView.setTextColor(getResources().getColor(R.color.red));
 			errorTextView.setText(R.string.login_error);
 			errorTextView.setVisibility(View.VISIBLE);
 			setInputFieldsDrawableToRed();
