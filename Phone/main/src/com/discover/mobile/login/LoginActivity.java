@@ -423,7 +423,11 @@ public class LoginActivity extends BaseActivity  {
 
 					@Override
 					public void success(final AccountDetails value) {
+						//set current user to generate user level preference file.  
+						SharedPreferencesWrapper.setCurrentUser(idField.getText().toString());
+						
 						saveCredentials();
+						
 						CurrentSessionDetails.getCurrentSessionDetails()
 								.setAccountDetails(value);
 						getXtifyRegistrationStatus();
@@ -447,7 +451,7 @@ public class LoginActivity extends BaseActivity  {
 		else{
 			SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.USER_ID, emptyString);
 		}
-		SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, saveUserId);
+		SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, saveUserId);	
 	}
 
 	/**
