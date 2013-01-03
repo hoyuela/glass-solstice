@@ -143,6 +143,8 @@ public class LoginActivity extends BaseActivity  {
 	private boolean preAuthHasRun = false;
 	private boolean saveUserId = false;
 	
+	private final static int LOGOUT_TEXT_COLOR = R.color.body_copy;
+	
 	@Inject
 	private PushNotificationService pushNotificationService;
 
@@ -173,7 +175,7 @@ public class LoginActivity extends BaseActivity  {
 			if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
 				errorTextView.setText(getString(R.string.logout_sucess));
 				errorTextView.setVisibility(View.VISIBLE);
-				errorTextView.setTextColor(getResources().getColor(R.color.body_copy));
+				errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 				this.getIntent().putExtra(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
 			}
 		}
@@ -249,14 +251,25 @@ public class LoginActivity extends BaseActivity  {
 
 			setLoginType(savedInstanceState.getInt(LOGIN_TYPE_KEY));
 			setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY), true);
-			
-			errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
-			errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
-			
+
+			restoreErrorTextView(savedInstanceState);
 			resetInputFieldColors();
 		}
 
 	
+	}
+	
+	/**
+	 * When restoring the state of the screen on rotation. Restore the error text at the top of the screen.
+	 *
+	 * @param savedInstanceState
+	 */
+	private void restoreErrorTextView(final Bundle savedInstanceState) {
+		errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
+		errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
+		if(!errorIsVisible())
+			errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
+		
 	}
 	
 	/**
