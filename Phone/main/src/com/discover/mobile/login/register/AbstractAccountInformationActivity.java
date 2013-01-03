@@ -131,7 +131,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		setContentView(R.layout.register_enter_account_info);
 		
     	HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
-    	progress.initChangePasswordHeader(0);
+    	progress.initChangePasswordHeader(1);
   
 		loadAllViews();
 		setupFieldsAndLabels();
