@@ -131,7 +131,7 @@
 			     	android:layout_marginTop="14dp"
 			     	android:layout_below="@+id/password_field"
 			        android:padding="5dip"
-			        android:onClick="toggleCheckBox"
+			        android:onClick="toggleCheckBoxFromXml"
 			        android:background="@drawable/gray_gradient_square"
 			        android:src="@drawable/transparent_square"
 			    	android:layout_marginLeft="5dip"/>

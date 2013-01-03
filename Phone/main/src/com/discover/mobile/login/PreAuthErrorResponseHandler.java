@@ -1,7 +1,6 @@
 package com.discover.mobile.login;
 
 import static com.discover.mobile.common.StandardErrorCodes.FORCED_UPGRADE_REQUIRED;
-import android.app.Activity;
 
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -19,8 +18,6 @@ import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
  */
 public class PreAuthErrorResponseHandler extends BaseErrorResponseHandler implements ErrorResponseHandler {
 
-	
-	
 	/**
 	 * Create a PreAuthErrorResponseHandler to handle error responses generated
 	 * 
@@ -29,7 +26,7 @@ public class PreAuthErrorResponseHandler extends BaseErrorResponseHandler implem
 	 */
 	public PreAuthErrorResponseHandler(final LoginActivity loginActivity) {
 		super(loginActivity);
-		
+
 	}
 
 	/**

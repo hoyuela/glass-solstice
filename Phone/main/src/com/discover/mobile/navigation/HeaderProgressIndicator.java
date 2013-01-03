@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
 
 
 /**
@@ -49,7 +50,7 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	 */
 	public void initChangePasswordHeader(int position) {
 		inflateHeader();
-		setTitle("Enter Info", "Change Password", "Confirmation");
+		setTitle(R.string.enter_info, R.string.create_password,R.string.confirm);
 		setPosition(position);
 	}
 
@@ -74,10 +75,10 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	/**
 	 * Sets the titles for the header
 	 */
-	private void setTitle(String title1, String title2, String title3) {
-		step1.setText(title1);
-		step2.setText(title2);
-		step3.setText(title3);
+	private void setTitle(int title1, int title2, int title3) {
+		step1.setText(getResources().getString(title1));
+		step2.setText(getResources().getString(title2));
+		step3.setText(getResources().getString(title3));
 	}
 	
 	/**
@@ -97,19 +98,19 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	
 	private void setIndicatorVisibility(int position){
 		if (position == 0){
-			step1.setTypeface(null, Typeface.BOLD);
+			step1.setTextAppearance(getContext(), R.style.selected_status_indicator_text);
 			indicator1.setVisibility(View.VISIBLE);
 			indicator2.setVisibility(View.INVISIBLE);
 			indicator3.setVisibility(View.INVISIBLE);
 		}else if (position == 1){
-			step2.setTypeface(null, Typeface.BOLD);
-			step1.setTypeface(null, Typeface.NORMAL);
+			step2.setTextAppearance(getContext(), R.style.selected_status_indicator_text);
+			step1.setTextAppearance(getContext(), R.style.status_indicator_text);
 			indicator1.setVisibility(View.INVISIBLE);
 			indicator2.setVisibility(View.VISIBLE);
 			indicator3.setVisibility(View.INVISIBLE);
 		}else {
-			step3.setTypeface(null, Typeface.BOLD);
-			step2.setTypeface(null, Typeface.NORMAL);
+			step3.setTextAppearance(getContext(), R.style.selected_status_indicator_text);
+			step2.setTextAppearance(getContext(), R.style.status_indicator_text);
 			indicator1.setVisibility(View.INVISIBLE);
 			indicator2.setVisibility(View.INVISIBLE);
 			indicator3.setVisibility(View.VISIBLE);

@@ -67,14 +67,20 @@
     <style name="action_bar_theme">
         <item name="android:visibility">gone</item>
     </style>
-
-    <style name="orange_action_bar_buttons" parent="action_bar_theme">
+    
+   <style name="orange_action_bar_buttons" parent = "action_bar_theme">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">12dp</item>
-        <item name="android:background">@drawable/square_menu_button</item>
-        <item name="android:layout_marginBottom">3dp</item>
-        <item name="android:layout_marginLeft">@dimen/between_related_elements_padding</item>
+        <item name="android:background">@drawable/square_button</item>
+        <item name="android:layout_marginLeft">9dp</item>
+    </style>
+    
+    <style name="logout_actionbar_button" parent="white_button">
+        <item name="android:textSize">14sp</item>
+	    <item name="android:layout_marginTop">4dp</item>
+	    <item name="android:layout_marginBottom">3dp</item>
+	    <item name="android:layout_marginRight">14dp</item>
     </style>
 
     <style name="action_bar_text" parent="action_bar_theme">
@@ -86,6 +92,7 @@
         <item name="android:textColor">@color/title</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:paddingRight">5dp</item>
     </style>
 
     <style name="blue_hyperlink">
@@ -362,6 +369,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">0dp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:lines">1</item>
         <item name="android:padding">0dp</item>
     </style>

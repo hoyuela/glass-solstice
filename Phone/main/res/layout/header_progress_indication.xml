@@ -21,7 +21,6 @@
 
             <TextView
                 android:id="@+id/step1_title"
-                android:text="@string/enter_info" 
                 style="@style/status_indicator_text" />
         </LinearLayout>
 
@@ -37,8 +36,7 @@
 
             <TextView
                 android:id="@+id/step2_title"
-                style="@style/status_indicator_text"
-                android:text="@string/create_password" />
+                style="@style/status_indicator_text"/>
         </LinearLayout>
 
         <LinearLayout
@@ -54,8 +52,7 @@
 
             <TextView
                 android:id="@+id/step3_title"
-                style="@style/status_indicator_text"
-                android:text="@string/confirm" />
+                style="@style/status_indicator_text" />
         </LinearLayout>
 
         <ImageView

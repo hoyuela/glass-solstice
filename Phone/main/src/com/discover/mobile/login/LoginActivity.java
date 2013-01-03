@@ -143,6 +143,8 @@ public class LoginActivity extends BaseActivity  {
 	private boolean preAuthHasRun = false;
 	private boolean saveUserId = false;
 	
+	private final static int LOGOUT_TEXT_COLOR = R.color.body_copy;
+	
 	@Inject
 	private PushNotificationService pushNotificationService;
 
@@ -169,13 +171,11 @@ public class LoginActivity extends BaseActivity  {
 		final Intent intent = this.getIntent();
 		final Bundle extras = intent.getExtras();
 
-		if(null == extras){return;}
-
 		if(extras != null){
 			if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
 				errorTextView.setText(getString(R.string.logout_sucess));
 				errorTextView.setVisibility(View.VISIBLE);
-				errorTextView.setTextColor(getResources().getColor(R.color.body_copy));
+				errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 				this.getIntent().putExtra(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
 			}
 		}
@@ -251,14 +251,25 @@ public class LoginActivity extends BaseActivity  {
 
 			setLoginType(savedInstanceState.getInt(LOGIN_TYPE_KEY));
 			setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY), true);
-			
-			errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
-			errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
-			
+
+			restoreErrorTextView(savedInstanceState);
 			resetInputFieldColors();
 		}
 
 	
+	}
+	
+	/**
+	 * When restoring the state of the screen on rotation. Restore the error text at the top of the screen.
+	 *
+	 * @param savedInstanceState
+	 */
+	private void restoreErrorTextView(final Bundle savedInstanceState) {
+		errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
+		errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
+		if(!errorIsVisible())
+			errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
+		
 	}
 	
 	/**
@@ -375,9 +386,8 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	private boolean showErrorWhenAttemptingToSaveAccountNumber() {
 		String inputId = idField.getText().toString();
-		InputValidator validator = new InputValidator();
 		
-		if(saveUserId && validator.isCardAccountNumberValid(inputId)) {
+		if(saveUserId && InputValidator.isCardAccountNumberValid(inputId)) {
 			errorTextView.setTextColor(getResources().getColor(R.color.red));
 			errorTextView.setText(getString(R.string.cannot_save_account_number));
 			errorTextView.setVisibility(View.VISIBLE);
@@ -449,7 +459,7 @@ public class LoginActivity extends BaseActivity  {
 	 * @param v Reference to view which contains the remember user id check
 	 * @param cache Specifies whether to remember the state change
 	 */
-	public void toggleCheckBox(final View v, boolean cache) {
+	public void toggleCheckBox(final View v, final boolean cache) {
 	
 		if (saveUserId) {
 			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
@@ -465,6 +475,17 @@ public class LoginActivity extends BaseActivity  {
 		if(cache) {
 			SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, saveUserId);
 		}
+	}
+	
+	/**
+	 * Calls toggleCheckBox(v, true)
+	 * This method allows us to call toggleCheckBox from XML, we always want to save the state of the button
+	 * so we always pass true as the second argument.
+	 * 
+	 * @param v the calling view.
+	 */
+	public void toggleCheckBoxFromXml(final View v) {
+		toggleCheckBox(v, true);
 	}
 
 	/**
@@ -622,15 +643,13 @@ public class LoginActivity extends BaseActivity  {
 	 * available and will allow users to login.
 	 */
 	public void startPreAuthCheck() {
-		final SuccessListener<PreAuthResult> optionalUpdateListener = new PreAuthSuccessResponseHandler(
-				this);
+		final SuccessListener<PreAuthResult> optionalUpdateListener = new PreAuthSuccessResponseHandler(this);
 
 		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback
 				.<PreAuthResult> builder(this)
 				.showProgressDialog("Discover", "Loading...", true) //FIXME externalize this
-				.withSuccessListener(optionalUpdateListener)
-				.withErrorResponseHandler(
-						new PreAuthErrorResponseHandler(this)).build();
+				.withSuccessListener(new PreAuthSuccessResponseHandler(this))
+				.withErrorResponseHandler(new PreAuthErrorResponseHandler(this)).build();
 
 		new PreAuthCheckCall(this, callback).submit();
 		preAuthHasRun = true;
