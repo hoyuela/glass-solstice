@@ -7,12 +7,11 @@ import android.view.View;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.navigation.HeaderProgressIndicator;
+import com.discover.mobile.utils.CommonUtils;
 
 /**
  * ForgotPasswordAccountInformationActivity - This activity extends the AbstractAccountInformationActivity
@@ -73,7 +72,7 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	 */
 	@Override
 	protected void doCustomUiSetup() {
-		hideLabel(accountIdentifierFieldRestrictionsLabel);
+		CommonUtils.hideLabel(accountIdentifierFieldRestrictionsLabel);
 		
 	}
 	
