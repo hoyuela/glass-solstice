@@ -26,9 +26,6 @@ public class DiscoverApplication extends Application {
 		if (isApplicationProcess(getPackageName())) {
 			try {
 				ACRA.init(this);
-				Class sMode = Class.forName("android.os.StrictMode");
-				Method enabledDefaults = sMode.getMethod("enableDefaults");
-				enabledDefaults.invoke(null);
 			} catch (Exception e) {
 				Log.v("Reflection Error", "...not supported. skipping...");
 			}
