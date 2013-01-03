@@ -86,7 +86,7 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 			public void onTextChanged(final CharSequence s, final int start, final int before,
 					final int count) {
 				fragment.showSaveBar();
-				if(!amountBox.isValid() && !amountBox.hasChanged()){
+				if(!amountBox.isValid()){
 					fragment.hideSavebar();
 				}else{
 					fragment.showSaveBar();

@@ -86,6 +86,9 @@ public class PushManageEditText extends ValidatedInputField{
 		}else{
 			isValid =  amount <= maxAmount && amount >= minAmount;
 		}
+		
+		if(null == errorLabel){return isValid;}
+		
 		if(!isValid){
 			this.errorLabel.setText(getErrorCodeText());
 			this.errorLabel.setVisibility(View.VISIBLE);
@@ -132,11 +135,15 @@ public class PushManageEditText extends ValidatedInputField{
 		return !(Integer.parseInt(getAmountFromEditText()) == definedAmount);
 	}
 	
+	/**
+	 * Get the error code to display
+	 * @return the error code to display
+	 */
 	public String getErrorCodeText(){
 		final Resources res = context.getResources();
 		amount = Integer.parseInt(getAmountFromEditText());
 		String string = "";
-		if(amount <= maxAmount || maxAmount != 0){
+		if(amount <= maxAmount || maxAmount == 0){
 			string = res.getString(R.string.push_manage_minimum_error_text);
 			string = string.replace(MINIMUM_AMT, Integer.toString(minAmount));	
 		}else if(amount >= minAmount){
