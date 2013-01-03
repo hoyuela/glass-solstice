@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.acra.ACRA;
-import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
 import android.app.ActivityManager;
@@ -13,7 +12,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-@ReportsCrashes(formKey = "", mailTo = "discoverandroidcrashes@gmail.com", mode = ReportingInteractionMode.TOAST, resToastText = R.string.crash_report)
+@ReportsCrashes(formKey = "dDAzM3VJakhEcHpvV2dsZlpJcXZqOGc6MQ")
 public class DiscoverApplication extends Application {
 	
 	static {
