@@ -133,5 +133,9 @@
 	<string name = "confirm">
 	    Confirmation
 	</string>
+	
+	<string name="crash_report">
+	    Preparing Email Crash Report
+	</string>
 	    
 </resources>
