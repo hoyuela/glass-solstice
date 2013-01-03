@@ -36,10 +36,7 @@
 
     <style name="WhiteTheme">
         <item name="android:background">@drawable/light_gray_bkgrd</item>
-        <item name="android:paddingBottom">@dimen/content_padding</item>
-        <item name="android:paddingLeft">@dimen/content_padding</item>
-        <item name="android:paddingRight">@dimen/content_padding</item>
-        <item name="android:paddingTop">@dimen/content_padding</item>
+        <item name="android:padding">@dimen/content_padding</item>
     </style>
 
     <style name="WhiteThemeFooter">
@@ -75,7 +72,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">12dp</item>
-        <item name="android:background">@drawable/square_button</item>
+        <item name="android:background">@drawable/square_menu_button</item>
         <item name="android:layout_marginBottom">3dp</item>
         <item name="android:layout_marginLeft">@dimen/between_related_elements_padding</item>
     </style>
@@ -193,8 +190,9 @@
 
     <style name="error_label" parent="discover_text">
         <item name="android:textColor">#ed1c24</item>
-        <item name="android:visibility">gone</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:visibility">gone</item>     
+		<item name="android:textSize">@dimen/body_copy_min</item>
+
     </style>
 
     <style name="edit_copy" parent="discover_text"></style>

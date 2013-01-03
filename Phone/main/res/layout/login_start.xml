@@ -60,8 +60,7 @@
 		            android:layout_below="@+id/error_text_view"
 		            android:text="@string/user_id"
 		            android:textAppearance="?android:attr/textAppearanceMedium"
-		            android:textColor="@color/title" 
-		            android:textStyle="bold"/>
+		             style="@style/body_copy"/>
 	
 		        <EditText
 		            android:id="@+id/username_field"
@@ -86,8 +85,7 @@
 		            android:layout_marginTop="@dimen/between_related_elements_padding"
 		            android:layout_marginRight="14dp"
 		            android:textAppearance="?android:attr/textAppearanceMedium" 
-		            android:textColor="@color/title"
-		            android:textStyle="bold"/>
+		            style="@style/body_copy"/>
 		        
 		        <TextView
 		            android:id="@+id/toggle_password_visibility_label"
@@ -169,60 +167,60 @@
 	                android:layout_height="wrap_content" 
 	                android:layout_centerHorizontal="true">
 	                
-			    <TextView
-		            android:id="@+id/go_to_label"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:clickable="true"
-		            android:layout_marginRight="@dimen/content_padding"
-		            android:text="@string/go_to"
-		            android:textColor="@color/title" />
-
-			    <ImageView
-			        android:id="@+id/card_check_mark"
-			        android:layout_width="12dp"
-			        android:layout_height="13dp" 
-			        android:layout_marginRight="2dp"
-			        android:src="@drawable/black_check"
-			        android:layout_marginTop="3dp"/>
-				
-				<TextView
-		            android:id="@+id/go_to_card_label"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_marginRight="@dimen/content_padding"
-		            android:clickable="true"
-		            android:text="@string/card"
-		            android:textColor="@color/title" 
-		            android:onClick="toggleBankCardLogin"/>
-				
-				<TextView
-		            android:id="@+id/divider"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_marginRight="@dimen/content_padding"
-		            android:clickable="true"
-		            android:text="@string/vertical_separator"
-		            android:textColor="@color/title" />
-				
-				<ImageView
-			        android:id="@+id/bank_check_mark"
-			         android:layout_width="12dp"
-			        android:layout_height="13dp" 
-			        android:layout_marginRight="2dp"
-			        android:src="@drawable/black_check"
-			        android:layout_marginTop="3dp"
-			        android:visibility="invisible"/>
-				
-				<TextView
-		            android:id="@+id/go_to_bank_label"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:clickable="true"
-		            android:text="@string/bank"
-		            android:onClick="toggleBankCardLogin"
-		            android:textColor="@color/blue_link" />
-	            </LinearLayout>
+				    <TextView
+			            android:id="@+id/go_to_label"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:clickable="true"
+			            android:layout_marginRight="@dimen/forms_inner_padding"
+			            android:text="@string/go_to"
+			            android:textColor="@color/title" />
+	
+				    <ImageView
+				        android:id="@+id/card_check_mark"
+				        android:layout_width="wrap_content"
+				        android:layout_height="fill_parent"
+				        android:contentDescription="@string/discover_copyright_text" 
+				        android:layout_marginRight="3dp"
+				        android:src="@drawable/black_check_mark"/>
+					
+					<TextView
+			            android:id="@+id/go_to_card_label"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:clickable="true"
+			            android:layout_marginRight="@dimen/forms_inner_padding"
+			            android:text="@string/card"
+			            android:textColor="@color/title" 
+			            android:onClick="toggleBankCardLogin"/>
+					
+					<TextView
+			            android:id="@+id/divider"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:layout_marginRight="@dimen/content_padding"
+			            android:clickable="true"
+			            android:text="@string/vertical_separator"
+			            android:textColor="@color/title" />
+					
+					<ImageView
+				        android:id="@+id/bank_check_mark"
+				         android:layout_width="wrap_content"
+				        android:layout_height="fill_parent" 
+				        android:contentDescription="@string/discover_copyright_text"
+				        android:layout_marginRight="3dp"
+				        android:src="@drawable/black_check_mark"
+				        android:visibility="invisible"/>
+					
+					<TextView
+			            android:id="@+id/go_to_bank_label"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:clickable="true"
+			            android:text="@string/bank"
+			            android:onClick="toggleBankCardLogin"
+			            android:textColor="@color/blue_link" />
+	        </LinearLayout>
 
 		        <TextView
 		            android:id="@+id/forgot_uid_or_pass_text"

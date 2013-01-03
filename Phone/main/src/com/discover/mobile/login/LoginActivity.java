@@ -141,7 +141,7 @@ public class LoginActivity extends BaseActivity  {
 	private Resources res;
 
 	private boolean preAuthHasRun = false;
-	boolean saveUserId = false;
+	private boolean saveUserId = false;
 	
 	@Inject
 	private PushNotificationService pushNotificationService;
@@ -168,11 +168,16 @@ public class LoginActivity extends BaseActivity  {
 	private void maybeShowUserLoggedOut(){
 		final Intent intent = this.getIntent();
 		final Bundle extras = intent.getExtras();
+
 		if(null == extras){return;}
-		if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
-			errorTextView.setText(getString(R.string.logout_sucess));
-			errorTextView.setVisibility(View.VISIBLE);
-			errorTextView.setTextColor(getResources().getColor(R.color.body_copy));
+
+		if(extras != null){
+			if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
+				errorTextView.setText(getString(R.string.logout_sucess));
+				errorTextView.setVisibility(View.VISIBLE);
+				errorTextView.setTextColor(getResources().getColor(R.color.body_copy));
+				this.getIntent().putExtra(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+			}
 		}
 	}
 	
@@ -236,23 +241,24 @@ public class LoginActivity extends BaseActivity  {
 	 * @param savedInstanceState A bundle of state information to be restored to the screen.
 	 */
 	public void restoreState(final Bundle savedInstanceState) {
-		if (savedInstanceState == null) {
-			return;
+		if (savedInstanceState != null) {
+			idField.setText(savedInstanceState.getString(ID_KEY));
+			passField.setText(savedInstanceState.getString(PASS_KEY));
+			preAuthHasRun = savedInstanceState.getBoolean(PRE_AUTH_KEY);
+
+			passField.setInputType(savedInstanceState.getInt(PW_INPUT_TYPE_KEY));
+			hideButton.setText(savedInstanceState.getString(HIDE_LABEL_KEY));
+
+			setLoginType(savedInstanceState.getInt(LOGIN_TYPE_KEY));
+			setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY), true);
+			
+			errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
+			errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
+			
+			resetInputFieldColors();
 		}
-		idField.setText(savedInstanceState.getString(ID_KEY));
-		passField.setText(savedInstanceState.getString(PASS_KEY));
-		preAuthHasRun = savedInstanceState.getBoolean(PRE_AUTH_KEY);
 
-		passField.setInputType(savedInstanceState.getInt(PW_INPUT_TYPE_KEY));
-		hideButton.setText(savedInstanceState.getString(HIDE_LABEL_KEY));
-
-		setLoginType(savedInstanceState.getInt(LOGIN_TYPE_KEY));
-		setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY), true);
-		
-		errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
-		errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
-		
-		resetInputFieldColors();
+	
 	}
 	
 	/**
@@ -317,7 +323,6 @@ public class LoginActivity extends BaseActivity  {
 		registerButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				setViewGone(errorTextView);
 				registerNewUser();
 			}
 		});
@@ -412,7 +417,6 @@ public class LoginActivity extends BaseActivity  {
 						CurrentSessionDetails.getCurrentSessionDetails()
 								.setAccountDetails(value);
 						getXtifyRegistrationStatus();
-						clearInputs();
 					}
 				})
 				.withErrorResponseHandler(new LoginErrorResponseHandler(this))
@@ -471,6 +475,8 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	public void togglePasswordVisibility(final View v) {
 		final String buttonText = hideButton.getText().toString();
+		//Retain the position of the selector.
+		int selectionPosition = passField.getSelectionStart();
 		if(HIDE.equals(buttonText)) {
 			hideButton.setText(SHOW);
 			passField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -478,7 +484,9 @@ public class LoginActivity extends BaseActivity  {
 			hideButton.setText(HIDE);
 			passField.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 		}
-
+		//Restore the position of the selector.
+		passField.setSelection(selectionPosition);
+		
 	}
 
 	/**
@@ -522,10 +530,12 @@ public class LoginActivity extends BaseActivity  {
 	 * @param shouldBeChecked Sets the check mark to checked or unchecked for true or false respectively.
 	 * @param cached Sets whether the state change should be remembered
 	 */
+
 	private void setCheckMark(boolean shouldBeChecked, boolean cached) {
 		saveUserId = !shouldBeChecked;
 		toggleCheckBox(toggleImage, cached);
 	}
+	
 	
 	/**
 	 * Sets the login type of the login screen. This is for users who want to log in with their "Card" or "Bank" info.
@@ -545,9 +555,11 @@ public class LoginActivity extends BaseActivity  {
 	 * user taps the register now button in the bottom bar.
 	 */
 	public void registerNewUser() {
-		clearInputs();
 		final Intent accountInformationActivity = new Intent(this, RegistrationAccountInformationActivity.class);
 		this.startActivity(accountInformationActivity);
+		clearInputs();
+		errorTextView.setText(emptyString);
+		setViewGone(errorTextView);
 	}
 
 	/**
@@ -555,9 +567,9 @@ public class LoginActivity extends BaseActivity  {
 	 * that it launches the forgot nav screen and is instead called from Java.
 	 */
 	private void forgotIdAndOrPass() {
-		clearInputs();
 		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotTypeSelectionActivity.class);
 		this.startActivity(forgotIdAndOrPassActivity);
+		clearInputs();
 	}
 
 	/**
@@ -575,6 +587,8 @@ public class LoginActivity extends BaseActivity  {
 				.withSuccessListener(new PushRegistrationStatusSuccessListener())
 				.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(this))
 				.launchIntentOnSuccess(NavigationRootActivity.class)
+				.finishCurrentActivityOnSuccess(this)
+				.clearTextViewsOnComplete(idField, passField)
 				.build();
 	
 		new GetPushRegistrationStatus(this, callback).submit();
