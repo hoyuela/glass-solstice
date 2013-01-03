@@ -2,15 +2,17 @@ package com.discover.mobile.push.manage;
 
 import android.util.Log;
 
-import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
-import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.ErrorHandlerUi;
+import com.discover.mobile.R;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.login.BaseErrorResponseHandler;
 
 /**
  * Error Handler for the posting of the preferences after the user had decided to change their current settings. 
  * @author jthornton
  *
  */
-public class PushPrefsErrorHandler implements ErrorResponseHandler{
+public class PushPrefsErrorHandler extends BaseErrorResponseHandler{
 
 	/**Tag labeling the class for errors*/
 	private static final String TAG = PushPrefsErrorHandler.class.getSimpleName();
@@ -18,8 +20,8 @@ public class PushPrefsErrorHandler implements ErrorResponseHandler{
 	/**
 	 * Constructor for the class
 	 */
-	public PushPrefsErrorHandler(){
-
+	public PushPrefsErrorHandler(final ErrorHandlerUi errorHandlerUi){
+		super(errorHandlerUi);
 	}
 	
 	/**
@@ -37,9 +39,11 @@ public class PushPrefsErrorHandler implements ErrorResponseHandler{
 	 * @return true if the error was handled
 	 */
 	@Override
-	public boolean handleFailure(final ErrorResponse<?> error) {
+	public boolean handleJsonErrorCode(final JsonMessageErrorResponse error) {
 		Log.e(TAG, Integer.toString(error.getHttpStatusCode()));
-		//TODO: Handle this appropriately
+		showModalErrorDialog(R.string.error_generic_title, 
+							 R.string.error_generic_content, 
+							 R.string.error_generic_button_text);
 		return true;
 	}
 

@@ -56,12 +56,13 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	@Override
 	public void onResume(){
 		super.onResume();
-		
-		if(resumeFragment != null)
-			makeFragmentVisible(resumeFragment);
-		
-		if(!CurrentSessionDetails.getCurrentSessionDetails().isNotCurrentUserRegisteredForPush())
-			makeFragmentVisible(new PushNowAvailableFragment());		
+		if(resumeFragment != null){
+			getSupportFragmentManager().popBackStack();
+			makeFragmentVisible(resumeFragment, false);
+		} else if(!CurrentSessionDetails.getCurrentSessionDetails().isNotCurrentUserRegisteredForPush()){	
+			getSupportFragmentManager().popBackStack();
+			makeFragmentVisible(new PushNowAvailableFragment());	
+		}
 	}
 	
 	/**
@@ -95,6 +96,5 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 		final TextView titleView= (TextView)findViewById(R.id.title_view);
 		return titleView.getText().toString();
 	}
-	
-	
+
 }

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import com.discover.mobile.R;
 
@@ -63,7 +63,7 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
 
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				dismiss();
 			}
 			
@@ -94,7 +94,7 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
 
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				dismiss();
 			}
 			
@@ -114,7 +114,7 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		final View mainView = this.getLayoutInflater().inflate(R.layout.modal_alert_layout, null);
 		this.setContentView(mainView);
 		
-		final RelativeLayout linearLayout = (RelativeLayout) mainView.findViewById(R.id.modal_linear_layout);
+		final LinearLayout linearLayout = (LinearLayout) mainView.findViewById(R.id.modal_linear_layout);
 		linearLayout.addView((View)top);
 		linearLayout.addView((View)bottom);
 	}

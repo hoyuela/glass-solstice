@@ -10,47 +10,44 @@
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
-        -->        
+        -->
     </style>
-    
+
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-  
-	<style name="AppTheme.NoTitleBar" parent="Theme.Sherlock.NoActionBar">
-    </style>
-   
+
+    <style name="AppTheme.NoTitleBar" parent="Theme.Sherlock.NoActionBar"></style>
+
     <style name="OrangeTheme">
         <item name="android:background">@drawable/login_bkgd</item>
     </style>
-    
+
     <style name="alert_modal_black_bg">
         <item name="android:background">#50000000</item>
     </style>
-    
+
     <style name="alert_modal_white_bg">
         <item name="android:background">@drawable/rounded_white_background</item>
-        <item name="android:layout_marginTop">@dimen/modal_top_margin</item>
         <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
         <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
-        <item name="android:layout_marginBottom">@dimen/modal_bottom_margin</item>
     </style>
 
     <style name="WhiteTheme">
         <item name="android:background">@drawable/light_gray_bkgrd</item>
         <item name="android:padding">@dimen/content_padding</item>
     </style>
-    
+
     <style name="WhiteThemeFooter">
         <item name="android:textColor">@color/blue</item>
     </style>
-    
+
     <style name="Theme.Splash" parent="android:Theme">
         <item name="android:background">@drawable/splash</item>
         <item name="android:windowNoTitle">true</item>
     </style>
-    
+
     <style name="call_to_action_theme">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/body_copy_max</item>
@@ -62,7 +59,7 @@
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="special_push_orange_button" parent="call_to_action_theme">
         <item name="android:textSize">@dimen/small_copy_mid</item>
     </style>
@@ -70,8 +67,8 @@
     <style name="action_bar_theme">
         <item name="android:visibility">gone</item>
     </style>
-    
-    <style name="orange_action_bar_buttons" parent = "action_bar_theme">
+
+    <style name="orange_action_bar_buttons" parent="action_bar_theme">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">12dp</item>
@@ -79,7 +76,7 @@
         <item name="android:layout_marginBottom">3dp</item>
         <item name="android:layout_marginLeft">@dimen/between_related_elements_padding</item>
     </style>
-    
+
     <style name="action_bar_text" parent="action_bar_theme">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -90,42 +87,43 @@
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="blue_hyperlink">
         <item name="android:textColor">@color/blue_link</item>
         <item name="android:textSize">@dimen/body_copy_max</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="blue_hyperlink_small">
         <item name="android:textColor">@color/blue_link</item>
         <item name="android:textSize">@dimen/small_copy_max</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="login_bottom_bar_button">
         <item name="android:padding">@dimen/content_padding</item>
         <item name="android:textSize">@dimen/small_copy_min</item>
         <item name="android:background">@drawable/login_bottom_bar_button</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:height">@dimen/login_bottom_button_height</item>
-    </style>  
-    
-    <style name="terms_and_conditions_title" parent = "title_copy">
+    </style>
+
+    <style name="terms_and_conditions_title" parent="title_copy">
         <item name="android:textSize">@dimen/title_max</item>
         <item name="android:layout_marginTop">@dimen/groups_of_elements_padding</item>
         <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
         <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
     </style>
-    
-    <style name="terms_and_conditions_content" parent = "sub_copy">
+
+    <style name="terms_and_conditions_content" parent="sub_copy">
         <item name="android:textSize">@dimen/body_copy_min</item>
         <item name="android:layout_marginTop">@dimen/groups_of_elements_padding</item>
         <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
         <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
     </style>
-    
-    <!--  FROM STYLE GUIDE 
+
+    <!--
+    FROM STYLE GUIDE 
     
     All typography for Android to be set in Roboto Bold and Roboto Regular. 
     Leading/Line-Height is defined for each type size to the right. 
@@ -137,73 +135,68 @@
 	The font sizes specified are for .PSD purposes and will be converted on-screen to 1/2 the specified font size.
 	For instance, 50px in Photoshop will appear as 25px on Android.
     -->
-    
+
     <style name="discover_text">
         <item name="android:layout_width">wrap_content</item>
-	    <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
-    
+
     <style name="title_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
-	    <item name="android:textColor">@color/title</item>
-	    <item name="android:textStyle">bold</item>	
+        <item name="android:textColor">@color/title</item>
+        <item name="android:textStyle">bold</item>
     </style>
-    
-    <style name="modal_title_text" parent = "title_copy">
+
+    <style name="modal_title_text" parent="title_copy">
         <item name="android:layout_marginTop">@dimen/modal_top_padding</item>
         <item name="android:layout_marginLeft">@dimen/modal_left_padding</item>
         <item name="android:layout_marginRight">@dimen/modal_right_padding</item>
         <item name="android:layout_marginBottom">@dimen/modal_bottom_padding</item>
         <item name="android:textSize">@dimen/title_min</item>
     </style>
-    
-    <style name="modal_content_text" parent = "sub_copy">
+
+    <style name="modal_content_text" parent="sub_copy">
         <item name="android:layout_marginLeft">@dimen/modal_left_padding</item>
         <item name="android:layout_marginRight">@dimen/modal_right_padding</item>
         <item name="android:textSize">@dimen/small_copy_max</item>
     </style>
-    
-    <!--   5. BODY COPY / #3d484d / 34px font-size / 42px line-height / regular -->
-    <style name="body_copy"  parent="discover_text">
+
+    <!-- 5. BODY COPY / #3d484d / 34px font-size / 42px line-height / regular -->
+    <style name="body_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-	    <item name="android:textColor">#3d484d</item>
-	    <item name="android:typeface">normal</item>
-	</style>
-    
-    <style name="small_copy"  parent="discover_text">
+        <item name="android:textColor">#3d484d</item>
+        <item name="android:typeface">normal</item>
+    </style>
+
+    <style name="small_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-	  	<item name="android:textColor">@color/sub_copy</item>
-	  	
+        <item name="android:textColor">@color/sub_copy</item>
     </style>
-    
-    <style name="sub_copy"  parent="discover_text">
+
+    <style name="sub_copy" parent="discover_text">
         <item name="android:textSize">24sp</item>
-	  	<item name="android:textColor">#576166</item>
-	 
+        <item name="android:textColor">#576166</item>
     </style>
-    
-    <style name="field_copy"  parent="discover_text">
+
+    <style name="field_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-	  	<item name="android:textColor">#8a9499</item>  
+        <item name="android:textColor">#8a9499</item>
     </style>
-   
-    <style name="field_stroke"  parent="discover_text">
+
+    <style name="field_stroke" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-	  	<item name="android:textColor">#dce3e5</item>	   
+        <item name="android:textColor">#dce3e5</item>
     </style>
-    
+
     <style name="error_label" parent="discover_text">
-       
-	    <item name="android:textColor">#ed1c24</item>
-        <item name="android:visibility">gone</item>
+        <item name="android:textColor">#ed1c24</item>
+        <item name="android:visibility">gone</item>     
 		<item name="android:textSize">@dimen/body_copy_min</item>
-    </style>
-    
-    <style name="edit_copy" parent="discover_text">
-       
 
     </style>
-    
+
+    <style name="edit_copy" parent="discover_text"></style>
+
     <style name="white_button">
         <item name="android:textColor">@color/sub_copy</item>
         <item name="android:textSize">@dimen/body_copy_min</item>
@@ -212,15 +205,15 @@
         <item name="android:paddingLeft">@dimen/white_button_left_right_padding</item>
         <item name="android:paddingRight">@dimen/white_button_left_right_padding</item>
         <item name="android:layout_marginBottom">@dimen/between_related_elements_padding</item>
-	    <item name="android:layout_marginRight">@dimen/between_related_elements_padding</item>
+        <item name="android:layout_marginRight">@dimen/between_related_elements_padding</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="modal_error_image">
         <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item>
         <item name="android:layout_marginLeft">@dimen/modal_left_padding</item>
-	</style>
+    </style>
 
     <style name="push_toggle_box_default">
         <item name="android:padding">@dimen/between_related_elements_padding</item>
@@ -228,98 +221,140 @@
         <item name="android:background">@drawable/gray_gradient_square</item>
         <item name="android:src">@drawable/transparent_square</item>
     </style>
-    
+
     <style name="push_toggle_box_text_style">
         <item name="android:textColor">@color/title</item>
-	    <item name="android:textStyle">bold</item>	
-        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:gravity">center</item>
     </style>
-    
+
     <style name="push_header_text_style">
         <item name="android:textColor">@color/title</item>
-	    <item name="android:textStyle">bold</item>	
-        <item name="android:textSize">@dimen/small_copy_max</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
     </style>
-    
+
     <style name="push_toggle_item_secondary_text">
         <item name="android:textColor">@color/sub_copy</item>
         <item name="android:textSize">14sp</item>
     </style>
-    
-    <style name="push_expand_item" parent="@style/blue_hyperlink">	
+
+    <style name="push_expand_item" parent="@style/blue_hyperlink">
         <item name="android:textSize">18sp</item>
     </style>
-    
+
     <style name="push_header_item_text">
         <item name="android:textColor">@color/title</item>
-	    <item name="android:textStyle">bold</item>	
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
         <item name="android:gravity">center</item>
     </style>
-    
+
     <style name="sub_copy_small">
         <item name="android:textColor">@color/sub_copy</item>
         <item name="android:textSize">12sp</item>
         <item name="android:paddingTop">@dimen/between_related_elements_padding</item>
     </style>
-    
+
     <style name="push_phone_number_text">
         <item name="android:textColor">@color/sub_copy</item>
         <item name="android:textSize">14sp</item>
     </style>
-    
+
     <style name="push_phone_number">
         <item name="android:textColor">@color/title</item>
-	    <item name="android:textStyle">bold</item>	
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
     </style>
-    
+
     <style name="push_change_number">
         <item name="android:textColor">@color/blue_link</item>
         <item name="android:textSize">@dimen/small_copy_max</item>
     </style>
-    
+
     <style name="push_manage_header_style">
         <item name="android:padding">@dimen/forms_inner_padding</item>
         <item name="android:background">@drawable/notification_list_item</item>
         <item name="android:layout_marginTop">@dimen/groups_of_elements_padding</item>
     </style>
-    
+
     <style name="push_toggle_text">
         <item name="android:textColor">@color/body_copy</item>
         <item name="android:textSize">16sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:layout_centerHorizontal">true</item>
     </style>
-    
+
     <style name="push_manage_save_success">
         <item name="android:textColor">@color/orange_link_idicator</item>
-	    <item name="android:textStyle">bold</item>	
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
     </style>
 
-    <!--Style for strength level in help guide -->
-	<style name="strength_help_level_message"  parent="title_copy">
+    <!-- Style for strength level in help guide -->
+    <style name="strength_help_level_message" parent="title_copy">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
-    
-    <!--Style for action message in help guide -->
-	<style name="action_message"  parent="small_copy">
+
+    <!-- Style for action message in help guide -->
+    <style name="action_message" parent="small_copy">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-	  	<item name="android:textColor">@color/sub_copy</item> 	
-	  	<item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textStyle">bold</item>
     </style>
-    
-    <!--NEED HELP? TEXT / #3d484d / 34pt font-size / centered / bold -->
-	<style name="need_help_text"  parent="body_copy">
-	    <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-		<item name="android:textStyle">bold</item>
-	</style>
-	
-	<!--1-800-347-2683 NUMBER LINK / #0267b1 / 34pt / regular-->
-	<style name="need_help_number_link"  parent="body_copy">
-	    <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-	    <item name="android:textColor">#0267b1</item>
-	</style>
+
+    <!-- NEED HELP? TEXT / #3d484d / 34pt font-size / centered / bold -->
+    <style name="need_help_text" parent="body_copy">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 1-800-347-2683 NUMBER LINK / #0267b1 / 34pt / regular -->
+    <style name="need_help_number_link" parent="body_copy">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textColor">#0267b1</item>
+    </style>
+
+    <!-- Status Indicator Styles -->
+    <style name="status_indicator_style">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:background">@drawable/light_gray_bkgrd</item>
+    </style>
+
+    <style name="status_check_mark">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/gray_check_mark</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
+    <style name="status_linear_layouts">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="status_indicator_image">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:src">@drawable/orange_down_arrow</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
+    <style name="status_indicator_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:lines">1</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
 </resources>

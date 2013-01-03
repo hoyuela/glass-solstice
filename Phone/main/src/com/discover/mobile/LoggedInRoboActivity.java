@@ -93,9 +93,17 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 		if(getValueFromSharedPrefs(SharedPreferencesWrapper.SHOW_LOGIN_MODAL, false)){
 			logout();
 		} else{
-			showCustomAlert(setUpLogoutAlert());
+			showAlertDialog();
 		}
 	}
+    
+    
+    /**
+     * Show the logout modal
+     */
+    public void showAlertDialog(){
+    	showCustomAlert(setUpLogoutAlert());
+    }
     
     /**
      * Set up the modal alert that will be displayed for logout confirmation

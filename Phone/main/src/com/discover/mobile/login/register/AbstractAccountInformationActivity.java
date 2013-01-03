@@ -40,6 +40,8 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
+
 /**
  * AbstractAccountInformationActivity this activity handles the forgot user password, both, and registration.
  * 
@@ -128,6 +130,9 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_enter_account_info);
 		
+    	HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
+    	progress.initChangePasswordHeader(0);
+  
 		loadAllViews();
 		setupFieldsAndLabels();
     	setupCustomTextChangedListeners();

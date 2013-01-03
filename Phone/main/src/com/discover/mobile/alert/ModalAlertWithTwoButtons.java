@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import com.discover.mobile.R;
 
@@ -47,7 +47,7 @@ public class ModalAlertWithTwoButtons extends AlertDialog{
 		final View mainView = this.getLayoutInflater().inflate(R.layout.modal_alert_layout, null);
 		this.setContentView(mainView);
 		
-		final RelativeLayout linearLayout = (RelativeLayout) mainView.findViewById(R.id.modal_linear_layout);
+		final LinearLayout linearLayout = (LinearLayout) mainView.findViewById(R.id.modal_linear_layout);
 		linearLayout.addView((View)top);
 		linearLayout.addView((View)bottom);
 	}

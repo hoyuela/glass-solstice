@@ -27,7 +27,11 @@ import com.discover.mobile.login.LockOutUserActivity;
  *
  */
 public class BaseActivity extends RoboActivity implements ErrorHandlerUi{
-	
+	/**
+	* Contains the last error that occurred with the activity. 
+	* An object that holds a reference to an instance of BaseActivity can set its value by using setLastError.
+	*/
+	private int mLastError = 0;
 	
     /**
      * Save a boolean value to the shared preferences
@@ -155,6 +159,21 @@ public class BaseActivity extends RoboActivity implements ErrorHandlerUi{
 		return this;
 	}
     
+	/* (non-Javadoc)
+	* @see com.discover.mobile.ErrorHandlerUi#setLastError()
+	*/
+	@Override
+	public void setLastError(int errorCode) {
+		mLastError = errorCode;
+	}
+
+	/* (non-Javadoc)
+	* @see com.discover.mobile.ErrorHandlerUi#getLastError()
+	*/
+	@Override
+	public int getLastError() {
+		return mLastError;
+	}
    
 
 }

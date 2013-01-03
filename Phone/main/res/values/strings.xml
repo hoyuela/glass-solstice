@@ -121,5 +121,17 @@
 	<string name="generic_error_title">
 	    An unexpected problem occurred
 	</string>
+	
+	<string name = "enter_info">
+	    Enter Info
+	</string>
+	
+	<string name = "create_password">
+	    Create Password
+	</string>
+	
+	<string name = "confirm">
+	    Confirmation
+	</string>
 	    
 </resources>
