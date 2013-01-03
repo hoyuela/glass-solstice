@@ -169,8 +169,6 @@ public class LoginActivity extends BaseActivity  {
 		final Intent intent = this.getIntent();
 		final Bundle extras = intent.getExtras();
 
-		if(null == extras){return;}
-
 		if(extras != null){
 			if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
 				errorTextView.setText(getString(R.string.logout_sucess));
@@ -375,9 +373,8 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	private boolean showErrorWhenAttemptingToSaveAccountNumber() {
 		String inputId = idField.getText().toString();
-		InputValidator validator = new InputValidator();
 		
-		if(saveUserId && validator.isCardAccountNumberValid(inputId)) {
+		if(saveUserId && InputValidator.isCardAccountNumberValid(inputId)) {
 			errorTextView.setTextColor(getResources().getColor(R.color.red));
 			errorTextView.setText(getString(R.string.cannot_save_account_number));
 			errorTextView.setVisibility(View.VISIBLE);
@@ -622,15 +619,13 @@ public class LoginActivity extends BaseActivity  {
 	 * available and will allow users to login.
 	 */
 	public void startPreAuthCheck() {
-		final SuccessListener<PreAuthResult> optionalUpdateListener = new PreAuthSuccessResponseHandler(
-				this);
+		final SuccessListener<PreAuthResult> optionalUpdateListener = new PreAuthSuccessResponseHandler(this);
 
 		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback
 				.<PreAuthResult> builder(this)
 				.showProgressDialog("Discover", "Loading...", true) //FIXME externalize this
-				.withSuccessListener(optionalUpdateListener)
-				.withErrorResponseHandler(
-						new PreAuthErrorResponseHandler(this)).build();
+				.withSuccessListener(new PreAuthSuccessResponseHandler(this))
+				.withErrorResponseHandler(new PreAuthErrorResponseHandler(this)).build();
 
 		new PreAuthCheckCall(this, callback).submit();
 		preAuthHasRun = true;

@@ -1,6 +1,5 @@
 package com.discover.mobile.login;
 
-import android.app.Activity;
 import android.util.Log;
 
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -17,12 +16,12 @@ import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListen
  */
 public class PreAuthSuccessResponseHandler extends PreAuthCallHelper implements SuccessListener<PreAuthResult>{
 	
-	Activity activity;
+	LoginActivity loginActivity;
 
 	private final static String TAG = PreAuthErrorResponseHandler.class.getSimpleName();
 	
-	public PreAuthSuccessResponseHandler(final Activity activity) {
-		this.activity = activity;
+	public PreAuthSuccessResponseHandler(final LoginActivity loginActivity) {
+		this.loginActivity = loginActivity;
 	}
 	
 	@Override
@@ -38,9 +37,9 @@ public class PreAuthSuccessResponseHandler extends PreAuthCallHelper implements 
 	@Override
 	public void success(final PreAuthResult value) {
 		Log.d(TAG, "Pre-auth status code: " + value.statusCode);
-		if(PreAuthCallHelper.shouldPresentOptionalUpdate(activity,value.upgradeDescription)) {
+		if(PreAuthCallHelper.shouldPresentOptionalUpdate(loginActivity,value.upgradeDescription)) {
 			TrackingHelper.trackPageView(AnalyticsPage.OPTIONAL_UPGRADE);
-			PreAuthCallHelper.showOptionalUpgradeAlertDialog(activity,value.upgradeDescription);
+			PreAuthCallHelper.showOptionalUpgradeAlertDialog(loginActivity, value.upgradeDescription);
 		} 		
 	}
 	
