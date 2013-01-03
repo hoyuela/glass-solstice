@@ -48,17 +48,17 @@ public abstract class ValidatedInputField extends EditText{
 	 * Default constructor
 	 * @param context the context of use for the EditText.
 	 */ 
-	public ValidatedInputField(Context context) {
+	public ValidatedInputField(final Context context) {
 		super(context);	
 		basicSetup();
 	}
 	
-	public ValidatedInputField(Context context, AttributeSet attrs) {
+	public ValidatedInputField(final Context context, final AttributeSet attrs) {
 		super(context, attrs);	
 		basicSetup();
 	}
 	
-	public ValidatedInputField(Context context, AttributeSet attrs, int defStyle) {
+	public ValidatedInputField(final Context context, final AttributeSet attrs, final int defStyle) {
 		super(context, attrs, defStyle);
 		basicSetup();
 	}
@@ -116,7 +116,7 @@ public abstract class ValidatedInputField extends EditText{
 		this.setOnFocusChangeListener(new OnFocusChangeListener() {
 			
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
+			public void onFocusChange(final View v, final boolean hasFocus) {
 				if( !hasFocus ){
 					updateAppearanceForInput();
 				}
@@ -135,18 +135,18 @@ public abstract class ValidatedInputField extends EditText{
 		this.addTextChangedListener(new TextWatcher() {
 
 			@Override
-			public void afterTextChanged(Editable s) {
+			public void afterTextChanged(final Editable s) {
 				if(isValid())
 					clearErrors();
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after){/*Intentionally Empty*/}
+			public void beforeTextChanged(final CharSequence s, final int start, final int count,
+					final int after){/*Intentionally Empty*/}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {/*Intentionally Empty*/}
+			public void onTextChanged(final CharSequence s, final int start, final int before,
+					final int count) {/*Intentionally Empty*/}
 			
 		});
 	}

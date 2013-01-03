@@ -52,4 +52,10 @@ public interface PushManageCategoryItem {
 	 * @param isAlreadySet - if the text preference was already set active by what was received from the server
 	 */
 	public void setWasTextAlreadySet(final boolean isAlreadySet);
+	
+	/**
+	 * Check to see if the category is valid
+	 * @return if the category is valid
+	 */
+	public boolean isValid();
 }

@@ -38,7 +38,9 @@
    	<string name="push_manage_save_success">Text and Push Alerts settings have been updated.</string>
    	<string name="load_more_alerts">Load More Alerts</string>
    	<string name="no_alerts">There are no new alerts to share right now.</string>
-    
+   	<string name="push_manage_minimum_error_text">The minimum notification amount is MINIMUM_AMT. Please enter an amount of MINIMUM_AMT or more.</string>
+    <string name="push_manage_maximum_error_text">The maximum notification amount is MAXIMUM_AMT. Please enter an amount of MAXIMUM_AMT or less.</string>
+   	
     <string name="notifcation_terms_and_condtions_header">Mobile Reminders, Fraud Alerts and Push Alerts Terms of Use</string>
     <string name="notification_terms_agreement">By signing up to receive Mobile Reminders and/or Fraud Alerts (“Text Messages”) or Push Alerts (“Push Alerts”), you agree to the following Terms of Use. By accessing or using Text Messages or Push Alerts, you agree to be bound by these Terms and all terms incorporated by reference.  If you do not agree to these Terms, do not sign up for or use Text Messages or Push Alerts.  DFS means Discover Products Inc. and its affiliates."</string>
     <string name="use_of_texts_header">Use of Text Messages</string>

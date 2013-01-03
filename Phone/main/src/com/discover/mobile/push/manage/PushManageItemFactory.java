@@ -77,15 +77,19 @@ public class PushManageItemFactory {
 	 * @param header - header to put in the item
 	 * @param definedAmount - defined amount to put in the amount box
 	 * @param minAmount - minimum amount to show to the user
+	 * @param definedAmount - current defined amount
 	 * @return an edit text push manage item 
 	 */
 	public PushManageCategoryItem createItem(
 			final String category, 
 			final String header, 
 			final int definedAmount, 
-			final int minAmount){
+			final int minAmount, 
+			final int maxAmount,
+			final PushManageFragment fragment){
 		
-		final PushManageToggleItemEditText view = new PushManageToggleItemEditText(context, null);
+		final PushManageToggleItemEditText view = 
+				new PushManageToggleItemEditText(context, null, minAmount, definedAmount, maxAmount, fragment);
 		view.setCategory(category);
 		view.setHeader(header);
 		view.setAmount(definedAmount);
@@ -106,15 +110,18 @@ public class PushManageItemFactory {
 	 * @param header - header to put in the item
 	 * @param text - text to put in the item
 	 * @param displayValues - values to display
+	 * @param definedAmount - defined amount of the item
 	 * @return a spinner push manage item 
 	 */
 	public PushManageCategoryItem createItem(
 			final String category, 
 			final String header,
 			final String text,
-			final List<Integer> displayValues){
+			final List<Integer> displayValues,
+			final int definedAmount,
+			final PushManageFragment fragment){
 		
-		final PushManageToogleItemSpinner view = new PushManageToogleItemSpinner(context, null);
+		final PushManageToogleItemSpinner view = new PushManageToogleItemSpinner(context, null,definedAmount, fragment);
 		view.setCategory(category);
 		view.setHeader(header);
 		view.setText(text);
@@ -125,6 +132,7 @@ public class PushManageItemFactory {
 		view.setTextChecked(isParamEnabled(prefs, category, PreferencesDetail.TEXT_PARAM));
 		view.setWasTextAlreadySet(isParamEnabled(prefs, category, PreferencesDetail.TEXT_PARAM));
 		view.setFragment(fragment);
+		fragment.hideSavebar();
 		return view;
 	}
 	
