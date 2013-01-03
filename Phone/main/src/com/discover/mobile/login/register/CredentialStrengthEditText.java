@@ -513,7 +513,7 @@ public class CredentialStrengthEditText extends EditText {
 		mTouchRegion.left = (int) getRight() - 60;
 		mTouchRegion.top = 0;
 		mTouchRegion.right = mTouchRegion.left + 60;
-		mTouchRegion.bottom = (int) mStrengthMeter.getHeight();
+		mTouchRegion.bottom = (int) this.getHeight();
 		
 	}
 	

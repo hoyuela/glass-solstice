@@ -69,6 +69,15 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
         super.onCreate(savedInstanceState);
         eventManager.fire(new OnCreateEvent(savedInstanceState));
     }
+    
+	/**
+	 * Set the title in the action bar for display
+	 * @param title - title to show in the display
+	 */
+	public void setActionBarTitle(final String title){
+		final TextView titleView= (TextView)findViewById(R.id.title_view);
+		titleView.setText(title);
+	}
 
     @Override
     protected void onRestart() {

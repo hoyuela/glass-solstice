@@ -68,7 +68,7 @@ public abstract class BaseFragment extends SherlockFragment{
 	 * @param title - title to show in the display
 	 */
     public void setActionBarTitle(final int title){
-    	final LoggedInRoboActivity activity = (LoggedInRoboActivity)this.getActivity();
+    	final BaseFragmentActivity activity = (BaseFragmentActivity)this.getActivity();
     	activity.setActionBarTitle(activity.getResources().getString(title));
     }
     

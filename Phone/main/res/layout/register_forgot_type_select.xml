@@ -24,8 +24,17 @@
         android:cacheColorHint="#00000000">
     </ListView>
         
-    <include layout="@layout/old_general_need_help_footer" />
-
-    <include layout="@layout/old_general_copyright_footer" />
-
+        <RelativeLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@+id/copyright_textview" >	
+	                
+		    <include 
+		        layout="@layout/old_general_need_help_footer" />
+		
+		   
+		    
+		</RelativeLayout>
+		 <include 
+		        layout="@layout/old_general_copyright_footer" />
 </RelativeLayout>
