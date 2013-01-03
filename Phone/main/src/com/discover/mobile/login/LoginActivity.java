@@ -446,7 +446,7 @@ public class LoginActivity extends BaseActivity  {
 	 * @param v Reference to view which contains the remember user id check
 	 * @param cache Specifies whether to remember the state change
 	 */
-	public void toggleCheckBox(final View v, boolean cache) {
+	public void toggleCheckBox(final View v, final boolean cache) {
 	
 		if (saveUserId) {
 			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
@@ -462,6 +462,17 @@ public class LoginActivity extends BaseActivity  {
 		if(cache) {
 			SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, saveUserId);
 		}
+	}
+	
+	/**
+	 * Calls toggleCheckBox(v, true)
+	 * This method allows us to call toggleCheckBox from XML, we always want to save the state of the button
+	 * so we always pass true as the second argument.
+	 * 
+	 * @param v the calling view.
+	 */
+	public void toggleCheckBoxFromXml(final View v) {
+		toggleCheckBox(v, true);
 	}
 
 	/**
