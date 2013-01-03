@@ -6,16 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.customui.PushManageEditText;
 import com.discover.mobile.common.push.manage.PostPrefDetail;
 import com.discover.mobile.common.push.manage.PostPrefParam;
 import com.discover.mobile.common.push.manage.PostPreferencesDetail;
@@ -35,17 +37,24 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 	private String category;
 	
 	/**Box holding the amount the user specified*/
-	private EditText amountBox;
+	private PushManageEditText amountBox;
 	
 	/**TextView holding the minimum amount text*/
 	private TextView minAmount;
 
+	private TextView errorText;
+	
 	/**
 	 * Constructor of the class
 	 * @param context - activity context
 	 * @param attrs - layout attributes
+	 * @param min - minimum edit text amount
+	 * @param max - maximum edit text amount
+	 * @param fragment - push manage fragment holding this item
 	 */
-	public PushManageToggleItemEditText(final Context context, final AttributeSet attrs) {
+	public PushManageToggleItemEditText(final Context context, final AttributeSet attrs, 
+										final int min, final int defined, 
+										final int max, final PushManageFragment fragment) {
 		super(context, attrs);
 		
 		final RelativeLayout mainView = 
@@ -53,14 +62,38 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 		setHeaderView((TextView)mainView.findViewById(R.id.header));
 		super.setPushToggleView((ImageView) mainView.findViewById(R.id.push_toggle_view));
 		super.setTextToggleView((ImageView) mainView.findViewById(R.id.text_toggle_view));
-		amountBox = (EditText) mainView.findViewById(R.id.amount_box);
+		amountBox = (PushManageEditText) mainView.findViewById(R.id.amount_box);
 		minAmount = (TextView) mainView.findViewById(R.id.minimum_amount);
 		final TextView amountText = (TextView) mainView.findViewById(R.id.amount_text_box_view);
-		
+		errorText = (TextView) mainView.findViewById(R.id.push_edit_text_error_label);
 		
 		super.getTextToggleView().setOnClickListener(getToggleListener());
 		super.getPushToggleView().setOnClickListener(getToggleListener());
 		
+		amountBox.setMinAmount(min);
+		amountBox.setMaxAmount(max);
+		amountBox.attachErrorLabel(errorText);
+		amountBox.setDefinedAmount(defined);
+		amountBox.addTextChangedListener(new TextWatcher(){
+			@Override
+			public void afterTextChanged(final Editable s) {}
+
+			@Override
+			public void beforeTextChanged(final CharSequence s, final int start, final int count,
+					final int after) {}
+
+			@Override
+			public void onTextChanged(final CharSequence s, final int start, final int before,
+					final int count) {
+				fragment.showSaveBar();
+				if(!amountBox.isValid() && !amountBox.hasChanged()){
+					fragment.hideSavebar();
+				}else{
+					fragment.showSaveBar();
+				}
+			}
+			
+		});
 		
 		final TextView textAlertText = (TextView)mainView.findViewById(R.id.text_enable_text);
 		final TextView pushAlertText = (TextView)mainView.findViewById(R.id.push_enable_text);
@@ -74,6 +107,15 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
         addView(amountBox);
         addView(amountText);
         addView(minAmount);
+        addView(errorText);
+	}
+	
+	/**
+	 * Return if the value in the edit text is valid
+	 * @return if the value in the edit text is valid
+	 */
+	public boolean isValid(){
+		return amountBox.isValid();
 	}
 	
 	/**

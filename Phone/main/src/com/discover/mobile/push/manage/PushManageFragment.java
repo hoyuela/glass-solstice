@@ -280,19 +280,25 @@ public class PushManageFragment extends BaseFragment{
 				res.getString(R.string.purchase_amount_category), 
 				res.getString(R.string.purchase_amount_header),
 				prefs.remindersEnrollResults.tamtDefAmt,
-				prefs.remindersEnrollResults.tamtMinAmt);		
+				prefs.remindersEnrollResults.tamtMinAmt,
+				prefs.remindersEnrollResults.tamtMaxAmt,
+				this);		
 		
 		final PushManageCategoryItem balance = factory.createItem(
 				res.getString(R.string.balance_amount_category), 
 				res.getString(R.string.balance_amount_header),
 				prefs.remindersEnrollResults.balanceDefAmt,
-				prefs.remindersEnrollResults.balanaceMinAmt);
+				prefs.remindersEnrollResults.balanaceMinAmt,
+				prefs.remindersEnrollResults.balanaceMaxAmt,
+				this);
 		
 		final PushManageCategoryItem creditLine = factory.createItem(
 				res.getString(R.string.credit_line_ammount_category), 
 				res.getString(R.string.credit_line_ammount_header),
 				res.getString(R.string.credit_line_ammount_text),
-				prefs.remindersEnrollResults.crltAmtOptions);
+				prefs.remindersEnrollResults.crltAmtOptions,
+				prefs.remindersEnrollResults.crltDefAmt,
+				this);
 		
 		if(showCategory(purchase.getCategory())){
 			monitorList.addView((RelativeLayout)purchase);
@@ -324,7 +330,9 @@ public class PushManageFragment extends BaseFragment{
 				res.getString(R.string.cashback_bonus_category),
 				res.getString(R.string.cashback_bonus_header),
 				prefs.remindersEnrollResults.mrrwDefAmt,
-				prefs.remindersEnrollResults.mrrwMinAmt);
+				prefs.remindersEnrollResults.mrrwMinAmt,
+				prefs.remindersEnrollResults.mrrwMaxAmt,
+				this);
 		((PushManageToggleItemEditText)cashBackBonus).hideMinimumAmount();
 		if(showCategory(rewardsReminder.getCategory())){
 			maximizeList.addView((RelativeLayout)rewardsReminder);
@@ -503,8 +511,18 @@ public class PushManageFragment extends BaseFragment{
 	 * Show the save bar
 	 */
 	public void showSaveBar(){
-		saveItem.setVisibility(View.VISIBLE);
-		hideSuccessSave();
+		boolean isValid = true;
+		
+		for(PushManageCategoryItem item : categoriesList){
+			if(!item.isValid()){
+				isValid = false;
+			}
+		}
+		
+		if(isValid){
+			saveItem.setVisibility(View.VISIBLE);
+			hideSuccessSave();
+		}
 	}
 
 	/**
