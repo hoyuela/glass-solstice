@@ -16,15 +16,9 @@ import com.discover.mobile.utils.CommonUtils;
  *
  */
 public class DobDatePicker extends ValidatedInputField{
-	private final static int GOOD_YEAR_LENGTH = 4;
-	private final static int MAX_MONTH = 12;
-	private final static int MIN_MONTH = 1;
 	
 	private final static int EMS_LENGTH = 11;
-	
-	private final static int MAX_DAY = 31;
-	private final static int MIN_DAY = MIN_MONTH;
-	
+
 	private final static int INVALID_VALUE = -1;
 	
 	private int dobDay = INVALID_VALUE;
@@ -107,33 +101,48 @@ public class DobDatePicker extends ValidatedInputField{
 		dobYear = INVALID_VALUE;
 		dobMonth = INVALID_VALUE;
 	}
-	
+
 	/**
-	 * Getters and setters
-	 * 
+	 * @return the dobDay
 	 */
 	public int getDobDay() {
-		return this.dobDay;
+		return dobDay;
 	}
-	
-	public int getDobYear() {
-		return this.dobYear;
+
+	/**
+	 * @param dobDay the dobDay to set
+	 */
+	public void setDobDay(final int dobDay) {
+		this.dobDay = dobDay;
 	}
-	
+
+	/**
+	 * @return the dobMonth
+	 */
 	public int getDobMonth() {
-		return this.dobMonth;
+		return dobMonth;
+	}
+
+	/**
+	 * @param dobMonth the dobMonth to set
+	 */
+	public void setDobMonth(final int dobMonth) {
+		this.dobMonth = dobMonth;
+	}
+
+	/**
+	 * @return the dobYear
+	 */
+	public int getDobYear() {
+		return dobYear;
+	}
+
+	/**
+	 * @param dobYear the dobYear to set
+	 */
+	public void setDobYear(final int dobYear) {
+		this.dobYear = dobYear;
 	}
 	
-	public void setDobMonth(final int month){
-		this.dobMonth = month;
-	}
-	
-	public void setDobYear(final int year) {
-		this.dobYear = year;
-	}
-	
-	public void setDobDay(final int day) {
-		this.dobDay = day;
-	}
 }
 
