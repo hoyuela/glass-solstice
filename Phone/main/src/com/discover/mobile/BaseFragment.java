@@ -47,6 +47,14 @@ public abstract class BaseFragment extends SherlockFragment{
     }
     
     /**
+     * Show the logout alert dialog
+     */
+    public void showAlertDialog(){
+    	final LoggedInRoboActivity activity = (LoggedInRoboActivity)this.getActivity();
+    	activity.showAlertDialog();
+    }
+    
+    /**
 	 * Make the fragment visible
 	 * @param fragment - fragment to be made visible
 	 */
@@ -60,7 +68,7 @@ public abstract class BaseFragment extends SherlockFragment{
 	 * @param title - title to show in the display
 	 */
     public void setActionBarTitle(final int title){
-    	final LoggedInRoboActivity activity = (LoggedInRoboActivity)this.getActivity();
+    	final BaseFragmentActivity activity = (BaseFragmentActivity)this.getActivity();
     	activity.setActionBarTitle(activity.getResources().getString(title));
     }
     

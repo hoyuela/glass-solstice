@@ -153,6 +153,18 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 		}
 
 	}
+	
+	/**
+	 * Sets the last error code for the ErrorHandlerUi instance referenced
+	 * 
+	 * @param errorCode Status Code from the response received
+	 */
+	protected void setLastError(int errorCode) {
+		ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
+		if (errorHandlerUi != null ) {
+			errorHandlerUi.setLastError(errorCode);
+		}
+	}
 
 	/**
 	 * For the child class to implement for specific handling of json error

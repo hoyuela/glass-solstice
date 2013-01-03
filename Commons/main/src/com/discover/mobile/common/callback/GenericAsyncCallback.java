@@ -200,6 +200,12 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 			return this;
 		}
 		
+		public Builder<V> finishCurrentActivityOnSuccess(final Activity activityToFinish) {
+			withCompletionListener(new FinishActivityCompletionListener(activityToFinish));
+			
+			return this;
+		}
+		
 	}
 	
 }

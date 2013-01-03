@@ -80,4 +80,17 @@ public interface ErrorHandlerUi {
 	 */
 	public Context getContext();
 	
+	/**
+	* Sets the last error that occurred 
+	* @param errorCode
+	*/
+	public void setLastError(int errorCode);
+	
+	/**
+	* Returns the value of the last error code set using setLastError
+	* 
+	* @return the cached last error code
+	*/
+	public int getLastError();
+	
 }

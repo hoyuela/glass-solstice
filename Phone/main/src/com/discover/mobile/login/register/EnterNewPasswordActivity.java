@@ -32,6 +32,7 @@ import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 /**
  * EnterNewPasswordActivit - this activity inherits from AbstractAccountInformationActivity
  * @author scottseward
@@ -111,6 +112,10 @@ public class EnterNewPasswordActivity extends RoboActivity {
 				updateBarsForPass(s, passBarOne, passBarTwo, passBarThree, strengthBarLabel);
 			}
 		});
+		
+		HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
+    	progress.initChangePasswordHeader(1);
+    	
 	}
 
 	
@@ -295,11 +300,11 @@ public class EnterNewPasswordActivity extends RoboActivity {
 		}
 		else {
 			if(!validator.wasPassValid) {
-				showLabelWithStringResource(errorLabelOne, R.string.invalid_value);
+				showLabelWithStringResource(errorLabelOne, R.string.doesnt_match_records);
 			}
 			if(validator.wasPassValid && !validator.didPassesMatch) {
 				showLabelWithStringResource(errorLabelOne, R.string.account_info_two_passwords_dont_match_text);
-				showLabelWithStringResource(errorLabelTwo, R.string.invalid_value);
+				showLabelWithStringResource(errorLabelTwo, R.string.doesnt_match_records);
 			}
 		}
 			

@@ -47,9 +47,17 @@ public class LoginErrorResponseHandler extends BaseErrorResponseHandler {
 	 */
 	@Override
 	protected boolean handleJsonErrorCode(JsonMessageErrorResponse messageErrorResponse) {
+		//Clear UI text fields in UI
 		clearInputs();
 		
-		switch(messageErrorResponse.getMessageStatusCode()) {
+		//Fetch response status code
+		int statusCode = messageErrorResponse.getMessageStatusCode();
+		
+		//Set last error code for UI
+		setLastError(statusCode);
+		
+		//Execute the appropriate error handler based on status code
+		switch(statusCode) {
 			
 			case LAST_ATTEMPT_WARNING:
 				setErrorText(R.string.login_attempt_warning);

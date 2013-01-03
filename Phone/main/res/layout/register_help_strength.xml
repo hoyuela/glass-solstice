@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/modal_bottom_margin"
-        android:layout_marginTop="@dimen/modal_bottom_margin"
+        android:layout_marginTop="@dimen/modal_top_margin"
         android:orientation="vertical"
         android:paddingLeft="@dimen/forms_inner_padding"
         android:paddingRight="@dimen/forms_inner_padding" >
@@ -24,7 +24,7 @@
 
         <include
             android:id="@+id/reg_help_strong_pswd"
-            layout="@layout/register_help_strength_item" />
+            layout="@layout/register_help_strength_item"/>
 
         <include
             android:id="@+id/reg_help_footer"

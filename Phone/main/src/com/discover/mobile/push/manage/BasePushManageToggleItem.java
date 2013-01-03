@@ -135,7 +135,7 @@ public abstract class BasePushManageToggleItem extends RelativeLayout implements
 	 * @param isEnabled - if the the push enable box active or not active
 	 */
 	public void setPushAlertBox(final boolean isEnabled){
-		isTextChecked = isEnabled;
+		isPushChecked = isEnabled;
 		toggleBox(pushAlert, isEnabled);
 	}	
 	

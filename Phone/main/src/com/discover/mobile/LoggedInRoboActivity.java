@@ -93,9 +93,17 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 		if(getValueFromSharedPrefs(SharedPreferencesWrapper.SHOW_LOGIN_MODAL, false)){
 			logout();
 		} else{
-			showCustomAlert(setUpLogoutAlert());
+			showAlertDialog();
 		}
 	}
+    
+    
+    /**
+     * Show the logout modal
+     */
+    public void showAlertDialog(){
+    	showCustomAlert(setUpLogoutAlert());
+    }
     
     /**
      * Set up the modal alert that will be displayed for logout confirmation
@@ -153,15 +161,6 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 		slidingMenu.setBehindOffsetRes(R.dimen.nav_menu_offset);
 		slidingMenu.setFadeDegree(FADE);
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-	}
-	
-	/**
-	 * Set the title in the action bar for display
-	 * @param title - title to show in the display
-	 */
-	public void setActionBarTitle(final String title){
-		final TextView titleView= (TextView)findViewById(R.id.title_view);
-		titleView.setText(title);
 	}
 	
 	/**

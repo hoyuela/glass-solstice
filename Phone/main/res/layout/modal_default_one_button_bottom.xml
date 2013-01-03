@@ -15,15 +15,16 @@
         android:layout_marginTop="@dimen/modal_orange_margin_top"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/modal_orange_margin_top"
-        android:layout_above="@+id/modal_alert_divider"
+        android:layout_below="@+id/modal_alert_divider"
         />
     
     <ImageView
         android:id="@+id/modal_alert_divider"
         android:layout_width="fill_parent"
         android:layout_height="5dp"
-        android:layout_alignParentBottom="true"
-        android:visibility="invisible"/>
+        android:layout_marginTop="@dimen/modal_bottom_margin"
+        android:background="@drawable/modal_divider_line"
+        android:visibility="visible"/>
    
     
 </RelativeLayout>
