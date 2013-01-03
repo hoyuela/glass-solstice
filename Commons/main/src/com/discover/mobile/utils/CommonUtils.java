@@ -70,7 +70,12 @@ public class CommonUtils {
 	 * @return A String representation of the passed resource with its last character removed.
 	 */
 	public static String removeLastChar(final String subString) {
-		return subString.substring(0, subString.length() - 1);
+		String output = subString;
+		
+		if(subString != null && subString.length() > 1){
+			output = subString.substring(0, subString.length() - 1);
+		}
+		return output;
 	}
 	
 	/**
