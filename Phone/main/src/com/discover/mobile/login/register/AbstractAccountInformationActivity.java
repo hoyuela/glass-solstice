@@ -72,8 +72,11 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	/**
 	 * Keys for use when saving a restoring activity state on screen rotation.
 	 */
+	private final static String MAIN_ERROR_TEXT_KEY = "mek";
+	private final static String MAIN_ERROR_VISIBILITY_KEY = "mevk";
+	
 	private final static String MAIN_FIELD_KEY = "mfk";
-	private static final String MAIN_ERROR_KEY = "mek";
+	private static final String MAIN_FIELD_ERROR_KEY = "mfek";
 
 	private static final String EXP_MONTH_KEY = "expmk";
 	private static final String EXP_YEAR_KEY = "expyk";
@@ -174,7 +177,10 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		
 		outState.putString(SSN_KEY, ssnField.getText().toString());
 		
-		outState.putInt(MAIN_ERROR_KEY, cardErrorLabel.getVisibility());
+		outState.putString(MAIN_ERROR_TEXT_KEY, errorMessageLabel.getText().toString());
+		outState.putInt(MAIN_ERROR_VISIBILITY_KEY, errorMessageLabel.getVisibility());
+		
+		outState.putInt(MAIN_FIELD_ERROR_KEY, cardErrorLabel.getVisibility());
 		outState.putInt(DOB_ERROR_KEY, dobErrorLabel.getVisibility());
 		outState.putInt(EXP_ERROR_KEY, expirationDateErrorLabel.getVisibility());
 		outState.putInt(SSN_ERROR_KEY, ssnErrorLabel.getVisibility());
@@ -216,7 +222,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		if(savedInstanceState != null){
 			accountIdentifierField.setText(savedInstanceState.getString(MAIN_FIELD_KEY));
 			
-			cardErrorLabel.setVisibility(savedInstanceState.getInt(MAIN_ERROR_KEY));
+			cardErrorLabel.setVisibility(savedInstanceState.getInt(MAIN_FIELD_ERROR_KEY));
 			if(cardErrorLabel.getVisibility() == View.VISIBLE)
 				accountIdentifierField.updateAppearanceForInput();
 			
@@ -228,10 +234,14 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 			
 			restoreCardExpDatePicker(savedInstanceState);
 			restoreDobDatePicker(savedInstanceState);
-			
+			restoreMainErrorLabel(savedInstanceState);
 		}
 	}
 
+	private void restoreMainErrorLabel(final Bundle savedInstanceState) {
+		errorMessageLabel.setVisibility(savedInstanceState.getInt(MAIN_ERROR_VISIBILITY_KEY));
+		errorMessageLabel.setText(savedInstanceState.getString(MAIN_ERROR_TEXT_KEY));
+	}
 	/**
 	 * Restores the DOB date picker to its previous state from a Bundle. If the saved values
 	 * in the Bundle were invalid, don't update the picker and set its variables to invalid
