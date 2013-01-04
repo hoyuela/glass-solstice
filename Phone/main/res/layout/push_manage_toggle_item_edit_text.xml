@@ -80,7 +80,7 @@
 	
 	<TextView
 	    android:id="@+id/push_edit_text_error_label"
-	    style="@style/error_label"
+	    style="@style/push_error_label"
 	    android:layout_below="@+id/minimum_amount"
 	    android:text="@string/doesnt_match_records" />
 	
