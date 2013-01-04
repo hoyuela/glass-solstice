@@ -246,6 +246,13 @@
         <item name="android:textColor">@color/sub_copy</item>
         <item name="android:textSize">14sp</item>
     </style>
+    
+     <style name="push_error_label" parent="discover_text">
+        <item name="android:textColor">#ed1c24</item>
+        <item name="android:visibility">gone</item>     
+		<item name="android:textSize">14sp</item>
+
+    </style>
 
     <style name="push_expand_item" parent="@style/blue_hyperlink">
         <item name="android:textSize">18sp</item>
