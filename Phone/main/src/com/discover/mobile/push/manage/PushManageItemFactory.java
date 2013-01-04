@@ -78,6 +78,7 @@ public class PushManageItemFactory {
 	 * @param definedAmount - defined amount to put in the amount box
 	 * @param minAmount - minimum amount to show to the user
 	 * @param definedAmount - current defined amount
+	 * @param fragment - fragment holding the item
 	 * @return an edit text push manage item 
 	 */
 	public PushManageCategoryItem createItem(
@@ -111,6 +112,8 @@ public class PushManageItemFactory {
 	 * @param text - text to put in the item
 	 * @param displayValues - values to display
 	 * @param definedAmount - defined amount of the item
+	 * @param selectedIndex - index to set selected
+	 * @param fragment - fragment holding the item
 	 * @return a spinner push manage item 
 	 */
 	public PushManageCategoryItem createItem(
@@ -118,21 +121,21 @@ public class PushManageItemFactory {
 			final String header,
 			final String text,
 			final List<Integer> displayValues,
-			final int definedAmount,
+			final int selectedIndex,
 			final PushManageFragment fragment){
 		
-		final PushManageToogleItemSpinner view = new PushManageToogleItemSpinner(context, null,definedAmount, fragment);
+		final PushManageToogleItemSpinner view = new PushManageToogleItemSpinner(context, null,selectedIndex, fragment);
 		view.setCategory(category);
 		view.setHeader(header);
 		view.setText(text);
 		view.setSpinnerDropdown(convertFromIntArray(displayValues));
+		view.setSpinnerDropdownIndex(selectedIndex);
 		view.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.notification_list_item));
 		view.setPadding(PADDING_LR, PADDING_TB, PADDING_LR ,PADDING_TB);
 		view.setPushChecked(isParamEnabled(prefs, category, PreferencesDetail.PUSH_PARAM));
 		view.setTextChecked(isParamEnabled(prefs, category, PreferencesDetail.TEXT_PARAM));
 		view.setWasTextAlreadySet(isParamEnabled(prefs, category, PreferencesDetail.TEXT_PARAM));
 		view.setFragment(fragment);
-		fragment.hideSavebar();
 		return view;
 	}
 	

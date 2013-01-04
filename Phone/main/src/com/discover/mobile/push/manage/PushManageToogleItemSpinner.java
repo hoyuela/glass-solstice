@@ -53,7 +53,7 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 	 * @param context - activity context
 	 * @param attrs - layout attributes
 	 */
-	public PushManageToogleItemSpinner(final Context context, final AttributeSet attrs, final int definedAmount, 
+	public PushManageToogleItemSpinner(final Context context, final AttributeSet attrs, final int selectedIndex, 
 									   final PushManageFragment fragment) {
 		super(context, attrs);
 		this.context = context;
@@ -74,7 +74,7 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 		    @Override
 		    public void onItemSelected(final AdapterView<?> parentView, final View selectedItemView, 
 		    							final int position, final long id) {
-		    	if(definedAmount != Integer.parseInt(getAmount())){
+		    	if(selectedIndex != amountSpinner.getSelectedItemPosition()){
 		    		fragment.showSaveBar();
 		    	}
 		    }
@@ -110,6 +110,14 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 																	  values);
 		adapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
 		amountSpinner.setAdapter(adapter);
+	}
+	
+	/**
+	 * Set the current selected position of the spinner
+	 * @param index - position to set selwcted
+	 */
+	public void setSpinnerDropdownIndex(final int index){
+		amountSpinner.setSelection(index);
 	}
 	
 	/**
