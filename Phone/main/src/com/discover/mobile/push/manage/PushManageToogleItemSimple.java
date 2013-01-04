@@ -150,4 +150,13 @@ public class PushManageToogleItemSimple extends BasePushManageToggleItem {
 		detail.categoryId = PostPrefDetail.TEXT_PARAM;
 		return detail;
 	}
+
+	/**
+	 * Check to see if the category is valid
+	 * @return if the category is valid
+	 */
+	@Override
+	public boolean isValid() {
+		return true;
+	}
 }

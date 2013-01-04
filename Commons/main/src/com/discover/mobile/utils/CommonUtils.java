@@ -25,7 +25,7 @@ public class CommonUtils {
 	 * @return the formatted phone number
 	 */
 	public static String toPhoneNumber(final String number){
-		if(number == null || number.length() < PHONE_NUMBER_MIN){return new String();}
+		if(number == null || number.length() < PHONE_NUMBER_MIN){return "";}
 		return String.format("%s-%s-%s", number.substring(0, 3), number.substring(3, 6), number.substring(6, 10));
 	}
 	

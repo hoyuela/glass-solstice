@@ -27,6 +27,7 @@ import com.discover.mobile.common.push.manage.PostNotificationPreferences;
 import com.discover.mobile.common.push.manage.PostPrefDetail;
 import com.discover.mobile.common.push.manage.PostPreferencesDetail;
 import com.discover.mobile.common.push.manage.PreferencesDetail;
+import com.discover.mobile.common.push.manage.PushManageCategoryParamDetail;
 import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.utils.CommonUtils;
@@ -276,23 +277,42 @@ public class PushManageFragment extends BaseFragment{
 	 * Create the list for the monitor your spending
 	 */
 	private void createMonitorList() {
+		
+		final int tamtDefined = getAmountFromPrefsToPlaceInEditText(res.getString(R.string.purchase_amount_category),
+				prefs.remindersEnrollResults.tamtDefAmt);
+		
 		final PushManageCategoryItem purchase = factory.createItem(
 				res.getString(R.string.purchase_amount_category), 
 				res.getString(R.string.purchase_amount_header),
-				prefs.remindersEnrollResults.tamtDefAmt,
-				prefs.remindersEnrollResults.tamtMinAmt);		
+				tamtDefined,
+				prefs.remindersEnrollResults.tamtMinAmt,
+				prefs.remindersEnrollResults.tamtMaxAmt,
+				this);		
+		
+		final int balanceDefined = getAmountFromPrefsToPlaceInEditText(res.getString(R.string.balance_amount_category),
+				prefs.remindersEnrollResults.balanceDefAmt);
 		
 		final PushManageCategoryItem balance = factory.createItem(
 				res.getString(R.string.balance_amount_category), 
 				res.getString(R.string.balance_amount_header),
-				prefs.remindersEnrollResults.balanceDefAmt,
-				prefs.remindersEnrollResults.balanaceMinAmt);
+				balanceDefined,
+				prefs.remindersEnrollResults.balanaceMinAmt,
+				prefs.remindersEnrollResults.balanaceMaxAmt,
+				this);
+		
+		final int creditLineAmount = getAmountFromPrefsToPlaceInEditText(res.getString(R.string.credit_line_ammount_category),
+				prefs.remindersEnrollResults.crltDefAmt);
+		
+		final int creditLineIndex = getDropdownIndexFromAmount(creditLineAmount, 
+				prefs.remindersEnrollResults.crltAmtOptions);
 		
 		final PushManageCategoryItem creditLine = factory.createItem(
 				res.getString(R.string.credit_line_ammount_category), 
 				res.getString(R.string.credit_line_ammount_header),
 				res.getString(R.string.credit_line_ammount_text),
-				prefs.remindersEnrollResults.crltAmtOptions);
+				prefs.remindersEnrollResults.crltAmtOptions,
+				creditLineIndex,
+				this);
 		
 		if(showCategory(purchase.getCategory())){
 			monitorList.addView((RelativeLayout)purchase);
@@ -312,6 +332,49 @@ public class PushManageFragment extends BaseFragment{
 	}
 	
 	/**
+	 * Get the index of the amount from the list so that it can be displayed in a dropdown correctly
+	 * @param amount - ammount to get from list
+	 * @param options - list of options
+	 * @return the index of the amount in the list
+	 */
+	private int getDropdownIndexFromAmount(final int amount, final List<Integer> options) {
+		int index = 0;
+		for(int i = 0; i < options.size(); i++){
+			if(options.get(i) == amount){
+				index = i; 
+				break;
+			}
+		}
+		return index;
+	}
+
+	/**
+	 * Get the defined amount out of the json response retrieved from the server
+	 * @param category - category to search for
+	 * @param defaultValue - default value if none is found
+	 * @return the value received from the server
+	 */
+	public int getAmountFromPrefsToPlaceInEditText(final String category, final int defaultValue){
+		if(null == prefs.remindersEnrollResults || 
+				null == prefs.remindersEnrollResults.preferences || 
+				prefs.remindersEnrollResults.preferences.isEmpty()){return defaultValue;}
+		
+		
+		for(PreferencesDetail item: prefs.remindersEnrollResults.preferences){
+			if(null != item.params && !item.params.isEmpty() && item.prefTypeCode.equals(category)){
+				for(PushManageCategoryParamDetail param : item.params){
+					if(PushManageCategoryParamDetail.AMOUNT_CODE.equals(param.code)){
+						return Integer.parseInt(param.value);
+					}
+				}
+			}
+		}
+		
+		return defaultValue;
+		
+	}
+
+	/**
 	 * Create the rewards list
 	 */
 	private void createRewardsList() {
@@ -320,11 +383,16 @@ public class PushManageFragment extends BaseFragment{
 				res.getString(R.string.rewards_reminder_header),
 				res.getString(R.string.rewards_reminder_text));
 		
+		final int mrrwDefAmount = getAmountFromPrefsToPlaceInEditText(res.getString(R.string.cashback_bonus_category),
+				prefs.remindersEnrollResults.mrrwDefAmt);
+		
 		final PushManageCategoryItem cashBackBonus = factory.createItem(
 				res.getString(R.string.cashback_bonus_category),
 				res.getString(R.string.cashback_bonus_header),
-				prefs.remindersEnrollResults.mrrwDefAmt,
-				prefs.remindersEnrollResults.mrrwMinAmt);
+				mrrwDefAmount,
+				prefs.remindersEnrollResults.mrrwMinAmt,
+				prefs.remindersEnrollResults.mrrwMaxAmt,
+				this);
 		((PushManageToggleItemEditText)cashBackBonus).hideMinimumAmount();
 		if(showCategory(rewardsReminder.getCategory())){
 			maximizeList.addView((RelativeLayout)rewardsReminder);
@@ -460,7 +528,7 @@ public class PushManageFragment extends BaseFragment{
 		}
 		post.deviceID = telephonyManager.getDeviceId();
 		post.regStatus = PostPreferencesDetail.ACCEPT;
-		post.accntOverrideInd = PostPreferencesDetail.OVERRIDE_YES;
+		post.accntOverrideInd = PostPreferencesDetail.OVERRIDE_NO;
 		post.phoneNumber = phone;
 		post.carrier = getCarrier();
 		post.prefs = getPrefs();
@@ -503,8 +571,18 @@ public class PushManageFragment extends BaseFragment{
 	 * Show the save bar
 	 */
 	public void showSaveBar(){
-		saveItem.setVisibility(View.VISIBLE);
-		hideSuccessSave();
+		boolean isValid = true;
+		
+		for(PushManageCategoryItem item : categoriesList){
+			if(!item.isValid()){
+				isValid = false;
+			}
+		}
+		
+		if(isValid){
+			saveItem.setVisibility(View.VISIBLE);
+			hideSuccessSave();
+		}
 	}
 
 	/**

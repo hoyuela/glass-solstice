@@ -18,10 +18,10 @@ public class PushManageCategoryParamDetail implements Serializable{
 	private static final long serialVersionUID = 3094405120334743575L;
 
 	/**Code to associate this param with*/
-	@JsonProperty("paramCode")
+	@JsonProperty("parmCode")
 	public String code;
 	
 	/**Value of this param*/
-	@JsonProperty("paramValue")
+	@JsonProperty("parmValue")
 	public String value;
 }

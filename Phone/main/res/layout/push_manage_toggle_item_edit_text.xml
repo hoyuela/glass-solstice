@@ -49,16 +49,14 @@
 		android:layout_alignTop="@+id/text_toggle_view"
 		android:layout_marginLeft="@dimen/push_header_margin_left"/>
 	
-	<EditText
+	<com.discover.mobile.common.customui.PushManageEditText
 	    android:id="@+id/amount_box"
 	    android:layout_width="wrap_content"
     	android:layout_height="wrap_content"
     	android:layout_alignLeft="@+id/header"
     	android:layout_below="@+id/header"
-    	android:inputType="number"
-    	android:textColor="@color/sub_copy"
-    	android:background="@drawable/edit_text_default"
-    	android:textSize="12dp"/>
+    	android:maxWidth="@dimen/push_edit_box_max_width"
+    	android:maxLength="9"/>
 	
 	<TextView
 	    android:id="@+id/amount_text_box_view"
@@ -79,5 +77,11 @@
     	android:layout_alignLeft="@+id/header"
     	style="@style/push_toggle_item_secondary_text"
     	android:text="@string/minimum_amount_is"/>
+	
+	<TextView
+	    android:id="@+id/push_edit_text_error_label"
+	    style="@style/push_error_label"
+	    android:layout_below="@+id/minimum_amount"
+	    android:text="@string/doesnt_match_records" />
 	
 </RelativeLayout>

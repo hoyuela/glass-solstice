@@ -28,6 +28,7 @@
         android:layout_width="@dimen/dummy_push_box_width"
    		android:layout_height="wrap_content"
    		android:layout_alignRight="@+id/terms_of_use_view_1"
-   		android:layout_alignBottom="@+id/terms_of_use_view_1"/>
+   		android:layout_alignBottom="@+id/terms_of_use_view_1"
+   		android:layout_alignTop="@+id/terms_of_use_view_1"/>
 
 </RelativeLayout>

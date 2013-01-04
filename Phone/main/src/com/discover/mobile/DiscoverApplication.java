@@ -1,16 +1,13 @@
 package com.discover.mobile;
 
-import java.lang.reflect.Method;
 import java.util.List;
 
-import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 @ReportsCrashes(formKey = "dDAzM3VJakhEcHpvV2dsZlpJcXZqOGc6MQ")
 public class DiscoverApplication extends Application {
@@ -22,16 +19,16 @@ public class DiscoverApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		if (isApplicationProcess(getPackageName())) {
-			try {
-				ACRA.init(this);
-				Class sMode = Class.forName("android.os.StrictMode");
-				Method enabledDefaults = sMode.getMethod("enableDefaults");
-				enabledDefaults.invoke(null);
-			} catch (Exception e) {
-				Log.v("Reflection Error", "...not supported. skipping...");
-			}
-		}
+//		if (isApplicationProcess(getPackageName())) {
+//			try {
+//				ACRA.init(this);
+//				Class sMode = Class.forName("android.os.StrictMode");
+//				Method enabledDefaults = sMode.getMethod("enableDefaults");
+//				enabledDefaults.invoke(null);
+//			} catch (Exception e) {
+//				Log.v("Reflection Error", "...not supported. skipping...");
+//			}
+//		}
 		//		EasyTracker.getInstance().setContext(this);
 	}
 	
