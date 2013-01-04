@@ -13,6 +13,7 @@ import static com.discover.mobile.common.auth.registration.RegistrationErrorCode
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
 
 import java.net.HttpURLConnection;
+import java.util.Calendar;
 
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.ProgressDialog;
@@ -41,6 +42,7 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.navigation.HeaderProgressIndicator;
+import com.discover.mobile.utils.CommonUtils;
 
 /**
  * AbstractAccountInformationActivity this activity handles the forgot user password, both, and registration.
@@ -111,6 +113,8 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	protected CustomDatePickerDialog dobPickerDialog;
 	protected CustomDatePickerDialog cardPickerDialog;
 	
+	final Calendar currentDate = Calendar.getInstance();
+
 	// TODO go through old code and make sure this is called every time
 	protected void checkForStrongAuth() {}
 	protected void doCustomUiSetup(){/*Intentionally empty*/}
@@ -295,6 +299,10 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 * the method hideDayPicker.
 	 */
 	private void setupCardDatePicker() {
+		final int NOT_NEEDED = 1;
+		final int currentMonth = currentDate.get(Calendar.MONTH);
+		final int currentYearPlusTwo = currentDate.get(Calendar.YEAR) + 2;
+		
 		cardPickerDialog = new CustomDatePickerDialog(this, new OnDateSetListener() {
 			
 			@Override
@@ -305,44 +313,36 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 				cardExpDatePicker.updateLabelWithSavedDate();
 				cardExpDatePicker.updateAppearanceForInput();
 			}
-		}, 2011, 10, 10);
-		cardPickerDialog.setTitle(removeLastChar(R.string.card_expiration_date_text));
+		}, currentYearPlusTwo, currentMonth, NOT_NEEDED);
+		
+		final String datePickerTitle = getResources().getString(R.string.card_expiration_date_text);
+		cardPickerDialog.setTitle(CommonUtils.removeLastChar(datePickerTitle));
 		cardPickerDialog.hideDayPicker();
-	}
-	
-	
-	/**
-	 * Returns a String representation of the passed String resource with its last character removed.
-	 * Used when setting the title of a date picker dialog. The Strings that are used include an ugly colon that 
-	 * doesnt make sense in a popup dialog.
-	 * 
-	 * @param res A String resource.
-	 * @return A String representation of the passed resource with its last character removed.
-	 */
-	private String removeLastChar(final int res) {
-		final String subStr = getResources().getString(res);
-		return subStr.substring(0, subStr.length() - 1);
 	}
 	
 	/**
 	 * Initialize the date of birth date picker. Assigns an OnDateSetListener to modify the dobDay/Month/Year ivars.
 	 * 
 	 */
-	private void setupDatePicker() {
+	private void setupDatePicker() {		
+		final int currentYearMinusEighteen = currentDate.get(Calendar.YEAR) - 18;
+		final int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
+		final int currentMonth =currentDate.get(Calendar.MONTH);
+		
 		dobPickerDialog = new CustomDatePickerDialog(this, new OnDateSetListener() {
-			
+
 			@Override
-			public void onDateSet(DatePicker view, int year, int monthOfYear,
-					int dayOfMonth) {
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				birthDatePicker.setDobDay(dayOfMonth);
-				birthDatePicker.setDobMonth( monthOfYear );
+				birthDatePicker.setDobMonth(monthOfYear);
 				birthDatePicker.setDobYear(year);
 				birthDatePicker.updateLabelWithSavedDate();
 				birthDatePicker.updateAppearanceForInput();
 			}
-		}, 2011, 10, 10) ;
-		dobPickerDialog.setTitle(removeLastChar(R.string.account_info_dob_text));
+		}, currentYearMinusEighteen, currentMonth, currentDay);
 		
+		final String dobPickerTitle = getResources().getString(R.string.account_info_dob_text);
+		dobPickerDialog.setTitle(CommonUtils.removeLastChar(dobPickerTitle));
 	}
 
 	protected void setupCustomTextChangedListeners() {}
@@ -406,9 +406,9 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		addCustomFieldToDetails(accountInformationDetails, accountNumString);
 		accountInformationDetails.socialSecurityNumber = memberSsnNumString;
 		accountInformationDetails.dateOfBirthDay = String.valueOf(birthDatePicker.getDobDay());
-		accountInformationDetails.dateOfBirthMonth = String.valueOf(birthDatePicker.getDobMonth());
+		accountInformationDetails.dateOfBirthMonth = String.valueOf(birthDatePicker.getDobMonth() + 1);
 		accountInformationDetails.dateOfBirthYear = String.valueOf(birthDatePicker.getDobYear());
-		accountInformationDetails.expirationMonth = String.valueOf(cardExpDatePicker.getExpirationMonth());
+		accountInformationDetails.expirationMonth = String.valueOf(cardExpDatePicker.getExpirationMonth() + 1);
 		accountInformationDetails.expirationYear = String.valueOf(cardExpDatePicker.getExpirationYear());
 	}
 	
@@ -423,7 +423,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
 			@Override
 			public void success(final Object value) {
-				checkForStrongAuth();
+				navToNextScreenWithDetails(accountInformationDetails);
 			}
 
 			@Override
@@ -507,7 +507,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 */
 	public void showMainErrorLabelWithText(final String text) {
 		errorMessageLabel.setText(text);
-		showLabel(errorMessageLabel);
+		CommonUtils.showLabel(errorMessageLabel);
 	}
 	
 	/**
@@ -535,7 +535,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 * So if a given field isValid, then clear any possible errors, or if not, they show errors.
 	 */
 	private void updateLabelsForInput(){
-		hideLabel(errorMessageLabel);
+		CommonUtils.hideLabel(errorMessageLabel);
 
 		accountIdentifierField.updateAppearanceForInput();
 		cardExpDatePicker.updateAppearanceForInput();
@@ -543,26 +543,11 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		birthDatePicker.updateAppearanceForInput();
 	}
 	
-	/**
-	 * Show a view.
-	 * @param v the view you want to show.
-	 */
-	public void showLabel(final View v){
-		v.setVisibility(View.VISIBLE);
-	}
-	
-	/**
-	 * Hide a view.
-	 * @param v the view you want to hide
-	 */
-	public void hideLabel(final View v){
-		v.setVisibility(View.GONE);
-	}
 
 	/**
 	 * Animate scrolling the screen to the top. Used when something has gone wrong. Bad input etc.
 	 */
-	protected void resetScrollPosition(){
+	public void resetScrollPosition(){
 		mainScrollView.smoothScrollTo(0, 0);
 	}
 }
