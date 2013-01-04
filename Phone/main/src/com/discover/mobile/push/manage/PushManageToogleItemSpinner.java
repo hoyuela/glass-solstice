@@ -10,6 +10,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -51,7 +53,8 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 	 * @param context - activity context
 	 * @param attrs - layout attributes
 	 */
-	public PushManageToogleItemSpinner(final Context context, final AttributeSet attrs) {
+	public PushManageToogleItemSpinner(final Context context, final AttributeSet attrs, final int selectedIndex, 
+									   final PushManageFragment fragment) {
 		super(context, attrs);
 		this.context = context;
 		final RelativeLayout mainView = 
@@ -67,6 +70,19 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 		super.getTextToggleView().setOnClickListener(getToggleListener());
 		super.getPushToggleView().setOnClickListener(getToggleListener());
 		
+		amountSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+		    @Override
+		    public void onItemSelected(final AdapterView<?> parentView, final View selectedItemView, 
+		    							final int position, final long id) {
+		    	if(selectedIndex != amountSpinner.getSelectedItemPosition()){
+		    		fragment.showSaveBar();
+		    	}
+		    }
+		    
+		    @Override
+		    public void onNothingSelected(final AdapterView<?> parentView) { }
+
+		});
 		
 		final TextView textAlertText = (TextView)mainView.findViewById(R.id.text_enable_text);
 		final TextView pushAlertText = (TextView)mainView.findViewById(R.id.push_enable_text);
@@ -80,6 +96,7 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
         addView(titleView);
         addView(amountSpinner);
         addView(amountText);
+        fragment.hideSavebar();
 	}
 	
 	/**
@@ -87,11 +104,20 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 	 * @param values - the values to be displayed in the spinner
 	 */
 	public void setSpinnerDropdown(final List<String> values){
-		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, 
-																	  R.layout.push_simple_spinner_view,
+		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+																	  R.layout.push_simple_spinner, 
+																	  R.id.amount,
 																	  values);
-		adapter.setDropDownViewResource(R.layout.push_simple_spinner_view);
+		adapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
 		amountSpinner.setAdapter(adapter);
+	}
+	
+	/**
+	 * Set the current selected position of the spinner
+	 * @param index - position to set selwcted
+	 */
+	public void setSpinnerDropdownIndex(final int index){
+		amountSpinner.setSelection(index);
 	}
 	
 	/**
@@ -215,6 +241,15 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 		params.add(param);
 		detail.params = params;
 		return detail;
+	}
+	
+	/**
+	 * Check to see if the category is valid
+	 * @return if the category is valid
+	 */
+	@Override
+	public boolean isValid() {
+		return true;
 	}
 }
 

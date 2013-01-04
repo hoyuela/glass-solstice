@@ -63,7 +63,8 @@
 	    android:layout_width="@dimen/push_spinner_width"
 	    android:layout_height="wrap_content"
 	    android:layout_alignLeft="@+id/sub_header"
-	    android:layout_below="@+id/sub_header" />
+	    android:layout_below="@+id/sub_header" 
+	    android:background="@drawable/edit_text_default"/>
 	
 	<TextView
 	    android:id="@+id/amount_spinner_text"
