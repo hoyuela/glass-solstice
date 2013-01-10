@@ -7,6 +7,7 @@ import com.discover.mobile.common.net.PostPushPreferencesReferenceHandler;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.common.url.UrlManager;
 
 /**
  * Call to post the devices notification preferences.  All the prefs are base of the device's xid.
@@ -26,7 +27,7 @@ public class PostNotificationPreferences extends JsonResponseMappingNetworkServi
 	 */
 	public PostNotificationPreferences(final Context context, final AsyncCallback<PostPreferencesDetail> callback,
 			final PostPreferencesDetail formData){
-		super(context, new PostCallParams("/cardsvcs/acs/contact/v1/preferences/enrollments") {{ //$NON-NLS-1$
+		super(context, new PostCallParams(UrlManager.getPushSetNotificationPrefUrl()) {{ //$NON-NLS-1$
 			requiresSessionForRequest = true;
 			sendDeviceIdentifiers = true;
 
