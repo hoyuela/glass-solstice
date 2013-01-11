@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,6 +61,7 @@ import com.google.inject.Inject;
  */
 @ContentView(R.layout.login_start)
 public class LoginActivity extends BaseActivity  {
+	private final static String TAG = "LoginActivity";
 	private final static String emptyString = ""; //$NON-NLS-1$
 
 	/**
@@ -149,6 +151,12 @@ public class LoginActivity extends BaseActivity  {
 
 	private boolean preAuthHasRun = false;
 	private boolean saveUserId = false;
+	
+	/**
+	 * Used to remember the lastLoginAccount at startup of the application, in case the user toggles to a different account
+	 * and does not login. This variable will be used to revert the application back to the original last logged in account.
+	 */
+	private int lastLoginAcct = Globals.CARD_ACCOUNT;
 	
 	private final static int LOGOUT_TEXT_COLOR = R.color.body_copy;
 	
@@ -317,10 +325,12 @@ public class LoginActivity extends BaseActivity  {
 		rememberIdCheckState = Globals.isRememberId();
 		
 		if(rememberIdCheckState){
+			clearInputs();
+			
 			idField.setText(Globals.getCurrentUser());
+
 			setCheckMark(rememberIdCheckState, true);
 		} else {
-			idField.setText("");
 			setCheckMark(rememberIdCheckState, false);
 		}
 
@@ -340,7 +350,7 @@ public class LoginActivity extends BaseActivity  {
 				//Clear the last error that occurred
 				setLastError(0);
 				
-				logIn();
+				login();
 			}
 		});
 
@@ -396,12 +406,12 @@ public class LoginActivity extends BaseActivity  {
 	}
 
 	/**
-	 * logIn() If the user id, or password field are effectively blank, do not
+	 * If the user id, or password field are effectively blank, do not
 	 * allow a service call to be made display the error message for id/pass not
 	 * matching records. If the fields have data - submit it to the server for
 	 * validation.
 	 */
-	private void logIn() {
+	private void login() {
 		setInputFieldsDrawablesToDefault();
 		if (!showErrorIfAnyFieldsAreEmpty() && !showErrorWhenAttemptingToSaveAccountNumber()) {
 			runAuthWithUsernameAndPassword(idField.getText().toString(),
@@ -449,15 +459,30 @@ public class LoginActivity extends BaseActivity  {
 	}
 
 	/**
-	 * runAuthWithUsernameAndPassword(final String username, final String
-	 * password) This method submits the users information to the server for
-	 * verification.
+	 * This method submits the users information to the Card or Bank server for
+	 * verification depending on what is selected in login page.
 	 * 
 	 * The AsyncCallback handles the success and failure of the call and is
 	 * responsible for handling and presenting error messages to the user.
+	 * 
 	 */
-	private void runAuthWithUsernameAndPassword(final String username,
-			final String password) {
+	private void runAuthWithUsernameAndPassword(final String username, final String password) {
+		//Check if card account has been selected
+		if( View.VISIBLE == cardCheckMark.getVisibility() ) {
+			cardLogin(username, password) ;
+		} else {
+			bankLogin(username, password);
+		}
+	}
+	
+	/**
+	 * This method submits the users information to the Card server for verification.
+	 * 
+	 * The AsyncCallback handles the success and failure of the call and is
+	 * responsible for handling and presenting error messages to the user.
+	 * 
+	 */
+	private void cardLogin(final String username, final String password) {
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback
 				.<AccountDetails> builder(this)
 				.showProgressDialog("Discover", "Loading...", true)
@@ -470,33 +495,51 @@ public class LoginActivity extends BaseActivity  {
 
 					@Override
 					public void success(final AccountDetails value) {
-						//Set current user for the current session  
-						Globals.setCurrentUser(idField.getText().toString());
-						
-						//Set the current account selected by the user
-						Globals.setCurrentAccount(Globals.CARD_ACCOUNT);
-						
-						//Set remember ID value in globals. This will be used to determine whether
-						//Current User is stored in persistent storage by the Globals class
-						Globals.setRememberId(saveUserId);	
-
-						//Set logged in to be able to save user name in persistent storage
+						// Set logged in to be able to save user name in
+						// persistent storage
 						Globals.setLoggedIn(true);
-						
-						//Load user level preferences
-						Globals.loadUserPreferences(getContext());
-						
+
+						// Update current account based on user logged
+						updateAccountInformation(Globals.CARD_ACCOUNT);
+
 						CurrentSessionDetails.getCurrentSessionDetails()
 								.setAccountDetails(value);
+
 						getXtifyRegistrationStatus();
+
 					}
 				})
 				.withErrorResponseHandler(new LoginErrorResponseHandler(this))
-								.build();
+				.build();
 
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
+
+	/**
+ 	 * This method submits the users information to the Bank server for verification.
+	 * 
+	 * The AsyncCallback handles the success and failure of the call and is
+	 * responsible for handling and presenting error messages to the user.
+	 * 
+	 */
+	private void bankLogin(final String username, final String password) {
+		/*********TODO: REMOVE THIS BLOCK OF CODE AFTER COMPLETING BANK LOGIN*************/
+		CharSequence text = "Bank Login Under Development";
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(this, text, duration);
+		toast.show();
+		
+		//Set logged in to be able to save user name in persistent storage
+		Globals.setLoggedIn(true);
+		
+		/*********TODO: REMOVE THIS BLOCK OF CODE AFTER COMPLETING BANK LOGIN*************/
 	
+		//TODO: Add Bank Login Logic here
+		
+		//Update current account based on user logged in and account type
+		updateAccountInformation(Globals.BANK_ACCOUNT);
+	}
 
 	/**
 	 * toggleCheckBox(final View v) This method handles the state of the check
@@ -561,8 +604,9 @@ public class LoginActivity extends BaseActivity  {
 	/**
 	 * Updates the view based on the application account selected by the user. Called by application at start-up.
 	 */
-	private void setApplicationAccount() {	
-		if (Globals.BANK_ACCOUNT == Globals.getCurrentAccount()) {
+	private void setApplicationAccount() {
+		lastLoginAcct = Globals.getCurrentAccount();
+		if (Globals.BANK_ACCOUNT == lastLoginAcct) {
 			toggleBankCardLogin(goToBankLabel);	
 		} else {
 			toggleBankCardLogin(goToCardLabel);	
@@ -577,8 +621,7 @@ public class LoginActivity extends BaseActivity  {
 	 * the labels next to it. In addition, it updates the text for the bottom
 	 * row buttons.
 	 */
-	public void toggleBankCardLogin(final View v) {
-		
+	public void toggleBankCardLogin(final View v) { 
 		if (v.equals(goToCardLabel)) {
 			goToCardLabel.setTextColor(getResources().getColor(R.color.black));
 			setViewVisible(cardCheckMark);
@@ -590,7 +633,7 @@ public class LoginActivity extends BaseActivity  {
 			privacySecOrTermButton.setText(R.string.privacy_and_security);
 			setViewVisible(this.forgotUserIdOrPassText);
 			
-			//Load Card Account Preferences
+			//Load Card Account Preferences for refreshing UI only
 			Globals.loadPreferences(this, Globals.CARD_ACCOUNT);
 		} else {
 			goToCardLabel.setTextColor(getResources().getColor(
@@ -603,12 +646,18 @@ public class LoginActivity extends BaseActivity  {
 			privacySecOrTermButton.setText(R.string.privacy_and_terms);
 			setViewInvisible(this.forgotUserIdOrPassText);
 			
-			//Load Bank Account Preferences
+			//Load Bank Account Preferences for refreshing UI only
 			Globals.loadPreferences(this, Globals.BANK_ACCOUNT);
 		}
 		
 		//Refresh Screen based on Selected Account Preferences
 		loadSavedCredentials();
+		
+		//Revert data back to original last logged in account.
+		//Last logged in is only remembered if user logins successfully
+		if( lastLoginAcct != Globals.getCurrentAccount() ) {
+			Globals.loadPreferences(this, lastLoginAcct);
+		}
 	}
 
 	/**
@@ -803,6 +852,42 @@ public class LoginActivity extends BaseActivity  {
 		inputFields.add(idField);
 		inputFields.add(passField);
 		return inputFields;
+	}
+	
+	/**
+	 * Used to update the globals data stored at login for CARD or BANK and retrieves
+	 * user information. Should only be called if logged in otherwise will return false.
+	 * 
+	 * @param account Specify either Globals.CARD_ACCOUNT or Globals.BANK_ACCOUNT
+	 * 
+	 * @return Returns true if successful, false otherwise.
+	 */
+	public boolean updateAccountInformation(int account) {
+		boolean ret = false;
+		
+		//Only update account information if logged in
+		if( Globals.isLoggedIn() ) {
+			//Set current user for the current session  
+			Globals.setCurrentUser(idField.getText().toString());
+			
+			//Set the current account selected by the user
+			Globals.setCurrentAccount(account);
+			
+			//Set remember ID value in globals. This will be used to determine whether
+			//Current User is stored in persistent storage by the Globals class
+			Globals.setRememberId(saveUserId);	
+			
+			//Load user level preferences
+			Globals.loadUserPreferences(getContext());
+			
+			ret = true;
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.w(TAG, "Unable to update account information.");
+			}
+		}
+			
+		return ret;
 	}
 
 	

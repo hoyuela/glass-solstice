@@ -161,41 +161,7 @@ public final class Globals {
 		
 		return keyName.toString();
 	}
-		
-    /**
-     * Save a boolean value to the shared preferences
-     * @param key - key of the value to store
-     * @param value - boolean value 
-     */
-    protected static void saveToSharedPrefs(final Context context, final String key, final boolean value){
-    	final SharedPreferences settings = context.getSharedPreferences(key, Context.MODE_PRIVATE);
-		final SharedPreferences.Editor editor = settings.edit();
-		editor.putBoolean(getStoredKeyName(key), value);
-		editor.commit(); 
-    }
-    
-    /**
-     * Get a boolean value to the shared preferences
-     * @param key - key of the value to get
-     * @param defaultValue - default boolean value 
-     */
-    protected static boolean getValueFromSharedPrefs(final Context context, final String key, final boolean defaultValue){
-    	final SharedPreferences settings = context.getSharedPreferences(key, Context.MODE_PRIVATE);
-    	return settings.getBoolean(getStoredKeyName(key), defaultValue);
-    }
-    
-    /**
-     * Save a string value to the shared preferences
-     * @param key - key of the value to store
-     * @param value - boolean value 
-     */
-    protected static void saveToSharedPrefs(final Context context, final String key, final String value){
-    	final SharedPreferences settings = context.getSharedPreferences(key, Context.MODE_PRIVATE);
-		final SharedPreferences.Editor editor = settings.edit();
-		editor.putString(getStoredKeyName(key), value);
-		editor.commit(); 
-    }
-       
+		     
     /**
      * Loads all user, account, and application level preferences from persistent storage. Activities
      * should call this function in its onResume. User level settings are only loaded if the user
@@ -359,16 +325,7 @@ public final class Globals {
 		}
     }
     
-    /**
-     * Get a boolean value to the shared preferences
-     * @param key - key of the value to get
-     * @param defaultValue - default string value 
-     */
-    protected static String getValueFromSharedPrefs(final Context context, final String key, final String defaultValue){
-    	final SharedPreferences settings = context.getSharedPreferences(key, Context.MODE_PRIVATE);
-    	return settings.getString(getStoredKeyName(key), defaultValue);
-    }
-    
+  
     /**
      * Get the current application t maccount the application is in.
      * 
