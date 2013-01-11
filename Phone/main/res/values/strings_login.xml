@@ -7,7 +7,7 @@
         Privacy &amp; Security
     </string>
     <string name="register_now">
-        Register Now
+        Register\nNow
     </string>
     <string name="forgot_id_or_pass_text">
         Forgot User ID/Password?
@@ -123,4 +123,10 @@
 	    To protect the security of your Account, we do not save your Discover card Account number
 	     with the "Remember My User ID" feature. It is only available when you use a user ID to log in.
 	</string>
+	<string name="atm_locator">
+        ATM\nLocator
+    </string>
+	<string name="privacy_and_terms">
+        Privacy &amp; Terms
+    </string>
 </resources>

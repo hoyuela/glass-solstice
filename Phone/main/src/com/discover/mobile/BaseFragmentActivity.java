@@ -33,7 +33,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.SharedPreferencesWrapper;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.login.LockOutUserActivity;
@@ -94,13 +94,21 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
     @Override
     protected void onResume() {
         super.onResume();
+        
+    	//Load all application and user preferences from persistent storage
+		Globals.loadPreferences(this);
+		
         eventManager.fire(new OnResumeEvent());
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
-        eventManager.fire(new OnPauseEvent());
+       super.onPause();
+        
+       //Save all application and user preferences into persistent storage
+       Globals.savePreferences(this);
+      		
+       eventManager.fire(new OnPauseEvent());
     }
 
     @Override
@@ -223,42 +231,6 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 		if(slidingMenu.isBehindShowing())
 			slidingMenu.showAbove();
 	}
-
-    /**
-     * Save a boolean value to the shared preferences
-     * @param key - key of the value to store
-     * @param value - boolean value 
-     */
-    public void saveToSharedPrefs(final String key, final boolean value){
-    	SharedPreferencesWrapper.saveToSharedPrefs(this, key, value);
-    }
-    
-    /**
-     * Get a boolean value to the shared preferences
-     * @param key - key of the value to get
-     * @param defaultValue - default boolean value 
-     */
-    public boolean getValueFromSharedPrefs(final String key, final boolean defaultValue){
-    	return SharedPreferencesWrapper.getValueFromSharedPrefs(this, key, defaultValue);
-    }
-    
-    /**
-     * Save a string value to the shared preferences
-     * @param key - key of the value to store
-     * @param value - boolean value 
-     */
-    public void saveToSharedPrefs(final String key, final String value){
-    	SharedPreferencesWrapper.saveToSharedPrefs(this, key, value);
-    }
-    
-    /**
-     * Get a boolean value to the shared preferences
-     * @param key - key of the value to get
-     * @param defaultValue - default string value 
-     */
-    public String getValueFromSharedPrefs(final String key, final String defaultValue){
-    	return SharedPreferencesWrapper.getValueFromSharedPrefs(this, key, defaultValue);
-    }
     
     /**
      * Go back to the previous screen

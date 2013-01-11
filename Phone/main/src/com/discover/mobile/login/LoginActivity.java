@@ -10,6 +10,7 @@ import java.util.List;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
+import com.discover.mobile.R;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -19,12 +20,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.discover.mobile.BaseActivity;
-import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.SharedPreferencesWrapper;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -95,9 +96,15 @@ public class LoginActivity extends BaseActivity  {
 	@InjectView(R.id.remember_user_id_button)
 	private ImageView saveUserButton;
 
-	@InjectView(R.id.register_now_button)
-	private Button registerButton;
+	@InjectView(R.id.register_now_or_atm_button)
+	private Button registerOrAtmButton;
+	
+	@InjectView(R.id.privacy_and_security_button)
+	private Button privacySecOrTermButton;
 
+	@InjectView(R.id.customer_service_button)
+	private Button customerServiceButton;
+	
 	// TEXT LABELS
 
 	@InjectView(R.id.error_text_view)
@@ -203,8 +210,11 @@ public class LoginActivity extends BaseActivity  {
 			//Uncheck remember user id checkbox without remembering change
 			setCheckMark(false, false);
 		}
-			
+		
+		//Default to the last path user chose for login Card or Bank
+		this.setApplicationAccount();		
 	}
+	
 
 	/**
 	 * Ran at the start of an activity when an activity is brought to the front.
@@ -304,11 +314,14 @@ public class LoginActivity extends BaseActivity  {
 	private void loadSavedCredentials() {
 		boolean rememberIdCheckState = false;
 	
-		rememberIdCheckState = SharedPreferencesWrapper.getValueFromSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, false);
+		rememberIdCheckState = Globals.isRememberId();
 		
 		if(rememberIdCheckState){
-			idField.setText(SharedPreferencesWrapper.getValueFromSharedPrefs(this, SharedPreferencesWrapper.USER_ID, ""));
+			idField.setText(Globals.getCurrentUser());
 			setCheckMark(rememberIdCheckState, true);
+		} else {
+			idField.setText("");
+			setCheckMark(rememberIdCheckState, false);
 		}
 
 	}
@@ -331,10 +344,44 @@ public class LoginActivity extends BaseActivity  {
 			}
 		});
 
-		registerButton.setOnClickListener(new View.OnClickListener() {
+		registerOrAtmButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				registerNewUser();
+				
+				String regOrAtmText = registerOrAtmButton.getText().toString();
+				String regText = getResources().getString(R.string.register_now);
+				
+				//Check if registerOrAtm button is displaying text for Card or Bank
+				if( regOrAtmText.equals(regText) ) {
+					registerNewUser();
+				} else {
+					openAtmLocator();
+				}
+				
+			}
+		});
+		
+		privacySecOrTermButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				
+				String curText = privacySecOrTermButton.getText().toString();
+				String privSecText = getResources().getString(R.string.privacy_and_security);
+				
+				//Check if privacySecOrTermButton button is displaying text for Card or Bank
+				if( curText.equals(privSecText) ) {
+					openPrivacyAndSecurity();
+				} else {
+					openPrivacyAndTerms();
+				}
+				
+			}
+		});
+		
+		customerServiceButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				openCustomerService();
 			}
 		});
 
@@ -423,10 +470,21 @@ public class LoginActivity extends BaseActivity  {
 
 					@Override
 					public void success(final AccountDetails value) {
-						//set current user to generate user level preference file.  
-						SharedPreferencesWrapper.setCurrentUser(idField.getText().toString());
+						//Set current user for the current session  
+						Globals.setCurrentUser(idField.getText().toString());
 						
-						saveCredentials();
+						//Set the current account selected by the user
+						Globals.setCurrentAccount(Globals.CARD_ACCOUNT);
+						
+						//Set remember ID value in globals. This will be used to determine whether
+						//Current User is stored in persistent storage by the Globals class
+						Globals.setRememberId(saveUserId);	
+
+						//Set logged in to be able to save user name in persistent storage
+						Globals.setLoggedIn(true);
+						
+						//Load user level preferences
+						Globals.loadUserPreferences(getContext());
 						
 						CurrentSessionDetails.getCurrentSessionDetails()
 								.setAccountDetails(value);
@@ -439,20 +497,6 @@ public class LoginActivity extends BaseActivity  {
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
 	
-	/**
-	 * Saves a successful user id to to file for use later. Also saves the state of the check box.
-	 * If the checkbox was not checked when we log in, any previously saved ID will be deleted.
-	 */
-	public void saveCredentials() {
-		
-		if(saveUserId){
-			SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.USER_ID, idField.getText().toString());
-		}
-		else{
-			SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.USER_ID, emptyString);
-		}
-		SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, saveUserId);	
-	}
 
 	/**
 	 * toggleCheckBox(final View v) This method handles the state of the check
@@ -477,7 +521,7 @@ public class LoginActivity extends BaseActivity  {
 
 		//Check whether to save change in persistent storage
 		if(cache) {
-			SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, saveUserId);
+			Globals.setRememberId(saveUserId);
 		}
 	}
 	
@@ -515,29 +559,56 @@ public class LoginActivity extends BaseActivity  {
 	}
 
 	/**
+	 * Updates the view based on the application account selected by the user. Called by application at start-up.
+	 */
+	private void setApplicationAccount() {	
+		if (Globals.BANK_ACCOUNT == Globals.getCurrentAccount()) {
+			toggleBankCardLogin(goToBankLabel);	
+		} else {
+			toggleBankCardLogin(goToCardLabel);	
+		}
+	}
+
+	/**
 	 * toggleBankCardLogin(final View v) This method handles the login choices
-	 * for loging in as a bank user or a card user.
+	 * for logging in as a bank user or a card user.
 	 * 
-	 * It merely changes the visible position of a check mark and the color of
-	 * the labels next to it.
+	 * It changes the visible position of a check mark and the color of
+	 * the labels next to it. In addition, it updates the text for the bottom
+	 * row buttons.
 	 */
 	public void toggleBankCardLogin(final View v) {
-
+		
 		if (v.equals(goToCardLabel)) {
 			goToCardLabel.setTextColor(getResources().getColor(R.color.black));
 			setViewVisible(cardCheckMark);
 
 			setViewInvisible(bankCheckMark);
 			goToBankLabel.setTextColor(getResources().getColor(R.color.blue_link));
+			
+			registerOrAtmButton.setText(R.string.register_now);
+			privacySecOrTermButton.setText(R.string.privacy_and_security);
+			setViewVisible(this.forgotUserIdOrPassText);
+			
+			//Load Card Account Preferences
+			Globals.loadPreferences(this, Globals.CARD_ACCOUNT);
 		} else {
-
 			goToCardLabel.setTextColor(getResources().getColor(
 					R.color.blue_link));
 			setViewInvisible(cardCheckMark);
 			setViewVisible(bankCheckMark);
 			goToBankLabel.setTextColor(getResources().getColor(R.color.black));
+			
+			registerOrAtmButton.setText(R.string.atm_locator);
+			privacySecOrTermButton.setText(R.string.privacy_and_terms);
+			setViewInvisible(this.forgotUserIdOrPassText);
+			
+			//Load Bank Account Preferences
+			Globals.loadPreferences(this, Globals.BANK_ACCOUNT);
 		}
-
+		
+		//Refresh Screen based on Selected Account Preferences
+		loadSavedCredentials();
 	}
 
 	/**
@@ -588,6 +659,60 @@ public class LoginActivity extends BaseActivity  {
 	}
 
 	/**
+	 * Opens ATM Locator screen when user taps the ATM Locator button while 
+	 * in the BANK Login Screen
+	 */
+	public void openAtmLocator() {
+		//TODO: Add ATM handler here
+		
+		//TODO: Remove this code once implemented. This is only for QA testing purposes only
+		CharSequence text = "ATM Locator Under Development";
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(this, text, duration);
+		toast.show();
+	}
+	
+	/**
+	 * Opens Privacy and Security screen when user taps the Privacy and Security button while 
+	 * in the Card Login Screen
+	 */
+	public void openPrivacyAndSecurity() {
+		//TODO: Remove this code once implemented. This is only for QA testing purposes only
+		CharSequence text = "Privacy & Security Under Development";
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(this, text, duration);
+		toast.show();
+	}
+	
+	/**
+	 * Opens Privacy and Terms screen when user taps the Privacy and Terms button while 
+	 * in the Bank Login Screen
+	 */
+	public void openPrivacyAndTerms() {
+		//TODO: Remove this code once implemented. This is only for QA testing purposes only
+		CharSequence text = "Privacy & Terms Under Development";
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(this, text, duration);
+		toast.show();
+	}
+	
+	/**
+	 * Opens Privacy and Terms screen when user taps the Privacy and Terms button while 
+	 * in the Bank Login Screen
+	 */
+	private void openCustomerService() {
+		//TODO: Remove this code once implemented. This is only for QA testing purposes only
+		CharSequence text = "Customer Service Under Development";
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(this, text, duration);
+		toast.show();
+	}
+	
+	/**
 	 * forgotIdAndOrPass() This method is the same as registerNewUser except
 	 * that it launches the forgot nav screen and is instead called from Java.
 	 */
@@ -597,6 +722,7 @@ public class LoginActivity extends BaseActivity  {
 		clearInputs();
 	}
 
+	
 	/**
 	 * Do a GET request to the server to check to see if this vendor id is
 	 * registered to this user.

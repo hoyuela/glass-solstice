@@ -262,7 +262,7 @@
 
 		<Button
 		    android:id="@+id/customer_service_button"
-		    android:layout_width="wrap_content"
+		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_weight=".33"
 		    style="@style/login_bottom_bar_button"
@@ -270,15 +270,15 @@
 
 		<Button
 		    android:id="@+id/privacy_and_security_button"
-		    android:layout_width="wrap_content"
+		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_weight=".33"
 		    style="@style/login_bottom_bar_button"
 		    android:text="@string/privacy_and_security" />
 
 		<Button
-		    android:id="@+id/register_now_button"
-		    android:layout_width="wrap_content"
+		    android:id="@+id/register_now_or_atm_button"
+		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_weight=".33"
 		    style="@style/login_bottom_bar_button"
