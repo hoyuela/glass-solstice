@@ -115,8 +115,12 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		this.setContentView(mainView);
 		
 		final LinearLayout linearLayout = (LinearLayout) mainView.findViewById(R.id.modal_linear_layout);
-		linearLayout.addView((View)top);
-		linearLayout.addView((View)bottom);
+		if(null != top){
+			linearLayout.addView((View)top);
+		}
+		if(null != bottom){
+			linearLayout.addView((View)bottom);
+		}
 	}
 
 	/**
