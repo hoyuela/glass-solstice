@@ -131,6 +131,9 @@ public class CreateLoginActivity extends RoboActivity {
 		confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
 		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
+
+		//TODO: Decide which screen type to display forgot both or register
+		confirmationScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_REGISTRATION);
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_CONFIRMATION);
 		
 

@@ -1,23 +1,39 @@
 package com.discover.mobile.alert;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.IntentExtraKey;
 
+/**
+ * Top view of the confirmation modal
+ * @author jthornton
+ *
+ */
 public class ModalConfirmationTop extends RelativeLayout implements ModalTopView {
-		
+	
+	/**Application Resources*/
+	private final Resources res;
+	
+	/**Text View that holds the user id*/
 	private TextView userIdLabel;
 	
+	/**Text View holding the email*/
 	private TextView userEmailLabel;
 	
+	/**Text view holding the last for digits of the account number*/
 	private TextView userAcctNbrLabel;
 	
+	/**Text View First paragraph text*/
 	private TextView firstParagraph;
 	
+	/**Text View holding the please note text*/
 	private TextView noteLabel;
 	
 	/**
@@ -30,35 +46,17 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 		
 		final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(context)
                 .inflate(R.layout.register_confirm, null);
-		
+		res = context.getResources();
 		userIdLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_id_label);
 		userEmailLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_email_label);
 		userAcctNbrLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_account_label);
 		firstParagraph = (TextView) mainView.findViewById(R.id.account_info_confirm_first_paragraph_label);
 		noteLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_note_label);
+		noteLabel.setText(Html.fromHtml(context.getString(R.string.account_info_confirm_note_text)));
 		
 		addView(mainView);
 	}
-	
-//	@Override
-//	public void onCreate(final Bundle savedInstanceState){
-//		super.onCreate(savedInstanceState);
-//		final Bundle extras = getIntent().getExtras();
-//    	if(extras != null) {
-//    		userIdLabel.setText(extras.getString(IntentExtraKey.UID));
-//    		userEmailLabel.setText(extras.getString(IntentExtraKey.EMAIL));
-//    		userAcctNbrLabel.setText(extras.getString(IntentExtraKey.ACCOUNT_LAST4));
-//    		if("forgotPass".equals(extras.getString("ScreenType"))){
-//    			firstParagraph.setText(R.string.password_confirmation_changed_text);
-//    		} else if("forgotBoth".equals(extras.getString("ScreenType"))){
-//    			firstParagraph.setText(R.string.forgot_both_changed_text);
-//    		} else if("forgotId".equals(extras.getString("ScreenType"))){
-//    			firstParagraph.setVisibility(View.GONE);
-//    			noteLabel.setVisibility(View.INVISIBLE);
-//    		}
-//    	}
-//	}
-	
+
 	/**
 	 * Set the user id text
 	 */
@@ -85,6 +83,22 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 	 */
 	public void setConfirmationText(final String text){
 		firstParagraph.setText(text);
+	}
+	
+	/**
+	 * Set the screenType based on what is passed in
+	 * @param screenType - screen type to show
+	 */
+	public void setScreenType(final String screenType){
+		if(IntentExtraKey.SCREEN_FORGOT_BOTH.equals(screenType)){
+			firstParagraph.setText(res.getString(R.string.forgot_both_changed_text));
+		} else if(IntentExtraKey.SCREEN_FORGOT_PASS.equals(screenType)){
+			firstParagraph.setText(res.getString(R.string.password_confirmation_changed_text));
+		} else if(IntentExtraKey.SCREEN_FOROGT_USER.equals(screenType)){
+			firstParagraph.setText(res.getString(R.string.user_confirmation_changed_text));
+		} else if(IntentExtraKey.SCREEN_REGISTRATION.equals(screenType)){
+			firstParagraph.setText(res.getString(R.string.account_info_confirm_first_paragraph_text));
+		}
 	}
 	
 	/**

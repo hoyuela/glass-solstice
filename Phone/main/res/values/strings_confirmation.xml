@@ -28,8 +28,10 @@
 	    Chuck Yeager
 	</string>
 	<string name="account_info_confirm_note_text">
-	    Please Note: If you currently 
-	    use Secure online Account Numbers, that password has also been changed.
+	     <![CDATA[
+	    <b>Please Note:</b> If you currently 
+	    use Secure Online Account Numbers, that password has also been changed.
+	    ]]>
 	</string>
 	
 <!-- Password Change Confirmation Strings -->
@@ -37,18 +39,20 @@
 	    Password Change Confirmation
 	</string>
 	<string name="password_confirmation_changed_text">
-	    Your password has been changed, you are now logged in and an 
-	    email has been sent to you.
+	    Your password has been changed and a confirmation email has been sent. You are logged in and ready to go.
 	</string>
 	
+<!--  User ID Change Confirmation Strings -->
+	<string name="user_confirmation_changed_text">
+	    Your user ID has been changed and a confirmation email has been sent. You are logged in and ready to go.
+	</string>
 	
 <!-- Forgot Both Confirmation Strings -->
 	<string name="forgot_both_title_text">
 	    User ID and Password Change Confirmation
 	</string>
 	<string name="forgot_both_changed_text">
-	    Your password and user ID have been changed, 
-	    you are now logged in and an email has been sent to you.
+	    Your password and user ID has been changed and a confirmation email has been sent. You are logged in and ready to go.
 	</string>
 	
 <!-- Forgot ID Confirmation Strings -->

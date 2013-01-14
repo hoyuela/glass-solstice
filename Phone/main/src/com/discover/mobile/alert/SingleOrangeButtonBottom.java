@@ -8,12 +8,24 @@ import android.widget.RelativeLayout;
 
 import com.discover.mobile.R;
 
+/**
+ * Single one bottom bottom view holding an orange button
+ * @author jthornton
+ *
+ */
 public class SingleOrangeButtonBottom extends RelativeLayout implements ModalBottomOneButtonView{
 	
+	/**Activity context*/
 	final Context context;
 	
+	/**Button in the view*/
 	final Button button;
 
+	/**
+	 * Constructor for the view
+	 * @param context - context of the activity
+	 * @param attrs - attributes to give to the view
+	 */
 	public SingleOrangeButtonBottom(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		

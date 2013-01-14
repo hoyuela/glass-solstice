@@ -327,7 +327,7 @@ public class EnterNewPasswordActivity extends RoboActivity {
 		confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
 		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
-		confirmationScreen.putExtra("ScreenType", "forgotPass");
+		confirmationScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_FORGOT_PASS);
 		this.startActivity(confirmationScreen);
 		finish();
 	}

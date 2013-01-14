@@ -98,11 +98,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_info_confirm_account_stars_label"
-            android:layout_marginTop="16dp"
-            android:text="@string/account_info_confirm_note_text"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/black"
-            android:textSize="@dimen/light_text_size" />
+            android:layout_marginTop="@dimen/table_inner_padding"
+            android:textColor="@color/sub_copy"
+        	android:textSize="@dimen/small_copy_mid" />
     </RelativeLayout>
 
     <TextView

@@ -15,7 +15,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,9 +22,6 @@ import android.widget.TextView;
 
 import com.discover.mobile.BaseActivity;
 import com.discover.mobile.R;
-import com.discover.mobile.alert.ModalAlertWithOneButton;
-import com.discover.mobile.alert.ModalConfirmationTop;
-import com.discover.mobile.alert.SingleOrangeButtonBottom;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.SharedPreferencesWrapper;
@@ -166,23 +162,6 @@ public class LoginActivity extends BaseActivity  {
 		if (!preAuthHasRun) {
 			startPreAuthCheck();
 		}
-		
-		//FIXME: Remove this
-		final ModalConfirmationTop top = new ModalConfirmationTop(this, null);
-		final SingleOrangeButtonBottom bottom = new SingleOrangeButtonBottom(this, null);
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(this, top, bottom);
-		top.setUserId("uidsm8461");
-		top.setEmail("jthornton@solstice-mobile.com");
-		top.setLastFour("0804");
-		bottom.setButtonText(R.string.home_text);
-		bottom.getButton().setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				modal.dismiss();
-				
-			}
-		});
-		modal.show();
 	}
 
 	/**
