@@ -42,6 +42,8 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.common.auth.registration.BankLoginData;
+import com.discover.mobile.common.auth.registration.CreateBankLoginCall;
 import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
@@ -446,7 +448,9 @@ public class LoginActivity extends BaseActivity  {
 	private void login() {
 		setInputFieldsDrawablesToDefault();
 		if (!showErrorIfAnyFieldsAreEmpty() && !showErrorWhenAttemptingToSaveAccountNumber()) {
-			runAuthWithUsernameAndPassword(idField.getText().toString(),
+//			runAuthWithUsernameAndPassword(idField.getText().toString(),
+//					passField.getText().toString());
+			runBankLogin(idField.getText().toString(),
 					passField.getText().toString());
 		}
 	}
@@ -546,7 +550,16 @@ public class LoginActivity extends BaseActivity  {
 
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
-
+	
+	public void runBankLogin(final String username, final String password){
+		final AsyncCallback<BankLoginData> callback = 
+				GenericAsyncCallback.<BankLoginData>builder(this)
+				.showProgressDialog("Discover", "Loading...", true)
+				.build();
+		
+		new CreateBankLoginCall(this, callback, username, password).submit();
+	}
+	
 	/**
  	 * This method submits the users information to the Bank server for verification.
 	 * 
