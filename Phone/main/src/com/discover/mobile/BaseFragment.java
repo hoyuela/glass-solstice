@@ -51,7 +51,7 @@ public abstract class BaseFragment extends SherlockFragment{
      */
     public void showAlertDialog(){
     	final LoggedInRoboActivity activity = (LoggedInRoboActivity)this.getActivity();
-    	activity.showAlertDialog();
+    	activity.logout();
     }
     
     /**
