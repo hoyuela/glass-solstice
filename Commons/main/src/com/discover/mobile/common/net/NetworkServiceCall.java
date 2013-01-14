@@ -161,6 +161,7 @@ public abstract class NetworkServiceCall<R> {
 		}
 	}
 	
+	//TODO Move this out and put into a POJO maybe
 	private void setupDeviceIdentifiers() {
 		if(!params.sendDeviceIdentifiers)
 			return;
