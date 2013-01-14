@@ -6,8 +6,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:padding="@dimen/forms_inner_padding">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/forms_inner_padding" >
 
         <TextView
             android:id="@+id/phone_title_label"
@@ -16,12 +16,38 @@
             android:layout_height="wrap_content"
             android:text="@string/by_phone" />
 
+        <TextView
+            android:id="@+id/card_phone_title_label"
+            style="@style/body_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/phone_title_label"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:text="@string/discover_card" />
+
         <LinearLayout
-            android:id="@+id/phone_numbers_list"
+            android:id="@+id/card_phone_numbers_list"
             style="@style/customer_service_table"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/phone_title_label" >
+            android:layout_below="@+id/card_phone_title_label" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bank_phone_title_label"
+            style="@style/body_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_phone_numbers_list"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:text="@string/discover_bank" />
+
+        <LinearLayout
+            android:id="@+id/bank_phone_numbers_list"
+            style="@style/customer_service_table"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bank_phone_title_label" >
         </LinearLayout>
 
         <TextView
@@ -29,16 +55,42 @@
             style="@style/title_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/phone_numbers_list"
+            android:layout_below="@+id/bank_phone_numbers_list"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:text="@string/by_mail" />
 
+        <TextView
+            android:id="@+id/card_mail_title_label"
+            style="@style/body_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mail_title_label"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:text="@string/discover_card" />
+
         <LinearLayout
-            android:id="@+id/mailing_address_list"
+            android:id="@+id/card_mail_address_list"
             style="@style/customer_service_table"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mail_title_label" >
+            android:layout_below="@+id/card_mail_title_label" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bank_mail_title_label"
+            style="@style/body_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_mail_address_list"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:text="@string/discover_bank" />
+
+        <LinearLayout
+            android:id="@+id/bank_mail_address_list"
+            style="@style/customer_service_table"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bank_mail_title_label" >
         </LinearLayout>
 
         <TextView
@@ -46,7 +98,7 @@
             style="@style/title_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mailing_address_list"
+            android:layout_below="@+id/bank_mail_address_list"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:text="@string/comments" />
 

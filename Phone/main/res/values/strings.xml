@@ -142,5 +142,12 @@
 	<string name="crash_report">
 	    Preparing Email Crash Report
 	</string>
+	
+	<string name="discover_card">
+	    Discover Card
+	</string>
+	<string name="discover_bank">
+	    Discover Bank
+	</string>
 	    
 </resources>

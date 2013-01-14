@@ -1,5 +1,7 @@
 package com.discover.mobile.help;
 
+import java.util.List;
+
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
@@ -16,10 +18,12 @@ import com.discover.mobile.R;
 public class CustomerServiceContactsActivity extends NotLoggedInRoboActivity {
 
 	/**
-	 * The two LinearLayouts in the view that will have elements inserted into them.
+	 * The LinearLayouts in the view that will have elements inserted into them.
 	 */
-	private LinearLayout phoneNumberList;
-	private LinearLayout mailingAddressList;
+	private LinearLayout cardPhoneNumberList;
+	private LinearLayout cardMailingAddressList;
+	private LinearLayout bankMailingAddressList;
+	private LinearLayout bankPhoneNumberList;
 	
 	/**
 	 * Finish the activity upon the back button in the action bar being pressed.
@@ -38,37 +42,32 @@ public class CustomerServiceContactsActivity extends NotLoggedInRoboActivity {
 		setContentView(R.layout.customer_service);
 		
 		loadViews();
-		loadCardPhoneNumbers();
-		loadCardMailingAddresses();
+		loadLists();
 	}
 	
 	/**
 	 * Get references to all of the views in the layout that we may want to modify.
 	 */
 	private void loadViews() {
-		phoneNumberList = (LinearLayout)findViewById(R.id.phone_numbers_list);
-		mailingAddressList = (LinearLayout)findViewById(R.id.mailing_address_list);
+		cardPhoneNumberList = (LinearLayout)findViewById(R.id.card_phone_numbers_list);
+		cardMailingAddressList = (LinearLayout)findViewById(R.id.card_mail_address_list);
+		
+		bankPhoneNumberList = (LinearLayout)findViewById(R.id.bank_phone_numbers_list);
+		bankMailingAddressList = (LinearLayout)findViewById(R.id.bank_mail_address_list);
 	}
 	
-	/**
-	 * Retrieve a list of TwoElementListItem-s that we can use to display in the UI. The returned elements are added
-	 * to the phoneNumberList.
-	 */
-	private void loadCardPhoneNumbers() {
-		if(phoneNumberList != null){
-			for(TwoElementListItem element : CustomerServiceContactLists.getCardPhoneNumberListElements(this))
-				phoneNumberList.addView(element);
-		}
+	private void loadLists() {
+		loadListElementsToLayoutFromList(cardPhoneNumberList, CustomerServiceContactLists.getCardPhoneNumberListElements(this));
+		loadListElementsToLayoutFromList(bankPhoneNumberList, CustomerServiceContactLists.getBankPhoneNumberListElements(this));
+
+		loadListElementsToLayoutFromList(cardMailingAddressList, CustomerServiceContactLists.getCardMailingAddressListElements(this));
+		loadListElementsToLayoutFromList(bankMailingAddressList, CustomerServiceContactLists.getBankMailingAddressListElements(this));
 	}
 	
-	/**
-	 * Retrieve a list of TwoElementListItem-s that we can use to display in the UI. The returned elements are added
-	 * to the mailingAddressList.
-	 */
-	private void loadCardMailingAddresses() {
-		if(mailingAddressList != null) {
-			for(TwoElementListItem element : CustomerServiceContactLists.getCardMailingAddressListElements(this))
-				mailingAddressList.addView(element);
+	private void loadListElementsToLayoutFromList(final LinearLayout layout, List<TwoElementListItem> elementList) {
+		if(layout != null){
+			for(TwoElementListItem element : elementList)
+				layout.addView(element);
 		}
 	}
 	

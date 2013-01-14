@@ -69,6 +69,51 @@ public class CustomerServiceContactLists {
 	}
 	
 	/**
+	 * This is a static method that returns a list of mailing address contacts that are for Discover Banking
+	 * They are in the form of RelativeLayout elements. 
+	 * They contain two labels, one that describes the address and one that is the address.
+	 * 
+	 * @param callingContext - a reference to the context that calls this method.
+	 * @return - A TwoElementListItem List containing these address View elements.
+	 */
+	public static List<TwoElementListItem> getBankMailingAddressListElements(final Context callingContext) {
+		context = callingContext;
+		res = context.getResources();
+		
+		List<TwoElementListItem> mailingAddressList = new ArrayList<TwoElementListItem>();
+
+		mailingAddressList.add(getTwoElementListItemWithText(R.string.bank_general_mail_title, R.string.bank_general_mail, false));
+		mailingAddressList.get(0).getDividerLine().setVisibility(View.GONE);
+		mailingAddressList.add(getTwoElementListItemWithText(R.string.bank_new_accounts_mail_title, R.string.bank_new_accounts_mail, false));
+		
+		return mailingAddressList;
+		
+	}
+	
+	/**
+	 * This is a static method that returns a list of telephone contacts that are in the form of RelativeLayout
+	 * elements. They contain two labels, one that describes the phone number and one that is the phone number
+	 * the phone number is clickable and initiates a telephone dial.
+	 * 
+	 * @param callingContext - a reference to the context that calls this method.
+	 * @return - A TwoElementListItem List containing these contact View elements.
+	 */
+	public static List<TwoElementListItem> getBankPhoneNumberListElements(final Context callingContext) {
+		context = callingContext;
+		res = context.getResources();
+		
+		List<TwoElementListItem> phoneContactList = new ArrayList<TwoElementListItem>();
+		
+		phoneContactList.add(getTwoElementListItemWithText(R.string.open_an_account, R.string.bank_phone_open_account, true));
+		phoneContactList.get(0).getDividerLine().setVisibility(View.GONE);
+		phoneContactList.add(getTwoElementListItemWithText(R.string.bank_tech_support, R.string.bank_phone_tech_support, true));
+		phoneContactList.add(getTwoElementListItemWithText(R.string.tdd_number, R.string.bank_phone_tdd, true));
+		phoneContactList.add(getTwoElementListItemWithText(R.string.bank_outside_usa, R.string.bank_outside_usa, true));
+
+		return phoneContactList;
+	}
+	
+	/**
 	 * The method that is used to assemble lists of phone number or mailing address View elements to be inserted
 	 * into a linear layout in an Android GUI.
 	 * 
