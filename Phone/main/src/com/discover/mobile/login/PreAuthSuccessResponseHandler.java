@@ -17,7 +17,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListen
 public class PreAuthSuccessResponseHandler extends PreAuthCallHelper implements SuccessListener<PreAuthResult>{
 	LoginActivity loginActivity;
 
-	private final static String TAG = PreAuthErrorResponseHandler.class.getSimpleName();
+	private final static String TAG = "PreAuthSuccess";
 	
 	public PreAuthSuccessResponseHandler(final LoginActivity loginActivity) {
 		this.loginActivity = loginActivity;
