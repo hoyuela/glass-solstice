@@ -74,11 +74,10 @@ public class CustomerServiceContactsActivity extends NotLoggedInRoboActivity {
 	 * @param layout a linear layout to insert view elements into
 	 * @param elementList a list of view elements that can be inserted into a linear layout.
 	 */
-	private void loadListElementsToLayoutFromList(final LinearLayout layout, List<TwoElementListItem> elementList) {
+	public static void loadListElementsToLayoutFromList(final LinearLayout layout, List<TwoElementListItem> elementList) {
 		if(layout != null){
 			for(TwoElementListItem element : elementList)
 				layout.addView(element);
 		}
 	}
-	
 }

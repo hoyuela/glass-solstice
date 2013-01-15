@@ -1,7 +1,6 @@
 package com.discover.mobile.help;
 
 import com.discover.mobile.R;
-import com.discover.mobile.push.manage.PushManageFragment;
 import com.discover.mobile.section.FragmentComponentInfo;
 import com.discover.mobile.section.GroupComponentInfo;
 
@@ -17,7 +16,7 @@ public class CustomerServiceSectionInfo extends GroupComponentInfo{
 	 */
 	public CustomerServiceSectionInfo(){
 		super(R.string.customer_service,
-				new FragmentComponentInfo(R.string.contact_us, PushManageFragment.class));
+				new FragmentComponentInfo(R.string.contact_us, CustomerServiceContactsFragment.class));
 		
 	}
 
