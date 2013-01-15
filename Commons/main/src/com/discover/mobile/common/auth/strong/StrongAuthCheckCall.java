@@ -12,7 +12,7 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
 import com.discover.mobile.common.net.error.ErrorResponseParser;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.url.UrlManager;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 
 public class StrongAuthCheckCall extends JsonResponseMappingNetworkServiceCall<StrongAuthDetails> {
 	
@@ -30,7 +30,7 @@ public class StrongAuthCheckCall extends JsonResponseMappingNetworkServiceCall<S
 
 	public StrongAuthCheckCall(final Context context, final AsyncCallback<StrongAuthDetails> callback) {
 		
-		super(context, new GetCallParams(UrlManager.getStrongAuthCheckUrl()) {{
+		super(context, new GetCallParams(UrlManagerCard.getStrongAuthCheckUrl()) {{
 			requiresSessionForRequest = true;
 			
 			sendDeviceIdentifiers = true;
