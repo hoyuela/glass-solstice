@@ -9,7 +9,7 @@
         android:id="@+id/splash_progress"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:paddingTop="@dimen/modal_orange_margin_top"
+         android:paddingTop="@dimen/orange_button_margin_top"
          style="@android:style/Widget.ProgressBar.Small.Inverse"
          android:layout_centerInParent="true"
      />
