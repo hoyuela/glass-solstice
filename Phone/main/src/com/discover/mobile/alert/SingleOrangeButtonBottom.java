@@ -32,7 +32,7 @@ public class SingleOrangeButtonBottom extends RelativeLayout implements ModalBot
 		final RelativeLayout mainView = 
 				(RelativeLayout) LayoutInflater.from(context).inflate(R.layout.single_orange_button_bottom, null);
 		this.context = context;
-		button = (Button) mainView.findViewById(R.id.orange_button);
+		button = (Button) mainView.findViewById(R.id.button);
 		addView(mainView);
 	}
 

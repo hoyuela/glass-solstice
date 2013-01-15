@@ -14,8 +14,10 @@ import android.view.View.OnClickListener;
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
+import com.discover.mobile.alert.ModalAlertWithTwoButtons;
 import com.discover.mobile.alert.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.alert.ModalDefaultTopView;
+import com.discover.mobile.alert.ModalDefaultTwoButtonBottomView;
 
 
 /**
@@ -58,21 +60,26 @@ public class PreAuthCallHelper  {
 		final Context context = errorHandlerUi.getContext();
 
 		final ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(context, null);
-		final ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(context, null);
+		final ModalDefaultTwoButtonBottomView twoButtonBottomView = new ModalDefaultTwoButtonBottomView(context, null);
 		
-		titleAndContentForDialog.setTitle(R.string.upgrade_dialog_title);
+		titleAndContentForDialog.setTitle(R.string.option_upgrade_dialog_title);
 		titleAndContentForDialog.setContent(R.string.optional_upgrade_dialog_body);
 		
-		singleButtonBottomView.setButtonText(R.string.upgrade_dialog_button_text);
+		twoButtonBottomView.setOkButtonText(R.string.upgrade_dialog_button_text);
+		twoButtonBottomView.setCancelButtonText(R.string.no_thanks);
 				
-		final ModalAlertWithOneButton optionalUpgradeDialog = 
-				new ModalAlertWithOneButton(context, titleAndContentForDialog, singleButtonBottomView);
+		final ModalAlertWithTwoButtons optionalUpgradeDialog = 
+				new ModalAlertWithTwoButtons(context, titleAndContentForDialog, twoButtonBottomView);
 		
-		singleButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
+		twoButtonBottomView.getOkButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) { upgrade(context); }
 		});
 		
+		twoButtonBottomView.getCancelButton().setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) { optionalUpgradeDialog.dismiss(); }
+		});
 		errorHandlerUi.showCustomAlert(optionalUpgradeDialog);
 	}
 	
@@ -88,7 +95,7 @@ public class PreAuthCallHelper  {
 		final ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(context, null);
 		final ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(context, null);
 		
-		titleAndContentForDialog.setTitle(R.string.upgrade_dialog_title);
+		titleAndContentForDialog.setTitle(R.string.forced_upgrade_dialog_title);
 		titleAndContentForDialog.setContent(R.string.forced_upgrade_dialog_body);
 		titleAndContentForDialog.showErrorIcon(true);
 		

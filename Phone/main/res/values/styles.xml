@@ -97,7 +97,7 @@
 
     <style name="blue_hyperlink">
         <item name="android:textColor">@color/blue_link</item>
-        <item name="android:textSize">@dimen/body_copy_max</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
         <item name="android:textStyle">bold</item>
     </style>
 

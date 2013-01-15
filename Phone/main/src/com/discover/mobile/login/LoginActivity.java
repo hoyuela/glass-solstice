@@ -158,22 +158,6 @@ public class LoginActivity extends BaseActivity  {
 		res = getResources();
 		restoreState(savedInstanceState);
 		setupButtons();
-
-//		final ModalConfirmationTop top = new ModalConfirmationTop(this, null);
-//		final SingleOrangeButtonBottom bottom = new SingleOrangeButtonBottom(this, null);
-//		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(this, top, bottom);
-//		top.setUserId("");
-//		top.setEmail("");
-//		top.setLastFour("");
-//		top.setScreenType(IntentExtraKey.SCREEN_REGISTRATION);
-//		bottom.setButtonText(R.string.home_text);
-//		bottom.getButton().setOnClickListener(new OnClickListener(){
-//			@Override
-//			public void onClick(final View v) {
-//				modal.dismiss();	
-//			}
-//		});
-//		modal.show();
 		
 		if (!preAuthHasRun) {
 			startPreAuthCheck();

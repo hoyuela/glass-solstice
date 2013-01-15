@@ -101,19 +101,24 @@
 	<string name="show">
 	    Show
 	</string>
-	<string name="upgrade_dialog_title">
-	    Upgrade Your Discover App
+	<string name="forced_upgrade_dialog_title">
+	    Please Upgrade Now!
 	</string>
 	<string name="forced_upgrade_dialog_body">
-	    Don\'t get stuck in the past. Update your version of the app to access your account.
+	    It\'s time to update your Discover app.  Please download the latest version to access your Discover account. 
+	</string>
+	<string name="option_upgrade_dialog_title">
+	    A New Version of the App is Available
 	</string>
 	<string name="optional_upgrade_dialog_body">
-	    Please update your mobile app for great new features that make managing your accounts even easier.
+	    You\'ll love what we\'ve done with the app. Please update to the newest version to take advantage of all the latest enhancements for your Discover account.
 	</string>
 	<string name="upgrade_dialog_button_text">
 	    Get the Latest App
 	</string>
-	
+	<string name="no_thanks">
+	    No Thanks
+	</string>
 	<string name="ok">
 	   OK
 	</string>
