@@ -33,6 +33,7 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.navigation.HeaderProgressIndicator;
+import com.discover.mobile.navigation.NavigationRootActivity;
 /**
  * EnterNewPasswordActivit - this activity inherits from AbstractAccountInformationActivity
  * @author scottseward
@@ -322,11 +323,11 @@ public class EnterNewPasswordActivity extends RoboActivity {
 	}
 	
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData) {
-		final Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
+		final Intent confirmationScreen = new Intent(this, NavigationRootActivity.class);
 		confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
 		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
-		confirmationScreen.putExtra("ScreenType", "forgotPass");
+		confirmationScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_FORGOT_PASS);
 		this.startActivity(confirmationScreen);
 		finish();
 	}

@@ -31,6 +31,7 @@ import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
+import com.discover.mobile.navigation.NavigationRootActivity;
 
 /**
  * CreateLoginActivity - this is the final step of a user either going through "Forgot Both" or "Register".
@@ -126,10 +127,13 @@ public class CreateLoginActivity extends RoboActivity {
 	}
 	
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
-		final Intent confirmationScreen = new Intent(this, AccountInformationConfirmationActivity.class);
+		final Intent confirmationScreen = new Intent(this, NavigationRootActivity.class);
 		confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
 		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
+
+		//TODO: Decide which screen type to display forgot both or register
+		confirmationScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_REGISTRATION);
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_CONFIRMATION);
 		
 
