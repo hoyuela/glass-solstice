@@ -7,7 +7,7 @@ import com.discover.mobile.common.net.ReadNotificationReferenceHandler;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.url.UrlManager;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 
 /**
  * Call to post a notification as read
@@ -27,7 +27,7 @@ public class PostNotificationRead extends JsonResponseMappingNetworkServiceCall<
 	 */
 	public PostNotificationRead(final Context context, final AsyncCallback<PostReadDetail> callback,
 			final PostReadDetail formData){
-		super(context, new PostCallParams(UrlManager.getPushReadNotificationUrl()) {{ //$NON-NLS-1$
+		super(context, new PostCallParams(UrlManagerCard.getPushReadNotificationUrl()) {{ //$NON-NLS-1$
 			requiresSessionForRequest = true;
 			sendDeviceIdentifiers = true;
 

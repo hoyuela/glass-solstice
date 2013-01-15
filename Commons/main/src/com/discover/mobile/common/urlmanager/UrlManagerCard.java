@@ -1,4 +1,4 @@
-package com.discover.mobile.common.url;
+package com.discover.mobile.common.urlmanager;
 /**
  * This class is used for adding and getting URL's for card services. Any bank URL's should go into the bank Url Manager class
  * @author ajleeds
@@ -55,7 +55,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the preAuthUrl
 	 */
-	protected static String getPreAuthUrl() {
+	public static String getPreAuthUrl() {
 		return PRE_AUTH_URL;
 	}
 
@@ -64,7 +64,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the forgotPasswordUrl
 	 */
-	protected static String getForgotPasswordUrl() {
+	public static String getForgotPasswordUrl() {
 		return FORGOT_PASSWORD_URL;
 	}
 
@@ -73,7 +73,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the forgotPasswordTwoUrl
 	 */
-	protected static String getForgotPasswordTwoUrl() {
+	public static String getForgotPasswordTwoUrl() {
 		return FORGOT_PASSWORD_TWO_URL;
 	}
 
@@ -82,7 +82,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the forgotUserIdUrl
 	 */
-	protected static String getForgotUserIdUrl() {
+	public static String getForgotUserIdUrl() {
 		return FORGOT_USER_ID_URL;
 	}
 
@@ -91,7 +91,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the loginUrl
 	 */
-	protected static String getLoginUrl() {
+	public static String getLoginUrl() {
 		return LOGIN_URL;
 	}
 
@@ -100,7 +100,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the logoutUrl
 	 */
-	protected static String getLogoutUrl() {
+	public static String getLogoutUrl() {
 		return LOGOUT_URL;
 	}
 
@@ -109,7 +109,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the sessionUrl
 	 */
-	protected static String getSessionUrl() {
+	public static String getSessionUrl() {
 		return SESSION_URL;
 	}
 
@@ -118,7 +118,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the strongAuthAnswerUrl
 	 */
-	protected static String getStrongAuthAnswerUrl() {
+	public static String getStrongAuthAnswerUrl() {
 		return STRONG_AUTH_ANSWER_URL;
 	}
 
@@ -127,7 +127,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the strongAuthCheckUrl
 	 */
-	protected static String getStrongAuthCheckUrl() {
+	public static String getStrongAuthCheckUrl() {
 		return STRONG_AUTH_CHECK_URL;
 	}
 
@@ -136,7 +136,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the strongAuthQuestionUrl
 	 */
-	protected static String getStrongAuthQuestionUrl() {
+	public static String getStrongAuthQuestionUrl() {
 		return STRONG_AUTH_QUESTION_URL;
 	}
 
@@ -145,7 +145,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the strongAuthUrl
 	 */
-	protected static String getStrongAuthUrl() {
+	public static String getStrongAuthUrl() {
 		return STRONG_AUTH_URL;
 	}
 
@@ -154,7 +154,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the pushAlertHistoryUrl
 	 */
-	protected static String getPushAlertHistoryUrl(int start, int size) {
+	public static String getPushAlertHistoryUrl(int start, int size) {
 		return PUSH_ALERT_HISTORY_URL + start + "&size=" + size;
 	}
 
@@ -163,7 +163,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the pushReadNotificationUrl
 	 */
-	protected static String getPushReadNotificationUrl() {
+	public static String getPushReadNotificationUrl() {
 		return PUSH_READ_NOTIFICATION_URL;
 	}
 
@@ -172,7 +172,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the pushGetNotificationPrefUrl
 	 */
-	protected static String getPushGetNotificationPrefUrl(String device) {
+	public static String getPushGetNotificationPrefUrl(String device) {
 		return PUSH_GET_NOTIFICATION_PREF_URL + device;
 	}
 
@@ -181,7 +181,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the pushSetNotificationPrefUrl
 	 */
-	protected static String getPushSetNotificationPrefUrl() {
+	public static String getPushSetNotificationPrefUrl() {
 		return PUSH_SET_NOTIFICATION_PREF_URL;
 	}
 
@@ -190,7 +190,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the pushRegistrationStatusUrl
 	 */
-	protected static String getPushRegistrationStatusUrl(String device) {
+	public static String getPushRegistrationStatusUrl(String device) {
 		return PUSH_REGISTRATION_STATUS_URL + device;
 	}
 
@@ -199,7 +199,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the pushRegisterVendorUrl
 	 */
-	protected static String getPushRegisterVendorUrl() {
+	public static String getPushRegisterVendorUrl() {
 		return PUSH_REGISTER_VENDOR_URL;
 	}
 
@@ -208,7 +208,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the accountInfoUrl
 	 */
-	protected static String getAccountInfoUrl() {
+	public static String getAccountInfoUrl() {
 		return ACCOUNT_INFO_URL;
 	}
 
@@ -217,7 +217,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the authenticateCall
 	 */
-	protected static String getAuthenticateCall() {
+	public static String getAuthenticateCall() {
 		return AUTHENTICATE_CALL;
 	}
 	

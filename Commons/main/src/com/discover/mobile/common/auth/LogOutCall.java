@@ -13,7 +13,7 @@ import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.url.UrlManager;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 
 /**
  * Logout call for the application.  This will make a call to the services that will terminate the session
@@ -26,7 +26,7 @@ public class LogOutCall extends NetworkServiceCall<Object> {
 	/**
 	 * Service call params to be used
 	 */
-	private static final ServiceCallParams STANDARD_PARAMS = new PostCallParams(UrlManager.getLogoutUrl()) {{
+	private static final ServiceCallParams STANDARD_PARAMS = new PostCallParams(UrlManagerCard.getLogoutUrl()) {{
 		requiresSessionForRequest = true;
 		clearsSessionAfterRequest = true;
 	}};

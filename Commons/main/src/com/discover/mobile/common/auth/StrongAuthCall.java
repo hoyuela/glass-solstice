@@ -9,7 +9,7 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.url.UrlManager;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 
 public class StrongAuthCall extends JsonResponseMappingNetworkServiceCall<StrongAuthDetails> {
 	
@@ -19,7 +19,7 @@ public class StrongAuthCall extends JsonResponseMappingNetworkServiceCall<Strong
 
 	public StrongAuthCall(final Context context, final AsyncCallback<StrongAuthDetails> callback) {
 		
-		super(context, new GetCallParams(UrlManager.getStrongAuthUrl()) {{
+		super(context, new GetCallParams(UrlManagerCard.getStrongAuthUrl()) {{
 			requiresSessionForRequest = true;
 			
 			sendDeviceIdentifiers = true;
