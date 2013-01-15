@@ -36,6 +36,7 @@ import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
+import com.discover.mobile.navigation.NavigationRootActivity;
 
 @ContentView(R.layout.register_forgot_id)
 public class ForgotUserIdActivity extends RoboActivity {
@@ -310,7 +311,7 @@ public class ForgotUserIdActivity extends RoboActivity {
 	
 	private void sendToConfirmationScreen(final String last4, final String email, final String uid) {
 		final Intent confirmationScreenIntent = 
-				new Intent(ForgotUserIdActivity.this, AccountInformationConfirmationActivity.class);
+				new Intent(ForgotUserIdActivity.this, NavigationRootActivity.class);
 		confirmationScreenIntent.putExtra("ScreenType", "forgotId");
 		confirmationScreenIntent.putExtra(IntentExtraKey.ACCOUNT_LAST4, last4);
 		confirmationScreenIntent.putExtra(IntentExtraKey.EMAIL, email);

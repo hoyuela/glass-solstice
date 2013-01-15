@@ -8,9 +8,30 @@ package com.discover.mobile.common;
  */
 public final class IntentExtraKey {
 	
+	/**Intent extra for email used to send the users email to the confirmation modal*/
 	public static final String EMAIL = "Email";
+	
+	/**Intent extra for user ID used to send the users user id to the confirmation modal*/
 	public static final String UID = "User-ID";
+
+	/**Intent extra for account last 4 digits used to send the users last four to the confirmation modal*/
 	public static final String ACCOUNT_LAST4 = "Account-Last4";
+	
+	/**Intent extra used to let the confirmation modal to display the correct text associated with registration*/
+	public static final String SCREEN_REGISTRATION = "Registration-Screen";
+	
+	/**Intent extra used to let the confirmation modal to display the correct text associated with forgot password*/
+	public static final String SCREEN_FORGOT_PASS = "Forgot-Pass-Screen-Type";
+	
+	/**Intent extra used to let the confirmation modal to display the correct text associated with forgot userID*/
+	public static final String SCREEN_FOROGT_USER = "Forgot-User-Screen-Type";
+	
+	/**Intent extra used to let the confirmation modal to display the correct text associated with forgot both*/
+	public static final String SCREEN_FORGOT_BOTH = "Forgot-Both-Screen-Type";
+	
+	/**Intent extra used to get the screen type out an intent*/
+	public static final String SCREEN_TYPE = "Screen-Type";
+	
 	public static final String REGISTRATION1_DETAILS = "Registration1-Details";
 	public static final String FORGOT_PASS_DETAILS = "Forgot-Pass-Details";
 	public static final String HELP_TYPE = "Uid-Pass-Help-Type";

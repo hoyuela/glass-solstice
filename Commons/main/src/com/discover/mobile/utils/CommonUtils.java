@@ -76,7 +76,7 @@ public class CommonUtils {
 			output = subString.substring(0, subString.length() - 1);
 		}
 		return output;
-	}
+    }
 	
 	/**
 	 * Show a view.

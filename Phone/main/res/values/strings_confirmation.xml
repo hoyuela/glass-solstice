@@ -5,15 +5,13 @@
 	    Registration Confirmation
 	</string>
 	<string name="account_info_confirm_first_paragraph_text">
-	    Your registration is complete, you are now logged in and an email 
-	    has been sent to you.
+	    You have successfully registered your account and a confirmation email has been sent. You are logged in and ready to go. 
 	</string>
 	<string name="account_info_confirm_security_precaution_text">
-	    As a security precaution, your password and the first 12 digits of 
-	    your Account number are not shown.
+	    As a security precaution, the first 12 digits of your account numbers are not shown. 
 	</string>
 	<string name="account_info_confirm_summary_text">
-	    Your Online Account Information:
+	    Your Online Account Information
 	</string>
 	<string name="account_info_confirm_id_title_text">User ID</string>
 	<string name="account_info_confirm_email_title_text">
@@ -30,8 +28,10 @@
 	    Chuck Yeager
 	</string>
 	<string name="account_info_confirm_note_text">
-	    Please Note: If you currently 
-	    use Secure online Account Numbers, that password has also been changed.
+	     <![CDATA[
+	    <b>Please Note:</b> If you currently 
+	    use Secure Online Account Numbers, that password has also been changed.
+	    ]]>
 	</string>
 	
 <!-- Password Change Confirmation Strings -->
@@ -39,18 +39,20 @@
 	    Password Change Confirmation
 	</string>
 	<string name="password_confirmation_changed_text">
-	    Your password has been changed, you are now logged in and an 
-	    email has been sent to you.
+	    Your password has been changed and a confirmation email has been sent. You are logged in and ready to go.
 	</string>
 	
+<!--  User ID Change Confirmation Strings -->
+	<string name="user_confirmation_changed_text">
+	    Your user ID has been changed and a confirmation email has been sent. You are logged in and ready to go.
+	</string>
 	
 <!-- Forgot Both Confirmation Strings -->
 	<string name="forgot_both_title_text">
 	    User ID and Password Change Confirmation
 	</string>
 	<string name="forgot_both_changed_text">
-	    Your password and user ID have been changed, 
-	    you are now logged in and an email has been sent to you.
+	    Your password and user ID has been changed and a confirmation email has been sent. You are logged in and ready to go.
 	</string>
 	
 <!-- Forgot ID Confirmation Strings -->

@@ -7,17 +7,7 @@
     android:layout_marginLeft="@dimen/forms_inner_padding"
     android:layout_marginTop="@dimen/modal_bottom_margin">
     
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/call_to_action_theme"
-        android:layout_marginTop="@dimen/modal_orange_margin_top"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/modal_orange_margin_top"
-        android:layout_below="@+id/modal_alert_divider"
-        />
-    
+        
     <ImageView
         android:id="@+id/modal_alert_divider"
         android:layout_width="fill_parent"
@@ -25,6 +15,15 @@
         android:layout_marginTop="@dimen/modal_bottom_margin"
         android:background="@drawable/modal_divider_line"
         android:visibility="visible"/>
-   
+    
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/call_to_action_theme"
+        android:layout_marginTop="@dimen/modal_orange_margin_top"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/modal_orange_margin_bottom"
+        android:layout_below="@+id/modal_alert_divider"/>
     
 </RelativeLayout>
