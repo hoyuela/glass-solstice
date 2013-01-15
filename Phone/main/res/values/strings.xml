@@ -75,5 +75,12 @@
     <string name="crash_report">Preparing Email Crash Report</string>
     <string name="discover_card">Card</string>
     <string name="discover_bank">Bank</string>
+    <string name="forced_upgrade_dialog_title">Please Upgrade Now!</string>
+    <string name="forced_upgrade_dialog_body">It\'s time to update your Discover app.  Please download the latest version to access your Discover account. </string>
+    <string name="option_upgrade_dialog_title">A New Version of the App is Available</string>
+    <string name="optional_upgrade_dialog_body">You\'ll love what we\'ve done with the app. Please update to the newest version to take advantage of all the latest enhancements for your Discover account.</string>
+    <string name="upgrade_dialog_button_text">Get the Latest App</string>
+    <string name="no_thanks">No Thanks</string>
+    <string name="ok">OK</string>
 
 </resources>
