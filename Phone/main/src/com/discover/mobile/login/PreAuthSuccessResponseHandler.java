@@ -37,7 +37,9 @@ public class PreAuthSuccessResponseHandler extends PreAuthCallHelper implements 
 	public void success(final PreAuthResult value) {
 		//Verify login is a valid reference
 		if( null != loginActivity) {		
-			Log.d(TAG, "Pre-auth status code: " + value.statusCode);
+			if( Log.isLoggable(TAG, Log.DEBUG)) {
+				Log.d(TAG, "Pre-auth status code: " + value.statusCode);
+			}
 			if(PreAuthCallHelper.shouldPresentOptionalUpdate(loginActivity,value.upgradeDescription)) {
 				TrackingHelper.trackPageView(AnalyticsPage.OPTIONAL_UPGRADE);
 				PreAuthCallHelper.showOptionalUpgradeAlertDialog(loginActivity, value.upgradeDescription);
