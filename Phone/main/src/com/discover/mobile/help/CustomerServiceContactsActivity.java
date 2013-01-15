@@ -57,6 +57,9 @@ public class CustomerServiceContactsActivity extends NotLoggedInRoboActivity {
 		bankMailingAddressList = (LinearLayout)findViewById(R.id.bank_mail_address_list);
 	}
 	
+	/**
+	 * Get the lists of elements that go into the contacts tables and insert them into the tables.
+	 */
 	private void loadLists() {
 		loadListElementsToLayoutFromList(cardPhoneNumberList, CustomerServiceContactLists.getCardPhoneNumberListElements(this));
 		loadListElementsToLayoutFromList(bankPhoneNumberList, CustomerServiceContactLists.getBankPhoneNumberListElements(this));
@@ -65,6 +68,12 @@ public class CustomerServiceContactsActivity extends NotLoggedInRoboActivity {
 		loadListElementsToLayoutFromList(bankMailingAddressList, CustomerServiceContactLists.getBankMailingAddressListElements(this));
 	}
 	
+	/**
+	 * Loads a list of View elements into a LinearLayout
+	 * 
+	 * @param layout a linear layout to insert view elements into
+	 * @param elementList a list of view elements that can be inserted into a linear layout.
+	 */
 	private void loadListElementsToLayoutFromList(final LinearLayout layout, List<TwoElementListItem> elementList) {
 		if(layout != null){
 			for(TwoElementListItem element : elementList)
