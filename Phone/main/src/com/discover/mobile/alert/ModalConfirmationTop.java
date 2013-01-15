@@ -6,6 +6,7 @@ import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
@@ -44,7 +45,7 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 	public ModalConfirmationTop(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		
-		final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(context)
+		final ScrollView mainView = (ScrollView) LayoutInflater.from(context)
                 .inflate(R.layout.register_confirm, null);
 		res = context.getResources();
 		userIdLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_id_label);

@@ -97,7 +97,7 @@
 
     <style name="blue_hyperlink">
         <item name="android:textColor">@color/blue_link</item>
-        <item name="android:textSize">@dimen/body_copy_max</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -155,16 +155,13 @@
     </style>
 
     <style name="modal_title_text" parent="title_copy">
-        <item name="android:layout_marginTop">@dimen/modal_top_padding</item>
-        <item name="android:layout_marginLeft">@dimen/modal_left_padding</item>
-        <item name="android:layout_marginRight">@dimen/modal_right_padding</item>
-        <item name="android:layout_marginBottom">@dimen/modal_bottom_padding</item>
+        <item name="android:layout_marginTop">@dimen/modal_text_padding</item>
+        <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
+        <item name="android:layout_marginBottom">@dimen/modal_text_padding</item>
         <item name="android:textSize">@dimen/title_min</item>
     </style>
 
     <style name="modal_content_text" parent="sub_copy">
-        <item name="android:layout_marginLeft">@dimen/modal_left_padding</item>
-        <item name="android:layout_marginRight">@dimen/modal_right_padding</item>
         <item name="android:textSize">@dimen/small_copy_max</item>
     </style>
 
@@ -219,7 +216,6 @@
 
     <style name="modal_error_image">
         <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item>
-        <item name="android:layout_marginLeft">@dimen/modal_left_padding</item>
     </style>
 
     <style name="push_toggle_box_default">
@@ -247,7 +243,7 @@
         <item name="android:textSize">14sp</item>
     </style>
     
-     <style name="push_error_label" parent="discover_text">
+     <style name="error_label_small" parent="discover_text">
         <item name="android:textColor">#ed1c24</item>
         <item name="android:visibility">gone</item>     
 		<item name="android:textSize">14sp</item>
