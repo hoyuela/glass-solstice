@@ -1,4 +1,4 @@
-package com.discover.mobile.common.bank.auth;
+package com.discover.mobile.common.auth.bank;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ public class ReceivedUrl {
 	public String url;
 	
 	@JsonProperty("allowed")
-	public List requestType;
+	public List<?> method;
+
 
 }

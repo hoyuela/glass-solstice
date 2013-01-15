@@ -1,4 +1,4 @@
-package com.discover.mobile.common.auth.registration;
+package com.discover.mobile.common.auth.bank;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
