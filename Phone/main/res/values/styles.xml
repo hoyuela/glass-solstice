@@ -237,7 +237,6 @@
         <item name="android:paddingBottom">@dimen/between_related_elements_padding</item>
         <item name="android:background">@drawable/rounded_table_corners_no_padding</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item>
         <item name="android:divider">@drawable/gray_line</item>
     </style>
     

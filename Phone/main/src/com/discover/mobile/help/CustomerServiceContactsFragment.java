@@ -12,14 +12,13 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.CommonMethods;
 
 public class CustomerServiceContactsFragment extends BaseFragment {
-	/**
-	 * The LinearLayouts in the view that will have elements inserted into them.
-	 */
+	/** The LinearLayouts in the view that will have elements inserted into them. */
 	private LinearLayout cardPhoneNumberList;
 	private LinearLayout cardMailingAddressList;
 	private LinearLayout bankMailingAddressList;
 	private LinearLayout bankPhoneNumberList;
 	
+	/** Use this variable to setup the appearance of the screen based on card or bank user.*/
 	private boolean isCardUser = true;
 	
 	/**
@@ -35,7 +34,6 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 		
 		return mainView;
 	}
-	
 	
 	/**
 	 * The title of the screen that will be presented in the action bar.
@@ -81,8 +79,8 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 */
 	private void hideBankElements(final View mainView) {
 		//Hide the "Discover Card" titles.
-		CommonMethods.setViewGone((TextView)mainView.findViewById(R.id.card_phone_title_label));
-		CommonMethods.setViewGone((TextView)mainView.findViewById(R.id.card_mail_title_label));
+		CommonMethods.setViewInvisible((TextView)mainView.findViewById(R.id.card_phone_title_label));
+		CommonMethods.setViewInvisible((TextView)mainView.findViewById(R.id.card_mail_title_label));
 
 		//Hide bank mailing addresses and its title.
 		CommonMethods.setViewGone((TextView)mainView.findViewById(R.id.bank_mail_title_label));
@@ -101,8 +99,8 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 */
 	private void hideCardElements(final View mainView) {
 		//Hide the "Discover Bank" titles.
-		CommonMethods.setViewGone((TextView)mainView.findViewById(R.id.bank_mail_title_label));
-		CommonMethods.setViewGone((TextView)mainView.findViewById(R.id.bank_phone_title_label));
+		CommonMethods.setViewInvisible((TextView)mainView.findViewById(R.id.bank_mail_title_label));
+		CommonMethods.setViewInvisible((TextView)mainView.findViewById(R.id.bank_phone_title_label));
 		
 		CommonMethods.setViewGone((TextView)mainView.findViewById(R.id.card_mail_title_label));
 		CommonMethods.setViewGone((LinearLayout)mainView.findViewById(R.id.card_mail_address_list));

@@ -85,9 +85,9 @@ public class CustomerServiceContactLists {
 		mailingAddressList.add(getTwoElementListItemWithText(R.string.bank_general_mail_title, R.string.bank_general_mail, false));
 		mailingAddressList.get(0).getDividerLine().setVisibility(View.GONE);
 		mailingAddressList.add(getTwoElementListItemWithText(R.string.bank_new_accounts_mail_title, R.string.bank_new_accounts_mail, false));
+		mailingAddressList.add(getTwoElementListItemWithText(R.string.bank_personal_loans_mail_title, R.string.bank_personal_loans_mail, false));
 		
 		return mailingAddressList;
-		
 	}
 	
 	/**
@@ -103,12 +103,12 @@ public class CustomerServiceContactLists {
 		res = context.getResources();
 		
 		List<TwoElementListItem> phoneContactList = new ArrayList<TwoElementListItem>();
-		
 		phoneContactList.add(getTwoElementListItemWithText(R.string.open_an_account, R.string.bank_phone_open_account, true));
 		phoneContactList.get(0).getDividerLine().setVisibility(View.GONE);
+		phoneContactList.add(getTwoElementListItemWithText(R.string.bank_personal_loans, R.string.bank_phone_personal_loans, true));
 		phoneContactList.add(getTwoElementListItemWithText(R.string.bank_tech_support, R.string.bank_phone_tech_support, true));
 		phoneContactList.add(getTwoElementListItemWithText(R.string.tdd_number, R.string.bank_phone_tdd, true));
-		phoneContactList.add(getTwoElementListItemWithText(R.string.bank_outside_usa, R.string.bank_outside_usa, true));
+		phoneContactList.add(getTwoElementListItemWithText(R.string.bank_outside_usa, R.string.bank_phone_outside_usa, true));
 
 		return phoneContactList;
 	}
