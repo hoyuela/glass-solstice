@@ -61,7 +61,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity {
 		((ImageView)this.findViewById(R.id.action_bar_discover_logo)).setVisibility(View.GONE);
 		
 		//Show title text with string resource.
-		final TextView titleText = (TextView)findViewById(R.id.title_view);
+		final TextView titleText = (TextView)findViewById(R.id.logged_out_title_view);
 		titleText.setText(this.getString(stringResource));
 		titleText.setVisibility(View.VISIBLE);
 		

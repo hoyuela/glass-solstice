@@ -1,67 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-	android:layout_height="48dp"
-	android:background="@drawable/action_bar_background">
-	    
-	<ImageView
-	    android:id="@+id/navigation_button"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
-	    android:layout_above="@+id/gradient_line"
-	    android:src="@drawable/sliding_drawer_white_icons"
-	    style="@style/orange_action_bar_buttons"/>
-	
-	<ImageView
-	    android:id="@+id/navigation_back_button"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_above="@+id/gradient_line"
-	    android:src="@drawable/back_arrow_white_icon"
-	    style="@style/orange_action_bar_buttons"/>
-	
-	<TextView
-	    android:id="@+id/title_view"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_centerInParent="true"
-	    style="@style/action_bar_text"/> 
-	    
-	<ImageView
-	    android:id="@+id/action_bar_discover_logo"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_centerInParent="true"
-	    android:background="@drawable/discover_blk_logo_login"
-	    android:layout_marginBottom="3dp"
-	    android:visibility="gone"/>
-	    
-	<Button
-	    android:id="@+id/logout_button"
-	    android:layout_width="wrap_content"
-	    android:layout_height="fill_parent"
-	    android:layout_alignTop="@+id/navigation_button"
-	    android:layout_alignBottom="@+id/navigation_button"
-	    android:layout_toLeftOf="@+id/dummy_view"
-	    android:text="@string/log_out" 
-	    style="@style/logout_actionbar_button"
-	    android:visibility="gone"/>
-	
-	<!-- This view allows for the spacing between the logout button and the right side of the screen -->
-	<TextView
-	    android:id="@+id/dummy_view"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentRight="true"
-	    android:visibility="invisible"/>
-	
-	<ImageView
-	    android:id="@+id/gradient_line"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:src="@drawable/gradiant_line"
-	    android:background="@color/stroke_ruling_line"
-	    android:layout_alignParentBottom="true"/>
+    android:layout_height="48dp"
+    android:background="@drawable/action_bar_background" >
+
+    <ImageView
+        android:id="@+id/navigation_button"
+        style="@style/orange_action_bar_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/gradient_line"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/sliding_drawer_white_icons" />
+
+    <ImageView
+        android:id="@+id/navigation_back_button"
+        style="@style/orange_action_bar_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/gradient_line"
+        android:src="@drawable/back_arrow_white_icon" />
+
+    <TextView
+        android:id="@+id/title_view"
+        style="@style/action_bar_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/logout_button"
+        android:layout_toRightOf="@+id/navigation_button" />
+
+    <TextView
+        android:id="@+id/logged_out_title_view"
+        style="@style/action_bar_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <ImageView
+        android:id="@+id/action_bar_discover_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/discover_blk_logo_login"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/logout_button"
+        style="@style/logout_actionbar_button"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignBottom="@+id/navigation_button"
+        android:layout_alignTop="@+id/navigation_button"
+        android:layout_toLeftOf="@+id/dummy_view"
+        android:text="@string/log_out"
+        android:visibility="gone" />
+
+    <!-- This view allows for the spacing between the logout button and the right side of the screen -->
+
+    <TextView
+        android:id="@+id/dummy_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/gradient_line"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/stroke_ruling_line"
+        android:src="@drawable/gradiant_line" />
 
 </RelativeLayout>
