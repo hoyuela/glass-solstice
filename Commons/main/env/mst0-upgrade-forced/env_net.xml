@@ -1,5 +1,5 @@
 <resources>
-    <string name="card_base_url">http://mst0.m.discovercard.com</string>
+    <string name="card_base_url">https://mst0.m.discovercard.com</string>
     <string name="bank_base_url">https://beta.discoverbank.com</string>
     <string name="xClientPlatform">Android</string>
     <string name="xApplicationVersion">2.1</string>
