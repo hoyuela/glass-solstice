@@ -43,6 +43,7 @@ public class CustomerServiceContactsActivity extends NotLoggedInRoboActivity {
 		
 		loadViews();
 		loadLists();
+		super.setActionBarTitle(R.string.contact_us);
 	}
 	
 	/**
