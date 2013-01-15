@@ -14,7 +14,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.discover.mobile.alert.ModalAlertWithTwoButtons;
 import com.discover.mobile.alert.ModalDefaultTopView;
 import com.discover.mobile.alert.ModalLogoutBottom;
-import com.discover.mobile.common.SharedPreferencesWrapper;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
@@ -33,7 +33,9 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 	
 	/**Pulled out variable for the fade of the sliding menu*/
 	private static final float FADE = 0.35f;
-
+	/**Flag used to know when in the middle of a log out*/
+	private static boolean pendingLogout = false;
+	
 	/**
 	 * Create the activity, set up the action bar and sliding menu
 	 * @param savedInstanceState - saved State of the activity
@@ -90,14 +92,13 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
      * Show the modal if the user wants it shown
      */
     public void maybeShowModalAlert(){
-		if(getValueFromSharedPrefs(SharedPreferencesWrapper.SHOW_LOGIN_MODAL, false)){
-			logout();
-		} else{
+		if(Globals.isShowLoginModal()){
 			showAlertDialog();
+		} else{
+			logout();
 		}
 	}
-    
-    
+     
     /**
      * Show the logout modal
      */
@@ -120,7 +121,8 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 		bottomView.getOkButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				saveToSharedPrefs(SharedPreferencesWrapper.SHOW_LOGIN_MODAL, bottomView.isShowAgainSelected());
+				Globals.setShowLoginModal(!bottomView.isShowAgainSelected());
+	
 				logout();
 			}
 		});
@@ -138,6 +140,10 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
      * Log the user out
      */
     public void logout(){
+    	/** Used on pause to know when to set Globals isLoggedIn to false**/
+    	pendingLogout = true;
+    	
+    	
 		final AsyncCallback<Object> callback = 
 				GenericAsyncCallback.<Object>builder(this)
 				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
@@ -170,7 +176,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 	public void setStatusBarVisbility(){
 		FragmentTransaction ft = this.getSupportFragmentManager()
 				.beginTransaction();
-		boolean statusBarVisitility = getValueFromSharedPrefs(SharedPreferencesWrapper.STATUS_BAR_VISIBILITY, true);
+		boolean statusBarVisitility = Globals.isStatusBarVisibility();
 		Fragment statusBar = this.getSupportFragmentManager().findFragmentById(
 				R.id.status_bar);
 		
@@ -199,7 +205,20 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 		}else if (statusBar.isHidden()){
 			visible=true;
 		}
-		saveToSharedPrefs(SharedPreferencesWrapper.STATUS_BAR_VISIBILITY, visible);
+		Globals.setStatusBarVisibility(visible);
+		
 		setStatusBarVisbility();
 	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		//Clear all global variables after logout
+		if( pendingLogout ) {
+			pendingLogout = false;
+			
+			Globals.setToDefaults();
+		}
+	}			
 }
