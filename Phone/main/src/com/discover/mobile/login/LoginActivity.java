@@ -43,6 +43,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListen
 import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
+import com.discover.mobile.help.CustomerServiceContactsActivity;
 import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
@@ -354,6 +355,14 @@ public class LoginActivity extends BaseActivity  {
 				login();
 			}
 		});
+		
+		customerServiceButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				clearInputsAndLaunchActivityFromClass(CustomerServiceContactsActivity.class);
+			}
+		});
 
 		registerOrAtmButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -364,7 +373,7 @@ public class LoginActivity extends BaseActivity  {
 				
 				//Check if registerOrAtm button is displaying text for Card or Bank
 				if( regOrAtmText.equals(regText) ) {
-					registerNewUser();
+					clearInputsAndLaunchActivityFromClass(RegistrationAccountInformationActivity.class);
 				} else {
 					openAtmLocator();
 				}
@@ -392,7 +401,7 @@ public class LoginActivity extends BaseActivity  {
 		customerServiceButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				openCustomerService();
+				clearInputsAndLaunchActivityFromClass(CustomerServiceContactsActivity.class);
 			}
 		});
 
@@ -697,17 +706,16 @@ public class LoginActivity extends BaseActivity  {
 	}
 
 	/**
-	 * registerNewUser() This method launches the registration screen when a
-	 * user taps the register now button in the bottom bar.
+	 * This method launches a new activity given an activity class.
 	 */
-	public void registerNewUser() {
-		final Intent accountInformationActivity = new Intent(this, RegistrationAccountInformationActivity.class);
-		this.startActivity(accountInformationActivity);
+	public void clearInputsAndLaunchActivityFromClass(final Class<?> newActivity) {
+		final Intent newVisibleIntent = new Intent(this, newActivity);
+		this.startActivity(newVisibleIntent);
 		clearInputs();
 		errorTextView.setText(emptyString);
 		setViewGone(errorTextView);
 	}
-
+	
 	/**
 	 * Opens ATM Locator screen when user taps the ATM Locator button while 
 	 * in the BANK Login Screen
@@ -743,19 +751,6 @@ public class LoginActivity extends BaseActivity  {
 	public void openPrivacyAndTerms() {
 		//TODO: Remove this code once implemented. This is only for QA testing purposes only
 		CharSequence text = "Privacy & Terms Under Development";
-		int duration = Toast.LENGTH_SHORT;
-
-		Toast toast = Toast.makeText(this, text, duration);
-		toast.show();
-	}
-	
-	/**
-	 * Opens Privacy and Terms screen when user taps the Privacy and Terms button while 
-	 * in the Bank Login Screen
-	 */
-	private void openCustomerService() {
-		//TODO: Remove this code once implemented. This is only for QA testing purposes only
-		CharSequence text = "Customer Service Under Development";
 		int duration = Toast.LENGTH_SHORT;
 
 		Toast toast = Toast.makeText(this, text, duration);
