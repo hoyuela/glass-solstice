@@ -14,17 +14,20 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.discover.mobile.BaseActivity;
 import com.discover.mobile.R;
+import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.CurrentSessionDetails;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.SharedPreferencesWrapper;
 import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -59,6 +62,7 @@ import com.google.inject.Inject;
  */
 @ContentView(R.layout.login_start)
 public class LoginActivity extends BaseActivity  {
+	private final static String TAG = "LoginActivity";
 	private final static String emptyString = ""; //$NON-NLS-1$
 
 	/**
@@ -95,9 +99,15 @@ public class LoginActivity extends BaseActivity  {
 	@InjectView(R.id.remember_user_id_button)
 	private ImageView saveUserButton;
 
-	@InjectView(R.id.register_now_button)
-	private Button registerButton;
+	@InjectView(R.id.register_now_or_atm_button)
+	private Button registerOrAtmButton;
+	
+	@InjectView(R.id.privacy_and_security_button)
+	private Button privacySecOrTermButton;
 
+	@InjectView(R.id.customer_service_button)
+	private Button customerServiceButton;
+	
 	// TEXT LABELS
 
 	@InjectView(R.id.error_text_view)
@@ -142,6 +152,12 @@ public class LoginActivity extends BaseActivity  {
 
 	private boolean preAuthHasRun = false;
 	private boolean saveUserId = false;
+	
+	/**
+	 * Used to remember the lastLoginAccount at startup of the application, in case the user toggles to a different account
+	 * and does not login. This variable will be used to revert the application back to the original last logged in account.
+	 */
+	private AccountType lastLoginAcct = AccountType.CARD_ACCOUNT;
 	
 	private final static int LOGOUT_TEXT_COLOR = R.color.body_copy;
 	
@@ -203,8 +219,11 @@ public class LoginActivity extends BaseActivity  {
 			//Uncheck remember user id checkbox without remembering change
 			setCheckMark(false, false);
 		}
-			
+		
+		//Default to the last path user chose for login Card or Bank
+		this.setApplicationAccount();		
 	}
+	
 
 	/**
 	 * Ran at the start of an activity when an activity is brought to the front.
@@ -304,11 +323,16 @@ public class LoginActivity extends BaseActivity  {
 	private void loadSavedCredentials() {
 		boolean rememberIdCheckState = false;
 	
-		rememberIdCheckState = SharedPreferencesWrapper.getValueFromSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, false);
+		rememberIdCheckState = Globals.isRememberId();
 		
 		if(rememberIdCheckState){
-			idField.setText(SharedPreferencesWrapper.getValueFromSharedPrefs(this, SharedPreferencesWrapper.USER_ID, ""));
+			clearInputs();
+			
+			idField.setText(Globals.getCurrentUser());
+
 			setCheckMark(rememberIdCheckState, true);
+		} else {
+			setCheckMark(rememberIdCheckState, false);
 		}
 
 	}
@@ -327,14 +351,48 @@ public class LoginActivity extends BaseActivity  {
 				//Clear the last error that occurred
 				setLastError(0);
 				
-				logIn();
+				login();
 			}
 		});
 
-		registerButton.setOnClickListener(new View.OnClickListener() {
+		registerOrAtmButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				registerNewUser();
+				
+				String regOrAtmText = registerOrAtmButton.getText().toString();
+				String regText = getResources().getString(R.string.register_now);
+				
+				//Check if registerOrAtm button is displaying text for Card or Bank
+				if( regOrAtmText.equals(regText) ) {
+					registerNewUser();
+				} else {
+					openAtmLocator();
+				}
+				
+			}
+		});
+		
+		privacySecOrTermButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				
+				String curText = privacySecOrTermButton.getText().toString();
+				String privSecText = getResources().getString(R.string.privacy_and_security);
+				
+				//Check if privacySecOrTermButton button is displaying text for Card or Bank
+				if( curText.equals(privSecText) ) {
+					openPrivacyAndSecurity();
+				} else {
+					openPrivacyAndTerms();
+				}
+				
+			}
+		});
+		
+		customerServiceButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				openCustomerService();
 			}
 		});
 
@@ -349,12 +407,12 @@ public class LoginActivity extends BaseActivity  {
 	}
 
 	/**
-	 * logIn() If the user id, or password field are effectively blank, do not
+	 * If the user id, or password field are effectively blank, do not
 	 * allow a service call to be made display the error message for id/pass not
 	 * matching records. If the fields have data - submit it to the server for
 	 * validation.
 	 */
-	private void logIn() {
+	private void login() {
 		setInputFieldsDrawablesToDefault();
 		if (!showErrorIfAnyFieldsAreEmpty() && !showErrorWhenAttemptingToSaveAccountNumber()) {
 			runAuthWithUsernameAndPassword(idField.getText().toString(),
@@ -402,15 +460,30 @@ public class LoginActivity extends BaseActivity  {
 	}
 
 	/**
-	 * runAuthWithUsernameAndPassword(final String username, final String
-	 * password) This method submits the users information to the server for
-	 * verification.
+	 * This method submits the users information to the Card or Bank server for
+	 * verification depending on what is selected in login page.
 	 * 
 	 * The AsyncCallback handles the success and failure of the call and is
 	 * responsible for handling and presenting error messages to the user.
+	 * 
 	 */
-	private void runAuthWithUsernameAndPassword(final String username,
-			final String password) {
+	private void runAuthWithUsernameAndPassword(final String username, final String password) {
+		//Check if card account has been selected
+		if( View.VISIBLE == cardCheckMark.getVisibility() ) {
+			cardLogin(username, password) ;
+		} else {
+			bankLogin(username, password);
+		}
+	}
+	
+	/**
+	 * This method submits the users information to the Card server for verification.
+	 * 
+	 * The AsyncCallback handles the success and failure of the call and is
+	 * responsible for handling and presenting error messages to the user.
+	 * 
+	 */
+	private void cardLogin(final String username, final String password) {
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback
 				.<AccountDetails> builder(this)
 				.showProgressDialog("Discover", "Loading...", true)
@@ -423,35 +496,50 @@ public class LoginActivity extends BaseActivity  {
 
 					@Override
 					public void success(final AccountDetails value) {
-						//set current user to generate user level preference file.  
-						SharedPreferencesWrapper.setCurrentUser(idField.getText().toString());
-						
-						saveCredentials();
-						
+						// Set logged in to be able to save user name in
+						// persistent storage
+						Globals.setLoggedIn(true);
+
+						// Update current account based on user logged
+						updateAccountInformation(AccountType.CARD_ACCOUNT);
+
 						CurrentSessionDetails.getCurrentSessionDetails()
 								.setAccountDetails(value);
+
 						getXtifyRegistrationStatus();
+
 					}
 				})
 				.withErrorResponseHandler(new LoginErrorResponseHandler(this))
-								.build();
+				.build();
 
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
-	
+
 	/**
-	 * Saves a successful user id to to file for use later. Also saves the state of the check box.
-	 * If the checkbox was not checked when we log in, any previously saved ID will be deleted.
+ 	 * This method submits the users information to the Bank server for verification.
+	 * 
+	 * The AsyncCallback handles the success and failure of the call and is
+	 * responsible for handling and presenting error messages to the user.
+	 * 
 	 */
-	public void saveCredentials() {
+	private void bankLogin(final String username, final String password) {
+		/*********TODO: REMOVE THIS BLOCK OF CODE AFTER COMPLETING BANK LOGIN*************/
+		CharSequence text = "Bank Login Under Development";
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(this, text, duration);
+		toast.show();
 		
-		if(saveUserId){
-			SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.USER_ID, idField.getText().toString());
-		}
-		else{
-			SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.USER_ID, emptyString);
-		}
-		SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, saveUserId);	
+		//Set logged in to be able to save user name in persistent storage
+		Globals.setLoggedIn(true);
+		
+		/*********TODO: REMOVE THIS BLOCK OF CODE AFTER COMPLETING BANK LOGIN*************/
+	
+		//TODO: Add Bank Login Logic here
+		
+		//Update current account based on user logged in and account type
+		updateAccountInformation(AccountType.BANK_ACCOUNT);
 	}
 
 	/**
@@ -477,7 +565,7 @@ public class LoginActivity extends BaseActivity  {
 
 		//Check whether to save change in persistent storage
 		if(cache) {
-			SharedPreferencesWrapper.saveToSharedPrefs(this, SharedPreferencesWrapper.REMEMBER_USER_ID, saveUserId);
+			Globals.setRememberId(saveUserId);
 		}
 	}
 	
@@ -515,29 +603,62 @@ public class LoginActivity extends BaseActivity  {
 	}
 
 	/**
-	 * toggleBankCardLogin(final View v) This method handles the login choices
-	 * for loging in as a bank user or a card user.
-	 * 
-	 * It merely changes the visible position of a check mark and the color of
-	 * the labels next to it.
+	 * Updates the view based on the application account selected by the user. Called by application at start-up.
 	 */
-	public void toggleBankCardLogin(final View v) {
+	private void setApplicationAccount() {
+		lastLoginAcct = Globals.getCurrentAccount();
+		if (AccountType.BANK_ACCOUNT == lastLoginAcct) {
+			toggleBankCardLogin(goToBankLabel);	
+		} else {
+			toggleBankCardLogin(goToCardLabel);	
+		}
+	}
 
+	/**
+	 * toggleBankCardLogin(final View v) This method handles the login choices
+	 * for logging in as a bank user or a card user.
+	 * 
+	 * It changes the visible position of a check mark and the color of
+	 * the labels next to it. In addition, it updates the text for the bottom
+	 * row buttons.
+	 */
+	public void toggleBankCardLogin(final View v) { 
 		if (v.equals(goToCardLabel)) {
 			goToCardLabel.setTextColor(getResources().getColor(R.color.black));
 			setViewVisible(cardCheckMark);
 
 			setViewInvisible(bankCheckMark);
 			goToBankLabel.setTextColor(getResources().getColor(R.color.blue_link));
+			
+			registerOrAtmButton.setText(R.string.register_now);
+			privacySecOrTermButton.setText(R.string.privacy_and_security);
+			setViewVisible(this.forgotUserIdOrPassText);
+			
+			//Load Card Account Preferences for refreshing UI only
+			Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
 		} else {
-
 			goToCardLabel.setTextColor(getResources().getColor(
 					R.color.blue_link));
 			setViewInvisible(cardCheckMark);
 			setViewVisible(bankCheckMark);
 			goToBankLabel.setTextColor(getResources().getColor(R.color.black));
+			
+			registerOrAtmButton.setText(R.string.atm_locator);
+			privacySecOrTermButton.setText(R.string.privacy_and_terms);
+			setViewInvisible(this.forgotUserIdOrPassText);
+			
+			//Load Bank Account Preferences for refreshing UI only
+			Globals.loadPreferences(this, AccountType.BANK_ACCOUNT);
 		}
-
+		
+		//Refresh Screen based on Selected Account Preferences
+		loadSavedCredentials();
+		
+		//Revert data back to original last logged in account.
+		//Last logged in is only remembered if user logins successfully
+		if( lastLoginAcct != Globals.getCurrentAccount() ) {
+			Globals.loadPreferences(this, lastLoginAcct);
+		}
 	}
 
 	/**
@@ -588,6 +709,60 @@ public class LoginActivity extends BaseActivity  {
 	}
 
 	/**
+	 * Opens ATM Locator screen when user taps the ATM Locator button while 
+	 * in the BANK Login Screen
+	 */
+	public void openAtmLocator() {
+		//TODO: Add ATM handler here
+		
+		//TODO: Remove this code once implemented. This is only for QA testing purposes only
+		CharSequence text = "ATM Locator Under Development";
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(this, text, duration);
+		toast.show();
+	}
+	
+	/**
+	 * Opens Privacy and Security screen when user taps the Privacy and Security button while 
+	 * in the Card Login Screen
+	 */
+	public void openPrivacyAndSecurity() {
+		//TODO: Remove this code once implemented. This is only for QA testing purposes only
+		CharSequence text = "Privacy & Security Under Development";
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(this, text, duration);
+		toast.show();
+	}
+	
+	/**
+	 * Opens Privacy and Terms screen when user taps the Privacy and Terms button while 
+	 * in the Bank Login Screen
+	 */
+	public void openPrivacyAndTerms() {
+		//TODO: Remove this code once implemented. This is only for QA testing purposes only
+		CharSequence text = "Privacy & Terms Under Development";
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(this, text, duration);
+		toast.show();
+	}
+	
+	/**
+	 * Opens Privacy and Terms screen when user taps the Privacy and Terms button while 
+	 * in the Bank Login Screen
+	 */
+	private void openCustomerService() {
+		//TODO: Remove this code once implemented. This is only for QA testing purposes only
+		CharSequence text = "Customer Service Under Development";
+		int duration = Toast.LENGTH_SHORT;
+
+		Toast toast = Toast.makeText(this, text, duration);
+		toast.show();
+	}
+	
+	/**
 	 * forgotIdAndOrPass() This method is the same as registerNewUser except
 	 * that it launches the forgot nav screen and is instead called from Java.
 	 */
@@ -597,6 +772,7 @@ public class LoginActivity extends BaseActivity  {
 		clearInputs();
 	}
 
+	
 	/**
 	 * Do a GET request to the server to check to see if this vendor id is
 	 * registered to this user.
@@ -677,6 +853,42 @@ public class LoginActivity extends BaseActivity  {
 		inputFields.add(idField);
 		inputFields.add(passField);
 		return inputFields;
+	}
+	
+	/**
+	 * Used to update the globals data stored at login for CARD or BANK and retrieves
+	 * user information. Should only be called if logged in otherwise will return false.
+	 * 
+	 * @param account Specify either Globals.CARD_ACCOUNT or Globals.BANK_ACCOUNT
+	 * 
+	 * @return Returns true if successful, false otherwise.
+	 */
+	public boolean updateAccountInformation(AccountType account) {
+		boolean ret = false;
+		
+		//Only update account information if logged in
+		if( Globals.isLoggedIn() ) {
+			//Load preferences
+			Globals.loadPreferences(getContext(), account);
+			
+			//Set current user for the current session  
+			Globals.setCurrentUser(idField.getText().toString());
+			
+			//Set the current account selected by the user
+			Globals.setCurrentAccount(account);
+			
+			//Set remember ID value in globals. This will be used to determine whether
+			//Current User is stored in persistent storage by the Globals class
+			Globals.setRememberId(saveUserId);	
+			
+			ret = true;
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.w(TAG, "Unable to update account information.");
+			}
+		}
+			
+		return ret;
 	}
 
 	
