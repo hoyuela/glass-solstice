@@ -974,7 +974,10 @@ public class LoginActivity extends BaseActivity  {
 		
 		preAuthHasRun = result;
 		
-		showSplashScreen(false);
+		//only hide splash screen if pre-auth is completed successfully
+		if( result  ) {
+			showSplashScreen(false);
+		}
 	}
 	
 	/**
