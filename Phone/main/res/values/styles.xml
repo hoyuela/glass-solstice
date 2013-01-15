@@ -243,7 +243,7 @@
         <item name="android:textSize">14sp</item>
     </style>
     
-     <style name="push_error_label" parent="discover_text">
+     <style name="error_label_small" parent="discover_text">
         <item name="android:textColor">#ed1c24</item>
         <item name="android:visibility">gone</item>     
 		<item name="android:textSize">14sp</item>
