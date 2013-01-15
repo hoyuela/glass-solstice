@@ -8,7 +8,9 @@ package com.discover.mobile.common.url;
  * 
  */
 public class UrlManagerBank {
-	private static final String BASE_URL = "https://beta.discoverbank.com";
+//	private static final String BASE_URL = "https://beta.discoverbank.com";
+	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
+
 
 	private static final String AUTHENTICATE_CURRENT_CUSTOMER_URL = "/api/customers/current";
 	private static final String GET_TOKEN_URL = "/api/auth/token";
