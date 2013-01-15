@@ -8,6 +8,7 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 import com.google.common.collect.ImmutableMap;
 
 public class ForgotUserIdCall extends JsonResponseMappingNetworkServiceCall<UserIdDetails> {
@@ -17,7 +18,7 @@ public class ForgotUserIdCall extends JsonResponseMappingNetworkServiceCall<User
 	public ForgotUserIdCall(final Context context, final AsyncCallback<UserIdDetails> callback,
 			final String accountNumber, final String password) {
 		
-		super(context, new GetCallParams("/cardsvcs/acs/reg/v1/user/id") {{
+		super(context, new GetCallParams(UrlManagerCard.getForgotUserIdUrl()) {{
 			
 			final String authString = getAuthorizationString(accountNumber, password);
 			headers = ImmutableMap.<String,String>builder()

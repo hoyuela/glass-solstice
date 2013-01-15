@@ -7,6 +7,7 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.VidReferanceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -35,6 +36,6 @@ public class GetPushRegistrationStatus extends JsonResponseMappingNetworkService
 	}
 	
 	private static String getUrl(final Context context){
-		return "/cardsvcs/acs/contact/v1/registration/status?vid=" + XtifySDK.getXidKey(context) ; //$NON-NLS-1$
+		return UrlManagerCard.getPushRegistrationStatusUrl(XtifySDK.getXidKey(context)) ; //$NON-NLS-1$
 	}
 }
