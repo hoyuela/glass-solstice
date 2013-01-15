@@ -1,6 +1,5 @@
 package com.discover.mobile;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,10 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.discover.mobile.alert.ModalAlertWithTwoButtons;
-import com.discover.mobile.alert.ModalDefaultTopView;
-import com.discover.mobile.alert.ModalLogoutBottom;
-import com.discover.mobile.common.SharedPreferencesWrapper;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
@@ -33,7 +29,9 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 	
 	/**Pulled out variable for the fade of the sliding menu*/
 	private static final float FADE = 0.35f;
-
+	/**Flag used to know when in the middle of a log out*/
+	private static boolean pendingLogout = false;
+	
 	/**
 	 * Create the activity, set up the action bar and sliding menu
 	 * @param savedInstanceState - saved State of the activity
@@ -66,7 +64,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 		
 		titleView.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				updateStatusBarVisibility();
 			}
 		});
@@ -81,63 +79,19 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 		logout.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				maybeShowModalAlert();
+				logout();
 			}
 		});	
     }
-    
-    /**
-     * Show the modal if the user wants it shown
-     */
-    public void maybeShowModalAlert(){
-		if(getValueFromSharedPrefs(SharedPreferencesWrapper.SHOW_LOGIN_MODAL, false)){
-			logout();
-		} else{
-			showAlertDialog();
-		}
-	}
-    
-    
-    /**
-     * Show the logout modal
-     */
-    public void showAlertDialog(){
-    	showCustomAlert(setUpLogoutAlert());
-    }
-    
-    /**
-     * Set up the modal alert that will be displayed for logout confirmation
-     * @return the modal alert that will be displayed for logout confirmation
-     */
-    private AlertDialog setUpLogoutAlert() {
-    	final ModalDefaultTopView topView = new ModalDefaultTopView(this, null);
-		final ModalLogoutBottom bottomView = new ModalLogoutBottom(this, null);
-		final ModalAlertWithTwoButtons alert = new ModalAlertWithTwoButtons(this, topView, bottomView);
-		topView.setTitle(R.string.logout_confirm_title);
-		topView.setContent(R.string.logout_confirm_text);
-		bottomView.setOkButtonText(R.string.logout_ok_button_text);
-		bottomView.setCancelButtonText(R.string.logout_cancel_button_text);
-		bottomView.getOkButton().setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				saveToSharedPrefs(SharedPreferencesWrapper.SHOW_LOGIN_MODAL, bottomView.isShowAgainSelected());
-				logout();
-			}
-		});
-		
-		bottomView.getCancelButton().setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				alert.dismiss();
-			}
-		});
-		return alert;
-	}
 
 	/**
      * Log the user out
      */
     public void logout(){
+    	/** Used on pause to know when to set Globals isLoggedIn to false**/
+    	pendingLogout = true;
+    	
+    	
 		final AsyncCallback<Object> callback = 
 				GenericAsyncCallback.<Object>builder(this)
 				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
@@ -170,7 +124,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 	public void setStatusBarVisbility(){
 		FragmentTransaction ft = this.getSupportFragmentManager()
 				.beginTransaction();
-		boolean statusBarVisitility = getValueFromSharedPrefs(SharedPreferencesWrapper.STATUS_BAR_VISIBILITY, true);
+		boolean statusBarVisitility = Globals.isStatusBarVisibility();
 		Fragment statusBar = this.getSupportFragmentManager().findFragmentById(
 				R.id.status_bar);
 		
@@ -199,7 +153,20 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 		}else if (statusBar.isHidden()){
 			visible=true;
 		}
-		saveToSharedPrefs(SharedPreferencesWrapper.STATUS_BAR_VISIBILITY, visible);
+		Globals.setStatusBarVisibility(visible);
+		
 		setStatusBarVisbility();
 	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		//Clear all global variables after logout
+		if( pendingLogout ) {
+			pendingLogout = false;
+			
+			Globals.setToDefaults();
+		}
+	}			
 }

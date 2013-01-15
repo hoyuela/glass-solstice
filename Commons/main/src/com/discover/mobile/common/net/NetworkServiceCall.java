@@ -74,7 +74,7 @@ public abstract class NetworkServiceCall<R> {
 		this.context = context;
 		this.params = params;
 		
-		BASE_URL = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.base_url );
+		BASE_URL = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.card_base_url );
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xApplicationVersion);
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xClientPlatform);
 	}

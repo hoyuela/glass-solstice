@@ -51,7 +51,7 @@ public abstract class BaseFragment extends SherlockFragment{
      */
     public void showAlertDialog(){
     	final LoggedInRoboActivity activity = (LoggedInRoboActivity)this.getActivity();
-    	activity.showAlertDialog();
+    	activity.logout();
     }
     
     /**
@@ -87,44 +87,5 @@ public abstract class BaseFragment extends SherlockFragment{
      */
     public abstract int getActionBarTitle();
     
-    /**
-     * Save a boolean value to the shared preferences
-     * @param key - key of the value to store
-     * @param value - boolean value 
-     */
-    public void saveToSharedPrefs(final String key, final boolean value){
-    	final BaseFragmentActivity activity= (BaseFragmentActivity)this.getActivity();
-    	activity.saveToSharedPrefs(key, value);
-    }
-    
-    /**
-     * Get a boolean value to the shared preferences
-     * @param key - key of the value to get
-     * @param defaultValue - default boolean value 
-     */
-    public boolean getValueFromSharedPrefs(final String key, final boolean defaultValue){
-    	final BaseFragmentActivity activity= (BaseFragmentActivity)this.getActivity();
-    	return activity.getValueFromSharedPrefs(key, defaultValue);
-    }
-    
-    /**
-     * Save a string value to the shared preferences
-     * @param key - key of the value to store
-     * @param value - boolean value 
-     */
-    public void saveToSharedPrefs(final String key, final String value){
-    	final BaseFragmentActivity activity= (BaseFragmentActivity)this.getActivity();
-    	activity.saveToSharedPrefs(key, value);
-    }
-    
-    /**
-     * Get a boolean value to the shared preferences
-     * @param key - key of the value to get
-     * @param defaultValue - default string value 
-     */
-    public String getValueFromSharedPrefs(final String key, final String defaultValue){
-    	final BaseFragmentActivity activity= (BaseFragmentActivity)this.getActivity();
-    	return activity.getValueFromSharedPrefs(key, defaultValue);
-    }
-	
+   
 }

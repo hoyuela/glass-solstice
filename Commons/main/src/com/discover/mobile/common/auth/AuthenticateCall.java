@@ -8,6 +8,7 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 import com.google.common.collect.ImmutableMap;
 
 public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<AccountDetails> {
@@ -20,7 +21,7 @@ public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<Acco
 	public AuthenticateCall(final Context context, final AsyncCallback<AccountDetails> callback,
 			final String username, final String password) {
 		
-		super(context, new GetCallParams("/cardsvcs/acs/acct/v1/account") {{ //$NON-NLS-1$
+		super(context, new GetCallParams(UrlManagerCard.getAuthenticateCall()) {{ //$NON-NLS-1$
 			final String authString = getAuthorizationString(username, password);
 			headers = ImmutableMap.<String,String>builder().put("Authorization", authString).build();
 			

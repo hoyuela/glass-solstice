@@ -6,8 +6,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
@@ -19,7 +18,7 @@ import com.discover.mobile.R;
  * @author jthornton
  *
  */
-public class ModalDefaultTopView extends LinearLayout implements ModalTopView{
+public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	
 	/**Resources for showing strings*/
 	private Resources res;
@@ -42,7 +41,7 @@ public class ModalDefaultTopView extends LinearLayout implements ModalTopView{
 	public ModalDefaultTopView(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		
-		final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(context)
+		final View mainView = (View) LayoutInflater.from(context)
                 .inflate(R.layout.modal_default_top_view, null);
 		
 		res = context.getResources();

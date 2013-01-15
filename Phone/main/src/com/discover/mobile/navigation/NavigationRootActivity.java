@@ -2,11 +2,17 @@ package com.discover.mobile.navigation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.discover.mobile.LoggedInRoboActivity;
 import com.discover.mobile.R;
+import com.discover.mobile.alert.ModalAlertWithOneButton;
+import com.discover.mobile.alert.ModalConfirmationTop;
+import com.discover.mobile.alert.SingleOrangeButtonBottom;
 import com.discover.mobile.common.CurrentSessionDetails;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.push.register.PushNowAvailableFragment;
 
 /**
@@ -63,8 +69,56 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 			getSupportFragmentManager().popBackStack();
 			makeFragmentVisible(new PushNowAvailableFragment());	
 		}
+		
+		final Bundle extras = getIntent().getExtras();
+		if(null != extras){
+			handleIntentExtras(extras);
+		}
 	}
 	
+	/**
+	 * Handle the extras passed in an intent
+	 * @param extras - extras passed into the app
+	 */
+	private void handleIntentExtras(final Bundle extras) {
+		final String screenType = extras.getString(IntentExtraKey.SCREEN_TYPE);
+		if(null != screenType){
+			final String userId = extras.getString(IntentExtraKey.UID);
+			final String email = extras.getString(IntentExtraKey.EMAIL);
+			final String lastFour = extras.getString(IntentExtraKey.ACCOUNT_LAST4);
+			showConirmationModal(screenType, userId, email, lastFour);
+		}
+		
+	}
+
+	/**
+	 * Show the confirmation modal
+	 * @param screenType - screen type to be displayed in the modal
+	 * @param userId - user ID to place in the modal
+	 * @param email - email to place in the modal
+	 * @param lastFour - last four account number digits to place in the modal
+	 */
+	private void showConirmationModal(final String screenType, final String userId,
+			final String email, final String lastFour) {
+		
+		final ModalConfirmationTop top = new ModalConfirmationTop(this, null);
+		final SingleOrangeButtonBottom bottom = new SingleOrangeButtonBottom(this, null);
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(this, top, bottom);
+		top.setUserId(userId);
+		top.setEmail(email);
+		top.setLastFour(lastFour);
+		top.setScreenType(screenType);
+		bottom.setButtonText(R.string.home_text);
+		bottom.getButton().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				modal.dismiss();	
+			}
+		});
+		modal.show();
+		
+	}
+
 	/**
 	 * Save the state of the activity when it goes to the background.
 	 * @param outState - bundle containing the out state of the activity

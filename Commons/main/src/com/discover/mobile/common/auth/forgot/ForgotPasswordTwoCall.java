@@ -8,6 +8,7 @@ import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 
 public class ForgotPasswordTwoCall extends JsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
 	
@@ -18,7 +19,7 @@ public class ForgotPasswordTwoCall extends JsonResponseMappingNetworkServiceCall
 	public ForgotPasswordTwoCall(final Context context, final AsyncCallback<RegistrationConfirmationDetails> callback,
 			final ForgotPasswordTwoDetails formData) {
 		
-		super(context, new PostCallParams("/cardsvcs/acs/reg/v1/user/pwd") {{
+		super(context, new PostCallParams(UrlManagerCard.getForgotPasswordTwoUrl()) {{
 			requiresSessionForRequest = true;
 //			sendDeviceIdentifiers = true;
 			

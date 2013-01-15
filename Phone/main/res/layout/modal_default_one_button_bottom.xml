@@ -2,10 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_marginBottom="@dimen/modal_bottom_margin" 
     android:layout_marginRight="@dimen/forms_inner_padding"
-    android:layout_marginLeft="@dimen/forms_inner_padding"
-    android:layout_marginTop="@dimen/modal_bottom_margin">
+    android:layout_marginLeft="@dimen/forms_inner_padding">
+    
+        
+    <ImageView
+        android:id="@+id/modal_alert_divider"
+        android:layout_width="fill_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/modal_divider_line"
+        android:layout_above="@+id/button"
+        android:visibility="visible"/>
     
     <Button
         android:id="@+id/button"
@@ -14,17 +21,7 @@
         style="@style/call_to_action_theme"
         android:layout_marginTop="@dimen/modal_orange_margin_top"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/modal_orange_margin_top"
-        android:layout_below="@+id/modal_alert_divider"
-        />
-    
-    <ImageView
-        android:id="@+id/modal_alert_divider"
-        android:layout_width="fill_parent"
-        android:layout_height="5dp"
-        android:layout_marginTop="@dimen/modal_bottom_margin"
-        android:background="@drawable/modal_divider_line"
-        android:visibility="visible"/>
-   
+        android:layout_marginBottom="@dimen/modal_orange_margin_bottom"
+        android:layout_alignParentBottom="true"/>
     
 </RelativeLayout>
