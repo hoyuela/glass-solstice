@@ -10,7 +10,6 @@ import java.util.List;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
-import com.discover.mobile.R;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -24,9 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.discover.mobile.BaseActivity;
+import com.discover.mobile.R;
+import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.CurrentSessionDetails;
-import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -156,7 +157,7 @@ public class LoginActivity extends BaseActivity  {
 	 * Used to remember the lastLoginAccount at startup of the application, in case the user toggles to a different account
 	 * and does not login. This variable will be used to revert the application back to the original last logged in account.
 	 */
-	private int lastLoginAcct = Globals.CARD_ACCOUNT;
+	private AccountType lastLoginAcct = AccountType.CARD_ACCOUNT;
 	
 	private final static int LOGOUT_TEXT_COLOR = R.color.body_copy;
 	
@@ -500,7 +501,7 @@ public class LoginActivity extends BaseActivity  {
 						Globals.setLoggedIn(true);
 
 						// Update current account based on user logged
-						updateAccountInformation(Globals.CARD_ACCOUNT);
+						updateAccountInformation(AccountType.CARD_ACCOUNT);
 
 						CurrentSessionDetails.getCurrentSessionDetails()
 								.setAccountDetails(value);
@@ -538,7 +539,7 @@ public class LoginActivity extends BaseActivity  {
 		//TODO: Add Bank Login Logic here
 		
 		//Update current account based on user logged in and account type
-		updateAccountInformation(Globals.BANK_ACCOUNT);
+		updateAccountInformation(AccountType.BANK_ACCOUNT);
 	}
 
 	/**
@@ -606,7 +607,7 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	private void setApplicationAccount() {
 		lastLoginAcct = Globals.getCurrentAccount();
-		if (Globals.BANK_ACCOUNT == lastLoginAcct) {
+		if (AccountType.BANK_ACCOUNT == lastLoginAcct) {
 			toggleBankCardLogin(goToBankLabel);	
 		} else {
 			toggleBankCardLogin(goToCardLabel);	
@@ -634,7 +635,7 @@ public class LoginActivity extends BaseActivity  {
 			setViewVisible(this.forgotUserIdOrPassText);
 			
 			//Load Card Account Preferences for refreshing UI only
-			Globals.loadPreferences(this, Globals.CARD_ACCOUNT);
+			Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
 		} else {
 			goToCardLabel.setTextColor(getResources().getColor(
 					R.color.blue_link));
@@ -647,7 +648,7 @@ public class LoginActivity extends BaseActivity  {
 			setViewInvisible(this.forgotUserIdOrPassText);
 			
 			//Load Bank Account Preferences for refreshing UI only
-			Globals.loadPreferences(this, Globals.BANK_ACCOUNT);
+			Globals.loadPreferences(this, AccountType.BANK_ACCOUNT);
 		}
 		
 		//Refresh Screen based on Selected Account Preferences
@@ -862,11 +863,14 @@ public class LoginActivity extends BaseActivity  {
 	 * 
 	 * @return Returns true if successful, false otherwise.
 	 */
-	public boolean updateAccountInformation(int account) {
+	public boolean updateAccountInformation(AccountType account) {
 		boolean ret = false;
 		
 		//Only update account information if logged in
 		if( Globals.isLoggedIn() ) {
+			//Load preferences
+			Globals.loadPreferences(getContext(), account);
+			
 			//Set current user for the current session  
 			Globals.setCurrentUser(idField.getText().toString());
 			
@@ -876,9 +880,6 @@ public class LoginActivity extends BaseActivity  {
 			//Set remember ID value in globals. This will be used to determine whether
 			//Current User is stored in persistent storage by the Globals class
 			Globals.setRememberId(saveUserId);	
-			
-			//Load user level preferences
-			Globals.loadUserPreferences(getContext());
 			
 			ret = true;
 		} else {

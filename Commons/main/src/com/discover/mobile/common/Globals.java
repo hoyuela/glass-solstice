@@ -33,7 +33,7 @@ import com.google.common.base.Strings;
  */
 public final class Globals {
 	/**Defines tag used for logging**/
-	private static final String TAG = "discover.Globals";
+	private static final String TAG = Globals.class.getSimpleName();
 			
 	/**String representing the file name*/
 	private static final String FILE_NAME = "com.discover.mobile.prefs";
@@ -53,30 +53,14 @@ public final class Globals {
 	/**Key used to determine the mode the application is in Card or Bank*/
 	public static final String CURRENT_ACCOUNT = "currentAccount";
 
-	/**Category code to identify an application level preference**/
-	public static final int APP_LEVEL_PREF = 1;
-	
-	/**Category code to identify an user level preference**/
-	public static final int USER_LEVEL_PREF = 2;
-	
-	/**Category code to identify an account level preference**/
-	public static final int ACCOUNT_LEVEL_PREF = 4;
-	
-	/**Category used to identify all levels**/
-	public static final int ALL_LEVEL_PREF = APP_LEVEL_PREF | USER_LEVEL_PREF | ACCOUNT_LEVEL_PREF;
-	
-	/**Category code to identify Card application mode**/
-	public static final int CARD_ACCOUNT = 0;
-	
-	/**Category code to identify Bank application mode**/
-	public static final int BANK_ACCOUNT = 1;
-	
 	/**Contains an identifier for the current user logged in. Value is used to construct user preferences file name.
 	 * Stored in Persistent Storage as currentAccount.USER_ID**/
 	private static String currentUser;			
+	
 	/**Contains an identifier for the current account being used by the user. Values can either be CARD_ACCOUNT or 
 	 * BANK_ACCOUNT. Stored in Persistent Storage using key name CURRENT_ACCOUNT**/
-	private static int currentAccount;			
+	private static AccountType currentAccount;			
+	
 	/**Contains a boolean flag that specifies whether user id should be remembered. Stored in Persistent Storage using
 	 * key name currentAccount.REMEMBER_USER_ID
 	 */
@@ -89,10 +73,10 @@ public final class Globals {
 	 * Persistent Storage using key name currentAccount.currentUser.SHOW_LOGIN_MODAL.
 	 */
 	private static boolean showLoginModal;
+	
 	/**Used to determine whether the user is logged in or not**/
 	private static boolean isLoggedIn;
 	
-
 	//Initialize static members at start-up of application
 	static {
 		setToDefaults();
@@ -114,18 +98,18 @@ public final class Globals {
 	 * @return APP_LEVEL_PREF or USER_LEVEL_PREF
 	 */
 	public static int getPreferenceLevel(String key) {
-		int level = APP_LEVEL_PREF;
+		int level = PreferenceLevel.APP_LEVEL_PREF.getValue();
 		
 		//Verify key name is not not null or empty
 		if( !Strings.isNullOrEmpty(key) ) {
 			// Check if key provided is an account level preference
 			if( !key.equals(CURRENT_ACCOUNT) ) {
-				level = ACCOUNT_LEVEL_PREF;
+				level = PreferenceLevel.ACCOUNT_LEVEL_PREF.getValue();
 			}
 			
 			// Check if key provided is a user level preference  
 			if ( key.equals(SHOW_LOGIN_MODAL) ) {
-				level |= USER_LEVEL_PREF;
+				level |= PreferenceLevel.USER_LEVEL_PREF.getValue();
 			}
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
@@ -146,13 +130,14 @@ public final class Globals {
 		StringBuilder keyName = new StringBuilder();
 
 		//Check if key provided is an account level preference
-		if( (getPreferenceLevel(key) & ACCOUNT_LEVEL_PREF) == ACCOUNT_LEVEL_PREF ) {
+		if( (getPreferenceLevel(key) & PreferenceLevel.ACCOUNT_LEVEL_PREF.getValue()) == PreferenceLevel.ACCOUNT_LEVEL_PREF.getValue() ) {
 			keyName.append(currentAccount);
 			keyName.append(".");
 		}
 
 		//Set file name for currentUser if the currentUser is set and preference level of key is user level
-		if( !Strings.isNullOrEmpty(currentUser) && (getPreferenceLevel(key) & USER_LEVEL_PREF) == USER_LEVEL_PREF ) {
+		if( !Strings.isNullOrEmpty(currentUser) &&
+			(getPreferenceLevel(key) & PreferenceLevel.USER_LEVEL_PREF.getValue()) == PreferenceLevel.USER_LEVEL_PREF.getValue() ) {
 			keyName.append(currentUser);
 			keyName.append(".");
 		}
@@ -173,7 +158,7 @@ public final class Globals {
     	//Load all application level specific preferences
 		SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 		
-		currentAccount = settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), CARD_ACCOUNT);
+		currentAccount = AccountType.values()[settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), AccountType.CARD_ACCOUNT.ordinal())];
 		rememberId = settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
 		statusBarVisibility = settings.getBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility); 	
 				
@@ -204,49 +189,35 @@ public final class Globals {
      * @param context Current activity that is loading the application preferences.
      * @param account CARD_ACCOUNT or BANK_ACCOUNT
      * 
-     * @return True if successful, false otherwise
      */
-    public static boolean loadPreferences(final Context context, int account) {
-    	boolean ret = false;
+    public static void loadPreferences(final Context context, AccountType account) {
     	
-    	//Verify a valid account type is provided
-    	if( account == CARD_ACCOUNT || account == BANK_ACCOUNT ) {
-
-	    	//Load all application level specific preferences
-			SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-			
-			currentAccount = account;
-			rememberId = settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
-			statusBarVisibility = settings.getBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility); 	
-			
-			//Check whether logged in or not
-			if( !isLoggedIn ) {
-				//Only Load remembered user if not logged in
-				currentUser = (rememberId)?settings.getString(getStoredKeyName(USER_ID), ""):currentUser;
+    	//Load all application level specific preferences
+		SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 		
-			} else {
-				//Load user level settings only if logged in
-				showLoginModal = settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true);
-			}
-			
-			if( Log.isLoggable(TAG, Log.VERBOSE)) {
-				Log.v(TAG,"loadPreferences");
-				Log.v(TAG, "isLoggedIn=" +isLoggedIn);
-				Log.v(TAG, "Key=" +getStoredKeyName(CURRENT_ACCOUNT) +" Value=" +currentAccount);
-				Log.v(TAG, "Key=" +getStoredKeyName(USER_ID) +" Value=" +currentUser);
-				Log.v(TAG, "Key=" +getStoredKeyName(REMEMBER_USER_ID) +" Value=" +rememberId);
-				Log.v(TAG, "Key=" +getStoredKeyName(STATUS_BAR_VISIBILITY) +" Value=" +statusBarVisibility);
-				Log.v(TAG, "Key=" +getStoredKeyName(SHOW_LOGIN_MODAL) +" Value=" +showLoginModal);
-			}
-			
-			ret = true;
-    	} else {
-    		if( Log.isLoggable(TAG, Log.ERROR)) {
-    			Log.e(TAG, "Invalid account type provided");
-    		}
-    	}
-    	
-    	return ret;
+		currentAccount = account;
+		rememberId = settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
+		statusBarVisibility = settings.getBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility); 	
+		
+		//Check whether logged in or not
+		if( !isLoggedIn ) {
+			//Only Load remembered user if not logged in
+			currentUser = (rememberId)?settings.getString(getStoredKeyName(USER_ID), ""):currentUser;
+	
+		} else {
+			//Load user level settings only if logged in
+			showLoginModal = settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true);
+		}
+		
+		if( Log.isLoggable(TAG, Log.VERBOSE)) {
+			Log.v(TAG,"loadPreferences");
+			Log.v(TAG, "isLoggedIn=" +isLoggedIn);
+			Log.v(TAG, "Key=" +getStoredKeyName(CURRENT_ACCOUNT) +" Value=" +currentAccount);
+			Log.v(TAG, "Key=" +getStoredKeyName(USER_ID) +" Value=" +currentUser);
+			Log.v(TAG, "Key=" +getStoredKeyName(REMEMBER_USER_ID) +" Value=" +rememberId);
+			Log.v(TAG, "Key=" +getStoredKeyName(STATUS_BAR_VISIBILITY) +" Value=" +statusBarVisibility);
+			Log.v(TAG, "Key=" +getStoredKeyName(SHOW_LOGIN_MODAL) +" Value=" +showLoginModal);
+		}
     }
     
     /**
@@ -295,7 +266,7 @@ public final class Globals {
     	//Store all application level specific preferences
         SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putInt(getStoredKeyName(CURRENT_ACCOUNT), currentAccount);
+		editor.putInt(getStoredKeyName(CURRENT_ACCOUNT), currentAccount.ordinal());
 		editor.putBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
 		editor.putBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility);
 		editor.putBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), showLoginModal);
@@ -317,7 +288,7 @@ public final class Globals {
 		if( Log.isLoggable(TAG, Log.VERBOSE)) {
 			Log.v(TAG,"savePreferences");
 			Log.v(TAG, "isLoggedIn=" +isLoggedIn);
-			Log.v(TAG, "Key=" +getStoredKeyName(CURRENT_ACCOUNT) +" Value=" +settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), CARD_ACCOUNT));
+			Log.v(TAG, "Key=" +getStoredKeyName(CURRENT_ACCOUNT) +" Value=" +settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), AccountType.CARD_ACCOUNT.ordinal()));
 			Log.v(TAG, "Key=" +getStoredKeyName(USER_ID) +" Value=" +settings.getString(getStoredKeyName(USER_ID), ""));
 			Log.v(TAG, "Key=" +getStoredKeyName(REMEMBER_USER_ID) +" Value=" +settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId));
 			Log.v(TAG, "Key=" +getStoredKeyName(STATUS_BAR_VISIBILITY) +" Value=" +settings.getBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility));
@@ -331,7 +302,7 @@ public final class Globals {
      * 
      * @return CARD_ACCOUNT or BANK_ACCOUNT
      */
-    public static int getCurrentAccount() {
+    public static AccountType getCurrentAccount() {
     	return currentAccount;
     }
     
@@ -340,15 +311,9 @@ public final class Globals {
      * 
      * @param value CARD_ACCOUNT or BANK_ACCOUNT
      */
-    public static void setCurrentAccount(int value) {
+    public static void setCurrentAccount(AccountType value) {
     	//Validate that an acceptable value is provided
-    	if( value == CARD_ACCOUNT || value == BANK_ACCOUNT ) {
-    		currentAccount = value;
-    	} else {
-    		if( Log.isLoggable(TAG, Log.ERROR)) {
-    			Log.e(TAG, "Unknown account type provided");
-			}
-    	}
+    	currentAccount = value;
     }
     
 	/**
@@ -443,7 +408,7 @@ public final class Globals {
 			Log.e(TAG, "Set Globals to Defaults");
 		}
     	
-    	currentAccount = CARD_ACCOUNT;
+    	currentAccount = AccountType.CARD_ACCOUNT;
     	currentUser = "";
 		rememberId = false;
 		statusBarVisibility = true;
