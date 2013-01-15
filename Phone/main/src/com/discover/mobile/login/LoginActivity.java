@@ -174,7 +174,7 @@ public class LoginActivity extends BaseActivity  {
 		res = getResources();
 		restoreState(savedInstanceState);
 		setupButtons();
-		
+
 		if (!preAuthHasRun) {
 			startPreAuthCheck();
 		}
