@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/OrangeTheme"
+    android:id="@+id/login_start_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-	
+    
+    <ProgressBar
+        android:id="@+id/splash_progress"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:paddingTop="@dimen/modal_orange_margin_top"
+         style="@android:style/Widget.ProgressBar.Small.Inverse"
+         android:layout_centerInParent="true"
+     />
+    
+    
 	<ScrollView 
-	        android:id="@+id/scrollView1"
+	        android:id="@+id/login_pane"
 	        android:layout_above="@+id/login_bottom_button_row"
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
