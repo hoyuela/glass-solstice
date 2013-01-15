@@ -15,7 +15,6 @@ import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListen
  *
  */
 public class PreAuthSuccessResponseHandler extends PreAuthCallHelper implements SuccessListener<PreAuthResult>{
-	
 	LoginActivity loginActivity;
 
 	private final static String TAG = PreAuthErrorResponseHandler.class.getSimpleName();
@@ -36,11 +35,21 @@ public class PreAuthSuccessResponseHandler extends PreAuthCallHelper implements 
 	 */
 	@Override
 	public void success(final PreAuthResult value) {
-		Log.d(TAG, "Pre-auth status code: " + value.statusCode);
-		if(PreAuthCallHelper.shouldPresentOptionalUpdate(loginActivity,value.upgradeDescription)) {
-			TrackingHelper.trackPageView(AnalyticsPage.OPTIONAL_UPGRADE);
-			PreAuthCallHelper.showOptionalUpgradeAlertDialog(loginActivity, value.upgradeDescription);
-		} 		
+		//Verify login is a valid reference
+		if( null != loginActivity) {		
+			Log.d(TAG, "Pre-auth status code: " + value.statusCode);
+			if(PreAuthCallHelper.shouldPresentOptionalUpdate(loginActivity,value.upgradeDescription)) {
+				TrackingHelper.trackPageView(AnalyticsPage.OPTIONAL_UPGRADE);
+				PreAuthCallHelper.showOptionalUpgradeAlertDialog(loginActivity, value.upgradeDescription);
+			} 	
+			
+			//Notify login activity that Pre-Auth call has completed
+			loginActivity.preAuthComplete(true);
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "LoginActivity reference is invalid");
+			}
+		}
 	}
 	
 

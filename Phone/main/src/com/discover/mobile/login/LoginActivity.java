@@ -16,13 +16,19 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.discover.mobile.BaseActivity;
+import com.discover.mobile.DefaultExceptionFailureHandler;
 import com.discover.mobile.R;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.CurrentSessionDetails;
@@ -40,6 +46,7 @@ import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
@@ -62,7 +69,9 @@ import com.google.inject.Inject;
  */
 @ContentView(R.layout.login_start)
 public class LoginActivity extends BaseActivity  {
-	private final static String TAG = "LoginActivity";
+	/*TAG used to print logs for the LoginActivity into logcat*/
+	private final static String TAG = LoginActivity.class.getSimpleName();
+	
 	private final static String emptyString = ""; //$NON-NLS-1$
 
 	/**
@@ -124,9 +133,9 @@ public class LoginActivity extends BaseActivity  {
 
 	@InjectView(R.id.go_to_card_label)
 	private TextView goToCardLabel;
-
-	// IMAGES
-
+    
+	//IMAGES
+	
 	@InjectView(R.id.card_check_mark)
 	private ImageView cardCheckMark;
 
@@ -135,6 +144,9 @@ public class LoginActivity extends BaseActivity  {
 	
 	@InjectView(R.id.remember_user_id_button)
 	private ImageView toggleImage;
+	
+	@InjectView(R.id.splash_progress)
+	private ProgressBar splashProgress;
 
 	// RESOURCES
 
@@ -150,7 +162,12 @@ public class LoginActivity extends BaseActivity  {
 	
 	private Resources res;
 
+	/*Used to specify whether the pre-authenciation call has been made for the application. 
+	 * Should only be done at application start-up.
+	 */
 	private boolean preAuthHasRun = false;
+
+
 	private boolean saveUserId = false;
 	
 	/**
@@ -175,6 +192,8 @@ public class LoginActivity extends BaseActivity  {
 		restoreState(savedInstanceState);
 		setupButtons();
 
+		//Check to see if pre-auth request is required. Should only 
+		//be done at application start-up
 		if (!preAuthHasRun) {
 			startPreAuthCheck();
 		}
@@ -222,6 +241,9 @@ public class LoginActivity extends BaseActivity  {
 		
 		//Default to the last path user chose for login Card or Bank
 		this.setApplicationAccount();		
+		
+		//Show splash screen while completing pre-auth, if pre-auth has not been done
+		showSplashScreen(!preAuthHasRun);
 	}
 	
 
@@ -823,17 +845,13 @@ public class LoginActivity extends BaseActivity  {
 	 * available and will allow users to login.
 	 */
 	public void startPreAuthCheck() {
-		final SuccessListener<PreAuthResult> optionalUpdateListener = new PreAuthSuccessResponseHandler(this);
-
-		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback
-				.<PreAuthResult> builder(this)
-				.showProgressDialog("Discover", "Loading...", true) //FIXME externalize this
+		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback.<PreAuthResult> builder(this)
 				.withSuccessListener(new PreAuthSuccessResponseHandler(this))
-				.withErrorResponseHandler(new PreAuthErrorResponseHandler(this)).build();
+				.withErrorResponseHandler(new PreAuthErrorResponseHandler(this))
+				.withExceptionFailureHandler(new DefaultExceptionFailureHandler() )
+				.withCompletionListener(new LockScreenCompletionListener(this)).build();
 
 		new PreAuthCheckCall(this, callback).submit();
-		preAuthHasRun = true;
-
 	}
 
 	/* (non-Javadoc)
@@ -891,5 +909,83 @@ public class LoginActivity extends BaseActivity  {
 		return ret;
 	}
 
+	/**
+	 * Used to display splash screen at start-up of the application prior to pre-authentication. If show is
+	 * set to true shows splash screen back ground and a progress bar with animation. If show is set to false, 
+	 * then login and toolbar views are shown. The login view use an aninmation to fade in.
+	 * 
+	 * @param show True hides all login views and toolbar, false hides progress bar and fades in login views.
+	 */
+	public void showSplashScreen(boolean show) {
+		ViewGroup loginStartLayout = (ViewGroup) this.findViewById( R.id.login_start_layout );
+		final ViewGroup loginPane = (ViewGroup) this.findViewById(R.id.login_pane);
+		final ViewGroup toolbar = (ViewGroup)this.findViewById(R.id.login_bottom_button_row);
+		
+		
+		//Verify loginStartLayout has a valid instance of ViewGroup
+		if( null != loginStartLayout && null != loginPane && null != toolbar ) {
+
+				//Show progress bar and hide login view
+		        if( show ) {
+		        	splashProgress.setVisibility(View.VISIBLE);
+		  
+		        	loginPane.setVisibility(View.GONE);
+		        	toolbar.setVisibility(View.GONE);
+		        }
+		        //Hide progress bar and fade in login view
+		        else {
+		        	//If login views already visible nothing more needs to be done
+		        	if( loginPane.getVisibility() != View.VISIBLE ) {
+			        	splashProgress.setVisibility(View.GONE);	
+			        	
+			        	loginPane.setVisibility(View.VISIBLE);
+			        	
+			        	Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
+			        	animationFadeIn.setAnimationListener(new AnimationListener() {
+		                    public void onAnimationStart(Animation anim)
+		                    {
+		                    };
+		                    public void onAnimationRepeat(Animation anim)
+		                    {
+		                    };
+		                    public void onAnimationEnd(Animation anim)
+		                    {
+		                       toolbar.setVisibility(View.VISIBLE);
+		                    };
+		                });
+						loginPane.startAnimation(animationFadeIn);    
+		        	} else {
+		        		if( Log.isLoggable(TAG, Log.WARN)) {
+		    				Log.w(TAG,"login views already visible");
+		    			}
+		        	}
+		        }
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG,"Unable to find views");
+			}
+		}
+	}
 	
+	/**
+	 * Sets a flag which is used to determine whether Pre-Authentication has been performed
+	 * by the application already. This flag helps avoid Pre-Authentication being performed
+	 * more than once by the application. In addition, it hides the splash screen and shows 
+	 * login views in the case the splash screen is being displayed.
+	 * 
+	 * @param result True if Pre-Authentication has been completed, false otherwise.
+	 */
+	public void preAuthComplete(boolean result) {
+		
+		preAuthHasRun = result;
+		
+		showSplashScreen(false);
+	}
+	
+	/**
+	 * @return True if Pre-authentication has been performed already, false otherwise.
+	 */
+	public boolean getPreAuthHasRun() {
+		return this.preAuthHasRun;
+	}
 }
