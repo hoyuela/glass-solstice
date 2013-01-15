@@ -64,11 +64,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity {
 		final TextView titleText = (TextView)findViewById(R.id.title_view);
 		titleText.setText(this.getString(stringResource));
 		titleText.setVisibility(View.VISIBLE);
-		//TEMP
-//		((Button) findViewById(R.id.logout_button)).setVisibility(View.INVISIBLE);
-//		((ImageView) this
-//		.findViewById(R.id.navigation_back_button)).setVisibility(View.GONE);
-//		((ImageView) findViewById(R.id.navigation_button)).setVisibility(View.INVISIBLE);
+		
 	}
 
 	/**
