@@ -29,6 +29,24 @@ public class PreAuthErrorResponseHandler extends BaseErrorResponseHandler implem
 
 	}
 
+	
+	/**
+	 * Notifies Login Activity that Pre-Authentication failed with an HTTP error response.
+	 */
+	@Override
+	protected boolean handleHTTPErrorCode(final int httpErrorCode)  {
+		boolean ret = super.handleHTTPErrorCode(httpErrorCode);
+		
+		LoginActivity loginActivity = (LoginActivity)getErrorFieldUi();
+		
+		if( null != loginActivity ) {
+			//Notify login activity that Pre-Auth call has completed
+			loginActivity.preAuthComplete(false);
+		}
+		
+		return ret;
+	}
+	
 	/**
 	 * Show them a force upgrade dialog if applicable
 	 * 
@@ -47,6 +65,13 @@ public class PreAuthErrorResponseHandler extends BaseErrorResponseHandler implem
 			return true;
 		}
 
+		LoginActivity loginActivity = (LoginActivity)getErrorFieldUi();
+		
+		if( null != loginActivity ) {
+			//Notify login activity that Pre-Auth call has completed
+			loginActivity.preAuthComplete(true);
+		}
+		
 		return false;
 	}
 
