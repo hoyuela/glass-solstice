@@ -1,0 +1,7 @@
+<resources>
+    <string name="card_base_url">https://asys.m.discovercard.com</string>
+    <string name="bank_base_url">https://beta.discoverbank.com</string>
+    <string name="xClientPlatform">Android</string>
+    <string name="xApplicationVersion">4.00</string>
+    <string name="upgrade_package_id">com.discover.mobile.DiscoverMobileActivity</string>
+</resources>
