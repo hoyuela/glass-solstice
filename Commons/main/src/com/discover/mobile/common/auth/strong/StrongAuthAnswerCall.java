@@ -16,6 +16,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 
 public class StrongAuthAnswerCall extends NetworkServiceCall<Object> {
 	
@@ -27,7 +28,7 @@ public class StrongAuthAnswerCall extends NetworkServiceCall<Object> {
 	public StrongAuthAnswerCall(final Context context, final AsyncCallback<Object> callback,
 			final StrongAuthAnswerDetails strongAuthAnswerDetails) throws NoSuchAlgorithmException {
 		
-		super(context, new PostCallParams("/cardsvcs/acs/strongauth/v1/authenticate") {{
+		super(context, new PostCallParams(UrlManagerCard.getStrongAuthAnswerUrl()) {{
 			
 			requiresSessionForRequest = true;
 			

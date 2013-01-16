@@ -21,7 +21,7 @@
     <style name="AppTheme.NoTitleBar" parent="Theme.Sherlock.NoActionBar"></style>
 
     <style name="OrangeTheme">
-        <item name="android:background">@drawable/login_bkgd</item>
+        <item name="android:background">@drawable/splash_screen</item>
     </style>
 
     <style name="alert_modal_black_bg">

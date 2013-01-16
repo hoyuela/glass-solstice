@@ -7,6 +7,7 @@ import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.VidRegistrationsRefereanceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 
 /**
  * POST call that will register the device with the user and the vendor id.  
@@ -26,7 +27,7 @@ public class RegisterVenderIdCall extends JsonResponseMappingNetworkServiceCall<
 	public RegisterVenderIdCall(final Context context, final AsyncCallback<DeviceRegistrationDetail> callback,
 			final DeviceRegistrationDetail formData) {
 		
-		super(context, new PostCallParams("/cardsvcs/acs/contact/v1/registration/status") {{ //$NON-NLS-1$
+		super(context, new PostCallParams(UrlManagerCard.getPushRegisterVendorUrl()) {{ //$NON-NLS-1$
 			requiresSessionForRequest = true;
 			sendDeviceIdentifiers = true;
 			
