@@ -95,18 +95,50 @@
         <item name="android:paddingRight">5dp</item>
     </style>
 
+    <!--  Blue Hyperlink styles -->
     <style name="blue_hyperlink">
         <item name="android:textColor">@color/blue_link</item>
         <item name="android:textSize">@dimen/body_copy_min</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="blue_hyperlink_small">
-        <item name="android:textColor">@color/blue_link</item>
+    <style name="blue_hyperlink_small" parent="blue_hyperlink">
         <item name="android:textSize">@dimen/small_copy_max</item>
-        <item name="android:textStyle">bold</item>
     </style>
-
+    
+    <style name="blue_hyperlink_extra_small"  parent="blue_hyperlink">
+        <item name="android:textSize">@dimen/small_copy_min</item>
+    </style>
+    
+    <!-- Sub Copy Styles  -->
+    <style name="sub_copy_small">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+    </style>
+    
+    <style name="sub_copy_big">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+    
+    <!-- Default Page Background Styling -->
+    <style name="default_background">
+        <item name="android:background">@drawable/light_gray_bkgrd</item>
+        <item name="android:padding">@dimen/forms_inner_padding</item>
+    </style>
+    
+    <!-- Default List Styling -->
+    <style name="default_list_background">
+        <item name="android:background">@drawable/notification_list_item</item>
+    </style>
+    
+    
+    <!-- Default List Item Styling -->
+    <style name="default_list_item">
+        <item name="android:background">@drawable/notification_list_item</item>
+        <item name="android:padding">@dimen/forms_inner_padding</item>
+    </style>
+    
     <style name="login_bottom_bar_button">
         <item name="android:padding">@dimen/content_padding</item>
         <item name="android:textSize">@dimen/small_copy_min</item>

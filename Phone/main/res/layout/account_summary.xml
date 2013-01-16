@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    style="@style/default_background" >
+    
+    <LinearLayout 
+        android:id="@+id/summary_list"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical"
+    	style="@style/default_list_background"/>
+    
+
+    <Button 
+        android:id="@+id/make_payament"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	style="@style/call_to_action_theme"
+    	android:text="@string/account_summary_make_a_payment"/>
+</LinearLayout>

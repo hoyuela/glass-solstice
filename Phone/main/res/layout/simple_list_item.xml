@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/default_list_item">
+
+    <TextView
+        android:id="@+id/balance_label"
+    	style="@style/sub_copy_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="Credit Available" 
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/balance_value"
+		style="@style/title_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/balance_label"
+        android:layout_below="@+id/balance_label"
+        android:layout_toLeftOf="@+id/action_text"
+        android:text="$9,999.00" />
+
+    <TextView
+        android:id="@+id/action_text"
+        style="@style/blue_hyperlink_extra_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@+id/balance_value"
+        android:text="Learn More" />
+
+</RelativeLayout>

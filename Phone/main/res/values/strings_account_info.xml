@@ -42,7 +42,17 @@
 	<string name="account_info_two_ids_must_match_text">User IDs must match.</string>
 	<string name="account_info_two_new_pass_confirm_text">Confirm New Password</string>
 	<string name="strength_text">Strength</string>
-	
+
 	<!-- Choose Activity Period Strings -->
 	<string name="choose_activty_period">Choose Activity Period</string>
+
+	<!--  Account Summary Strings -->
+	<string name="account_summary_make_a_payment">Make a Payment</string>
+	<string name="account_summary_current_balance">Current Balance</string>
+	<string name="account_summary_last_statement">Last Statement Balanace</string>
+	<string name="account_summary_minimum_payment">Minimum Payment (Due: %s)</string>
+	<string name="account_summary_last_payment">Last Payment (%s)</string>
+	<string name="account_summary_credit_available">Credit Available</string>
+	<string name="account_summary_cash_back_bonus">Cashback Bonus Balance</string>
+	<string name="account_summary_learn_more">LEARN MORE</string>
 </resources>
