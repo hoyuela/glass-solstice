@@ -6,8 +6,7 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
-	    android:padding="@dimen/forms_inner_padding"  >
+	    android:layout_height="fill_parent"  >
 	   
 		<ImageView
 	        android:id="@+id/error_icon"
@@ -32,6 +31,14 @@
 	        android:layout_height="wrap_content"
 	        android:layout_below="@+id/modal_alert_title"
 	        style="@style/modal_content_text"/>
-   
+	    
+	  <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/modal_alert_text"
+                android:layout_marginTop="@dimen/abs__action_bar_default_height">
+                
+                <include layout="@layout/old_general_need_help_footer" />
+        </RelativeLayout> 
     </RelativeLayout>
 </ScrollView>

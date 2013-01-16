@@ -545,6 +545,8 @@ public class LoginActivity extends BaseActivity  {
 					}
 				})
 				.withErrorResponseHandler(new LoginErrorResponseHandler(this))
+				.withExceptionFailureHandler(new DefaultExceptionFailureHandler())
+				.withCompletionListener(new LockScreenCompletionListener(this))
 				.build();
 
 		new AuthenticateCall(this, callback, username, password).submit();

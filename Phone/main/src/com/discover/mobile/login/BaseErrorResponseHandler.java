@@ -18,6 +18,8 @@ import android.widget.EditText;
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -204,7 +206,11 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 			return true;
 
 		case HttpURLConnection.HTTP_UNAVAILABLE:
-			getErrorFieldUi().sendToErrorPage(R.string.internal_server_error_503);
+			if(Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT) {
+				getErrorFieldUi().sendToErrorPage(httpErrorCode, R.string.error_503_title, R.string.bank_error_503_message);
+			} else {
+				getErrorFieldUi().sendToErrorPage(httpErrorCode, R.string.error_503_title, R.string.internal_server_error_503);
+			}
 			return true;
 
 		case HttpURLConnection.HTTP_FORBIDDEN:

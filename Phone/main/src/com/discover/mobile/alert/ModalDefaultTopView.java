@@ -5,11 +5,13 @@ import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
+import com.discover.mobile.help.NeedHelpFooter;
 
 /**
  * Default top view to be displayed in the alert modal.  This contains a title as well
@@ -32,6 +34,8 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	/**View that holds the content text*/
 	private TextView text;
 	
+	/**View that holds the footer text*/
+	private NeedHelpFooter helpFooter;
 
 	/**
 	 * Constructor for the view
@@ -49,8 +53,9 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 		errorImage = (ImageView) mainView.findViewById(R.id.error_icon);
 		title = (TextView) mainView.findViewById(R.id.modal_alert_title);
 		text = (TextView) mainView.findViewById(R.id.modal_alert_text);
+		helpFooter = new NeedHelpFooter((ViewGroup)mainView);
 		
-		addView(mainView);
+		addView(mainView);		
 	}
 
 	/**
@@ -93,6 +98,13 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	 */
 	public void setDynamicContent(final String content) {
 		text.setText(content);
+	}
+	
+	/**
+	 * @return Returns the NeedHelpFooter wrapper instance which allows to set the footer help number
+	 */
+	public NeedHelpFooter getHelpFooter() {
+		return helpFooter;
 	}
 
 }

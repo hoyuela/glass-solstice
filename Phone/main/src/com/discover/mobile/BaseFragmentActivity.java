@@ -277,12 +277,14 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
     
     
     /**
-	 * A common method used to forward user to error page with a given static
+	 * A common method used to forward user to error modal dialog with a given static
 	 * string text message
 	 * 
-	 * @param errorText
+	 * @param errorCode HTTP error code
+	 * @param errorText Text that is displayed in the content area of dialog
+	 * @param titleText Text that is displayed at the top of the screen which describes the reason of the error
 	 */
-	public void sendToErrorPage(int titleText, int errorText) {
+	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
 		final Intent maintenancePageIntent = new Intent((Context) this, LockOutUserActivity.class);
 		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
 		startActivity(maintenancePageIntent);
