@@ -23,6 +23,8 @@ import android.os.Message;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.Struct;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
@@ -74,7 +76,11 @@ public abstract class NetworkServiceCall<R> {
 		this.context = context;
 		this.params = params;
 		
-		BASE_URL = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.card_base_url );
+		if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT){
+			BASE_URL = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.bank_base_url );
+		}else {
+			BASE_URL = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.card_base_url );
+		}
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xApplicationVersion);
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xClientPlatform);
 	}
