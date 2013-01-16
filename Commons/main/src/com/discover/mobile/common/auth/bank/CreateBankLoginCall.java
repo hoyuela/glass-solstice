@@ -24,7 +24,7 @@ public class CreateBankLoginCall extends
 	public CreateBankLoginCall(final Context context,
 			final AsyncCallback<BankLoginData> callback,
 			final BankLoginDetails login) {
-
+ 
 		super(context, new PostCallParams(UrlManagerBank.getGetTokenUrl()) {
 			{
 
