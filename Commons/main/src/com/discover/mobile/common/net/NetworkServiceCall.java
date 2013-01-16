@@ -83,7 +83,9 @@ public abstract class NetworkServiceCall<R> {
 		this.context = context;
 		this.params = params;
 		
-		setNetowrkUtilityResources(context, true);
+		BASE_URL = UrlManagerCard.getBaseUrl();
+		X_APP_VERSION = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xApplicationVersion);
+		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xClientPlatform);
 	}
 	
 	/**
@@ -93,29 +95,13 @@ public abstract class NetworkServiceCall<R> {
 	 * @param isCard Determines if the base url is card or bank
 	 */
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params, boolean isCard){
-		super();
-		validateConstructorArgs(context, params);
+		this(context, params);
 		
-		this.context = context;
-		this.params = params;
-		
-		setNetowrkUtilityResources(context, isCard);
-	}
-
-	/**
-	 * Sets the network utility variables and the base url based on if its card or bank
-	 * @param context
-	 * @param isCard if true, the base url is the card base url
-	 */
-	private void setNetowrkUtilityResources(final Context context,
-			boolean isCard) {
 		if (!isCard){
 			BASE_URL = UrlManagerBank.getBaseUrl();
 		}else {
 			BASE_URL = UrlManagerCard.getBaseUrl();
 		}
-		X_APP_VERSION = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xApplicationVersion);
-		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xClientPlatform);
 	}
 	
 	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {

@@ -51,7 +51,6 @@ public abstract class JsonResponseMappingNetworkServiceCall<M> extends NetworkSe
 			final Class<M> modelClass, boolean isCard) {
 		
 		super(context, params, isCard);
-		
 		checkNotNull(modelClass, "modelClass cannot be null");
 		
 		this.modelClass = modelClass;
