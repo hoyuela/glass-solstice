@@ -16,6 +16,9 @@ public class SsnEditText extends ValidatedInputField{
 	private int ssn;
 	
 	private final static int GOOD_SSN_LENGTH = 4;
+	private final static int EMS_LENGTH_LARGE = 4;
+	private final static int EMS_LENGTH_SMALL = 3;
+
 	
 	public SsnEditText(Context context) {
 		super(context);
@@ -34,13 +37,11 @@ public class SsnEditText extends ValidatedInputField{
 	 */
 	@Override
 	public void setupInputRestrictions() {
-		this.setMinEms(GOOD_SSN_LENGTH);
-		this.setMaxEms(GOOD_SSN_LENGTH);
 		filterArray[0] = new InputFilter.LengthFilter(GOOD_SSN_LENGTH);
 		this.setFilters(filterArray);
 		this.setInputType(InputType.TYPE_CLASS_PHONE);
 	}
-	
+
 	/**
 	 * Checks the current input to see if it is of valid length.
 	 * @return returns true if the input if of valid length.
@@ -69,5 +70,16 @@ public class SsnEditText extends ValidatedInputField{
 	 */
 	public void setSsn(final int ssn) {
 		this.ssn = ssn;
+	}
+
+	@Override
+	protected int getEMSFocusedLength() {
+		return EMS_LENGTH_LARGE;
+	}
+
+	@Override
+	protected int getEMSNotFocusedLength() {
+		return EMS_LENGTH_LARGE;
+		
 	}
 }

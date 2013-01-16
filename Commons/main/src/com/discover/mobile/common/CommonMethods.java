@@ -3,10 +3,13 @@ package com.discover.mobile.common;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 public final class CommonMethods {
+	private final static String TAG = CommonMethods.class.getSimpleName();
+	
 	public final static void setViewGone(View v) {
 		v.setVisibility(View.GONE);
 	}
@@ -38,12 +41,44 @@ public final class CommonMethods {
 	 * @param callingContext - When calling this method, pass it the context/activity that called this method.
 	 */
 	public final static void dialNumber(final String number, final Context callingContext) {
-		Intent dialNumber = new Intent(Intent.ACTION_DIAL);
+		if(number != null && callingContext != null) {
+			Intent dialNumber = new Intent(Intent.ACTION_DIAL);
+			
+			dialNumber.setData(Uri.parse("tel:" + number));
+	
+			callingContext.startActivity(dialNumber);
+		}else{
+			Log.e(TAG, "ERROR : Attempting to dial a null number");
+		}
 		
-		dialNumber.setData(Uri.parse("tel:" + number));
-
-		callingContext.startActivity(dialNumber);
 	}
+	
+	/**
+	 * Search through a String and remove any spaces
+	 */
+	public final static String getSpacelessString(final String stringWithSpaces) {
+		String stringWithNoSpaces = stringWithSpaces;
+		
+		if(stringWithSpaces != null) {
+			stringWithNoSpaces = stringWithSpaces.replace(" ", "");
+		}
+		
+		return stringWithNoSpaces;
+	}
+	
+	/**
+	 * Insert a space after every 4 characters in a String.
+	 * Warning! Recursion!!!
+	 * This method takes the first four characters of some string, adds a space to the end of those 4 characters
+	 * and then appends it to the rest of the input string, minus those 4 beginning characters and the space.
+	 */
+	public final static String getStringWithSpacesEvery4Characters(final String stringWithoutSpaces) {
+		if(stringWithoutSpaces != null && stringWithoutSpaces.length() > 4)
+			return stringWithoutSpaces.substring(0, 4) + " " + getStringWithSpacesEvery4Characters(stringWithoutSpaces.substring(4));
+		else
+			return stringWithoutSpaces;	
+	}
+	
 	
 	private CommonMethods(){
 		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$

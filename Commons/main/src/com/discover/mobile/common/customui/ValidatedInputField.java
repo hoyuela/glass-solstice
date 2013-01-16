@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,21 +29,36 @@ public abstract class ValidatedInputField extends EditText{
 	/** Default and error drawables for input fields */
 	protected final static int FIELD_DEFAULT_APPEARANCE = R.drawable.edit_text_default;
 	protected final static int FIELD_ERROR_APPEARANCE = R.drawable.edit_text_red;
+		
+	private int EMS_FOCUSED;
+	private int EMS_NOT_FOCUSED;
 	
+	private ValidatedInputField mSearchText;
+	
+	/**Default date picker ems size*/
+	protected static final int DATE_PICKER_EMS_LENGTH = 11;
+
 	/**A shared input filter to be used when changing the max input length of a field.*/
 	InputFilter[] filterArray = new InputFilter[1];
 
 	/**
 	 * Drawables that are used in the right compound drawable locations.
 	 */
-	protected static Drawable redX = null;
-	protected static Drawable downArrow = null;
+	protected Drawable redX = null;
+	protected Drawable grayX = null;
+	protected Drawable downArrow = null;
+	
+	protected boolean isInErrorState = false;
+	
+	protected boolean needsToAdjustSizeDynamically = false;
 	
 	/**
 	 * If an error label is provided, this will be shown and hidden on 
 	 * error states.
 	 */
 	protected TextView errorLabel;
+	protected abstract int getEMSFocusedLength();
+	protected abstract int getEMSNotFocusedLength();
 	
 	/**
 	 * Default constructor
@@ -72,8 +88,31 @@ public abstract class ValidatedInputField extends EditText{
 		setupTextChangedListener();
 		setupInputRestrictions();
 		setupDefaultAppearance();
+		setupEMSLength();
+		mSearchText = this;
+		setupRightDrawableTouchRegion();
 	}
 	
+	/**
+	 * Sets the EMS length to either a default value or what is returned by a subclass.
+	 */
+	private void setupEMSLength() {
+		EMS_FOCUSED = getEMSFocusedLength();
+		EMS_NOT_FOCUSED = getEMSNotFocusedLength();
+	
+		this.setEms(EMS_NOT_FOCUSED);
+		this.setMaxEms(EMS_NOT_FOCUSED);
+	}
+	
+	/**
+	 * Adjusts the EMS length of the input field during runtime.
+	 * 
+	 * @param newEmsLength a EMS length that will be used for EMS and maxEMS.
+	 */
+	private void setNewEms(final int newEmsLength) {
+		this.setEms(newEmsLength);
+		this.setMaxEms(newEmsLength);
+	}
 	/**
 	 * Set the default appearance so that we dont have to do it in XML.
 	 */
@@ -117,13 +156,45 @@ public abstract class ValidatedInputField extends EditText{
 			
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
+				clearRightDrawable();
+
+				//If Lost Focus
 				if( !hasFocus ){
+					setNewEms(EMS_NOT_FOCUSED);
 					updateAppearanceForInput();
+					if(!isInErrorState) {
+						clearErrors();
+						clearRightDrawable();
+					}
 				}
+				//If Selected/Has Focus
+				else {
+					setNewEms(EMS_FOCUSED);
+					setRightDrawableGrayX();
+					if(isInErrorState)
+						setRightDrawableRedX();
+				}
+					
 			}
 			
 		});
 	}
+	
+	/**Sets the right drawable to the gray X image*/
+	private void setRightDrawableGrayX() {
+		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getGrayX(), null);
+	}
+	
+	/**Sets the right drawable to the red X image*/
+	protected void setRightDrawableRedX() {
+		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getRedX(), null);
+	}
+	
+	/**Clears the right drawable so that no image is present*/
+	protected void clearRightDrawable() {
+		this.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+	}
+
 	
 	/**
 	 * Sets a text changed listener to listen for new input. Validates
@@ -159,6 +230,12 @@ public abstract class ValidatedInputField extends EditText{
 		if(redX == null)
 			redX = getResources().getDrawable(R.drawable.x_red);
 		return redX;
+	}
+	
+	protected Drawable getGrayX() {
+		if(grayX == null)
+			grayX = getResources().getDrawable(R.drawable.x_gray);
+		return grayX;
 	}
 	
 	/**
@@ -200,7 +277,9 @@ public abstract class ValidatedInputField extends EditText{
 	 */
 	protected void setErrors(){
 		showErrorLabel();
+		setRightDrawableRedX();
 		this.setBackgroundResource(FIELD_ERROR_APPEARANCE);
+		isInErrorState = true;
 	}
 	
 	/**
@@ -209,7 +288,40 @@ public abstract class ValidatedInputField extends EditText{
 	 */
 	protected void clearErrors(){
 		hideErrorLabel();
+		setRightDrawableGrayX();
 		this.setBackgroundResource(FIELD_DEFAULT_APPEARANCE);
+		isInErrorState = false;
 	}
-
+	
+	/**
+	 * Set the text field to clear itself if the user presses a right drawable in the 
+	 * input field.
+	 */
+	private void setupRightDrawableTouchRegion() {
+		
+		/**
+		 * Touch listener so that when tapping the X the text is cleared.
+		 */
+		this.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (mSearchText.getCompoundDrawables()[2] == null) {
+					return false;
+				}
+				if (event.getAction() != MotionEvent.ACTION_UP) {
+					return false;
+				}
+				if (event.getX() > mSearchText.getWidth()
+						- mSearchText.getPaddingRight()
+						- getRedX().getIntrinsicWidth()) {
+					mSearchText.setText("");
+					mSearchText.clearErrors();
+					mSearchText.setRightDrawableGrayX();
+				}
+				return false;
+			}
+		});
+	}
+	
 }

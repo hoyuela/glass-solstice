@@ -20,9 +20,13 @@ import com.google.common.base.Strings;
  */
 public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	private boolean isUsernameField = true;
-	private static final int VALID_ACCOUNT_NUMBER_LENGTH = 16;
-	private static final int MAX_USERNAME_LENGTH = 32;
 	
+	private static final int EMS_SELECTED = 16;
+	private static final int EMS_NOT_SELECTED = EMS_SELECTED;
+	
+	private static final int VALID_ACCOUNT_NUMBER_LENGTH = 20;
+	private static final int MAX_USERNAME_LENGTH = 32;
+	private static final String TAG = UsernameOrAccountNumberEditText.class.getSimpleName();
 	/**
 	 * Default constructors. Initially sets up the input field as a username field.
 	 */
@@ -134,5 +138,15 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		this.setBackgroundResource(FIELD_ERROR_APPEARANCE);
 		
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getRedX(), null);
+	}
+
+	@Override
+	protected int getEMSFocusedLength() {
+		return EMS_SELECTED;
+	}
+
+	@Override
+	protected int getEMSNotFocusedLength() {
+		return EMS_NOT_SELECTED;
 	}
 }

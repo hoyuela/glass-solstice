@@ -24,6 +24,9 @@ public class PushManageEditText extends ValidatedInputField{
 	
 	/**Static string to replace the maximum amount*/
 	private static String MAXIMUM_AMT = "MAXIMUM_AMT";
+	
+	/** Default ems size of input field*/
+	private int EMS_LENGTH = 4;
 
 	/**Amount in the text box*/
 	private int amount;
@@ -208,6 +211,16 @@ public class PushManageEditText extends ValidatedInputField{
 	 */
 	public void setDefinedAmount(int definedAmount) {
 		this.definedAmount = definedAmount;
+	}
+
+	@Override
+	protected int getEMSFocusedLength() {
+		return EMS_LENGTH;
+	}
+
+	@Override
+	protected int getEMSNotFocusedLength() {
+		return EMS_LENGTH;
 	}
 
 }

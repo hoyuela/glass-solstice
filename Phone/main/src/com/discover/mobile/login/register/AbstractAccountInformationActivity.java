@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
+import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
@@ -42,7 +43,6 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.navigation.HeaderProgressIndicator;
-import com.discover.mobile.utils.CommonUtils;
 
 /**
  * AbstractAccountInformationActivity this activity handles the forgot user password, both, and registration.
@@ -72,23 +72,23 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	/**
 	 * Keys for use when saving a restoring activity state on screen rotation.
 	 */
-	private final static String MAIN_ERROR_TEXT_KEY = "mek";
-	private final static String MAIN_ERROR_VISIBILITY_KEY = "mevk";
+	private final static String MAIN_ERROR_TEXT_KEY = "a";
+	private final static String MAIN_ERROR_VISIBILITY_KEY = "b";
 	
-	private final static String MAIN_FIELD_KEY = "mfk";
-	private static final String MAIN_FIELD_ERROR_KEY = "mfek";
+	private final static String MAIN_FIELD_KEY = "c";
+	private static final String MAIN_FIELD_ERROR_KEY = "d";
 
-	private static final String EXP_MONTH_KEY = "expmk";
-	private static final String EXP_YEAR_KEY = "expyk";
-	private static final String EXP_ERROR_KEY = "expek";
+	private static final String EXP_MONTH_KEY = "e";
+	private static final String EXP_YEAR_KEY = "f";
+	private static final String EXP_ERROR_KEY = "g";
 	
-	private static final String DOB_DAY_KEY = "dobdk";
-	private static final String DOB_MONTH_KEY = "dobmk";
-	private static final String DOB_YEAR_KEY = "dobyk";
-	private static final String DOB_ERROR_KEY = "dobek";
+	private static final String DOB_DAY_KEY = "h";
+	private static final String DOB_MONTH_KEY = "i";
+	private static final String DOB_YEAR_KEY = "j";
+	private static final String DOB_ERROR_KEY = "k";
 	
-	private static final String SSN_KEY = "ssnk";
-	private static final String SSN_ERROR_KEY = "ssnek";
+	private static final String SSN_KEY = "l";
+	private static final String SSN_ERROR_KEY = "m";
 	
 //TEXT LABELS
 	protected TextView accountIdentifierFieldLabel;
@@ -115,6 +115,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 //DATE PICKER DIALOGS
 	protected CustomDatePickerDialog dobPickerDialog;
 	protected CustomDatePickerDialog cardPickerDialog;
+	
 	
 	final Calendar currentDate = Calendar.getInstance();
 
@@ -326,7 +327,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		}, currentYearPlusTwo, currentMonth, NOT_NEEDED);
 		
 		final String datePickerTitle = getResources().getString(R.string.card_expiration_date_text);
-		cardPickerDialog.setTitle(CommonUtils.removeLastChar(datePickerTitle));
+		cardPickerDialog.setTitle(datePickerTitle);
 		cardPickerDialog.hideDayPicker();
 	}
 	
@@ -352,7 +353,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		}, currentYearMinusEighteen, currentMonth, currentDay);
 		
 		final String dobPickerTitle = getResources().getString(R.string.account_info_dob_text);
-		dobPickerDialog.setTitle(CommonUtils.removeLastChar(dobPickerTitle));
+		dobPickerDialog.setTitle(dobPickerTitle);
 	}
 
 	protected void setupCustomTextChangedListeners() {}
@@ -517,7 +518,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 */
 	public void showMainErrorLabelWithText(final String text) {
 		errorMessageLabel.setText(text);
-		CommonUtils.showLabel(errorMessageLabel);
+		CommonMethods.setViewVisible(errorMessageLabel);
 	}
 	
 	/**
@@ -545,7 +546,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 * So if a given field isValid, then clear any possible errors, or if not, they show errors.
 	 */
 	private void updateLabelsForInput(){
-		CommonUtils.hideLabel(errorMessageLabel);
+		CommonMethods.setViewGone(errorMessageLabel);
 
 		accountIdentifierField.updateAppearanceForInput();
 		cardExpDatePicker.updateAppearanceForInput();

@@ -126,7 +126,8 @@ public class InputValidator {
 	}
 	
 	public static boolean isCardAccountNumberValid(final String cardAccountNumber){	
-		return cardAccountNumber.startsWith(CARD_NUMBER_PREFIX) && cardAccountNumber.length() == CARD_NUMBER_LENGTH_OK;
+		return cardAccountNumber.startsWith(CARD_NUMBER_PREFIX) && cardAccountNumber.length() == CARD_NUMBER_LENGTH_OK 
+				&& !cardAccountNumber.contains(" ");
 	}
 	
 	public boolean isPassValid(final String inputSequence){		
