@@ -23,14 +23,14 @@ import android.os.Message;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.Struct;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.ErrorResponseParser;
 import com.discover.mobile.common.net.json.JsonMappingRequestBodySerializer;
+import com.discover.mobile.common.urlmanager.UrlManagerBank;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
@@ -42,6 +42,8 @@ import com.google.common.collect.ImmutableList;
  */
 public abstract class NetworkServiceCall<R> {
 	
+	
+
 	private final String TAG = getClass().getSimpleName();
 	
 	private static final String ID_PREFIX = "%&(()!12["; //$NON-NLS-1$
@@ -59,9 +61,9 @@ public abstract class NetworkServiceCall<R> {
 	static final int RESULT_PARSED_ERROR = 2;
 	
 	private final ServiceCallParams params;
-	private final String BASE_URL;
-	private final String X_APP_VERSION;
-	private final String X_CLIENT_PLATFORM;
+	private String BASE_URL;
+	private String X_APP_VERSION;
+	private String X_CLIENT_PLATFORM;
 	
 	private Context context;
 	private HttpURLConnection conn;
@@ -70,16 +72,47 @@ public abstract class NetworkServiceCall<R> {
 	
 	private volatile boolean submitted = false;
 	
+	/**
+	 * Network service call used with the base url defaulted to card.
+	 * @param context
+	 * @param params
+	 */
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params) {
 		validateConstructorArgs(context, params);
 		
 		this.context = context;
 		this.params = params;
 		
-		if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT){
-			BASE_URL = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.bank_base_url );
+		setNetowrkUtilityResources(context, true);
+	}
+	
+	/**
+	 * Network Service call that is used when needing the bank base URL. 
+	 * @param context
+	 * @param params
+	 * @param isCard Determines if the base url is card or bank
+	 */
+	protected NetworkServiceCall(final Context context, final ServiceCallParams params, boolean isCard){
+		super();
+		validateConstructorArgs(context, params);
+		
+		this.context = context;
+		this.params = params;
+		
+		setNetowrkUtilityResources(context, isCard);
+	}
+
+	/**
+	 * Sets the network utility variables and the base url based on if its card or bank
+	 * @param context
+	 * @param isCard if true, the base url is the card base url
+	 */
+	private void setNetowrkUtilityResources(final Context context,
+			boolean isCard) {
+		if (!isCard){
+			BASE_URL = UrlManagerBank.getBaseUrl();
 		}else {
-			BASE_URL = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.card_base_url );
+			BASE_URL = UrlManagerCard.getBaseUrl();
 		}
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xApplicationVersion);
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xClientPlatform);

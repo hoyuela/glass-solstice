@@ -36,7 +36,7 @@ public class CreateBankLoginCall extends
 				body = login;
 
 			}
-		}, BankLoginData.class);
+		}, BankLoginData.class, false);
 
 		// TODO decide if this is the best type of handler
 		handler = new StrongReferenceHandler<BankLoginData>(callback);

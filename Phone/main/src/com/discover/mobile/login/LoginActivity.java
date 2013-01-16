@@ -449,9 +449,7 @@ public class LoginActivity extends BaseActivity  {
 	private void login() {
 		setInputFieldsDrawablesToDefault();
 		if (!showErrorIfAnyFieldsAreEmpty() && !showErrorWhenAttemptingToSaveAccountNumber()) {
-//			runAuthWithUsernameAndPassword(idField.getText().toString(),
-//					passField.getText().toString());
-			runBankLogin(idField.getText().toString(),
+			runAuthWithUsernameAndPassword(idField.getText().toString(),
 					passField.getText().toString());
 		}
 	}
@@ -552,10 +550,6 @@ public class LoginActivity extends BaseActivity  {
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
 	
-	public void runBankLogin(final String username, final String password){
-		
-	}
-	
 	/**
  	 * This method submits the users information to the Bank server for verification.
 	 * 
@@ -571,13 +565,13 @@ public class LoginActivity extends BaseActivity  {
 				GenericAsyncCallback.<BankLoginData>builder(this)
 				.showProgressDialog("Discover", "Loading...", true)
 				.build();
-		
 		new CreateBankLoginCall(this, callback, login).submit();
 		//Set logged in to be able to save user name in persistent storage
 		Globals.setLoggedIn(true);
 		
 		//Update current account based on user logged in and account type
 		updateAccountInformation(AccountType.BANK_ACCOUNT);
+		
 	}
 
 	/**

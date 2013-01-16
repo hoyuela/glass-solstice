@@ -24,10 +24,33 @@ public abstract class JsonResponseMappingNetworkServiceCall<M> extends NetworkSe
 	
 	private final Class<M> modelClass;
 	
+	/**
+	 * JSON mapping service call used with the base url defaulted to card.
+	 * @param context
+	 * @param params
+	 */
 	protected JsonResponseMappingNetworkServiceCall(final Context context, final ServiceCallParams params,
 			final Class<M> modelClass) {
 		
 		super(context, params);
+		
+		checkNotNull(modelClass, "modelClass cannot be null");
+		
+		this.modelClass = modelClass;
+		Log.d(TAG, modelClass.toString());
+	}
+	
+	/**
+	 * JSON Response mapping service for Bank. 
+	 * @param context
+	 * @param params
+	 * @param modelClass
+	 * @param isCard Determines if the card base url is used. 
+	 */
+	protected JsonResponseMappingNetworkServiceCall(final Context context, final ServiceCallParams params,
+			final Class<M> modelClass, boolean isCard) {
+		
+		super(context, params, isCard);
 		
 		checkNotNull(modelClass, "modelClass cannot be null");
 		
