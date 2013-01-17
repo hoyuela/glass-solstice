@@ -572,9 +572,11 @@ public class LoginActivity extends BaseActivity  {
 					}
 
 					@Override
-					public void success(BankLoginData arg0) {
+					public void success(BankLoginData value) {
 						//Set logged in to be able to save user name in persistent storage
 						Globals.setLoggedIn(true);
+						
+						//TODO Need to set a current session object.
 						
 						//Update current account based on user logged in and account type
 						updateAccountInformation(AccountType.BANK_ACCOUNT);
