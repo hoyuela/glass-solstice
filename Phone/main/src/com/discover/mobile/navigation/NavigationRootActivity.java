@@ -32,6 +32,12 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	private static final String TITLE = "title";
 	
 	/**
+	 * Boolean set to true when the app was paused. If the fragment was paused this will stay true, but if the
+	 * screen was rotated this will be recreated as false.
+	 */
+	private boolean wasPaused = false;
+	
+	/**
 	 * Create the activity
 	 * @param savedInstatnceState - saved state of the activity
 	 */
@@ -62,13 +68,13 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	@Override
 	public void onResume(){
 		super.onResume();
-		if(resumeFragment != null){
+		if(null != resumeFragment && !wasPaused){
 			getSupportFragmentManager().popBackStack();
 			makeFragmentVisible(resumeFragment, false);
-		} else if(!CurrentSessionDetails.getCurrentSessionDetails().isNotCurrentUserRegisteredForPush()){	
+		} else if(!CurrentSessionDetails.getCurrentSessionDetails().isNotCurrentUserRegisteredForPush()  && !wasPaused){	
 			getSupportFragmentManager().popBackStack();
 			makeFragmentVisible(new PushNowAvailableFragment());	
-		}
+		} 
 		
 		final Bundle extras = getIntent().getExtras();
 		if(null != extras){
@@ -125,6 +131,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
+		wasPaused = true;
 		this.getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT, currentFragment);
 		outState.putString(TITLE, getActionBarTitle());
 		super.onSaveInstanceState(outState);
