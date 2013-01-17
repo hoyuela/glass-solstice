@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="@dimen/forms_inner_padding">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:padding="@dimen/forms_inner_padding"  >
+	    
+	   	<TextView 
+	        android:id="@+id/modal_alert_title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/late_payment_modal_title"
+	        style="@style/modal_title_text"/>
+	   	
+	   	<TextView
+	   	    android:id="@+id/payment_date_label"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/modal_alert_title"
+	        android:text="@string/late_payment_modal_date_text"
+	        android:textStyle="bold"   
+	        style="@style/modal_body_copy_content_text"/>
+	   	
+	   	<TextView
+	        android:id="@+id/payment_date"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/payment_date_label"
+	        android:layout_marginBottom="@dimen/modal_text_padding"
+	        style="@style/modal_content_text"/>
+	   	
+	    <TextView
+	        android:id="@+id/modal_alert_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/payment_date"
+	        android:text="@string/late_payment_modal_text"
+	        style="@style/modal_content_text"/>
+   
+    </RelativeLayout>
+</ScrollView>

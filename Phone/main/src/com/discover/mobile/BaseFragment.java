@@ -1,6 +1,7 @@
 package com.discover.mobile;
 
 import roboguice.RoboGuice;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 
@@ -49,9 +50,9 @@ public abstract class BaseFragment extends SherlockFragment{
     /**
      * Show the logout alert dialog
      */
-    public void showAlertDialog(){
+    public void showCustomAlertDialog(final AlertDialog modal){
     	final LoggedInRoboActivity activity = (LoggedInRoboActivity)this.getActivity();
-    	activity.logout();
+    	activity.showCustomAlert(modal);
     }
     
     /**

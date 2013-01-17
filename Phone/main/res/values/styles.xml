@@ -214,13 +214,16 @@
 
     <style name="modal_title_text" parent="title_copy">
         <item name="android:layout_marginTop">@dimen/modal_text_padding</item>
-        <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
         <item name="android:layout_marginBottom">@dimen/modal_text_padding</item>
         <item name="android:textSize">@dimen/title_min</item>
     </style>
 
     <style name="modal_content_text" parent="sub_copy">
         <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+    
+    <style name="modal_body_copy_content_text" parent="body_copy">
+        <item name="android:textSize">@dimen/body_copy_min</item>
     </style>
 
     <!-- 5. BODY COPY / #3d484d / 34px font-size / 42px line-height / regular -->
@@ -306,6 +309,7 @@
     
     <style name="modal_error_image">
         <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item>
+        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
     </style>
 
     <style name="push_toggle_box_default">

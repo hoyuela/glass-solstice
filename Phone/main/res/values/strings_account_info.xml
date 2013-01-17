@@ -56,4 +56,12 @@
 	<string name="account_summary_cash_back_bonus">Cashback Bonus Balance</string>
 	<string name="account_summary_miles_bonus">Miles Balance</string>
 	<string name="account_summary_learn_more">LEARN MORE</string>
+	
+	<!--  Account Summary Modals -->
+	<string name="account_summary_modal_button">Continue</string>
+	<string name="credit_line_modal_title">Credit Line Available</string>
+	<string name="credit_line_modal_text">This is the unused portion of your credit line. Certain pending transactions might affect the available balance you see displayed here.</string>
+	<string name="late_payment_modal_title">Late Payment Warning</string>
+	<string name="late_payment_modal_date_text">Minimum Payment Due:</string>
+	<string name="late_payment_modal_text">If we do not receive your minimum payment by the date listed above, you may have to pay a late fee of up to $35.00 and your purchase and balance transfer APRs for new transactions may be increased up to the Penalty APR of 15.99% variable.</string>
 </resources>
