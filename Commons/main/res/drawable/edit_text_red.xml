@@ -1,4 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" >
-	<item android:drawable="@drawable/text_field_red"/>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Darker, selected states -->
+    <item android:state_focused="true" android:state_pressed="true">
+        <shape>
+            <gradient 
+				android:startColor="@color/gradient_start_selected"
+				android:centerColor="@color/gradient_center_selected"
+				android:endColor="@color/gradient_end_selected" 
+				android:angle="@integer/edit_text_drawable_gradient_angle"/>
+
+            <stroke 
+				android:width="@dimen/edit_text_stroke_width"
+				android:color="@color/error_indicator_dark"/>
+
+            <corners android:radius="@dimen/edit_text_corner_radius"/>
+        </shape>  
+     </item>
+     
+     <item android:state_focused="true" android:state_pressed="false">        
+        <shape>
+            <gradient 
+				android:startColor="@color/gradient_start_selected"
+				android:centerColor="@color/gradient_center_selected"
+				android:endColor="@color/gradient_end_selected" 
+				android:angle="@integer/edit_text_drawable_gradient_angle"/>
+
+            <stroke 
+				android:width="@dimen/edit_text_stroke_width"
+				android:color="@color/error_indicator_dark"/>
+
+            <corners android:radius="@dimen/edit_text_corner_radius"/>
+        </shape> 
+     </item>
+     
+     <!-- Lighter non selected states -->
+    <item android:state_focused="false" android:state_pressed="true">        
+        <shape>
+            <gradient 
+				android:startColor="@color/gradient_start_not_selected"
+				android:centerColor="@color/gradient_center_not_selected"
+				android:endColor="@color/gradient_end_not_selected" 
+				android:angle="@integer/edit_text_drawable_gradient_angle"/>
+
+            <stroke 
+				android:width="@dimen/edit_text_stroke_width"
+				android:color="@color/error_indicator"/>
+
+            <corners android:radius="@dimen/edit_text_corner_radius"/>
+        </shape> 
+    </item>
+        
+    <item android:state_focused="false" android:state_pressed="false">        
+        <shape>
+            <gradient 
+				android:startColor="@color/gradient_start_not_selected"
+				android:centerColor="@color/gradient_center_not_selected"
+				android:endColor="@color/gradient_end_not_selected" 
+				android:angle="@integer/edit_text_drawable_gradient_angle"/>
+
+            <stroke 
+				android:width="@dimen/edit_text_stroke_width"
+				android:color="@color/error_indicator"/>
+
+            <corners android:radius="@dimen/edit_text_corner_radius"/>
+        </shape> 
+    </item>
+        
+    <item android:state_enabled="true"><shape>
+            <padding android:bottom="4dp" android:left="8dp" android:right="8dp" android:top="4dp" />
+        </shape></item>
+
 </selector>

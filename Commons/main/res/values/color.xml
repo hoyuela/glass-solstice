@@ -38,6 +38,22 @@
     <color name="orange_link_idicator">#ff6600</color>
 	<color name="error_indicator">#ed1c24</color>
 	<color name="weak_indicator">#ffdb11</color>
-	<color name="string_indicator">#8ed402</color>
+	<color name="strong_indicator">#8ed402</color>
 	<color name="blue_link">#0267b1</color>
+	
+	<!-- Discover Secondary Colors Darker -->
+	<color name="strong_indicator_dark">#8ed402</color>
+	<color name="weak_indicator_dark">#dfcb01</color>
+	<color name="error_indicator_dark">#dd0c14</color>
+	<color name="stroke_ruling_line_dark">#b0b8bc</color>
+	
+	<!-- Discover EditText Gradients for drop shadows -->
+	<color name="gradient_start_not_selected">#f2f2f2</color>
+	<color name="gradient_center_not_selected">#FFFFFF</color>
+	<color name="gradient_end_not_selected">#FFFFFF</color>
+	
+	<color name="gradient_start_selected">#e2e2e2</color>
+	<color name="gradient_center_selected">#FFFFFF</color>
+	<color name="gradient_end_selected">#FFFFFF</color>
+	
 </resources>

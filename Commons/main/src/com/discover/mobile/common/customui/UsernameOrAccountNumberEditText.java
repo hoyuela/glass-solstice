@@ -24,7 +24,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	private static final int EMS_SELECTED = 16;
 	private static final int EMS_NOT_SELECTED = EMS_SELECTED;
 	
-	private static final int VALID_ACCOUNT_NUMBER_LENGTH = 20;
+	private static final int VALID_ACCOUNT_NUMBER_LENGTH = 16;
 	private static final int MAX_USERNAME_LENGTH = 32;
 	private static final String TAG = UsernameOrAccountNumberEditText.class.getSimpleName();
 	/**
@@ -115,29 +115,6 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		final String cardAccountNumber = this.getText().toString();
 		
 		return InputValidator.isCardAccountNumberValid(cardAccountNumber);
-	}
-	
-	/**
-	 * Resets the appearance of the input field back to its default.
-	 */
-	@Override
-	protected void clearErrors() {
-		hideErrorLabel();
-		this.setBackgroundResource(FIELD_DEFAULT_APPEARANCE);
-		this.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-
-	}
-	
-	/**
-	 * Sets the appearance of the input field to an error state. Highlights the field
-	 * in red and shows a red X in the right drawable location.
-	 */
-	@Override
-	protected void setErrors() {
-		showErrorLabel();
-		this.setBackgroundResource(FIELD_ERROR_APPEARANCE);
-		
-		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getRedX(), null);
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public abstract class ValidatedInputField extends EditText{
 	/** Default and error drawables for input fields */
 	protected final static int FIELD_DEFAULT_APPEARANCE = R.drawable.edit_text_default;
 	protected final static int FIELD_ERROR_APPEARANCE = R.drawable.edit_text_red;
-		
+
 	private int EMS_FOCUSED;
 	private int EMS_NOT_FOCUSED;
 	
