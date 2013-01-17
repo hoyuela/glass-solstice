@@ -448,9 +448,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 * @param v - the calling View.
 	 */
 	public void validateInfoAndSubmitOnSuccess(final View v){
-		
-		updateLabelsForInput();
-		
+				
 		if(isFormCompleteAndValid()){
 			submitFormInfo();
 		}
@@ -597,20 +595,6 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		startActivity(maintenancePageIntent);
 		finish();
 	}
-	
-	/**
-	 * Ask all of the input fields to update their apperance for their current inputs.
-	 * So if a given field isValid, then clear any possible errors, or if not, they show errors.
-	 */
-	private void updateLabelsForInput(){
-		CommonMethods.setViewGone(errorMessageLabel);
-
-		accountIdentifierField.updateAppearanceForInput();
-		cardExpDatePicker.updateAppearanceForInput();
-		ssnField.updateAppearanceForInput();
-		birthDatePicker.updateAppearanceForInput();
-	}
-	
 
 	/**
 	 * Animate scrolling the screen to the top. Used when something has gone wrong. Bad input etc.

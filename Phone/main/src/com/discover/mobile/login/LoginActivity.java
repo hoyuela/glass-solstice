@@ -47,6 +47,7 @@ import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
+import com.discover.mobile.common.customui.NonEmptyEditText;
 import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
@@ -80,15 +81,15 @@ public class LoginActivity extends BaseActivity  {
 	 * state bundle for restoring the state of the screen upon orientation
 	 * changes.
 	 */
-	private final static String PASS_KEY = "pass";
-	private final static String ID_KEY = "id";
-	private final static String SAVE_ID_KEY = "save";
-	private final static String LOGIN_TYPE_KEY = "type";
-	private final static String PRE_AUTH_KEY = "pauth";
-	private final static String PW_INPUT_TYPE_KEY = "secrets";
-	private final static String HIDE_LABEL_KEY = "hide";
-	private final static String ERROR_MESSAGE_KEY = "errorText";
-	private final static String ERROR_MESSAGE_VISIBILITY = "errorVisibility";
+	private final static String PASS_KEY = "a";
+	private final static String ID_KEY = "b";
+	private final static String SAVE_ID_KEY = "c";
+	private final static String LOGIN_TYPE_KEY = "d";
+	private final static String PRE_AUTH_KEY = "e";
+	private final static String PW_INPUT_TYPE_KEY = "f";
+	private final static String HIDE_LABEL_KEY = "g";
+	private final static String ERROR_MESSAGE_KEY = "h";
+	private final static String ERROR_MESSAGE_VISIBILITY = "i";
 	
 	/**
 	 * Roboguise injections of android interface element references.
@@ -96,10 +97,10 @@ public class LoginActivity extends BaseActivity  {
 	// INPUT FIELDS
 
 	@InjectView(R.id.username_field)
-	private EditText idField;
+	private NonEmptyEditText idField;
 
 	@InjectView(R.id.password_field)
-	private EditText passField;
+	private NonEmptyEditText passField;
 
 	// BUTTONS
 
@@ -298,7 +299,6 @@ public class LoginActivity extends BaseActivity  {
 			resetInputFieldColors();
 		}
 
-	
 	}
 	
 	/**

@@ -73,7 +73,7 @@ public final class CommonMethods {
 	 * and then appends it to the rest of the input string, minus those 4 beginning characters and the space.
 	 */
 	public final static String getStringWithSpacesEvery4Characters(final String stringWithoutSpaces) {
-		if(stringWithoutSpaces != null && stringWithoutSpaces.length() > 4)
+		if(stringWithoutSpaces != null && stringWithoutSpaces.length() > 3)
 			return stringWithoutSpaces.substring(0, 4) + " " + getStringWithSpacesEvery4Characters(stringWithoutSpaces.substring(4));
 		else
 			return stringWithoutSpaces;	
