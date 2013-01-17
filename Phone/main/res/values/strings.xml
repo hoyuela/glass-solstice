@@ -73,6 +73,7 @@
     <string name="enter_info">Enter Info</string>
     <string name="create_password">Create Password</string>
     <string name="confirm">Confirmation</string>
+    <string name="create_login">Create Login</string>
     <string name="crash_report">Preparing Email Crash Report</string>
     <string name="discover_card">Card</string>
     <string name="discover_bank">Bank</string>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.discover.mobile.R;
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
@@ -12,6 +13,7 @@ import com.discover.mobile.common.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 
 /**
  * ForgotPasswordAccountInformationActivity - This activity extends the AbstractAccountInformationActivity
@@ -104,6 +106,12 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 		Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
 		startActivity(forgotCredentials);
 		finish();		
+	}
+	
+	@Override
+	protected void setHeaderProgressText() {
+			HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
+			headerProgressBar.setTitle(R.string.enter_info, R.string.create_password, R.string.confirm);
 	}
 	
 //	AJ AND SCOTT TO FIX 

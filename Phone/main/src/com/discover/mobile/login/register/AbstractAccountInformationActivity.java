@@ -141,6 +141,8 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
 	}
 	
+	protected abstract void setHeaderProgressText();
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -156,7 +158,8 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
     	setupDatePicker();
     	setupClickablePhoneNumbers();
     	setupDisabledButtonListners();
-    	    	
+    	setHeaderProgressText();
+    	
     	restoreState(savedInstanceState);
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 	}
