@@ -20,9 +20,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -119,6 +122,8 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	protected CustomDatePickerDialog dobPickerDialog;
 	protected CustomDatePickerDialog cardPickerDialog;
 	
+	protected Button continueButton;
+	
 	
 	final Calendar currentDate = Calendar.getInstance();
 
@@ -150,6 +155,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
     	setupCardDatePicker();
     	setupDatePicker();
     	setupClickablePhoneNumbers();
+    	setupDisabledButtonListners();
     	    	
     	restoreState(savedInstanceState);
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
@@ -169,6 +175,47 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		birthDatePicker =(DobDatePicker)findViewById(R.id.account_info_birth_date_picker);
 		cardExpDatePicker = (CardExpirationDatePicker)findViewById(R.id.account_info_card_exp_date_picker);
 		helpNumber = (TextView)findViewById(R.id.help_number_label);
+		continueButton = (Button)findViewById(R.id.account_info_continue_button);
+	}
+	
+	/**
+	 * Attach text watchers to all fields so that when everything is valid, the continue button is enabled,
+	 * if anything is false, its disabled.
+	 */
+	protected void setupDisabledButtonListners() {
+		accountIdentifierField.addTextChangedListener(getContinueButtonTextWatcher());
+		ssnField.addTextChangedListener(getContinueButtonTextWatcher());
+		birthDatePicker.addTextChangedListener(getContinueButtonTextWatcher());
+		cardExpDatePicker.addTextChangedListener(getContinueButtonTextWatcher());
+	}
+	
+	public boolean isFormCompleteAndValid() {
+		return accountIdentifierField.isValid() && cardExpDatePicker.isValid() && birthDatePicker.isValid()
+				&& ssnField.isValid();
+	}
+	
+	/**
+	 * Get a new text watcher that will enable and disable the continue button if all form info is complete.
+	 * @return a text watcher that watches for the form to be completed.
+	 */
+	public TextWatcher getContinueButtonTextWatcher() {
+		return new TextWatcher() {
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(isFormCompleteAndValid())
+					continueButton.setEnabled(true);
+				else
+					continueButton.setEnabled(false);
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,	int after) {}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+		};
+		
 	}
     
 	/**
@@ -401,16 +448,10 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 * @param v - the calling View.
 	 */
 	public void validateInfoAndSubmitOnSuccess(final View v){
-
-		boolean formIsComplete =
-				accountIdentifierField.isValid() &&
-				birthDatePicker.isValid() &&
-				cardExpDatePicker.isValid() &&
-				ssnField.isValid();	
 		
 		updateLabelsForInput();
 		
-		if(formIsComplete){
+		if(isFormCompleteAndValid()){
 			submitFormInfo();
 		}
 		else{
