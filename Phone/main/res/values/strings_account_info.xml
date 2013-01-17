@@ -54,5 +54,6 @@
 	<string name="account_summary_last_payment">Last Payment (%s)</string>
 	<string name="account_summary_credit_available">Credit Available</string>
 	<string name="account_summary_cash_back_bonus">Cashback Bonus Balance</string>
+	<string name="account_summary_miles_bonus">Miles Balance</string>
 	<string name="account_summary_learn_more">LEARN MORE</string>
 </resources>

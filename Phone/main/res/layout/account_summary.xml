@@ -1,52 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/default_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    style="@style/default_background" >
-    
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginLeft="@dimen/forms_inner_padding"
-    android:layout_marginRight="@dimen/forms_inner_padding"
-    android:layout_marginTop="@dimen/table_inner_padding"
-    android:gravity="center_horizontal">
-    
-    <LinearLayout 
-        android:id="@+id/summary_list"
+    <LinearLayout
         android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="vertical"
-    	style="@style/default_list_background"/>
-    
-
-    <Button 
-        android:id="@+id/make_payament"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	style="@style/call_to_action_theme"
-    	android:text="@string/account_summary_make_a_payment"
-        android:layout_marginTop="@dimen/orange_button_margin_top"/>
-
-    
-    <TextView
-        android:id="@+id/provide_feedback_button2"
-        style="@style/blue_hyperlink_small"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/orange_button_margin_top"
-        android:text="@string/feedback_text" />
-    
-    <!-- <Button
-        android:id="@+id/provide_feedback_button"
-        style="@style/call_to_action_theme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/orange_button_margin_top"
-        android:text="@string/feedback_text" /> -->
-    
-</LinearLayout>
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/table_inner_padding"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/summary_list"
+            style="@style/default_list_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <Button
+            android:id="@+id/make_payament"
+            style="@style/call_to_action_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:text="@string/account_summary_make_a_payment" />
+
+        <TextView
+            android:id="@+id/provide_feedback_button"
+            style="@style/blue_hyperlink_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:text="@string/feedback_text" />
+    </LinearLayout>
+
 </ScrollView>
