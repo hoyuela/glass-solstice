@@ -91,6 +91,7 @@ public abstract class ValidatedInputField extends EditText{
 		setupEMSLength();
 		mSearchText = this;
 		setupRightDrawableTouchRegion();
+		setupDefaultHeight();
 	}
 	
 	/**
@@ -119,6 +120,11 @@ public abstract class ValidatedInputField extends EditText{
 	protected void setupDefaultAppearance() {
 		this.setBackgroundResource(FIELD_DEFAULT_APPEARANCE);
 		this.setTextColor(getResources().getColor(R.color.field_copy));
+	}
+	
+	protected void setupDefaultHeight() {
+		this.setHeight(getResources().getDimensionPixelSize(R.dimen.input_field_height));
+
 	}
 	
 	/**

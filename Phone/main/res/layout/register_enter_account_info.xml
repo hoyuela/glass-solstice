@@ -76,12 +76,11 @@
 
             <com.discover.mobile.common.customui.UsernameOrAccountNumberEditText
                 android:id="@+id/account_info_main_input_field"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/input_field_height"
                 android:layout_below="@+id/account_info_label_one_label"
                 android:layout_marginTop="@dimen/between_related_elements_padding"
-                android:imeOptions="actionDone"
-                android:visibility="visible" />
+                android:imeOptions="actionDone"/>
 
             <TextView
                 android:id="@+id/account_information_input_info_label"

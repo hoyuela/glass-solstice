@@ -76,7 +76,7 @@
 		        <com.discover.mobile.common.customui.NonEmptyEditText
 		            android:id="@+id/username_field"
 		            android:layout_width="match_parent"
-		            android:layout_height="48dp"
+		            android:layout_height="wrap_content"
 		            android:layout_below="@+id/user_id_label"
 		            android:background="@drawable/edit_text_default"
 		            android:ems="10"
@@ -113,7 +113,7 @@
 		        <com.discover.mobile.common.customui.NonEmptyEditText
 		            android:id="@+id/password_field"
 		            android:layout_width="match_parent"
-		            android:layout_height="48dp"
+		            android:layout_height="wrap_content"
 		            android:layout_below="@+id/password_label"
 		            android:background="@drawable/edit_text_default"
 		            android:hint="@string/empty"

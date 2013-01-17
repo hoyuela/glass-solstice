@@ -3,6 +3,7 @@ package com.discover.mobile.login.register;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.registration.AccountInformationCall;
@@ -40,7 +41,7 @@ public class RegistrationAccountInformationActivity extends AbstractAccountInfor
 	 */
 	@Override
 	protected void addCustomFieldToDetails(final AccountInformationDetails details, final String value) {
-		details.acctNbr = value;
+		details.acctNbr = CommonMethods.getSpacelessString(value);
 	}
 	
 	@Override
