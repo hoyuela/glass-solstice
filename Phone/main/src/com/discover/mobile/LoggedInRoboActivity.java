@@ -122,11 +122,9 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 	 * sets the visibility
 	 */
 	public void setStatusBarVisbility(){
-		FragmentTransaction ft = this.getSupportFragmentManager()
-				.beginTransaction();
-		boolean statusBarVisitility = Globals.isStatusBarVisibility();
-		Fragment statusBar = this.getSupportFragmentManager().findFragmentById(
-				R.id.status_bar);
+		final FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
+		final boolean statusBarVisitility = Globals.isStatusBarVisibility();
+		final Fragment statusBar = this.getSupportFragmentManager().findFragmentById(R.id.status_bar);
 		
 		/**
 		 * If its set to false hide the fragment, else show it.
@@ -145,8 +143,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 	 * @param visible - boolean for setting the shared pref
 	 */
 	public void updateStatusBarVisibility(){
-		Fragment statusBar = this.getSupportFragmentManager().findFragmentById(
-				R.id.status_bar);
+		final Fragment statusBar = this.getSupportFragmentManager().findFragmentById(R.id.status_bar);
 		boolean visible = true;
 		if (statusBar.isVisible()){
 			visible = false;

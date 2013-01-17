@@ -107,7 +107,7 @@
     </style>
     
     <style name="blue_hyperlink_extra_small"  parent="blue_hyperlink">
-        <item name="android:textSize">@dimen/small_copy_min</item>
+        <item name="android:textSize">12sp</item>
     </style>
     
     <!-- Sub Copy Styles  -->
@@ -121,10 +121,30 @@
         <item name="android:textSize">@dimen/small_copy_max</item>
     </style>
     
+    <style name="sub_copy_medium">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_mid</item>
+    </style>
+    
+    <!--  Field Copy Styles-->
+    <style name="field_copy_small">
+        <item name="android:textColor">@color/field_copy</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+    </style>
+    
+    <style name="field_copy_big">
+        <item name="android:textColor">@color/field_copy</item>
+        <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+    
+    <style name="field_copy_medium">
+        <item name="android:textColor">@color/field_copy</item>
+        <item name="android:textSize">@dimen/small_copy_mid</item>
+    </style>
+    
     <!-- Default Page Background Styling -->
     <style name="default_background">
         <item name="android:background">@drawable/light_gray_bkgrd</item>
-        <item name="android:padding">@dimen/forms_inner_padding</item>
     </style>
     
     <!-- Default List Styling -->
@@ -258,6 +278,18 @@
         <item name="android:paddingRight">@dimen/white_button_left_right_padding</item>
         <item name="android:layout_marginBottom">@dimen/between_related_elements_padding</item>
         <item name="android:layout_marginRight">@dimen/between_related_elements_padding</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="simple_white_button">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:background">@drawable/white_button</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:paddingLeft">@dimen/white_button_left_right_padding</item>
+        <item name="android:paddingRight">@dimen/white_button_left_right_padding</item>
+        <item name="android:layout_marginBottom">@dimen/between_related_elements_padding</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
     </style>
