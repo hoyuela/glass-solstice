@@ -78,14 +78,7 @@ public abstract class NetworkServiceCall<R> {
 	 * @param params
 	 */
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params) {
-		validateConstructorArgs(context, params);
-		
-		this.context = context;
-		this.params = params;
-		
-		BASE_URL = UrlManagerCard.getBaseUrl();
-		X_APP_VERSION = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xApplicationVersion);
-		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xClientPlatform);
+		this(context, params, true);
 	}
 	
 	/**
@@ -95,13 +88,17 @@ public abstract class NetworkServiceCall<R> {
 	 * @param isCard Determines if the base url is card or bank
 	 */
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params, boolean isCard){
-		this(context, params);
-		
+		validateConstructorArgs(context, params);
+		this.context = context;
+		this.params = params;
 		if (!isCard){
 			BASE_URL = UrlManagerBank.getBaseUrl();
 		}else {
 			BASE_URL = UrlManagerCard.getBaseUrl();
 		}
+		X_APP_VERSION = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xApplicationVersion);
+		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xClientPlatform);
+	
 	}
 	
 	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {

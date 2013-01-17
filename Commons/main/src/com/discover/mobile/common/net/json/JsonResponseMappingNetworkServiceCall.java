@@ -31,13 +31,7 @@ public abstract class JsonResponseMappingNetworkServiceCall<M> extends NetworkSe
 	 */
 	protected JsonResponseMappingNetworkServiceCall(final Context context, final ServiceCallParams params,
 			final Class<M> modelClass) {
-		
-		super(context, params);
-		
-		checkNotNull(modelClass, "modelClass cannot be null");
-		
-		this.modelClass = modelClass;
-		Log.d(TAG, modelClass.toString());
+		this(context, params, modelClass, true);
 	}
 	
 	/**
