@@ -17,10 +17,12 @@ import java.util.Calendar;
 
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.DatePicker;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -93,6 +95,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 //TEXT LABELS
 	protected TextView accountIdentifierFieldLabel;
 	protected TextView accountIdentifierFieldRestrictionsLabel;
+	protected TextView helpNumber;
 
 //INPUT FIELDS
 	protected UsernameOrAccountNumberEditText accountIdentifierField;
@@ -146,6 +149,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
     	setupCustomTextChangedListeners();
     	setupCardDatePicker();
     	setupDatePicker();
+    	setupClickablePhoneNumbers();
     	    	
     	restoreState(savedInstanceState);
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
@@ -164,6 +168,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		mainScrollView = (ScrollView)findViewById(R.id.account_info_scroll_view);
 		birthDatePicker =(DobDatePicker)findViewById(R.id.account_info_birth_date_picker);
 		cardExpDatePicker = (CardExpirationDatePicker)findViewById(R.id.account_info_card_exp_date_picker);
+		helpNumber = (TextView)findViewById(R.id.help_number_label);
 	}
     
 	/**
@@ -185,6 +190,17 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		outState.putInt(DOB_ERROR_KEY, dobErrorLabel.getVisibility());
 		outState.putInt(EXP_ERROR_KEY, expirationDateErrorLabel.getVisibility());
 		outState.putInt(SSN_ERROR_KEY, ssnErrorLabel.getVisibility());
+	}
+	
+	protected void setupClickablePhoneNumbers() {
+		final Context currentContext = this;
+		helpNumber.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CommonMethods.dialNumber(helpNumber.getText().toString(), currentContext);				
+			}
+		});
 	}
 
 	/**
