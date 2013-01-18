@@ -3,6 +3,13 @@ package com.discover.mobile.section.account.summary;
 import com.discover.mobile.common.account.summary.LatePaymentWarningTextDetail;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 
+/**
+ * Success listener for the late payment modal.  This applies specifically to the retrieval
+ * of the user specific text.  The details are retrieved in another call.
+ * 
+ * @author jthornton
+ *
+ */
 public class LatePaymentWarningTextSuccessListener implements SuccessListener<LatePaymentWarningTextDetail>{
 	
 	/**Fragment to return the successful nature of the call*/

@@ -23,6 +23,36 @@ public final class StandardErrorCodes {
 	public static final int FAILED_SECURITY = 1916;
 	public static final int ACCOUNT_NOT_REGISTERED = 1918;
 	
+	/**
+	 * Received when: The authorization credentials are either missing or incorrect.
+	 */
+	public static final int UNAUTHORIZED = 401;
+	
+	/**
+	 * Received when: If input parameters entered as incorrect or wrong formatted. 
+	 */
+	public static final int INVALID_FORMAT = 400;
+	
+	/**
+	 * Received when: The request has been understood but has been refused due to incompatible client version. 
+	 * 				  Status is available in response body.
+	 * 
+	 * Received when: The request has been understood but has been refused due to invalid strong auth status. 
+	 * 				  Strong Auth Info is available in the response body.
+	 */
+	public static final int FORBIDDEN = 403;
+	
+	/**
+	 * Received when: The server/service is experiencing issues that require investigation.
+	 */
+	public static final int INTERNAL_SERVER_ERROR = 500;
+	
+	/**
+	 * Received when: The request has been understood but has been refused. 
+	 * 				  The System in is maintenance mode, maintenance window info present in body.
+	 */
+	public static final int SERVICE_UNAVAILABLE = 503;
+	
 	private StandardErrorCodes() {
 		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$
 	}
