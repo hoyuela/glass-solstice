@@ -9,7 +9,7 @@ package com.discover.mobile.common.urlmanager;
 
 public class UrlManagerCard {
 
-	private static final String BASE_URL = "https://mst0.m.discovercard.com";
+	private static final String BASE_URL = "http://192.168.1.70:8008";
 
 	/**
 	 * Pre Auth URL
@@ -43,6 +43,11 @@ public class UrlManagerCard {
 	private static final String STRONG_AUTH_CHECK_URL = "/cardsvcs/acs/reg/v1/user/sa/check";
 	private static final String STRONG_AUTH_QUESTION_URL = "/cardsvcs/acs/strongauth/v1/challenge";
 	private static final String STRONG_AUTH_URL = "/cardsvcs/acs/reg/v1/user/sa/check";
+	
+	/**URL to get the dates ranges to be shown when the users tries to select 
+	 * from a range of dates to show recent transactions.
+	 */
+	private static final String STATEMENT_IDENTIFIERS = "/cardsvcs/acs/stmt/v1/identifiers";
 
 	/**
 	 * Push Notification URLs
@@ -192,6 +197,10 @@ public class UrlManagerCard {
 	 */
 	public static String getAuthenticateCall() {
 		return AUTHENTICATE_CALL;
+	}
+
+	public static String getStatementIdentifiers() {
+		return STATEMENT_IDENTIFIERS;
 	}
 
 }

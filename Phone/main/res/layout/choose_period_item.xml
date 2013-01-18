@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:padding="@dimen/between_related_elements_padding">
+    
+    <TextView 
+        android:id="@+id/date_string"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:background="@drawable/notification_list_item"
+    	style="@style/title_copy"/>
+    
+
+</LinearLayout>
