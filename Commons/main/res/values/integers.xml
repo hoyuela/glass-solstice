@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="edit_text_drawable_gradient_angle">270</integer>
+
+</resources>

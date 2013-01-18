@@ -5,6 +5,8 @@
         android:drawable="@drawable/orange_button"/>
     <item android:state_pressed="true"
         android:drawable="@drawable/orange_button_pressed"/>
+    <item android:state_enabled="false" 
+        android:drawable="@drawable/orange_button_disabled"/>
     
 	<item android:drawable="@drawable/orange_button"/>
 </selector>

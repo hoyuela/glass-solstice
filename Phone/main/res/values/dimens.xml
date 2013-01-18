@@ -62,7 +62,5 @@
     <dimen name="small_copy_max">17sp</dimen>
     <dimen name="small_copy_min">14sp</dimen>
     <dimen name="small_copy_mid">15sp</dimen>
-    
-    
-    
+        
 </resources>

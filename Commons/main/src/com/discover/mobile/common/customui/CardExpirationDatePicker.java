@@ -1,6 +1,7 @@
 package com.discover.mobile.common.customui;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
 import com.discover.mobile.common.R;
@@ -16,8 +17,6 @@ import com.discover.mobile.utils.CommonUtils;
  *
  */
 public class CardExpirationDatePicker extends ValidatedInputField{
-
-	private static final int EMS_LENGTH = 10;
 	
 	private static final int INVALID_VALUE = -1;
 	
@@ -73,7 +72,7 @@ public class CardExpirationDatePicker extends ValidatedInputField{
 		super.setupDefaultAppearance();
 		
 		this.setHint(R.string.exp_date_placeholder);
-		this.setEms(EMS_LENGTH);
+		this.setEms(DATE_PICKER_EMS_LENGTH);
 		this.setFocusable(false);
 		
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getDownArrow(), null);
@@ -96,6 +95,16 @@ public class CardExpirationDatePicker extends ValidatedInputField{
 		expirationYear = INVALID_VALUE;
 	}
 	
+	@Override
+	protected Drawable getRedX() {
+		return getGrayX();
+	}
+	
+	@Override
+	protected Drawable getGrayX() {
+		return getDownArrow();
+	}
+	
 	/**
 	 * Getters and setters
 	 * 
@@ -114,6 +123,16 @@ public class CardExpirationDatePicker extends ValidatedInputField{
 	
 	public void setExpirationYear(final int expirationYear) {
 		this.expirationYear = expirationYear;
+	}
+
+	@Override
+	protected int getEMSFocusedLength() {
+		return DATE_PICKER_EMS_LENGTH;
+	}
+
+	@Override
+	protected int getEMSNotFocusedLength() {
+		return DATE_PICKER_EMS_LENGTH;
 	}
 	
 }

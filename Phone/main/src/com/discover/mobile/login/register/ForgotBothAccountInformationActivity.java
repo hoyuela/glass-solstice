@@ -33,6 +33,7 @@ import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 /**
  * ForgotBothAccountInformationActivity - provides layout customization to the first step of a user forgetting their
@@ -299,6 +300,12 @@ public class ForgotBothAccountInformationActivity extends AbstractAccountInforma
 		Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
 		startActivity(forgotCredentials);
 		finish();
+	}
+	
+	@Override
+	protected void setHeaderProgressText() {
+			HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
+			headerProgressBar.setTitle(R.string.enter_info, R.string.create_login, R.string.confirm);
 	}
 	
 }

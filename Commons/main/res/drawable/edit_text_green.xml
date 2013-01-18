@@ -12,7 +12,7 @@
 
             <stroke 
 				android:width="@dimen/edit_text_stroke_width"
-				android:color="@color/stroke_ruling_line_dark"/>
+				android:color="@color/strong_indicator_dark"/>
 
             <corners android:radius="@dimen/edit_text_corner_radius"/>
         </shape>  
@@ -28,7 +28,7 @@
 
             <stroke 
 				android:width="@dimen/edit_text_stroke_width"
-				android:color="@color/stroke_ruling_line_dark"/>
+				android:color="@color/strong_indicator_dark"/>
 
             <corners android:radius="@dimen/edit_text_corner_radius"/>
         </shape> 
@@ -45,7 +45,7 @@
 
             <stroke 
 				android:width="@dimen/edit_text_stroke_width"
-				android:color="@color/field_stroke"/>
+				android:color="@color/strong_indicator"/>
 
             <corners android:radius="@dimen/edit_text_corner_radius"/>
         </shape> 
@@ -61,7 +61,7 @@
 
             <stroke 
 				android:width="@dimen/edit_text_stroke_width"
-				android:color="@color/field_stroke"/>
+				android:color="@color/strong_indicator"/>
 
             <corners android:radius="@dimen/edit_text_corner_radius"/>
         </shape> 

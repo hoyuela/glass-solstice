@@ -162,7 +162,7 @@ public class CredentialStrengthEditText extends EditText {
 		this.setSingleLine();
 		mNoTextImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.strength_meter_grey);
 		mStrengthMeter = mNoTextImage;
-		this.setBackgroundResource(R.drawable.text_field_gray);
+		this.setBackgroundResource(R.drawable.edit_text_default);
 		
 	}
 	
@@ -288,7 +288,7 @@ public class CredentialStrengthEditText extends EditText {
 				&& hasGoodLength && (hasLowerCase || hasUpperCase)
 				&& hasNonAlphaNum && hasNumber) {
 			mStrengthMeter = mStrongImage;
-			setBackgroundResource(R.drawable.text_field_green);
+			setBackgroundResource(R.drawable.edit_text_green);
 		}
 		/*
 		 * Meets minimum requirements but does not include a variation of
@@ -297,7 +297,7 @@ public class CredentialStrengthEditText extends EditText {
 		else if (!passAndIdMatch && !looksLikeActNum && !hasInvalidChar
 				&& hasGoodLength) {
 			mStrengthMeter = mModerateImage;
-			setBackgroundResource(R.drawable.text_field_yellow);
+			setBackgroundResource(R.drawable.edit_text_yellow);
 		}
 		/*
 		 * Does not meet minimum requirements (not 6-16 characters, looks like
@@ -306,7 +306,7 @@ public class CredentialStrengthEditText extends EditText {
 		 */
 		else {
 			mStrengthMeter = mWeakImage;
-			setBackgroundResource(R.drawable.text_field_red);
+			setBackgroundResource(R.drawable.edit_text_red);
 		}
 		
 		//Force an onDraw
@@ -362,7 +362,7 @@ public class CredentialStrengthEditText extends EditText {
 		if (!passAndIdMatch && hasGoodLength && hasUpperAndLowerAndNum
 				&& hasNonAlphaNum) {
 			mStrengthMeter = mStrongImage;
-			setBackgroundResource(R.drawable.text_field_green);
+			setBackgroundResource(R.drawable.edit_text_green);
 		}
 		/*
 		 * Meets minimum requirements but does not include a variation of upper
@@ -371,7 +371,7 @@ public class CredentialStrengthEditText extends EditText {
 		else if (!passAndIdMatch && hasGoodLength && hasNumber
 				&& (hasUpperCase || hasLowerCase)) {
 			mStrengthMeter = mModerateImage;
-			setBackgroundResource(R.drawable.text_field_yellow);
+			setBackgroundResource(R.drawable.edit_text_yellow);
 		}
 		/*
 		 * Does not meet minimum requirements (not 8-32 characters, does not
@@ -379,7 +379,7 @@ public class CredentialStrengthEditText extends EditText {
 		 */
 		else {
 			mStrengthMeter = mWeakImage;
-			setBackgroundResource(R.drawable.text_field_red);
+			setBackgroundResource(R.drawable.edit_text_red);
 		}
 		
 

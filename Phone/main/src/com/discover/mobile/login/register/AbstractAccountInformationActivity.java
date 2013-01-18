@@ -17,16 +17,22 @@ import java.util.Calendar;
 
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
+import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
@@ -42,7 +48,6 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.navigation.HeaderProgressIndicator;
-import com.discover.mobile.utils.CommonUtils;
 
 /**
  * AbstractAccountInformationActivity this activity handles the forgot user password, both, and registration.
@@ -72,27 +77,28 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	/**
 	 * Keys for use when saving a restoring activity state on screen rotation.
 	 */
-	private final static String MAIN_ERROR_TEXT_KEY = "mek";
-	private final static String MAIN_ERROR_VISIBILITY_KEY = "mevk";
+	private final static String MAIN_ERROR_TEXT_KEY = "a";
+	private final static String MAIN_ERROR_VISIBILITY_KEY = "b";
 	
-	private final static String MAIN_FIELD_KEY = "mfk";
-	private static final String MAIN_FIELD_ERROR_KEY = "mfek";
+	private final static String MAIN_FIELD_KEY = "c";
+	private static final String MAIN_FIELD_ERROR_KEY = "d";
 
-	private static final String EXP_MONTH_KEY = "expmk";
-	private static final String EXP_YEAR_KEY = "expyk";
-	private static final String EXP_ERROR_KEY = "expek";
+	private static final String EXP_MONTH_KEY = "e";
+	private static final String EXP_YEAR_KEY = "f";
+	private static final String EXP_ERROR_KEY = "g";
 	
-	private static final String DOB_DAY_KEY = "dobdk";
-	private static final String DOB_MONTH_KEY = "dobmk";
-	private static final String DOB_YEAR_KEY = "dobyk";
-	private static final String DOB_ERROR_KEY = "dobek";
+	private static final String DOB_DAY_KEY = "h";
+	private static final String DOB_MONTH_KEY = "i";
+	private static final String DOB_YEAR_KEY = "j";
+	private static final String DOB_ERROR_KEY = "k";
 	
-	private static final String SSN_KEY = "ssnk";
-	private static final String SSN_ERROR_KEY = "ssnek";
+	private static final String SSN_KEY = "l";
+	private static final String SSN_ERROR_KEY = "m";
 	
 //TEXT LABELS
 	protected TextView accountIdentifierFieldLabel;
 	protected TextView accountIdentifierFieldRestrictionsLabel;
+	protected TextView helpNumber;
 
 //INPUT FIELDS
 	protected UsernameOrAccountNumberEditText accountIdentifierField;
@@ -116,6 +122,9 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	protected CustomDatePickerDialog dobPickerDialog;
 	protected CustomDatePickerDialog cardPickerDialog;
 	
+	protected Button continueButton;
+	
+	
 	final Calendar currentDate = Calendar.getInstance();
 
 	// TODO go through old code and make sure this is called every time
@@ -132,6 +141,8 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
 	}
 	
+	protected abstract void setHeaderProgressText();
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -145,7 +156,10 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
     	setupCustomTextChangedListeners();
     	setupCardDatePicker();
     	setupDatePicker();
-    	    	
+    	setupClickablePhoneNumbers();
+    	setupDisabledButtonListners();
+    	setHeaderProgressText();
+    	
     	restoreState(savedInstanceState);
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 	}
@@ -163,6 +177,48 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		mainScrollView = (ScrollView)findViewById(R.id.account_info_scroll_view);
 		birthDatePicker =(DobDatePicker)findViewById(R.id.account_info_birth_date_picker);
 		cardExpDatePicker = (CardExpirationDatePicker)findViewById(R.id.account_info_card_exp_date_picker);
+		helpNumber = (TextView)findViewById(R.id.help_number_label);
+		continueButton = (Button)findViewById(R.id.account_info_continue_button);
+	}
+	
+	/**
+	 * Attach text watchers to all fields so that when everything is valid, the continue button is enabled,
+	 * if anything is false, its disabled.
+	 */
+	protected void setupDisabledButtonListners() {
+		accountIdentifierField.addTextChangedListener(getContinueButtonTextWatcher());
+		ssnField.addTextChangedListener(getContinueButtonTextWatcher());
+		birthDatePicker.addTextChangedListener(getContinueButtonTextWatcher());
+		cardExpDatePicker.addTextChangedListener(getContinueButtonTextWatcher());
+	}
+	
+	public boolean isFormCompleteAndValid() {
+		return accountIdentifierField.isValid() && cardExpDatePicker.isValid() && birthDatePicker.isValid()
+				&& ssnField.isValid();
+	}
+	
+	/**
+	 * Get a new text watcher that will enable and disable the continue button if all form info is complete.
+	 * @return a text watcher that watches for the form to be completed.
+	 */
+	public TextWatcher getContinueButtonTextWatcher() {
+		return new TextWatcher() {
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(isFormCompleteAndValid())
+					continueButton.setEnabled(true);
+				else
+					continueButton.setEnabled(false);
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,	int after) {}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+		};
+		
 	}
     
 	/**
@@ -184,6 +240,17 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		outState.putInt(DOB_ERROR_KEY, dobErrorLabel.getVisibility());
 		outState.putInt(EXP_ERROR_KEY, expirationDateErrorLabel.getVisibility());
 		outState.putInt(SSN_ERROR_KEY, ssnErrorLabel.getVisibility());
+	}
+	
+	protected void setupClickablePhoneNumbers() {
+		final Context currentContext = this;
+		helpNumber.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CommonMethods.dialNumber(helpNumber.getText().toString(), currentContext);				
+			}
+		});
 	}
 
 	/**
@@ -326,7 +393,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		}, currentYearPlusTwo, currentMonth, NOT_NEEDED);
 		
 		final String datePickerTitle = getResources().getString(R.string.card_expiration_date_text);
-		cardPickerDialog.setTitle(CommonUtils.removeLastChar(datePickerTitle));
+		cardPickerDialog.setTitle(datePickerTitle);
 		cardPickerDialog.hideDayPicker();
 	}
 	
@@ -352,7 +419,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		}, currentYearMinusEighteen, currentMonth, currentDay);
 		
 		final String dobPickerTitle = getResources().getString(R.string.account_info_dob_text);
-		dobPickerDialog.setTitle(CommonUtils.removeLastChar(dobPickerTitle));
+		dobPickerDialog.setTitle(dobPickerTitle);
 	}
 
 	protected void setupCustomTextChangedListeners() {}
@@ -384,16 +451,8 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 * @param v - the calling View.
 	 */
 	public void validateInfoAndSubmitOnSuccess(final View v){
-
-		boolean formIsComplete =
-				accountIdentifierField.isValid() &&
-				birthDatePicker.isValid() &&
-				cardExpDatePicker.isValid() &&
-				ssnField.isValid();	
-		
-		updateLabelsForInput();
-		
-		if(formIsComplete){
+				
+		if(isFormCompleteAndValid()){
 			submitFormInfo();
 		}
 		else{
@@ -517,7 +576,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 */
 	public void showMainErrorLabelWithText(final String text) {
 		errorMessageLabel.setText(text);
-		CommonUtils.showLabel(errorMessageLabel);
+		CommonMethods.setViewVisible(errorMessageLabel);
 	}
 	
 	/**
@@ -539,20 +598,6 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		startActivity(maintenancePageIntent);
 		finish();
 	}
-	
-	/**
-	 * Ask all of the input fields to update their apperance for their current inputs.
-	 * So if a given field isValid, then clear any possible errors, or if not, they show errors.
-	 */
-	private void updateLabelsForInput(){
-		CommonUtils.hideLabel(errorMessageLabel);
-
-		accountIdentifierField.updateAppearanceForInput();
-		cardExpDatePicker.updateAppearanceForInput();
-		ssnField.updateAppearanceForInput();
-		birthDatePicker.updateAppearanceForInput();
-	}
-	
 
 	/**
 	 * Animate scrolling the screen to the top. Used when something has gone wrong. Bad input etc.

@@ -2,8 +2,8 @@
     
     <!-- Account Info Screen 1 -->
 	<string name="account_info_one_step_text">Step 1 of 2: Enter Account Information</string>
-    <string name="account_info_dob_text">Primary Cardmember\'s Birthday:</string>
-	<string name="account_info_ssn_info_text">Social Security Number of Primary Cardmember:</string>
+    <string name="account_info_dob_text">Primary Cardmember\'s Birthday</string>
+	<string name="account_info_ssn_info_text">Primary Cardmember\'s Social Security Number (Last 4 Digits)</string>
 	<string name="account_info_bad_input_error_text">
 	    You have entered invalid information.
 	     Carefully review your information and please try again.
@@ -14,8 +14,8 @@
 	    Please contact customer service at 1&#8211;866&#8211;221&#8211;1126 for more information. 
 	</string>
 
-	<string name="account_info_input_restrictions_label">This is a 16&#8211;
-	    digit number starting with 6011. Do not include space or hyphens.
+	<string name="account_info_input_restrictions_label">This is a 16&#8211;digit number starting with 6011.
+	    Do not include space or hyphens.
 	</string>
 	
 	<!-- Account Info Screen 2 -->
