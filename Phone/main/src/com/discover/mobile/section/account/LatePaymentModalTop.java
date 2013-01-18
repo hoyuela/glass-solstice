@@ -32,7 +32,6 @@ public class LatePaymentModalTop extends ScrollView implements ModalTopView {
 	/**View holding payment due date*/
 	private TextView dueDate;
 	
-
 	/**
 	 * Constructor for the view
 	 * @param context - activity context

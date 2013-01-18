@@ -36,6 +36,12 @@ public class UrlManagerCard {
 	private static final String ACCOUNT_INFO_URL = "/cardsvcs/acs/reg/v1/user/reg/auth";
 	private static final String AUTHENTICATE_CALL = "/cardsvcs/acs/acct/v1/account";
 	private static final String SESSION_URL = "/cardsvcs/acs/session/v1/update";
+	
+	/**URL to get the late payment information*/
+	private static final String LATE_PAYMENT_WARNING_URL = "/cardsvcs/acs/stmt/v1/paymentwarning";
+	
+	/**URL to get late payment text information*/
+	private static final String LATE_PAYMENT_WARNING_TEXT_URL = "/json/statements/latePayWarn.json";
 
 	/**
 	 * Strong Authentication URLs
@@ -147,7 +153,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the pushAlertHistoryUrl
 	 */
-	public static String getPushAlertHistoryUrl(int start, int size) {
+	public static String getPushAlertHistoryUrl(final int start, final int size) {
 		return PUSH_ALERT_HISTORY_URL + start + "&size=" + size;
 	}
 
@@ -161,7 +167,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the pushGetNotificationPrefUrl
 	 */
-	public static String getPushGetNotificationPrefUrl(String device) {
+	public static String getPushGetNotificationPrefUrl(final String device) {
 		return PUSH_GET_NOTIFICATION_PREF_URL + device;
 	}
 
@@ -175,7 +181,7 @@ public class UrlManagerCard {
 	/**
 	 * @return the pushRegistrationStatusUrl
 	 */
-	public static String getPushRegistrationStatusUrl(String device) {
+	public static String getPushRegistrationStatusUrl(final String device) {
 		return PUSH_REGISTRATION_STATUS_URL + device;
 	}
 
@@ -203,5 +209,18 @@ public class UrlManagerCard {
 	public static String getStatementIdentifiers() {
 		return STATEMENT_IDENTIFIERS;
 	}
+	/**
+	 * @return the late payment warning url
+	 */
+	public static String getLatePaymentWarningUrl() {
+		return LATE_PAYMENT_WARNING_URL;
+	}
 
+
+	/**
+	 * @return URL to get late payment text information
+	 */
+	public static String getLatePaymentWarningTextUrl() {
+		return LATE_PAYMENT_WARNING_TEXT_URL;
+	}
 }
