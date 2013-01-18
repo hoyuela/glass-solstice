@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -37,6 +38,9 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 	/**Text View holding the please note text*/
 	private TextView noteLabel;
 	
+	/**Button to close the modal*/
+	private Button home;
+	
 	/**
 	 * Constructor for the view
 	 * @param context - activity context
@@ -54,6 +58,7 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 		firstParagraph = (TextView) mainView.findViewById(R.id.account_info_confirm_first_paragraph_label);
 		noteLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_note_label);
 		noteLabel.setText(Html.fromHtml(context.getString(R.string.account_info_confirm_note_text)));
+		home = (Button) mainView.findViewById(R.id.home);
 		
 		addView(mainView);
 	}
@@ -126,4 +131,8 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 	@Override
 	public void setContent(String content) {}
 
+
+	public Button getButton(){
+		return home;
+	}
 }

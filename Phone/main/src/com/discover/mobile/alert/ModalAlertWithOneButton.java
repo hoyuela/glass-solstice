@@ -35,6 +35,9 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	private static final int VIEW_HEIGHTS = 0;
 	
 	/**Static weight for the top view in portrait mode*/
+	private static final float NO_BOTTOM_WEIGHT = 10f;
+	
+	/**Static weight for the top view in portrait mode*/
 	private static final float PORTRAIT_TOP_WEIGHT = 7f;
 	
 	/**Static weight for the bottom view in portrait mode*/
@@ -229,7 +232,11 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	    final int orientation = context.getResources().getConfiguration().orientation; 
 	    float topWeight;
 	    float bottomWeight;
-	    if (Configuration.ORIENTATION_LANDSCAPE == orientation) { 
+	    
+	    if (null == bottom){
+	    	topWeight = NO_BOTTOM_WEIGHT;
+		    bottomWeight = VIEW_HEIGHTS;
+	    }else if (Configuration.ORIENTATION_LANDSCAPE == orientation) { 
 	    	topWeight = LANDSCAPE_TOP_WEIGHT;
 		    bottomWeight = LANDSCAPE_BOTTOM_WEIGHT;
 	    } else { 
