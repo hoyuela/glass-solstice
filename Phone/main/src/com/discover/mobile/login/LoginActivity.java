@@ -42,6 +42,9 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.common.auth.bank.BankLoginData;
+import com.discover.mobile.common.auth.bank.BankLoginDetails;
+import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
 import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
@@ -546,7 +549,7 @@ public class LoginActivity extends BaseActivity  {
 
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
-
+	
 	/**
  	 * This method submits the users information to the Bank server for verification.
 	 * 
@@ -555,22 +558,33 @@ public class LoginActivity extends BaseActivity  {
 	 * 
 	 */
 	private void bankLogin(final String username, final String password) {
-		/*********TODO: REMOVE THIS BLOCK OF CODE AFTER COMPLETING BANK LOGIN*************/
-		CharSequence text = "Bank Login Under Development";
-		int duration = Toast.LENGTH_SHORT;
+		BankLoginDetails login = new BankLoginDetails();
+		login.password = password;
+		login.username = username;
+		final AsyncCallback<BankLoginData> callback = 
+				GenericAsyncCallback.<BankLoginData>builder(this)
+				.showProgressDialog("Discover", "Loading...", true)
+				.withSuccessListener(new SuccessListener<BankLoginData>() {
 
-		Toast toast = Toast.makeText(this, text, duration);
-		toast.show();
+					@Override
+					public CallbackPriority getCallbackPriority() {
+						return CallbackPriority.MIDDLE;
+					}
+
+					@Override
+					public void success(BankLoginData value) {
+						//Set logged in to be able to save user name in persistent storage
+						Globals.setLoggedIn(true);
+						
+						//TODO Need to set a current session object.
+						
+						//Update current account based on user logged in and account type
+						updateAccountInformation(AccountType.BANK_ACCOUNT);
+					}
+				})
+				.build();
+		new CreateBankLoginCall(this, callback, login).submit();
 		
-		//Set logged in to be able to save user name in persistent storage
-		Globals.setLoggedIn(true);
-		
-		/*********TODO: REMOVE THIS BLOCK OF CODE AFTER COMPLETING BANK LOGIN*************/
-	
-		//TODO: Add Bank Login Logic here
-		
-		//Update current account based on user logged in and account type
-		updateAccountInformation(AccountType.BANK_ACCOUNT);
 	}
 
 	/**

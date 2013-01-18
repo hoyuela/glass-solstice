@@ -29,6 +29,8 @@ import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.ErrorResponseParser;
 import com.discover.mobile.common.net.json.JsonMappingRequestBodySerializer;
+import com.discover.mobile.common.urlmanager.UrlManagerBank;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
@@ -40,6 +42,8 @@ import com.google.common.collect.ImmutableList;
  */
 public abstract class NetworkServiceCall<R> {
 	
+	
+
 	private final String TAG = getClass().getSimpleName();
 	
 	private static final String ID_PREFIX = "%&(()!12["; //$NON-NLS-1$
@@ -57,9 +61,9 @@ public abstract class NetworkServiceCall<R> {
 	static final int RESULT_PARSED_ERROR = 2;
 	
 	private final ServiceCallParams params;
-	private final String BASE_URL;
-	private final String X_APP_VERSION;
-	private final String X_CLIENT_PLATFORM;
+	private String BASE_URL;
+	private String X_APP_VERSION;
+	private String X_CLIENT_PLATFORM;
 	
 	private Context context;
 	private HttpURLConnection conn;
@@ -68,15 +72,33 @@ public abstract class NetworkServiceCall<R> {
 	
 	private volatile boolean submitted = false;
 	
+	/**
+	 * Network service call used with the base url defaulted to card.
+	 * @param context
+	 * @param params
+	 */
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params) {
+		this(context, params, true);
+	}
+	
+	/**
+	 * Network Service call that is used when needing the bank base URL. 
+	 * @param context
+	 * @param params
+	 * @param isCard Determines if the base url is card or bank
+	 */
+	protected NetworkServiceCall(final Context context, final ServiceCallParams params, boolean isCard){
 		validateConstructorArgs(context, params);
-		
 		this.context = context;
 		this.params = params;
-		
-		BASE_URL = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.card_base_url );
+		if (!isCard){
+			BASE_URL = UrlManagerBank.getBaseUrl();
+		}else {
+			BASE_URL = UrlManagerCard.getBaseUrl();
+		}
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xApplicationVersion);
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xClientPlatform);
+	
 	}
 	
 	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {
@@ -161,6 +183,7 @@ public abstract class NetworkServiceCall<R> {
 		}
 	}
 	
+	//TODO Move this out and put into a POJO maybe
 	private void setupDeviceIdentifiers() {
 		if(!params.sendDeviceIdentifiers)
 			return;
