@@ -2,6 +2,8 @@ package com.discover.mobile.common;
 
 import java.util.Locale;
 
+import com.discover.mobile.common.auth.AccountDetails;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,15 +14,17 @@ import android.widget.TextView;
 
 public final class CommonMethods {
 	private final static String TAG = CommonMethods.class.getSimpleName();
-	
+
+	// FIXME Duped code. See CommonUtils.showLabel(v). Remove this, or other.
 	public final static void setViewGone(View v) {
 		v.setVisibility(View.GONE);
 	}
-	
+
+	// FIXME Duped code. See CommonUtils.showLabel(v). Remove this, or other.
 	public final static void setViewVisible(View v) {
 		v.setVisibility(View.VISIBLE);
 	}
-	
+
 	public final static void setViewInvisible(final View v) {
 		v.setVisibility(View.INVISIBLE);
 	}
@@ -28,14 +32,17 @@ public final class CommonMethods {
 	/**
 	 * Set a text label visible and assign its text value to the given string.
 	 * 
-	 * @param label - A TextView to set visible and change the text of.
-	 * @param text - The String to present.
+	 * @param label
+	 *            - A TextView to set visible and change the text of.
+	 * @param text
+	 *            - The String to present.
 	 */
-	public final static void showLabelWithText(final TextView label, final String text) {
+	public final static void showLabelWithText(final TextView label,
+			final String text) {
 		label.setText(text);
 		setViewVisible(label);
 	}
-	
+
 	/**
 	 * Sets a given EditText's input to all lowercase characters. Useful when restricting the
 	 * input of a field.
@@ -70,8 +77,11 @@ public final class CommonMethods {
 	 * Launches the android native phone dialer with a given telephone number, and awaits user's
 	 * action to initiate the call.
 	 * 
-	 * @param number - a String representation of a phone number to dial.
-	 * @param callingContext - When calling this method, pass it the context/activity that called this method.
+	 * @param number
+	 *            - a String representation of a phone number to dial.
+	 * @param callingContext
+	 *            - When calling this method, pass it the context/activity that
+	 *            called this method.
 	 */
 	public final static void dialNumber(final String number, final Context callingContext) {
 		if(number != null && callingContext != null) {
@@ -85,20 +95,46 @@ public final class CommonMethods {
 		}
 		
 	}
+
+	/**
+	 * Determines whether or not the current account's card type is a Miles
+	 * Escape, or not.
+	 * 
+	 * @param accountDetails
+	 * @return true if a Miles Escape, false otherwise.
+	 */
+	public final static boolean isEscapeCard(AccountDetails accountDetails) {
+
+		// No Outage
+		if (!accountDetails.cardProductGroupOutageMode) {
+			if (accountDetails.cardProductGroupCode.equalsIgnoreCase("ESC")) {
+				return true;
+			}
+			return false;
+		}
+
+		// Outage - manual discernment of type
+		if (accountDetails.cardType.equalsIgnoreCase("000001")
+				&& accountDetails.incentiveCode.equalsIgnoreCase("000003")
+				&& accountDetails.incentiveTypeCode.equalsIgnoreCase("MI2")) {
+			return true;
+		}
+		return false;
+	}
 	
 	/**
 	 * Search through a String and remove any spaces
 	 */
 	public final static String getSpacelessString(final String stringWithSpaces) {
 		String stringWithNoSpaces = stringWithSpaces;
-		
+
 		if(stringWithSpaces != null) {
 			stringWithNoSpaces = stringWithSpaces.replace(" ", "");
 		}
-		
+
 		return stringWithNoSpaces;
 	}
-	
+
 	/**
 	 * Insert a space after every 4 characters in a String.
 	 * Warning! Recursion!!!
@@ -111,8 +147,9 @@ public final class CommonMethods {
 		else
 			return stringWithoutSpaces;	
 	}
-	
-	private CommonMethods(){
-		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$
+
+	private CommonMethods() {
+		throw new UnsupportedOperationException(
+				"This class is non-instantiable"); //$NON-NLS-1$
 	}
 }
