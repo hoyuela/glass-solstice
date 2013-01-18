@@ -33,6 +33,19 @@ public final class CommonMethods {
 		setViewVisible(label);
 	}
 	
+
+	/**
+	 * Set a text label visible and assign its text value to the given string resource.
+	 * 
+	 * @param label - A TextView to set visible and change the text of.
+	 * @param text - The String resource to resolve and present.
+	 * @param context - the context that is using this method.
+	 */
+	public final static void showLabelWithStringResource(final TextView label, final int text, final Context context) {
+		label.setText(context.getResources().getString(text));
+		setViewVisible(label);
+	}
+	
 	/**
 	 * Launches the android native phone dialer with a given telephone number, and awaits user's
 	 * action to initiate the call.
@@ -78,7 +91,6 @@ public final class CommonMethods {
 		else
 			return stringWithoutSpaces;	
 	}
-	
 	
 	private CommonMethods(){
 		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$

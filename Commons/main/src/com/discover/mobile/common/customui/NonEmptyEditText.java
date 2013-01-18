@@ -34,7 +34,7 @@ public class NonEmptyEditText extends ValidatedInputField {
 	}
 
 	@Override
-	protected boolean isValid() {
+	public boolean isValid() {
 		return this.length() > 0;
 	}
 	

@@ -1,5 +1,7 @@
 package com.discover.mobile.login.register;
 
+import java.util.Locale;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +19,8 @@ import android.widget.EditText;
 import com.discover.mobile.R;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.auth.InputValidator;
+import com.discover.mobile.common.customui.ValidatedInputField;
 
 /**
  * Editable View which validates the text entered with a password or user id strength algorithm.
@@ -36,7 +40,7 @@ import com.discover.mobile.common.analytics.TrackingHelper;
  * @author henryoyuela
  * 
  */
-public class CredentialStrengthEditText extends EditText {
+public class CredentialStrengthEditText extends ValidatedInputField {
 	/** Used to print logs within this class **/
 	private static final String TAG = CredentialStrengthEditText.class.getName();
 	/**
@@ -53,6 +57,10 @@ public class CredentialStrengthEditText extends EditText {
 	 * Maximum length for a password
 	 */
 	public static final int MAX_PSWD_LENGTH=32;
+	/**
+	 * Length of the default EMS for this field.
+	 */
+	final static int DEFAULT_EMS = 20;
 	/**
 	 * Maximum length for userid
 	 */
@@ -219,12 +227,23 @@ public class CredentialStrengthEditText extends EditText {
 			break;
 		case USERID:
 			updateStrengthMeterForUID(text);
+			setInputToLowerCase(this.getText().toString(), this);
 			break;
 		default:
 			Log.v(TAG, "Credential type not specified");
 			break;
 		}
 
+	}
+	
+	public void setInputToLowerCase(final CharSequence input, final EditText field){
+		final String inputString = input.toString();
+		final String lowerCaseInput = inputString.toLowerCase(Locale.getDefault());
+		
+		if( !inputString.equals(lowerCaseInput)){
+			field.setText(lowerCaseInput);
+			field.setSelection(lowerCaseInput.length());
+		}
 		
 	}
 	
@@ -531,6 +550,31 @@ public class CredentialStrengthEditText extends EditText {
 		float w = bitmap.getWidth() * h / height;
 		
 		return Bitmap.createScaledBitmap(bitmap, (int) w, (int) h, true);
+		
+	}
+
+	@Override
+	protected int getEMSFocusedLength() {
+		return DEFAULT_EMS;
+	}
+
+	@Override
+	protected int getEMSNotFocusedLength() {
+		return DEFAULT_EMS;
+	}
+
+	@Override
+	public boolean isValid() {
+		String currentInput = this.getText().toString();
+		boolean isValid = false;
+		
+		if(mCredentialType == PASSWORD)
+			isValid = InputValidator.isPasswordValid(currentInput);
+		else
+			isValid = InputValidator.isUserIdValid(currentInput);
+		
+		return isValid;
+		
 		
 	}
 }

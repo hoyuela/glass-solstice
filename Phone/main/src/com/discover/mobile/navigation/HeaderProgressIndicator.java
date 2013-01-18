@@ -83,7 +83,7 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	 * Sets up the current position of the header
 	 * @param position - number between 0-2
 	 */
-	private void setPosition(int position){
+	public void setPosition(int position){
 		if (position == 1){
 			step1Confirm.setVisibility(View.VISIBLE);
 		}

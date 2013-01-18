@@ -46,6 +46,7 @@ public abstract class ValidatedInputField extends EditText{
 	 */
 	protected Drawable redX = null;
 	protected Drawable grayX = null;
+	protected Drawable greenCheck = null;
 	protected Drawable downArrow = null;
 	
 	protected boolean isInErrorState = false;
@@ -244,6 +245,12 @@ public abstract class ValidatedInputField extends EditText{
 		return grayX;
 	}
 	
+	protected Drawable getGreenCheck() {
+		if(greenCheck == null)
+			greenCheck = getResources().getDrawable(R.drawable.checkmark_green);
+		return greenCheck;
+	}
+	
 	/**
 	 * If a down arrow is to be used at the right drawable location (for a date picker)
 	 * Load it from the resources so that the calling class can use the image.
@@ -275,7 +282,7 @@ public abstract class ValidatedInputField extends EditText{
 	 * Check to see if the current edit text has a valid input state.
 	 * @return returns true if the current input is valid.
 	 */
-	protected abstract boolean isValid();
+	public abstract boolean isValid();
 	
 	/**
 	 * Sets the error state of the EditText. This usually includes things like
@@ -312,19 +319,18 @@ public abstract class ValidatedInputField extends EditText{
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if (mSearchText.getCompoundDrawables()[2] == null) {
-					return false;
+				Drawable rightDrawable = mSearchText.getCompoundDrawables()[2];
+				if (rightDrawable == null || rightDrawable.equals(getGreenCheck()) || event.getAction() != MotionEvent.ACTION_UP) {
+					//Do nothing
 				}
-				if (event.getAction() != MotionEvent.ACTION_UP) {
-					return false;
-				}
-				if (event.getX() > mSearchText.getWidth()
+				else if (event.getX() > mSearchText.getWidth()
 						- mSearchText.getPaddingRight()
 						- getRedX().getIntrinsicWidth()) {
 					mSearchText.setText("");
 					mSearchText.clearErrors();
 					mSearchText.setRightDrawableGrayX();
 				}
+
 				return false;
 			}
 		});

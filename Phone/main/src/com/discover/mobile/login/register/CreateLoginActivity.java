@@ -8,29 +8,39 @@ import static com.discover.mobile.common.auth.registration.RegistrationErrorCode
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 
 import java.net.HttpURLConnection;
+import java.util.Locale;
 
-import roboguice.activity.RoboActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
+import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.CreateLoginCall;
 import com.discover.mobile.common.auth.registration.CreateLoginDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
+import com.discover.mobile.common.customui.ConfirmationEditText;
+import com.discover.mobile.common.customui.EmailEditText;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 import com.discover.mobile.navigation.NavigationRootActivity;
 
 /**
@@ -41,7 +51,7 @@ import com.discover.mobile.navigation.NavigationRootActivity;
  * @author scottseward
  *
  */
-public class CreateLoginActivity extends RoboActivity {
+public class CreateLoginActivity extends NotLoggedInRoboActivity {
 	
 	// FIXME replace all extra sets/gets with ScreenType references (constants)
 	
@@ -55,38 +65,92 @@ public class CreateLoginActivity extends RoboActivity {
 	private TextView passConfirmErrorLabel;
 	private TextView emailErrorLabel;
 
+//SCROLL VIEW
+	private ScrollView mainScrollView;
 		
 //INPUT FIELDS
-	private EditText emailField;
+	private EmailEditText emailField;
 	private CredentialStrengthEditText idField;
-	private EditText idConfirmField;
+	private ConfirmationEditText idConfirmField;
 	private CredentialStrengthEditText passField;
-	private EditText passConfirmField;
+	private ConfirmationEditText passConfirmField;
 	
+//HEADER PROGRESS BAR
+	private HeaderProgressIndicator headerProgressIndicator;
+	
+//BUTTONS
+	private Button continueButton;
+	
+	private Context currentContext;
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_create_credentials);
-		
 		loadAllViews();
-						
-//		mergeAccountDetails();
+		attachDisabledButtonListeners();
+		attachErrorLabelsToFields();
+		mergeAccountDetails();
 
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP2);
 		setupStrengthBars();
+		setupConfirmationFields();
+
+		setupHeaderProgress();
+		setupHelpNumber();
+	}
+	
+	/** 
+	 * A text watcher that allows every form on the screen to listen for 
+	 * when the form info is complete and then update the submit button to enabled
+	 */
+	private TextWatcher getContinueButtonTextWatcher() {
+		return new TextWatcher() {
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(isFormCompleteAndValid())
+					continueButton.setEnabled(true);
+				else
+					continueButton.setEnabled(false);
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,int count) {}
+		};
+	}
+	
+	private void attachDisabledButtonListeners() {
+		emailField.addTextChangedListener(getContinueButtonTextWatcher());
+		idField.addTextChangedListener(getContinueButtonTextWatcher());
+		idConfirmField.addTextChangedListener(getContinueButtonTextWatcher());
+		idConfirmField.setIsUserIdConfirmation(true);
+		passField.addTextChangedListener(getContinueButtonTextWatcher());
+		passConfirmField.addTextChangedListener(getContinueButtonTextWatcher());
 		
+	}
+	
+	private void attachErrorLabelsToFields() {
+		emailField.attachErrorLabel(emailErrorLabel);
+	}
+	
+	private boolean isFormCompleteAndValid() {
+		return emailField.isValid() && 
+				idField.isValid() && idConfirmField.isValid() && 
+				passField.isValid() && passConfirmField.isValid();
 	}
 	
 	/**
 	 * Assign all local variables to view elements that we will need to access.
 	 */
 	private void loadAllViews() {
-		passConfirmField = (EditText) findViewById(R.id.account_info_two_pass_confirm_field);
+		passConfirmField = (ConfirmationEditText) findViewById(R.id.account_info_two_pass_confirm_field);
 		passField = (CredentialStrengthEditText)findViewById(R.id.account_info_two_pass_field);
-		idConfirmField = (EditText)findViewById(R.id.account_info_two_id_confirm_field);
+		idConfirmField = (ConfirmationEditText)findViewById(R.id.account_info_two_id_confirm_field);
 		idField = (CredentialStrengthEditText)findViewById(R.id.account_info_two_id_field);
-		emailField = (EditText)findViewById(R.id.account_info_two_email_field);
+		emailField = (EmailEditText)findViewById(R.id.account_info_two_email_field);
 		emailErrorLabel = (TextView)findViewById(R.id.account_info_email_error_label);
 		passConfirmErrorLabel = (TextView)findViewById(R.id.account_info_pass_two_confirm_error_label);
 		passErrorLabel = (TextView)findViewById(R.id.account_info_id_pass_error_label);
@@ -94,6 +158,35 @@ public class CreateLoginActivity extends RoboActivity {
 		
 		errorMessageLabel = (TextView)findViewById(R.id.account_info_id_confirm_error_label);
 		mainErrorMessageLabel = (TextView)findViewById(R.id.account_info_main_error_label);
+		headerProgressIndicator = (HeaderProgressIndicator)findViewById(R.id.header);
+		continueButton  = (Button)findViewById(R.id.account_info_two_submit_button);
+		
+		mainScrollView = (ScrollView)findViewById(R.id.main_scroll);
+	}
+	
+	private void setupConfirmationFields() {
+		idConfirmField.attachEditTextToMatch(idField);
+		idConfirmField.attachErrorLabel(idConfirmErrorLabel);
+		
+		passConfirmField.attachEditTextToMatch(passField);
+		passConfirmField.attachErrorLabel(passConfirmErrorLabel);
+	}
+	private void setupHeaderProgress() {
+		headerProgressIndicator.initChangePasswordHeader(1);
+		headerProgressIndicator.setTitle(R.string.enter_info, R.string.create_login, R.string.confirm);
+		headerProgressIndicator.setPosition(1);
+	}
+	
+	private void setupHelpNumber() {
+		currentContext = this;
+		final TextView helpText = (TextView)findViewById(R.id.help_number_label);
+		helpText.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CommonMethods.dialNumber(helpText.getText().toString(), currentContext);
+			}
+		});
 	}
 	
 	private void setupStrengthBars() {
@@ -103,8 +196,7 @@ public class CreateLoginActivity extends RoboActivity {
 	
 	private void mergeAccountDetails() {
 		formDataTwo = new CreateLoginDetails();
-
-		final AccountInformationDetails formDataOne = 
+		AccountInformationDetails formDataOne = 
 				(AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
 
 		formDataTwo.acctNbr = formDataOne.acctNbr;
@@ -116,14 +208,9 @@ public class CreateLoginActivity extends RoboActivity {
 		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
 	
 	}
-	
-	@Override
-	public void onBackPressed() {
-		cancel(null);
-	}
 
 	public void cancel(final View v) {
-
+		goBack();
 	}
 	
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
@@ -141,75 +228,20 @@ public class CreateLoginActivity extends RoboActivity {
 	}
 	
 	public void checkInputsThenSubmit(final View v){
-		final InputValidator validator = new InputValidator();
-		
-		final String email = emailField.getText().toString();
-		final String id1 = idField.getText().toString();
-		final String id2 = idConfirmField.getText().toString();
-		final String pass1 = passField.getText().toString();
-		final String pass2 = passConfirmField.getText().toString();
-		
-		validator.doPassesMatch(pass1, pass2);
-		validator.doIdsMatch(id1,id2);
-		validator.isEmailValid(email);
-		validator.doPassAndIdMatch(pass1,id1); 
-		validator.isUidValid(id1);
 
-		updateErrorLabelsUsingValidator(validator);
-		
-		if(validator.wasAccountTwoInfoComplete()){
-			formDataTwo.email = email;
-			formDataTwo.password = pass1;
+		if(isFormCompleteAndValid()){
+			formDataTwo.email = emailField.getText().toString();
+			formDataTwo.password = passField.getText().toString();
 			formDataTwo.passwordConfirm = formDataTwo.password;
-			formDataTwo.userId = id1;
+			formDataTwo.userId = idField.getText().toString();
 			formDataTwo.userIdConfirm = formDataTwo.userId;
 			submitFormInfo();
 		}
 		else {
-			showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
+			mainScrollView.smoothScrollTo(0, 0);
+			CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text, currentContext);
 		}
 			
-	}
-	
-	private void updateErrorLabelsUsingValidator(final InputValidator validator) {
-		hideAllErrorLabels();
-		
-		if( !validator.didIdsMatch ) {
-			showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_ids_must_match_text);
-			showLabelWithStringResource(idConfirmErrorLabel, R.string.doesnt_match_records);
-		}
-		else {
-			hideLabel(errorMessageLabel);
-			hideLabel(idConfirmErrorLabel);
-		}
-		
-		if( !validator.didPassesMatch ){
-			showLabelWithStringResource(passErrorLabel, R.string.account_info_two_passwords_dont_match_text);
-			showLabelWithStringResource(passConfirmErrorLabel, R.string.doesnt_match_records);
-		}
-		else {
-			hideLabel(passConfirmErrorLabel);
-		}
-		
-		if( !validator.wasEmailValid ){
-			showLabelWithStringResource(emailErrorLabel, R.string.doesnt_match_records);
-		}
-		else {
-			hideLabel(emailErrorLabel);
-		}
-		
-		if( validator.didPassAndIdMatch ) {
-			showLabelWithStringResource(errorMessageLabel, R.string.id_and_pass_match);
-		}
-	}
-	
-	private void hideAllErrorLabels() {
-		hideLabel(errorMessageLabel);
-		hideLabel(idConfirmErrorLabel);
-		hideLabel(passErrorLabel);
-		hideLabel(passConfirmErrorLabel);
-		hideLabel(emailErrorLabel);
-		
 	}
 	
 	private static final int PASSWORD_STRENGTH_HELP = 0;
@@ -234,247 +266,16 @@ public class CreateLoginActivity extends RoboActivity {
 		//need not do anything we dont care about the result from these screens.
 	}
 
-	private void setupTextChangedListeners(){
-	
-//		passField.addTextChangedListener(new TextWatcher() {
-//
-//
-//			@Override
-//			public void beforeTextChanged(final CharSequence s, final int start, final int count,
-//					final int after) {/*not used*/}
-//
-//			@Override
-//			public void onTextChanged(final CharSequence inputText, final int start, final int before,
-//					final int count) {
-//				updateBarsForPass(inputText, passBarOne, passBarTwo, passBarThree, passStrengthBarLabel);
-//			}
-//
-//			@Override
-//			public void afterTextChanged(final Editable s) {/*not used*/}
-//		});
-//		
-//		idField.addTextChangedListener(new TextWatcher(){
-//			InputValidator validator = new InputValidator();
-//
-//			@Override
-//			public void afterTextChanged(final Editable s) {/*not used*/}
-//			
-//			@Override
-//			public void beforeTextChanged(final CharSequence s, final int start, final int count,
-//					final int after) {/*not used*/}
-//
-//			@Override
-//			public void onTextChanged(final CharSequence inputText, final int start, final int before, 
-//			final int count) {
-//				updateBarsForUID(inputText, idBarOne, idBarTwo, idBarThree, idStrengthBarLabel);
-//				setInputToLowerCase(inputText, idField);
-//				if(validator.isUidValid(idField.getText().toString())) {
-//					hideLabel(errorMessageLabel);
-//				}
-//			}
-//		});
-//		
-//		idField.setOnFocusChangeListener(new OnFocusChangeListener() {
-//			InputValidator validator = new InputValidator();
-//			
-//			@Override
-//			public void onFocusChange(final View v, final boolean hasFocus) {
-//				if(!hasFocus && !validator.isUidValid(idField.getText().toString())) {
-//					showLabelWithStringResource(errorMessageLabel, R.string.doesnt_match_records);
-//				}
-//			}
-//		});
-//		
-//		idConfirmField.setOnFocusChangeListener(new OnFocusChangeListener() {
-//			InputValidator validator = new InputValidator();
-//			
-//			@Override
-//			public void onFocusChange(final View v, final boolean hasFocus) {
-//				if(!hasFocus && !validator.isUidValid(idConfirmField.getText().toString())) {
-//					showLabelWithStringResource(idConfirmErrorLabel, R.string.doesnt_match_records);
-//				}
-//			}
-//		});
-//		
-//		idConfirmField.addTextChangedListener(new TextWatcher(){
-//			InputValidator validator = new InputValidator();
-//
-//			@Override
-//			public void afterTextChanged(final Editable s) {/*not used*/}
-//
-//			@Override
-//			public void beforeTextChanged(final CharSequence s, final int start, final int count,
-//					final int after) {/*not used*/}
-//
-//			@Override
-//			public void onTextChanged(final CharSequence s, final int start, final int before,
-//					final int count) {
-//				setInputToLowerCase(s, idConfirmField);
-//				if(validator.isUidValid(idConfirmField.getText().toString())) {
-//					hideLabel(idConfirmErrorLabel);
-//				}
-//				
-//			}
-//			
-//		});
+	public void setInputToLowerCase(final CharSequence input, final EditText field){
+		final String inputString = input.toString();
+		final String lowerCaseInput = inputString.toLowerCase(Locale.getDefault());
+		
+		if( !inputString.equals(lowerCaseInput)){
+			field.setText(lowerCaseInput);
+			field.setSelection(lowerCaseInput.length());
+		}
+		
 	}
-
-//	public void setInputToLowerCase(final CharSequence input, final EditText field){
-//		final String inputString = input.toString();
-//		final String lowerCaseInput = inputString.toLowerCase(Locale.getDefault());
-//		
-//		if( !inputString.equals(lowerCaseInput)){
-//			field.setText(lowerCaseInput);
-//			field.setSelection(lowerCaseInput.length());
-//		}
-//		
-//	}
-	
-	// FIXME revise the following gigantic methods
-	
-	//Currently setup only for a single user id input.
-//	public void updateBarsForUID(final CharSequence inputSequence, 
-//									final View barOne, final View barTwo, final View barThree, final TextView label) {
-//		
-//		boolean hasGoodLength   = false;
-//		boolean hasUpperCase    = false;
-//		boolean hasLowerCase    = false;
-//		boolean hasNonAlphaNum  = false;
-//		boolean hasInvalidChar  = false;
-//		boolean hasNumber 	    = false;
-//		boolean looksLikeActNum = false;
-//		
-//		boolean passAndIdMatch = idField.getText().equals(passField.getText());
-//		
-//		//Check length of input.
-//		if(inputSequence.length() >= 6 && inputSequence.length() <= 16)
-//			hasGoodLength = true;
-//		
-//			for(int i = 0; i < inputSequence.length(); ++i){
-//				
-//				if(Character.isLowerCase(inputSequence.charAt(i))){
-//					hasLowerCase = true;
-//				}
-//				else if (Character.isUpperCase(inputSequence.charAt(i))){
-//					hasUpperCase = true;
-//				}
-//				else if (Character.isDigit(inputSequence.charAt(i))){
-//					hasNumber = true;
-//				}
-//				else if(inputSequence.charAt(i) == '\\' ||
-//						inputSequence.charAt(i) == '`'  ||
-//						inputSequence.charAt(i) == '\'' ||
-//						inputSequence.charAt(i) == '\"' ||
-//						inputSequence.charAt(i) == ' '){
-//					hasInvalidChar = true;
-//				}
-//				else if(!Character.isLetterOrDigit(inputSequence.charAt(i))){
-//					hasNonAlphaNum = true;
-//				}
-//			}
-//			
-//			if(inputSequence.toString().startsWith("6011")){
-//				looksLikeActNum = true;
-//				showLabelWithStringResource(errorMessageLabel, R.string.doesnt_match_records);
-//			}
-//			
-//			/*
-//			 * Meets minimum requirements and combines a variation of letters, numbers, and special characters.
-//			 */
-//			if(!passAndIdMatch && !looksLikeActNum && !hasInvalidChar && hasGoodLength && (hasLowerCase || hasUpperCase) && hasNonAlphaNum && hasNumber){
-//				barOne.setBackgroundColor(getResources().getColor(R.color.green));		
-//				barTwo.setBackgroundColor(getResources().getColor(R.color.green));
-//				barThree.setBackgroundColor(getResources().getColor(R.color.green));
-//				label.setText(getResources().getString(R.string.strength_bar_strong));
-//			}
-//			/*
-//			 * Meets minimum requirements but does not include a variation of letters, numbers, and special characters.
-//			 */
-//			else if(!passAndIdMatch && !looksLikeActNum && !hasInvalidChar && hasGoodLength){
-//				barOne.setBackgroundColor(getResources().getColor(R.color.yellow));		
-//				barTwo.setBackgroundColor(getResources().getColor(R.color.yellow));
-//				barThree.setBackgroundColor(getResources().getColor(R.color.gray));
-//				label.setText(getResources().getString(R.string.strength_bar_moderate));
-//			}
-//			/*
-//			 * Does not meet minimum requirements (not 6-16 characters, 
-//			 * looks like an account number, or uses spaces or the following characters: (`)(')(")(\))
-//			 */
-//			else {
-//				barOne.setBackgroundColor(getResources().getColor(R.color.red));		
-//				barTwo.setBackgroundColor(getResources().getColor(R.color.gray));
-//				barThree.setBackgroundColor(getResources().getColor(R.color.gray));
-//				label.setText(getResources().getString(R.string.strength_bar_not_valid));
-//			}
-//			
-//	}
-
-	
-//	public void updateBarsForPass(final CharSequence inputSequence, 
-//									final View barOne, final View barTwo, final View barThree, final TextView label){
-//		boolean hasGoodLength  = false;
-//		boolean hasUpperCase   = false;
-//		boolean hasLowerCase   = false;
-//		boolean hasNonAlphaNum = false;
-//		boolean hasNumber 	   = false;
-//		
-//		boolean passAndIdMatch = idField.getText().equals(passField.getText());
-//				
-//		//Check length of input.
-//		if(inputSequence.length() >= 8 && inputSequence.length() <= 32)
-//			hasGoodLength = true;
-//					
-//		//A password must have at least 1 letter and 1 number and cannot be 'password'
-//		//but password doesn't have a number...
-//			for(int i = 0; i < inputSequence.length(); ++i){
-//				
-//				if(Character.isLowerCase(inputSequence.charAt(i))){
-//					hasLowerCase = true;
-//				}
-//				else if (Character.isUpperCase(inputSequence.charAt(i))){
-//					hasUpperCase = true;
-//				}
-//				else if (Character.isDigit(inputSequence.charAt(i))){
-//					hasNumber = true;
-//				}				
-//				else if(!Character.isLetterOrDigit(inputSequence.charAt(i))){
-//					hasNonAlphaNum = true;
-//				}
-//			}
-//			
-//			final boolean hasUpperAndLowerAndNum = hasLowerCase && hasUpperCase && hasNumber;
-//			/*
-//			 * Meets minimum requirements and combines upper case letters,
-//			 * lower case letters, numbers, and special characters.
-//			 */
-//			if(!passAndIdMatch && hasGoodLength && hasUpperAndLowerAndNum && hasNonAlphaNum){
-//				barOne.setBackgroundColor(getResources().getColor(R.color.green));		
-//				barTwo.setBackgroundColor(getResources().getColor(R.color.green));
-//				barThree.setBackgroundColor(getResources().getColor(R.color.green));
-//				label.setText(getResources().getString(R.string.strength_bar_strong));
-//			}
-//			/*
-//			 * Meets minimum requirements but does not include a
-//			 * variation of upper case letters, lower case letters, numbers, and special characters.
-//			 */
-//			else if(!passAndIdMatch && hasGoodLength && hasNumber && (hasUpperCase || hasLowerCase)){
-//				barOne.setBackgroundColor(getResources().getColor(R.color.yellow));		
-//				barTwo.setBackgroundColor(getResources().getColor(R.color.yellow));
-//				barThree.setBackgroundColor(getResources().getColor(R.color.gray));
-//				label.setText(getResources().getString(R.string.strength_bar_moderate));
-//			}
-//			/*
-//			 * Does not meet minimum requirements (not 8-32 characters, 
-//			 * does not contain at least 1 letter and 1 number, or is the word "password").
-//			 */
-//			else{
-//				barOne.setBackgroundColor(getResources().getColor(R.color.red));		
-//				barTwo.setBackgroundColor(getResources().getColor(R.color.gray));
-//				barThree.setBackgroundColor(getResources().getColor(R.color.gray));
-//				label.setText(getResources().getString(R.string.strength_bar_not_valid));
-//			}
-//			
-//	}
 	
 	private void submitFormInfo() {
 		final ProgressDialog progress = 
@@ -507,22 +308,22 @@ public class CreateLoginActivity extends RoboActivity {
 				
 				switch(messageErrorResponse.getMessageStatusCode()){
 				case REG_AUTHENTICATION_PROBLEM: //Provided information was incorrect.
-					showLabelWithStringResource(errorMessageLabel, R.string.account_info_bad_input_error_text);
+					CommonMethods.showLabelWithStringResource(errorMessageLabel, R.string.account_info_bad_input_error_text, currentContext);
 					return true;
 				case BAD_ACCOUNT_STATUS: //Last attemt with this account number warning.
-					showLabelWithStringResource(errorMessageLabel, R.string.login_attempt_warning);
+					CommonMethods.showLabelWithStringResource(errorMessageLabel, R.string.login_attempt_warning, currentContext);
 					return true;
 				case ID_AND_PASS_EQUAL:
-					showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
-					showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_id_matches_pass_error_text);
+					CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text, currentContext);
+					CommonMethods.showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_id_matches_pass_error_text, currentContext);
 					return true;
 				case ID_AND_SSN_EQUAL:
-					showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
-					showLabelWithStringResource(errorMessageLabel, R.string.id_and_ssn_match_text);
+					CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text, currentContext);
+					CommonMethods.showLabelWithStringResource(errorMessageLabel, R.string.id_and_ssn_match_text, currentContext);
 					return true;
 				case ID_ALREADY_TAKEN:
-					showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
-					showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_username_in_use_error_text);
+					CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text, currentContext);
+					CommonMethods.showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_username_in_use_error_text, currentContext);
 					return true;
 				case PLANNED_OUTAGE:
 					sendToErrorPage(ScreenType.SCHEDULED_MAINTENANCE);
@@ -546,18 +347,9 @@ public class CreateLoginActivity extends RoboActivity {
 		startActivity(maintenancePageIntent);
 		finish();
 	}
-	
-	
-	private void showLabelWithStringResource(final TextView label, final int stringResource) {
-		label.setText(getString(stringResource));
-		showLabel(label);
-	}
-	
-	private void showLabel(final View v) {
-		v.setVisibility(View.VISIBLE);
-	}
-	
-	private void hideLabel(final View v) {
-		v.setVisibility(View.GONE);
+
+	@Override
+	public void goBack() {
+		finish();
 	}
 }

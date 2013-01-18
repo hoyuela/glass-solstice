@@ -18,9 +18,12 @@ import java.util.regex.Pattern;
  *
  */
 public class InputValidator {
-	private Pattern emailPattern;
+	private static Pattern emailPattern;
 	private final static String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 									+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	
+	private static Matcher matcher;
+	private static Pattern pattern;
 	public boolean 
 	wasDobMonthValid, wasDobYearValid, wasDobDayValid, 
 	wasAccountNumberValid, wasSsnValid, wasEmailValid, 
@@ -91,16 +94,16 @@ public class InputValidator {
 		return didPassAndIdMatch;
 	}
 	
-	
-	public boolean isEmailValid(final String email){
+	public static boolean isEmailValid(final String email){
 		//See if we have a xxx@xxx.xxx style string
-		//Need some regular expressions up in here!
-		final Matcher matcher = emailPattern.matcher(email);
+		if(email== null){return false;}
 		
-		wasEmailValid = matcher.matches();
+		if(pattern == null)
+			pattern = Pattern.compile(EMAIL_PATTERN);
 		
-		return wasEmailValid;
-
+		matcher = pattern.matcher(email);
+		return matcher.matches();
+		
 	}
 	
 	public boolean doPassesMatch(final String pass1, final String pass2){
@@ -121,16 +124,13 @@ public class InputValidator {
 		return didIdsMatch;
 	}
 	
-	public boolean isLoginCredentialsValid(final String uid, final String pass){
-		return isUidValid(uid) && isPassValid(pass);
-	}
-	
 	public static boolean isCardAccountNumberValid(final String cardAccountNumber){	
 		return cardAccountNumber.startsWith(CARD_NUMBER_PREFIX) && cardAccountNumber.length() == CARD_NUMBER_LENGTH_OK 
 				&& !cardAccountNumber.contains(" ");
 	}
 	
-	public boolean isPassValid(final String inputSequence){		
+	public static boolean isPasswordValid(final String inputSequence){	
+		boolean isPassValid    = false;
 		boolean hasGoodLength  = false;
 		boolean hasUpperCase   = false;
 		boolean hasLowerCase   = false;
@@ -159,15 +159,15 @@ public class InputValidator {
 				}
 			}
 			
-			wasPassValid = (hasUpperCase || hasLowerCase) && 
+			isPassValid = (hasUpperCase || hasLowerCase) && 
 					hasGoodLength && 
 					hasNumber;
 			
-			return wasPassValid;
+			return isPassValid;
 	}
 	
-	public boolean isUidValid(final String uid){
-
+	public static boolean isUserIdValid(final String uid){
+		boolean isUserIdValid = false;
 		if(    !uid.equals("Credit Card User ID") &&
 			   uid.length() >= 6 && 
 			   uid.length() <= 16 &&
@@ -177,12 +177,12 @@ public class InputValidator {
 			   !uid.contains("\"")&&
 			   !uid.contains("\\") &&
 			   !uid.startsWith("6011")){
-				wasUidValid = true;
+				isUserIdValid = true;
 			}
 		else
-			wasUidValid = false;	
+			isUserIdValid = false;	
 		
-		return wasUidValid;
+		return isUserIdValid;
 	}
 	
 	/**
