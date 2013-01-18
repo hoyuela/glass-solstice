@@ -1,4 +1,4 @@
-package com.discover.mobile.login;
+package com.discover.mobile.error;
 
 import static com.discover.mobile.common.StandardErrorCodes.NO_DATA_FOUND;
 import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
@@ -24,6 +24,7 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.login.LockOutUserActivity;
 
 /**
  * A base class for error response handling.

@@ -6,6 +6,7 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.error.BaseErrorResponseHandler;
 
 /**
  * PreAuthErrorResponseHandler handles server error messages received from the

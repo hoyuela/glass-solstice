@@ -32,10 +32,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.alert.ModalAlertWithOneButton;
-import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.google.inject.Key;
 import com.slidingmenu.lib.SlidingMenu;
@@ -99,6 +100,9 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 		Globals.loadPreferences(this);
 		
         eventManager.fire(new OnResumeEvent());
+        
+      //Set this activity as the active activity
+      ErrorHandlerFactory.getInstance().setActiveActivity(this);
     }
 
     @Override
@@ -345,6 +349,11 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 	@Override
 	public int getLastError() {
 		return mLastError;
+	}
+	
+	@Override
+	public ErrorHandlerFactory getErrorHandlerFactory() {
+		return ErrorHandlerFactory.getInstance();
 	}
     
 }

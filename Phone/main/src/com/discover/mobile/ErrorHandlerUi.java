@@ -7,6 +7,8 @@ import android.content.Context;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.discover.mobile.error.ErrorHandlerFactory;
+
 
 /**
  * An interface to support common error handling across activities/fragments
@@ -102,4 +104,8 @@ public interface ErrorHandlerUi {
 	*/
 	public int getLastError();
 	
+	/**
+	 * 
+	 */
+	public ErrorHandlerFactory getErrorHandlerFactory();
 }

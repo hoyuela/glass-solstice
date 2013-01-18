@@ -12,13 +12,10 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.discover.mobile.alert.ErrorModalFactory;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
-import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.login.LockOutUserActivity;
 
 /**
@@ -81,7 +78,7 @@ public class BaseActivity extends RoboActivity implements ErrorHandlerUi{
 	 */
 	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
 		//Create a modal dialog based on title, error text, and errorCode provided
-		showCustomAlert(ErrorModalFactory.createErrorModal(this, errorCode, titleText, errorText));
+		showCustomAlert(ErrorHandlerFactory.getInstance().createErrorModal(errorCode, titleText, errorText));
 	}
 
 	/**
@@ -147,6 +144,9 @@ public class BaseActivity extends RoboActivity implements ErrorHandlerUi{
 		
 		//Load all application and user preferences from persistent storage
 		Globals.loadPreferences(this);
+		
+		//Set this activity as the active activity
+		ErrorHandlerFactory.getInstance().setActiveActivity(this);
 	}
 	
 	/**
@@ -159,6 +159,11 @@ public class BaseActivity extends RoboActivity implements ErrorHandlerUi{
 		//Save all application and user preferences into persistent storage
 		Globals.savePreferences(this);
 		
+	}
+
+	@Override
+	public ErrorHandlerFactory getErrorHandlerFactory() {
+		return ErrorHandlerFactory.getInstance();
 	}
 	
 

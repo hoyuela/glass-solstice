@@ -14,7 +14,7 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.login.BaseErrorResponseHandler;
+import com.discover.mobile.error.BaseErrorResponseHandler;
 import com.discover.mobile.logout.LogOutSuccessListener;
 import com.slidingmenu.lib.SlidingMenu;
 
