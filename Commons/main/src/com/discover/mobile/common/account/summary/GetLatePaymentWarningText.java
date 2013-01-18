@@ -9,6 +9,11 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.urlmanager.UrlManagerCard;
 
+/**
+ * Gets the text (only text) to be shown in the late payment warning modal
+ * @author jthornton
+ *
+ */
 public class GetLatePaymentWarningText extends JsonResponseMappingNetworkServiceCall<LatePaymentWarningTextDetail>{
 
 	/**Reference handler to allow the call to be back on the UI*/

@@ -1,4 +1,4 @@
-package com.discover.mobile.section.account;
+package com.discover.mobile.section.account.summary;
 
 import android.content.Context;
 import android.view.View.OnClickListener;

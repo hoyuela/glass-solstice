@@ -1,9 +1,9 @@
-package com.discover.mobile.section.account;
+package com.discover.mobile.section.account.summary;
 
-import com.discover.mobile.common.account.summary.LatePaymentWarningDetail;
+import com.discover.mobile.common.account.summary.LatePaymentWarningTextDetail;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 
-public class LatePaymentWarningSuccessListener  implements SuccessListener<LatePaymentWarningDetail>{
+public class LatePaymentWarningTextSuccessListener implements SuccessListener<LatePaymentWarningTextDetail>{
 	
 	/**Fragment to return the successful nature of the call*/
 	private AccountSummaryFragment fragment;
@@ -12,7 +12,7 @@ public class LatePaymentWarningSuccessListener  implements SuccessListener<LateP
 	 * Constructor for the class
 	 * @param fragment - fragment using this listener
 	 */
-	public LatePaymentWarningSuccessListener(final AccountSummaryFragment fragment){
+	public LatePaymentWarningTextSuccessListener(final AccountSummaryFragment fragment){
 		this.fragment = fragment;
 	}
 
@@ -31,8 +31,8 @@ public class LatePaymentWarningSuccessListener  implements SuccessListener<LateP
 	 * @return the successful response
 	 */
 	@Override
-	public void success(final LatePaymentWarningDetail detail) {
-		fragment.getLatePaymentTextInformation();
-		fragment.prepLatePaymentModalInfo(detail);
+	public void success(final LatePaymentWarningTextDetail detail) {
+		fragment.storeInfoStrings(detail);
+		fragment.showLatePaymentModal();
 	}
 }
