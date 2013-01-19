@@ -9,20 +9,45 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponse
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.google.common.base.Strings;
 
-
+/**
+ * This class is added to an instance of GenericAsyncCallback<> when built specifically for a Bank related
+ * NetworkServiceCall<>. This class is used as a dispatcher of NetworkServiceCall error response events.
+ * It relays the error response to the appropriate error handler based on the response's HTTP status code 
+ * and BankErrorResponse error code.
+ * 
+ * @author henryoyuela
+ *
+ */
 public final class BankBaseErrorResponseHandler implements ErrorResponseHandler {
+	/**
+	 * Contains a reference to an ErrorHandlerFactory to 
+	 */
 	protected ErrorHandlerFactory mErrorHandlerFactory = null;
-
-	public BankBaseErrorResponseHandler(ErrorHandlerUi errorHandlerUi) {
+	protected ErrorHandlerUi mErrorHandlerUi = null;
+	/**
+	 * Default constructor should not be used
+	 */
+	@SuppressWarnings("unused")
+	private BankBaseErrorResponseHandler() {
+		
+	}
+	/**
+	 * Constructor used to initialized an instance of the BankBaseErrorResponseHandler.
+	 * 
+	 * @param errorHandlerUi Reference to an instance of ErrorHandlerUi in order to make changes to the UI
+	 * 						 when an error occurs. An activity that makes a network service call is expected
+	 * 						 to implement this interface in order to handle the error response.
+	 */
+	public BankBaseErrorResponseHandler(final ErrorHandlerUi errorHandlerUi) {
+		mErrorHandlerUi = errorHandlerUi;
 		mErrorHandlerFactory = errorHandlerUi.getErrorHandlerFactory();
 	
 	}
 	
 	/**
-	 * Expectation is that all common error codes are handled here.
-	 * 
-	 * The extended ErrorHandler class will handle any network specific call
-	 * error codes coming back
+	 * This function is the callback used by a NetworkServiceCall<> to notify the application
+	 * that an error response was received. This calls uses this callback to dispatch the
+	 * error response to the appropriate handler.
 	 */
 	@Override
 	public final boolean handleFailure(final ErrorResponse<?> errorResponse) {
@@ -43,7 +68,6 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	 * 
 	 * OVERRIDE ME TO HANDLE CUSTOM JSON RESPONSE CODES ---
 	 * 
-	 * 
 	 * @param messageErrorResponse
 	 * @return
 	 */
@@ -55,30 +79,28 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 		if( !Strings.isNullOrEmpty(msgErrResponse.getErrorCode()) ) {
 			//Login Errors
 			if( errCode.equals(BankErrorCodes.ERROR_INVALID_LOGIN) ) {
-				mErrorHandlerFactory.handleLoginOrStrongAuthFailure(msgErrResponse.getErrorMessage());
+				mErrorHandlerFactory.handleLoginOrStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_LOGIN) ) {
-				mErrorHandlerFactory.handleLoginOrStrongAuthFailure(msgErrResponse.getErrorMessage());
+				mErrorHandlerFactory.handleLoginOrStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOGIN_LOCKED)) {
-				//Show a modal for locked out
-				mErrorHandlerFactory.handleLockedOut();
+				mErrorHandlerFactory.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} 
 			//Strong Auth Errors
 			else if( errCode.equals(BankErrorCodes.ERROR_INVALID_STRONG_AUTH) ) {
-				mErrorHandlerFactory.handleLoginOrStrongAuthFailure(msgErrResponse.getErrorMessage());
+				mErrorHandlerFactory.handleLoginOrStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH)) {
-				mErrorHandlerFactory.handleLoginOrStrongAuthFailure(msgErrResponse.getErrorMessage());
+				mErrorHandlerFactory.handleLoginOrStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOCKED_STRONG_AUTH)) {
-				//Show a modal for locked out
-				mErrorHandlerFactory.handleLockedOut();
+				mErrorHandlerFactory.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			}
 			//Maintenance Errors
 			else if( errCode.equals(BankErrorCodes.ERROR_MAINTENANCE_PLANNED)) {
-				mErrorHandlerFactory.handleHttpUnavailableErrorModal(true);
+				mErrorHandlerFactory.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_MAINTENANCE_UNPLANNED )) {
-				mErrorHandlerFactory.handleHttpUnavailableErrorModal(false);
+				mErrorHandlerFactory.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
 			}
 		} else {
-			mErrorHandlerFactory.handleGenericErrorModal(msgErrResponse.getHttpStatusCode());
+			mErrorHandlerFactory.handleGenericError(msgErrResponse.getHttpStatusCode());
 			handled = true;
 		}
 			
@@ -99,25 +121,28 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 
 		switch (httpErrorCode) {
 		case HttpURLConnection.HTTP_UNAUTHORIZED:
-			mErrorHandlerFactory.handleHttpUnauthorized();
+			mErrorHandlerFactory.handleHttpUnauthorizedError();
 			return true;
 		case HttpURLConnection.HTTP_INTERNAL_ERROR:
 			mErrorHandlerFactory.handleHttpInternalServerErrorModal();
 			return true;
 		case HttpURLConnection.HTTP_UNAVAILABLE:
-			mErrorHandlerFactory.handleHttpUnavailableErrorModal(false);
+			mErrorHandlerFactory.handleHttpServiceUnavailableModal(null);
 			return true;
 		case HttpURLConnection.HTTP_FORBIDDEN:
-			mErrorHandlerFactory.handleHttpForbiddenErrorModal();
+			mErrorHandlerFactory.handleGenericError(httpErrorCode);
 			return true;
 		default:
-			mErrorHandlerFactory.handleGenericErrorModal(httpErrorCode);
+			mErrorHandlerFactory.handleGenericError(httpErrorCode);
 			return true;
 		}
 	}
 
 	/**
-	 * Can override this if you need another priority: MIDDLE
+	 * An AsyncCallback may have several ErrorResponseHandler. This function serves as a callback
+	 * to the AsyncCallback it is associated with in order to determine the priority of this handler 
+	 * among the other ErrorResponseHandler in its list. AsyncCallback will use the CallbackPriority
+	 * value to determine when it should call handleFailure() for an instance of this class.
 	 */
 	@Override
 	public CallbackPriority getCallbackPriority() {

@@ -1,24 +1,49 @@
 package com.discover.mobile.common.auth.bank;
 
+/**
+ * Class contains the error codes that can be found in an error response to a Bank NetworkServiceCall<>
+ * 
+ * @author henryoyuela
+ *
+ */
 public class BankErrorCodes {
 
-	//HTTP 503
+	/**
+	 * Error Code used to describe a Planned System Maintenance error response with HTTP Status Code 503
+	 */
 	public static final String ERROR_MAINTENANCE_PLANNED = "Maintenance.Planned";
-	//HTTP 503
+	/**
+	 * Error Code used to describe a Unplanned System Maintenance error response with HTTP Status Code 503
+	 */
 	public static final String ERROR_MAINTENANCE_UNPLANNED = "Maintenance.Unplanned";
-	//HTTP 401
+	/**
+	 * Error Code used to describe an Invalid Login error response with HTTP Status Code 401
+	 */
 	public static final String ERROR_INVALID_LOGIN = "Auth.Login.Fail";
-	//HTTP 401
+	/**
+	 * Error Code used to describe a Last Attempt Invalid Login error response with HTTP Status Code 401
+	 */
 	public static final String ERROR_LAST_ATTEMPT_LOGIN = "Auth.Login.LastAttempt";
-	//HTTP 401
+	/**
+	 * Error Code used to describe a Login Locked Out error response with HTTP Status Code 403
+	 */
 	public static final String ERROR_LOGIN_LOCKED = "Auth.Login.Locked";
-	//HTTP 401
+	/**
+	 * Error Code used to describe an Invalid Strong Auth error response with HTTP Status Code 401
+	 */
 	public static final String ERROR_INVALID_STRONG_AUTH = "Auth.SA.Fail";
-	//HTTP 401
+	/**
+	 * Error Code used to describe a Last Attempt to a Strong Auth error response with HTTP Status Code 401
+	 */
 	public static final String ERROR_LAST_ATTEMPT_STRONG_AUTH = "Auth.SA.LastAttempt";
-	//HTTP 403
+	/**
+	 * Error Code used to describe a Strong Auth Locked Out error response with HTTP Status Code 403
+	 */
 	public static final String ERROR_LOCKED_STRONG_AUTH = "Auth.SA.Locked";
 	
+	/**
+	 * Default constructor is not to be used
+	 */
 	private BankErrorCodes() {
 		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$
 	}

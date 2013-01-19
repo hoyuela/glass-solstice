@@ -114,4 +114,16 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 	@Override
 	public void setContent(final int resouce) {}
 
+	/**
+	 * Set the title view text. Not Used in this class
+	 */
+	@Override
+	public void setTitle(String text) {}
+
+	/**
+	 * Set the content text. Not Used in this class
+	 */
+	@Override
+	public void setContent(String content) {}
+
 }

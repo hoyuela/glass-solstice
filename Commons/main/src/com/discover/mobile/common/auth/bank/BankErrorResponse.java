@@ -11,35 +11,56 @@ import com.discover.mobile.common.net.error.ErrorMessageMapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
+ * This is a class is used for mapping the JSON that is returned for errors on Bank service calls.
+ * 
+ * Example of JSON:
+ * {
+ *	    "errors" : [
+ *	                {
+ *	                "name" : "LastLoginAttempt",
+ *	                "code" : "Auth.Login.LastAttempt",
+ *	                "message" : "We're sorry, we still do not recognize the information you entered. For security reasons, you will be allowed only one more login attempt."
+ *	                }
+ *	                ],
+ *	    "data" : {
+ *	        "username" : "test001"
+ *	    }
+ *	}
  * 
  * @author henryoyuela
  *
  */
 public class BankErrorResponse extends AbstractErrorResponse<BankErrorResponse> {
 	/**
-	 * 
+	 * Auto-generated serial UID which is used to serialize and de-serialize BankErrorResponse objects
 	 */
 	private static final long serialVersionUID = -5484067099749190270L;
-
+	/**
+	 * Used for print logs from this class into Android logcat
+	 */
 	private static final String TAG = BankErrorResponse.class.getSimpleName();	
-	
-	/**List of params associated with this preference*/
+	/**
+	 * Contains list of errors found in a JSON Error Response to a Bank related NetworkServiceCall<>
+	 **/
 	@JsonProperty("errors")
 	public List<BankError> errors;
-	
+	/**
+	 * Contains the data found in a JSON Error Response to a Bank related NetworkServiceCall<>
+	 */
 	@JsonProperty("data")
 	public Map<String, String> data = new HashMap<String, String>();
 	
-	public BankErrorResponse() {
-		
-	}
-	
+	/**
+	 * Not Used in this class
+	 */
 	@Override
 	public ErrorMessageMapper<BankErrorResponse> getMessageMapper() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
+	/**
+	 * @return Returns the error code found in the JSON error response
+	 */
 	public String getErrorCode() {
 		String errorCode = null;
 		
@@ -53,7 +74,9 @@ public class BankErrorResponse extends AbstractErrorResponse<BankErrorResponse> 
 		
 		return errorCode;
 	}
-	
+	/**
+	 * @return Returns the name used to decribe the error found in the JSON error response
+	 */
 	public String getErrorName() {
 		String errorName = null;
 		
@@ -67,7 +90,9 @@ public class BankErrorResponse extends AbstractErrorResponse<BankErrorResponse> 
 		
 		return errorName;
 	}
-	
+	/**
+	 * @return Returns the Message found in the JSON error response
+	 */
 	public String getErrorMessage() {
 		String errorMessage = null;
 		

@@ -68,12 +68,29 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	}
 
 	/**
+	 * Set the text in the title view
+	 * @param text - String with text to be displayed as the title
+	 */
+	@Override
+	public void setTitle(final String text) {
+		title.setText(text);	
+	}
+	
+	/**
 	 * Set the content of the view
 	 * @param resource - int representing the resource to be displayed
 	 */
 	@Override
 	public void setContent(final int resource) {
 		text.setText(res.getString(resource));
+	}
+	
+	/**
+	 * Set the text in the content view
+	 * @param content - String with text to be displayed as the message
+	 */
+	public void setContent(final String content) {
+		text.setText(content);
 	}
 	
 	/**

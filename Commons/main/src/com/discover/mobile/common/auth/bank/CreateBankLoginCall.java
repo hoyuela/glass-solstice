@@ -18,7 +18,7 @@ import com.discover.mobile.common.urlmanager.UrlManagerBank;
  */
 public class CreateBankLoginCall extends
 		JsonResponseMappingNetworkServiceCall<BankLoginData> {
-
+	
 	private final TypedReferenceHandler<BankLoginData> handler;
 
 	public CreateBankLoginCall(final Context context,
@@ -33,7 +33,11 @@ public class CreateBankLoginCall extends
 				requiresSessionForRequest = false;
 
 				sendDeviceIdentifiers = true;
+						
 				body = login;
+				
+				// Specify what error parser to use when receiving an error response
+				errorResponseParser = BankErrorResponseParser.instance();
 
 			}
 		}, BankLoginData.class, false);

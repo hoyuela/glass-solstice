@@ -48,7 +48,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * Private constructor to prevent construction without a fragment or
 	 * activity
 	 */
-	public BaseErrorResponseHandler(ErrorHandlerUi errorHandlerUi) {
+	public BaseErrorResponseHandler(final ErrorHandlerUi errorHandlerUi) {
 		this.errorHandlerUi = errorHandlerUi;
 	}
 
@@ -160,7 +160,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * 
 	 * @param errorCode Status Code from the response received
 	 */
-	protected void setLastError(int errorCode) {
+	protected void setLastError(final int errorCode) {
 		ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
 		if (errorHandlerUi != null ) {
 			errorHandlerUi.setLastError(errorCode);
@@ -222,7 +222,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * 
 	 * @param stringResource
 	 */
-	protected void showModalErrorDialog(int title, int content, int buttonText) {
+	protected void showModalErrorDialog(final int title,final int content,final int buttonText) {
 		getErrorFieldUi().showOneButtonAlert(title, content, buttonText);
 	}
 
@@ -231,7 +231,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * 
 	 * @param stringResource
 	 */
-	protected void showDynamicModalErrorDialog(int title, String content, int buttonText) {
+	protected void showDynamicModalErrorDialog(final int title,final String content,final int buttonText) {
 		getErrorFieldUi().showDynamicOneButtonAlert(title, content, buttonText);
 	}
 
@@ -245,7 +245,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * @param text
 	 * @param errorText
 	 */
-	protected void setErrorText(int errorText) {
+	protected void setErrorText(final int errorText) {
 		ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
 		if (errorHandlerUi != null) {
 			errorHandlerUi.getErrorLabel().setText(((Context) errorHandlerUi).getResources().getString(errorText));
@@ -264,7 +264,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * @param text
 	 * @param errorText
 	 */
-	protected void setDynamicErrorText(String message) {
+	protected void setDynamicErrorText(final String message) {
 		ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
 		if (errorHandlerUi != null) {
 			errorHandlerUi.getErrorLabel().setText(message);
@@ -305,7 +305,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
      * @param content - the resource id for content to display on the box
      * @param buttonText - the resource id for button text to display on the button
      */
-    public void showOneButtonAlert(int title, int content, int buttonText){    	
+    public void showOneButtonAlert(final int title,final int content,final int buttonText){    	
 		showCustomAlert(new ModalAlertWithOneButton(getErrorFieldUi().getContext(),title,content,buttonText));
     }
     
@@ -318,7 +318,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
      * @param content - the resource id for content to display on the box
      * @param buttonText - the resource id for button text to display on the button
      */
-    public void showDynamicOneButtonAlert(int title, String content, int buttonText){    	
+    public void showDynamicOneButtonAlert(final int title,final String content,final int buttonText){    	
 		showCustomAlert(new ModalAlertWithOneButton(getErrorFieldUi().getContext(),title,content,buttonText));
     }
     
@@ -329,7 +329,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * 
 	 * @param errorText
 	 */
-	protected void sendToErrorPage(int titleText, int errorText) {
+	protected void sendToErrorPage(final int titleText,final int errorText) {
 		final Intent maintenancePageIntent = new Intent(getErrorFieldUi().getContext(), LockOutUserActivity.class);
 		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
 		getErrorFieldUi().getContext().startActivity(maintenancePageIntent);
@@ -342,7 +342,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * 
 	 * @param errorText
 	 */
-	protected void sendToErrorPage(int errorText) {
+	protected void sendToErrorPage(final int errorText) {
 		final Intent maintenancePageIntent = new Intent(getErrorFieldUi().getContext(), LockOutUserActivity.class);
 		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
 		getErrorFieldUi().getContext().startActivity(maintenancePageIntent);

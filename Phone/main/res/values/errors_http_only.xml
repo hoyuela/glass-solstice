@@ -2,6 +2,7 @@
     <!--General HTTP Error Strings  -->
     <string name="error_500_title">We\'re Currently Performing System Maintenance</string>
     <string name="error_503_title">We\'re Currently Performing System Maintenance</string>
+    <string name="error_403_title">You\'ve Been Locked Out</string>
     
     <!--Card HTTP Error Strings  -->
 	<string name="error_401">Sorry. The User ID and/or Password does not match our records, or you are not registered. Please try again.</string>
@@ -15,5 +16,5 @@
 	<!-- Default Bank HTTP Error Strings. Note Error Strings for bank are provided in the error response, these are in case they are not  -->
 	<string name="bank_error_500_message">We are currently performing system maintenance. We are working to keep the app running smoothly; unfortunately, this means your request cannot be completed at this time\n\nPlease try again on Sunday after 6am ET or on Monday-Saturday after 4am ET.</string>
 	<string name="bank_error_503_message">We are currently performing system maintenance. We are working to keep the app running smoothly; unfortunately, this means your request cannot be completed at this time\n\nPlease try again on Sunday after 6am ET or on Monday-Saturday after 4am ET.</string>
-	
+	<string name="bank_error_403_message">We know you\'re excited to get into the app, but you\'ve tried to log in with the wrong username or password too many times. Contact us by phone to regain access to your account.</string>
 </resources>
