@@ -317,7 +317,7 @@ public class EnterNewPasswordActivity extends RoboActivity {
 	}
 	
 	public void cancel(final View v) {
-		final Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
+		final Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
 		startActivity(forgotCredentials);
 		finish();
 	}

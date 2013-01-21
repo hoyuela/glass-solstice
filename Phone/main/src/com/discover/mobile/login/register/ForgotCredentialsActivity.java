@@ -21,7 +21,7 @@ import com.discover.mobile.common.analytics.TrackingHelper;
  * @author scottseward
  *
  */
-public class ForgotTypeSelectionActivity extends NotLoggedInRoboActivity {
+public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 	
 	private ArrayAdapter<Option> optionAdapter;
 	private ListView choicesList;
