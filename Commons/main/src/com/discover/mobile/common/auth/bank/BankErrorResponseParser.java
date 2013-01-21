@@ -10,11 +10,7 @@ import android.util.Log;
 
 import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
 import com.discover.mobile.common.net.error.ErrorResponseParser;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.discover.mobile.common.net.json.JacksonObjectMapperHolder;
 
 /**
  * This class is used to parse error responses to Discover Bank service requests. A single instance of 
@@ -35,10 +31,6 @@ public class BankErrorResponseParser implements ErrorResponseParser<BankErrorRes
 	 * Singleton instance of parser so it can be reused in any Bank Network Service Call object
 	 */
 	private static final ErrorResponseParser<?> BANK_ERROR_RESPONSE_PARSER;	
-	/**
-	 * Used to parse and deserialize a JSON Error response and store it in a BankErrorResponse object
-	 */
-	static final ObjectMapper mapper = createObjectMapper();
 	/**
 	 * Creates singleton instance of BankErrorResponseParser and adds it to the list of parsers that 
 	 * are tried when a response to a Network Service Call request is received. If the response has 
@@ -67,19 +59,6 @@ public class BankErrorResponseParser implements ErrorResponseParser<BankErrorRes
 		
 	}
 	/**
-	 * 
-	 * @return Returns a jackson mapper used to deserialize an incoming error response with a JSON body 
-	 * 		   into an BankErrorResponse
-	 */
-	private static ObjectMapper createObjectMapper() {
-		return new ObjectMapper()
-				.disable(MapperFeature.AUTO_DETECT_GETTERS)
-				.disable(MapperFeature.AUTO_DETECT_SETTERS)
-				.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, true)
-				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-				.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-	}
-	/**
 	 * Called by a NetworkServiceCall<> in order to deserialize an incoming JSON error response into a 
 	 * BankErrorResponse. If the response is NOT in the format of a BankErrorResponse, then throws
 	 * an IOException
@@ -95,7 +74,7 @@ public class BankErrorResponseParser implements ErrorResponseParser<BankErrorRes
 		BankErrorResponse ret = null;
 		
 		try {
-			ret = mapper.readValue(in, BankErrorResponse.class);
+			ret = JacksonObjectMapperHolder.getMapper().readValue(in, BankErrorResponse.class);
 			
 			if( ret == null && Log.isLoggable(TAG, Log.ERROR) ) {
 				Log.e(TAG, "Unable to map error response to an object");
