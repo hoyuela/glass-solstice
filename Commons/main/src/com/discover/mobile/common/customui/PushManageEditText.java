@@ -213,14 +213,4 @@ public class PushManageEditText extends ValidatedInputField{
 		this.definedAmount = definedAmount;
 	}
 
-	@Override
-	protected int getEMSFocusedLength() {
-		return EMS_LENGTH;
-	}
-
-	@Override
-	protected int getEMSNotFocusedLength() {
-		return EMS_LENGTH;
-	}
-
 }

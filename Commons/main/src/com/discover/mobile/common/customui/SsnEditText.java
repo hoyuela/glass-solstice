@@ -14,11 +14,9 @@ import android.util.AttributeSet;
 public class SsnEditText extends ValidatedInputField{
 
 	private int ssn;
+	private final static int DEFAULT_EMS = 4;
 	
 	private final static int GOOD_SSN_LENGTH = 4;
-	private final static int EMS_LENGTH_LARGE = 4;
-	private final static int EMS_LENGTH_SMALL = 3;
-
 	
 	public SsnEditText(Context context) {
 		super(context);
@@ -30,6 +28,12 @@ public class SsnEditText extends ValidatedInputField{
 	
 	public SsnEditText(Context context, AttributeSet attrs, int defStyle){
 		super(context, attrs, defStyle);
+	}
+	
+	@Override
+	protected void setupDefaultAppearance() {
+		super.setupDefaultAppearance();
+		this.setEms(DEFAULT_EMS);
 	}
 
 	/**
@@ -71,15 +75,5 @@ public class SsnEditText extends ValidatedInputField{
 	public void setSsn(final int ssn) {
 		this.ssn = ssn;
 	}
-
-	@Override
-	protected int getEMSFocusedLength() {
-		return EMS_LENGTH_LARGE;
-	}
-
-	@Override
-	protected int getEMSNotFocusedLength() {
-		return EMS_LENGTH_LARGE;
-		
-	}
+	
 }
