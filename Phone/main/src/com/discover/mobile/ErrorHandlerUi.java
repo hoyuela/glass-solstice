@@ -7,6 +7,8 @@ import android.content.Context;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.discover.mobile.error.ErrorHandlerFactory;
+
 
 /**
  * An interface to support common error handling across activities/fragments
@@ -62,7 +64,16 @@ public interface ErrorHandlerUi {
 	 * @param titleText
 	 * @param errorText
 	 */
-	public void sendToErrorPage(int titleText, int errorText);
+	
+	/**
+	 * A common method used to forward user to error modal dialog with a given static
+	 * string text message
+	 * 
+	 * @param errorCode HTTP error code
+	 * @param errorText Text that is displayed in the content area of dialog
+	 * @param titleText Text that is displayed at the top of the screen which describes the reason of the error
+	 */
+	public void sendToErrorPage(int errorCode, int titleText, int errorText);
 	
 	/**
 	 * Send to error page; display error text with default error page title
@@ -93,4 +104,8 @@ public interface ErrorHandlerUi {
 	*/
 	public int getLastError();
 	
+	/**
+	 * 
+	 */
+	public ErrorHandlerFactory getErrorHandlerFactory();
 }

@@ -1,4 +1,4 @@
-package com.discover.mobile;
+package com.discover.mobile.error;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
 
@@ -14,8 +14,8 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFail
  * @author henryoyuela
  *
  */
-public class DefaultExceptionFailureHandler implements ExceptionFailureHandler {
-	public DefaultExceptionFailureHandler(){
+public class BaseExceptionFailureHandler implements ExceptionFailureHandler {
+	public BaseExceptionFailureHandler(){
 
 	}
 	

@@ -124,15 +124,5 @@ public class CardExpirationDatePicker extends ValidatedInputField{
 	public void setExpirationYear(final int expirationYear) {
 		this.expirationYear = expirationYear;
 	}
-
-	@Override
-	protected int getEMSFocusedLength() {
-		return DATE_PICKER_EMS_LENGTH;
-	}
-
-	@Override
-	protected int getEMSNotFocusedLength() {
-		return DATE_PICKER_EMS_LENGTH;
-	}
 	
 }
