@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 public class SsnEditText extends ValidatedInputField{
 
 	private int ssn;
+	private final static int DEFAULT_EMS = 4;
 	
 	private final static int GOOD_SSN_LENGTH = 4;
 	
@@ -28,19 +29,23 @@ public class SsnEditText extends ValidatedInputField{
 	public SsnEditText(Context context, AttributeSet attrs, int defStyle){
 		super(context, attrs, defStyle);
 	}
+	
+	@Override
+	protected void setupDefaultAppearance() {
+		super.setupDefaultAppearance();
+		this.setEms(DEFAULT_EMS);
+	}
 
 	/**
 	 * Restrict the input filed to accept only numbers to a maximum length of 4.
 	 */
 	@Override
 	public void setupInputRestrictions() {
-		this.setMinEms(GOOD_SSN_LENGTH);
-		this.setMaxEms(GOOD_SSN_LENGTH);
 		filterArray[0] = new InputFilter.LengthFilter(GOOD_SSN_LENGTH);
 		this.setFilters(filterArray);
 		this.setInputType(InputType.TYPE_CLASS_PHONE);
 	}
-	
+
 	/**
 	 * Checks the current input to see if it is of valid length.
 	 * @return returns true if the input if of valid length.
@@ -70,4 +75,5 @@ public class SsnEditText extends ValidatedInputField{
 	public void setSsn(final int ssn) {
 		this.ssn = ssn;
 	}
+	
 }

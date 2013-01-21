@@ -2,6 +2,7 @@ package com.discover.mobile.common;
 
 import java.util.List;
 
+import com.discover.mobile.common.account.recent.RecentActivityPeriodsDetail;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.push.history.NotificationDetail;
 import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
@@ -19,6 +20,9 @@ public final class CurrentSessionDetails {
 	
 	/**List of notifications (used to help with rotation)*/
 	private List<NotificationDetail> notifications;
+	
+	/**Time periods that can be displayed for the recent account activity*/
+	private RecentActivityPeriodsDetail periods;
 	
 	private CurrentSessionDetails(){
 		
@@ -67,5 +71,21 @@ public final class CurrentSessionDetails {
 	
 	public void clearNotifications(){
 		this.notifications.clear();
+	}
+
+	/**
+	 * Get the time periods that can be displayed for the recent account activity
+	 * @return the time periods that can be displayed for the recent account activity
+	 */
+	public RecentActivityPeriodsDetail getPeriods() {
+		return periods;
+	}
+
+	/**
+	 * Set the time periods that can be displayed for the recent account activity
+	 * @param periods - the time periods that can be displayed for the recent account activity
+	 */
+	public void setPeriods(RecentActivityPeriodsDetail periods) {
+		this.periods = periods;
 	}
 }

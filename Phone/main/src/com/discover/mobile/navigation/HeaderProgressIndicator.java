@@ -1,7 +1,6 @@
 package com.discover.mobile.navigation;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
 
 
 /**
@@ -75,7 +73,7 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	/**
 	 * Sets the titles for the header
 	 */
-	private void setTitle(int title1, int title2, int title3) {
+	public void setTitle(int title1, int title2, int title3) {
 		step1.setText(getResources().getString(title1));
 		step2.setText(getResources().getString(title2));
 		step3.setText(getResources().getString(title3));
@@ -85,7 +83,7 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	 * Sets up the current position of the header
 	 * @param position - number between 0-2
 	 */
-	private void setPosition(int position){
+	public void setPosition(int position){
 		if (position == 1){
 			step1Confirm.setVisibility(View.VISIBLE);
 		}

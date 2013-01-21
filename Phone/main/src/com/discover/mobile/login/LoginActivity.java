@@ -27,8 +27,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.discover.mobile.AsyncCallbackBuilderLibrary;
 import com.discover.mobile.BaseActivity;
-import com.discover.mobile.DefaultExceptionFailureHandler;
 import com.discover.mobile.R;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.CurrentSessionDetails;
@@ -42,16 +42,21 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.common.auth.bank.BankLoginData;
+import com.discover.mobile.common.auth.bank.BankLoginDetails;
+import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
 import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
+import com.discover.mobile.common.customui.NonEmptyEditText;
 import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
+import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.help.CustomerServiceContactsActivity;
-import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
+import com.discover.mobile.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
@@ -80,15 +85,15 @@ public class LoginActivity extends BaseActivity  {
 	 * state bundle for restoring the state of the screen upon orientation
 	 * changes.
 	 */
-	private final static String PASS_KEY = "pass";
-	private final static String ID_KEY = "id";
-	private final static String SAVE_ID_KEY = "save";
-	private final static String LOGIN_TYPE_KEY = "type";
-	private final static String PRE_AUTH_KEY = "pauth";
-	private final static String PW_INPUT_TYPE_KEY = "secrets";
-	private final static String HIDE_LABEL_KEY = "hide";
-	private final static String ERROR_MESSAGE_KEY = "errorText";
-	private final static String ERROR_MESSAGE_VISIBILITY = "errorVisibility";
+	private final static String PASS_KEY = "a";
+	private final static String ID_KEY = "b";
+	private final static String SAVE_ID_KEY = "c";
+	private final static String LOGIN_TYPE_KEY = "d";
+	private final static String PRE_AUTH_KEY = "e";
+	private final static String PW_INPUT_TYPE_KEY = "f";
+	private final static String HIDE_LABEL_KEY = "g";
+	private final static String ERROR_MESSAGE_KEY = "h";
+	private final static String ERROR_MESSAGE_VISIBILITY = "i";
 	
 	/**
 	 * Roboguise injections of android interface element references.
@@ -96,10 +101,10 @@ public class LoginActivity extends BaseActivity  {
 	// INPUT FIELDS
 
 	@InjectView(R.id.username_field)
-	private EditText idField;
+	private NonEmptyEditText idField;
 
 	@InjectView(R.id.password_field)
-	private EditText passField;
+	private NonEmptyEditText passField;
 
 	// BUTTONS
 
@@ -298,7 +303,6 @@ public class LoginActivity extends BaseActivity  {
 			resetInputFieldColors();
 		}
 
-	
 	}
 	
 	/**
@@ -542,11 +546,13 @@ public class LoginActivity extends BaseActivity  {
 					}
 				})
 				.withErrorResponseHandler(new LoginErrorResponseHandler(this))
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.withCompletionListener(new LockScreenCompletionListener(this))
 				.build();
 
 		new AuthenticateCall(this, callback, username, password).submit();
 	}
-
+	
 	/**
  	 * This method submits the users information to the Bank server for verification.
 	 * 
@@ -555,22 +561,33 @@ public class LoginActivity extends BaseActivity  {
 	 * 
 	 */
 	private void bankLogin(final String username, final String password) {
-		/*********TODO: REMOVE THIS BLOCK OF CODE AFTER COMPLETING BANK LOGIN*************/
-		CharSequence text = "Bank Login Under Development";
-		int duration = Toast.LENGTH_SHORT;
-
-		Toast toast = Toast.makeText(this, text, duration);
-		toast.show();
+		BankLoginDetails login = new BankLoginDetails();
+		login.password = password;
+		login.username = username;
 		
-		//Set logged in to be able to save user name in persistent storage
-		Globals.setLoggedIn(true);
-		
-		/*********TODO: REMOVE THIS BLOCK OF CODE AFTER COMPLETING BANK LOGIN*************/
+		final AsyncCallback<BankLoginData> callback = 
+				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankLoginData.class, this, this, true)
+					.withSuccessListener(new SuccessListener<BankLoginData>() {
 	
-		//TODO: Add Bank Login Logic here
+						@Override
+						public CallbackPriority getCallbackPriority() {
+							return CallbackPriority.MIDDLE;
+						}
+	
+						@Override
+						public void success(BankLoginData value) {
+							//Set logged in to be able to save user name in persistent storage
+							Globals.setLoggedIn(true);
+							
+							//TODO Need to set a current session object.
+							
+							//Update current account based on user logged in and account type
+							updateAccountInformation(AccountType.BANK_ACCOUNT);
+						}
+					})
+					.build();
 		
-		//Update current account based on user logged in and account type
-		updateAccountInformation(AccountType.BANK_ACCOUNT);
+		new CreateBankLoginCall(this, callback, login).submit();
 	}
 
 	/**
@@ -784,7 +801,7 @@ public class LoginActivity extends BaseActivity  {
 	 * that it launches the forgot nav screen and is instead called from Java.
 	 */
 	private void forgotIdAndOrPass() {
-		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotTypeSelectionActivity.class);
+		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotCredentialsActivity.class);
 		this.startActivity(forgotIdAndOrPassActivity);
 		clearInputs();
 	}
@@ -843,7 +860,7 @@ public class LoginActivity extends BaseActivity  {
 		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback.<PreAuthResult> builder(this)
 				.withSuccessListener(new PreAuthSuccessResponseHandler(this))
 				.withErrorResponseHandler(new PreAuthErrorResponseHandler(this))
-				.withExceptionFailureHandler(new DefaultExceptionFailureHandler() )
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler() )
 				.withCompletionListener(new LockScreenCompletionListener(this)).build();
 
 		new PreAuthCheckCall(this, callback).submit();

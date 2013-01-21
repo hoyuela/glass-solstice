@@ -11,10 +11,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * {@link ObjectMapper} is thread-safe as long as its not being configured, this class will handle its setup and users
  * should not modify its configuration.
  */
-final class JacksonObjectMapperHolder {
+public final class JacksonObjectMapperHolder {
 	
 	static final ObjectMapper mapper = createObjectMapper();
 	
+	/**
+	 * 
+	 * @return Returns a jackson mapper used to deserialize an incoming error response with a JSON body 
+	 */
+	public static ObjectMapper getMapper() {
+		return mapper;
+	}
+
+
 	private static ObjectMapper createObjectMapper() {
 		return new ObjectMapper()
 				.disable(MapperFeature.AUTO_DETECT_GETTERS)
@@ -23,6 +32,7 @@ final class JacksonObjectMapperHolder {
 				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
 				.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 	}
+	
 	
 	private JacksonObjectMapperHolder() {
 		throw new UnsupportedOperationException("This class is non-instantiable");

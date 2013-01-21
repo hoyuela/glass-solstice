@@ -1,6 +1,7 @@
 package com.discover.mobile.common.customui;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
 import com.discover.mobile.common.R;
@@ -17,8 +18,6 @@ import com.discover.mobile.utils.CommonUtils;
  */
 public class DobDatePicker extends ValidatedInputField{
 	
-	private final static int EMS_LENGTH = 11;
-
 	private final static int INVALID_VALUE = -1;
 	
 	private int dobDay = INVALID_VALUE;
@@ -78,9 +77,9 @@ public class DobDatePicker extends ValidatedInputField{
 	protected void setupDefaultAppearance(){
 		super.setupDefaultAppearance();
 		this.setHint(R.string.birth_date_placeholder);
-		this.setEms(EMS_LENGTH);
 		this.setFocusable(false);
-
+		this.setEms(DATE_PICKER_EMS_LENGTH);
+		
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getDownArrow(), null);
 	}
 	
@@ -144,5 +143,14 @@ public class DobDatePicker extends ValidatedInputField{
 		this.dobYear = dobYear;
 	}
 	
-}
+	@Override
+	protected Drawable getRedX() {
+		return getGrayX();
+	}
+	
+	@Override
+	protected Drawable getGrayX() {
+		return getDownArrow();
+	}
 
+}

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.login.BaseErrorResponseHandler;
+import com.discover.mobile.error.BaseErrorResponseHandler;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 

@@ -35,6 +35,17 @@ public class AuthenticateCall extends JsonResponseMappingNetworkServiceCall<Acco
 		handler = new StrongReferenceHandler<AccountDetails>(callback);
 	}
 	
+	public AuthenticateCall(final Context context, final AsyncCallback<AccountDetails> callback) {
+		
+		super(context, new GetCallParams(UrlManagerCard.getAuthenticateCall()) {{ //$NON-NLS-1$
+			
+			sendDeviceIdentifiers = true;
+		}}, AccountDetails.class);
+		
+		// TODO decide if this is the best type of handler
+		handler = new StrongReferenceHandler<AccountDetails>(callback);
+	}
+	
 	private static String getAuthorizationString(final String username, final String password) {
 		final String concatenatedCreds = username + ": :" + password;
 		return "DCRDBasic " + Base64.encodeToString(concatenatedCreds.getBytes(), Base64.NO_WRAP);

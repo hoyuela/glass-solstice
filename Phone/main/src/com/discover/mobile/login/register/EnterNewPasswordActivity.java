@@ -293,7 +293,7 @@ public class EnterNewPasswordActivity extends RoboActivity {
 		final String passTwoFieldValue = passTwoField.getText().toString();
 		
 		//If the info was all valid - submit it to the service call.
-		if(validator.isPassValid(passOneFieldValue) &&
+		if(InputValidator.isPasswordValid(passOneFieldValue) &&
 		   validator.doPassesMatch(passOneFieldValue, passTwoFieldValue)){
 			passTwoDetails.password = passOneFieldValue;
 			passTwoDetails.passwordConfirm = passTwoDetails.password;
@@ -317,7 +317,7 @@ public class EnterNewPasswordActivity extends RoboActivity {
 	}
 	
 	public void cancel(final View v) {
-		final Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
+		final Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
 		startActivity(forgotCredentials);
 		finish();
 	}

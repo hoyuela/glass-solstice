@@ -115,6 +115,17 @@
         android:text="@string/account_info_confirm_security_precaution_text"
         android:textColor="@color/sub_copy"
         android:textSize="@dimen/small_copy_mid" />
+    
+    <Button
+        android:id="@+id/home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/modal_orange_margin_top"
+        android:layout_marginBottom="@dimen/modal_orange_margin_bottom"
+        style="@style/call_to_action_theme"
+        android:layout_below="@+id/account_info_confirm_security_precaution_label"
+        android:layout_centerHorizontal="true"
+        android:text="@string/home_text"/>
 
 </RelativeLayout>
 </ScrollView>

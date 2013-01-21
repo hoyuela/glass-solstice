@@ -2,8 +2,8 @@
     
     <!-- Account Info Screen 1 -->
 	<string name="account_info_one_step_text">Step 1 of 2: Enter Account Information</string>
-    <string name="account_info_dob_text">Primary Cardmember\'s Birthday:</string>
-	<string name="account_info_ssn_info_text">Social Security Number of Primary Cardmember:</string>
+    <string name="account_info_dob_text">Primary Cardmember\'s Birthday</string>
+	<string name="account_info_ssn_info_text">Primary Cardmember\'s Social Security Number (Last 4 Digits)</string>
 	<string name="account_info_bad_input_error_text">
 	    You have entered invalid information.
 	     Carefully review your information and please try again.
@@ -14,15 +14,14 @@
 	    Please contact customer service at 1&#8211;866&#8211;221&#8211;1126 for more information. 
 	</string>
 
-	<string name="account_info_input_restrictions_label">This is a 16&#8211;
-	    digit number starting with 6011. Do not include space or hyphens.
+	<string name="account_info_input_restrictions_label">This is a 16&#8211;digit number starting with 6011.
+	    Do not include space or hyphens.
 	</string>
 	
 	<!-- Account Info Screen 2 -->
-	<string name="account_info_two_step_text">Step 2 of 2: Create Account Login</string>
     <string name="account_info_two_id_detail_info_text">6&#8211;16 characters can contain most special characters except: (\"), (\'), (\\) and spaces.</string>
-	<string name="account_info_two_create_id_text">New User ID:</string>
-	<string name="account_info_two_pass_text">New Password:</string>
+	<string name="account_info_two_create_id_text">New User ID</string>
+	<string name="account_info_two_pass_text">New Password</string>
 	<string name="account_info_two_pass_info_text">
 	    8&#8211;32 characters. At least one number. Case sensitive. Special characters can be used. 
 	    Password is used for Account Center home.
@@ -32,16 +31,18 @@
 	    You\'ll be sent an email confirming your online account registration.
 	</string>
 	
-	<string name="account_info_two_confirm_id_text">Confirm User ID:</string>
-	<string name="account_info_two_id_strength_text">User ID Strength:</string>
-	<string name="account_info_two_pass_strength_text">Password Strength:</string>
-	<string name="account_info_two_pass_confirm_text">Confirm Password:</string>
-	<string name="account_info_two_email_text">Email Address:</string>
+	<string name="account_info_two_confirm_id_text">Confirm User ID</string>
+	<string name="account_info_two_id_strength_text">User ID Strength</string>
+	<string name="account_info_two_pass_strength_text">Password Strength</string>
+	<string name="account_info_two_pass_confirm_text">Confirm Password</string>
+	<string name="account_info_two_email_text">Email Address</string>
 	<string name="account_info_two_id_matches_pass_error_text">User ID and password must not be the same.</string>
 	<string name="account_info_two_username_in_use_error_text">User ID is already in use. Please choose another one.</string>
-	<string name="account_info_two_passwords_dont_match_text">Passwords do not match.</string>
+	<string name="account_info_two_passwords_dont_match_text">Passwords must match.</string>
 	<string name="account_info_two_ids_must_match_text">User IDs must match.</string>
-	<string name="account_info_two_new_pass_confirm_text">
-	    Confirm New Password:
-	</string>
+	<string name="account_info_two_new_pass_confirm_text">Confirm New Password</string>
+	<string name="strength_text">Strength</string>
+	
+	<!-- Choose Activity Period Strings -->
+	<string name="choose_activty_period">Choose Activity Period</string>
 </resources>

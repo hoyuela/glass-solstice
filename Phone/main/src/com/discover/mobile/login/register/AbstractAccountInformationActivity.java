@@ -4,11 +4,15 @@ import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.FAILED_SECURITY;
 import static com.discover.mobile.common.StandardErrorCodes.INVALID_EXTERNAL_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.INVALID_ONLINE_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
 import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.ONLINE_STATUS_PROHIBITED;
 import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
+import static com.discover.mobile.common.StandardErrorCodes.UNSCHEDULED_MAINTENANCE;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.NOT_PRIMARY_CARDHOLDER;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
 
@@ -17,19 +21,30 @@ import java.util.Calendar;
 
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
+import com.discover.mobile.common.CommonMethods;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
+import com.discover.mobile.common.auth.strong.StrongAuthCheckCall;
+import com.discover.mobile.common.auth.strong.StrongAuthDetails;
+import com.discover.mobile.common.auth.strong.StrongAuthErrorResponse;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.customui.CardExpirationDatePicker;
@@ -42,7 +57,7 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.navigation.HeaderProgressIndicator;
-import com.discover.mobile.utils.CommonUtils;
+import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
 /**
  * AbstractAccountInformationActivity this activity handles the forgot user password, both, and registration.
@@ -72,27 +87,28 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	/**
 	 * Keys for use when saving a restoring activity state on screen rotation.
 	 */
-	private final static String MAIN_ERROR_TEXT_KEY = "mek";
-	private final static String MAIN_ERROR_VISIBILITY_KEY = "mevk";
+	private final static String MAIN_ERROR_TEXT_KEY = "a";
+	private final static String MAIN_ERROR_VISIBILITY_KEY = "b";
 	
-	private final static String MAIN_FIELD_KEY = "mfk";
-	private static final String MAIN_FIELD_ERROR_KEY = "mfek";
+	private final static String MAIN_FIELD_KEY = "c";
+	private static final String MAIN_FIELD_ERROR_KEY = "d";
 
-	private static final String EXP_MONTH_KEY = "expmk";
-	private static final String EXP_YEAR_KEY = "expyk";
-	private static final String EXP_ERROR_KEY = "expek";
+	private static final String EXP_MONTH_KEY = "e";
+	private static final String EXP_YEAR_KEY = "f";
+	private static final String EXP_ERROR_KEY = "g";
 	
-	private static final String DOB_DAY_KEY = "dobdk";
-	private static final String DOB_MONTH_KEY = "dobmk";
-	private static final String DOB_YEAR_KEY = "dobyk";
-	private static final String DOB_ERROR_KEY = "dobek";
+	private static final String DOB_DAY_KEY = "h";
+	private static final String DOB_MONTH_KEY = "i";
+	private static final String DOB_YEAR_KEY = "j";
+	private static final String DOB_ERROR_KEY = "k";
 	
-	private static final String SSN_KEY = "ssnk";
-	private static final String SSN_ERROR_KEY = "ssnek";
+	private static final String SSN_KEY = "l";
+	private static final String SSN_ERROR_KEY = "m";
 	
 //TEXT LABELS
 	protected TextView accountIdentifierFieldLabel;
 	protected TextView accountIdentifierFieldRestrictionsLabel;
+	protected TextView helpNumber;
 
 //INPUT FIELDS
 	protected UsernameOrAccountNumberEditText accountIdentifierField;
@@ -116,10 +132,14 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	protected CustomDatePickerDialog dobPickerDialog;
 	protected CustomDatePickerDialog cardPickerDialog;
 	
+//BUTTONS
+	protected Button continueButton;
+	
+	
 	final Calendar currentDate = Calendar.getInstance();
 
 	// TODO go through old code and make sure this is called every time
-	protected void checkForStrongAuth() {}
+
 	protected void doCustomUiSetup(){/*Intentionally empty*/}
 
 	protected abstract void addCustomFieldToDetails(AccountInformationDetails details, String value);
@@ -132,6 +152,9 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
 	}
 	
+	protected abstract void setHeaderProgressText();
+	protected void setupCustomTextChangedListeners() {}
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -145,11 +168,17 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
     	setupCustomTextChangedListeners();
     	setupCardDatePicker();
     	setupDatePicker();
-    	    	
+    	setupClickablePhoneNumbers();
+    	setupDisabledButtonListners();
+    	setHeaderProgressText();
+
     	restoreState(savedInstanceState);
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 	}
-	
+
+	/**
+	 * Initialize the member variables that will reference UI elements.
+	 */
 	public void loadAllViews() {
 		accountIdentifierFieldLabel = (TextView)findViewById(R.id.account_info_label_one_label);
 		accountIdentifierFieldRestrictionsLabel  = (TextView)findViewById(R.id.account_information_input_info_label);
@@ -163,6 +192,52 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		mainScrollView = (ScrollView)findViewById(R.id.account_info_scroll_view);
 		birthDatePicker =(DobDatePicker)findViewById(R.id.account_info_birth_date_picker);
 		cardExpDatePicker = (CardExpirationDatePicker)findViewById(R.id.account_info_card_exp_date_picker);
+		helpNumber = (TextView)findViewById(R.id.help_number_label);
+		continueButton = (Button)findViewById(R.id.account_info_continue_button);
+	}
+	
+	/**
+	 * Attach text watchers to all fields so that when everything is valid, the continue button is enabled,
+	 * if anything is false, its disabled.
+	 */
+	protected void setupDisabledButtonListners() {
+		accountIdentifierField.addTextChangedListener(getContinueButtonTextWatcher());
+		ssnField.addTextChangedListener(getContinueButtonTextWatcher());
+		birthDatePicker.addTextChangedListener(getContinueButtonTextWatcher());
+		cardExpDatePicker.addTextChangedListener(getContinueButtonTextWatcher());
+	}
+	
+	/**
+	 * Check to see if all of the fields on the page contain valid input.
+	 * @return true if all fields contain valid information.
+	 */
+	public boolean isFormCompleteAndValid() {
+		return accountIdentifierField.isValid() && cardExpDatePicker.isValid() && birthDatePicker.isValid()
+				&& ssnField.isValid();
+	}
+	
+	/**
+	 * Get a new text watcher that will enable and disable the continue button if all form info is complete.
+	 * @return a text watcher that watches for the form to be completed.
+	 */
+	public TextWatcher getContinueButtonTextWatcher() {
+		return new TextWatcher() {
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if(isFormCompleteAndValid())
+					continueButton.setEnabled(true);
+				else
+					continueButton.setEnabled(false);
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,	int after) {}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {}
+		};
+		
 	}
     
 	/**
@@ -184,6 +259,20 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		outState.putInt(DOB_ERROR_KEY, dobErrorLabel.getVisibility());
 		outState.putInt(EXP_ERROR_KEY, expirationDateErrorLabel.getVisibility());
 		outState.putInt(SSN_ERROR_KEY, ssnErrorLabel.getVisibility());
+	}
+	
+	/**
+	 * Make the help number clickable and dialable.
+	 */
+	protected void setupClickablePhoneNumbers() {
+		final Context currentContext = this;
+		helpNumber.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CommonMethods.dialNumber(helpNumber.getText().toString(), currentContext);				
+			}
+		});
 	}
 
 	/**
@@ -238,10 +327,15 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		}
 	}
 
+	/**
+	 * Restore the main error label's text and visibility
+	 * @param savedInstanceState
+	 */
 	private void restoreMainErrorLabel(final Bundle savedInstanceState) {
 		errorMessageLabel.setVisibility(savedInstanceState.getInt(MAIN_ERROR_VISIBILITY_KEY));
 		errorMessageLabel.setText(savedInstanceState.getString(MAIN_ERROR_TEXT_KEY));
 	}
+	
 	/**
 	 * Restores the DOB date picker to its previous state from a Bundle. If the saved values
 	 * in the Bundle were invalid, don't update the picker and set its variables to invalid
@@ -326,7 +420,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		}, currentYearPlusTwo, currentMonth, NOT_NEEDED);
 		
 		final String datePickerTitle = getResources().getString(R.string.card_expiration_date_text);
-		cardPickerDialog.setTitle(CommonUtils.removeLastChar(datePickerTitle));
+		cardPickerDialog.setTitle(datePickerTitle);
 		cardPickerDialog.hideDayPicker();
 	}
 	
@@ -352,10 +446,8 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		}, currentYearMinusEighteen, currentMonth, currentDay);
 		
 		final String dobPickerTitle = getResources().getString(R.string.account_info_dob_text);
-		dobPickerDialog.setTitle(CommonUtils.removeLastChar(dobPickerTitle));
+		dobPickerDialog.setTitle(dobPickerTitle);
 	}
-
-	protected void setupCustomTextChangedListeners() {}
 
 	/**
 	 * present the date of birth date picker dialog. Called from XML.
@@ -384,16 +476,8 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 * @param v - the calling View.
 	 */
 	public void validateInfoAndSubmitOnSuccess(final View v){
-
-		boolean formIsComplete =
-				accountIdentifierField.isValid() &&
-				birthDatePicker.isValid() &&
-				cardExpDatePicker.isValid() &&
-				ssnField.isValid();	
-		
-		updateLabelsForInput();
-		
-		if(formIsComplete){
+				
+		if(isFormCompleteAndValid()){
 			submitFormInfo();
 		}
 		else{
@@ -433,7 +517,8 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
 			@Override
 			public void success(final Object value) {
-				navToNextScreenWithDetails(accountInformationDetails);
+				checkForStrongAuth();
+
 			}
 
 			@Override
@@ -517,7 +602,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 */
 	public void showMainErrorLabelWithText(final String text) {
 		errorMessageLabel.setText(text);
-		CommonUtils.showLabel(errorMessageLabel);
+		CommonMethods.setViewVisible(errorMessageLabel);
 	}
 	
 	/**
@@ -539,20 +624,6 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		startActivity(maintenancePageIntent);
 		finish();
 	}
-	
-	/**
-	 * Ask all of the input fields to update their apperance for their current inputs.
-	 * So if a given field isValid, then clear any possible errors, or if not, they show errors.
-	 */
-	private void updateLabelsForInput(){
-		CommonUtils.hideLabel(errorMessageLabel);
-
-		accountIdentifierField.updateAppearanceForInput();
-		cardExpDatePicker.updateAppearanceForInput();
-		ssnField.updateAppearanceForInput();
-		birthDatePicker.updateAppearanceForInput();
-	}
-	
 
 	/**
 	 * Animate scrolling the screen to the top. Used when something has gone wrong. Bad input etc.
@@ -560,4 +631,178 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	public void resetScrollPosition(){
 		mainScrollView.smoothScrollTo(0, 0);
 	}
+	
+	protected void checkForStrongAuth() {
+		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
+			@Override
+			public void success(final StrongAuthDetails value) {
+				Log.d(TAG, "Success");
+				progress.dismiss();
+				navToNextScreenWithDetails(accountInformationDetails);
+
+				
+			}
+
+			@Override
+			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+
+				progress.dismiss();
+				
+				if(errorResponse instanceof StrongAuthErrorResponse)
+					return handleStrongAuthErrorResponse((StrongAuthErrorResponse)errorResponse);
+				
+				// TODO handle or remove cases where we don't have handling
+				switch (errorResponse.getHttpStatusCode()) {
+					
+					case HttpURLConnection.HTTP_UNAUTHORIZED:
+						getStrongAuthQuestion();
+						return true;
+				}
+				
+				return false;
+			}
+			
+			private boolean handleStrongAuthErrorResponse(final StrongAuthErrorResponse errorResponse) {
+				if(errorResponse.getResult().endsWith("skipped")) {
+					navToNextScreenWithDetails(accountInformationDetails);
+					return true;
+				}
+				else if (errorResponse.getResult().endsWith("challenge")) { 
+					getStrongAuthQuestion();
+					return true;
+				}
+				else
+					return false;
+			}
+
+			@Override
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
+				progress.dismiss();
+				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
+
+				// FIXME add "assertions" for what the HTTP status code should be
+				switch(messageErrorResponse.getMessageStatusCode()){
+				
+					case LOCKED_OUT_ACCOUNT:
+						sendToErrorPage(ScreenType.STRONG_AUTH_LOCKED_OUT);
+						return true;
+						
+					case STRONG_AUTH_NOT_ENROLLED:
+						sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
+						return true;
+						
+					case SAMS_CLUB_MEMBER:
+						showMainErrorLabelWithText(getString(R.string.account_info_sams_club_card_error_text));
+						return true;
+						
+					case REG_AUTHENTICATION_PROBLEM: // Provided information was incorrect.
+						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+						return true;
+						
+					case FAILED_SECURITY:
+						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+						return true;
+					
+					case NOT_PRIMARY_CARDHOLDER:
+						sendToErrorPage(ScreenType.NOT_PRIMARY_CARDHOLDER);
+						return true;
+					
+					case UNSCHEDULED_MAINTENANCE:
+						sendToErrorPage(ScreenType.UNSCHEDULED_MAINTENANCE);
+						return true;
+						
+					case MAX_LOGIN_ATTEMPTS:
+						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
+						return true;
+						
+					case LAST_ATTEMPT_WARNING:
+						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
+						return true;
+						
+					default:
+						return false;
+				}
+			}
+		};
+
+		final StrongAuthCheckCall strongAuthCall = new StrongAuthCheckCall(this, callback);
+		strongAuthCall.submit();
+		
+	}
+		
+	/**
+	 * If strong auth is required, this call is made to retrieve the question and question ID for Strong Auth.
+	 * On success Strong Auth is launched and the question and id are passed to the activity.
+	 * It is launched for intent, so once Strong Auth is done, we come back to the launching activity
+	 * and decide how to proceed.
+	 */
+	private void getStrongAuthQuestion() {
+		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
+
+		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
+			@Override
+			public void success(final StrongAuthDetails value) {
+
+				progress.dismiss();
+				strongAuthQuestion = value.questionText;
+				strongAuthQuestionId = value.questionId;
+				
+				navToStrongAuth();
+			}
+
+			@Override
+			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+				progress.dismiss();
+				
+				// FIXME
+				switch (errorResponse.getHttpStatusCode()) {
+					case HttpURLConnection.HTTP_BAD_REQUEST:
+						return true;
+					case HttpURLConnection.HTTP_UNAUTHORIZED:
+						return true;
+					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldn't authenticate user info.
+						return true;
+					case HttpURLConnection.HTTP_FORBIDDEN:
+						return true;
+				}
+				
+				return false;
+			}
+			
+			@Override
+			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
+				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
+				
+				// FIXME
+				switch(messageErrorResponse.getMessageStatusCode()){
+				
+				default://TODO properly handle these ^ v
+					return true;
+				}
+				
+			}
+		};
+
+		final GetStrongAuthQuestionCall strongAuthCall = 
+				new GetStrongAuthQuestionCall(this, callback);
+		strongAuthCall.submit();
+		
+	}
+	
+	protected static final int STRONG_AUTH_ACTIVITY = 0;
+	/**
+	 * Start the strong auth page with a given question and question ID.
+	 * Start strong auth for result - we need to know in the launching class if it was successful or not.
+	 */
+	private void navToStrongAuth() {
+		final Intent strongAuth = new Intent(this, EnhancedAccountSecurityActivity.class);
+		
+		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, strongAuthQuestion);
+		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, strongAuthQuestionId);
+		
+		startActivityForResult(strongAuth, STRONG_AUTH_ACTIVITY);
+		
+	}
+		
+		
 }

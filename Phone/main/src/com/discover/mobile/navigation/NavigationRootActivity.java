@@ -10,7 +10,6 @@ import com.discover.mobile.LoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.alert.ModalConfirmationTop;
-import com.discover.mobile.alert.SingleOrangeButtonBottom;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.push.register.PushNowAvailableFragment;
@@ -108,14 +107,12 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 			final String email, final String lastFour) {
 		
 		final ModalConfirmationTop top = new ModalConfirmationTop(this, null);
-		final SingleOrangeButtonBottom bottom = new SingleOrangeButtonBottom(this, null);
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(this, top, bottom);
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(this, top, null);
 		top.setUserId(userId);
 		top.setEmail(email);
 		top.setLastFour(lastFour);
 		top.setScreenType(screenType);
-		bottom.setButtonText(R.string.home_text);
-		bottom.getButton().setOnClickListener(new OnClickListener(){
+		top.getButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
 				modal.dismiss();	

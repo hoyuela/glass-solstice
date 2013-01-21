@@ -13,10 +13,11 @@
     <string name="discover_secured_text">Discover Bank, Member FDIC | SECURED</string>
     <string name="email_placeholder">mail@mail.com</string>
     <!-- &#8211; is a dash character so that lint will not complain of using a dash in strings -->
-    <string name="card_expiration_date_text">Card Expiration Date:</string>
+    <string name="card_expiration_date_text">Card Expiration Date</string>
     <string name="need_help_text">Need Help?</string>
     <!-- &#8211; is a dash character so that lint will not complain of using a dash in strings -->
     <string name="need_help_number_text">1&#8211;800&#8211;347&#8211;2683</string>
+    <string name="bank_need_help_number_text">1&#8211;800&#8211;290&#8211;9885</string>
     <string name="forgot_id_title_text">Forgot User ID</string>
     <string name="forgot_id_password_text">Account Center Password:</string>
     <string name="forgot_id_submission_error_text">We\'re sorry. The Credit Card Account Number and/or Password does not
@@ -33,11 +34,10 @@
     <string name="logout">Logout</string>
     <string name="forgot_password_text">Forgot Password</string>
     <string name="forgot_both_text">Forgot Both</string>
-    <string name="forgot_password_field_title_text">Credit Card User ID:</string>
-    <string name="arrow">></string>
+    <string name="forgot_password_field_title_text">Credit Card User ID</string>
     <string name="forgot_credentials_text">Forgot User ID or Password</string>
     <string name="register_text">Register</string>
-    <string name="account_info_label_one">Credit Card Account Number:</string>
+    <string name="account_info_label_one">Credit Card Account Number</string>
     <string name="cancel_text">Cancel</string>
     <string name="continue_text">Continue</string>
     <string name="submit_text">Submit</string>
@@ -54,6 +54,7 @@
     <string name="empty"></string>
     <string name="home_text">Home</string>
     <string name="doesnt_match_records">Doesn\'t Match Our Records</string>
+    <string name="invalid_input">Invalid input</string>
     <string name="forgot_pass_create_new_text">Create a New Password:</string>
     <string name="forgot_pass_step_two_text">Step 2 of 2: Create New Password</string>
     <string name="max_attempts_exceeded_text">You have Exceeded the Maximum Number of Unsuccessful Attempts.
@@ -72,6 +73,7 @@
     <string name="enter_info">Enter Info</string>
     <string name="create_password">Create Password</string>
     <string name="confirm">Confirmation</string>
+    <string name="create_login">Create Login</string>
     <string name="crash_report">Preparing Email Crash Report</string>
     <string name="discover_card">Card</string>
     <string name="discover_bank">Bank</string>

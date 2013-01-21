@@ -4,7 +4,13 @@ import android.content.Context;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
+import android.view.inputmethod.InputConnectionWrapper;
 
+import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.auth.InputValidator;
 import com.google.common.base.Strings;
 
@@ -20,9 +26,12 @@ import com.google.common.base.Strings;
  */
 public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	private boolean isUsernameField = true;
-	private static final int VALID_ACCOUNT_NUMBER_LENGTH = 16;
-	private static final int MAX_USERNAME_LENGTH = 32;
 	
+	private static final int DEFAULT_EMS = 20;
+	
+	private static final int VALID_ACCOUNT_NUMBER_LENGTH = 19;
+	private static final int MAX_USERNAME_LENGTH = 32;
+
 	/**
 	 * Default constructors. Initially sets up the input field as a username field.
 	 */
@@ -57,6 +66,65 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	public void setFieldAccountNumber() {
 		isUsernameField = false;
 		setupAccountNumberInputRestrictions();
+		setupInputStylizer();
+	}
+
+	@Override
+	protected void setupDefaultAppearance() {
+		super.setupDefaultAppearance();
+		this.setEms(DEFAULT_EMS);
+	}
+	/**
+	 * Listens for hardware keyboard inputs and stylizes the input for account numbers.
+	 */
+	private void setupInputStylizer() {
+		this.setOnKeyListener(new OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				
+				updateInputWithString(CommonMethods.getSpacelessString(getInputText()));
+				
+            	if(!isUsernameField){
+					updateInputWithString(CommonMethods.getStringWithSpacesEvery4Characters(getInputText()));
+					setCursorPositionToEnd();
+            	}
+            	
+	            return false;			
+	        }
+		});
+	}
+	
+	/**
+	 * Returns the number of space characters that occur before a given position in the field.
+	 * @param position
+	 * @return
+	 */
+	public int numberOfSpacesBeforePosition(final int position) {
+		int numberOfSpaces = 0;
+		String currentInput = getInputText();
+		for(int i = 0; i < position; ++i){
+			if(currentInput.charAt(i) == ' ')
+				numberOfSpaces += 1;
+		}
+		
+		return numberOfSpaces;
+	}
+	
+	/**
+	 * Updates the current input to the passed String parameter.
+	 * @param newInput
+	 */
+	private void updateInputWithString(final String newInput) {
+		this.setText(newInput);
+	}
+	
+	/**
+	 * Return the current text in the field.
+	 * @return
+	 */
+	private String getInputText(){
+		return this.getText().toString();
 	}
 	
 	/**
@@ -110,29 +178,49 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	public boolean isAccountNumberValid() {
 		final String cardAccountNumber = this.getText().toString();
 		
-		return InputValidator.isCardAccountNumberValid(cardAccountNumber);
+		return InputValidator.isCardAccountNumberValid(CommonMethods.getSpacelessString(cardAccountNumber));
 	}
 	
 	/**
-	 * Resets the appearance of the input field back to its default.
+	 * This private inner class is intended on intercepting the software keyboard events so that we can 
+	 * adjust the style of the input fields on key press.
+	 * 
+	 * It currently stylizes the text with a space between every 4 characters of an account number
+	 * 
 	 */
-	@Override
-	protected void clearErrors() {
-		hideErrorLabel();
-		this.setBackgroundResource(FIELD_DEFAULT_APPEARANCE);
-		this.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+	 @Override
+	    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+	        return new CustomInputConnection(super.onCreateInputConnection(outAttrs),
+	                true);
+	    }
 
-	}
-	
-	/**
-	 * Sets the appearance of the input field to an error state. Highlights the field
-	 * in red and shows a red X in the right drawable location.
-	 */
-	@Override
-	protected void setErrors() {
-		showErrorLabel();
-		this.setBackgroundResource(FIELD_ERROR_APPEARANCE);
-		
-		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getRedX(), null);
-	}
+	    private class CustomInputConnection extends InputConnectionWrapper {
+
+	        public CustomInputConnection(InputConnection target, boolean mutable) {
+	            super(target, mutable);
+	        }
+
+	        @Override
+	        public boolean sendKeyEvent(KeyEvent event) {
+
+				updateInputWithString(CommonMethods.getSpacelessString(getInputText()));
+				
+				boolean superKeyEvent = super.sendKeyEvent(event);
+            	if(!isUsernameField){
+
+					updateInputWithString(CommonMethods.getStringWithSpacesEvery4Characters(getInputText()));
+					setCursorPositionToEnd();
+            	}
+	            return superKeyEvent;
+
+	        }
+
+	    }
+	    /**
+	     * Sets the text cursor position to the end of the field. 
+	     */
+	    private void setCursorPositionToEnd() {
+	    	this.setSelection(this.length(), this.length());
+	    }
+	    
 }

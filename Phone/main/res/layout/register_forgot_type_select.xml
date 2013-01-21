@@ -1,40 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/WhiteTheme"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    style="@style/WhiteTheme" >
+    android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/forgot_credentials_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/forgot_credentials_text"
-        android:textAppearance="?android:attr/textAppearanceMedium" 
-        android:textColor="@color/black"
-        android:textStyle="bold"/>
-    
-    <ListView
-        android:id="@android:id/list"
-        android:background="@drawable/rounded_table_corners_no_padding"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/forgot_credentials_label"
-        android:layout_centerHorizontal="true" 
-        android:cacheColorHint="#00000000">
-    </ListView>
-        
-        <RelativeLayout
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_above="@+id/copyright_textview" >	
-	                
-		    <include 
-		        layout="@layout/old_general_need_help_footer" />
-		
-		   
-		    
-		</RelativeLayout>
-		 <include 
-		        layout="@layout/old_general_copyright_footer" />
+   
+
+        <LinearLayout
+            android:id="@+id/linear_layout_one"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" 
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/forgot_credentials_label"
+                style="@style/title_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/forgot_credentials_text" />
+
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/groups_of_elements_padding"
+                android:background="@drawable/rounded_table_corners_no_padding"
+                android:cacheColorHint="#00000000"
+                android:divider="@color/field_stroke"
+                android:dividerHeight="1dp" >
+            </ListView>
+        </LinearLayout>
+
+  
+
 </RelativeLayout>

@@ -46,6 +46,8 @@
     <dimen name="modal_bottom_margin">15dp</dimen>
     <dimen name="modal_top_dummy_view">30dp</dimen>
     <dimen name="modal_text_padding">17dp</dimen>
+    <dimen name="modal_footer_topmargin">35dp</dimen>
+    
     
     <!--  Login Bottom Buttons -->
     <dimen name="login_bottom_button_height">50dp</dimen>
@@ -62,7 +64,5 @@
     <dimen name="small_copy_max">17sp</dimen>
     <dimen name="small_copy_min">14sp</dimen>
     <dimen name="small_copy_mid">15sp</dimen>
-    
-    
-    
+        
 </resources>

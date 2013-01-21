@@ -2,13 +2,17 @@ package com.discover.mobile.login.register;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.discover.mobile.R;
+import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.registration.AccountInformationCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 
 /**
  * This activity sets up the abstract account information screen to handle user registration.
@@ -31,7 +35,6 @@ public class RegistrationAccountInformationActivity extends AbstractAccountInfor
 	}
 	
 	public RegistrationAccountInformationActivity() {
-		// TODO make sure this shouldn't be specfic to registration without forgetting
 		super(AnalyticsPage.FORGOT_BOTH_STEP1);
 	}
 	
@@ -40,7 +43,7 @@ public class RegistrationAccountInformationActivity extends AbstractAccountInfor
 	 */
 	@Override
 	protected void addCustomFieldToDetails(final AccountInformationDetails details, final String value) {
-		details.acctNbr = value;
+		details.acctNbr = CommonMethods.getSpacelessString(value);
 	}
 	
 	@Override
@@ -75,6 +78,30 @@ public class RegistrationAccountInformationActivity extends AbstractAccountInfor
 	public void goBack() {
 		finish();
 	}
+
+	/**
+	 * Set the text that is displayed in the top header progress bar.
+	 */
+	@Override
+	protected void setHeaderProgressText() {
+			HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
+			headerProgressBar.setTitle(R.string.enter_info, R.string.create_login, R.string.confirm);
+	}
 	
+	/**
+	 * Decide what to do when the strong auth activity exits. If it was successful, then navigate
+	 * to the next applicable screen. If not, cancel the registration process.
+	 */
+	@Override
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {	
+		Log.d("ACTIVITY DID GIVE RESULT","ACTIVITY DID GIVE RESULT");
+		if(requestCode == STRONG_AUTH_ACTIVITY) {
+			if(resultCode == RESULT_OK) {
+				navToNextScreenWithDetails(accountInformationDetails);
+			} else if (resultCode == RESULT_CANCELED){
+				finish();
+			}
+		}
+	}
 	
 }

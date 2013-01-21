@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import android.view.View;
-
 /**
  * A common place to put utilities that can and will be used across the app on both phone and tablet
  * @author jthornton
@@ -59,39 +57,6 @@ public class CommonUtils {
 		calendarValue.set(Calendar.MONTH, month);
 		
 		return new SimpleDateFormat("MM/yy", Locale.getDefault()).format(calendarValue.getTime());
-	}
-	
-	/**
-	 * Returns a String representation of the passed String resource with its last character removed.
-	 * Used when setting the title of a date picker dialog. The Strings that are used include an ugly colon that 
-	 * doesnt make sense in a popup dialog.
-	 * 
-	 * @param res A String resource.
-	 * @return A String representation of the passed resource with its last character removed.
-	 */
-	public static String removeLastChar(final String subString) {
-		String output = subString;
-		
-		if(subString != null && subString.length() > 1){
-			output = subString.substring(0, subString.length() - 1);
-		}
-		return output;
-    }
-	
-	/**
-	 * Show a view.
-	 * @param v the view you want to show.
-	 */
-	public static void showLabel(final View v){
-		v.setVisibility(View.VISIBLE);
-	}
-	
-	/**
-	 * Hide a view.
-	 * @param v the view you want to hide
-	 */
-	public static void hideLabel(final View v){
-		v.setVisibility(View.GONE);
 	}
 	
 }

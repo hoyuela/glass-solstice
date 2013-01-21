@@ -35,6 +35,9 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	private static final int VIEW_HEIGHTS = 0;
 	
 	/**Static weight for the top view in portrait mode*/
+	private static final float NO_BOTTOM_WEIGHT = 10f;
+	
+	/**Static weight for the top view in portrait mode*/
 	private static final float PORTRAIT_TOP_WEIGHT = 7f;
 	
 	/**Static weight for the bottom view in portrait mode*/
@@ -130,6 +133,85 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	}
 	
 	/**
+	 * An alternate way to create a modal alert with one button 
+	 * by supplying content only
+	 * 
+	 * @param context  - application context
+	 * @param title - the title for the alert
+	 * @param content - the body text for the alert
+	 * @param showErrorIcon - used to show the error icon on the top view
+	 * @param helpNumber - help number to be displayed in the modal
+	 * @param buttonText - the button text for the alert
+	 */
+	public ModalAlertWithOneButton(final Context context, 
+			final int title, final int content, 
+			boolean showErrorIcon, final int helpNumber, final int buttonText) {
+		
+		super(context);
+
+		this.context = context;
+		final ModalDefaultTopView topView = new ModalDefaultTopView(context, null);
+		final ModalDefaultOneButtonBottomView bottomView = new ModalDefaultOneButtonBottomView(context, null);
+		
+		topView.showErrorIcon(showErrorIcon);
+		topView.setTitle(title);
+		topView.setContent(content);
+		topView.getHelpFooter().setToDialNumberOnClick(helpNumber);
+		bottomView.setButtonText(buttonText);
+		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				dismiss();
+			}
+			
+		});
+		
+		this.top = topView;
+		this.bottom = bottomView;
+	}
+	
+
+	/**
+	 * An alternate way to create a modal alert with one button 
+	 * by supplying content only
+	 * 
+	 * @param context  - application context
+	 * @param title - the title for the alert
+	 * @param content - the body text for the alert
+	 * @param showErrorIcon - used to show the error icon on the top view
+	 * @param helpNumber - help number to be displayed in the modal
+	 * @param buttonText - the button text for the alert
+	 */
+	public ModalAlertWithOneButton(final Context context, 
+			final String title, final String content, 
+			boolean showErrorIcon, final int helpNumber, final int buttonText) {
+		
+		super(context);
+
+		this.context = context;
+		final ModalDefaultTopView topView = new ModalDefaultTopView(context, null);
+		final ModalDefaultOneButtonBottomView bottomView = new ModalDefaultOneButtonBottomView(context, null);
+		
+		topView.showErrorIcon(showErrorIcon);
+		topView.setTitle(title);
+		topView.setContent(content);
+		topView.getHelpFooter().setToDialNumberOnClick(helpNumber);
+		bottomView.setButtonText(buttonText);
+		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				dismiss();
+			}
+			
+		});
+		
+		this.top = topView;
+		this.bottom = bottomView;
+	}
+	
+	/**
 	 * Create the modal alert and add the views to be displayed.
 	 * @param savedInstanceState - saved state of the modal
 	 */
@@ -150,7 +232,11 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	    final int orientation = context.getResources().getConfiguration().orientation; 
 	    float topWeight;
 	    float bottomWeight;
-	    if (Configuration.ORIENTATION_LANDSCAPE == orientation) { 
+	    
+	    if (null == bottom){
+	    	topWeight = NO_BOTTOM_WEIGHT;
+		    bottomWeight = VIEW_HEIGHTS;
+	    }else if (Configuration.ORIENTATION_LANDSCAPE == orientation) { 
 	    	topWeight = LANDSCAPE_TOP_WEIGHT;
 		    bottomWeight = LANDSCAPE_BOTTOM_WEIGHT;
 	    } else { 

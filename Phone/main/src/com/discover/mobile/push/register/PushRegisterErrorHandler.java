@@ -2,7 +2,7 @@ package com.discover.mobile.push.register;
 
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.login.BaseErrorResponseHandler;
+import com.discover.mobile.error.BaseErrorResponseHandler;
 
 /**
  * Error handler for the call to the server that registers the device and the

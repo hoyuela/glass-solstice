@@ -5,7 +5,7 @@ import android.util.Log;
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.login.BaseErrorResponseHandler;
+import com.discover.mobile.error.BaseErrorResponseHandler;
 
 /**
  * Error Handler for the posting of the preferences after the user had decided to change their current settings. 
