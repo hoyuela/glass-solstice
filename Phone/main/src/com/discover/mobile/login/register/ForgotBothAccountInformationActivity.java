@@ -106,13 +106,6 @@ public class ForgotBothAccountInformationActivity extends AbstractAccountInforma
 			}
 		}
 	}
-
-	@Override
-	public void goBack() {
-		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
-		startActivity(forgotCredentials);
-		finish();
-	}
 	
 	@Override
 	protected void setHeaderProgressText() {
