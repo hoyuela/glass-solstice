@@ -632,7 +632,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		mainScrollView.smoothScrollTo(0, 0);
 	}
 	
-	private void checkForStrongAuth() {
+	protected void checkForStrongAuth() {
 		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
 			public void success(final StrongAuthDetails value) {

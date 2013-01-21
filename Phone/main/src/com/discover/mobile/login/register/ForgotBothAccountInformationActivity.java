@@ -1,15 +1,5 @@
 package com.discover.mobile.login.register;
 
-import static com.discover.mobile.common.StandardErrorCodes.FAILED_SECURITY;
-import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
-import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
-import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
-import static com.discover.mobile.common.StandardErrorCodes.UNSCHEDULED_MAINTENANCE;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.NOT_PRIMARY_CARDHOLDER;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
-
 import java.net.HttpURLConnection;
 
 import android.app.ProgressDialog;
@@ -25,9 +15,7 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
 import com.discover.mobile.common.auth.registration.AccountInformationCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
-import com.discover.mobile.common.auth.strong.StrongAuthCheckCall;
 import com.discover.mobile.common.auth.strong.StrongAuthDetails;
-import com.discover.mobile.common.auth.strong.StrongAuthErrorResponse;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -111,102 +99,6 @@ public class ForgotBothAccountInformationActivity extends AbstractAccountInforma
 	@Override
 	protected Class<?> getSuccessfulStrongAuthIntentClass() {
 		return CreateLoginActivity.class;
-	}
-	
-	/**
-	 * Send a request to the server to check if Strong Auth is required at this step.
-	 */
-	@Override
-	protected void checkForStrongAuth() {
-		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
-			@Override
-			public void success(final StrongAuthDetails value) {
-				Log.d(TAG, "Success");
-				
-			}
-
-			@Override
-			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				
-				if(errorResponse instanceof StrongAuthErrorResponse)
-					return handleStrongAuthErrorResponse((StrongAuthErrorResponse)errorResponse);
-				
-				// TODO handle or remove cases where we don't have handling
-				switch (errorResponse.getHttpStatusCode()) {
-					
-					case HttpURLConnection.HTTP_UNAUTHORIZED:
-						getStrongAuthQuestion();
-						return true;
-				}
-				
-				return false;
-			}
-			
-			private boolean handleStrongAuthErrorResponse(final StrongAuthErrorResponse errorResponse) {
-				if(errorResponse.getResult().endsWith("skipped")) {
-					navToNextScreenWithDetails(accountInformationDetails);
-					return true;
-				}
-				else if (errorResponse.getResult().endsWith("challenge")) { 
-					getStrongAuthQuestion();
-					return true;
-				}
-				else
-					return false;
-			}
-
-			@Override
-			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
-
-				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-
-				// FIXME add "assertions" for what the HTTP status code should be
-				switch(messageErrorResponse.getMessageStatusCode()){
-				
-					case LOCKED_OUT_ACCOUNT:
-						sendToErrorPage(ScreenType.STRONG_AUTH_LOCKED_OUT);
-						return true;
-						
-					case STRONG_AUTH_NOT_ENROLLED:
-						sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
-						return true;
-						
-					case SAMS_CLUB_MEMBER:
-						showMainErrorLabelWithText(getString(R.string.account_info_sams_club_card_error_text));
-						return true;
-						
-					case REG_AUTHENTICATION_PROBLEM: // Provided information was incorrect.
-						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-						return true;
-						
-					case FAILED_SECURITY:
-						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-						return true;
-					
-					case NOT_PRIMARY_CARDHOLDER:
-						sendToErrorPage(ScreenType.NOT_PRIMARY_CARDHOLDER);
-						return true;
-					
-					case UNSCHEDULED_MAINTENANCE:
-						sendToErrorPage(ScreenType.UNSCHEDULED_MAINTENANCE);
-						return true;
-						
-					case MAX_LOGIN_ATTEMPTS:
-						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
-						return true;
-						
-					case LAST_ATTEMPT_WARNING:
-						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
-						return true;
-						
-					default:
-						return false;
-				}
-			}
-		};
-
-		final StrongAuthCheckCall strongAuthCall = new StrongAuthCheckCall(this, callback);
-		strongAuthCall.submit();
 	}
 	
 	/**
