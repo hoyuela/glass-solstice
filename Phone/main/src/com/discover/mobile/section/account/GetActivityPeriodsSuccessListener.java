@@ -3,17 +3,22 @@ package com.discover.mobile.section.account;
 import com.discover.mobile.common.account.recent.RecentActivityPeriodsDetail;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 
+/**
+ * Success listener for getting the periods that can be selected to view transactions for.
+ * @author jthornton
+ *
+ */
 public class GetActivityPeriodsSuccessListener implements SuccessListener<RecentActivityPeriodsDetail>{
 	
 	/**Local instance of the fragment making this call*/
-	private final ChooseDateRangeFragment fragment;
+	private final AccountRecentActivityFragment fragment;
 	
 	/**
 	 * Constructor for the class, letting the listener know the fragment using it
 	 * @param fragment - fragment using this listener
 	 * @param isOptedIn - true is the user is opting into push alerts
 	 */
-	public GetActivityPeriodsSuccessListener(final ChooseDateRangeFragment fragment){
+	public GetActivityPeriodsSuccessListener(final AccountRecentActivityFragment fragment){
 		this.fragment = fragment;
 	}
 
@@ -31,7 +36,6 @@ public class GetActivityPeriodsSuccessListener implements SuccessListener<Recent
 	 */
 	@Override
 	public void success(final RecentActivityPeriodsDetail detail) {
-		fragment.displayDateRanges(detail);
-		
+		fragment.getNewDateRange(detail);
 	}
 }

@@ -9,8 +9,23 @@ import android.widget.TextView;
 
 import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
+import com.discover.mobile.common.account.recent.GetActivityPeriods;
 import com.discover.mobile.common.account.recent.RecentActivityPeriodDetail;
+import com.discover.mobile.common.account.recent.RecentActivityPeriodsDetail;
+import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.callback.GenericAsyncCallback;
 
+/**
+ * Recent account activity fragment.  Allows the user to see details related to their transactions based
+ * on a certain date range.
+ * 
+ * *********
+ * Note this class is done in a different user story (US5241) - this will be commented after the user story. 
+ * This had to be created to reach the choose date fragment
+ * *********
+ * @author jthornton
+ *
+ */
 public class AccountRecentActivityFragment extends BaseFragment {
 	
 	private TextView dateRange;
@@ -49,8 +64,24 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	}
 	
 	protected void chooseDateRange(){
+		final AsyncCallback<RecentActivityPeriodsDetail> callback = 
+				GenericAsyncCallback.<RecentActivityPeriodsDetail>builder(this.getActivity())
+				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
+									getResources().getString(R.string.push_progress_registration_loading), 
+									true)
+				.withSuccessListener(new GetActivityPeriodsSuccessListener(this))
+				//This will be done in US5241.  (Just here to get dates in the view).
+				.withErrorResponseHandler(null)
+				.build();
+		
+		new GetActivityPeriods(getActivity(), callback).submit();
+		
+	}
+	
+	public void getNewDateRange(final RecentActivityPeriodsDetail periods){
 		final ChooseDateRangeFragment fragment = new ChooseDateRangeFragment();
 		fragment.setReturnFragment(this);
+		fragment.setPeriods(periods);
 		super.makeFragmentVisible(fragment);
 	}
 	
@@ -67,7 +98,7 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	}
 
 	public void setDateRange(final RecentActivityPeriodDetail recentActivityPeriodDetail) {
-		currentRange = recentActivityPeriodDetail;
-		
+		currentRange = recentActivityPeriodDetail;	
+		//TODO: Do server call to get transactions
 	}
 }
