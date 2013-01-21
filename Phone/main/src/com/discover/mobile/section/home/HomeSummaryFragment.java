@@ -1,28 +1,18 @@
 package com.discover.mobile.section.home;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import roboguice.RoboGuice;
-import roboguice.inject.InjectView;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.R;
 import com.discover.mobile.BaseFragment;
+import com.discover.mobile.R;
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.auth.AccountDetails;
-import com.discover.mobile.views.GeneralListItemAdapter;
-import com.discover.mobile.views.GeneralListItemModel;
 
 public class HomeSummaryFragment extends BaseFragment {
 
@@ -102,12 +92,12 @@ public class HomeSummaryFragment extends BaseFragment {
 
 		// subsection
 		((TextView) lastStatement.findViewById(R.id.bottom_bar_label))
-				.setText(formatMinPaymentTitle(accountDetails));
+				.setText(formatMinimumPaymentTitle(accountDetails));
 		((TextView) lastStatement.findViewById(R.id.bottom_bar_value))
 				.setText(getString(R.string.dollar_sign)
 						+ accountDetails.minimumPaymentDue);
 
-		// Pay button
+		// View button
 		((TextView) lastStatement.findViewById(R.id.blue_button_text))
 				.setText(R.string.view_blue_button_text);
 	}
@@ -122,23 +112,43 @@ public class HomeSummaryFragment extends BaseFragment {
 		LinearLayout bonusBalance = (LinearLayout) view
 				.findViewById(R.id.home_bonus_balance);
 
-		// main content
-		((TextView) bonusBalance.findViewById(R.id.title))
-				.setText(R.string.cashback_bonus_balance);
-		((TextView) bonusBalance.findViewById(R.id.content_text))
-				.setText(getString(R.string.dollar_sign)
-						+ accountDetails.earnRewardAmount);
+		// main content & subsection
+		boolean isCashback = CommonMethods.isCashbackCard(accountDetails);
 
-		// subsection
-		((TextView) bonusBalance.findViewById(R.id.bottom_bar_label))
-				.setText(getString(R.string.newly_earned));
-		((TextView) bonusBalance.findViewById(R.id.bottom_bar_value))
-				.setText(getString(R.string.dollar_sign)
-						+ accountDetails.newlyEarnedRewards);
+		if (isCashback) {
+			((TextView) bonusBalance.findViewById(R.id.title))
+					.setText(R.string.cashback_bonus_balance);
+			((TextView) bonusBalance.findViewById(R.id.content_text))
+					.setText(getString(R.string.dollar_sign)
+							+ accountDetails.earnRewardAmount);
 
-		// Pay button
-		((TextView) bonusBalance.findViewById(R.id.blue_button_text))
-				.setText(R.string.redeem_blue_button_text);
+			((TextView) bonusBalance.findViewById(R.id.bottom_bar_label))
+					.setText(getString(R.string.newly_earned));
+			((TextView) bonusBalance.findViewById(R.id.bottom_bar_value))
+					.setText(getString(R.string.dollar_sign)
+							+ accountDetails.newlyEarnedRewards);
+		} else {
+			((TextView) bonusBalance.findViewById(R.id.title))
+					.setText(R.string.miles_balance);
+			((TextView) bonusBalance.findViewById(R.id.content_text))
+					.setText(CommonMethods
+							.insertCommas(accountDetails.earnRewardAmount));
+
+			((TextView) bonusBalance.findViewById(R.id.bottom_bar_label))
+					.setText(getString(R.string.newly_earned));
+			((TextView) bonusBalance.findViewById(R.id.bottom_bar_value))
+					.setText(CommonMethods
+							.insertCommas(accountDetails.newlyEarnedRewards));
+		}
+
+		// Redeem button
+		if (!CommonMethods.isEscapeCard(accountDetails)) {
+			((TextView) bonusBalance.findViewById(R.id.blue_button_text))
+					.setText(R.string.redeem_blue_button_text);
+		} else {
+			((TextView) bonusBalance.findViewById(R.id.blue_button_text))
+					.setVisibility(View.GONE);
+		}
 	}
 
 	/**
@@ -148,18 +158,25 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * @param accountDetails
 	 */
 	private void setupBonusOffer(AccountDetails accountDetails) {
-//		RelativeLayout bonusOffer = (RelativeLayout) view
-//				.findViewById(R.id.home_bonus_offer);
+		RelativeLayout bonusOffer = (RelativeLayout) view
+				.findViewById(R.id.home_bonus_offer);
 
-//		LinearLayout subSection = (LinearLayout) bonusOffer
-//				.findViewById(R.id.general_list_item_subsection);
-//		View divider = (View) bonusOffer
-//				.findViewById(R.id.general_list_item_separator_line);
-//		View vertDivider = (View) bonusOffer
-//				.findViewById(R.id.divider_line);
-		
-//		subSection.setVisibility(View.GONE);
-//		divider.setVisibility(View.GONE);
+		// main content
+		boolean isCashback = CommonMethods.isCashbackCard(accountDetails);
+		if (isCashback) {
+			((TextView) bonusOffer.findViewById(R.id.title))
+					.setText(R.string.cashback_bonus_offer);
+		} else {
+			((TextView) bonusOffer.findViewById(R.id.title))
+					.setText(R.string.miles_offer);
+		}
+
+		((TextView) bonusOffer.findViewById(R.id.content_text))
+				.setText(getString(R.string.cashback_miles_offer_subtext));
+
+		// SignUp button
+		((TextView) bonusOffer.findViewById(R.id.blue_button_text))
+				.setText(R.string.sign_up_blue_button_text);
 	}
 
 	/**
@@ -169,7 +186,7 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * @param accountDetails
 	 * @return Formatted title with due date.
 	 */
-	private String formatMinPaymentTitle(AccountDetails accountDetails) {
+	private String formatMinimumPaymentTitle(AccountDetails accountDetails) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getString(R.string.min_payment_due));
 		sb.append(' ');

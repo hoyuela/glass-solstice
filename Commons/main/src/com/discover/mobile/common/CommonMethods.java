@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.discover.mobile.common.auth.AccountDetails;
+
 public final class CommonMethods {
 	private final static String TAG = CommonMethods.class.getSimpleName();
 
