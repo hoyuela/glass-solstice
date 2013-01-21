@@ -568,28 +568,27 @@ public class LoginActivity extends BaseActivity  {
 		login.username = username;
 		
 		final AsyncCallback<BankLoginData> callback = 
-				GenericAsyncCallback.<BankLoginData>builder(this)
-				.showProgressDialog("Discover", "Loading...", true)
-				.withSuccessListener(new SuccessListener<BankLoginData>() {
-
-					@Override
-					public CallbackPriority getCallbackPriority() {
-						return CallbackPriority.MIDDLE;
-					}
-
-					@Override
-					public void success(BankLoginData value) {
-						//Set logged in to be able to save user name in persistent storage
-						Globals.setLoggedIn(true);
-						
-						//TODO Need to set a current session object.
-						
-						//Update current account based on user logged in and account type
-						updateAccountInformation(AccountType.BANK_ACCOUNT);
-						
-					}
-				})
-				.build();
+				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankLoginData.class, this, this, true)
+					.withSuccessListener(new SuccessListener<BankLoginData>() {
+	
+						@Override
+						public CallbackPriority getCallbackPriority() {
+							return CallbackPriority.MIDDLE;
+						}
+	
+						@Override
+						public void success(BankLoginData value) {
+							//Set logged in to be able to save user name in persistent storage
+							Globals.setLoggedIn(true);
+							
+							//TODO Need to set a current session object.
+							
+							//Update current account based on user logged in and account type
+							updateAccountInformation(AccountType.BANK_ACCOUNT);
+						}
+					})
+					.build();
+		
 		new CreateBankLoginCall(this, callback, login).submit();
 	}
 	

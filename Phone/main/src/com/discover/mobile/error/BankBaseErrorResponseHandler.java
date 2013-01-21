@@ -75,21 +75,22 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 		boolean handled = false;
 		
 		String errCode = msgErrResponse.getErrorCode();
+		String strongQuestion = msgErrResponse.getDataValue("challengeQuestion");
+		String strongQuestionId = msgErrResponse.getDataValue("challengeQuestionId");
+		
 		
 		if( !Strings.isNullOrEmpty(msgErrResponse.getErrorCode()) ) {
 			//Login Errors
 			if( errCode.equals(BankErrorCodes.ERROR_INVALID_LOGIN) ) {
-				mErrorHandlerFactory.handleLoginOrStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
+				mErrorHandlerFactory.handleLoginAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_LOGIN) ) {
-				mErrorHandlerFactory.handleLoginOrStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
+				mErrorHandlerFactory.handleLoginAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOGIN_LOCKED)) {
 				mErrorHandlerFactory.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} 
 			//Strong Auth Errors
-			else if( errCode.equals(BankErrorCodes.ERROR_INVALID_STRONG_AUTH) ) {
-				mErrorHandlerFactory.handleLoginOrStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
-			} else if( errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH)) {
-				mErrorHandlerFactory.handleLoginOrStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
+			else if( errCode.equals(BankErrorCodes.ERROR_INVALID_STRONG_AUTH) || errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH) ) {
+				mErrorHandlerFactory.handleStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage(), strongQuestion, strongQuestionId);
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOCKED_STRONG_AUTH)) {
 				mErrorHandlerFactory.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			}

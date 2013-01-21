@@ -106,4 +106,14 @@ public class BankErrorResponse extends AbstractErrorResponse<BankErrorResponse> 
 		
 		return errorMessage;
 	}
+	
+	/**
+	 * 
+	 * @param key 
+	 * @return Returns the string with the key
+	 */
+	public String getDataValue(String key){
+		
+		return data.get(key);
+	}
 }

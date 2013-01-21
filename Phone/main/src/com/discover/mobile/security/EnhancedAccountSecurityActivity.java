@@ -16,8 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
-import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthAnswerDetails;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
@@ -28,7 +26,6 @@ import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 
 /**
@@ -102,6 +99,14 @@ public class EnhancedAccountSecurityActivity extends RoboActivity {
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (!isCard) {
+			whatsThisLayout.setVisibility(View.GONE);
+		}
+	}
+	
+	@Override
+	public void onResume(){
 		final Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			final String question = extras
@@ -111,11 +116,13 @@ public class EnhancedAccountSecurityActivity extends RoboActivity {
 			isCard = extras.getBoolean(IntentExtraKey.IS_CARD_ACCOUNT, true);
 			questionLabel.setText(question);
 		}
-
-		if (!isCard) {
-			whatsThisLayout.setVisibility(View.GONE);
-		}
 	}
+	
+	@Override
+    protected void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
 
 	// Open and close the expandable help menu.
 	public void expandHelpMenu(final View v) {
@@ -178,12 +185,9 @@ public class EnhancedAccountSecurityActivity extends RoboActivity {
 							@Override
 							public void success(BankStrongAuthDetails value) {
 								progress.dismiss();
-								if (value.status != "ALLOWED") {
-									// TODO redo strong auth call
+								if (value.status.equals("ALLOWED")) {
 									startHomeFragment();
-								} else {
-									startHomeFragment();
-								}
+								} 
 							}
 						}).build();
 		new CreateStrongAuthRequestCall(this, callback, details).submit();

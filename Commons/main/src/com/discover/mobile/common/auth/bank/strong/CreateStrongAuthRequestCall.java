@@ -2,6 +2,7 @@ package com.discover.mobile.common.auth.bank.strong;
 
 import android.content.Context;
 
+import com.discover.mobile.common.auth.bank.BankErrorResponseParser;
 import com.discover.mobile.common.auth.strong.StrongAuthDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
@@ -52,6 +53,9 @@ public class CreateStrongAuthRequestCall extends
 		
 		super(context, new PostCallParams(UrlManagerBank.getStrongAuthUrl() + "/index.php") {{
 			requiresSessionForRequest = false;
+			
+			// Specify what error parser to use when receiving an error response
+			errorResponseParser = BankErrorResponseParser.instance();
 			
 			sendDeviceIdentifiers = true;
 			body = details;
