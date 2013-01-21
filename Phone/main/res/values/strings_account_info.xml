@@ -43,4 +43,6 @@
 	<string name="account_info_two_new_pass_confirm_text">Confirm New Password</string>
 	<string name="strength_text">Strength</string>
 	
+	<!-- Choose Activity Period Strings -->
+	<string name="choose_activty_period">Choose Activity Period</string>
 </resources>
