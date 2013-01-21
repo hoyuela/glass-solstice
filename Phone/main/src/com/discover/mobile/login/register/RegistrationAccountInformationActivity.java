@@ -35,7 +35,6 @@ public class RegistrationAccountInformationActivity extends AbstractAccountInfor
 	}
 	
 	public RegistrationAccountInformationActivity() {
-		// TODO make sure this shouldn't be specfic to registration without forgetting
 		super(AnalyticsPage.FORGOT_BOTH_STEP1);
 	}
 	
