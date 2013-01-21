@@ -149,6 +149,39 @@ public final class CommonMethods {
 		else
 			return stringWithoutSpaces;	
 	}
+	
+	/**
+	 * Determines whether or not the current account's card type is a Cashback
+	 * Rewards card.
+	 * 
+	 * @param accountDetails
+	 * @return true if a Cashback, false otherwise.
+	 */
+	public final static boolean isCashbackCard(AccountDetails accountDetails) {
+
+		if (accountDetails.incentiveTypeCode.equalsIgnoreCase("CBB")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Takes a string and adds commas ',' every three character places from the
+	 * right. Used for formatting natural numbers with thousand commas.
+	 * 
+	 * @param str
+	 * @return Formatted string with commas.
+	 */
+	public final static String insertCommas(String str) {
+		Log.e("what", str);
+		if (str.length() < 4) {
+			return str;
+		}
+
+		return insertCommas(str.substring(0, str.length() - 3)) + ","
+				+ str.substring(str.length() - 3, str.length());
+	}
 
 	private CommonMethods() {
 		throw new UnsupportedOperationException(
