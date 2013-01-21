@@ -2,9 +2,11 @@ package com.discover.mobile.login.register;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.discover.mobile.R;
+import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -41,7 +43,9 @@ public class ForgotBothAccountInformationActivity extends AbstractAccountInforma
 	 */
 	@Override
 	protected void addCustomFieldToDetails(final AccountInformationDetails details, final String value) {
-		details.acctNbr = value;
+		//Value is a stylized account number with spaces, remove these spaces and continue.
+		
+		details.acctNbr = CommonMethods.getSpacelessString(value);
 	}
 	
 	@Override
@@ -100,6 +104,23 @@ public class ForgotBothAccountInformationActivity extends AbstractAccountInforma
 	protected void setHeaderProgressText() {
 			HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
 			headerProgressBar.setTitle(R.string.enter_info, R.string.create_login, R.string.confirm);
+	}
+	
+	
+	/**
+	 * Decide what to do when the strong auth activity exits. If it was successful, then navigate
+	 * to the next applicable screen. If not, cancel the registration process.
+	 */
+	@Override
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {	
+		Log.d("ACTIVITY DID GIVE RESULT","ACTIVITY DID GIVE RESULT");
+		if(requestCode == STRONG_AUTH_ACTIVITY) {
+			if(resultCode == RESULT_OK) {
+				navToNextScreenWithDetails(accountInformationDetails);
+			} else if (resultCode == RESULT_CANCELED){
+				finish();
+			}
+		}
 	}
 	
 }
