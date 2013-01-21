@@ -45,6 +45,8 @@ import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.auth.bank.BankLoginData;
 import com.discover.mobile.common.auth.bank.BankLoginDetails;
 import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
+import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
+import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
@@ -61,6 +63,7 @@ import com.discover.mobile.login.register.RegistrationAccountInformationActivity
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
+import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
@@ -507,7 +510,8 @@ public class LoginActivity extends BaseActivity  {
 		if( View.VISIBLE == cardCheckMark.getVisibility() ) {
 			cardLogin(username, password) ;
 		} else {
-			bankLogin(username, password);
+//			bankLogin(username, password);
+			handleStrongAuth();
 		}
 	}
 	
@@ -564,28 +568,68 @@ public class LoginActivity extends BaseActivity  {
 		login.username = username;
 		
 		final AsyncCallback<BankLoginData> callback = 
-				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankLoginData.class, this, this, true)
-					.withSuccessListener(new SuccessListener<BankLoginData>() {
-	
-						@Override
-						public CallbackPriority getCallbackPriority() {
-							return CallbackPriority.MIDDLE;
-						}
-	
-						@Override
-						public void success(BankLoginData value) {
-							//Set logged in to be able to save user name in persistent storage
-							Globals.setLoggedIn(true);
-							
-							//TODO Need to set a current session object.
-							
-							//Update current account based on user logged in and account type
-							updateAccountInformation(AccountType.BANK_ACCOUNT);
-						}
-					})
-					.build();
-		
+				GenericAsyncCallback.<BankLoginData>builder(this)
+				.showProgressDialog("Discover", "Loading...", true)
+				.withSuccessListener(new SuccessListener<BankLoginData>() {
+
+					@Override
+					public CallbackPriority getCallbackPriority() {
+						return CallbackPriority.MIDDLE;
+					}
+
+					@Override
+					public void success(BankLoginData value) {
+						//Set logged in to be able to save user name in persistent storage
+						Globals.setLoggedIn(true);
+						
+						//TODO Need to set a current session object.
+						
+						//Update current account based on user logged in and account type
+						updateAccountInformation(AccountType.BANK_ACCOUNT);
+						
+					}
+				})
+				.build();
 		new CreateBankLoginCall(this, callback, login).submit();
+	}
+	
+	/**
+	 * Strong Auth call
+	 */
+	
+	private void handleStrongAuth(){
+		final AsyncCallback<BankStrongAuthDetails> callback = 
+				GenericAsyncCallback.<BankStrongAuthDetails>builder(this)
+				.showProgressDialog("Discover", "Loading...", true)
+				.withSuccessListener(new SuccessListener<BankStrongAuthDetails>() {
+
+					@Override
+					public CallbackPriority getCallbackPriority() {
+						return CallbackPriority.MIDDLE;
+					}
+
+					@Override
+					public void success(BankStrongAuthDetails value) {
+						navToStrongAuth(value.question, value.questionId);
+					}
+				})
+				.build();
+		new CreateStrongAuthRequestCall(this, callback).submit();	
+	}
+	
+	/**
+	 * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
+	 */
+	private void navToStrongAuth(String question, String id) {
+		
+		final Intent strongAuth = new Intent(this, EnhancedAccountSecurityActivity.class);
+		
+		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, question);
+		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, id);
+		strongAuth.putExtra(IntentExtraKey.IS_CARD_ACCOUNT, false);
+		
+		startActivityForResult(strongAuth, 0);
+		
 	}
 
 	/**

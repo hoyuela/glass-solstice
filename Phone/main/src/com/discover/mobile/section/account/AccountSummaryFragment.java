@@ -1,4 +1,4 @@
-package com.discover.mobile.section.home;
+package com.discover.mobile.section.account;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,38 +17,38 @@ import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.views.GeneralListItemAdapter;
 import com.discover.mobile.views.GeneralListItemModel;
+import com.google.inject.Inject;
 
-public class HomeSummaryFragment extends BaseFragment {
+public class AccountSummaryFragment extends BaseFragment {
+	
+	@Inject
+	private CurrentSessionDetails currentSessionDetails;
 	
 	private final List<GeneralListItemModel> accountSummaryListItems = new ArrayList<GeneralListItemModel>();
 	
-	@InjectView(R.id.account_summary_items)
+//	@InjectView(R.id.account_summary_items)
 	private ListView accountSummaryList;
-
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.section_account_summary_landing, null);
 		
+		buildAccountSummaryListItems();
+		
 		final GeneralListItemAdapter generalListItemAdapter = 
 				new GeneralListItemAdapter(getActivity(), accountSummaryListItems);
 		
-		/**
-		 * Clearing the adapter before populating with new data. Since onCreateView will get called 
-		 * every time you return to the home screen, this will allow the list to get updated with new data.
-		 */
-		generalListItemAdapter.clear();
-		
-		buildAccountSummaryListItems();
-		ListView listView = (ListView) view.findViewById(R.id.account_summary_items);
-		listView.setAdapter(generalListItemAdapter);
+//		ListView listView = (ListView) view.findViewById(R.id.account_summary_items);
+//		listView.setAdapter(generalListItemAdapter);
 				
 		return view;
 	}
 
 	private void buildAccountSummaryListItems() {
 		
-		final AccountDetails accountDetails = CurrentSessionDetails.getCurrentSessionDetails().getAccountDetails();
+		final AccountDetails accountDetails = currentSessionDetails.getAccountDetails();
+		
 		if (accountDetails != null) {
 			
 			GeneralListItemModel generalListItem = createCurrentBalanceItem(accountDetails);
@@ -111,7 +111,7 @@ public class HomeSummaryFragment extends BaseFragment {
 			}};
 		}};
 	}
-
+	
 	/**
 	 * Return the integer value of the string that needs to be displayed in the title
 	 */

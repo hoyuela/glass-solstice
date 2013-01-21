@@ -15,7 +15,8 @@ import android.widget.TextView;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.error.ErrorHandlerFactory;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.login.LockOutUserActivity;
 
 /**
@@ -69,16 +70,16 @@ public class BaseActivity extends RoboActivity implements ErrorHandlerUi{
     
     
     /**
-	 * A common method used to forward user to error modal dialog with a given static
+	 * A common method used to forward user to error page with a given static
 	 * string text message
 	 * 
-	 * @param errorCode HTTP error code
-	 * @param errorText Text that is displayed in the content area of dialog
-	 * @param titleText Text that is displayed at the top of the screen which describes the reason of the error
+	 * @param errorText
 	 */
-	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
-		//Create a modal dialog based on title, error text, and errorCode provided
-		showCustomAlert(ErrorHandlerFactory.getInstance().createErrorModal(errorCode, titleText, errorText));
+	public void sendToErrorPage(int titleText, int errorText) {
+		final Intent maintenancePageIntent = new Intent((Context) this, LockOutUserActivity.class);
+		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
+		startActivity(maintenancePageIntent);
+		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 	}
 
 	/**
@@ -144,9 +145,6 @@ public class BaseActivity extends RoboActivity implements ErrorHandlerUi{
 		
 		//Load all application and user preferences from persistent storage
 		Globals.loadPreferences(this);
-		
-		//Set this activity as the active activity
-		ErrorHandlerFactory.getInstance().setActiveActivity(this);
 	}
 	
 	/**
@@ -159,11 +157,6 @@ public class BaseActivity extends RoboActivity implements ErrorHandlerUi{
 		//Save all application and user preferences into persistent storage
 		Globals.savePreferences(this);
 		
-	}
-
-	@Override
-	public ErrorHandlerFactory getErrorHandlerFactory() {
-		return ErrorHandlerFactory.getInstance();
 	}
 	
 

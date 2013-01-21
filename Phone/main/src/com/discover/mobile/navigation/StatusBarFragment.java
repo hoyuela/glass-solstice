@@ -46,7 +46,7 @@ public class StatusBarFragment extends Fragment {
 		//TODO This is temporary and used just to populate something in the account Name
 		final AccountDetails accountDetails = CurrentSessionDetails.getCurrentSessionDetails().getAccountDetails();
 		
-		setStatusBarText(accountDetails.primaryCardMember.nameOnCard);
+//		setStatusBarText(accountDetails.primaryCardMember.nameOnCard);
 	}
 	
 	/**
