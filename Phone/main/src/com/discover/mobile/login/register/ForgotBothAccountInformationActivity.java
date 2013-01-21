@@ -99,17 +99,6 @@ public class ForgotBothAccountInformationActivity extends AbstractAccountInforma
 	protected Class<?> getSuccessfulStrongAuthIntentClass() {
 		return CreateLoginActivity.class;
 	}
-
-	@Override
-	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {		
-		if(requestCode == STRONG_AUTH_ACTIVITY) {
-			if(resultCode == RESULT_OK) {
-				navToNextScreenWithDetails(accountInformationDetails);
-			} else if (resultCode == RESULT_CANCELED){
-				finish();
-			}
-		}
-	}
 	
 	@Override
 	protected void setHeaderProgressText() {
@@ -124,7 +113,6 @@ public class ForgotBothAccountInformationActivity extends AbstractAccountInforma
 	 */
 	@Override
 	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {	
-		Log.d("ACTIVITY DID GIVE RESULT","ACTIVITY DID GIVE RESULT");
 		if(requestCode == STRONG_AUTH_ACTIVITY) {
 			if(resultCode == RESULT_OK) {
 				navToNextScreenWithDetails(accountInformationDetails);
