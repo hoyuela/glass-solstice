@@ -78,7 +78,8 @@ public class DobDatePicker extends ValidatedInputField{
 		super.setupDefaultAppearance();
 		this.setHint(R.string.birth_date_placeholder);
 		this.setFocusable(false);
-
+		this.setEms(DATE_PICKER_EMS_LENGTH);
+		
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getDownArrow(), null);
 	}
 	
@@ -152,15 +153,4 @@ public class DobDatePicker extends ValidatedInputField{
 		return getDownArrow();
 	}
 
-	@Override
-	protected int getEMSFocusedLength() {
-		return DATE_PICKER_EMS_LENGTH;
-	}
-
-	@Override
-	protected int getEMSNotFocusedLength() {
-		return DATE_PICKER_EMS_LENGTH;
-	}
-
 }
-
