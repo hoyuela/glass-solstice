@@ -9,12 +9,15 @@ import android.widget.TextView;
 
 import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
+import com.discover.mobile.common.account.recent.RecentActivityPeriodDetail;
 
 public class AccountRecentActivityFragment extends BaseFragment {
 	
 	private TextView dateRange;
 	
 	private TextView searchTrans;
+	
+	private RecentActivityPeriodDetail currentRange;
 	
 	
 	// TEMP
@@ -63,9 +66,8 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		return R.string.recent_activity_title;
 	}
 
-	public void setDateRange() {
-		// TODO Auto-generated method stub
+	public void setDateRange(final RecentActivityPeriodDetail recentActivityPeriodDetail) {
+		currentRange = recentActivityPeriodDetail;
 		
 	}
-	
 }

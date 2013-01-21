@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -22,6 +23,10 @@ public class ChooseDateRangeFragment extends BaseFragment{
 	private LinearLayout dates;
 	
 	private Context context;
+	
+	private static final String FRAGMENT = "fragment";
+	
+	private RecentActivityPeriodsDetail periods;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -51,20 +56,49 @@ public class ChooseDateRangeFragment extends BaseFragment{
 		return R.string.recent_activity_title;
 	}
 	
+	@Override
+	public void onSaveInstanceState(final Bundle outState){
+		this.getFragmentManager().putFragment(outState, FRAGMENT, fragment);
+		super.onSaveInstanceState(outState);
+	}
+	
+	public void resumeFragment(final Bundle savedInstanceState){
+		if(null == savedInstanceState){return;}
+		this.fragment = 
+				(AccountRecentActivityFragment)this.getFragmentManager().getFragment(savedInstanceState, FRAGMENT);
+	}
+	
 	public void setReturnFragment(final AccountRecentActivityFragment fragment){
 		this.fragment = fragment;
 	}
 	
-	protected void setRangeInReturnFragment(){
-		this.fragment.setDateRange();
+	protected void setRangeInReturnFragment(final RecentActivityPeriodDetail recentActivityPeriodDetail){
+		if(null == this.fragment){
+			this.fragment = new AccountRecentActivityFragment();
+		}
+		this.fragment.setDateRange(recentActivityPeriodDetail);
 		super.makeFragmentVisible(fragment);
 	}
 	
-	public void displayDateRanges(final RecentActivityPeriodsDetail details){
-		for(RecentActivityPeriodDetail detail : details.dates){
+	public void displayDateRanges(final RecentActivityPeriodsDetail periods){
+		this.periods = periods;
+		for(RecentActivityPeriodDetail detail : periods.dates){
 			final ChoosePeriodItem item = new ChoosePeriodItem(context, null, detail);
+			item.setOnClickListener(getClickListener());
 			dates.addView(item);
+			
 		}
 	}
+
+	private OnClickListener getClickListener() {
+		return new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				final ChoosePeriodItem view = (ChoosePeriodItem) v;
+				setRangeInReturnFragment(view.getPeriod());
+			}
+		};
+	}
+
 
 }

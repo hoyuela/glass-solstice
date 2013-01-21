@@ -3,38 +3,44 @@ package com.discover.mobile.section.account;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.account.recent.RecentActivityPeriodDetail;
 
-public class ChoosePeriodItem extends LinearLayout{
+public class ChoosePeriodItem extends RelativeLayout{
 	
 	/**Label associated with the item*/
 	private final TextView label;
 	
-	private final RecentActivityPeriodDetail detail;
+	/**Period associated with this item*/
+	private final RecentActivityPeriodDetail period;
 	
 	/**
 	 * Constructor of the class
 	 * @param context - activity context
 	 * @param attrs - attributes to give to the layout
+	 * @param period - time period to associate with this item
 	 */
-	public ChoosePeriodItem(final Context context, final AttributeSet attrs, final RecentActivityPeriodDetail detail) {
+	public ChoosePeriodItem(final Context context, final AttributeSet attrs, final RecentActivityPeriodDetail period) {
 		super(context, attrs);
 		
-		final LinearLayout mainView = (LinearLayout) LayoutInflater.from(context)
+		final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(context)
                 .inflate(R.layout.choose_period_item, null);
 		
 		label = (TextView) mainView.findViewById(R.id.date_string);
-		label.setText(detail.displayDate);
-		this.detail = detail;
+		label.setText(period.displayDate);
+		this.period = period;
 		
 		addView(mainView);
 	}
 
-	public RecentActivityPeriodDetail getDetail() {
-		return detail;
+	/**
+	 * Get the period associated with this item
+	 * @return the period associated with this item
+	 */
+	public RecentActivityPeriodDetail getPeriod() {
+		return period;
 	}
 }

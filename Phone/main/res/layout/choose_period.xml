@@ -6,8 +6,12 @@
 	
 	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:orientation="vertical" 
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:layout_marginTop="@dimen/groups_of_elements_padding" 
+	    android:layout_marginRight="@dimen/forms_inner_padding"
+	    android:layout_marginLeft="@dimen/forms_inner_padding"
+	    android:paddingBottom="@dimen/groups_of_elements_padding"
 	    style="@drawable/light_gray_bkgrd">
 	    
 		
@@ -15,8 +19,8 @@
 	        android:id="@+id/title"
 	        android:layout_width="match_parent"
 	    	android:layout_height="match_parent"
-	    	android:background="@drawable/notification_list_item"
-	    	android:text="Choose Activity Period"
+	    	android:text="@string/choose_activty_period"
+	    	android:layout_marginBottom="@dimen/forms_inner_padding"
 	    	style="@style/title_copy"/>
 	    
 	    <LinearLayout 
