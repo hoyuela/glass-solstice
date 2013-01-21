@@ -27,8 +27,7 @@ import com.google.common.base.Strings;
 public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	private boolean isUsernameField = true;
 	
-	private static final int EMS_SELECTED = 16;
-	private static final int EMS_NOT_SELECTED = EMS_SELECTED;
+	private static final int DEFAULT_EMS = 20;
 	
 	private static final int VALID_ACCOUNT_NUMBER_LENGTH = 19;
 	private static final int MAX_USERNAME_LENGTH = 32;
@@ -70,7 +69,11 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		setupInputStylizer();
 	}
 
-	
+	@Override
+	protected void setupDefaultAppearance() {
+		super.setupDefaultAppearance();
+		this.setEms(DEFAULT_EMS);
+	}
 	/**
 	 * Listens for hardware keyboard inputs and stylizes the input for account numbers.
 	 */
@@ -177,23 +180,6 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		
 		return InputValidator.isCardAccountNumberValid(CommonMethods.getSpacelessString(cardAccountNumber));
 	}
-
-	/**
-	 * Return the EMS length of the field when focused.
-	 */
-	@Override
-	protected int getEMSFocusedLength() {
-		return EMS_SELECTED;
-	}
-
-	/**
-	 * Return the EMS length of the field when NOT focused.
-	 */
-	@Override
-	protected int getEMSNotFocusedLength() {
-		return EMS_NOT_SELECTED;
-	}
-	
 	
 	/**
 	 * This private inner class is intended on intercepting the software keyboard events so that we can 

@@ -5,8 +5,6 @@ import android.util.AttributeSet;
 
 public class NonEmptyEditText extends ValidatedInputField {
 
-	private final int EMS_FOCUSED = 16;
-	private final int EMS_NOT_FOCUSED = 16;
 	/**
 	 * Default constructor
 	 * @param context the context of use for the EditText.
@@ -24,19 +22,8 @@ public class NonEmptyEditText extends ValidatedInputField {
 	}
 
 	@Override
-	protected int getEMSFocusedLength() {
-		return EMS_FOCUSED;
-	}
-
-	@Override
-	protected int getEMSNotFocusedLength() {
-		return EMS_NOT_FOCUSED;
-	}
-
-	@Override
 	public boolean isValid() {
 		return this.length() > 0;
 	}
 	
-
 }
