@@ -90,4 +90,9 @@ public class LatePaymentModalTop extends ScrollView implements ModalTopView {
 		text.setText(content);
 	}
 
+	@Override
+	public void setTitle(final String text) {}
+
+	@Override
+	public void setContent(final String content) {}
 }
