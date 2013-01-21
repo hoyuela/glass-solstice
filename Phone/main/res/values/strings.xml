@@ -35,7 +35,6 @@
     <string name="forgot_password_text">Forgot Password</string>
     <string name="forgot_both_text">Forgot Both</string>
     <string name="forgot_password_field_title_text">Credit Card User ID</string>
-    <string name="arrow">></string>
     <string name="forgot_credentials_text">Forgot User ID or Password</string>
     <string name="register_text">Register</string>
     <string name="account_info_label_one">Credit Card Account Number</string>

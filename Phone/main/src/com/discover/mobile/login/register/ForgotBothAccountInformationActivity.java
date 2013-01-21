@@ -71,7 +71,7 @@ public class ForgotBothAccountInformationActivity extends AbstractAccountInforma
 	 */
 	@Override
 	public void goBack(final View v) {
-		Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
+		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
 		startActivity(forgotCredentials);
 		finish();
 	}
@@ -96,6 +96,17 @@ public class ForgotBothAccountInformationActivity extends AbstractAccountInforma
 		return CreateLoginActivity.class;
 	}
 
+	@Override
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {		
+		if(requestCode == STRONG_AUTH_ACTIVITY) {
+			if(resultCode == RESULT_OK) {
+				navToNextScreenWithDetails(accountInformationDetails);
+			} else if (resultCode == RESULT_CANCELED){
+				finish();
+			}
+		}
+	}
+	
 	@Override
 	protected void setHeaderProgressText() {
 			HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);

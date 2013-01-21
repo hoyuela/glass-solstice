@@ -177,7 +177,7 @@ public class ForgotUserIdActivity extends RoboActivity {
 	}
 	
 	public void goBack() {
-		final Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
+		final Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
 		startActivity(forgotCredentials);
 		finish();
 	}

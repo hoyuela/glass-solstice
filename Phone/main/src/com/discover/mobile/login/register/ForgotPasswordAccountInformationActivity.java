@@ -64,7 +64,7 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	 */
 	@Override
 	public void goBack(final View v) {
-		Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
+		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
 		startActivity(forgotCredentials);
 		finish();
 	}
@@ -103,7 +103,7 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 
 	@Override
 	public void goBack() {
-		Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
+		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
 		startActivity(forgotCredentials);
 		finish();		
 	}

@@ -84,10 +84,10 @@
 			android:label="@string/app_name"
 			android:launchMode="singleTask" />
 	
-		<activity android:name=".login.register.ForgotTypeSelectionActivity"
+		<activity android:name="com.discover.mobile.login.register.ForgotCredentialsActivity"
 			android:label="@string/app_name"
-			android:launchMode="singleTask"
-			android:noHistory="true" />
+			android:launchMode="singleTask">
+		</activity>
 		
 		<activity android:name=".login.register.ForgotUserIdActivity"
 			android:label="@string/app_name"
