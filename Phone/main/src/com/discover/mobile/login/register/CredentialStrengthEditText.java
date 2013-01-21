@@ -13,6 +13,7 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -86,6 +87,11 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	 * Bitmap used to indicate that no text to be evaluated
 	 **/
 	private Bitmap mNoTextImage = null;
+	
+	/**
+	 * Bitmap used to indicate an invalid input.
+	 */
+	private Bitmap mInvalidImage = null;
 	/**
 	 * Bitmap rendered by EditText onDraw method based on strength of entered
 	 * text (rules vary based on whether id or password)
@@ -133,7 +139,16 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	/**Inherited method from ValidatedInputField, overridden to disable*/
 	@Override
 	protected void setupFocusChangedListener() {
-		//Do nothing
+		this.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(!hasFocus && !isValid()){
+					loadResources();
+					mStrengthMeter = mInvalidImage;
+				}
+			}
+		});
 	}
 	
 	/**Inherited method from ValidatedInputField, overridden to disable*/
@@ -266,12 +281,10 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 			}
 		}
 
-		/*TODO: Waiting on Visual Asset
 		if (inputSequence.toString().startsWith("6011")) {
 			looksLikeActNum = true;
-			showLabelWithStringResource(errorMessageLabel, R.string.invalid_value);
 		}
-		*/
+		
 
 		/*
 		 * Meets minimum requirements and combines a variation of letters,
@@ -507,6 +520,8 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	 */
 	public void loadResources() {
 		//Load All Imgaes
+		if(mInvalidImage == null)
+			mInvalidImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.strength_meter_invalid_red);
 		if(mStrengthMeter == null)
 			mStrengthMeter = BitmapFactory.decodeResource(this.getResources(), R.drawable.edit_text_default);
 		if(mStrongImage == null)
@@ -536,6 +551,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		mStrongImage = scaleImage(mStrongImage, height, width);
 		mModerateImage = scaleImage(mModerateImage, height, width);
 		mWeakImage = scaleImage(mWeakImage, height, width);
+		mInvalidImage = scaleImage(mInvalidImage, height, width);
 		
 		// Define touch region based on current control size
 		mTouchRegion = new Rect();
