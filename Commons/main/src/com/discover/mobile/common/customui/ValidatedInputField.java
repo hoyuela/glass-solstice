@@ -29,11 +29,8 @@ public abstract class ValidatedInputField extends EditText{
 	/** Default and error drawables for input fields */
 	protected final static int FIELD_DEFAULT_APPEARANCE = R.drawable.edit_text_default;
 	protected final static int FIELD_ERROR_APPEARANCE = R.drawable.edit_text_red;
-
-	private int EMS_FOCUSED;
-	private int EMS_NOT_FOCUSED;
 	
-	private ValidatedInputField mSearchText;
+	private ValidatedInputField thisEditText;
 	
 	/**Default date picker ems size*/
 	protected static final int DATE_PICKER_EMS_LENGTH = 11;
@@ -50,16 +47,13 @@ public abstract class ValidatedInputField extends EditText{
 	protected Drawable downArrow = null;
 	
 	protected boolean isInErrorState = false;
-	
-	protected boolean needsToAdjustSizeDynamically = false;
-	
+		
+	public boolean isInDefaultState = true;
 	/**
 	 * If an error label is provided, this will be shown and hidden on 
 	 * error states.
 	 */
 	protected TextView errorLabel;
-	protected abstract int getEMSFocusedLength();
-	protected abstract int getEMSNotFocusedLength();
 	
 	/**
 	 * Default constructor
@@ -84,37 +78,16 @@ public abstract class ValidatedInputField extends EditText{
 	 * Called upon creation of a ValidatedInputField child. Sets up the text changed and
 	 * focus changed listeners and sets the default appearance and input restrictions on the field.
 	 */
-	protected void basicSetup() {
+	private void basicSetup() {
 		setupFocusChangedListener();
 		setupTextChangedListener();
 		setupInputRestrictions();
 		setupDefaultAppearance();
-		setupEMSLength();
-		mSearchText = this;
+		thisEditText = this;
 		setupRightDrawableTouchRegion();
 		setupDefaultHeight();
 	}
 	
-	/**
-	 * Sets the EMS length to either a default value or what is returned by a subclass.
-	 */
-	private void setupEMSLength() {
-		EMS_FOCUSED = getEMSFocusedLength();
-		EMS_NOT_FOCUSED = getEMSNotFocusedLength();
-	
-		this.setEms(EMS_NOT_FOCUSED);
-		this.setMaxEms(EMS_NOT_FOCUSED);
-	}
-	
-	/**
-	 * Adjusts the EMS length of the input field during runtime.
-	 * 
-	 * @param newEmsLength a EMS length that will be used for EMS and maxEMS.
-	 */
-	private void setNewEms(final int newEmsLength) {
-		this.setEms(newEmsLength);
-		this.setMaxEms(newEmsLength);
-	}
 	/**
 	 * Set the default appearance so that we dont have to do it in XML.
 	 */
@@ -167,7 +140,6 @@ public abstract class ValidatedInputField extends EditText{
 
 				//If Lost Focus
 				if( !hasFocus ){
-					setNewEms(EMS_NOT_FOCUSED);
 					updateAppearanceForInput();
 					if(!isInErrorState) {
 						clearErrors();
@@ -176,7 +148,6 @@ public abstract class ValidatedInputField extends EditText{
 				}
 				//If Selected/Has Focus
 				else {
-					setNewEms(EMS_FOCUSED);
 					setRightDrawableGrayX();
 					if(isInErrorState)
 						setRightDrawableRedX();
@@ -188,7 +159,7 @@ public abstract class ValidatedInputField extends EditText{
 	}
 	
 	/**Sets the right drawable to the gray X image*/
-	private void setRightDrawableGrayX() {
+	protected void setRightDrawableGrayX() {
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getGrayX(), null);
 	}
 	
@@ -293,6 +264,7 @@ public abstract class ValidatedInputField extends EditText{
 		setRightDrawableRedX();
 		this.setBackgroundResource(FIELD_ERROR_APPEARANCE);
 		isInErrorState = true;
+		isInDefaultState = false;
 	}
 	
 	/**
@@ -319,16 +291,17 @@ public abstract class ValidatedInputField extends EditText{
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				Drawable rightDrawable = mSearchText.getCompoundDrawables()[2];
+				Drawable rightDrawable = thisEditText.getCompoundDrawables()[2];
 				if (rightDrawable == null || rightDrawable.equals(getGreenCheck()) || event.getAction() != MotionEvent.ACTION_UP) {
 					//Do nothing
 				}
-				else if (event.getX() > mSearchText.getWidth()
-						- mSearchText.getPaddingRight()
+				else if (event.getX() > thisEditText.getWidth()
+						- thisEditText.getPaddingRight()
 						- getRedX().getIntrinsicWidth()) {
-					mSearchText.setText("");
-					mSearchText.clearErrors();
-					mSearchText.setRightDrawableGrayX();
+					thisEditText.setText("");
+					thisEditText.clearErrors();
+					thisEditText.setRightDrawableGrayX();
+					isInDefaultState = true;
 				}
 
 				return false;

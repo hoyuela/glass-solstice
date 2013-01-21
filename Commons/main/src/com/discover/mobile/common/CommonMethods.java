@@ -1,10 +1,13 @@
 package com.discover.mobile.common;
 
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public final class CommonMethods {
@@ -33,7 +36,24 @@ public final class CommonMethods {
 		setViewVisible(label);
 	}
 	
-
+	/**
+	 * Sets a given EditText's input to all lowercase characters. Useful when restricting the
+	 * input of a field.
+	 * 
+	 * @param input
+	 * @param field
+	 */
+	public static void setInputToLowerCase(final CharSequence input, final EditText field){
+		final String inputString = input.toString();
+		final String lowerCaseInput = inputString.toLowerCase(Locale.getDefault());
+		
+		if( !inputString.equals(lowerCaseInput)){
+			field.setText(lowerCaseInput);
+			field.setSelection(lowerCaseInput.length());
+		}
+		
+	}
+	
 	/**
 	 * Set a text label visible and assign its text value to the given string resource.
 	 * 

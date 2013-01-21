@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
+import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.R;
 
 public class ConfirmationEditText extends ValidatedInputField {
@@ -58,16 +59,6 @@ public class ConfirmationEditText extends ValidatedInputField {
 			
 		});
 	}
-	
-	@Override
-	protected int getEMSFocusedLength() {
-		return EMS_DEFAULT;
-	}
-
-	@Override
-	protected int getEMSNotFocusedLength() {
-		return EMS_DEFAULT;
-	}
 
 	/**
 	 * When a user navigates away from the field, do a validation and graphic update again.
@@ -84,6 +75,11 @@ public class ConfirmationEditText extends ValidatedInputField {
 				if(!hasFocus && !isValid()){
 					setErrors();
 				}
+				else{
+					setRightDrawableGrayX();
+					if(isInErrorState)
+						setRightDrawableRedX();
+				}
 				
 			}
 		});
@@ -96,25 +92,46 @@ public class ConfirmationEditText extends ValidatedInputField {
 	 */
 	@Override
 	protected void setupTextChangedListener() {
-
+		final ConfirmationEditText self = this;
+		
 		this.addTextChangedListener(new TextWatcher() {
+			String beforeText;
+			String afterText;
+			@Override
+			public void afterTextChanged(Editable s) {
+				afterText = s.toString();
+				if(beforeText.equals(afterText)){
+					if(isValid())
+						setAppearanceMatched();
+					else
+						updateAppearanceForInput();
+				}
+			}
 
 			@Override
-			public void afterTextChanged(Editable s) {}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				beforeText = s.toString();
+			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				
 				if(isUserId)
-					setInputToLowerCase(s);
-				if(isValid()){
+					CommonMethods.setInputToLowerCase(s, self);
+				if(count > 0)
+					isInDefaultState = false;
+				
+				if(isInDefaultState)
+					{/*Do nothing*/}
+				else if(isValid()){
 					clearErrors();
 					setAppearanceMatched();
-				}else
+					
+				}
+				else
 					clearErrors();
+				
+				
 			}
 			
 		});
@@ -128,6 +145,7 @@ public class ConfirmationEditText extends ValidatedInputField {
 	public void setIsUserIdConfirmation(final boolean isUserId) {
 		this.isUserId = isUserId;
 	}
+	
 	/**
 	 * The appearance of the text field when it is matching an attached EditText's input.
 	 */
