@@ -27,8 +27,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.discover.mobile.AsyncCallbackBuilderLibrary;
 import com.discover.mobile.BaseActivity;
-import com.discover.mobile.DefaultExceptionFailureHandler;
 import com.discover.mobile.R;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.CurrentSessionDetails;
@@ -54,6 +54,7 @@ import com.discover.mobile.common.customui.NonEmptyEditText;
 import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
+import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.help.CustomerServiceContactsActivity;
 import com.discover.mobile.login.register.ForgotTypeSelectionActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
@@ -545,6 +546,8 @@ public class LoginActivity extends BaseActivity  {
 					}
 				})
 				.withErrorResponseHandler(new LoginErrorResponseHandler(this))
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.withCompletionListener(new LockScreenCompletionListener(this))
 				.build();
 
 		new AuthenticateCall(this, callback, username, password).submit();
@@ -561,30 +564,30 @@ public class LoginActivity extends BaseActivity  {
 		BankLoginDetails login = new BankLoginDetails();
 		login.password = password;
 		login.username = username;
-		final AsyncCallback<BankLoginData> callback = 
-				GenericAsyncCallback.<BankLoginData>builder(this)
-				.showProgressDialog("Discover", "Loading...", true)
-				.withSuccessListener(new SuccessListener<BankLoginData>() {
-
-					@Override
-					public CallbackPriority getCallbackPriority() {
-						return CallbackPriority.MIDDLE;
-					}
-
-					@Override
-					public void success(BankLoginData value) {
-						//Set logged in to be able to save user name in persistent storage
-						Globals.setLoggedIn(true);
-						
-						//TODO Need to set a current session object.
-						
-						//Update current account based on user logged in and account type
-						updateAccountInformation(AccountType.BANK_ACCOUNT);
-					}
-				})
-				.build();
-		new CreateBankLoginCall(this, callback, login).submit();
 		
+		final AsyncCallback<BankLoginData> callback = 
+				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankLoginData.class, this, this, true)
+					.withSuccessListener(new SuccessListener<BankLoginData>() {
+	
+						@Override
+						public CallbackPriority getCallbackPriority() {
+							return CallbackPriority.MIDDLE;
+						}
+	
+						@Override
+						public void success(BankLoginData value) {
+							//Set logged in to be able to save user name in persistent storage
+							Globals.setLoggedIn(true);
+							
+							//TODO Need to set a current session object.
+							
+							//Update current account based on user logged in and account type
+							updateAccountInformation(AccountType.BANK_ACCOUNT);
+						}
+					})
+					.build();
+		
+		new CreateBankLoginCall(this, callback, login).submit();
 	}
 
 	/**
@@ -857,7 +860,7 @@ public class LoginActivity extends BaseActivity  {
 		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback.<PreAuthResult> builder(this)
 				.withSuccessListener(new PreAuthSuccessResponseHandler(this))
 				.withErrorResponseHandler(new PreAuthErrorResponseHandler(this))
-				.withExceptionFailureHandler(new DefaultExceptionFailureHandler() )
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler() )
 				.withCompletionListener(new LockScreenCompletionListener(this)).build();
 
 		new PreAuthCheckCall(this, callback).submit();
