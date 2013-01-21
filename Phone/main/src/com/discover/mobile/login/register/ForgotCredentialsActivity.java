@@ -13,6 +13,7 @@ import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.login.LoginActivity;
 /**
  * This class handles a user's choice and navigation to the first step of forgot password/user id/ or both.
  * It contains a list of choices, upon tapping a choice, this activity is finished and the selected
@@ -101,7 +102,14 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 	}
 
 	@Override
+	public void onBackPressed() {
+		goBack();
+	}
+	
+	@Override
 	public void goBack() {
+		Intent login = new Intent(this, LoginActivity.class);
+		startActivity(login);
 		finish();
 	}
 	

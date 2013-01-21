@@ -803,7 +803,7 @@ public class LoginActivity extends BaseActivity  {
 	private void forgotIdAndOrPass() {
 		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotCredentialsActivity.class);
 		this.startActivity(forgotIdAndOrPassActivity);
-		clearInputs();
+		finish();
 	}
 
 	

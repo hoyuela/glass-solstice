@@ -135,6 +135,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		filterArray[0] = new InputFilter.LengthFilter(VALID_ACCOUNT_NUMBER_LENGTH);
 		this.setFilters(filterArray);
 		this.setInputType(InputType.TYPE_CLASS_PHONE);
+		setupDefaultHeight();
 	}
 
 	/**
@@ -145,6 +146,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		filterArray[0] = new InputFilter.LengthFilter(MAX_USERNAME_LENGTH);
 		this.setFilters(filterArray);
 		this.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+		setupDefaultHeight();
 	}
 	
 	/**
