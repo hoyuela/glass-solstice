@@ -6,9 +6,6 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputConnection;
-import android.view.inputmethod.InputConnectionWrapper;
 
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.auth.InputValidator;
@@ -190,39 +187,37 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	 * It currently stylizes the text with a space between every 4 characters of an account number
 	 * 
 	 */
-	 @Override
-	    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-	        return new CustomInputConnection(super.onCreateInputConnection(outAttrs),
-	                true);
-	    }
-
-	    private class CustomInputConnection extends InputConnectionWrapper {
-
-	        public CustomInputConnection(InputConnection target, boolean mutable) {
-	            super(target, mutable);
-	        }
-
-	        @Override
-	        public boolean sendKeyEvent(KeyEvent event) {
-
-				updateInputWithString(CommonMethods.getSpacelessString(getInputText()));
-				
-				boolean superKeyEvent = super.sendKeyEvent(event);
-            	if(!isUsernameField){
-
-					updateInputWithString(CommonMethods.getStringWithSpacesEvery4Characters(getInputText()));
-					setCursorPositionToEnd();
-            	}
-	            return superKeyEvent;
-
-	        }
-
-	    }
-	    /**
-	     * Sets the text cursor position to the end of the field. 
-	     */
-	    private void setCursorPositionToEnd() {
-	    	this.setSelection(this.length(), this.length());
-	    }
+//	 @Override
+//    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+//        return new CustomInputConnection(super.onCreateInputConnection(outAttrs), true);
+//    }
+//
+//    private class CustomInputConnection extends InputConnectionWrapper {
+//
+//        public CustomInputConnection(InputConnection target, boolean mutable) {
+//            super(target, mutable);
+//        }
+//
+//        @Override
+//        public boolean sendKeyEvent(KeyEvent event) {
+//
+//			updateInputWithString(CommonMethods.getSpacelessString(getInputText()));
+//			
+//			boolean superKeyEvent = super.sendKeyEvent(event);
+//        	if(!isUsernameField){
+//				updateInputWithString(CommonMethods.getStringWithSpacesEvery4Characters(getInputText()));
+//				setCursorPositionToEnd();
+//        	}
+//            return superKeyEvent;
+//
+//        }
+//
+//    }
+    /**
+     * Sets the text cursor position to the end of the field. 
+     */
+    private void setCursorPositionToEnd() {
+    	this.setSelection(this.length(), this.length());
+    }
 	    
 }

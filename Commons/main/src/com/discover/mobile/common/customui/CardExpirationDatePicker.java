@@ -1,8 +1,13 @@
 package com.discover.mobile.common.customui;
 
+import java.util.Calendar;
+
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.DatePicker;
 
 import com.discover.mobile.common.R;
 import com.discover.mobile.common.auth.InputValidator;
@@ -22,19 +27,52 @@ public class CardExpirationDatePicker extends ValidatedInputField{
 	
 	private int expirationMonth = INVALID_VALUE;
 	private int expirationYear = INVALID_VALUE;
+	
+	private Context currentContext;
+	
+	private CustomDatePickerDialog attachedDatePickerDialog;
 		
 	public CardExpirationDatePicker(Context context) {
 		super(context);
+		defaultSetup(context);
 	}
 	
 	public CardExpirationDatePicker(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		defaultSetup(context);
 	}
 	
 	public CardExpirationDatePicker(Context context, AttributeSet attrs, int defStyle){
 		super(context, attrs, defStyle);
+		defaultSetup(context);
 	}
+	
+	/**
+	 * Initial setup for the date picker.
+	 * @param context
+	 */
+	private void defaultSetup(final Context context) {
+		currentContext = context;
+		setupDatePickerDialog();
+		setupOnClickListener();
 
+		this.setCursorVisible(false);
+		this.setKeyListener(null);
+	}
+	
+	/**
+	 * When the element is clicked, launch the date picker dialog.
+	 */
+	private void setupOnClickListener() {
+		this.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				attachedDatePickerDialog.show();
+			}
+		});
+	}
+	
 	/**
 	 * Checks to see if the saved expiration date is valid.
 	 * 
@@ -64,6 +102,46 @@ public class CardExpirationDatePicker extends ValidatedInputField{
 	}
 	
 	/**
+	 * Setup the focus changed listeners so that we can focus this item and have it remain looking
+	 * like a date picker
+	 */
+	@Override
+	protected void setupFocusChangedListener() {
+		this.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus)
+					attachedDatePickerDialog.show();
+			}
+		});
+	}
+	
+	private void setupDatePickerDialog() {
+		final Calendar currentDate = Calendar.getInstance();
+
+		final int NOT_NEEDED = 1;
+		final int currentMonth = currentDate.get(Calendar.MONTH);
+		final int currentYearPlusTwo = currentDate.get(Calendar.YEAR) + 2;
+		
+		attachedDatePickerDialog = new CustomDatePickerDialog(currentContext, new OnDateSetListener() {
+			
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				setExpirationMonth(monthOfYear);
+				setExpirationYear(year);
+				updateLabelWithSavedDate();
+				updateAppearanceForInput();
+			}
+		}, currentYearPlusTwo, currentMonth, NOT_NEEDED);
+		
+		final String datePickerTitle = getResources().getString(R.string.card_expiration_date_text);
+		attachedDatePickerDialog.setTitle(datePickerTitle);
+		attachedDatePickerDialog.hideDayPicker();
+	}
+	
+	/**
 	 * Setup the default apperance of the input field. Beyond the normal setup, a down arrow
 	 * drawable is set on the right, along with hint text.
 	 */
@@ -73,8 +151,6 @@ public class CardExpirationDatePicker extends ValidatedInputField{
 		
 		this.setHint(R.string.exp_date_placeholder);
 		this.setEms(DATE_PICKER_EMS_LENGTH);
-		this.setFocusable(false);
-		
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getDownArrow(), null);
 	}
 	
