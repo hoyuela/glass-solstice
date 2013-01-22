@@ -7,19 +7,14 @@ import static com.discover.mobile.common.auth.registration.RegistrationErrorCode
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_SSN_EQUAL;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 
-import java.net.HttpURLConnection;
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -49,7 +44,6 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
-import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.HeaderProgressIndicator;
@@ -75,9 +69,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 	
 	private final static String UPDATE_PASSWORD_STATE = "k";
 	private final static String UPDATE_ID_STATE = "l";
-	
-	private final static String PASS_CONFIRM_ERROR_VISIBILITY_KEY = "m";
-	private final static String PASS_CONFIRM_ERROR_TEXT_KEY = "n";
 
 //ERROR LABELS
 	private TextView mainErrorMessageLabel;
@@ -101,8 +92,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 	private HeaderProgressIndicator headerProgressIndicator;
 	
 //BUTTONS
-	private Button continueButton;
-	
 	private Context currentContext;
 	
 	@Override
@@ -110,7 +99,7 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_create_credentials);
 		loadAllViews();
-		attachDisabledButtonListeners();
+
 		attachErrorLabelsToFields();
 		mergeAccountDetails();
 
@@ -152,42 +141,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 		}
 	}
 	
-	/** 
-	 * A text watcher that allows every form on the screen to listen for 
-	 * when the form info is complete and then update the submit button to enabled
-	 */
-	private TextWatcher getContinueButtonTextWatcher() {
-		return new TextWatcher() {
-			@Override
-			public void afterTextChanged(Editable s) {
-				if(isFormCompleteAndValid())
-					continueButton.setEnabled(true);
-				else
-					continueButton.setEnabled(false);
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,int count) {}
-		};
-	}
-	
-	/**
-	 * Attach text watchers to all input fields so that when all fields are valid, the continue button gets enabled.
-	 * Or if any of them become disabled, so does the continue button.
-	 */
-	private void attachDisabledButtonListeners() {
-		emailField.addTextChangedListener(getContinueButtonTextWatcher());
-		idField.addTextChangedListener(getContinueButtonTextWatcher());
-		idConfirmField.addTextChangedListener(getContinueButtonTextWatcher());
-		idConfirmField.setIsUserIdConfirmation(true);
-		passField.addTextChangedListener(getContinueButtonTextWatcher());
-		passConfirmField.addTextChangedListener(getContinueButtonTextWatcher());
-		
-	}
-	
 	/**
 	 * Attach error lables to be hidden/shown for these input fields based on the valididty of their input.
 	 */
@@ -217,8 +170,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 		idConfirmField = (ConfirmationEditText)findViewById(R.id.account_info_two_id_confirm_field);
 		idField = (CredentialStrengthEditText)findViewById(R.id.account_info_two_id_field);
 		emailField = (EmailEditText)findViewById(R.id.account_info_two_email_field);
-
-		continueButton  = (Button)findViewById(R.id.account_info_two_submit_button);
 		
 		mainErrorMessageLabelTwo = (TextView)findViewById(R.id.account_info_error_label_two);
 		errorMessageLabel = (TextView)findViewById(R.id.account_info_id_confirm_error_label);
@@ -323,7 +274,14 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 	 * @param v
 	 */
 	public void checkInputsThenSubmit(final View v){
-
+		CommonMethods.setViewGone(mainErrorMessageLabel);
+		
+		emailField.updateAppearanceForInput();
+		passField.updateAppearanceForInput();
+		idField.updateAppearanceForInput();
+		passConfirmField.updateAppearanceForInput();
+		idConfirmField.updateAppearanceForInput();
+		
 		if(isFormCompleteAndValid()){
 			formDataTwo.email = emailField.getText().toString();
 			formDataTwo.password = passField.getText().toString();
@@ -386,11 +344,11 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 				mainScrollView.smoothScrollTo(0, 0);
 
 				switch (errorResponse.getHttpStatusCode()) {
-					case HttpURLConnection.HTTP_UNAUTHORIZED:
+					default:
+						CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, R.string.unkown_error_text, currentContext);
 						return true;
 				}
 				
-				return false;
 			}
 
 			@Override
@@ -563,58 +521,4 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 		return null;
 	}
 
-	@Override
-	public void showCustomAlert(AlertDialog alert) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void showOneButtonAlert(int title, int content, int buttonText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void showDynamicOneButtonAlert(int title, String content,
-			int buttonText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendToErrorPage(int errorText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Context getContext() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setLastError(int errorCode) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getLastError() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public ErrorHandlerFactory getErrorHandlerFactory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
