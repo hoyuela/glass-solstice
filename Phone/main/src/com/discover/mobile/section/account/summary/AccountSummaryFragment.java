@@ -140,6 +140,7 @@ public class AccountSummaryFragment extends BaseFragment {
 	 * Populate the linear layout
 	 */
 	public void populateList(){
+		if(null == info){return;}
 		final Resources res = this.getResources();
 		
 		accountSummaryList.addView(SimpleListItemFactory.createItem(context,
