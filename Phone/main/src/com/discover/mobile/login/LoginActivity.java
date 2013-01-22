@@ -45,9 +45,12 @@ import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.auth.bank.BankLoginData;
 import com.discover.mobile.common.auth.bank.BankLoginDetails;
 import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
+import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
+import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.GenericCallbackListener.CallbackPriority;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.customui.NonEmptyEditText;
@@ -61,6 +64,7 @@ import com.discover.mobile.login.register.RegistrationAccountInformationActivity
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
+import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
@@ -562,7 +566,6 @@ public class LoginActivity extends BaseActivity  {
 		BankLoginDetails login = new BankLoginDetails();
 		login.password = password;
 		login.username = username;
-		
 		final AsyncCallback<BankLoginData> callback = 
 				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankLoginData.class, this, this, true)
 					.withSuccessListener(new SuccessListener<BankLoginData>() {
@@ -587,6 +590,7 @@ public class LoginActivity extends BaseActivity  {
 		
 		new CreateBankLoginCall(this, callback, login).submit();
 	}
+	
 
 	/**
 	 * toggleCheckBox(final View v) This method handles the state of the check
@@ -801,7 +805,7 @@ public class LoginActivity extends BaseActivity  {
 	private void forgotIdAndOrPass() {
 		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotCredentialsActivity.class);
 		this.startActivity(forgotIdAndOrPassActivity);
-		clearInputs();
+		finish();
 	}
 
 	

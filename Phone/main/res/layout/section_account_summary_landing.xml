@@ -1,35 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/light_gray_bkgrd"
-    android:orientation="vertical"
-    android:padding="15dp" 
-    android:paddingTop="7dp">
+    android:layout_height="match_parent" >
 
-    <include 
-        layout="@layout/general_list_item"
-        android:id="@+id/home_current_balance"/>
-    
-    <include 
-        layout="@layout/general_list_item"
-        android:id="@+id/home_last_statement"/>
-    
-    <include 
-        layout="@layout/general_list_item"
-        android:id="@+id/home_bonus_balance"/>
-    
-    <include 
-        layout="@layout/general_list_item_simple"
-        android:id="@+id/home_bonus_offer"/>
-    <!--
-    <ListView 
-        android:id="@+id/account_summary_items"
+    <LinearLayout
+        android:background="@drawable/light_gray_bkgrd"
+        android:orientation="vertical"
+        android:padding="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_marginTop="5dp"
-        android:background="#ffffff"/>
-    -->
+        android:paddingTop="7dp" >
 
-</LinearLayout>
+        <include
+            android:id="@+id/home_current_balance"
+            layout="@layout/general_list_item" />
+
+        <include
+            android:id="@+id/home_last_statement"
+            layout="@layout/general_list_item" />
+
+        <include
+            android:id="@+id/home_bonus_balance"
+            layout="@layout/general_list_item" />
+
+        <include
+            android:id="@+id/home_bonus_offer"
+            layout="@layout/general_list_item_simple" />
+     
+    </LinearLayout>
+
+</ScrollView>

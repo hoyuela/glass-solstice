@@ -98,7 +98,6 @@ public abstract class ValidatedInputField extends EditText{
 	
 	protected void setupDefaultHeight() {
 		this.setHeight(getResources().getDimensionPixelSize(R.dimen.input_field_height));
-
 	}
 	
 	/**

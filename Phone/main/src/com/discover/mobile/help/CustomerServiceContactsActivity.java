@@ -2,11 +2,16 @@ package com.discover.mobile.help;
 
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
+import com.discover.mobile.error.ErrorHandlerFactory;
 /**
  * The activity which handles the logged out view of contact customer service.
  * This page is constructed from phone number and address contacts in two table like linear layouts. 
@@ -79,5 +84,72 @@ public class CustomerServiceContactsActivity extends NotLoggedInRoboActivity {
 			for(TwoElementListItem element : elementList)
 				layout.addView(element);
 		}
+	}
+
+	@Override
+	public TextView getErrorLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<EditText> getInputFields() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void showCustomAlert(AlertDialog alert) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showOneButtonAlert(int title, int content, int buttonText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showDynamicOneButtonAlert(int title, String content,
+			int buttonText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendToErrorPage(int errorText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Context getContext() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setLastError(int errorCode) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getLastError() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ErrorHandlerFactory getErrorHandlerFactory() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

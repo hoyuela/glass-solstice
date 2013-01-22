@@ -14,7 +14,7 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.error.BaseErrorResponseHandler;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.logout.LogOutSuccessListener;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -98,7 +98,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 									getResources().getString(R.string.push_progress_registration_loading), 
 									true)
 				.withSuccessListener(new LogOutSuccessListener(this))
-				.withErrorResponseHandler(new BaseErrorResponseHandler((ErrorHandlerUi) this))
+				.withErrorResponseHandler(new CardBaseErrorResponseHandler((ErrorHandlerUi) this))
 				.build();
 	
 		new LogOutCall(this, callback).submit();
@@ -122,11 +122,9 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 	 * sets the visibility
 	 */
 	public void setStatusBarVisbility(){
-		FragmentTransaction ft = this.getSupportFragmentManager()
-				.beginTransaction();
-		boolean statusBarVisitility = Globals.isStatusBarVisibility();
-		Fragment statusBar = this.getSupportFragmentManager().findFragmentById(
-				R.id.status_bar);
+		final FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
+		final boolean statusBarVisitility = Globals.isStatusBarVisibility();
+		final Fragment statusBar = this.getSupportFragmentManager().findFragmentById(R.id.status_bar);
 		
 		/**
 		 * If its set to false hide the fragment, else show it.
@@ -145,8 +143,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 	 * @param visible - boolean for setting the shared pref
 	 */
 	public void updateStatusBarVisibility(){
-		Fragment statusBar = this.getSupportFragmentManager().findFragmentById(
-				R.id.status_bar);
+		final Fragment statusBar = this.getSupportFragmentManager().findFragmentById(R.id.status_bar);
 		boolean visible = true;
 		if (statusBar.isVisible()){
 			visible = false;

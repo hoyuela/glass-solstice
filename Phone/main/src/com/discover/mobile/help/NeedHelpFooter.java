@@ -32,7 +32,7 @@ public class NeedHelpFooter
 	 * 
 	 * @param rootView - View that contains the footer text views.
 	 */
-	public NeedHelpFooter(ViewGroup rootView) {
+	public NeedHelpFooter(final ViewGroup rootView) {
 
 		helpNumberTxtVw = (TextView)rootView.findViewById(R.id.help_number_label);
 
@@ -43,13 +43,13 @@ public class NeedHelpFooter
 	 * 
 	 * @param helpNumber Resource id of the help number in the resource file
 	 */
-	public void setToDialNumberOnClick(int helpNumber) {
+	public void setToDialNumberOnClick(final int helpNumber) {
 		
 		helpNumberTxtVw.setText(helpNumberTxtVw.getContext().getResources().getString(helpNumber));
 		
 		helpNumberTxtVw.setOnClickListener(new OnClickListener(){
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				CommonMethods.dialNumber(helpNumberTxtVw.getText().toString(), helpNumberTxtVw.getContext());
 			}
 		});
@@ -60,8 +60,8 @@ public class NeedHelpFooter
 	 * 
 	 * @param show True to display the footer, false otherwise.
 	 */
-	public void show(boolean show) {
-		ViewGroup parentView = (ViewGroup) helpNumberTxtVw.getParent();
+	public void show(final boolean show) {
+		final ViewGroup parentView = (ViewGroup) helpNumberTxtVw.getParent();
 
 		if( show ) {
 			parentView.setVisibility(View.VISIBLE);

@@ -1,14 +1,11 @@
 package com.discover.mobile.common.customui;
 
 import android.content.Context;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputConnection;
-import android.view.inputmethod.InputConnectionWrapper;
 
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.auth.InputValidator;
@@ -78,21 +75,33 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	 * Listens for hardware keyboard inputs and stylizes the input for account numbers.
 	 */
 	private void setupInputStylizer() {
-		this.setOnKeyListener(new OnKeyListener() {
-			
+		
+		this.addTextChangedListener(new TextWatcher() {
+
 			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
+			public void afterTextChanged(Editable s) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
 				
-				updateInputWithString(CommonMethods.getSpacelessString(getInputText()));
-				
-            	if(!isUsernameField){
-					updateInputWithString(CommonMethods.getStringWithSpacesEvery4Characters(getInputText()));
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				String currentText = s.toString();
+				String currentTextStylized = 
+						CommonMethods.getStringWithSpacesEvery4Characters(CommonMethods.getSpacelessString(currentText));
+				if(currentTextStylized.length() < 19 && !currentText.equals(currentTextStylized)){
+					updateInputWithString(currentTextStylized);
 					setCursorPositionToEnd();
-            	}
-            	
-	            return false;			
-	        }
+				}
+			}
+			
 		});
+
 	}
 	
 	/**
@@ -135,6 +144,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		filterArray[0] = new InputFilter.LengthFilter(VALID_ACCOUNT_NUMBER_LENGTH);
 		this.setFilters(filterArray);
 		this.setInputType(InputType.TYPE_CLASS_PHONE);
+		setupDefaultHeight();
 	}
 
 	/**
@@ -145,6 +155,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		filterArray[0] = new InputFilter.LengthFilter(MAX_USERNAME_LENGTH);
 		this.setFilters(filterArray);
 		this.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+		setupDefaultHeight();
 	}
 	
 	/**
@@ -181,46 +192,11 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		return InputValidator.isCardAccountNumberValid(CommonMethods.getSpacelessString(cardAccountNumber));
 	}
 	
-	/**
-	 * This private inner class is intended on intercepting the software keyboard events so that we can 
-	 * adjust the style of the input fields on key press.
-	 * 
-	 * It currently stylizes the text with a space between every 4 characters of an account number
-	 * 
-	 */
-	 @Override
-	    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
-	        return new CustomInputConnection(super.onCreateInputConnection(outAttrs),
-	                true);
-	    }
-
-	    private class CustomInputConnection extends InputConnectionWrapper {
-
-	        public CustomInputConnection(InputConnection target, boolean mutable) {
-	            super(target, mutable);
-	        }
-
-	        @Override
-	        public boolean sendKeyEvent(KeyEvent event) {
-
-				updateInputWithString(CommonMethods.getSpacelessString(getInputText()));
-				
-				boolean superKeyEvent = super.sendKeyEvent(event);
-            	if(!isUsernameField){
-
-					updateInputWithString(CommonMethods.getStringWithSpacesEvery4Characters(getInputText()));
-					setCursorPositionToEnd();
-            	}
-	            return superKeyEvent;
-
-	        }
-
-	    }
-	    /**
-	     * Sets the text cursor position to the end of the field. 
-	     */
-	    private void setCursorPositionToEnd() {
-	    	this.setSelection(this.length(), this.length());
-	    }
+    /**
+     * Sets the text cursor position to the end of the field. 
+     */
+    private void setCursorPositionToEnd() {
+    	this.setSelection(this.length(), this.length());
+    }
 	    
 }

@@ -3,13 +3,17 @@ package com.discover.mobile.common.account.recent;
 import android.content.Context;
 
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.net.GetPushPreferenceReferenceHandler;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
+import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.urlmanager.UrlManagerCard;
-import com.xtify.sdk.api.XtifySDK;
 
+/**
+ * Call to get the activity periods to be displayed in the choose activity period fragment
+ * @author jthornton
+ *
+ */
 public class GetActivityPeriods extends JsonResponseMappingNetworkServiceCall<RecentActivityPeriodsDetail>{
 
 	/**Reference handler to allow the call to be back on the UI*/
@@ -25,9 +29,8 @@ public class GetActivityPeriods extends JsonResponseMappingNetworkServiceCall<Re
 		
 			sendDeviceIdentifiers = true;
 		}}, RecentActivityPeriodsDetail.class);
-		
-		//TODO: Change this handler
-		handler = new GetPushPreferenceReferenceHandler<RecentActivityPeriodsDetail>(callback);
+
+		handler = new SimpleReferenceHandler<RecentActivityPeriodsDetail>(callback);
 	}
 
 	/**
@@ -37,14 +40,5 @@ public class GetActivityPeriods extends JsonResponseMappingNetworkServiceCall<Re
 	@Override
 	protected TypedReferenceHandler<RecentActivityPeriodsDetail> getHandler() {
 		return handler;
-	}
-	
-	/**
-	 * Get the url of the call
-	 * @param context - activity context
-	 * @return the url of the call
-	 */
-	private static String getUrl(final Context context){
-		return UrlManagerCard.getPushGetNotificationPrefUrl(XtifySDK.getXidKey(context)) ; //$NON-NLS-1$
 	}
 }

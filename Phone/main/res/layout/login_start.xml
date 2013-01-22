@@ -78,14 +78,10 @@
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_below="@+id/user_id_label"
-		            android:background="@drawable/edit_text_default"
-		            android:ems="10"
 		            android:hint="@string/empty"
 		            android:imeOptions="actionNext"
 		            android:inputType="textNoSuggestions"
-		            android:maxLength="@integer/MAX_ID_LENGTH"
-		            android:maxLines="@integer/MAX_INPUT_LINES"
-		            android:textColor="@color/black"/>
+		            android:textCursorDrawable="@null"/>
 					
 		        <TextView
 		            android:id="@+id/password_label"
@@ -115,12 +111,9 @@
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_below="@+id/password_label"
-		            android:background="@drawable/edit_text_default"
 		            android:hint="@string/empty"
 		            android:inputType="textPassword"
-		            android:maxLength="@integer/MAX_PASSWORD_LENGTH"
-		            android:maxLines="@integer/MAX_INPUT_LINES"
-		            android:textColor="@color/black"/>
+					android:textCursorDrawable="@null"/>
 	
 	            <TextView
 	                android:id="@+id/remember_user_id_label"

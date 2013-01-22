@@ -23,5 +23,4 @@ public class EmailEditText extends ValidatedInputField {
 	public boolean isValid() {
 		return InputValidator.isEmailValid(this.getText().toString());
 	}
-	
 }

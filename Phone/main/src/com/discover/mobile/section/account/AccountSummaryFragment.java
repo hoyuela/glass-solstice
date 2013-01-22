@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.discover.mobile.R;
 import com.discover.mobile.BaseFragment;
+import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.views.GeneralListItemAdapter;

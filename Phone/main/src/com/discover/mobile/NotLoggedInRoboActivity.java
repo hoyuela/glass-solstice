@@ -1,5 +1,7 @@
 package com.discover.mobile;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -8,6 +10,8 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.discover.mobile.common.Globals;
+import com.discover.mobile.error.ErrorHandlerFactory;
 
 /**
  * This is the base activity for any activity that wants to use the Action bar
@@ -16,7 +20,7 @@ import com.actionbarsherlock.app.SherlockActivity;
  * @author jthornton
  * 
  */
-public abstract class NotLoggedInRoboActivity extends SherlockActivity {
+public abstract class NotLoggedInRoboActivity extends SherlockActivity implements ErrorHandlerUi {
 
 	/**
 	 * Create the activity and show the action bar
@@ -25,6 +29,19 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity {
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		showActionBar();
+	}
+	
+	@Override
+	public ErrorHandlerFactory getErrorHandlerFactory() {
+		return ErrorHandlerFactory.getInstance();
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		
+		//Set this activity as the active activity
+		ErrorHandlerFactory.getInstance().setActiveActivity(this);
 	}
 
 	/**
@@ -86,5 +103,56 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity {
 	 * 
 	 */
 	public abstract void goBack();
+	
+
+	@Override
+	public void showCustomAlert(AlertDialog alert) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showOneButtonAlert(int title, int content, int buttonText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showDynamicOneButtonAlert(int title, String content,
+			int buttonText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendToErrorPage(int errorText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Context getContext() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setLastError(int errorCode) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getLastError() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }
