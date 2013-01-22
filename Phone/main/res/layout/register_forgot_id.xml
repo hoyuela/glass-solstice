@@ -93,8 +93,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/orange_button_margin_top"
             android:layout_marginTop="@dimen/orange_button_margin_top"
-            android:text="@string/submit_text" 
-            android:enabled="false"/>
+            android:text="@string/submit_text" />
 
         <TextView
             android:id="@+id/account_info_cancel_label"
