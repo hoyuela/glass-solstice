@@ -19,7 +19,7 @@
     <string name="need_help_number_text">1&#8211;800&#8211;347&#8211;2683</string>
     <string name="bank_need_help_number_text">1&#8211;800&#8211;290&#8211;9885</string>
     <string name="forgot_id_title_text">Forgot User ID</string>
-    <string name="forgot_id_password_text">Account Center Password:</string>
+    <string name="forgot_id_password_text">Account Center Password</string>
     <string name="forgot_id_submission_error_text">We\'re sorry. The Credit Card Account Number and/or Password does not
 	    match our records, or you are not registered. Please try again.</string>
     <string name="zluba_error">Due to special conditions related to your account, we cannot provide

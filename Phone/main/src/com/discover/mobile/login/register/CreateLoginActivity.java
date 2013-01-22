@@ -507,6 +507,8 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 					
 	@Override
 	public void goBack() {
+		Intent login = new Intent(this, LoginActivity.class);
+		startActivity(login);
 		finish();
 	}
 	
