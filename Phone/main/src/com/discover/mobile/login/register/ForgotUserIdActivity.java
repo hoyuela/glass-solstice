@@ -5,6 +5,7 @@ import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
 import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
 
 import java.net.HttpURLConnection;
 
@@ -299,11 +300,12 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 					case AUTH_BAD_ACCOUNT_STATUS:
 						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
 						return true;
-						
 					case STRONG_AUTH_NOT_ENROLLED:
 						sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
 						return true;
-						
+					case LOCKED_OUT_ACCOUNT:
+						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
+						return true;
 					case MAX_LOGIN_ATTEMPTS:
 						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
 						return true;
