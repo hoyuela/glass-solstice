@@ -168,6 +168,21 @@ public class ConfirmationEditText extends ValidatedInputField {
 	}
 	
 	/**
+	 * Update the error state of the field.
+	 * If the input field is valid - hide the error state and show as valid. If not, 
+	 * show the error state.
+	 */
+	@Override
+	public void updateAppearanceForInput() {
+		if(isValid()){
+			clearErrors();
+			setAppearanceMatched();
+		}
+		else
+			setErrors();
+	}
+	
+	/**
 	 * Set the current input to loweracse if it is not already.
 	 * @param input
 	 */

@@ -15,12 +15,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -75,9 +71,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 	
 	private final static String UPDATE_PASSWORD_STATE = "k";
 	private final static String UPDATE_ID_STATE = "l";
-	
-	private final static String PASS_CONFIRM_ERROR_VISIBILITY_KEY = "m";
-	private final static String PASS_CONFIRM_ERROR_TEXT_KEY = "n";
 
 //ERROR LABELS
 	private TextView mainErrorMessageLabel;
@@ -101,8 +94,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 	private HeaderProgressIndicator headerProgressIndicator;
 	
 //BUTTONS
-	private Button continueButton;
-	
 	private Context currentContext;
 	
 	@Override
@@ -110,7 +101,7 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_create_credentials);
 		loadAllViews();
-		attachDisabledButtonListeners();
+
 		attachErrorLabelsToFields();
 		mergeAccountDetails();
 
@@ -152,42 +143,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 		}
 	}
 	
-	/** 
-	 * A text watcher that allows every form on the screen to listen for 
-	 * when the form info is complete and then update the submit button to enabled
-	 */
-	private TextWatcher getContinueButtonTextWatcher() {
-		return new TextWatcher() {
-			@Override
-			public void afterTextChanged(Editable s) {
-				if(isFormCompleteAndValid())
-					continueButton.setEnabled(true);
-				else
-					continueButton.setEnabled(false);
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,int after) {}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,int count) {}
-		};
-	}
-	
-	/**
-	 * Attach text watchers to all input fields so that when all fields are valid, the continue button gets enabled.
-	 * Or if any of them become disabled, so does the continue button.
-	 */
-	private void attachDisabledButtonListeners() {
-		emailField.addTextChangedListener(getContinueButtonTextWatcher());
-		idField.addTextChangedListener(getContinueButtonTextWatcher());
-		idConfirmField.addTextChangedListener(getContinueButtonTextWatcher());
-		idConfirmField.setIsUserIdConfirmation(true);
-		passField.addTextChangedListener(getContinueButtonTextWatcher());
-		passConfirmField.addTextChangedListener(getContinueButtonTextWatcher());
-		
-	}
-	
 	/**
 	 * Attach error lables to be hidden/shown for these input fields based on the valididty of their input.
 	 */
@@ -217,8 +172,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 		idConfirmField = (ConfirmationEditText)findViewById(R.id.account_info_two_id_confirm_field);
 		idField = (CredentialStrengthEditText)findViewById(R.id.account_info_two_id_field);
 		emailField = (EmailEditText)findViewById(R.id.account_info_two_email_field);
-
-		continueButton  = (Button)findViewById(R.id.account_info_two_submit_button);
 		
 		mainErrorMessageLabelTwo = (TextView)findViewById(R.id.account_info_error_label_two);
 		errorMessageLabel = (TextView)findViewById(R.id.account_info_id_confirm_error_label);
@@ -323,7 +276,14 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 	 * @param v
 	 */
 	public void checkInputsThenSubmit(final View v){
-
+		CommonMethods.setViewGone(mainErrorMessageLabel);
+		
+		emailField.updateAppearanceForInput();
+		passField.updateAppearanceForInput();
+		idField.updateAppearanceForInput();
+		passConfirmField.updateAppearanceForInput();
+		idConfirmField.updateAppearanceForInput();
+		
 		if(isFormCompleteAndValid()){
 			formDataTwo.email = emailField.getText().toString();
 			formDataTwo.password = passField.getText().toString();
