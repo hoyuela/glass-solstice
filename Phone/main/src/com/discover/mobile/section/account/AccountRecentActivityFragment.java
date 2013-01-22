@@ -19,10 +19,6 @@ import com.discover.mobile.common.callback.GenericAsyncCallback;
  * Recent account activity fragment.  Allows the user to see details related to their transactions based
  * on a certain date range.
  * 
- * *********
- * Note this class is done in a different user story (US5241) - this will be commented after the user story. 
- * This had to be created to reach the choose date fragment
- * *********
  * @author jthornton
  *
  */
@@ -34,8 +30,12 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	
 	private RecentActivityPeriodDetail currentRange;
 	
+	private RecentActivityPeriodsDetail periods;
 	
-	// TEMP
+	/**
+	 * TODO: Handle rotation
+	 */
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class AccountRecentActivityFragment extends BaseFragment {
 
 			@Override
 			public void onClick(final View v) {
-				chooseDateRange();
+				getNewDateRange();
 			}
 			
 		});
@@ -59,11 +59,21 @@ public class AccountRecentActivityFragment extends BaseFragment {
 				showSearchScreen();			
 			}		
 		});
-		
+
 		return view;
 	}
 	
-	protected void chooseDateRange(){
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(null != currentRange){
+			dateRange.setText(currentRange.displayDate);
+		} else{
+			getDateRanges();
+		}
+	}
+	
+	protected void getDateRanges(){
 		final AsyncCallback<RecentActivityPeriodsDetail> callback = 
 				GenericAsyncCallback.<RecentActivityPeriodsDetail>builder(this.getActivity())
 				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
@@ -78,7 +88,8 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		
 	}
 	
-	public void getNewDateRange(final RecentActivityPeriodsDetail periods){
+	public void getNewDateRange(){
+		if(null == periods){return;}
 		final ChooseDateRangeFragment fragment = new ChooseDateRangeFragment();
 		fragment.setReturnFragment(this);
 		fragment.setPeriods(periods);
@@ -99,6 +110,10 @@ public class AccountRecentActivityFragment extends BaseFragment {
 
 	public void setDateRange(final RecentActivityPeriodDetail recentActivityPeriodDetail) {
 		currentRange = recentActivityPeriodDetail;	
-		//TODO: Do server call to get transactions
+		dateRange.setText(currentRange.displayDate);
+	}
+	
+	public void setPeriods(final RecentActivityPeriodsDetail periods) {
+		this.periods = periods;	
 	}
 }

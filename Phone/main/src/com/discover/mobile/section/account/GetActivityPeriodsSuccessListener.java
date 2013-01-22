@@ -36,6 +36,7 @@ public class GetActivityPeriodsSuccessListener implements SuccessListener<Recent
 	 */
 	@Override
 	public void success(final RecentActivityPeriodsDetail detail) {
-		fragment.getNewDateRange(detail);
+		fragment.setDateRange(detail.dates.get(0));
+		fragment.setPeriods(detail);
 	}
 }
