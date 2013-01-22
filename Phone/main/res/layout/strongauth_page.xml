@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:id="@+id/scrollView1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
     style="@style/WhiteTheme"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:focusable="true" 
-	   	android:focusableInTouchMode="true">
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true" >
 
         <TextView
             android:id="@+id/account_security_label"
@@ -19,6 +19,18 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/black"
             android:textStyle="bold" />
+        
+        <TextView
+            android:id="@+id/error_message_strong_auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/account_security_label"
+            android:layout_below="@+id/account_security_label"
+            android:paddingTop="4dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/black"
+            android:textSize="@dimen/light_text_size" 
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/account_security_info_label"
@@ -64,9 +76,9 @@
         <RelativeLayout
             android:id="@+id/account_security_whats_this_relative_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
             android:layout_below="@+id/account_security_remember_device_label"
-            android:onClick="expandHelpMenu">
+            android:onClick="expandHelpMenu" >
 
             <View
                 android:id="@+id/account_security_separator_line_one"
@@ -100,8 +112,8 @@
                 android:id="@+id/account_security_separator_line_two"
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="4dp"
                 android:layout_below="@+id/account_security_whats_this_detail_label"
+                android:layout_marginTop="4dp"
                 android:background="@android:color/darker_gray" />
 
             <TextView
@@ -112,16 +124,15 @@
                 android:maxLines="@integer/ZERO"
                 android:text="@string/account_security_whats_this_detail_text"
                 android:textColor="@color/black" />
-            	
         </RelativeLayout>
 
         <RadioGroup
             android:id="@+id/account_security_choice_radio_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_below="@+id/account_security_whats_this_relative_layout"
-            android:background="@drawable/rounded_table_corners_shape">
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_table_corners_shape" >
 
             <RadioButton
                 android:id="@+id/account_security_choice_one_radio"
@@ -129,7 +140,9 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="@string/account_security_remember_me_text"
-                android:textColor="@color/black" />
+                android:button="@drawable/custom_radio_check"
+                android:textColor="@color/black"
+                android:textStyle="bold"  />
 
             <View
                 android:id="@+id/account_security_choices_separator"
@@ -143,30 +156,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:button="@drawable/custom_radio_check"
                 android:text="@string/account_security_dont_remember_me_text"
-                android:textColor="@color/black" />
-            
+                android:textColor="@color/abs__primary_text_disable_only_holo_dark"
+                android:textStyle="bold" />
         </RadioGroup>
 
         <Button
             android:id="@+id/account_security_continue_button"
+            style="@style/call_to_action_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_security_choice_radio_group"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:text="@string/continue_text" 
-            android:onClick="submitSecurityInfo"/>
+            android:layout_marginBottom="@dimen/modal_orange_margin_bottom"
+            android:layout_marginTop="@dimen/modal_orange_margin_top"
+            android:onClick="submitSecurityInfo"
+            android:text="@string/continue_text" />
 
         <RelativeLayout
-    	    android:layout_width="match_parent"
-    	    android:layout_height="70dp"
-    	    android:layout_below="@+id/account_security_continue_button" >
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_below="@+id/account_security_continue_button" >
 
-   			<include layout="@layout/old_general_copyright_footer"/>
-    	    
-    	</RelativeLayout>
-        
+            <include layout="@layout/old_general_copyright_footer" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </ScrollView>

@@ -50,6 +50,9 @@ public final class IntentExtraKey {
 	 */
 	public static final String ERROR_TITLE_TEXT_KEY = "error-title-text";
 	
+	public static final String IS_CARD_ACCOUNT = "Is-Card";
+	
+	
 	/**
 	 * NOT INSTANTIABLE
 	 */

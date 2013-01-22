@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.discover.mobile.R;
 import com.discover.mobile.BaseFragment;
+import com.discover.mobile.R;
 
 /**
  * The push terms and conditions screen. It shows the terms and conditions

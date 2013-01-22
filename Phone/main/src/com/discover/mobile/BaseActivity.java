@@ -170,4 +170,3 @@ public class BaseActivity extends RoboActivity implements ErrorHandlerUi{
 }
 
 
-
