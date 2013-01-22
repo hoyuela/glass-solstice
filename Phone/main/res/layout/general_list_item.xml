@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#ffffff" >
+    android:background="@drawable/home_list_item">
     
     <RelativeLayout 
         android:layout_width="match_parent"
@@ -37,17 +37,6 @@
 	            android:textColor="#293033" />
         
         </LinearLayout>
-        
-        <!-- 
-        <View
-            android:id="@id/divider_line"
-            android:layout_toRightOf="@+id/topLeftLayout"
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="4dip"
-            android:background="@drawable/divider_vertical_holo_dark"/>
-         -->
 
         <View
             android:id="@id/divider_line"
@@ -55,8 +44,8 @@
             android:layout_alignBottom="@id/general_list_item_separator_line"
             android:layout_width="0.5dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             android:alpha=".6"
             android:background="#c0c8cc" />
 
@@ -87,13 +76,14 @@
     <LinearLayout 
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/general_list_item_subsection">
         
         <TextView
             android:text="Credit Available:"
             android:id="@id/bottom_bar_label"
-            android:layout_weight=".5"
-            android:layout_width="wrap_content"
+            android:layout_weight=".4"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="7dp"
             android:paddingTop="5dp"
@@ -104,10 +94,9 @@
         <TextView 
             android:text="$4,997.00"
             android:id="@id/bottom_bar_value"
-            android:gravity="right"
-            android:layout_marginRight="7dp"
-            android:layout_weight=".5"
-            android:layout_width="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_weight=".6"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:paddingBottom="7dp"
