@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.CommonMethods;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
@@ -197,7 +198,7 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 		Log.d("ACTIVITY DID GIVE RESULT","ACTIVITY DID GIVE RESULT");
 		if(requestCode == STRONG_AUTH_ACTIVITY) {
 			if(resultCode == RESULT_OK) {
-				navToNextScreenWithDetails(null);
+				navToNextScreenWithDetails(accountInformationDetails);
 			} else if (resultCode == RESULT_CANCELED){
 				finish();
 			}
@@ -205,12 +206,12 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	}
 
 	/**
-	 * Inherited method from AbstractAccountInformation Activity. However, ForgotPassword step 1 does not
-	 * need to send any details object to the next activity.
+	 * Navigate to forgot password step 2. Continue with valid informatoin from step 1.
 	 */
 	@Override
 	protected void navToNextScreenWithDetails(AccountInformationDetails details) {
 		Intent createNewPassword = new Intent(this, getSuccessfulStrongAuthIntentClass());
+		createNewPassword.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, details);
 		startActivity(createNewPassword);
 		finish();
 	}
