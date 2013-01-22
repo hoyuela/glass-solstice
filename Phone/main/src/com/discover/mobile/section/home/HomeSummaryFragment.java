@@ -1,5 +1,7 @@
 package com.discover.mobile.section.home;
 
+import java.text.NumberFormat;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,19 +55,21 @@ public class HomeSummaryFragment extends BaseFragment {
 		LinearLayout currentBalance = (LinearLayout) view
 				.findViewById(R.id.home_current_balance);
 
+		double currBalance = Double.valueOf(accountDetails.currentBalance);
+		double credAvailable = Double.valueOf(accountDetails.availableCredit);
+
 		// main content
 		((TextView) currentBalance.findViewById(R.id.title))
 				.setText(R.string.current_balance);
 		((TextView) currentBalance.findViewById(R.id.content_text))
-				.setText(getString(R.string.dollar_sign)
-						+ accountDetails.currentBalance);
+				.setText(NumberFormat.getCurrencyInstance().format(currBalance));
 
 		// subsection
 		((TextView) currentBalance.findViewById(R.id.bottom_bar_label))
 				.setText(getString(R.string.credit_available));
 		((TextView) currentBalance.findViewById(R.id.bottom_bar_value))
-				.setText(getString(R.string.dollar_sign)
-						+ accountDetails.availableCredit);
+				.setText(NumberFormat.getCurrencyInstance().format(
+						credAvailable));
 
 		// Pay button
 		((TextView) currentBalance.findViewById(R.id.blue_button_text))
@@ -83,19 +87,20 @@ public class HomeSummaryFragment extends BaseFragment {
 		LinearLayout lastStatement = (LinearLayout) view
 				.findViewById(R.id.home_last_statement);
 
+		double lastBalance = Double.valueOf(accountDetails.statementBalance);
+		double minPayment = Double.valueOf(accountDetails.minimumPaymentDue);
+
 		// main content
 		((TextView) lastStatement.findViewById(R.id.title))
 				.setText(R.string.last_statement_balance);
 		((TextView) lastStatement.findViewById(R.id.content_text))
-				.setText(getString(R.string.dollar_sign)
-						+ accountDetails.statementBalance);
+				.setText(NumberFormat.getCurrencyInstance().format(lastBalance));
 
 		// subsection
 		((TextView) lastStatement.findViewById(R.id.bottom_bar_label))
 				.setText(formatMinimumPaymentTitle(accountDetails));
 		((TextView) lastStatement.findViewById(R.id.bottom_bar_value))
-				.setText(getString(R.string.dollar_sign)
-						+ accountDetails.minimumPaymentDue);
+				.setText(NumberFormat.getCurrencyInstance().format(minPayment));
 
 		// View button
 		((TextView) lastStatement.findViewById(R.id.blue_button_text))
@@ -116,17 +121,22 @@ public class HomeSummaryFragment extends BaseFragment {
 		boolean isCashback = CommonMethods.isCashbackCard(accountDetails);
 
 		if (isCashback) {
+
+			double cashBonus = Double.valueOf(accountDetails.earnRewardAmount);
+			double newlyEarned = Double
+					.valueOf(accountDetails.newlyEarnedRewards);
+
 			((TextView) bonusBalance.findViewById(R.id.title))
 					.setText(R.string.cashback_bonus_balance);
 			((TextView) bonusBalance.findViewById(R.id.content_text))
-					.setText(getString(R.string.dollar_sign)
-							+ accountDetails.earnRewardAmount);
+					.setText(NumberFormat.getCurrencyInstance().format(
+							cashBonus));
 
 			((TextView) bonusBalance.findViewById(R.id.bottom_bar_label))
 					.setText(getString(R.string.newly_earned));
 			((TextView) bonusBalance.findViewById(R.id.bottom_bar_value))
-					.setText(getString(R.string.dollar_sign)
-							+ accountDetails.newlyEarnedRewards);
+					.setText(NumberFormat.getCurrencyInstance().format(
+							newlyEarned));
 		} else {
 			((TextView) bonusBalance.findViewById(R.id.title))
 					.setText(R.string.miles_balance);
