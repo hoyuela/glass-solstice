@@ -67,4 +67,7 @@
 	
 	<!-- Recent Account Activity Strings -->
 	<string name="view_trans_actions_by_period">View Transactions by Activity Period:</string>
+	<string name="recent_activity_since">Recent Activity Since </string>
+	<string name="narrow_list">To narrow list, </string>
+	<string name="search_transactions"> search transactions.</string>
 </resources>

@@ -4,34 +4,55 @@
     android:layout_height="fill_parent"
     android:background="@drawable/light_gray_bkgrd">
 	
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	<LinearLayout
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
     	android:orientation="vertical" 
     	android:layout_marginTop="@dimen/groups_of_elements_padding" 
 	    android:layout_marginRight="@dimen/forms_inner_padding"
 	    android:layout_marginLeft="@dimen/forms_inner_padding"
-	    android:paddingBottom="@dimen/groups_of_elements_padding"
-	    style="@drawable/light_gray_bkgrd">
+	    android:paddingBottom="@dimen/groups_of_elements_padding">
     
     
     <TextView
         android:id="@+id/view_transactions_label"
         android:layout_width="wrap_content"
     	android:layout_height="wrap_content"
-    	android:text="View Transactions by Activity Period."/>
+    	android:text="@string/view_trans_actions_by_period"
+   		style="@style/body_copy"/>
     
     <TextView
         android:id="@+id/view_transactions"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
-    	android:text="Recent Actiivty Since XX/XX/XX"/>
+    	android:text="@string/recent_activity_since"
+    	android:paddingTop="@dimen/table_inner_padding"
+	    android:paddingBottom="@dimen/table_inner_padding"
+	    android:paddingRight="@dimen/forms_inner_padding"
+	    android:paddingLeft="@dimen/forms_inner_padding"
+		android:background="@drawable/notification_list_item"/>
     
-    <TextView
-        android:id="@+id/search_transactions"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:text="Search Transactions"/>
+    	android:orientation="horizontal" >
+    	
+	    <TextView
+	        android:id="@+id/narrow_list"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:text="@string/narrow_list"
+	    	style="@style/sub_copy_small"/>
+	    
+	    <TextView
+	        android:id="@+id/search_transactions"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:text="@string/search_transactions"
+	    	style="@style/blue_hyperlink_smallest"
+	    	android:textStyle="normal"/>
+    
+    </LinearLayout>
         
     
 	</LinearLayout>
