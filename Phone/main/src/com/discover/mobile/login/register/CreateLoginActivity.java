@@ -40,7 +40,6 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
-import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.HeaderProgressIndicator;
@@ -506,70 +505,4 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 		}
 	}
 
-	@Override
-	public TextView getErrorLabel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<EditText> getInputFields() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void showCustomAlert(AlertDialog alert) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void showOneButtonAlert(int title, int content, int buttonText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void showDynamicOneButtonAlert(int title, String content,
-			int buttonText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendToErrorPage(int errorText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Context getContext() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setLastError(int errorCode) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getLastError() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public ErrorHandlerFactory getErrorHandlerFactory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
