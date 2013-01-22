@@ -6,11 +6,6 @@ import static com.discover.mobile.common.auth.registration.RegistrationErrorCode
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_SSN_EQUAL;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
-
-import java.net.HttpURLConnection;
-import java.util.List;
-
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -346,11 +341,11 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 				mainScrollView.smoothScrollTo(0, 0);
 
 				switch (errorResponse.getHttpStatusCode()) {
-					case HttpURLConnection.HTTP_UNAUTHORIZED:
+					default:
+						CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, R.string.unkown_error_text, currentContext);
 						return true;
 				}
 				
-				return false;
 			}
 
 			@Override
