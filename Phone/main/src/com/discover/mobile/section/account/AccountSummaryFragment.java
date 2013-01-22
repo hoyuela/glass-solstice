@@ -26,7 +26,7 @@ public class AccountSummaryFragment extends BaseFragment {
 	
 	private final List<GeneralListItemModel> accountSummaryListItems = new ArrayList<GeneralListItemModel>();
 	
-	@InjectView(R.id.account_summary_items)
+//	@InjectView(R.id.account_summary_items)
 	private ListView accountSummaryList;
 	
 	@Override
@@ -39,8 +39,8 @@ public class AccountSummaryFragment extends BaseFragment {
 		final GeneralListItemAdapter generalListItemAdapter = 
 				new GeneralListItemAdapter(getActivity(), accountSummaryListItems);
 		
-		ListView listView = (ListView) view.findViewById(R.id.account_summary_items);
-		listView.setAdapter(generalListItemAdapter);
+//		ListView listView = (ListView) view.findViewById(R.id.account_summary_items);
+//		listView.setAdapter(generalListItemAdapter);
 				
 		return view;
 	}

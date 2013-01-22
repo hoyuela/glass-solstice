@@ -67,7 +67,7 @@ public class GeneralListItemAdapter extends ArrayAdapter<GeneralListItemModel> {
 		if (model.actionButtonModel != null)
 			blueButtonText.setText(model.actionButtonModel.buttonTextRes);
 		else {
-			View buttonDividerLine = cellView.findViewById(R.id.general_list_item_separator_line);
+			View buttonDividerLine = cellView.findViewById(R.id.divider_line);
 			buttonDividerLine.setVisibility(View.GONE);
 			blueButtonText.setVisibility(View.GONE);
 		}
