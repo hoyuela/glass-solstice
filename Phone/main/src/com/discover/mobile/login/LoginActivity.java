@@ -175,7 +175,7 @@ public class LoginActivity extends BaseActivity  {
 	/*Used to specify whether the pre-authenciation call has been made for the application. 
 	 * Should only be done at application start-up.
 	 */
-	private boolean preAuthHasRun = true;
+	private boolean preAuthHasRun = false;
 
 
 	private boolean saveUserId = false;
@@ -204,9 +204,9 @@ public class LoginActivity extends BaseActivity  {
 
 		//Check to see if pre-auth request is required. Should only 
 		//be done at application start-up
-//		if (!preAuthHasRun) {
-//			startPreAuthCheck();
-//		}
+		if (!preAuthHasRun) {
+			startPreAuthCheck();
+		}
 	}
 
 	/**
