@@ -1,19 +1,25 @@
 package com.discover.mobile.login.register;
 
+import java.util.List;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.error.ErrorHandlerFactory;
 /**
  * This class handles a user's choice and navigation to the first step of forgot password/user id/ or both.
  * It contains a list of choices, upon tapping a choice, this activity is finished and the selected
@@ -111,6 +117,73 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 		Intent login = new Intent(this, LoginActivity.class);
 		startActivity(login);
 		finish();
+	}
+
+	@Override
+	public TextView getErrorLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<EditText> getInputFields() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void showCustomAlert(AlertDialog alert) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showOneButtonAlert(int title, int content, int buttonText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showDynamicOneButtonAlert(int title, String content,
+			int buttonText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendToErrorPage(int errorText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Context getContext() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setLastError(int errorCode) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getLastError() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ErrorHandlerFactory getErrorHandlerFactory() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

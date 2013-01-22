@@ -50,6 +50,7 @@ import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.GenericCallbackListener.CallbackPriority;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.customui.NonEmptyEditText;
@@ -174,7 +175,7 @@ public class LoginActivity extends BaseActivity  {
 	/*Used to specify whether the pre-authenciation call has been made for the application. 
 	 * Should only be done at application start-up.
 	 */
-	private boolean preAuthHasRun = false;
+	private boolean preAuthHasRun = true;
 
 
 	private boolean saveUserId = false;
@@ -203,9 +204,9 @@ public class LoginActivity extends BaseActivity  {
 
 		//Check to see if pre-auth request is required. Should only 
 		//be done at application start-up
-		if (!preAuthHasRun) {
-			startPreAuthCheck();
-		}
+//		if (!preAuthHasRun) {
+//			startPreAuthCheck();
+//		}
 	}
 
 	/**
@@ -510,8 +511,7 @@ public class LoginActivity extends BaseActivity  {
 		if( View.VISIBLE == cardCheckMark.getVisibility() ) {
 			cardLogin(username, password) ;
 		} else {
-//			bankLogin(username, password);
-			handleStrongAuth();
+			bankLogin(username, password);
 		}
 	}
 	
@@ -566,7 +566,6 @@ public class LoginActivity extends BaseActivity  {
 		BankLoginDetails login = new BankLoginDetails();
 		login.password = password;
 		login.username = username;
-		
 		final AsyncCallback<BankLoginData> callback = 
 				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankLoginData.class, this, this, true)
 					.withSuccessListener(new SuccessListener<BankLoginData>() {
@@ -592,44 +591,6 @@ public class LoginActivity extends BaseActivity  {
 		new CreateBankLoginCall(this, callback, login).submit();
 	}
 	
-	/**
-	 * Strong Auth call
-	 */
-	
-	private void handleStrongAuth(){
-		final AsyncCallback<BankStrongAuthDetails> callback = 
-				GenericAsyncCallback.<BankStrongAuthDetails>builder(this)
-				.showProgressDialog("Discover", "Loading...", true)
-				.withSuccessListener(new SuccessListener<BankStrongAuthDetails>() {
-
-					@Override
-					public CallbackPriority getCallbackPriority() {
-						return CallbackPriority.MIDDLE;
-					}
-
-					@Override
-					public void success(BankStrongAuthDetails value) {
-						navToStrongAuth(value.question, value.questionId);
-					}
-				})
-				.build();
-		new CreateStrongAuthRequestCall(this, callback).submit();	
-	}
-	
-	/**
-	 * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
-	 */
-	private void navToStrongAuth(String question, String id) {
-		
-		final Intent strongAuth = new Intent(this, EnhancedAccountSecurityActivity.class);
-		
-		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, question);
-		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, id);
-		strongAuth.putExtra(IntentExtraKey.IS_CARD_ACCOUNT, false);
-		
-		startActivityForResult(strongAuth, 0);
-		
-	}
 
 	/**
 	 * toggleCheckBox(final View v) This method handles the state of the check

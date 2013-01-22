@@ -1,20 +1,23 @@
 package com.discover.mobile.security;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
-import roboguice.activity.RoboActivity;
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.AsyncCallbackBuilderLibrary;
+import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthAnswerDetails;
@@ -24,7 +27,6 @@ import com.discover.mobile.common.auth.strong.StrongAuthAnswerCall;
 import com.discover.mobile.common.auth.strong.StrongAuthAnswerDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.navigation.NavigationRootActivity;
 
@@ -53,8 +55,8 @@ import com.discover.mobile.navigation.NavigationRootActivity;
  * 
  */
 
-@ContentView(R.layout.strongauth_page)
-public class EnhancedAccountSecurityActivity extends RoboActivity {
+//@ContentView(R.layout.strongauth_page)
+public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 
 	/**
 	 * Field Description of HELP_DROPDOWN_LINE_HEIGHT The Strong Auth screen has
@@ -71,43 +73,67 @@ public class EnhancedAccountSecurityActivity extends RoboActivity {
 
 	private String questionId;
 	private Boolean isCard;
-
-	// INPUT FIELDS
-
-	@InjectView(R.id.account_security_question_answer_field)
-	private EditText questionAnswerField;
-
-	// RADIO BUTTONS AND GROUPS
-
-	@InjectView(R.id.account_security_choice_radio_group)
-	private RadioGroup securityRadioGroup;
-
-	// TEXT LABELS
-
-	@InjectView(R.id.account_security_whats_this_detail_label)
-	private TextView detailHelpLabel;
-
-	@InjectView(R.id.account_security_plus_label)
-	private TextView statusIconLabel;
-
-	@InjectView(R.id.account_security_question_placeholder_label)
-	private TextView questionLabel;
-
-	@InjectView(R.id.account_security_whats_this_relative_layout)
-	private RelativeLayout whatsThisLayout;
+	EditText questionAnswerField;
+	RadioGroup securityRadioGroup;
+	TextView detailHelpLabel;
+	TextView statusIconLabel;
+	TextView questionLabel;
+	TextView errorMessage;
+	RelativeLayout whatsThisLayout;
+	Bundle extras;
+	
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (!isCard) {
-			whatsThisLayout.setVisibility(View.GONE);
-		}
+		setContentView(R.layout.strongauth_page);
+		// INPUT FIELDS
+
+		questionAnswerField = (EditText) findViewById(R.id.account_security_question_answer_field);
+
+		// RADIO BUTTONS AND GROUPS
+
+		securityRadioGroup = (RadioGroup) findViewById(R.id.account_security_choice_radio_group);
+
+		// TEXT LABELS
+
+		detailHelpLabel = (TextView) findViewById(R.id.account_security_whats_this_detail_label);
+		
+		errorMessage = (TextView) findViewById(R.id.error_message_strong_auth);
+
+		statusIconLabel = (TextView) findViewById(R.id.account_security_plus_label);
+
+		questionLabel = (TextView) findViewById(R.id.account_security_question_placeholder_label);
+
+		whatsThisLayout = (RelativeLayout) findViewById(R.id.account_security_whats_this_relative_layout);
+		final RadioButton radioButtonOne = (RadioButton)securityRadioGroup.findViewById(R.id.account_security_choice_one_radio);
+		final RadioButton radioButtonTwo = (RadioButton)securityRadioGroup.findViewById(R.id.account_security_choice_two_radio);
+		
+		securityRadioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) { 
+            	RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
+            	if (checkedRadioButton == radioButtonOne){
+            		radioButtonOne.setTextColor(getResources().getColor(R.color.black));
+            		radioButtonTwo.setTextColor(getResources().getColor(R.color.abs__primary_text_disable_only_holo_dark));
+            	}else {
+            		radioButtonTwo.setTextColor(getResources().getColor(R.color.black));
+            		radioButtonOne.setTextColor(getResources().getColor(R.color.abs__primary_text_disable_only_holo_dark));
+            	}
+            }
+});
+
 	}
 	
+	/**
+	 * Moved intent logic to onResume instead of onCreate. onNewIntent will update the intent before onResume is 
+	 * called. 
+	 */
 	@Override
 	public void onResume(){
-		final Bundle extras = getIntent().getExtras();
+		super.onResume();
+		extras = getIntent().getExtras();
 		if (extras != null) {
 			final String question = extras
 					.getString(IntentExtraKey.STRONG_AUTH_QUESTION);
@@ -116,11 +142,16 @@ public class EnhancedAccountSecurityActivity extends RoboActivity {
 			isCard = extras.getBoolean(IntentExtraKey.IS_CARD_ACCOUNT, true);
 			questionLabel.setText(question);
 		}
+		if (!isCard) {
+			whatsThisLayout.setVisibility(View.GONE);
+		}
 	}
 	
 	@Override
     protected void onNewIntent(Intent intent){
         super.onNewIntent(intent);
+        
+        //Grab the updated intent
         setIntent(intent);
     }
 
@@ -165,31 +196,54 @@ public class EnhancedAccountSecurityActivity extends RoboActivity {
 		}
 
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.discover.mobile.ErrorHandlerUi#getErrorLabel()
+	 */
+	@Override
+	public TextView getErrorLabel() {
+		return errorMessage;
+	}
 
+	/* (non-Javadoc)
+	 * @see com.discover.mobile.ErrorHandlerUi#getInputFields()
+	 */
+	@Override
+	public List<EditText> getInputFields() {
+		List<EditText> inputFields = new ArrayList<EditText>();
+		inputFields.add(questionAnswerField);
+		return inputFields;
+	}
+
+	/**
+	 * Submits the bank strong auth answer. 
+	 * 
+	 * @param progress
+	 * @param answer
+	 */
 	private void submitBankSecurityInfo(final ProgressDialog progress,
 			String answer) {
 		BankStrongAuthAnswerDetails details = new BankStrongAuthAnswerDetails();
 		details.question = answer;
 		details.questionId = questionId;
-		final AsyncCallback<BankStrongAuthDetails> callback = GenericAsyncCallback
-				.<BankStrongAuthDetails> builder(this)
-				.showProgressDialog("Discover", "Loading...", true)
-				.withSuccessListener(
-						new SuccessListener<BankStrongAuthDetails>() {
+		
+		final AsyncCallback<BankStrongAuthDetails> callback = AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankStrongAuthDetails.class, this, this, true)
+				.withSuccessListener(new SuccessListener<BankStrongAuthDetails>() {
+					
+					@Override
+					public CallbackPriority getCallbackPriority() {
+						return CallbackPriority.MIDDLE;
+					}
 
-							@Override
-							public CallbackPriority getCallbackPriority() {
-								return CallbackPriority.MIDDLE;
-							}
-
-							@Override
-							public void success(BankStrongAuthDetails value) {
-								progress.dismiss();
-								if (value.status.equals("ALLOWED")) {
-									startHomeFragment();
-								} 
-							}
-						}).build();
+					@Override
+					public void success(BankStrongAuthDetails value) {
+						progress.dismiss();
+						startHomeFragment();
+					}
+				})
+				.build();
+					
+		
 		new CreateStrongAuthRequestCall(this, callback, details).submit();
 
 	}
@@ -244,4 +298,9 @@ public class EnhancedAccountSecurityActivity extends RoboActivity {
 		finish();
 	}
 
+	@Override
+	public void goBack() {
+		// TODO Auto-generated method stub
+		
+	}
 }

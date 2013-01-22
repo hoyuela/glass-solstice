@@ -3,16 +3,13 @@ package com.discover.mobile.common.auth.bank.strong;
 import android.content.Context;
 
 import com.discover.mobile.common.auth.bank.BankErrorResponseParser;
-import com.discover.mobile.common.auth.strong.StrongAuthDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
-import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.urlmanager.UrlManagerBank;
-import com.discover.mobile.common.urlmanager.UrlManagerCard;
 
 /**
  * The Bank Login call for retrieving a valid token and any URL's that are
@@ -51,7 +48,7 @@ public class CreateStrongAuthRequestCall extends
 	public CreateStrongAuthRequestCall(final Context context,
 			final AsyncCallback<BankStrongAuthDetails> callback, final BankStrongAuthAnswerDetails details) {
 		
-		super(context, new PostCallParams(UrlManagerBank.getStrongAuthUrl() + "/index.php") {{
+		super(context, new PostCallParams(UrlManagerBank.getStrongAuthUrl()) {{
 			requiresSessionForRequest = false;
 			
 			// Specify what error parser to use when receiving an error response

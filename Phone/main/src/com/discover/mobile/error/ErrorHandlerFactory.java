@@ -320,12 +320,18 @@ public class ErrorHandlerFactory {
 	public void handleHttpUnauthorizedError() {
 		//TODO: Will complete this in the Handle Technical Difficulties User Story	
 	}
-		
+	/**
+	 * This function handles the response for a 401 with strong auth. The new question and id are sent as an 
+	 * intent to the strong auth activity.
+	 * 	
+	 * @param errorHandlerUi
+	 * @param errorMessage
+	 * @param question
+	 * @param id
+	 */
 	public void handleStrongAuthFailure(final ErrorHandlerUi errorHandlerUi,final String errorMessage, final String question, final String id ) {	
 		showErrorsOnScreen(errorHandlerUi, errorMessage);
 
-		//TODO: Update Strong Auth Class to inherit from ErrorHandlerUI to be able to call showErrorsOnScreen.
-	   //		this will be implemented once StrongAuth has been completed for Bank.
 		final Intent strongAuth = new Intent(mActivity, EnhancedAccountSecurityActivity.class);
 		
 		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, question);
