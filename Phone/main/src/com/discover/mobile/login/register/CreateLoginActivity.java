@@ -6,12 +6,16 @@ import static com.discover.mobile.common.auth.registration.RegistrationErrorCode
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_SSN_EQUAL;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+
+import java.util.List;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -503,6 +507,18 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 			navigateToConfirmationScreenWithResponseData(confirmationDetails);
 
 		}
+	}
+
+	@Override
+	public TextView getErrorLabel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<EditText> getInputFields() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
