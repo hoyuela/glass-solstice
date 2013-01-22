@@ -15,8 +15,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -103,6 +101,8 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
 		
 		setOnClickActions();
+		attachErrorLabels();
+
 		restoreState(savedInstanceState);
 	}
 	
@@ -188,11 +188,6 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	 */
 	private void setupInputFields() {
 		cardNumField.setFieldAccountNumber();
-
-		passField.addTextChangedListener(getSubmitButtonTextWatcherEnabler());
-		cardNumField.addTextChangedListener(getSubmitButtonTextWatcherEnabler());
-		
-		attachErrorLabels();
 	}
 	
 	/**
@@ -212,7 +207,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		submitButton.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				doForgotUserIdCall();
+				checkInputsAndSubmit();
 			}
 		});
 		
@@ -242,6 +237,22 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		finish();
 	}
 	
+	/**
+	 * 
+	 */
+	private void checkInputsAndSubmit() {
+		cardNumField.updateAppearanceForInput();
+		passField.updateAppearanceForInput();
+		CommonMethods.setViewGone(mainErrLabel);
+
+		if(cardNumField.isValid() && passField.isValid())
+			doForgotUserIdCall();
+		else{
+			mainScrollView.smoothScrollTo(0, 0);
+			displayOnMainErrorLabel(getString(R.string.login_error));
+		}
+		
+	}
 	/**
 	 * Submit the form info to the server and handle success or error.
 	 */
@@ -273,19 +284,14 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 						displayOnMainErrorLabel(getString(R.string.login_error));
 						return true;
 						
-					case HttpURLConnection.HTTP_UNAVAILABLE:
+					default:
 						displayOnMainErrorLabel(getString(R.string.unkown_error_text));
 						return true;
 
 				}
 				
-				return false;
 			}
 			
-			private void displayOnMainErrorLabel(final String text){
-				mainErrLabel.setText(text);
-				CommonMethods.setViewVisible(mainErrLabel);
-			}
 
 			@Override
 			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
@@ -313,7 +319,6 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 						displayOnMainErrorLabel(getString(R.string.login_attempt_warning));
 						return true;
 
-
 				}
 				
 				return false;
@@ -321,6 +326,11 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		};
 
 		new ForgotUserIdCall(this, callback, CommonMethods.getSpacelessString(cardNumField.getText().toString()), passField.getText().toString()).submit();
+	}
+	
+	private void displayOnMainErrorLabel(final String text){
+		mainErrLabel.setText(text);
+		CommonMethods.setViewVisible(mainErrLabel);
 	}
 	
 	/**
@@ -346,30 +356,6 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 					}
 				})
 			    .show();
-	}
-	
-	/**
-	 * Return a TextWatcher that will enable the submit button when all form info is valid.
-	 * @return
-	 */
-	private TextWatcher getSubmitButtonTextWatcherEnabler() {
-		return new TextWatcher() {
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				if(cardNumField.isValid() && passField.isValid())
-					submitButton.setEnabled(true);
-				else
-					submitButton.setEnabled(false);
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,	int after) {/*empty*/}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {/*empty*/}
-			
-		};
 	}
 	
 	/**

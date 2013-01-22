@@ -19,18 +19,14 @@ import static com.discover.mobile.common.auth.registration.RegistrationErrorCode
 import java.net.HttpURLConnection;
 import java.util.Calendar;
 
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -104,7 +100,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	
 	private static final String SSN_KEY = "l";
 	private static final String SSN_ERROR_KEY = "m";
-	
+		
 //TEXT LABELS
 	protected TextView accountIdentifierFieldLabel;
 	protected TextView accountIdentifierFieldRestrictionsLabel;
@@ -135,10 +131,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 //BUTTONS
 	protected Button continueButton;
 	
-	
 	final Calendar currentDate = Calendar.getInstance();
-
-	// TODO go through old code and make sure this is called every time
 
 	protected void doCustomUiSetup(){/*Intentionally empty*/}
 
@@ -166,10 +159,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		loadAllViews();
 		setupFieldsAndLabels();
     	setupCustomTextChangedListeners();
-    	setupCardDatePicker();
-    	setupDatePicker();
     	setupClickablePhoneNumbers();
-    	setupDisabledButtonListners();
     	setHeaderProgressText();
 
     	restoreState(savedInstanceState);
@@ -197,47 +187,12 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	}
 	
 	/**
-	 * Attach text watchers to all fields so that when everything is valid, the continue button is enabled,
-	 * if anything is false, its disabled.
-	 */
-	protected void setupDisabledButtonListners() {
-		accountIdentifierField.addTextChangedListener(getContinueButtonTextWatcher());
-		ssnField.addTextChangedListener(getContinueButtonTextWatcher());
-		birthDatePicker.addTextChangedListener(getContinueButtonTextWatcher());
-		cardExpDatePicker.addTextChangedListener(getContinueButtonTextWatcher());
-	}
-	
-	/**
 	 * Check to see if all of the fields on the page contain valid input.
 	 * @return true if all fields contain valid information.
 	 */
 	public boolean isFormCompleteAndValid() {
 		return accountIdentifierField.isValid() && cardExpDatePicker.isValid() && birthDatePicker.isValid()
 				&& ssnField.isValid();
-	}
-	
-	/**
-	 * Get a new text watcher that will enable and disable the continue button if all form info is complete.
-	 * @return a text watcher that watches for the form to be completed.
-	 */
-	public TextWatcher getContinueButtonTextWatcher() {
-		return new TextWatcher() {
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				if(isFormCompleteAndValid())
-					continueButton.setEnabled(true);
-				else
-					continueButton.setEnabled(false);
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,	int after) {}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {}
-		};
-		
 	}
     
 	/**
@@ -385,88 +340,12 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 * Then do any custom UI setup that is required.
 	 */
 	private void setupFieldsAndLabels() {
-				
+		doCustomUiSetup();
+
 		accountIdentifierField.attachErrorLabel(cardErrorLabel);
 		ssnField.attachErrorLabel(ssnErrorLabel);
 		birthDatePicker.attachErrorLabel(dobErrorLabel);
 		cardExpDatePicker.attachErrorLabel(expirationDateErrorLabel);
-
-		doCustomUiSetup();
-	}
-	
-	/**
-	 * setupCardDatePicker() Initializes the card expiration date spinner. Creates a new one with an OnDateSetListener
-	 * The OnDateSetListener sets the expirationYear/Month ivars to be used later when submitting 
-	 * the form information with a service call
-	 * 
-	 * Because the card expiration date only includes month and year, the date field is removed by
-	 * the method hideDayPicker.
-	 */
-	private void setupCardDatePicker() {
-		final int NOT_NEEDED = 1;
-		final int currentMonth = currentDate.get(Calendar.MONTH);
-		final int currentYearPlusTwo = currentDate.get(Calendar.YEAR) + 2;
-		
-		cardPickerDialog = new CustomDatePickerDialog(this, new OnDateSetListener() {
-			
-			@Override
-			public void onDateSet(DatePicker view, int year, int monthOfYear,
-					int dayOfMonth) {
-				cardExpDatePicker.setExpirationMonth(monthOfYear);
-				cardExpDatePicker.setExpirationYear(year);
-				cardExpDatePicker.updateLabelWithSavedDate();
-				cardExpDatePicker.updateAppearanceForInput();
-			}
-		}, currentYearPlusTwo, currentMonth, NOT_NEEDED);
-		
-		final String datePickerTitle = getResources().getString(R.string.card_expiration_date_text);
-		cardPickerDialog.setTitle(datePickerTitle);
-		cardPickerDialog.hideDayPicker();
-	}
-	
-	/**
-	 * Initialize the date of birth date picker. Assigns an OnDateSetListener to modify the dobDay/Month/Year ivars.
-	 * 
-	 */
-	private void setupDatePicker() {		
-		final int currentYearMinusEighteen = currentDate.get(Calendar.YEAR) - 18;
-		final int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
-		final int currentMonth =currentDate.get(Calendar.MONTH);
-		
-		dobPickerDialog = new CustomDatePickerDialog(this, new OnDateSetListener() {
-
-			@Override
-			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-				birthDatePicker.setDobDay(dayOfMonth);
-				birthDatePicker.setDobMonth(monthOfYear);
-				birthDatePicker.setDobYear(year);
-				birthDatePicker.updateLabelWithSavedDate();
-				birthDatePicker.updateAppearanceForInput();
-			}
-		}, currentYearMinusEighteen, currentMonth, currentDay);
-		
-		final String dobPickerTitle = getResources().getString(R.string.account_info_dob_text);
-		dobPickerDialog.setTitle(dobPickerTitle);
-	}
-
-	/**
-	 * present the date of birth date picker dialog. Called from XML.
-	 * 
-	 * @param v the calling View.
-	 */
-	public void showBirthDatePickerDialog(final View v) {
-		dobPickerDialog.show();
-	}
-	
-	
-	/**
-	 * Present the date picker dialog for card expiration dates. Called from XML.
-	 * 
-	 * @param v the calling View
-	 */
-	public void showCardDatePickerDialog(final View v) {
-		
-		cardPickerDialog.show();
 	}
 	
 	/**
@@ -477,10 +356,17 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 */
 	public void validateInfoAndSubmitOnSuccess(final View v){
 				
+		CommonMethods.setViewGone(errorMessageLabel);
+		accountIdentifierField.updateAppearanceForInput();
+		birthDatePicker.updateAppearanceForInput();
+		cardExpDatePicker.updateAppearanceForInput();
+		ssnField.updateAppearanceForInput();
+		
 		if(isFormCompleteAndValid()){
 			submitFormInfo();
 		}
 		else{
+			showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));					
 			resetScrollPosition();
 		}
 		

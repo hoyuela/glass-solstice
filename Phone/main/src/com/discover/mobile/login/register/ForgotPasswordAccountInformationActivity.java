@@ -2,12 +2,11 @@ package com.discover.mobile.login.register;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.CommonMethods;
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
@@ -33,25 +32,18 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		accountIdentifierField.setFieldUsername();
-		
 	}
 	
+	/**
+	 * Initiates the proper analytics services call.
+	 */
 	public ForgotPasswordAccountInformationActivity() {
 		super(AnalyticsPage.FORGOT_PASSWORD_STEP1);
 	} 
-	/**
-	 * Put all of the form details as a serializable object extra and pass it to the next activity
-	 * which will append more info onto that object.
-	 */
-	@Override
-	protected void navToNextScreenWithDetails(AccountInformationDetails details) {
-		final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
-		createLoginActivity.putExtra(ScreenType.INTENT_KEY, ScreenType.FORGOT_PASSWORD);
-		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, details);
-		startActivity(createLoginActivity);
-		finish();
-	}
 	
+	/**
+	 * When the hardware back button is pressed, call the goBack method.
+	 */
 	@Override
 	public void onBackPressed() {
 		goBack(null);
@@ -75,6 +67,8 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	@Override
 	protected void doCustomUiSetup() {
 		CommonMethods.setViewGone(accountIdentifierFieldRestrictionsLabel);
+		accountIdentifierFieldLabel.setText(R.string.user_id);
+		accountIdentifierField.setFieldUsername();
 	}
 	
 	/**
@@ -101,6 +95,9 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 		return EnterNewPasswordActivity.class;
 	}
 
+	/**
+	 * The inherited goBack method from NotLoggedInRoboActivity for the software back button.
+	 */
 	@Override
 	public void goBack() {
 		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
@@ -108,54 +105,40 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 		finish();		
 	}
 	
+	/**
+	 * Setup the header progress bar appearance.
+	 */
 	@Override
 	protected void setHeaderProgressText() {
 			HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
 			headerProgressBar.setTitle(R.string.enter_info, R.string.create_password, R.string.confirm);
 	}
 	
-//	AJ AND SCOTT TO FIX 
-	
-//	@Override
-//	protected void setupCustomTextChangedListeners(){
-//		final InputValidator validator = new InputValidator();
-//
-//		idField.setOnFocusChangeListener(new OnFocusChangeListener() {
-//			InputValidator validator = new InputValidator();
-//			
-//			@Override
-//			public void onFocusChange(View v, boolean hasFocus) {
-//				
-//				if( !hasFocus && !validator.isUidValid( idField.getText().toString() ) ) {
-//					showLabel(idErrorLabel);
-//				}
-//			}
-//		});
-//		
-//		idField.addTextChangedListener(new TextWatcher(){
-//			
-//			// FIXME this may be a bug, is this intended to override the one defined
-//			// at the beginning of setupCustomTextChangedListeners()?
-//			InputValidator validator = new InputValidator();
-//
-//			@Override
-//			public void afterTextChanged(final Editable s) {/*Intentionally empty*/}
-//
-//			@Override
-//			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
-//
-//			@Override
-//			public void onTextChanged(final CharSequence s, final int start, final int before,
-//					final int count) {
-//				//Hide error label.
-//				if( validator.isPassValid( s.toString() ) ) {
-//					idErrorLabel.setVisibility(View.GONE);
-//				}
-//			}
-//			HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
-//    		progress.initChangePasswordHeader(1);
-//			
-//		});
-//		
-//	}
+	/**
+	 * This method handles the result of the Strong Auth activity.
+	 * When Strong Auth finishes, either navigate to the next screen, or cancel the registration process.
+	 */
+	@Override
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {	
+		Log.d("ACTIVITY DID GIVE RESULT","ACTIVITY DID GIVE RESULT");
+		if(requestCode == STRONG_AUTH_ACTIVITY) {
+			if(resultCode == RESULT_OK) {
+				navToNextScreenWithDetails(null);
+			} else if (resultCode == RESULT_CANCELED){
+				finish();
+			}
+		}
+	}
+
+	/**
+	 * Inherited method from AbstractAccountInformation Activity. However, ForgotPassword step 1 does not
+	 * need to send any details object to the next activity.
+	 */
+	@Override
+	protected void navToNextScreenWithDetails(AccountInformationDetails details) {
+		Intent createNewPassword = new Intent(this, getSuccessfulStrongAuthIntentClass());
+		startActivity(createNewPassword);
+		finish();
+	}
+
 }
