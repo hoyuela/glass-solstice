@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.error.BaseErrorResponseHandler;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 
@@ -17,7 +17,7 @@ import com.discover.mobile.navigation.NavigationRootActivity;
  * @author jthornton
  * 
  */
-public class PushRegistrationStatusErrorHandler extends BaseErrorResponseHandler  {
+public class PushRegistrationStatusErrorHandler extends CardBaseErrorResponseHandler  {
 
 	Activity activity;
 	

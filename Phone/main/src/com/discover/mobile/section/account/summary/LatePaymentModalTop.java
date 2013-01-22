@@ -29,8 +29,14 @@ public class LatePaymentModalTop extends ScrollView implements ModalTopView {
 	/**View that holds the content text*/
 	private TextView text;
 	
+	/**View holding the due date*/
+	private TextView dueDateLabel;
+	
 	/**View holding payment due date*/
 	private TextView dueDate;
+	
+	/**View holding the error text*/
+	private TextView error;
 	
 	/**
 	 * Constructor for the view
@@ -45,11 +51,24 @@ public class LatePaymentModalTop extends ScrollView implements ModalTopView {
 		
 		res = context.getResources();
 		
+		dueDateLabel = (TextView) mainView.findViewById(R.id.payment_date_label);
 		dueDate = (TextView) mainView.findViewById(R.id.payment_date);
 		title = (TextView) mainView.findViewById(R.id.modal_alert_title);
 		text = (TextView) mainView.findViewById(R.id.modal_alert_text);
+		error = (TextView) mainView.findViewById(R.id.modal_alert_error_text);
 		
 		addView(mainView);
+	}
+	
+	/**
+	 * Show the error state of the modal
+	 */
+	public void setErrorState(){
+		dueDateLabel.setVisibility(View.GONE);
+		dueDate.setVisibility(View.GONE);
+		text.setVisibility(View.GONE);
+		error.setVisibility(View.VISIBLE);
+		setTitle(R.string.late_payment_modal_error_title);
 	}
 
 	/**

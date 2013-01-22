@@ -6,7 +6,7 @@ import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback.Builder;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.error.BankBaseErrorResponseHandler;
-import com.discover.mobile.error.BaseErrorResponseHandler;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.error.BaseExceptionFailureHandler;
 
 /**
@@ -83,12 +83,12 @@ public final class AsyncCallbackBuilderLibrary {
 			builder = GenericAsyncCallback.<T>builder(activity)
 								.showProgressDialog("Discover", "Loading...", true)
 								.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-								.withErrorResponseHandler(new BaseErrorResponseHandler(errorHandler))
+								.withErrorResponseHandler(new CardBaseErrorResponseHandler(errorHandler))
 								.withCompletionListener(new LockScreenCompletionListener(activity));
 		} else {
 			builder = GenericAsyncCallback.<T>builder(activity)
 					.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-					.withErrorResponseHandler(new BaseErrorResponseHandler(errorHandler))
+					.withErrorResponseHandler(new CardBaseErrorResponseHandler(errorHandler))
 					.withCompletionListener(new LockScreenCompletionListener(activity));
 		}
 		

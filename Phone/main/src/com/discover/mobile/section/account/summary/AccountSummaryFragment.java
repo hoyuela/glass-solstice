@@ -278,7 +278,7 @@ public class AccountSummaryFragment extends BaseFragment {
 			final AsyncCallback<LatePaymentWarningDetail> callback = 
 					GenericAsyncCallback.<LatePaymentWarningDetail>builder(this.getActivity())
 					.withSuccessListener(new LatePaymentWarningSuccessListener(this))
-					.withErrorResponseHandler(null)
+					.withErrorResponseHandler(new LatePaymentErrorHandler(this))
 					.build();
 			
 			new GetLatePaymentWarning(getActivity(), callback).submit();
@@ -297,12 +297,12 @@ public class AccountSummaryFragment extends BaseFragment {
 			final AsyncCallback<LatePaymentWarningTextDetail> callback = 
 					GenericAsyncCallback.<LatePaymentWarningTextDetail>builder(this.getActivity())
 					.withSuccessListener(new LatePaymentWarningTextSuccessListener(this))
-					.withErrorResponseHandler(null)
+					.withErrorResponseHandler(new LatePaymentErrorHandler(this))
 					.build();
 			
 			new GetLatePaymentWarningText(getActivity(), callback).submit();
 		} else{
-			showLatePaymentModal();
+			showLatePaymentModal(true);
 		}
 	}
 	
@@ -316,15 +316,22 @@ public class AccountSummaryFragment extends BaseFragment {
 	
 	/**
 	 * Show the late payment warning modal
+	 * @param success -  true if the calls were successful
 	 */
-	protected void showLatePaymentModal(){
+	protected void showLatePaymentModal(final boolean success){
 		dialog.dismiss();
-		final String content = getContentString();
 		final LatePaymentModalTop top = new LatePaymentModalTop(context, null);
 		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(context, null);
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(context, top, bottom);
-		top.setPaymentDate(getLongDateString(info.paymentDueDate));
-		top.setDynamicContent(content);
+		
+		if(success){
+
+			final String content = getContentString();
+			top.setPaymentDate(getLongDateString(info.paymentDueDate));
+			top.setDynamicContent(content);
+		} else{
+			top.setErrorState();
+		}
 		bottom.setButtonText(R.string.account_summary_modal_button);
 		bottom.getButton().setOnClickListener(new OnClickListener() {
 			@Override

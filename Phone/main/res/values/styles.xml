@@ -225,6 +225,12 @@
     <style name="modal_body_copy_content_text" parent="body_copy">
         <item name="android:textSize">@dimen/body_copy_min</item>
     </style>
+    
+    <style name="modal_content_error_text" parent="sub_copy">
+        <item name="android:textSize">@dimen/small_copy_max</item>
+        <item name="android:textColor">@color/error_indicator</item>
+    </style>
+    
 
     <!-- 5. BODY COPY / #3d484d / 34px font-size / 42px line-height / regular -->
     <style name="body_copy" parent="discover_text">

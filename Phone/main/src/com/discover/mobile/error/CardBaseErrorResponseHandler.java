@@ -37,7 +37,7 @@ import com.discover.mobile.login.LockOutUserActivity;
  * @author ekaram
  * 
  */
-public class BaseErrorResponseHandler implements ErrorResponseHandler {
+public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 
 	/**
 	 * The Parent RoboSlidingFragmentActvitiy that made the service call
@@ -48,7 +48,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * Private constructor to prevent construction without a fragment or
 	 * activity
 	 */
-	public BaseErrorResponseHandler(final ErrorHandlerUi errorHandlerUi) {
+	public CardBaseErrorResponseHandler(final ErrorHandlerUi errorHandlerUi) {
 		this.errorHandlerUi = errorHandlerUi;
 	}
 
@@ -57,7 +57,7 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 	 * activity
 	 */
 	@SuppressWarnings("unused")
-	private BaseErrorResponseHandler() {
+	private CardBaseErrorResponseHandler() {
 		throw new RuntimeException("invalid constructor");
 	}
 
@@ -82,25 +82,25 @@ public class BaseErrorResponseHandler implements ErrorResponseHandler {
 
 		if (errorResponse instanceof JsonMessageErrorResponse) {
 
-			JsonMessageErrorResponse messageErrorResponse = (JsonMessageErrorResponse) errorResponse;
+			final JsonMessageErrorResponse messageErrorResponse = (JsonMessageErrorResponse) errorResponse;
 			
 			// FIRST we will try for common status code generic handling
 			switch (messageErrorResponse.getMessageStatusCode()) {
-			case UNSCHEDULED_MAINTENANCE:
-				getErrorFieldUi().sendToErrorPage(R.string.temporary_outage);
-				return true;
-
-			case SCHEDULED_MAINTENANCE:
-				getErrorFieldUi().sendToErrorPage(R.string.planned_outage_one);
-				return true;
-
-			case PLANNED_OUTAGE:
-				getErrorFieldUi().sendToErrorPage(R.string.planned_outage_one);
-				return true;
-
-			case NO_DATA_FOUND:
-				getErrorFieldUi().sendToErrorPage(R.string.no_data_found);
-				return true;
+				case UNSCHEDULED_MAINTENANCE:
+					getErrorFieldUi().sendToErrorPage(R.string.temporary_outage);
+					return true;
+	
+				case SCHEDULED_MAINTENANCE:
+					getErrorFieldUi().sendToErrorPage(R.string.planned_outage_one);
+					return true;
+	
+				case PLANNED_OUTAGE:
+					getErrorFieldUi().sendToErrorPage(R.string.planned_outage_one);
+					return true;
+	
+				case NO_DATA_FOUND:
+					getErrorFieldUi().sendToErrorPage(R.string.no_data_found);
+					return true;
 
 			}
 			// SECOND we try the JSON specific error code handling

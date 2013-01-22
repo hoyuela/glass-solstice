@@ -64,4 +64,6 @@
 	<string name="late_payment_modal_title">Late Payment Warning</string>
 	<string name="late_payment_modal_date_text">Minimum Payment Due:</string>
 	<string name="late_payment_modal_text">If we do not receive your minimum payment by the date listed above, you may have to pay a late fee of up to $35.00 and your purchase and balance transfer APRs for new transactions may be increased up to the Penalty APR of 15.99% variable.</string>
+	<string name="late_payment_modal_error_message">Some of our web site features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.</string>
+	<string name="late_payment_modal_error_title">We\'re Sorry</string>
 </resources>

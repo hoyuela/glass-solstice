@@ -6,9 +6,9 @@ import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.error.BaseErrorResponseHandler;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 
-public class BaseAccountErrorResponseHandler extends BaseErrorResponseHandler{
+public class BaseAccountErrorResponseHandler extends CardBaseErrorResponseHandler{
 
 	/**TAG used for labeling class for errors*/
 	private static final String TAG = BaseAccountErrorResponseHandler.class.getSimpleName();

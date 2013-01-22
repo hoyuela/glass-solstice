@@ -23,7 +23,8 @@
 	        android:layout_below="@+id/modal_alert_title"
 	        android:text="@string/late_payment_modal_date_text"
 	        android:textStyle="bold"   
-	        style="@style/modal_body_copy_content_text"/>
+	        style="@style/modal_body_copy_content_text"
+	        android:visibility="visible"/>
 	   	
 	   	<TextView
 	        android:id="@+id/payment_date"
@@ -40,6 +41,15 @@
 	        android:layout_below="@+id/payment_date"
 	        android:text="@string/late_payment_modal_text"
 	        style="@style/modal_content_text"/>
+	    
+	    <TextView 
+	        android:id="@+id/modal_alert_error_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/modal_alert_title"
+	        android:text="@string/late_payment_modal_error_message"
+	        style="@style/modal_content_error_text"
+	        android:visibility="gone"/>
    
     </RelativeLayout>
 </ScrollView>

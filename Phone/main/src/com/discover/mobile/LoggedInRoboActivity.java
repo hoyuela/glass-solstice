@@ -14,7 +14,7 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.error.BaseErrorResponseHandler;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.logout.LogOutSuccessListener;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -98,7 +98,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 									getResources().getString(R.string.push_progress_registration_loading), 
 									true)
 				.withSuccessListener(new LogOutSuccessListener(this))
-				.withErrorResponseHandler(new BaseErrorResponseHandler((ErrorHandlerUi) this))
+				.withErrorResponseHandler(new CardBaseErrorResponseHandler((ErrorHandlerUi) this))
 				.build();
 	
 		new LogOutCall(this, callback).submit();

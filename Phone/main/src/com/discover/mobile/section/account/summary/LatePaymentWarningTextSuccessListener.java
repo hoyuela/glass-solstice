@@ -40,6 +40,6 @@ public class LatePaymentWarningTextSuccessListener implements SuccessListener<La
 	@Override
 	public void success(final LatePaymentWarningTextDetail detail) {
 		fragment.storeInfoStrings(detail);
-		fragment.showLatePaymentModal();
+		fragment.showLatePaymentModal(true);
 	}
 }

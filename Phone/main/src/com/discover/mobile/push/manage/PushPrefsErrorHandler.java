@@ -5,14 +5,14 @@ import android.util.Log;
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.error.BaseErrorResponseHandler;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 
 /**
  * Error Handler for the posting of the preferences after the user had decided to change their current settings. 
  * @author jthornton
  *
  */
-public class PushPrefsErrorHandler extends BaseErrorResponseHandler{
+public class PushPrefsErrorHandler extends CardBaseErrorResponseHandler{
 
 	/**Tag labeling the class for errors*/
 	private static final String TAG = PushPrefsErrorHandler.class.getSimpleName();

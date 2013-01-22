@@ -6,7 +6,7 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.error.BaseErrorResponseHandler;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 
 /**
  * PreAuthErrorResponseHandler handles server error messages received from the
@@ -17,7 +17,7 @@ import com.discover.mobile.error.BaseErrorResponseHandler;
  * @author scottseward
  * 
  */
-public class PreAuthErrorResponseHandler extends BaseErrorResponseHandler implements ErrorResponseHandler {
+public class PreAuthErrorResponseHandler extends CardBaseErrorResponseHandler implements ErrorResponseHandler {
 
 	/**
 	 * Create a PreAuthErrorResponseHandler to handle error responses generated
