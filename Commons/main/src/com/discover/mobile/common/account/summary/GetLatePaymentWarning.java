@@ -1,4 +1,4 @@
-package com.discover.mobile.common.account.recent;
+package com.discover.mobile.common.account.summary;
 
 import android.content.Context;
 
@@ -10,27 +10,27 @@ import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall
 import com.discover.mobile.common.urlmanager.UrlManagerCard;
 
 /**
- * Call to get the activity periods to be displayed in the choose activity period fragment
+ * Get the late payment warning information
  * @author jthornton
  *
  */
-public class GetActivityPeriods extends JsonResponseMappingNetworkServiceCall<RecentActivityPeriodsDetail>{
+public class GetLatePaymentWarning  extends JsonResponseMappingNetworkServiceCall<LatePaymentWarningDetail>{
 
 	/**Reference handler to allow the call to be back on the UI*/
-	private final TypedReferenceHandler<RecentActivityPeriodsDetail> handler;
-	
+	private final TypedReferenceHandler<LatePaymentWarningDetail> handler;
+
 	/**
 	 * Constructor for the call
 	 * @param context - activity context
 	 * @param callback - callback to run the call in
 	 */
-	public GetActivityPeriods(final Context context, final AsyncCallback<RecentActivityPeriodsDetail> callback){
-		super(context, new GetCallParams(UrlManagerCard.getStatementIdentifiers()) {{
-		
-			sendDeviceIdentifiers = true;
-		}}, RecentActivityPeriodsDetail.class);
+	public GetLatePaymentWarning(final Context context, final AsyncCallback<LatePaymentWarningDetail> callback){
+		super(context, new GetCallParams(UrlManagerCard.getLatePaymentWarningUrl()) {{
 
-		handler = new SimpleReferenceHandler<RecentActivityPeriodsDetail>(callback);
+			sendDeviceIdentifiers = true;
+		}}, LatePaymentWarningDetail.class);
+
+		handler = new SimpleReferenceHandler<LatePaymentWarningDetail>(callback);
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class GetActivityPeriods extends JsonResponseMappingNetworkServiceCall<Re
 	 * @return the reference handler for the call
 	 */
 	@Override
-	protected TypedReferenceHandler<RecentActivityPeriodsDetail> getHandler() {
+	protected TypedReferenceHandler<LatePaymentWarningDetail> getHandler() {
 		return handler;
 	}
 }

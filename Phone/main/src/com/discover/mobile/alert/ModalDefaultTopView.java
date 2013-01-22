@@ -123,5 +123,12 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	public NeedHelpFooter getHelpFooter() {
 		return helpFooter;
 	}
+	
+	/**
+	 * Hide the help footer
+	 */
+	public void hideNeedHelpFooter(){
+		helpFooter.show(false);
+	}
 
 }

@@ -62,6 +62,7 @@ public class PreAuthCallHelper  {
 		final ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(context, null);
 		final ModalDefaultTwoButtonBottomView twoButtonBottomView = new ModalDefaultTwoButtonBottomView(context, null);
 		
+		titleAndContentForDialog.hideNeedHelpFooter();
 		titleAndContentForDialog.setTitle(R.string.option_upgrade_dialog_title);
 		titleAndContentForDialog.setContent(R.string.optional_upgrade_dialog_body);
 		
@@ -95,6 +96,7 @@ public class PreAuthCallHelper  {
 		final ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(context, null);
 		final ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(context, null);
 		
+		titleAndContentForDialog.hideNeedHelpFooter();
 		titleAndContentForDialog.setTitle(R.string.forced_upgrade_dialog_title);
 		titleAndContentForDialog.setContent(R.string.forced_upgrade_dialog_body);
 		titleAndContentForDialog.showErrorIcon(true);
