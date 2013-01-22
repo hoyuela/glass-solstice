@@ -9,18 +9,21 @@ import java.net.HttpURLConnection;
 import java.util.List;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
+import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
-import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoCall;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoDetails;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
@@ -43,22 +46,28 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 	
 	private static AccountInformationDetails passOneDetails;
 	private ForgotPasswordTwoDetails passTwoDetails;
-		
+	private final Context currentContext = this;
+	
 //TEXT LABELS
-	TextView mainErrorMessageLabel;
-	TextView errorMessageLabel;
-	TextView errorLabelOne;	
-	TextView errorLabelTwo;
+	private TextView mainErrorMessageLabel;
+	private TextView errorMessageLabel;
+	private TextView errorLabelOne;	
+	private TextView errorLabelTwo;
+	private TextView helpNumberLabel;
 		
 //INPUT FIELDS
-	CredentialStrengthEditText passOneField;
-	ConfirmationEditText passTwoField;
+	private CredentialStrengthEditText passOneField;
+	private ConfirmationEditText passTwoField;
+	
+//SCROLL VIEW
+	private ScrollView mainScrollView;
 		
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_create_password);
 		loadAllViews();
+		setupInputFields();
 		
 		passTwoDetails = new ForgotPasswordTwoDetails();
 		
@@ -71,14 +80,38 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 		HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
     	progress.initChangePasswordHeader(1);
     	
+    	setupHelpNumber();
+    	
 	}
 	
+	private void setupHelpNumber() {
+		helpNumberLabel.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CommonMethods.dialNumber(helpNumberLabel.getText().toString(), currentContext);
+			}
+		});
+	}
 	private void loadAllViews() {
 		passOneField = (CredentialStrengthEditText)findViewById(R.id.account_info_two_pass_field);
 		passTwoField = (ConfirmationEditText)findViewById(R.id.account_info_two_pass_confirm_field);
+		
 		errorLabelTwo = (TextView)findViewById(R.id.enter_new_pass_error_two_label);
 		errorLabelOne = (TextView)findViewById(R.id.enter_new_pass_error_one_label);
 		errorMessageLabel = (TextView)findViewById(R.id.account_info_error_label);
+		helpNumberLabel = (TextView)findViewById(R.id.help_number_label);
+		mainErrorMessageLabel = (TextView)findViewById(R.id.account_info_main_error_label);
+		
+		mainScrollView = (ScrollView)findViewById(R.id.main_scroll_view);
+		
+	}
+	
+	private void setupInputFields() {
+		passOneField.setCredentialType(CredentialStrengthEditText.PASSWORD);
+		passTwoField.attachEditTextToMatch(passOneField);
+		passOneField.attachErrorLabel(errorLabelOne);
+		passTwoField.attachErrorLabel(errorLabelTwo);
+		
 	}
 	
 	private void mergeAccountDetails() {
@@ -93,7 +126,6 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 	
 	private void submitFormInfo() {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
-		hideAllErrorLabels();
 		
 		final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = 
 				new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
@@ -126,16 +158,16 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 				switch(messageErrorResponse.getMessageStatusCode()){
 
 				case REG_AUTHENTICATION_PROBLEM: 
-					showLabelWithStringResource(errorMessageLabel, R.string.account_info_bad_input_error_text);
+					CommonMethods.showLabelWithStringResource(errorMessageLabel, R.string.account_info_bad_input_error_text, currentContext);
 					return true;
 					
-				case BAD_ACCOUNT_STATUS: //Last attemt with this account number warning.
-					showLabelWithStringResource(errorMessageLabel,R.string.login_attempt_warning);
+				case BAD_ACCOUNT_STATUS: //Last attempt with this account number warning.
+					CommonMethods.showLabelWithStringResource(errorMessageLabel,R.string.login_attempt_warning, currentContext);
 					return true;
 					
 				case ID_AND_PASS_EQUAL:
-					showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text);
-					showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_id_matches_pass_error_text);
+					CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text, currentContext);
+					CommonMethods.showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_id_matches_pass_error_text, currentContext);
 					return true;
 					
 				case SCHEDULED_MAINTENANCE:
@@ -155,14 +187,6 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 
 	}
 	
-	public void hideAllErrorLabels() {
-		
-		hideLabel(mainErrorMessageLabel);
-		hideLabel(errorMessageLabel);
-		hideLabel(errorLabelOne);
-		hideLabel(errorLabelTwo);
-	}
-	
 	private void sendToErrorPage(final ScreenType screenType) {
 		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
 		screenType.addExtraToIntent(maintenancePageIntent);
@@ -170,58 +194,28 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 		finish();
 	}
 	
-	private void showLabelWithStringResource(TextView label, int id) {
-		label.setText(getString(id));
-		showLabel(label);
-	}
-	
-	private void showLabel(final View v) {
-		v.setVisibility(View.VISIBLE);
-	}
-	
-	private void hideLabel(final View v) {
-		v.setVisibility(View.GONE);
-	}
-	
-	public void showPasswordStrengthBarHelp(final View v) {
-		
-		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-		passwordHelpScreen.putExtra("helpType", "password");
-		this.startActivityForResult(passwordHelpScreen, 0);
-	}
-	
-	@Override
-	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {		
-	}	
-	
-	
 	public void checkInputsThenSubmit(final View v) {
-		
-		final InputValidator validator = new InputValidator();
-		final String passOneFieldValue = passOneField.getText().toString();
-		final String passTwoFieldValue = passTwoField.getText().toString();
+		passOneField.updateAppearanceForInput();
+		passTwoField.updateAppearanceForInput();
+		CommonMethods.setViewGone(mainErrorMessageLabel);
 		
 		//If the info was all valid - submit it to the service call.
-		if(InputValidator.isPasswordValid(passOneFieldValue) &&
-		   validator.doPassesMatch(passOneFieldValue, passTwoFieldValue)){
+		if(passOneField.isValid() && passTwoField.isValid()){
+			final String passOneFieldValue = passOneField.getText().toString();
+
 			passTwoDetails.password = passOneFieldValue;
 			passTwoDetails.passwordConfirm = passTwoDetails.password;
 			submitFormInfo();
 		}
 		else {
-			if(!validator.wasPassValid) {
-				showLabelWithStringResource(errorLabelOne, R.string.doesnt_match_records);
-			}
-			if(validator.wasPassValid && !validator.didPassesMatch) {
-				showLabelWithStringResource(errorLabelOne, R.string.account_info_two_passwords_dont_match_text);
-				showLabelWithStringResource(errorLabelTwo, R.string.doesnt_match_records);
-			}
+			mainScrollView.smoothScrollTo(0, 0);
+			if(!passOneField.isValid())
+				passOneField.setStrengthMeterInvalid();
+			
+			CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, 
+					R.string.account_info_bad_input_error_text, this);
 		}
 		
-	}
-	
-	@Override public void onBackPressed() {
-		cancel(null);
 	}
 	
 	public void cancel(final View v) {
@@ -239,7 +233,16 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 		this.startActivity(confirmationScreen);
 		finish();
 	}
-
+	
+	@Override
+	public void goBack() {
+		cancel(null);
+	}
+	
+	@Override public void onBackPressed() {
+		cancel(null);
+	}
+	
 	@Override
 	public TextView getErrorLabel() {
 		// TODO Auto-generated method stub
@@ -252,9 +255,4 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 		return null;
 	}
 
-	@Override
-	public void goBack() {
-		cancel(null);
-	}
-	
 }

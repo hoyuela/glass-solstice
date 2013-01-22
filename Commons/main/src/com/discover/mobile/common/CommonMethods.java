@@ -16,15 +16,18 @@ public final class CommonMethods {
 	private final static String TAG = CommonMethods.class.getSimpleName();
 
 	public final static void setViewGone(View v) {
-		v.setVisibility(View.GONE);
+		if(v != null)
+			v.setVisibility(View.GONE);
 	}
 
 	public final static void setViewVisible(View v) {
-		v.setVisibility(View.VISIBLE);
+		if(v != null)
+			v.setVisibility(View.VISIBLE);
 	}
 
 	public final static void setViewInvisible(final View v) {
-		v.setVisibility(View.INVISIBLE);
+		if(v != null)
+			v.setVisibility(View.INVISIBLE);
 	}
 
 	/**
