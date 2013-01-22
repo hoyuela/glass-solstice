@@ -50,10 +50,14 @@ public class UrlManagerCard {
 	private static final String STRONG_AUTH_QUESTION_URL = "/cardsvcs/acs/strongauth/v1/challenge";
 	private static final String STRONG_AUTH_URL = "/cardsvcs/acs/reg/v1/user/sa/check";
 	
-	/**URL to get the dates ranges to be shown when the users tries to select 
+	/**
+	 * URL to get the dates ranges to be shown when the users tries to select 
 	 * from a range of dates to show recent transactions.
 	 */
 	private static final String STATEMENT_IDENTIFIERS = "/cardsvcs/acs/stmt/v1/identifiers";
+	
+	/**URL to get recent account activity transactions*/
+	private static final String GET_RECENT_ACCOUNT_TRANSACTIONS = "/cardsvcs/acs/stmt/v1/transaction?stmtDate=";
 
 	/**
 	 * Push Notification URLs
@@ -221,5 +225,12 @@ public class UrlManagerCard {
 	 */
 	public static String getLatePaymentWarningTextUrl() {
 		return LATE_PAYMENT_WARNING_TEXT_URL;
+	}
+
+	/**
+	 * @return URL to get recent account activity transactions
+	 */
+	public static String getGetRecentAccountTransactions(final String category) {
+		return GET_RECENT_ACCOUNT_TRANSACTIONS + category;
 	}
 }

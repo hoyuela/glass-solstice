@@ -30,7 +30,7 @@
 	    android:paddingBottom="@dimen/table_inner_padding"
 	    android:paddingRight="@dimen/forms_inner_padding"
 	    android:paddingLeft="@dimen/forms_inner_padding"
-		android:background="@drawable/notification_list_item"/>
+		android:background="@drawable/home_list_item"/>
     
     <LinearLayout
         android:layout_width="match_parent"

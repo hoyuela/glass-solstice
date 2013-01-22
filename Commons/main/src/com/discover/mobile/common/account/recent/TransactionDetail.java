@@ -22,4 +22,7 @@ public class TransactionDetail implements Serializable {
 	
 	@JsonProperty("txnCtg")
 	public String category;
+	
+	@JsonProperty("merchantId")
+	public String merchantId;
 }

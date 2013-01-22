@@ -155,7 +155,7 @@
     
     <!-- Default List Item Styling -->
     <style name="default_list_item">
-        <item name="android:background">@drawable/notification_list_item</item>
+        <item name="android:background">@drawable/home_list_item</item>
         <item name="android:padding">@dimen/forms_inner_padding</item>
     </style>
     
