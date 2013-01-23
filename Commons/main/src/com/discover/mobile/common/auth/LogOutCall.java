@@ -27,6 +27,13 @@ import com.discover.mobile.common.urlmanager.UrlManagerCard;
 public class LogOutCall extends NetworkServiceCall<Object> {
 	
 	
+	/**
+	 * Service call params to be used
+	 */
+//	private static final ServiceCallParams STANDARD_PARAMS = new PostCallParams(UrlManagerCard.getLogoutUrl()) {{
+//		requiresSessionForRequest = true;
+//		clearsSessionAfterRequest = true;
+//	}};
 	
 	private static ServiceCallParams getParams(){
 		ServiceCallParams params;

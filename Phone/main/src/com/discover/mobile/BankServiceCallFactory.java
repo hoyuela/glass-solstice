@@ -3,6 +3,7 @@ package com.discover.mobile;
 import javax.annotation.Nonnull;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.common.AccountType;
@@ -24,8 +25,10 @@ import com.discover.mobile.common.net.NetworkServiceCallQueue.EventType;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.bank.Address;
 import com.discover.mobile.common.net.json.bank.PhoneNumber;
+import com.discover.mobile.common.urlmanager.UrlManagerBank;
 import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.navigation.NavigationRootActivity;
 import com.google.common.base.Strings;
 
 
@@ -65,6 +68,7 @@ public class BankServiceCallFactory {
 	
 		@Override
 		public void success(TYPE value) {
+			navToHome(mActivity);
 			Customer customer = (Customer)value;
 			
 			StringBuilder builder = new StringBuilder();
@@ -141,6 +145,17 @@ public class BankServiceCallFactory {
 	}
 	
 	/**
+	 * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
+	 */
+	private static void navToHome(Activity a) {
+		
+		final Intent home = new Intent(a, NavigationRootActivity.class);
+		
+		a.startActivityForResult(home, 0);
+		
+	}
+	
+	/**
 	 * This function is used to construct a NetworkServiceCallQueue populated with the NetworkServiceCall<> 
 	 * objects to authenticate and login a user to access Bank Services. The calling Activity will be responsible 
 	 * for calling submit to start the process. The first HTTP request will consists of authenticating with the 
@@ -167,7 +182,7 @@ public class BankServiceCallFactory {
 				Globals.setLoggedIn(true);
 				
 				//TODO Need to set a current session object.
-				
+				UrlManagerBank.setLogoutUrl(value.links.logout.url);
 				//Update current account based on user logged in and account type
 				activity.updateAccountInformation(AccountType.BANK_ACCOUNT);
 			}

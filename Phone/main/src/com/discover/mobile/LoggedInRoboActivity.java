@@ -96,7 +96,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		logout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-					logoutCard();
+					logout();
 			}
 		});
 	}
@@ -104,10 +104,9 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	/**
      * Log the user out of card
      */
-    public void logoutCard(){
+    public void logout(){
     	/** Used on pause to know when to set Globals isLoggedIn to false**/
     	pendingLogout = true;
-    	Boolean isCard = false;
     	
 		final AsyncCallback<Object> callback = 
 				GenericAsyncCallback.<Object>builder(this)
