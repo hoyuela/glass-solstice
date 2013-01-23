@@ -4,9 +4,6 @@ import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.SCHEDULED_MAINTENANCE;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
-
-import java.net.HttpURLConnection;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -99,7 +96,6 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 		passTwoField.attachEditTextToMatch(passOneField);
 		passOneField.attachErrorLabel(errorLabelOne);
 		passTwoField.attachErrorLabel(errorLabelTwo);
-		
 	}
 	
 	/**
@@ -128,7 +124,8 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 			public void success(final RegistrationConfirmationDetails responseData) {
 				Log.d(TAG, "Success");
 				progress.dismiss();
-				navigateToConfirmationScreenWithResponseData(responseData);
+				confirmationDetails = responseData;
+				retrieveAccountDetailsFromServer();
 			}
 
 			@Override
@@ -136,10 +133,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 				Log.w(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse);
 				progress.dismiss();
 				
-				switch (errorResponse.getHttpStatusCode()) {
-					case HttpURLConnection.HTTP_BAD_REQUEST: // TODO figure out if this actually happens
-						return true;
-						
+				switch (errorResponse.getHttpStatusCode()) {	
 					default:
 						CommonMethods.showLabelWithStringResource(errorMessageLabel,R.string.unkown_error_text, currentContext);
 						return true;

@@ -144,9 +144,4 @@ public class ForgotPasswordAccountInformationActivity extends ForgotOrRegisterFi
 		return null;
 	}
 
-	@Override
-	protected void navToNextScreenWithDetails(AccountInformationDetails details) {
-		
-	}
-
 }

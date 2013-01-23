@@ -192,7 +192,7 @@ public final class CommonMethods {
 	 * @return Formatted string with commas.
 	 */
 	public final static String insertCommas(String str) {
-		if(!Strings.isNullOrEmpty(str))
+		if(Strings.isNullOrEmpty(str))
 			return "";
 		if (str.length() < 4) 
 			return str;

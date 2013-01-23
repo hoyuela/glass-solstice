@@ -142,7 +142,6 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 		public void success(final PushRegistrationStatusDetail value) {
 			super.success(value);
 			navigateToConfirmationScreenWithResponseData(confirmationDetails);
-
 		}
 	}
 

@@ -535,8 +535,6 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 				Log.d(TAG, "Success");
 				progress.dismiss();
 				navToNextScreenWithDetails(accountInformationDetails);
-
-				
 			}
 
 			@Override
@@ -685,7 +683,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		
 	}
 	
-	protected static final int STRONG_AUTH_ACTIVITY = 0;
+	protected final int STRONG_AUTH_ACTIVITY = 0;
 	/**
 	 * Start the strong auth page with a given question and question ID.
 	 * Start strong auth for result - we need to know in the launching class if it was successful or not.
@@ -719,11 +717,11 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 * Put all of the form details as a serializable object extra and pass it to the next activity
 	 * which will append more info onto that object.
 	 */
-	protected void navToNextScreenWithDetails(AccountInformationDetails details) {
+	protected void navToNextScreenWithDetails(final AccountInformationDetails details) {
 		final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
 		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, details);
 		startActivity(createLoginActivity);
-		finish();
+		this.finish();
 	}
 	
 	/**
