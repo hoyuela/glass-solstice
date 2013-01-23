@@ -128,6 +128,22 @@ public abstract class NetworkServiceCall<R> {
 	protected abstract TypedReferenceHandler<R> getHandler();
 	
 	/**
+	 * Allows to fetch the Handler used for responses to an HTTP request via this class. Can
+	 * only be called before or after a NetworkServiceCall<> has been processed. Calling this function
+	 * during the processing of an HTTP request will result in a null return value.
+	 * 
+	 * @return Returns the TypeReferenceHandler<> instance provided in the constructor of this class.
+	 */
+	public TypedReferenceHandler<R> getHandlerSafe() {
+		//Check if request is not in process otherwise return null
+		if( conn == null ) {
+			return getHandler();
+		} else {
+			return null;
+		}
+	}
+	
+	/**
 	 * Executed in a background thread, needs to be thread-safe.
 	 * 
 	 * @param status 

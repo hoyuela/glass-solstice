@@ -3,10 +3,10 @@ package com.discover.mobile.error;
 import java.net.HttpURLConnection;
 
 import com.discover.mobile.ErrorHandlerUi;
-import com.discover.mobile.common.auth.bank.BankErrorCodes;
-import com.discover.mobile.common.auth.bank.BankErrorResponse;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.common.net.error.bank.BankErrorCodes;
+import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.google.common.base.Strings;
 
 /**

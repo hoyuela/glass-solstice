@@ -27,7 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.discover.mobile.AsyncCallbackBuilderLibrary;
+import com.discover.mobile.BankServiceCallFactory;
 import com.discover.mobile.BaseActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.common.AccountType;
@@ -42,7 +42,6 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
-import com.discover.mobile.common.auth.bank.BankLoginData;
 import com.discover.mobile.common.auth.bank.BankLoginDetails;
 import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
@@ -550,6 +549,8 @@ public class LoginActivity extends BaseActivity  {
 					}
 				})
 				.withErrorResponseHandler(new LoginErrorResponseHandler(this))
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.withCompletionListener(new LockScreenCompletionListener(this))
 				.build();
 
 		new AuthenticateCall(this, callback, username, password).submit();
@@ -566,29 +567,8 @@ public class LoginActivity extends BaseActivity  {
 		BankLoginDetails login = new BankLoginDetails();
 		login.password = password;
 		login.username = username;
-		final AsyncCallback<BankLoginData> callback = 
-				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankLoginData.class, this, this, true)
-					.withSuccessListener(new SuccessListener<BankLoginData>() {
-	
-						@Override
-						public CallbackPriority getCallbackPriority() {
-							return CallbackPriority.MIDDLE;
-						}
-	
-						@Override
-						public void success(BankLoginData value) {
-							//Set logged in to be able to save user name in persistent storage
-							Globals.setLoggedIn(true);
-							
-							//TODO Need to set a current session object.
-							
-							//Update current account based on user logged in and account type
-							updateAccountInformation(AccountType.BANK_ACCOUNT);
-						}
-					})
-					.build();
 		
-		new CreateBankLoginCall(this, callback, login).submit();
+		BankServiceCallFactory.createLoginCall(login, this).submitWithProgressDialog("Discover", "Loading...");
 	}
 	
 
