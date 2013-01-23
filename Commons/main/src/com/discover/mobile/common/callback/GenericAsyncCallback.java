@@ -35,20 +35,23 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	
 	private static final String TAG = GenericAsyncCallback.class.getSimpleName();
 	
-	private final @Nonnull List<CompletionListener> completionListeners;
-	private final @Nonnull List<SuccessListener<V>> successListeners;
-	private final @Nonnull List<ExceptionFailureHandler> exceptionFailureHandlers;
+	private @Nonnull List<CompletionListener> completionListeners;
+	private @Nonnull List<SuccessListener<V>> successListeners;
+	private @Nonnull List<ExceptionFailureHandler> exceptionFailureHandlers;
+	private @Nonnull Builder<V> builder;
+	
 	/**
 	 * We only need one error response handler; we will use inheritance 
 	 * @see BaseErrorResponseHandler
 	 */
-	private final @Nonnull ErrorResponseHandler errorResponseHandler;
+	private @Nonnull ErrorResponseHandler errorResponseHandler;
 	
 	private GenericAsyncCallback(final Builder<V> builder) {
 		completionListeners = safeSortedCopy(builder.completionListeners);
 		successListeners = safeSortedCopy(builder.successListeners);
 		exceptionFailureHandlers = safeSortedCopy(builder.exceptionFailureHandlers);
 		errorResponseHandler = builder.errorResponseHandler;
+		this.builder = builder;
 	}
 
 	@Override
@@ -94,6 +97,36 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		if(!handled)
 			Log.e(TAG,"No handler for errorResponse: " + errorResponse);
 	}
+	
+	/**
+	 * This function should not be called during the processing of an HTTP request via
+	 * NetworkServiceCall as it is not thread-safe.
+	 * 
+	 * @return Returns the current builder held by this instance of GenericAsyncCallback. 
+	 * 
+	 */
+	public Builder<V> getBuilder() {
+		return builder;
+	}
+	
+	/**
+	 *
+	 * Used to reconstruct the list of listeners used by the GenericAsyncCallback to
+	 * handle events raised by a NetworkServiceCall<>. 
+	 * 
+	 * This function should not be called during the processing of an HTTP request via
+	 * NetworkServiceCall as it is not thread-safe.
+	 * 
+	 * @param builder Holds the lists of event listeners 
+	 */
+	public void rebuild(final Builder<V> builder) {
+		completionListeners = safeSortedCopy(builder.completionListeners);
+		successListeners = safeSortedCopy(builder.successListeners);
+		exceptionFailureHandlers = safeSortedCopy(builder.exceptionFailureHandlers);
+		errorResponseHandler = builder.errorResponseHandler;
+		this.builder = builder;
+	}
+	
 	
 	@SuppressWarnings("null")
 	private static @Nonnull <L extends GenericCallbackListener> List<L> safeSortedCopy(@Nullable final List<L> list) {
@@ -166,7 +199,7 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 			return this;
 		}
 		
-		public Builder<V> showProgressDialog(final String title, final String message, final boolean indeterminate) {
+		public Builder<V> showProgressDialog(final String title, final String message, boolean indeterminate) {
 			@SuppressWarnings("null")
 			final @Nonnull ProgressDialog dialog = ProgressDialog.show(activity, title, message, indeterminate);
 			

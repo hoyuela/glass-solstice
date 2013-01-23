@@ -1,4 +1,4 @@
-package com.discover.mobile.common.auth.bank;
+package com.discover.mobile.common.net.error.bank;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

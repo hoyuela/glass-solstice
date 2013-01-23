@@ -22,7 +22,6 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.bank.BankErrorResponse;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
@@ -376,5 +375,21 @@ public class ErrorHandlerFactory {
 		clearTextOnScreen(errorHandlerUi);
 		
 		return modal;
+	}
+
+	/**
+     * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
+     */
+	public void handleStrongAuthChallenge(String question, String id) {
+		final Intent strongAuth = new Intent(ErrorHandlerFactory.mActivity, EnhancedAccountSecurityActivity.class);
+		
+		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, question);
+		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, id);
+		strongAuth.putExtra(IntentExtraKey.IS_CARD_ACCOUNT, false);
+		ErrorHandlerFactory.mActivity.startActivityForResult(strongAuth, 0);
+	}
+	
+	public void handleInvalidToken() {
+		
 	}
 }
