@@ -260,7 +260,9 @@ public class ErrorHandlerFactory {
 	 */
 	public ModalAlertWithOneButton handleHttpInternalServerErrorModal() {
 		
-		return createErrorModal(HttpURLConnection.HTTP_INTERNAL_ERROR, R.string.error_500_title, R.string.bank_error_500_message);
+		ModalAlertWithOneButton modal = createErrorModal(HttpURLConnection.HTTP_INTERNAL_ERROR, R.string.error_500_title, R.string.bank_error_500_message);
+		showCustomAlert(modal);
+		return modal;
 	
 	}
 	

@@ -34,6 +34,9 @@ public class CreateStrongAuthRequestCall extends
 		super(context, new GetCallParams(UrlManagerBank.getStrongAuthUrl()) {{
 			requiresSessionForRequest = false;
 			
+			// Specify what error parser to use when receiving an error response
+			errorResponseParser = BankErrorResponseParser.instance();
+			
 			sendDeviceIdentifiers = true;
 		}}, BankStrongAuthDetails.class, false);
 		handler = new StrongReferenceHandler<BankStrongAuthDetails>(callback);

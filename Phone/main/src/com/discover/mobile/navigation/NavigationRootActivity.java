@@ -10,7 +10,9 @@ import com.discover.mobile.LoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.alert.ModalConfirmationTop;
+import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.CurrentSessionDetails;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.push.register.PushNowAvailableFragment;
 
@@ -70,7 +72,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 		if(null != resumeFragment && !wasPaused){
 			getSupportFragmentManager().popBackStack();
 			makeFragmentVisible(resumeFragment, false);
-		} else if(!CurrentSessionDetails.getCurrentSessionDetails().isNotCurrentUserRegisteredForPush()  && !wasPaused){	
+		} else if(!CurrentSessionDetails.getCurrentSessionDetails().isNotCurrentUserRegisteredForPush()  && !wasPaused && Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)){	
 			getSupportFragmentManager().popBackStack();
 			makeFragmentVisible(new PushNowAvailableFragment());	
 		} 
