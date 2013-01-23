@@ -42,6 +42,9 @@ import com.google.common.base.Strings;
  */
 public class BankServiceCallFactory {
 	private static BankServiceCallFactory instance = new BankServiceCallFactory();
+	//TODO: Remove this code in sprint 2:
+	private static Customer customer;
+	//TODO: Remove this code in Sprint 2
 	
 	private BankServiceCallFactory() {
 		
@@ -69,55 +72,7 @@ public class BankServiceCallFactory {
 		@Override
 		public void success(TYPE value) {
 			navToHome(mActivity);
-			Customer customer = (Customer)value;
-			
-			StringBuilder builder = new StringBuilder();
-
-			builder.append("E-mail: \n");
-			builder.append(customer.email);
-			builder.append("\n");
-			builder.append("ID: \n");
-			builder.append(customer.id);
-			builder.append("\n");
-			builder.append("Name: \n");
-			builder.append("Family Name:" +customer.name.familyName +"\n");
-			builder.append("Formatted Name:" +customer.name.formatted +"\n");
-			builder.append("Middle:" +customer.name.middleName +"\n");
-			builder.append("Type:" +customer.name.type);
-			builder.append("\n\n");
-			
-			for (Address address : customer.addresses) {
-				builder.append("Address: \n");
-				builder.append("Locality:" +address.locality +"\n");
-				builder.append("Postal Code:" +address.postalCode +"\n");
-				builder.append("Region: " +address.region +"\n");
-				builder.append("Address: " +address.streetAddress +"\n");
-				builder.append("Type: " +address.type +"\n");
-				builder.append("Formatted: " +address.formatted +"\n");
-			}
-			builder.append("\n");
-			
-			builder.append("Links: \n");
-			for (String key : customer.links.keySet()) {
-				builder.append(key +"\n" );
-				builder.append(customer.links.get(key).url +"\n");
-				for(Object method : customer.links.get(key).method) {
-					builder.append(method +"\n");
-				}
-				builder.append("\n");
-			}
-			builder.append("\n");
-			
-			for (PhoneNumber phone : customer.phoneNumbers) {
-				builder.append("Phone Number: \n");
-				builder.append(phone.number +"\n");
-				builder.append(phone.type +"\n");
-				builder.append("\n");
-			}
-			builder.append("\n");
-			
-			ModalAlertWithOneButton alert = ErrorHandlerFactory.getInstance().createErrorModal("Customer Info Download", builder.toString());
-			ErrorHandlerFactory.showCustomAlert(alert);
+			BankServiceCallFactory.customer = (Customer)value;
 		}
 	};
 
@@ -254,5 +209,56 @@ public class BankServiceCallFactory {
 					.build();
 		
 		 return new CreateStrongAuthRequestCall(activity, callback);
+	}
+
+	//TODO: Remove this
+	public static void displayCustomerInformation() {
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("E-mail: \n");
+		builder.append(customer.email);
+		builder.append("\n");
+		builder.append("ID: \n");
+		builder.append(customer.id);
+		builder.append("\n");
+		builder.append("Name: \n");
+		builder.append("Family Name:" +customer.name.familyName +"\n");
+		builder.append("Formatted Name:" +customer.name.formatted +"\n");
+		builder.append("Middle:" +customer.name.middleName +"\n");
+		builder.append("Type:" +customer.name.type);
+		builder.append("\n\n");
+		
+		for (Address address : customer.addresses) {
+			builder.append("Address: \n");
+			builder.append("Locality:" +address.locality +"\n");
+			builder.append("Postal Code:" +address.postalCode +"\n");
+			builder.append("Region: " +address.region +"\n");
+			builder.append("Address: " +address.streetAddress +"\n");
+			builder.append("Type: " +address.type +"\n");
+			builder.append("Formatted: " +address.formatted +"\n");
+		}
+		builder.append("\n");
+		
+		builder.append("Links: \n");
+		for (String key : customer.links.keySet()) {
+			builder.append(key +"\n" );
+			builder.append(customer.links.get(key).url +"\n");
+			for(Object method : customer.links.get(key).method) {
+				builder.append(method +"\n");
+			}
+			builder.append("\n");
+		}
+		builder.append("\n");
+		
+		for (PhoneNumber phone : customer.phoneNumbers) {
+			builder.append("Phone Number: \n");
+			builder.append(phone.number +"\n");
+			builder.append(phone.type +"\n");
+			builder.append("\n");
+		}
+		builder.append("\n");
+		
+		ModalAlertWithOneButton alert = ErrorHandlerFactory.getInstance().createErrorModal("Customer Info Download", builder.toString());
+		ErrorHandlerFactory.showCustomAlert(alert);
 	}
 }

@@ -42,6 +42,16 @@ public class BankErrorCodes {
 	public static final String ERROR_LOCKED_STRONG_AUTH = "Auth.SA.Locked";
 	
 	/**
+	 * Error Code used to describe a Fraud user error response with HTTP Status Code 403
+	 */
+	public static final String ERROR_FRAUD_USER = "Auth.Login.BadStatus";
+	
+	/**
+	 * Error Code used to describe a No Accounts Found error response with HTTP Status Code 403
+	 */
+	public static final String ERROR_NO_ACCOUNTS_FOUND = "Auth.Login.NoAccountsFound";
+	
+	/**
 	 * Default constructor is not to be used
 	 */
 	private BankErrorCodes() {
