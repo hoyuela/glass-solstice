@@ -25,6 +25,8 @@ public class HomeSummaryFragment extends BaseFragment {
 			final ViewGroup container, final Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.section_account_summary_landing, null);
 
+		showActionBarLogo();
+		
 		setupHomeElements();
 
 		return view;
