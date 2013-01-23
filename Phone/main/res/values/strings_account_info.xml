@@ -22,8 +22,7 @@
 	<string name="account_info_two_create_id_text">New User ID</string>
 	<string name="account_info_two_pass_text">New Password</string>
 	<string name="account_info_two_pass_info_text">
-	    8&#8211;32 characters. At least one number. Case sensitive. Special characters can be used. 
-	    Password is used for Account Center home.
+	    8&#8211;32 characters. At least one number. Case sensitive. Special characters can be used.
 	</string>
 	
 	<string name="email_sub_copy">
