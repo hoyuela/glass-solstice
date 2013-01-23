@@ -35,6 +35,11 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	private static boolean pendingLogout = false;
 
 	/**
+	 * Flag used for if its bank or not
+	 */
+	Boolean isCard;
+	
+	/**
 	 * Create the activity, set up the action bar and sliding menu
 	 * 
 	 * @param savedInstanceState
@@ -43,6 +48,11 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)){
+			isCard = true;
+		}else {
+			isCard = false;
+		}
 		showActionBar();
 		setupSlidingMenu();
 	}
@@ -77,7 +87,9 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		navigationToggle.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				toggle();
+				if(isCard){
+					toggle();
+				}
 			}
 		});
 
@@ -107,9 +119,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 						new CardBaseErrorResponseHandler((ErrorHandlerUi) this))
 				.build();
 	
-		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)){
-			isCard = true;
-		}
+		
 		new LogOutCall(this, callback, isCard).submit();
 	} 
     
