@@ -92,6 +92,11 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 			}
 		});
 	}
+	
+	/**
+	 * Get all of the view elements from the layout and assign them to local variables that will be 
+	 * used to access them.
+	 */
 	private void loadAllViews() {
 		passOneField = (CredentialStrengthEditText)findViewById(R.id.account_info_two_pass_field);
 		passTwoField = (ConfirmationEditText)findViewById(R.id.account_info_two_pass_confirm_field);
@@ -106,6 +111,9 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 		
 	}
 	
+	/**
+	 * Setup input fields, attach error labels and set the type of input that the fields will receive.
+	 */
 	private void setupInputFields() {
 		passOneField.setCredentialType(CredentialStrengthEditText.PASSWORD);
 		passTwoField.attachEditTextToMatch(passOneField);
@@ -114,6 +122,10 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 		
 	}
 	
+	/**
+	 * Take the details from the first page and merge them into a POJO that will be send to the server
+	 * on this page.
+	 */
 	private void mergeAccountDetails() {
 		passTwoDetails.userId = passOneDetails.userId;
 		passTwoDetails.dateOfBirthDay = passOneDetails.dateOfBirthDay;
@@ -124,6 +136,9 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 		passTwoDetails.socialSecurityNumber = passOneDetails.socialSecurityNumber;
 	}
 	
+	/**
+	 * Take the information provided by the user and send it to the server for serverside validation.
+	 */
 	private void submitFormInfo() {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
@@ -161,7 +176,7 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 					CommonMethods.showLabelWithStringResource(errorMessageLabel, R.string.account_info_bad_input_error_text, currentContext);
 					return true;
 					
-				case BAD_ACCOUNT_STATUS: //Last attempt with this account number warning.
+				case BAD_ACCOUNT_STATUS:
 					CommonMethods.showLabelWithStringResource(errorMessageLabel,R.string.login_attempt_warning, currentContext);
 					return true;
 					
@@ -187,6 +202,10 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 
 	}
 	
+	/**
+	 * Navigate the user to a lockout screen.
+	 * @param screenType
+	 */
 	private void sendToErrorPage(final ScreenType screenType) {
 		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
 		screenType.addExtraToIntent(maintenancePageIntent);
@@ -194,6 +213,11 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 		finish();
 	}
 	
+	/**
+	 * If all of the information is valid on the page then submit the info to get validated
+	 * by the server.
+	 * @param v
+	 */
 	public void checkInputsThenSubmit(final View v) {
 		passOneField.updateAppearanceForInput();
 		passTwoField.updateAppearanceForInput();
@@ -218,12 +242,21 @@ public class EnterNewPasswordActivity extends NotLoggedInRoboActivity {
 		
 	}
 	
+	/**
+	 * Close this activity and start the forgot credentials activity.
+	 * @param v
+	 */
 	public void cancel(final View v) {
 		final Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
 		startActivity(forgotCredentials);
 		finish();
 	}
 	
+	/**
+	 * If the server call succeeds then we navigate the user to the account home page with a confirmation
+	 * dialog presented.
+	 * @param responseData
+	 */
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData) {
 		final Intent confirmationScreen = new Intent(this, NavigationRootActivity.class);
 		confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
