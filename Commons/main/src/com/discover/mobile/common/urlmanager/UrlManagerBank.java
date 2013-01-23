@@ -14,13 +14,14 @@ public class UrlManagerBank {
 //	private static final String BASE_URL = "http://192.168.2.71:8008";
 //	private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
 
-
 	private static final String AUTHENTICATE_CURRENT_CUSTOMER_URL = "/api/customers/current";
 	private static final String GET_TOKEN_URL = "/api/auth/token";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
 	private static final String ACCOUNT_URL = "/api/accounts";
 	private static final String EXTERNAL_ACCOUNTS_URL = "/api/accounts/external";
 	private static final String CUSTOMER_SERVICE_URL = "/api/customers/current";
+	public static String LOGOUT_URL = null;
+	
 
 	/**
 	 * @return the baseUrl
@@ -69,6 +70,24 @@ public class UrlManagerBank {
 	 */
 	public static String getCustomerServiceUrl() {
 		return CUSTOMER_SERVICE_URL;
+	}
+
+	/**
+	 * @return the logoutUrl
+	 */
+	public static String getLogoutUrl() {
+		return LOGOUT_URL;
+	}
+
+	/**
+	 * This is used in order to set the logout URL that is returned from the
+	 * service
+	 * 
+	 * @param url
+	 */
+	public static void setLogoutUrl(String url) {
+		
+		LOGOUT_URL = url.replaceAll("http://beta.discoverbank.com", "");
 	}
 
 }
