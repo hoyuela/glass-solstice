@@ -67,9 +67,9 @@ import com.discover.mobile.security.EnhancedAccountSecurityActivity;
  *
  */
 
-abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivity {
+abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	
-	private static final String TAG = AbstractAccountInformationActivity.class.getSimpleName();
+	private static final String TAG = ForgotOrRegisterFirstStep.class.getSimpleName();
 	
 	protected AccountInformationDetails accountInformationDetails;
 	
@@ -136,12 +136,11 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	protected void doCustomUiSetup(){/*Intentionally empty*/}
 
 	protected abstract void addCustomFieldToDetails(AccountInformationDetails details, String value);
-	protected abstract void navToNextScreenWithDetails(AccountInformationDetails details);
 	protected abstract Class<?> getSuccessfulStrongAuthIntentClass();
 	protected abstract NetworkServiceCall<?> 
 					createServiceCall(AsyncCallback<Object> callback, AccountInformationDetails details);
 	
-	protected AbstractAccountInformationActivity(final String analyticsPageIdentifier) {
+	protected ForgotOrRegisterFirstStep(final String analyticsPageIdentifier) {
 		ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
 	}
 	
@@ -165,6 +164,7 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
     	restoreState(savedInstanceState);
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 	}
+
 
 	/**
 	 * Initialize the member variables that will reference UI elements.
@@ -496,9 +496,19 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 	 * @param v the calling View
 	 */
 	public void goBack(@SuppressWarnings("unused") final View v) {
-		finish();
+		goBack();
 	}
 
+	/**
+	 * The inherited goBack method from NotLoggedInRoboActivity for the software back button.
+	 */
+	@Override
+	public void goBack() {
+		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(forgotCredentials);
+		finish();		
+	}
+	
 	/**
 	 * If something has gone wrong and the user is not allowed to proceed, this will send them to an error screen.
 	 * It also finishes the current activity so that upon a back button press, they will not come back here.
@@ -689,6 +699,39 @@ abstract class AbstractAccountInformationActivity extends NotLoggedInRoboActivit
 		startActivityForResult(strongAuth, STRONG_AUTH_ACTIVITY);
 		
 	}
-		
+	
+	/**
+	 * This method handles the result of the Strong Auth activity.
+	 * When Strong Auth finishes, either navigate to the next screen, or cancel the registration process.
+	 */
+	@Override
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {	
+		if(requestCode == STRONG_AUTH_ACTIVITY) {
+			if(resultCode == RESULT_OK) {
+				navToNextScreenWithDetails(accountInformationDetails);
+			} else if (resultCode == RESULT_CANCELED){
+				finish();
+			}
+		}
+	}
+	
+	/**
+	 * Put all of the form details as a serializable object extra and pass it to the next activity
+	 * which will append more info onto that object.
+	 */
+	protected void navToNextScreenWithDetails(AccountInformationDetails details) {
+		final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
+		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, details);
+		startActivity(createLoginActivity);
+		finish();
+	}
+	
+	/**
+	 * When the hardware back button is pressed, call the goBack method.
+	 */
+	@Override
+	public void onBackPressed() {
+		goBack(null);
+	}
 		
 }

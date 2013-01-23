@@ -29,7 +29,7 @@ import com.discover.mobile.navigation.HeaderProgressIndicator;
  * @author scottseward
  *
  */
-public class ForgotBothAccountInformationActivity extends AbstractAccountInformationActivity {
+public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstStep {
 	private static final String TAG = ForgotBothAccountInformationActivity.class.getSimpleName();
 	public ForgotBothAccountInformationActivity() {
 		super(AnalyticsPage.FORGOT_BOTH_STEP1);

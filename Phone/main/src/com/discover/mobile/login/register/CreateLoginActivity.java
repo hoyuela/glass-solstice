@@ -6,51 +6,29 @@ import static com.discover.mobile.common.auth.registration.RegistrationErrorCode
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_SSN_EQUAL;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
-
-import java.util.List;
-
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.common.CommonMethods;
-import com.discover.mobile.common.CurrentSessionDetails;
-import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.AccountDetails;
-import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.registration.CreateLoginCall;
 import com.discover.mobile.common.auth.registration.CreateLoginDetails;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.customui.ConfirmationEditText;
 import com.discover.mobile.common.customui.EmailEditText;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
-import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
-import com.discover.mobile.login.LockOutUserActivity;
-import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.HeaderProgressIndicator;
-import com.discover.mobile.navigation.NavigationRootActivity;
-import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
-import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
-import com.xtify.sdk.api.XtifySDK;
 
 /**
  * CreateLoginActivity - this is the final step of a user either going through "Forgot Both" or "Register".
@@ -60,10 +38,9 @@ import com.xtify.sdk.api.XtifySDK;
  * @author scottseward
  *
  */
-public class CreateLoginActivity extends NotLoggedInRoboActivity {
+public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		
 	private CreateLoginDetails formDataTwo;
-	private RegistrationConfirmationDetails confirmationDetails;
 	
 	private final static String UPDATE_PASS_CONFIRM_STATE = "a";
 	
@@ -125,9 +102,7 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 		outState.putBoolean(UPDATE_PASSWORD_STATE, passField.isInDefaultState);
 		outState.putBoolean(UPDATE_PASS_CONFIRM_STATE, passConfirmField.isInDefaultState);
 	}
-	
 
-	
 	/**
 	 * Resore the state of the screen.
 	 * 
@@ -148,7 +123,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 		emailField.attachErrorLabel(emailErrorLabel);
 		idConfirmField.attachErrorLabel(idConfirmErrorLabel);
 		passConfirmField.attachErrorLabel(passConfirmErrorLabel);
-
 	}
 	
 	/**
@@ -202,21 +176,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 	}
 	
 	/**
-	 * Make the help number at the bottom of the screen clickable and when clicked, dial its number.
-	 */
-	private void setupHelpNumber() {
-		currentContext = this;
-		final TextView helpText = (TextView)findViewById(R.id.help_number_label);
-		helpText.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				CommonMethods.dialNumber(helpText.getText().toString(), currentContext);
-			}
-		});
-	}
-	
-	/**
 	 * Set the type of input that the strength bars should check against.
 	 */
 	private void setupStrengthBars() {
@@ -240,32 +199,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 		formDataTwo.expirationYear = formDataOne.expirationYear;
 		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
 	
-	}
-
-	/**
-	 * Called from XML when the cancel link is pressed. 
-	 * @param v
-	 */
-	public void cancel(final View v) {
-		goBack();
-	}
-	
-	/**
-	 * Start the next activity after this one is complete.
-	 * @param responseData
-	 */
-	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
-		final Intent confirmationScreen = new Intent(this, NavigationRootActivity.class);
-		confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
-		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
-		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
-
-		//TODO: Decide which screen type to display forgot both or register
-		confirmationScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_REGISTRATION);
-		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_CONFIRMATION);
-		
-
-		this.startActivity(confirmationScreen);
 	}
 	
 	/**
@@ -297,30 +230,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 			
 	}
 	
-	private static final int PASSWORD_STRENGTH_HELP = 0;
-	private static final int UID_STRENGTH_HELP = 1;
-	/**
-	 * Show the help screen for the password strength.
-	 * @param v
-	 */
-	public void showPasswordStrengthBarHelp(final View v){
-		final Intent passwordHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-		passwordHelpScreen.putExtra("ScreenType", "pass");
-		TrackingHelper.trackPageView(AnalyticsPage.PASSWORD_STRENGTH_HELP);
-		startActivityForResult(passwordHelpScreen, PASSWORD_STRENGTH_HELP);
-	}
-	
-	/**
-	 * Show the help screen for the user id strength.
-	 * @param v
-	 */
-	public void showIdStrengthBarHelp(final View v){
-		final Intent uidHelpScreen = new Intent(this, StrengthBarHelpActivity.class);
-		uidHelpScreen.putExtra("ScreenType", "id");
-		TrackingHelper.trackPageView(AnalyticsPage.UID_STRENGTH_HELP);
-		startActivityForResult(uidHelpScreen, UID_STRENGTH_HELP);
-	}
-	
 	/**
 	 * Submit all of the information present on this screen along with the information from
 	 * register/forgot both step 1. On success, retrieve the users account information.
@@ -335,7 +244,7 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 			public void success(final RegistrationConfirmationDetails responseData) {
 				progress.dismiss();
 				confirmationDetails = responseData;
-				getAccountDetails();
+				retrieveAccountDetailsFromServer();
 			}
 
 			@Override
@@ -388,137 +297,6 @@ public class CreateLoginActivity extends NotLoggedInRoboActivity {
 		final CreateLoginCall registrationCall = 
 				new CreateLoginCall(this, callback, formDataTwo);
 		registrationCall.submit();
-
-	}
-	
-	/**
-	 * Sends a user to a modal 'lockout' screen. This terminates the registration process.
-	 * @param screenType
-	 */
-	private void sendToErrorPage(final ScreenType screenType) {
-		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
-		screenType.addExtraToIntent(maintenancePageIntent);
-		startActivity(maintenancePageIntent);
-		finish();
-	}
-	
-	/**
-	 * This method submits the users information to the Card server for verification.
-	 * 
-	 * The AsyncCallback handles the success and failure of the call and is
-	 * responsible for handling and presenting error messages to the user.
-	 * 
-	 */
-	private void getAccountDetails() {
-		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback
-				.<AccountDetails> builder(this)
-				.showProgressDialog("Discover", "Loading...", true)
-				.withSuccessListener(new SuccessListener<AccountDetails>() {
-
-					@Override
-					public CallbackPriority getCallbackPriority() {
-						return CallbackPriority.MIDDLE;
-					}
-
-					@Override
-					public void success(final AccountDetails value) {
-						// Set logged in to be able to save user name in
-						// persistent storage
-						Globals.setLoggedIn(true);
-
-						// Update current account based on user logged
-
-						CurrentSessionDetails.getCurrentSessionDetails()
-								.setAccountDetails(value);
-
-						getXtifyRegistrationStatus();
-
-					}
-				})
-				.build();
-
-		new AuthenticateCall(this, callback).submit();
-	}
-	
-	/**
-	 * Do a GET request to the server to check to see if this vendor id is
-	 * registered to this user.
-	 * 
-	 * @author jthornton
-	 */
-	protected void getXtifyRegistrationStatus(){
-		if(XtifySDK.getXidKey(this) != null){
-			final AsyncCallback<PushRegistrationStatusDetail> callback = 
-					GenericAsyncCallback.<PushRegistrationStatusDetail>builder(this)
-					.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
-										getResources().getString(R.string.push_progress_registration_loading), 
-										true)
-					.withSuccessListener(new PushConfirmationSuccessListener())
-					.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(new LoginActivity()))
-					.finishCurrentActivityOnSuccess(this)
-					.clearTextViewsOnComplete(idField, passField)
-					.build();
-		
-			new GetPushRegistrationStatus(this, callback).submit();
-		}else{
-			navigateToConfirmationScreenWithResponseData(confirmationDetails);
-			finish();
-		}
-
-	}
-					
-	@Override
-	public void goBack() {
-		Intent login = new Intent(this, LoginActivity.class);
-		startActivity(login);
-		finish();
-	}
-	
-	/**
-	 * The original success listener needed to be extended to support navigating to another screen
-	 * on success. This specific class handles navigating to the home screen after a user completes
-	 * registration and the push notification status is retrieved.
-	 * @author scottseward
-	 *
-	 */
-	private class PushConfirmationSuccessListener extends PushRegistrationStatusSuccessListener implements SuccessListener<PushRegistrationStatusDetail>{
-		
-		/**
-		 * Constructor that takes in a context so that it can manipulate the flow of the app.
-		 */
-		public PushConfirmationSuccessListener(){}
-
-		/**
-		 * Set the priority level of the success handler
-		 * @return CallbackPriority - the priority of the callback
-		 */
-		@Override
-		public CallbackPriority getCallbackPriority() {
-			return CallbackPriority.LAST;
-		}
-
-		/**
-		 * Send the app on the correct path when the call is successful
-		 * @param value - the returning push registration detail from the server
-		 */
-		@Override
-		public void success(final PushRegistrationStatusDetail value) {
-			super.success(value);
-			navigateToConfirmationScreenWithResponseData(confirmationDetails);
-
-		}
-	}
-
-	@Override
-	public TextView getErrorLabel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<EditText> getInputFields() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

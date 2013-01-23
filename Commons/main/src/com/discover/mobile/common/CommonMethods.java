@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.common.auth.AccountDetails;
+import com.google.common.base.Strings;
 
 public final class CommonMethods {
 	private final static String TAG = CommonMethods.class.getSimpleName();
@@ -191,12 +192,13 @@ public final class CommonMethods {
 	 * @return Formatted string with commas.
 	 */
 	public final static String insertCommas(String str) {
-		if (str.length() < 4) {
+		if(!Strings.isNullOrEmpty(str))
+			return "";
+		if (str.length() < 4) 
 			return str;
-		}
-
-		return insertCommas(str.substring(0, str.length() - 3)) + ","
-				+ str.substring(str.length() - 3, str.length());
+		else	
+			return insertCommas(str.substring(0, str.length() - 3)) + ","
+					+ str.substring(str.length() - 3, str.length());
 	}
 
 	private CommonMethods() {
