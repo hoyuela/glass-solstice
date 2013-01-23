@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import roboguice.util.Strings;
-
 import android.content.Context;
 import android.util.Log;
 
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
@@ -83,7 +81,9 @@ public class CreateBankLoginCall extends
 		
 		//Fetch token from JSON response
 		if( data.token != null && !Strings.isEmpty(data.token)  ) {
-			SessionTokenManager.setToken(data.token);
+			//When sending a request with a token as part of the request the format to follow is 
+			//Authorization: BankBasic <<token>>
+			SessionTokenManager.setToken(BankSchema.BANKBASIC +" " +data.token);
 		} else {
 			String message = "Response does not include token";
 			

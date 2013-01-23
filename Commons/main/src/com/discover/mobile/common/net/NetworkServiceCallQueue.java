@@ -121,12 +121,22 @@ final public class NetworkServiceCallQueue {
 			}
 		}
 	}
+	
 	/**
 	 * 
 	 * @param serviceCall NetworkServiceCall object to enqueue
 	 * @param event Specifies when the NetworkServiceCall<> object should be triggered to send its request
 	 */
 	public void enqueue(final @Nonnull NetworkServiceCall<?> serviceCall, EventType event) {
+		enqueue(serviceCall, event, null);
+	}
+	
+	/**
+	 * 
+	 * @param serviceCall NetworkServiceCall object to enqueue
+	 * @param event Specifies when the NetworkServiceCall<> object should be triggered to send its request
+	 */
+	public void enqueue(final @Nonnull NetworkServiceCall<?> serviceCall, EventType event, NetworkServiceCallCondition<?> condition) {
 		//Verify the maximum size of the queue has not been reached
 		if( (tailIndex + 1) == services.length ) {
 			//Increase the size of the queue
@@ -148,16 +158,16 @@ final public class NetworkServiceCallQueue {
 			
 				switch(event) {
 				case Complete:
-					asyncCallback.getBuilder().withCompletionListener( new CallNextServiceInQueue<Serializable>(serviceCall));
+					asyncCallback.getBuilder().withCompletionListener( new CallNextServiceInQueue<Serializable>(serviceCall, condition));
 					break;
 				case Success:
-					asyncCallback.getBuilder().withSuccessListener( new CallNextServiceInQueue<Serializable>(serviceCall));
+					asyncCallback.getBuilder().withSuccessListener( new CallNextServiceInQueue<Serializable>(serviceCall, condition));
 					break;
 				case Error:
-					asyncCallback.getBuilder().withErrorResponseHandler( new CallNextServiceInQueue<Serializable>(serviceCall));	
+					asyncCallback.getBuilder().withErrorResponseHandler( new CallNextServiceInQueue<Serializable>(serviceCall, condition));	
 					break;
 				case Exception:
-					asyncCallback.getBuilder().withExceptionFailureHandler( new CallNextServiceInQueue<Serializable>(serviceCall));
+					asyncCallback.getBuilder().withExceptionFailureHandler( new CallNextServiceInQueue<Serializable>(serviceCall, condition));
 					break;
 				}	
 				
@@ -250,9 +260,11 @@ final public class NetworkServiceCallQueue {
 	public class CallNextServiceInQueue<Serializable> implements SuccessListener<Serializable>, 
 		ExceptionFailureHandler, ErrorResponseHandler, CompletionListener {
 		private final NetworkServiceCall<?> mNetworkServiceCall;
+		private final NetworkServiceCallCondition<?> mCondition;
 		
-		private CallNextServiceInQueue(NetworkServiceCall<?> networkServiceCall) {
+		private CallNextServiceInQueue(NetworkServiceCall<?> networkServiceCall, NetworkServiceCallCondition<?> condition) {
 			mNetworkServiceCall = networkServiceCall;
+			mCondition = condition;
 		}
 		
 		@Override
@@ -260,29 +272,59 @@ final public class NetworkServiceCallQueue {
 			return CallbackPriority.LAST;
 		}
 
+		private void executeNextCall() {
+			if( mCondition != null ) {
+				if( mCondition.isCallable() ) {
+					mNetworkServiceCall.submit();
+				} else {
+					if( Log.isLoggable(TAG, Log.WARN)) {
+						Log.w(TAG, "Condition was not met to execute " +mNetworkServiceCall.toString());
+					}
+				}
+			} else {
+				mNetworkServiceCall.submit();
+			}
+		}
+		
 		@Override
 		public void success(Serializable value) {
-			mNetworkServiceCall.submit();
+			if( mCondition != null ) {
+				mCondition.success((java.io.Serializable) value);
+			}
+			
+			executeNextCall();
 		}
 
 		@Override
 		public void complete(Object result) {
-			mNetworkServiceCall.submit();
+			if( mCondition != null ) {
+				mCondition.complete(result);
+			}
 			
+			executeNextCall();		
 		}
 
 		@Override
 		public boolean handleFailure(ErrorResponse<?> errorResponse) {
-			mNetworkServiceCall.submit();
+			if( mCondition != null ) {
+				mCondition.handleFailure(errorResponse);
+			}
+			
+			executeNextCall();
 			return false;
 		}
 
 		@Override
 		public boolean handleFailure(Throwable executionException) {
-			mNetworkServiceCall.submit();
+			if( mCondition != null ) {
+				mCondition.handleFailure(executionException);
+			}
+			
+			executeNextCall();
 			return false;
-		}
+		}		
 	};
+	
 	
 
 }

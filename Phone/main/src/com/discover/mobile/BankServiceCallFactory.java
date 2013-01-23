@@ -9,16 +9,27 @@ import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.bank.BankLoginData;
 import com.discover.mobile.common.auth.bank.BankLoginDetails;
+import com.discover.mobile.common.auth.bank.BankSchema;
 import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
+import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
+import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.customer.bank.Customer;
 import com.discover.mobile.common.customer.bank.CustomerServiceCall;
+import com.discover.mobile.common.net.HttpHeaders;
+import com.discover.mobile.common.net.NetworkServiceCallCondition;
 import com.discover.mobile.common.net.NetworkServiceCallQueue;
+import com.discover.mobile.common.net.NetworkServiceCallQueue.EventType;
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.bank.Address;
 import com.discover.mobile.common.net.json.bank.PhoneNumber;
 import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.login.LoginActivity;
+import com.google.common.base.Strings;
+
+
+
 
 /**
  * Utility class used to construct NetworkServiceCall<> objects used for invoking Bank related web-service API.
@@ -32,6 +43,7 @@ public class BankServiceCallFactory {
 	private BankServiceCallFactory() {
 		
 	}
+	
 	
 	/**
 	 * TODO: Placeholder for handling the downloading of customer information
@@ -64,7 +76,10 @@ public class BankServiceCallFactory {
 			builder.append(customer.id);
 			builder.append("\n");
 			builder.append("Name: \n");
-			builder.append(customer.name);
+			builder.append("Family Name:" +customer.name.familyName +"\n");
+			builder.append("Formatted Name:" +customer.name.formatted +"\n");
+			builder.append("Middle:" +customer.name.middleName +"\n");
+			builder.append("Type:" +customer.name.type);
 			builder.append("\n\n");
 			
 			for (Address address : customer.addresses) {
@@ -74,6 +89,7 @@ public class BankServiceCallFactory {
 				builder.append("Region: " +address.region +"\n");
 				builder.append("Address: " +address.streetAddress +"\n");
 				builder.append("Type: " +address.type +"\n");
+				builder.append("Formatted: " +address.formatted +"\n");
 			}
 			builder.append("\n");
 			
@@ -100,7 +116,8 @@ public class BankServiceCallFactory {
 			ErrorHandlerFactory.showCustomAlert(alert);
 		}
 	};
-	
+
+
 	/**
 	 * Used to construct a CustomerServiceCall object for invoking the 
 	 * Bank - Customer Service API found at ./api/customers/current. The callee
@@ -156,6 +173,27 @@ public class BankServiceCallFactory {
 			}
 		};
 		
+		NetworkServiceCallCondition<BankStrongAuthDetails> condition = new NetworkServiceCallCondition<BankStrongAuthDetails>() {
+			private boolean mIsCallable = false;
+			
+			@Override
+			public boolean isCallable() {
+				return mIsCallable;
+			}
+			
+			@Override
+			public boolean handleFailure(ErrorResponse<?> arg0) {
+				String wwwAuthenticateValue = arg0.getConnection().getHeaderField(HttpHeaders.Authentication);
+				
+				if( !Strings.isNullOrEmpty(wwwAuthenticateValue) ) {
+					//Check if strong auth challenge
+					mIsCallable = ( wwwAuthenticateValue.contains(BankSchema.BANKSA));
+				}
+				
+				return false;
+			}
+		};
+		
 		//Build the handler for the response to the Bank authentication request
 		final AsyncCallback<BankLoginData> callback = 
 				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankLoginData.class, activity, activity, false)
@@ -166,10 +204,40 @@ public class BankServiceCallFactory {
 		CreateBankLoginCall loginCall =  new CreateBankLoginCall(activity, callback, credentials);
 		//Create the NetworkServiceCall<> for downloading customer information after successfully authenticating
 		CustomerServiceCall customerCall = createCustomerDownloadCall(activity);
+		//Create the NetworkServiceCall<> for sending a Strong Auth request to download question
+		CreateStrongAuthRequestCall strongAuthCall = createStrongAuthRequest(activity);
+		
 		//Create the queue which will link the NetworkServiceCall<> objects
 		NetworkServiceCallQueue serviceCallQueue = new NetworkServiceCallQueue(activity, loginCall);
 		serviceCallQueue.enqueue(customerCall, NetworkServiceCallQueue.EventType.Success);
+		serviceCallQueue.enqueue(strongAuthCall, EventType.Error, condition);
 		
 		return serviceCallQueue;	
+	}
+	
+	public static CreateStrongAuthRequestCall createStrongAuthRequest(final @Nonnull Activity activity) {
+		
+		SuccessListener<BankStrongAuthDetails> successListener = new SuccessListener<BankStrongAuthDetails>() {
+	 		@Override
+	 		public CallbackPriority getCallbackPriority() {
+	 			return CallbackPriority.MIDDLE;
+	 		}
+
+	 		@Override
+	 		public void success(BankStrongAuthDetails value) {
+	 			ErrorHandlerFactory.getInstance().handleStrongAuthChallenge(value.question, value.questionId);
+	 		}
+	 	};
+	 	
+	 	/**
+		 * Create an AsyncCallback using the default builder created for Bank related web-service HTTP requests
+		 */
+		final AsyncCallback<BankStrongAuthDetails>  callback = 
+				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankStrongAuthDetails.class, 
+						activity, (ErrorHandlerUi) activity, false)
+					.withSuccessListener(successListener)
+					.build();
+		
+		 return new CreateStrongAuthRequestCall(activity, callback);
 	}
 }

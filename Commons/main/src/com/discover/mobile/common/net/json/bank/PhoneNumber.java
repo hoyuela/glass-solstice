@@ -12,15 +12,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Phone information provided in the JSON response to the Customer Service API 
  * /api/customers/current. The following is an example of the JSON:
  * 
- * {
- *		"id" : "1",
- *		"name" : "Andrew Duckett",
- *		"email" : "andrewduckett@discover.com", "addresses" : [ {
- *			"type" : "work",
- *			"streetAddress" : "2600 Lake Cook Road", "locality" : "Riverwoods",
- *			"region" : "Illinois",
- *			"postalCode" : "60015"
- *		} ],
+  * {
+ *		"id":"0000443951",
+ *		"name":{
+ *			"givenName":"AUDREY",
+ *			"middleName":"",
+ *			"familyName": "RICHARDSON",
+ *			"formatted":"AUDREY  RICHARDSON"
+ *		},
+ *		"email" : "andrewduckett@discover.com", 
+ *		"addresses":[{
+ *                "type":"HOME",
+ *                "streetAddress":"19949 PLEASANT MEADOW LANE",
+ *                "locality":"PURCELLVILLE",
+ *                "region":"VA",
+ *                "postalCode":"20132",
+ *                "formatted":"19949 PLEASANT MEADOW LANE\nPURCELLVILLE VA 20132"
+ *       }],
  *		"phoneNumbers" : [ {
  *			"type" : "work",
  *			"number" : "224.405.5446" 

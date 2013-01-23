@@ -1,25 +1,18 @@
-package com.discover.mobile.common.customer.bank;
+package com.discover.mobile.common.net.json.bank;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import com.discover.mobile.common.net.json.bank.Address;
-import com.discover.mobile.common.net.json.bank.Name;
-import com.discover.mobile.common.net.json.bank.PhoneNumber;
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This is used for storing Customer detailed information provided in a JSON response to a 
+ * This is used for storing Name information provided in a JSON response to a 
  * Bank web-service API invocation. 
  * 
  * The CustomerServiceCall class uses this object to store the
- * Customer information provided in the JSON response to the Customer Service API 
+ * Name information provided in the JSON response to the Customer Service API 
  * /api/customers/current. The following is an example of the JSON:
  * 
- * {
+  * {
  *		"id":"0000443951",
  *		"name":{
  *			"givenName":"AUDREY",
@@ -64,31 +57,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author henryoyuela
  *
  */
-public class Customer implements Serializable {
+public class Name implements Serializable {
+	
 	/**
-	 * Auto-generated serial UID which is used to serialize and de-serialize PhoneNumber objects
+	 * Auto-generated serial UID which is used to serialize and de-serialize Name object
 	 */
-	private static final long serialVersionUID = -544315055134223597L;
-    /**
-     * Contains the customer identifier number
-     */
-	@JsonProperty("id")
-	public String id;
-	
-	@JsonProperty("name")
-	public Name name;
-	
-	@JsonProperty("email")
-	public String email;
-	
-	@JsonProperty("addresses")
-	public List<Address> addresses;
-	
-	@JsonProperty("phoneNumbers")
-	public List<PhoneNumber> phoneNumbers;
-	/**
-	 * Contains Bank web-service API Resource links
-	 */
-	@JsonProperty("links")
-	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
+	private static final long serialVersionUID = 6648021748646124016L;
+
+	@JsonProperty("givenName")
+	public String type;
+
+	 @JsonProperty("middleName")
+	 public String middleName;
+	 
+	 @JsonProperty("familyName")
+	 public String familyName;
+	 
+	 @JsonProperty("formatted")
+	 public String formatted;
+
 }
