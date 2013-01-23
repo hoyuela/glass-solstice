@@ -1,10 +1,14 @@
 package com.discover.mobile.section.account;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.discover.mobile.BaseFragment;
@@ -17,6 +21,7 @@ import com.discover.mobile.common.account.recent.RecentActivityPeriodsDetail;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.section.account.recent.GetTransactionsSuccessListener;
+import com.discover.mobile.section.account.recent.TransactionTable;
 
 /**
  * Recent account activity fragment.  Allows the user to see details related to their transactions based
@@ -35,7 +40,21 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	
 	private RecentActivityPeriodsDetail periods;
 	
+	private TransactionTable pending;
+	
+	private TransactionTable posted;
+	
+	private TextView feedback;
+	
+	private Button load;
+	
 	private GetTransactionDetails transactions;
+	
+	private Resources res;
+	
+	private boolean isLoadingMore = false;
+	
+	private AlertDialog dialog;
 	
 	/**
 	 * TODO: Handle rotation
@@ -46,15 +65,34 @@ public class AccountRecentActivityFragment extends BaseFragment {
 			final Bundle savedInstanceState) {
 		
 		final View view = inflater.inflate(R.layout.account_recent_activity, null);
+		res = this.getActivity().getResources();
+		pending = (TransactionTable) view.findViewById(R.id.pending_transactions);
+		posted = (TransactionTable) view.findViewById(R.id.posted_transactions);
 		
 		dateRange = (TextView) view.findViewById(R.id.view_transactions);
 		dateRange.setOnClickListener(new OnClickListener(){
-
 			@Override
 			public void onClick(final View v) {
 				getNewDateRange();
 			}
 			
+		});
+		
+		load = (Button) view.findViewById(R.id.load_more);
+		load.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+			if(null != transactions && null != transactions.loadMoreLink)
+				loadMoreTransactions(transactions.loadMoreLink);			
+			}		
+		});
+		
+		feedback = (TextView) view.findViewById(R.id.provide_feedback_button);
+		feedback.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				showProvideFeedback();			
+			}		
 		});
 		
 		searchTrans = (TextView) view.findViewById(R.id.search_transactions);
@@ -80,13 +118,11 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	}
 	
 	private void getDateRanges(){
-		final AsyncCallback<RecentActivityPeriodsDetail> callback = 
+		showDialog();
+		//TODO: Create error handler
+		final  AsyncCallback<RecentActivityPeriodsDetail> callback = 
 				GenericAsyncCallback.<RecentActivityPeriodsDetail>builder(this.getActivity())
-				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
-									getResources().getString(R.string.push_progress_registration_loading), 
-									true)
 				.withSuccessListener(new GetActivityPeriodsSuccessListener(this))
-				//This will be done in US5241.  (Just here to get dates in the view).
 				.withErrorResponseHandler(null)
 				.build();
 		
@@ -94,32 +130,24 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		
 	}
 	
-	public void getTransactions(){
-		final AsyncCallback<GetTransactionDetails> callback = 
-				GenericAsyncCallback.<GetTransactionDetails>builder(this.getActivity())
-				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
-									getResources().getString(R.string.push_progress_registration_loading), 
-									true)
+	private AsyncCallback<GetTransactionDetails> getTransactionCallback(){
+		return	GenericAsyncCallback.<GetTransactionDetails>builder(this.getActivity())
 				.withSuccessListener(new GetTransactionsSuccessListener(this))
-				//This will be done in US5241.  (Just here to get dates in the view).
 				.withErrorResponseHandler(null)
 				.build();
-		
-		new GetTransactions(getActivity(), callback, currentRange).submit();
 	}
 	
-	private void loadMoreTransactions(){
-		final AsyncCallback<GetTransactionDetails> callback = 
-				GenericAsyncCallback.<GetTransactionDetails>builder(this.getActivity())
-				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
-									getResources().getString(R.string.push_progress_registration_loading), 
-									true)
-				.withSuccessListener(new GetTransactionsSuccessListener(this))
-				//This will be done in US5241.  (Just here to get dates in the view).
-				.withErrorResponseHandler(null)
-				.build();
-		
-		new GetTransactions(getActivity(), callback, transactions.loadMoreLink).submit();
+	public void getTransactions(){
+		if(null == dialog || !dialog.isShowing()){
+			dialog.show();
+		}
+		new GetTransactions(getActivity(), getTransactionCallback(), currentRange).submit();
+	}
+	
+	private void loadMoreTransactions(final String link){
+		isLoadingMore = true;
+		showDialog();
+		new GetTransactions(getActivity(), getTransactionCallback(), transactions.loadMoreLink).submit();
 	}
 	
 	public void getNewDateRange(){
@@ -132,6 +160,63 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	
 	protected void showSearchScreen(){
 		super.makeFragmentVisible(new AccountSearchTransactionFragment());
+	}
+	
+	public void showTransactions(){
+		hideDialog();
+		if(null != transactions.loadMoreLink){
+			load.setVisibility(View.VISIBLE);
+		} else{
+			load.setVisibility(View.GONE);
+		}
+		
+		if(!isLoadingMore){
+			clearBothTables();
+		}
+		
+		if(transactions.showPending){
+			showOnlyOneTable();
+		} else{
+			showBothTables();
+		}
+		posted.setTransactions(transactions.posted);
+		posted.showTransactions(transactions.posted);
+		isLoadingMore = false;
+	}
+	
+	private void showOnlyOneTable(){
+		pending.setVisibility(View.VISIBLE);
+		posted.setTitle(res.getString(R.string.recent_activity_posted_transactions));
+		pending.setTitle(res.getString(R.string.recent_activity_pending_transactions));
+		pending.setTransactions(transactions.pending);
+		pending.showTransactions(transactions.pending);
+	}
+	
+	private void showBothTables(){
+		pending.setVisibility(View.GONE);
+		posted.setTitle(res.getString(R.string.recent_activity_transactions));
+	}
+	
+	private void clearBothTables(){
+		pending.clearList();
+		posted.clearList();
+	}
+	
+	private void showDialog(){
+		if(null == dialog){
+			dialog = ProgressDialog.show(this.getActivity(),
+					getResources().getString(R.string.push_progress_get_title), 
+					getResources().getString(R.string.push_progress_registration_loading), 
+					true);
+		}else{
+			dialog.show();
+		}
+	}
+	
+	private void hideDialog(){
+		if(null != dialog){
+			dialog.dismiss();
+		}
 	}
 	
 	/**

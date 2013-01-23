@@ -34,6 +34,7 @@ public class GetTransactionsSuccessListener implements SuccessListener <GetTrans
 	@Override
 	public void success(final GetTransactionDetails successObject) {
 		fragment.setTransactions(successObject);
+		fragment.showTransactions();
 	}
 
 }

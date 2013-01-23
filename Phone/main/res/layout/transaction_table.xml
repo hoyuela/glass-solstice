@@ -1,55 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="@drawable/light_gray_bkgrd">
-    
-    <TextView 
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
         android:id="@+id/table_title"
-    	android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:text="Posted Transactions"
-    	style="@style/title_copy"/>
-    
+        style="@style/title_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Posted Transactions"
+        android:textStyle="bold" 
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"/>
+
     <LinearLayout
         android:id="@+id/sort_filters"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:orientation="horizontal"
-	    android:weightSum="4"> 
-	    
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4" 
+        android:layout_below="@+id/table_title">
+
         <TextView
             android:id="@+id/date_filter"
-           	android:layout_width="0dip"
-	    	android:layout_height="match_parent"
-	    	android:layout_weight="1"
-	    	android:text="Date"
-	    	style="@style/sub_copy_small"/>
-        
+            style="@style/sub_copy_medium"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Date" />
+
         <TextView
             android:id="@+id/description_filter"
-           	android:layout_width="0dip"
-	    	android:layout_height="match_parent"
-	    	android:layout_weight="2"
-	    	android:text="Description"
-	    	style="@style/sub_copy_small"/>
-        
+            style="@style/sub_copy_medium"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Description" />
+
         <TextView
             android:id="@+id/amount_filter"
-           	android:layout_width="0dip"
-	    	android:layout_height="match_parent"
-	    	android:layout_weight="1"
-	    	android:text="Amount"
-	    	style="@style/sub_copy_small"/>
-            
-   </LinearLayout>
-   
-    <LinearLayout 
-        android:id="@+id/transactions"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical" />
+            style="@style/sub_copy_medium"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Amount" />
+    </LinearLayout>
     
+    <TextView 
+        android:id="@+id/no_transactions"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="There was no activity for the selected periods"
+        android:visibility="gone"
+        android:layout_below="@+id/sort_filters"/>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/transactions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/sort_filters" />
+
+</RelativeLayout>

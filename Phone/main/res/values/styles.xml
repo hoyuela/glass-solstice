@@ -233,6 +233,11 @@
     
 
     <!-- 5. BODY COPY / #3d484d / 34px font-size / 42px line-height / regular -->
+    <style name="title_medium" parent="discover_text">
+        <item name="android:textSize">@dimen/title_mid</item>
+        <item name="android:textColor">@color/title</item>
+    </style>
+    
     <style name="body_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/body_copy</item>
