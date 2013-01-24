@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.discover.mobile.BankServiceCallFactory;
 import com.discover.mobile.LoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
@@ -33,6 +32,12 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	/**String that is the key to getting the current fragment title out of the saved bundle.*/
 	private static final String TITLE = "title";
 	
+	/**String to get modal state*/
+	private static final String MODAL_STATE = "modalState";
+	
+	/**Boolean to show the modal*/
+	private boolean shouldShowModal = true;
+	
 	/**
 	 * Boolean set to true when the app was paused. If the fragment was paused this will stay true, but if the
 	 * screen was rotated this will be recreated as false.
@@ -57,6 +62,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	 */
 	private void setUpCurrentFragment(final Bundle savedInstanceState) {
 		if(null == savedInstanceState){return;}
+		shouldShowModal = savedInstanceState.getBoolean(MODAL_STATE, true);
 		final Fragment fragment = this.getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT);
 		if(null != fragment){
 			resumeFragment = fragment;
@@ -89,6 +95,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	 * @param extras - extras passed into the app
 	 */
 	private void handleIntentExtras(final Bundle extras) {
+		if(!shouldShowModal){return;}
 		final String screenType = extras.getString(IntentExtraKey.SCREEN_TYPE);
 		if(null != screenType){
 			final String userId = extras.getString(IntentExtraKey.UID);
@@ -119,6 +126,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 			@Override
 			public void onClick(final View v) {
 				modal.dismiss();	
+				shouldShowModal = false;
 			}
 		});
 		modal.show();
@@ -134,6 +142,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 		wasPaused = true;
 		this.getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT, currentFragment);
 		outState.putString(TITLE, getActionBarTitle());
+		outState.putBoolean(MODAL_STATE, shouldShowModal);
 		super.onSaveInstanceState(outState);
 	}
 	
