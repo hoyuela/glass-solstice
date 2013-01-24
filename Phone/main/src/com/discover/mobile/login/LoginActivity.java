@@ -42,6 +42,7 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.common.auth.bank.BankLoginData;
 import com.discover.mobile.common.auth.bank.BankLoginDetails;
 import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
@@ -56,6 +57,7 @@ import com.discover.mobile.common.customui.NonEmptyEditText;
 import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
+import com.discover.mobile.common.urlmanager.UrlManagerBank;
 import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.help.CustomerServiceContactsActivity;
 import com.discover.mobile.login.register.ForgotCredentialsActivity;
@@ -569,6 +571,17 @@ public class LoginActivity extends BaseActivity  {
 		login.username = username;
 		
 		BankServiceCallFactory.createLoginCall(login, this).submitWithProgressDialog("Discover", "Loading...");
+	}
+	
+	/**
+	 * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
+	 */
+	private void navToHome() {
+		
+		final Intent home = new Intent(this, NavigationRootActivity.class);
+		
+		startActivityForResult(home, 0);
+		
 	}
 	
 

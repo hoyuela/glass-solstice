@@ -3,6 +3,7 @@
     <string name="error_500_title">We\'re Currently Performing System Maintenance</string>
     <string name="error_503_title">We\'re Currently Performing System Maintenance</string>
     <string name="error_403_title">You\'ve Been Locked Out</string>
+    <string name="error_403_title_request">Your Request Could Not Be Completed</string>
     
     <!--Card HTTP Error Strings  -->
 	<string name="error_401">Sorry. The User ID and/or Password does not match our records, or you are not registered. Please try again.</string>

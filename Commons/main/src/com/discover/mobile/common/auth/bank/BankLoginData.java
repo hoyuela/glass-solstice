@@ -1,7 +1,10 @@
 package com.discover.mobile.common.auth.bank;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -22,6 +25,7 @@ public class BankLoginData implements Serializable {
 	public String token;
 
 	@JsonProperty("links")
-	public Links links;
+	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
+	
 
 }

@@ -235,7 +235,7 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private void executeConnection() throws IOException, NoSuchAlgorithmException {
-		conn = createConnection();
+ 		conn = createConnection();
 		try {
 			prepareConnection();
 			
@@ -265,14 +265,14 @@ public abstract class NetworkServiceCall<R> {
 	
 	private HttpURLConnection createConnection() throws IOException {
 		final URL fullUrl = getFullUrl();
-		if (fullUrl.getProtocol().toLowerCase().equals("https")) {
-	        trustAllHosts();
-	        HttpsURLConnection https = (HttpsURLConnection) fullUrl.openConnection();
-	        https.setHostnameVerifier(DO_NOT_VERIFY);
-	        conn = https;
-	    } else {
+//		if (fullUrl.getProtocol().toLowerCase().equals("https")) {
+//	        trustAllHosts();
+//	        HttpsURLConnection https = (HttpsURLConnection) fullUrl.openConnection();
+//	        https.setHostnameVerifier(DO_NOT_VERIFY);
+//	        conn = https;
+//	    } else {
 	        conn = (HttpURLConnection) fullUrl.openConnection();
-	    }
+//	    }
 		return conn;
 	}
 	

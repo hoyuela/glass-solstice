@@ -7,12 +7,15 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
+import com.discover.mobile.common.urlmanager.UrlManagerBank;
 import com.discover.mobile.common.urlmanager.UrlManagerCard;
 
 /**
@@ -23,13 +26,29 @@ import com.discover.mobile.common.urlmanager.UrlManagerCard;
  */
 public class LogOutCall extends NetworkServiceCall<Object> {
 	
+	
 	/**
 	 * Service call params to be used
 	 */
-	private static final ServiceCallParams STANDARD_PARAMS = new PostCallParams(UrlManagerCard.getLogoutUrl()) {{
-		requiresSessionForRequest = true;
-		clearsSessionAfterRequest = true;
-	}};
+//	private static final ServiceCallParams STANDARD_PARAMS = new PostCallParams(UrlManagerCard.getLogoutUrl()) {{
+//		requiresSessionForRequest = true;
+//		clearsSessionAfterRequest = true;
+//	}};
+	
+	private static ServiceCallParams getParams(){
+		ServiceCallParams params;
+		String url;
+		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)){
+			url = UrlManagerCard.getLogoutUrl();
+		}else {
+			url = UrlManagerBank.getLogoutUrl();
+		}
+		params = new PostCallParams(url) {{
+			requiresSessionForRequest = true;
+			clearsSessionAfterRequest = true;
+		}};
+		return params;
+	}
 	
 	/**
 	 * Reference handler so that the UI can be updated
@@ -37,12 +56,22 @@ public class LogOutCall extends NetworkServiceCall<Object> {
 	private final TypedReferenceHandler<Object> handler;
 	
 	/**
-	 * Constructor for the call
+	 * Constructor for the call used currently for card
 	 * @param context - activity context
 	 * @param callback - callback that will run this in the background
 	 */
 	public LogOutCall(final Context context, final AsyncCallback<Object> callback) {
-		super(context, STANDARD_PARAMS);
+		this(context, callback, true);
+	}
+	
+	/**
+	 * New constructor created for the Bank logout call. 
+	 * @param context
+	 * @param callback
+	 * @param isCard
+	 */
+	public LogOutCall(final Context context, final AsyncCallback<Object> callback, Boolean isCard){
+		super(context, getParams(), isCard);
 		
 		handler = new StrongReferenceHandler<Object>(callback);
 	}

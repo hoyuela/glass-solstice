@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
@@ -34,6 +35,11 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	private static boolean pendingLogout = false;
 
 	/**
+	 * Flag used for if its bank or not
+	 */
+	Boolean isCard;
+	
+	/**
 	 * Create the activity, set up the action bar and sliding menu
 	 * 
 	 * @param savedInstanceState
@@ -42,6 +48,11 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)){
+			isCard = true;
+		}else {
+			isCard = false;
+		}
 		showActionBar();
 		setupSlidingMenu();
 	}
@@ -76,41 +87,41 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		navigationToggle.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				toggle();
+				if(isCard){
+					toggle();
+				}
 			}
 		});
 
 		logout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				logout();
+					logout();
 			}
 		});
 	}
 
 	/**
-	 * Log the user out
-	 */
-	public void logout() {
-		/** Used on pause to know when to set Globals isLoggedIn to false **/
-		pendingLogout = true;
-
-		final AsyncCallback<Object> callback = GenericAsyncCallback
-				.<Object> builder(this)
-				.showProgressDialog(
-						getResources().getString(
-								R.string.push_progress_get_title),
-						getResources().getString(
-								R.string.push_progress_registration_loading),
-						true)
+     * Log the user out of card
+     */
+    public void logout(){
+    	/** Used on pause to know when to set Globals isLoggedIn to false**/
+    	pendingLogout = true;
+    	
+		final AsyncCallback<Object> callback = 
+				GenericAsyncCallback.<Object>builder(this)
+				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
+									getResources().getString(R.string.push_progress_registration_loading), 
+									true)
 				.withSuccessListener(new LogOutSuccessListener(this))
 				.withErrorResponseHandler(
 						new CardBaseErrorResponseHandler((ErrorHandlerUi) this))
 				.build();
-
-		new LogOutCall(this, callback).submit();
-	}
-
+	
+		
+		new LogOutCall(this, callback, isCard).submit();
+	} 
+    
 	/**
 	 * Set up and style the sliding menu
 	 */

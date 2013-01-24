@@ -3,6 +3,7 @@ package com.discover.mobile;
 import javax.annotation.Nonnull;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.common.AccountType;
@@ -24,8 +25,10 @@ import com.discover.mobile.common.net.NetworkServiceCallQueue.EventType;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.bank.Address;
 import com.discover.mobile.common.net.json.bank.PhoneNumber;
+import com.discover.mobile.common.urlmanager.UrlManagerBank;
 import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.navigation.NavigationRootActivity;
 import com.google.common.base.Strings;
 
 
@@ -39,6 +42,9 @@ import com.google.common.base.Strings;
  */
 public class BankServiceCallFactory {
 	private static BankServiceCallFactory instance = new BankServiceCallFactory();
+	//TODO: Remove this code in sprint 2:
+	private static Customer customer;
+	//TODO: Remove this code in Sprint 2
 	
 	private BankServiceCallFactory() {
 		
@@ -65,55 +71,8 @@ public class BankServiceCallFactory {
 	
 		@Override
 		public void success(TYPE value) {
-			Customer customer = (Customer)value;
-			
-			StringBuilder builder = new StringBuilder();
-
-			builder.append("E-mail: \n");
-			builder.append(customer.email);
-			builder.append("\n");
-			builder.append("ID: \n");
-			builder.append(customer.id);
-			builder.append("\n");
-			builder.append("Name: \n");
-			builder.append("Family Name:" +customer.name.familyName +"\n");
-			builder.append("Formatted Name:" +customer.name.formatted +"\n");
-			builder.append("Middle:" +customer.name.middleName +"\n");
-			builder.append("Type:" +customer.name.type);
-			builder.append("\n\n");
-			
-			for (Address address : customer.addresses) {
-				builder.append("Address: \n");
-				builder.append("Locality:" +address.locality +"\n");
-				builder.append("Postal Code:" +address.postalCode +"\n");
-				builder.append("Region: " +address.region +"\n");
-				builder.append("Address: " +address.streetAddress +"\n");
-				builder.append("Type: " +address.type +"\n");
-				builder.append("Formatted: " +address.formatted +"\n");
-			}
-			builder.append("\n");
-			
-			builder.append("Links: \n");
-			for (String key : customer.links.keySet()) {
-				builder.append(key +"\n" );
-				builder.append(customer.links.get(key).url +"\n");
-				for(Object method : customer.links.get(key).method) {
-					builder.append(method +"\n");
-				}
-				builder.append("\n");
-			}
-			builder.append("\n");
-			
-			for (PhoneNumber phone : customer.phoneNumbers) {
-				builder.append("Phone Number: \n");
-				builder.append(phone.number +"\n");
-				builder.append(phone.type +"\n");
-				builder.append("\n");
-			}
-			builder.append("\n");
-			
-			ModalAlertWithOneButton alert = ErrorHandlerFactory.getInstance().createErrorModal("Customer Info Download", builder.toString());
-			ErrorHandlerFactory.showCustomAlert(alert);
+			navToHome(mActivity);
+			BankServiceCallFactory.customer = (Customer)value;
 		}
 	};
 
@@ -138,6 +97,17 @@ public class BankServiceCallFactory {
 					.build();
 
 		return  new CustomerServiceCall(activity, callback);	
+	}
+	
+	/**
+	 * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
+	 */
+	private static void navToHome(Activity a) {
+		
+		final Intent home = new Intent(a, NavigationRootActivity.class);
+		
+		a.startActivityForResult(home, 0);
+		
 	}
 	
 	/**
@@ -167,7 +137,7 @@ public class BankServiceCallFactory {
 				Globals.setLoggedIn(true);
 				
 				//TODO Need to set a current session object.
-				
+				UrlManagerBank.setLogoutUrl(value.links.get("logout").url);
 				//Update current account based on user logged in and account type
 				activity.updateAccountInformation(AccountType.BANK_ACCOUNT);
 			}
@@ -239,5 +209,56 @@ public class BankServiceCallFactory {
 					.build();
 		
 		 return new CreateStrongAuthRequestCall(activity, callback);
+	}
+
+	//TODO: Remove this
+	public static void displayCustomerInformation() {
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("E-mail: \n");
+		builder.append(customer.email);
+		builder.append("\n");
+		builder.append("ID: \n");
+		builder.append(customer.id);
+		builder.append("\n");
+		builder.append("Name: \n");
+		builder.append("Family Name:" +customer.name.familyName +"\n");
+		builder.append("Formatted Name:" +customer.name.formatted +"\n");
+		builder.append("Middle:" +customer.name.middleName +"\n");
+		builder.append("Type:" +customer.name.type);
+		builder.append("\n\n");
+		
+		for (Address address : customer.addresses) {
+			builder.append("Address: \n");
+			builder.append("Locality:" +address.locality +"\n");
+			builder.append("Postal Code:" +address.postalCode +"\n");
+			builder.append("Region: " +address.region +"\n");
+			builder.append("Address: " +address.streetAddress +"\n");
+			builder.append("Type: " +address.type +"\n");
+			builder.append("Formatted: " +address.formatted +"\n");
+		}
+		builder.append("\n");
+		
+		builder.append("Links: \n");
+		for (String key : customer.links.keySet()) {
+			builder.append(key +"\n" );
+			builder.append(customer.links.get(key).url +"\n");
+			for(Object method : customer.links.get(key).method) {
+				builder.append(method +"\n");
+			}
+			builder.append("\n");
+		}
+		builder.append("\n");
+		
+		for (PhoneNumber phone : customer.phoneNumbers) {
+			builder.append("Phone Number: \n");
+			builder.append(phone.number +"\n");
+			builder.append(phone.type +"\n");
+			builder.append("\n");
+		}
+		builder.append("\n");
+		
+		ModalAlertWithOneButton alert = ErrorHandlerFactory.getInstance().createErrorModal("Customer Info Download", builder.toString());
+		ErrorHandlerFactory.showCustomAlert(alert);
 	}
 }

@@ -89,7 +89,9 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				mErrorHandlerFactory.handleLoginAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOGIN_LOCKED)) {
 				mErrorHandlerFactory.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
-			} 
+			}else if (errCode.equals(BankErrorCodes.ERROR_FRAUD_USER) || errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
+				mErrorHandlerFactory.handleHttpFraudNotFoundUserErrorModal(mErrorHandlerUi, msgErrResponse.getErrorMessage());
+			}
 			//Strong Auth Errors
 			else if( errCode.equals(BankErrorCodes.ERROR_INVALID_STRONG_AUTH) || errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH) ) {
 				mErrorHandlerFactory.handleStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage(), strongQuestion, strongQuestionId);
