@@ -1,4 +1,4 @@
-package com.discover.mobile.common.auth.bank;
+package com.discover.mobile.common.net.error.bank;
 
 /**
  * Class contains the error codes that can be found in an error response to a Bank NetworkServiceCall<>
@@ -40,6 +40,16 @@ public class BankErrorCodes {
 	 * Error Code used to describe a Strong Auth Locked Out error response with HTTP Status Code 403
 	 */
 	public static final String ERROR_LOCKED_STRONG_AUTH = "Auth.SA.Locked";
+	
+	/**
+	 * Error Code used to describe a Fraud user error response with HTTP Status Code 403
+	 */
+	public static final String ERROR_FRAUD_USER = "Auth.Login.BadStatus";
+	
+	/**
+	 * Error Code used to describe a No Accounts Found error response with HTTP Status Code 403
+	 */
+	public static final String ERROR_NO_ACCOUNTS_FOUND = "Auth.Login.NoAccountsFound";
 	
 	/**
 	 * Default constructor is not to be used

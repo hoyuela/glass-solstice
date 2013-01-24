@@ -10,11 +10,11 @@ import android.app.Dialog;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 
-class DialogDismissingCompletionListener implements CompletionListener {
+public class DialogDismissingCompletionListener implements CompletionListener {
 	
 	private final WeakReference<Dialog> dialogRef;
 	
-	DialogDismissingCompletionListener(final @Nonnull Dialog dialog) {
+	public DialogDismissingCompletionListener(final @Nonnull Dialog dialog) {
 		dialogRef = new WeakReference<Dialog>(dialog);
 	}
 	

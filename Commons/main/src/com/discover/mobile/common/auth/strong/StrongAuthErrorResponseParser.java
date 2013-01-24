@@ -8,14 +8,13 @@ import java.util.Map;
 
 import android.util.Log;
 
+import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.error.ErrorResponseParser;
 
 public class StrongAuthErrorResponseParser implements ErrorResponseParser<StrongAuthErrorResponse> {
 	
 	private static final String TAG = StrongAuthErrorResponseParser.class.getSimpleName();
-	
-	private static final String HEADER_WWW_AUTHENTICATE = "WWW-Authenticate";
-	
+		
 	@Override
 	public StrongAuthErrorResponse parseErrorResponse(int httpStatusCode,
 			InputStream in, HttpURLConnection conn) throws IOException {
@@ -29,11 +28,11 @@ public class StrongAuthErrorResponseParser implements ErrorResponseParser<Strong
 	}
 	
 	private boolean canParseErrorResponse(Map<String,List<String>> headers) {
-		return headers.containsKey(HEADER_WWW_AUTHENTICATE);
+		return headers.containsKey(HttpHeaders.Authentication);
 	}
 	
 	private String getStrongAuthResult(Map<String,List<String>> headers) throws IOException {
-		List<String> values = headers.get(HEADER_WWW_AUTHENTICATE);
+		List<String> values = headers.get(HttpHeaders.Authentication);
 		
 		if(values == null || values.isEmpty()) {
 			String message = "No value for WWW-Authenticate header";

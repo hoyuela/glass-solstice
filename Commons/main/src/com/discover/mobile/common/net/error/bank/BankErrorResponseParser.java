@@ -1,4 +1,4 @@
-package com.discover.mobile.common.auth.bank;
+package com.discover.mobile.common.net.error.bank;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -83,8 +83,6 @@ public class BankErrorResponseParser implements ErrorResponseParser<BankErrorRes
 			if(Log.isLoggable(TAG, Log.ERROR) ) {
 				Log.e(TAG, "Exception occured trying to map error response to an object");
 			}
-			
-			throw new IOException();
 		}
 		
 		return ret;

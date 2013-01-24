@@ -79,12 +79,13 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 		
 		final ErrorResponse<?> response = parser.parseErrorResponse(httpStatusCode, in, conn);
 		if(response != null && response instanceof AbstractErrorResponse)
-			setProtectedFields((AbstractErrorResponse<?>)response, httpStatusCode);
+			setProtectedFields((AbstractErrorResponse<?>)response, httpStatusCode, conn);
 		return response;
 	}
 	
-	private static void setProtectedFields(final AbstractErrorResponse<?> response, final int httpStatusCode) {
+	private static void setProtectedFields(final AbstractErrorResponse<?> response, final int httpStatusCode, final HttpURLConnection connection) {
 		response.setHttpStatusCode(httpStatusCode);
+		response.setConnection(connection);
 	}
 	
 }

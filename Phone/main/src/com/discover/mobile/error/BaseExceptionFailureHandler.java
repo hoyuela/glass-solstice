@@ -26,7 +26,10 @@ public class BaseExceptionFailureHandler implements ExceptionFailureHandler {
 
 	@Override
 	public boolean handleFailure(Throwable arg0) {
-		//TODO:
+		//TODO: Handle Socket Timeout Exception
+		//TODO: Handle Airplane Mode
+		//TOOD: Handle MissingTokenException
+		//TODO: Handle IOException
 		return true;
 	}
 

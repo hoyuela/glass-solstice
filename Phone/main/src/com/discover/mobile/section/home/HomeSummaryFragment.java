@@ -10,13 +10,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.BankServiceCallFactory;
 import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
+import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.CurrentSessionDetails;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.AccountDetails;
 
 public class HomeSummaryFragment extends BaseFragment {
+
+	/* (non-Javadoc)
+	 * @see com.discover.mobile.BaseFragment#onResume()
+	 */
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		BankServiceCallFactory.displayCustomerInformation();
+	}
 
 	private View view;
 
@@ -24,9 +37,10 @@ public class HomeSummaryFragment extends BaseFragment {
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.section_account_summary_landing, null);
-
-		setupHomeElements();
-
+		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)){
+			setupHomeElements();
+			showActionBarLogo();
+		}
 		return view;
 	}
 

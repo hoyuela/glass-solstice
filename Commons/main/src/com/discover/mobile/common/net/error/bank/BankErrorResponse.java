@@ -1,5 +1,6 @@
-package com.discover.mobile.common.auth.bank;
+package com.discover.mobile.common.net.error.bank;
 
+import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,7 @@ public class BankErrorResponse extends AbstractErrorResponse<BankErrorResponse> 
 	 */
 	@JsonProperty("data")
 	public Map<String, String> data = new HashMap<String, String>();
+
 	
 	/**
 	 * Not Used in this class
@@ -116,4 +118,5 @@ public class BankErrorResponse extends AbstractErrorResponse<BankErrorResponse> 
 		
 		return data.get(key);
 	}
+
 }
