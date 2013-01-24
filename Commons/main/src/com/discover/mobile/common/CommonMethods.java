@@ -2,6 +2,7 @@ package com.discover.mobile.common;
 
 import java.util.Locale;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -77,8 +78,8 @@ public final class CommonMethods {
 	 *            - the context that is using this method.
 	 */
 	public final static void showLabelWithStringResource(final TextView label,
-			final int text, final Context context) {
-		label.setText(context.getResources().getString(text));
+			final int text, final Activity callingActivity) {
+		label.setText(callingActivity.getResources().getString(text));
 		setViewVisible(label);
 	}
 
