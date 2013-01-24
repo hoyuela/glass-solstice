@@ -240,6 +240,9 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		pending.showTransactions(transactions.pending);
 	}
 	
+	/**
+	 * Setup the view to show both tables
+	 */
 	private void showBothTables(){
 		pending.setVisibility(View.VISIBLE);
 		posted.setTitle(res.getString(R.string.recent_activity_posted_transactions));
@@ -248,11 +251,17 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		posted.setNoTransactionsMessage(res.getString(R.string.recent_activity_no_new_posted));
 	}
 	
+	/**
+	 * Clear all layouts in both tables
+	 */
 	private void clearBothTables(){
 		pending.clearList();
 		posted.clearList();
 	}
 	
+	/**
+	 * Show the progress dialog
+	 */
 	private void showDialog(){
 		if(null == dialog){
 			dialog = ProgressDialog.show(this.getActivity(),
@@ -264,6 +273,9 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		}
 	}
 	
+	/**
+	 * Hide the progress dialog
+	 */
 	private void hideDialog(){
 		if(null != dialog){
 			dialog.dismiss();
@@ -278,15 +290,27 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		return R.string.recent_activity_title;
 	}
 
+	/**
+	 * Set the current date range to be displayed in the fragment
+	 * @param recentActivityPeriodDetail - the current date range to be displayed in the fragment
+	 */
 	public void setDateRange(final RecentActivityPeriodDetail recentActivityPeriodDetail) {
 		currentRange = recentActivityPeriodDetail;	
 		dateRange.setText(currentRange.displayDate);
 	}
 	
+	/**
+	 * Set the periods that can be displayed in the fragment
+	 * @param periods - Set the periods that can be displayed in the fragment
+	 */
 	public void setPeriods(final RecentActivityPeriodsDetail periods) {
 		this.periods = periods;	
 	}
 
+	/**
+	 * Set the transactions that can be displayed in the fragment
+	 * @param transactions - set the transactions that can be displayed in the fragment
+	 */
 	public void setTransactions(GetTransactionDetails transactions) {
 		this.transactions = transactions;
 	}
