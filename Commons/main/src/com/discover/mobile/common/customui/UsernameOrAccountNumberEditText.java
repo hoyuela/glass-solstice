@@ -28,6 +28,14 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	
 	private static final int VALID_ACCOUNT_NUMBER_LENGTH = 19;
 	private static final int MAX_USERNAME_LENGTH = 32;
+	
+	private int lengthBefore = 0;
+	private int lengthAfter = 0;
+	
+	private int cursorStartPosition = 0;
+	private int cursorEndPosition = 0;
+	private boolean needsToRestore = false;
+	private boolean isDeleting = false;
 
 	/**
 	 * Default constructors. Initially sets up the input field as a username field.
@@ -73,30 +81,47 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	}
 	/**
 	 * Listens for hardware keyboard inputs and stylizes the input for account numbers.
+	 * 
+	 * When text is changed in the input field it has to do the following.
+	 * Save the current input that has just changed and get the properly formatted version of the current input.
+	 * Compare the current input to a properly formatted version of the current input.
+	 * If they differ in formatting, restore the input field with the properly formatted String.
+	 * Then restore the position of the cursor.
+	 * 
+	 * This also needs to know when a deletion is being made, by comparing before and after lengths of the String.
+	 * Also it needs to know where spaces are being inserted so that it can account for cursor position.
 	 */
 	private void setupInputStylizer() {
-		
 		this.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void afterTextChanged(Editable s) {
+				restoreCursorPosition();
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				lengthBefore = s.length();
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				String currentText = s.toString();
+				final String currentText = s.toString();
 				String currentTextStylized = 
 						CommonMethods.getStringWithSpacesEvery4Characters(CommonMethods.getSpacelessString(currentText));
-				if(currentTextStylized.length() < 19 && !currentText.equals(currentTextStylized)){
+				//remove the trailing space at the end of the number
+				if(currentTextStylized.length() == VALID_ACCOUNT_NUMBER_LENGTH + 1)
+					currentTextStylized = currentTextStylized.trim();
+				
+				lengthAfter = currentTextStylized.length();
+				
+				if(currentTextStylized.length() <= VALID_ACCOUNT_NUMBER_LENGTH && !currentText.equals(currentTextStylized)){
+					saveCursorPosition();
+					if(lengthBefore > lengthAfter)
+						isDeleting = true;
+					
 					updateInputWithString(currentTextStylized);
-					setCursorPositionToEnd();
 				}
 			}
 			
@@ -104,6 +129,34 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 
 	}
 	
+	/**
+	 * Save the current position of the text cursor.
+	 */
+	private void saveCursorPosition() {
+		cursorStartPosition = this.getSelectionStart();
+		cursorEndPosition = this.getSelectionEnd();
+		needsToRestore = true;
+	}
+	
+	/**
+	 * Restore the position of the text cursor.
+	 */
+	private void restoreCursorPosition() {
+		if(needsToRestore){
+			//If were are at a space and are NOT deleting a character,
+			//increment the cursor position so that it restores to the right spot 
+			//ahead of the space.
+			if(cursorStartPosition % 5 == 0 && !isDeleting){
+				cursorStartPosition ++;
+				cursorEndPosition ++;
+			}
+			
+			isDeleting = false;
+			
+			this.setSelection(cursorStartPosition, cursorEndPosition);
+			needsToRestore = false;
+		}
+	}
 	/**
 	 * Returns the number of space characters that occur before a given position in the field.
 	 * @param position
@@ -191,12 +244,5 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		
 		return InputValidator.isCardAccountNumberValid(CommonMethods.getSpacelessString(cardAccountNumber));
 	}
-	
-    /**
-     * Sets the text cursor position to the end of the field. 
-     */
-    private void setCursorPositionToEnd() {
-    	this.setSelection(this.length(), this.length());
-    }
 	    
 }
