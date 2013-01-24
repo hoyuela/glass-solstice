@@ -30,6 +30,7 @@
 	       	android:focusable="true"
         	android:focusableInTouchMode="true" >
 	        
+	        
 	        <View
                android:id="@+id/padding_element_top"
                android:layout_width="fill_parent"

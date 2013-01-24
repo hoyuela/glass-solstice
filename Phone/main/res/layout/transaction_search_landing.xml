@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/light_gray_bkgrd"
+        android:padding="15dp"
+        android:paddingTop="7dp" >
+
+        <!-- Keyword Section -->
+
+        <LinearLayout
+            android:id="@+id/section_keywords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/title_keywords"
+                style="@style/title_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7dp"
+                android:paddingRight="7dp"
+                android:text="@string/title_keywords" />
+
+            <TextView
+                android:id="@+id/title_keywords_sub"
+                style="@style/body_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7dp"
+                android:text="@string/subtitle_keywords"
+                android:textColor="@color/sub_copy" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/input_keywords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/section_keywords"
+            android:background="@drawable/edit_text_default"
+            android:inputType="text"
+            android:text="" />
+
+        <!-- Date Section -->
+
+        <TextView
+            android:id="@+id/title_date"
+            style="@style/title_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/input_keywords"
+            android:paddingBottom="7dp"
+            android:paddingTop="20dp"
+            android:text="@string/title_date" />
+
+        <TextView
+            android:id="@+id/title_date_sub"
+            style="@style/body_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_date"
+            android:paddingBottom="7dp"
+            android:text="@string/subtitle_date"
+            android:textColor="@color/sub_copy" />
+
+        <include
+            android:id="@+id/transaction_date_selector"
+            android:layout_below="@id/title_date_sub"
+            layout="@layout/toggle_date_selector" />
+
+        <TextView
+            android:id="@+id/temp_cal_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/transaction_date_selector"
+            android:background="#FFFFFF"
+            android:text="hello left" />
+
+        <TextView
+            android:id="@+id/temp_cal_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/transaction_date_selector"
+            android:background="#FFFFFF"
+            android:text="hello right" />
+
+        <!-- Amount Section -->
+        <!--
+            <include
+            android:id="@+id/transaction_amount_selector"
+            layout="@layout/toggle_date_selector" />
+        -->
+        <!-- Nearly same section as above - skip for now -->
+
+
+        <!-- Category Section -->
+    </RelativeLayout>
+
+</ScrollView>
