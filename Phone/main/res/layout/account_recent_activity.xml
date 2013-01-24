@@ -7,8 +7,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/forms_inner_padding"
-        android:layout_marginRight="@dimen/forms_inner_padding"
         android:layout_marginTop="@dimen/groups_of_elements_padding"
         android:orientation="vertical"
         android:paddingBottom="@dimen/groups_of_elements_padding" >
@@ -19,6 +17,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/view_trans_actions_by_period"
+       		android:layout_marginLeft="@dimen/forms_inner_padding"
+        	android:layout_marginRight="@dimen/forms_inner_padding"
             android:textStyle="bold" />
 
         <TextView
@@ -30,11 +30,15 @@
             android:paddingLeft="@dimen/forms_inner_padding"
             android:paddingRight="@dimen/forms_inner_padding"
             android:paddingTop="@dimen/table_inner_padding"
+        	android:layout_marginLeft="@dimen/forms_inner_padding"
+        	android:layout_marginRight="@dimen/forms_inner_padding"
             android:text="@string/recent_activity_since" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+        	android:layout_marginLeft="@dimen/forms_inner_padding"
+        	android:layout_marginRight="@dimen/forms_inner_padding"
             android:orientation="horizontal" >
 
             <TextView
@@ -50,6 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/recent_activity_search_transactions"
+                android:layout_marginLeft="1dp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -57,7 +62,8 @@
             android:id="@+id/pending_transactions"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/groups_of_elements_padding" />
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:visibility="gone" />
 
         <com.discover.mobile.section.account.recent.TransactionTable
             android:id="@+id/posted_transactions"

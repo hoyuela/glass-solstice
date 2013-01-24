@@ -36,6 +36,10 @@ public class TransactionItem extends RelativeLayout{
 		amount = (TextView) mainView.findViewById(R.id.transaction_amount);
 		this.transaction = transaction; 
 		
+		if(transaction.amount.contains("-")){
+			amount.setTextColor(context.getResources().getColor(R.color.string_indicator));
+		}
+		
 		showTransaction();
 		addView(mainView);
 	}

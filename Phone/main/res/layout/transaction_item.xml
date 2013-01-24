@@ -1,35 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/home_list_item"
-    android:padding="@dimen/between_related_elements_padding">
+    android:layout_height="wrap_content">
     
-    <TextView 
-        android:id="@+id/transaction_date"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	style="@style/body_copy"
-    	android:text="08/01/13"
-    	android:layout_alignParentLeft="true"/>
+	<LinearLayout
+	    android:id="@+id/content"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentLeft="true"
+	    android:paddingRight="@dimen/between_related_elements_padding"
+	    android:paddingLeft="@dimen/between_related_elements_padding"
+	    android:paddingTop="@dimen/table_inner_padding"
+	    android:paddingBottom="@dimen/table_inner_padding"
+	    android:weightSum="4">
     
-    <TextView 
-        android:id="@+id/transaction_description"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	style="@style/body_copy"
-    	android:text="Some Really Random Pub where you drank to much"
-    	android:layout_toRightOf="@+id/transaction_date"
-    	android:layout_toLeftOf="@+id/transaction_amount"
-    	android:layout_marginRight="@dimen/between_related_elements_padding"
-    	android:layout_marginLeft="@dimen/between_related_elements_padding"/>
+	    <TextView 
+	        android:id="@+id/transaction_date"
+	    	android:layout_width="0dip"
+	    	android:layout_height="wrap_content"
+            style="@style/sub_copy_small"
+	    	android:layout_weight="1"/>
+	    
+	    <TextView 
+	        android:id="@+id/transaction_description"
+	    	android:layout_width="0dip"
+	    	android:layout_height="wrap_content"
+            style="@style/sub_copy_small"
+	    	android:layout_weight="2"/>
+	    
+	    <TextView 
+	        android:id="@+id/transaction_amount"
+	    	android:layout_width="0dip"
+	    	android:layout_height="wrap_content"
+            style="@style/sub_copy_small"
+	    	android:layout_weight="1"/>
     
-    <TextView 
-        android:id="@+id/transaction_amount"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	style="@style/body_copy"
-    	android:text="$50.00"
-    	android:layout_alignParentRight="true"/>
-
+    </LinearLayout>
+    
+	<View
+	    android:id="@+id/dotted_line"
+   		android:layout_width="wrap_content"
+    	android:layout_height="1dp"
+	    android:background="@drawable/table_dotted_line"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/content"/> 
+	
 </RelativeLayout>

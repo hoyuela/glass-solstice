@@ -2,7 +2,6 @@ package com.discover.mobile.section.account.recent;
 
 import com.discover.mobile.common.account.recent.GetTransactionDetails;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.section.account.AccountRecentActivityFragment;
 
 public class GetTransactionsSuccessListener implements SuccessListener <GetTransactionDetails>{
 	

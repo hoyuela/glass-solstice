@@ -17,17 +17,13 @@ public class TransactionTable extends RelativeLayout{
 	
 	private final TextView title;
 	
-	private final TextView dateFilter;
-	
-	private final TextView descriptionFilter;
-	
-	private final TextView amountFilter;
-	
 	private final TextView message;
 	
 	private final LinearLayout transactionsList;
 	
 	private List<TransactionDetail> transactions;
+	
+	private boolean isWhiteBackground = false;
 
 	public TransactionTable(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
@@ -35,9 +31,6 @@ public class TransactionTable extends RelativeLayout{
                 .inflate(R.layout.transaction_table, null);
 		
 		title = (TextView) mainView.findViewById(R.id.table_title);
-		dateFilter = (TextView) mainView.findViewById(R.id.date_filter);
-		descriptionFilter = (TextView) mainView.findViewById(R.id.description_filter);
-		amountFilter = (TextView) mainView.findViewById(R.id.amount_filter);
 		transactionsList = (LinearLayout) mainView.findViewById(R.id.transactions);
 		message = (TextView) mainView.findViewById(R.id.no_transactions);	
 		
@@ -48,10 +41,13 @@ public class TransactionTable extends RelativeLayout{
 	public void showTransactions(final List<TransactionDetail> transactions){
 		if(null == transactions || transactions.isEmpty()){
 			showNoTransactionMessage();
+			isWhiteBackground = false;
 		} else {
 			for(TransactionDetail transaction : transactions){
 				TransactionItem item = new TransactionItem(this.getContext(), null, transaction);
 				transactionsList.addView(item);
+				item.setBackgroundColor((isWhiteBackground) ? R.color.white : R.color.transaction_table_stripe);
+				isWhiteBackground = (isWhiteBackground) ? false : true;
 			}
 		}
 	}
@@ -59,7 +55,6 @@ public class TransactionTable extends RelativeLayout{
 	private void showNoTransactionMessage() {
 		transactionsList.setVisibility(View.GONE);
 		message.setVisibility(View.VISIBLE);
-		
 	}
 
 	public void clearList(){
@@ -72,5 +67,9 @@ public class TransactionTable extends RelativeLayout{
 	
 	public void setTransactions(final List<TransactionDetail> transactions){
 		this.transactions = transactions;
+	}
+	
+	public void setNoTransactionsMessage(final String message){
+		this.message.setText(message);
 	}
 }

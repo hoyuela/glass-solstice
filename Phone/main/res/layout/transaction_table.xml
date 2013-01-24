@@ -9,10 +9,11 @@
         style="@style/title_medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Posted Transactions"
         android:textStyle="bold" 
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"/>
 
     <LinearLayout
         android:id="@+id/sort_filters"
@@ -20,7 +21,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="4" 
-        android:layout_below="@+id/table_title">
+        android:layout_below="@+id/table_title"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginBottom="@dimen/between_related_elements_padding"
+        android:layout_marginTop="@dimen/table_inner_padding">
 
         <TextView
             android:id="@+id/date_filter"
@@ -28,7 +33,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Date" />
+            android:text="@string/recent_activity_date" />
 
         <TextView
             android:id="@+id/description_filter"
@@ -36,7 +41,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="Description" />
+            android:text="@string/recent_activity_description" />
 
         <TextView
             android:id="@+id/amount_filter"
@@ -44,22 +49,41 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Amount" />
+            android:text="@string/recent_activity_amount" />
     </LinearLayout>
     
     <TextView 
         android:id="@+id/no_transactions"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="There was no activity for the selected periods"
         android:visibility="gone"
-        android:layout_below="@+id/sort_filters"/>
+        android:layout_below="@+id/sort_filters"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"/>
 
+    <View
+        android:id="@+id/top_line"
+   		android:layout_width="wrap_content"
+    	android:layout_height="1dp"
+	    android:background="@drawable/table_solid_line"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/no_transactions"/>
+    
     <LinearLayout
         android:id="@+id/transactions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/sort_filters" />
+        android:layout_below="@+id/top_line"/>
+    
+    <View
+        android:id="@+id/bottom_line"
+   		android:layout_width="wrap_content"
+    	android:layout_height="1dp"
+	    android:background="@drawable/table_solid_line"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/transactions"/>
 
 </RelativeLayout>

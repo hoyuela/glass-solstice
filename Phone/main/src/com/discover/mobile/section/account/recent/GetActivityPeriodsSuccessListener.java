@@ -1,4 +1,4 @@
-package com.discover.mobile.section.account;
+package com.discover.mobile.section.account.recent;
 
 import com.discover.mobile.common.account.recent.RecentActivityPeriodsDetail;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;

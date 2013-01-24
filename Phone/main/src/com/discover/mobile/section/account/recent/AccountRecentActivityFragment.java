@@ -1,4 +1,4 @@
-package com.discover.mobile.section.account;
+package com.discover.mobile.section.account.recent;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -20,8 +20,7 @@ import com.discover.mobile.common.account.recent.RecentActivityPeriodDetail;
 import com.discover.mobile.common.account.recent.RecentActivityPeriodsDetail;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.section.account.recent.GetTransactionsSuccessListener;
-import com.discover.mobile.section.account.recent.TransactionTable;
+import com.discover.mobile.section.account.AccountSearchTransactionFragment;
 
 /**
  * Recent account activity fragment.  Allows the user to see details related to their transactions based
@@ -175,9 +174,11 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		}
 		
 		if(transactions.showPending){
-			showOnlyOneTable();
-		} else{
 			showBothTables();
+			pending.setTransactions(transactions.pending);
+			pending.showTransactions(transactions.pending); 
+		} else{
+			showOnlyOneTable();
 		}
 		posted.setTransactions(transactions.posted);
 		posted.showTransactions(transactions.posted);
@@ -185,16 +186,19 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	}
 	
 	private void showOnlyOneTable(){
-		pending.setVisibility(View.VISIBLE);
-		posted.setTitle(res.getString(R.string.recent_activity_posted_transactions));
-		pending.setTitle(res.getString(R.string.recent_activity_pending_transactions));
+		pending.setVisibility(View.GONE);
+		posted.setNoTransactionsMessage(res.getString(R.string.recent_activity_no_activity));
+		posted.setTitle(res.getString(R.string.recent_activity_transactions));
 		pending.setTransactions(transactions.pending);
 		pending.showTransactions(transactions.pending);
 	}
 	
 	private void showBothTables(){
-		pending.setVisibility(View.GONE);
-		posted.setTitle(res.getString(R.string.recent_activity_transactions));
+		pending.setVisibility(View.VISIBLE);
+		posted.setTitle(res.getString(R.string.recent_activity_posted_transactions));
+		pending.setTitle(res.getString(R.string.recent_activity_pending_transactions));
+		pending.setNoTransactionsMessage(res.getString(R.string.recent_activity_no_new_pending));
+		posted.setNoTransactionsMessage(res.getString(R.string.recent_activity_no_new_posted));
 	}
 	
 	private void clearBothTables(){
