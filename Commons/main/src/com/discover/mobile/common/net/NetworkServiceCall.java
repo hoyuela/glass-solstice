@@ -235,7 +235,7 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private void executeConnection() throws IOException, NoSuchAlgorithmException {
-		conn = createConnection();
+ 		conn = createConnection();
 		try {
 			prepareConnection();
 			
