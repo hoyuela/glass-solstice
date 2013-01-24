@@ -27,14 +27,30 @@
         android:layout_marginBottom="@dimen/between_related_elements_padding"
         android:layout_marginTop="@dimen/table_inner_padding">
 
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            
         <TextView
             android:id="@+id/date_filter"
             style="@style/sub_copy_medium"
-            android:layout_width="0dip"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:textStyle="bold"
             android:text="@string/recent_activity_date" />
-
+        
+        <View
+            android:id="@+id/down_arrow"
+            android:layout_width="10dp"
+            android:layout_height="6dp"
+            android:background="@drawable/orange_down_carrot"
+            android:layout_toRightOf="@+id/date_filter"
+            android:layout_alignBottom="@+id/date_filter"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="@dimen/between_related_elements_padding"/>
+		</RelativeLayout>
+		
         <TextView
             android:id="@+id/description_filter"
             style="@style/sub_copy_medium"
