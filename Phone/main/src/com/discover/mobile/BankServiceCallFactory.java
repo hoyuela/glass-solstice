@@ -3,7 +3,6 @@ package com.discover.mobile;
 import javax.annotation.Nonnull;
 
 import android.app.Activity;
-import android.content.Intent;
 
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.common.AccountType;
@@ -26,6 +25,7 @@ import com.discover.mobile.common.net.NetworkServiceCallQueue.EventType;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.bank.Address;
 import com.discover.mobile.common.net.json.bank.PhoneNumber;
+import com.discover.mobile.common.urlmanager.UrlManagerBank;
 import com.discover.mobile.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.login.LoginActivity;
@@ -72,7 +72,7 @@ public class BankServiceCallFactory {
 	
 		@Override
 		public void success(TYPE value) {
-			navToHome(mActivity);
+			Navigator.navigateToHomePage(mActivity);
 			BankServiceCallFactory.customer = (Customer)value;
 		}
 	};
@@ -162,8 +162,8 @@ public class BankServiceCallFactory {
 				//Set logged in to be able to save user name in persistent storage
 				Globals.setLoggedIn(true);
 				
-				//TODO Need to set a current session object.
 				UrlManagerBank.setLogoutUrl(value.links.get("logout").url);
+				
 				//Update current account based on user logged in and account type
 				activity.updateAccountInformation(AccountType.BANK_ACCOUNT);
 			}
@@ -295,18 +295,5 @@ public class BankServiceCallFactory {
 		 return new CreateStrongAuthRequestCall(activity, callback, details);
 	}
 
-	
-	public static CreateStrongAuthRequestCall createStrongAuthRequest(final @Nonnull Activity activity, final BankStrongAuthAnswerDetails details) {
-	 	/**
-		 * Create an AsyncCallback using the default builder created for Bank related web-service HTTP requests
-		 */
-		final AsyncCallback<BankStrongAuthDetails>  callback = 
-				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankStrongAuthDetails.class, 
-						activity, (ErrorHandlerUi) activity, true)
-					.withSuccessListener(instance.new StrongAuthResponseHandler (activity))
-					.build();
-		
-		 return new CreateStrongAuthRequestCall(activity, callback, details);
-	}
 
 }

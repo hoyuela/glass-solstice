@@ -382,8 +382,11 @@ public class ErrorHandlerFactory {
 	 *            Specifies the HTTP status code received in the error response.
 	 */
 	public void handleGenericError(final int httpErrorCode) {
-		// TODO: Will complete this in the Handle Technical Difficulties User
-		// Story
+		ModalAlertWithOneButton modal = createErrorModal(
+				httpErrorCode,
+				R.string.error_request_not_completed_title, R.string.error_request_not_completed_msg);
+		
+		showCustomAlert(modal);
 	}
 
 	public void handleHttpUnauthorizedError() {
@@ -481,4 +484,6 @@ public class ErrorHandlerFactory {
 	public void handleSessionExpired() {
 		Navigator.navigateToLoginPage(mActivity, IntentExtraKey.SESSION_EXPIRED);
 	}
+	
+	
 }
