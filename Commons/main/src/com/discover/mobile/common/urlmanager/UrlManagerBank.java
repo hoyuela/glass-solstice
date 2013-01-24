@@ -1,5 +1,10 @@
 package com.discover.mobile.common.urlmanager;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.discover.mobile.common.net.json.bank.ReceivedUrl;
+
 /**
  * This class is used for adding and getting URL's for bank services. Any bank
  * URL's should go into the card Url Manager class
@@ -9,18 +14,29 @@ package com.discover.mobile.common.urlmanager;
  */
 public class UrlManagerBank {
 	private static final String BASE_URL = "https://beta.discoverbank.com";
-//	private static final String BASE_URL = "http://192.168.2.177:8008"; //Henry's Laptop
-//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
-//	private static final String BASE_URL = "http://192.168.1.94:8008";
-//	private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
+	// private static final String BASE_URL = "http://192.168.2.177:8008";
+	// //Henry's Laptop
+	// private static final String BASE_URL =
+	// "http://solsticebeta.com/Discover/DiscoverBank";
+	// private static final String BASE_URL = "http://192.168.1.94:8008";
+	// private static final String BASE_URL =
+	// "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
 
 	private static final String AUTHENTICATE_CURRENT_CUSTOMER_URL = "/api/customers/current";
 	private static final String GET_TOKEN_URL = "/api/auth/token";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
-	private static final String ACCOUNT_URL = "/api/accounts";
-	private static final String EXTERNAL_ACCOUNTS_URL = "/api/accounts/external";
 	private static final String CUSTOMER_SERVICE_URL = "/api/customers/current";
-	public static String LOGOUT_URL = null;
+	private static Map<String, ReceivedUrl> links;
+	
+	/**
+	 * Keys for the urls in order to retrieve from the map
+	 */
+	public static final String ACCOUNT_URL_KEY = "accounts";
+	public static final String TRANSFER_URL_KEY = "transfers";
+	public static final String PING_URL_KEY = "ping";
+	public static final String PAYEES_URL_KEY = "payees";
+	public static final String LOGOUT_URL_KEY = "logout";
+	public static final String PAYMENTS_URL_KEY = "payments";
 	
 
 	/**
@@ -38,6 +54,12 @@ public class UrlManagerBank {
 	}
 
 	/**
+	 * @return the customerServiceUrl
+	 */
+	public static String getCustomerServiceUrl() {
+		return CUSTOMER_SERVICE_URL;
+	}
+	/**
 	 * @return the getTokenUrl
 	 */
 	public static String getGetTokenUrl() {
@@ -51,43 +73,34 @@ public class UrlManagerBank {
 		return STRONG_AUTH_URL;
 	}
 
-	/**
-	 * @return the accountUrl
-	 */
-	public static String getAccountUrl() {
-		return ACCOUNT_URL;
-	}
 
 	/**
-	 * @return the externalAccountsUrl
-	 */
-	public static String getExternalAccountsUrl() {
-		return EXTERNAL_ACCOUNTS_URL;
-	}
-
-	/**
-	 * @return the customerServiceUrl
-	 */
-	public static String getCustomerServiceUrl() {
-		return CUSTOMER_SERVICE_URL;
-	}
-
-	/**
-	 * @return the logoutUrl
-	 */
-	public static String getLogoutUrl() {
-		return LOGOUT_URL;
-	}
-
-	/**
-	 * This is used in order to set the logout URL that is returned from the
-	 * service
+	 * This is used in order to retrieve a url from the map.
 	 * 
-	 * @param url
+	 * @param key
+	 *            The key for the URL that needs to be retrieved
 	 */
-	public static void setLogoutUrl(String url) {
-		
-		LOGOUT_URL = url.replaceAll("http://beta.discoverbank.com", "");
+	public static String getUrl(String key) {
+		return links.get(key).url
+				.replaceAll("http://beta.discoverbank.com", "");
 	}
 
+	/**
+	 * Add new links to the links map or creates a new map if one doesn't
+	 * already exist.
+	 * 
+	 * @param newLinks Map of links returned from the JSON 
+	 */
+	public static void setNewLinks(Map<String, ReceivedUrl> newLinks) {
+		if (newLinks == null) {
+			throw new IllegalArgumentException("newLinks cannot be null.");
+		}
+		if (links == null) {
+			links = new HashMap<String, ReceivedUrl>();
+			links.putAll(newLinks);
+			return;
+		} else {
+			links.putAll(newLinks);
+		}
+	}
 }

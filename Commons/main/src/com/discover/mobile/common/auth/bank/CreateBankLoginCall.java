@@ -84,6 +84,7 @@ public class CreateBankLoginCall extends
 			//When sending a request with a token as part of the request the format to follow is 
 			//Authorization: BankBasic <<token>>
 			SessionTokenManager.setToken(BankSchema.BANKBASIC +" " +data.token);
+			UrlManagerBank.setNewLinks(data.links);
 		} else {
 			String message = "Response does not include token";
 			

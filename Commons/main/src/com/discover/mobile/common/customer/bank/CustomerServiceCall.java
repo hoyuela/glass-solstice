@@ -1,5 +1,10 @@
 package com.discover.mobile.common.customer.bank;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 
 import com.discover.mobile.common.callback.AsyncCallback;
@@ -87,6 +92,16 @@ public class CustomerServiceCall extends
 
 		// TODO decide if this is the best type of handler
 		handler = new StrongReferenceHandler<Customer>(callback);
+	}
+	
+	@Override
+	protected Customer parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
+			throws IOException {
+		final Customer data = super.parseSuccessResponse(status, headers, body);
+		
+			UrlManagerBank.setNewLinks(data.links);
+		
+		return data;
 	}
 
 	@Override

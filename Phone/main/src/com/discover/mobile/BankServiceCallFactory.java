@@ -162,8 +162,7 @@ public class BankServiceCallFactory {
 				//Set logged in to be able to save user name in persistent storage
 				Globals.setLoggedIn(true);
 				
-				UrlManagerBank.setLogoutUrl(value.links.get("logout").url);
-				
+				//TODO Need to set a current session object.
 				//Update current account based on user logged in and account type
 				activity.updateAccountInformation(AccountType.BANK_ACCOUNT);
 			}
