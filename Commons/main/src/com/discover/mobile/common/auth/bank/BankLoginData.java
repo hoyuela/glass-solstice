@@ -25,8 +25,8 @@ public class BankLoginData implements Serializable {
 	public String token;
 
 	@JsonProperty("links")
-//	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
-	public Links links;
+	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
+//	public Links links;
 	
 
 }

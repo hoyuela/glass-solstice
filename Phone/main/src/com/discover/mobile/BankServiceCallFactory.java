@@ -137,7 +137,7 @@ public class BankServiceCallFactory {
 				Globals.setLoggedIn(true);
 				
 				//TODO Need to set a current session object.
-				UrlManagerBank.setLogoutUrl(value.links.logout.url);
+				UrlManagerBank.setLogoutUrl(value.links.get("logout").url);
 				//Update current account based on user logged in and account type
 				activity.updateAccountInformation(AccountType.BANK_ACCOUNT);
 			}
