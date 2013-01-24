@@ -11,20 +11,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.common.auth.AccountDetails;
+import com.google.common.base.Strings;
 
 public final class CommonMethods {
 	private final static String TAG = CommonMethods.class.getSimpleName();
 
 	public final static void setViewGone(View v) {
-		v.setVisibility(View.GONE);
+		if(v != null)
+			v.setVisibility(View.GONE);
 	}
 
 	public final static void setViewVisible(View v) {
-		v.setVisibility(View.VISIBLE);
+		if(v != null)
+			v.setVisibility(View.VISIBLE);
 	}
 
 	public final static void setViewInvisible(final View v) {
-		v.setVisibility(View.INVISIBLE);
+		if(v != null)
+			v.setVisibility(View.INVISIBLE);
 	}
 
 	/**
@@ -188,12 +192,13 @@ public final class CommonMethods {
 	 * @return Formatted string with commas.
 	 */
 	public final static String insertCommas(String str) {
-		if (str.length() < 4) {
+		if(Strings.isNullOrEmpty(str))
+			return "";
+		if (str.length() < 4) 
 			return str;
-		}
-
-		return insertCommas(str.substring(0, str.length() - 3)) + ","
-				+ str.substring(str.length() - 3, str.length());
+		else	
+			return insertCommas(str.substring(0, str.length() - 3)) + ","
+					+ str.substring(str.length() - 3, str.length());
 	}
 
 	private CommonMethods() {

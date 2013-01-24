@@ -4,15 +4,12 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.CommonMethods;
-import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.registration.AccountInformationCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
@@ -29,7 +26,7 @@ import com.discover.mobile.navigation.HeaderProgressIndicator;
  * @author scottseward
  *
  */
-public class RegistrationAccountInformationActivity extends AbstractAccountInformationActivity {
+public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirstStep {
 	
 	/**
 	 * Setup the main input field to be for an account number.
@@ -60,30 +57,17 @@ public class RegistrationAccountInformationActivity extends AbstractAccountInfor
 		return new AccountInformationCall(this, callback, details);
 	}
 	
+	@Override
+	public void goBack() {
+		finish();
+	}
+	
 	/**
 	 * Returns the Activity that will be launched upon successful or skipped Strong Auth.
 	 */
 	@Override
 	protected Class<?> getSuccessfulStrongAuthIntentClass() {
 		return CreateLoginActivity.class;
-	}
-	
-
-	/**
-	 * Put all of the form details as a serializable object extra and pass it to the next activity
-	 * which will append more info onto that object.
-	 */
-	@Override
-	protected void navToNextScreenWithDetails(AccountInformationDetails details) {
-		final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
-		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, details);
-		startActivity(createLoginActivity);
-		finish();
-	}
-
-	@Override
-	public void goBack() {
-		finish();
 	}
 
 	/**
@@ -93,22 +77,6 @@ public class RegistrationAccountInformationActivity extends AbstractAccountInfor
 	protected void setHeaderProgressText() {
 			HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
 			headerProgressBar.setTitle(R.string.enter_info, R.string.create_login, R.string.confirm);
-	}
-	
-	/**
-	 * Decide what to do when the strong auth activity exits. If it was successful, then navigate
-	 * to the next applicable screen. If not, cancel the registration process.
-	 */
-	@Override
-	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {	
-		Log.d("ACTIVITY DID GIVE RESULT","ACTIVITY DID GIVE RESULT");
-		if(requestCode == STRONG_AUTH_ACTIVITY) {
-			if(resultCode == RESULT_OK) {
-				navToNextScreenWithDetails(accountInformationDetails);
-			} else if (resultCode == RESULT_CANCELED){
-				finish();
-			}
-		}
 	}
 
 	@Override

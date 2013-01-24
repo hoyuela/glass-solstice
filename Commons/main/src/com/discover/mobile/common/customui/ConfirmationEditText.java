@@ -75,6 +75,9 @@ public class ConfirmationEditText extends ValidatedInputField {
 				if(!hasFocus && !isValid()){
 					setErrors();
 				}
+				else if (!hasFocus && isValid()){
+					setAppearanceMatched();
+				}
 				else{
 					setRightDrawableGrayX();
 					if(isInErrorState)

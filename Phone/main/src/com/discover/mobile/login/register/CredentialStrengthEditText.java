@@ -236,7 +236,8 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		
 		super.onTextChanged(text, start, lengthBefore, lengthAfter);
 		if(isInDefaultState)
-			{/*dont update the appearance*/}
+			{/*dont update the appearance in case the field is empty and gets 'updated'
+			with empty text through orientation change or otherwise*/}
 		else 			
 			updateAppearanceForInput();
 
@@ -394,6 +395,15 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		this.invalidate();
 
 	}
+
+	/**
+	 * Force the strength meter icon to display 'invalid' text. Useful when the field is already
+	 * invalid and someone wants to make the 'invalid' text display.
+	 */
+	public void setStrengthMeterInvalid() {
+		mStrengthMeter = mInvalidImage;
+		this.setBackgroundResource(R.drawable.edit_text_red);
+	}
 	
 	/**
 	 * Call an update to the strength meter based on the current input.
@@ -402,7 +412,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	public void updateAppearanceForInput() {
 		if(this.length() > 0)
 			isInDefaultState = false;
-		
+
 		if(mCredentialType == PASSWORD)
 			updateStrengthMeterForPass(this.getText().toString());
 		else
