@@ -12,7 +12,6 @@ import com.discover.mobile.common.auth.bank.BankLoginData;
 import com.discover.mobile.common.auth.bank.BankLoginDetails;
 import com.discover.mobile.common.auth.bank.BankSchema;
 import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
-import com.discover.mobile.common.auth.bank.strong.BankStrongAuthAnswerDetails;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.common.callback.AsyncCallback;
@@ -139,17 +138,6 @@ public class BankServiceCallFactory {
 	}
 	
 	/**
-	 * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
-	 */
-	private static void navToHome(Activity a) {
-		
-		final Intent home = new Intent(a, NavigationRootActivity.class);
-		
-		a.startActivityForResult(home, 0);
-		
-	}
-	
-	/**
 	 * This function is used to construct a NetworkServiceCallQueue populated with the NetworkServiceCall<> 
 	 * objects to authenticate and login a user to access Bank Services. The calling Activity will be responsible 
 	 * for calling submit to start the process. The first HTTP request will consists of authenticating with the 
@@ -231,6 +219,18 @@ public class BankServiceCallFactory {
 	}
 	
 	public static CreateStrongAuthRequestCall createStrongAuthRequest(final @Nonnull Activity activity) {
+		
+		SuccessListener<BankStrongAuthDetails> successListener = new SuccessListener<BankStrongAuthDetails>() {
+	 		@Override
+	 		public CallbackPriority getCallbackPriority() {
+	 			return CallbackPriority.MIDDLE;
+	 		}
+
+	 		@Override
+	 		public void success(BankStrongAuthDetails value) {
+	 			ErrorHandlerFactory.getInstance().handleStrongAuthChallenge(value.question, value.questionId);
+	 		}
+	 	};
 	 	
 	 	/**
 		 * Create an AsyncCallback using the default builder created for Bank related web-service HTTP requests
@@ -238,7 +238,7 @@ public class BankServiceCallFactory {
 		final AsyncCallback<BankStrongAuthDetails>  callback = 
 				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankStrongAuthDetails.class, 
 						activity, (ErrorHandlerUi) activity, false)
-					.withSuccessListener(instance.new StrongAuthResponseHandler (activity))
+					.withSuccessListener(successListener)
 					.build();
 		
 		 return new CreateStrongAuthRequestCall(activity, callback);

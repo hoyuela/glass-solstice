@@ -45,9 +45,6 @@
     <string name="logout_sucess">
         You are now logged out. Thank you for using Discover Mobile.
     </string>
-    <string name="session_expired">
-        Your login session has expired.
-    </string>
 <!--  LOGIN ERRORS -->
 	<string name="id_invalid">
 	    Please check your ID and try again.

@@ -16,17 +16,19 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.BankServiceCallFactory;
+import com.discover.mobile.AsyncCallbackBuilderLibrary;
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthAnswerDetails;
+import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
+import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.common.auth.strong.StrongAuthAnswerCall;
 import com.discover.mobile.common.auth.strong.StrongAuthAnswerDetails;
+import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.error.ErrorHandlerFactory;
+import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.navigation.NavigationRootActivity;
-import com.google.common.base.Strings;
 
 /**
  * Class Description of EnhancedAccountSecurity
@@ -174,25 +176,23 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	}
 
 	public void submitSecurityInfo(final View v) {
+
+		final ProgressDialog progress = ProgressDialog.show(this,
+				"Discover", "Loading...", true); //$NON-NLS-1$ //$NON-NLS-2$
+		// Find out which radio button is pressed.
+		final int radioButtonId = securityRadioGroup.getCheckedRadioButtonId();
+		final View selectedButton = securityRadioGroup
+				.findViewById(radioButtonId);
+		final int selectedIndex = securityRadioGroup
+				.indexOfChild(selectedButton);
+
 		// Store answer in a string
 		final String answer = questionAnswerField.getText().toString();
 
-		if( !Strings.isNullOrEmpty(answer) ) {
-			// Find out which radio button is pressed.
-			final int radioButtonId = securityRadioGroup.getCheckedRadioButtonId();
-			final View selectedButton = securityRadioGroup.findViewById(radioButtonId);
-			final int selectedIndex = securityRadioGroup.indexOfChild(selectedButton);
-			
-			if (!isCard) {
-				submitBankSecurityInfo(answer);
-			} else {
-				final ProgressDialog progress = ProgressDialog.show(this,
-						"Discover", "Loading...", true); //$NON-NLS-1$ //$NON-NLS-2$
-				submitCardSecurityInfo(progress, selectedIndex, answer);
-			}
+		if (!isCard) {
+			submitBankSecurityInfo(progress, answer);
 		} else {
-			ErrorHandlerFactory.getInstance().showErrorsOnScreen(
-					this, this.getResources().getString(R.string.error_strongauth_noanswer));
+			submitCardSecurityInfo(progress, selectedIndex, answer);
 		}
 
 	}
@@ -218,15 +218,34 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	/**
 	 * Submits the bank strong auth answer. 
 	 * 
+	 * @param progress
 	 * @param answer
 	 */
-	private void submitBankSecurityInfo(String answer) {
+	private void submitBankSecurityInfo(final ProgressDialog progress,
+			String answer) {
 		BankStrongAuthAnswerDetails details = new BankStrongAuthAnswerDetails();
 		details.question = answer;
 		details.questionId = questionId;
 		
-		//Create a strong auth post request to send credentials to the server 
-		BankServiceCallFactory.createStrongAuthRequest(this, details).submit();
+		final AsyncCallback<BankStrongAuthDetails> callback = AsyncCallbackBuilderLibrary.createDefaultBankBuilder(BankStrongAuthDetails.class, this, this, true)
+				.withSuccessListener(new SuccessListener<BankStrongAuthDetails>() {
+					
+					@Override
+					public CallbackPriority getCallbackPriority() {
+						return CallbackPriority.MIDDLE;
+					}
+
+					@Override
+					public void success(BankStrongAuthDetails value) {
+						progress.dismiss();
+						startHomeFragment();
+					}
+				})
+				.build();
+					
+		
+		new CreateStrongAuthRequestCall(this, callback, details).submit();
+
 	}
 
 	private void startHomeFragment() {

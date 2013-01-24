@@ -59,7 +59,6 @@ import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.common.urlmanager.UrlManagerBank;
 import com.discover.mobile.error.BaseExceptionFailureHandler;
-import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.help.CustomerServiceContactsActivity;
 import com.discover.mobile.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
@@ -220,56 +219,21 @@ public class LoginActivity extends BaseActivity  {
 
 		if(extras != null){
 			if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
-				showLogoutSuccessful();
+				errorTextView.setText(getString(R.string.logout_sucess));
+				errorTextView.setVisibility(View.VISIBLE);
+				errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 				this.getIntent().putExtra(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
 			}
 		}
 	}
 	
 	/**
-	 * Check to see if the user's session expired
-	 */
-	private void maybeShowSessionExpired() {
-		final Intent intent = this.getIntent();
-		final Bundle extras = intent.getExtras();
-
-		if(extras != null){
-			if(extras.getBoolean(IntentExtraKey.SESSION_EXPIRED, false)){
-				showSessionExpired();
-				this.getIntent().putExtra(IntentExtraKey.SESSION_EXPIRED, false);
-			}
-		}
-	}
-	
-	/**
-	 * Display session expired message
-	 */
-	public void showSessionExpired() {
-		errorTextView.setText(getString(R.string.session_expired));
-		errorTextView.setVisibility(View.VISIBLE);
-		errorTextView.setTextColor(getResources().getColor(R.color.red));
-	}
-	
-	/**
-	 * Display succesful logout message at top of the screen
-	 */
-	public void showLogoutSuccessful() {
-		errorTextView.setText(getString(R.string.logout_sucess));
-		errorTextView.setVisibility(View.VISIBLE);
-		errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
-	}
-	/**
 	 * Resume the activity
 	 */
 	@Override
 	public void onResume(){
 		super.onResume();
-		
-		//Check if the login activity was launched because of a logout
 		maybeShowUserLoggedOut();
-		
-		//Check if the login activity was launched because of a session expire
-		maybeShowSessionExpired();
 		
 		int lastError = getLastError();
 		

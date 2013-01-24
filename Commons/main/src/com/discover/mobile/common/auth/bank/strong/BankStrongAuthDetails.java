@@ -27,10 +27,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  */
 public class BankStrongAuthDetails {
-	/**
-	 * Used to determine whether Strong Auth passed
-	 */
-	public static final String ALLOW_STATUS="ALLOW";
 
 	@JsonProperty("status")
 	public String status;
