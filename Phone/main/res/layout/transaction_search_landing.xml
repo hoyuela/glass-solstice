@@ -3,20 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/light_gray_bkgrd"
+        android:orientation="vertical"
         android:padding="15dp"
         android:paddingTop="7dp" >
 
         <!-- Keyword Section -->
 
-        <LinearLayout
-            android:id="@+id/section_keywords"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/title_keywords"
@@ -32,16 +31,16 @@
                 style="@style/body_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/title_keywords"
                 android:paddingBottom="7dp"
                 android:text="@string/subtitle_keywords"
                 android:textColor="@color/sub_copy" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <EditText
             android:id="@+id/input_keywords"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/section_keywords"
             android:background="@drawable/edit_text_default"
             android:inputType="text"
             android:text="" />
@@ -53,8 +52,7 @@
             style="@style/title_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/input_keywords"
-            android:paddingBottom="7dp"
+            android:paddingBottom="3dp"
             android:paddingTop="20dp"
             android:text="@string/title_date" />
 
@@ -63,44 +61,51 @@
             style="@style/body_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/title_date"
             android:paddingBottom="7dp"
             android:text="@string/subtitle_date"
             android:textColor="@color/sub_copy" />
 
-        <include
-            android:id="@+id/transaction_date_selector"
-            android:layout_below="@id/title_date_sub"
-            layout="@layout/toggle_date_selector" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-        <TextView
-            android:id="@+id/temp_cal_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/transaction_date_selector"
-            android:background="#FFFFFF"
-            android:text="hello left" />
+            <include
+                android:id="@+id/transaction_date_selector"
+                layout="@layout/toggle_range_selector" />
 
-        <TextView
-            android:id="@+id/temp_cal_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/transaction_date_selector"
-            android:background="#FFFFFF"
-            android:text="hello right" />
+            <TextView
+                android:id="@+id/temp_cal_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/transaction_date_selector"
+                android:background="#FFFFFF"
+                android:text="hello left" />
+
+            <TextView
+                android:id="@+id/temp_cal_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/transaction_date_selector"
+                android:background="#FFFFFF"
+                android:text="hello right" />
+        </RelativeLayout>
 
         <!-- Amount Section -->
-        <!--
-            <include
+
+        <TextView
+            android:id="@+id/title_amount"
+            style="@style/title_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="7dp"
+            android:paddingTop="20dp"
+            android:text="@string/title_amount" />
+
+        <include
             android:id="@+id/transaction_amount_selector"
-            layout="@layout/toggle_date_selector" />
-        -->
-        <!-- Nearly same section as above - skip for now -->
-
-
-        <!-- Category Section -->
-    </RelativeLayout>
+            layout="@layout/toggle_range_selector" />
+    </LinearLayout>
 
 </ScrollView>

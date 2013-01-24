@@ -34,6 +34,7 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 	private void setupDateToggleListeners(View v) {
 		RadioGroup dateGroup = (RadioGroup) v
 				.findViewById(R.id.transaction_date_selector);
+//		RadioGroup amtGroup = (RadioGroup) v.findViewBy
 
 		dateLeft = (ToggleButton) dateGroup.findViewById(R.id.toggle_left);
 		dateMid = (ToggleButton) dateGroup.findViewById(R.id.toggle_middle);
@@ -44,6 +45,16 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 		dateRight.setOnClickListener(new DateToggleListener());
 	}
 
+	/**
+	 * Return the integer value of the string that needs to be displayed in the
+	 * title
+	 */
+	@Override
+	public int getActionBarTitle() {
+		return R.string.search_transactions_title;
+	}
+
+	
 	/**
 	 * Listener for Date Toggler
 	 * 
@@ -76,10 +87,9 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 				deselectToggleButton(R.id.toggle_middle);
 				deselectToggleButton(R.id.toggle_left);
 				break;
-
 			}
-
 		}
+		
 
 		/**
 		 * This will ensure a button already selected is not unselected.
@@ -94,12 +104,10 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 				dateLeft.setChecked(true);
 				return false;
 			}
-
 			if (id == dateRight.getId() && !dateRight.isChecked()) {
 				dateRight.setChecked(true);
 				return false;
 			}
-
 			if (id == dateMid.getId() && !dateMid.isChecked()) {
 				dateMid.setChecked(true);
 				return false;
@@ -117,16 +125,13 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 				// Show both date boxes TODO
 				dateRight.setTextColor(getResources().getColor(R.color.white));
 			}
-
 			if (R.id.toggle_middle == id) {
 				// Show single date box TODO
 				dateMid.setTextColor(getResources().getColor(R.color.white));
 			}
-
 			if (R.id.toggle_left == id) {
 				dateLeft.setTextColor(getResources().getColor(R.color.white));
 			}
-
 		}
 
 		/**
@@ -137,33 +142,21 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 
 			if (R.id.toggle_right == id) {
 				// hide both date boxes TODO
-				dateRight.setSelected(false);
+				dateRight.setChecked(false);
 				dateRight.setTextColor(getResources().getColor(
 						R.color.field_copy));
 			}
-
 			if (R.id.toggle_middle == id) {
 				// hide single date box TODO
-				dateMid.setSelected(false);
+				dateMid.setChecked(false);
 				dateMid.setTextColor(getResources()
 						.getColor(R.color.field_copy));
 			}
-
 			if (R.id.toggle_left == id) {
-				dateLeft.setSelected(false);
+				dateLeft.setChecked (false);
 				dateLeft.setTextColor(getResources().getColor(
 						R.color.field_copy));
 			}
 		}
 	}
-
-	/**
-	 * Return the integer value of the string that needs to be displayed in the
-	 * title
-	 */
-	@Override
-	public int getActionBarTitle() {
-		return R.string.search_transactions_title;
-	}
-
 }
