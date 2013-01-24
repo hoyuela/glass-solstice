@@ -19,18 +19,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/black"
             android:textStyle="bold" />
-        
-        <TextView
-            android:id="@+id/error_message_strong_auth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/account_security_label"
-            android:layout_below="@+id/account_security_label"
-            android:paddingTop="4dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/black"
-            android:textSize="@dimen/light_text_size" 
-            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/account_security_info_label"
@@ -43,12 +31,26 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/black"
             android:textSize="@dimen/light_text_size" />
+        
+          <TextView
+            android:id="@+id/error_message_strong_auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/account_security_info_label"
+            android:layout_below="@+id/account_security_info_label"
+            android:paddingTop="4dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            android:textSize="@dimen/light_text_size" 
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/account_security_question_placeholder_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/account_security_info_label"
+            android:layout_below="@+id/error_message_strong_auth"
             android:layout_marginTop="16dp"
             android:text="@string/account_security_placeholder_text"
             android:textAppearance="?android:attr/textAppearanceSmall"
