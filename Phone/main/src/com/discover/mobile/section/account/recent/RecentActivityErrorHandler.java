@@ -42,19 +42,22 @@ public class RecentActivityErrorHandler extends CardBaseErrorResponseHandler{
 		
 		switch(statusCode){
 			case StandardErrorCodes.UNAUTHORIZED:
-				//fragment.showLatePaymentModal(false);
+				fragment.showErrorModal();
 				break;
 			case StandardErrorCodes.INVALID_FORMAT:
-				//fragment.showLatePaymentModal(false);
+				fragment.showErrorModal();
 				break;
 			case StandardErrorCodes.FORBIDDEN:
-				//fragment.showLatePaymentModal(false);
+				fragment.showErrorModal();
 				break;
 			case StandardErrorCodes.INTERNAL_SERVER_ERROR:
-				//fragment.showLatePaymentModal(false);
+				fragment.showErrorModal();
 				break;
 			case StandardErrorCodes.SERVICE_UNAVAILABLE:
-				//fragment.showLatePaymentModal(false);
+				fragment.showErrorModal();
+				break;
+			default:
+				fragment.showErrorModal();
 				break;
 		}
 		return true;
@@ -74,19 +77,22 @@ public class RecentActivityErrorHandler extends CardBaseErrorResponseHandler{
 	protected boolean handleHTTPErrorCode(final int httpErrorCode) {
 		switch (httpErrorCode) {
 			case StandardErrorCodes.UNAUTHORIZED:
-				//fragment.showLatePaymentModal(false);
+				fragment.showErrorModal();
 				break;
 			case StandardErrorCodes.INVALID_FORMAT:
-				//fragment.showLatePaymentModal(false);
+				fragment.showErrorModal();
 				break;
 			case StandardErrorCodes.FORBIDDEN:
-				//fragment.showLatePaymentModal(false);
+				fragment.showErrorModal();
 				break;
 			case StandardErrorCodes.INTERNAL_SERVER_ERROR:
-				//fragment.showLatePaymentModal(false);
+				fragment.showErrorModal();
 				break;
 			case StandardErrorCodes.SERVICE_UNAVAILABLE:
-				//fragment.showLatePaymentModal(false);
+				fragment.showErrorModal();
+				break;
+			default:
+				fragment.showErrorModal();
 				break;
 		}
 		return true;

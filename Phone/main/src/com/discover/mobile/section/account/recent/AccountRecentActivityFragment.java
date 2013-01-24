@@ -2,6 +2,7 @@ package com.discover.mobile.section.account.recent;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
+import com.discover.mobile.alert.ModalAlertWithOneButton;
+import com.discover.mobile.alert.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.account.recent.GetActivityPeriods;
 import com.discover.mobile.common.account.recent.GetTransactionDetails;
 import com.discover.mobile.common.account.recent.GetTransactions;
@@ -21,6 +24,7 @@ import com.discover.mobile.common.account.recent.RecentActivityPeriodsDetail;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.section.account.AccountSearchTransactionFragment;
+import com.discover.mobile.section.account.summary.LatePaymentModalTop;
 
 /**
  * Recent account activity fragment.  Allows the user to see details related to their transactions based
@@ -69,6 +73,7 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	
 	/**
 	 * TODO: Handle rotation
+	 * Need to save categories, current transactions on screen
 	 */
 	
 	/**
@@ -130,12 +135,45 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	@Override
 	public void onResume(){
 		super.onResume();
-		if(null != currentRange){
+		if(RecentActivityRotationHelper.getHelper().isHasData()){
+			resumeFragment();
+			dateRange.setText(currentRange.displayDate);
+		}else if(null != currentRange){
 			dateRange.setText(currentRange.displayDate);
 			getTransactions();
 		} else{
 			getDateRanges();
 		}	
+	}
+	
+	/**
+	 * Resume the fragment from its previous state
+	 */
+	private void resumeFragment() {
+		RecentActivityRotationHelper helper = RecentActivityRotationHelper.getHelper();
+		this.currentRange = helper.getCurrentRange();
+		this.pending.showTransactions(helper.getPending());
+		this.posted.showTransactions(helper.getPosted());
+		this.periods = helper.getPeriods();
+		this.transactions = helper.getTransactions();
+		helper.clearHelper();
+		showTransactions();
+	}
+
+	/**
+	 * Save the sate of the fragment
+	 * @param outState - bundle to save the state in
+	 */
+	@Override
+	public void onSaveInstanceState(final Bundle outState){
+		RecentActivityRotationHelper helper = RecentActivityRotationHelper.getHelper();
+		helper.setCurrentRange(currentRange);
+		helper.setPending(pending.getTransactions());
+		helper.setPeriods(periods);
+		helper.setPosted(posted.getTransactions());
+		helper.setTransactions(transactions);
+		helper.setHasData(true);
+		super.onSaveInstanceState(outState);
 	}
 	
 	/**
@@ -169,7 +207,7 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	 */
 	public void getTransactions(){
 		if(null == dialog || !dialog.isShowing()){
-			dialog.show();
+			showDialog();
 		}
 		new GetTransactions(getActivity(), getTransactionCallback(), currentRange).submit();
 	}
@@ -196,6 +234,34 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	}
 	
 	/**
+	 * Show the error modal, used when the server call fails
+	 */
+	public void showErrorModal(){
+		hideDialog();
+		final Context context = this.getActivity();
+		final LatePaymentModalTop top = new LatePaymentModalTop(context, null);
+		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(context, null);
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(context, top, bottom);
+		top.setErrorState();
+		bottom.setButtonText(R.string.account_summary_modal_button);
+		bottom.getButton().setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				modal.dismiss();
+				popStack();
+			}
+		});
+		super.showCustomAlertDialog(modal);
+	}
+	
+	/**
+	 * Pop the stack so that the user does not see a data less page
+	 */
+	protected void popStack(){
+		this.getFragmentManager().popBackStack();
+	}
+	
+	/**
 	 * Show the search screen
 	 */
 	protected void showSearchScreen(){
@@ -206,7 +272,6 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	 * Show the transactions retrieved from the server
 	 */
 	public void showTransactions(){
-		hideDialog();
 		if(null != transactions.loadMoreLink){
 			load.setVisibility(View.VISIBLE);
 		} else{
@@ -227,6 +292,7 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		posted.setTransactions(transactions.posted);
 		posted.showTransactions(transactions.posted);
 		isLoadingMore = false;
+		hideDialog();
 	}
 	
 	/**

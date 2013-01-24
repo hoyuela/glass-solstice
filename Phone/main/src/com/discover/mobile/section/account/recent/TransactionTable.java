@@ -1,5 +1,6 @@
 package com.discover.mobile.section.account.recent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -35,6 +36,7 @@ public class TransactionTable extends RelativeLayout{
 	/**Boolean used to determine if the white background should be shown*/
 	private boolean isWhiteBackground = false;
 	
+	/**No message bottom line*/
 	private View noMessage;
 
 	/**
@@ -47,6 +49,7 @@ public class TransactionTable extends RelativeLayout{
 		final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(context)
                 .inflate(R.layout.transaction_table, null);
 		
+		transactions = new ArrayList<TransactionDetail>();
 		title = (TextView) mainView.findViewById(R.id.table_title);
 		transactionsList = (LinearLayout) mainView.findViewById(R.id.transactions);
 		message = (TextView) mainView.findViewById(R.id.no_transactions);
@@ -91,9 +94,7 @@ public class TransactionTable extends RelativeLayout{
 	 */
 	public void clearList(){
 		transactionsList.removeAllViews();
-		if(null != this.transactions){
-			this.transactions.clear();
-		}
+		this.transactions.clear();
 	}
 	
 	/**
@@ -122,5 +123,12 @@ public class TransactionTable extends RelativeLayout{
 	 */
 	public void setNoTransactionsMessage(final String message){
 		this.message.setText(message);
+	}
+	
+	/**
+	 * Get the transactions the table has
+	 */
+	public List<TransactionDetail> getTransactions(){
+		return transactions;
 	}
 }
