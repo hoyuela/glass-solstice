@@ -194,10 +194,32 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	 * Displays the Discover logo in the actionBar as opposed to the TextView.
 	 */
 	public void showActionBarLogo() {
+		showActionBarLogo(true);
+	}
+
+	/**
+	 * Displays the TextView in the ActionBar and hides the Discover Logo.d
+	 */
+	public void hideActionBarLogo() {
+		showActionBarLogo(false);
+	}
+
+	/**
+	 * Hides and shows the textView and ImageView.
+	 * 
+	 * @param show
+	 *            Displays logo if true, displays TextView otherwise.
+	 */
+	private void showActionBarLogo(boolean show) {
 		final TextView titleView = (TextView) findViewById(R.id.title_view);
 		final ImageView titleImageView = (ImageView) findViewById(R.id.action_bar_discover_logo);
-		
-		titleView.setVisibility(View.GONE);
-		titleImageView.setVisibility(View.VISIBLE);
+
+		if (show) {
+			titleView.setVisibility(View.GONE);
+			titleImageView.setVisibility(View.VISIBLE);
+		} else {
+			titleView.setVisibility(View.VISIBLE);
+			titleImageView.setVisibility(View.GONE);
+		}
 	}
 }

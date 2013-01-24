@@ -46,6 +46,13 @@ public class HomeSummaryFragment extends BaseFragment {
 		return view;
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		hideActionBarLogo();
+	}
+
 	/**
 	 * Builds the four elements (Current balance, last statement, cashback
 	 * balance, & cashback offer) on the Home view.
