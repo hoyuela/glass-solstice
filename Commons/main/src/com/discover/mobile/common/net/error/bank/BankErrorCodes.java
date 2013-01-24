@@ -19,7 +19,7 @@ public class BankErrorCodes {
 	/**
 	 * Error Code used to describe an Invalid Login error response with HTTP Status Code 401
 	 */
-	public static final String ERROR_INVALID_LOGIN = "Auth.Login.Fail";
+	public static final String ERROR_INVALID_LOGIN = "Auth.Login.Failed";
 	/**
 	 * Error Code used to describe a Last Attempt Invalid Login error response with HTTP Status Code 401
 	 */

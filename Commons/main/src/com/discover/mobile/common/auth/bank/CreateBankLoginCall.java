@@ -13,8 +13,8 @@ import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
+import com.discover.mobile.common.net.error.ExceptionLibrary;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
-import com.discover.mobile.common.net.error.bank.BankExceptions;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.urlmanager.UrlManagerBank;
 
@@ -91,7 +91,7 @@ public class CreateBankLoginCall extends
 				Log.e(TAG, message);
 			}
 	
-			throw new BankExceptions.MissingTokenException(message);
+			throw new ExceptionLibrary.MissingTokenException();
 		}
 		
 		return data;

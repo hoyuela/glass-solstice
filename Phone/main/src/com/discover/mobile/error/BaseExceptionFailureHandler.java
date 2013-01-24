@@ -29,7 +29,17 @@ public class BaseExceptionFailureHandler implements ExceptionFailureHandler {
 		//TODO: Handle Socket Timeout Exception
 		//TODO: Handle Airplane Mode
 		//TOOD: Handle MissingTokenException
+		//TODO: Handle Malformed Message Exception
 		//TODO: Handle IOException
+		
+		//TODO: If exception during Pre-Auth then show error modal and exit app
+		//TODO: If exception during Login show error on screen
+		//TODO: If exception during Strong auth show error on screen
+		//TODO: If exception during Forget Password
+		//TODO: If exception during During Logged in and in Fragment display modal
+		
+		
+		ErrorHandlerFactory.getInstance().handleGenericError(0);
 		return true;
 	}
 
