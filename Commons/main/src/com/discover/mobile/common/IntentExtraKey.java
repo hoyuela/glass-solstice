@@ -39,6 +39,10 @@ public final class IntentExtraKey {
 	public static final String STRONG_AUTH_QUESTION_ID = "SA-Question-ID";
 	public static final String ACCOUNT_LOCKED_FAILED_ATTEMPTS = "Account-Locked-Failed-Attempts";
 	public static final String SHOW_SUCESSFUL_LOGOUT_MESSAGE = "Show-Successful-Logout";
+	/**
+	 * Used to specify to the application that the token for the session is no longer valid
+	 */
+	public static final String SESSION_EXPIRED = "Session-Expired";
 	
 	/**
 	 * ERROR TEXT is used to add resource error text to an activity to display on error Page

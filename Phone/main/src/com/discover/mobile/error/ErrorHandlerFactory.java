@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 
+import com.discover.mobile.BankServiceCallFactory;
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
@@ -23,6 +24,7 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.navigation.Navigator;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
 /**
@@ -81,7 +83,7 @@ public class ErrorHandlerFactory {
 	 * @param errorText
 	 *            - Contains the error string to be displayed on ErrorHandlerUi.
 	 */
-	protected void showErrorsOnScreen(final ErrorHandlerUi errorHandlerUi,final String errorText) {
+	public void showErrorsOnScreen(final ErrorHandlerUi errorHandlerUi,final String errorText) {
 		//Show error label and display error text
 		if (errorHandlerUi != null) {
 			errorHandlerUi.getErrorLabel().setText(errorText);
@@ -106,7 +108,7 @@ public class ErrorHandlerFactory {
 	 * @param errorHandlerUi
 	 *            - Reference to ErrorHandlerUi that needs to be updated.
 	 */
-	protected void clearTextOnScreen(final ErrorHandlerUi errorHandlerUi) {
+	public void clearTextOnScreen(final ErrorHandlerUi errorHandlerUi) {
 		//Hide error label and display error text
 		if (errorHandlerUi != null) {
 			errorHandlerUi.getErrorLabel().setVisibility(View.GONE);
@@ -385,8 +387,9 @@ public class ErrorHandlerFactory {
 	}
 
 	public void handleHttpUnauthorizedError() {
-		//TODO: Will complete this in the Handle Technical Difficulties User Story	
+	
 	}
+	
 	/**
 	 * This function handles the response for a 401 with strong auth. The new
 	 * question and id are sent as an intent to the strong auth activity.
@@ -459,17 +462,17 @@ public class ErrorHandlerFactory {
 	}
 
 	/**
-	 *     * Launch the strong auth Activity with the question that was
-	 * retrieved from the get strong auth question call.    
-	 */
-	public void handleStrongAuthChallenge(String question, String id) {
-		final Intent strongAuth = new Intent(ErrorHandlerFactory.mActivity,
-				EnhancedAccountSecurityActivity.class);
-
-		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, question);
-		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, id);
-		strongAuth.putExtra(IntentExtraKey.IS_CARD_ACCOUNT, false);
-		ErrorHandlerFactory.mActivity.startActivityForResult(strongAuth, 0);
+     * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
+     */
+	public void handleStrongAuthChallenge() {
+		//Verify user is not in login page, if they are then the challenge will be handled elsewhere
+		if( mActivity.getClass() != LoginActivity.class ) {
+			BankServiceCallFactory.createStrongAuthRequest(mActivity).submit();
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "In login activity, so ignoring strong auth challenge");
+			}
+		}
 	}
 	
 	/** 
