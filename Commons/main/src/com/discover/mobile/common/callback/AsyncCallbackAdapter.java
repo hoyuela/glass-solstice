@@ -1,5 +1,6 @@
 package com.discover.mobile.common.callback;
 
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 
@@ -25,8 +26,13 @@ public class AsyncCallbackAdapter<V> implements AsyncCallback<V> {
 		// TODO consider forcing some implementation of success (why have any calls that we don't care about a 200?)
 	}
 	
+	/**
+	 * 
+	 * @param executionException Reference to the exception that was thrown
+	 * @param networkServiceCall Reference to the network service call where the exception occurred
+	 */
 	@Override
-	public void failure(final Throwable executionException) {
+	public void failure(final Throwable executionException, final NetworkServiceCall<V> networkServiceCall) {
 		throw new UnsupportedOperationException("Unhandled execution exception", executionException);
 	}
 	

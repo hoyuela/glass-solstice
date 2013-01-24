@@ -8,7 +8,13 @@ public interface AsyncCallback<V> {
 	void success(V value);
 	
 	void failure(ErrorResponse<?> errorResponse);
-	void failure(Throwable executionException);
+	
+	/**
+	 * 
+	 * @param executionException Reference to the exception that was thrown
+	 * @param networkServiceCall Reference to the network service call where the exception occurred
+	 */
+	void failure(Throwable executionException, final NetworkServiceCall<V> networkServiceCall );
 	
 	/**
 	 * Called when the {@link NetworkServiceCall} finishes, no matter what the result was. This will be called before

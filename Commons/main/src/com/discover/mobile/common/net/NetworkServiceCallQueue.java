@@ -314,10 +314,15 @@ final public class NetworkServiceCallQueue {
 			return false;
 		}
 
+		/**
+		 * 
+		 * @param executionException Reference to the exception that was thrown
+		 * @param networkServiceCall Reference to the network service call where the exception occurred
+		 */
 		@Override
-		public boolean handleFailure(Throwable executionException) {
+		public boolean handleFailure(Throwable executionException, final NetworkServiceCall<?> networkServiceCall) {
 			if( mCondition != null ) {
-				mCondition.handleFailure(executionException);
+				mCondition.handleFailure(executionException, networkServiceCall);
 			}
 			
 			executeNextCall();

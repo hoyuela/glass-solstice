@@ -1,6 +1,10 @@
 package com.discover.mobile.error;
 
+import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
+import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.navigation.Navigator;
 
 /**
  * 1) include context here so that this class can invoke the error modal dialog.
@@ -25,21 +29,15 @@ public class BaseExceptionFailureHandler implements ExceptionFailureHandler {
 	}
 
 	@Override
-	public boolean handleFailure(Throwable arg0) {
-		//TODO: Handle Socket Timeout Exception
-		//TODO: Handle Airplane Mode
-		//TOOD: Handle MissingTokenException
-		//TODO: Handle Malformed Message Exception
-		//TODO: Handle IOException
+	public boolean handleFailure(Throwable arg0, final NetworkServiceCall<?> networkServiceCall) {	
+		//Check if this is an exception that occured to pre-auth
+		if( networkServiceCall instanceof PreAuthCheckCall) {
+			LoginActivity loginActivity = (LoginActivity)ErrorHandlerFactory.getActiveActivity();
+			loginActivity.showSplashScreen(false);
+		} else {
+			ErrorHandlerFactory.getInstance().handleGenericError(0);
+		}
 		
-		//TODO: If exception during Pre-Auth then show error modal and exit app
-		//TODO: If exception during Login show error on screen
-		//TODO: If exception during Strong auth show error on screen
-		//TODO: If exception during Forget Password
-		//TODO: If exception during During Logged in and in Fragment display modal
-		
-		
-		ErrorHandlerFactory.getInstance().handleGenericError(0);
 		return true;
 	}
 

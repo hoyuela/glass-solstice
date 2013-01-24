@@ -42,6 +42,7 @@ import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.customui.NonEmptyEditText;
 import com.discover.mobile.common.customui.UsernameOrAccountNumberEditText;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
@@ -270,7 +271,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 			}
 			
 			@Override
-			public void failure(final Throwable error) {
+			public void failure(final Throwable error, final NetworkServiceCall<RegistrationConfirmationDetails> callback) {
 				progress.dismiss();
 				Log.e(TAG, "Error: " + error.getMessage());
 				showOkAlertDialog("Error", error.getMessage());
