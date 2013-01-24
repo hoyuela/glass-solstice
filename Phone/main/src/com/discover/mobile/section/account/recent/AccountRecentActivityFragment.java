@@ -31,34 +31,53 @@ import com.discover.mobile.section.account.AccountSearchTransactionFragment;
  */
 public class AccountRecentActivityFragment extends BaseFragment {
 	
+	/**Text View holding the date range*/
 	private TextView dateRange;
 	
+	/**TExt view holding the button to change to the search page*/
 	private TextView searchTrans;
 	
+	/**Current range showing transactions*/
 	private RecentActivityPeriodDetail currentRange;
 	
+	/**All the ranges available to be displayed*/
 	private RecentActivityPeriodsDetail periods;
 	
+	/**Table holding the pending transactions*/
 	private TransactionTable pending;
 	
+	/**Table holding the posted transactions*/
 	private TransactionTable posted;
 	
+	/**Text view holding the feedback*/
 	private TextView feedback;
 	
+	/**Load more button*/
 	private Button load;
 	
+	/**Activity details from the server*/
 	private GetTransactionDetails transactions;
 	
+	/**Resources*/
 	private Resources res;
 	
+	/**Boolean letting the application know it is loading more*/
 	private boolean isLoadingMore = false;
 	
+	/**Dialog diaplyed when server calls are made*/
 	private AlertDialog dialog;
 	
 	/**
 	 * TODO: Handle rotation
 	 */
 	
+	/**
+	 * Create the view
+	 * @param inflater - used to inflate the layout
+	 * @param container - container holding the view
+	 * @param savedInstanceState - state of the fragment
+	 * @return the view
+	 */
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -105,6 +124,9 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		return view;
 	}
 	
+	/**
+	 * Resume the fragment
+	 */
 	@Override
 	public void onResume(){
 		super.onResume();
@@ -116,26 +138,35 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		}	
 	}
 	
+	/**
+	 * Get the date ranges to be displayed in the fragment
+	 */
 	private void getDateRanges(){
 		showDialog();
-		//TODO: Create error handler
 		final  AsyncCallback<RecentActivityPeriodsDetail> callback = 
 				GenericAsyncCallback.<RecentActivityPeriodsDetail>builder(this.getActivity())
 				.withSuccessListener(new GetActivityPeriodsSuccessListener(this))
-				.withErrorResponseHandler(null)
+				.withErrorResponseHandler(new RecentActivityErrorHandler(this))
 				.build();
 		
 		new GetActivityPeriods(getActivity(), callback).submit();
 		
 	}
 	
+	/**
+	 * Get the callback for getting the transactions
+	 * @return the callback for getting the transactions
+	 */
 	private AsyncCallback<GetTransactionDetails> getTransactionCallback(){
 		return	GenericAsyncCallback.<GetTransactionDetails>builder(this.getActivity())
 				.withSuccessListener(new GetTransactionsSuccessListener(this))
-				.withErrorResponseHandler(null)
+				.withErrorResponseHandler(new RecentActivityErrorHandler(this))
 				.build();
 	}
 	
+	/**
+	 * Get the transactions for the current time period
+	 */
 	public void getTransactions(){
 		if(null == dialog || !dialog.isShowing()){
 			dialog.show();
@@ -143,13 +174,20 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		new GetTransactions(getActivity(), getTransactionCallback(), currentRange).submit();
 	}
 	
+	/**
+	 * Get more transactions from the link
+	 * @param link link to get more transactions from
+	 */
 	private void loadMoreTransactions(final String link){
 		isLoadingMore = true;
 		showDialog();
 		new GetTransactions(getActivity(), getTransactionCallback(), transactions.loadMoreLink).submit();
 	}
 	
-	public void getNewDateRange(){
+	/**
+	 * Get a new date range for transactions
+	 */
+	private void getNewDateRange(){
 		if(null == periods){return;}
 		final ChooseDateRangeFragment fragment = new ChooseDateRangeFragment();
 		fragment.setReturnFragment(this);
@@ -157,10 +195,16 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		super.makeFragmentVisible(fragment);
 	}
 	
+	/**
+	 * Show the search screen
+	 */
 	protected void showSearchScreen(){
 		super.makeFragmentVisible(new AccountSearchTransactionFragment());
 	}
 	
+	/**
+	 * Show the transactions retrieved from the server
+	 */
 	public void showTransactions(){
 		hideDialog();
 		if(null != transactions.loadMoreLink){
@@ -185,6 +229,9 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		isLoadingMore = false;
 	}
 	
+	/**
+	 * Setup the view to only show one table
+	 */
 	private void showOnlyOneTable(){
 		pending.setVisibility(View.GONE);
 		posted.setNoTransactionsMessage(res.getString(R.string.recent_activity_no_activity));

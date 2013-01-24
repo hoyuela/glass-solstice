@@ -51,15 +51,6 @@
             android:layout_weight="1"
             android:text="@string/recent_activity_amount" />
     </LinearLayout>
-    
-    <TextView 
-        android:id="@+id/no_transactions"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_below="@+id/sort_filters"
-        android:layout_marginLeft="@dimen/forms_inner_padding"
-        android:layout_marginRight="@dimen/forms_inner_padding"/>
 
     <View
         android:id="@+id/top_line"
@@ -68,7 +59,19 @@
 	    android:background="@drawable/table_solid_line"
 	    android:layout_alignParentRight="true"
 	    android:layout_alignParentLeft="true"
-	    android:layout_below="@+id/no_transactions"/>
+	    android:layout_below="@+id/sort_filters"/>
+     
+    <TextView 
+        android:id="@+id/no_transactions"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@+id/top_line"
+	    android:paddingRight="@dimen/between_related_elements_padding"
+	    android:paddingLeft="@dimen/between_related_elements_padding"
+	    android:paddingTop="@dimen/table_inner_padding"
+	    android:paddingBottom="@dimen/table_inner_padding"
+        android:background="@color/transaction_table_stripe"/>
     
     <LinearLayout
         android:id="@+id/transactions"
@@ -78,12 +81,12 @@
         android:layout_below="@+id/top_line"/>
     
     <View
-        android:id="@+id/bottom_line"
+        android:id="@+id/bottom_no_message"
    		android:layout_width="wrap_content"
     	android:layout_height="1dp"
 	    android:background="@drawable/table_solid_line"
 	    android:layout_alignParentRight="true"
 	    android:layout_alignParentLeft="true"
-	    android:layout_below="@+id/transactions"/>
+	    android:layout_below="@+id/no_transactions"/>
 
 </RelativeLayout>

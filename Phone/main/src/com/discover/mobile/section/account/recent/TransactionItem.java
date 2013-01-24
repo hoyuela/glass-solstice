@@ -9,16 +9,27 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.account.recent.TransactionDetail;
 
+/**
+ * Item shown in the transaction table
+ * @author jthornton
+ *
+ */
 public class TransactionItem extends RelativeLayout{
 	
 	/**Date associated with the item*/
 	private final TextView date;
 	
+	/**Description of the transaction*/
 	private final TextView description;
 	
+	/**Amount of the transactions*/
 	private final TextView amount;
 	
+	/**Transaction being displayed in the layout*/
 	private final TransactionDetail transaction;
+	
+	/**String meaning the amount was a debit*/
+	private static final String DEBIT = "-";
 	
 	/**
 	 * Constructor of the class
@@ -36,7 +47,7 @@ public class TransactionItem extends RelativeLayout{
 		amount = (TextView) mainView.findViewById(R.id.transaction_amount);
 		this.transaction = transaction; 
 		
-		if(transaction.amount.contains("-")){
+		if(transaction.amount.contains(DEBIT)){
 			amount.setTextColor(context.getResources().getColor(R.color.string_indicator));
 		}
 		
@@ -44,6 +55,9 @@ public class TransactionItem extends RelativeLayout{
 		addView(mainView);
 	}
 	
+	/**
+	 * Show the transaction information
+	 */
 	private void showTransaction(){
 		date.setText(this.transaction.date);
 		description.setText(this.transaction.description);

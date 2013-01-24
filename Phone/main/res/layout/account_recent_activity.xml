@@ -62,8 +62,7 @@
             android:id="@+id/pending_transactions"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/groups_of_elements_padding"
-            android:visibility="gone" />
+            android:layout_marginTop="@dimen/groups_of_elements_padding" />
 
         <com.discover.mobile.section.account.recent.TransactionTable
             android:id="@+id/posted_transactions"

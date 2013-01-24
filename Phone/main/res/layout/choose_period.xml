@@ -30,6 +30,16 @@
 	    	android:orientation="vertical"
 	        android:layout_marginBottom="@dimen/between_related_elements_padding"
 	        android:background="@drawable/notification_list_item"/>
+	    
+        <TextView
+            android:id="@+id/provide_feedback_button"
+            style="@style/blue_hyperlink_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/orange_button_margin_top"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/feedback_text"/>
 
 	</LinearLayout>
 </ScrollView>
