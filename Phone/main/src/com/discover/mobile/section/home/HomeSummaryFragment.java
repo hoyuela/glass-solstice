@@ -28,7 +28,9 @@ public class HomeSummaryFragment extends BaseFragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		BankServiceCallFactory.displayCustomerInformation();
+		if (Globals.getCurrentAccount().equals(AccountType.BANK_ACCOUNT)){
+			BankServiceCallFactory.displayCustomerInformation();
+		}
 	}
 
 	private View view;
