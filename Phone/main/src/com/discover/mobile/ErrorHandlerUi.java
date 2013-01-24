@@ -60,28 +60,6 @@ public interface ErrorHandlerUi {
 	public void showDynamicOneButtonAlert(int title, String content, int buttonText);
 	
 	/**
-	 * Send to error page; display error text with given title
-	 * @param titleText
-	 * @param errorText
-	 */
-	
-	/**
-	 * A common method used to forward user to error modal dialog with a given static
-	 * string text message
-	 * 
-	 * @param errorCode HTTP error code
-	 * @param errorText Text that is displayed in the content area of dialog
-	 * @param titleText Text that is displayed at the top of the screen which describes the reason of the error
-	 */
-	public void sendToErrorPage(int errorCode, int titleText, int errorText);
-	
-	/**
-	 * Send to error page; display error text with default error page title
-	 * @param errorText
-	 */
-	public void sendToErrorPage(int errorText);
-	
-	/**
 	 * returns the context associated with this error handler ui.
 	 * 
 	 * for fragment, this is the activityfragment.
