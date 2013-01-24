@@ -177,6 +177,13 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private boolean useAndClearContext() {
+		TypedReferenceHandler<R> handler = this.getHandler();
+		
+		//Set network service call in handler to be able to share request call information in callbacks
+		if( null != handler) {
+			handler.setNetworkServiceCall(this);
+		}
+		
 		try {
 			checkAndUpdateSubmittedState();
 			checkNetworkConnected();
@@ -238,13 +245,6 @@ public abstract class NetworkServiceCall<R> {
  		conn = createConnection();
 		try {
 			prepareConnection();
-			
-			TypedReferenceHandler<R> handler = this.getHandler();
-			
-			//Set network service call in handler to be able to share request call information in callbacks
-			if( null != handler) {
-				handler.setNetworkServiceCall(this);
-			}
 			
 			conn.connect();
 			try {
