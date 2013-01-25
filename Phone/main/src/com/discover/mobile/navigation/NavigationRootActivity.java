@@ -1,7 +1,11 @@
 package com.discover.mobile.navigation;
 
+import java.util.Calendar;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -14,6 +18,7 @@ import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.urlmanager.UrlManagerBank;
 import com.discover.mobile.push.register.PushNowAvailableFragment;
 
 /**
@@ -44,6 +49,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	 */
 	private boolean wasPaused = false;
 	
+	
 	/**
 	 * Create the activity
 	 * @param savedInstatnceState - saved state of the activity
@@ -54,6 +60,55 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 		setupFirstVisibleFragment();
 		setUpCurrentFragment(savedInstanceState);
 		setStatusBarVisbility();
+	}
+	
+	/**
+	 * Used to handle user interaction across the application.
+	 * 
+	 * @param ev
+	 *            The MotionEvent that was recognized.
+	 * @return True if consumed, false otherwise.
+	 */
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		super.dispatchTouchEvent(ev);
+
+		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+			getLastTouchTime();
+		}
+
+		// Don't consume event.
+		return false;
+	}
+
+	/**
+	 * Determines the current time and gets the time stored in globals. 
+	 * Then updates globals with the current time. 
+	 */
+	private void getLastTouchTime() {
+		Calendar mCalendarInstance = Calendar.getInstance();
+
+		long previousTime = Globals.getOldTouchTimeInMillis();
+		long currentTime = mCalendarInstance.getTimeInMillis();
+
+		setIsUserTimedOut(previousTime, currentTime);
+		Globals.setOldTouchTimeInMillis(currentTime);
+	}
+	
+	/**
+	 * Determines whether or not the user is timed out. 
+	 * @param previousTime
+	 * @param currentTime
+	 */
+	private void setIsUserTimedOut(long previousTime, long currentTime) {
+		// Previous value exists
+		if (previousTime != 0) {
+			long difference = currentTime - previousTime;
+			// User has become inactive and will be set to timed-out.
+			if ((difference / 1000) > UrlManagerBank.MAX_IDLE_TIME && Globals.getCurrentAccount().equals(AccountType.BANK_ACCOUNT)) {
+				 Navigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED);
+			}
+		}
 	}
 	
 	/**
@@ -83,6 +138,9 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 			getSupportFragmentManager().popBackStack();
 			makeFragmentVisible(new PushNowAvailableFragment());	
 		} 
+		if (Globals.getCurrentAccount().equals(AccountType.BANK_ACCOUNT)){
+			getLastTouchTime();
+		}
 		
 		final Bundle extras = getIntent().getExtras();
 		if(null != extras){

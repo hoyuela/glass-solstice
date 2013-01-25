@@ -77,6 +77,8 @@ public final class Globals {
 	/**Used to determine whether the user is logged in or not**/
 	private static boolean isLoggedIn;
 	
+	private static long oldTouchTimeinMillis;
+	
 	//Initialize static members at start-up of application
 	static {
 		setToDefaults();
@@ -389,6 +391,14 @@ public final class Globals {
 	 */
 	public static boolean isLoggedIn() {
 		return isLoggedIn;
+	}
+	
+	public static long getOldTouchTimeInMillis(){
+		return oldTouchTimeinMillis;
+	}
+	
+	public static void setOldTouchTimeInMillis(long touch){
+		oldTouchTimeinMillis = touch;
 	}
 
 	/**
