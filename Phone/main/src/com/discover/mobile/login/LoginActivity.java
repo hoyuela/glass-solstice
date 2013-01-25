@@ -42,31 +42,24 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
-import com.discover.mobile.common.auth.bank.BankLoginData;
 import com.discover.mobile.common.auth.bank.BankLoginDetails;
-import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
-import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
-import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.GenericCallbackListener.CallbackPriority;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.customui.NonEmptyEditText;
 import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
-import com.discover.mobile.common.urlmanager.UrlManagerBank;
 import com.discover.mobile.error.BaseExceptionFailureHandler;
-import com.discover.mobile.error.ErrorHandlerFactory;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.help.CustomerServiceContactsActivity;
 import com.discover.mobile.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
-import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
@@ -587,7 +580,7 @@ public class LoginActivity extends BaseActivity  {
 
 					}
 				})
-				.withErrorResponseHandler(new LoginErrorResponseHandler(this))
+				.withErrorResponseHandler(new CardBaseErrorResponseHandler(this))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
 				.withCompletionListener(new LockScreenCompletionListener(this))
 				.build();

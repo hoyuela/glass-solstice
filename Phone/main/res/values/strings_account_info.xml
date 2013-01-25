@@ -7,11 +7,9 @@
 	    You have entered invalid information.
 	     Carefully review your information and please try again.
 	</string>
-	<string name="account_info_sams_club_card_error_text">
-	    As a Sam\'s Club Discover Cardmember, you cannot register for the Account Center access 
-	    at Discovercard.com. To manage your account you may register at the Sam\'s Club Web Site.
-	    Please contact customer service at 1&#8211;866&#8211;221&#8211;1126 for more information. 
-	</string>
+	<string name="account_info_sams_club_card_error_text">As a Sam\'s Club Discover Cardmember, you cannot register for
+	    Account Center access at discover.com. We\'d love to have you, but for now you must
+	    register through the Sam\'s Club Website to manage your account.</string>
 
 	<string name="account_info_input_restrictions_label">This is a 16&#8211;digit number starting with 6011.
 	    Do not include spaces or hyphens.

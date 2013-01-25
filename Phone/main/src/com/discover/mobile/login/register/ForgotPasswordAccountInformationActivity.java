@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -86,6 +87,13 @@ public class ForgotPasswordAccountInformationActivity extends ForgotOrRegisterFi
 	protected void setHeaderProgressText() {
 			HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
 			headerProgressBar.setTitle(R.string.enter_info, R.string.create_password, R.string.confirm);
+	}
+	
+	@Override
+	public void finish() {
+		super.finish();
+		Intent forgotCredentialsActivity = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(forgotCredentialsActivity);
 	}
 
 	@Override
