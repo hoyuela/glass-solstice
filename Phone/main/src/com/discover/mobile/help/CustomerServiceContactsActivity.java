@@ -118,18 +118,6 @@ public class CustomerServiceContactsActivity extends NotLoggedInRoboActivity {
 	}
 
 	@Override
-	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendToErrorPage(int errorText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public Context getContext() {
 		// TODO Auto-generated method stub
 		return null;

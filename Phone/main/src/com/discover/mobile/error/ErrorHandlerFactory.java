@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
@@ -283,8 +284,16 @@ public class ErrorHandlerFactory {
 		}
 
 		// Create a one button modal with text as per parameters provided
-		ModalAlertWithOneButton modal = new ModalAlertWithOneButton(mActivity,
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(mActivity,
 				titleText, errorText, true, helpResId, R.string.ok);
+		
+		modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				modal.dismiss();
+				
+			}		
+		});
 
 		// Show one button error dialog
 		return modal;
