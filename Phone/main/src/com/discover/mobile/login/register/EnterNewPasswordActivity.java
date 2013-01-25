@@ -52,6 +52,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		super.isForgot = true;
 		setContentView(R.layout.register_create_password);
 		loadAllViews();
 		setupInputFields();
