@@ -2,7 +2,7 @@ package com.discover.mobile.login.register;
 
 import java.util.List;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -44,7 +44,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 	 * forgot or register.
 	 */
 	protected RegistrationConfirmationDetails confirmationDetails;
-	protected final Context currentContext = this;
+	protected final Activity currentContext = this;
 
 	/**
 	 * This method submits the users information to the Card server for verification.
