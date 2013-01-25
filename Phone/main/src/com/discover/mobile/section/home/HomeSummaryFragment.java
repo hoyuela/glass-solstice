@@ -95,9 +95,9 @@ public class HomeSummaryFragment extends BaseFragment {
 				.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
 						credAvailable));
 
-		// Pay button
+		// View button
 		((TextView) currentBalance.findViewById(R.id.blue_button_text))
-				.setText(getString(R.string.pay_blue_button_text));
+				.setText(getString(R.string.view_blue_button_text));
 
 	}
 
@@ -126,9 +126,9 @@ public class HomeSummaryFragment extends BaseFragment {
 		((TextView) lastStatement.findViewById(R.id.bottom_bar_value))
 				.setText(NumberFormat.getCurrencyInstance(Locale.US).format(minPayment));
 
-		// View button
+		// Pay button
 		((TextView) lastStatement.findViewById(R.id.blue_button_text))
-				.setText(R.string.view_blue_button_text);
+				.setText(R.string.pay_blue_button_text);
 	}
 
 	/**
