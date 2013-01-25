@@ -19,6 +19,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.CompletionLis
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 
 /**
@@ -70,13 +71,17 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		safeClear(successListeners);
 	}
 
+	/**
+	 * @param executionException Reference to the exception that was thrown
+	 * @param networkServiceCall Reference to the network service call where the exception occurred
+	 */
 	@Override
-	public void failure(final Throwable executionException) {
+	public void failure(final Throwable executionException, final NetworkServiceCall<V> networkServiceCall) {
 		Log.w(TAG, "caught throwable during execution", executionException);
 		
 		boolean handled = false;
 		for(final ExceptionFailureHandler handler : exceptionFailureHandlers) {
-			handled = handler.handleFailure(executionException);
+			handled = handler.handleFailure(executionException, networkServiceCall);
 			if(handled)
 				break;
 		}

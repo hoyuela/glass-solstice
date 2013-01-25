@@ -17,8 +17,11 @@ public abstract class  NetworkServiceCallCondition<TYPE> {
 		return false;
 	}
 
-
-	public boolean handleFailure(Throwable arg0) {
+	/**
+	 * @param executionException Reference to the exception that was thrown
+	 * @param networkServiceCall Reference to the network service call where the exception occurred
+	 */
+	public boolean handleFailure(Throwable arg0, final NetworkServiceCall<?> networkServiceCall) {
 		
 		return false;
 	}

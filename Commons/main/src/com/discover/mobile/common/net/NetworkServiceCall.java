@@ -107,7 +107,7 @@ public abstract class NetworkServiceCall<R> {
 		}
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xApplicationVersion);
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xClientPlatform);
-	
+		
 	}
 	
 	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {
@@ -177,6 +177,13 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private boolean useAndClearContext() {
+		TypedReferenceHandler<R> handler = this.getHandler();
+		
+		//Set network service call in handler to be able to share request call information in callbacks
+		if( null != handler) {
+			handler.setNetworkServiceCall(this);
+		}
+		
 		try {
 			checkAndUpdateSubmittedState();
 			checkNetworkConnected();
@@ -241,6 +248,7 @@ public abstract class NetworkServiceCall<R> {
 			
 			conn.connect();
 			try {
+				
 				sendRequestBody();
 				
 				final int statusCode = getResponseCode();
@@ -459,7 +467,6 @@ public abstract class NetworkServiceCall<R> {
 	 * @throws IOException
 	 */
 	private void parseResponseAndSendResult(final int statusCode) throws IOException {
-		
 		if(DelegatingErrorResponseParser.isErrorStatus(statusCode)) {
 			
 			final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();

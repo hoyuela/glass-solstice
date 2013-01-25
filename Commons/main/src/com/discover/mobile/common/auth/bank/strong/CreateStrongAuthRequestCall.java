@@ -38,6 +38,9 @@ public class CreateStrongAuthRequestCall extends
 			errorResponseParser = BankErrorResponseParser.instance();
 			
 			sendDeviceIdentifiers = true;
+			
+			// Specify what error parser to use when receiving an error response
+			errorResponseParser = BankErrorResponseParser.instance();
 		}}, BankStrongAuthDetails.class, false);
 		handler = new StrongReferenceHandler<BankStrongAuthDetails>(callback);
 	}

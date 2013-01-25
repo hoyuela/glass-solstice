@@ -9,7 +9,6 @@ import java.net.HttpURLConnection;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
@@ -18,13 +17,9 @@ import android.widget.EditText;
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.login.LockOutUserActivity;
 
 /**
  * A base class for error response handling.
@@ -87,19 +82,19 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 			// FIRST we will try for common status code generic handling
 			switch (messageErrorResponse.getMessageStatusCode()) {
 				case UNSCHEDULED_MAINTENANCE:
-					getErrorFieldUi().sendToErrorPage(R.string.temporary_outage);
+					sendToErrorPage(R.string.temporary_outage);
 					return true;
 	
 				case SCHEDULED_MAINTENANCE:
-					getErrorFieldUi().sendToErrorPage(R.string.planned_outage_one);
+					sendToErrorPage(R.string.planned_outage_one);
 					return true;
 	
 				case PLANNED_OUTAGE:
-					getErrorFieldUi().sendToErrorPage(R.string.planned_outage_one);
+					sendToErrorPage(R.string.planned_outage_one);
 					return true;
 	
 				case NO_DATA_FOUND:
-					getErrorFieldUi().sendToErrorPage(R.string.no_data_found);
+					sendToErrorPage(R.string.no_data_found);
 					return true;
 
 			}
@@ -201,15 +196,15 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 			return true;
 
 		case HttpURLConnection.HTTP_INTERNAL_ERROR:
-			getErrorFieldUi().sendToErrorPage(R.string.internal_server_error_500);
+			sendToErrorPage(R.string.internal_server_error_500);
 			return true;
 
 		case HttpURLConnection.HTTP_UNAVAILABLE:
-			getErrorFieldUi().sendToErrorPage(httpErrorCode, R.string.error_503_title, R.string.internal_server_error_503);
+			sendToErrorPage(httpErrorCode, R.string.error_503_title, R.string.internal_server_error_503);
 			return true;
 
 		case HttpURLConnection.HTTP_FORBIDDEN:
-			getErrorFieldUi().sendToErrorPage(R.string.forbidden_403);
+			sendToErrorPage(R.string.forbidden_403);
 			return true;
 		}
 		return false;
@@ -330,10 +325,22 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	 * @param errorText
 	 */
 	protected void sendToErrorPage(final int titleText,final int errorText) {
-		final Intent maintenancePageIntent = new Intent(getErrorFieldUi().getContext(), LockOutUserActivity.class);
-		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
-		getErrorFieldUi().getContext().startActivity(maintenancePageIntent);
-		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
+		final Context context = getErrorFieldUi().getContext();
+		final ErrorHandlerFactory factory = ErrorHandlerFactory.getInstance();
+		final AlertDialog dialog = factory.createErrorModal(context.getString(titleText), context.getString(errorText));
+		ErrorHandlerFactory.showCustomAlert(dialog);
+	}
+	
+    /**
+	 * A common method used to forward user to error page with a given static
+	 * string text message
+	 * 
+	 * @param errorText
+	 */
+	protected void sendToErrorPage(final int errorCode, final int titleText,final int errorText) {
+		final ErrorHandlerFactory factory = ErrorHandlerFactory.getInstance();
+		final AlertDialog dialog = factory.createErrorModal(errorCode, titleText, errorText);
+		ErrorHandlerFactory.showCustomAlert(dialog);
 	}
 
 	/**
@@ -343,9 +350,12 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	 * @param errorText
 	 */
 	protected void sendToErrorPage(final int errorText) {
-		final Intent maintenancePageIntent = new Intent(getErrorFieldUi().getContext(), LockOutUserActivity.class);
-		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
-		getErrorFieldUi().getContext().startActivity(maintenancePageIntent);
+		final Context context = getErrorFieldUi().getContext();
+		final ErrorHandlerFactory factory = ErrorHandlerFactory.getInstance();
+		final AlertDialog dialog = 
+				factory.createErrorModal(context.getString(R.string.default_outage_header), 
+						context.getString(errorText));
+		ErrorHandlerFactory.showCustomAlert(dialog);
 	}
 
 }

@@ -10,10 +10,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 
+import com.discover.mobile.BankServiceCallFactory;
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
@@ -23,6 +25,7 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.navigation.Navigator;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
 /**
@@ -49,10 +52,17 @@ public class ErrorHandlerFactory {
 	public static ErrorHandlerFactory getInstance() {
 		return instance;
 	}
-
+	
 	/**
-	 * @param activity
-	 *            - Set to the current activity for the application
+	 * 
+	 * @return Returns a reference to the active activity set via setActiveActivity
+	 */
+	public static Activity getActiveActivity() {
+		return mActivity;
+	}
+	
+	/** 
+	 * @param activity - Set to the current activity for the application
 	 */
 	public void setActiveActivity(final Activity activity) {
 		mActivity = activity;
@@ -74,9 +84,8 @@ public class ErrorHandlerFactory {
 	 * @param errorText
 	 *            - Contains the error string to be displayed on ErrorHandlerUi.
 	 */
-	protected void showErrorsOnScreen(final ErrorHandlerUi errorHandlerUi,
-			final String errorText) {
-		// Show error label and display error text
+	public void showErrorsOnScreen(final ErrorHandlerUi errorHandlerUi,final String errorText) {
+		//Show error label and display error text
 		if (errorHandlerUi != null) {
 			errorHandlerUi.getErrorLabel().setText(errorText);
 			errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
@@ -100,8 +109,8 @@ public class ErrorHandlerFactory {
 	 * @param errorHandlerUi
 	 *            - Reference to ErrorHandlerUi that needs to be updated.
 	 */
-	protected void clearTextOnScreen(final ErrorHandlerUi errorHandlerUi) {
-		// Hide error label and display error text
+	public void clearTextOnScreen(final ErrorHandlerUi errorHandlerUi) {
+		//Hide error label and display error text
 		if (errorHandlerUi != null) {
 			errorHandlerUi.getErrorLabel().setVisibility(View.GONE);
 		}
@@ -275,8 +284,16 @@ public class ErrorHandlerFactory {
 		}
 
 		// Create a one button modal with text as per parameters provided
-		ModalAlertWithOneButton modal = new ModalAlertWithOneButton(mActivity,
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(mActivity,
 				titleText, errorText, true, helpResId, R.string.ok);
+		
+		modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				modal.dismiss();
+				
+			}		
+		});
 
 		// Show one button error dialog
 		return modal;
@@ -374,15 +391,17 @@ public class ErrorHandlerFactory {
 	 *            Specifies the HTTP status code received in the error response.
 	 */
 	public void handleGenericError(final int httpErrorCode) {
-		// TODO: Will complete this in the Handle Technical Difficulties User
-		// Story
+		ModalAlertWithOneButton modal = createErrorModal(
+				httpErrorCode,
+				R.string.error_request_not_completed_title, R.string.error_request_not_completed_msg);
+		
+		showCustomAlert(modal);
 	}
 
 	public void handleHttpUnauthorizedError() {
-		// TODO: Will complete this in the Handle Technical Difficulties User
-		// Story
+		
 	}
-
+	
 	/**
 	 * This function handles the response for a 401 with strong auth. The new
 	 * question and id are sent as an intent to the strong auth activity.
@@ -455,20 +474,25 @@ public class ErrorHandlerFactory {
 	}
 
 	/**
-	 *     * Launch the strong auth Activity with the question that was
-	 * retrieved from the get strong auth question call.    
+     * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
+     */
+	public void handleStrongAuthChallenge() {
+		//Verify user is not in login page, if they are then the challenge will be handled elsewhere
+		if( mActivity.getClass() != LoginActivity.class ) {
+			BankServiceCallFactory.createStrongAuthRequest(mActivity).submit();
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "In login activity, so ignoring strong auth challenge");
+			}
+		}
+	}
+	
+	/** 
+	 * Navigates to login page after a session expired
 	 */
-	public void handleStrongAuthChallenge(String question, String id) {
-		final Intent strongAuth = new Intent(ErrorHandlerFactory.mActivity,
-				EnhancedAccountSecurityActivity.class);
-
-		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, question);
-		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, id);
-		strongAuth.putExtra(IntentExtraKey.IS_CARD_ACCOUNT, false);
-		ErrorHandlerFactory.mActivity.startActivityForResult(strongAuth, 0);
+	public void handleSessionExpired() {
+		Navigator.navigateToLoginPage(mActivity, IntentExtraKey.SESSION_EXPIRED);
 	}
-
-	public void handleInvalidToken() {
-
-	}
+	
+	
 }

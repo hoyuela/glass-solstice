@@ -1,4 +1,4 @@
-package com.discover.mobile.section.account;
+package com.discover.mobile.section.account.recent;
 
 import com.discover.mobile.common.account.recent.RecentActivityPeriodsDetail;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
@@ -36,6 +36,8 @@ public class GetActivityPeriodsSuccessListener implements SuccessListener<Recent
 	 */
 	@Override
 	public void success(final RecentActivityPeriodsDetail detail) {
-		fragment.getNewDateRange(detail);
+		fragment.setDateRange(detail.dates.get(0));
+		fragment.setPeriods(detail);
+		fragment.getTransactions();
 	}
 }

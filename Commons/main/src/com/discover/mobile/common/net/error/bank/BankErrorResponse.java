@@ -1,6 +1,5 @@
 package com.discover.mobile.common.net.error.bank;
 
-import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

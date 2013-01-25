@@ -1,5 +1,6 @@
 package com.discover.mobile.common.callback;
 
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 
 public interface GenericCallbackListener {
@@ -21,7 +22,13 @@ public interface GenericCallbackListener {
 	}
 	
 	public static interface ExceptionFailureHandler extends GenericCallbackListener {
-		boolean handleFailure(Throwable executionException);
+		/**
+		 * @param executionException Reference to the exception that was thrown
+		 * @param networkServiceCall Reference to the network service call where the exception occurred
+		 * 
+		 * @return Return true if failure was handles, false otherwise
+		 */
+		boolean handleFailure(Throwable executionException, final NetworkServiceCall<?> networkServiceCall);
 	}
 	
 	public static interface ErrorResponseHandler extends GenericCallbackListener {

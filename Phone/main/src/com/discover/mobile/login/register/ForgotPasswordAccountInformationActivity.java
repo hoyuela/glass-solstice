@@ -115,16 +115,6 @@ public class ForgotPasswordAccountInformationActivity extends ForgotOrRegisterFi
 	}
 
 	@Override
-	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
-		
-	}
-
-	@Override
-	public void sendToErrorPage(int errorText) {
-		
-	}
-
-	@Override
 	public Context getContext() {
 		return null;
 	}

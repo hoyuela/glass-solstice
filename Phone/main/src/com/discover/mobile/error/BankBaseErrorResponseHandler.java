@@ -127,27 +127,26 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 		
 		switch (httpErrorCode) {
 		case HttpURLConnection.HTTP_UNAUTHORIZED:
-			
 			String wwwAuthenticateValue = conn.getHeaderField(HttpHeaders.Authentication);
 			
 			if( !Strings.isNullOrEmpty(wwwAuthenticateValue) ) {
 				//Check if token expired
 				if( wwwAuthenticateValue.contains(BankSchema.BANKAUTH) ) {
 					//Navigate back to home page
-					
+					mErrorHandlerFactory.handleSessionExpired();	
 				}
 				//Check if strong auth challenge
 				else if( wwwAuthenticateValue.contains(BankSchema.BANKSA)) {
-					//Navigate to Strong Auth page
-					
+					//Send request to Strong Auth web-service API
+					mErrorHandlerFactory.handleStrongAuthChallenge();
 				}
 				//Check if not authorized to view page
 				else {
 					//Display a modal and return to previous page
-					mErrorHandlerFactory.handleHttpUnauthorizedError();
+					mErrorHandlerFactory.handleGenericError(httpErrorCode);
 				}
 			} else {
-				mErrorHandlerFactory.handleHttpUnauthorizedError();
+				mErrorHandlerFactory.handleGenericError(httpErrorCode);
 			}
 			return true;
 		case HttpURLConnection.HTTP_INTERNAL_ERROR:

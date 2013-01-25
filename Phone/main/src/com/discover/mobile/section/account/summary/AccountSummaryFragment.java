@@ -1,5 +1,8 @@
 package com.discover.mobile.section.account.summary;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
@@ -178,7 +181,7 @@ public class AccountSummaryFragment extends BaseFragment {
 		} else if(MILES_CODE.equals(info.incentiveTypeCode)){
 			accountSummaryList.addView(SimpleListItemFactory.createItem(context,
 					res.getString(R.string.account_summary_miles_bonus), 
-					info.earnRewardAmount));
+					convertToAmountString(info.earnRewardAmount)));
 		}
 		
 	}
@@ -209,7 +212,21 @@ public class AccountSummaryFragment extends BaseFragment {
 	 * @return the dollar amount in string form
 	 */
 	private String convertToDollars(final String dollar){
-		return DOLLAR + dollar;
+		if(null != dollar){
+			final double amount = Double.parseDouble(dollar);
+			return NumberFormat.getCurrencyInstance(Locale.US).format(amount);
+		} else{
+			return "$0.00";
+		}
+	}
+	
+	private String convertToAmountString(final String number){
+		if(null != number){
+			final double amount = Double.parseDouble(number);
+			return NumberFormat.getInstance(Locale.US).format(amount);
+		} else{
+			return "0";
+		}
 	}
 	
 	/**

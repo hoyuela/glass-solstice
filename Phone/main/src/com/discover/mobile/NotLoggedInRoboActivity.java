@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.discover.mobile.common.Globals;
 import com.discover.mobile.error.ErrorHandlerFactory;
 
 /**
@@ -120,18 +119,6 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	@Override
 	public void showDynamicOneButtonAlert(int title, String content,
 			int buttonText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendToErrorPage(int errorText) {
 		// TODO Auto-generated method stub
 		
 	}

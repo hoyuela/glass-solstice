@@ -1,6 +1,10 @@
 package com.discover.mobile.error;
 
+import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
+import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.navigation.Navigator;
 
 /**
  * 1) include context here so that this class can invoke the error modal dialog.
@@ -25,11 +29,15 @@ public class BaseExceptionFailureHandler implements ExceptionFailureHandler {
 	}
 
 	@Override
-	public boolean handleFailure(Throwable arg0) {
-		//TODO: Handle Socket Timeout Exception
-		//TODO: Handle Airplane Mode
-		//TOOD: Handle MissingTokenException
-		//TODO: Handle IOException
+	public boolean handleFailure(Throwable arg0, final NetworkServiceCall<?> networkServiceCall) {	
+		//Check if this is an exception that occured to pre-auth
+		if( networkServiceCall instanceof PreAuthCheckCall) {
+			LoginActivity loginActivity = (LoginActivity)ErrorHandlerFactory.getActiveActivity();
+			loginActivity.showSplashScreen(false);
+		} else {
+			ErrorHandlerFactory.getInstance().handleGenericError(0);
+		}
+		
 		return true;
 	}
 

@@ -41,7 +41,7 @@ public class LogOutCall extends NetworkServiceCall<Object> {
 		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)){
 			url = UrlManagerCard.getLogoutUrl();
 		}else {
-			url = UrlManagerBank.getLogoutUrl();
+			url = UrlManagerBank.getUrl(UrlManagerBank.LOGOUT_URL_KEY);
 		}
 		params = new PostCallParams(url) {{
 			requiresSessionForRequest = true;

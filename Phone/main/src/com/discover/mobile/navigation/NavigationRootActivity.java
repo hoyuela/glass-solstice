@@ -1,12 +1,15 @@
 package com.discover.mobile.navigation;
 
+import java.util.Calendar;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.discover.mobile.BankServiceCallFactory;
 import com.discover.mobile.LoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
@@ -15,6 +18,7 @@ import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.urlmanager.UrlManagerBank;
 import com.discover.mobile.push.register.PushNowAvailableFragment;
 
 /**
@@ -33,11 +37,18 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	/**String that is the key to getting the current fragment title out of the saved bundle.*/
 	private static final String TITLE = "title";
 	
+	/**String to get modal state*/
+	private static final String MODAL_STATE = "modalState";
+	
+	/**Boolean to show the modal*/
+	private boolean shouldShowModal = true;
+	
 	/**
 	 * Boolean set to true when the app was paused. If the fragment was paused this will stay true, but if the
 	 * screen was rotated this will be recreated as false.
 	 */
 	private boolean wasPaused = false;
+	
 	
 	/**
 	 * Create the activity
@@ -52,11 +63,61 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	}
 	
 	/**
+	 * Used to handle user interaction across the application.
+	 * 
+	 * @param ev
+	 *            The MotionEvent that was recognized.
+	 * @return True if consumed, false otherwise.
+	 */
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		super.dispatchTouchEvent(ev);
+
+		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+			getLastTouchTime();
+		}
+
+		// Don't consume event.
+		return false;
+	}
+
+	/**
+	 * Determines the current time and gets the time stored in globals. 
+	 * Then updates globals with the current time. 
+	 */
+	private void getLastTouchTime() {
+		Calendar mCalendarInstance = Calendar.getInstance();
+
+		long previousTime = Globals.getOldTouchTimeInMillis();
+		long currentTime = mCalendarInstance.getTimeInMillis();
+
+		setIsUserTimedOut(previousTime, currentTime);
+		Globals.setOldTouchTimeInMillis(currentTime);
+	}
+	
+	/**
+	 * Determines whether or not the user is timed out. 
+	 * @param previousTime
+	 * @param currentTime
+	 */
+	private void setIsUserTimedOut(long previousTime, long currentTime) {
+		// Previous value exists
+		if (previousTime != 0) {
+			long difference = currentTime - previousTime;
+			// User has become inactive and will be set to timed-out.
+			if ((difference / 1000) > UrlManagerBank.MAX_IDLE_TIME && Globals.getCurrentAccount().equals(AccountType.BANK_ACCOUNT)) {
+				 Navigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED);
+			}
+		}
+	}
+	
+	/**
 	 * Sets up the fragment that was visible before the app went into the background
 	 * @param savedInstanceState - bundle containing the state
 	 */
 	private void setUpCurrentFragment(final Bundle savedInstanceState) {
 		if(null == savedInstanceState){return;}
+		shouldShowModal = savedInstanceState.getBoolean(MODAL_STATE, true);
 		final Fragment fragment = this.getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT);
 		if(null != fragment){
 			resumeFragment = fragment;
@@ -77,6 +138,9 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 			getSupportFragmentManager().popBackStack();
 			makeFragmentVisible(new PushNowAvailableFragment());	
 		} 
+		if (Globals.getCurrentAccount().equals(AccountType.BANK_ACCOUNT)){
+			getLastTouchTime();
+		}
 		
 		final Bundle extras = getIntent().getExtras();
 		if(null != extras){
@@ -89,6 +153,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	 * @param extras - extras passed into the app
 	 */
 	private void handleIntentExtras(final Bundle extras) {
+		if(!shouldShowModal){return;}
 		final String screenType = extras.getString(IntentExtraKey.SCREEN_TYPE);
 		if(null != screenType){
 			final String userId = extras.getString(IntentExtraKey.UID);
@@ -119,6 +184,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 			@Override
 			public void onClick(final View v) {
 				modal.dismiss();	
+				shouldShowModal = false;
 			}
 		});
 		modal.show();
@@ -134,6 +200,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 		wasPaused = true;
 		this.getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT, currentFragment);
 		outState.putString(TITLE, getActionBarTitle());
+		outState.putBoolean(MODAL_STATE, shouldShowModal);
 		super.onSaveInstanceState(outState);
 	}
 	

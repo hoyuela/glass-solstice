@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
+import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.error.ErrorHandlerFactory;
@@ -34,6 +36,7 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 	private ArrayAdapter<Option> optionAdapter;
 	private ListView choicesList;
 	final Activity currentContext = this;
+	protected TextView helpNumber;
 
 	/**
 	 * Load list options into the list and setup an OnClickListener to wait for list selections.
@@ -45,7 +48,7 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 		choicesList = (ListView)findViewById(android.R.id.list);
 		optionAdapter = new ArrayAdapter<Option>(this, R.layout.register_forgot_type_select_option_item, android.R.id.text1,
 				Option.values());
-		
+		helpNumber = (TextView)findViewById(R.id.help_number_label);
 		choicesList.setAdapter(optionAdapter);
 
 		
@@ -64,8 +67,23 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 				endActivity();
 			}
 		});
+		setupClickablePhoneNumbers();
 
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_MENU);
+	}
+	
+	/**
+	 * Make the help number clickable and dialable.
+	 */
+	protected void setupClickablePhoneNumbers() {
+		final Context currentContext = this;
+		helpNumber.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CommonMethods.dialNumber(helpNumber.getText().toString(), currentContext);				
+			}
+		});
 	}
 
 	private void endActivity(){
@@ -147,18 +165,6 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 	@Override
 	public void showDynamicOneButtonAlert(int title, String content,
 			int buttonText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void sendToErrorPage(int errorText) {
 		// TODO Auto-generated method stub
 		
 	}

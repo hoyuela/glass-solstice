@@ -45,6 +45,9 @@
     <string name="logout_sucess">
         You are now logged out. Thank you for using Discover Mobile.
     </string>
+    <string name="session_expired">
+        Your login session has expired.
+    </string>
 <!--  LOGIN ERRORS -->
 	<string name="id_invalid">
 	    Please check your ID and try again.
@@ -79,17 +82,18 @@
 	<string name="forbidden_403">
 	    The request has been understood but has been refused due to incompatible client version.
 	</string>
+	<string name="default_outage_header">We\'re Sorry</string>
 	<string name="temporary_outage">
-	    <h3>We\'re sorry.</h3><br/>Some of our web site features are unavailable at this time. 
+	    Some of our web site features are unavailable at this time. 
 	    We sincerely apologize for this temporary inconvenience and are working to resolve the issue.
 	</string>
 	<string name="planned_outage_one">
-	    We\'re sorry. We will be performing a system maintenance between 1 a.m. and 6 a.m. Eastern Time.
+	  	We will be performing a system maintenance between 1 a.m. and 6 a.m. Eastern Time.
 	     We apologize for any inconvenience. Please try again later, or for immediate assistance call 
 		 <a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a>.
 	</string>
 	<string name="cashback_bonus_unavailable">
-	    Cashback Bonus is currently unavailable. We apologize for the inconvenience. Please try again later.
+	    Casƒhback Bonus is currently unavailable. We apologize for the inconvenience. Please try again later.
 	</string>
 	<string name="no_data_found">
 	    No data found.

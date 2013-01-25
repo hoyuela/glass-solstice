@@ -1,6 +1,7 @@
 package com.discover.mobile.section.home;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -46,6 +47,13 @@ public class HomeSummaryFragment extends BaseFragment {
 		return view;
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		hideActionBarLogo();
+	}
+
 	/**
 	 * Builds the four elements (Current balance, last statement, cashback
 	 * balance, & cashback offer) on the Home view.
@@ -78,18 +86,18 @@ public class HomeSummaryFragment extends BaseFragment {
 		((TextView) currentBalance.findViewById(R.id.title))
 				.setText(R.string.current_balance);
 		((TextView) currentBalance.findViewById(R.id.content_text))
-				.setText(NumberFormat.getCurrencyInstance().format(currBalance));
+				.setText(NumberFormat.getCurrencyInstance(Locale.US).format(currBalance));
 
 		// subsection
 		((TextView) currentBalance.findViewById(R.id.bottom_bar_label))
 				.setText(getString(R.string.credit_available));
 		((TextView) currentBalance.findViewById(R.id.bottom_bar_value))
-				.setText(NumberFormat.getCurrencyInstance().format(
+				.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
 						credAvailable));
 
-		// Pay button
+		// View button
 		((TextView) currentBalance.findViewById(R.id.blue_button_text))
-				.setText(getString(R.string.pay_blue_button_text));
+				.setText(getString(R.string.view_blue_button_text));
 
 	}
 
@@ -110,17 +118,17 @@ public class HomeSummaryFragment extends BaseFragment {
 		((TextView) lastStatement.findViewById(R.id.title))
 				.setText(R.string.last_statement_balance);
 		((TextView) lastStatement.findViewById(R.id.content_text))
-				.setText(NumberFormat.getCurrencyInstance().format(lastBalance));
+				.setText(NumberFormat.getCurrencyInstance(Locale.US).format(lastBalance));
 
 		// subsection
 		((TextView) lastStatement.findViewById(R.id.bottom_bar_label))
 				.setText(formatMinimumPaymentTitle(accountDetails));
 		((TextView) lastStatement.findViewById(R.id.bottom_bar_value))
-				.setText(NumberFormat.getCurrencyInstance().format(minPayment));
+				.setText(NumberFormat.getCurrencyInstance(Locale.US).format(minPayment));
 
-		// View button
+		// Pay button
 		((TextView) lastStatement.findViewById(R.id.blue_button_text))
-				.setText(R.string.view_blue_button_text);
+				.setText(R.string.pay_blue_button_text);
 	}
 
 	/**
@@ -145,13 +153,13 @@ public class HomeSummaryFragment extends BaseFragment {
 			((TextView) bonusBalance.findViewById(R.id.title))
 					.setText(R.string.cashback_bonus_balance);
 			((TextView) bonusBalance.findViewById(R.id.content_text))
-					.setText(NumberFormat.getCurrencyInstance().format(
+					.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
 							cashBonus));
 
 			((TextView) bonusBalance.findViewById(R.id.bottom_bar_label))
 					.setText(getString(R.string.newly_earned));
 			((TextView) bonusBalance.findViewById(R.id.bottom_bar_value))
-					.setText(NumberFormat.getCurrencyInstance().format(
+					.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
 							newlyEarned));
 		} else {
 			((TextView) bonusBalance.findViewById(R.id.title))

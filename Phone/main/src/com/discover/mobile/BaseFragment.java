@@ -104,6 +104,15 @@ public abstract class BaseFragment extends SherlockFragment {
 				.getActivity();
 		activity.showActionBarLogo();
 	}
+	
+	/**
+	 * Hides the Logo on the ActionBar and instead shows the TextView.
+	 */
+	public void hideActionBarLogo() {
+		final LoggedInRoboActivity activity = (LoggedInRoboActivity) this
+				.getActivity();
+		activity.hideActionBarLogo();
+	}
 
 	/**
 	 * Get the resource id of the string that should be shown in the action bar
@@ -113,4 +122,14 @@ public abstract class BaseFragment extends SherlockFragment {
 	 */
 	public abstract int getActionBarTitle();
 
+    
+   /**
+    * Used to show the provide feedback fragment
+    * 
+    * NOTE: This has not been implemented yet, because the provide feedback 
+    * fragment has not been created
+    */
+    public void showProvideFeedback(){
+    	//TODO: Implement this
+    }
 }
