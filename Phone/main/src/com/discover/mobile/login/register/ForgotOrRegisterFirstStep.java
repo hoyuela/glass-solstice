@@ -230,8 +230,6 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		outState.putInt(MODAL_BODY_KEY, modalBodyText);
 		outState.putBoolean(MODAL_CLOSES_ACTIVITY_KEY, modalClosesActivity);
 		
-		super.onSaveInstanceState(outState);
-
 	}
 	
 	/**

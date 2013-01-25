@@ -141,7 +141,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 					activity.finish();
 			}
 		});
-
+		modalIsPresent = true;
 		errorModal.show();
 	}
 	
