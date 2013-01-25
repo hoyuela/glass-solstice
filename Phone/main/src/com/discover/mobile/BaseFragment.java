@@ -122,4 +122,14 @@ public abstract class BaseFragment extends SherlockFragment {
 	 */
 	public abstract int getActionBarTitle();
 
+    
+   /**
+    * Used to show the provide feedback fragment
+    * 
+    * NOTE: This has not been implemented yet, because the provide feedback 
+    * fragment has not been created
+    */
+    public void showProvideFeedback(){
+    	//TODO: Implement this
+    }
 }

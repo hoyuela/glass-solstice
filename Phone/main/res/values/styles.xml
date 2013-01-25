@@ -155,7 +155,7 @@
     
     <!-- Default List Item Styling -->
     <style name="default_list_item">
-        <item name="android:background">@drawable/notification_list_item</item>
+        <item name="android:background">@drawable/home_list_item</item>
         <item name="android:padding">@dimen/forms_inner_padding</item>
     </style>
     
@@ -233,6 +233,11 @@
     
 
     <!-- 5. BODY COPY / #3d484d / 34px font-size / 42px line-height / regular -->
+    <style name="title_medium" parent="discover_text">
+        <item name="android:textSize">@dimen/title_mid</item>
+        <item name="android:textColor">@color/title</item>
+    </style>
+    
     <style name="body_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/body_copy</item>

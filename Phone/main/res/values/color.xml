@@ -32,6 +32,7 @@
     <color name="header_bg">#d8dde0</color>
     <color name="sub_header_bg">#e8eced</color>
     <color name="stroke_ruling_line">#c0c8cc</color>
+    <color name="transaction_table_stripe">#f1f1f1</color>
     
     <!-- Discover Secondary Colors -->
     <color name="orange_gradient_light">#ed4b0b</color>

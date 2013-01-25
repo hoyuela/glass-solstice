@@ -64,4 +64,20 @@
 	<string name="late_payment_modal_text">If we do not receive your minimum payment by the date listed above, you may have to pay a late fee of up to $35.00 and your purchase and balance transfer APRs for new transactions may be increased up to the Penalty APR of 15.99% variable.</string>
 	<string name="late_payment_modal_error_message">Some of our web site features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.</string>
 	<string name="late_payment_modal_error_title">We\'re Sorry</string>
+	
+	<!-- Recent Account Activity Strings -->
+	<string name="view_trans_actions_by_period">View Transactions by Activity Period:</string>
+	<string name="recent_activity_since">Recent Activity Since </string>
+	<string name="recent_activity_narrow_list">To narrow list, </string>
+	<string name="recent_activity_search_transactions"> search transactions.</string>
+	<string name="recent_activity_transactions">Transactions</string>
+	<string name="recent_activity_posted_transactions">Posted Transactions</string>
+	<string name="recent_activity_pending_transactions">Pending Transactions</string>
+	<string name="recent_activity_load_more">Load More</string>
+	<string name="recent_activity_date">Date</string>
+	<string name="recent_activity_description">Description</string>
+	<string name="recent_activity_amount">Amount</string>
+	<string name="recent_activity_no_activity">There was no activity for the selected period.</string>
+	<string name="recent_activity_no_new_pending">You have no new pending transactions.</string>
+	<string name="recent_activity_no_new_posted">No activity has posted to your account since your last statement.</string>
 </resources>

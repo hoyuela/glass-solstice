@@ -3,6 +3,7 @@ package com.discover.mobile.section.account;
 import com.discover.mobile.R;
 import com.discover.mobile.section.FragmentComponentInfo;
 import com.discover.mobile.section.GroupComponentInfo;
+import com.discover.mobile.section.account.recent.AccountRecentActivityFragment;
 import com.discover.mobile.section.account.summary.AccountSummaryFragment;
 
 public final class AccountSectionInfo extends GroupComponentInfo {

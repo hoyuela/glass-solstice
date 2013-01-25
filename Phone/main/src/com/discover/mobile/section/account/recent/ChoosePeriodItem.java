@@ -1,4 +1,4 @@
-package com.discover.mobile.section.account;
+package com.discover.mobile.section.account.recent;
 
 import android.content.Context;
 import android.util.AttributeSet;
