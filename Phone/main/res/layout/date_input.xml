@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/date_input_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/small_copy"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:id="@+id/date_field_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date_input_title"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/date_input_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/edit_text_default" />
+
+        <ImageView
+            android:id="@+id/date_input_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_weight="3"
+            android:paddingLeft="3dp"
+            android:src="@drawable/calendar_icon" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/date_input_subtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/date_field_layout"
+        android:textSize="10sp"
+        android:text="@string/chooser_date_subtitle" />
+
+</RelativeLayout>

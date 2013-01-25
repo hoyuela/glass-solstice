@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.discover.mobile.BaseFragment;
@@ -34,15 +36,33 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 	private void setupDateToggleListeners(View v) {
 		RadioGroup dateGroup = (RadioGroup) v
 				.findViewById(R.id.transaction_date_selector);
-//		RadioGroup amtGroup = (RadioGroup) v.findViewBy
+		RadioGroup amtGroup = (RadioGroup) v
+				.findViewById(R.id.transaction_amount_selector);
+
+		RelativeLayout dateFrom = (RelativeLayout) v
+				.findViewById(R.id.date_from_element);
+		RelativeLayout dateTo = (RelativeLayout) v
+				.findViewById(R.id.date_to_element);
+		RelativeLayout amtFrom = (RelativeLayout) v
+				.findViewById(R.id.amount_from_element);
+		RelativeLayout amtTo = (RelativeLayout) v
+				.findViewById(R.id.amount_to_element);
 
 		dateLeft = (ToggleButton) dateGroup.findViewById(R.id.toggle_left);
 		dateMid = (ToggleButton) dateGroup.findViewById(R.id.toggle_middle);
 		dateRight = (ToggleButton) dateGroup.findViewById(R.id.toggle_right);
 
-		dateLeft.setOnClickListener(new DateToggleListener());
-		dateMid.setOnClickListener(new DateToggleListener());
-		dateRight.setOnClickListener(new DateToggleListener());
+		amtLeft = (ToggleButton) amtGroup.findViewById(R.id.toggle_left);
+		amtMid = (ToggleButton) amtGroup.findViewById(R.id.toggle_middle);
+		amtRight = (ToggleButton) amtGroup.findViewById(R.id.toggle_right);
+
+		createDateToggleListener(dateLeft, dateGroup, dateFrom, dateTo);
+		createDateToggleListener(dateMid, dateGroup, dateFrom, dateTo);
+		createDateToggleListener(dateRight, dateGroup, dateFrom, dateTo);
+
+		createAmountToggleListener(amtLeft, amtGroup, amtFrom, amtTo);
+		createAmountToggleListener(amtMid, amtGroup, amtFrom, amtTo);
+		createAmountToggleListener(amtRight, amtGroup, amtFrom, amtTo);
 	}
 
 	/**
@@ -54,109 +74,124 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 		return R.string.search_transactions_title;
 	}
 
-	
 	/**
-	 * Listener for Date Toggler
+	 * Creates the Click listeners for the Date ToggleButtons.
 	 * 
-	 * @author sam
-	 * 
+	 * @param toggleButton
+	 *            the toggleButton for which to create the listener.
+	 * @param group
+	 *            the RadioGroup to which the ToggleButton belongs.
 	 */
-	private class DateToggleListener implements OnClickListener {
+	private void createDateToggleListener(final ToggleButton toggleButton,
+			final RadioGroup group, final RelativeLayout fromField,
+			final RelativeLayout toField) {
 
-		@Override
-		public void onClick(View v) {
+		toggleButton.setOnClickListener(new OnClickListener() {
 
-			if (!checkForValidSelection(v.getId())) {
-				return;
+			@Override
+			public void onClick(final View v) {
+
+				toggleById(group, toggleButton.getId());
+
+				switch (toggleButton.getId()) {
+				case R.id.toggle_left:
+					fromField.setVisibility(View.GONE);
+					toField.setVisibility(View.GONE);
+					break;
+				case R.id.toggle_middle:
+					fromField.setVisibility(View.VISIBLE);
+					((TextView) fromField.findViewById(R.id.date_input_title))
+							.setText(getResources().getString(
+									R.string.chooser_date_title));
+					toField.setVisibility(View.INVISIBLE);
+					break;
+				case R.id.toggle_right:
+					fromField.setVisibility(View.VISIBLE);
+					((TextView) fromField.findViewById(R.id.date_input_title))
+							.setText(getResources().getString(
+									R.string.chooser_from_title));
+					toField.setVisibility(View.VISIBLE);
+					((TextView) toField.findViewById(R.id.date_input_title))
+							.setText(getResources().getString(
+									R.string.chooser_to_title));
+					break;
+				}
 			}
 
-			switch (v.getId()) {
+		});
+	}
 
-			case R.id.toggle_left:
-				selectToggleButton(R.id.toggle_left);
-				deselectToggleButton(R.id.toggle_middle);
-				deselectToggleButton(R.id.toggle_right);
-				break;
-			case R.id.toggle_middle:
-				selectToggleButton(R.id.toggle_middle);
-				deselectToggleButton(R.id.toggle_left);
-				deselectToggleButton(R.id.toggle_right);
-				break;
-			case R.id.toggle_right:
-				selectToggleButton(R.id.toggle_right);
-				deselectToggleButton(R.id.toggle_middle);
-				deselectToggleButton(R.id.toggle_left);
-				break;
-			}
-		}
-		
+	/**
+	 * Creates the Click listeners for the Date ToggleButtons.
+	 * 
+	 * @param toggleButton
+	 *            the toggleButton for which to create the listener.
+	 * @param group
+	 *            the RadioGroup to which the ToggleButton belongs.
+	 */
+	private void createAmountToggleListener(final ToggleButton toggleButton,
+			final RadioGroup group, final RelativeLayout fromField,
+			final RelativeLayout toField) {
 
-		/**
-		 * This will ensure a button already selected is not unselected.
-		 * 
-		 * @param id
-		 *            resource id of the clicked button
-		 * 
-		 * @return true if not already selected, false otherwise.
-		 */
-		private boolean checkForValidSelection(int id) {
-			if (id == dateLeft.getId() && !dateLeft.isChecked()) {
-				dateLeft.setChecked(true);
-				return false;
-			}
-			if (id == dateRight.getId() && !dateRight.isChecked()) {
-				dateRight.setChecked(true);
-				return false;
-			}
-			if (id == dateMid.getId() && !dateMid.isChecked()) {
-				dateMid.setChecked(true);
-				return false;
-			}
-			return true;
-		}
+		toggleButton.setOnClickListener(new OnClickListener() {
 
-		/**
-		 * 
-		 * @param id
-		 */
-		private void selectToggleButton(int id) {
+			@Override
+			public void onClick(final View v) {
 
-			if (R.id.toggle_right == id) {
-				// Show both date boxes TODO
-				dateRight.setTextColor(getResources().getColor(R.color.white));
-			}
-			if (R.id.toggle_middle == id) {
-				// Show single date box TODO
-				dateMid.setTextColor(getResources().getColor(R.color.white));
-			}
-			if (R.id.toggle_left == id) {
-				dateLeft.setTextColor(getResources().getColor(R.color.white));
-			}
-		}
+				toggleById(group, toggleButton.getId());
 
-		/**
-		 * 
-		 * @param id
-		 */
-		private void deselectToggleButton(int id) {
+				switch (toggleButton.getId()) {
+				case R.id.toggle_left:
+					fromField.setVisibility(View.GONE);
+					toField.setVisibility(View.GONE);
+					break;
+				case R.id.toggle_middle:
+					fromField.setVisibility(View.VISIBLE);
+					((TextView) fromField.findViewById(R.id.amount_input_title))
+							.setText(getResources().getString(
+							
+									R.string.chooser_amount_title));
+					toField.setVisibility(View.INVISIBLE);
+					break;
+				case R.id.toggle_right:
+					fromField.setVisibility(View.VISIBLE);
+					((TextView) fromField.findViewById(R.id.amount_input_title))
+							.setText(getResources().getString(
+									R.string.chooser_from_title));
+					toField.setVisibility(View.VISIBLE);
+					((TextView) toField.findViewById(R.id.amount_input_title))
+							.setText(getResources().getString(
+									R.string.chooser_to_title));
+					break;
+				}
+			}
 
-			if (R.id.toggle_right == id) {
-				// hide both date boxes TODO
-				dateRight.setChecked(false);
-				dateRight.setTextColor(getResources().getColor(
-						R.color.field_copy));
-			}
-			if (R.id.toggle_middle == id) {
-				// hide single date box TODO
-				dateMid.setChecked(false);
-				dateMid.setTextColor(getResources()
-						.getColor(R.color.field_copy));
-			}
-			if (R.id.toggle_left == id) {
-				dateLeft.setChecked (false);
-				dateLeft.setTextColor(getResources().getColor(
-						R.color.field_copy));
+		});
+	}
+
+	/**
+	 * Toggles the clicked button and untoggles the rest in the group.
+	 * 
+	 * @param group
+	 *            the group to which the ToggleButton belongs
+	 * @param checkedId
+	 *            the id of the ToggleButton
+	 */
+	public void toggleById(final RadioGroup group, final int checkedId) {
+
+		for (int i = 0; i < group.getChildCount(); i++) {
+			if (group.getChildAt(i) instanceof ToggleButton) {
+				final ToggleButton view = (ToggleButton) group.getChildAt(i);
+				if (view.getId() == checkedId) {
+					view.setChecked(true);
+					view.setTextColor(getResources().getColor(R.color.white));
+				} else {
+					view.setChecked(false);
+					view.setTextColor(getResources().getColor(
+							R.color.field_copy));
+				}
 			}
 		}
 	}
+
 }

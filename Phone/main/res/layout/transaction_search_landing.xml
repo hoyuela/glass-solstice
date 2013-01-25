@@ -71,25 +71,34 @@
 
             <include
                 android:id="@+id/transaction_date_selector"
-                layout="@layout/toggle_range_selector" />
+                layout="@layout/toggle_range_selector"
+                android:paddingBottom="7dp" />
 
-            <TextView
-                android:id="@+id/temp_cal_left"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/date_input_fields"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_below="@id/transaction_date_selector"
-                android:background="#FFFFFF"
-                android:text="hello left" />
+                android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/temp_cal_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/transaction_date_selector"
-                android:background="#FFFFFF"
-                android:text="hello right" />
+                <include
+                    android:id="@+id/date_from_element"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    layout="@layout/date_input"
+                    android:visibility="gone" />
+
+                <include
+                    android:id="@+id/date_to_element"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    layout="@layout/date_input"
+                    android:visibility="gone" />
+            </LinearLayout>
         </RelativeLayout>
 
         <!-- Amount Section -->
@@ -103,9 +112,57 @@
             android:paddingTop="20dp"
             android:text="@string/title_amount" />
 
-        <include
-            android:id="@+id/transaction_amount_selector"
-            layout="@layout/toggle_range_selector" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <include
+                android:id="@+id/transaction_amount_selector"
+                layout="@layout/toggle_range_selector"
+                android:paddingBottom="7dp" />
+
+            <LinearLayout
+                android:id="@+id/amount_input_fields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/transaction_amount_selector"
+                android:orientation="horizontal" >
+
+                <include
+                    android:id="@+id/amount_from_element"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    layout="@layout/amount_input"
+                    android:visibility="gone" />
+
+                <include
+                    android:id="@+id/amount_to_element"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    layout="@layout/amount_input"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Category Section -->
+
+        <TextView
+            android:id="@+id/title_category"
+            style="@style/title_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="7dp"
+            android:paddingTop="20dp"
+            android:text="@string/title_category" />
+
+        <Spinner
+            android:id="@+id/spinner_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </ScrollView>
