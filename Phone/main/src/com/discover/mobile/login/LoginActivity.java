@@ -13,7 +13,6 @@ import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,9 +128,6 @@ public class LoginActivity extends BaseActivity  {
 
 	@InjectView(R.id.forgot_uid_or_pass_text)
 	private TextView forgotUserIdOrPassText;
-
-	@InjectView(R.id.toggle_password_visibility_label)
-	private TextView hideButton;
 
 	@InjectView(R.id.go_to_bank_label)
 	private TextView goToBankLabel;
@@ -309,7 +305,6 @@ public class LoginActivity extends BaseActivity  {
 		outState.putBoolean(SAVE_ID_KEY, saveUserId);
 		outState.putBoolean(PRE_AUTH_KEY, preAuthHasRun);
 		outState.putInt(PW_INPUT_TYPE_KEY, passField.getInputType());
-		outState.putString(HIDE_LABEL_KEY, hideButton.getText().toString());
 		outState.putInt(LOGIN_TYPE_KEY, cardCheckMark.getVisibility());
 		outState.putString(ERROR_MESSAGE_KEY, errorTextView.getText().toString());
 		outState.putInt(ERROR_MESSAGE_VISIBILITY, errorTextView.getVisibility());
@@ -328,7 +323,6 @@ public class LoginActivity extends BaseActivity  {
 			preAuthHasRun = savedInstanceState.getBoolean(PRE_AUTH_KEY);
 
 			passField.setInputType(savedInstanceState.getInt(PW_INPUT_TYPE_KEY));
-			hideButton.setText(savedInstanceState.getString(HIDE_LABEL_KEY));
 
 			setLoginType(savedInstanceState.getInt(LOGIN_TYPE_KEY));
 			setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY), true);
@@ -651,28 +645,6 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	public void toggleCheckBoxFromXml(final View v) {
 		toggleCheckBox(v, true);
-	}
-
-	/**
-	 * togglePasswordVisibility(final View v) This method handles showing and
-	 * hiding of a users password. It will show a user's password in plain text
-	 * if the user taps the Show text label on the home screen. And hide it if
-	 * it says 'Hide'
-	 */
-	public void togglePasswordVisibility(final View v) {
-		final String buttonText = hideButton.getText().toString();
-		//Retain the position of the selector.
-		int selectionPosition = passField.getSelectionStart();
-		if(HIDE.equals(buttonText)) {
-			hideButton.setText(SHOW);
-			passField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-		} else {
-			hideButton.setText(HIDE);
-			passField.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-		}
-		//Restore the position of the selector.
-		passField.setSelection(selectionPosition);
-		
 	}
 
 	/**
