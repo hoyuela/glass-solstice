@@ -13,6 +13,10 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 public abstract class TypedReferenceHandler<V> extends Handler {
 	
 	private final String TAG = getClass().getSimpleName();
+	/**
+	 * Reference to NetworkServiceCall<> that is the owner of this class
+	 */
+	protected NetworkServiceCall<V> networkServiceCall;
 	
 	abstract AsyncCallback<V> getCallback();
 	
@@ -44,6 +48,10 @@ public abstract class TypedReferenceHandler<V> extends Handler {
 		}
 	}
 	
+	void setNetworkServiceCall(NetworkServiceCall<V> networkServiceCall) {
+		this.networkServiceCall = networkServiceCall;
+	}
+	
 	void handleSuccess(final Message message, final AsyncCallback<V> callback) {
 		@SuppressWarnings("unchecked")
 		final V value = (V) message.obj;
@@ -53,7 +61,7 @@ public abstract class TypedReferenceHandler<V> extends Handler {
 	@SuppressWarnings("static-method")
 	void handleException(final Message message, final AsyncCallback<V> callback) {
 		final Throwable exception = (Throwable) message.obj;
-		callback.failure(exception);
+		callback.failure(exception, networkServiceCall);
 	}
 	
 	@SuppressWarnings("static-method")

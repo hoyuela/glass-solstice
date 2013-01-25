@@ -3,14 +3,12 @@ package com.discover.mobile.error;
 import java.net.HttpURLConnection;
 
 import com.discover.mobile.ErrorHandlerUi;
-import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.bank.BankSchema;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.bank.BankErrorCodes;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
-import com.discover.mobile.navigation.Navigator;
 import com.google.common.base.Strings;
 
 /**
@@ -145,10 +143,10 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				//Check if not authorized to view page
 				else {
 					//Display a modal and return to previous page
-					mErrorHandlerFactory.handleHttpUnauthorizedError();
+					mErrorHandlerFactory.handleGenericError(httpErrorCode);
 				}
 			} else {
-				mErrorHandlerFactory.handleHttpUnauthorizedError();
+				mErrorHandlerFactory.handleGenericError(httpErrorCode);
 			}
 			return true;
 		case HttpURLConnection.HTTP_INTERNAL_ERROR:
