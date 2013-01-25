@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -192,12 +193,14 @@ public class LoginActivity extends BaseActivity  {
 		res = getResources();
 		restoreState(savedInstanceState);
 		setupButtons();
+		
 
 		//Check to see if pre-auth request is required. Should only 
 		//be done at application start-up
-		if (!preAuthHasRun) {
+		if (!preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
 			startPreAuthCheck();
-		}
+		} 
+		
 	}
 
 	/**
@@ -278,8 +281,13 @@ public class LoginActivity extends BaseActivity  {
 		//Default to the last path user chose for login Card or Bank
 		this.setApplicationAccount();		
 		
-		//Show splash screen while completing pre-auth, if pre-auth has not been done
-		showSplashScreen(!preAuthHasRun);
+		//Show splash screen while completing pre-auth, if pre-auth has not been done and
+		//application is be launched for the first time
+		if( !preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) ) {
+			showSplashScreen(!preAuthHasRun);
+		} else {
+			this.showLoginPane();
+		}
 	}
 	
 
@@ -476,6 +484,10 @@ public class LoginActivity extends BaseActivity  {
 	 * validation.
 	 */
 	private void login() {
+		//Close Soft Input Keyboard
+		InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		inputManager.hideSoftInputFromInputMethod(passField.getWindowToken(), 0);
+		  
 		Globals.setOldTouchTimeInMillis(0);
 		setInputFieldsDrawablesToDefault();
 		if (!showErrorIfAnyFieldsAreEmpty() && !showErrorWhenAttemptingToSaveAccountNumber()) {
@@ -972,6 +984,18 @@ public class LoginActivity extends BaseActivity  {
 				Log.e(TAG,"Unable to find views");
 			}
 		}
+	}
+	
+	/**
+	 * Shows the login pane with credential text fields and the toolbar at the bottom of the page
+	 */
+	public void showLoginPane() {
+		final ViewGroup loginPane = (ViewGroup) this.findViewById(R.id.login_pane);
+		final ViewGroup toolbar = (ViewGroup)this.findViewById(R.id.login_bottom_button_row);
+
+		splashProgress.setVisibility(View.GONE);
+		toolbar.setVisibility(View.VISIBLE);
+		loginPane.setVisibility(View.VISIBLE);
 	}
 	
 	/**
