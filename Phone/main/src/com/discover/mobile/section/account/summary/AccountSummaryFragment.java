@@ -154,12 +154,14 @@ public class AccountSummaryFragment extends BaseFragment {
 				res.getString(R.string.account_summary_last_statement), 
 				convertToDollars(info.lastPaymentAmount)));
 		
-		final String minPaymentString = res.getString(R.string.account_summary_minimum_payment);
-		accountSummaryList.addView(SimpleListItemFactory.createItem(context,
-				String.format(minPaymentString, getDateString(info.paymentDueDate)), 
-				convertToDollars(info.minimumPaymentDue),
-				res.getString(R.string.account_summary_learn_more),
-				getPaymentActionHandler()));
+		if(null != info.paymentDueDate){
+			final String minPaymentString = res.getString(R.string.account_summary_minimum_payment);
+			accountSummaryList.addView(SimpleListItemFactory.createItem(context,
+					String.format(minPaymentString, getDateString(info.paymentDueDate)), 
+					convertToDollars(info.minimumPaymentDue),
+					res.getString(R.string.account_summary_learn_more),
+					getPaymentActionHandler()));
+		}
 		
 		final String lastPaymentString = res.getString(R.string.account_summary_last_payment);
 		accountSummaryList.addView(SimpleListItemFactory.createItem(context,
@@ -192,6 +194,9 @@ public class AccountSummaryFragment extends BaseFragment {
 	 * @return the string to be displayed 
 	 */
 	private String getDateString(final String dateString){
+		if(null == dateString){
+			return "";
+		}
 		return dateString.substring(MONTH_BEGIN, MONTH_END) + DATE_DIV + dateString.substring(YEAR_BEGIN, YEAR_END);
 	}
 	
