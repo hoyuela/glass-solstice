@@ -158,8 +158,8 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 		confirmationAndLoginScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationAndLoginScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
 		
-		if(isForgot){
-			confirmationAndLoginScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_FORGOT_PASS);
+		if(CurrentSessionDetails.getCurrentSessionDetails().isForgotCreds()){
+			confirmationAndLoginScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_FORGOT_BOTH);
 		} else{
 			confirmationAndLoginScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_REGISTRATION);
 		}
