@@ -489,6 +489,7 @@ public class LoginActivity extends BaseActivity  {
 	 * validation.
 	 */
 	private void login() {
+		Globals.setOldTouchTimeInMillis(0);
 		setInputFieldsDrawablesToDefault();
 		if (!showErrorIfAnyFieldsAreEmpty() && !showErrorWhenAttemptingToSaveAccountNumber()) {
 			runAuthWithUsernameAndPassword(idField.getText().toString(),

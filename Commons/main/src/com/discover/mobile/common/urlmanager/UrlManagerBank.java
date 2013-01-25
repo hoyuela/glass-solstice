@@ -14,13 +14,12 @@ import com.discover.mobile.common.net.json.bank.ReceivedUrl;
  */
 public class UrlManagerBank {
 	private static final String BASE_URL = "https://beta.discoverbank.com";
-	// private static final String BASE_URL = "http://192.168.2.177:8008";
-	// //Henry's Laptop
-	// private static final String BASE_URL =
-	// "http://solsticebeta.com/Discover/DiscoverBank";
-	// private static final String BASE_URL = "http://192.168.1.94:8008";
-	// private static final String BASE_URL =
-	// "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
+//	private static final String BASE_URL = "http://192.168.2.177:8008"; //Henry's Laptop
+//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
+//	private static final String BASE_URL = "http://192.168.1.94:8008";
+//	private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
+	
+	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
 
 	private static final String AUTHENTICATE_CURRENT_CUSTOMER_URL = "/api/customers/current";
 	private static final String GET_TOKEN_URL = "/api/auth/token";
