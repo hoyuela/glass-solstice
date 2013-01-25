@@ -40,6 +40,7 @@
     <string name="account_info_label_one">Credit Card Account Number</string>
     <string name="cancel_text">Cancel</string>
     <string name="continue_text">Continue</string>
+    <string name="close_text">Close</string>
     <string name="submit_text">Submit</string>
     <string name="year_hint">YYYY</string>
     <string name="ssn_prefix">XXX &#8211; XX &#8211;</string>
@@ -87,5 +88,6 @@
 	<string name="error_strongauth_noanswer">Please enter a valid value and try again.</string>
 	<string name="error_request_not_completed_title">Your Request Could Not Be Completed</string>
 	<string name="error_request_not_completed_msg">We\'re sorry. We can\'t complete your request at this time. Please contact us for more information.</string>
-	
+	<string name="lockout_title">You\'ve Been Locked Out</string>
+    
 </resources>

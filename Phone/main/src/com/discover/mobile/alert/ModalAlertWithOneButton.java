@@ -1,5 +1,6 @@
 package com.discover.mobile.alert;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -48,6 +49,9 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	
 	/**Static weight for the bottom view in landscape mode*/
 	private static final float LANDSCAPE_BOTTOM_WEIGHT = 5f;
+	
+	/**An attached activity that will be closed if the dialog is dismissed with the back button*/
+	private Activity toClose;
 	
 	/**
 	 * Constructor for the alert
@@ -259,6 +263,24 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		}
 	}
 
+	/**
+	 * When the back button is pressed, close an attached activity if needed.
+	 */
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+
+		if(toClose != null)
+			toClose.finish();
+	}
+	
+	/**
+	 * Attaches an activity to be closed when the dialog is dismissed.
+	 * @param toClose
+	 */
+	public void finishActivityOnClose(final Activity toClose) {
+		this.toClose = toClose;
+	}
 	/**
 	 * Get the top piece so that it can be manipulated
 	 * @return the top piece so that it can be manipulated

@@ -1,14 +1,24 @@
 package com.discover.mobile.error;
 
+import static com.discover.mobile.common.StandardErrorCodes.ACCOUNT_NUMBER_CHANGED;
+import static com.discover.mobile.common.StandardErrorCodes.ACCOUNT_NUMBER_REREGISTERED;
+import static com.discover.mobile.common.StandardErrorCodes.ACCOUNT_SETUP_PENDING;
+import static com.discover.mobile.common.StandardErrorCodes.AUTH_BAD_ACCOUNT_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS;
+import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
 import static com.discover.mobile.common.StandardErrorCodes.NO_DATA_FOUND;
 import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.StandardErrorCodes.SCHEDULED_MAINTENANCE;
+import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
 import static com.discover.mobile.common.StandardErrorCodes.UNSCHEDULED_MAINTENANCE;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
 
 import java.net.HttpURLConnection;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
@@ -39,12 +49,14 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	 */
 	protected ErrorHandlerUi errorHandlerUi = null;
 	
+	protected ErrorHandlerFactory mErrorHandlerFactory = null;
 	/**
 	 * Private constructor to prevent construction without a fragment or
 	 * activity
 	 */
 	public CardBaseErrorResponseHandler(final ErrorHandlerUi errorHandlerUi) {
 		this.errorHandlerUi = errorHandlerUi;
+		mErrorHandlerFactory = errorHandlerUi.getErrorHandlerFactory();
 	}
 
 	/**
@@ -74,7 +86,8 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	public final boolean handleFailure(final ErrorResponse<?> errorResponse) {
 
 		String errorHandlingFailureMessage;
-
+		final Resources resources = errorHandlerUi.getContext().getResources();
+		
 		if (errorResponse instanceof JsonMessageErrorResponse) {
 
 			final JsonMessageErrorResponse messageErrorResponse = (JsonMessageErrorResponse) errorResponse;
@@ -82,21 +95,54 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 			// FIRST we will try for common status code generic handling
 			switch (messageErrorResponse.getMessageStatusCode()) {
 				case UNSCHEDULED_MAINTENANCE:
-					sendToErrorPage(R.string.temporary_outage);
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.temporary_outage));
 					return true;
 	
 				case SCHEDULED_MAINTENANCE:
-					sendToErrorPage(R.string.planned_outage_one);
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.planned_outage_one));
 					return true;
 	
 				case PLANNED_OUTAGE:
-					sendToErrorPage(R.string.planned_outage_one);
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.planned_outage_one));
 					return true;
 	
 				case NO_DATA_FOUND:
-					sendToErrorPage(R.string.no_data_found);
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.no_data_found));
 					return true;
-
+				
+				case EXCEEDED_LOGIN_ATTEMPTS:
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.locked_account));
+					return true;
+					
+				case LAST_ATTEMPT_WARNING:
+					setErrorText(R.string.login_attempt_warning);
+					return true;
+					
+				case STRONG_AUTH_NOT_ENROLLED:
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.account_security_not_enrolled));
+					return true;
+				
+				case AUTH_BAD_ACCOUNT_STATUS:
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.zluba_error));
+					return true;
+				
+				case ACCOUNT_NUMBER_REREGISTERED:
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.account_number_reregistered));
+					return true;
+					
+				case LOCKED_OUT_ACCOUNT:
+					TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_LOCKED);
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.locked_account));
+					return true;
+					
+				case ACCOUNT_SETUP_PENDING:
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.account_setup_pending));
+					return true;
+				
+				case ACCOUNT_NUMBER_CHANGED:
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.account_number_changed));
+					return true;
+					
 			}
 			// SECOND we try the JSON specific error code handling
 			if (handleJsonErrorCode(messageErrorResponse)) {

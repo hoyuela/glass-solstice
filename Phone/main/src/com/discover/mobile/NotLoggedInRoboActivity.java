@@ -1,15 +1,21 @@
 package com.discover.mobile;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.discover.mobile.alert.ModalAlertWithOneButton;
+import com.discover.mobile.alert.ModalDefaultOneButtonBottomView;
+import com.discover.mobile.alert.ModalDefaultTopView;
 import com.discover.mobile.error.ErrorHandlerFactory;
 
 /**
@@ -20,7 +26,8 @@ import com.discover.mobile.error.ErrorHandlerFactory;
  * 
  */
 public abstract class NotLoggedInRoboActivity extends SherlockActivity implements ErrorHandlerUi {
-
+	protected boolean modalIsPresent = false;
+	
 	/**
 	 * Create the activity and show the action bar
 	 */
@@ -34,6 +41,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	public ErrorHandlerFactory getErrorHandlerFactory() {
 		return ErrorHandlerFactory.getInstance();
 	}
+
 	
 	@Override
 	public void onResume(){
@@ -97,6 +105,47 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	}
 	
 	/**
+	 * Present a modal error dialog over the current activity with a given title and body text. Can also close the
+	 * current activity on close if needed.
+	 * 
+	 * @param titleText - the String resource to present in the title of the modal dialog.
+	 * @param bodyText - the String resource to present in the body of the modal dialog.
+	 * @param finishActivityOnClose - if passed as true, the activity that displays the modal 
+	 * error will be finished when the modal is closed.
+	 */
+	protected void showErrorModal(final int titleText, final int bodyText, final boolean finishActivityOnClose) {
+		final Activity activity = this;
+
+		final ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(activity, null);
+		final ModalDefaultOneButtonBottomView oneButtonBottomView = new ModalDefaultOneButtonBottomView(activity, null);
+
+		titleAndContentForDialog.setTitle(activity.getResources().getString(titleText));
+		titleAndContentForDialog.setContent(activity.getResources().getString(bodyText));
+		
+		titleAndContentForDialog.showErrorIcon(true);
+		oneButtonBottomView.setButtonText(R.string.close_text);
+				
+		titleAndContentForDialog.getHelpFooter().setToDialNumberOnClick(R.string.need_help_number_text);
+		final ModalAlertWithOneButton errorModal = 
+				new ModalAlertWithOneButton(activity, titleAndContentForDialog, oneButtonBottomView);
+		
+		if(finishActivityOnClose)
+			errorModal.finishActivityOnClose(activity);
+
+		oneButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				modalIsPresent = false;
+				errorModal.dismiss();
+				if(finishActivityOnClose)
+					activity.finish();
+			}
+		});
+
+		errorModal.show();
+	}
+	
+	/**
 	 * Function to be implemented by subclasses to return to previous screen that opened
 	 * the currently displayed screen.
 	 * 
@@ -105,9 +154,10 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	
 
 	@Override
-	public void showCustomAlert(AlertDialog alert) {
-		// TODO Auto-generated method stub
-		
+	public void showCustomAlert(final AlertDialog alert) {
+		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		alert.show();
+		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	}
 
 	@Override
