@@ -10,6 +10,7 @@ import java.util.List;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
+import android.app.Service;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -172,6 +173,8 @@ public class LoginActivity extends BaseActivity  {
 
 	private boolean saveUserId = false;
 	
+	InputMethodManager imm;
+	
 	/**
 	 * Used to remember the lastLoginAccount at startup of the application, in case the user toggles to a different account
 	 * and does not login. This variable will be used to revert the application back to the original last logged in account.
@@ -194,7 +197,9 @@ public class LoginActivity extends BaseActivity  {
 		restoreState(savedInstanceState);
 		setupButtons();
 		
-
+		imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
+		
+		
 		//Check to see if pre-auth request is required. Should only 
 		//be done at application start-up
 		if (!preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
@@ -410,7 +415,7 @@ public class LoginActivity extends BaseActivity  {
 			@Override
 			public void onClick(final View v) {
 				setViewGone(errorTextView);
-				
+				imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0); 
 				//Clear the last error that occurred
 				setLastError(0);
 				
