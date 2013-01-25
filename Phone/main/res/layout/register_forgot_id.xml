@@ -39,7 +39,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/forgot_id_account_num_label"
-            android:layout_marginTop="@dimen/between_related_elements_padding" />
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:textCursorDrawable="@null" />
 
         <TextView
             android:id="@+id/forgot_id_id_error_label"
@@ -74,7 +75,8 @@
             android:layout_below="@+id/forgot_id_password_label"
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:inputType="textPassword"
-            android:maxLength="32" />
+            android:maxLength="32" 
+            android:textCursorDrawable="@null" />
 
         <TextView
             android:id="@+id/forgot_id_pass_error_label"
