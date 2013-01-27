@@ -9,7 +9,7 @@ package com.discover.mobile.common.urlmanager;
 
 public class UrlManagerCard {
 
-	private static final String BASE_URL = "http://192.168.1.70:8008";
+	private static final String BASE_URL = "https://mst0.m.discovercard.com";
 
 	/**
 	 * Pre Auth URL
