@@ -78,9 +78,8 @@ public class HomeSummaryFragment extends BaseFragment {
 	private void setupCurrentBalanceElement(AccountDetails accountDetails) {
 		LinearLayout currentBalance = (LinearLayout) view
 				.findViewById(R.id.home_current_balance);
-
-		double currBalance = Double.valueOf(accountDetails.currentBalance);
-		double credAvailable = Double.valueOf(accountDetails.availableCredit);
+		double currBalance = getDoublevalue(accountDetails.currentBalance);
+		double credAvailable = getDoublevalue(accountDetails.availableCredit);
 
 		// main content
 		((TextView) currentBalance.findViewById(R.id.title))
@@ -111,9 +110,13 @@ public class HomeSummaryFragment extends BaseFragment {
 		LinearLayout lastStatement = (LinearLayout) view
 				.findViewById(R.id.home_last_statement);
 
-		double lastBalance = Double.valueOf(accountDetails.statementBalance);
-		double minPayment = Double.valueOf(accountDetails.minimumPaymentDue);
-
+		if(null == accountDetails.minimumPaymentDue){
+			lastStatement.setVisibility(View.GONE);
+			return;
+		}
+		double lastBalance = getDoublevalue(accountDetails.statementBalance);
+		double minPayment = getDoublevalue(accountDetails.minimumPaymentDue);
+		
 		// main content
 		((TextView) lastStatement.findViewById(R.id.title))
 				.setText(R.string.last_statement_balance);
@@ -129,6 +132,14 @@ public class HomeSummaryFragment extends BaseFragment {
 		// Pay button
 		((TextView) lastStatement.findViewById(R.id.blue_button_text))
 				.setText(R.string.pay_blue_button_text);
+	}
+	
+	private double getDoublevalue(final String amount){
+		if(null == amount){
+			return 0.00;
+		} else{
+			return Double.valueOf(amount);
+		}
 	}
 
 	/**
@@ -147,8 +158,7 @@ public class HomeSummaryFragment extends BaseFragment {
 		if (isCashback) {
 
 			double cashBonus = Double.valueOf(accountDetails.earnRewardAmount);
-			double newlyEarned = Double
-					.valueOf(accountDetails.newlyEarnedRewards);
+			double newlyEarned = Double.valueOf(accountDetails.newlyEarnedRewards);
 
 			((TextView) bonusBalance.findViewById(R.id.title))
 					.setText(R.string.cashback_bonus_balance);
@@ -221,6 +231,7 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * @return Formatted title with due date.
 	 */
 	private String formatMinimumPaymentTitle(AccountDetails accountDetails) {
+		if(null == accountDetails.paymentDueDate){return getString(R.string.min_payment_due);}
 		StringBuilder sb = new StringBuilder();
 		sb.append(getString(R.string.min_payment_due));
 		sb.append(' ');

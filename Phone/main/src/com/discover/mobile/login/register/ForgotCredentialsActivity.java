@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.common.CommonMethods;
+import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.error.ErrorHandlerFactory;
@@ -63,6 +64,9 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 					long arg3) {
 				final Option selection = optionAdapter.getItem(arg2);
 				final Class<?> intentClass = selection.getIntentClass();
+				if(selection == Option.BOTH){
+					CurrentSessionDetails.getCurrentSessionDetails().setForgotCreds(true);
+				}
 				startActivity(new Intent(currentContext, intentClass));		
 				endActivity();
 			}

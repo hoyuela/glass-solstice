@@ -43,7 +43,8 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	private CreateLoginDetails formDataTwo;
 	
 	private final static String UPDATE_PASS_CONFIRM_STATE = "a";
-	
+	private final static String UPDATE_ID_CONFIRM_STATE ="b";
+	private final static String UPDATE_EMAIL = "c";
 	private final static String UPDATE_PASSWORD_STATE = "k";
 	private final static String UPDATE_ID_STATE = "l";
 
@@ -65,6 +66,10 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	private CredentialStrengthEditText passField;
 	private ConfirmationEditText passConfirmField;
 	
+	private boolean idIsError;
+	private boolean isPassError;
+	private boolean isEmailError;
+	
 //HEADER PROGRESS BAR
 	private HeaderProgressIndicator headerProgressIndicator;
 	
@@ -74,6 +79,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		super.isForgot = false;
 		setContentView(R.layout.register_create_credentials);
 		loadAllViews();
 
@@ -87,7 +93,23 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		setupHeaderProgress();
 		setupHelpNumber();
 		restoreState(savedInstanceState);
-
+	}
+	
+	/**
+	 * Resume the fragment
+	 */
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(isEmailError){
+			emailField.setErrors();
+		}
+		if(idIsError){
+			idConfirmField.setErrors();
+		}
+		if(isPassError){
+			passConfirmField.setErrors();
+		}
 	}
 	
 	/**
@@ -98,9 +120,10 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		super.onSaveInstanceState(outState);
 
 		outState.putBoolean(UPDATE_ID_STATE, idField.isInDefaultState);
-		
+		outState.putBoolean(UPDATE_EMAIL, emailField.isInErrorState);
+		outState.putBoolean(UPDATE_ID_CONFIRM_STATE, idConfirmField.isInErrorState);
 		outState.putBoolean(UPDATE_PASSWORD_STATE, passField.isInDefaultState);
-		outState.putBoolean(UPDATE_PASS_CONFIRM_STATE, passConfirmField.isInDefaultState);
+		outState.putBoolean(UPDATE_PASS_CONFIRM_STATE, passConfirmField.isInErrorState);
 	}
 
 	/**
@@ -112,8 +135,18 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		if(savedInstanceState != null){
 			idField.isInDefaultState = savedInstanceState.getBoolean(UPDATE_ID_STATE);
 			passField.isInDefaultState = savedInstanceState.getBoolean(UPDATE_PASSWORD_STATE);
-			passConfirmField.isInDefaultState = savedInstanceState.getBoolean(UPDATE_PASS_CONFIRM_STATE);
+
+			idIsError = savedInstanceState.getBoolean(UPDATE_ID_CONFIRM_STATE);
+			isPassError = savedInstanceState.getBoolean(UPDATE_PASS_CONFIRM_STATE);
+			isEmailError = savedInstanceState.getBoolean(UPDATE_EMAIL);
+			
 		}
+	}
+	
+	/**
+	 * Set the error states if needed
+	 */
+	private void setErrorStates(){
 	}
 	
 	/**

@@ -24,6 +24,9 @@ public final class CurrentSessionDetails {
 	/**Time periods that can be displayed for the recent account activity*/
 	private RecentActivityPeriodsDetail periods;
 	
+	/**Boolean used to determine if the user is registering or changing their info*/
+	private boolean forgotCreds = false;
+	
 	private CurrentSessionDetails(){
 		
 	}
@@ -87,5 +90,19 @@ public final class CurrentSessionDetails {
 	 */
 	public void setPeriods(RecentActivityPeriodsDetail periods) {
 		this.periods = periods;
+	}
+
+	/**
+	 * @return the forgotCreds
+	 */
+	public boolean isForgotCreds() {
+		return forgotCreds;
+	}
+
+	/**
+	 * @param forgotCreds the forgotCreds to set
+	 */
+	public void setForgotCreds(boolean forgotCreds) {
+		this.forgotCreds = forgotCreds;
 	}
 }
