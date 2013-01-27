@@ -6,7 +6,6 @@ import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.login.LoginActivity;
-import com.discover.mobile.navigation.Navigator;
 
 /**
  * 1) include context here so that this class can invoke the error modal dialog.

@@ -28,6 +28,8 @@ import com.discover.mobile.common.account.summary.LatePaymentWarningTextDetail;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.LockScreenCompletionListener;
+import com.discover.mobile.error.BaseExceptionFailureHandler;
 
 /**
  * Fragment holding the account summary information for both miles and cashback users
@@ -302,6 +304,8 @@ public class AccountSummaryFragment extends BaseFragment {
 					GenericAsyncCallback.<LatePaymentWarningDetail>builder(this.getActivity())
 					.withSuccessListener(new LatePaymentWarningSuccessListener(this))
 					.withErrorResponseHandler(new LatePaymentErrorHandler(this))
+					.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+					.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
 					.build();
 			
 			new GetLatePaymentWarning(getActivity(), callback).submit();
@@ -321,6 +325,8 @@ public class AccountSummaryFragment extends BaseFragment {
 					GenericAsyncCallback.<LatePaymentWarningTextDetail>builder(this.getActivity())
 					.withSuccessListener(new LatePaymentWarningTextSuccessListener(this))
 					.withErrorResponseHandler(new LatePaymentErrorHandler(this))
+					.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+					.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
 					.build();
 			
 			new GetLatePaymentWarningText(getActivity(), callback).submit();

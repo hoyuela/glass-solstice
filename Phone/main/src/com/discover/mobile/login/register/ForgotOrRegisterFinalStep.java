@@ -21,9 +21,12 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
+import com.discover.mobile.error.BaseExceptionFailureHandler;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
@@ -59,6 +62,9 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback
 				.<AccountDetails> builder(this)
 				.showProgressDialog("Discover", "Loading...", true)
+				.withErrorResponseHandler(new CardBaseErrorResponseHandler(this))
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.withCompletionListener(new LockScreenCompletionListener(this))
 				.withSuccessListener(new SuccessListener<AccountDetails>() {
 
 					@Override
@@ -101,6 +107,8 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 							true)
 							.withSuccessListener(new PushConfirmationSuccessListener())
 							.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(new LoginActivity()))
+							.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+							.withCompletionListener(new LockScreenCompletionListener(this))
 							.finishCurrentActivityOnSuccess(this)
 							.build();
 
