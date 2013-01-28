@@ -3,6 +3,8 @@ package com.discover.mobile;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -138,9 +140,20 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 				modalIsPresent = false;
 				errorModal.dismiss();
 				if(finishActivityOnClose)
-					activity.finish();
+					goBack();
 			}
 		});
+		
+		errorModal.setOnCancelListener(new OnCancelListener() {			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				if(finishActivityOnClose)
+					goBack();
+				else
+					errorModal.dismiss();			
+			}
+		});
+		
 		modalIsPresent = true;
 		showCustomAlert(errorModal);
 		
@@ -180,9 +193,20 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 				modalIsPresent = false;
 				errorModal.dismiss();
 				if(finishActivityOnClose)
-					activity.finish();
+					goBack();
 			}
 		});
+		
+		errorModal.setOnCancelListener(new OnCancelListener() {			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				if(finishActivityOnClose)
+					goBack();
+				else
+					errorModal.dismiss();
+			}
+		});
+		
 		modalIsPresent = true;
 		errorModal.show();
 		
