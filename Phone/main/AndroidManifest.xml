@@ -45,9 +45,9 @@
 	
 		<activity android:name=".security.EnhancedAccountSecurityActivity"
 			android:label="@string/app_name"
-			android:launchMode="standard"
-			android:screenOrientation="portrait"
-			android:noHistory="true" />
+			android:launchMode="standard">
+
+			</activity>
 		
 		<activity android:name=".login.LockOutUserActivity"
 			android:label="@string/app_name"
@@ -57,49 +57,51 @@
 		<activity android:name=".login.register.RegistrationAccountInformationActivity"
 			android:label="@string/app_name"
 			android:launchMode="standard">
+
 		</activity>
 	
 		<activity android:name=".login.register.ForgotPasswordAccountInformationActivity"
 			android:label="@string/app_name"
-			android:launchMode="standard"
-			android:screenOrientation="portrait" />
+			android:launchMode="standard" >
+		</activity>
 	
 		<activity android:name=".login.register.ForgotBothAccountInformationActivity"
 			android:label="@string/app_name"
-			android:launchMode="standard"
-			android:screenOrientation="portrait" />
+			android:launchMode="standard" />
 		
 		<activity android:name=".login.register.CreateLoginActivity"
 			android:label="@string/app_name"
-			android:launchMode="standard"
-			android:screenOrientation="portrait" />
+			android:launchMode="standard" >
+			
+			</activity>
 		
 		<activity android:name=".login.register.AccountInformationConfirmationActivity"
 			android:label="@string/app_name"
-			android:launchMode="singleTask"
-			android:screenOrientation="portrait"
-			android:noHistory="true" />
+			android:launchMode="standard" />
 
 		<activity android:name=".login.register.StrengthBarHelpActivity"
 			android:label="@string/app_name"
-			android:launchMode="singleTask" />
+			android:launchMode="standard" />
 	
-		<activity android:name=".login.register.ForgotTypeSelectionActivity"
+		<activity android:name="com.discover.mobile.login.register.ForgotCredentialsActivity"
 			android:label="@string/app_name"
-			android:launchMode="singleTask"
-			android:screenOrientation="portrait"
-			android:noHistory="true" />
+			android:launchMode="standard">
+		</activity>
 		
 		<activity android:name=".login.register.ForgotUserIdActivity"
 			android:label="@string/app_name"
-			android:launchMode="singleTask"
-			android:screenOrientation="portrait"
-			android:noHistory="true" />
+			android:launchMode="standard" >
+		</activity>
 		
 		<activity android:name=".login.register.EnterNewPasswordActivity"
 			android:label="@string/app_name"
-			android:launchMode="singleTop"
-			android:screenOrientation="portrait" />
+			android:launchMode="standard" >
+		</activity>
+		
+		<activity android:name=".help.CustomerServiceContactsActivity"
+			android:label="@string/app_name"
+			android:launchMode="standard" >
+		</activity>
 	
 		<activity android:name=".navigation.NavigationMenuRootActivity" />
 		

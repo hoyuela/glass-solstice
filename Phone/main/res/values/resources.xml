@@ -72,22 +72,6 @@
    		<item>some other item</item>
     </string-array>
     
-    <string-array name="better_month_array">
-        <item>Month</item>
-        <item>(01) January</item>
-        <item>(02) February</item>
-        <item>(03) March</item>
-        <item>(04) April</item>
-        <item>(05) May</item>
-        <item>(06) June</item>
-        <item>(07) July</item>
-        <item>(08) August</item>
-        <item>(09) September</item>
-        <item>(10) October</item>
-        <item>(11) November</item>
-        <item>(12) December</item>
-    </string-array>
-    
     <string-array name="forgot_login">
         <item>Forgot User ID</item>
         <item>Forgot Password</item>

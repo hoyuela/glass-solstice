@@ -6,4 +6,6 @@
 	<string name="birth_date_placeholder">
 	    Select Month/Day/Year
 	</string>
+	<string name="account_info_dob_text">Primary Cardmember\'s Birthday</string>
+    <string name="card_expiration_date_text">Card Expiration Date</string>
 </resources>

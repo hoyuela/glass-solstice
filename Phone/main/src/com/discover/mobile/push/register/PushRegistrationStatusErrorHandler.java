@@ -3,7 +3,8 @@ package com.discover.mobile.push.register;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.discover.mobile.login.BaseErrorResponseHandler;
+import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 
@@ -16,7 +17,7 @@ import com.discover.mobile.navigation.NavigationRootActivity;
  * @author jthornton
  * 
  */
-public class PushRegistrationStatusErrorHandler extends BaseErrorResponseHandler  {
+public class PushRegistrationStatusErrorHandler extends CardBaseErrorResponseHandler  {
 
 	Activity activity;
 	
@@ -26,7 +27,7 @@ public class PushRegistrationStatusErrorHandler extends BaseErrorResponseHandler
 	 * @param loginActivity
 	 *            - activity context
 	 */
-	public PushRegistrationStatusErrorHandler(LoginActivity loginActivity) {
+	public PushRegistrationStatusErrorHandler(final LoginActivity loginActivity) {
 		super(loginActivity);
 		this.activity=loginActivity;
 	}
@@ -48,7 +49,7 @@ public class PushRegistrationStatusErrorHandler extends BaseErrorResponseHandler
 	 * @return true if the error has been handled
 	 */
 	@Override
-	protected boolean handleJsonErrorCode(com.discover.mobile.common.net.json.JsonMessageErrorResponse messageErrorResponse) {
+	protected boolean handleJsonErrorCode(final JsonMessageErrorResponse messageErrorResponse) {
 		
 		//FIXME are we sure we want to suppress this error code
 		final Intent intent = new Intent(activity, NavigationRootActivity.class);

@@ -2,7 +2,7 @@ package com.discover.mobile.push.register;
 
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.login.BaseErrorResponseHandler;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 
 /**
  * Error handler for the call to the server that registers the device and the
@@ -12,7 +12,7 @@ import com.discover.mobile.login.BaseErrorResponseHandler;
  * @author jthornton
  * 
  */
-public class PushRegisterErrorHandler extends BaseErrorResponseHandler {
+public class PushRegisterErrorHandler extends CardBaseErrorResponseHandler {
 
 	/**
 	 * Local instance of the fragment making this call (used to swap the

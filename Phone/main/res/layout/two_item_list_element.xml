@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <View
+        android:id="@+id/divider_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/between_related_elements_padding"
+        android:background="@color/field_stroke" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider_line"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/between_related_elements_padding"
+        android:paddingRight="@dimen/between_related_elements_padding"
+        android:paddingTop="@dimen/between_related_elements_padding" >
+
+        <TextView
+            android:id="@+id/left_text"
+            style="@style/field_copy_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/edit" />
+
+        <TextView
+            android:id="@+id/right_text"
+            style="@style/blue_hyperlink_smallest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="@dimen/content_padding"
+            android:paddingLeft="@dimen/content_padding"            
+            android:text="@string/edit" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -16,18 +16,19 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 
-public class StrongAuthAnswerCall extends NetworkServiceCall<Object> {
+public class StrongAuthAnswerCall extends NetworkServiceCall<StrongAuthAnswerDetails> {
 	
 	private static final String TAG = StrongAuthAnswerCall.class.getSimpleName();
 	private static final String ID_PREFIX = "%&(()!12[";
 
-	private final TypedReferenceHandler<Object> handler;
+	private final TypedReferenceHandler<StrongAuthAnswerDetails> handler;
 
-	public StrongAuthAnswerCall(final Context context, final AsyncCallback<Object> callback,
+	public StrongAuthAnswerCall(final Context context, final AsyncCallback<StrongAuthAnswerDetails> callback,
 			final StrongAuthAnswerDetails strongAuthAnswerDetails) throws NoSuchAlgorithmException {
 		
-		super(context, new PostCallParams("/cardsvcs/acs/strongauth/v1/authenticate") {{
+		super(context, new PostCallParams(UrlManagerCard.getStrongAuthAnswerUrl()) {{
 			
 			requiresSessionForRequest = true;
 			
@@ -46,18 +47,18 @@ public class StrongAuthAnswerCall extends NetworkServiceCall<Object> {
 		
 		
 		// TODO decide if this is the best type of handler
-		handler = new StrongReferenceHandler<Object>(callback);
+		handler = new StrongReferenceHandler<StrongAuthAnswerDetails>(callback);
 	}
 
 	
 	@Override
-	protected TypedReferenceHandler<Object> getHandler() {
+	protected TypedReferenceHandler<StrongAuthAnswerDetails> getHandler() {
 		return handler;
 	}
 
 
 	@Override
-	protected Object parseSuccessResponse(final int status,
+	protected StrongAuthAnswerDetails parseSuccessResponse(final int status,
 			final Map<String, List<String>> headers, final InputStream body)
 			throws IOException {
 		// TODO Auto-generated method stub

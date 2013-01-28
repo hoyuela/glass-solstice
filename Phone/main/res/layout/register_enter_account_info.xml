@@ -23,14 +23,6 @@
             android:padding="@dimen/forms_inner_padding" >
 
             <TextView
-                android:id="@+id/account_info_title_label"
-                style="@style/title_copy"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/app_name"
-                android:visibility="invisible" />
-
-            <TextView
                 android:id="@+id/account_info_label_one_label"
                 style="@style/title_copy"
                 android:layout_below="@+id/account_info_error_label"
@@ -38,11 +30,12 @@
 
             <com.discover.mobile.common.customui.UsernameOrAccountNumberEditText
                 android:id="@+id/account_info_main_input_field"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/input_field_height"
                 android:layout_below="@+id/account_info_label_one_label"
                 android:layout_marginTop="@dimen/between_related_elements_padding"
-                android:imeOptions="actionDone" />
+                android:imeOptions="actionDone"
+                android:textCursorDrawable="@null" />
 
             <TextView
                 android:id="@+id/account_information_input_info_label"
@@ -55,9 +48,7 @@
                 android:id="@+id/account_info_card_account_number_error_label"
                 style="@style/error_label"
                 android:layout_below="@+id/account_info_main_input_field"
-                android:text="@string/doesnt_match_records" >
-
-                <requestFocus />
+                android:text="@string/invalid_input" >
             </TextView>
 
             <TextView
@@ -85,7 +76,8 @@
                 android:layout_below="@+id/account_info_ssn_info_label"
                 android:layout_marginTop="@dimen/between_related_elements_padding"
                 android:layout_toRightOf="@+id/account_info_ssn_prefix_label"
-                android:imeOptions="actionDone" />
+                android:imeOptions="actionDone"
+                android:textCursorDrawable="@null" />
 
             <TextView
                 android:id="@+id/account_info_ssn_prefix_label"
@@ -101,8 +93,9 @@
             <TextView
                 android:id="@+id/account_info_ssn_error_label"
                 style="@style/error_label"
+                android:layout_alignLeft="@+id/account_info_ssn_input_field"
                 android:layout_below="@+id/account_info_ssn_input_field"
-                android:text="@string/doesnt_match_records" />
+                android:text="@string/invalid_input" />
 
             <TextView
                 android:id="@+id/account_info_dob_label"
@@ -115,65 +108,70 @@
                 android:id="@+id/account_info_dob_year_error_label"
                 style="@style/error_label"
                 android:layout_below="@+id/account_info_birth_date_picker"
-                android:text="@string/doesnt_match_records" />
+                android:text="@string/invalid_input" />
 
-            <LinearLayout
-                android:id="@+id/account_info_button_row"
+            <Button
+                android:id="@+id/account_info_continue_button"
+                style="@style/call_to_action_theme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_birth_date_picker"
                 android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/orange_button_margin_top"
                 android:layout_marginTop="@dimen/orange_button_margin_top"
-                android:orientation="vertical" >
+                android:onClick="validateInfoAndSubmitOnSuccess"
+                android:text="@string/continue_text" />
 
-                <Button
-                    android:id="@+id/account_info_continue_button"
-                    style="@style/call_to_action_theme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="validateInfoAndSubmitOnSuccess"
-                    android:text="@string/continue_text" />
-
-                <Button
-                    android:id="@+id/account_info_cancel_button"
-                    style="@style/blue_hyperlink"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/none"
-                    android:onClick="goBack"
-                    android:text="@string/cancel_text" />
-            </LinearLayout>
+            <Button
+                android:id="@+id/account_info_cancel_button"
+                style="@style/blue_hyperlink"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_info_continue_button"
+                android:layout_centerHorizontal="true"
+                android:background="@color/none"
+                android:onClick="goBack"
+                android:text="@string/cancel_text" />
 
             <com.discover.mobile.common.customui.CardExpirationDatePicker
                 android:id="@+id/account_info_card_exp_date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_card_expiration_date_label"
-                android:layout_marginTop="@dimen/between_related_elements_padding"
-                android:onClick="showCardDatePickerDialog" />
+                android:layout_marginTop="@dimen/between_related_elements_padding" />
 
             <TextView
                 android:id="@+id/account_info_expiration_date_error_label"
                 style="@style/error_label"
                 android:layout_below="@+id/account_info_card_exp_date_picker"
-                android:text="@string/doesnt_match_records" />
+                android:text="@string/invalid_input" />
 
             <com.discover.mobile.common.customui.DobDatePicker
                 android:id="@+id/account_info_birth_date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_dob_label"
-                android:layout_marginTop="@dimen/between_related_elements_padding"
-                android:onClick="showBirthDatePickerDialog" />
+                android:layout_marginTop="@dimen/between_related_elements_padding" />
 
             <RelativeLayout
+                android:id="@+id/footer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_button_row"
-                android:layout_marginTop="@dimen/orange_button_margin_top" >
+                android:layout_below="@+id/account_info_cancel_button"
+                android:layout_marginTop="@dimen/groups_of_elements_padding" >
 
                 <include layout="@layout/old_general_need_help_footer" />
             </RelativeLayout>
+            <TextView
+                android:id="@+id/provide_feedback_button"
+                style="@style/blue_hyperlink_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/footer"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/orange_button_margin_top"
+                android:layout_marginTop="@dimen/orange_button_margin_top"
+                android:text="@string/feedback_text" />
         </RelativeLayout>
     </ScrollView>
 

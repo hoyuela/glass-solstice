@@ -14,8 +14,10 @@ import android.view.View.OnClickListener;
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
+import com.discover.mobile.alert.ModalAlertWithTwoButtons;
 import com.discover.mobile.alert.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.alert.ModalDefaultTopView;
+import com.discover.mobile.alert.ModalDefaultTwoButtonBottomView;
 
 
 /**
@@ -57,22 +59,28 @@ public class PreAuthCallHelper  {
 	public static final void showOptionalUpgradeAlertDialog(final ErrorHandlerUi errorHandlerUi, final String message) {
 		final Context context = errorHandlerUi.getContext();
 
-		ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(context, null);
-		ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(context, null);
+		final ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(context, null);
+		final ModalDefaultTwoButtonBottomView twoButtonBottomView = new ModalDefaultTwoButtonBottomView(context, null);
 		
-		titleAndContentForDialog.setTitle(R.string.upgrade_dialog_title);
+		titleAndContentForDialog.hideNeedHelpFooter();
+		titleAndContentForDialog.setTitle(R.string.option_upgrade_dialog_title);
 		titleAndContentForDialog.setContent(R.string.optional_upgrade_dialog_body);
 		
-		singleButtonBottomView.setButtonText(R.string.upgrade_dialog_button_text);
+		twoButtonBottomView.setOkButtonText(R.string.upgrade_dialog_button_text);
+		twoButtonBottomView.setCancelButtonText(R.string.no_thanks);
 				
-		ModalAlertWithOneButton optionalUpgradeDialog = 
-				new ModalAlertWithOneButton(context, titleAndContentForDialog, singleButtonBottomView);
+		final ModalAlertWithTwoButtons optionalUpgradeDialog = 
+				new ModalAlertWithTwoButtons(context, titleAndContentForDialog, twoButtonBottomView);
 		
-		singleButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
+		twoButtonBottomView.getOkButton().setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) { upgrade(context); }
+			public void onClick(final View v) { upgrade(context); }
 		});
 		
+		twoButtonBottomView.getCancelButton().setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) { optionalUpgradeDialog.dismiss(); }
+		});
 		errorHandlerUi.showCustomAlert(optionalUpgradeDialog);
 	}
 	
@@ -85,27 +93,28 @@ public class PreAuthCallHelper  {
 	 */
 	public static  final void showForcedUpgradeAlertDialog(final ErrorHandlerUi errorHandlerUi) {
 		final Context context = errorHandlerUi.getContext();
-		ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(context, null);
-		ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(context, null);
+		final ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(context, null);
+		final ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(context, null);
 		
-		titleAndContentForDialog.setTitle(R.string.upgrade_dialog_title);
+		titleAndContentForDialog.hideNeedHelpFooter();
+		titleAndContentForDialog.setTitle(R.string.forced_upgrade_dialog_title);
 		titleAndContentForDialog.setContent(R.string.forced_upgrade_dialog_body);
 		titleAndContentForDialog.showErrorIcon(true);
 		
 		singleButtonBottomView.setButtonText(R.string.upgrade_dialog_button_text);
 				
-		ModalAlertWithOneButton optionalUpgradeDialog = 
+		final ModalAlertWithOneButton optionalUpgradeDialog = 
 				new ModalAlertWithOneButton(context, titleAndContentForDialog, singleButtonBottomView);
 		
 		singleButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) { upgrade(context); }
+			public void onClick(final View v) { upgrade(context); }
 		});
 		optionalUpgradeDialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
-		@Override
-		public void onCancel(DialogInterface dialog) {
-			android.os.Process.killProcess(android.os.Process.myPid());
-		}
+			@Override
+			public void onCancel(final DialogInterface dialog) {
+				android.os.Process.killProcess(android.os.Process.myPid());
+			}
 		});	
 		
 		errorHandlerUi.showCustomAlert(optionalUpgradeDialog);

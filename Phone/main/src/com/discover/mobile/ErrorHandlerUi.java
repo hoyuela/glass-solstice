@@ -7,6 +7,8 @@ import android.content.Context;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.discover.mobile.error.ErrorHandlerFactory;
+
 
 /**
  * An interface to support common error handling across activities/fragments
@@ -58,19 +60,6 @@ public interface ErrorHandlerUi {
 	public void showDynamicOneButtonAlert(int title, String content, int buttonText);
 	
 	/**
-	 * Send to error page; display error text with given title
-	 * @param titleText
-	 * @param errorText
-	 */
-	public void sendToErrorPage(int titleText, int errorText);
-	
-	/**
-	 * Send to error page; display error text with default error page title
-	 * @param errorText
-	 */
-	public void sendToErrorPage(int errorText);
-	
-	/**
 	 * returns the context associated with this error handler ui.
 	 * 
 	 * for fragment, this is the activityfragment.
@@ -93,4 +82,8 @@ public interface ErrorHandlerUi {
 	*/
 	public int getLastError();
 	
+	/**
+	 * 
+	 */
+	public ErrorHandlerFactory getErrorHandlerFactory();
 }

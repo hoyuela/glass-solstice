@@ -14,6 +14,7 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 
 /**
  * Error response handler for the login service call.
@@ -24,7 +25,7 @@ import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
  * @author scottseward, ekaram
  *
  */
-public class LoginErrorResponseHandler extends BaseErrorResponseHandler {
+public class LoginErrorResponseHandler extends CardBaseErrorResponseHandler {
 	
 	/**
 	 * LoginErrorResponseHandler requires the context of use, input fields for id, and password, and error label
@@ -81,7 +82,6 @@ public class LoginErrorResponseHandler extends BaseErrorResponseHandler {
 				
 			case LOCKED_OUT_ACCOUNT:
 				TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_LOCKED);
-				// TODO sseward: reference lock out text when error map set up
 				sendToErrorPage(R.string.locked_account);
 				return true;
 				

@@ -3,12 +3,15 @@
 
     <RelativeLayout
         android:id="@+id/location_text"
-        style="@style/status_indicator_style" >
+        style="@style/status_indicator_style" 
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding">
 
         <ImageView
             android:id="@+id/step1_confirm"
             android:layout_alignParentLeft="true"
-            style="@style/status_check_mark" />
+            style="@style/status_check_mark" 
+            android:layout_marginRight="@dimen/between_related_elements_padding"/>
 
         <LinearLayout
             android:id="@+id/step_1"
@@ -32,7 +35,8 @@
 
             <ImageView
                 android:id="@+id/middle_indicator"
-                style="@style/status_indicator_image"  />
+                style="@style/status_indicator_image"
+                android:layout_marginRight="@dimen/between_related_elements_padding"  />
 
             <TextView
                 android:id="@+id/step2_title"
@@ -48,7 +52,8 @@
 
             <ImageView
                 android:id="@+id/last_indicator"
-                style="@style/status_indicator_image" />
+                style="@style/status_indicator_image" 
+                android:layout_marginRight="@dimen/between_related_elements_padding"/>
 
             <TextView
                 android:id="@+id/step3_title"

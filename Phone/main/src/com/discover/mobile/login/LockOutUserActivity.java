@@ -3,6 +3,7 @@ package com.discover.mobile.login;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -57,6 +58,13 @@ public class LockOutUserActivity extends RoboActivity {
 			setErrorText(errorText);
 		if (errorTitleText != null)
 			setErrorTitleText(errorTitleText);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		final Intent loginScreen = new Intent(this, LoginActivity.class);
+		startActivity(loginScreen);
+		this.finish();
 	}
 
 }

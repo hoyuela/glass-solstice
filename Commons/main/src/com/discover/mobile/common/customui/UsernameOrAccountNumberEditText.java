@@ -1,10 +1,13 @@
 package com.discover.mobile.common.customui;
 
 import android.content.Context;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 
+import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.auth.InputValidator;
 import com.google.common.base.Strings;
 
@@ -20,9 +23,20 @@ import com.google.common.base.Strings;
  */
 public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	private boolean isUsernameField = true;
-	private static final int VALID_ACCOUNT_NUMBER_LENGTH = 16;
+	
+	private static final int DEFAULT_EMS = 20;
+	
+	private static final int VALID_ACCOUNT_NUMBER_LENGTH = 19;
 	private static final int MAX_USERNAME_LENGTH = 32;
 	
+	private int lengthBefore = 0;
+	private int lengthAfter = 0;
+	
+	private int cursorStartPosition = 0;
+	private int cursorEndPosition = 0;
+	private boolean needsToRestore = false;
+	private boolean isDeleting = false;
+
 	/**
 	 * Default constructors. Initially sets up the input field as a username field.
 	 */
@@ -57,6 +71,122 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	public void setFieldAccountNumber() {
 		isUsernameField = false;
 		setupAccountNumberInputRestrictions();
+		setupInputStylizer();
+	}
+
+	@Override
+	protected void setupDefaultAppearance() {
+		super.setupDefaultAppearance();
+		this.setEms(DEFAULT_EMS);
+	}
+	/**
+	 * Listens for hardware keyboard inputs and stylizes the input for account numbers.
+	 * 
+	 * When text is changed in the input field it has to do the following.
+	 * Save the current input that has just changed and get the properly formatted version of the current input.
+	 * Compare the current input to a properly formatted version of the current input.
+	 * If they differ in formatting, restore the input field with the properly formatted String.
+	 * Then restore the position of the cursor.
+	 * 
+	 * This also needs to know when a deletion is being made, by comparing before and after lengths of the String.
+	 * Also it needs to know where spaces are being inserted so that it can account for cursor position.
+	 */
+	private void setupInputStylizer() {
+		this.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				restoreCursorPosition();
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				lengthBefore = s.length();
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				final String currentText = s.toString();
+				String currentTextStylized = 
+						CommonMethods.getStringWithSpacesEvery4Characters(CommonMethods.getSpacelessString(currentText));
+				//remove the trailing space at the end of the number
+				if(currentTextStylized.length() == VALID_ACCOUNT_NUMBER_LENGTH + 1)
+					currentTextStylized = currentTextStylized.trim();
+				
+				lengthAfter = currentTextStylized.length();
+				
+				if(currentTextStylized.length() <= VALID_ACCOUNT_NUMBER_LENGTH && !currentText.equals(currentTextStylized)){
+					saveCursorPosition();
+					if(lengthBefore > lengthAfter)
+						isDeleting = true;
+					
+					updateInputWithString(currentTextStylized);
+				}
+			}
+			
+		});
+
+	}
+	
+	/**
+	 * Save the current position of the text cursor.
+	 */
+	private void saveCursorPosition() {
+		cursorStartPosition = this.getSelectionStart();
+		cursorEndPosition = this.getSelectionEnd();
+		needsToRestore = true;
+	}
+	
+	/**
+	 * Restore the position of the text cursor.
+	 */
+	private void restoreCursorPosition() {
+		if(needsToRestore){
+			//If were are at a space and are NOT deleting a character,
+			//increment the cursor position so that it restores to the right spot 
+			//ahead of the space.
+			if(cursorStartPosition % 5 == 0 && !isDeleting){
+				cursorStartPosition ++;
+				cursorEndPosition ++;
+			}
+			
+			isDeleting = false;
+			
+			this.setSelection(cursorStartPosition, cursorEndPosition);
+			needsToRestore = false;
+		}
+	}
+	/**
+	 * Returns the number of space characters that occur before a given position in the field.
+	 * @param position
+	 * @return
+	 */
+	public int numberOfSpacesBeforePosition(final int position) {
+		int numberOfSpaces = 0;
+		String currentInput = getInputText();
+		for(int i = 0; i < position; ++i){
+			if(currentInput.charAt(i) == ' ')
+				numberOfSpaces += 1;
+		}
+		
+		return numberOfSpaces;
+	}
+	
+	/**
+	 * Updates the current input to the passed String parameter.
+	 * @param newInput
+	 */
+	private void updateInputWithString(final String newInput) {
+		this.setText(newInput);
+	}
+	
+	/**
+	 * Return the current text in the field.
+	 * @return
+	 */
+	private String getInputText(){
+		return this.getText().toString();
 	}
 	
 	/**
@@ -67,6 +197,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		filterArray[0] = new InputFilter.LengthFilter(VALID_ACCOUNT_NUMBER_LENGTH);
 		this.setFilters(filterArray);
 		this.setInputType(InputType.TYPE_CLASS_PHONE);
+		setupDefaultHeight();
 	}
 
 	/**
@@ -77,6 +208,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		filterArray[0] = new InputFilter.LengthFilter(MAX_USERNAME_LENGTH);
 		this.setFilters(filterArray);
 		this.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+		setupDefaultHeight();
 	}
 	
 	/**
@@ -110,29 +242,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	public boolean isAccountNumberValid() {
 		final String cardAccountNumber = this.getText().toString();
 		
-		return InputValidator.isCardAccountNumberValid(cardAccountNumber);
+		return InputValidator.isCardAccountNumberValid(CommonMethods.getSpacelessString(cardAccountNumber));
 	}
-	
-	/**
-	 * Resets the appearance of the input field back to its default.
-	 */
-	@Override
-	protected void clearErrors() {
-		hideErrorLabel();
-		this.setBackgroundResource(FIELD_DEFAULT_APPEARANCE);
-		this.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-
-	}
-	
-	/**
-	 * Sets the appearance of the input field to an error state. Highlights the field
-	 * in red and shows a red X in the right drawable location.
-	 */
-	@Override
-	protected void setErrors() {
-		showErrorLabel();
-		this.setBackgroundResource(FIELD_ERROR_APPEARANCE);
-		
-		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getRedX(), null);
-	}
+	    
 }

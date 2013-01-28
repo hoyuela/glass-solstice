@@ -1,5 +1,6 @@
 package com.discover.mobile.section;
 
+import com.discover.mobile.help.CustomerServiceSectionInfo;
 import com.discover.mobile.profile.ProfileAndSettingsSectionInfo;
 import com.discover.mobile.section.account.AccountSectionInfo;
 import com.discover.mobile.section.home.HomeSectionInfo;
@@ -20,6 +21,7 @@ public final class Sections {
 			.add(new HomeSectionInfo())
 			.add(new AccountSectionInfo())
 			.add(new ProfileAndSettingsSectionInfo())
+			.add(new CustomerServiceSectionInfo())
 			.build();
 	
 	private Sections() {

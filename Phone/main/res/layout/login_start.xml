@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/OrangeTheme"
+    android:id="@+id/login_start_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-	
+    
+    <ProgressBar
+        android:id="@+id/splash_progress"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:paddingTop="@dimen/orange_button_margin_top"
+         style="@android:style/Widget.ProgressBar.Small.Inverse"
+         android:layout_centerInParent="true"
+     />
+    
+    
 	<ScrollView 
-	        android:id="@+id/scrollView1"
+	        android:id="@+id/login_pane"
 	        android:layout_above="@+id/login_bottom_button_row"
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
@@ -62,19 +73,15 @@
 		            android:textAppearance="?android:attr/textAppearanceMedium"
 		             style="@style/body_copy"/>
 	
-		        <EditText
+		        <com.discover.mobile.common.customui.NonEmptyEditText
 		            android:id="@+id/username_field"
 		            android:layout_width="match_parent"
-		            android:layout_height="48dp"
+		            android:layout_height="wrap_content"
 		            android:layout_below="@+id/user_id_label"
-		            android:background="@drawable/edit_text_default"
-		            android:ems="10"
 		            android:hint="@string/empty"
 		            android:imeOptions="actionNext"
 		            android:inputType="textNoSuggestions"
-		            android:maxLength="@integer/MAX_ID_LENGTH"
-		            android:maxLines="@integer/MAX_INPUT_LINES"
-		            android:textColor="@color/black"/>
+		            android:textCursorDrawable="@null"/>
 					
 		        <TextView
 		            android:id="@+id/password_label"
@@ -82,34 +89,19 @@
 		            android:layout_height="wrap_content"
 		            android:layout_below="@+id/username_field"
 		            android:text="@string/password"
-		            android:layout_marginTop="@dimen/between_related_elements_padding"
+		            android:layout_marginTop="@dimen/groups_of_elements_padding"
 		            android:layout_marginRight="14dp"
 		            android:textAppearance="?android:attr/textAppearanceMedium" 
 		            style="@style/body_copy"/>
-		        
-		        <TextView
-		            android:id="@+id/toggle_password_visibility_label"
-		            android:padding="@dimen/content_padding"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_toRightOf="@+id/password_label"
-		            android:clickable="true"
-		            android:onClick="togglePasswordVisibility"
-		            android:layout_alignBaseline="@+id/password_label"
-		            android:text="@string/show"
-		            android:textColor="@color/blue"/>
-	
-		        <EditText
+		       
+		        <com.discover.mobile.common.customui.NonEmptyEditText
 		            android:id="@+id/password_field"
 		            android:layout_width="match_parent"
-		            android:layout_height="48dp"
+		            android:layout_height="wrap_content"
 		            android:layout_below="@+id/password_label"
-		            android:background="@drawable/edit_text_default"
 		            android:hint="@string/empty"
 		            android:inputType="textPassword"
-		            android:maxLength="@integer/MAX_PASSWORD_LENGTH"
-		            android:maxLines="@integer/MAX_INPUT_LINES"
-		            android:textColor="@color/black"/>
+					android:textCursorDrawable="@null"/>
 	
 	            <TextView
 	                android:id="@+id/remember_user_id_label"
@@ -257,30 +249,31 @@
 	    android:id="@+id/login_bottom_button_row"
            android:layout_width="fill_parent"
            android:layout_height="wrap_content"
+           android:orientation="horizontal"
            android:layout_alignParentBottom="true" 
            android:background="@color/transparentGray">
 
 		<Button
 		    android:id="@+id/customer_service_button"
-		    android:layout_width="wrap_content"
+		    android:layout_width="0dp"
 		    android:layout_height="wrap_content"
-		    android:layout_weight=".33"
+		    android:layout_weight="0.33"
 		    style="@style/login_bottom_bar_button"
 		    android:text="@string/customer_service" />
 
 		<Button
 		    android:id="@+id/privacy_and_security_button"
-		    android:layout_width="wrap_content"
+		    android:layout_width="0dp"
 		    android:layout_height="wrap_content"
-		    android:layout_weight=".33"
+		    android:layout_weight="0.33"
 		    style="@style/login_bottom_bar_button"
 		    android:text="@string/privacy_and_security" />
 
 		<Button
-		    android:id="@+id/register_now_button"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_weight=".33"
+		    android:id="@+id/register_now_or_atm_button"
+		    android:layout_width="0dp"
+		    android:layout_height="fill_parent"
+		    android:layout_weight="0.34"
 		    style="@style/login_bottom_bar_button"
 		    android:text="@string/register_now"/>
 

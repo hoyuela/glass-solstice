@@ -1,17 +1,23 @@
 package com.discover.mobile.login.register;
 
+import java.util.List;
+
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.ScreenType;
+import com.discover.mobile.R;
+import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.utils.CommonUtils;
+import com.discover.mobile.error.ErrorHandlerFactory;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 
 /**
  * ForgotPasswordAccountInformationActivity - This activity extends the AbstractAccountInformationActivity
@@ -22,7 +28,7 @@ import com.discover.mobile.utils.CommonUtils;
  * @author scottseward
  *
  */
-public class ForgotPasswordAccountInformationActivity extends AbstractAccountInformationActivity {
+public class ForgotPasswordAccountInformationActivity extends ForgotOrRegisterFirstStep {
 	
 	/**
 	 * Setup the main input field to accept a username instead of an account number.
@@ -31,49 +37,23 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		accountIdentifierField.setFieldUsername();
-		
 	}
 	
+	/**
+	 * Initiates the proper analytics services call.
+	 */
 	public ForgotPasswordAccountInformationActivity() {
 		super(AnalyticsPage.FORGOT_PASSWORD_STEP1);
-	} 
-	/**
-	 * Put all of the form details as a serializable object extra and pass it to the next activity
-	 * which will append more info onto that object.
-	 */
-	@Override
-	protected void navToNextScreenWithDetails(AccountInformationDetails details) {
-		final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
-		createLoginActivity.putExtra(ScreenType.INTENT_KEY, ScreenType.FORGOT_PASSWORD);
-		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, details);
-		startActivity(createLoginActivity);
-		finish();
-	}
-	
-	@Override
-	public void onBackPressed() {
-		goBack(null);
-	}
-	
-	/**
-	 * goBack will navigate the user back to the forgot selection activity. This is the screen that lets
-	 * the user choose between forgotten password/user id/ or both. We also finish this activity so that
-	 * they cannot navigate back to this screen.
-	 */
-	@Override
-	public void goBack(final View v) {
-		Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
-		startActivity(forgotCredentials);
-		finish();
-	}
+	} 	
 	
 	/**
 	 * Hide the text label that contains information that pertains to account numbers.
 	 */
 	@Override
 	protected void doCustomUiSetup() {
-		CommonUtils.hideLabel(accountIdentifierFieldRestrictionsLabel);
-		
+		CommonMethods.setViewGone(accountIdentifierFieldRestrictionsLabel);
+		accountIdentifierFieldLabel.setText(R.string.user_id);
+		accountIdentifierField.setFieldUsername();
 	}
 	
 	/**
@@ -99,56 +79,72 @@ public class ForgotPasswordAccountInformationActivity extends AbstractAccountInf
 	protected Class<?> getSuccessfulStrongAuthIntentClass() {
 		return EnterNewPasswordActivity.class;
 	}
-
+	
+	/**
+	 * Setup the header progress bar appearance.
+	 */
 	@Override
-	public void goBack() {
-		Intent forgotCredentials = new Intent(this, ForgotTypeSelectionActivity.class);
-		startActivity(forgotCredentials);
-		finish();		
+	protected void setHeaderProgressText() {
+			HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
+			headerProgressBar.setTitle(R.string.enter_info, R.string.create_password, R.string.confirm);
 	}
 	
-//	AJ AND SCOTT TO FIX 
-	
-//	@Override
-//	protected void setupCustomTextChangedListeners(){
-//		final InputValidator validator = new InputValidator();
-//
-//		idField.setOnFocusChangeListener(new OnFocusChangeListener() {
-//			InputValidator validator = new InputValidator();
-//			
-//			@Override
-//			public void onFocusChange(View v, boolean hasFocus) {
-//				
-//				if( !hasFocus && !validator.isUidValid( idField.getText().toString() ) ) {
-//					showLabel(idErrorLabel);
-//				}
-//			}
-//		});
-//		
-//		idField.addTextChangedListener(new TextWatcher(){
-//			
-//			// FIXME this may be a bug, is this intended to override the one defined
-//			// at the beginning of setupCustomTextChangedListeners()?
-//			InputValidator validator = new InputValidator();
-//
-//			@Override
-//			public void afterTextChanged(final Editable s) {/*Intentionally empty*/}
-//
-//			@Override
-//			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {/*Intentionally empty*/}
-//
-//			@Override
-//			public void onTextChanged(final CharSequence s, final int start, final int before,
-//					final int count) {
-//				//Hide error label.
-//				if( validator.isPassValid( s.toString() ) ) {
-//					idErrorLabel.setVisibility(View.GONE);
-//				}
-//			}
-//			HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
-//    		progress.initChangePasswordHeader(1);
-//			
-//		});
-//		
-//	}
+	@Override
+	public void goBack() {
+		finish();
+		final Intent forgotCredentialsActivity = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(forgotCredentialsActivity);
+	}
+
+	@Override
+	public TextView getErrorLabel() {
+		return null;
+	}
+
+	@Override
+	public List<EditText> getInputFields() {
+		return null;
+	}
+
+	@Override
+	public void showCustomAlert(AlertDialog alert) {
+		
+	}
+
+	@Override
+	public void showOneButtonAlert(int title, int content, int buttonText) {
+		
+	}
+
+	@Override
+	public void showDynamicOneButtonAlert(int title, String content,
+			int buttonText) {
+		
+	}
+
+	@Override
+	public Context getContext() {
+		return null;
+	}
+
+	@Override
+	public void setLastError(int errorCode) {
+		
+	}
+
+	@Override
+	public int getLastError() {
+		return 0;
+	}
+
+	@Override
+	public ErrorHandlerFactory getErrorHandlerFactory() {
+		return null;
+	}
+
+	@Override
+	protected boolean isForgotFlow() {
+		return true;
+	}
+
 }

@@ -1,6 +1,5 @@
 package com.discover.mobile;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,145 +10,113 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.discover.mobile.alert.ModalAlertWithTwoButtons;
-import com.discover.mobile.alert.ModalDefaultTopView;
-import com.discover.mobile.alert.ModalLogoutBottom;
-import com.discover.mobile.common.SharedPreferencesWrapper;
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.login.BaseErrorResponseHandler;
-import com.discover.mobile.logout.LogOutSuccessListener;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
+import com.discover.mobile.logout.LogOutSuccessFailListener;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
- * This is used as the base activity for when the user has logged in.  Extending this will show the action bar
- * with the sliding bar as well as the title text and logout button.
+ * This is used as the base activity for when the user has logged in. Extending
+ * this will show the action bar with the sliding bar as well as the title text
+ * and logout button.
  * 
  * @author jthornton
- *
+ * 
  */
-public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
-	
-	/**Pulled out variable for the fade of the sliding menu*/
+public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
+
+	/** Pulled out variable for the fade of the sliding menu */
 	private static final float FADE = 0.35f;
+	/** Flag used to know when in the middle of a log out */
+	private static boolean pendingLogout = false;
+
+	/**
+	 * Flag used for if its bank or not
+	 */
+	Boolean isCard;
 
 	/**
 	 * Create the activity, set up the action bar and sliding menu
-	 * @param savedInstanceState - saved State of the activity
+	 * 
+	 * @param savedInstanceState
+	 *            - saved State of the activity
 	 */
 	@Override
-	public void onCreate(final Bundle savedInstanceState){
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)) {
+			isCard = true;
+		} else {
+			isCard = false;
+		}
 		showActionBar();
 		setupSlidingMenu();
 	}
-	
-	 /**
-     *	Show the action bar with the custom layout
-     */
-    public void showActionBar(){
-    	setBehindContentView(R.layout.navigation_menu_frame);
-		
+
+	/**
+	 * Show the action bar with the custom layout
+	 */
+	public void showActionBar() {
+		setBehindContentView(R.layout.navigation_menu_frame);
+
 		final ActionBar actionBar = getSupportActionBar();
-		actionBar.setCustomView(getLayoutInflater().inflate(R.layout.action_bar_menu_layout, null));
+		actionBar.setCustomView(getLayoutInflater().inflate(
+				R.layout.action_bar_menu_layout, null));
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-		
+
 		final TextView titleView = (TextView) findViewById(R.id.title_view);
 		final ImageView navigationToggle = (ImageView) findViewById(R.id.navigation_button);
 		final Button logout = (Button) findViewById(R.id.logout_button);
-		
+
 		navigationToggle.setVisibility(View.VISIBLE);
 		logout.setVisibility(View.VISIBLE);
 		navigationToggle.setVisibility(View.VISIBLE);
 		titleView.setVisibility(View.VISIBLE);
-		
+
 		titleView.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				updateStatusBarVisibility();
 			}
 		});
-		
-		navigationToggle.setOnClickListener(new OnClickListener(){
+
+		navigationToggle.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				toggle();
+				if (isCard) {
+					toggle();
+				}
 			}
 		});
-		
-		logout.setOnClickListener(new OnClickListener(){
+
+		logout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				maybeShowModalAlert();
-			}
-		});	
-    }
-    
-    /**
-     * Show the modal if the user wants it shown
-     */
-    public void maybeShowModalAlert(){
-		if(getValueFromSharedPrefs(SharedPreferencesWrapper.SHOW_LOGIN_MODAL, false)){
-			logout();
-		} else{
-			showAlertDialog();
-		}
-	}
-    
-    
-    /**
-     * Show the logout modal
-     */
-    public void showAlertDialog(){
-    	showCustomAlert(setUpLogoutAlert());
-    }
-    
-    /**
-     * Set up the modal alert that will be displayed for logout confirmation
-     * @return the modal alert that will be displayed for logout confirmation
-     */
-    private AlertDialog setUpLogoutAlert() {
-    	final ModalDefaultTopView topView = new ModalDefaultTopView(this, null);
-		final ModalLogoutBottom bottomView = new ModalLogoutBottom(this, null);
-		final ModalAlertWithTwoButtons alert = new ModalAlertWithTwoButtons(this, topView, bottomView);
-		topView.setTitle(R.string.logout_confirm_title);
-		topView.setContent(R.string.logout_confirm_text);
-		bottomView.setOkButtonText(R.string.logout_ok_button_text);
-		bottomView.setCancelButtonText(R.string.logout_cancel_button_text);
-		bottomView.getOkButton().setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				saveToSharedPrefs(SharedPreferencesWrapper.SHOW_LOGIN_MODAL, bottomView.isShowAgainSelected());
 				logout();
 			}
 		});
-		
-		bottomView.getCancelButton().setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				alert.dismiss();
-			}
-		});
-		return alert;
 	}
 
 	/**
-     * Log the user out
-     */
-    public void logout(){
-		final AsyncCallback<Object> callback = 
-				GenericAsyncCallback.<Object>builder(this)
-				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
-									getResources().getString(R.string.push_progress_registration_loading), 
-									true)
-				.withSuccessListener(new LogOutSuccessListener(this))
-				.withErrorResponseHandler(new BaseErrorResponseHandler((ErrorHandlerUi) this))
+	 * Log the user out of card
+	 */
+	public void logout() {
+		/** Used on pause to know when to set Globals isLoggedIn to false **/
+		pendingLogout = true;
+
+		AsyncCallback<Object> callback = AsyncCallbackBuilderLibrary
+				.createDefaultCardAsyncBuilder(Object.class, this, null, true)
+				.withSuccessListener(new LogOutSuccessFailListener(this))
+				.withErrorResponseHandler(new LogOutSuccessFailListener(this))
 				.build();
-	
-		new LogOutCall(this, callback).submit();
-	} 
-    
+
+		new LogOutCall(this, callback, isCard).submit();
+	}
+
 	/**
 	 * Set up and style the sliding menu
 	 */
@@ -162,44 +129,92 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity{
 		slidingMenu.setFadeDegree(FADE);
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
-	
+
 	/**
-	 * Checks the shared pref to get the visibility for the status bar and 
-	 * sets the visibility
+	 * Checks the shared pref to get the visibility for the status bar and sets
+	 * the visibility
 	 */
-	public void setStatusBarVisbility(){
-		FragmentTransaction ft = this.getSupportFragmentManager()
+	public void setStatusBarVisbility() {
+		final FragmentTransaction ft = this.getSupportFragmentManager()
 				.beginTransaction();
-		boolean statusBarVisitility = getValueFromSharedPrefs(SharedPreferencesWrapper.STATUS_BAR_VISIBILITY, true);
-		Fragment statusBar = this.getSupportFragmentManager().findFragmentById(
-				R.id.status_bar);
-		
+		final boolean statusBarVisitility = Globals.isStatusBarVisibility();
+		final Fragment statusBar = this.getSupportFragmentManager()
+				.findFragmentById(R.id.status_bar);
+
 		/**
 		 * If its set to false hide the fragment, else show it.
 		 */
-		if (!statusBarVisitility){
+		if (!statusBarVisitility) {
 			ft.hide(statusBar);
-		}else {
+		} else {
 			ft.show(statusBar);
 		}
 		ft.commit();
 	}
-	
+
 	/**
-	 * Updates the shared preference for the status bar visibility and then calls 
-	 * setStatusBarVisibility to update the visibility
-	 * @param visible - boolean for setting the shared pref
+	 * Updates the shared preference for the status bar visibility and then
+	 * calls setStatusBarVisibility to update the visibility
+	 * 
+	 * @param visible
+	 *            - boolean for setting the shared pref
 	 */
-	public void updateStatusBarVisibility(){
-		Fragment statusBar = this.getSupportFragmentManager().findFragmentById(
-				R.id.status_bar);
+	public void updateStatusBarVisibility() {
+		final Fragment statusBar = this.getSupportFragmentManager()
+				.findFragmentById(R.id.status_bar);
 		boolean visible = true;
-		if (statusBar.isVisible()){
+		if (statusBar.isVisible()) {
 			visible = false;
-		}else if (statusBar.isHidden()){
-			visible=true;
+		} else if (statusBar.isHidden()) {
+			visible = true;
 		}
-		saveToSharedPrefs(SharedPreferencesWrapper.STATUS_BAR_VISIBILITY, visible);
+		Globals.setStatusBarVisibility(visible);
+
 		setStatusBarVisbility();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		// Clear all global variables after logout
+		if (pendingLogout) {
+			pendingLogout = false;
+
+			Globals.setToDefaults();
+		}
+	}
+
+	/**
+	 * Displays the Discover logo in the actionBar as opposed to the TextView.
+	 */
+	public void showActionBarLogo() {
+		showActionBarLogo(true);
+	}
+
+	/**
+	 * Displays the TextView in the ActionBar and hides the Discover Logo.d
+	 */
+	public void hideActionBarLogo() {
+		showActionBarLogo(false);
+	}
+
+	/**
+	 * Hides and shows the textView and ImageView.
+	 * 
+	 * @param show
+	 *            Displays logo if true, displays TextView otherwise.
+	 */
+	private void showActionBarLogo(boolean show) {
+		final TextView titleView = (TextView) findViewById(R.id.title_view);
+		final ImageView titleImageView = (ImageView) findViewById(R.id.action_bar_discover_logo);
+
+		if (show) {
+			titleView.setVisibility(View.GONE);
+			titleImageView.setVisibility(View.VISIBLE);
+		} else {
+			titleView.setVisibility(View.VISIBLE);
+			titleImageView.setVisibility(View.GONE);
+		}
 	}
 }

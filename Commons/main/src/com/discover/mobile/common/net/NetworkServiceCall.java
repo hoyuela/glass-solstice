@@ -14,8 +14,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import android.content.Context;
 import android.os.Handler;
@@ -29,6 +38,8 @@ import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.ErrorResponseParser;
 import com.discover.mobile.common.net.json.JsonMappingRequestBodySerializer;
+import com.discover.mobile.common.urlmanager.UrlManagerBank;
+import com.discover.mobile.common.urlmanager.UrlManagerCard;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
@@ -40,6 +51,8 @@ import com.google.common.collect.ImmutableList;
  */
 public abstract class NetworkServiceCall<R> {
 	
+	
+
 	private final String TAG = getClass().getSimpleName();
 	
 	private static final String ID_PREFIX = "%&(()!12["; //$NON-NLS-1$
@@ -57,9 +70,9 @@ public abstract class NetworkServiceCall<R> {
 	static final int RESULT_PARSED_ERROR = 2;
 	
 	private final ServiceCallParams params;
-	private final String BASE_URL;
-	private final String X_APP_VERSION;
-	private final String X_CLIENT_PLATFORM;
+	private String BASE_URL;
+	private String X_APP_VERSION;
+	private String X_CLIENT_PLATFORM;
 	
 	private Context context;
 	private HttpURLConnection conn;
@@ -68,15 +81,33 @@ public abstract class NetworkServiceCall<R> {
 	
 	private volatile boolean submitted = false;
 	
+	/**
+	 * Network service call used with the base url defaulted to card.
+	 * @param context
+	 * @param params
+	 */
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params) {
+		this(context, params, true);
+	}
+	
+	/**
+	 * Network Service call that is used when needing the bank base URL. 
+	 * @param context
+	 * @param params
+	 * @param isCard Determines if the base url is card or bank
+	 */
+	protected NetworkServiceCall(final Context context, final ServiceCallParams params, boolean isCard){
 		validateConstructorArgs(context, params);
-		
 		this.context = context;
 		this.params = params;
-		
-		BASE_URL = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.base_url );
+		if (!isCard){
+			BASE_URL = UrlManagerBank.getBaseUrl();
+		}else {
+			BASE_URL = UrlManagerCard.getBaseUrl();
+		}
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xApplicationVersion);
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xClientPlatform);
+		
 	}
 	
 	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {
@@ -95,6 +126,22 @@ public abstract class NetworkServiceCall<R> {
 	}
 
 	protected abstract TypedReferenceHandler<R> getHandler();
+	
+	/**
+	 * Allows to fetch the Handler used for responses to an HTTP request via this class. Can
+	 * only be called before or after a NetworkServiceCall<> has been processed. Calling this function
+	 * during the processing of an HTTP request will result in a null return value.
+	 * 
+	 * @return Returns the TypeReferenceHandler<> instance provided in the constructor of this class.
+	 */
+	public TypedReferenceHandler<R> getHandlerSafe() {
+		//Check if request is not in process otherwise return null
+		if( conn == null ) {
+			return getHandler();
+		} else {
+			return null;
+		}
+	}
 	
 	/**
 	 * Executed in a background thread, needs to be thread-safe.
@@ -130,6 +177,13 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private boolean useAndClearContext() {
+		TypedReferenceHandler<R> handler = this.getHandler();
+		
+		//Set network service call in handler to be able to share request call information in callbacks
+		if( null != handler) {
+			handler.setNetworkServiceCall(this);
+		}
+		
 		try {
 			checkAndUpdateSubmittedState();
 			checkNetworkConnected();
@@ -161,6 +215,7 @@ public abstract class NetworkServiceCall<R> {
 		}
 	}
 	
+	//TODO Move this out and put into a POJO maybe
 	private void setupDeviceIdentifiers() {
 		if(!params.sendDeviceIdentifiers)
 			return;
@@ -187,12 +242,13 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private void executeConnection() throws IOException, NoSuchAlgorithmException {
-		conn = createConnection();
+ 		conn = createConnection();
 		try {
 			prepareConnection();
 			
 			conn.connect();
 			try {
+				
 				sendRequestBody();
 				
 				final int statusCode = getResponseCode();
@@ -217,8 +273,54 @@ public abstract class NetworkServiceCall<R> {
 	
 	private HttpURLConnection createConnection() throws IOException {
 		final URL fullUrl = getFullUrl();
-		return (HttpURLConnection) fullUrl.openConnection();
+//		if (fullUrl.getProtocol().toLowerCase().equals("https")) {
+//	        trustAllHosts();
+//	        HttpsURLConnection https = (HttpsURLConnection) fullUrl.openConnection();
+//	        https.setHostnameVerifier(DO_NOT_VERIFY);
+//	        conn = https;
+//	    } else {
+	        conn = (HttpURLConnection) fullUrl.openConnection();
+//	    }
+		return conn;
 	}
+	
+	// always verify the host - dont check for certificate
+    final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
+          public boolean verify(String hostname, SSLSession session) {
+              return true;
+          }
+   };
+
+
+    /**
+     * Trust every server - dont check for any certificate
+     */
+    private static void trustAllHosts() {
+              // Create a trust manager that does not validate certificate chains
+              TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+                      public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                              return new java.security.cert.X509Certificate[] {};
+                      }
+
+                      public void checkClientTrusted(X509Certificate[] chain,
+                                      String authType) throws CertificateException {
+                      }
+
+                      public void checkServerTrusted(X509Certificate[] chain,
+                                      String authType) throws CertificateException {
+                      }
+              } };
+
+              // Install the all-trusting trust manager
+              try {
+                      SSLContext sc = SSLContext.getInstance("TLS");
+                      sc.init(null, trustAllCerts, new java.security.SecureRandom());
+                      HttpsURLConnection
+                                      .setDefaultSSLSocketFactory(sc.getSocketFactory());
+              } catch (Exception e) {
+                      e.printStackTrace();
+              }
+      }
 	
 	private URL getFullUrl() throws IOException {
 		return new URL(BASE_URL + params.path);
@@ -365,7 +467,6 @@ public abstract class NetworkServiceCall<R> {
 	 * @throws IOException
 	 */
 	private void parseResponseAndSendResult(final int statusCode) throws IOException {
-		
 		if(DelegatingErrorResponseParser.isErrorStatus(statusCode)) {
 			
 			final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();

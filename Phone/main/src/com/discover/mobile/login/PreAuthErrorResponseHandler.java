@@ -6,6 +6,7 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 
 /**
  * PreAuthErrorResponseHandler handles server error messages received from the
@@ -16,7 +17,7 @@ import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
  * @author scottseward
  * 
  */
-public class PreAuthErrorResponseHandler extends BaseErrorResponseHandler implements ErrorResponseHandler {
+public class PreAuthErrorResponseHandler extends CardBaseErrorResponseHandler implements ErrorResponseHandler {
 
 	/**
 	 * Create a PreAuthErrorResponseHandler to handle error responses generated
@@ -29,6 +30,24 @@ public class PreAuthErrorResponseHandler extends BaseErrorResponseHandler implem
 
 	}
 
+	
+	/**
+	 * Notifies Login Activity that Pre-Authentication failed with an HTTP error response.
+	 */
+	@Override
+	protected boolean handleHTTPErrorCode(final int httpErrorCode)  {
+		boolean ret = super.handleHTTPErrorCode(httpErrorCode);
+		
+		LoginActivity loginActivity = (LoginActivity)getErrorFieldUi();
+		
+		if( null != loginActivity ) {
+			//Notify login activity that Pre-Auth call has completed
+			loginActivity.preAuthComplete(false);
+		}
+		
+		return ret;
+	}
+	
 	/**
 	 * Show them a force upgrade dialog if applicable
 	 * 
@@ -47,6 +66,13 @@ public class PreAuthErrorResponseHandler extends BaseErrorResponseHandler implem
 			return true;
 		}
 
+		LoginActivity loginActivity = (LoginActivity)getErrorFieldUi();
+		
+		if( null != loginActivity ) {
+			//Notify login activity that Pre-Auth call has completed
+			loginActivity.preAuthComplete(true);
+		}
+		
 		return false;
 	}
 

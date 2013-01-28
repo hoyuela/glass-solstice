@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:paddingTop="@dimen/table_inner_padding"
+    android:paddingBottom="@dimen/table_inner_padding"
+    android:paddingRight="@dimen/forms_inner_padding"
+    android:paddingLeft="@dimen/forms_inner_padding"
+	android:background="@drawable/home_list_item">
+    
+    <TextView 
+        android:id="@+id/date_string"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_alignParentLeft="true"
+    	android:layout_alignParentRight="true"
+    	android:textColor="@color/sub_copy"
+    	android:textSize="@dimen/small_copy_mid"/>
+    
+
+</RelativeLayout>
