@@ -46,9 +46,15 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	private final String UPDATE_PASS_CONFIRM_STATE = "a";
 	private final String UPDATE_ID_CONFIRM_STATE ="b";
 	private final String UPDATE_EMAIL = "c";
+	private final String ERROR_1 = "d";
+	private final String EROR_STRING_1 = "e";
+	private final String ERROR_2 = "f";
+	private final String ERROR_STRING_2 = "g";
+	private final String SERVER_ERROR = "h";
+	private final String SERVER_ERROR_STRING = "i";
 	private final String UPDATE_PASSWORD_STATE = "k";
 	private final String UPDATE_ID_STATE = "l";
-
+	
 //ERROR LABELS
 	private TextView mainErrorMessageLabel;
 	private TextView mainErrorMessageLabelTwo;
@@ -67,15 +73,18 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	private CredentialStrengthEditText passField;
 	private ConfirmationEditText passConfirmField;
 	
-	private boolean idIsError;
-	private boolean isPassError;
-	private boolean isEmailError;
+	private boolean idIsError = false;
+	private boolean isPassError = false;
+	private boolean isEmailError = false;
+	private boolean isError1 = false;
+	private boolean isError2 = false;
+	private boolean isServerError = false;
 	
 //HEADER PROGRESS BAR
 	private HeaderProgressIndicator headerProgressIndicator;
 	
 //BUTTONS
-	private Activity currentActivity = this;
+	private final Activity currentActivity = this;
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
@@ -107,17 +116,34 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	@Override
 	public void onResume(){
 		super.onResume();
+		showErrors();
+	}
+	
+	private void showErrors() {
 		if(isEmailError){
 			emailField.setErrors();
 		}
 		if(idIsError){
 			idConfirmField.setErrors();
+		} else{
+			idConfirmField.clearErrors();
 		}
 		if(isPassError){
 			passConfirmField.setErrors();
+		} else{
+			passConfirmField.clearErrors();
 		}
+		if(isError1){
+			mainErrorMessageLabel.setVisibility(View.VISIBLE);
+		}
+		if(isError2){
+			mainErrorMessageLabelTwo.setVisibility(View.VISIBLE);
+		}
+		if(isServerError){
+			errorMessageLabel.setVisibility(View.VISIBLE);
+		}	
 	}
-	
+
 	/**
 	 * Save the state of the screen.
 	 */
@@ -130,11 +156,22 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		outState.putBoolean(UPDATE_ID_CONFIRM_STATE, idConfirmField.isInErrorState);
 		outState.putBoolean(UPDATE_PASSWORD_STATE, passField.isInDefaultState);
 		outState.putBoolean(UPDATE_PASS_CONFIRM_STATE, passConfirmField.isInErrorState);
-
+		if(mainErrorMessageLabel.getVisibility() == View.VISIBLE){
+			outState.putBoolean(ERROR_1, true);
+			outState.putString(EROR_STRING_1, mainErrorMessageLabel.getText().toString());
+		}
+		if(mainErrorMessageLabelTwo.getVisibility() == View.VISIBLE){
+			outState.putBoolean(ERROR_2, true);
+			outState.putString(ERROR_STRING_2, mainErrorMessageLabelTwo.getText().toString());
+		}
+		if(errorMessageLabel.getVisibility() == View.VISIBLE){
+			outState.putBoolean(SERVER_ERROR, true);
+			outState.putString(SERVER_ERROR_STRING, errorMessageLabel.getText().toString());
+		}
 	}
 
 	/**
-	 * Resore the state of the screen.
+	 * Restore the state of the screen.
 	 * 
 	 * @param savedInstanceState - a Bundle containing saved state information.
 	 */
@@ -143,10 +180,15 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 			idField.isInDefaultState = savedInstanceState.getBoolean(UPDATE_ID_STATE);
 			passField.isInDefaultState = savedInstanceState.getBoolean(UPDATE_PASSWORD_STATE);
 
-			idIsError = savedInstanceState.getBoolean(UPDATE_ID_CONFIRM_STATE);
-			isPassError = savedInstanceState.getBoolean(UPDATE_PASS_CONFIRM_STATE);
-			isEmailError = savedInstanceState.getBoolean(UPDATE_EMAIL);
-			
+			idIsError = savedInstanceState.getBoolean(UPDATE_ID_CONFIRM_STATE, false);
+			isPassError = savedInstanceState.getBoolean(UPDATE_PASS_CONFIRM_STATE, false);
+			isEmailError = savedInstanceState.getBoolean(UPDATE_EMAIL, false);
+			isError1 = savedInstanceState.getBoolean(ERROR_1, false);
+			isError2 = savedInstanceState.getBoolean(ERROR_2, false);
+			isServerError = savedInstanceState.getBoolean(SERVER_ERROR, false);
+			mainErrorMessageLabel.setText(savedInstanceState.getString(EROR_STRING_1));
+			mainErrorMessageLabelTwo.setText(savedInstanceState.getString(ERROR_STRING_2));
+			errorMessageLabel.setText(savedInstanceState.getString(SERVER_ERROR_STRING));
 		}
 	}
 	
@@ -221,7 +263,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	 * Take the account details POJO from step 1 and merge it into a POJO for step 2.
 	 */
 	private void mergeAccountDetails() {
-		AccountInformationDetails formDataOne = 
+		final AccountInformationDetails formDataOne = 
 				(AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
 
 		if(formDataOne != null){
