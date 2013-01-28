@@ -157,21 +157,6 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 			needsToRestore = false;
 		}
 	}
-	/**
-	 * Returns the number of space characters that occur before a given position in the field.
-	 * @param position
-	 * @return
-	 */
-	public int numberOfSpacesBeforePosition(final int position) {
-		int numberOfSpaces = 0;
-		String currentInput = getInputText();
-		for(int i = 0; i < position; ++i){
-			if(currentInput.charAt(i) == ' ')
-				numberOfSpaces += 1;
-		}
-		
-		return numberOfSpaces;
-	}
 	
 	/**
 	 * Updates the current input to the passed String parameter.
@@ -182,21 +167,13 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	}
 	
 	/**
-	 * Return the current text in the field.
-	 * @return
-	 */
-	private String getInputText(){
-		return this.getText().toString();
-	}
-	
-	/**
 	 * Sets the max length of the input to the maximum account number length.
 	 * Also restricts input to numbers only.
 	 */
 	private void setupAccountNumberInputRestrictions() {
 		filterArray[0] = new InputFilter.LengthFilter(VALID_ACCOUNT_NUMBER_LENGTH);
 		this.setFilters(filterArray);
-		this.setInputType(InputType.TYPE_CLASS_PHONE);
+		this.setInputType(InputType.TYPE_CLASS_NUMBER);
 		setupDefaultHeight();
 	}
 
