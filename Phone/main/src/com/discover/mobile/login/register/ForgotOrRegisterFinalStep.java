@@ -45,6 +45,8 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 	 */
 	protected RegistrationConfirmationDetails confirmationDetails;
 	protected final Activity currentContext = this;
+	protected boolean isForgotFlow = false;
+
 
 	/**
 	 * This method submits the users information to the Card server for verification.
@@ -157,7 +159,11 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 		confirmationAndLoginScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationAndLoginScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
 		
-		confirmationAndLoginScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_FORGOT_PASS);
+		if(CurrentSessionDetails.getCurrentSessionDetails().isForgotCreds()){
+			confirmationAndLoginScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_FORGOT_BOTH);
+		} else{
+			confirmationAndLoginScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_REGISTRATION);
+		}
 		this.startActivity(confirmationAndLoginScreen);
 		finish();
 	}
@@ -202,19 +208,26 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 	 * @param v
 	 */
 	public void cancel(final View v) {
-		final Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
-		startActivity(forgotCredentials);
-		finish();
+		goBack();
 	}
 	
 	@Override
-	public void goBack() {	
-		cancel(null);
+	public void goBack() {
+		Intent lastScreen = null;
+		if (isForgotFlow){
+			lastScreen = new Intent(this, ForgotCredentialsActivity.class);
+		}else{
+			lastScreen = new Intent(this, LoginActivity.class);
+		}
+
+		startActivity(lastScreen);
+		finish();
+
 	}
 	
 	@Override 
 	public void onBackPressed() {
-		cancel(null);
+		goBack();
 	}
 
 }

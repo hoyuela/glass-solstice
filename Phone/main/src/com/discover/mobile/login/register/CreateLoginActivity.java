@@ -9,6 +9,7 @@ import static com.discover.mobile.common.auth.registration.RegistrationErrorCode
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -16,7 +17,6 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
@@ -39,13 +39,15 @@ import com.discover.mobile.navigation.HeaderProgressIndicator;
  *
  */
 public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
-		
+	private final String TAG = ForgotOrRegisterFinalStep.class.getSimpleName();
+	
 	private CreateLoginDetails formDataTwo;
 	
-	private final static String UPDATE_PASS_CONFIRM_STATE = "a";
-	
-	private final static String UPDATE_PASSWORD_STATE = "k";
-	private final static String UPDATE_ID_STATE = "l";
+	private final String UPDATE_PASS_CONFIRM_STATE = "a";
+	private final String UPDATE_ID_CONFIRM_STATE ="b";
+	private final String UPDATE_EMAIL = "c";
+	private final String UPDATE_PASSWORD_STATE = "k";
+	private final String UPDATE_ID_STATE = "l";
 
 //ERROR LABELS
 	private TextView mainErrorMessageLabel;
@@ -65,6 +67,10 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	private CredentialStrengthEditText passField;
 	private ConfirmationEditText passConfirmField;
 	
+	private boolean idIsError;
+	private boolean isPassError;
+	private boolean isEmailError;
+	
 //HEADER PROGRESS BAR
 	private HeaderProgressIndicator headerProgressIndicator;
 	
@@ -74,6 +80,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.register_create_credentials);
 		loadAllViews();
 
@@ -83,11 +90,32 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP2);
 		setupStrengthBars();
 		setupConfirmationFields();
+		getPreviousScreenType();
 
 		setupHeaderProgress();
 		setupHelpNumber();
 		restoreState(savedInstanceState);
-
+	}
+	
+	protected void getPreviousScreenType() {
+		isForgotFlow = getIntent().getBooleanExtra(IntentExtraKey.SCREEN_FORGOT_BOTH, false);
+	}
+	
+	/**
+	 * Resume the fragment
+	 */
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(isEmailError){
+			emailField.setErrors();
+		}
+		if(idIsError){
+			idConfirmField.setErrors();
+		}
+		if(isPassError){
+			passConfirmField.setErrors();
+		}
 	}
 	
 	/**
@@ -98,9 +126,11 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		super.onSaveInstanceState(outState);
 
 		outState.putBoolean(UPDATE_ID_STATE, idField.isInDefaultState);
-		
+		outState.putBoolean(UPDATE_EMAIL, emailField.isInErrorState);
+		outState.putBoolean(UPDATE_ID_CONFIRM_STATE, idConfirmField.isInErrorState);
 		outState.putBoolean(UPDATE_PASSWORD_STATE, passField.isInDefaultState);
-		outState.putBoolean(UPDATE_PASS_CONFIRM_STATE, passConfirmField.isInDefaultState);
+		outState.putBoolean(UPDATE_PASS_CONFIRM_STATE, passConfirmField.isInErrorState);
+
 	}
 
 	/**
@@ -112,7 +142,11 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		if(savedInstanceState != null){
 			idField.isInDefaultState = savedInstanceState.getBoolean(UPDATE_ID_STATE);
 			passField.isInDefaultState = savedInstanceState.getBoolean(UPDATE_PASSWORD_STATE);
-			passConfirmField.isInDefaultState = savedInstanceState.getBoolean(UPDATE_PASS_CONFIRM_STATE);
+
+			idIsError = savedInstanceState.getBoolean(UPDATE_ID_CONFIRM_STATE);
+			isPassError = savedInstanceState.getBoolean(UPDATE_PASS_CONFIRM_STATE);
+			isEmailError = savedInstanceState.getBoolean(UPDATE_EMAIL);
+			
 		}
 	}
 	
@@ -187,18 +221,22 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	 * Take the account details POJO from step 1 and merge it into a POJO for step 2.
 	 */
 	private void mergeAccountDetails() {
-		formDataTwo = new CreateLoginDetails();
 		AccountInformationDetails formDataOne = 
 				(AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
 
-		formDataTwo.acctNbr = formDataOne.acctNbr;
-		formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
-		formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
-		formDataTwo.dateOfBirthYear = formDataOne.dateOfBirthYear;
-		formDataTwo.expirationMonth = formDataOne.expirationMonth;
-		formDataTwo.expirationYear = formDataOne.expirationYear;
-		formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
-	
+		if(formDataOne != null){
+			formDataTwo = new CreateLoginDetails();
+
+			formDataTwo.acctNbr = formDataOne.acctNbr;
+			formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
+			formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
+			formDataTwo.dateOfBirthYear = formDataOne.dateOfBirthYear;
+			formDataTwo.expirationMonth = formDataOne.expirationMonth;
+			formDataTwo.expirationYear = formDataOne.expirationYear;
+			formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
+		}else{
+			Log.e(TAG, "UNABLE TO MERGE ACCOUNT DETAILS");
+		}
 	}
 	
 	/**
@@ -254,6 +292,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 
 				switch (errorResponse.getHttpStatusCode()) {
 					default:
+						Log.e(TAG, "Create Login submission error : " + errorResponse.toString());
 						CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, R.string.unkown_error_text, currentActivity);
 						return true;
 				}
@@ -285,10 +324,11 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 					CommonMethods.showLabelWithStringResource(mainErrorMessageLabelTwo, R.string.account_info_two_username_in_use_error_text, currentActivity);
 					return true;
 				case PLANNED_OUTAGE:
-					sendToErrorPage(ScreenType.SCHEDULED_MAINTENANCE);
+					showErrorModal(R.string.could_not_complete_request, R.string.unknown_error, false);
 					return true;
 					
 				default:
+					Log.e(TAG, "UNHANDLED ERROR " + messageErrorResponse.toString());
 					return false;
 				}
 			}

@@ -3,6 +3,8 @@ package com.discover.mobile.common.customui;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.google.common.base.Strings;
+
 public class NonEmptyEditText extends ValidatedInputField {
 
 	/**
@@ -23,7 +25,7 @@ public class NonEmptyEditText extends ValidatedInputField {
 
 	@Override
 	public boolean isValid() {
-		return this.length() > 0;
+		return !Strings.isNullOrEmpty(this.getText().toString());
 	}
 	
 }

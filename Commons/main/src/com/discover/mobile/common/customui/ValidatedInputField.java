@@ -46,7 +46,7 @@ public abstract class ValidatedInputField extends EditText{
 	protected Drawable greenCheck = null;
 	protected Drawable downArrow = null;
 	
-	protected boolean isInErrorState = false;
+	public boolean isInErrorState = false;
 		
 	public boolean isInDefaultState = true;
 	/**
@@ -236,10 +236,13 @@ public abstract class ValidatedInputField extends EditText{
 	 * show the error state.
 	 */
 	public void updateAppearanceForInput() {
-		if(isValid())
+		if(isValid()){
 			clearErrors();
-		else
+			this.isInErrorState = false;
+		} else{
 			setErrors();
+			this.isInErrorState = true;
+		}
 	}
 
 	/**
@@ -258,7 +261,7 @@ public abstract class ValidatedInputField extends EditText{
 	 * Sets the error state of the EditText. This usually includes things like
 	 * changing the highlighting color and showing an error label. 
 	 */
-	protected void setErrors(){
+	public void setErrors(){
 		showErrorLabel();
 		setRightDrawableRedX();
 		this.setBackgroundResource(FIELD_ERROR_APPEARANCE);
@@ -270,7 +273,7 @@ public abstract class ValidatedInputField extends EditText{
 	 * Clears the error state of the EditText. This usually includes setting the
 	 * highlighting to default and hiding error labels.
 	 */
-	protected void clearErrors(){
+	public void clearErrors(){
 		hideErrorLabel();
 		setRightDrawableGrayX();
 		this.setBackgroundResource(FIELD_DEFAULT_APPEARANCE);

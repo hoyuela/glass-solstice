@@ -16,7 +16,7 @@ import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.error.CardBaseErrorResponseHandler;
-import com.discover.mobile.logout.LogOutSuccessListener;
+import com.discover.mobile.logout.LogOutSuccessFailListener;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
@@ -38,7 +38,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	 * Flag used for if its bank or not
 	 */
 	Boolean isCard;
-	
+
 	/**
 	 * Create the activity, set up the action bar and sliding menu
 	 * 
@@ -48,9 +48,9 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)){
+		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)) {
 			isCard = true;
-		}else {
+		} else {
 			isCard = false;
 		}
 		showActionBar();
@@ -87,7 +87,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		navigationToggle.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				if(isCard){
+				if (isCard) {
 					toggle();
 				}
 			}
@@ -96,32 +96,27 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		logout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-					logout();
+				logout();
 			}
 		});
 	}
 
 	/**
-     * Log the user out of card
-     */
-    public void logout(){
-    	/** Used on pause to know when to set Globals isLoggedIn to false**/
-    	pendingLogout = true;
-    	
-		final AsyncCallback<Object> callback = 
-				GenericAsyncCallback.<Object>builder(this)
-				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
-									getResources().getString(R.string.push_progress_registration_loading), 
-									true)
-				.withSuccessListener(new LogOutSuccessListener(this))
-				.withErrorResponseHandler(
-						new CardBaseErrorResponseHandler((ErrorHandlerUi) this))
+	 * Log the user out of card
+	 */
+	public void logout() {
+		/** Used on pause to know when to set Globals isLoggedIn to false **/
+		pendingLogout = true;
+
+		AsyncCallback<Object> callback = AsyncCallbackBuilderLibrary
+				.createDefaultCardAsyncBuilder(Object.class, this, null, true)
+				.withSuccessListener(new LogOutSuccessFailListener(this))
+				.withErrorResponseHandler(new LogOutSuccessFailListener(this))
 				.build();
-	
-		
+
 		new LogOutCall(this, callback, isCard).submit();
-	} 
-    
+	}
+
 	/**
 	 * Set up and style the sliding menu
 	 */

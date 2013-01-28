@@ -46,7 +46,7 @@
         You are now logged out. Thank you for using Discover Mobile.
     </string>
     <string name="session_expired">
-        Your login session has expired.
+        We\'ve logged you out to protect your account security.  Please log in again.
     </string>
 <!--  LOGIN ERRORS -->
 	<string name="id_invalid">
@@ -55,6 +55,7 @@
 	<string name="pass_invalid">
 	    Please check your password and try again.
 	</string>
+	<string name="we_are_sorry">We\'re Sorry</string>
 	<string name="account_number_reregistered">
 	    We\'re sorry, you may no longer use this Discover card account number to access Discover.com Mobile. 
 	    Instead, please visit www.discover.com to create a User ID and password. If you have any questions, 
@@ -76,6 +77,7 @@
 	     For further assistance please call 
 	     <a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a>
 	</string>
+	<string name="unknown_error">We\'re sorry. We can\'t complete your request at this time. Please contact us for more information.</string>
 	<string name="internal_server_error_503">
 	    We\'re sorry. Our services are unavailable at this time. <br/>We apologize for any inconvenience.
 	</string>
@@ -93,7 +95,7 @@
 		 <a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a>.
 	</string>
 	<string name="cashback_bonus_unavailable">
-	    Casƒhback Bonus is currently unavailable. We apologize for the inconvenience. Please try again later.
+	    Cashback Bonus is currently unavailable. We apologize for the inconvenience. Please try again later.
 	</string>
 	<string name="no_data_found">
 	    No data found.
@@ -125,6 +127,8 @@
         ATM\nLocator
     </string>
 	<string name="privacy_and_terms">
-        Privacy &amp; Terms
+        Privacy &amp;\n Terms
     </string>
+    <string name="problem_authenticating">There was a problem authenticating your registration information.</string>
+
 </resources>

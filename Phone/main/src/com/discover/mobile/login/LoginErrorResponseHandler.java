@@ -82,7 +82,6 @@ public class LoginErrorResponseHandler extends CardBaseErrorResponseHandler {
 				
 			case LOCKED_OUT_ACCOUNT:
 				TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_LOCKED);
-				// TODO sseward: reference lock out text when error map set up
 				sendToErrorPage(R.string.locked_account);
 				return true;
 				

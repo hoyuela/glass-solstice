@@ -10,16 +10,18 @@ import java.util.List;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
+import android.app.Service;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,31 +44,24 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
-import com.discover.mobile.common.auth.bank.BankLoginData;
 import com.discover.mobile.common.auth.bank.BankLoginDetails;
-import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
-import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
-import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.GenericCallbackListener.CallbackPriority;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.customui.NonEmptyEditText;
 import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
-import com.discover.mobile.common.urlmanager.UrlManagerBank;
 import com.discover.mobile.error.BaseExceptionFailureHandler;
-import com.discover.mobile.error.ErrorHandlerFactory;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.help.CustomerServiceContactsActivity;
 import com.discover.mobile.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
-import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
@@ -137,9 +132,6 @@ public class LoginActivity extends BaseActivity  {
 	@InjectView(R.id.forgot_uid_or_pass_text)
 	private TextView forgotUserIdOrPassText;
 
-	@InjectView(R.id.toggle_password_visibility_label)
-	private TextView hideButton;
-
 	@InjectView(R.id.go_to_bank_label)
 	private TextView goToBankLabel;
 
@@ -182,6 +174,8 @@ public class LoginActivity extends BaseActivity  {
 
 	private boolean saveUserId = false;
 	
+	InputMethodManager imm;
+	
 	/**
 	 * Used to remember the lastLoginAccount at startup of the application, in case the user toggles to a different account
 	 * and does not login. This variable will be used to revert the application back to the original last logged in account.
@@ -203,12 +197,17 @@ public class LoginActivity extends BaseActivity  {
 		res = getResources();
 		restoreState(savedInstanceState);
 		setupButtons();
-
+		
+		imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+		
+		
 		//Check to see if pre-auth request is required. Should only 
 		//be done at application start-up
-		if (!preAuthHasRun) {
+		if (!preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
 			startPreAuthCheck();
-		}
+		} 
+		
 	}
 
 	/**
@@ -289,8 +288,13 @@ public class LoginActivity extends BaseActivity  {
 		//Default to the last path user chose for login Card or Bank
 		this.setApplicationAccount();		
 		
-		//Show splash screen while completing pre-auth, if pre-auth has not been done
-		showSplashScreen(!preAuthHasRun);
+		//Show splash screen while completing pre-auth, if pre-auth has not been done and
+		//application is be launched for the first time
+		if( !preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) ) {
+			showSplashScreen(!preAuthHasRun);
+		} else {
+			this.showLoginPane();
+		}
 	}
 	
 
@@ -316,7 +320,6 @@ public class LoginActivity extends BaseActivity  {
 		outState.putBoolean(SAVE_ID_KEY, saveUserId);
 		outState.putBoolean(PRE_AUTH_KEY, preAuthHasRun);
 		outState.putInt(PW_INPUT_TYPE_KEY, passField.getInputType());
-		outState.putString(HIDE_LABEL_KEY, hideButton.getText().toString());
 		outState.putInt(LOGIN_TYPE_KEY, cardCheckMark.getVisibility());
 		outState.putString(ERROR_MESSAGE_KEY, errorTextView.getText().toString());
 		outState.putInt(ERROR_MESSAGE_VISIBILITY, errorTextView.getVisibility());
@@ -335,7 +338,6 @@ public class LoginActivity extends BaseActivity  {
 			preAuthHasRun = savedInstanceState.getBoolean(PRE_AUTH_KEY);
 
 			passField.setInputType(savedInstanceState.getInt(PW_INPUT_TYPE_KEY));
-			hideButton.setText(savedInstanceState.getString(HIDE_LABEL_KEY));
 
 			setLoginType(savedInstanceState.getInt(LOGIN_TYPE_KEY));
 			setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY), true);
@@ -415,7 +417,7 @@ public class LoginActivity extends BaseActivity  {
 			@Override
 			public void onClick(final View v) {
 				setViewGone(errorTextView);
-				
+				imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0); 
 				//Clear the last error that occurred
 				setLastError(0);
 				
@@ -427,7 +429,7 @@ public class LoginActivity extends BaseActivity  {
 			
 			@Override
 			public void onClick(View v) {
-				clearInputsAndLaunchActivityFromClass(CustomerServiceContactsActivity.class);
+				launchActivityFromClass(CustomerServiceContactsActivity.class);
 			}
 		});
 
@@ -440,7 +442,7 @@ public class LoginActivity extends BaseActivity  {
 				
 				//Check if registerOrAtm button is displaying text for Card or Bank
 				if( regOrAtmText.equals(regText) ) {
-					clearInputsAndLaunchActivityFromClass(RegistrationAccountInformationActivity.class);
+					launchActivityFromClass(RegistrationAccountInformationActivity.class);
 				} else {
 					openAtmLocator();
 				}
@@ -468,7 +470,7 @@ public class LoginActivity extends BaseActivity  {
 		customerServiceButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				clearInputsAndLaunchActivityFromClass(CustomerServiceContactsActivity.class);
+				launchActivityFromClass(CustomerServiceContactsActivity.class);
 			}
 		});
 
@@ -489,6 +491,10 @@ public class LoginActivity extends BaseActivity  {
 	 * validation.
 	 */
 	private void login() {
+		//Close Soft Input Keyboard
+		InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		inputManager.hideSoftInputFromInputMethod(passField.getWindowToken(), 0);
+		  
 		Globals.setOldTouchTimeInMillis(0);
 		setInputFieldsDrawablesToDefault();
 		if (!showErrorIfAnyFieldsAreEmpty() && !showErrorWhenAttemptingToSaveAccountNumber()) {
@@ -587,7 +593,7 @@ public class LoginActivity extends BaseActivity  {
 
 					}
 				})
-				.withErrorResponseHandler(new LoginErrorResponseHandler(this))
+				.withErrorResponseHandler(new CardBaseErrorResponseHandler(this))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
 				.withCompletionListener(new LockScreenCompletionListener(this))
 				.build();
@@ -658,28 +664,6 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	public void toggleCheckBoxFromXml(final View v) {
 		toggleCheckBox(v, true);
-	}
-
-	/**
-	 * togglePasswordVisibility(final View v) This method handles showing and
-	 * hiding of a users password. It will show a user's password in plain text
-	 * if the user taps the Show text label on the home screen. And hide it if
-	 * it says 'Hide'
-	 */
-	public void togglePasswordVisibility(final View v) {
-		final String buttonText = hideButton.getText().toString();
-		//Retain the position of the selector.
-		int selectionPosition = passField.getSelectionStart();
-		if(HIDE.equals(buttonText)) {
-			hideButton.setText(SHOW);
-			passField.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-		} else {
-			hideButton.setText(HIDE);
-			passField.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-		}
-		//Restore the position of the selector.
-		passField.setSelection(selectionPosition);
-		
 	}
 
 	/**
@@ -779,12 +763,10 @@ public class LoginActivity extends BaseActivity  {
 	/**
 	 * This method launches a new activity given an activity class.
 	 */
-	public void clearInputsAndLaunchActivityFromClass(final Class<?> newActivity) {
+	public void launchActivityFromClass(final Class<?> newActivity) {
 		final Intent newVisibleIntent = new Intent(this, newActivity);
 		this.startActivity(newVisibleIntent);
-		clearInputs();
-		errorTextView.setText(emptyString);
-		setViewGone(errorTextView);
+		finish();
 	}
 	
 	/**
@@ -1009,6 +991,18 @@ public class LoginActivity extends BaseActivity  {
 				Log.e(TAG,"Unable to find views");
 			}
 		}
+	}
+	
+	/**
+	 * Shows the login pane with credential text fields and the toolbar at the bottom of the page
+	 */
+	public void showLoginPane() {
+		final ViewGroup loginPane = (ViewGroup) this.findViewById(R.id.login_pane);
+		final ViewGroup toolbar = (ViewGroup)this.findViewById(R.id.login_bottom_button_row);
+
+		splashProgress.setVisibility(View.GONE);
+		toolbar.setVisibility(View.VISIBLE);
+		loginPane.setVisibility(View.VISIBLE);
 	}
 	
 	/**

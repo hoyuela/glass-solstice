@@ -2,10 +2,18 @@ package com.discover.mobile.login.register;
 
 import static com.discover.mobile.common.StandardErrorCodes.AUTH_BAD_ACCOUNT_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.FAILED_SECURITY;
+import static com.discover.mobile.common.StandardErrorCodes.INVALID_EXTERNAL_STATUS;
+import static com.discover.mobile.common.StandardErrorCodes.INVALID_ONLINE_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
 import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
+import static com.discover.mobile.common.StandardErrorCodes.ONLINE_STATUS_PROHIBITED;
+import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
 
 import java.net.HttpURLConnection;
 import java.util.List;
@@ -29,7 +37,6 @@ import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
@@ -47,7 +54,6 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
-import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
@@ -72,6 +78,16 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	private final String MAIN_ERROR_LABEL_VISIBILITY_KEY = "d";
 	private final String PASS_FIELD_TEXT_KEY = "e";
 	private final String CARD_FIELD_TEXT_KEY = "f";
+	
+	private final String MODAL_IS_SHOWING_KEY = "n";
+	private final String MODAL_BODY_KEY = "o";
+	private final String MODAL_TITLE_KEY = "p";
+	private final String MODAL_CLOSES_ACTIVITY_KEY = "q";
+	
+	private int modalTitleText;
+	private int modalBodyText;
+	private boolean modalClosesActivity = false;
+	private Class modalNavActivity = null;
 	
 	private RegistrationConfirmationDetails confirmationDetails;
 	
@@ -131,8 +147,14 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 			
 			if(!Strings.isNullOrEmpty(cardText))
 				cardNumField.setText(cardText);
-		}
 			
+			modalIsPresent = savedInstanceState.getBoolean(MODAL_IS_SHOWING_KEY);
+			if(modalIsPresent){
+				displayModal(savedInstanceState.getInt(MODAL_TITLE_KEY), 
+						savedInstanceState.getInt(MODAL_BODY_KEY), 			
+						savedInstanceState.getBoolean(MODAL_CLOSES_ACTIVITY_KEY));
+			}
+		}
 	}
 	
 	/**
@@ -152,6 +174,13 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		
 		outState.putString(PASS_FIELD_TEXT_KEY, passField.getText().toString());
 		outState.putString(CARD_FIELD_TEXT_KEY, cardNumField.getText().toString());
+		
+		outState.putBoolean(MODAL_IS_SHOWING_KEY, modalIsPresent);
+		outState.putInt(MODAL_TITLE_KEY, modalTitleText);
+		outState.putInt(MODAL_BODY_KEY, modalBodyText);
+		outState.putBoolean(MODAL_CLOSES_ACTIVITY_KEY, modalClosesActivity);
+
+		super.onSaveInstanceState(outState);
 	}
 	
 	
@@ -229,16 +258,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	public void onBackPressed() {
 		goBack();
 	}
-	
-	/**
-	 * Go back to the forgotten credentials activity instead of just finishing this activity.
-	 */
-	@Override
-	public void goBack() {
-		final Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
-		startActivity(forgotCredentials);
-		finish();
-	}
+
 	
 	/**
 	 * 
@@ -288,6 +308,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 						return true;
 						
 					default:
+						Log.e(TAG, "UNHANDLED ERROR: " + errorResponse.toString());
 						displayOnMainErrorLabel(getString(R.string.unkown_error_text));
 						return true;
 
@@ -305,26 +326,52 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 				idErrLabel.setText(messageErrorResponse.getMessage());
 				
 				switch (messageErrorResponse.getMessageStatusCode()){
-					case BAD_ACCOUNT_STATUS:
-					case AUTH_BAD_ACCOUNT_STATUS:
-						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
-						return true;
+						
 					case STRONG_AUTH_NOT_ENROLLED:
-						sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
+						displayModal(R.string.account_security_title_text, R.string.account_security_not_enrolled, true);
 						return true;
+						
 					case LOCKED_OUT_ACCOUNT:
-						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
-						return true;
 					case MAX_LOGIN_ATTEMPTS:
-						sendToErrorPage(ScreenType.LOCKED_OUT_USER);
+						displayModal(R.string.lockout_title, R.string.locked_account, true);
 						return true;
+						
 					case LAST_ATTEMPT_WARNING:
 						displayOnMainErrorLabel(getString(R.string.login_attempt_warning));
 						return true;
-
-				}
+						
+					case SAMS_CLUB_MEMBER: 
+						displayModal(R.string.we_are_sorry, R.string.account_info_sams_club_card_error_text, true);
+						return true;
+						
+					case REG_AUTHENTICATION_PROBLEM: 
+						displayOnMainErrorLabel(getString(R.string.account_info_bad_input_error_text));					
+						return true;
+					
+					case FINAL_LOGIN_ATTEMPT:
+						displayOnMainErrorLabel(getString(R.string.login_attempt_warning));
+						return true;
+						
+					case INVALID_EXTERNAL_STATUS:
+					case ONLINE_STATUS_PROHIBITED:
+					case INVALID_ONLINE_STATUS:
+					case BAD_ACCOUNT_STATUS:
+					case AUTH_BAD_ACCOUNT_STATUS:
+						displayModal(R.string.could_not_complete_request, R.string.zluba_error, true);
+						return true;
 				
-				return false;
+					case PLANNED_OUTAGE:
+						displayModal(R.string.could_not_complete_request, R.string.planned_outage_one, true);
+						return true;
+						
+					case FAILED_SECURITY:	
+						displayOnMainErrorLabel(getString(R.string.account_info_bad_input_error_text));
+						return true;
+						
+					default:
+						return false;
+
+				}				
 			}
 		};
 
@@ -334,17 +381,6 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	private void displayOnMainErrorLabel(final String text){
 		mainErrLabel.setText(text);
 		CommonMethods.setViewVisible(mainErrLabel);
-	}
-	
-	/**
-	 * Send a user to a lockout activity and finish this activity.
-	 * @param screenType
-	 */
-	private void sendToErrorPage(final ScreenType screenType) {
-		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
-		screenType.addExtraToIntent(maintenancePageIntent);
-		startActivity(maintenancePageIntent);
-		finish();
 	}
 	
 	private void showOkAlertDialog(final String title, final String message) {
@@ -469,23 +505,34 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
 
-		//TODO: Decide which screen type to display forgot both or register
-		confirmationScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_REGISTRATION);
+		confirmationScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_FOROGT_USER);
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_CONFIRMATION);
-		
 
 		this.startActivity(confirmationScreen);
+	}
+	
+	private void displayModal(final int titleText, final int bodyText, final boolean finishActivityOnClose){
+		modalBodyText = bodyText;
+		modalTitleText = titleText;
+		modalClosesActivity = finishActivityOnClose;
+		
+		showErrorModal(titleText, bodyText, finishActivityOnClose);
+	}
+	
+	@Override
+	public void goBack() {
+		finish();
+		final Intent forgotCredentialsActivity = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(forgotCredentialsActivity);
 	}
 
 	@Override
 	public TextView getErrorLabel() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<EditText> getInputFields() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

@@ -4,15 +4,12 @@ import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.FAILED_SECURITY;
 import static com.discover.mobile.common.StandardErrorCodes.INVALID_EXTERNAL_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.INVALID_ONLINE_STATUS;
-import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
 import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.ONLINE_STATUS_PROHIBITED;
 import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
-import static com.discover.mobile.common.StandardErrorCodes.UNSCHEDULED_MAINTENANCE;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.NOT_PRIMARY_CARDHOLDER;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
 
@@ -100,7 +97,16 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	
 	private static final String SSN_KEY = "l";
 	private static final String SSN_ERROR_KEY = "m";
-		
+	
+	private final String MODAL_IS_SHOWING_KEY = "n";
+	private final String MODAL_BODY_KEY = "o";
+	private final String MODAL_TITLE_KEY = "p";
+	private final String MODAL_CLOSES_ACTIVITY_KEY = "q";
+	
+	private int modalTitleText;
+	private int modalBodyText;
+	private boolean modalClosesActivity = false;
+	
 //TEXT LABELS
 	protected TextView accountIdentifierFieldLabel;
 	protected TextView accountIdentifierFieldRestrictionsLabel;
@@ -132,7 +138,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	protected Button continueButton;
 	
 	final Calendar currentDate = Calendar.getInstance();
-
+	
 	protected void doCustomUiSetup(){/*Intentionally empty*/}
 
 	protected abstract void addCustomFieldToDetails(AccountInformationDetails details, String value);
@@ -146,6 +152,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	
 	protected abstract void setHeaderProgressText();
 	protected void setupCustomTextChangedListeners() {}
+	protected abstract boolean isForgotFlow();
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
@@ -163,6 +170,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 
     	restoreState(savedInstanceState);
     	TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
+
 	}
 
 
@@ -214,6 +222,12 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		outState.putInt(DOB_ERROR_KEY, dobErrorLabel.getVisibility());
 		outState.putInt(EXP_ERROR_KEY, expirationDateErrorLabel.getVisibility());
 		outState.putInt(SSN_ERROR_KEY, ssnErrorLabel.getVisibility());
+		
+		outState.putBoolean(MODAL_IS_SHOWING_KEY, modalIsPresent);
+		outState.putInt(MODAL_TITLE_KEY, modalTitleText);
+		outState.putInt(MODAL_BODY_KEY, modalBodyText);
+		outState.putBoolean(MODAL_CLOSES_ACTIVITY_KEY, modalClosesActivity);
+		
 	}
 	
 	/**
@@ -263,6 +277,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 * @param savedInstanceState
 	 */
 	public void restoreState(final Bundle savedInstanceState) {
+		
 		if(savedInstanceState != null){
 			accountIdentifierField.setText(savedInstanceState.getString(MAIN_FIELD_KEY));
 			
@@ -279,6 +294,13 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 			restoreCardExpDatePicker(savedInstanceState);
 			restoreDobDatePicker(savedInstanceState);
 			restoreMainErrorLabel(savedInstanceState);
+			
+			modalIsPresent = savedInstanceState.getBoolean(MODAL_IS_SHOWING_KEY);
+				if(modalIsPresent){
+					displayModal(savedInstanceState.getInt(MODAL_TITLE_KEY), 
+							savedInstanceState.getInt(MODAL_BODY_KEY), 			
+							savedInstanceState.getBoolean(MODAL_CLOSES_ACTIVITY_KEY));
+				}
 		}
 	}
 
@@ -355,13 +377,8 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 * @param v - the calling View.
 	 */
 	public void validateInfoAndSubmitOnSuccess(final View v){
-				
-		CommonMethods.setViewGone(errorMessageLabel);
-		accountIdentifierField.updateAppearanceForInput();
-		birthDatePicker.updateAppearanceForInput();
-		cardExpDatePicker.updateAppearanceForInput();
-		ssnField.updateAppearanceForInput();
-		
+		updateAllErrorStates();
+
 		if(isFormCompleteAndValid()){
 			submitFormInfo();
 		}
@@ -372,6 +389,16 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		
 	}
 	
+	/**
+	 * Update the state of all input fields based on their input and hide the main error label.
+	 */
+	private void updateAllErrorStates() {
+		CommonMethods.setViewGone(errorMessageLabel);
+		accountIdentifierField.updateAppearanceForInput();
+		birthDatePicker.updateAppearanceForInput();
+		cardExpDatePicker.updateAppearanceForInput();
+		ssnField.updateAppearanceForInput();
+	}
 	/**
 	 * Takes all of the information in the form and saves it to the accountInformationDetails object.
 	 * addCustomFieldToDetails determines the type of account information to provide from the main
@@ -412,37 +439,36 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 				progress.dismiss();
 				resetScrollPosition();
 				switch (errorResponse.getHttpStatusCode()) {
-					case HttpURLConnection.HTTP_UNAUTHORIZED:
-						// TODO handle
-						return true;
 						// TEMP temp fix for strange 503 coming back from server on some accounts. v
 					case HttpURLConnection.HTTP_UNAVAILABLE:
 						showMainErrorLabelWithText(getString(R.string.unkown_error_text));
 					return true;
+					
+					default:
+						Log.e(TAG, "ERROR SUBMITTING FORM INFO: " + errorResponse.toString());
+						showErrorModal(R.string.could_not_complete_request, R.string.unknown_error, false);
+						return true;
 				}
 				
-				return false;
 			}
 
 			@Override
 			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
 				resetScrollPosition();
-				
-				Log.d(TAG, "Error message: " + messageErrorResponse.getMessage());
-				
+								
 				// FIXME add "assertions" for what the HTTP status code should be
 				switch (messageErrorResponse.getMessageStatusCode()) {
-					case SAMS_CLUB_MEMBER: // Wrong type of account info provided.
-						showMainErrorLabelWithText(getString(R.string.account_info_sams_club_card_error_text));
+					case SAMS_CLUB_MEMBER: 
+						displayModal(R.string.we_are_sorry, R.string.account_info_sams_club_card_error_text, true);
 						return true;
 						
-					case REG_AUTHENTICATION_PROBLEM: // Provided information was incorrect.
+					case REG_AUTHENTICATION_PROBLEM: 
 						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));					
 						return true;
 						
-					case BAD_ACCOUNT_STATUS: // Last attemt with this account number warning.
-						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
+					case BAD_ACCOUNT_STATUS:
+						displayModal(R.string.could_not_complete_request, R.string.problem_authenticating, true);
 						return true;
 					
 					case FINAL_LOGIN_ATTEMPT:
@@ -450,21 +476,21 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 						return true;
 						
 					case MAX_LOGIN_ATTEMPTS:
-						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
+						displayModal(R.string.lockout_title, R.string.locked_account, true);
 						return true;
 						
 					case INVALID_EXTERNAL_STATUS:
 					case ONLINE_STATUS_PROHIBITED:
 					case INVALID_ONLINE_STATUS:
-						sendToErrorPage(ScreenType.BAD_ACCOUNT_STATUS);
+						displayModal(R.string.could_not_complete_request, R.string.zluba_error, true);
 						return true;
 						
 					case STRONG_AUTH_NOT_ENROLLED:
-						sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
+						displayModal(R.string.account_security_title_text, R.string.account_security_not_enrolled, true);
 						return true;
 						
 					case PLANNED_OUTAGE:
-						sendToErrorPage(ScreenType.SCHEDULED_MAINTENANCE);
+						displayModal(R.string.could_not_complete_request, R.string.planned_outage_one, true);
 						return true;
 						
 					case FAILED_SECURITY:	
@@ -472,6 +498,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 						return true;
 						
 					default:
+						Log.e(TAG, "UNHANDLED ERROR: " + messageErrorResponse.getMessage());
 						return false;
 				}
 			}
@@ -480,7 +507,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		final NetworkServiceCall<?> serviceCall = createServiceCall(callback, accountInformationDetails);
 		serviceCall.submit();
 	}
-	
+
 	/**
 	 * Set the text of the main error label to the given String value and set it to visible.
 	 * 
@@ -529,10 +556,9 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	}
 	
 	protected void checkForStrongAuth() {
-		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
+		final AsyncCallbackAdapter<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
 			public void success(final StrongAuthDetails value) {
-				Log.d(TAG, "Success");
 				progress.dismiss();
 				navToNextScreenWithDetails(accountInformationDetails);
 			}
@@ -551,9 +577,13 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
 						getStrongAuthQuestion();
 						return true;
+						
+					default:
+						Log.e(TAG, "UNHANDLED ERROR: " + errorResponse.toString());
+						displayModal(R.string.could_not_complete_request, R.string.unknown_error, false);
+						return true;
 				}
 				
-				return false;
 			}
 			
 			private boolean handleStrongAuthErrorResponse(final StrongAuthErrorResponse errorResponse) {
@@ -572,48 +602,20 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 			@Override
 			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
-				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
 
-				// FIXME add "assertions" for what the HTTP status code should be
 				switch(messageErrorResponse.getMessageStatusCode()){
 				
 					case LOCKED_OUT_ACCOUNT:
-						sendToErrorPage(ScreenType.STRONG_AUTH_LOCKED_OUT);
+						displayModal(R.string.account_security_title_text, R.string.account_security_locked_out, true);
 						return true;
 						
 					case STRONG_AUTH_NOT_ENROLLED:
-						sendToErrorPage(ScreenType.STRONG_AUTH_NOT_ENROLLED);
+						displayModal(R.string.account_security_title_text, R.string.account_security_not_enrolled, true);
 						return true;
-						
-					case SAMS_CLUB_MEMBER:
-						showMainErrorLabelWithText(getString(R.string.account_info_sams_club_card_error_text));
-						return true;
-						
-					case REG_AUTHENTICATION_PROBLEM: // Provided information was incorrect.
-						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-						return true;
-						
-					case FAILED_SECURITY:
-						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-						return true;
-					
-					case NOT_PRIMARY_CARDHOLDER:
-						sendToErrorPage(ScreenType.NOT_PRIMARY_CARDHOLDER);
-						return true;
-					
-					case UNSCHEDULED_MAINTENANCE:
-						sendToErrorPage(ScreenType.UNSCHEDULED_MAINTENANCE);
-						return true;
-						
-					case MAX_LOGIN_ATTEMPTS:
-						sendToErrorPage(ScreenType.ACCOUNT_LOCKED_FAILED_ATTEMPTS);
-						return true;
-						
-					case LAST_ATTEMPT_WARNING:
-						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
-						return true;
+			
 						
 					default:
+						Log.e(TAG, "UNHANDLED ERROR: " + messageErrorResponse.getMessage());
 						return false;
 				}
 			}
@@ -648,33 +650,14 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
 				progress.dismiss();
 				
-				// FIXME
 				switch (errorResponse.getHttpStatusCode()) {
-					case HttpURLConnection.HTTP_BAD_REQUEST:
-						return true;
-					case HttpURLConnection.HTTP_UNAUTHORIZED:
-						return true;
-					case HttpURLConnection.HTTP_INTERNAL_ERROR: //couldn't authenticate user info.
-						return true;
-					case HttpURLConnection.HTTP_FORBIDDEN:
-						return true;
+					default:
+						Log.e(TAG, "UNHANDLED ERROR: " + errorResponse.toString());
+						displayModal(R.string.could_not_complete_request, R.string.unknown_error, false);
+						return false;
 				}
-				
-				return false;
 			}
 			
-			@Override
-			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
-				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
-				
-				// FIXME
-				switch(messageErrorResponse.getMessageStatusCode()){
-				
-				default://TODO properly handle these ^ v
-					return true;
-				}
-				
-			}
 		};
 
 		final GetStrongAuthQuestionCall strongAuthCall = 
@@ -708,7 +691,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 			if(resultCode == RESULT_OK) {
 				navToNextScreenWithDetails(accountInformationDetails);
 			} else if (resultCode == RESULT_CANCELED){
-				finish();
+				goBack();
 			}
 		}
 	}
@@ -720,8 +703,10 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	protected void navToNextScreenWithDetails(final AccountInformationDetails details) {
 		final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
 		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, details);
+		createLoginActivity.putExtra(IntentExtraKey.SCREEN_FORGOT_BOTH, isForgotFlow());
+		
 		startActivity(createLoginActivity);
-		this.finish();
+		finish();
 	}
 	
 	/**
@@ -732,4 +717,11 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		goBack(null);
 	}
 		
+	private void displayModal(final int titleText, final int bodyText, final boolean finishActivityOnClose){
+		modalBodyText = bodyText;
+		modalTitleText = titleText;
+		modalClosesActivity = finishActivityOnClose;
+		
+		showErrorModalForRegistration(titleText, bodyText, finishActivityOnClose);
+	}
 }

@@ -1,5 +1,7 @@
 package com.discover.mobile.error;
 
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -34,8 +36,10 @@ public class BaseExceptionFailureHandler implements ExceptionFailureHandler {
 		if( networkServiceCall instanceof PreAuthCheckCall) {
 			LoginActivity loginActivity = (LoginActivity)ErrorHandlerFactory.getActiveActivity();
 			loginActivity.showSplashScreen(false);
-		} else {
+		} else if (!(networkServiceCall instanceof LogOutCall)) {
 			ErrorHandlerFactory.getInstance().handleGenericError(0);
+		}else {
+			Navigator.navigateToLoginPage(ErrorHandlerFactory.getActiveActivity(), IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
 		}
 		
 		return true;

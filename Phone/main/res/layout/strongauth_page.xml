@@ -1,85 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView1"
-    style="@style/WhiteTheme"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/light_gray_bkgrd"
         android:focusable="true"
-        android:focusableInTouchMode="true" >
+        android:focusableInTouchMode="true"
+        android:padding="@dimen/forms_inner_padding" >
+
+        <TextView
+            android:id="@+id/account_security_server_error"
+            style="@style/error_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="@string/account_security_answer_doesnt_match"/>
 
         <TextView
             android:id="@+id/account_security_label"
+            style="@style/title_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/account_security_text"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+            android:layout_below="@+id/account_security_server_error"
+            android:text="@string/account_security_text" />
 
         <TextView
             android:id="@+id/account_security_info_label"
+            style="@style/small_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/account_security_label"
             android:layout_below="@+id/account_security_label"
             android:paddingTop="4dp"
-            android:text="@string/account_security_info_text"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/black"
-            android:textSize="@dimen/light_text_size" />
-        
-          <TextView
-            android:id="@+id/error_message_strong_auth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/account_security_info_label"
-            android:layout_below="@+id/account_security_info_label"
-            android:paddingTop="4dp"
-            android:layout_marginTop="16dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/red"
-            android:textStyle="bold"
-            android:textSize="@dimen/light_text_size" 
-            android:visibility="gone"/>
+            android:text="@string/account_security_info_text" />
 
         <TextView
             android:id="@+id/account_security_question_placeholder_label"
+            style="@style/smallest_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/error_message_strong_auth"
-            android:layout_marginTop="16dp"
-            android:text="@string/account_security_placeholder_text"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/black" />
+            android:layout_below="@+id/account_security_info_label"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:text="@string/account_security_placeholder_text" />
 
-        <EditText
+        <com.discover.mobile.common.customui.NonEmptyEditText
             android:id="@+id/account_security_question_answer_field"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/input_field_height"
             android:layout_below="@+id/account_security_question_placeholder_label"
-            android:hint="@string/account_security_question_hint"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:hint="@string/empty"
             android:imeOptions="actionDone"
             android:inputType="textNoSuggestions"
-            android:maxLines="@integer/MAX_INPUT_LINES" />
+            android:textCursorDrawable="@null" />
 
         <TextView
-            android:id="@+id/account_security_remember_device_label"
+            android:id="@+id/error_message_strong_auth"
+            style="@style/error_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_security_question_answer_field"
-            android:layout_marginTop="16dp"
-            android:text="@string/account_security_remember_device_text"
-            android:textColor="@color/black" />
+            android:layout_marginTop="@dimen/between_related_elements_padding" />
+
+        <TextView
+            android:id="@+id/account_security_remember_device_label"
+            style="@style/smallest_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/error_message_strong_auth"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:text="@string/account_security_remember_device_text" />
 
         <RelativeLayout
             android:id="@+id/account_security_whats_this_relative_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/account_security_remember_device_label"
+            android:layout_below="@+id/account_security_choice_radio_group"
             android:onClick="expandHelpMenu" >
 
             <View
@@ -88,7 +87,7 @@
                 android:layout_height="1dp"
                 android:layout_marginBottom="4dp"
                 android:layout_marginTop="8dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@color/field_stroke" />
 
             <TextView
                 android:id="@+id/account_security_whats_this_label"
@@ -116,7 +115,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/account_security_whats_this_detail_label"
                 android:layout_marginTop="4dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@color/field_stroke" />
 
             <TextView
                 android:id="@+id/account_security_whats_this_detail_label"
@@ -132,36 +131,36 @@
             android:id="@+id/account_security_choice_radio_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/account_security_whats_this_relative_layout"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/rounded_table_corners_shape" >
+            android:layout_below="@+id/account_security_remember_device_label"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:background="@drawable/rounded_table_corners_no_padding"
+            android:divider="@drawable/modal_divider_line"
+            android:orientation="vertical" >
 
             <RadioButton
                 android:id="@+id/account_security_choice_one_radio"
-                android:layout_width="wrap_content"
+                style="@style/small_copy"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/account_security_remember_me_text"
                 android:button="@drawable/custom_radio_check"
-                android:textColor="@color/black"
-                android:textStyle="bold"  />
+                android:checked="true"
+                android:padding="@dimen/forms_inner_padding"
+                android:text="@string/account_security_remember_me_text" />
 
             <View
-                android:id="@+id/account_security_choices_separator"
                 android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="4dp"
-                android:background="@android:color/darker_gray" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_list_item" />
 
             <RadioButton
                 android:id="@+id/account_security_choice_two_radio"
-                android:layout_width="wrap_content"
+                style="@style/field_copy_small"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:button="@drawable/custom_radio_check"
-                android:text="@string/account_security_dont_remember_me_text"
-                android:textColor="@color/abs__primary_text_disable_only_holo_dark"
-                android:textStyle="bold" />
+                android:padding="@dimen/forms_inner_padding"
+                android:text="@string/account_security_dont_remember_me_text" />
         </RadioGroup>
 
         <Button
@@ -169,20 +168,23 @@
             style="@style/call_to_action_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/account_security_choice_radio_group"
+            android:layout_below="@+id/account_security_whats_this_relative_layout"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/modal_orange_margin_bottom"
-            android:layout_marginTop="@dimen/modal_orange_margin_top"
+            android:layout_marginBottom="@dimen/orange_button_margin_top"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
             android:onClick="submitSecurityInfo"
             android:text="@string/continue_text" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_below="@+id/account_security_continue_button" >
-
-            <include layout="@layout/old_general_copyright_footer" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/provide_feedback_button"
+            style="@style/blue_hyperlink_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_continue_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/orange_button_margin_top"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:text="@string/feedback_text" />
     </RelativeLayout>
 
 </ScrollView>
