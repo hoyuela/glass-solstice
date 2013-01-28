@@ -114,10 +114,8 @@
 	    <a href='tel:18003472683'>1&#8211;800&#8211;347&#8211;2683</a>.
 	</string>
 	<string name="locked_account">
-	    For security purposes, your online account has been locked.<br/>Please call Discover
-	         Customer Service at 
-	         <a href='tel:18882518003'>1&#8211;888&#8211;251&#8211;8003</a> 
-	         for information about accessing your account online.
+	     We know you’re excited to get into the app, but you’ve tried to log in with the wrong username or password too many times.
+		For more information, please contact Customer Service at 1&#8211;800&#8211;Discover (1&#8211;800&#8211;347&#8211;4996) for assistance.
 	</string>
 	<string name="cannot_save_account_number">
 	    To protect the security of your Account, we do not save your Discover card Account number
