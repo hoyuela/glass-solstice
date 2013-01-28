@@ -3,6 +3,8 @@ package com.discover.mobile.common.auth.registration;
 public final class RegistrationErrorCodes {
 	
 	public static final int LOCKED_OUT_ACCOUNT = 1402;
+	public static final int STRONG_AUTH_STATUS_INVALID = 1402;
+	public static final int INCORRECT_STRONG_AUTH_ANSWER = 1405;
 	public static final int SAMS_CLUB_MEMBER = 1905;
 	public static final int REG_AUTHENTICATION_PROBLEM = 1906;
 	public static final int PASS_RESET_FAIL = 1908;

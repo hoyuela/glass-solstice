@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.error.ErrorHandlerFactory;
+import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.HeaderProgressIndicator;
 
 /**
@@ -60,6 +62,8 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
 	@Override
 	public void goBack() {
 		finish();
+		final Intent loginActivity = new Intent(this, LoginActivity.class);
+		startActivity(loginActivity);
 	}
 	
 	/**
@@ -69,7 +73,12 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
 	protected Class<?> getSuccessfulStrongAuthIntentClass() {
 		return CreateLoginActivity.class;
 	}
-
+	
+	@Override
+	protected boolean isForgotFlow() {
+		return false;
+	}
+	
 	/**
 	 * Set the text that is displayed in the top header progress bar.
 	 */

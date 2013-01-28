@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoCall;
 import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoDetails;
 import com.discover.mobile.common.auth.registration.AccountInformationDetails;
@@ -33,7 +32,6 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 	
 	private static final String TAG = EnterNewPasswordActivity.class.getSimpleName();
 	
-	private static AccountInformationDetails passOneDetails;
 	private ForgotPasswordTwoDetails passTwoDetails;
 	
 //TEXT LABELS
@@ -48,28 +46,60 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 	
 //SCROLL VIEW
 	private ScrollView mainScrollView;
+	
+	private final String UPDATE_PASS_ONE_STATE = "a";
+	
+	private final String MAIN_ERROR_VISIBILITY = "c";
+	private final String MAIN_ERROR_STRING = "d";
 		
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		super.isForgot = true;
 		setContentView(R.layout.register_create_password);
 		loadAllViews();
+		getPreviousScreenType();
 		setupInputFields();
+		mergeAccountDetails();
+		setupProgressHeader();
+    	setupHelpNumber();
+    	restoreState(savedInstanceState);
+	}
+
+	/**
+	 * Get a passed boolean to see if the screen that launched this activity was a forgot step.
+	 * Default to false if it was not provided.
+	 */
+	protected void getPreviousScreenType() {
+		isForgotFlow = getIntent().getBooleanExtra(IntentExtraKey.SCREEN_FORGOT_BOTH, false);
+	}
+
+	/**
+	 * Restore the state of the input fields on the screen upon orientation change.
+	 * @param savedInstanceState
+	 */
+	private void restoreState(final Bundle savedInstanceState) {
+		if(savedInstanceState != null) {
+			if(!savedInstanceState.getBoolean(UPDATE_PASS_ONE_STATE))
+				passOneField.updateAppearanceForInput();
+			
+			mainErrorMessageLabel.setVisibility(savedInstanceState.getInt(MAIN_ERROR_VISIBILITY));
+			mainErrorMessageLabel.setText(savedInstanceState.getString(MAIN_ERROR_STRING));		
+			
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(final Bundle outState){
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(UPDATE_PASS_ONE_STATE, passOneField.isInDefaultState);
 		
-		passTwoDetails = new ForgotPasswordTwoDetails();
-		
-		final Bundle extras = getIntent().getExtras();
-    	if(extras != null) {
-    		passOneDetails = (AccountInformationDetails) getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
-    		mergeAccountDetails();
-    	}
-		
+		outState.putString(MAIN_ERROR_STRING, mainErrorMessageLabel.getText().toString());
+		outState.putInt(MAIN_ERROR_VISIBILITY, mainErrorMessageLabel.getVisibility());
+	}
+	
+	private void setupProgressHeader() {
 		HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
     	progress.initChangePasswordHeader(1);
-    	
-    	setupHelpNumber();
-    	
 	}
 	
 	/**
@@ -100,17 +130,26 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 	}
 	
 	/**
-	 * Take the details from the first page and merge them into a POJO that will be send to the server
-	 * on this page.
+	 * Take the details from the first page and merge them into a POJO that will be sent to the server
+	 * from this page.
 	 */
 	private void mergeAccountDetails() {
-		passTwoDetails.userId = passOneDetails.userId;
-		passTwoDetails.dateOfBirthDay = passOneDetails.dateOfBirthDay;
-		passTwoDetails.dateOfBirthMonth = passOneDetails.dateOfBirthMonth;
-		passTwoDetails.dateOfBirthYear = passOneDetails.dateOfBirthYear;
-		passTwoDetails.expirationMonth = passOneDetails.expirationMonth;
-		passTwoDetails.expirationYear = passOneDetails.expirationYear;
-		passTwoDetails.socialSecurityNumber = passOneDetails.socialSecurityNumber;
+		final Bundle extras = getIntent().getExtras();
+    	if(extras != null) {
+    		passTwoDetails = new ForgotPasswordTwoDetails();
+    		AccountInformationDetails passOneDetails = 
+    				(AccountInformationDetails) getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
+    		if(passOneDetails != null){
+	    		passTwoDetails.userId = passOneDetails.userId;
+	    		passTwoDetails.dateOfBirthDay = passOneDetails.dateOfBirthDay;
+	    		passTwoDetails.dateOfBirthMonth = passOneDetails.dateOfBirthMonth;
+	    		passTwoDetails.dateOfBirthYear = passOneDetails.dateOfBirthYear;
+	    		passTwoDetails.expirationMonth = passOneDetails.expirationMonth;
+	    		passTwoDetails.expirationYear = passOneDetails.expirationYear;
+	    		passTwoDetails.socialSecurityNumber = passOneDetails.socialSecurityNumber;
+    		}
+    	}
+		
 	}
 	
 	/**
@@ -123,7 +162,6 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 				new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
 			@Override
 			public void success(final RegistrationConfirmationDetails responseData) {
-				Log.d(TAG, "Success");
 				progress.dismiss();
 				confirmationDetails = responseData;
 				retrieveAccountDetailsFromServer();
@@ -131,11 +169,11 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
-				Log.w(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse);
 				progress.dismiss();
 				
 				switch (errorResponse.getHttpStatusCode()) {	
 					default:
+						Log.e(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse.toString());
 						CommonMethods.showLabelWithStringResource(errorMessageLabel,R.string.unkown_error_text, currentContext);
 						return true;
 				}
@@ -145,7 +183,6 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 			@Override
 			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
-				Log.e(TAG, "Error message: " + messageErrorResponse.getMessage());
 				switch(messageErrorResponse.getMessageStatusCode()){
 
 				case REG_AUTHENTICATION_PROBLEM: 
@@ -162,10 +199,11 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 					return true;
 					
 				case SCHEDULED_MAINTENANCE:
-					sendToErrorPage(ScreenType.SCHEDULED_MAINTENANCE);
+					showErrorModal(R.string.could_not_complete_request, R.string.unscheduled_maintenance, false);
 					return true;
 					
 				default:
+					Log.e(TAG, "UNHANDLED ERROR " + messageErrorResponse.toString());
 					return false;
 					
 				}

@@ -30,6 +30,18 @@
             android:id="@+id/reg_help_footer"
             android:layout_height="fill_parent"
             layout="@layout/new_general_need_help_footer" />
+
+        <TextView
+            android:id="@+id/provide_feedback_button"
+            style="@style/blue_hyperlink_small"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/reg_help_footer"
+            android:layout_marginBottom="@dimen/orange_button_margin_top"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:gravity="center"
+            android:text="@string/feedback_text" />
+
     </LinearLayout>
 
 </ScrollView>

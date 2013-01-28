@@ -414,7 +414,7 @@ public class LoginActivity extends BaseActivity  {
 			
 			@Override
 			public void onClick(View v) {
-				clearInputsAndLaunchActivityFromClass(CustomerServiceContactsActivity.class);
+				launchActivityFromClass(CustomerServiceContactsActivity.class);
 			}
 		});
 
@@ -427,7 +427,7 @@ public class LoginActivity extends BaseActivity  {
 				
 				//Check if registerOrAtm button is displaying text for Card or Bank
 				if( regOrAtmText.equals(regText) ) {
-					clearInputsAndLaunchActivityFromClass(RegistrationAccountInformationActivity.class);
+					launchActivityFromClass(RegistrationAccountInformationActivity.class);
 				} else {
 					openAtmLocator();
 				}
@@ -455,7 +455,7 @@ public class LoginActivity extends BaseActivity  {
 		customerServiceButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				clearInputsAndLaunchActivityFromClass(CustomerServiceContactsActivity.class);
+				launchActivityFromClass(CustomerServiceContactsActivity.class);
 			}
 		});
 
@@ -744,12 +744,10 @@ public class LoginActivity extends BaseActivity  {
 	/**
 	 * This method launches a new activity given an activity class.
 	 */
-	public void clearInputsAndLaunchActivityFromClass(final Class<?> newActivity) {
+	public void launchActivityFromClass(final Class<?> newActivity) {
 		final Intent newVisibleIntent = new Intent(this, newActivity);
 		this.startActivity(newVisibleIntent);
-		clearInputs();
-		errorTextView.setText(emptyString);
-		setViewGone(errorTextView);
+		finish();
 	}
 	
 	/**
