@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.navigation.Navigator;
 
 /**
  * Success listener for the log out call.
@@ -14,7 +17,7 @@ import com.discover.mobile.login.LoginActivity;
  * @author jthornton
  *
  */
-public class LogOutSuccessListener implements SuccessListener<Object>{
+public class LogOutSuccessFailListener implements SuccessListener<Object>, ErrorResponseHandler{
 	
 	/**Activity running*/
 	private Activity activity;
@@ -23,7 +26,7 @@ public class LogOutSuccessListener implements SuccessListener<Object>{
 	 * Constructor for the class
 	 * @param activity - the current activity running
 	 */
-	public LogOutSuccessListener(final Activity activity){
+	public LogOutSuccessFailListener(final Activity activity){
 		this.activity = activity;
 	}
 
@@ -43,12 +46,13 @@ public class LogOutSuccessListener implements SuccessListener<Object>{
 	 */
 	@Override
 	public void success(final Object successObject) {
-		//TODO: Handle this appropriately, this may change in the future
-		final Intent intent = new Intent(activity, LoginActivity.class);
-		final Bundle bundle = new Bundle();
-		bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-		intent.putExtras(bundle);
-		activity.startActivity(intent);
-		activity.finish();
+		Navigator.navigateToLoginPage(activity, IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
+	}
+
+	@Override
+	public boolean handleFailure(ErrorResponse<?> arg0) {
+		// TODO Auto-generated method stub
+		Navigator.navigateToLoginPage(activity, IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
+		return false;
 	}
 }

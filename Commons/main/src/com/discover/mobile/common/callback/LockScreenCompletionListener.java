@@ -45,7 +45,7 @@ public class LockScreenCompletionListener implements CompletionListener {
 	@Override
 	public void complete(Object arg0) {
 		if( null != activity ) {
-			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 		}
 	}
 

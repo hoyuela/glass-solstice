@@ -46,7 +46,7 @@
         You are now logged out. Thank you for using Discover Mobile.
     </string>
     <string name="session_expired">
-        Your login session has expired.
+        We\'ve logged you out to protect your account security.  Please log in again.
     </string>
 <!--  LOGIN ERRORS -->
 	<string name="id_invalid">
@@ -127,7 +127,7 @@
         ATM\nLocator
     </string>
 	<string name="privacy_and_terms">
-        Privacy &amp; Terms
+        Privacy &amp;\n Terms
     </string>
     <string name="problem_authenticating">There was a problem authenticating your registration information.</string>
 
