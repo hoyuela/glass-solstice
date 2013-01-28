@@ -14,8 +14,6 @@ import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.logout.LogOutSuccessFailListener;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -109,7 +107,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		pendingLogout = true;
 
 		AsyncCallback<Object> callback = AsyncCallbackBuilderLibrary
-				.createDefaultCardAsyncBuilder(Object.class, this, null, true)
+				.createDefaultCardAsyncBuilder(Object.class, this, this, true)
 				.withSuccessListener(new LogOutSuccessFailListener(this))
 				.withErrorResponseHandler(new LogOutSuccessFailListener(this))
 				.build();
