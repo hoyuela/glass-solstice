@@ -12,6 +12,7 @@ import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -198,6 +199,7 @@ public class LoginActivity extends BaseActivity  {
 		setupButtons();
 		
 		imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 		
 		
 		//Check to see if pre-auth request is required. Should only 

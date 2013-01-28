@@ -2,9 +2,10 @@ package com.discover.mobile.navigation;
 
 import java.util.Calendar;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -60,6 +61,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 		setupFirstVisibleFragment();
 		setUpCurrentFragment(savedInstanceState);
 		setStatusBarVisbility();
+		
 	}
 	
 	/**
@@ -131,6 +133,7 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 	@Override
 	public void onResume(){
 		super.onResume();
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 		if(null != resumeFragment && !wasPaused){
 			getSupportFragmentManager().popBackStack();
 			makeFragmentVisible(resumeFragment, false);
@@ -224,5 +227,18 @@ public class NavigationRootActivity extends LoggedInRoboActivity implements Navi
 		final TextView titleView= (TextView)findViewById(R.id.title_view);
 		return titleView.getText().toString();
 	}
+	
+	@Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        int backStackCount = fragmentManager.getBackStackEntryCount();
+        
+        if( backStackCount == 1 ) {
+            this.logout();
+        } else {
+            super.onBackPressed();
+        }
+            
+    }
 
 }
