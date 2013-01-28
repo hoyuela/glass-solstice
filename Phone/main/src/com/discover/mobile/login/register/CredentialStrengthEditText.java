@@ -486,7 +486,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 			//Draw Strength meter in the tail of the EditText
 			canvas.drawBitmap(mStrengthMeter, x, y, mPaint);
 		}
-		
+		this.invalidate();
 	}
 	
 	/**
