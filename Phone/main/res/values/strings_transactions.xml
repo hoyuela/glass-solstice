@@ -16,4 +16,5 @@
     <string name="toggle_specific">Specific</string>
     <string name="toggle_range">Range</string>
     <string name="dollar_sign">$</string>
+    <string name="search">Search</string>
 </resources>

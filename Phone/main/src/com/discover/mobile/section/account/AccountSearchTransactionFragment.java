@@ -1,22 +1,38 @@
 package com.discover.mobile.section.account;
 
+import java.util.List;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.discover.mobile.AsyncCallbackBuilderLibrary;
 import com.discover.mobile.BaseFragment;
+import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
+import com.discover.mobile.common.account.CategoriesDetail;
+import com.discover.mobile.common.account.CategoryDetail;
+import com.discover.mobile.common.account.GetTransactionCategories;
+import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.callback.GenericAsyncCallback.Builder;
+import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 
 public class AccountSearchTransactionFragment extends BaseFragment {
 
 	ToggleButton dateLeft, dateMid, dateRight, amtLeft, amtMid, amtRight;
+	Spinner categorySpinner;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
@@ -24,10 +40,82 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 
 		final View view = inflater.inflate(R.layout.transaction_search_landing,
 				null);
+		categorySpinner = (Spinner) view.findViewById(R.id.spinner_category);
 
+		getCategories();
 		setupDateToggleListeners(view);
 
 		return view;
+	}
+
+	/**
+	 * Get the categories for the spinner
+	 */
+	private void getCategories() {
+
+		final Builder<CategoriesDetail> callback = AsyncCallbackBuilderLibrary
+				.createDefaultCardAsyncBuilder(CategoriesDetail.class,
+						getActivity(), (ErrorHandlerUi) this.getActivity(),
+						true);
+
+		callback.withSuccessListener(new SuccessListener<CategoriesDetail>() {
+
+			@Override
+			public CallbackPriority getCallbackPriority() {
+				return CallbackPriority.MIDDLE;
+			}
+
+			@Override
+			public void success(CategoriesDetail cat) {
+
+				List<CategoryDetail> cd = cat.categories;
+//				cd.add(new CategoryDetail("-","-"));
+				cd.addAll(cat.otherCategories);
+
+				final ArrayAdapter<CategoryDetail> spinnerAdapter = new ArrayAdapter<CategoryDetail>(
+						getActivity(), R.layout.push_simple_spinner,
+						R.id.amount, cd);
+				spinnerAdapter
+						.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
+				categorySpinner.setAdapter(spinnerAdapter);
+
+				categorySpinner
+						.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+							@Override
+							public void onItemSelected(AdapterView<?> arg0,
+									View arg1, int arg2, long arg3) {
+								CategoryDetail cdo = (CategoryDetail) categorySpinner
+										.getSelectedItem();
+								Log.e("", cdo.categoryDesc);
+							}
+
+							@Override
+							public void onNothingSelected(AdapterView<?> arg0) {
+								// TODO Auto-generated method stub
+								Log.e("", "How did I even???");
+							}
+						});
+			}
+		});
+
+		new GetTransactionCategories((Context) getActivity(),
+				(AsyncCallback<CategoriesDetail>) callback.build()).submit();
+
+	}
+
+	/**
+	 * Set the spinner drop down values
+	 * 
+	 * @param values
+	 *            - the values to be displayed in the spinner
+	 */
+	public void setSpinnerDropdown(final List<String> values) {
+		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+				getActivity(), R.layout.push_simple_spinner, R.id.amount,
+				values);
+		adapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
+		categorySpinner.setAdapter(adapter);
 	}
 
 	/**
@@ -149,8 +237,8 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 					fromField.setVisibility(View.VISIBLE);
 					((TextView) fromField.findViewById(R.id.amount_input_title))
 							.setText(getResources().getString(
-							
-									R.string.chooser_amount_title));
+
+							R.string.chooser_amount_title));
 					toField.setVisibility(View.INVISIBLE);
 					break;
 				case R.id.toggle_right:

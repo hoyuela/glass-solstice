@@ -68,6 +68,11 @@ public class UrlManagerCard {
 	private static final String PUSH_SET_NOTIFICATION_PREF_URL = "/cardsvcs/acs/contact/v1/preferences/enrollments";
 	private static final String PUSH_REGISTRATION_STATUS_URL = "/cardsvcs/acs/contact/v1/registration/status?vid=";
 	private static final String PUSH_REGISTER_VENDOR_URL = "/cardsvcs/acs/contact/v1/registration/status";
+	
+	/**
+	 * Search Transaction URLs
+	 */
+	private static final String SEARCH_TRANS_CATEGORY_URL = "/cardsvcs/acs/stmt/v1/category";
 
 	/**
 	 * @return the baseUrl
@@ -219,7 +224,6 @@ public class UrlManagerCard {
 		return LATE_PAYMENT_WARNING_URL;
 	}
 
-
 	/**
 	 * @return URL to get late payment text information
 	 */
@@ -232,5 +236,12 @@ public class UrlManagerCard {
 	 */
 	public static String getGetRecentAccountTransactions(final String category) {
 		return GET_RECENT_ACCOUNT_TRANSACTIONS + category;
+	}
+	
+	/**
+	 * @return URL to get categories for searching transactions
+	 */
+	public static String getSearchTransCategoryUrl() {
+		return SEARCH_TRANS_CATEGORY_URL;
 	}
 }
