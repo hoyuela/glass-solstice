@@ -55,6 +55,7 @@ import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
@@ -114,6 +115,11 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_forgot_id);
+		
+		HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
+    	progress.initChangePasswordHeader(0);
+    	progress.hideStepTwo();
+		
 		loadAllViews();
 		setupInputFields();
 

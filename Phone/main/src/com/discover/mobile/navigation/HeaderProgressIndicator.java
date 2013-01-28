@@ -114,4 +114,11 @@ public class HeaderProgressIndicator extends RelativeLayout {
 			indicator3.setVisibility(View.VISIBLE);
 		}
 	}
+	
+	/**
+	 * Hides the second state in the bread crumb 
+	 */
+	public void hideStepTwo(){
+		step2.setVisibility(View.GONE);
+	}
 }
