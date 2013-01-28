@@ -309,13 +309,9 @@
     </style>
 
     <style name="customer_service_table">
-        <item name="android:paddingTop">1dp</item>
-        <item name="android:paddingRight">1dp</item>
-        <item name="android:paddingLeft">1dp</item>
-        <item name="android:paddingBottom">@dimen/between_related_elements_padding</item>
-        <item name="android:background">@drawable/rounded_table_corners_no_padding</item>
+        <item name="android:padding">2dp</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:divider">@drawable/gray_line</item>
+        <item name="android:background">@drawable/rounded_table_corners_no_padding</item>
     </style>
     
     <style name="modal_error_image">

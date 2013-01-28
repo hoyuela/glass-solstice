@@ -22,6 +22,8 @@ public class TwoElementListItem extends RelativeLayout{
 	 */
 	private TextView leftTextView;
 	private TextView rightTextView;
+	private TextView addressTextView;
+	
 	//A horizontal gray line on the top of each view that acts as a divider.
 	private View dividerLine;
 	
@@ -57,6 +59,7 @@ public class TwoElementListItem extends RelativeLayout{
 		leftTextView = (TextView)findViewById(R.id.left_text);
 		rightTextView = (TextView)findViewById(R.id.right_text);
 		dividerLine = (View)findViewById(R.id.divider_line);
+		addressTextView = (TextView)findViewById(R.id.address_text);
 	}
 	
 	/**
@@ -83,6 +86,14 @@ public class TwoElementListItem extends RelativeLayout{
 		}
 	}
 	
+	public void setAddressText(final String addressText){
+		if(null == addressText){
+			addressTextView.setText("");
+		}else {
+			addressTextView.setText(addressText);
+		}
+	}
+	
 	/**
 	 * @return the leftTextView
 	 */
@@ -100,6 +111,13 @@ public class TwoElementListItem extends RelativeLayout{
 	 */
 	public TextView getRightTextView() {
 		return rightTextView;
+	}
+	
+	/**
+	 * @return the addressTextView
+	 */
+	public TextView getAddressTextView() {
+		return addressTextView;
 	}
 	/**
 	 * @param rightTextView the rightTextView to set

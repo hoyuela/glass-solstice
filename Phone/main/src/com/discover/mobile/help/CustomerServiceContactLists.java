@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.R;
@@ -41,7 +43,6 @@ public class CustomerServiceContactLists {
 		List<TwoElementListItem> phoneContactList = new ArrayList<TwoElementListItem>();
 		
 		phoneContactList.add(getTwoElementListItemWithText(R.string.inside_us_number, R.string.card_phone_us, true));
-		phoneContactList.get(0).getDividerLine().setVisibility(View.GONE);
 		phoneContactList.add(getTwoElementListItemWithText(R.string.outside_us_number, R.string.card_phone_non_us, true));
 		phoneContactList.add(getTwoElementListItemWithText(R.string.tdd_number, R.string.card_phone_tdd, true));
 		
@@ -62,7 +63,6 @@ public class CustomerServiceContactLists {
 		List<TwoElementListItem> mailingAddressList = new ArrayList<TwoElementListItem>();
 		
 		mailingAddressList.add(getTwoElementListItemWithText(R.string.payment_address, R.string.card_mailing_payment, false));
-		mailingAddressList.get(0).getDividerLine().setVisibility(View.GONE);
 		mailingAddressList.add(getTwoElementListItemWithText(R.string.customer_service_two_line, R.string.card_mailing_customer_service, false));
 		
 		return mailingAddressList;
@@ -83,7 +83,6 @@ public class CustomerServiceContactLists {
 		List<TwoElementListItem> mailingAddressList = new ArrayList<TwoElementListItem>();
 
 		mailingAddressList.add(getTwoElementListItemWithText(R.string.bank_general_mail_title, R.string.bank_general_mail, false));
-		mailingAddressList.get(0).getDividerLine().setVisibility(View.GONE);
 		mailingAddressList.add(getTwoElementListItemWithText(R.string.bank_new_accounts_mail_title, R.string.bank_new_accounts_mail, false));
 		mailingAddressList.add(getTwoElementListItemWithText(R.string.bank_personal_loans_mail_title, R.string.bank_personal_loans_mail, false));
 		
@@ -104,7 +103,6 @@ public class CustomerServiceContactLists {
 		
 		List<TwoElementListItem> phoneContactList = new ArrayList<TwoElementListItem>();
 		phoneContactList.add(getTwoElementListItemWithText(R.string.open_an_account, R.string.bank_phone_open_account, true));
-		phoneContactList.get(0).getDividerLine().setVisibility(View.GONE);
 		phoneContactList.add(getTwoElementListItemWithText(R.string.bank_personal_loans, R.string.bank_phone_personal_loans, true));
 		phoneContactList.add(getTwoElementListItemWithText(R.string.bank_tech_support, R.string.bank_phone_tech_support, true));
 		phoneContactList.add(getTwoElementListItemWithText(R.string.tdd_number, R.string.bank_phone_tdd, true));
@@ -117,25 +115,28 @@ public class CustomerServiceContactLists {
 	 * The method that is used to assemble lists of phone number or mailing address View elements to be inserted
 	 * into a linear layout in an Android GUI.
 	 * 
-	 * @param leftText - A String resource that will be used as the text of the left text label.
-	 * @param rightText - A String resource that will be used as the text of the right text label.
+	 * @param primaryText - A String resource that will be used as the text of the left text label.
+	 * @param secondaryText - A String resource that will be used as the text of the right text label.
 	 * @param isPhoneNumber - Set to true if the element will contain a phone number. This adjusts appearance and adds an OnClickListener to the number so that it will dial its number.
 	 * @return a newly created TwoElementListItem with the provided text values and apperance based on if it was a phone number or not.
 	 */
-	private static TwoElementListItem getTwoElementListItemWithText(final int leftText, final int rightText, final boolean isPhoneNumber) {
+	private static TwoElementListItem getTwoElementListItemWithText(final int primaryText, final int secondaryText, final boolean isPhoneNumber) {
 		TwoElementListItem newItem = new TwoElementListItem(context);
 		
-		newItem.setLeftText(res.getString(leftText));
-		newItem.setRightText(res.getString(rightText));
+		newItem.setLeftText(res.getString(primaryText));
 		
 		//Adjusts the appearance and click listener based on if this is a phone number or not.
 		if(isPhoneNumber) {
 			setToDialNumberOnClick(newItem.getRightTextView());
-			newItem.getRightTextView().setTextAppearance(context, R.style.blue_hyperlink_smallest);
+			newItem.setRightText(res.getString(secondaryText));
+			newItem.getAddressTextView().setVisibility(View.GONE);
+			newItem.getLeftTextView().setLayoutParams(
+					new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		}
-		//No click listener, and change the appearance.
+		//No click listener, use the address label and hide the number label.
 		else {
-			newItem.getRightTextView().setTextAppearance(context, R.style.smallest_copy);
+			newItem.setAddressText(res.getString(secondaryText));
+			newItem.getRightTextView().setVisibility(View.GONE);
 		}
 		
 		return newItem;
