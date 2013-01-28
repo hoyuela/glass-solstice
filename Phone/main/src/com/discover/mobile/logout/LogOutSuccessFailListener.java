@@ -47,13 +47,6 @@ public class LogOutSuccessFailListener implements SuccessListener<Object>, Error
 	@Override
 	public void success(final Object successObject) {
 		Navigator.navigateToLoginPage(activity, IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
-		
-//		final Intent intent = new Intent(activity, LoginActivity.class);
-//		final Bundle bundle = new Bundle();
-//		bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-//		intent.putExtras(bundle);
-//		activity.startActivity(intent);
-//		activity.finish();
 	}
 
 	@Override
