@@ -66,16 +66,21 @@ public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstS
 	}
 	
 	@Override
+	protected boolean isForgotFlow() {
+		return true;
+	}
+	
+	@Override
 	protected void setHeaderProgressText() {
 			HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
 			headerProgressBar.setTitle(R.string.enter_info, R.string.create_login, R.string.confirm);
 	}
 	
 	@Override
-	public void finish() {
-		super.finish();
-		Intent forgotCredentialsActivity = new Intent(this, ForgotCredentialsActivity.class);
-		startActivity(forgotCredentialsActivity);
+	public void goBack() {
+		finish();
+		final Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(forgotCredentials);
 	}
 
 	@Override

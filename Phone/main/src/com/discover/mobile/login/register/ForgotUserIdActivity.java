@@ -258,16 +258,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	public void onBackPressed() {
 		goBack();
 	}
-	
-	/**
-	 * Go back to the forgotten credentials activity instead of just finishing this activity.
-	 */
-	@Override
-	public void goBack() {
-		final Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
-		startActivity(forgotCredentials);
-		finish();
-	}
+
 	
 	/**
 	 * 
@@ -317,6 +308,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 						return true;
 						
 					default:
+						Log.e(TAG, "UNHANDLED ERROR: " + errorResponse.toString());
 						displayOnMainErrorLabel(getString(R.string.unkown_error_text));
 						return true;
 
@@ -528,9 +520,9 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	}
 	
 	@Override
-	public void finish() {
-		super.finish();
-		Intent forgotCredentialsActivity = new Intent(this, ForgotCredentialsActivity.class);
+	public void goBack() {
+		finish();
+		final Intent forgotCredentialsActivity = new Intent(this, ForgotCredentialsActivity.class);
 		startActivity(forgotCredentialsActivity);
 	}
 

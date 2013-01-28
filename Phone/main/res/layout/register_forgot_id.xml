@@ -110,12 +110,23 @@
             android:text="@string/cancel_text" />
 
         <RelativeLayout
+            android:id="@+id/footer"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_info_cancel_label" >
 
             <include layout="@layout/old_general_need_help_footer" />
         </RelativeLayout>
+        <TextView
+                android:id="@+id/provide_feedback_button"
+                style="@style/blue_hyperlink_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/footer"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/orange_button_margin_top"
+                android:layout_marginTop="@dimen/orange_button_margin_top"
+                android:text="@string/feedback_text" />
     </RelativeLayout>
 
 </ScrollView>

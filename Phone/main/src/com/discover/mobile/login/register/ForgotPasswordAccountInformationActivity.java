@@ -90,9 +90,9 @@ public class ForgotPasswordAccountInformationActivity extends ForgotOrRegisterFi
 	}
 	
 	@Override
-	public void finish() {
-		super.finish();
-		Intent forgotCredentialsActivity = new Intent(this, ForgotCredentialsActivity.class);
+	public void goBack() {
+		finish();
+		final Intent forgotCredentialsActivity = new Intent(this, ForgotCredentialsActivity.class);
 		startActivity(forgotCredentialsActivity);
 	}
 
@@ -140,6 +140,11 @@ public class ForgotPasswordAccountInformationActivity extends ForgotOrRegisterFi
 	@Override
 	public ErrorHandlerFactory getErrorHandlerFactory() {
 		return null;
+	}
+
+	@Override
+	protected boolean isForgotFlow() {
+		return true;
 	}
 
 }
