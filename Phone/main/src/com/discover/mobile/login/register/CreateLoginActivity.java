@@ -8,6 +8,7 @@ import static com.discover.mobile.common.auth.registration.RegistrationErrorCode
 import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,8 +27,10 @@ import com.discover.mobile.common.auth.registration.RegistrationConfirmationDeta
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.customui.ConfirmationEditText;
 import com.discover.mobile.common.customui.EmailEditText;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.navigation.HeaderProgressIndicator;
 
 /**
@@ -318,8 +321,18 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		final ProgressDialog progress = 
 				ProgressDialog.show(this, "Discover", "Loading...", true);
 		
+		//Lock orientation while request is being processed
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		
 		final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = 
 				new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
+			
+			@Override
+			public void complete(final Object result) {
+				//Unlock orientation after request has been processed
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+			}
+			
 			@Override
 			public void success(final RegistrationConfirmationDetails responseData) {
 				progress.dismiss();
@@ -341,6 +354,13 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 				
 			}
 
+			@Override
+			public void failure(final Throwable executionException, final NetworkServiceCall<RegistrationConfirmationDetails> networkServiceCall) {
+				//Catch all exception handler
+				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(executionException, networkServiceCall);
+			}
+			
 			@Override
 			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
