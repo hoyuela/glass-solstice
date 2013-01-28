@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.error.ErrorHandlerFactory;
+import com.discover.mobile.login.LoginActivity;
 /**
  * The activity which handles the logged out view of contact customer service.
  * This page is constructed from phone number and address contacts in two table like linear layouts. 
@@ -35,8 +37,14 @@ public class CustomerServiceContactsActivity extends NotLoggedInRoboActivity {
 	 */
 	@Override
 	public void goBack() {
-		finish();
+		onBackPressed();
 	}
+	
+	@Override
+	public void onBackPressed() {
+		final Intent loginActivity = new Intent(this, LoginActivity.class);
+		startActivity(loginActivity);
+		finish();	}
 
 	/**
 	 * Setup and load the view for presentation.
