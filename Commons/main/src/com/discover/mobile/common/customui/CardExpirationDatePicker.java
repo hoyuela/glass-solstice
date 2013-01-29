@@ -56,6 +56,7 @@ public class CardExpirationDatePicker extends ValidatedInputField{
 		setupDatePickerDialog();
 		setupOnClickListener();
 
+		this.setFocusable(false);
 		this.setCursorVisible(false);
 		this.setKeyListener(null);
 	}
