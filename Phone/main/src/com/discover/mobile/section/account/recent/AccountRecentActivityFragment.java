@@ -60,9 +60,6 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	/** Text view holding the feedback */
 	private TextView feedback;
 
-	/** Load more button */
-	private Button load;
-
 	/** Activity details from the server */
 	private GetTransactionDetails transactions;
 
@@ -112,15 +109,6 @@ public class AccountRecentActivityFragment extends BaseFragment {
 				getNewDateRange();
 			}
 
-		});
-
-		load = (Button) view.findViewById(R.id.load_more);
-		load.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				if (null != transactions && null != transactions.loadMoreLink)
-					loadMoreTransactions(transactions.loadMoreLink);
-			}
 		});
 
 		feedback = (TextView) view.findViewById(R.id.provide_feedback_button);
@@ -309,12 +297,6 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	 * Show the transactions retrieved from the server
 	 */
 	public void showTransactions() {
-		// if(null != transactions.loadMoreLink){
-		// load.setVisibility(View.VISIBLE);
-		// // FIXME Display's the loadMore button
-		// } else{
-		load.setVisibility(View.GONE);
-		// }
 
 		if (!isLoadingMore) {
 			clearBothTables();

@@ -71,15 +71,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/groups_of_elements_padding" />
 
-        <Button
-            android:id="@+id/load_more"
-            style="@style/call_to_action_theme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/orange_button_margin_top"
-            android:text="@string/recent_activity_load_more" 
-            android:visibility="gone"/>
-
         <TextView
             android:id="@+id/provide_feedback_button"
             style="@style/blue_hyperlink_small"
