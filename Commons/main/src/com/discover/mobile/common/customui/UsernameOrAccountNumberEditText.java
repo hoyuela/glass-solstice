@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.auth.InputValidator;
-import com.google.common.base.Strings;
 
 /**
  * This class is an edit text which will function as either a Username field or an AccountNumber field.
@@ -24,16 +23,18 @@ import com.google.common.base.Strings;
 public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	private boolean isUsernameField = true;
 	
-	private static final int DEFAULT_EMS = 20;
+	private final int DEFAULT_EMS = 20;
 	
-	private static final int VALID_ACCOUNT_NUMBER_LENGTH = 19;
-	private static final int MAX_USERNAME_LENGTH = 32;
+	private final int VALID_ACCOUNT_NUMBER_LENGTH = 19;
+	private final int MAX_USERNAME_LENGTH = 16;
+	private final int MIN_USERNAME_LENGTH = 6;
 	
 	private int lengthBefore = 0;
 	private int lengthAfter = 0;
 	
 	private int cursorStartPosition = 0;
 	private int cursorEndPosition = 0;
+	
 	private boolean needsToRestore = false;
 	private boolean isDeleting = false;
 
@@ -205,9 +206,9 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	 * @return true if the input is not empty or null.
 	 */
 	public boolean isUsernameValid() {
-		final String username = this.getText().toString();
+		final int usernameLength = this.length();
 		
-		return !Strings.isNullOrEmpty(username);
+		return InputValidator.isValueBoundedBy(usernameLength, MIN_USERNAME_LENGTH, MAX_USERNAME_LENGTH);
 	}
 	
 	/**

@@ -209,7 +209,7 @@ public class InputValidator {
 		return isValueBoundedBy(year, YEAR_MIN_VALUE, YEAR_MAX_VALUE);
 	}
 	
-	private static boolean isValueBoundedBy(final int value, final int min, final int max){
+	public static boolean isValueBoundedBy(final int value, final int min, final int max){
 		if(value >= min && value <= max)
 			return true;
 		else
