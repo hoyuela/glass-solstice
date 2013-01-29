@@ -5,11 +5,20 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
     
+   
+    <ImageView
+        android:id="@+id/splash_logo"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+        android:contentDescription="@string/image_description"
+        android:src="@drawable/discover_splash_logo"
+        android:layout_centerInParent="true" />
+       
     <ProgressBar
         android:id="@+id/splash_progress"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:paddingTop="@dimen/orange_button_margin_top"
+         android:paddingTop="@dimen/splash_progress_toppadding"
          style="@android:style/Widget.ProgressBar.Small.Inverse"
          android:layout_centerInParent="true"
      />
@@ -20,13 +29,11 @@
 	        android:layout_above="@+id/login_bottom_button_row"
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
-	        android:paddingLeft="@dimen/groups_of_elements_padding" 
 			 >
 			 
 	    <RelativeLayout
 	       	android:layout_width="fill_parent"
 	       	android:layout_height="wrap_content"
-	      	android:layout_marginRight="@dimen/groups_of_elements_padding"
 	       	android:focusable="true"
         	android:focusableInTouchMode="true" >
 	        
@@ -39,11 +46,10 @@
 	        
 	        <RelativeLayout
 	            android:id="@+id/login_table"
-	            android:layout_width="fill_parent"
+	            android:layout_width="match_parent"
 	            android:layout_below="@+id/padding_element_top"
 	            android:layout_height="wrap_content"
-	            android:background="@drawable/rounded_table_corners_shape" >
-	            
+	            style="@style/login_white_pane">	            
 	            
 	            <ImageView
 	                android:id="@+id/discoverLogo"
