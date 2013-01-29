@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,132 +28,146 @@ import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.section.account.AccountSearchTransactionFragment;
 import com.discover.mobile.section.account.summary.LatePaymentModalTop;
+import com.discover.mobile.views.ExtendingScrollView;
 
 /**
- * Recent account activity fragment.  Allows the user to see details related to their transactions based
- * on a certain date range.
+ * Recent account activity fragment. Allows the user to see details related to
+ * their transactions based on a certain date range.
  * 
  * @author jthornton
- *
+ * 
  */
 public class AccountRecentActivityFragment extends BaseFragment {
-	
-	/**Text View holding the date range*/
+
+	/** Text View holding the date range */
 	private TextView dateRange;
-	
-	/**TExt view holding the button to change to the search page*/
+
+	/** TExt view holding the button to change to the search page */
 	private TextView searchTrans;
-	
-	/**Current range showing transactions*/
+
+	/** Current range showing transactions */
 	private RecentActivityPeriodDetail currentRange;
-	
-	/**All the ranges available to be displayed*/
+
+	/** All the ranges available to be displayed */
 	private RecentActivityPeriodsDetail periods;
-	
-	/**Table holding the pending transactions*/
+
+	/** Table holding the pending transactions */
 	private TransactionTable pending;
-	
-	/**Table holding the posted transactions*/
+
+	/** Table holding the posted transactions */
 	private TransactionTable posted;
-	
-	/**Text view holding the feedback*/
+
+	/** Text view holding the feedback */
 	private TextView feedback;
-	
-	/**Load more button*/
+
+	/** Load more button */
 	private Button load;
-	
-	/**Activity details from the server*/
+
+	/** Activity details from the server */
 	private GetTransactionDetails transactions;
-	
-	/**Resources*/
+
+	/** Resources */
 	private Resources res;
-	
-	/**Boolean letting the application know it is loading more*/
+
+	/** Boolean letting the application know it is loading more */
 	private boolean isLoadingMore = false;
-	
-	/**Dialog diaplyed when server calls are made*/
+
+	/** Dialog diaplyed when server calls are made */
 	private AlertDialog dialog;
-	
+
+	/** ScrollView element in which the page is contained */
+	private ExtendingScrollView scrollView;
+
 	/**
-	 * TODO: Handle rotation
-	 * Need to save categories, current transactions on screen
+	 * TODO: Handle rotation Need to save categories, current transactions on
+	 * screen
 	 */
-	
+
 	/**
 	 * Create the view
-	 * @param inflater - used to inflate the layout
-	 * @param container - container holding the view
-	 * @param savedInstanceState - state of the fragment
+	 * 
+	 * @param inflater
+	 *            - used to inflate the layout
+	 * @param container
+	 *            - container holding the view
+	 * @param savedInstanceState
+	 *            - state of the fragment
 	 * @return the view
 	 */
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-			final Bundle savedInstanceState) {
-		
-		final View view = inflater.inflate(R.layout.account_recent_activity, null);
+	public View onCreateView(final LayoutInflater inflater,
+			final ViewGroup container, final Bundle savedInstanceState) {
+
+		final View view = inflater.inflate(R.layout.account_recent_activity,
+				null);
 		res = this.getActivity().getResources();
-		pending = (TransactionTable) view.findViewById(R.id.pending_transactions);
+		pending = (TransactionTable) view
+				.findViewById(R.id.pending_transactions);
 		posted = (TransactionTable) view.findViewById(R.id.posted_transactions);
-		
+
 		dateRange = (TextView) view.findViewById(R.id.view_transactions);
-		dateRange.setOnClickListener(new OnClickListener(){
+		dateRange.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
 				getNewDateRange();
 			}
-			
+
 		});
-		
+
 		load = (Button) view.findViewById(R.id.load_more);
-		load.setOnClickListener(new OnClickListener(){
+		load.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-			if(null != transactions && null != transactions.loadMoreLink)
-				loadMoreTransactions(transactions.loadMoreLink);			
-			}		
+				if (null != transactions && null != transactions.loadMoreLink)
+					loadMoreTransactions(transactions.loadMoreLink);
+			}
 		});
-		
+
 		feedback = (TextView) view.findViewById(R.id.provide_feedback_button);
-		feedback.setOnClickListener(new OnClickListener(){
+		feedback.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				showProvideFeedback();			
-			}		
+				showProvideFeedback();
+			}
 		});
-		
+
 		searchTrans = (TextView) view.findViewById(R.id.search_transactions);
-		searchTrans.setOnClickListener(new OnClickListener(){
+		searchTrans.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				showSearchScreen();			
-			}		
+				showSearchScreen();
+			}
 		});
+
+		scrollView = (ExtendingScrollView) view;
+		scrollView.attachFragment(this);
 
 		return view;
 	}
-	
+
 	/**
 	 * Resume the fragment
 	 */
 	@Override
-	public void onResume(){
+	public void onResume() {
 		super.onResume();
-		if(RecentActivityRotationHelper.getHelper().isHasData()){
+		if (RecentActivityRotationHelper.getHelper().isHasData()) {
 			resumeFragment();
 			dateRange.setText(currentRange.displayDate);
-		}else if(null != currentRange){
+		} else if (null != currentRange) {
 			dateRange.setText(currentRange.displayDate);
 			getTransactions();
-		} else{
+		} else {
 			getDateRanges();
-		}	
+		}
 	}
-	
+
 	/**
 	 * Resume the fragment from its previous state
 	 */
 	private void resumeFragment() {
-		RecentActivityRotationHelper helper = RecentActivityRotationHelper.getHelper();
+		RecentActivityRotationHelper helper = RecentActivityRotationHelper
+				.getHelper();
 		this.currentRange = helper.getCurrentRange();
 		this.pending.showTransactions(helper.getPending());
 		this.posted.showTransactions(helper.getPosted());
@@ -164,11 +179,14 @@ public class AccountRecentActivityFragment extends BaseFragment {
 
 	/**
 	 * Save the sate of the fragment
-	 * @param outState - bundle to save the state in
+	 * 
+	 * @param outState
+	 *            - bundle to save the state in
 	 */
 	@Override
-	public void onSaveInstanceState(final Bundle outState){
-		RecentActivityRotationHelper helper = RecentActivityRotationHelper.getHelper();
+	public void onSaveInstanceState(final Bundle outState) {
+		RecentActivityRotationHelper helper = RecentActivityRotationHelper
+				.getHelper();
 		helper.setCurrentRange(currentRange);
 		helper.setPending(pending.getTransactions());
 		helper.setPeriods(periods);
@@ -177,77 +195,90 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		helper.setHasData(true);
 		super.onSaveInstanceState(outState);
 	}
-	
+
 	/**
 	 * Get the date ranges to be displayed in the fragment
 	 */
-	private void getDateRanges(){
+	private void getDateRanges() {
 		showDialog();
-		final  AsyncCallback<RecentActivityPeriodsDetail> callback = 
-				GenericAsyncCallback.<RecentActivityPeriodsDetail>builder(this.getActivity())
-				.withSuccessListener(new GetActivityPeriodsSuccessListener(this))
+		final AsyncCallback<RecentActivityPeriodsDetail> callback = GenericAsyncCallback
+				.<RecentActivityPeriodsDetail> builder(this.getActivity())
+				.withSuccessListener(
+						new GetActivityPeriodsSuccessListener(this))
 				.withErrorResponseHandler(new RecentActivityErrorHandler(this))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
+				.withCompletionListener(
+						new LockScreenCompletionListener(this.getActivity()))
 				.build();
-		
+
 		new GetActivityPeriods(getActivity(), callback).submit();
-		
+
 	}
-	
+
 	/**
 	 * Get the callback for getting the transactions
+	 * 
 	 * @return the callback for getting the transactions
 	 */
-	private AsyncCallback<GetTransactionDetails> getTransactionCallback(){
-		return	GenericAsyncCallback.<GetTransactionDetails>builder(this.getActivity())
+	private AsyncCallback<GetTransactionDetails> getTransactionCallback() {
+		return GenericAsyncCallback
+				.<GetTransactionDetails> builder(this.getActivity())
 				.withSuccessListener(new GetTransactionsSuccessListener(this))
 				.withErrorResponseHandler(new RecentActivityErrorHandler(this))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
+				.withCompletionListener(
+						new LockScreenCompletionListener(this.getActivity()))
 				.build();
 	}
-	
+
 	/**
 	 * Get the transactions for the current time period
 	 */
-	public void getTransactions(){
-		if(null == dialog || !dialog.isShowing()){
+	public void getTransactions() {
+		if (null == dialog || !dialog.isShowing()) {
 			showDialog();
 		}
-		new GetTransactions(getActivity(), getTransactionCallback(), currentRange).submit();
+		new GetTransactions(getActivity(), getTransactionCallback(),
+				currentRange).submit();
 	}
-	
+
 	/**
 	 * Get more transactions from the link
-	 * @param link link to get more transactions from
+	 * 
+	 * @param link
+	 *            link to get more transactions from
 	 */
-	private void loadMoreTransactions(final String link){
+	private void loadMoreTransactions(final String link) {
 		isLoadingMore = true;
 		showDialog();
-		new GetTransactions(getActivity(), getTransactionCallback(), transactions.loadMoreLink).submit();
+		new GetTransactions(getActivity(), getTransactionCallback(),
+				transactions.loadMoreLink).submit();
 	}
-	
+
 	/**
 	 * Get a new date range for transactions
 	 */
-	private void getNewDateRange(){
-		if(null == periods){return;}
+	private void getNewDateRange() {
+		if (null == periods) {
+			return;
+		}
 		final ChooseDateRangeFragment fragment = new ChooseDateRangeFragment();
 		fragment.setReturnFragment(this);
 		fragment.setPeriods(periods);
 		super.makeFragmentVisible(fragment);
 	}
-	
+
 	/**
 	 * Show the error modal, used when the server call fails
 	 */
-	public void showErrorModal(){
+	public void showErrorModal() {
 		hideDialog();
 		final Context context = this.getActivity();
 		final LatePaymentModalTop top = new LatePaymentModalTop(context, null);
-		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(context, null);
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(context, top, bottom);
+		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(
+				context, null);
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(
+				context, top, bottom);
 		top.setErrorState();
 		bottom.setButtonText(R.string.account_summary_modal_button);
 		bottom.getButton().setOnClickListener(new OnClickListener() {
@@ -259,40 +290,41 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		});
 		super.showCustomAlertDialog(modal);
 	}
-	
+
 	/**
 	 * Pop the stack so that the user does not see a data less page
 	 */
-	protected void popStack(){
+	protected void popStack() {
 		this.getFragmentManager().popBackStack();
 	}
-	
+
 	/**
 	 * Show the search screen
 	 */
-	protected void showSearchScreen(){
+	protected void showSearchScreen() {
 		super.makeFragmentVisible(new AccountSearchTransactionFragment());
 	}
-	
+
 	/**
 	 * Show the transactions retrieved from the server
 	 */
-	public void showTransactions(){
-		if(null != transactions.loadMoreLink){
-			load.setVisibility(View.VISIBLE);
-		} else{
-			load.setVisibility(View.GONE);
-		}
-		
-		if(!isLoadingMore){
+	public void showTransactions() {
+		// if(null != transactions.loadMoreLink){
+		// load.setVisibility(View.VISIBLE);
+		// // FIXME Display's the loadMore button
+		// } else{
+		load.setVisibility(View.GONE);
+		// }
+
+		if (!isLoadingMore) {
 			clearBothTables();
 		}
-		
-		if(transactions.showPending){
+
+		if (transactions.showPending) {
 			showBothTables();
 			pending.setTransactions(transactions.pending);
-			pending.showTransactions(transactions.pending); 
-		} else{
+			pending.showTransactions(transactions.pending);
+		} else {
 			showOnlyOneTable();
 		}
 		posted.setTransactions(transactions.posted);
@@ -300,62 +332,69 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		isLoadingMore = false;
 		hideDialog();
 	}
-	
+
 	/**
 	 * Setup the view to only show one table
 	 */
-	private void showOnlyOneTable(){
+	private void showOnlyOneTable() {
 		pending.setVisibility(View.GONE);
-		posted.setNoTransactionsMessage(res.getString(R.string.recent_activity_no_activity));
+		posted.setNoTransactionsMessage(res
+				.getString(R.string.recent_activity_no_activity));
 		posted.setTitle(res.getString(R.string.recent_activity_transactions));
 		pending.setTransactions(transactions.pending);
 		pending.showTransactions(transactions.pending);
 	}
-	
+
 	/**
 	 * Setup the view to show both tables
 	 */
-	private void showBothTables(){
+	private void showBothTables() {
 		pending.setVisibility(View.VISIBLE);
-		posted.setTitle(res.getString(R.string.recent_activity_posted_transactions));
-		pending.setTitle(res.getString(R.string.recent_activity_pending_transactions));
-		pending.setNoTransactionsMessage(res.getString(R.string.recent_activity_no_new_pending));
-		posted.setNoTransactionsMessage(res.getString(R.string.recent_activity_no_new_posted));
+		posted.setTitle(res
+				.getString(R.string.recent_activity_posted_transactions));
+		pending.setTitle(res
+				.getString(R.string.recent_activity_pending_transactions));
+		pending.setNoTransactionsMessage(res
+				.getString(R.string.recent_activity_no_new_pending));
+		posted.setNoTransactionsMessage(res
+				.getString(R.string.recent_activity_no_new_posted));
 	}
-	
+
 	/**
 	 * Clear all layouts in both tables
 	 */
-	private void clearBothTables(){
+	private void clearBothTables() {
 		pending.clearList();
 		posted.clearList();
 	}
-	
+
 	/**
 	 * Show the progress dialog
 	 */
-	private void showDialog(){
-		if(null == dialog){
-			dialog = ProgressDialog.show(this.getActivity(),
-					getResources().getString(R.string.push_progress_get_title), 
-					getResources().getString(R.string.push_progress_registration_loading), 
-					true);
-		}else{
+	private void showDialog() {
+		if (null == dialog) {
+			dialog = ProgressDialog.show(
+					this.getActivity(),
+					getResources().getString(R.string.push_progress_get_title),
+					getResources().getString(
+							R.string.push_progress_registration_loading), true);
+		} else {
 			dialog.show();
 		}
 	}
-	
+
 	/**
 	 * Hide the progress dialog
 	 */
-	private void hideDialog(){
-		if(null != dialog){
+	private void hideDialog() {
+		if (null != dialog) {
 			dialog.dismiss();
 		}
 	}
-	
+
 	/**
-	 * Return the integer value of the string that needs to be displayed in the title
+	 * Return the integer value of the string that needs to be displayed in the
+	 * title
 	 */
 	@Override
 	public int getActionBarTitle() {
@@ -364,26 +403,44 @@ public class AccountRecentActivityFragment extends BaseFragment {
 
 	/**
 	 * Set the current date range to be displayed in the fragment
-	 * @param recentActivityPeriodDetail - the current date range to be displayed in the fragment
+	 * 
+	 * @param recentActivityPeriodDetail
+	 *            - the current date range to be displayed in the fragment
 	 */
-	public void setDateRange(final RecentActivityPeriodDetail recentActivityPeriodDetail) {
-		currentRange = recentActivityPeriodDetail;	
+	public void setDateRange(
+			final RecentActivityPeriodDetail recentActivityPeriodDetail) {
+		currentRange = recentActivityPeriodDetail;
 		dateRange.setText(currentRange.displayDate);
 	}
-	
+
 	/**
 	 * Set the periods that can be displayed in the fragment
-	 * @param periods - Set the periods that can be displayed in the fragment
+	 * 
+	 * @param periods
+	 *            - Set the periods that can be displayed in the fragment
 	 */
 	public void setPeriods(final RecentActivityPeriodsDetail periods) {
-		this.periods = periods;	
+		this.periods = periods;
 	}
 
 	/**
 	 * Set the transactions that can be displayed in the fragment
-	 * @param transactions - set the transactions that can be displayed in the fragment
+	 * 
+	 * @param transactions
+	 *            - set the transactions that can be displayed in the fragment
 	 */
 	public void setTransactions(GetTransactionDetails transactions) {
 		this.transactions = transactions;
+	}
+
+	/**
+	 * Loads more transactions when the user has scrolled to the bottom and
+	 * subsequently tried to scroll beyond that.
+	 */
+	@Override
+	public void scrollViewBottomReached() {
+		if (null != transactions && null != transactions.loadMoreLink) {
+			loadMoreTransactions(transactions.loadMoreLink);
+		}
 	}
 }
