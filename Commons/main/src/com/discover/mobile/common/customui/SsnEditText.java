@@ -43,7 +43,7 @@ public class SsnEditText extends ValidatedInputField{
 	public void setupInputRestrictions() {
 		filterArray[0] = new InputFilter.LengthFilter(GOOD_SSN_LENGTH);
 		this.setFilters(filterArray);
-		this.setInputType(InputType.TYPE_CLASS_PHONE);
+		this.setInputType(InputType.TYPE_CLASS_NUMBER);
 	}
 
 	/**

@@ -71,10 +71,7 @@
 	    please contact Customer Service at 
 	    <a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a>
 	</string>
-	<string name="internal_server_error_500">
-	    <h3>Discover.com Mobile Error</h3>We\'re sorry. Your request cannot be completed at this time. 
-	    We sincerely apologize for this inconvenience and are working to resolve this issue soon.
-	     For further assistance please call 
+	<string name="internal_server_error_500">Your request cannot be completed at this time. We sincerely apologize for this inconvenience and are working to resolve this issue soon. For further assistance please call 
 	     <a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a>
 	</string>
 	<string name="unknown_error">We\'re sorry. We can\'t complete your request at this time. Please contact us for more information.</string>

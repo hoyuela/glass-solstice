@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_keywords">Keywords</string>
+    <string name="subtitle_keywords">(optional):</string>
+    <string name="title_date">Date:</string>
+    <string name="subtitle_date">Up to 24 months of history are available.</string>
+    <string name="title_amount">Amount:</string>
+    <string name="title_category">Category:</string>
+    <string name="chooser_date_title">Enter Date</string>
+    <string name="chooser_date_subtitle">(e.g., MM/DD/YYYY)</string>
+    <string name="chooser_amount_title">Enter Amount</string>
+    <string name="chooser_amount_subtitle">(e.g., $12.50 or $1,360.12)</string>
+    <string name="chooser_from_title">From:</string>
+    <string name="chooser_to_title">To:</string>
+    <string name="toggle_all">All</string>
+    <string name="toggle_specific">Specific</string>
+    <string name="toggle_range">Range</string>
+    <string name="dollar_sign">$</string>
+    <string name="search">Search</string>
+</resources>

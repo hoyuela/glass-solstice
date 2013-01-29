@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <ToggleButton
+        android:id="@+id/toggle_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/selector_toggle_left"
+        android:checked="true"
+        android:textColor="@color/white"
+        android:textOff="@string/toggle_all"
+        android:textOn="@string/toggle_all"
+        android:textSize="14sp" />
+
+    <ToggleButton
+        android:id="@+id/toggle_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/selector_toggle_mid"
+        android:checked="false"
+        android:textColor="@color/field_copy"
+        android:textOff="@string/toggle_specific"
+        android:textOn="@string/toggle_specific"
+        android:textSize="14sp" />
+
+    <ToggleButton
+        android:id="@+id/toggle_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/selector_toggle_right"
+        android:checked="false"
+        android:textColor="@color/field_copy"
+        android:textOff="@string/toggle_range"
+        android:textOn="@string/toggle_range"
+        android:textSize="14sp" />
+
+</RadioGroup>

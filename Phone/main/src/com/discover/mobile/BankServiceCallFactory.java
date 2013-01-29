@@ -25,7 +25,6 @@ import com.discover.mobile.common.net.NetworkServiceCallQueue.EventType;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.bank.Address;
 import com.discover.mobile.common.net.json.bank.PhoneNumber;
-import com.discover.mobile.common.urlmanager.UrlManagerBank;
 import com.discover.mobile.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.login.LoginActivity;

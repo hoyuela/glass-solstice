@@ -16,9 +16,11 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.push.history.GetAlertHistory;
 import com.discover.mobile.common.push.history.NotificationDetail;
 import com.discover.mobile.common.push.history.NotificationListDetail;
+import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.push.manage.PushManageFragment;
 
 public class PushHistoryFragment extends BaseFragment{
@@ -150,6 +152,8 @@ public class PushHistoryFragment extends BaseFragment{
 									true)
 				.withSuccessListener(new PushHistorySuccessListener(this))
 				.withErrorResponseHandler(new PushHistoryErrorHandler())
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
 				.build();
 		
 		new GetAlertHistory(getActivity(), callback, begin, amount).submit();

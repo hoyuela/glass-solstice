@@ -10,6 +10,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,8 +33,10 @@ import com.discover.mobile.common.auth.strong.StrongAuthAnswerDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.customui.NonEmptyEditText;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.google.common.base.Strings;
@@ -369,12 +372,28 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		serverErrorLabel.setVisibility(View.GONE);
 		questionAnswerField.updateAppearanceForInput();
 		
+		//Lock Orientation while processing request
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		
 		final AsyncCallbackAdapter<StrongAuthAnswerDetails> callback = new AsyncCallbackAdapter<StrongAuthAnswerDetails>() {
 			@Override
 			public void success(final StrongAuthAnswerDetails value) {
 				progress.dismiss();
 				finishWithResultOK();
 			}
+			
+			@Override
+			public void complete(final Object result) {
+				//Unlock orientation to be able to support orientation
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+			}
+			
+			@Override
+			public void failure(final Throwable executionException, final NetworkServiceCall<StrongAuthAnswerDetails> networkServiceCall) {
+				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(executionException, networkServiceCall);
+			}
+			
 			/**
 			 * Catch all modal popup.
 			 */
@@ -468,6 +487,8 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		final Activity currentActivity = this;
 		
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		
 		final AsyncCallbackAdapter<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
 			public void success(final StrongAuthDetails value) {
@@ -477,6 +498,18 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 				strongAuthQuestionId = value.questionId;
 				strongAuthQuestion = value.questionText;
 				questionLabel.setText(strongAuthQuestion);
+			}
+			
+			@Override
+			public void complete(final Object result) {
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+			}
+			
+			
+			@Override
+			public void failure(final Throwable executionException, final NetworkServiceCall<StrongAuthDetails> networkServiceCall) {
+				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(executionException, networkServiceCall);
 			}
 
 			@Override
