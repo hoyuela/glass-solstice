@@ -835,6 +835,8 @@ public class LoginActivity extends BaseActivity  {
 									true)
 				.withSuccessListener(new PushRegistrationStatusSuccessListener())
 				.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(this))
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.withCompletionListener(new LockScreenCompletionListener(this))
 				.launchIntentOnSuccess(NavigationRootActivity.class)
 				.finishCurrentActivityOnSuccess(this)
 				.clearTextViewsOnComplete(idField, passField)
@@ -1014,13 +1016,12 @@ public class LoginActivity extends BaseActivity  {
 	 * @param result True if Pre-Authentication has been completed, false otherwise.
 	 */
 	public void preAuthComplete(boolean result) {
-		
+		//Set flag to detect if pre-authentication needs to be performed 
+		//the next time login activity is launched
 		preAuthHasRun = result;
+	
+		showSplashScreen(false);
 		
-		//only hide splash screen if pre-auth is completed successfully
-		if( result  ) {
-			showSplashScreen(false);
-		}
 	}
 	
 	/**

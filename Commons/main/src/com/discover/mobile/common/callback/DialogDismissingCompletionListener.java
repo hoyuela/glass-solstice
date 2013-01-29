@@ -26,8 +26,15 @@ public class DialogDismissingCompletionListener implements CompletionListener {
 	@Override
 	public void complete(final Object result) {
 		final Dialog dialog = safeGetReferenced(dialogRef);
-		if(dialog != null)
-			dialog.dismiss();
+
+		//Dismiss dialog if it is showing
+		if (dialog != null && dialog.isShowing()) {
+			try {	
+				dialog.dismiss();
+			} catch (Exception ex) {
+				//This is here to handle the case where an orientation change causes a crash
+			}
+		}
 	}
 	
 }

@@ -23,6 +23,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +48,7 @@ import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.customui.NonEmptyEditText;
 import com.discover.mobile.common.customui.UsernameOrAccountNumberEditText;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -54,7 +56,10 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
+import com.discover.mobile.error.BaseExceptionFailureHandler;
+import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.login.LoginActivity;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
@@ -114,6 +119,11 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_forgot_id);
+		
+		HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
+    	progress.initChangePasswordHeader(0);
+    	progress.hideStepTwo();
+		
 		loadAllViews();
 		setupInputFields();
 
@@ -200,7 +210,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		cardNumField = (UsernameOrAccountNumberEditText)findViewById(R.id.forgot_id_id_field);
 		passField = (NonEmptyEditText)findViewById(R.id.forgot_id_password_field);
 		
-		mainScrollView = (ScrollView)findViewById(R.id.main_scroll_view);
+		mainScrollView = (ScrollView)findViewById(R.id.main_scroll);
 	}
 	
 	/**
@@ -282,6 +292,9 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	private void doForgotUserIdCall() {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
+		//Lock orientation while request is being processed
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		
 		final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
 			@Override
 			public void success(final RegistrationConfirmationDetails value) {
@@ -291,16 +304,25 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 			}
 			
 			@Override
+			public void complete(final Object result) {
+				//Unlock orientation after request has been proceesed
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+			}
+			
+			@Override
 			public void failure(final Throwable error, final NetworkServiceCall<RegistrationConfirmationDetails> callback) {
 				progress.dismiss();
 				Log.e(TAG, "Error: " + error.getMessage());
 				showOkAlertDialog("Error", error.getMessage());
+				
+				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(error, callback);
 			}
 
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
 				progress.dismiss();
-				mainScrollView.smoothScrollTo(0, 0);
+				resetScrollPosition();
 				
 				switch (errorResponse.getHttpStatusCode()) {
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
@@ -319,9 +341,8 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 
 			@Override
 			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
-				mainScrollView.smoothScrollTo(0, 0);
-
 				progress.dismiss();
+				resetScrollPosition();
 
 				idErrLabel.setText(messageErrorResponse.getMessage());
 				
@@ -341,7 +362,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 						return true;
 						
 					case SAMS_CLUB_MEMBER: 
-						displayModal(R.string.we_are_sorry, R.string.account_info_sams_club_card_error_text, true);
+						displayModal(R.string.we_are_sorry, R.string.account_info_sams_club_card_error_text, false);
 						return true;
 						
 					case REG_AUTHENTICATION_PROBLEM: 
@@ -361,7 +382,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 						return true;
 				
 					case PLANNED_OUTAGE:
-						displayModal(R.string.could_not_complete_request, R.string.planned_outage_one, true);
+						displayModal(R.string.could_not_complete_request, R.string.planned_outage_one, false);
 						return true;
 						
 					case FAILED_SECURITY:	
@@ -381,6 +402,10 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	private void displayOnMainErrorLabel(final String text){
 		mainErrLabel.setText(text);
 		CommonMethods.setViewVisible(mainErrLabel);
+	}
+	
+	private void resetScrollPosition(){
+		mainScrollView.smoothScrollTo(0, 0);
 	}
 	
 	private void showOkAlertDialog(final String title, final String message) {
@@ -408,6 +433,9 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback
 				.<AccountDetails> builder(this)
 				.showProgressDialog("Discover", "Loading...", true)
+				.withErrorResponseHandler(new CardBaseErrorResponseHandler(this))
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.withCompletionListener(new LockScreenCompletionListener(this))
 				.withSuccessListener(new SuccessListener<AccountDetails>() {
 
 					@Override
@@ -450,6 +478,8 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 										true)
 					.withSuccessListener(new PushConfirmationSuccessListener())
 					.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(new LoginActivity()))
+					.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+					.withCompletionListener(new LockScreenCompletionListener(this))
 					.finishCurrentActivityOnSuccess(this)
 					.build();
 		

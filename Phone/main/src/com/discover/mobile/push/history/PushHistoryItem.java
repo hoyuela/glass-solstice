@@ -17,9 +17,11 @@ import android.widget.TextView;
 import com.discover.mobile.R;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.push.history.NotificationDetail;
 import com.discover.mobile.common.push.history.PostNotificationRead;
 import com.discover.mobile.common.push.history.PostReadDetail;
+import com.discover.mobile.error.BaseExceptionFailureHandler;
 
 /**
  * Class used to hold information about one notification object
@@ -114,6 +116,8 @@ public class PushHistoryItem extends RelativeLayout{
 									true)
 				.withSuccessListener(new ReadNotificationSucessListener(this))
 				.withErrorResponseHandler(new ReadNotificationErrorHandler())
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.withCompletionListener(new LockScreenCompletionListener(activity))
 				.build();
 		
 		new PostNotificationRead(activity, callback, detail).submit();

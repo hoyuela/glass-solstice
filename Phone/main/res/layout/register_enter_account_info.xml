@@ -133,7 +133,7 @@
                 android:onClick="goBack"
                 android:text="@string/cancel_text" />
 
-            <com.discover.mobile.common.customui.CardExpirationDatePicker
+            <com.discover.mobile.common.customui.CardExpirationDateEditText
                 android:id="@+id/account_info_card_exp_date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                 android:layout_below="@+id/account_info_card_exp_date_picker"
                 android:text="@string/invalid_input" />
 
-            <com.discover.mobile.common.customui.DobDatePicker
+            <com.discover.mobile.common.customui.DatePickerEditText
                 android:id="@+id/account_info_birth_date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
