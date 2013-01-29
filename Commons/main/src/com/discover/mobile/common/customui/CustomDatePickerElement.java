@@ -51,11 +51,40 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 		currentContext = context;
 		setupDatePickerDialog();
 		setupOnTouchListener();
-
+		setupOnClickListener();
+		
 		this.setCursorVisible(false);
 		this.setKeyListener(null);
 	}
 	
+	/**
+	 * This allows support for clicking the elemnt rather than touching it.
+	 * So that if the field is focused and a physical button is pressed to 'click'
+	 * the field, the dialog will show up.
+	 */
+	protected void setupOnClickListener() {
+		this.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				attachedDatePickerDialog.show();
+			}
+		});
+	}
+	
+	/**
+	 * When the element is tapped, launch the date picker dialog.
+	 */
+	private void setupOnTouchListener() {
+		
+		this.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction() == MotionEvent.ACTION_UP)
+					attachedDatePickerDialog.show();
+				return false;
+			}
+		});
+	}
 	/**
 	 * If the date picker gets focus and the loses it, validate the field.
 	 * If the date is invalid, set the error state.
@@ -78,20 +107,6 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 		});
 	}
 	
-	/**
-	 * When the element is tapped, launch the date picker dialog.
-	 */
-	private void setupOnTouchListener() {
-		
-		this.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction() == MotionEvent.ACTION_UP)
-					attachedDatePickerDialog.show();
-				return false;
-			}
-		});
-	}
 
 	protected void setupDatePickerDialog() {
 		final Calendar currentDate = Calendar.getInstance();
