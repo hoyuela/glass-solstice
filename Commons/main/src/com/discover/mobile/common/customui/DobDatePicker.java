@@ -58,6 +58,7 @@ public class DobDatePicker extends ValidatedInputField{
 		setupDatePickerDialog();
 		setupOnClickListener();
 
+		this.setFocusable(false);
 		this.setCursorVisible(false);
 		this.setKeyListener(null);
 	}
