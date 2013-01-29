@@ -45,7 +45,7 @@
 	<!--  Account Summary Strings -->
 	<string name="account_summary_make_a_payment">Make a Payment</string>
 	<string name="account_summary_current_balance">Current Balance</string>
-	<string name="account_summary_last_statement">Last Statement Balanace</string>
+	<string name="account_summary_last_statement">Last Statement Balance</string>
 	<string name="account_summary_minimum_payment">Minimum Payment (Due: %s)</string>
 	<string name="account_summary_last_payment">Last Payment (%s)</string>
 	<string name="account_summary_credit_available">Credit Available</string>
