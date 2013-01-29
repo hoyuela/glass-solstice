@@ -22,6 +22,7 @@ import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.push.manage.GetNotificationPreferences;
 import com.discover.mobile.common.push.manage.PostNotificationPreferences;
 import com.discover.mobile.common.push.manage.PostPrefDetail;
@@ -29,6 +30,7 @@ import com.discover.mobile.common.push.manage.PostPreferencesDetail;
 import com.discover.mobile.common.push.manage.PreferencesDetail;
 import com.discover.mobile.common.push.manage.PushManageCategoryParamDetail;
 import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
+import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.utils.CommonUtils;
 import com.xtify.sdk.api.XtifySDK;
@@ -234,6 +236,8 @@ public class PushManageFragment extends BaseFragment{
 									true)
 				.withSuccessListener(new GetPushPrefsSuccessListener(this))
 				.withErrorResponseHandler(new GetPushPrefsErrorResponseHandler())
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
 				.build();
 		
 		new GetNotificationPreferences(this.context, callback).submit();
@@ -502,6 +506,8 @@ public class PushManageFragment extends BaseFragment{
 									true)
 				.withSuccessListener(new PostPrefsSuccessListener(this))
 				.withErrorResponseHandler(new PushPrefsErrorHandler((NavigationRootActivity)this.getActivity()))
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
 				.build();
 		
 		new PostNotificationPreferences(this.context, callback, getPreferences()).submit();

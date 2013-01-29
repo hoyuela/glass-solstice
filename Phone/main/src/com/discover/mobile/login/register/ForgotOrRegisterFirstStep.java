@@ -19,6 +19,7 @@ import java.util.Calendar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -48,6 +49,7 @@ import com.discover.mobile.common.customui.UsernameOrAccountNumberEditText;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.navigation.HeaderProgressIndicator;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
@@ -427,13 +429,29 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		
 		progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 		
+		//Lock orientation while request is being processed
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
 			@Override
 			public void success(final Object value) {
 				checkForStrongAuth();
 
 			}
+			
+			@Override
+			public void complete(final Object result) {
+				//Unlock orientation after request has been processed
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+			}
 
+			@Override
+			public void failure(final Throwable executionException, final NetworkServiceCall<Object> networkServiceCall) {
+				//Catch all exception handler
+				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(executionException, networkServiceCall);
+			}
+			
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
 				progress.dismiss();
@@ -556,11 +574,24 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	}
 	
 	protected void checkForStrongAuth() {
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		
 		final AsyncCallbackAdapter<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
 			public void success(final StrongAuthDetails value) {
 				progress.dismiss();
 				navToNextScreenWithDetails(accountInformationDetails);
+			}
+			
+			@Override
+			public void complete(final Object result) {
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+			}
+			
+			@Override
+			public void failure(final Throwable executionException, final NetworkServiceCall<StrongAuthDetails> networkServiceCall) {
+				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(executionException, networkServiceCall);
 			}
 
 			@Override
@@ -635,6 +666,8 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	private void getStrongAuthQuestion() {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		
 		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
 			public void success(final StrongAuthDetails value) {
@@ -644,6 +677,17 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 				strongAuthQuestionId = value.questionId;
 				
 				navToStrongAuth();
+			}
+			
+			@Override
+			public void complete(final Object result) {
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+			}
+			
+			@Override
+			public void failure(final Throwable executionException, final NetworkServiceCall<StrongAuthDetails> networkServiceCall) {
+				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(executionException, networkServiceCall);
 			}
 
 			@Override
