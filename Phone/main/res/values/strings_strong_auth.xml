@@ -22,11 +22,11 @@
 	    No. This is a public or shared device.
 	</string>
 	<string name="account_security_whats_this_detail_text">
-	    Choose "Yes" if this is a private device that you will frequently 
+	    Choose Yes if this is a private device that you will frequently 
 	    use to access your account. By doing so, you\'ll still benefit from 
 	    heightened account security, but will receive fewer security question 
-	    prompts when logging in. Choose "No" if this is a public device or you 
-	    share it with others who are not authorized Cardmembers on your account.
+	    prompts when logging in.\n\nChoose No if this is a public device or you 
+	    share it with others who are not authorized Cardmembers on your Account.
 	</string>
 	<string name="account_security_locked_out">
 	    For security purposes, your online account has been locked.\n

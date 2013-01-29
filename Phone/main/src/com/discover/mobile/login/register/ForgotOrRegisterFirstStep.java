@@ -41,9 +41,9 @@ import com.discover.mobile.common.auth.strong.StrongAuthDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthErrorResponse;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.customui.CardExpirationDatePicker;
+import com.discover.mobile.common.customui.CardExpirationDateEditText;
 import com.discover.mobile.common.customui.CustomDatePickerDialog;
-import com.discover.mobile.common.customui.DobDatePicker;
+import com.discover.mobile.common.customui.DatePickerEditText;
 import com.discover.mobile.common.customui.SsnEditText;
 import com.discover.mobile.common.customui.UsernameOrAccountNumberEditText;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -129,8 +129,8 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	private ScrollView mainScrollView;
 	
 //DATE PICKER ELEMENTS
-	protected CardExpirationDatePicker cardExpDatePicker;
-	protected DobDatePicker birthDatePicker;
+	protected CardExpirationDateEditText cardExpDatePicker;
+	protected DatePickerEditText birthDatePicker;
 	
 //DATE PICKER DIALOGS
 	protected CustomDatePickerDialog dobPickerDialog;
@@ -190,8 +190,8 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		dobErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
 		expirationDateErrorLabel = (TextView)findViewById(R.id.account_info_expiration_date_error_label);
 		mainScrollView = (ScrollView)findViewById(R.id.account_info_scroll_view);
-		birthDatePicker =(DobDatePicker)findViewById(R.id.account_info_birth_date_picker);
-		cardExpDatePicker = (CardExpirationDatePicker)findViewById(R.id.account_info_card_exp_date_picker);
+		birthDatePicker =(DatePickerEditText)findViewById(R.id.account_info_birth_date_picker);
+		cardExpDatePicker = (CardExpirationDateEditText)findViewById(R.id.account_info_card_exp_date_picker);
 		helpNumber = (TextView)findViewById(R.id.help_number_label);
 		continueButton = (Button)findViewById(R.id.account_info_continue_button);
 	}
@@ -212,7 +212,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	public void onSaveInstanceState(final Bundle outState){
 		outState.putString(MAIN_FIELD_KEY, accountIdentifierField.getText().toString());
 		
-		saveCardExpirationDatePicker(outState);
+		saveCardExpirationDateEditText(outState);
 		saveBirthDatePicker(outState);
 		
 		outState.putString(SSN_KEY, ssnField.getText().toString());
@@ -254,9 +254,9 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 */
 	private void saveBirthDatePicker(final Bundle outState) {
 		if(birthDatePicker.isValid()){
-			outState.putInt(DOB_DAY_KEY, birthDatePicker.getDobDay());
-			outState.putInt(DOB_MONTH_KEY, birthDatePicker.getDobMonth());
-			outState.putInt(DOB_YEAR_KEY, birthDatePicker.getDobYear());
+			outState.putInt(DOB_DAY_KEY, birthDatePicker.getDay());
+			outState.putInt(DOB_MONTH_KEY, birthDatePicker.getMonth());
+			outState.putInt(DOB_YEAR_KEY, birthDatePicker.getYear());
 		}
 	}
 	
@@ -266,10 +266,10 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 * 
 	 * @param outState the Bundle to save state to.
 	 */
-	private void saveCardExpirationDatePicker(final Bundle outState) {
+	private void saveCardExpirationDateEditText(final Bundle outState) {
 		if(cardExpDatePicker.isValid()){
-			outState.putInt(EXP_MONTH_KEY, cardExpDatePicker.getExpirationMonth());
-			outState.putInt(EXP_YEAR_KEY, cardExpDatePicker.getExpirationYear());
+			outState.putInt(EXP_MONTH_KEY, cardExpDatePicker.getMonth());
+			outState.putInt(EXP_YEAR_KEY, cardExpDatePicker.getYear());
 		}
 	}
 	
@@ -294,7 +294,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 				ssnField.updateAppearanceForInput();
 			
 			restoreCardExpDatePicker(savedInstanceState);
-			restoreDobDatePicker(savedInstanceState);
+			restoreDatePickerEditText(savedInstanceState);
 			restoreMainErrorLabel(savedInstanceState);
 			
 			modalIsPresent = savedInstanceState.getBoolean(MODAL_IS_SHOWING_KEY);
@@ -322,10 +322,10 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 * 
 	 * @param savedInstanceState a Bundle that contains save state information about this date picker.
 	 */
-	private void restoreDobDatePicker(final Bundle savedInstanceState) {
-		birthDatePicker.setDobDay(savedInstanceState.getInt(DOB_DAY_KEY));
-		birthDatePicker.setDobMonth(savedInstanceState.getInt(DOB_MONTH_KEY));
-		birthDatePicker.setDobYear(savedInstanceState.getInt(DOB_YEAR_KEY));
+	private void restoreDatePickerEditText(final Bundle savedInstanceState) {
+		birthDatePicker.setDay(savedInstanceState.getInt(DOB_DAY_KEY));
+		birthDatePicker.setMonth(savedInstanceState.getInt(DOB_MONTH_KEY));
+		birthDatePicker.setYear(savedInstanceState.getInt(DOB_YEAR_KEY));
 		dobErrorLabel.setVisibility(savedInstanceState.getInt(DOB_ERROR_KEY));
 
 		if(birthDatePicker.isValid()){
@@ -345,8 +345,8 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 * @param savedInstanceState a Bundle that contains save state information about this date picker.
 	 */
 	private void restoreCardExpDatePicker(final Bundle savedInstanceState) {
-		cardExpDatePicker.setExpirationMonth(savedInstanceState.getInt(EXP_MONTH_KEY));
-		cardExpDatePicker.setExpirationYear(savedInstanceState.getInt(EXP_YEAR_KEY));
+		cardExpDatePicker.setMonth(savedInstanceState.getInt(EXP_MONTH_KEY));
+		cardExpDatePicker.setYear(savedInstanceState.getInt(EXP_YEAR_KEY));
 		expirationDateErrorLabel.setVisibility(savedInstanceState.getInt(EXP_ERROR_KEY));
 		
 		if(cardExpDatePicker.isValid()) {
@@ -414,11 +414,11 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		accountInformationDetails = new AccountInformationDetails();
 		addCustomFieldToDetails(accountInformationDetails, accountNumString);
 		accountInformationDetails.socialSecurityNumber = memberSsnNumString;
-		accountInformationDetails.dateOfBirthDay = String.valueOf(birthDatePicker.getDobDay());
-		accountInformationDetails.dateOfBirthMonth = String.valueOf(birthDatePicker.getDobMonth() + 1);
-		accountInformationDetails.dateOfBirthYear = String.valueOf(birthDatePicker.getDobYear());
-		accountInformationDetails.expirationMonth = String.valueOf(cardExpDatePicker.getExpirationMonth() + 1);
-		accountInformationDetails.expirationYear = String.valueOf(cardExpDatePicker.getExpirationYear());
+		accountInformationDetails.dateOfBirthDay = String.valueOf(birthDatePicker.getDay());
+		accountInformationDetails.dateOfBirthMonth = String.valueOf(birthDatePicker.getMonth() + 1);
+		accountInformationDetails.dateOfBirthYear = String.valueOf(birthDatePicker.getYear());
+		accountInformationDetails.expirationMonth = String.valueOf(cardExpDatePicker.getMonth() + 1);
+		accountInformationDetails.expirationYear = String.valueOf(cardExpDatePicker.getYear());
 	}
 	
 	/**

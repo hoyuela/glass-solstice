@@ -210,7 +210,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		cardNumField = (UsernameOrAccountNumberEditText)findViewById(R.id.forgot_id_id_field);
 		passField = (NonEmptyEditText)findViewById(R.id.forgot_id_password_field);
 		
-		mainScrollView = (ScrollView)findViewById(R.id.main_scroll_view);
+		mainScrollView = (ScrollView)findViewById(R.id.main_scroll);
 	}
 	
 	/**
@@ -322,7 +322,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 			@Override
 			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
 				progress.dismiss();
-				mainScrollView.smoothScrollTo(0, 0);
+				resetScrollPosition();
 				
 				switch (errorResponse.getHttpStatusCode()) {
 					case HttpURLConnection.HTTP_UNAUTHORIZED:
@@ -341,9 +341,8 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 
 			@Override
 			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
-				mainScrollView.smoothScrollTo(0, 0);
-
 				progress.dismiss();
+				resetScrollPosition();
 
 				idErrLabel.setText(messageErrorResponse.getMessage());
 				
@@ -363,7 +362,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 						return true;
 						
 					case SAMS_CLUB_MEMBER: 
-						displayModal(R.string.we_are_sorry, R.string.account_info_sams_club_card_error_text, true);
+						displayModal(R.string.we_are_sorry, R.string.account_info_sams_club_card_error_text, false);
 						return true;
 						
 					case REG_AUTHENTICATION_PROBLEM: 
@@ -383,7 +382,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 						return true;
 				
 					case PLANNED_OUTAGE:
-						displayModal(R.string.could_not_complete_request, R.string.planned_outage_one, true);
+						displayModal(R.string.could_not_complete_request, R.string.planned_outage_one, false);
 						return true;
 						
 					case FAILED_SECURITY:	
@@ -403,6 +402,10 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	private void displayOnMainErrorLabel(final String text){
 		mainErrLabel.setText(text);
 		CommonMethods.setViewVisible(mainErrLabel);
+	}
+	
+	private void resetScrollPosition(){
+		mainScrollView.smoothScrollTo(0, 0);
 	}
 	
 	private void showOkAlertDialog(final String title, final String message) {
