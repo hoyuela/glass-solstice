@@ -3,6 +3,7 @@ package com.discover.mobile;
 import roboguice.RoboGuice;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -104,7 +105,7 @@ public abstract class BaseFragment extends SherlockFragment {
 				.getActivity();
 		activity.showActionBarLogo();
 	}
-	
+
 	/**
 	 * Hides the Logo on the ActionBar and instead shows the TextView.
 	 */
@@ -122,14 +123,22 @@ public abstract class BaseFragment extends SherlockFragment {
 	 */
 	public abstract int getActionBarTitle();
 
-    
-   /**
-    * Used to show the provide feedback fragment
-    * 
-    * NOTE: This has not been implemented yet, because the provide feedback 
-    * fragment has not been created
-    */
-    public void showProvideFeedback(){
-    	//TODO: Implement this
-    }
+	/**
+	 * Used to show the provide feedback fragment
+	 * 
+	 * NOTE: This has not been implemented yet, because the provide feedback
+	 * fragment has not been created
+	 */
+	public void showProvideFeedback() {
+		// TODO: Implement this
+	}
+
+	/**
+	 * Used by a fragment when it's additionally using the
+	 * {@code ExtendingScrollView}. Implement when you need to perform an action
+	 * upon reaching the bottom of this scroll view.
+	 */
+	public void scrollViewBottomReached() {
+		// DO NOTHING, fragments *must* override this.
+	}
 }
