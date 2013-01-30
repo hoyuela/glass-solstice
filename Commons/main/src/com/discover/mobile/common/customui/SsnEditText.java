@@ -14,9 +14,9 @@ import android.util.AttributeSet;
 public class SsnEditText extends ValidatedInputField{
 
 	private int ssn;
-	private final static int DEFAULT_EMS = 4;
+	private final int DEFAULT_EMS = 4;
 	
-	private final static int GOOD_SSN_LENGTH = 4;
+	private final int GOOD_SSN_LENGTH = 4;
 	
 	public SsnEditText(Context context) {
 		super(context);
@@ -31,7 +31,7 @@ public class SsnEditText extends ValidatedInputField{
 	}
 	
 	@Override
-	protected void setupDefaultAppearance() {
+	public void setupDefaultAppearance() {
 		super.setupDefaultAppearance();
 		this.setEms(DEFAULT_EMS);
 	}

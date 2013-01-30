@@ -224,7 +224,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	 * a date picker. Same as default but with hint text and the down arrow in the right drawable.
 	 */
 	@Override
-	protected void setupDefaultAppearance(){
+	public void setupDefaultAppearance(){
 		super.setupDefaultAppearance();
 		this.setHint(getPlaceholderText());
 		this.setEms(DATE_PICKER_EMS_LENGTH);
