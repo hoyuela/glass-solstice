@@ -76,9 +76,9 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	protected boolean handleJsonErrorCode(final BankErrorResponse msgErrResponse) {	
 		boolean handled = false;
 	
-		String errCode = msgErrResponse.getErrorCode();
-		String strongQuestion = msgErrResponse.getDataValue("challengeQuestion");
-		String strongQuestionId = msgErrResponse.getDataValue("challengeQuestionId");
+		final String errCode = msgErrResponse.getErrorCode();
+		final String strongQuestion = msgErrResponse.getDataValue("challengeQuestion");
+		final String strongQuestionId = msgErrResponse.getDataValue("challengeQuestionId");
 		
 		
 		if( !Strings.isNullOrEmpty(msgErrResponse.getErrorCode()) ) {
@@ -103,6 +103,8 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				mErrorHandlerFactory.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_MAINTENANCE_UNPLANNED )) {
 				mErrorHandlerFactory.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
+			} else {
+				mErrorHandlerFactory.handleGenericError(msgErrResponse.getHttpStatusCode());
 			}
 		} else {
 			mErrorHandlerFactory.handleGenericError(msgErrResponse.getHttpStatusCode());
@@ -122,12 +124,12 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	 * @param messageErrorResponse
 	 * @return
 	 */
-	protected boolean handleHTTPErrorCode(final int httpErrorCode, HttpURLConnection conn) {
+	protected boolean handleHTTPErrorCode(final int httpErrorCode, final HttpURLConnection conn) {
 
 		
 		switch (httpErrorCode) {
 		case HttpURLConnection.HTTP_UNAUTHORIZED:
-			String wwwAuthenticateValue = conn.getHeaderField(HttpHeaders.Authentication);
+			final String wwwAuthenticateValue = conn.getHeaderField(HttpHeaders.Authentication);
 			
 			if( !Strings.isNullOrEmpty(wwwAuthenticateValue) ) {
 				//Check if token expired
@@ -148,9 +150,6 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			} else {
 				mErrorHandlerFactory.handleGenericError(httpErrorCode);
 			}
-			return true;
-		case HttpURLConnection.HTTP_INTERNAL_ERROR:
-			mErrorHandlerFactory.handleHttpInternalServerErrorModal();
 			return true;
 		case HttpURLConnection.HTTP_UNAVAILABLE:
 			mErrorHandlerFactory.handleHttpServiceUnavailableModal(null);
