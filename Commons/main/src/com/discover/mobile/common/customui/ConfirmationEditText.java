@@ -13,7 +13,6 @@ import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.R;
 
 public class ConfirmationEditText extends ValidatedInputField {
-	private static int EMS_DEFAULT = 16;
 	private boolean isUserId = false;
 	private EditText editTextToMatch;
 	
@@ -37,9 +36,26 @@ public class ConfirmationEditText extends ValidatedInputField {
 	 * @param matchTo An EditText that we want our confirmation field to match to.
 	 */
 	public void attachEditTextToMatch(final EditText matchTo) {
-		editTextToMatch = matchTo;
-		editTextToMatch.addTextChangedListener(new TextWatcher(){
-
+		if(matchTo != null) {
+			editTextToMatch = matchTo;
+			
+			this.matchInputRestrictionsTo(editTextToMatch);
+	
+			editTextToMatch.addTextChangedListener(getMatcherTextWatcher());
+		}
+	}
+	
+	/**
+	 * Returns a TextWatcher that should be added to the EditText that this Confirmation EditText
+	 * is watching. This will cause the attached EditText field to clear errors or set the
+	 * confirmation field to matched (Green) when it gets edited.
+	 * 
+	 * @return - A TextWatcher that is intended to be attached to the EditText that a ConfirmationEditText is 
+	 * matching itself to. This allows the attached EditText to update the appearance of the ConfirmationEditText.
+	 */
+	private TextWatcher getMatcherTextWatcher() {
+		return new TextWatcher(){
+			
 			@Override
 			public void afterTextChanged(Editable s) {}
 
@@ -47,8 +63,7 @@ public class ConfirmationEditText extends ValidatedInputField {
 			public void beforeTextChanged(CharSequence s, int start,int count, int after) {}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start,
-					int before, int count) {
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				if(!isValid()){
 					clearErrors();
 					clearRightDrawable();
@@ -57,9 +72,19 @@ public class ConfirmationEditText extends ValidatedInputField {
 				}
 			}
 			
-		});
+		};
 	}
 
+	/**
+	 * Sets the input restrictions of the confirmation field to the input restrictions of the
+	 * attached EditText.
+	 * @param attachedField
+	 */
+	private void matchInputRestrictionsTo(final EditText attachedField) {
+		this.setFilters(attachedField.getFilters());
+		this.setInputType(attachedField.getInputType());
+	}
+	
 	/**
 	 * When a user navigates away from the field, do a validation and graphic update again.
 	 * If the field is yet to be matched it will still be gray, but when a user navigates away it will turn red

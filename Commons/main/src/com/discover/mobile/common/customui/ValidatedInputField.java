@@ -27,13 +27,13 @@ import com.discover.mobile.common.R;
 public abstract class ValidatedInputField extends EditText{
 
 	/** Default and error drawables for input fields */
-	protected final static int FIELD_DEFAULT_APPEARANCE = R.drawable.edit_text_default;
-	protected final static int FIELD_ERROR_APPEARANCE = R.drawable.edit_text_red;
+	protected final int FIELD_DEFAULT_APPEARANCE = R.drawable.edit_text_default;
+	protected final int FIELD_ERROR_APPEARANCE = R.drawable.edit_text_red;
 	
 	private ValidatedInputField thisEditText;
 	
 	/**Default date picker ems size*/
-	protected static final int DATE_PICKER_EMS_LENGTH = 11;
+	protected final int DATE_PICKER_EMS_LENGTH = 11;
 
 	/**A shared input filter to be used when changing the max input length of a field.*/
 	InputFilter[] filterArray = new InputFilter[1];
@@ -85,15 +85,15 @@ public abstract class ValidatedInputField extends EditText{
 		setupDefaultAppearance();
 		thisEditText = this;
 		setupRightDrawableTouchRegion();
-		setupDefaultHeight();
 	}
 	
 	/**
 	 * Set the default appearance so that we dont have to do it in XML.
 	 */
-	protected void setupDefaultAppearance() {
+	public void setupDefaultAppearance() {
 		this.setBackgroundResource(FIELD_DEFAULT_APPEARANCE);
 		this.setTextColor(getResources().getColor(R.color.field_copy));
+		setupDefaultHeight();
 	}
 	
 	protected void setupDefaultHeight() {

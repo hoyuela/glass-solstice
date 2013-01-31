@@ -33,7 +33,7 @@ import com.discover.mobile.navigation.HeaderProgressIndicator;
  */
 public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 	
-	private static final String TAG = EnterNewPasswordActivity.class.getSimpleName();
+	private final String TAG = EnterNewPasswordActivity.class.getSimpleName();
 	
 	private ForgotPasswordTwoDetails passTwoDetails;
 	
@@ -52,8 +52,8 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 	
 	private final String UPDATE_PASS_ONE_STATE = "a";
 	
+	private final String MAIN_ERROR_STRING = "b";
 	private final String MAIN_ERROR_VISIBILITY = "c";
-	private final String MAIN_ERROR_STRING = "d";
 		
 	@Override
 	public void onCreate(final Bundle savedInstanceState){

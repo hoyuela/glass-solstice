@@ -129,12 +129,12 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		if(idIsError){
 			idConfirmField.setErrors();
 		} else{
-			idConfirmField.clearErrors();
+			idConfirmField.setupDefaultAppearance();
 		}
 		if(isPassError){
 			passConfirmField.setErrors();
 		} else{
-			passConfirmField.clearErrors();
+			passConfirmField.setupDefaultAppearance();
 		}
 		if(isError1){
 			mainErrorMessageLabel.setVisibility(View.VISIBLE);

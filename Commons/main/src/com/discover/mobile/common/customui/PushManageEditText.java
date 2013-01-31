@@ -105,7 +105,7 @@ public class PushManageEditText extends ValidatedInputField{
 	 * Set the default appearance so that we dont have to do it in XML.
 	 */
 	@Override
-	protected void setupDefaultAppearance() {
+	public void setupDefaultAppearance() {
 		this.setBackgroundResource(FIELD_DEFAULT_APPEARANCE);
 		this.setTextColor(getResources().getColor(R.color.field_copy));
 		this.setInputType(InputType.TYPE_CLASS_NUMBER);

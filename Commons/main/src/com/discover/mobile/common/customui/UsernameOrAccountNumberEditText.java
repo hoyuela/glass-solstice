@@ -76,7 +76,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	}
 
 	@Override
-	protected void setupDefaultAppearance() {
+	public void setupDefaultAppearance() {
 		super.setupDefaultAppearance();
 		this.setEms(DEFAULT_EMS);
 	}
