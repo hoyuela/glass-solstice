@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import com.discover.mobile.R;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.urlmanager.UrlManagerBank;
+import com.discover.mobile.common.urlmanager.BankUrlManager;
 import com.discover.mobile.navigation.NavigationRootActivity;
 import com.discover.mobile.navigation.Navigator;
 
@@ -71,7 +71,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 		if (previousTime != 0) {
 			long difference = currentTime - previousTime;
 			// User has become inactive and will be set to timed-out.
-			if ((difference / 1000) > UrlManagerBank.MAX_IDLE_TIME) {
+			if ((difference / 1000) > BankUrlManager.MAX_IDLE_TIME) {
 				 Navigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED);
 			}
 		}
