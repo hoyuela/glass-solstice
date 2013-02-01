@@ -1,4 +1,4 @@
-package com.discover.mobile.error;
+package com.discover.mobile.bank;
 
 import java.net.HttpURLConnection;
 
@@ -9,6 +9,7 @@ import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.bank.BankErrorCodes;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
+import com.discover.mobile.error.ErrorHandlerFactory;
 import com.google.common.base.Strings;
 
 /**

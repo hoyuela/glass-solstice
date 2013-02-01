@@ -1,0 +1,19 @@
+package com.discover.mobile.bank.navigation;
+
+import android.os.Bundle;
+
+import com.discover.mobile.navigation.NavigationItem;
+import com.discover.mobile.navigation.NavigationMenuFragment;
+import com.discover.mobile.section.Sections;
+
+public class NavigationMenuFragmentBank extends NavigationMenuFragment {
+	
+	@Override
+	public void onActivityCreated(final Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
+		NavigationItem.initializeAdapterWithSections(navigationItemAdapter, Sections.BANK_SECTION_LIST);
+		setListAdapter(navigationItemAdapter);
+	}
+	
+}

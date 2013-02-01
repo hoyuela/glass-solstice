@@ -7,14 +7,15 @@ import android.widget.ListView;
 import com.discover.mobile.section.ComponentInfo;
 import com.discover.mobile.section.FragmentComponentInfo;
 import com.discover.mobile.section.GroupComponentInfo;
-import com.discover.mobile.section.Sections;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
-abstract class NavigationItem {
+public abstract class NavigationItem {
 	
 	final NavigationItemAdapter adapter;
 	final NavigationItemView view;
 	final int absoluteIndex;
+	static ImmutableList<ComponentInfo> section;
 	
 	NavigationItem(final NavigationItemAdapter adapter, final NavigationItemView view, final int absoluteIndex) {
 		this.adapter = adapter;
@@ -24,7 +25,8 @@ abstract class NavigationItem {
 	
 	abstract void onClick(ListView listView);
 	
-	static void initializeAdapterWithSections(final NavigationItemAdapter adapter) {
+	public static void initializeAdapterWithSections(final NavigationItemAdapter adapter, ImmutableList<ComponentInfo> sectionInfo) {
+		section = sectionInfo;
 		final FragmentNavigationItem firstItem = initializeAdapterWithFirstSection(adapter);
 		initializeAdapterWithRemainingSections(adapter);
 
@@ -35,21 +37,21 @@ abstract class NavigationItem {
 	}
 	
 	private static FragmentNavigationItem initializeAdapterWithFirstSection(final NavigationItemAdapter adapter) {
-		final FragmentComponentInfo sectionInfo = (FragmentComponentInfo) Sections.SECTION_LIST.get(0);
+		final FragmentComponentInfo sectionInfo = (FragmentComponentInfo) section.get(0);
 		final FragmentNavigationItem item = createSectionFragmentItem(sectionInfo, adapter, 0);
 		adapter.add(item);
 		return item;
 	}
 	
 	private static void initializeAdapterWithRemainingSections(final NavigationItemAdapter adapter) {
-		for(int i = 1; i < Sections.SECTION_LIST.size(); i++) {
+		for(int i = 1; i < section.size(); i++) {
 			final NavigationItem navItem = createSectionItem(adapter, i);
 			adapter.add(navItem);
 		}
 	}
 	
 	private static NavigationItem createSectionItem(final NavigationItemAdapter adapter, final int index) {
-		final ComponentInfo sectionInfo = Sections.SECTION_LIST.get(index);
+		final ComponentInfo sectionInfo = section.get(index);
 		if(sectionInfo instanceof GroupComponentInfo)
 			return createSectionGroupItem((GroupComponentInfo)sectionInfo, adapter, index);
 		else if(sectionInfo instanceof FragmentComponentInfo)

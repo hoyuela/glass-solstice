@@ -22,9 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.discover.mobile.BankServiceCallFactory;
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
+import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthAnswerDetails;
@@ -38,7 +38,7 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.error.ErrorHandlerFactory;
-import com.discover.mobile.navigation.NavigationRootActivity;
+import com.discover.mobile.navigation.NavigationRootActivityCard;
 import com.google.common.base.Strings;
 
 /**
@@ -363,7 +363,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	}
 
 	private void startHomeFragment() {
-		final Intent strongAuth = new Intent(this, NavigationRootActivity.class);
+		final Intent strongAuth = new Intent(this, NavigationRootActivityCard.class);
 
 		startActivityForResult(strongAuth, 0);
 	}

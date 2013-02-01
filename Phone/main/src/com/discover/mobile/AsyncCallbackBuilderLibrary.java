@@ -2,10 +2,10 @@ package com.discover.mobile;
 
 import android.app.Activity;
 
+import com.discover.mobile.bank.BankBaseErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback.Builder;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
-import com.discover.mobile.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.error.BaseExceptionFailureHandler;
 

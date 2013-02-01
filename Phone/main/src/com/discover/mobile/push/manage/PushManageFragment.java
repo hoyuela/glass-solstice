@@ -31,7 +31,7 @@ import com.discover.mobile.common.push.manage.PreferencesDetail;
 import com.discover.mobile.common.push.manage.PushManageCategoryParamDetail;
 import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
 import com.discover.mobile.error.BaseExceptionFailureHandler;
-import com.discover.mobile.navigation.NavigationRootActivity;
+import com.discover.mobile.navigation.NavigationRootActivityCard;
 import com.discover.mobile.utils.CommonUtils;
 import com.xtify.sdk.api.XtifySDK;
 
@@ -505,7 +505,7 @@ public class PushManageFragment extends BaseFragment{
 									getResources().getString(R.string.push_progress_registration_loading), 
 									true)
 				.withSuccessListener(new PostPrefsSuccessListener(this))
-				.withErrorResponseHandler(new PushPrefsErrorHandler((NavigationRootActivity)this.getActivity()))
+				.withErrorResponseHandler(new PushPrefsErrorHandler((NavigationRootActivityCard)this.getActivity()))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
 				.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
 				.build();

@@ -29,9 +29,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.discover.mobile.BankServiceCallFactory;
 import com.discover.mobile.BaseActivity;
 import com.discover.mobile.R;
+import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.Globals;
@@ -59,7 +59,7 @@ import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.help.CustomerServiceContactsActivity;
 import com.discover.mobile.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
-import com.discover.mobile.navigation.NavigationRootActivity;
+import com.discover.mobile.navigation.NavigationRootActivityCard;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
 import com.google.common.base.Strings;
@@ -615,17 +615,6 @@ public class LoginActivity extends BaseActivity  {
 		BankServiceCallFactory.createLoginCall(login, this).submitWithProgressDialog("Discover", "Loading...");
 	}
 	
-	/**
-	 * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
-	 */
-	private void navToHome() {
-		
-		final Intent home = new Intent(this, NavigationRootActivity.class);
-		
-		startActivityForResult(home, 0);
-		
-	}
-	
 
 	/**
 	 * toggleCheckBox(final View v) This method handles the state of the check
@@ -836,7 +825,7 @@ public class LoginActivity extends BaseActivity  {
 				.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(this))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
 				.withCompletionListener(new LockScreenCompletionListener(this))
-				.launchIntentOnSuccess(NavigationRootActivity.class)
+				.launchIntentOnSuccess(NavigationRootActivityCard.class)
 				.finishCurrentActivityOnSuccess(this)
 				.clearTextViewsOnComplete(idField, passField)
 				.build();

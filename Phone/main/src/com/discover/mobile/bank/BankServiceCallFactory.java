@@ -1,9 +1,11 @@
-package com.discover.mobile;
+package com.discover.mobile.bank;
 
 import javax.annotation.Nonnull;
 
 import android.app.Activity;
 
+import com.discover.mobile.AsyncCallbackBuilderLibrary;
+import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
@@ -25,7 +27,6 @@ import com.discover.mobile.common.net.NetworkServiceCallQueue.EventType;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.bank.Address;
 import com.discover.mobile.common.net.json.bank.PhoneNumber;
-import com.discover.mobile.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.Navigator;

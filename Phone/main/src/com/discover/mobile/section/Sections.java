@@ -16,12 +16,17 @@ public final class Sections {
 	/**
 	 * Immutable list showing all the top level sections that are displayed in the sliding nav menu
 	 */
-	public static final ImmutableList<ComponentInfo> SECTION_LIST = ImmutableList.<ComponentInfo>builder()
+	public static final ImmutableList<ComponentInfo> CARD_SECTION_LIST = ImmutableList.<ComponentInfo>builder()
 			//Add Sections below
 			.add(new HomeSectionInfo())
 			.add(new AccountSectionInfo())
 			.add(new ProfileAndSettingsSectionInfo())
 			.add(new CustomerServiceSectionInfo())
+			.build();
+	
+	public static final ImmutableList<ComponentInfo> BANK_SECTION_LIST = ImmutableList.<ComponentInfo>builder()
+			//Add Sections below
+			.add(new HomeSectionInfo())
 			.build();
 	
 	private Sections() {
