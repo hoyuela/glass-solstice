@@ -7,7 +7,7 @@ import com.discover.mobile.common.net.GetPushPreferenceReferenceHandler;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.UrlManagerCard;
+import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 /**
  * Get the alert history
@@ -53,6 +53,6 @@ public class GetAlertHistory  extends JsonResponseMappingNetworkServiceCall<Noti
 	 * @param amount - amount to get
 	 */
 	private static String getUrl(final int begin, final int amount){
-		return UrlManagerCard.getPushAlertHistoryUrl(begin, amount);
+		return CardUrlManager.getPushAlertHistoryUrl(begin, amount);
 	}
 }

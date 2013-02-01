@@ -7,7 +7,7 @@ package com.discover.mobile.common.urlmanager;
  * 
  */
 
-public class UrlManagerCard {
+public class CardUrlManager {
 
 	private static final String BASE_URL = "https://mst0.m.discovercard.com";
 

@@ -12,7 +12,7 @@ import com.discover.mobile.common.net.json.bank.ReceivedUrl;
  * @author ajleeds
  * 
  */
-public class UrlManagerBank {
+public class BankUrlManager {
 	private static final String BASE_URL = "https://beta.discoverbank.com";
 //	private static final String BASE_URL = "http://192.168.2.177:8008"; //Henry's Laptop
 //	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";

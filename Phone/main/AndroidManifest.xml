@@ -143,7 +143,7 @@
 		<!--  End Xtify Setup -->
         <activity android:name=".push.PushTermsAndConditionsActivity"></activity>
         <activity android:name="com.discover.mobile.navigation.NavigationRootActivityCard"></activity>
-        <activity android:name="com.discover.mobile.bank.navigation.NavigationRootActivityBank" ></activity>
+        <activity android:name="com.discover.mobile.bank.navigation.BankNavigationRootActivity" ></activity>
         <activity android:name="com.discover.mobile.push.PushEnrollFragment"></activity>
     </application>
     

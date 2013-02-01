@@ -7,7 +7,7 @@ import com.discover.mobile.common.net.GetPushPreferenceReferenceHandler;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.UrlManagerCard;
+import com.discover.mobile.common.urlmanager.CardUrlManager;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -49,6 +49,6 @@ public class GetNotificationPreferences extends JsonResponseMappingNetworkServic
 	 * @return the url of the call
 	 */
 	private static String getUrl(final Context context){
-		return UrlManagerCard.getPushGetNotificationPrefUrl(XtifySDK.getXidKey(context)) ; //$NON-NLS-1$
+		return CardUrlManager.getPushGetNotificationPrefUrl(XtifySDK.getXidKey(context)) ; //$NON-NLS-1$
 	}
 }

@@ -7,7 +7,7 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.UrlManagerCard;
+import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 /**
  * Gets the text (only text) to be shown in the late payment warning modal
@@ -25,7 +25,7 @@ public class GetLatePaymentWarningText extends JsonResponseMappingNetworkService
 	 * @param callback - callback to run the call in
 	 */
 	public GetLatePaymentWarningText(final Context context, final AsyncCallback<LatePaymentWarningTextDetail> callback){
-		super(context, new GetCallParams(UrlManagerCard.getLatePaymentWarningTextUrl()) {{
+		super(context, new GetCallParams(CardUrlManager.getLatePaymentWarningTextUrl()) {{
 
 			sendDeviceIdentifiers = true;
 		}}, LatePaymentWarningTextDetail.class);

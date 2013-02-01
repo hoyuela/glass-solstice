@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.discover.mobile.bank.navigation.NavigationRootActivityBank;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
@@ -65,8 +65,8 @@ public class Navigator {
 	 * @param activity Reference to Activity from where it will navigate to home page
 	 */
 	public static void navigateToHomePage(final Activity activity) {
-		if( activity.getClass() != NavigationRootActivityBank.class ) {
-			final Intent home = new Intent(activity, NavigationRootActivityBank.class);
+		if( activity.getClass() != BankNavigationRootActivity.class ) {
+			final Intent home = new Intent(activity, BankNavigationRootActivity.class);
 			activity.startActivity(home);
 			
 			//Close current activity

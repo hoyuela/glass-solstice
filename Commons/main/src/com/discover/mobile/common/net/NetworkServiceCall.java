@@ -38,8 +38,8 @@ import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.ErrorResponseParser;
 import com.discover.mobile.common.net.json.JsonMappingRequestBodySerializer;
-import com.discover.mobile.common.urlmanager.UrlManagerBank;
-import com.discover.mobile.common.urlmanager.UrlManagerCard;
+import com.discover.mobile.common.urlmanager.BankUrlManager;
+import com.discover.mobile.common.urlmanager.CardUrlManager;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
@@ -101,9 +101,9 @@ public abstract class NetworkServiceCall<R> {
 		this.context = context;
 		this.params = params;
 		if (!isCard){
-			BASE_URL = UrlManagerBank.getBaseUrl();
+			BASE_URL = BankUrlManager.getBaseUrl();
 		}else {
-			BASE_URL = UrlManagerCard.getBaseUrl();
+			BASE_URL = CardUrlManager.getBaseUrl();
 		}
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xApplicationVersion);
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context,com.discover.mobile.common.R.string.xClientPlatform);

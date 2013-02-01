@@ -16,7 +16,7 @@ import com.discover.mobile.navigation.Navigator;
  * as well as show the sliding bar as well as the action bar.
  *
  */
-public class NavigationRootActivityBank extends NavigationRootActivity {
+public class BankNavigationRootActivity extends NavigationRootActivity {
 	
 	
 	/**

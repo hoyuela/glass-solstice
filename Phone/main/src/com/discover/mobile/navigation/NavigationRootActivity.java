@@ -84,26 +84,6 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 			makeFragmentVisible(resumeFragment, false);
 		}
 		
-		final Bundle extras = getIntent().getExtras();
-		if(null != extras){
-			handleIntentExtras(extras);
-		}
-	}
-	
-	/**
-	 * Handle the extras passed in an intent
-	 * @param extras - extras passed into the app
-	 */
-	private void handleIntentExtras(final Bundle extras) {
-		if(!shouldShowModal){return;}
-		final String screenType = extras.getString(IntentExtraKey.SCREEN_TYPE);
-		if(null != screenType){
-			final String userId = extras.getString(IntentExtraKey.UID);
-			final String email = extras.getString(IntentExtraKey.EMAIL);
-			final String lastFour = extras.getString(IntentExtraKey.ACCOUNT_LAST4);
-			showConirmationModal(screenType, userId, email, lastFour);
-		}
-		
 	}
 
 	/**
@@ -113,7 +93,7 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	 * @param email - email to place in the modal
 	 * @param lastFour - last four account number digits to place in the modal
 	 */
-	private void showConirmationModal(final String screenType, final String userId,
+	protected void showConirmationModal(final String screenType, final String userId,
 			final String email, final String lastFour) {
 		
 		final ModalConfirmationTop top = new ModalConfirmationTop(this, null);

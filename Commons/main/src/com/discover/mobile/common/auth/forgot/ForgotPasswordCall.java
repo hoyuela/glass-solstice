@@ -13,7 +13,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.urlmanager.UrlManagerCard;
+import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 public class ForgotPasswordCall extends NetworkServiceCall<Object> {
 	
@@ -24,7 +24,7 @@ public class ForgotPasswordCall extends NetworkServiceCall<Object> {
 	public ForgotPasswordCall(final Context context, final AsyncCallback<Object> callback,
 			final AccountInformationDetails formData) {
 		
-		super(context, new PostCallParams(UrlManagerCard.getForgotPasswordUrl()) {{
+		super(context, new PostCallParams(CardUrlManager.getForgotPasswordUrl()) {{
 			clearsSessionBeforeRequest = true;
 			requiresSessionForRequest = false;
 			
