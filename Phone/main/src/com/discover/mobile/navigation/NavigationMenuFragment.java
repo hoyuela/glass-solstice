@@ -6,7 +6,7 @@ import android.widget.ListView;
 import com.discover.mobile.RoboSherlockListFragment;
 import com.google.inject.Inject;
 
-public class NavigationMenuFragment extends RoboSherlockListFragment {
+public abstract class NavigationMenuFragment extends RoboSherlockListFragment {
 	
 	@Inject
 	protected NavigationItemAdapter navigationItemAdapter;
