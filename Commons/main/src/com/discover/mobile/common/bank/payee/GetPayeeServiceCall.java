@@ -13,7 +13,7 @@ import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.UrlManagerBank;
+import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
  * Used for invoking the Bank - Customer Service API found at ./api/payees/. The JSON
@@ -84,7 +84,7 @@ public class GetPayeeServiceCall  extends JsonResponseMappingNetworkServiceCall<
 	public GetPayeeServiceCall(final Context context,
 			final AsyncCallback<ListPayeeDetail> callback) {
 
-		super(context, new GetCallParams(UrlManagerBank.getUrl(UrlManagerBank.PAYEES_URL_KEY)) {
+		super(context, new GetCallParams(BankUrlManager.getUrl(BankUrlManager.PAYEES_URL_KEY)) {
 			{
 				//This service call is made after authenticating and receiving a token,
 				//therefore the session should not be cleared otherwise the token will be wiped out
