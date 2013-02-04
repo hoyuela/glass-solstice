@@ -2,11 +2,13 @@ package com.discover.mobile.navigation;
 
 import java.util.List;
 
+import android.support.v4.app.Fragment;
 import android.widget.ListView;
 
 import com.discover.mobile.section.ComponentInfo;
 import com.discover.mobile.section.FragmentComponentInfo;
 import com.discover.mobile.section.GroupComponentInfo;
+import com.discover.mobile.section.home.HomeSummaryFragment;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
@@ -25,31 +27,37 @@ public abstract class NavigationItem {
 	
 	abstract void onClick(ListView listView);
 	
+	/**
+	 * Sets up the adapter and make the home fragment the first visible fragment when logging in.  
+	 * @param adapter
+	 * @param sectionInfo
+	 */
 	public static void initializeAdapterWithSections(final NavigationItemAdapter adapter, ImmutableList<ComponentInfo> sectionInfo) {
 		section = sectionInfo;
-		final FragmentNavigationItem firstItem = initializeAdapterWithFirstSection(adapter);
 		initializeAdapterWithRemainingSections(adapter);
-
-		adapter.setSelectedItem(firstItem);
-		adapter.getNavigationRoot().makeFragmentVisible(firstItem.getCachedOrCreateFragment());
+		Fragment homeFragment = new HomeSummaryFragment();
+		adapter.getNavigationRoot().makeFragmentVisible(homeFragment);
 		// TODO set first section as selected	 
 		
 	}
 	
-	private static FragmentNavigationItem initializeAdapterWithFirstSection(final NavigationItemAdapter adapter) {
-		final FragmentComponentInfo sectionInfo = (FragmentComponentInfo) section.get(0);
-		final FragmentNavigationItem item = createSectionFragmentItem(sectionInfo, adapter, 0);
-		adapter.add(item);
-		return item;
-	}
-	
+	/**
+	 * Sets up the menu with the main menu options as well as the sections underneath. 
+	 * @param adapter
+	 */
 	private static void initializeAdapterWithRemainingSections(final NavigationItemAdapter adapter) {
-		for(int i = 1; i < section.size(); i++) {
+		for(int i = 0; i < section.size(); i++) {
 			final NavigationItem navItem = createSectionItem(adapter, i);
 			adapter.add(navItem);
 		}
 	}
 	
+	/**
+	 * Creates the sections under the main titles
+	 * @param adapter
+	 * @param index
+	 * @return
+	 */
 	private static NavigationItem createSectionItem(final NavigationItemAdapter adapter, final int index) {
 		final ComponentInfo sectionInfo = section.get(index);
 		if(sectionInfo instanceof GroupComponentInfo)

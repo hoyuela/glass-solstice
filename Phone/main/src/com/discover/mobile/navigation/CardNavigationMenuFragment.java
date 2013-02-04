@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.discover.mobile.section.Sections;
 
-public class NavigationMenuFragmentCard extends NavigationMenuFragment {
+public class CardNavigationMenuFragment extends NavigationMenuFragment {
 	
 	@Override
 	public void onActivityCreated(final Bundle savedInstanceState) {

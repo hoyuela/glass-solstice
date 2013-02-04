@@ -1,5 +1,11 @@
 package com.discover.mobile.section;
 
+import com.discover.mobile.bank.account.BankAccountSectionInfo;
+import com.discover.mobile.bank.atm.BankAtmLocatorInfo;
+import com.discover.mobile.bank.customerservice.BankCustomerServiceSectionInfo;
+import com.discover.mobile.bank.deposit.BankDepositChecksSectionInfo;
+import com.discover.mobile.bank.paybills.BankPayBillsSectionInfo;
+import com.discover.mobile.bank.transfer.BankTransferMoneySectionInfo;
 import com.discover.mobile.help.CustomerServiceSectionInfo;
 import com.discover.mobile.profile.ProfileAndSettingsSectionInfo;
 import com.discover.mobile.section.account.AccountSectionInfo;
@@ -26,7 +32,12 @@ public final class Sections {
 	
 	public static final ImmutableList<ComponentInfo> BANK_SECTION_LIST = ImmutableList.<ComponentInfo>builder()
 			//Add Sections below
-			.add(new HomeSectionInfo())
+			.add(new BankAccountSectionInfo())
+			.add(new BankTransferMoneySectionInfo())
+			.add(new BankPayBillsSectionInfo())
+			.add(new BankDepositChecksSectionInfo())
+			.add(new BankCustomerServiceSectionInfo())
+			.add(new BankAtmLocatorInfo())
 			.build();
 	
 	private Sections() {

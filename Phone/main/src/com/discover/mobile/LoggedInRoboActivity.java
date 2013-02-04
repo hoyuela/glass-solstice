@@ -133,6 +133,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		slidingMenu.setShadowDrawable(R.drawable.nav_menu_shadow);
 		slidingMenu.setBehindOffsetRes(R.dimen.nav_menu_offset);
 		slidingMenu.setFadeDegree(FADE);
+//		slidingMenu.setMenu(R.layout.navigation_card_menu_frame);
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 
