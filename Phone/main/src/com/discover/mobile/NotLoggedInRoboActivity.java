@@ -19,6 +19,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.alert.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.alert.ModalDefaultTopView;
+import com.discover.mobile.bank.BankActivityManager;
 import com.discover.mobile.error.ErrorHandlerFactory;
 
 /**
@@ -55,7 +56,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 		super.onResume();
 		
 		//Set this activity as the active activity
-		ActivityManager.setActiveActivity(this);
+		BankActivityManager.setActiveActivity(this);
 	}
 
 	@Override

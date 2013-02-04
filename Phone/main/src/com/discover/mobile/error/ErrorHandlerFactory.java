@@ -15,11 +15,10 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 
-import com.discover.mobile.ActivityManager;
-import com.discover.mobile.BankServiceCallFactory;
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
+import com.discover.mobile.bank.BankActivityManager;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
@@ -208,7 +207,7 @@ public class ErrorHandlerFactory {
 	 */
 	public ModalAlertWithOneButton createErrorModal(final int errorCode,
 			final int titleText, final int errorText) {
-		final Activity activeActivity = ActivityManager.getActiveActivity();
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
 		
 		// Keep track of times an error page is shown for login
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
@@ -259,7 +258,7 @@ public class ErrorHandlerFactory {
 	 */
 	public ModalAlertWithOneButton createErrorModal(final String titleText,
 			final String errorText) {
-		final Activity activeActivity = ActivityManager.getActiveActivity();
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
 		
 		// Keep track of times an error page is shown for login
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
@@ -313,7 +312,7 @@ public class ErrorHandlerFactory {
 	 * @return
 	 */
 	public ModalAlertWithOneButton handleHttpFraudNotFoundUserErrorModal(final ErrorHandlerUi mErrorHandlerUi, final String message) {
-		final Activity activeActivity = ActivityManager.getActiveActivity();
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
 		
 		final ModalAlertWithOneButton modal = createErrorModal(activeActivity.getResources().getString(R.string.error_403_title_request), message);
 		showCustomAlert(modal);
@@ -337,7 +336,7 @@ public class ErrorHandlerFactory {
 	 */
 	public ModalAlertWithOneButton handleHttpServiceUnavailableModal(
 			final String errorText) {
-		final Activity activeActivity = ActivityManager.getActiveActivity();
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
 		
 		// Fetch modal title from resources
 		final String title = activeActivity.getResources().getString(
@@ -406,7 +405,7 @@ public class ErrorHandlerFactory {
 	 */
 	public void handleStrongAuthFailure(final ErrorHandlerUi errorHandlerUi,
 			final String errorMessage, final String question, final String id) {
-		final Activity activeActivity = ActivityManager.getActiveActivity();
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
 
 		Navigator.navigateToStrongAuth(activeActivity, question, id, errorMessage);
 	}
@@ -432,7 +431,7 @@ public class ErrorHandlerFactory {
 	 */
 	public ModalAlertWithOneButton handleLockedOut(
 			final ErrorHandlerUi errorHandlerUi, final String errorText) {
-		final Activity activeActivity = ActivityManager.getActiveActivity();
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
 		
 		// Fetch modal title from resources
 		final String title = activeActivity.getResources().getString(
@@ -465,7 +464,7 @@ public class ErrorHandlerFactory {
      * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
      */
 	public void handleStrongAuthChallenge() {
-		final Activity activeActivity = ActivityManager.getActiveActivity();
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
 		
 		//Verify user is not in login page, if they are then the challenge will be handled elsewhere
 		if( activeActivity.getClass() != LoginActivity.class ) {
@@ -481,7 +480,7 @@ public class ErrorHandlerFactory {
 	 * Navigates to login page after a session expired
 	 */
 	public void handleSessionExpired() {
-		final Activity activeActivity = ActivityManager.getActiveActivity();
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
 		
 		Navigator.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED);
 	}

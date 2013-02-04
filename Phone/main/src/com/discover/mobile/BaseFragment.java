@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.discover.mobile.navigation.CardNavigationRootActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 
 /**

@@ -59,8 +59,8 @@ import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail
 import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.login.LoginActivity;
-import com.discover.mobile.navigation.HeaderProgressIndicator;
 import com.discover.mobile.navigation.CardNavigationRootActivity;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
 import com.google.common.base.Strings;

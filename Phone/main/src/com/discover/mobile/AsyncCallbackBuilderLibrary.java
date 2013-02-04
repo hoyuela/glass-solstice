@@ -2,7 +2,7 @@ package com.discover.mobile;
 
 import android.app.Activity;
 
-import com.discover.mobile.bank.BankBaseErrorResponseHandler;
+import com.discover.mobile.bank.BankNetworkServiceCallManager;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback.Builder;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
@@ -50,10 +50,10 @@ public final class AsyncCallbackBuilderLibrary {
 		
 		builder = GenericAsyncCallback.<T>builder(activity)
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withExceptionFailureHandler(NetworkServiceCallManager.getInstance())
-				.withErrorResponseHandler(NetworkServiceCallManager.getInstance())
-				.withStartListener(NetworkServiceCallManager.getInstance())
-				.withSuccessListener((SuccessListener<T>) NetworkServiceCallManager.getInstance())
+				.withExceptionFailureHandler(BankNetworkServiceCallManager.getInstance())
+				.withErrorResponseHandler(BankNetworkServiceCallManager.getInstance())
+				.withStartListener(BankNetworkServiceCallManager.getInstance())
+				.withSuccessListener((SuccessListener<T>) BankNetworkServiceCallManager.getInstance())
 				.withCompletionListener(new LockScreenCompletionListener(activity));
 		
 		

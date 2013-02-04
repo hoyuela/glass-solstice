@@ -33,6 +33,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.alert.ModalAlertWithOneButton;
+import com.discover.mobile.bank.BankActivityManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -107,7 +108,7 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
         eventManager.fire(new OnResumeEvent());
         
         //Set this activity as the active activity
-        ActivityManager.setActiveActivity(this);
+        BankActivityManager.setActiveActivity(this);
     }
 
     @Override

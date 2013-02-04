@@ -1,4 +1,4 @@
-package com.discover.mobile;
+package com.discover.mobile.bank;
 
 import java.io.Serializable;
 import java.net.HttpURLConnection;
@@ -6,6 +6,8 @@ import java.net.HttpURLConnection;
 import android.app.Activity;
 import android.util.Log;
 
+import com.discover.mobile.AlertDialogParent;
+import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.bank.BankSchema;
@@ -20,7 +22,6 @@ import com.discover.mobile.common.customer.bank.CustomerServiceCall;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.Navigator;
 import com.google.common.base.Strings;
@@ -34,12 +35,12 @@ import com.google.common.base.Strings;
  * @author henryoyuela
  *
  */
-final public class NetworkServiceCallManager implements StartListener, SuccessListener<Serializable>,
+final public class BankNetworkServiceCallManager implements StartListener, SuccessListener<Serializable>,
 		ErrorResponseHandler, ExceptionFailureHandler {
 	/**
 	 * Used to print logs into Android logcat
 	 */
-	private static final String TAG = NetworkServiceCallManager.class.getSimpleName();
+	private static final String TAG = BankNetworkServiceCallManager.class.getSimpleName();
 	/**
 	 * Holds a reference to the Previous NetworkServiceCall<> sent out by the application, used to 
 	 * retransmit a NetworkServiceCall<> when required. Set in the start() method implementation
@@ -60,14 +61,14 @@ final public class NetworkServiceCallManager implements StartListener, SuccessLi
 	/**
 	 * Holds Reference to Singleton instance of NetworkServiceCallManager
 	 */
-	private static final NetworkServiceCallManager instance = new NetworkServiceCallManager();
+	private static final BankNetworkServiceCallManager instance = new BankNetworkServiceCallManager();
 
 	
 	/**
 	 * Constructor is made private to follow a singleton design pattern.
 	 */
-	private NetworkServiceCallManager() {
-		errorHandler = new BankBaseErrorResponseHandler((ErrorHandlerUi) ActivityManager.getActiveActivity());
+	private BankNetworkServiceCallManager() {
+		errorHandler = new BankBaseErrorResponseHandler((ErrorHandlerUi) BankActivityManager.getActiveActivity());
 	}
 	
 	/**
@@ -83,7 +84,7 @@ final public class NetworkServiceCallManager implements StartListener, SuccessLi
 	 * 
 	 * @return Returns Singleton instance of NetworkServiceCallManager
 	 */
-	static public NetworkServiceCallManager getInstance() {
+	static public BankNetworkServiceCallManager getInstance() {
 		
 		return instance;
 	}
@@ -122,7 +123,7 @@ final public class NetworkServiceCallManager implements StartListener, SuccessLi
 	 */
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> error) {
-		final Activity activeActivity = ActivityManager.getActiveActivity();
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
 		
 		if( isStrongAuthChallenge(error) ) {
 			//Send request to Strong Auth web-service API
@@ -142,7 +143,7 @@ final public class NetworkServiceCallManager implements StartListener, SuccessLi
 	 */
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> arg0, final Throwable arg1) {
-		final AlertDialogParent activeActivity = (AlertDialogParent)ActivityManager.getActiveActivity();
+		final AlertDialogParent activeActivity = (AlertDialogParent)BankActivityManager.getActiveActivity();
 		activeActivity.closeDialog();
 		
 		return false;
@@ -156,11 +157,11 @@ final public class NetworkServiceCallManager implements StartListener, SuccessLi
 	 */
 	@Override
 	public void success(final NetworkServiceCall<?> sender, final Serializable result) {
-		final Activity activeActivity = ActivityManager.getActiveActivity();
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
 		
 		//Download Customer Information if a Login call is successful
 		if( sender instanceof CreateBankLoginCall ) {
-			final LoginActivity activity = (LoginActivity) ActivityManager.getActiveActivity();
+			final LoginActivity activity = (LoginActivity) BankActivityManager.getActiveActivity();
 			
 			//Set logged in to be able to save user name in persistent storage
 			Globals.setLoggedIn(true);
@@ -205,7 +206,7 @@ final public class NetworkServiceCallManager implements StartListener, SuccessLi
 	 */
 	@Override
 	public void start(final NetworkServiceCall<?> sender) {
-		final AlertDialogParent activeActivity = (AlertDialogParent)ActivityManager.getActiveActivity();
+		final AlertDialogParent activeActivity = (AlertDialogParent)BankActivityManager.getActiveActivity();
 		activeActivity.startProgressDialog();
 
 		//Update curCall and prevCall it is a different service request

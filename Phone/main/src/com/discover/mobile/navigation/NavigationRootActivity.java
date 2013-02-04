@@ -12,7 +12,6 @@ import com.discover.mobile.LoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.alert.ModalConfirmationTop;
-import com.discover.mobile.common.IntentExtraKey;
 
 /**
  * Root activity for the application after login. This will transition fragment on and off the screen
@@ -149,8 +148,8 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	
 	@Override
     public void onBackPressed() {
-        FragmentManager fragmentManager = this.getSupportFragmentManager();
-        int backStackCount = fragmentManager.getBackStackEntryCount();
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        final int backStackCount = fragmentManager.getBackStackEntryCount();
         
         if( backStackCount == 1 ) {
             this.logout();

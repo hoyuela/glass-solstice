@@ -1,6 +1,6 @@
 package com.discover.mobile.error;
 
-import com.discover.mobile.ActivityManager;
+import com.discover.mobile.bank.BankActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
@@ -35,12 +35,12 @@ public class BaseExceptionFailureHandler implements ExceptionFailureHandler {
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final Throwable arg0) {	
 		//Check if this is an exception that occured to pre-auth
 		if( sender instanceof PreAuthCheckCall) {
-			final LoginActivity loginActivity = (LoginActivity)ActivityManager.getActiveActivity();
+			final LoginActivity loginActivity = (LoginActivity)BankActivityManager.getActiveActivity();
 			loginActivity.showSplashScreen(false);
 		} else if (!(sender instanceof LogOutCall)) {
 			ErrorHandlerFactory.getInstance().handleGenericError(0);
 		}else {
-			Navigator.navigateToLoginPage(ActivityManager.getActiveActivity(), IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
+			Navigator.navigateToLoginPage(BankActivityManager.getActiveActivity(), IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
 		}
 		
 		return true;

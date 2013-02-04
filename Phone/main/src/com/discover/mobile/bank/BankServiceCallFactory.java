@@ -48,7 +48,7 @@ public class BankServiceCallFactory {
 	 * @return Returns the constructed CustomerServiceCall
 	 */
 	public static CustomerServiceCall createCustomerDownloadCall() {
-		final Activity activity = ActivityManager.getActiveActivity();
+		final Activity activity = BankActivityManager.getActiveActivity();
 		
 		/**
 		 * Create an AsyncCallback using the default builder created for Bank related web-service HTTP requests
@@ -71,7 +71,7 @@ public class BankServiceCallFactory {
 	 * 			the Bank Service
 	 */
 	public static CreateBankLoginCall createLoginCall(final BankLoginDetails credentials ) {
-		final LoginActivity activity = (LoginActivity) ActivityManager.getActiveActivity();
+		final LoginActivity activity = (LoginActivity) BankActivityManager.getActiveActivity();
 		
 		//Build the handler for the response to the Bank authentication request
 		final AsyncCallback<BankLoginData> callback = 
@@ -93,7 +93,7 @@ public class BankServiceCallFactory {
 	 * @return Reference to the created CreateStrongAuthRequestCall.
 	 */
 	public static CreateStrongAuthRequestCall createStrongAuthRequest() {
-		final Activity activity = ActivityManager.getActiveActivity();
+		final Activity activity = BankActivityManager.getActiveActivity();
 		
 	 	/**
 		 * Create an AsyncCallback using the default builder created for Bank related web-service HTTP requests
@@ -116,7 +116,7 @@ public class BankServiceCallFactory {
 	 * @return Reference to the created CreateStrongAuthRequestCall.
 	 */
 	public static CreateStrongAuthRequestCall createStrongAuthRequest(final BankStrongAuthAnswerDetails details) {
-		final Activity activity = ActivityManager.getActiveActivity();
+		final Activity activity = BankActivityManager.getActiveActivity();
 		
 		/**
 		 * Create an AsyncCallback using the default builder created for Bank related web-service HTTP requests
@@ -134,7 +134,7 @@ public class BankServiceCallFactory {
 	 * @return
 	 */
 	public static NetworkServiceCall<BankLoginData> createAccountDownloadCall() {
-		final Activity activity = ActivityManager.getActiveActivity();
+		final Activity activity = BankActivityManager.getActiveActivity();
 		
 		// TODO Auto-generated method stub
 		return null;
