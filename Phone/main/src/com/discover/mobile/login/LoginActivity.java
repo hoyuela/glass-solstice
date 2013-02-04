@@ -59,7 +59,7 @@ import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.help.CustomerServiceContactsActivity;
 import com.discover.mobile.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.login.register.RegistrationAccountInformationActivity;
-import com.discover.mobile.navigation.NavigationRootActivityCard;
+import com.discover.mobile.navigation.CardNavigationRootActivity;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
 import com.google.common.base.Strings;
@@ -825,7 +825,7 @@ public class LoginActivity extends BaseActivity  {
 				.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(this))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
 				.withCompletionListener(new LockScreenCompletionListener(this))
-				.launchIntentOnSuccess(NavigationRootActivityCard.class)
+				.launchIntentOnSuccess(CardNavigationRootActivity.class)
 				.finishCurrentActivityOnSuccess(this)
 				.clearTextViewsOnComplete(idField, passField)
 				.build();

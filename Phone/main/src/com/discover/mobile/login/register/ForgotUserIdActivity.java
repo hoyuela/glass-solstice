@@ -60,7 +60,7 @@ import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.HeaderProgressIndicator;
-import com.discover.mobile.navigation.NavigationRootActivityCard;
+import com.discover.mobile.navigation.CardNavigationRootActivity;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
 import com.google.common.base.Strings;
@@ -530,7 +530,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	 * @param responseData
 	 */
 	private void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData){
-		final Intent confirmationScreen = new Intent(this, NavigationRootActivityCard.class);
+		final Intent confirmationScreen = new Intent(this, CardNavigationRootActivity.class);
 		confirmationScreen.putExtra(IntentExtraKey.UID, responseData.userId);
 		confirmationScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);

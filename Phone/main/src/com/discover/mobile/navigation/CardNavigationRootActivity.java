@@ -12,7 +12,7 @@ import com.discover.mobile.push.register.PushNowAvailableFragment;
  * as well as show the sliding bar as well as the action bar.
  *
  */
-public class NavigationRootActivityCard extends NavigationRootActivity {
+public class CardNavigationRootActivity extends NavigationRootActivity {
 
 	/**
 	 * Resume the activity to the state that it was when the activity went to the background

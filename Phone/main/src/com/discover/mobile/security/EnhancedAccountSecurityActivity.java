@@ -38,7 +38,7 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.error.ErrorHandlerFactory;
-import com.discover.mobile.navigation.NavigationRootActivityCard;
+import com.discover.mobile.navigation.CardNavigationRootActivity;
 import com.google.common.base.Strings;
 
 /**
@@ -363,7 +363,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	}
 
 	private void startHomeFragment() {
-		final Intent strongAuth = new Intent(this, NavigationRootActivityCard.class);
+		final Intent strongAuth = new Intent(this, CardNavigationRootActivity.class);
 
 		startActivityForResult(strongAuth, 0);
 	}

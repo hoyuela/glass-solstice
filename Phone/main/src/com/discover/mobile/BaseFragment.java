@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.discover.mobile.navigation.NavigationRootActivityCard;
+import com.discover.mobile.navigation.CardNavigationRootActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 
 /**
