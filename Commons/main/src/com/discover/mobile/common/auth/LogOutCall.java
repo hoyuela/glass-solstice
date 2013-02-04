@@ -15,8 +15,8 @@ import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.urlmanager.UrlManagerBank;
-import com.discover.mobile.common.urlmanager.UrlManagerCard;
+import com.discover.mobile.common.urlmanager.BankUrlManager;
+import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 /**
  * Logout call for the application.  This will make a call to the services that will terminate the session
@@ -39,9 +39,9 @@ public class LogOutCall extends NetworkServiceCall<Object> {
 		ServiceCallParams params;
 		String url;
 		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)){
-			url = UrlManagerCard.getLogoutUrl();
+			url = CardUrlManager.getLogoutUrl();
 		}else {
-			url = UrlManagerBank.getUrl(UrlManagerBank.LOGOUT_URL_KEY);
+			url = BankUrlManager.getUrl(BankUrlManager.LOGOUT_URL_KEY);
 		}
 		params = new PostCallParams(url) {{
 			requiresSessionForRequest = true;

@@ -7,7 +7,7 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.UrlManagerCard;
+import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 /**
  * Call to get the activity periods to be displayed in the choose activity period fragment
@@ -29,7 +29,7 @@ public class GetTransactions extends JsonResponseMappingNetworkServiceCall<GetTr
 						   final AsyncCallback<GetTransactionDetails> callback, 
 						   final RecentActivityPeriodDetail category){
 		
-		super(context, new GetCallParams(UrlManagerCard.getGetRecentAccountTransactions(category.date)) {{
+		super(context, new GetCallParams(CardUrlManager.getGetRecentAccountTransactions(category.date)) {{
 		
 			sendDeviceIdentifiers = true;
 		}}, GetTransactionDetails.class);

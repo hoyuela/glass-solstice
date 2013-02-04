@@ -9,7 +9,7 @@ import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.UrlManagerBank;
+import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
  * The Bank Login call for retrieving a valid token and any URL's that are
@@ -31,7 +31,7 @@ public class CreateStrongAuthRequestCall extends
 	public CreateStrongAuthRequestCall(final Context context,
 			final AsyncCallback<BankStrongAuthDetails> callback) {
 		
-		super(context, new GetCallParams(UrlManagerBank.getStrongAuthUrl()) {{
+		super(context, new GetCallParams(BankUrlManager.getStrongAuthUrl()) {{
 			requiresSessionForRequest = false;
 			
 			// Specify what error parser to use when receiving an error response
@@ -54,7 +54,7 @@ public class CreateStrongAuthRequestCall extends
 	public CreateStrongAuthRequestCall(final Context context,
 			final AsyncCallback<BankStrongAuthDetails> callback, final BankStrongAuthAnswerDetails details) {
 		
-		super(context, new PostCallParams(UrlManagerBank.getStrongAuthUrl()) {{
+		super(context, new PostCallParams(BankUrlManager.getStrongAuthUrl()) {{
 			requiresSessionForRequest = false;
 			
 			// Specify what error parser to use when receiving an error response

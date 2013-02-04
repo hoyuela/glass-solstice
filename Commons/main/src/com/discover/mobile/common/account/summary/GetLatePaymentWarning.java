@@ -7,7 +7,7 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.UrlManagerCard;
+import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 /**
  * Get the late payment warning information
@@ -25,7 +25,7 @@ public class GetLatePaymentWarning  extends JsonResponseMappingNetworkServiceCal
 	 * @param callback - callback to run the call in
 	 */
 	public GetLatePaymentWarning(final Context context, final AsyncCallback<LatePaymentWarningDetail> callback){
-		super(context, new GetCallParams(UrlManagerCard.getLatePaymentWarningUrl()) {{
+		super(context, new GetCallParams(CardUrlManager.getLatePaymentWarningUrl()) {{
 
 			sendDeviceIdentifiers = true;
 		}}, LatePaymentWarningDetail.class);

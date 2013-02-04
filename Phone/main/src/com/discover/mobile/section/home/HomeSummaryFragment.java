@@ -11,9 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.BankServiceCallFactory;
 import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
+import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.CurrentSessionDetails;

@@ -44,4 +44,9 @@
 	<color name="weak_indicator">#ffdb11</color>
 	<color name="string_indicator">#8ed402</color>
 	<color name="blue_link">#0267b1</color>
+	
+	<!-- Navigation Menu Gradient -->
+	<color name="menu_light_gray">#3D484D</color>
+	<color name="menu_dark_gray">#293033</color>
+	
 </resources>

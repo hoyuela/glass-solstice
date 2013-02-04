@@ -15,10 +15,10 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 
-import com.discover.mobile.BankServiceCallFactory;
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
+import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;

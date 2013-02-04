@@ -56,12 +56,18 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		showActionBar();
 		setupSlidingMenu();
 	}
+	
+	/**
+	 * Returns the id for the sliding drawer menu frame
+	 * @return
+	 */
+	public abstract int getBehindContentView();
 
 	/**
 	 * Show the action bar with the custom layout
 	 */
 	public void showActionBar() {
-		setBehindContentView(R.layout.navigation_menu_frame);
+		setBehindContentView(getBehindContentView());
 
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setCustomView(getLayoutInflater().inflate(
@@ -87,9 +93,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		navigationToggle.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				if (isCard) {
 					toggle();
-				}
 			}
 		});
 

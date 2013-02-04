@@ -6,7 +6,7 @@ import android.content.Intent;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.login.LoginActivity;
-import com.discover.mobile.navigation.NavigationRootActivity;
+import com.discover.mobile.navigation.CardNavigationRootActivity;
 
 /**
  * This is the error handler for when the app tries to get information from
@@ -52,7 +52,7 @@ public class PushRegistrationStatusErrorHandler extends CardBaseErrorResponseHan
 	protected boolean handleJsonErrorCode(final JsonMessageErrorResponse messageErrorResponse) {
 		
 		//FIXME are we sure we want to suppress this error code
-		final Intent intent = new Intent(activity, NavigationRootActivity.class);
+		final Intent intent = new Intent(activity, CardNavigationRootActivity.class);
 		activity.startActivity(intent);
 		activity = null;
 		return true;

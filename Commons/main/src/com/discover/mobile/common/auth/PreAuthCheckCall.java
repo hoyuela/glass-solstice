@@ -14,11 +14,11 @@ import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.urlmanager.UrlManagerCard;
+import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 public class PreAuthCheckCall extends NetworkServiceCall<PreAuthResult> {
 	
-	private static final ServiceCallParams STANDARD_PARAMS = new GetCallParams(UrlManagerCard.getPreAuthUrl()) {{
+	private static final ServiceCallParams STANDARD_PARAMS = new GetCallParams(CardUrlManager.getPreAuthUrl()) {{
 		requiresSessionForRequest = false;
 	}};
 	

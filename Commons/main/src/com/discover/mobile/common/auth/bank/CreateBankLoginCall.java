@@ -16,7 +16,7 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.ExceptionLibrary;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.UrlManagerBank;
+import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
  * The Bank Login call for retrieving a valid token and any URL's that are
@@ -35,7 +35,7 @@ public class CreateBankLoginCall extends
 			final AsyncCallback<BankLoginData> callback,
 			final BankLoginDetails login) {
  
-		super(context, new PostCallParams(UrlManagerBank.getGetTokenUrl()) {
+		super(context, new PostCallParams(BankUrlManager.getGetTokenUrl()) {
 			{
 
 				clearsSessionBeforeRequest = true;
@@ -84,7 +84,7 @@ public class CreateBankLoginCall extends
 			//When sending a request with a token as part of the request the format to follow is 
 			//Authorization: BankBasic <<token>>
 			SessionTokenManager.setToken(BankSchema.BANKBASIC +" " +data.token);
-			UrlManagerBank.setNewLinks(data.links);
+			BankUrlManager.setNewLinks(data.links);
 		} else {
 			String message = "Response does not include token";
 			

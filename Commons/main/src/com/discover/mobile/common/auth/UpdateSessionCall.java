@@ -11,11 +11,11 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.urlmanager.UrlManagerCard;
+import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 public class UpdateSessionCall extends NetworkServiceCall<Object> {
 	
-	private static final PostCallParams PARAMS = new PostCallParams(UrlManagerCard.getSessionUrl());
+	private static final PostCallParams PARAMS = new PostCallParams(CardUrlManager.getSessionUrl());
 	
 	private final TypedReferenceHandler<Object> handler;
 	

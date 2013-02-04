@@ -29,7 +29,7 @@ import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.login.LockOutUserActivity;
 import com.discover.mobile.login.LoginActivity;
-import com.discover.mobile.navigation.NavigationRootActivity;
+import com.discover.mobile.navigation.CardNavigationRootActivity;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
 import com.xtify.sdk.api.XtifySDK;
@@ -162,7 +162,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 	 * @param responseData
 	 */
 	protected void navigateToConfirmationScreenWithResponseData(final RegistrationConfirmationDetails responseData) {
-		final Intent confirmationAndLoginScreen = new Intent(this, NavigationRootActivity.class);
+		final Intent confirmationAndLoginScreen = new Intent(this, CardNavigationRootActivity.class);
 		confirmationAndLoginScreen.putExtra(IntentExtraKey.UID, responseData.userId);
 		confirmationAndLoginScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationAndLoginScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
