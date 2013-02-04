@@ -65,12 +65,12 @@ import java.util.List;
  */
 public class ListPayeeDetail implements Serializable{
 
-	
+
 	/**
 	 * Auto-generated serial UID which is used to serialize and de-serialize
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**List of payees returned*/
-	List<PayeeDetail> payees;
+	public List<PayeeDetail> payees;
 }

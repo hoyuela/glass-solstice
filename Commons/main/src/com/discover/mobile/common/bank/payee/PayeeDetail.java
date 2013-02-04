@@ -46,35 +46,35 @@ public class PayeeDetail implements Serializable{
 
 	/**Unique id for the object*/
 	private static final long serialVersionUID = 1L;
-	
+
 	/**Id for the payee*/
 	@JsonProperty("id")
-	private String id;
-	
+	public String id;
+
 	/**Payee name*/
 	@JsonProperty("name")
-	private String name;
-	
+	public String name;
+
 	/**Payee nickname*/
 	@JsonProperty("nickName")
-	private String nickName;
-	
+	public String nickName;
+
 	/**Account number for the payee*/
 	@JsonProperty("accountNumber")
-	private String account;
-	
+	public String account;
+
 	/**Earliest payment date*/
 	@JsonProperty("earliestPaymentDate")
-	private String paymentDate;
-	
+	public String paymentDate;
+
 	/**Boolean for if the payee is verified*/
 	@JsonProperty("isVerified")
-	private boolean verified;
-	
+	public boolean verified;
+
 	/**Payee phone number*/
 	@JsonProperty("phone")
-	private String phone;
-	
+	public String phone;
+
 	/**
 	 * Contains Bank web-service API Resource links
 	 */

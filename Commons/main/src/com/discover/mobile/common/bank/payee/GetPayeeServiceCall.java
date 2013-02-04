@@ -9,7 +9,7 @@ import android.content.Context;
 
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
-import com.discover.mobile.common.net.StrongReferenceHandler;
+import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
@@ -103,7 +103,7 @@ public class GetPayeeServiceCall  extends JsonResponseMappingNetworkServiceCall<
 		}, ListPayeeDetail.class, false);
 
 		// TODO decide if this is the best type of handler
-		this.handler = new StrongReferenceHandler<ListPayeeDetail>(callback);
+		this.handler = new SimpleReferenceHandler<ListPayeeDetail>(callback);
 	}
 
 	@Override
