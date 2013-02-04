@@ -21,6 +21,7 @@ import roboguice.event.EventManager;
 import roboguice.inject.RoboInjector;
 import roboguice.util.RoboContext;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -49,7 +50,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  * @author jthornton
  *
  */
-public class BaseFragmentActivity extends SlidingFragmentActivity implements RoboContext, ErrorHandlerUi{
+public class BaseFragmentActivity extends SlidingFragmentActivity implements RoboContext, ErrorHandlerUi, AlertDialogParent{
 	/**
 	* Contains the last error that occurred with the activity. 
 	* An object that holds a reference to an instance of BaseActivity can set its value by using setLastError.
@@ -61,6 +62,10 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 	
     protected EventManager eventManager;
     protected HashMap<Key<?>,Object> scopedObjects = new HashMap<Key<?>, Object>();
+    /**
+	 * Reference to the dialog currently being displayed on top of this activity. Is set using setDialog();
+	 */
+    private AlertDialog mActiveDialog;
     
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -101,8 +106,8 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 		
         eventManager.fire(new OnResumeEvent());
         
-      //Set this activity as the active activity
-      ErrorHandlerFactory.getInstance().setActiveActivity(this);
+        //Set this activity as the active activity
+        ActivityManager.setActiveActivity(this);
     }
 
     @Override
@@ -113,7 +118,10 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
        Globals.savePreferences(this);
       		
        eventManager.fire(new OnPauseEvent());
+       
+       closeDialog();
     }
+    
 
     @Override
     protected void onNewIntent( final Intent intent ) {
@@ -247,7 +255,8 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
      * Show a custom modal alert dialog for the activity
      * @param alert - the modal alert to be shown
      */
-    public void showCustomAlert(final AlertDialog alert){
+    @Override
+	public void showCustomAlert(final AlertDialog alert){
     	alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -262,7 +271,8 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
      * @param content - the resource id for content to display on the box
      * @param buttonText - the resource id for button text to display on the button
      */
-    public void showOneButtonAlert(int title, int content, int buttonText){    	
+    @Override
+	public void showOneButtonAlert(final int title, final int content, final int buttonText){    	
 		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
     }
     
@@ -275,7 +285,8 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
      * @param content - the resource id for content to display on the box
      * @param buttonText - the resource id for button text to display on the button
      */
-    public void showDynamicOneButtonAlert(int title, String content, int buttonText){    	
+    @Override
+	public void showDynamicOneButtonAlert(final int title, final String content, final int buttonText){    	
 		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
     }
     
@@ -288,8 +299,8 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 	 * @param errorText Text that is displayed in the content area of dialog
 	 * @param titleText Text that is displayed at the top of the screen which describes the reason of the error
 	 */
-	public void sendToErrorPage(int errorCode, int titleText, int errorText) {
-		final Intent maintenancePageIntent = new Intent((Context) this, LockOutUserActivity.class);
+	public void sendToErrorPage(final int errorCode, final int titleText, final int errorText) {
+		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
 		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
 		startActivity(maintenancePageIntent);
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
@@ -301,8 +312,8 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 	 * 
 	 * @param errorText
 	 */
-	public void sendToErrorPage(int errorText) {
-		final Intent maintenancePageIntent = new Intent((Context) this, LockOutUserActivity.class);
+	public void sendToErrorPage(final int errorText) {
+		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
 		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
 		startActivity(maintenancePageIntent);
 	}
@@ -339,7 +350,7 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 	* @see com.discover.mobile.ErrorHandlerUi#setLastError()
 	*/
 	@Override
-	public void setLastError(int errorCode) {
+	public void setLastError(final int errorCode) {
 		mLastError = errorCode;
 	}
 
@@ -355,5 +366,46 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 	public ErrorHandlerFactory getErrorHandlerFactory() {
 		return ErrorHandlerFactory.getInstance();
 	}
-    
+
+	/**
+	 * @return Return a reference to the current dialog being displayed over this activity.
+	 */
+	@Override
+	public AlertDialog getDialog() {
+		return mActiveDialog;
+	}
+
+	/**
+	 * Allows to set the current dialog that is being displayed over this activity.
+	 */
+	@Override
+	public void setDialog(final AlertDialog dialog) {
+		mActiveDialog = dialog;
+	}
+
+	/**
+	 * Closes the current dialog this is being displayed over this activity. Requires
+	 * a call to setDialog to be able to use this function.
+	 */
+	@Override
+	public void closeDialog() {
+		if( mActiveDialog != null && mActiveDialog.isShowing()) {
+			mActiveDialog.dismiss();
+			mActiveDialog = null;
+		}	
+	}
+  
+	/**
+	 * Starts a Progress dialog using this activity as the context. The ProgressDialog created
+	 * will be set at the active dialog.
+	 */
+	@Override
+	public void startProgressDialog() {		
+		if( mActiveDialog == null ) {
+			mActiveDialog = ProgressDialog.show(this,"Discover", "Loading...", true);	
+			setDialog(mActiveDialog);
+		} else {
+			
+		}
+	}
 }

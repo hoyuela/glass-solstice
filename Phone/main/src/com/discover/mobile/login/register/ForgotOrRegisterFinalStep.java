@@ -21,8 +21,9 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.callback.LockScreenCompletionListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.error.BaseExceptionFailureHandler;
@@ -73,7 +74,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 					}
 
 					@Override
-					public void success(final AccountDetails value) {
+					public void success(final NetworkServiceCall<?> sender, final AccountDetails value) {
 						// Set logged in to be able to save user name in
 						// persistent storage
 						Globals.setLoggedIn(true);
@@ -149,8 +150,8 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 		 * @param value - the returning push registration detail from the server
 		 */
 		@Override
-		public void success(final PushRegistrationStatusDetail value) {
-			super.success(value);
+		public void success(final NetworkServiceCall<?> sender, final PushRegistrationStatusDetail value) {
+			super.success(sender, value);
 			navigateToConfirmationScreenWithResponseData(confirmationDetails);
 		}
 	}
@@ -184,7 +185,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 		helpText.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				CommonMethods.dialNumber(helpText.getText().toString(), currentContext);
 			}
 		});

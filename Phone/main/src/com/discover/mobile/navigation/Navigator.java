@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
@@ -80,19 +81,33 @@ public class Navigator {
 	
 	/**
 	 * Navigates application to EnhancedAccountSecurityActivity which is used for strong authentication
-	 * for both CARD and BANK accounts.
+	 * for both CARD and BANK accounts. If EnhancedAccountSecurityActivity is already open, then it will
+	 * just update the question displayed to the user.
 	 * 
 	 * @param activity Reference to Activity from where the application will navigate to Strong Auth Page
 	 * @param question Question to ask the user for Strong Authentication
 	 * @param id Question ID, which will be sent to the server with answer to the question
+	 * @param errorMessage Set to null if no error message needs to be displayed, otherwise set to the error 
+	 * 						message to display on the StrongAuthPage.
+	 * 
 	 */
-	public static void navigateToStrongAuth(final Activity activity,final String question,final String id) {
-		final Intent strongAuth = new Intent(activity, EnhancedAccountSecurityActivity.class);
-		
-		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, question);
-		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, id);
-		strongAuth.putExtra(IntentExtraKey.IS_CARD_ACCOUNT, false);
-		activity.startActivityForResult(strongAuth, 0);
+	public static void navigateToStrongAuth(final Activity activity,final String question,final String id, final String errorMessage) {
+		if( activity.getClass() != EnhancedAccountSecurityActivity.class ) {
+			final Intent strongAuth = new Intent(activity, EnhancedAccountSecurityActivity.class);
+			
+			strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, question);
+			strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, id);
+			strongAuth.putExtra(IntentExtraKey.IS_CARD_ACCOUNT, false);
+			activity.startActivityForResult(strongAuth, 0);
+		} else {
+			final EnhancedAccountSecurityActivity strongAuthPage = (EnhancedAccountSecurityActivity)activity;
+			
+			if( errorMessage != null ) {
+				ErrorHandlerFactory.getInstance().showErrorsOnScreen(strongAuthPage, errorMessage);
+			}
+			
+			strongAuthPage.updateQuestion(question, id, false);
+		}
 	}
 
 }

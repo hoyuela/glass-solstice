@@ -3,6 +3,7 @@ package com.discover.mobile.common.callback;
 import android.app.Activity;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 
 public class FinishActivityCompletionListener implements CompletionListener{
 
@@ -18,7 +19,7 @@ public class FinishActivityCompletionListener implements CompletionListener{
 	}
 
 	@Override
-	public void complete(Object result) {
+	public void complete(final NetworkServiceCall<?> sender, final Object result) {
 		activity.finish();
 	}
 

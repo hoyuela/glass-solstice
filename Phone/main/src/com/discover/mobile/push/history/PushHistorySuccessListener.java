@@ -1,6 +1,7 @@
 package com.discover.mobile.push.history;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.push.history.NotificationListDetail;
 
 /**
@@ -11,7 +12,7 @@ import com.discover.mobile.common.push.history.NotificationListDetail;
 public class PushHistorySuccessListener implements SuccessListener<NotificationListDetail>{
 	
 	/**Fragment to return the successful nature of the call*/
-	private PushHistoryFragment fragment;
+	private final PushHistoryFragment fragment;
 	
 	/**
 	 * Constructor for the class
@@ -36,7 +37,7 @@ public class PushHistorySuccessListener implements SuccessListener<NotificationL
 	 * @return the successful response
 	 */
 	@Override
-	public void success(final NotificationListDetail detail) {
+	public void success(final NetworkServiceCall<?> sender, final NotificationListDetail detail) {
 		fragment.addToList(detail);
 	}
 }

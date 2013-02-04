@@ -79,7 +79,7 @@ public class BankUrlManager {
 	 * @param key
 	 *            The key for the URL that needs to be retrieved
 	 */
-	public static String getUrl(String key) {
+	public static String getUrl(final String key) {
 		return links.get(key).url
 				.replaceAll("http://beta.discoverbank.com", "");
 	}
@@ -90,7 +90,7 @@ public class BankUrlManager {
 	 * 
 	 * @param newLinks Map of links returned from the JSON 
 	 */
-	public static void setNewLinks(Map<String, ReceivedUrl> newLinks) {
+	public static void setNewLinks(final Map<String, ReceivedUrl> newLinks) {
 		if (newLinks == null) {
 			throw new IllegalArgumentException("newLinks cannot be null.");
 		}

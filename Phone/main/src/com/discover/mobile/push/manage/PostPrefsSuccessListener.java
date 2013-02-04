@@ -1,6 +1,7 @@
 package com.discover.mobile.push.manage;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.push.manage.PostPreferencesDetail;
 
 /**
@@ -11,7 +12,7 @@ import com.discover.mobile.common.push.manage.PostPreferencesDetail;
 public class PostPrefsSuccessListener implements SuccessListener <PostPreferencesDetail>{
 	
 	/**Fragment to return the successful nature of the call*/
-	private PushManageFragment fragment;
+	private final PushManageFragment fragment;
 	
 	/**
 	 * Constructor for the class
@@ -36,7 +37,7 @@ public class PostPrefsSuccessListener implements SuccessListener <PostPreference
 	 * @return the successful response
 	 */
 	@Override
-	public void success(final PostPreferencesDetail successObject) {
+	public void success(final NetworkServiceCall<?> sender, final PostPreferencesDetail successObject) {
 		fragment.hideSavebar();
 		fragment.showSuccessSave();
 	}

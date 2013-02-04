@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import android.app.Dialog;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 
 public class DialogDismissingCompletionListener implements CompletionListener {
 	
@@ -24,14 +25,14 @@ public class DialogDismissingCompletionListener implements CompletionListener {
 	}
 	
 	@Override
-	public void complete(final Object result) {
+	public void complete(final NetworkServiceCall<?> sender, final Object result) {
 		final Dialog dialog = safeGetReferenced(dialogRef);
 
 		//Dismiss dialog if it is showing
 		if (dialog != null && dialog.isShowing()) {
 			try {	
 				dialog.dismiss();
-			} catch (Exception ex) {
+			} catch (final Exception ex) {
 				//This is here to handle the case where an orientation change causes a crash
 			}
 		}

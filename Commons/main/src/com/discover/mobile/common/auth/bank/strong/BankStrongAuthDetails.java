@@ -1,5 +1,7 @@
 package com.discover.mobile.common.auth.bank.strong;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -26,7 +28,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author ajleeds
  *
  */
-public class BankStrongAuthDetails {
+public class BankStrongAuthDetails implements Serializable {
+	/**
+	 * Auto-generated serial UID which is used to serialize and de-serialize BankStrongAuthDetails objects
+	 */
+	private static final long serialVersionUID = -2034266378644868213L;
+
 	/**
 	 * Used to determine whether Strong Auth passed
 	 */

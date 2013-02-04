@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 
 /**
  * Used as a task to lock and unlock the screen for orientation change during an 
@@ -43,7 +44,7 @@ public class LockScreenCompletionListener implements CompletionListener {
 	}
 
 	@Override
-	public void complete(Object arg0) {
+	public void complete(final NetworkServiceCall<?> sender, final Object arg0) {
 		if( null != activity ) {
 			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 		}

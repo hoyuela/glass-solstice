@@ -51,6 +51,7 @@ import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.customui.NonEmptyEditText;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
@@ -269,7 +270,7 @@ public class LoginActivity extends BaseActivity  {
 		//Check if the login activity was launched because of a session expire
 		maybeShowSessionExpired();
 		
-		int lastError = getLastError();
+		final int lastError = getLastError();
 		
 		//Do not load saved credentials if there was a previous login attempt 
 		//which failed because of a lock out
@@ -375,8 +376,8 @@ public class LoginActivity extends BaseActivity  {
 	 * @return returns true if an error is being displayed in the errorTextView
 	 */
 	private boolean errorIsVisible() {
-		boolean errorTextViewIsVisible = errorTextView.getVisibility() == View.VISIBLE;
-		boolean errorTextIsNotLogoutMessage = 
+		final boolean errorTextViewIsVisible = errorTextView.getVisibility() == View.VISIBLE;
+		final boolean errorTextIsNotLogoutMessage = 
 				!getResources().getString(R.string.logout_sucess).equals(errorTextView.getText().toString());
 				
 		if( errorTextViewIsVisible & errorTextIsNotLogoutMessage )
@@ -427,7 +428,7 @@ public class LoginActivity extends BaseActivity  {
 		customerServiceButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				launchActivityFromClass(CustomerServiceContactsActivity.class);
 			}
 		});
@@ -436,8 +437,8 @@ public class LoginActivity extends BaseActivity  {
 			@Override
 			public void onClick(final View v) {
 				
-				String regOrAtmText = registerOrAtmButton.getText().toString();
-				String regText = getResources().getString(R.string.register_now);
+				final String regOrAtmText = registerOrAtmButton.getText().toString();
+				final String regText = getResources().getString(R.string.register_now);
 				
 				//Check if registerOrAtm button is displaying text for Card or Bank
 				if( regOrAtmText.equals(regText) ) {
@@ -453,8 +454,8 @@ public class LoginActivity extends BaseActivity  {
 			@Override
 			public void onClick(final View v) {
 				
-				String curText = privacySecOrTermButton.getText().toString();
-				String privSecText = getResources().getString(R.string.privacy_and_security);
+				final String curText = privacySecOrTermButton.getText().toString();
+				final String privSecText = getResources().getString(R.string.privacy_and_security);
 				
 				//Check if privacySecOrTermButton button is displaying text for Card or Bank
 				if( curText.equals(privSecText) ) {
@@ -491,7 +492,7 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	private void login() {
 		//Close Soft Input Keyboard
-		InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		final InputMethodManager inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 		inputManager.hideSoftInputFromInputMethod(passField.getWindowToken(), 0);
 		  
 		Globals.setOldTouchTimeInMillis(0);
@@ -525,7 +526,7 @@ public class LoginActivity extends BaseActivity  {
 	 * @return a boolean that represents if an error was displayed or not.
 	 */
 	private boolean showErrorWhenAttemptingToSaveAccountNumber() {
-		String inputId = idField.getText().toString();
+		final String inputId = idField.getText().toString();
 		
 		if(saveUserId && InputValidator.isCardAccountNumberValid(inputId)) {
 			errorTextView.setTextColor(getResources().getColor(R.color.red));
@@ -577,7 +578,7 @@ public class LoginActivity extends BaseActivity  {
 					}
 
 					@Override
-					public void success(final AccountDetails value) {
+					public void success(final NetworkServiceCall<?> sender, final AccountDetails value) {
 						// Set logged in to be able to save user name in
 						// persistent storage
 						Globals.setLoggedIn(true);
@@ -608,11 +609,11 @@ public class LoginActivity extends BaseActivity  {
 	 * 
 	 */
 	private void bankLogin(final String username, final String password) {
-		BankLoginDetails login = new BankLoginDetails();
+		final BankLoginDetails login = new BankLoginDetails();
 		login.password = password;
 		login.username = username;
 		
-		BankServiceCallFactory.createLoginCall(login, this).submitWithProgressDialog("Discover", "Loading...");
+		BankServiceCallFactory.createLoginCall(login).submit();
 	}
 	
 
@@ -729,7 +730,7 @@ public class LoginActivity extends BaseActivity  {
 	 * @param cached Sets whether the state change should be remembered
 	 */
 
-	private void setCheckMark(boolean shouldBeChecked, boolean cached) {
+	private void setCheckMark(final boolean shouldBeChecked, final boolean cached) {
 		saveUserId = !shouldBeChecked;
 		toggleCheckBox(toggleImage, cached);
 	}
@@ -740,7 +741,7 @@ public class LoginActivity extends BaseActivity  {
 	 * 
 	 * @param loginType The visibility of the Card login check mark. If visible - then login as Card, else Bank.
 	 */
-	private void setLoginType(int loginType) {
+	private void setLoginType(final int loginType) {
 		if (View.VISIBLE == loginType)
 			toggleBankCardLogin(goToCardLabel);		
 		else
@@ -765,10 +766,10 @@ public class LoginActivity extends BaseActivity  {
 		//TODO: Add ATM handler here
 		
 		//TODO: Remove this code once implemented. This is only for QA testing purposes only
-		CharSequence text = "ATM Locator Under Development";
-		int duration = Toast.LENGTH_SHORT;
+		final CharSequence text = "ATM Locator Under Development";
+		final int duration = Toast.LENGTH_SHORT;
 
-		Toast toast = Toast.makeText(this, text, duration);
+		final Toast toast = Toast.makeText(this, text, duration);
 		toast.show();
 	}
 	
@@ -778,10 +779,10 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	public void openPrivacyAndSecurity() {
 		//TODO: Remove this code once implemented. This is only for QA testing purposes only
-		CharSequence text = "Privacy & Security Under Development";
-		int duration = Toast.LENGTH_SHORT;
+		final CharSequence text = "Privacy & Security Under Development";
+		final int duration = Toast.LENGTH_SHORT;
 
-		Toast toast = Toast.makeText(this, text, duration);
+		final Toast toast = Toast.makeText(this, text, duration);
 		toast.show();
 	}
 	
@@ -791,10 +792,10 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	public void openPrivacyAndTerms() {
 		//TODO: Remove this code once implemented. This is only for QA testing purposes only
-		CharSequence text = "Privacy & Terms Under Development";
-		int duration = Toast.LENGTH_SHORT;
+		final CharSequence text = "Privacy & Terms Under Development";
+		final int duration = Toast.LENGTH_SHORT;
 
-		Toast toast = Toast.makeText(this, text, duration);
+		final Toast toast = Toast.makeText(this, text, duration);
 		toast.show();
 	}
 	
@@ -883,7 +884,7 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	@Override
 	public List<EditText> getInputFields() {
-		List<EditText> inputFields = new ArrayList<EditText>();
+		final List<EditText> inputFields = new ArrayList<EditText>();
 		inputFields.add(idField);
 		inputFields.add(passField);
 		return inputFields;
@@ -897,7 +898,7 @@ public class LoginActivity extends BaseActivity  {
 	 * 
 	 * @return Returns true if successful, false otherwise.
 	 */
-	public boolean updateAccountInformation(AccountType account) {
+	public boolean updateAccountInformation(final AccountType account) {
 		boolean ret = false;
 		
 		//Only update account information if logged in
@@ -932,8 +933,8 @@ public class LoginActivity extends BaseActivity  {
 	 * 
 	 * @param show True hides all login views and toolbar, false hides progress bar and fades in login views.
 	 */
-	public void showSplashScreen(boolean show) {
-		ViewGroup loginStartLayout = (ViewGroup) this.findViewById( R.id.login_start_layout );
+	public void showSplashScreen(final boolean show) {
+		final ViewGroup loginStartLayout = (ViewGroup) this.findViewById( R.id.login_start_layout );
 		final ViewGroup loginPane = (ViewGroup) this.findViewById(R.id.login_pane);
 		final ViewGroup toolbar = (ViewGroup)this.findViewById(R.id.login_bottom_button_row);
 		
@@ -956,15 +957,18 @@ public class LoginActivity extends BaseActivity  {
 			        	
 			        	loginPane.setVisibility(View.VISIBLE);
 			        	
-			        	Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
+			        	final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
 			        	animationFadeIn.setAnimationListener(new AnimationListener() {
-		                    public void onAnimationStart(Animation anim)
+		                    @Override
+							public void onAnimationStart(final Animation anim)
 		                    {
 		                    };
-		                    public void onAnimationRepeat(Animation anim)
+		                    @Override
+							public void onAnimationRepeat(final Animation anim)
 		                    {
 		                    };
-		                    public void onAnimationEnd(Animation anim)
+		                    @Override
+							public void onAnimationEnd(final Animation anim)
 		                    {
 		                       toolbar.setVisibility(View.VISIBLE);
 		                    };
@@ -1003,7 +1007,7 @@ public class LoginActivity extends BaseActivity  {
 	 * 
 	 * @param result True if Pre-Authentication has been completed, false otherwise.
 	 */
-	public void preAuthComplete(boolean result) {
+	public void preAuthComplete(final boolean result) {
 		//Set flag to detect if pre-authentication needs to be performed 
 		//the next time login activity is launched
 		preAuthHasRun = result;

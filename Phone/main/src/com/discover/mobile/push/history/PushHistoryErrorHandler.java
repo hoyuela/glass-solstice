@@ -3,6 +3,7 @@ package com.discover.mobile.push.history;
 import android.util.Log;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.push.manage.GetPushPrefsErrorResponseHandler;
 
@@ -31,7 +32,7 @@ public class PushHistoryErrorHandler implements ErrorResponseHandler {
 	 * @return true if the error was handled
 	 */
 	@Override
-	public boolean handleFailure(final ErrorResponse<?> error) {
+	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> error) {
 		Log.e(TAG, Integer.toString(error.getHttpStatusCode()));
 		//TODO:  Handle this correctly
 		return true;
