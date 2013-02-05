@@ -74,9 +74,9 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 * define the number of vertical lines that the menu will occupy when it is
 	 * expanded. (When collapsed it is set to 0)
 	 */
-	private final int HELP_DROPDOWN_LINE_HEIGHT = 10;
+	private static final int HELP_DROPDOWN_LINE_HEIGHT = 10;
 
-	private final String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
+	private static final String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
 	
 	private String strongAuthQuestion;
 	private String strongAuthQuestionId;
@@ -181,7 +181,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
             public void onCheckedChanged(final RadioGroup group, final int checkedId) { 
             	
             	final RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
-            	if (checkedRadioButton.equals(radioButtonOne)){
+            	if (checkedRadioButton.equals(radioButtonOne) ){
             		radioButtonOne.setTextColor(subCopyColor);
             		radioButtonTwo.setTextColor(fieldCopyColor);
             	}else {

@@ -23,6 +23,7 @@ import com.discover.mobile.common.push.manage.PostPrefDetail;
 import com.discover.mobile.common.push.manage.PostPrefParam;
 import com.discover.mobile.common.push.manage.PostPreferencesDetail;
 import com.discover.mobile.common.push.manage.PushManageCategoryParamDetail;
+import com.google.common.base.Strings;
 
 /**
  * View created to be used in the push notification manage layout.
@@ -40,13 +41,13 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 	private String category;
 
 	/**TitleView of the item*/
-	private TextView titleView;
+	private final TextView titleView;
 	
 	/**Spinner holding the viable amounts*/
-	private Spinner amountSpinner;
+	private final Spinner amountSpinner;
 	
 	/**Context of the activity*/
-	private Context context;
+	private final Context context;
 	
 	/**
 	 * Constructor of the class
@@ -143,6 +144,7 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 	 * Get the category of the item
 	 * @return - the category of the item
 	 */
+	@Override
 	public String getCategory() {
 		return category;
 	}
@@ -151,6 +153,7 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 	 * Set if the push item is supposed to be checked
 	 * @param isChecked - true if the push item is supposed to be checked
 	 */
+	@Override
 	public void setCategory(final String category) {
 		this.category = category;
 	}
@@ -162,12 +165,14 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 	private String getAmount(){
 		final String amount = amountSpinner.getSelectedItem().toString();
 		String number = Integer.toString(0);
-		if(null == amount){return number;}
-		try {
-			number =  NumberFormat.getCurrencyInstance().parse(amount).toString();
-		} catch (ParseException e) {
-			Log.e(TAG, "Error parsing string "+ amount + " , reason: " + e.getMessage());
-		}	
+
+		if( !Strings.isNullOrEmpty(amount) ) {
+			try {
+				number =  NumberFormat.getCurrencyInstance().parse(amount).toString();
+			} catch (final ParseException e) {
+				Log.e(TAG, "Error parsing string "+ amount + " , reason: " + e.getMessage());
+			}	
+		}
 		return number;
 	}
 	

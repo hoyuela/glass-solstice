@@ -52,9 +52,7 @@ import com.google.common.collect.ImmutableList;
  */
 public abstract class NetworkServiceCall<R> {
 	
-	
-
-	private final String TAG = getClass().getSimpleName();
+	private static final String TAG = NetworkServiceCall.class.getSimpleName();
 	
 	private static final String ID_PREFIX = "%&(()!12["; //$NON-NLS-1$
 	
@@ -323,34 +321,36 @@ public abstract class NetworkServiceCall<R> {
      */
     @SuppressWarnings("unused")
 	private static void trustAllHosts() {
-              // Create a trust manager that does not validate certificate chains
-              final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-                      @Override
-					public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                              return new java.security.cert.X509Certificate[] {};
-                      }
+		// Create a trust manager that does not validate certificate chains
+		final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+			@Override
+			public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+				return new java.security.cert.X509Certificate[] {};
+			}
 
-                      @Override
-					public void checkClientTrusted(final X509Certificate[] chain,
-                                      final String authType) throws CertificateException {
-                      }
+			@Override
+			public void checkClientTrusted(final X509Certificate[] chain,
+					final String authType) throws CertificateException {
+			}
 
-                      @Override
-					public void checkServerTrusted(final X509Certificate[] chain,
-                                      final String authType) throws CertificateException {
-                      }
-              } };
+			@Override
+			public void checkServerTrusted(final X509Certificate[] chain,
+					final String authType) throws CertificateException {
+			}
+		} };
 
-              // Install the all-trusting trust manager
-              try {
-                      final SSLContext sc = SSLContext.getInstance("TLS");
-                      sc.init(null, trustAllCerts, new java.security.SecureRandom());
-                      HttpsURLConnection
-                                      .setDefaultSSLSocketFactory(sc.getSocketFactory());
-              } catch (final Exception e) {
-                      e.printStackTrace();
-              }
-      }
+		// Install the all-trusting trust manager
+		try {
+			final SSLContext sc = SSLContext.getInstance("TLS");
+			sc.init(null, trustAllCerts, new java.security.SecureRandom());
+			HttpsURLConnection
+					.setDefaultSSLSocketFactory(sc.getSocketFactory());
+		} catch (final Exception e) {
+			if (Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Failure occurred in NetworkServiceCall");
+			}
+		}
+	}
 	
 	private URL getFullUrl() throws IOException {
 		return new URL(BASE_URL + params.path);

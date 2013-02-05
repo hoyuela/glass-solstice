@@ -74,7 +74,7 @@ public class Navigator {
 			activity.finish();		
 		} else {
 			if( Log.isLoggable(TAG, Log.DEBUG)) {
-				Log.d(TAG, "Application is already in login view");
+				Log.d(TAG, "Application is already in Home Page view");
 			}
 		}	
 	}

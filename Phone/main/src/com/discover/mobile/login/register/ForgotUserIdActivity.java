@@ -77,17 +77,17 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 
 	private static final String TAG = ForgotUserIdActivity.class.getSimpleName();
 
-	private final String MAIN_ERROR_LABEL_TEXT_KEY = "a";
-	private final String SHOULD_UPDATE_PASS_APPEARANCE = "b";
-	private final String SHOULD_UPDATE_ACCT_NBR_APPEARANCE = "c";
-	private final String MAIN_ERROR_LABEL_VISIBILITY_KEY = "d";
-	private final String PASS_FIELD_TEXT_KEY = "e";
-	private final String CARD_FIELD_TEXT_KEY = "f";
+	private static final String MAIN_ERROR_LABEL_TEXT_KEY = "a";
+	private static final String SHOULD_UPDATE_PASS_APPEARANCE = "b";
+	private static final String SHOULD_UPDATE_ACCT_NBR_APPEARANCE = "c";
+	private static final String MAIN_ERROR_LABEL_VISIBILITY_KEY = "d";
+	private static final String PASS_FIELD_TEXT_KEY = "e";
+	private static final String CARD_FIELD_TEXT_KEY = "f";
 
-	private final String MODAL_IS_SHOWING_KEY = "n";
-	private final String MODAL_BODY_KEY = "o";
-	private final String MODAL_TITLE_KEY = "p";
-	private final String MODAL_CLOSES_ACTIVITY_KEY = "q";
+	private static final String MODAL_IS_SHOWING_KEY = "n";
+	private static final String MODAL_BODY_KEY = "o";
+	private static final String MODAL_TITLE_KEY = "p";
+	private static final String MODAL_CLOSES_ACTIVITY_KEY = "q";
 
 	private int modalTitleText;
 	private int modalBodyText;

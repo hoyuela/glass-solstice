@@ -36,7 +36,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	 * @return True if consumed, false otherwise.
 	 */
 	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev) {
+	public boolean dispatchTouchEvent(final MotionEvent ev) {
 		super.dispatchTouchEvent(ev);
 
 		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
@@ -52,10 +52,10 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	 * Then updates globals with the current time. 
 	 */
 	private void getLastTouchTime() {
-		Calendar mCalendarInstance = Calendar.getInstance();
+		final Calendar mCalendarInstance = Calendar.getInstance();
 
-		long previousTime = Globals.getOldTouchTimeInMillis();
-		long currentTime = mCalendarInstance.getTimeInMillis();
+		final long previousTime = Globals.getOldTouchTimeInMillis();
+		final long currentTime = mCalendarInstance.getTimeInMillis();
 
 		setIsUserTimedOut(previousTime, currentTime);
 		Globals.setOldTouchTimeInMillis(currentTime);
@@ -66,12 +66,14 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	 * @param previousTime
 	 * @param currentTime
 	 */
-	private void setIsUserTimedOut(long previousTime, long currentTime) {
+	private void setIsUserTimedOut(final long previousTime, final long currentTime) {
 		// Previous value exists
 		if (previousTime != 0) {
-			long difference = currentTime - previousTime;
+			final long difference = currentTime - previousTime;
+			final float secs = (float)difference / 1000;
+			
 			// User has become inactive and will be set to timed-out.
-			if ((difference / 1000) > BankUrlManager.MAX_IDLE_TIME) {
+			if ( secs > BankUrlManager.MAX_IDLE_TIME) {
 				 Navigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED);
 			}
 		}

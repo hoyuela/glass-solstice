@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import com.discover.mobile.R;
 
@@ -18,7 +18,7 @@ import com.discover.mobile.R;
 public class SimpleModalAlert extends AlertDialog{
 	
 	/**Top view too be displayed*/
-	private ModalTopView top;
+	private final ModalTopView top;
 	
 	/**
 	 * Constructor for the alert
@@ -40,7 +40,7 @@ public class SimpleModalAlert extends AlertDialog{
 		final View mainView = this.getLayoutInflater().inflate(R.layout.modal_alert_layout, null);
 		this.setContentView(mainView);
 		
-		final RelativeLayout linearLayout = (RelativeLayout) mainView.findViewById(R.id.modal_linear_layout);
+		final LinearLayout linearLayout = (LinearLayout) mainView.findViewById(R.id.modal_linear_layout);
 		linearLayout.addView((View)top);
 	}
 

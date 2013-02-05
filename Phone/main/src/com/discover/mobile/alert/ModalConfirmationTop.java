@@ -24,22 +24,19 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 	private final Resources res;
 	
 	/**Text View that holds the user id*/
-	private TextView userIdLabel;
+	private final TextView userIdLabel;
 	
 	/**Text View holding the email*/
-	private TextView userEmailLabel;
+	private final TextView userEmailLabel;
 	
 	/**Text view holding the last for digits of the account number*/
-	private TextView userAcctNbrLabel;
+	private final TextView userAcctNbrLabel;
 	
 	/**Text View First paragraph text*/
-	private TextView firstParagraph;
-	
-	/**Text View holding the please note text*/
-	private TextView noteLabel;
+	private final TextView firstParagraph;
 	
 	/**Button to close the modal*/
-	private Button home;
+	private final Button home;
 	
 	/**
 	 * Constructor for the view
@@ -51,12 +48,13 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 		
 		final ScrollView mainView = (ScrollView) LayoutInflater.from(context)
                 .inflate(R.layout.register_confirm, null);
+		final  TextView noteLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_note_label);
+		
 		res = context.getResources();
 		userIdLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_id_label);
 		userEmailLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_email_label);
 		userAcctNbrLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_account_label);
-		firstParagraph = (TextView) mainView.findViewById(R.id.account_info_confirm_first_paragraph_label);
-		noteLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_note_label);
+		firstParagraph = (TextView) mainView.findViewById(R.id.account_info_confirm_first_paragraph_label);	
 		noteLabel.setText(Html.fromHtml(context.getString(R.string.account_info_confirm_note_text)));
 		home = (Button) mainView.findViewById(R.id.home);
 		
@@ -123,13 +121,13 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 	 * Set the title view text. Not Used in this class
 	 */
 	@Override
-	public void setTitle(String text) {}
+	public void setTitle(final String text) {}
 
 	/**
 	 * Set the content text. Not Used in this class
 	 */
 	@Override
-	public void setContent(String content) {}
+	public void setContent(final String content) {}
 
 
 	public Button getButton(){

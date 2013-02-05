@@ -472,54 +472,56 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 
 			@Override
 			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse messageErrorResponse) {
+				boolean handled = false;
 				progress.dismiss();
 				resetScrollPosition();
 
 				// FIXME add "assertions" for what the HTTP status code should be
 				switch (messageErrorResponse.getMessageStatusCode()) {
-					case SAMS_CLUB_MEMBER: 
-						displayModal(R.string.we_are_sorry, R.string.account_info_sams_club_card_error_text, true);
-						return true;
-	
-					case REG_AUTHENTICATION_PROBLEM: 
-						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));					
-						return true;
-	
-					case BAD_ACCOUNT_STATUS:
-						displayModal(R.string.could_not_complete_request, R.string.problem_authenticating, true);
-						return true;
-	
-					case FINAL_LOGIN_ATTEMPT:
-						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
-						return true;
-	
-					case MAX_LOGIN_ATTEMPTS:
-						displayModal(R.string.lockout_title, R.string.locked_account, true);
-						return true;
-	
-					case INVALID_EXTERNAL_STATUS:
-					case ONLINE_STATUS_PROHIBITED:
-					case INVALID_ONLINE_STATUS:
-						displayModal(R.string.could_not_complete_request, R.string.zluba_error, true);
-						return true;
-	
-					case STRONG_AUTH_NOT_ENROLLED:
-						displayModal(R.string.account_security_title_text, R.string.account_security_not_enrolled, true);
-						return true;
-	
-					case PLANNED_OUTAGE:
-						displayModal(R.string.could_not_complete_request, R.string.planned_outage_one, true);
-						return true;
-	
-					case FAILED_SECURITY:	
-						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-						return true;
-	
-					default:
-						Log.e(TAG, "UNHANDLED ERROR: " + messageErrorResponse.getMessage());
-						return false;
+				case SAMS_CLUB_MEMBER: 
+					displayModal(R.string.we_are_sorry, R.string.account_info_sams_club_card_error_text, true);
+					handled = true;
+					break;
+				case REG_AUTHENTICATION_PROBLEM: 
+					showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));					
+					handled = true;
+					break;
+				case BAD_ACCOUNT_STATUS:
+					displayModal(R.string.could_not_complete_request, R.string.problem_authenticating, true);
+					handled = true;
+					break;
+				case FINAL_LOGIN_ATTEMPT:
+					showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
+					handled = true;
+					break;
+				case MAX_LOGIN_ATTEMPTS:
+					displayModal(R.string.lockout_title, R.string.locked_account, true);
+					handled = true;
+					break;
+				case INVALID_EXTERNAL_STATUS:
+				case ONLINE_STATUS_PROHIBITED:
+				case INVALID_ONLINE_STATUS:
+					displayModal(R.string.could_not_complete_request, R.string.zluba_error, true);
+					handled = true;
+					break;
+				case STRONG_AUTH_NOT_ENROLLED:
+					displayModal(R.string.account_security_title_text, R.string.account_security_not_enrolled, true);
+					handled = true;
+					break;
+				case PLANNED_OUTAGE:
+					displayModal(R.string.could_not_complete_request, R.string.planned_outage_one, true);
+					handled = true;
+					break;
+				case FAILED_SECURITY:	
+					showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+					handled = true;
+					break;
+				default:
+					Log.e(TAG, "UNHANDLED ERROR: " + messageErrorResponse.getMessage());
+					break;
 				}
-			}
+				return handled;
+			}	
 		};
 
 		final NetworkServiceCall<?> serviceCall = createServiceCall(callback, accountInformationDetails);
