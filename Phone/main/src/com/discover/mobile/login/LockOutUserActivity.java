@@ -32,7 +32,7 @@ public class LockOutUserActivity extends RoboActivity {
 	/**
 	 * The title of the error dialog. Defaults to "Secure Credit Card Login"
 	 */
-	public void setErrorTitleText(int resourceId) {
+	public void setErrorTitleText(final int resourceId) {
 		errorTextView.setText(getString(resourceId));
 	}
 
@@ -41,19 +41,17 @@ public class LockOutUserActivity extends RoboActivity {
 	 * 
 	 * @param resourceId
 	 */
-	public void setErrorText(int resourceId) {
+	public void setErrorText(final int resourceId) {
 		errorTextView.setText(getString(resourceId));
 	}
 
-	@InjectView(R.id.secure_card_login_label)
-	private TextView errorTitleText;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		Integer errorText = (Integer) this.getIntent().getExtras().getSerializable(IntentExtraKey.ERROR_TEXT_KEY);
-		Integer errorTitleText = (Integer) this.getIntent().getExtras().getSerializable(IntentExtraKey.ERROR_TITLE_TEXT_KEY);
+		final Integer errorText = (Integer) this.getIntent().getExtras().getSerializable(IntentExtraKey.ERROR_TEXT_KEY);
+		final Integer errorTitleText = (Integer) this.getIntent().getExtras().getSerializable(IntentExtraKey.ERROR_TITLE_TEXT_KEY);
 		if (errorText != null)
 			setErrorText(errorText);
 		if (errorTitleText != null)
