@@ -37,15 +37,15 @@ import com.discover.mobile.navigation.HeaderProgressIndicator;
  * CreateLoginActivity - this is the final step of a user either going through "Forgot Both" or "Register".
  * This activity takes all of the information submitted from step 1 and adds it to the information gathered on
  * this activity. Then all of that information together is submitted to register (or re-register) the user.
- * 
+ *  
  * @author scottseward
  *
  */
 public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	private final String TAG = ForgotOrRegisterFinalStep.class.getSimpleName();
-	
+
 	private CreateLoginDetails formDataTwo;
-	
+
 	private final String UPDATE_PASS_CONFIRM_STATE = "a";
 	private final String UPDATE_ID_CONFIRM_STATE ="b";
 	private final String UPDATE_EMAIL = "c";
@@ -57,8 +57,8 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	private final String SERVER_ERROR_STRING = "i";
 	private final String UPDATE_PASSWORD_STATE = "k";
 	private final String UPDATE_ID_STATE = "l";
-	
-//ERROR LABELS
+
+	//ERROR LABELS
 	private TextView mainErrorMessageLabel;
 	private TextView mainErrorMessageLabelTwo;
 	private TextView errorMessageLabel;
@@ -66,29 +66,29 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	private TextView passConfirmErrorLabel;
 	private TextView emailErrorLabel;
 
-//SCROLL VIEW
+	//SCROLL VIEW
 	private ScrollView mainScrollView;
-		
-//INPUT FIELDS
+
+	//INPUT FIELDS
 	private EmailEditText emailField;
 	private CredentialStrengthEditText idField;
 	private ConfirmationEditText idConfirmField;
 	private CredentialStrengthEditText passField;
 	private ConfirmationEditText passConfirmField;
-	
+
 	private boolean idIsError = false;
 	private boolean isPassError = false;
 	private boolean isEmailError = false;
 	private boolean isError1 = false;
 	private boolean isError2 = false;
 	private boolean isServerError = false;
-	
-//HEADER PROGRESS BAR
+
+	//HEADER PROGRESS BAR
 	private HeaderProgressIndicator headerProgressIndicator;
-	
-//BUTTONS
+
+	//BUTTONS
 	private final Activity currentActivity = this;
-	
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -108,11 +108,11 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		setupHelpNumber();
 		restoreState(savedInstanceState);
 	}
-	
+
 	protected void getPreviousScreenType() {
 		isForgotFlow = getIntent().getBooleanExtra(IntentExtraKey.SCREEN_FORGOT_BOTH, false);
 	}
-	
+
 	/**
 	 * Resume the fragment
 	 */
@@ -121,7 +121,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		super.onResume();
 		showErrors();
 	}
-	
+
 	private void showErrors() {
 		if(isEmailError){
 			emailField.setErrors();
@@ -194,7 +194,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 			errorMessageLabel.setText(savedInstanceState.getString(SERVER_ERROR_STRING));
 		}
 	}
-	
+
 	/**
 	 * Attach error lables to be hidden/shown for these input fields based on the valididty of their input.
 	 */
@@ -203,7 +203,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		idConfirmField.attachErrorLabel(idConfirmErrorLabel);
 		passConfirmField.attachErrorLabel(passConfirmErrorLabel);
 	}
-	
+
 	/**
 	 * Checks to see if all information on the screen is valid.
 	 * @return Returns true if all information on the screen is valid.
@@ -213,7 +213,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 				idField.isValid() && idConfirmField.isValid() && 
 				passField.isValid() && passConfirmField.isValid();
 	}
-	
+
 	/**
 	 * Assign all local variables to view elements that we will need to access.
 	 */
@@ -223,14 +223,14 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		idConfirmField = (ConfirmationEditText)findViewById(R.id.account_info_two_id_confirm_field);
 		idField = (CredentialStrengthEditText)findViewById(R.id.account_info_two_id_field);
 		emailField = (EmailEditText)findViewById(R.id.account_info_two_email_field);
-		
+
 		mainErrorMessageLabelTwo = (TextView)findViewById(R.id.account_info_error_label_two);
 		errorMessageLabel = (TextView)findViewById(R.id.account_info_id_confirm_error_label);
 		mainErrorMessageLabel = (TextView)findViewById(R.id.account_info_main_error_label);
 		idConfirmErrorLabel = (TextView)findViewById(R.id.account_info_id_confirm_error_label);
 		emailErrorLabel = (TextView)findViewById(R.id.account_info_email_error_label);
 		passConfirmErrorLabel = (TextView)findViewById(R.id.account_info_pass_two_confirm_error_label);
-		
+
 		mainScrollView = (ScrollView)findViewById(R.id.main_scroll);
 
 		headerProgressIndicator = (HeaderProgressIndicator)findViewById(R.id.header);
@@ -244,7 +244,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		idConfirmField.attachEditTextToMatch(idField);
 		passConfirmField.attachEditTextToMatch(passField);
 	}
-	
+
 	/**
 	 * Setup the header progress UI element. With proper text and showing that we are on step 2 of a 3 step process.
 	 */
@@ -253,7 +253,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		headerProgressIndicator.setTitle(R.string.enter_info, R.string.create_login, R.string.confirm);
 		headerProgressIndicator.setPosition(1);
 	}
-	
+
 	/**
 	 * Set the type of input that the strength bars should check against.
 	 */
@@ -261,7 +261,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		idField.setCredentialType(CredentialStrengthEditText.USERID);
 		passField.setCredentialType(CredentialStrengthEditText.PASSWORD);
 	}
-	
+
 	/**
 	 * Take the account details POJO from step 1 and merge it into a POJO for step 2.
 	 */
@@ -283,7 +283,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 			Log.e(TAG, "UNABLE TO MERGE ACCOUNT DETAILS");
 		}
 	}
-	
+
 	/**
 	 * If all of the form information is complete, then save the info in our POJO and submit it to the server
 	 * for server side validation. Otherwise, scroll to the top of the page and display an error.
@@ -291,13 +291,13 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	 */
 	public void checkInputsThenSubmit(final View v){
 		CommonMethods.setViewGone(mainErrorMessageLabel);
-		
+
 		emailField.updateAppearanceForInput();
 		passField.updateAppearanceForInput();
 		idField.updateAppearanceForInput();
 		passConfirmField.updateAppearanceForInput();
 		idConfirmField.updateAppearanceForInput();
-		
+
 		if(isFormCompleteAndValid()){
 			formDataTwo.email = emailField.getText().toString();
 			formDataTwo.password = passField.getText().toString();
@@ -310,9 +310,9 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 			mainScrollView.smoothScrollTo(0, 0);
 			CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text, currentActivity);
 		}
-			
+
 	}
-	
+
 	/**
 	 * Submit all of the information present on this screen along with the information from
 	 * register/forgot both step 1. On success, retrieve the users account information.
@@ -320,19 +320,19 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	private void submitFormInfo() {
 		final ProgressDialog progress = 
 				ProgressDialog.show(this, "Discover", "Loading...", true);
-		
+
 		//Lock orientation while request is being processed
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-		
+
 		final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = 
 				new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
-			
+
 			@Override
 			public void complete(final NetworkServiceCall<?> sender, final Object result) {
 				//Unlock orientation after request has been processed
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 			}
-			
+
 			@Override
 			public void success(final NetworkServiceCall<?> sender, final RegistrationConfirmationDetails responseData) {
 				progress.dismiss();
@@ -346,12 +346,12 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 				mainScrollView.smoothScrollTo(0, 0);
 
 				switch (errorResponse.getHttpStatusCode()) {
-					default:
-						Log.e(TAG, "Create Login submission error : " + errorResponse.toString());
-						CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, R.string.unkown_error_text, currentActivity);
-						return true;
+				default:
+					Log.e(TAG, "Create Login submission error : " + errorResponse.toString());
+					CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, R.string.unkown_error_text, currentActivity);
+					return true;
 				}
-				
+
 			}
 
 			@Override
@@ -360,7 +360,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
 				exceptionHandler.handleFailure(sender, executionException);
 			}
-			
+
 			@Override
 			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
@@ -388,14 +388,14 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 				case PLANNED_OUTAGE:
 					showErrorModal(R.string.could_not_complete_request, R.string.unknown_error, false);
 					return true;
-					
+
 				default:
 					Log.e(TAG, "UNHANDLED ERROR " + messageErrorResponse.toString());
 					return false;
 				}
 			}
 		};
-				
+
 		final CreateLoginCall registrationCall = 
 				new CreateLoginCall(this, callback, formDataTwo);
 		registrationCall.submit();

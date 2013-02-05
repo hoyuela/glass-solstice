@@ -30,7 +30,7 @@ public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstS
 	public ForgotBothAccountInformationActivity() {
 		super(AnalyticsPage.FORGOT_BOTH_STEP1);
 	}
-	
+
 	/**
 	 * Set the main input field to accept an account number as opposed to a username.
 	 */
@@ -49,14 +49,14 @@ public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstS
 		//Value is a stylized account number with spaces, remove these spaces and continue.
 		details.acctNbr = CommonMethods.getSpacelessString(value);
 	}
-	
+
 	@Override
 	protected NetworkServiceCall<?> createServiceCall(final AsyncCallback<Object> callback,
 			final AccountInformationDetails details) {
-		
+
 		return new AccountInformationCall(this, callback, details);
 	}
-	
+
 	/**
 	 * The Activity that will appear after a successful Strong Auth challenge.
 	 */
@@ -64,18 +64,18 @@ public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstS
 	protected Class<?> getSuccessfulStrongAuthIntentClass() {
 		return CreateLoginActivity.class;
 	}
-	
+
 	@Override
 	protected boolean isForgotFlow() {
 		return true;
 	}
-	
+
 	@Override
 	protected void setHeaderProgressText() {
-			HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
-			headerProgressBar.setTitle(R.string.enter_info, R.string.create_login, R.string.confirm);
+		final HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
+		headerProgressBar.setTitle(R.string.enter_info, R.string.create_login, R.string.confirm);
 	}
-	
+
 	@Override
 	public void goBack() {
 		finish();
@@ -96,22 +96,22 @@ public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstS
 	}
 
 	@Override
-	public void showCustomAlert(AlertDialog alert) {
+	public void showCustomAlert(final AlertDialog alert) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void showOneButtonAlert(int title, int content, int buttonText) {
+	public void showOneButtonAlert(final int title, final int content, final int buttonText) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void showDynamicOneButtonAlert(int title, String content,
-			int buttonText) {
+	public void showDynamicOneButtonAlert(final int title, final String content,
+			final int buttonText) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -121,9 +121,9 @@ public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstS
 	}
 
 	@Override
-	public void setLastError(int errorCode) {
+	public void setLastError(final int errorCode) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -137,5 +137,5 @@ public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstS
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }

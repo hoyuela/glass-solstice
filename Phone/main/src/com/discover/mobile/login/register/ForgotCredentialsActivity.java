@@ -33,7 +33,7 @@ import com.discover.mobile.login.LoginActivity;
  *
  */
 public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
-	
+
 	private ArrayAdapter<Option> optionAdapter;
 	private ListView choicesList;
 	final Activity currentContext = this;
@@ -52,7 +52,7 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 		helpNumber = (TextView)findViewById(R.id.help_number_label);
 		choicesList.setAdapter(optionAdapter);
 
-		
+
 		choicesList.setOnItemClickListener(new OnItemClickListener() {
 
 			/**
@@ -60,8 +60,8 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 			 * at that position, start the activity associated with that object, then finish this activity.
 			 */
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
+			public void onItemClick(final AdapterView<?> arg0, final View arg1, final int arg2,
+					final long arg3) {
 				final Option selection = optionAdapter.getItem(arg2);
 				final Class<?> intentClass = selection.getIntentClass();
 				if(selection == Option.BOTH){
@@ -75,16 +75,16 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_MENU);
 	}
-	
+
 	/**
 	 * Make the help number clickable and dialable.
 	 */
 	protected void setupClickablePhoneNumbers() {
 		final Context currentContext = this;
 		helpNumber.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				CommonMethods.dialNumber(helpNumber.getText().toString(), currentContext);				
 			}
 		});
@@ -93,7 +93,7 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 	private void endActivity(){
 		finish();
 	}
-	
+
 	/**
 	 * An enumerated type that contains list items and the class/activity that they start upon selection.
 	 * 
@@ -104,15 +104,15 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 		USER_ID("Forgot User ID", ForgotUserIdActivity.class),
 		PASSWORD("Forgot Password", ForgotPasswordAccountInformationActivity.class),
 		BOTH("Forgot Both", ForgotBothAccountInformationActivity.class);
-		
+
 		private final String ITEM_TEXT;
 		private final Class<?> INTENT_CLASS;
-		
+
 		Option(final String itemText, final Class<? extends Activity> intentClass) {
 			ITEM_TEXT = itemText;
 			INTENT_CLASS = intentClass;
 		}
-		
+
 		/**
 		 * Returns a String object containing the text of the list item.
 		 */
@@ -120,7 +120,7 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 		public String toString() {
 			return ITEM_TEXT;
 		}
-		
+
 		/**
 		 * Returns the class/activity associated with this list option.
 		 * @return - the class/activity associated with this list item
@@ -134,10 +134,10 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 	public void onBackPressed() {
 		goBack();
 	}
-	
+
 	@Override
 	public void goBack() {
-		Intent login = new Intent(this, LoginActivity.class);
+		final Intent login = new Intent(this, LoginActivity.class);
 		startActivity(login);
 		finish();
 	}
@@ -155,22 +155,22 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 	}
 
 	@Override
-	public void showCustomAlert(AlertDialog alert) {
+	public void showCustomAlert(final AlertDialog alert) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void showOneButtonAlert(int title, int content, int buttonText) {
+	public void showOneButtonAlert(final int title, final int content, final int buttonText) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void showDynamicOneButtonAlert(int title, String content,
-			int buttonText) {
+	public void showDynamicOneButtonAlert(final int title, final String content,
+			final int buttonText) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -180,9 +180,9 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 	}
 
 	@Override
-	public void setLastError(int errorCode) {
+	public void setLastError(final int errorCode) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -196,6 +196,6 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
+
 }
