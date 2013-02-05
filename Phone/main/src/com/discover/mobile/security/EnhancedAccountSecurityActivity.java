@@ -74,9 +74,9 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 * define the number of vertical lines that the menu will occupy when it is
 	 * expanded. (When collapsed it is set to 0)
 	 */
-	private final int HELP_DROPDOWN_LINE_HEIGHT = 10;
+	private static final int HELP_DROPDOWN_LINE_HEIGHT = 10;
 
-	private final String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
+	private static final String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
 	
 	private String strongAuthQuestion;
 	private String strongAuthQuestionId;

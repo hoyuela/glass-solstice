@@ -22,6 +22,7 @@ import com.discover.mobile.common.push.manage.PostPrefDetail;
 import com.discover.mobile.common.push.manage.PostPrefParam;
 import com.discover.mobile.common.push.manage.PostPreferencesDetail;
 import com.discover.mobile.common.push.manage.PreferencesDetail;
+import com.google.common.base.Strings;
 
 /**
  * An item that can be toggled and that has an edit text in the layout
@@ -37,12 +38,11 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 	private String category;
 	
 	/**Box holding the amount the user specified*/
-	private PushManageEditText amountBox;
+	private final PushManageEditText amountBox;
 	
 	/**TextView holding the minimum amount text*/
-	private TextView minAmount;
+	private final TextView minAmount;
 
-	private TextView errorText;
 	
 	/**
 	 * Constructor of the class
@@ -65,7 +65,7 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 		amountBox = (PushManageEditText) mainView.findViewById(R.id.amount_box);
 		minAmount = (TextView) mainView.findViewById(R.id.minimum_amount);
 		final TextView amountText = (TextView) mainView.findViewById(R.id.amount_text_box_view);
-		errorText = (TextView) mainView.findViewById(R.id.push_edit_text_error_label);
+		final TextView errorText = (TextView) mainView.findViewById(R.id.push_edit_text_error_label);
 		
 		super.getTextToggleView().setOnClickListener(getToggleListener());
 		super.getPushToggleView().setOnClickListener(getToggleListener());
@@ -114,6 +114,7 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 	 * Return if the value in the edit text is valid
 	 * @return if the value in the edit text is valid
 	 */
+	@Override
 	public boolean isValid(){
 		return amountBox.isValid();
 	}
@@ -130,6 +131,7 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 	 * Get the category of the item
 	 * @return - the category of the item
 	 */
+	@Override
 	public String getCategory() {
 		return category;
 	}
@@ -138,6 +140,7 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 	 * Set if the push item is supposed to be checked
 	 * @param isChecked - true if the push item is supposed to be checked
 	 */
+	@Override
 	public void setCategory(final String category) {
 		this.category = category;
 	}
@@ -157,12 +160,13 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 	private String getAmount(){
 		final String amount = amountBox.getText().toString();
 		String number = Integer.toString(0);
-		if(null == amount){return number;}
-		try {
-			number =  NumberFormat.getCurrencyInstance().parse(amount).toString();
-		} catch (ParseException e) {
-			Log.e(TAG, "Error parsing string "+ amount + " , reason: " + e.getMessage());
-		}	
+		if( !Strings.isNullOrEmpty(amount) ) {
+			try {
+				number =  NumberFormat.getCurrencyInstance().parse(amount).toString();
+			} catch (final ParseException e) {
+				Log.e(TAG, "Error parsing string "+ amount + " , reason: " + e.getMessage());
+			}	
+		}
 		return number;
 	}
 	

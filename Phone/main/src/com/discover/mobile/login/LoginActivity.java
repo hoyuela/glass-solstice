@@ -78,23 +78,22 @@ import com.google.inject.Inject;
 @ContentView(R.layout.login_start)
 public class LoginActivity extends BaseActivity  {
 	/*TAG used to print logs for the LoginActivity into logcat*/
-	private final String TAG = LoginActivity.class.getSimpleName();
-	
-	private final String emptyString = ""; //$NON-NLS-1$
+	private static final String TAG = LoginActivity.class.getSimpleName();
+
 
 	/**
 	 * These are string values used when passing extras to the saved instance
 	 * state bundle for restoring the state of the screen upon orientation
 	 * changes.
 	 */
-	private final String PASS_KEY = "a";
-	private final String ID_KEY = "b";
-	private final String SAVE_ID_KEY = "c";
-	private final String LOGIN_TYPE_KEY = "d";
-	private final String PRE_AUTH_KEY = "e";
-	private final String PW_INPUT_TYPE_KEY = "f";
-	private final String ERROR_MESSAGE_KEY = "g";
-	private final String ERROR_MESSAGE_VISIBILITY = "h";
+	private static final String PASS_KEY = "a";
+	private static final String ID_KEY = "b";
+	private static final String SAVE_ID_KEY = "c";
+	private static final String LOGIN_TYPE_KEY = "d";
+	private static final String PRE_AUTH_KEY = "e";
+	private static final String PW_INPUT_TYPE_KEY = "f";
+	private static final String ERROR_MESSAGE_KEY = "g";
+	private static final String ERROR_MESSAGE_VISIBILITY = "h";
 	
 	/**
 	 * Roboguise injections of android interface element references.
@@ -182,7 +181,7 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	private AccountType lastLoginAcct = AccountType.CARD_ACCOUNT;
 	
-	private final int LOGOUT_TEXT_COLOR = R.color.body_copy;
+	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
 	
 	@Inject
 	private PushNotificationService pushNotificationService;
@@ -718,6 +717,8 @@ public class LoginActivity extends BaseActivity  {
 	 * clearInputs() Removes any text in the login input fields.
 	 */
 	private void clearInputs() {
+		final String emptyString = ""; //$NON-NLS-1$
+		
 		idField.setText(emptyString);
 		passField.setText(emptyString);
 		setInputFieldsDrawablesToDefault();

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.discover.mobile.common.R;
+import com.google.common.base.Strings;
 
 /**
  * Custom edit text field for the manage push alerts edit text items 
@@ -24,9 +25,6 @@ public class PushManageEditText extends ValidatedInputField{
 
 	/**Static string to replace the maximum amount*/
 	private static String MAXIMUM_AMT = "MAXIMUM_AMT";
-
-	/** Default ems size of input field*/
-	private final int EMS_LENGTH = 4;
 
 	/**Amount in the text box*/
 	private int amount;
@@ -118,15 +116,17 @@ public class PushManageEditText extends ValidatedInputField{
 	private String getAmountFromEditText(){
 		String amountString = this.getText().toString();
 		String number = Integer.toString(0);
-		if(null == amountString){return number;}
-		if(!amountString.contains("$")){
-			amountString = "$" + amountString;
+		
+		if( !Strings.isNullOrEmpty(amountString) ) {	
+			if(!amountString.contains("$")){
+				amountString = "$" + amountString;
+			}
+			try {
+				number =  NumberFormat.getCurrencyInstance().parse(amountString).toString();
+			} catch (final ParseException e) {
+				Log.e(TAG, "Error parsing string "+ amountString + " , reason: " + e.getMessage());
+			}	
 		}
-		try {
-			number =  NumberFormat.getCurrencyInstance().parse(amountString).toString();
-		} catch (final ParseException e) {
-			Log.e(TAG, "Error parsing string "+ amountString + " , reason: " + e.getMessage());
-		}	
 		return number;
 	}
 

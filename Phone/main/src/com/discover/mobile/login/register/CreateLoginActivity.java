@@ -46,17 +46,17 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 
 	private CreateLoginDetails formDataTwo;
 
-	private final String UPDATE_PASS_CONFIRM_STATE = "a";
-	private final String UPDATE_ID_CONFIRM_STATE ="b";
-	private final String UPDATE_EMAIL = "c";
-	private final String ERROR_1 = "d";
-	private final String EROR_STRING_1 = "e";
-	private final String ERROR_2 = "f";
-	private final String ERROR_STRING_2 = "g";
-	private final String SERVER_ERROR = "h";
-	private final String SERVER_ERROR_STRING = "i";
-	private final String UPDATE_PASSWORD_STATE = "k";
-	private final String UPDATE_ID_STATE = "l";
+	private static final String UPDATE_PASS_CONFIRM_STATE = "a";
+	private static final String UPDATE_ID_CONFIRM_STATE ="b";
+	private static final String UPDATE_EMAIL = "c";
+	private static final String ERROR_1 = "d";
+	private static final String EROR_STRING_1 = "e";
+	private static final String ERROR_2 = "f";
+	private static final String ERROR_STRING_2 = "g";
+	private static final String SERVER_ERROR = "h";
+	private static final String SERVER_ERROR_STRING = "i";
+	private static final String UPDATE_PASSWORD_STATE = "k";
+	private static final String UPDATE_ID_STATE = "l";
 
 	//ERROR LABELS
 	private TextView mainErrorMessageLabel;
