@@ -149,12 +149,9 @@ public class ConfirmationEditText extends ValidatedInputField {
 				if(count > 0)
 					isInDefaultState = false;
 
-				if(isInDefaultState)
-				{/*Do nothing*/}
-				else if(isValid()){
+				if(!isInDefaultState && isValid()){
 					clearErrors();
 					setAppearanceMatched();
-
 				}
 				else
 					clearErrors();

@@ -235,10 +235,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 			isInDefaultState = false;
 
 		super.onTextChanged(text, start, lengthBefore, lengthAfter);
-		if(isInDefaultState)
-		{/*dont update the appearance in case the field is empty and gets 'updated'
-			with empty text through orientation change or otherwise*/}
-		else 			
+		if(!isInDefaultState)
 			updateAppearanceForInput();
 
 	}

@@ -30,7 +30,6 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	private final int MIN_USERNAME_LENGTH = 6;
 
 	private int lengthBefore = 0;
-	private int lengthAfter = 0;
 
 	private int cursorStartPosition = 0;
 	private int cursorEndPosition = 0;
@@ -115,7 +114,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 				if(currentTextStylized.length() == VALID_ACCOUNT_NUMBER_LENGTH + 1)
 					currentTextStylized = currentTextStylized.trim();
 
-				lengthAfter = currentTextStylized.length();
+				final int lengthAfter = currentTextStylized.length();
 
 				if(currentTextStylized.length() <= VALID_ACCOUNT_NUMBER_LENGTH && !currentText.equals(currentTextStylized)){
 					saveCursorPosition();

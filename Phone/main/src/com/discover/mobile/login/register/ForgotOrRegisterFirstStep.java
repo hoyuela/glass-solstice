@@ -68,7 +68,7 @@ import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
 abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 
-	private static final String TAG = ForgotOrRegisterFirstStep.class.getSimpleName();
+	private final String TAG = ForgotOrRegisterFirstStep.class.getSimpleName();
 
 	protected AccountInformationDetails accountInformationDetails;
 
@@ -82,23 +82,23 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	/**
 	 * Keys for use when saving a restoring activity state on screen rotation.
 	 */
-	private final static String MAIN_ERROR_TEXT_KEY = "a";
-	private final static String MAIN_ERROR_VISIBILITY_KEY = "b";
+	private final String MAIN_ERROR_TEXT_KEY = "a";
+	private final String MAIN_ERROR_VISIBILITY_KEY = "b";
 
-	private final static String MAIN_FIELD_KEY = "c";
-	private static final String MAIN_FIELD_ERROR_KEY = "d";
+	private final String MAIN_FIELD_KEY = "c";
+	private final String MAIN_FIELD_ERROR_KEY = "d";
 
-	private static final String EXP_MONTH_KEY = "e";
-	private static final String EXP_YEAR_KEY = "f";
-	private static final String EXP_ERROR_KEY = "g";
+	private final String EXP_MONTH_KEY = "e";
+	private final String EXP_YEAR_KEY = "f";
+	private final String EXP_ERROR_KEY = "g";
 
-	private static final String DOB_DAY_KEY = "h";
-	private static final String DOB_MONTH_KEY = "i";
-	private static final String DOB_YEAR_KEY = "j";
-	private static final String DOB_ERROR_KEY = "k";
+	private final String DOB_DAY_KEY = "h";
+	private final String DOB_MONTH_KEY = "i";
+	private final String DOB_YEAR_KEY = "j";
+	private final String DOB_ERROR_KEY = "k";
 
-	private static final String SSN_KEY = "l";
-	private static final String SSN_ERROR_KEY = "m";
+	private final String SSN_KEY = "l";
+	private final String SSN_ERROR_KEY = "m";
 
 	private final String MODAL_IS_SHOWING_KEY = "n";
 	private final String MODAL_BODY_KEY = "o";
@@ -477,47 +477,47 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 
 				// FIXME add "assertions" for what the HTTP status code should be
 				switch (messageErrorResponse.getMessageStatusCode()) {
-				case SAMS_CLUB_MEMBER: 
-					displayModal(R.string.we_are_sorry, R.string.account_info_sams_club_card_error_text, true);
-					return true;
-
-				case REG_AUTHENTICATION_PROBLEM: 
-					showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));					
-					return true;
-
-				case BAD_ACCOUNT_STATUS:
-					displayModal(R.string.could_not_complete_request, R.string.problem_authenticating, true);
-					return true;
-
-				case FINAL_LOGIN_ATTEMPT:
-					showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
-					return true;
-
-				case MAX_LOGIN_ATTEMPTS:
-					displayModal(R.string.lockout_title, R.string.locked_account, true);
-					return true;
-
-				case INVALID_EXTERNAL_STATUS:
-				case ONLINE_STATUS_PROHIBITED:
-				case INVALID_ONLINE_STATUS:
-					displayModal(R.string.could_not_complete_request, R.string.zluba_error, true);
-					return true;
-
-				case STRONG_AUTH_NOT_ENROLLED:
-					displayModal(R.string.account_security_title_text, R.string.account_security_not_enrolled, true);
-					return true;
-
-				case PLANNED_OUTAGE:
-					displayModal(R.string.could_not_complete_request, R.string.planned_outage_one, true);
-					return true;
-
-				case FAILED_SECURITY:	
-					showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-					return true;
-
-				default:
-					Log.e(TAG, "UNHANDLED ERROR: " + messageErrorResponse.getMessage());
-					return false;
+					case SAMS_CLUB_MEMBER: 
+						displayModal(R.string.we_are_sorry, R.string.account_info_sams_club_card_error_text, true);
+						return true;
+	
+					case REG_AUTHENTICATION_PROBLEM: 
+						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));					
+						return true;
+	
+					case BAD_ACCOUNT_STATUS:
+						displayModal(R.string.could_not_complete_request, R.string.problem_authenticating, true);
+						return true;
+	
+					case FINAL_LOGIN_ATTEMPT:
+						showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
+						return true;
+	
+					case MAX_LOGIN_ATTEMPTS:
+						displayModal(R.string.lockout_title, R.string.locked_account, true);
+						return true;
+	
+					case INVALID_EXTERNAL_STATUS:
+					case ONLINE_STATUS_PROHIBITED:
+					case INVALID_ONLINE_STATUS:
+						displayModal(R.string.could_not_complete_request, R.string.zluba_error, true);
+						return true;
+	
+					case STRONG_AUTH_NOT_ENROLLED:
+						displayModal(R.string.account_security_title_text, R.string.account_security_not_enrolled, true);
+						return true;
+	
+					case PLANNED_OUTAGE:
+						displayModal(R.string.could_not_complete_request, R.string.planned_outage_one, true);
+						return true;
+	
+					case FAILED_SECURITY:	
+						showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+						return true;
+	
+					default:
+						Log.e(TAG, "UNHANDLED ERROR: " + messageErrorResponse.getMessage());
+						return false;
 				}
 			}
 		};

@@ -7,7 +7,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -75,28 +74,22 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 * define the number of vertical lines that the menu will occupy when it is
 	 * expanded. (When collapsed it is set to 0)
 	 */
-	private final static int HELP_DROPDOWN_LINE_HEIGHT = 10;
+	private final int HELP_DROPDOWN_LINE_HEIGHT = 10;
 
 	private final String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
-	
-	private final String TRUE = "true";
-	private final String FALSE = "false";
 	
 	private String strongAuthQuestion;
 	private String strongAuthQuestionId;
 	
 	private String questionId;
-	private Boolean isCard;
+	private Boolean isCard = true;
 	private RadioGroup securityRadioGroup;
 	private TextView detailHelpLabel;
 	private TextView statusIconLabel;
 	private TextView questionLabel;
 	private RelativeLayout whatsThisLayout;
-	private Bundle extras;
 	
 	private String inputErrorText;
-	private String serverErrorText;
-	private int serverErrorVisibility;
 	private int inputErrorVisibility;
 	private String dropdownSymbol;
 	
@@ -147,8 +140,8 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	
 	private void restoreState(final Bundle savedInstanceState) {
 		if(savedInstanceState != null){
-			serverErrorText = savedInstanceState.getString(SERVER_ERROR_TEXT);
-			serverErrorVisibility = savedInstanceState.getInt(SERVER_ERROR_VISIBILITY);
+			final String serverErrorText = savedInstanceState.getString(SERVER_ERROR_TEXT);
+			final int serverErrorVisibility = savedInstanceState.getInt(SERVER_ERROR_VISIBILITY);
 			
 			inputErrorVisibility = savedInstanceState.getInt(ANSWER_ERROR_VISIBILITY);
 			inputErrorText = savedInstanceState.getString(ANSWER_ERROR_TEXT);
@@ -188,7 +181,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
             public void onCheckedChanged(final RadioGroup group, final int checkedId) { 
             	
             	final RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
-            	if (checkedRadioButton == radioButtonOne){
+            	if (checkedRadioButton.equals(radioButtonOne)){
             		radioButtonOne.setTextColor(subCopyColor);
             		radioButtonTwo.setTextColor(fieldCopyColor);
             	}else {
@@ -207,7 +200,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	public void onResume(){
 		super.onResume();
 
-		extras = getIntent().getExtras();
+		final Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			strongAuthQuestion = extras
 					.getString(IntentExtraKey.STRONG_AUTH_QUESTION);
@@ -454,9 +447,9 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		answerDetails.questionId = strongAuthQuestionId;
 
 		if (selectedIndex == 0) {
-			answerDetails.bindDevice = TRUE;
+			answerDetails.bindDevice = "true";
 		} else {
-			answerDetails.bindDevice = FALSE;
+			answerDetails.bindDevice = "false";
 		}
 
 		StrongAuthAnswerCall strongAuthAnswer;
@@ -505,7 +498,6 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 */
 	private void getStrongAuthQuestion() {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
-		final Activity currentActivity = this;
 		
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 		

@@ -35,7 +35,6 @@ import com.discover.mobile.login.LoginActivity;
 public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 
 	private ArrayAdapter<Option> optionAdapter;
-	private ListView choicesList;
 	final Activity currentContext = this;
 	protected TextView helpNumber;
 
@@ -46,7 +45,7 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_forgot_type_select);
-		choicesList = (ListView)findViewById(android.R.id.list);
+		final ListView choicesList = (ListView)findViewById(android.R.id.list);
 		optionAdapter = new ArrayAdapter<Option>(this, R.layout.register_forgot_type_select_option_item, android.R.id.text1,
 				Option.values());
 		helpNumber = (TextView)findViewById(R.id.help_number_label);
