@@ -167,7 +167,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 		confirmationAndLoginScreen.putExtra(IntentExtraKey.UID, responseData.userId);
 		confirmationAndLoginScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationAndLoginScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
-		
+
 		if(CurrentSessionDetails.getCurrentSessionDetails().isForgotCreds()){
 			confirmationAndLoginScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_FORGOT_BOTH);
 		} else{
@@ -176,14 +176,14 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 		this.startActivity(confirmationAndLoginScreen);
 		finish();
 	}
-	
+
 	/**
 	 * Make the help number at the bottom of the screen clickable and when clicked, dial its number.
 	 */
 	protected void setupHelpNumber() {
 		final TextView helpText = (TextView)findViewById(R.id.help_number_label);
 		helpText.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(final View v) {
 				CommonMethods.dialNumber(helpText.getText().toString(), currentContext);
@@ -201,7 +201,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 		startActivity(maintenancePageIntent);
 		finish();
 	}
-	
+
 	@Override
 	public TextView getErrorLabel() {
 		return null;
@@ -211,7 +211,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 	public List<EditText> getInputFields() {
 		return null;
 	}
-	
+
 	/**
 	 * Close this activity and start the forgot credentials activity.
 	 * @param v
@@ -219,7 +219,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 	public void cancel(final View v) {
 		goBack();
 	}
-	
+
 	@Override
 	public void goBack() {
 		Intent lastScreen = null;
@@ -233,7 +233,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 		finish();
 
 	}
-	
+
 	@Override 
 	public void onBackPressed() {
 		goBack();

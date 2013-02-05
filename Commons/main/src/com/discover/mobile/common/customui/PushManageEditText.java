@@ -13,39 +13,39 @@ import android.view.View;
 import com.discover.mobile.common.R;
 
 /**
- * Custom edit text field for the manage push alerts edit text items
+ * Custom edit text field for the manage push alerts edit text items 
  * @author jthornton
  *
  */
 public class PushManageEditText extends ValidatedInputField{
-	
+
 	/**Static string to replace the minimum amount*/
 	private static String MINIMUM_AMT = "MINIMUM_AMT";
-	
+
 	/**Static string to replace the maximum amount*/
 	private static String MAXIMUM_AMT = "MAXIMUM_AMT";
-	
+
 	/** Default ems size of input field*/
-	private int EMS_LENGTH = 4;
+	private final int EMS_LENGTH = 4;
 
 	/**Amount in the text box*/
 	private int amount;
-	
+
 	/**Max amount allowed in the text box*/
 	private int maxAmount;
-	
+
 	/**Min amount allowed in the text box*/
 	private int minAmount;
-	
+
 	/**application context*/
-	private Context context;
-	
+	private final Context context;
+
 	/**Defined amount from server*/
 	private int definedAmount;
-	
+
 	/**Tag for error logging*/
 	private static final String TAG = PushManageEditText.class.getSimpleName();
-	
+
 	/**
 	 * Class constructor
 	 * @param context - activity context
@@ -54,7 +54,7 @@ public class PushManageEditText extends ValidatedInputField{
 		super(context);
 		this.context = context;
 	}
-	
+
 	/**
 	 * Class constructor
 	 * @param context - activity context
@@ -64,7 +64,7 @@ public class PushManageEditText extends ValidatedInputField{
 		super(context, attrs);
 		this.context = context;
 	}
-	
+
 	/**
 	 * Class constructor
 	 * @param context - activity context
@@ -75,7 +75,7 @@ public class PushManageEditText extends ValidatedInputField{
 		super(context, attrs, defStyle);
 		this.context = context;
 	}
-	
+
 	/**
 	 * Return true if the edit text contains a valid value
 	 * @return if the edit text contains a valid value
@@ -89,9 +89,9 @@ public class PushManageEditText extends ValidatedInputField{
 		}else{
 			isValid =  amount <= maxAmount && amount >= minAmount;
 		}
-		
+
 		if(null == errorLabel){return isValid;}
-		
+
 		if(!isValid){
 			this.errorLabel.setText(getErrorCodeText());
 			this.errorLabel.setVisibility(View.VISIBLE);
@@ -100,7 +100,7 @@ public class PushManageEditText extends ValidatedInputField{
 		}
 		return isValid;
 	}
-	
+
 	/**
 	 * Set the default appearance so that we dont have to do it in XML.
 	 */
@@ -110,7 +110,7 @@ public class PushManageEditText extends ValidatedInputField{
 		this.setTextColor(getResources().getColor(R.color.field_copy));
 		this.setInputType(InputType.TYPE_CLASS_NUMBER);
 	}
-	
+
 	/**
 	 * Get the amount the user put in the box
 	 * @return - the amount put in the box
@@ -124,12 +124,12 @@ public class PushManageEditText extends ValidatedInputField{
 		}
 		try {
 			number =  NumberFormat.getCurrencyInstance().parse(amountString).toString();
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			Log.e(TAG, "Error parsing string "+ amountString + " , reason: " + e.getMessage());
 		}	
 		return number;
 	}
-	
+
 	/**
 	 * Check to see if the edit text has changed from its defined amount
 	 * @return if the edit text has changed from its defined amount
@@ -137,7 +137,7 @@ public class PushManageEditText extends ValidatedInputField{
 	public boolean hasChanged(){
 		return !(Integer.parseInt(getAmountFromEditText()) == definedAmount);
 	}
-	
+
 	/**
 	 * Get the error code to display
 	 * @return the error code to display
@@ -209,7 +209,7 @@ public class PushManageEditText extends ValidatedInputField{
 	/**
 	 * @param definedAmount the definedAmount to set
 	 */
-	public void setDefinedAmount(int definedAmount) {
+	public void setDefinedAmount(final int definedAmount) {
 		this.definedAmount = definedAmount;
 	}
 

@@ -15,48 +15,48 @@ import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.utils.CommonUtils;
 
 /**
- * The parent class for any date picker
+ * The parent class for any date picker 
  * @author scottseward
  *
  */
 public abstract class CustomDatePickerElement extends ValidatedInputField {
 	protected Context currentContext;
-	
+
 	protected CustomDatePickerDialog attachedDatePickerDialog;
-	
+
 	protected final int INVALID_VALUE = -1;
-	
+
 	private int day = INVALID_VALUE;
 	private int month = INVALID_VALUE;
 	private int year = INVALID_VALUE;
-	
-	public CustomDatePickerElement(Context context) {
+
+	public CustomDatePickerElement(final Context context) {
 		super(context);
 		defaultSetup(context);
 	}
-	
-	public CustomDatePickerElement(Context context, AttributeSet attrs) {
+
+	public CustomDatePickerElement(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		defaultSetup(context);
 
 	}
-	
-	public CustomDatePickerElement(Context context, AttributeSet attrs, int defStyle){
+
+	public CustomDatePickerElement(final Context context, final AttributeSet attrs, final int defStyle){
 		super(context, attrs, defStyle);
 		defaultSetup(context);
 
 	}
-	
+
 	protected void defaultSetup(final Context context) {
 		currentContext = context;
 		setupDatePickerDialog();
 		setupOnTouchListener();
 		setupOnClickListener();
-		
+
 		this.setCursorVisible(false);
 		this.setKeyListener(null);
 	}
-	
+
 	/**
 	 * This allows support for clicking the elemnt rather than touching it.
 	 * So that if the field is focused and a physical button is pressed to 'click'
@@ -65,20 +65,20 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	protected void setupOnClickListener() {
 		this.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				attachedDatePickerDialog.show();
 			}
 		});
 	}
-	
+
 	/**
 	 * When the element is tapped, launch the date picker dialog.
 	 */
 	private void setupOnTouchListener() {
-		
+
 		this.setOnTouchListener(new OnTouchListener() {
 			@Override
-			public boolean onTouch(View v, MotionEvent event) {
+			public boolean onTouch(final View v, final MotionEvent event) {
 				if(event.getAction() == MotionEvent.ACTION_UP)
 					attachedDatePickerDialog.show();
 				return false;
@@ -93,20 +93,20 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	@Override
 	protected void setupFocusChangedListener() {
 		this.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
+
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
+			public void onFocusChange(final View v, final boolean hasFocus) {
 				if(!hasFocus){
 					if (!isValid())
 						setErrors();
 					else
 						clearErrors();
 				}
-				
+
 			}
 		});
 	}
-	
+
 
 	protected void setupDatePickerDialog() {
 		final Calendar currentDate = Calendar.getInstance();
@@ -114,11 +114,11 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 		final int currentYearMinusEighteen = currentDate.get(Calendar.YEAR) - getYearOffset();
 		final int currentDay = currentDate.get(Calendar.DAY_OF_MONTH) - getDayOffset();
 		final int currentMonth = currentDate.get(Calendar.MONTH) - getMonthOffset();
-		
+
 		attachedDatePickerDialog = new CustomDatePickerDialog(currentContext, new OnDateSetListener() {
 
 			@Override
-			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+			public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
 				setDay(dayOfMonth);
 				setMonth(monthOfYear);
 				setYear(year);
@@ -126,12 +126,12 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 				updateAppearanceForInput();
 			}
 		}, currentYearMinusEighteen, currentMonth, currentDay);
-		
+
 		final String dobPickerTitle = getResources().getString(R.string.account_info_dob_text);
 		attachedDatePickerDialog.setTitle(dobPickerTitle);	
-		
+
 	}
-	
+
 	/**
 	 * @return the day
 	 */
@@ -142,7 +142,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	/**
 	 * @param day the day to set
 	 */
-	public void setDay(int day) {
+	public void setDay(final int day) {
 		this.day = day;
 	}
 
@@ -156,7 +156,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	/**
 	 * @param month the month to set
 	 */
-	public void setMonth(int month) {
+	public void setMonth(final int month) {
 		this.month = month;
 	}
 
@@ -170,20 +170,20 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	/**
 	 * @param year the year to set
 	 */
-	public void setYear(int year) {
+	public void setYear(final int year) {
 		this.year = year;
 	}
-	
+
 	@Override
 	protected Drawable getRedX() {
 		return getGrayX();
 	}
-	
+
 	@Override
 	protected Drawable getGrayX() {
 		return getDownArrow();
 	}
-	
+
 	/**
 	 * Sets all of the member data to invalid values.
 	 */
@@ -192,7 +192,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 		year = INVALID_VALUE;
 		month = INVALID_VALUE;
 	}
-	
+
 	/**
 	 * If the date picker has valid values, update its label to a formatted date with those
 	 * values.
@@ -201,8 +201,8 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 		if(this.isValid())
 			this.setText( CommonUtils.getFormattedDate(getMonth(), getDay(), getYear()) );
 	}
-	
-	
+
+
 	/**
 	 * Checks to see if the set DOB Year is a valid year value.
 	 * @return true if the DOB year is valid.
@@ -210,7 +210,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	protected boolean isYearValid() {
 		return InputValidator.isYearValid(getYear());
 	}
-	
+
 	/**
 	 * Checks to see if the set DOB Month is a valid month value.
 	 * @return true if the DOB month is valid.
@@ -218,7 +218,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	protected boolean isMonthValid() {
 		return InputValidator.isMonthValid(getMonth());
 	}
-	
+
 	/**
 	 * Setup the default appearance of this input field to look like
 	 * a date picker. Same as default but with hint text and the down arrow in the right drawable.
@@ -231,7 +231,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getDownArrow(), null);
 	}
-	
+
 	/**
 	 * Checks to see if the set DOB Day is a valid day value.
 	 * @return true if the DOB day is valid.
@@ -239,7 +239,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	protected boolean isDayValid() {
 		return InputValidator.isDayValid(getDay());
 	}
-	
+
 	/**
 	 * Return the default placeholder text.
 	 * @return a string resource representing the default placeholder text.
@@ -247,7 +247,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	protected int getPlaceholderText(){
 		return R.string.date_placeholder;
 	}
-	
+
 	/**
 	 * Checks to see if the set DOB day, month, and year are valid.
 	 * @return true if the day, month, and year are all valid.
@@ -256,7 +256,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	public boolean isValid() {
 		return isYearValid() && isMonthValid() && isDayValid();
 	}
-	
+
 	protected int getYearOffset(){
 		return 0;
 	}

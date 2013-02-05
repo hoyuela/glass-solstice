@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
-import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.CurrentSessionDetails;
@@ -29,9 +28,6 @@ public class HomeSummaryFragment extends BaseFragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if (Globals.getCurrentAccount().equals(AccountType.BANK_ACCOUNT)){
-			BankServiceCallFactory.displayCustomerInformation();
-		}
 	}
 
 	private View view;
@@ -50,7 +46,7 @@ public class HomeSummaryFragment extends BaseFragment {
 	@Override
 	public void onPause() {
 		super.onPause();
-		
+
 		hideActionBarLogo();
 	}
 
@@ -75,28 +71,28 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * 
 	 * @param accountDetails
 	 */
-	private void setupCurrentBalanceElement(AccountDetails accountDetails) {
-		LinearLayout currentBalance = (LinearLayout) view
+	private void setupCurrentBalanceElement(final AccountDetails accountDetails) {
+		final LinearLayout currentBalance = (LinearLayout) view
 				.findViewById(R.id.home_current_balance);
-		double currBalance = getDoublevalue(accountDetails.currentBalance);
-		double credAvailable = getDoublevalue(accountDetails.availableCredit);
+		final double currBalance = getDoublevalue(accountDetails.currentBalance);
+		final double credAvailable = getDoublevalue(accountDetails.availableCredit);
 
 		// main content
 		((TextView) currentBalance.findViewById(R.id.title))
-				.setText(R.string.current_balance);
+		.setText(R.string.current_balance);
 		((TextView) currentBalance.findViewById(R.id.content_text))
-				.setText(NumberFormat.getCurrencyInstance(Locale.US).format(currBalance));
+		.setText(NumberFormat.getCurrencyInstance(Locale.US).format(currBalance));
 
 		// subsection
 		((TextView) currentBalance.findViewById(R.id.bottom_bar_label))
-				.setText(getString(R.string.credit_available));
+		.setText(getString(R.string.credit_available));
 		((TextView) currentBalance.findViewById(R.id.bottom_bar_value))
-				.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
-						credAvailable));
+		.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
+				credAvailable));
 
 		// View button
 		((TextView) currentBalance.findViewById(R.id.blue_button_text))
-				.setText(getString(R.string.view_blue_button_text));
+		.setText(getString(R.string.view_blue_button_text));
 
 	}
 
@@ -106,34 +102,34 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * 
 	 * @param accountDetails
 	 */
-	private void setupLastStatementElement(AccountDetails accountDetails) {
-		LinearLayout lastStatement = (LinearLayout) view
+	private void setupLastStatementElement(final AccountDetails accountDetails) {
+		final LinearLayout lastStatement = (LinearLayout) view
 				.findViewById(R.id.home_last_statement);
 
 		if(null == accountDetails.minimumPaymentDue){
 			lastStatement.setVisibility(View.GONE);
 			return;
 		}
-		double lastBalance = getDoublevalue(accountDetails.statementBalance);
-		double minPayment = getDoublevalue(accountDetails.minimumPaymentDue);
-		
+		final double lastBalance = getDoublevalue(accountDetails.statementBalance);
+		final double minPayment = getDoublevalue(accountDetails.minimumPaymentDue);
+
 		// main content
 		((TextView) lastStatement.findViewById(R.id.title))
-				.setText(R.string.last_statement_balance);
+		.setText(R.string.last_statement_balance);
 		((TextView) lastStatement.findViewById(R.id.content_text))
-				.setText(NumberFormat.getCurrencyInstance(Locale.US).format(lastBalance));
+		.setText(NumberFormat.getCurrencyInstance(Locale.US).format(lastBalance));
 
 		// subsection
 		((TextView) lastStatement.findViewById(R.id.bottom_bar_label))
-				.setText(formatMinimumPaymentTitle(accountDetails));
+		.setText(formatMinimumPaymentTitle(accountDetails));
 		((TextView) lastStatement.findViewById(R.id.bottom_bar_value))
-				.setText(NumberFormat.getCurrencyInstance(Locale.US).format(minPayment));
+		.setText(NumberFormat.getCurrencyInstance(Locale.US).format(minPayment));
 
 		// Pay button
 		((TextView) lastStatement.findViewById(R.id.blue_button_text))
-				.setText(R.string.pay_blue_button_text);
+		.setText(R.string.pay_blue_button_text);
 	}
-	
+
 	private double getDoublevalue(final String amount){
 		if(null == amount){
 			return 0.00;
@@ -148,50 +144,50 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * 
 	 * @param accountDetails
 	 */
-	private void setupBonusBalance(AccountDetails accountDetails) {
-		LinearLayout bonusBalance = (LinearLayout) view
+	private void setupBonusBalance(final AccountDetails accountDetails) {
+		final LinearLayout bonusBalance = (LinearLayout) view
 				.findViewById(R.id.home_bonus_balance);
 
 		// main content & subsection
-		boolean isCashback = CommonMethods.isCashbackCard(accountDetails);
+		final boolean isCashback = CommonMethods.isCashbackCard(accountDetails);
 
 		if (isCashback) {
 
-			double cashBonus = Double.valueOf(accountDetails.earnRewardAmount);
-			double newlyEarned = Double.valueOf(accountDetails.newlyEarnedRewards);
+			final double cashBonus = Double.valueOf(accountDetails.earnRewardAmount);
+			final double newlyEarned = Double.valueOf(accountDetails.newlyEarnedRewards);
 
 			((TextView) bonusBalance.findViewById(R.id.title))
-					.setText(R.string.cashback_bonus_balance);
+			.setText(R.string.cashback_bonus_balance);
 			((TextView) bonusBalance.findViewById(R.id.content_text))
-					.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
-							cashBonus));
+			.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
+					cashBonus));
 
 			((TextView) bonusBalance.findViewById(R.id.bottom_bar_label))
-					.setText(getString(R.string.newly_earned));
+			.setText(getString(R.string.newly_earned));
 			((TextView) bonusBalance.findViewById(R.id.bottom_bar_value))
-					.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
-							newlyEarned));
+			.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
+					newlyEarned));
 		} else {
 			((TextView) bonusBalance.findViewById(R.id.title))
-					.setText(R.string.miles_balance);
+			.setText(R.string.miles_balance);
 			((TextView) bonusBalance.findViewById(R.id.content_text))
-					.setText(CommonMethods
-							.insertCommas(accountDetails.earnRewardAmount));
+			.setText(CommonMethods
+					.insertCommas(accountDetails.earnRewardAmount));
 
 			((TextView) bonusBalance.findViewById(R.id.bottom_bar_label))
-					.setText(getString(R.string.newly_earned));
+			.setText(getString(R.string.newly_earned));
 			((TextView) bonusBalance.findViewById(R.id.bottom_bar_value))
-					.setText(CommonMethods
-							.insertCommas(accountDetails.newlyEarnedRewards));
+			.setText(CommonMethods
+					.insertCommas(accountDetails.newlyEarnedRewards));
 		}
 
 		// Redeem button
 		if (!CommonMethods.isEscapeCard(accountDetails)) {
 			((TextView) bonusBalance.findViewById(R.id.blue_button_text))
-					.setText(R.string.redeem_blue_button_text);
+			.setText(R.string.redeem_blue_button_text);
 		} else {
 			((TextView) bonusBalance.findViewById(R.id.blue_button_text))
-					.setVisibility(View.GONE);
+			.setVisibility(View.GONE);
 		}
 	}
 
@@ -201,26 +197,26 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * 
 	 * @param accountDetails
 	 */
-	private void setupBonusOffer(AccountDetails accountDetails) {
-		RelativeLayout bonusOffer = (RelativeLayout) view
+	private void setupBonusOffer(final AccountDetails accountDetails) {
+		final RelativeLayout bonusOffer = (RelativeLayout) view
 				.findViewById(R.id.home_bonus_offer);
 
 		// main content
-		boolean isCashback = CommonMethods.isCashbackCard(accountDetails);
+		final boolean isCashback = CommonMethods.isCashbackCard(accountDetails);
 		if (isCashback) {
 			((TextView) bonusOffer.findViewById(R.id.title))
-					.setText(R.string.cashback_bonus_offer);
+			.setText(R.string.cashback_bonus_offer);
 		} else {
 			((TextView) bonusOffer.findViewById(R.id.title))
-					.setText(R.string.miles_offer);
+			.setText(R.string.miles_offer);
 		}
 
 		((TextView) bonusOffer.findViewById(R.id.content_text))
-				.setText(getString(R.string.cashback_miles_offer_subtext));
+		.setText(getString(R.string.cashback_miles_offer_subtext));
 
 		// SignUp button
 		((TextView) bonusOffer.findViewById(R.id.blue_button_text))
-				.setText(R.string.sign_up_blue_button_text);
+		.setText(R.string.sign_up_blue_button_text);
 	}
 
 	/**
@@ -230,9 +226,9 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * @param accountDetails
 	 * @return Formatted title with due date.
 	 */
-	private String formatMinimumPaymentTitle(AccountDetails accountDetails) {
+	private String formatMinimumPaymentTitle(final AccountDetails accountDetails) {
 		if(null == accountDetails.paymentDueDate){return getString(R.string.min_payment_due);}
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		sb.append(getString(R.string.min_payment_due));
 		sb.append(' ');
 		sb.append(accountDetails.paymentDueDate.substring(0, 2));

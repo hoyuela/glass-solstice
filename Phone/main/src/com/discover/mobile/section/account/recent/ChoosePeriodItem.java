@@ -10,13 +10,12 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.account.recent.RecentActivityPeriodDetail;
 
 public class ChoosePeriodItem extends RelativeLayout{
-	
-	/**Label associated with the item*/
-	private final TextView label;
-	
+
+
+
 	/**Period associated with this item*/
 	private final RecentActivityPeriodDetail period;
-	
+
 	/**
 	 * Constructor of the class
 	 * @param context - activity context
@@ -25,14 +24,15 @@ public class ChoosePeriodItem extends RelativeLayout{
 	 */
 	public ChoosePeriodItem(final Context context, final AttributeSet attrs, final RecentActivityPeriodDetail period) {
 		super(context, attrs);
-		
+
 		final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(context)
-                .inflate(R.layout.choose_period_item, null);
-		
-		label = (TextView) mainView.findViewById(R.id.date_string);
+				.inflate(R.layout.choose_period_item, null);
+
+		/**Label associated with the item*/
+		final TextView label = (TextView) mainView.findViewById(R.id.date_string);
 		label.setText(period.displayDate);
 		this.period = period;
-		
+
 		addView(mainView);
 	}
 

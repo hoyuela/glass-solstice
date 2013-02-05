@@ -5,12 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.discover.mobile.BaseFragment;
@@ -42,9 +40,6 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	/** Text View holding the date range */
 	private TextView dateRange;
 
-	/** TExt view holding the button to change to the search page */
-	private TextView searchTrans;
-
 	/** Current range showing transactions */
 	private RecentActivityPeriodDetail currentRange;
 
@@ -57,9 +52,6 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	/** Table holding the posted transactions */
 	private TransactionTable posted;
 
-	/** Text view holding the feedback */
-	private TextView feedback;
-
 	/** Activity details from the server */
 	private GetTransactionDetails transactions;
 
@@ -71,9 +63,6 @@ public class AccountRecentActivityFragment extends BaseFragment {
 
 	/** Dialog diaplyed when server calls are made */
 	private AlertDialog dialog;
-
-	/** ScrollView element in which the page is contained */
-	private ExtendingScrollView scrollView;
 
 	/**
 	 * TODO: Handle rotation Need to save categories, current transactions on
@@ -111,7 +100,7 @@ public class AccountRecentActivityFragment extends BaseFragment {
 
 		});
 
-		feedback = (TextView) view.findViewById(R.id.provide_feedback_button);
+		final TextView feedback = (TextView) view.findViewById(R.id.provide_feedback_button);
 		feedback.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -119,7 +108,8 @@ public class AccountRecentActivityFragment extends BaseFragment {
 			}
 		});
 
-		searchTrans = (TextView) view.findViewById(R.id.search_transactions);
+		/** TExt view holding the button to change to the search page */
+		final TextView searchTrans = (TextView) view.findViewById(R.id.search_transactions);
 		searchTrans.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -127,7 +117,8 @@ public class AccountRecentActivityFragment extends BaseFragment {
 			}
 		});
 
-		scrollView = (ExtendingScrollView) view;
+		/** ScrollView element in which the page is contained */
+		final ExtendingScrollView scrollView = (ExtendingScrollView) view;
 		scrollView.attachFragment(this);
 
 		return view;
@@ -154,7 +145,7 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	 * Resume the fragment from its previous state
 	 */
 	private void resumeFragment() {
-		RecentActivityRotationHelper helper = RecentActivityRotationHelper
+		final RecentActivityRotationHelper helper = RecentActivityRotationHelper
 				.getHelper();
 		this.currentRange = helper.getCurrentRange();
 		this.pending.showTransactions(helper.getPending());
@@ -173,7 +164,7 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
-		RecentActivityRotationHelper helper = RecentActivityRotationHelper
+		final RecentActivityRotationHelper helper = RecentActivityRotationHelper
 				.getHelper();
 		helper.setCurrentRange(currentRange);
 		helper.setPending(pending.getTransactions());
@@ -193,11 +184,11 @@ public class AccountRecentActivityFragment extends BaseFragment {
 				.<RecentActivityPeriodsDetail> builder(this.getActivity())
 				.withSuccessListener(
 						new GetActivityPeriodsSuccessListener(this))
-				.withErrorResponseHandler(new RecentActivityErrorHandler(this))
-				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(
-						new LockScreenCompletionListener(this.getActivity()))
-				.build();
+						.withErrorResponseHandler(new RecentActivityErrorHandler(this))
+						.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+						.withCompletionListener(
+								new LockScreenCompletionListener(this.getActivity()))
+								.build();
 
 		new GetActivityPeriods(getActivity(), callback).submit();
 
@@ -216,7 +207,7 @@ public class AccountRecentActivityFragment extends BaseFragment {
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
 				.withCompletionListener(
 						new LockScreenCompletionListener(this.getActivity()))
-				.build();
+						.build();
 	}
 
 	/**
@@ -411,7 +402,7 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	 * @param transactions
 	 *            - set the transactions that can be displayed in the fragment
 	 */
-	public void setTransactions(GetTransactionDetails transactions) {
+	public void setTransactions(final GetTransactionDetails transactions) {
 		this.transactions = transactions;
 	}
 

@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 
 /**
  * A SSN input field. Accepts the last 4 digits of a user's ssn number.
- *
+ * 
  * @author scottseward
  *
  */
@@ -15,21 +15,21 @@ public class SsnEditText extends ValidatedInputField{
 
 	private int ssn;
 	private final int DEFAULT_EMS = 4;
-	
+
 	private final int GOOD_SSN_LENGTH = 4;
-	
-	public SsnEditText(Context context) {
+
+	public SsnEditText(final Context context) {
 		super(context);
 	}
-	
-	public SsnEditText(Context context, AttributeSet attrs) {
+
+	public SsnEditText(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 	}
-	
-	public SsnEditText(Context context, AttributeSet attrs, int defStyle){
+
+	public SsnEditText(final Context context, final AttributeSet attrs, final int defStyle){
 		super(context, attrs, defStyle);
 	}
-	
+
 	@Override
 	public void setupDefaultAppearance() {
 		super.setupDefaultAppearance();
@@ -64,7 +64,7 @@ public class SsnEditText extends ValidatedInputField{
 	public int getSsn() {
 		return ssn;
 	}
-	
+
 	/**
 	 * Save a ssn number to the member ssn variable.
 	 * @param ssn an integer representing the last 4 digits of an ssn number.
@@ -72,5 +72,5 @@ public class SsnEditText extends ValidatedInputField{
 	public void setSsn(final int ssn) {
 		this.ssn = ssn;
 	}
-	
+
 }

@@ -29,7 +29,7 @@ import com.discover.mobile.navigation.HeaderProgressIndicator;
  *
  */
 public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirstStep {
-	
+
 	/**
 	 * Setup the main input field to be for an account number.
 	 */
@@ -37,13 +37,13 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		accountIdentifierField.setFieldAccountNumber();
-		
+
 	}
-	
+
 	public RegistrationAccountInformationActivity() {
 		super(AnalyticsPage.FORGOT_BOTH_STEP1);
 	}
-	
+
 	/**
 	 * Adds the main input field to the AccountInformaitonDetails object as an account number field.
 	 */
@@ -51,21 +51,21 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
 	protected void addCustomFieldToDetails(final AccountInformationDetails details, final String value) {
 		details.acctNbr = CommonMethods.getSpacelessString(value);
 	}
-	
+
 	@Override
 	protected NetworkServiceCall<?> createServiceCall(final AsyncCallback<Object> callback, 
 			final AccountInformationDetails details) {
-		
+
 		return new AccountInformationCall(this, callback, details);
 	}
-	
+
 	@Override
 	public void goBack() {
 		finish();
 		final Intent loginActivity = new Intent(this, LoginActivity.class);
 		startActivity(loginActivity);
 	}
-	
+
 	/**
 	 * Returns the Activity that will be launched upon successful or skipped Strong Auth.
 	 */
@@ -73,19 +73,19 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
 	protected Class<?> getSuccessfulStrongAuthIntentClass() {
 		return CreateLoginActivity.class;
 	}
-	
+
 	@Override
 	protected boolean isForgotFlow() {
 		return false;
 	}
-	
+
 	/**
 	 * Set the text that is displayed in the top header progress bar.
 	 */
 	@Override
 	protected void setHeaderProgressText() {
-			HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
-			headerProgressBar.setTitle(R.string.enter_info, R.string.create_login, R.string.confirm);
+		final HeaderProgressIndicator headerProgressBar = (HeaderProgressIndicator)findViewById(R.id.header);
+		headerProgressBar.setTitle(R.string.enter_info, R.string.create_login, R.string.confirm);
 	}
 
 	@Override
@@ -101,22 +101,22 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
 	}
 
 	@Override
-	public void showCustomAlert(AlertDialog alert) {
+	public void showCustomAlert(final AlertDialog alert) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void showOneButtonAlert(int title, int content, int buttonText) {
+	public void showOneButtonAlert(final int title, final int content, final int buttonText) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void showDynamicOneButtonAlert(int title, String content,
-			int buttonText) {
+	public void showDynamicOneButtonAlert(final int title, final String content,
+			final int buttonText) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -126,9 +126,9 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
 	}
 
 	@Override
-	public void setLastError(int errorCode) {
+	public void setLastError(final int errorCode) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -142,5 +142,5 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }

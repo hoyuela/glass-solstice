@@ -17,7 +17,7 @@ import com.discover.mobile.common.R;
 /**
  * An abstract class to handle input fields with specific input types.
  * Allows easy input restriction, validating input, showing of error labels, and error states.
- * 
+ *  
  * This parent class handles the attachment of an error label to hide and show, the default and 
  * error appearance of a field, it is up to the children to implement what isValid means.
  * 
@@ -29,9 +29,9 @@ public abstract class ValidatedInputField extends EditText{
 	/** Default and error drawables for input fields */
 	protected final int FIELD_DEFAULT_APPEARANCE = R.drawable.edit_text_default;
 	protected final int FIELD_ERROR_APPEARANCE = R.drawable.edit_text_red;
-	
+
 	private ValidatedInputField thisEditText;
-	
+
 	/**Default date picker ems size*/
 	protected final int DATE_PICKER_EMS_LENGTH = 11;
 
@@ -45,16 +45,16 @@ public abstract class ValidatedInputField extends EditText{
 	protected Drawable grayX = null;
 	protected Drawable greenCheck = null;
 	protected Drawable downArrow = null;
-	
+
 	public boolean isInErrorState = false;
-		
+
 	public boolean isInDefaultState = true;
 	/**
 	 * If an error label is provided, this will be shown and hidden on 
 	 * error states.
 	 */
 	protected TextView errorLabel;
-	
+
 	/**
 	 * Default constructor
 	 * @param context the context of use for the EditText.
@@ -63,17 +63,17 @@ public abstract class ValidatedInputField extends EditText{
 		super(context);	
 		basicSetup();
 	}
-	
+
 	public ValidatedInputField(final Context context, final AttributeSet attrs) {
 		super(context, attrs);	
 		basicSetup();
 	}
-	
+
 	public ValidatedInputField(final Context context, final AttributeSet attrs, final int defStyle) {
 		super(context, attrs, defStyle);
 		basicSetup();
 	}
-	
+
 	/**
 	 * Called upon creation of a ValidatedInputField child. Sets up the text changed and
 	 * focus changed listeners and sets the default appearance and input restrictions on the field.
@@ -86,7 +86,7 @@ public abstract class ValidatedInputField extends EditText{
 		thisEditText = this;
 		setupRightDrawableTouchRegion();
 	}
-	
+
 	/**
 	 * Set the default appearance so that we dont have to do it in XML.
 	 */
@@ -95,11 +95,11 @@ public abstract class ValidatedInputField extends EditText{
 		this.setTextColor(getResources().getColor(R.color.field_copy));
 		setupDefaultHeight();
 	}
-	
+
 	protected void setupDefaultHeight() {
 		this.setHeight(getResources().getDimensionPixelSize(R.dimen.input_field_height));
 	}
-	
+
 	/**
 	 * The TextLabel to be used to show an error. It is hidden or shown
 	 * based on the state of the input field. This class is not responsible
@@ -109,7 +109,7 @@ public abstract class ValidatedInputField extends EditText{
 	public void attachErrorLabel(final TextView label) {
 		this.errorLabel = label;
 	}
-	
+
 	/**
 	 * Set the visibility of the attached error label to GONE.
 	 */
@@ -117,7 +117,7 @@ public abstract class ValidatedInputField extends EditText{
 		if(errorLabel != null)
 			this.errorLabel.setVisibility(View.GONE);
 	}
-	
+
 	/**
 	 * Set the visibility of the attached error label to VISIBLE.
 	 */
@@ -125,14 +125,14 @@ public abstract class ValidatedInputField extends EditText{
 		if(errorLabel != null)
 			this.errorLabel.setVisibility(View.VISIBLE);
 	}
-	
+
 	/**
 	 * Sets a focus changed listener that will validate and update the appearance of the input field
 	 * upon focus change.
 	 */
 	protected void setupFocusChangedListener() {
 		this.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
+
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
 				clearRightDrawable();
@@ -151,28 +151,28 @@ public abstract class ValidatedInputField extends EditText{
 					if(isInErrorState)
 						setRightDrawableRedX();
 				}
-					
+
 			}
-			
+
 		});
 	}
-	
+
 	/**Sets the right drawable to the gray X image*/
 	protected void setRightDrawableGrayX() {
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getGrayX(), null);
 	}
-	
+
 	/**Sets the right drawable to the red X image*/
 	protected void setRightDrawableRedX() {
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getRedX(), null);
 	}
-	
+
 	/**Clears the right drawable so that no image is present*/
 	protected void clearRightDrawable() {
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 	}
 
-	
+
 	/**
 	 * Sets a text changed listener to listen for new input. Validates
 	 * the input in real time, so that if the field has been 
@@ -195,10 +195,10 @@ public abstract class ValidatedInputField extends EditText{
 			@Override
 			public void onTextChanged(final CharSequence s, final int start, final int before,
 					final int count) {/*Intentionally Empty*/}
-			
+
 		});
 	}
-	
+
 	/**
 	 * If a red X is to be used at the right drawable location (on error of account # or username)
 	 * Load it from the resources so that the calling class can use the image.
@@ -208,19 +208,19 @@ public abstract class ValidatedInputField extends EditText{
 			redX = getResources().getDrawable(R.drawable.x_red);
 		return redX;
 	}
-	
+
 	protected Drawable getGrayX() {
 		if(grayX == null)
 			grayX = getResources().getDrawable(R.drawable.x_gray);
 		return grayX;
 	}
-	
+
 	protected Drawable getGreenCheck() {
 		if(greenCheck == null)
 			greenCheck = getResources().getDrawable(R.drawable.checkmark_green);
 		return greenCheck;
 	}
-	
+
 	/**
 	 * If a down arrow is to be used at the right drawable location (for a date picker)
 	 * Load it from the resources so that the calling class can use the image.
@@ -250,13 +250,13 @@ public abstract class ValidatedInputField extends EditText{
 	 * things such as length, if its a password etc.
 	 */
 	protected void setupInputRestrictions(){}
-	
+
 	/**
 	 * Check to see if the current edit text has a valid input state.
 	 * @return returns true if the current input is valid.
 	 */
 	public abstract boolean isValid();
-	
+
 	/**
 	 * Sets the error state of the EditText. This usually includes things like
 	 * changing the highlighting color and showing an error label. 
@@ -268,7 +268,7 @@ public abstract class ValidatedInputField extends EditText{
 		isInErrorState = true;
 		isInDefaultState = false;
 	}
-	
+
 	/**
 	 * Clears the error state of the EditText. This usually includes setting the
 	 * highlighting to default and hiding error labels.
@@ -279,21 +279,21 @@ public abstract class ValidatedInputField extends EditText{
 		this.setBackgroundResource(FIELD_DEFAULT_APPEARANCE);
 		isInErrorState = false;
 	}
-	
+
 	/**
 	 * Set the text field to clear itself if the user presses a right drawable in the 
 	 * input field.
 	 */
 	private void setupRightDrawableTouchRegion() {
-		
+
 		/**
 		 * Touch listener so that when tapping the X the text is cleared.
 		 */
 		this.setOnTouchListener(new OnTouchListener() {
-			
+
 			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				Drawable rightDrawable = thisEditText.getCompoundDrawables()[2];
+			public boolean onTouch(final View v, final MotionEvent event) {
+				final Drawable rightDrawable = thisEditText.getCompoundDrawables()[2];
 				if (rightDrawable == null || rightDrawable.equals(getGreenCheck()) || event.getAction() != MotionEvent.ACTION_UP) {
 					//Do nothing
 				}
@@ -310,5 +310,5 @@ public abstract class ValidatedInputField extends EditText{
 			}
 		});
 	}
-	
+
 }

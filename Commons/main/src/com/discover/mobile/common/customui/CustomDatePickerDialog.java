@@ -11,25 +11,25 @@ import android.widget.DatePicker;
 /**
  * This custom date picker extends the default android date picker dialog.
  * It is extended in this case for the purpose of removing the day spinner from the dialog.
- * This class simply hides the day picker and only presents the month and year.
+ * This class simply hides the day picker and only presents the month and year. 
  * 
  * @author scottseward
  *
  */
 public class CustomDatePickerDialog extends DatePickerDialog{
 	private static final String TAG = CustomDatePickerDialog.class.getSimpleName();
-	
+
 	/**
 	 * Default constructors.
 	 */
-	public CustomDatePickerDialog(Context context, int theme,
-			OnDateSetListener callBack, int year, int monthOfYear,
-			int dayOfMonth) {
+	public CustomDatePickerDialog(final Context context, final int theme,
+			final OnDateSetListener callBack, final int year, final int monthOfYear,
+			final int dayOfMonth) {
 		super(context, theme, callBack, year, monthOfYear, dayOfMonth);
 	}
-	
-	public CustomDatePickerDialog(Context context, OnDateSetListener callBack, int year, int monthOfYear,
-			int dayOfMonth) {
+
+	public CustomDatePickerDialog(final Context context, final OnDateSetListener callBack, final int year, final int monthOfYear,
+			final int dayOfMonth) {
 		super(context, callBack, year, monthOfYear, dayOfMonth);
 	}
 
@@ -39,7 +39,7 @@ public class CustomDatePickerDialog extends DatePickerDialog{
 	 * no method body.
 	 */
 	@Override
-	public void onDateChanged(DatePicker view, int year, int month, int day) {/*intentionally empty*/}
+	public void onDateChanged(final DatePicker view, final int year, final int month, final int day) {/*intentionally empty*/}
 
 	/**
 	 * This method looks for declared variables in the DatePickerDialog class that match
@@ -47,31 +47,31 @@ public class CustomDatePickerDialog extends DatePickerDialog{
 	 * so that we get a nice looking month and year date picker dialog.
 	 */
 	public void hideDayPicker() {
-		
-		 try{
-			    Field[] datePickerDialogFields = DatePickerDialog.class.getDeclaredFields();
-			    for (Field datePickerDialogField : datePickerDialogFields) { 
-			    	String datePickerDialogFieldName = datePickerDialogField.getName();
-			        if ("mDatePicker".equals(datePickerDialogFieldName) ||
-			        	"mDateSpinner".equals(datePickerDialogFieldName)) {
-			            datePickerDialogField.setAccessible(true);
-			            DatePicker datePicker = (DatePicker)datePickerDialogField.get(this);
-			            Field datePickerFields[] = datePickerDialogField.getType().getDeclaredFields();
-			            for (Field datePickerField : datePickerFields) {
-			            	String datePickerFieldName = datePickerField.getName();
-			               if ("mDayPicker".equals(datePickerFieldName) ||
-			            		   "mDaySpinner".equals(datePickerFieldName)) {
-			                  datePickerField.setAccessible(true);
-			                  Object dayPicker = new Object();
-			                  dayPicker = datePickerField.get(datePicker);
-			                  ((View) dayPicker).setVisibility(View.GONE);
-			               }
-			            }
-			         }
-			      }
-			    }catch(Exception e){
-			    	Log.d(TAG, "Error hiding day picker: " + e);
-			    }
+
+		try{
+			final Field[] datePickerDialogFields = DatePickerDialog.class.getDeclaredFields();
+			for (final Field datePickerDialogField : datePickerDialogFields) { 
+				final String datePickerDialogFieldName = datePickerDialogField.getName();
+				if ("mDatePicker".equals(datePickerDialogFieldName) ||
+						"mDateSpinner".equals(datePickerDialogFieldName)) {
+					datePickerDialogField.setAccessible(true);
+					final DatePicker datePicker = (DatePicker)datePickerDialogField.get(this);
+					final Field datePickerFields[] = datePickerDialogField.getType().getDeclaredFields();
+					for (final Field datePickerField : datePickerFields) {
+						final String datePickerFieldName = datePickerField.getName();
+						if ("mDayPicker".equals(datePickerFieldName) ||
+								"mDaySpinner".equals(datePickerFieldName)) {
+							datePickerField.setAccessible(true);
+							Object dayPicker = new Object();
+							dayPicker = datePickerField.get(datePicker);
+							((View) dayPicker).setVisibility(View.GONE);
+						}
+					}
+				}
+			}
+		}catch(final Exception e){
+			Log.d(TAG, "Error hiding day picker: " + e);
 		}
+	}
 
 }

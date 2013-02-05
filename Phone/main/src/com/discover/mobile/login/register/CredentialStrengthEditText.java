@@ -63,11 +63,11 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	public static final int MAX_USERID_LENGTH=16;
 	private static final int PASSWORD_STRENGTH_HELP = 0;
 	private static final int UID_STRENGTH_HELP = 1;
-	
+
 	/**
 	 * Used for painting strength meter in onDraw method
 	 */
-	private Paint mPaint = new Paint();
+	private final Paint mPaint = new Paint();
 	/**
 	 * Bitmap used to indicate that the text entered qualifies as a strong
 	 * password
@@ -87,7 +87,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	 * Bitmap used to indicate that no text to be evaluated
 	 **/
 	private Bitmap mNoTextImage = null;
-	
+
 	/**
 	 * Bitmap used to indicate an invalid input.
 	 */
@@ -105,24 +105,24 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	/**
 	 * Used for drawing when OnDraw is called
 	 */
-	private Rect mRect = new Rect();
-	
+	private final Rect mRect = new Rect();
+
 	/**
 	 * Contains what rules to use for evaluating strength of entered text. By
 	 * default set to password
 	 **/
 	private int mCredentialType = PASSWORD;
 
-	public CredentialStrengthEditText(Context context, AttributeSet attrs,
-			int defStyle) {
+	public CredentialStrengthEditText(final Context context, final AttributeSet attrs,
+			final int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
-	public CredentialStrengthEditText(Context context, AttributeSet attrs) {
+	public CredentialStrengthEditText(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public CredentialStrengthEditText(Context context) {
+	public CredentialStrengthEditText(final Context context) {
 		super(context);
 	}
 
@@ -135,14 +135,14 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	public int getCredentialType() {
 		return mCredentialType;
 	}
-	
+
 	/**Inherited method from ValidatedInputField, overridden to disable*/
 	@Override
 	protected void setupFocusChangedListener() {
 		this.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
+
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
+			public void onFocusChange(final View v, final boolean hasFocus) {
 				if(!hasFocus && !isValid()){
 					loadResources();
 					mStrengthMeter = mInvalidImage;
@@ -150,13 +150,13 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 			}
 		});
 	}
-	
+
 	/**Inherited method from ValidatedInputField, overridden to disable*/
 	@Override
 	protected void setupTextChangedListener(){
 		//Do nothing
 	}
-	
+
 	/**
 	 * Sets what rules to use to evaluate strength of the text entered. In addition,
 	 * will set the max length of characters that can be entered for the text field.
@@ -164,11 +164,11 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	 * @param mCredentialType
 	 *            value should be either PASSWORD or USERID
 	 */
-	public void setCredentialType(int type) {
+	public void setCredentialType(final int type) {
 		this.mCredentialType = type;
-		
+
 		//Set maximum length of characters allowed
-		InputFilter[] filters = new InputFilter[1];
+		final InputFilter[] filters = new InputFilter[1];
 		switch(mCredentialType) {
 		case PASSWORD:
 			filters[0]=new InputFilter.LengthFilter(MAX_PSWD_LENGTH);
@@ -182,9 +182,9 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 			Log.v(TAG, "Invalid credential type");
 			break;
 		}	
-		
+
 		this.setSingleLine();
-		
+
 		if(type == PASSWORD)
 			this.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		else if(type == USERID)
@@ -194,7 +194,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		mStrengthMeter = mNoTextImage;
 		this.setBackgroundResource(R.drawable.edit_text_default);		
 	}
-	
+
 
 	/**
 	 * Called to open user id help guide (StrengthBarHelpActivity)
@@ -204,7 +204,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		uidHelpScreen.putExtra("ScreenType", "id");
 		TrackingHelper.trackPageView(AnalyticsPage.UID_STRENGTH_HELP);
 
-		Activity activity = (Activity) this.getContext();
+		final Activity activity = (Activity) this.getContext();
 		if (null != activity) {
 			activity.startActivityForResult(uidHelpScreen, UID_STRENGTH_HELP);
 		} else {
@@ -220,29 +220,29 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		passwordHelpScreen.putExtra("ScreenType", "pass");
 		TrackingHelper.trackPageView(AnalyticsPage.PASSWORD_STRENGTH_HELP);
 
-		Activity activity = (Activity) this.getContext();
+		final Activity activity = (Activity) this.getContext();
 		if (null != activity) {
 			activity.startActivityForResult(passwordHelpScreen, PASSWORD_STRENGTH_HELP);
 		} else {
 			Log.v(TAG, "Context not provided");
 		}
 	}
-	
+
 	@Override
-	public void onTextChanged(CharSequence text,int start,int lengthBefore,int lengthAfter) {	
+	public void onTextChanged(final CharSequence text,final int start,final int lengthBefore,final int lengthAfter) {	
 		loadResources();
 		if(lengthAfter > 0)
 			isInDefaultState = false;
-		
+
 		super.onTextChanged(text, start, lengthBefore, lengthAfter);
 		if(isInDefaultState)
-			{/*dont update the appearance in case the field is empty and gets 'updated'
+		{/*dont update the appearance in case the field is empty and gets 'updated'
 			with empty text through orientation change or otherwise*/}
 		else 			
 			updateAppearanceForInput();
 
 	}
-	
+
 	/**
 	 * Sets what image to be displayed to indicate to the user the strength of password entered
 	 * 
@@ -257,7 +257,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		boolean hasInvalidChar = false;
 		boolean hasNumber = false;
 		boolean looksLikeActNum = false;
-		boolean passAndIdMatch = false;
+		final boolean passAndIdMatch = false;
 
 		// Check length of input.
 		if (inputSequence.length() >= 6 && inputSequence.length() <= MAX_USERID_LENGTH)
@@ -285,7 +285,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		if (inputSequence.toString().startsWith("6011")) {
 			looksLikeActNum = true;
 		}
-		
+
 
 		/*
 		 * Meets minimum requirements and combines a variation of letters,
@@ -315,12 +315,12 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 			mStrengthMeter = mWeakImage;
 			setBackgroundResource(R.drawable.edit_text_red);
 		}
-		
+
 		//Force an onDraw
 		this.invalidate();
 
 	}
-	
+
 	@Override
 	public void setupDefaultAppearance() {	
 		super.setupDefaultAppearance();
@@ -341,7 +341,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		boolean hasLowerCase = false;
 		boolean hasNonAlphaNum = false;
 		boolean hasNumber = false;
-		boolean passAndIdMatch = false;
+		final boolean passAndIdMatch = false;
 
 		// Check length of input.
 		if (inputSequence.length() >= 8 && inputSequence.length() <= MAX_PSWD_LENGTH)
@@ -391,7 +391,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 			mStrengthMeter = mWeakImage;
 			setBackgroundResource(R.drawable.edit_text_red);
 		}
-		
+
 		this.invalidate();
 
 	}
@@ -404,7 +404,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		mStrengthMeter = mInvalidImage;
 		this.setBackgroundResource(R.drawable.edit_text_red);
 	}
-	
+
 	/**
 	 * Call an update to the strength meter based on the current input.
 	 */
@@ -418,7 +418,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		else
 			updateStrengthMeterForUID(this.getText().toString());
 	}
-	
+
 	/**
 	 * This function is a Android View function that has been overridden to detect when the user 
 	 * taps the region of the strength meter that is meant to open a help guide.
@@ -428,9 +428,9 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	 * then the base class result is returned; otherwise, false is returned to avoid opening the keyboard.
 	 */
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public boolean onTouchEvent(final MotionEvent event) {
 		boolean ret = false;
-		
+
 		// Check if touchable region was tapped by user
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			final int x = (int) event.getX();
@@ -465,47 +465,47 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 
 		return ret;
 	}
-	
+
 	/**
 	 * Overridden to paint strength meter over the text field
 	 */
 	@Override
-	protected void onDraw(Canvas canvas) {
+	protected void onDraw(final Canvas canvas) {
 		super.onDraw(canvas);
 
 		//Fetch information on canvas position within the control
 		canvas.getClipBounds(mRect);
 		if(mStrengthMeter != null){
 			//Calculate Position of Strength Meter
-			float yoffset = 1;
-			float xoffset = 1;
+			final float yoffset = 1;
+			final float xoffset = 1;
 
-			float x = this.getWidth() - mStrengthMeter.getWidth() + mRect.left + xoffset;
-			float y = this.getScrollY() - yoffset;
-				
+			final float x = this.getWidth() - mStrengthMeter.getWidth() + mRect.left + xoffset;
+			final float y = this.getScrollY() - yoffset;
+
 			//Draw Strength meter in the tail of the EditText
 			canvas.drawBitmap(mStrengthMeter, x, y, mPaint);
 		}
 		this.invalidate();
 	}
-	
+
 	/**
 	 * Overridden to adjust the strength meter image to the size of the text field
 	 */
 	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+	protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		
+
 		loadResources();
 		//Temporarily Cache Strength Meter images in its original size
-		Bitmap oldStrongImage = mStrongImage;
-		Bitmap oldModerateImage = mModerateImage;
-		Bitmap oldWeakImage = mWeakImage;
-		Bitmap oldNoTextImage = mNoTextImage;
-		
+		final Bitmap oldStrongImage = mStrongImage;
+		final Bitmap oldModerateImage = mModerateImage;
+		final Bitmap oldWeakImage = mWeakImage;
+		final Bitmap oldNoTextImage = mNoTextImage;
+
 		//Scale Strength meter Images to fit within the EditText 
 		scaleAllImages(h, w);
-		
+
 		//Set current strength meter image in its scaled version
 		if( oldStrongImage.equals(mStrengthMeter)) {
 			mStrengthMeter = mStrongImage;
@@ -516,7 +516,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		} else if(oldNoTextImage.equals(mStrengthMeter)) {
 			mStrengthMeter = mNoTextImage;
 		}
-		
+
 		//Add padding to the right that is equal to the width of the strength meter image,
 		//so that if the text entered is long enough to reach to the strength meter
 		//it does not go under the strength meter image, and instead begins to scroll to the right
@@ -524,7 +524,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 			this.setPadding(this.getPaddingLeft(), this.getPaddingTop(), this.getPaddingRight() + mStrengthMeter.getWidth(), this.getPaddingBottom());
 		}
 	}
-	
+
 	/**
 	 * Load all image resources if they have not already been loaded.
 	 */
@@ -553,26 +553,26 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 
 		height += 5;
 		width += 1;
-		
+
 		loadResources();
-		
+
 		//Scale Images
 		mNoTextImage = scaleImage(mNoTextImage, height, width);
 		mStrongImage = scaleImage(mStrongImage, height, width);
 		mModerateImage = scaleImage(mModerateImage, height, width);
 		mWeakImage = scaleImage(mWeakImage, height, width);
 		mInvalidImage = scaleImage(mInvalidImage, height, width);
-		
+
 		// Define touch region based on current control size
 		mTouchRegion = new Rect();
-		
-		mTouchRegion.left = (int) getRight() - 60;
+
+		mTouchRegion.left = getRight() - 60;
 		mTouchRegion.top = 0;
 		mTouchRegion.right = mTouchRegion.left + 60;
-		mTouchRegion.bottom = (int) this.getHeight();
-		
+		mTouchRegion.bottom = this.getHeight();
+
 	}
-	
+
 	/**
 	 * Utility function to scale an image
 	 * 
@@ -581,13 +581,13 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	 * @param width The width to use for scaling the image
 	 * @return
 	 */
-	public Bitmap scaleImage(Bitmap bitmap, int height, int width) {
-		float padding = 4;
-		float h = height - padding;
-		float w = bitmap.getWidth() * h / height;
-		
+	public Bitmap scaleImage(final Bitmap bitmap, final int height, final int width) {
+		final float padding = 4;
+		final float h = height - padding;
+		final float w = bitmap.getWidth() * h / height;
+
 		return Bitmap.createScaledBitmap(bitmap, (int) w, (int) h, true);
-		
+
 	}
 
 	/**
@@ -595,16 +595,16 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	 */
 	@Override
 	public boolean isValid() {
-		String currentInput = this.getText().toString();
+		final String currentInput = this.getText().toString();
 		boolean isValid = false;
-		
+
 		if(mCredentialType == PASSWORD)
 			isValid = InputValidator.isPasswordValid(currentInput);
 		else
 			isValid = InputValidator.isUserIdValid(currentInput);
-		
+
 		return isValid;
-		
+
 	}
 
 	/**
@@ -617,7 +617,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	/**
 	 * @param mStrengthMeter the mStrengthMeter to set
 	 */
-	public void setmStrengthMeter(Bitmap mStrengthMeter) {
+	public void setmStrengthMeter(final Bitmap mStrengthMeter) {
 		this.mStrengthMeter = mStrengthMeter;
 	}
 }
