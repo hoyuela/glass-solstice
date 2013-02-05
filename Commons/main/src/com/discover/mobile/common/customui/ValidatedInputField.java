@@ -294,21 +294,44 @@ public abstract class ValidatedInputField extends EditText{
 			@Override
 			public boolean onTouch(final View v, final MotionEvent event) {
 				final Drawable rightDrawable = thisEditText.getCompoundDrawables()[2];
-				if (rightDrawable == null || rightDrawable.equals(getGreenCheck()) || event.getAction() != MotionEvent.ACTION_UP) {
-					//Do nothing
-				}
-				else if (event.getX() > thisEditText.getWidth()
-						- thisEditText.getPaddingRight()
-						- getRedX().getIntrinsicWidth()) {
-					thisEditText.setText("");
-					thisEditText.clearErrors();
-					thisEditText.setRightDrawableGrayX();
-					isInDefaultState = true;
+				
+				if (drawableIsClickable(rightDrawable) && isTouchRegionValid(event)) {
+					clearInputFieldState();
 				}
 
 				return false;
 			}
 		});
+	}
+	
+	/**
+	 * Determines if the drawable is one that will clear the input field upon pressing it.
+	 * @param drawable A drawable object that will be compared against clickable drawables.
+	 * @return returns true if the passed drawable is a valid clickable drawable.
+	 */
+	private boolean drawableIsClickable(final Drawable drawable){
+		return getRedX().equals(drawable) || getGrayX().equals(drawable);
+	}
+	
+	/**
+	 * Determines if the MotionEvent touch region was on the right drawable.
+	 * @param event The MotionEvent that will be used to check where the user pressed on the screen.
+	 * @return Returns true if the user pressed in the region of the right drawable in the EditText field.
+	 */
+	private boolean isTouchRegionValid(final MotionEvent event){
+		return event.getX() > this.getWidth() - this.getPaddingRight() - getRedX().getIntrinsicWidth();
+	}
+	
+	/**
+	 * Removes the current text from the input field, clears/hides any attached error labels,
+	 * sets the right drawable to the grey X, because the user will be focused on the input field.
+	 * And sets the isInDefaultState to true.
+	 */
+	protected void clearInputFieldState() {
+		this.setText("");
+		this.clearErrors();
+		this.setRightDrawableGrayX();
+		isInDefaultState = true;
 	}
 
 }

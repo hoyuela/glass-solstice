@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -150,19 +149,14 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 				msgTxtVw.setText(msg);
 
 			if( null != colorBarVw ) {
-
-				final Drawable colorBar = getResources().getDrawable( image );
-				if(null != colorBar ) 
-					colorBarVw.setBackgroundDrawable(colorBar);
-
+				colorBarVw.setBackgroundResource(image);
 			}	
 
 			//If resource id is not 0 then display image
 			if( 0 != image2 ) {
 				final View checkVw = view.findViewById(R.id.reg_help_strong_check);
 				if( null != checkVw)  {
-					final Drawable strengthIcon = getResources().getDrawable( image2 );
-					checkVw.setBackgroundDrawable(strengthIcon);		
+					checkVw.setBackgroundResource(image2);		
 					checkVw.setVisibility(View.VISIBLE);
 				}
 			}
