@@ -25,7 +25,7 @@ public class BankUrlManager {
 	private static final String GET_TOKEN_URL = "/api/auth/token";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
 	private static final String CUSTOMER_SERVICE_URL = "/api/customers/current";
-	private static Map<String, ReceivedUrl> links;
+	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 	
 	/**
 	 * Keys for the urls in order to retrieve from the map
@@ -94,12 +94,7 @@ public class BankUrlManager {
 		if (newLinks == null) {
 			throw new IllegalArgumentException("newLinks cannot be null.");
 		}
-		if (links == null) {
-			links = new HashMap<String, ReceivedUrl>();
-			links.putAll(newLinks);
-			return;
-		} else {
-			links.putAll(newLinks);
-		}
+			
+		links.putAll(newLinks);
 	}
 }
