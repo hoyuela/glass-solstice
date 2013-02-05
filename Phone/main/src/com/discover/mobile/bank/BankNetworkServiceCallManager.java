@@ -40,7 +40,7 @@ final public class BankNetworkServiceCallManager implements StartListener, Succe
 	/**
 	 * Used to print logs into Android logcat
 	 */
-	private static final String TAG = BankNetworkServiceCallManager.class.getSimpleName();
+	private static final String TAG = "NeServiceCallManager";
 	/**
 	 * Holds a reference to the Previous NetworkServiceCall<> sent out by the application, used to 
 	 * retransmit a NetworkServiceCall<> when required. Set in the start() method implementation
@@ -125,7 +125,7 @@ final public class BankNetworkServiceCallManager implements StartListener, Succe
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> error) {
 		final Activity activeActivity = BankActivityManager.getActiveActivity();
 		
-		if( isStrongAuthChallenge(error) ) {
+		if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
 			//Send request to Strong Auth web-service API
 			BankServiceCallFactory.createStrongAuthRequest().submit();
 		} else {
@@ -178,7 +178,7 @@ final public class BankNetworkServiceCallManager implements StartListener, Succe
 			Navigator.navigateToHomePage(activeActivity);
 		}
 		//Display StrongAuth Page if it is a response to a StrongAuth GET request with a question or retansmit previous NetworkServiceCall<>
-		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && !sender.isPostCall()) {
+		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isGetCall()) {
 			final BankStrongAuthDetails value = (BankStrongAuthDetails)result;
 			if( !BankStrongAuthDetails.ALLOW_STATUS.equals(value.status ) ) {
  				Navigator.navigateToStrongAuth(activeActivity, value.question, value.questionId, null);

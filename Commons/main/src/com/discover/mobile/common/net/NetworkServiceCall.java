@@ -33,6 +33,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.discover.mobile.common.Struct;
+import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -368,6 +369,10 @@ public abstract class NetworkServiceCall<R> {
 	
 	public boolean isPostCall() {
 		return params instanceof PostCallParams;
+	}
+	
+	public boolean isGetCall() {
+		return params instanceof GetCallParams;
 	}
 	
 	private void doHttpMethodSpecificSetup() throws IOException {
