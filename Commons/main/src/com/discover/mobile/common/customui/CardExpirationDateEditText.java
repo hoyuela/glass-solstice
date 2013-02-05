@@ -17,17 +17,17 @@ import com.discover.mobile.utils.CommonUtils;
 public class CardExpirationDateEditText extends CustomDatePickerElement{
 			
 	//advances the year by 2 years into the future.
-	private final int YEAR_OFFSET = -2;
+	private static final int YEAR_OFFSET = -2;
 		
-	public CardExpirationDateEditText(Context context) {
+	public CardExpirationDateEditText(final Context context) {
 		super(context);
 	}
 	
-	public CardExpirationDateEditText(Context context, AttributeSet attrs) {
+	public CardExpirationDateEditText(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 	}
 	
-	public CardExpirationDateEditText(Context context, AttributeSet attrs, int defStyle){
+	public CardExpirationDateEditText(final Context context, final AttributeSet attrs, final int defStyle){
 		super(context, attrs, defStyle);
 	}
 

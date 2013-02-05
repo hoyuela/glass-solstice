@@ -14,9 +14,9 @@ import android.util.AttributeSet;
 public class SsnEditText extends ValidatedInputField{
 
 	private int ssn;
-	private final int DEFAULT_EMS = 4;
+	private static final int DEFAULT_EMS = 4;
 
-	private final int GOOD_SSN_LENGTH = 4;
+	private static final int GOOD_SSN_LENGTH = 4;
 
 	public SsnEditText(final Context context) {
 		super(context);

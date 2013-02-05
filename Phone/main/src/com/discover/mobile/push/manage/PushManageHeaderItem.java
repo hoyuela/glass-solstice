@@ -24,7 +24,7 @@ public class PushManageHeaderItem extends RelativeLayout{
 	private LinearLayout list;
 	
 	/**TextView signifying that the elements should be hidden*/
-	private TextView hide;
+	private final TextView hide;
 
 	/**String representing the item needs to be hidden*/
 	private final String hideString; 
@@ -33,8 +33,12 @@ public class PushManageHeaderItem extends RelativeLayout{
 	private final String showString;
 	
 	/**Title of the header*/
-	private TextView title;
+	private final TextView title;
 	
+	public TextView getTitle() {
+		return title;
+	}
+
 	/**
 	 * Constructor of the class
 	 * @param context - activity context
@@ -63,7 +67,6 @@ public class PushManageHeaderItem extends RelativeLayout{
 	 * @param header - the text to be set in the header
 	 */
 	public void setHeader(final String header){
-		title = (TextView) findViewById(R.id.title);
 		title.setText(header);
 	}
 	
