@@ -120,11 +120,11 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		restoreState(savedInstanceState);
 	}
 	
-	private final String SERVER_ERROR_VISIBILITY ="a";
-	private final String SERVER_ERROR_TEXT = "c";
-	private final String ANSWER_ERROR_VISIBILITY = "b";
-	private final String ANSWER_ERROR_TEXT = "d";
-	private final String WHATS_THIS_STATE = "e";
+	private static final String SERVER_ERROR_VISIBILITY ="a";
+	private static final String SERVER_ERROR_TEXT = "c";
+	private static final String ANSWER_ERROR_VISIBILITY = "b";
+	private static final String ANSWER_ERROR_TEXT = "d";
+	private static final String WHATS_THIS_STATE = "e";
 	
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {

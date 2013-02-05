@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import roboguice.inject.ContentView;
-import roboguice.inject.InjectResource;
 import roboguice.inject.InjectView;
 import android.app.Service;
 import android.content.Intent;
@@ -151,13 +150,6 @@ public class LoginActivity extends BaseActivity  {
 	@InjectView(R.id.splash_progress)
 	private ProgressBar splashProgress;
 
-	// RESOURCES
-
-	@InjectResource(R.string.hide)
-	private String HIDE;
-
-	@InjectResource(R.string.show)
-	private String SHOW;
 
 	/**
 	 * Non roboguise attributes
