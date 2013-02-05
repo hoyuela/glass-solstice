@@ -161,7 +161,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_enter_account_info);
 		
-    	HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
+    	final HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
     	progress.initChangePasswordHeader(0);
   
 		loadAllViews();
@@ -240,7 +240,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		helpNumber.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				CommonMethods.dialNumber(helpNumber.getText().toString(), currentContext);				
 			}
 		});
@@ -408,8 +408,8 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 * This object is used when submitting information to the server.
 	 */
 	private void saveFormDetailsToObject() {
-		String accountNumString = accountIdentifierField.getText().toString();
-		String memberSsnNumString = ssnField.getText().toString();
+		final String accountNumString = accountIdentifierField.getText().toString();
+		final String memberSsnNumString = ssnField.getText().toString();
 		
 		accountInformationDetails = new AccountInformationDetails();
 		addCustomFieldToDetails(accountInformationDetails, accountNumString);
@@ -434,26 +434,26 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		
 		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
 			@Override
-			public void success(final Object value) {
+			public void success(final NetworkServiceCall<?> sender, final Object value) {
 				checkForStrongAuth();
 
 			}
 			
 			@Override
-			public void complete(final Object result) {
+			public void complete(final NetworkServiceCall<?> sender, final Object result) {
 				//Unlock orientation after request has been processed
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 			}
 
 			@Override
-			public void failure(final Throwable executionException, final NetworkServiceCall<Object> networkServiceCall) {
+			public void failure(final NetworkServiceCall<?> sender, final Throwable executionException) {
 				//Catch all exception handler
-				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-				exceptionHandler.handleFailure(executionException, networkServiceCall);
+				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(sender, executionException);
 			}
 			
 			@Override
-			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 				progress.dismiss();
 				resetScrollPosition();
 				switch (errorResponse.getHttpStatusCode()) {
@@ -471,7 +471,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 			}
 
 			@Override
-			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
 				resetScrollPosition();
 								
@@ -549,7 +549,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 */
 	@Override
 	public void goBack() {
-		Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+		final Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
 		startActivity(forgotCredentials);
 		finish();		
 	}
@@ -578,24 +578,24 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		
 		final AsyncCallbackAdapter<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
-			public void success(final StrongAuthDetails value) {
+			public void success(final NetworkServiceCall<?> sender, final StrongAuthDetails value) {
 				progress.dismiss();
 				navToNextScreenWithDetails(accountInformationDetails);
 			}
 			
 			@Override
-			public void complete(final Object result) {
+			public void complete(final NetworkServiceCall<?> sender, final Object result) {
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 			}
 			
 			@Override
-			public void failure(final Throwable executionException, final NetworkServiceCall<StrongAuthDetails> networkServiceCall) {
-				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-				exceptionHandler.handleFailure(executionException, networkServiceCall);
+			public void failure(final NetworkServiceCall<?> sender, final Throwable executionException) {
+				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(sender, executionException);
 			}
 
 			@Override
-			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 
 				progress.dismiss();
 				
@@ -631,7 +631,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 			}
 
 			@Override
-			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
 
 				switch(messageErrorResponse.getMessageStatusCode()){
@@ -670,7 +670,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		
 		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
-			public void success(final StrongAuthDetails value) {
+			public void success(final NetworkServiceCall<?> sender, final StrongAuthDetails value) {
 
 				progress.dismiss();
 				strongAuthQuestion = value.questionText;
@@ -680,18 +680,18 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 			}
 			
 			@Override
-			public void complete(final Object result) {
+			public void complete(final NetworkServiceCall<?> sender, final Object result) {
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 			}
 			
 			@Override
-			public void failure(final Throwable executionException, final NetworkServiceCall<StrongAuthDetails> networkServiceCall) {
-				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-				exceptionHandler.handleFailure(executionException, networkServiceCall);
+			public void failure(final NetworkServiceCall<?> sender, final Throwable executionException) {
+				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(sender, executionException);
 			}
 
 			@Override
-			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 				progress.dismiss();
 				
 				switch (errorResponse.getHttpStatusCode()) {

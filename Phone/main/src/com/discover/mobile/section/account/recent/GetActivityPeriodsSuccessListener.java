@@ -2,6 +2,7 @@ package com.discover.mobile.section.account.recent;
 
 import com.discover.mobile.common.account.recent.RecentActivityPeriodsDetail;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 
 /**
  * Success listener for getting the periods that can be selected to view transactions for.
@@ -35,7 +36,7 @@ public class GetActivityPeriodsSuccessListener implements SuccessListener<Recent
 	 * Handle when the call is successful, in this case send it to the next screen
 	 */
 	@Override
-	public void success(final RecentActivityPeriodsDetail detail) {
+	public void success(final NetworkServiceCall<?> sender, final RecentActivityPeriodsDetail detail) {
 		fragment.setDateRange(detail.dates.get(0));
 		fragment.setPeriods(detail);
 		fragment.getTransactions();

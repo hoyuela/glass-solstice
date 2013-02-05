@@ -2,6 +2,7 @@ package com.discover.mobile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -18,6 +19,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.alert.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.alert.ModalDefaultTopView;
+import com.discover.mobile.bank.BankActivityManager;
 import com.discover.mobile.error.ErrorHandlerFactory;
 
 /**
@@ -27,8 +29,12 @@ import com.discover.mobile.error.ErrorHandlerFactory;
  * @author jthornton
  * 
  */
-public abstract class NotLoggedInRoboActivity extends SherlockActivity implements ErrorHandlerUi {
+public abstract class NotLoggedInRoboActivity extends SherlockActivity implements ErrorHandlerUi, AlertDialogParent {
 	protected boolean modalIsPresent = false;
+	/**
+	 * Reference to the dialog currently being displayed on top of this activity. Is set using setDialog();
+	 */
+	private AlertDialog mActiveDialog;
 	
 	/**
 	 * Create the activity and show the action bar
@@ -50,9 +56,15 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 		super.onResume();
 		
 		//Set this activity as the active activity
-		ErrorHandlerFactory.getInstance().setActiveActivity(this);
+		BankActivityManager.setActiveActivity(this);
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		closeDialog();
+	}
+	
 	/**
 	 * Show the action bar with the custom layout
 	 */
@@ -146,7 +158,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 		
 		errorModal.setOnCancelListener(new OnCancelListener() {			
 			@Override
-			public void onCancel(DialogInterface dialog) {
+			public void onCancel(final DialogInterface dialog) {
 				if(finishActivityOnClose)
 					goBack();
 				else
@@ -199,7 +211,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 		
 		errorModal.setOnCancelListener(new OnCancelListener() {			
 			@Override
-			public void onCancel(DialogInterface dialog) {
+			public void onCancel(final DialogInterface dialog) {
 				if(finishActivityOnClose)
 					goBack();
 				else
@@ -227,14 +239,14 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	}
 
 	@Override
-	public void showOneButtonAlert(int title, int content, int buttonText) {
+	public void showOneButtonAlert(final int title, final int content, final int buttonText) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void showDynamicOneButtonAlert(int title, String content,
-			int buttonText) {
+	public void showDynamicOneButtonAlert(final int title, final String content,
+			final int buttonText) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -246,7 +258,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	}
 
 	@Override
-	public void setLastError(int errorCode) {
+	public void setLastError(final int errorCode) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -256,6 +268,43 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	/**
+	 * @return Return a reference to the current dialog being displayed over this activity.
+	 */
+	@Override
+	public AlertDialog getDialog() {
+		return mActiveDialog;
+	}
+	/**
+	 * Allows to set the current dialog that is being displayed over this activity.
+	 */
+	@Override
+	public void setDialog(final AlertDialog dialog) {
+		mActiveDialog = dialog;
+	}
+	/**
+	 * Closes the current dialog this is being displayed over this activity. Requires
+	 * a call to setDialog to be able to use this function.
+	 */
+	@Override
+	public void closeDialog() {
+		if( mActiveDialog != null && mActiveDialog.isShowing()) {
+			mActiveDialog.dismiss();
+			mActiveDialog = null;
+		}
+	}
+	/**
+	 * Starts a Progress dialog using this activity as the context. The ProgressDialog created
+	 * will be set at the active dialog.
+	 */
+	@Override
+	public void startProgressDialog() {		
+		if( mActiveDialog == null ) {
+			mActiveDialog = ProgressDialog.show(this,"Discover", "Loading...", true);	
+			setDialog(mActiveDialog);
+		} else {
+			
+		}
+	}
 
 }

@@ -29,6 +29,7 @@ import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 
@@ -84,7 +85,7 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	 * error codes coming back
 	 */
 	@Override
-	public final boolean handleFailure(final ErrorResponse<?> errorResponse) {
+	public final boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 
 		String errorHandlingFailureMessage;
 		final Resources resources = errorHandlerUi.getContext().getResources();
@@ -174,9 +175,9 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	 * Set the input fields to be highlighted in red.
 	 */
 	protected void setInputFieldsDrawableToRed() {
-		ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
+		final ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
 		if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
-			for (EditText text : errorHandlerUi.getInputFields()) {
+			for (final EditText text : errorHandlerUi.getInputFields()) {
 				text.setBackgroundResource(R.drawable.edit_text_red);
 			}
 		}
@@ -188,9 +189,9 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	 */
 	protected void clearInputs() {
 
-		ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
+		final ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
 		if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
-			for (EditText text : errorHandlerUi.getInputFields()) {
+			for (final EditText text : errorHandlerUi.getInputFields()) {
 				text.setText("");
 			}
 		}
@@ -203,7 +204,7 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	 * @param errorCode Status Code from the response received
 	 */
 	protected void setLastError(final int errorCode) {
-		ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
+		final ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
 		if (errorHandlerUi != null ) {
 			errorHandlerUi.setLastError(errorCode);
 		}
@@ -288,7 +289,7 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	 * @param errorText
 	 */
 	protected void setErrorText(final int errorText) {
-		ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
+		final ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
 		if (errorHandlerUi != null) {
 			errorHandlerUi.getErrorLabel().setText(((Context) errorHandlerUi).getResources().getString(errorText));
 			errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
@@ -307,7 +308,7 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	 * @param errorText
 	 */
 	protected void setDynamicErrorText(final String message) {
-		ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
+		final ErrorHandlerUi errorHandlerUi = getErrorFieldUi();
 		if (errorHandlerUi != null) {
 			errorHandlerUi.getErrorLabel().setText(message);
 			errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);

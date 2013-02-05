@@ -1,6 +1,7 @@
 package com.discover.mobile.push.manage;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
 
 /**
@@ -11,7 +12,7 @@ import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
 public class GetPushPrefsSuccessListener implements SuccessListener<PushNotificationPrefsDetail>{
 	
 	/**Fragment to return the successful nature of the call*/
-	private PushManageFragment fragment;
+	private final PushManageFragment fragment;
 	
 	/**
 	 * Constructor for the class
@@ -36,7 +37,7 @@ public class GetPushPrefsSuccessListener implements SuccessListener<PushNotifica
 	 * @return the successful response
 	 */
 	@Override
-	public void success(final PushNotificationPrefsDetail detail) {
+	public void success(final NetworkServiceCall<?> sender, final PushNotificationPrefsDetail detail) {
 		fragment.setPrefs(detail);
 		fragment.displayPrefs();
 	}

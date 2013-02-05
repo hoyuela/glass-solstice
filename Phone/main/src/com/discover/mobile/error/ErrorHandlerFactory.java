@@ -18,6 +18,7 @@ import android.widget.EditText;
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
+import com.discover.mobile.bank.BankActivityManager;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
@@ -26,7 +27,6 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.Navigator;
-import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 
 /**
  * Used to handle error responses to a NetworkServiceCall<>.
@@ -37,7 +37,6 @@ import com.discover.mobile.security.EnhancedAccountSecurityActivity;
 public class ErrorHandlerFactory {
 	static final String TAG = ErrorHandlerFactory.class.getSimpleName();
 	static final ErrorHandlerFactory instance = new ErrorHandlerFactory();
-	static Activity mActivity;
 
 	/**
 	 * Uses a singleton design pattern
@@ -51,21 +50,6 @@ public class ErrorHandlerFactory {
 	 */
 	public static ErrorHandlerFactory getInstance() {
 		return instance;
-	}
-	
-	/**
-	 * 
-	 * @return Returns a reference to the active activity set via setActiveActivity
-	 */
-	public static Activity getActiveActivity() {
-		return mActivity;
-	}
-	
-	/** 
-	 * @param activity - Set to the current activity for the application
-	 */
-	public void setActiveActivity(final Activity activity) {
-		mActivity = activity;
 	}
 
 	/**
@@ -93,7 +77,7 @@ public class ErrorHandlerFactory {
 
 		// Set the input fields to be highlighted in red and clears text
 		if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
-			for (EditText text : errorHandlerUi.getInputFields()) {
+			for (final EditText text : errorHandlerUi.getInputFields()) {
 				text.setBackgroundResource(R.drawable.edit_text_red);
 				text.setText("");
 			}
@@ -121,7 +105,7 @@ public class ErrorHandlerFactory {
 			errorHandlerUi.getInputFields().get(0).requestFocus();
 
 			for (int i = (errorHandlerUi.getInputFields().size() - 1); i >= 0; i--) {
-				EditText text = errorHandlerUi.getInputFields().get(i);
+				final EditText text = errorHandlerUi.getInputFields().get(i);
 				text.setText("");
 				text.setBackgroundResource(R.drawable.edit_text_default);
 			}
@@ -157,7 +141,7 @@ public class ErrorHandlerFactory {
 		}
 
 		@Override
-		public void onDismiss(DialogInterface dialog) {
+		public void onDismiss(final DialogInterface dialog) {
 			if (Log.isLoggable(TAG, Log.VERBOSE)) {
 				Log.v(TAG, "Closing Application...");
 			}
@@ -184,7 +168,7 @@ public class ErrorHandlerFactory {
 		}
 
 		@Override
-		public void onDismiss(DialogInterface dialog) {
+		public void onDismiss(final DialogInterface dialog) {
 			// Send an intent to open login activity if current activity is not
 			// login
 			if (this.activity.getClass() != LoginActivity.class) {
@@ -223,6 +207,8 @@ public class ErrorHandlerFactory {
 	 */
 	public ModalAlertWithOneButton createErrorModal(final int errorCode,
 			final int titleText, final int errorText) {
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
+		
 		// Keep track of times an error page is shown for login
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 
@@ -235,7 +221,7 @@ public class ErrorHandlerFactory {
 		}
 
 		// Create a one button modal with text as per parameters provided
-		ModalAlertWithOneButton modal = new ModalAlertWithOneButton(mActivity,
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity,
 				titleText, errorText, true, helpResId, R.string.ok);
 
 		// If not logged in then exit the application
@@ -243,11 +229,11 @@ public class ErrorHandlerFactory {
 				&& HttpURLConnection.HTTP_UNAVAILABLE == errorCode) {
 			// Close application
 			modal.setOnDismissListener(instance.new CloseApplicationOnDismiss(
-					mActivity));
+					activeActivity));
 		} else if (Globals.isLoggedIn()) {
 			// Navigate back to login
 			modal.setOnDismissListener(instance.new NavigateToLoginOnDismiss(
-					mActivity));
+					activeActivity));
 		}
 
 		// Show one button error dialog
@@ -272,6 +258,8 @@ public class ErrorHandlerFactory {
 	 */
 	public ModalAlertWithOneButton createErrorModal(final String titleText,
 			final String errorText) {
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
+		
 		// Keep track of times an error page is shown for login
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 
@@ -284,12 +272,12 @@ public class ErrorHandlerFactory {
 		}
 
 		// Create a one button modal with text as per parameters provided
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(mActivity,
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity,
 				titleText, errorText, true, helpResId, R.string.ok);
 		
 		modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				modal.dismiss();
 				
 			}		
@@ -310,7 +298,7 @@ public class ErrorHandlerFactory {
 	 */
 	public ModalAlertWithOneButton handleHttpInternalServerErrorModal() {
 
-		ModalAlertWithOneButton modal = createErrorModal(
+		final ModalAlertWithOneButton modal = createErrorModal(
 				HttpURLConnection.HTTP_INTERNAL_ERROR,
 				R.string.error_500_title, R.string.bank_error_500_message);
 		showCustomAlert(modal);
@@ -323,8 +311,10 @@ public class ErrorHandlerFactory {
 	 * @param mErrorHandlerUi 
 	 * @return
 	 */
-	public ModalAlertWithOneButton handleHttpFraudNotFoundUserErrorModal(ErrorHandlerUi mErrorHandlerUi, String message) {
-		ModalAlertWithOneButton modal = createErrorModal(instance.mActivity.getResources().getString(R.string.error_403_title_request), message);
+	public ModalAlertWithOneButton handleHttpFraudNotFoundUserErrorModal(final ErrorHandlerUi mErrorHandlerUi, final String message) {
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
+		
+		final ModalAlertWithOneButton modal = createErrorModal(activeActivity.getResources().getString(R.string.error_403_title_request), message);
 		showCustomAlert(modal);
 		return modal;
 	}
@@ -346,8 +336,10 @@ public class ErrorHandlerFactory {
 	 */
 	public ModalAlertWithOneButton handleHttpServiceUnavailableModal(
 			final String errorText) {
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
+		
 		// Fetch modal title from resources
-		String title = mActivity.getResources().getString(
+		final String title = activeActivity.getResources().getString(
 				R.string.error_503_title);
 
 		ModalAlertWithOneButton modal = null;
@@ -366,11 +358,11 @@ public class ErrorHandlerFactory {
 		if (!Globals.isLoggedIn()) {
 			// Close application
 			modal.setOnDismissListener(instance.new CloseApplicationOnDismiss(
-					mActivity));
+					activeActivity));
 		} else if (Globals.isLoggedIn()) {
 			// Navigate back to login
 			modal.setOnDismissListener(instance.new NavigateToLoginOnDismiss(
-					mActivity));
+					activeActivity));
 		}
 
 		showCustomAlert(modal);
@@ -391,7 +383,7 @@ public class ErrorHandlerFactory {
 	 *            Specifies the HTTP status code received in the error response.
 	 */
 	public void handleGenericError(final int httpErrorCode) {
-		ModalAlertWithOneButton modal = createErrorModal(
+		final ModalAlertWithOneButton modal = createErrorModal(
 				httpErrorCode,
 				R.string.error_request_not_completed_title, R.string.error_request_not_completed_msg);
 		
@@ -413,16 +405,9 @@ public class ErrorHandlerFactory {
 	 */
 	public void handleStrongAuthFailure(final ErrorHandlerUi errorHandlerUi,
 			final String errorMessage, final String question, final String id) {
-		showErrorsOnScreen(errorHandlerUi, errorMessage);
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
 
-		final Intent strongAuth = new Intent(mActivity,
-				EnhancedAccountSecurityActivity.class);
-
-		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, question);
-		strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, id);
-		strongAuth.putExtra(IntentExtraKey.IS_CARD_ACCOUNT, false);
-
-		mActivity.startActivityForResult(strongAuth, 0);
+		Navigator.navigateToStrongAuth(activeActivity, question, id, errorMessage);
 	}
 
 	public void handleLoginAuthFailure(final ErrorHandlerUi errorHandlerUi,
@@ -446,8 +431,10 @@ public class ErrorHandlerFactory {
 	 */
 	public ModalAlertWithOneButton handleLockedOut(
 			final ErrorHandlerUi errorHandlerUi, final String errorText) {
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
+		
 		// Fetch modal title from resources
-		String title = mActivity.getResources().getString(
+		final String title = activeActivity.getResources().getString(
 				R.string.error_403_title);
 
 		ModalAlertWithOneButton modal = null;
@@ -463,7 +450,7 @@ public class ErrorHandlerFactory {
 
 		// Navigate back to login
 		modal.setOnDismissListener(instance.new NavigateToLoginOnDismiss(
-				mActivity));
+				activeActivity));
 
 		showCustomAlert(modal);
 
@@ -477,9 +464,11 @@ public class ErrorHandlerFactory {
      * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
      */
 	public void handleStrongAuthChallenge() {
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
+		
 		//Verify user is not in login page, if they are then the challenge will be handled elsewhere
-		if( mActivity.getClass() != LoginActivity.class ) {
-			BankServiceCallFactory.createStrongAuthRequest(mActivity).submit();
+		if( activeActivity.getClass() != LoginActivity.class ) {
+			BankServiceCallFactory.createStrongAuthRequest().submit();
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "In login activity, so ignoring strong auth challenge");
@@ -491,7 +480,9 @@ public class ErrorHandlerFactory {
 	 * Navigates to login page after a session expired
 	 */
 	public void handleSessionExpired() {
-		Navigator.navigateToLoginPage(mActivity, IntentExtraKey.SESSION_EXPIRED);
+		final Activity activeActivity = BankActivityManager.getActiveActivity();
+		
+		Navigator.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED);
 	}
 	
 	

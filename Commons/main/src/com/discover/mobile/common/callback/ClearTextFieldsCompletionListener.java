@@ -6,6 +6,7 @@ import java.util.Set;
 import android.widget.TextView;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.google.common.collect.Sets;
 
 class ClearTextFieldsCompletionListener implements CompletionListener {
@@ -24,7 +25,7 @@ class ClearTextFieldsCompletionListener implements CompletionListener {
 	}
 
 	@Override
-	public void complete(final Object result) {
+	public void complete(final NetworkServiceCall<?> sender, final Object result) {
 		for(final WeakReference<TextView> textViewRef : textViewRefs) {
 			final TextView textView = textViewRef.get();
 			if(textView != null)

@@ -6,6 +6,7 @@ import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.common.auth.bank.BankSchema;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.HttpHeaders;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.bank.BankErrorCodes;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
@@ -53,7 +54,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	 * error response to the appropriate handler.
 	 */
 	@Override
-	public final boolean handleFailure(final ErrorResponse<?> errorResponse) {
+	public final boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 		boolean handled = false;
 		if (errorResponse instanceof BankErrorResponse) {
 			//Use JSON Error Response Handler if error response has a JSON body in it

@@ -59,8 +59,8 @@ import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail
 import com.discover.mobile.error.BaseExceptionFailureHandler;
 import com.discover.mobile.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.login.LoginActivity;
-import com.discover.mobile.navigation.HeaderProgressIndicator;
 import com.discover.mobile.navigation.CardNavigationRootActivity;
+import com.discover.mobile.navigation.HeaderProgressIndicator;
 import com.discover.mobile.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.push.register.PushRegistrationStatusSuccessListener;
 import com.google.common.base.Strings;
@@ -92,7 +92,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	private int modalTitleText;
 	private int modalBodyText;
 	private boolean modalClosesActivity = false;
-	private Class modalNavActivity = null;
+	private final Class modalNavActivity = null;
 	
 	private RegistrationConfirmationDetails confirmationDetails;
 	
@@ -120,7 +120,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_forgot_id);
 		
-		HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
+		final HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
     	progress.initChangePasswordHeader(0);
     	progress.hideStepTwo();
 		
@@ -149,8 +149,8 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 			if(savedInstanceState.getBoolean(SHOULD_UPDATE_ACCT_NBR_APPEARANCE))
 				cardNumField.updateAppearanceForInput();
 			
-			String cardText = savedInstanceState.getString(CARD_FIELD_TEXT_KEY);
-			String passText = savedInstanceState.getString(PASS_FIELD_TEXT_KEY);
+			final String cardText = savedInstanceState.getString(CARD_FIELD_TEXT_KEY);
+			final String passText = savedInstanceState.getString(PASS_FIELD_TEXT_KEY);
 			
 			if(!Strings.isNullOrEmpty(passText))
 				passField.setText(passText);
@@ -241,7 +241,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		helpNumber.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				CommonMethods.dialNumber(helpNumberString, currentContext);
 			}
 		});
@@ -297,30 +297,30 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		
 		final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
 			@Override
-			public void success(final RegistrationConfirmationDetails value) {
+			public void success(final NetworkServiceCall<?> sender, final RegistrationConfirmationDetails value) {
 				progress.dismiss();
 				confirmationDetails = value;
 				getAccountDetails();
 			}
 			
 			@Override
-			public void complete(final Object result) {
+			public void complete(final NetworkServiceCall<?> sender, final Object result) {
 				//Unlock orientation after request has been proceesed
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 			}
 			
 			@Override
-			public void failure(final Throwable error, final NetworkServiceCall<RegistrationConfirmationDetails> callback) {
+			public void failure(final NetworkServiceCall<?> sender, final Throwable error) {
 				progress.dismiss();
 				Log.e(TAG, "Error: " + error.getMessage());
 				showOkAlertDialog("Error", error.getMessage());
 				
-				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-				exceptionHandler.handleFailure(error, callback);
+				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(sender, error);
 			}
 
 			@Override
-			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 				progress.dismiss();
 				resetScrollPosition();
 				
@@ -340,7 +340,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 			
 
 			@Override
-			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
 				resetScrollPosition();
 
@@ -444,7 +444,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 					}
 
 					@Override
-					public void success(final AccountDetails value) {
+					public void success(final NetworkServiceCall<?> sender, final AccountDetails value) {
 						// Set logged in to be able to save user name in
 						// persistent storage
 						Globals.setLoggedIn(true);
@@ -518,8 +518,8 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		 * @param value - the returning push registration detail from the server
 		 */
 		@Override
-		public void success(final PushRegistrationStatusDetail value) {
-			super.success(value);
+		public void success(final NetworkServiceCall<?> sender, final PushRegistrationStatusDetail value) {
+			super.success(sender, value);
 			navigateToConfirmationScreenWithResponseData(confirmationDetails);
 
 		}

@@ -2,11 +2,12 @@ package com.discover.mobile.section.account.recent;
 
 import com.discover.mobile.common.account.recent.GetTransactionDetails;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 
 public class GetTransactionsSuccessListener implements SuccessListener <GetTransactionDetails>{
 	
 	/**Fragment to return the successful nature of the call*/
-	private AccountRecentActivityFragment fragment;
+	private final AccountRecentActivityFragment fragment;
 	
 	/**
 	 * Constructor for the class
@@ -31,7 +32,7 @@ public class GetTransactionsSuccessListener implements SuccessListener <GetTrans
 	 * @return the successful response
 	 */
 	@Override
-	public void success(final GetTransactionDetails successObject) {
+	public void success(final NetworkServiceCall<?> sender, final GetTransactionDetails successObject) {
 		fragment.setTransactions(successObject);
 		fragment.showTransactions();
 	}

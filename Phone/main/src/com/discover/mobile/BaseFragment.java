@@ -3,11 +3,9 @@ package com.discover.mobile;
 import roboguice.RoboGuice;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.discover.mobile.navigation.CardNavigationRootActivity;
 import com.discover.mobile.navigation.NavigationRootActivity;
 
 /**

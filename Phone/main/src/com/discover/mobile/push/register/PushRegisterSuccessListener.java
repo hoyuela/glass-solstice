@@ -1,6 +1,7 @@
 package com.discover.mobile.push.register;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.push.registration.DeviceRegistrationDetail;
 
 /**
@@ -41,7 +42,7 @@ public class PushRegisterSuccessListener implements SuccessListener<DeviceRegist
 	 * Handle when the call is successful, in this case send it to the next screen
 	 */
 	@Override
-	public void success(final DeviceRegistrationDetail detail) {
+	public void success(final NetworkServiceCall<?> sender, final DeviceRegistrationDetail detail) {
 		if(isOptedIn)
 			fragment.changeToAcceptScreen();
 		else

@@ -6,6 +6,7 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 /**
  * Handles the success response from a PreAuth call.
  * Will present optional upgrade message to the user if the server sees that the application
@@ -34,7 +35,7 @@ public class PreAuthSuccessResponseHandler extends PreAuthCallHelper implements 
 	 * 
 	 */
 	@Override
-	public void success(final PreAuthResult value) {
+	public void success(final NetworkServiceCall<?> sender, final PreAuthResult value) {
 		//Verify login is a valid reference
 		if( null != loginActivity) {		
 			if( Log.isLoggable(TAG, Log.DEBUG)) {

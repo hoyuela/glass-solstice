@@ -2,7 +2,6 @@ package com.discover.mobile.section.account;
 
 import java.util.List;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,9 +24,9 @@ import com.discover.mobile.R;
 import com.discover.mobile.common.account.CategoriesDetail;
 import com.discover.mobile.common.account.CategoryDetail;
 import com.discover.mobile.common.account.GetTransactionCategories;
-import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback.Builder;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 
 public class AccountSearchTransactionFragment extends BaseFragment {
 
@@ -66,9 +65,9 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 			}
 
 			@Override
-			public void success(CategoriesDetail cat) {
+			public void success(final NetworkServiceCall<?> sender, final CategoriesDetail cat) {
 
-				List<CategoryDetail> cd = cat.categories;
+				final List<CategoryDetail> cd = cat.categories;
 //				cd.add(new CategoryDetail("-","-"));
 				cd.addAll(cat.otherCategories);
 
@@ -83,15 +82,15 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 						.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 							@Override
-							public void onItemSelected(AdapterView<?> arg0,
-									View arg1, int arg2, long arg3) {
-								CategoryDetail cdo = (CategoryDetail) categorySpinner
+							public void onItemSelected(final AdapterView<?> arg0,
+									final View arg1, final int arg2, final long arg3) {
+								final CategoryDetail cdo = (CategoryDetail) categorySpinner
 										.getSelectedItem();
 								Log.e("", cdo.categoryDesc);
 							}
 
 							@Override
-							public void onNothingSelected(AdapterView<?> arg0) {
+							public void onNothingSelected(final AdapterView<?> arg0) {
 								// TODO Auto-generated method stub
 								Log.e("", "How did I even???");
 							}
@@ -99,8 +98,8 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 			}
 		});
 
-		new GetTransactionCategories((Context) getActivity(),
-				(AsyncCallback<CategoriesDetail>) callback.build()).submit();
+		new GetTransactionCategories(getActivity(),
+				callback.build()).submit();
 
 	}
 
@@ -121,19 +120,19 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 	/**
 	 * Creates the various listeners for Date and Amount selection.
 	 */
-	private void setupDateToggleListeners(View v) {
-		RadioGroup dateGroup = (RadioGroup) v
+	private void setupDateToggleListeners(final View v) {
+		final RadioGroup dateGroup = (RadioGroup) v
 				.findViewById(R.id.transaction_date_selector);
-		RadioGroup amtGroup = (RadioGroup) v
+		final RadioGroup amtGroup = (RadioGroup) v
 				.findViewById(R.id.transaction_amount_selector);
 
-		RelativeLayout dateFrom = (RelativeLayout) v
+		final RelativeLayout dateFrom = (RelativeLayout) v
 				.findViewById(R.id.date_from_element);
-		RelativeLayout dateTo = (RelativeLayout) v
+		final RelativeLayout dateTo = (RelativeLayout) v
 				.findViewById(R.id.date_to_element);
-		RelativeLayout amtFrom = (RelativeLayout) v
+		final RelativeLayout amtFrom = (RelativeLayout) v
 				.findViewById(R.id.amount_from_element);
-		RelativeLayout amtTo = (RelativeLayout) v
+		final RelativeLayout amtTo = (RelativeLayout) v
 				.findViewById(R.id.amount_to_element);
 
 		dateLeft = (ToggleButton) dateGroup.findViewById(R.id.toggle_left);

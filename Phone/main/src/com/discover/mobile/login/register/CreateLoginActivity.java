@@ -328,20 +328,20 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 				new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
 			
 			@Override
-			public void complete(final Object result) {
+			public void complete(final NetworkServiceCall<?> sender, final Object result) {
 				//Unlock orientation after request has been processed
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 			}
 			
 			@Override
-			public void success(final RegistrationConfirmationDetails responseData) {
+			public void success(final NetworkServiceCall<?> sender, final RegistrationConfirmationDetails responseData) {
 				progress.dismiss();
 				confirmationDetails = responseData;
 				retrieveAccountDetailsFromServer();
 			}
 
 			@Override
-			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 				progress.dismiss();
 				mainScrollView.smoothScrollTo(0, 0);
 
@@ -355,14 +355,14 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 			}
 
 			@Override
-			public void failure(final Throwable executionException, final NetworkServiceCall<RegistrationConfirmationDetails> networkServiceCall) {
+			public void failure(final NetworkServiceCall<?> sender, final Throwable executionException) {
 				//Catch all exception handler
-				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-				exceptionHandler.handleFailure(executionException, networkServiceCall);
+				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(sender, executionException);
 			}
 			
 			@Override
-			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse messageErrorResponse) {
+			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse messageErrorResponse) {
 				progress.dismiss();
 				mainScrollView.smoothScrollTo(0, 0);
 

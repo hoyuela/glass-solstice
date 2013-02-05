@@ -185,9 +185,9 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		    final int fieldCopyColor = getResources().getColor(R.color.field_copy);
 
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) { 
+            public void onCheckedChanged(final RadioGroup group, final int checkedId) { 
             	
-            	RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
+            	final RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
             	if (checkedRadioButton == radioButtonOne){
             		radioButtonOne.setTextColor(subCopyColor);
             		radioButtonTwo.setTextColor(fieldCopyColor);
@@ -221,6 +221,26 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 			whatsThisLayout.setVisibility(View.GONE);
 		}
 		
+	}
+	
+	/**
+	 * Method used to update the challenge question on the page.
+	 * 
+	 * @param question New Question to update the page with
+	 * @param questionId ID that is used when generating a Strong Auth NetworkServiceCall<> to answer the question
+	 * @param isCard Specifies whether the page is being updated for card or bank account
+	 */
+	public void updateQuestion(final String question, final String questionId, final boolean isCard ) {
+		this.closeDialog();
+		
+		strongAuthQuestion = question;
+		strongAuthQuestionId = questionId;
+		
+		questionLabel.setText(strongAuthQuestion);
+		
+		if (!isCard) {
+			whatsThisLayout.setVisibility(View.GONE);
+		}
 	}
 	
 	/**
@@ -260,7 +280,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	}
 	
 	@Override
-    protected void onNewIntent(Intent intent){
+    protected void onNewIntent(final Intent intent){
         super.onNewIntent(intent);
         
         //Grab the updated intent
@@ -343,7 +363,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 */
 	@Override
 	public List<EditText> getInputFields() {
-		List<EditText> inputFields = new ArrayList<EditText>();
+		final List<EditText> inputFields = new ArrayList<EditText>();
 		inputFields.add(questionAnswerField);
 		return inputFields;
 	}
@@ -353,13 +373,13 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 * 
 	 * @param answer
 	 */
-	private void submitBankSecurityInfo(String answer) {
-		BankStrongAuthAnswerDetails details = new BankStrongAuthAnswerDetails();
+	private void submitBankSecurityInfo(final String answer) {
+		final BankStrongAuthAnswerDetails details = new BankStrongAuthAnswerDetails();
 		details.question = answer;
 		details.questionId = questionId;
 		
 		//Create a strong auth post request to send credentials to the server 
-		BankServiceCallFactory.createStrongAuthRequest(this, details).submit();
+		BankServiceCallFactory.createStrongAuthRequest(details).submit();
 	}
 
 	private void startHomeFragment() {
@@ -368,7 +388,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		startActivityForResult(strongAuth, 0);
 	}
 
-	private void submitCardSecurityInfo(final ProgressDialog progress, int selectedIndex, String answer) {
+	private void submitCardSecurityInfo(final ProgressDialog progress, final int selectedIndex, final String answer) {
 		serverErrorLabel.setVisibility(View.GONE);
 		questionAnswerField.updateAppearanceForInput();
 		
@@ -377,28 +397,28 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		
 		final AsyncCallbackAdapter<StrongAuthAnswerDetails> callback = new AsyncCallbackAdapter<StrongAuthAnswerDetails>() {
 			@Override
-			public void success(final StrongAuthAnswerDetails value) {
+			public void success( final NetworkServiceCall<?> networkServiceCall, final StrongAuthAnswerDetails value) {
 				progress.dismiss();
 				finishWithResultOK();
 			}
 			
 			@Override
-			public void complete(final Object result) {
+			public void complete( final NetworkServiceCall<?> networkServiceCall, final Object result) {
 				//Unlock orientation to be able to support orientation
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 			}
 			
 			@Override
-			public void failure(final Throwable executionException, final NetworkServiceCall<StrongAuthAnswerDetails> networkServiceCall) {
-				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-				exceptionHandler.handleFailure(executionException, networkServiceCall);
+			public void failure( final NetworkServiceCall<?> networkServiceCall, final Throwable executionException) {
+				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure(networkServiceCall, executionException);
 			}
 			
 			/**
 			 * Catch all modal popup.
 			 */
 			@Override
-			public boolean handleErrorResponse(final ErrorResponse<?> errorResponse){
+			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse){
 				switch(errorResponse.getHttpStatusCode()){
 					default:
 						showErrorModal(R.string.could_not_complete_request, R.string.internal_server_error_500, false);
@@ -407,7 +427,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 			}
 			
 			@Override
-			public boolean handleMessageErrorResponse(final JsonMessageErrorResponse value) {
+			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse value) {
 				Log.d(TAG, "ERROR CODE " + value.toString());
 				progress.dismiss();
 				switch(value.getMessageStatusCode()){
@@ -491,7 +511,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		
 		final AsyncCallbackAdapter<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
-			public void success(final StrongAuthDetails value) {
+			public void success(final NetworkServiceCall<?> sender, final StrongAuthDetails value) {
 				//If we get a new question, close the loading dialog and setup the new question.
 				progress.dismiss();
 
@@ -501,19 +521,19 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 			}
 			
 			@Override
-			public void complete(final Object result) {
+			public void complete(final NetworkServiceCall<?> sender, final Object result) {
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 			}
 			
 			
 			@Override
-			public void failure(final Throwable executionException, final NetworkServiceCall<StrongAuthDetails> networkServiceCall) {
-				BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-				exceptionHandler.handleFailure(executionException, networkServiceCall);
+			public void failure(final NetworkServiceCall<?> sender, final Throwable executionException) {
+				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+				exceptionHandler.handleFailure( sender, executionException);
 			}
 
 			@Override
-			public boolean handleErrorResponse(final ErrorResponse errorResponse) {
+			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 				progress.dismiss();
 				switch (errorResponse.getHttpStatusCode()) {
 					//catch all for strong auth question retrival.

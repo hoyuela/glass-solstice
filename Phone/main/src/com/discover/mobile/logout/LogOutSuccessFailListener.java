@@ -1,14 +1,12 @@
 package com.discover.mobile.logout;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
 
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.navigation.Navigator;
 
 /**
@@ -20,7 +18,7 @@ import com.discover.mobile.navigation.Navigator;
 public class LogOutSuccessFailListener implements SuccessListener<Object>, ErrorResponseHandler{
 	
 	/**Activity running*/
-	private Activity activity;
+	private final Activity activity;
 	
 	/**
 	 * Constructor for the class
@@ -45,12 +43,12 @@ public class LogOutSuccessFailListener implements SuccessListener<Object>, Error
 	 * @param successObject - object retrieved from the success call
 	 */
 	@Override
-	public void success(final Object successObject) {
+	public void success(final NetworkServiceCall<?> sender, final Object successObject) {
 		Navigator.navigateToLoginPage(activity, IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
 	}
 
 	@Override
-	public boolean handleFailure(ErrorResponse<?> arg0) {
+	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> arg0) {
 		// TODO Auto-generated method stub
 		Navigator.navigateToLoginPage(activity, IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
 		return false;

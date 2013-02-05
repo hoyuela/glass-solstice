@@ -33,6 +33,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.discover.mobile.common.Struct;
+import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -68,6 +69,7 @@ public abstract class NetworkServiceCall<R> {
 	static final int RESULT_SUCCESS = 0;
 	static final int RESULT_EXCEPTION = 1;
 	static final int RESULT_PARSED_ERROR = 2;
+	static final int RESULT_START = 3;
 	
 	private final ServiceCallParams params;
 	private String BASE_URL;
@@ -96,7 +98,7 @@ public abstract class NetworkServiceCall<R> {
 	 * @param params
 	 * @param isCard Determines if the base url is card or bank
 	 */
-	protected NetworkServiceCall(final Context context, final ServiceCallParams params, boolean isCard){
+	protected NetworkServiceCall(final Context context, final ServiceCallParams params, final boolean isCard){
 		validateConstructorArgs(context, params);
 		this.context = context;
 		this.params = params;
@@ -144,6 +146,26 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	/**
+	 * Resends the same request using the same information provided during instantiation. It will
+	 * not allow to retransmit if there is a transmission already being processed.
+	 * 
+	 * @param context Reference to context instance from where the NetworkServiceCall<> is being called.
+	 */
+	public void retransmit(final Context context) {
+		//Check if request is not in the middle of processing a request already 
+		if( conn == null ) {
+			this.context = context;
+			submitted = false;
+			
+			submit();
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Unable to retransmit NetworkServiceCall because it is transmitting");
+			}
+		}
+
+	}
+	/**
 	 * Executed in a background thread, needs to be thread-safe.
 	 * 
 	 * @param status 
@@ -159,6 +181,9 @@ public abstract class NetworkServiceCall<R> {
 	 * Submit the service call for asynchronous execution and call the callback when completed.
 	 */
 	public final void submit() {
+		//Notify application that the network service call has started
+		this.getHandler().getCallback().start(this);
+		
 		final boolean shouldContinue = useAndClearContext();
 		if(!shouldContinue)
 			return;
@@ -177,7 +202,7 @@ public abstract class NetworkServiceCall<R> {
 	}
 	
 	private boolean useAndClearContext() {
-		TypedReferenceHandler<R> handler = this.getHandler();
+		final TypedReferenceHandler<R> handler = this.getHandler();
 		
 		//Set network service call in handler to be able to share request call information in callbacks
 		if( null != handler) {
@@ -286,7 +311,8 @@ public abstract class NetworkServiceCall<R> {
 	
 	// always verify the host - dont check for certificate
     final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
-          public boolean verify(String hostname, SSLSession session) {
+          @Override
+		public boolean verify(final String hostname, final SSLSession session) {
               return true;
           }
    };
@@ -295,29 +321,33 @@ public abstract class NetworkServiceCall<R> {
     /**
      * Trust every server - dont check for any certificate
      */
-    private static void trustAllHosts() {
+    @SuppressWarnings("unused")
+	private static void trustAllHosts() {
               // Create a trust manager that does not validate certificate chains
-              TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-                      public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+              final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+                      @Override
+					public java.security.cert.X509Certificate[] getAcceptedIssuers() {
                               return new java.security.cert.X509Certificate[] {};
                       }
 
-                      public void checkClientTrusted(X509Certificate[] chain,
-                                      String authType) throws CertificateException {
+                      @Override
+					public void checkClientTrusted(final X509Certificate[] chain,
+                                      final String authType) throws CertificateException {
                       }
 
-                      public void checkServerTrusted(X509Certificate[] chain,
-                                      String authType) throws CertificateException {
+                      @Override
+					public void checkServerTrusted(final X509Certificate[] chain,
+                                      final String authType) throws CertificateException {
                       }
               } };
 
               // Install the all-trusting trust manager
               try {
-                      SSLContext sc = SSLContext.getInstance("TLS");
+                      final SSLContext sc = SSLContext.getInstance("TLS");
                       sc.init(null, trustAllCerts, new java.security.SecureRandom());
                       HttpsURLConnection
                                       .setDefaultSSLSocketFactory(sc.getSocketFactory());
-              } catch (Exception e) {
+              } catch (final Exception e) {
                       e.printStackTrace();
               }
       }
@@ -337,8 +367,12 @@ public abstract class NetworkServiceCall<R> {
 		setupTimeouts();
 	}
 	
-	private boolean isPostCall() {
+	public boolean isPostCall() {
 		return params instanceof PostCallParams;
+	}
+	
+	public boolean isGetCall() {
+		return params instanceof GetCallParams;
 	}
 	
 	private void doHttpMethodSpecificSetup() throws IOException {
@@ -492,9 +526,7 @@ public abstract class NetworkServiceCall<R> {
 			sendResultToHandler(result, RESULT_SUCCESS);
 		}
 	}
-	
-	
-	
+		
 	private ErrorResponseParser<?> getErrorResponseParser() {
 		return params.errorResponseParser == null ?
 				DelegatingErrorResponseParser.getSharedInstance() : params.errorResponseParser;

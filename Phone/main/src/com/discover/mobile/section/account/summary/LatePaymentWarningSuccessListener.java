@@ -2,6 +2,7 @@ package com.discover.mobile.section.account.summary;
 
 import com.discover.mobile.common.account.summary.LatePaymentWarningDetail;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 
 /**
  * Success listener for the late payment modal.  This applies specifically to the retrieval
@@ -13,7 +14,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListen
 public class LatePaymentWarningSuccessListener  implements SuccessListener<LatePaymentWarningDetail>{
 	
 	/**Fragment to return the successful nature of the call*/
-	private AccountSummaryFragment fragment;
+	private final AccountSummaryFragment fragment;
 	
 	/**
 	 * Constructor for the class
@@ -38,7 +39,7 @@ public class LatePaymentWarningSuccessListener  implements SuccessListener<LateP
 	 * @return the successful response
 	 */
 	@Override
-	public void success(final LatePaymentWarningDetail detail) {
+	public void success(final NetworkServiceCall<?> sender, final LatePaymentWarningDetail detail) {
 		fragment.getLatePaymentTextInformation();
 		fragment.prepLatePaymentModalInfo(detail);
 	}

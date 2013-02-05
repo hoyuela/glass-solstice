@@ -18,14 +18,16 @@ import android.widget.TextView;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
+import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 
 /**
+ * A listener class used to monitor NetworkServiceCall<> events such as when it starts, succeeds, fails 
+ * because of an HTTP error response, or fails because of an exception. 
  * 
- * 
- * @author ghayworth,ekaram
+ * @author ghayworth,ekaram, hoyuela
  *
  * @param <V>
  */
@@ -34,70 +36,120 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	// FIXME make ALL callbacks with the same priority happen in appropriate order, not just the order for that type of
 	// callback
 	
+	/**
+	 * Used to print logs into Android logcat
+	 */
 	private static final String TAG = GenericAsyncCallback.class.getSimpleName();
-	
+	/**
+	 * List of listeners notified when a NetworkServiceCall<> starts processing a request
+	 */
+	private @Nonnull List<StartListener> startListeners;
+	/**
+	 * List of listeners notified when a NetworkServiceCall<> completes, irrespective it was 
+	 * successful or failed.
+	 */
 	private @Nonnull List<CompletionListener> completionListeners;
+	/**
+	 * List of listeners notified when a NetworkServiceCall<> receives a 200 OK HTTP response
+	 */
 	private @Nonnull List<SuccessListener<V>> successListeners;
+	/**
+	 * List of listeners notified when a NetworkServiceCall<> receives an error response
+	 */
 	private @Nonnull List<ExceptionFailureHandler> exceptionFailureHandlers;
+	/**
+	 * Reference to builder class used to construct collection of listeners
+	 */
 	private @Nonnull Builder<V> builder;
-	
 	/**
 	 * We only need one error response handler; we will use inheritance 
 	 * @see BaseErrorResponseHandler
 	 */
 	private @Nonnull ErrorResponseHandler errorResponseHandler;
 	
+	/**
+	 * Constructor used by Builder<> class to generate an instance of GenericAsyncCallback<> 
+	 * with collection of listeners specified using the builder.
+	 * 
+	 * @param builder
+	 */
 	private GenericAsyncCallback(final Builder<V> builder) {
 		completionListeners = safeSortedCopy(builder.completionListeners);
 		successListeners = safeSortedCopy(builder.successListeners);
 		exceptionFailureHandlers = safeSortedCopy(builder.exceptionFailureHandlers);
+		startListeners = safeSortedCopy(builder.startListeners);
 		errorResponseHandler = builder.errorResponseHandler;
 		this.builder = builder;
 	}
 
+	/**
+	 * Callback invoked when a NetworkServiceCall<> starts
+	 * @param sender Reference to calling NetworkServiceCall<>
+	 */
 	@Override
-	public void complete(final Object result) {
-		for(final CompletionListener listener : completionListeners)
-			listener.complete(result);
-		
-		safeClear(completionListeners);
+	public void start(final NetworkServiceCall<?> sender) {
+		for(final StartListener listener : startListeners)
+			listener.start(sender);
 	}
-	
+	/**
+	 * Called when the {@link NetworkServiceCall} finishes, no matter what the result was. This will be called before
+	 * {@link #success(Object)}, {@link #failure(Throwable)} or {@link #failure(ErrorResponse)} is called. If an
+	 * {@code Exception} is thrown during the execution of this method it will prevent the status-specific method from
+	 * being called.
+	 * 
+	 * @param sender Reference to calling NetworkServiceCall<>
+	 * @param result The result of the call before it is passed to the more specific, status-related methods
+	 */
 	@Override
-	public void success(final V value) {
+	public void complete(final NetworkServiceCall<?> sender, final Object result) {
+		for(final CompletionListener listener : completionListeners)
+			listener.complete(sender, result);
+	}
+	/**
+	 * Callback invoked when a NetworkServiceCall<> receives a 200 OK response
+	 * 
+	 * @param sender Reference to calling NetworkServiceCall<>
+	 * @param value Contains any content that was found in the body of the 200 OK response
+	 */
+	@Override
+	public void success(final NetworkServiceCall<?> sender, final V value) {
 		for(final SuccessListener<V> listener : successListeners)
-			listener.success(value);
-		
-		safeClear(successListeners);
+			listener.success(sender, value);
 	}
 
 	/**
+	 * Callback invoked when an exception occurs during sending a request or processing a response for a
+	 * NetworkServiceCall<>. 
+	 * 
 	 * @param executionException Reference to the exception that was thrown
 	 * @param networkServiceCall Reference to the network service call where the exception occurred
 	 */
 	@Override
-	public void failure(final Throwable executionException, final NetworkServiceCall<V> networkServiceCall) {
+	public void failure(final NetworkServiceCall<?> sender, final Throwable executionException) {
 		Log.w(TAG, "caught throwable during execution", executionException);
 		
 		boolean handled = false;
 		for(final ExceptionFailureHandler handler : exceptionFailureHandlers) {
-			handled = handler.handleFailure(executionException, networkServiceCall);
+			handled = handler.handleFailure(sender, executionException);
 			if(handled)
 				break;
 		}
 		
-		safeClear(exceptionFailureHandlers);
-		
 		if(!handled)
 			throw new UnsupportedOperationException("No handler for throwable", executionException);
 	}
-	
+	/**
+	 * Callback invoked when a NetworkServiceCall<> receives an HTTP error response. 
+	 * 
+	 * @param sender Reference to calling NetworkServiceCall<>
+	 * @param errorResponse Contains any content that was provided in the body of the HTTP error response.
+	 */
 	@Override
-	public void failure(final ErrorResponse<?> errorResponse) {
+	public void failure(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 		Log.w(TAG, "server returned errorResponse: " + errorResponse);
 		
 		boolean handled = false;
-		handled = errorResponseHandler.handleFailure(errorResponse);
+		handled = errorResponseHandler.handleFailure(sender, errorResponse);
 		
 		if(!handled)
 			Log.e(TAG,"No handler for errorResponse: " + errorResponse);
@@ -128,12 +180,12 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		completionListeners = safeSortedCopy(builder.completionListeners);
 		successListeners = safeSortedCopy(builder.successListeners);
 		exceptionFailureHandlers = safeSortedCopy(builder.exceptionFailureHandlers);
+		startListeners = safeSortedCopy(builder.startListeners);
 		errorResponseHandler = builder.errorResponseHandler;
 		this.builder = builder;
 	}
 	
 	
-	@SuppressWarnings("null")
 	private static @Nonnull <L extends GenericCallbackListener> List<L> safeSortedCopy(@Nullable final List<L> list) {
 		if(list == null || list.isEmpty())
 			return Collections.emptyList();
@@ -146,7 +198,7 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		return returnList;
 	}
 	
-	private static void safeClear(final List<?> list) {
+	public static void safeClear(final List<?> list) {
 		if(!list.isEmpty())
 			list.clear();
 	}
@@ -155,6 +207,15 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		return new Builder<V>(activity);
 	}
 	
+	/**
+	 * Helper class defined to build GenericAsyncCallback<> instances. A GenericAsyncCallback<> can only
+	 * be instantiated via a builder class. All listeners are provided via the builder class and are
+	 * sorted and copied over to the GenericAsyncCallback upon calling build on the Builder<> class.
+	 * 
+	 * @author henryoyuela
+	 *
+	 * @param <V>
+	 */
 	public static final class Builder<V> {
 		
 
@@ -163,6 +224,7 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		private @Nullable List<CompletionListener> completionListeners;
 		private @Nullable List<SuccessListener<V>> successListeners;
 		private @Nullable List<ExceptionFailureHandler> exceptionFailureHandlers;
+		private @Nullable List<StartListener> startListeners;
 		public ErrorResponseHandler errorResponseHandler;
 
 		
@@ -172,6 +234,14 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		
 		public GenericAsyncCallback<V> build() {
 			return new GenericAsyncCallback<V>(this);
+		}
+		
+		public Builder<V> withStartListener(final StartListener startListener) {
+			if(startListeners == null)
+				startListeners = new LinkedList<StartListener>();
+			startListeners.add(startListener);
+			
+			return this;
 		}
 		
 		public Builder<V> withCompletionListener(final CompletionListener completionListener) {
@@ -204,8 +274,7 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 			return this;
 		}
 		
-		public Builder<V> showProgressDialog(final String title, final String message, boolean indeterminate) {
-			@SuppressWarnings("null")
+		public Builder<V> showProgressDialog(final String title, final String message, final boolean indeterminate) {
 			final @Nonnull ProgressDialog dialog = ProgressDialog.show(activity, title, message, indeterminate);
 			
 			withCompletionListener(new DialogDismissingCompletionListener(dialog));
@@ -225,7 +294,6 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		 * @param successLaunchIntentClass
 		 * @return This builder so that calls can be chained 
 		 */
-		@SuppressWarnings("null")
 		public Builder<V> launchIntentOnSuccess(final @Nonnull Class<?> successLaunchIntentClass) {
 			withSuccessListener(new FireIntentSuccessListener<V>(activity, successLaunchIntentClass));
 			
@@ -245,5 +313,7 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		}
 		
 	}
+
+
 	
 }

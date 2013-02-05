@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
 
 class FireIntentSuccessListener<V> implements SuccessListener<V> {
 	
@@ -27,7 +28,7 @@ class FireIntentSuccessListener<V> implements SuccessListener<V> {
 	}
 
 	@Override
-	public void success(final V value) {
+	public void success(final NetworkServiceCall<?> sender, final V value) {
 		final Activity activity = safeGetReferenced(activityRef);
 		if(activity != null) {
 			final Intent successIntent = new Intent(activity, intentTargetClass);
