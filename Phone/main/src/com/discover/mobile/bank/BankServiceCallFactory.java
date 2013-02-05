@@ -10,6 +10,8 @@ import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthAnswerDetails;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
+import com.discover.mobile.common.bank.account.activity.GetActivityServerCall;
+import com.discover.mobile.common.bank.account.activity.ListActivityDetail;
 import com.discover.mobile.common.bank.payee.GetPayeeServiceCall;
 import com.discover.mobile.common.bank.payee.ListPayeeDetail;
 import com.discover.mobile.common.callback.AsyncCallback;
@@ -127,8 +129,8 @@ public class BankServiceCallFactory {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Create the service call to get the payees for a user
+	 * @return the service call to get the payees for a user
 	 */
 	public static GetPayeeServiceCall createGetPayeeServiceRequest(){
 		final Activity activity = BankActivityManager.getActiveActivity();
@@ -139,6 +141,22 @@ public class BankServiceCallFactory {
 						.build();
 
 		return new GetPayeeServiceCall(activity, callback);
+	}
+
+	/**
+	 * Create the service call to get the account activity.
+	 * @param url - URL to be used to get the activity
+	 * @return the service call to get the account activity
+	 */
+	public static GetActivityServerCall createGetActivityServerCall(final String url){
+		final Activity activity = BankActivityManager.getActiveActivity();
+
+		final AsyncCallback<ListActivityDetail>  callback =
+				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(ListActivityDetail.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new GetActivityServerCall(activity, callback, url);
 	}
 
 	/**

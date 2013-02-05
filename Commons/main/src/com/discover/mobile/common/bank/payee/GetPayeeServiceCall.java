@@ -72,7 +72,7 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  * @author jthornton
  *
  */
-public class GetPayeeServiceCall  extends UnamedListJsonResponseMappingNetworkServiceCall<ListPayeeDetail> {
+public class GetPayeeServiceCall extends UnamedListJsonResponseMappingNetworkServiceCall<ListPayeeDetail> {
 
 	/**Reference handler to return the data to the UI*/
 	private final TypedReferenceHandler<ListPayeeDetail> handler;
