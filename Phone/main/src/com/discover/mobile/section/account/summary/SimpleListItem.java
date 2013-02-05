@@ -16,22 +16,19 @@ import com.discover.mobile.R;
  *
  */
 public class SimpleListItem extends RelativeLayout{
-	
-	/**Activity cotnext*/
-	private final Context context;
-	
+
 	/**Label to be shown at the top of the cell*/
 	private final TextView label;
-	
+
 	/**Value to be shown under the label*/
 	private final TextView value;
-	
+
 	/**Action item to be shown if there is any action*/
 	private final TextView action;
-	
+
 	/**Glass bar line shown next to the image line*/
 	private final ImageView line;
-	
+
 	/**
 	 * Constructor for the class
 	 * @param context - activity context
@@ -39,27 +36,25 @@ public class SimpleListItem extends RelativeLayout{
 	 */
 	public SimpleListItem(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		
+
 		final RelativeLayout layout = 
 				(RelativeLayout)LayoutInflater.from(context).inflate(R.layout.simple_list_item, null);
-		
+
 		label = (TextView)layout.findViewById(R.id.balance_label);
 		value = (TextView)layout.findViewById(R.id.balance_value);
 		action = (TextView)layout.findViewById(R.id.action_text);
 		line = (ImageView)layout.findViewById(R.id.divider_line);
 
-		this.context = context;
-		
 		addView(layout);
 	}
-	
+
 	/**
 	 * Hide the action text
 	 */
 	public void hideAction(){
 		action.setVisibility(View.INVISIBLE);
 	}
-	
+
 	/**
 	 * Set the text label shown in the cell
 	 * @param label - label to be shown
@@ -67,7 +62,7 @@ public class SimpleListItem extends RelativeLayout{
 	public void setLabel(final String label){
 		this.label.setText(label);
 	}
-	
+
 	/**
 	 * Set the action to be shown 
 	 * @param action - action string that should be shown
@@ -76,7 +71,7 @@ public class SimpleListItem extends RelativeLayout{
 		this.action.setText(action);
 		line.setVisibility(View.VISIBLE);
 	}
-	
+
 	/**
 	 * Set the value of the string in the value spot
 	 * @param value - value to be shown
@@ -84,7 +79,7 @@ public class SimpleListItem extends RelativeLayout{
 	public void setValue(final String value){
 		this.value.setText(value);
 	}
-	
+
 	/**
 	 * Set the action handler when the action button is clicked.
 	 * @param listener - lister to attach to the action button
