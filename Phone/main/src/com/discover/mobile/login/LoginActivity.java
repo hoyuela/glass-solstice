@@ -110,8 +110,6 @@ public class LoginActivity extends BaseActivity  {
 	@InjectView(R.id.login_button)
 	private Button loginButton;
 
-	@InjectView(R.id.remember_user_id_button)
-	private ImageView saveUserButton;
 
 	@InjectView(R.id.register_now_or_atm_button)
 	private Button registerOrAtmButton;
