@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
+import com.discover.mobile.bank.BankServiceCallFactory;
 
 public class SchedulePaymentLandingPage extends BaseFragment{
 
@@ -21,7 +22,14 @@ public class SchedulePaymentLandingPage extends BaseFragment{
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.account_summary, null);
 
+		getPayees();
+
+
 		return view;
+	}
+
+	public void getPayees(){
+		BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 	}
 
 

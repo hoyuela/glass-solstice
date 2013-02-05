@@ -4,6 +4,16 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Object holding the details about the activity of the account
+ * 
+ * JSON Example:
+ * 
+ * 
+ * 
+ * @author jthornton
+ *
+ */
 public class ActivityDetail implements Serializable{
 
 	private static final long serialVersionUID = -180698452175670553L;

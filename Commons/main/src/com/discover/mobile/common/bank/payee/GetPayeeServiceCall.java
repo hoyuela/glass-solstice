@@ -12,7 +12,7 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
@@ -72,8 +72,9 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  * @author jthornton
  *
  */
-public class GetPayeeServiceCall  extends JsonResponseMappingNetworkServiceCall<ListPayeeDetail> {
+public class GetPayeeServiceCall  extends UnamedListJsonResponseMappingNetworkServiceCall<ListPayeeDetail> {
 
+	/**Reference handler to return the data to the UI*/
 	private final TypedReferenceHandler<ListPayeeDetail> handler;
 
 	/**
@@ -102,18 +103,31 @@ public class GetPayeeServiceCall  extends JsonResponseMappingNetworkServiceCall<
 			}
 		}, ListPayeeDetail.class, false);
 
-		// TODO decide if this is the best type of handler
 		this.handler = new SimpleReferenceHandler<ListPayeeDetail>(callback);
 	}
 
+	/**
+	 * Parse the success response.
+	 * 
+	 * @param status - response status
+	 * @param header - map of headers
+	 * @param body - response body
+	 * @return list of payee details
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected ListPayeeDetail parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 
-		//No parsing is necessary for the links
-		return super.parseSuccessResponse(status, headers, body);
+		final ListPayeeDetail details = new ListPayeeDetail();
+		details.payees = (List<PayeeDetail>)super.parseSuccessResponse(status, headers, body);
+		return details;
+
 	}
 
+	/**
+	 * @return the handler
+	 */
 	@Override
 	public TypedReferenceHandler<ListPayeeDetail> getHandler() {
 		return this.handler;

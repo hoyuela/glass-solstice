@@ -18,7 +18,7 @@ public class BankUrlManager {
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
 	//	private static final String BASE_URL = "http://192.168.1.94:8008";
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
-	// private static final String BASE_URL = "http://192.168.1.70:8009"; //Jon's Laptop
+	//private static final String BASE_URL = "http://192.168.1.70:8009"; //Jon's Laptop
 	private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
 
 	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
@@ -76,8 +76,7 @@ public class BankUrlManager {
 	/**
 	 * This is used in order to retrieve a url from the map.
 	 * 
-	 * @param key
-	 *            The key for the URL that needs to be retrieved
+	 * @param key - The key for the URL that needs to be retrieved
 	 */
 	public static String getUrl(final String key) {
 		final String url = links.get(key).url;

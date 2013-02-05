@@ -45,7 +45,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class PayeeDetail implements Serializable{
 
 	/**Unique id for the object*/
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7210529152877467294L;
 
 	/**Id for the payee*/
 	@JsonProperty("id")
