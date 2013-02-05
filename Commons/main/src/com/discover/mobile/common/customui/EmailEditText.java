@@ -7,15 +7,15 @@ import com.discover.mobile.common.auth.InputValidator;
 
 public class EmailEditText extends ValidatedInputField {
 
-	public EmailEditText(Context context) {
+	public EmailEditText(final Context context) {
 		super(context);
 	}
-	
-	public EmailEditText(Context context, AttributeSet attrs) {
+
+	public EmailEditText(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 	}
-	
-	public EmailEditText(Context context, AttributeSet attrs, int defStyle){
+
+	public EmailEditText(final Context context, final AttributeSet attrs, final int defStyle){
 		super(context, attrs, defStyle);
 	}
 
