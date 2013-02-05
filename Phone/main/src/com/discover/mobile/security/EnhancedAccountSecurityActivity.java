@@ -181,7 +181,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
             public void onCheckedChanged(final RadioGroup group, final int checkedId) { 
             	
             	final RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
-            	if (checkedRadioButton.equals(radioButtonOne)){
+            	if (checkedRadioButton.equals(radioButtonOne) ){
             		radioButtonOne.setTextColor(subCopyColor);
             		radioButtonTwo.setTextColor(fieldCopyColor);
             	}else {

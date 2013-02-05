@@ -11,12 +11,10 @@ import com.discover.mobile.common.auth.bank.strong.BankStrongAuthAnswerDetails;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.customer.bank.Customer;
 import com.discover.mobile.common.customer.bank.CustomerServiceCall;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.login.LoginActivity;
-import com.discover.mobile.navigation.Navigator;
 
 /**
  * Utility class used to construct NetworkServiceCall<> objects used for invoking Bank related web-service API.
@@ -26,10 +24,7 @@ import com.discover.mobile.navigation.Navigator;
  */
 public class BankServiceCallFactory {
 	private static BankServiceCallFactory instance = new BankServiceCallFactory();
-	//TODO: Remove this code in sprint 2:
-	private static Customer customer;
-	//TODO: Remove this code in Sprint 2
-
+	
 	private BankServiceCallFactory() {
 
 	}
@@ -51,7 +46,6 @@ public class BankServiceCallFactory {
 		 */
 		final AsyncCallback<Customer> callback = 
 				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(Customer.class, activity, (ErrorHandlerUi) activity)
-				.withSuccessListener(instance.new NavigateToActivity<Customer>(activity))
 				.build();
 
 		return  new CustomerServiceCall(activity, callback);	
@@ -130,35 +124,10 @@ public class BankServiceCallFactory {
 	 * @return
 	 */
 	public static NetworkServiceCall<BankLoginData> createAccountDownloadCall() {
-		final Activity activity = BankActivityManager.getActiveActivity();
+		//TODO: final Activity activity = BankActivityManager.getActiveActivity();
 
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/**
-	 * TODO: Placeholder for handling the downloading of customer information, this will be removed
-	 * in sprint 2
-	 * @author henryoyuela
-	 *
-	 * @param <TYPE>
-	 */
-	public class NavigateToActivity<TYPE> implements SuccessListener<TYPE> {
-		private final Activity mActivity;
-
-		private NavigateToActivity(final Activity activity) {
-			mActivity = activity;
-		}
-
-		@Override
-		public CallbackPriority getCallbackPriority() {
-			return CallbackPriority.MIDDLE;
-		}
-
-		@Override
-		public void success(final NetworkServiceCall<?> sender, final TYPE value) {
-			Navigator.navigateToHomePage(mActivity);
-			BankServiceCallFactory.customer = (Customer)value;
-		}
-	};
 }
