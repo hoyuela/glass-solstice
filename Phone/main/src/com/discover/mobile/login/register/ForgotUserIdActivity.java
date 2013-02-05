@@ -92,7 +92,6 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	private int modalTitleText;
 	private int modalBodyText;
 	private boolean modalClosesActivity = false;
-	private final Class modalNavActivity = null;
 
 	private RegistrationConfirmationDetails confirmationDetails;
 
