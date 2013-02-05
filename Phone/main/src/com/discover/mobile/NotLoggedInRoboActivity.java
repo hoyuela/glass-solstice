@@ -35,7 +35,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	 * Reference to the dialog currently being displayed on top of this activity. Is set using setDialog();
 	 */
 	private AlertDialog mActiveDialog;
-	
+
 	/**
 	 * Create the activity and show the action bar
 	 */
@@ -44,17 +44,17 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 		super.onCreate(savedInstanceState);
 		showActionBar();
 	}
-	
+
 	@Override
 	public ErrorHandlerFactory getErrorHandlerFactory() {
 		return ErrorHandlerFactory.getInstance();
 	}
 
-	
+
 	@Override
 	public void onResume(){
 		super.onResume();
-		
+
 		//Set this activity as the active activity
 		BankActivityManager.setActiveActivity(this);
 	}
@@ -64,7 +64,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 		super.onPause();
 		closeDialog();
 	}
-	
+
 	/**
 	 * Show the action bar with the custom layout
 	 */
@@ -90,19 +90,19 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 			}
 		});
 	}
-	
+
 	/**
 	 * Set the title in the action bar to display text instead of the default discover image
 	 */
 	public void setActionBarTitle(final int stringResource) {
 		//Hide the title image in the action bar.
 		((ImageView)this.findViewById(R.id.action_bar_discover_logo)).setVisibility(View.GONE);
-		
+
 		//Show title text with string resource.
 		final TextView titleText = (TextView)findViewById(R.id.logged_out_title_view);
 		titleText.setText(this.getString(stringResource));
 		titleText.setVisibility(View.VISIBLE);
-		
+
 	}
 
 	/**
@@ -111,13 +111,13 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	public void setActionBarTitleImageVisible() {
 		//Hide the title image in the action bar.
 		((ImageView)this.findViewById(R.id.action_bar_discover_logo)).setVisibility(View.VISIBLE);
-		
+
 		//Hide title text and reset text value.
 		final TextView titleText = (TextView)findViewById(R.id.title_view);
 		titleText.setText(this.getString(R.string.empty));
 		titleText.setVisibility(View.GONE);
 	}
-	
+
 	/**
 	 * Present a modal error dialog over the current activity with a given title and body text. Can also close the
 	 * current activity on close if needed.
@@ -135,14 +135,14 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 
 		titleAndContentForDialog.setTitle(activity.getResources().getString(titleText));
 		titleAndContentForDialog.setContent(activity.getResources().getString(bodyText));
-		
+
 		titleAndContentForDialog.showErrorIcon(true);
 		oneButtonBottomView.setButtonText(R.string.close_text);
-				
+
 		titleAndContentForDialog.getHelpFooter().setToDialNumberOnClick(R.string.need_help_number_text);
 		final ModalAlertWithOneButton errorModal = 
 				new ModalAlertWithOneButton(activity, titleAndContentForDialog, oneButtonBottomView);
-		
+
 		if(finishActivityOnClose)
 			errorModal.finishActivityOnClose(activity);
 
@@ -155,7 +155,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 					goBack();
 			}
 		});
-		
+
 		errorModal.setOnCancelListener(new OnCancelListener() {			
 			@Override
 			public void onCancel(final DialogInterface dialog) {
@@ -165,12 +165,12 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 					errorModal.dismiss();			
 			}
 		});
-		
+
 		modalIsPresent = true;
 		showCustomAlert(errorModal);
-		
+
 	}
-	
+
 	/**
 	 * Present a modal error dialog over the current activity with a given title and body text. Can also close the
 	 * current activity on close if needed.
@@ -188,14 +188,14 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 
 		titleAndContentForDialog.setTitle(activity.getResources().getString(titleText));
 		titleAndContentForDialog.setContent(activity.getResources().getString(bodyText));
-		
+
 		titleAndContentForDialog.showErrorIcon(true);
 		oneButtonBottomView.setButtonText(R.string.close_text);
-				
+
 		titleAndContentForDialog.getHelpFooter().setToDialNumberOnClick(R.string.need_help_number_text);
 		final ModalAlertWithOneButton errorModal = 
 				new ModalAlertWithOneButton(activity, titleAndContentForDialog, oneButtonBottomView);
-		
+
 		if(finishActivityOnClose)
 			errorModal.finishActivityOnClose(activity);
 
@@ -208,7 +208,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 					goBack();
 			}
 		});
-		
+
 		errorModal.setOnCancelListener(new OnCancelListener() {			
 			@Override
 			public void onCancel(final DialogInterface dialog) {
@@ -218,10 +218,10 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 					errorModal.dismiss();
 			}
 		});
-		
+
 		modalIsPresent = true;
 		errorModal.show();
-		
+
 	}
 	/**
 	 * Function to be implemented by subclasses to return to previous screen that opened
@@ -229,7 +229,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	 * 
 	 */
 	public abstract void goBack();
-	
+
 
 	@Override
 	public void showCustomAlert(final AlertDialog alert) {
@@ -241,14 +241,14 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	@Override
 	public void showOneButtonAlert(final int title, final int content, final int buttonText) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void showDynamicOneButtonAlert(final int title, final String content,
 			final int buttonText) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -260,7 +260,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	@Override
 	public void setLastError(final int errorCode) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -302,8 +302,6 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 		if( mActiveDialog == null ) {
 			mActiveDialog = ProgressDialog.show(this,"Discover", "Loading...", true);	
 			setDialog(mActiveDialog);
-		} else {
-			
 		}
 	}
 
