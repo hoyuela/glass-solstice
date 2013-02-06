@@ -12,7 +12,7 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
@@ -104,7 +104,7 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  * @author jthornton
  *
  */
-public class GetPaymentsServiceCall extends JsonResponseMappingNetworkServiceCall<ListPaymentDetail> {
+public class GetPaymentsServiceCall extends UnamedListJsonResponseMappingNetworkServiceCall<ListPaymentDetail> {
 
 	private final TypedReferenceHandler<ListPaymentDetail> handler;
 
@@ -138,12 +138,14 @@ public class GetPaymentsServiceCall extends JsonResponseMappingNetworkServiceCal
 		this.handler = new SimpleReferenceHandler<ListPaymentDetail>(callback);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected ListPaymentDetail parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 
-		//No parsing is necessary for the links
-		return super.parseSuccessResponse(status, headers, body);
+		final ListPaymentDetail details = new ListPaymentDetail();
+		details.payments = (List<PaymentDetail>)super.parseSuccessResponse(status, headers, body);
+		return details;
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package com.discover.mobile.common.bank.payment;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.discover.mobile.common.bank.payee.PayeeDetail;
@@ -100,11 +99,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PaymentDetail implements Serializable{
 
+	/**Unique identidier for the class*/
 	private static final long serialVersionUID = -1968961896410192306L;
 
+	/**Id of the payment*/
 	@JsonProperty("id")
 	public String id;
 
+	/**Description of the payment*/
 	@JsonProperty("description")
 	public String description;
 
@@ -115,21 +117,27 @@ public class PaymentDetail implements Serializable{
 	@JsonProperty("amount")
 	public int amount;
 
+	/**Status of the payment*/
 	@JsonProperty("status")
 	public String status;
 
+	/**List of dates associated with the payment*/
 	@JsonProperty("dates")
-	public List<PaymentDateDetail> dates;
+	public Map<String, PaymentDateDetail>dates;
 
+	/**Details about the payee*/
 	@JsonProperty("payee")
 	public PayeeDetail payee;
 
+	/**Payment account*/
 	@JsonProperty("paymentAccount")
 	public PaymentAccountDetail paymentAccount;
 
+	/**Payment confirmation number*/
 	@JsonProperty("confirmationNumber")
 	public String confirmationNumber;
 
+	/**payment memo*/
 	@JsonProperty("memo")
 	public String memo;
 
