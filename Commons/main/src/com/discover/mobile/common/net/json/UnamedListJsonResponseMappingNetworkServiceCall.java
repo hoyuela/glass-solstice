@@ -21,13 +21,9 @@ import com.discover.mobile.common.net.ServiceCallParams;
  */
 public abstract class UnamedListJsonResponseMappingNetworkServiceCall<M, I> extends JsonResponseMappingNetworkServiceCall<M>{
 
-	private static final String TAG = UnamedListJsonResponseMappingNetworkServiceCall.class.getSimpleName();
-
-	private final Class<M> modelClass;
+	private static final String TAG = "UnamedListJsonResponseMapping";
 
 	private final Class<I> innerClass;
-
-	//protected Class<? impelments  Serializable> innerClass;
 
 	/**
 	 * JSON mapping service call used with the base url defaulted to card.
@@ -52,7 +48,6 @@ public abstract class UnamedListJsonResponseMappingNetworkServiceCall<M, I> exte
 		super(context, params, modelClass, isCard);
 		checkNotNull(modelClass, "modelClass cannot be null");
 
-		this.modelClass = modelClass;
 		this.innerClass = innerClass;
 		Log.d(TAG, modelClass.toString());
 	}
