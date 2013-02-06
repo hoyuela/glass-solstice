@@ -15,9 +15,11 @@ import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkServiceCall;
 
 /**
- * Used for invoking the Bank - Customer Service API found at ./api/accounts/{id}/activity. The JSON
+ * Used for invoking the Bank - Account Service API found at ./api/accounts/{id}/activity. The JSON
  * response to this web-service API is de-serialized into a ActivityDetails List object and passed to the
  * application layer.
+ * 
+ * API Call: /api/accounts/{id}/activity
  * 
  * The following is an example of the Customer JSON response:
  * 
@@ -51,7 +53,7 @@ import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkS
  * @author jthornton
  *
  */
-public class GetActivityServerCall extends UnamedListJsonResponseMappingNetworkServiceCall<ListActivityDetail> {
+public class GetActivityServerCall extends UnamedListJsonResponseMappingNetworkServiceCall<ListActivityDetail, ActivityDetail> {
 
 	/**Reference handler to return the data to the UI*/
 	private final TypedReferenceHandler<ListActivityDetail> handler;
@@ -81,28 +83,27 @@ public class GetActivityServerCall extends UnamedListJsonResponseMappingNetworkS
 				this.errorResponseParser = BankErrorResponseParser.instance();
 
 			}
-		}, ListActivityDetail.class, false);
+		}, ListActivityDetail.class, ActivityDetail.class, false);
 
 		this.handler = new SimpleReferenceHandler<ListActivityDetail>(callback);
 	}
 
 	/**
-	 * Parse the success response.
+	 * Parse the success response.  Take the unnamed table and then parses it correctly returning a list of the
+	 * POJO model class to the UI.
 	 * 
 	 * @param status - response status
 	 * @param header - map of headers
 	 * @param body - response body
-	 * @return list of activity details
+	 * @return list of details
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected ListActivityDetail parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 
 		final ListActivityDetail details = new ListActivityDetail();
-		details.activities = (List<ActivityDetail>)super.parseSuccessResponse(status, headers, body);
+		details.activities = super.parseUnamedList(body);
 		return details;
-
 	}
 
 	/**

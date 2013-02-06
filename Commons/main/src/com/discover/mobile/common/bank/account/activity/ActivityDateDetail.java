@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Date object holding information about the activity date.
  * 
+ * API Call: /api/accounts/{id}/activity
+ * 
  * JSON Object Example:
  * 
  * "dates": {

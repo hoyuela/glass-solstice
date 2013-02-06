@@ -8,7 +8,9 @@ import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * JSON object holding the information about the payment account
+ * Used for storing individual payment account information.
+ * 
+ * API Call: /api/payments/
  * 
  * JSON Example:
  * 

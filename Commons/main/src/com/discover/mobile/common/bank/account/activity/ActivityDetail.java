@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object holding the details about the activity of the account
  * 
+ *  * API Call: /api/accounts/{id}/activity
+ * 
  * JSON Example:
  * 
  * 		{

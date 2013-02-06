@@ -17,12 +17,17 @@ import com.discover.mobile.common.net.ServiceCallParams;
  * A {@link NetworkServiceCall} that handles mapping of unnamed list JSON requests and responses.
  * 
  * @param <M> The <u>m</u>odel type for the JSON result
+ * @param <V> The <u>I</u>nner type for the JSON result
  */
-public abstract class UnamedListJsonResponseMappingNetworkServiceCall<M> extends JsonResponseMappingNetworkServiceCall<M>{
+public abstract class UnamedListJsonResponseMappingNetworkServiceCall<M, I> extends JsonResponseMappingNetworkServiceCall<M>{
 
 	private static final String TAG = UnamedListJsonResponseMappingNetworkServiceCall.class.getSimpleName();
 
 	private final Class<M> modelClass;
+
+	private final Class<I> innerClass;
+
+	//protected Class<? impelments  Serializable> innerClass;
 
 	/**
 	 * JSON mapping service call used with the base url defaulted to card.
@@ -30,8 +35,8 @@ public abstract class UnamedListJsonResponseMappingNetworkServiceCall<M> extends
 	 * @param params
 	 */
 	protected UnamedListJsonResponseMappingNetworkServiceCall(final Context context, final ServiceCallParams params,
-			final Class<M> modelClass) {
-		this(context, params, modelClass, true);
+			final Class<M> modelClass, final Class<I> innerClass) {
+		this(context, params, modelClass, innerClass, true);
 	}
 
 	/**
@@ -42,18 +47,32 @@ public abstract class UnamedListJsonResponseMappingNetworkServiceCall<M> extends
 	 * @param isCard Determines if the card base url is used.
 	 */
 	protected UnamedListJsonResponseMappingNetworkServiceCall(final Context context, final ServiceCallParams params,
-			final Class<M> modelClass, final boolean isCard) {
+			final Class<M> modelClass, final Class<I> innerClass, final boolean isCard) {
 
 		super(context, params, modelClass, isCard);
 		checkNotNull(modelClass, "modelClass cannot be null");
 
 		this.modelClass = modelClass;
+		this.innerClass = innerClass;
 		Log.d(TAG, modelClass.toString());
 	}
 
 	@Override
 	protected M parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
-		return JacksonObjectMapperHolder.mapper.readValue(body, JacksonObjectMapperHolder.mapper.getTypeFactory().constructCollectionType(List.class, this.modelClass));
+		return super.parseSuccessResponse(status, headers, body);
+	}
+
+	/**
+	 * Parses an unnamed list and returns a list of the model class.
+	 * @param body - json body to parse
+	 * @param model - model class to map the objects to
+	 * @return a list of model obects
+	 * @throws IOException
+	 */
+	public List<I> parseUnamedList(final InputStream body)
+			throws IOException {
+		final List<I> object = JacksonObjectMapperHolder.mapper.readValue(body, JacksonObjectMapperHolder.mapper.getTypeFactory().constructCollectionType(List.class, this.innerClass));
+		return object;
 	}
 }

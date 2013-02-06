@@ -8,7 +8,7 @@ import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This is used for storing Payee detailed information provided in a JSON response to a
+ * This is used for storing Individual Payee detailed information provided in a JSON response to a
  * Bank web-service API invocation
  * 
  * The GetPayeeServiceCall class uses this object to store the Payee information.

@@ -1,9 +1,12 @@
 package com.discover.mobile.common.bank.account.activity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * A ActivityDetails List object and passed to the application layer.
+ * 
+ * API Call: /api/accounts/{id}/activity
  * 
  * The following is an example of the Customer JSON response:
  * 
@@ -37,7 +40,10 @@ import java.util.List;
  * @author jthornton
  *
  */
-public class ListActivityDetail {
+public class ListActivityDetail implements Serializable{
+
+	/**Unique identifier for the object*/
+	private static final long serialVersionUID = 8207177094396952741L;
 
 	/**List of activity details*/
 	List<ActivityDetail> activities;

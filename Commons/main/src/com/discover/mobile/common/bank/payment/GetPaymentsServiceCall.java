@@ -16,10 +16,11 @@ import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkS
 import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
- * This is used for storing payment detailed information provided in a JSON response to a
- * Bank web-service API invocation
+ * Used for invoking the Bank - Payment Service API found at ./api/payments/. The JSON
+ * response to this web-service API is de-serialized into a payment detailed object and passed to the
+ * application layer.
  * 
- * The GetPayeeServiceCall class uses this object to store the Payee information.
+ * The GetPayeeServiceCall class uses this object to store the a list of payment information information.
  * 
  * API call: /api/payments
  * 
@@ -104,7 +105,7 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  * @author jthornton
  *
  */
-public class GetPaymentsServiceCall extends UnamedListJsonResponseMappingNetworkServiceCall<ListPaymentDetail> {
+public class GetPaymentsServiceCall extends UnamedListJsonResponseMappingNetworkServiceCall<ListPaymentDetail, PaymentDetail> {
 
 	private final TypedReferenceHandler<ListPaymentDetail> handler;
 
@@ -132,19 +133,27 @@ public class GetPaymentsServiceCall extends UnamedListJsonResponseMappingNetwork
 				this.errorResponseParser = BankErrorResponseParser.instance();
 
 			}
-		}, ListPaymentDetail.class, false);
+		}, ListPaymentDetail.class, PaymentDetail.class, false);
 
 		// TODO decide if this is the best type of handler
 		this.handler = new SimpleReferenceHandler<ListPaymentDetail>(callback);
 	}
 
-	@SuppressWarnings("unchecked")
+	/**
+	 * Parse the success response.  Take the unnamed table and then parses it correctly returning a list of the
+	 * POJO model class to the UI.
+	 * 
+	 * @param status - response status
+	 * @param header - map of headers
+	 * @param body - response body
+	 * @return list of details
+	 */
 	@Override
 	protected ListPaymentDetail parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 
 		final ListPaymentDetail details = new ListPaymentDetail();
-		details.payments = (List<PaymentDetail>)super.parseSuccessResponse(status, headers, body);
+		details.payments = super.parseUnamedList(body);
 		return details;
 	}
 

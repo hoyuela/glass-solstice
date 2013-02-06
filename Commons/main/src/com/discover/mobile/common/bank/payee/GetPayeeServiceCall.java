@@ -16,7 +16,7 @@ import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkS
 import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
- * Used for invoking the Bank - Customer Service API found at ./api/payees/. The JSON
+ * Used for invoking the Bank - Payee Service API found at ./api/payees/. The JSON
  * response to this web-service API is de-serialized into a Payees List object and passed to the
  * application layer.
  * 
@@ -72,7 +72,7 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  * @author jthornton
  *
  */
-public class GetPayeeServiceCall extends UnamedListJsonResponseMappingNetworkServiceCall<ListPayeeDetail> {
+public class GetPayeeServiceCall extends UnamedListJsonResponseMappingNetworkServiceCall<ListPayeeDetail, PayeeDetail> {
 
 	/**Reference handler to return the data to the UI*/
 	private final TypedReferenceHandler<ListPayeeDetail> handler;
@@ -101,26 +101,26 @@ public class GetPayeeServiceCall extends UnamedListJsonResponseMappingNetworkSer
 				this.errorResponseParser = BankErrorResponseParser.instance();
 
 			}
-		}, ListPayeeDetail.class, false);
+		}, ListPayeeDetail.class, PayeeDetail.class, false);
 
 		this.handler = new SimpleReferenceHandler<ListPayeeDetail>(callback);
 	}
 
 	/**
-	 * Parse the success response.
+	 * Parse the success response.  Take the unnamed table and then parses it correctly returning a list of the
+	 * POJO model class to the UI.
 	 * 
 	 * @param status - response status
 	 * @param header - map of headers
 	 * @param body - response body
-	 * @return list of payee details
+	 * @return list of details
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected ListPayeeDetail parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 
 		final ListPayeeDetail details = new ListPayeeDetail();
-		details.payees = (List<PayeeDetail>)super.parseSuccessResponse(status, headers, body);
+		details.payees = super.parseUnamedList(body);
 		return details;
 
 	}
