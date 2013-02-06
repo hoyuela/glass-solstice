@@ -27,6 +27,8 @@ import android.widget.TextView;
 import com.discover.mobile.NotLoggedInRoboActivity;
 import com.discover.mobile.R;
 import com.discover.mobile.bank.BankServiceCallFactory;
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthAnswerDetails;
@@ -134,7 +136,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	private static final int MIN_ANSWER_LENGTH = 2;
 	
 	 /**
-     * Callback to watch the text field for empty/non-empty
+     * Callback to watch the text field for empty/non-empty entered text from user
      */
     private final TextWatcher mTextWatcher = new TextWatcher() {
 
@@ -162,12 +164,15 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 
 		restoreState(savedInstanceState);
 		
-		//Add text change listener to determine when the user has entered text
-		//to enable/disable continue button
-		questionAnswerField.addTextChangedListener(mTextWatcher);
-		
-		//Disable continue button by default
-		continueButton.setEnabled(false);
+		//Disabling continue button only applies to Bank
+		if( Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT) {
+			//Add text change listener to determine when the user has entered text
+			//to enable/disable continue button
+			questionAnswerField.addTextChangedListener(mTextWatcher);
+			
+			//Disable continue button by default
+			continueButton.setEnabled(false);
+		}
 	}
 	
 	@Override
