@@ -18,8 +18,6 @@ public class BankUrlManager {
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
 	//	private static final String BASE_URL = "http://192.168.1.94:8008";
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
-	//private static final String BASE_URL = "http://192.168.1.70:8009"; //Jon's Laptop
-	//private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
 
 	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
 	public static final String EMPTY = "";
@@ -27,7 +25,7 @@ public class BankUrlManager {
 	private static final String GET_TOKEN_URL = "/api/auth/token";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
 	private static final String CUSTOMER_SERVICE_URL = "/api/customers/current";
-	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
+	private static Map<String, ReceivedUrl> links;
 
 	/**
 	 * Keys for the urls in order to retrieve from the map
@@ -38,6 +36,7 @@ public class BankUrlManager {
 	public static final String PAYEES_URL_KEY = "payees";
 	public static final String LOGOUT_URL_KEY = "logout";
 	public static final String PAYMENTS_URL_KEY = "payments";
+
 
 	/**
 	 * @return the baseUrl

@@ -6,13 +6,12 @@ import com.discover.mobile.section.GroupComponentInfo;
 import com.discover.mobile.section.home.HomeSummaryFragment;
 
 public final class BankAccountSectionInfo extends GroupComponentInfo {
-	
+
 	public BankAccountSectionInfo() {
-		super(R.string.section_title_account,
-				new FragmentComponentInfo(R.string.sub_section_title_account_summary, HomeSummaryFragment.class),
-				new FragmentComponentInfo(R.string.sub_section_title_statements, HomeSummaryFragment.class),
-				new FragmentComponentInfo(R.string.sub_section_title_open_new_account,
-						HomeSummaryFragment.class));
+		super(R.string.section_title_account, 
+				new FragmentComponentInfo(R.string.sub_section_title_account_summary,HomeSummaryFragment.class), 
+				new FragmentComponentInfo(R.string.sub_section_title_statements,null, "http://www.google.com"),
+				new FragmentComponentInfo(R.string.sub_section_title_open_new_account,null, "http://www.google.com"));
 	}
-	
+
 }
