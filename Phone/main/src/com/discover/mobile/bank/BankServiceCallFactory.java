@@ -15,12 +15,10 @@ import com.discover.mobile.common.bank.account.activity.ListActivityDetail;
 import com.discover.mobile.common.bank.payee.GetPayeeServiceCall;
 import com.discover.mobile.common.bank.payee.ListPayeeDetail;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.customer.bank.Customer;
 import com.discover.mobile.common.customer.bank.CustomerServiceCall;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.login.LoginActivity;
-import com.discover.mobile.navigation.Navigator;
 
 /**
  * Utility class used to construct NetworkServiceCall<> objects used for invoking Bank related web-service API.
@@ -29,15 +27,10 @@ import com.discover.mobile.navigation.Navigator;
  *
  */
 public class BankServiceCallFactory {
-	private static BankServiceCallFactory instance = new BankServiceCallFactory();
-
-	private static Customer customer;
-
 
 	private BankServiceCallFactory() {
 
 	}
-
 
 	/**
 	 * Used to construct a CustomerServiceCall object for invoking the
@@ -169,30 +162,4 @@ public class BankServiceCallFactory {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	/**
-	 * TODO: Placeholder for handling the downloading of customer information, this will be removed
-	 * in sprint 2
-	 * @author henryoyuela
-	 *
-	 * @param <TYPE>
-	 */
-	public class NavigateToActivity<TYPE> implements SuccessListener<TYPE> {
-		private final Activity mActivity;
-
-		private NavigateToActivity(final Activity activity) {
-			this.mActivity = activity;
-		}
-
-		@Override
-		public CallbackPriority getCallbackPriority() {
-			return CallbackPriority.MIDDLE;
-		}
-
-		@Override
-		public void success(final NetworkServiceCall<?> sender, final TYPE value) {
-			Navigator.navigateToHomePage(this.mActivity);
-			BankServiceCallFactory.customer = (Customer)value;
-		}
-	};
 }
