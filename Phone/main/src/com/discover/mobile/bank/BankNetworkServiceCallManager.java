@@ -190,12 +190,12 @@ ErrorResponseHandler, ExceptionFailureHandler {
 		else if( sender instanceof CreateStrongAuthRequestCall && this.prevCall != null && sender.isGetCall()) {
 			final BankStrongAuthDetails value = (BankStrongAuthDetails)result;
 			if( !BankStrongAuthDetails.ALLOW_STATUS.equals(value.status ) ) {
-				BankNavigator.navigateToStrongAuth(activeActivity, value.question, value.questionId, null);
-			} else {
-				//Retransmit the previous NetworkServiceCall<>
-				this.prevCall.retransmit(activeActivity);
-			}
-		}
+ 				BankNavigator.navigateToStrongAuth(activeActivity, value, null);
+ 			} else {
+ 				//Retransmit the previous NetworkServiceCall<> 
+ 				prevCall.retransmit(activeActivity);
+ 			}
+		} 
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
 		else if( sender instanceof CreateStrongAuthRequestCall && this.prevCall != null && sender.isPostCall() ) {
 			this.prevCall.retransmit(activeActivity);

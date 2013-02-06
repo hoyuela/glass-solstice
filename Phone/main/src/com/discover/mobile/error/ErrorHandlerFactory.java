@@ -26,6 +26,7 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.login.LoginActivity;
 
 /**
@@ -404,10 +405,10 @@ public class ErrorHandlerFactory {
 	 * @param id
 	 */
 	public void handleStrongAuthFailure(final ErrorHandlerUi errorHandlerUi,
-			final String errorMessage, final String question, final String id) {
+			final String errorMessage, final BankStrongAuthDetails details) {
 		final Activity activeActivity = BankActivityManager.getActiveActivity();
 
-		BankNavigator.navigateToStrongAuth(activeActivity, question, id, errorMessage);
+		BankNavigator.navigateToStrongAuth(activeActivity, details, errorMessage);
 	}
 
 	public void handleLoginAuthFailure(final ErrorHandlerUi errorHandlerUi,

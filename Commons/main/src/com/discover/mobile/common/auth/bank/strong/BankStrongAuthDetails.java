@@ -2,6 +2,7 @@ package com.discover.mobile.common.auth.bank.strong;
 
 import java.io.Serializable;
 
+import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -9,22 +10,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  * Json Format:
  * {
- * "status":"SKIPPED",
- *  "challengeQuestionId":"Q3.2",
- *  "challengeQuestion":"What is your mother's middle name?",
- *  "bindDevice":true,
- *  "sessionId":"4e3d1119:13b6d7e3c45:-1f78",
- *  "transactionId":"TRX_4e3D1119:13b6d7e3c45:-1f77",
- *  "links":{
- *     "self":{
- *        "ref":"https://www.discoverbank.com/api/auth/strongauth",
- *        "allowed":[
- *           "GET",
- *           "POST"
- *        ]
- *     }
- *  }
- *}
+ *	"status" : "CHALLEGE",
+ *	"challengeQuestionId" : "Q3.2",
+ *	"challengeQuestion" : "What is your mother's middle name?",
+ *	"bindDevice": true,
+ *	"sessionId": "4e3d1119:13b6d7e3c45:-1f78",
+ *	"transactionId": "TRX_4e3D1119:13b6d7e3c45:-1f77",
+ *	"links" : {
+ *		"self" : {
+ *			"ref" : "https://www.discoverbank.com/api/auth/strongauth",
+ *			"allowed" : [ "GET", "POST" ]
+ *		}
+ *	}
+ * }
+ * 
  * @author ajleeds
  *
  */
@@ -42,6 +41,9 @@ public class BankStrongAuthDetails implements Serializable {
 	@JsonProperty("status")
 	public String status;
 	
+	@JsonProperty("bindDevice")
+	public String bindDevice;
+	
 	@JsonProperty("challengeQuestionId")
 	public String questionId;
 	
@@ -54,5 +56,25 @@ public class BankStrongAuthDetails implements Serializable {
 	@JsonProperty("transactionId")
 	public String transactionId;
 	
+	/**
+	 * Default Constructor
+	 */
+	public BankStrongAuthDetails() {
+		
+	}
+	
+	/**
+	 * Constructor used to build a BankStrongAuthDetails object from an error message response.
+	 * 
+	 * @param msgErrResponse Holds reference to a BankErrorResponse generated from a BankErrorResponseParser
+	 */
+	public BankStrongAuthDetails(final BankErrorResponse msgErrResponse) {
+		question = msgErrResponse.getDataValue("challengeQuestion");
+		questionId = msgErrResponse.getDataValue("challengeQuestionId");
+		sessionId = msgErrResponse.getDataValue("sessionId");
+		transactionId = msgErrResponse.getDataValue("transactionId");
+		bindDevice = msgErrResponse.getDataValue("bindDevice");
+		status = msgErrResponse.getDataValue("status");
+	}
 }
 

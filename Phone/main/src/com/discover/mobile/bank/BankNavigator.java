@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.discover.mobile.AlertDialogParent;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.error.ErrorHandlerFactory;
 import com.discover.mobile.login.LoginActivity;
 import com.discover.mobile.security.EnhancedAccountSecurityActivity;
@@ -93,13 +94,12 @@ public class BankNavigator {
 	 * 						message to display on the StrongAuthPage.
 	 * 
 	 */
-	public static void navigateToStrongAuth(final Activity activity,final String question,final String id, final String errorMessage) {
+	public static void navigateToStrongAuth(final Activity activity, final BankStrongAuthDetails details, final String errorMessage) {
 		if( activity.getClass() != EnhancedAccountSecurityActivity.class ) {
 			final Intent strongAuth = new Intent(activity, EnhancedAccountSecurityActivity.class);
 			
-			strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, question);
-			strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, id);
 			strongAuth.putExtra(IntentExtraKey.IS_CARD_ACCOUNT, false);
+			strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_DETAILS, details);
 			activity.startActivityForResult(strongAuth, 0);
 		} else {
 			final EnhancedAccountSecurityActivity strongAuthPage = (EnhancedAccountSecurityActivity)activity;
@@ -108,7 +108,7 @@ public class BankNavigator {
 				ErrorHandlerFactory.getInstance().showErrorsOnScreen(strongAuthPage, errorMessage);
 			}
 			
-			strongAuthPage.updateQuestion(question, id, false);
+			strongAuthPage.updateQuestion(details);
 		}
 	}
 

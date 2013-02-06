@@ -11,8 +11,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -27,6 +30,7 @@ import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthAnswerDetails;
+import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthAnswerCall;
 import com.discover.mobile.common.auth.strong.StrongAuthAnswerDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthDetails;
@@ -80,6 +84,11 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	
 	private String strongAuthQuestion;
 	private String strongAuthQuestionId;
+	/**
+	 * Holds a reference to a BankStrongAuthDetails which is provide after requesting a Strong Challenge Question
+	 * via an Intent in the onResume() method of this activity or via updateQuestion().
+	 */
+	private BankStrongAuthDetails strongAuthDetails;
 	
 	private String questionId;
 	private Boolean isCard = true;
@@ -88,6 +97,11 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	private TextView statusIconLabel;
 	private TextView questionLabel;
 	private RelativeLayout whatsThisLayout;
+	/**
+	 * Holds reference to the button that triggers the NetworkServiceCall<> to POST the 
+	 * answer in the TextView with id account_security_question_answer_field.
+	 */
+	private Button continueButton;
 	
 	private String inputErrorText;
 	private int inputErrorVisibility;
@@ -109,6 +123,35 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	
 	private int activityResult = RESULT_CANCELED;
 	
+	private static final String SERVER_ERROR_VISIBILITY ="a";
+	private static final String SERVER_ERROR_TEXT = "c";
+	private static final String ANSWER_ERROR_VISIBILITY = "b";
+	private static final String ANSWER_ERROR_TEXT = "d";
+	private static final String WHATS_THIS_STATE = "e";
+	/**
+	 * Minimum string length allowed to be sent as an answer to a Strong Auth Challenge Question
+	 */
+	private static final int MIN_ANSWER_LENGTH = 2;
+	
+	 /**
+     * Callback to watch the text field for empty/non-empty
+     */
+    private final TextWatcher mTextWatcher = new TextWatcher() {
+
+        @Override
+		public void beforeTextChanged(final CharSequence s, final int start, final int before, final int after) { }
+
+        @Override
+		public void onTextChanged(final CharSequence s, final int start, final int before, final int after) {
+        	EnhancedAccountSecurityActivity.this.onTextChanged(s);
+        }
+
+        @Override
+		public void afterTextChanged(final Editable s) {
+        }
+    };
+    
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -118,13 +161,14 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		setupRadioGroupListener();
 
 		restoreState(savedInstanceState);
+		
+		//Add text change listener to determine when the user has entered text
+		//to enable/disable continue button
+		questionAnswerField.addTextChangedListener(mTextWatcher);
+		
+		//Disable continue button by default
+		continueButton.setEnabled(false);
 	}
-	
-	private static final String SERVER_ERROR_VISIBILITY ="a";
-	private static final String SERVER_ERROR_TEXT = "c";
-	private static final String ANSWER_ERROR_VISIBILITY = "b";
-	private static final String ANSWER_ERROR_TEXT = "d";
-	private static final String WHATS_THIS_STATE = "e";
 	
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
@@ -169,6 +213,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		radioButtonTwo = (RadioButton)securityRadioGroup.findViewById(R.id.account_security_choice_two_radio);
 		serverErrorLabel = (TextView)findViewById(R.id.account_security_server_error);
 		mainScrollView = (ScrollView)findViewById(R.id.scrollView1);
+		continueButton = (Button)findViewById(R.id.account_security_continue_button);
 		questionAnswerField.attachErrorLabel(errorMessage);
 	}
 	
@@ -202,12 +247,22 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 
 		final Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			strongAuthQuestion = extras
-					.getString(IntentExtraKey.STRONG_AUTH_QUESTION);
-			strongAuthQuestionId = extras
-					.getString(IntentExtraKey.STRONG_AUTH_QUESTION_ID);
-			isCard = extras.getBoolean(IntentExtraKey.IS_CARD_ACCOUNT, true);
-			questionLabel.setText(strongAuthQuestion);
+			//Determine if the activity was created from a Card or a Bank logical path
+			isCard = extras.getBoolean(IntentExtraKey.IS_CARD_ACCOUNT, false);
+			
+			//Check if activity was created via a Card or Bank logical path
+			if( isCard ) {
+				strongAuthQuestion = extras
+						.getString(IntentExtraKey.STRONG_AUTH_QUESTION);
+				strongAuthQuestionId = extras
+						.getString(IntentExtraKey.STRONG_AUTH_QUESTION_ID);
+				questionLabel.setText(strongAuthQuestion);
+			} else {
+				//Read Strong Auth Details provided via intent that started this activity
+				strongAuthDetails = (BankStrongAuthDetails)extras.getSerializable(IntentExtraKey.STRONG_AUTH_DETAILS);
+				//Set question for the strong auth challenge
+				questionLabel.setText(strongAuthDetails.question);
+			}		
 		}
 
 		if (!isCard) {
@@ -219,21 +274,20 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	/**
 	 * Method used to update the challenge question on the page.
 	 * 
-	 * @param question New Question to update the page with
-	 * @param questionId ID that is used when generating a Strong Auth NetworkServiceCall<> to answer the question
-	 * @param isCard Specifies whether the page is being updated for card or bank account
+	 * @param details Holds reference to Question for the StrongAuth details among other details
 	 */
-	public void updateQuestion(final String question, final String questionId, final boolean isCard ) {
+	public void updateQuestion(final BankStrongAuthDetails details ) {
+		//Close any opened dialog
 		this.closeDialog();
 		
-		strongAuthQuestion = question;
-		strongAuthQuestionId = questionId;
+		//Update strong auth details reference to new object 
+		this.strongAuthDetails = details;
 		
-		questionLabel.setText(strongAuthQuestion);
+		//Update UI with new question being asekd
+		questionLabel.setText(details.question);
 		
-		if (!isCard) {
-			whatsThisLayout.setVisibility(View.GONE);
-		}
+		//What's this layout is hidden for bank
+		whatsThisLayout.setVisibility(View.GONE);
 	}
 	
 	/**
@@ -330,7 +384,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 			final int selectedIndex = securityRadioGroup.indexOfChild(selectedButton);
 			
 			if (!isCard) {
-				submitBankSecurityInfo(answer);
+				submitBankSecurityInfo(answer, (selectedIndex==0));
 			} else {
 				final ProgressDialog progress = ProgressDialog.show(this,
 						"Discover", "Loading...", true); //$NON-NLS-1$ //$NON-NLS-2$
@@ -364,12 +418,12 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	/**
 	 * Submits the bank strong auth answer. 
 	 * 
-	 * @param answer
+	 * @param answer Holds a strong with answer to the Bank Strong Auth Challenge
+	 * @param bindDevice Holds a boolean indicating whether the device should be bound with the user's Bank account
 	 */
-	private void submitBankSecurityInfo(final String answer) {
-		final BankStrongAuthAnswerDetails details = new BankStrongAuthAnswerDetails();
-		details.question = answer;
-		details.questionId = questionId;
+	private void submitBankSecurityInfo(final String answer, final boolean bindDevice) {
+		//Create an object to hold the response to the challenge
+		final BankStrongAuthAnswerDetails details = new BankStrongAuthAnswerDetails(strongAuthDetails, answer, bindDevice);
 		
 		//Create a strong auth post request to send credentials to the server 
 		BankServiceCallFactory.createStrongAuthRequest(details).submit();
@@ -542,4 +596,18 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		
 	}
 	
+	/**
+	 * Event handler for text change events on the TextView with id account_security_question_answer_field.
+	 * If no text is detected then the continue button at the bottom of the page is disabled, else it 
+	 * is enabled.
+	 * 
+	 * @param newText Text that is provided by the TextView whenever a change has been detected
+	 */
+	private void onTextChanged(final CharSequence newText) {
+		if( newText != null && newText.length() >= MIN_ANSWER_LENGTH ) {
+			continueButton.setEnabled(true);
+		} else {
+			continueButton.setEnabled(false);
+		}
+	}
 }
