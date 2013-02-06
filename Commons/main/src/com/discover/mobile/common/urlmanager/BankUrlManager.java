@@ -14,19 +14,21 @@ import com.discover.mobile.common.net.json.bank.ReceivedUrl;
  */
 public class BankUrlManager {
 	private static final String BASE_URL = "https://beta.discoverbank.com";
-//	private static final String BASE_URL = "http://192.168.2.177:8008"; //Henry's Laptop
-//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
-//	private static final String BASE_URL = "http://192.168.1.94:8008";
-//	private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
-	
-	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
+	//	private static final String BASE_URL = "http://192.168.2.177:8008"; //Henry's Laptop
+	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
+	//	private static final String BASE_URL = "http://192.168.1.94:8008";
+	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
+	//private static final String BASE_URL = "http://192.168.1.70:8009"; //Jon's Laptop
+	//private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
 
+	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
+	public static final String EMPTY = "";
 	private static final String AUTHENTICATE_CURRENT_CUSTOMER_URL = "/api/customers/current";
 	private static final String GET_TOKEN_URL = "/api/auth/token";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
 	private static final String CUSTOMER_SERVICE_URL = "/api/customers/current";
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
-	
+
 	/**
 	 * Keys for the urls in order to retrieve from the map
 	 */
@@ -36,7 +38,6 @@ public class BankUrlManager {
 	public static final String PAYEES_URL_KEY = "payees";
 	public static final String LOGOUT_URL_KEY = "logout";
 	public static final String PAYMENTS_URL_KEY = "payments";
-	
 
 	/**
 	 * @return the baseUrl
@@ -72,29 +73,31 @@ public class BankUrlManager {
 		return STRONG_AUTH_URL;
 	}
 
-
 	/**
 	 * This is used in order to retrieve a url from the map.
 	 * 
-	 * @param key
-	 *            The key for the URL that needs to be retrieved
+	 * @param key - The key for the URL that needs to be retrieved
 	 */
 	public static String getUrl(final String key) {
-		return links.get(key).url
-				.replaceAll("http://beta.discoverbank.com", "");
+		final String url = links.get(key).url;
+		if(null != url){
+			return url.replaceAll(BASE_URL, "");
+		}else{
+			return EMPTY;
+		}
 	}
 
 	/**
 	 * Add new links to the links map or creates a new map if one doesn't
 	 * already exist.
 	 * 
-	 * @param newLinks Map of links returned from the JSON 
+	 * @param newLinks Map of links returned from the JSON
 	 */
 	public static void setNewLinks(final Map<String, ReceivedUrl> newLinks) {
 		if (newLinks == null) {
 			throw new IllegalArgumentException("newLinks cannot be null.");
 		}
-			
+
 		links.putAll(newLinks);
 	}
 }
