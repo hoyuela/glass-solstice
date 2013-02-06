@@ -20,7 +20,7 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  * response to this web-service API is de-serialized into a Payees List object and passed to the
  * application layer.
  * 
- * The following is an example of the Customer JSON response:
+ * The following is an example of the Payee JSON response:
  * 
  *[{
  *	"id": "000001",
