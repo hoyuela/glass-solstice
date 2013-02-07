@@ -18,7 +18,7 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
 public class DeletePaymentServiceCall extends NetworkServiceCall<PaymentDetail> {
 	private final TypedReferenceHandler<PaymentDetail> handler;
 	
-	protected DeletePaymentServiceCall(final Context context, 
+	public DeletePaymentServiceCall(final Context context, 
 			final AsyncCallback<PaymentDetail> callback, final PaymentDetail pmt) {
 		super(context, new DeleteCallParams(BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY) +"/" +pmt.id) {
 			{
@@ -44,15 +44,13 @@ public class DeletePaymentServiceCall extends NetworkServiceCall<PaymentDetail> 
 
 	@Override
 	protected TypedReferenceHandler<PaymentDetail> getHandler() {
-		// TODO Auto-generated method stub
-		return null;
+		return handler;
 	}
 
 	@Override
 	protected PaymentDetail parseSuccessResponse(final int status,
 			final Map<String, List<String>> headers, final InputStream body)
 			throws IOException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
