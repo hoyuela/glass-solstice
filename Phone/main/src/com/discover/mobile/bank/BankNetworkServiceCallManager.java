@@ -9,22 +9,23 @@ import android.util.Log;
 import com.discover.mobile.AlertDialogParent;
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.BankUser;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.bank.BankSchema;
 import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
+import com.discover.mobile.common.bank.account.GetCustomerAccountsServerCall;
+import com.discover.mobile.common.bank.customer.CustomerServiceCall;
 import com.discover.mobile.common.bank.payee.GetPayeeServiceCall;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.common.customer.bank.CustomerServiceCall;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.login.LoginActivity;
-import com.discover.mobile.navigation.Navigator;
 import com.google.common.base.Strings;
 
 /**
@@ -174,15 +175,22 @@ ErrorResponseHandler, ExceptionFailureHandler {
 		}
 		//Download Account Summary Information if a Customer Download is successful
 		else if( sender instanceof CustomerServiceCall ) {
-			//TODO: Uncomment this line once account download is complete
-			//BankServiceCallFactory.createAccountDownloadCall((Activity)activeActivity).submit();
-			Navigator.navigateToHomePage(activeActivity);
+			//Verify user has bank accounts otherwise navigate to no accounts page
+			if( BankUser.instance().getCustomerInfo().hasAccounts() ) {
+				BankServiceCallFactory.createGetCustomerAccountsServerCall().submit();
+			} else {
+				BankNavigator.navigateToNoAccounts();
+			}
+		}
+		//Navigate to Account Summary landing page once Account Summary is downloaded
+		else if( sender instanceof GetCustomerAccountsServerCall) {
+			BankNavigator.navigateToHomePage(activeActivity);
 		}
 		//Display StrongAuth Page if it is a response to a StrongAuth GET request with a question or retansmit previous NetworkServiceCall<>
 		else if( sender instanceof CreateStrongAuthRequestCall && this.prevCall != null && sender.isGetCall()) {
 			final BankStrongAuthDetails value = (BankStrongAuthDetails)result;
 			if( !BankStrongAuthDetails.ALLOW_STATUS.equals(value.status ) ) {
-				Navigator.navigateToStrongAuth(activeActivity, value.question, value.questionId, null);
+				BankNavigator.navigateToStrongAuth(activeActivity, value.question, value.questionId, null);
 			} else {
 				//Retransmit the previous NetworkServiceCall<>
 				this.prevCall.retransmit(activeActivity);

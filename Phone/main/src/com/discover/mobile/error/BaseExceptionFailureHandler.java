@@ -1,13 +1,13 @@
 package com.discover.mobile.error;
 
 import com.discover.mobile.bank.BankActivityManager;
+import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.login.LoginActivity;
-import com.discover.mobile.navigation.Navigator;
 
 /**
  * Class is a generic exception handler for NetworkServiceCall<>. There are three cases supported by 
@@ -40,7 +40,7 @@ public class BaseExceptionFailureHandler implements ExceptionFailureHandler {
 		} else if (!(sender instanceof LogOutCall)) {
 			ErrorHandlerFactory.getInstance().handleGenericError(0);
 		}else {
-			Navigator.navigateToLoginPage(BankActivityManager.getActiveActivity(), IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
+			BankNavigator.navigateToLoginPage(BankActivityManager.getActiveActivity(), IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
 		}
 		
 		return true;

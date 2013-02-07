@@ -10,14 +10,15 @@ import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthAnswerDetails;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
+import com.discover.mobile.common.bank.account.AccountList;
+import com.discover.mobile.common.bank.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.common.bank.account.activity.GetActivityServerCall;
 import com.discover.mobile.common.bank.account.activity.ListActivityDetail;
+import com.discover.mobile.common.bank.customer.Customer;
+import com.discover.mobile.common.bank.customer.CustomerServiceCall;
 import com.discover.mobile.common.bank.payee.GetPayeeServiceCall;
 import com.discover.mobile.common.bank.payee.ListPayeeDetail;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.customer.bank.Customer;
-import com.discover.mobile.common.customer.bank.CustomerServiceCall;
-import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.login.LoginActivity;
 
 /**
@@ -153,13 +154,21 @@ public class BankServiceCallFactory {
 	}
 
 	/**
-	 * TODO: Define once account summary is completed
-	 * @return
+	 * Creates a GetCustomerAccountsServerCall<> object used to download the Account Summary 
+	 * using the Bank Accounts Service API.
+	 * 
+	 * @return Reference to the GetCustomerAccountsServerCall object created.
 	 */
-	public static NetworkServiceCall<BankLoginData> createAccountDownloadCall() {
+	public static GetCustomerAccountsServerCall createGetCustomerAccountsServerCall() {
 		BankActivityManager.getActiveActivity();
+		
+		final Activity activity = BankActivityManager.getActiveActivity();
 
-		// TODO Auto-generated method stub
-		return null;
+		final AsyncCallback<AccountList>  callback =
+				AsyncCallbackBuilderLibrary.createDefaultBankBuilder(AccountList.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new GetCustomerAccountsServerCall(activity, callback);
 	}
 }
