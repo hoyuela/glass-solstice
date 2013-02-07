@@ -13,14 +13,14 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This is used for storing Customer detailed information provided in a JSON response to a 
- * Bank web-service API invocation. 
+ * This is used for storing Customer detailed information provided in a JSON response to a
+ * Bank web-service API invocation.
  * 
  * The CustomerServiceCall class uses this object to store the
- * Customer information provided in the JSON response to the Customer Service API 
+ * Customer information provided in the JSON response to the Customer Service API
  * /api/customers/current. The following is an example of the JSON:
  * 
-  * {
+ * {
  *    "id": "1",
  *    "name": {
  *        "givenName": "Andrew",
@@ -113,9 +113,9 @@ public class Customer implements Serializable {
 	 * Auto-generated serial UID which is used to serialize and de-serialize Customer objects
 	 */
 	private static final long serialVersionUID = -544315055134223597L;
-    /**
-     * Contains the customer identifier number
-     */
+	/**
+	 * Contains the customer identifier number
+	 */
 	@JsonProperty("id")
 	public String id;
 	/**
@@ -148,63 +148,70 @@ public class Customer implements Serializable {
 	 */
 	@JsonProperty("eligibility")
 	public Map<String, Eligibility> eligibilities;
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	public boolean canAccessTransfers() {
-		return (links.get(BankUrlManager.TRANSFER_URL_KEY) != null );
+		return (this.links.get(BankUrlManager.TRANSFER_URL_KEY) != null );
 	}
-	
+
 	/**
 	 * 
 	 * @return True if has a link to Payees, false otherwise
 	 */
 	public boolean canAccessPayees() {
-		return (links.get(BankUrlManager.PAYEES_URL_KEY) != null );
+		return (this.links.get(BankUrlManager.PAYEES_URL_KEY) != null );
 	}
-	
+
 	/**
 	 * 
 	 * @return  True if has a link to Payments, false otherwise
 	 */
 	public boolean canAccessPayments() {
-		return (links.get(BankUrlManager.TRANSFER_URL_KEY) != null );
+		return (this.links.get(BankUrlManager.TRANSFER_URL_KEY) != null );
 	}
-	
+
 	/**
 	 * 
 	 * @return True if the Accounts link is provided, false otherwise
 	 */
 	public boolean hasAccounts() {
-		return (links.get(BankUrlManager.ACCOUNT_URL_KEY) != null );
+		return (this.links.get(BankUrlManager.ACCOUNT_URL_KEY) != null );
 	}
-	
+
 	/**
 	 * 
-	 * @return Returns Transfers Eligibility object that specifies a Customer's enrollment 
+	 * @return Returns Transfers Eligibility object that specifies a Customer's enrollment
 	 * and eligibility status for transfers
 	 */
 	public Eligibility getTransfersEligibility() {
-		return ( eligibilities != null )? eligibilities.get("transfers") : null;
+		return ( this.eligibilities != null )? this.eligibilities.get("transfers") : null;
 	}
-	
+
 	/**
 	 * 
-	 * @return Returns Payments Eligibility object that specifies a Customer's enrollment
-	 * and eligibility status for Payments
+	 * @return Returns boolean that specifies a Customer's eligibility status for Payments
 	 */
-	public Eligibility getPaymentsEligibility() {
-		return ( eligibilities != null )? eligibilities.get("payments") : null;
+	public boolean getPaymentsEligibility() {
+		return ( this.eligibilities != null )? this.eligibilities.get("payments").isEligible() : false;
 	}
-	
+
 	/**
 	 * 
-	 * @return Returns Transfers Eligibility object that specifies a Customer's 
+	 * @return Returns boolean object that specifies a Customer's enrollment status for Payments
+	 */
+	public boolean getPaymentsEnrolled() {
+		return ( this.eligibilities != null )? this.eligibilities.get("payments").isEnrolled() : false;
+	}
+
+	/**
+	 * 
+	 * @return Returns Transfers Eligibility object that specifies a Customer's
 	 * enrollment and eligibility status for Transfers
 	 */
 	public Eligibility getDepositsEligibility() {
-		return ( eligibilities != null )? eligibilities.get("deposits") : null;
+		return ( this.eligibilities != null )? this.eligibilities.get("deposits") : null;
 	}
 }

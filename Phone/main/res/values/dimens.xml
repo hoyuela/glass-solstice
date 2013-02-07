@@ -47,6 +47,7 @@
     <dimen name="modal_top_dummy_view">30dp</dimen>
     <dimen name="modal_text_padding">17dp</dimen>
     <dimen name="modal_footer_topmargin">35dp</dimen>
+    <dimen name="orange_help_button_size">30dp</dimen>
     
     
     <!--  Login Bottom Buttons -->

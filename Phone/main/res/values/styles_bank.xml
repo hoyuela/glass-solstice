@@ -1,0 +1,40 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <style name="orange_help_button">
+        <item name="android:layout_marginBottom">@dimen/groups_of_elements_padding</item>
+        <item name="android:layout_marginLeft">@dimen/groups_of_elements_padding</item>
+        <item name="android:layout_marginRight">@dimen/groups_of_elements_padding</item>
+        <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item>
+    </style>
+    
+    <style name="page_title">
+        <item name="android:textColor">@color/title</item>
+        <item name="android:textSize">@dimen/title_min</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="body_copy_title">
+        <item name="android:textColor">@color/body_copy</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="normal_static_text">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_mid</item>
+    </style>
+    
+    <style name="bank_blue_hyperlink">
+        <item name="android:textColor">@color/blue_link</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+    </style>
+
+    <style name="bank_blue_hyperlink_small" parent="bank_blue_hyperlink">
+        <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+    
+    <style name="blue_choose_item_text">
+        <item name="android:textColor">@color/blue_link</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+    </style>
+</resources>
