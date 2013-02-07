@@ -4,6 +4,7 @@ import java.net.HttpURLConnection;
 
 import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.common.auth.bank.BankSchema;
+import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -79,10 +80,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 		boolean handled = false;
 	
 		final String errCode = msgErrResponse.getErrorCode();
-		final String strongQuestion = msgErrResponse.getDataValue("challengeQuestion");
-		final String strongQuestionId = msgErrResponse.getDataValue("challengeQuestionId");
-		
-		
+
 		if( !Strings.isNullOrEmpty(msgErrResponse.getErrorCode()) ) {
 			//Login Errors
 			if( errCode.equals(BankErrorCodes.ERROR_INVALID_LOGIN) ) {
@@ -96,7 +94,8 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			}
 			//Strong Auth Errors
 			else if( errCode.equals(BankErrorCodes.ERROR_INVALID_STRONG_AUTH) || errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH) ) {
-				mErrorHandlerFactory.handleStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage(), strongQuestion, strongQuestionId);
+				final BankStrongAuthDetails details = new BankStrongAuthDetails(msgErrResponse);
+				mErrorHandlerFactory.handleStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage(), details);
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOCKED_STRONG_AUTH)) {
 				mErrorHandlerFactory.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			}
@@ -116,6 +115,8 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 		return handled;
 	}
 
+
+	
 	/**
 	 * Exposed as protected method in case of need to override by
 	 * child class.
