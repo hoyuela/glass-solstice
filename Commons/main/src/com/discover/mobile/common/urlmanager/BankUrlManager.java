@@ -81,7 +81,10 @@ public class BankUrlManager {
 	public static String getUrl(final String key) {
 		final String url = links.get(key).url;
 		if(null != url){
-			return url.replaceAll(BASE_URL, "");
+			/**
+			 * Note this is hard coded now, but this will be removed in the future
+			 */
+			return url.replaceAll("http://beta.discoverbank.com", "");
 		}else{
 			return EMPTY;
 		}

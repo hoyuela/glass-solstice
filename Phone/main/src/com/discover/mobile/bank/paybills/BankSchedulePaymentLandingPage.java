@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
 import com.discover.mobile.common.BankUser;
-import com.discover.mobile.common.bank.customer.Eligibility;
 
 /**
  * Landing page for when the user clicks on the pay bills in the navigation.  Based on the users payment eligibility
@@ -33,10 +32,9 @@ public class BankSchedulePaymentLandingPage extends BaseFragment{
 			final Bundle savedInstanceState) {
 
 		final View view;
-		final Eligibility eligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
 
-		final boolean isEligible = eligible.isEligible();
-		final boolean isEnrolled = eligible.isEnrolled();
+		final boolean isEligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
+		final boolean isEnrolled = BankUser.instance().getCustomerInfo().getPaymentsEnrolled();
 
 		if(!isEligible){
 			view = new BankPayeeNotEligibleLayout(getActivity(), null);
