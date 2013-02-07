@@ -31,4 +31,9 @@
     <style name="bank_blue_hyperlink_small" parent="bank_blue_hyperlink">
         <item name="android:textSize">@dimen/small_copy_max</item>
     </style>
+    
+    <style name="blue_choose_item_text">
+        <item name="android:textColor">@color/blue_link</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+    </style>
 </resources>
