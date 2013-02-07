@@ -7,7 +7,19 @@ import android.view.ViewGroup;
 
 import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
+import com.discover.mobile.common.BankUser;
+import com.discover.mobile.common.bank.customer.Eligibility;
 
+/**
+ * Landing page for when the user clicks on the pay bills in the navigation.  Based on the users payment eligibility
+ * this will display one of three views.  If the user in not eligible it will show the pay bills landing page.
+ * If the user is eligible, but not enrolled it will show the terms and conditions screen.  If the user is not enrolled
+ * and eligible it will get the list of payees available for the customer and display them in a list so that the
+ * payee can be selected.
+ * 
+ * @author jthornton
+ *
+ */
 public class BankSchedulePaymentLandingPage extends BaseFragment{
 
 	/**
@@ -21,18 +33,15 @@ public class BankSchedulePaymentLandingPage extends BaseFragment{
 			final Bundle savedInstanceState) {
 
 		final View view;
-		final boolean isEnrolled = false;
-		final boolean isEligible = false;
+		final Eligibility eligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
 
-		//If the user is not eligible then show the no eligible view
+		final boolean isEligible = eligible.isEligible();
+		final boolean isEnrolled = eligible.isEnrolled();
+
 		if(!isEligible){
 			view = new BankPayeeNotEligibleLayout(getActivity(), null);
-
-			//User is eligible but not enrolled
 		} else if(isEligible && !isEnrolled){
 			view = new BankPayTerms(getActivity(), null);
-
-			//User is eligible and enrolled
 		} else{
 			view = new BankSelectPayee(getActivity(), null);
 		}
@@ -40,6 +49,9 @@ public class BankSchedulePaymentLandingPage extends BaseFragment{
 		return view;
 	}
 
+	/**
+	 * Set the title in the action bar.
+	 */
 	@Override
 	public int getActionBarTitle() {
 		return R.string.pay_a_bill_title;

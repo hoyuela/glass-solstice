@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.widget;
+package com.discover.mobile.bank.paybills;
 
 import android.content.Context;
 import android.util.AttributeSet;
