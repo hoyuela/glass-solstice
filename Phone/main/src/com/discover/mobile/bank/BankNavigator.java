@@ -1,10 +1,12 @@
-package com.discover.mobile.navigation;
+package com.discover.mobile.bank;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.discover.mobile.AlertDialogParent;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.error.ErrorHandlerFactory;
@@ -17,15 +19,15 @@ import com.discover.mobile.security.EnhancedAccountSecurityActivity;
  * @author henryoyuela
  *
  */
-public class Navigator {
-	public static final String TAG = Navigator.class.getSimpleName();
+public class BankNavigator {
+	public static final String TAG = BankNavigator.class.getSimpleName();
 	
 	/**
      * This constructor is not supported and throws an UnsupportedOperationException when called.
      * 
      * @throws UnsupportedOperationException Every time this method is invoked.
      */
-	private Navigator() {
+	private BankNavigator() {
 		throw new UnsupportedOperationException(
 				"This class is non-instantiable"); //$NON-NLS-1$
 	}
@@ -108,6 +110,17 @@ public class Navigator {
 			
 			strongAuthPage.updateQuestion(question, id, false);
 		}
+	}
+
+	public static void navigateToNoAccounts() {
+		((AlertDialogParent)BankActivityManager.getActiveActivity()).closeDialog();
+		//TODO: Remove this code once implemented. This is only for QA testing purposes only
+		final CharSequence text = "No Accounts Page Under Development";
+		final int duration = Toast.LENGTH_SHORT;
+
+		final Toast toast = Toast.makeText(BankActivityManager.getActiveActivity(), text, duration);
+		toast.show();
+		
 	}
 
 }

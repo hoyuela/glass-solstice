@@ -1,4 +1,4 @@
-package com.discover.mobile.common.customer.bank;
+package com.discover.mobile.common.bank.customer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.common.BankUser;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
@@ -23,38 +24,89 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  * The following is an example of the Customer JSON response:
  * 
  * {
- *		"id" : "1",
- *		"name" : "Andrew Duckett",
- *		"email" : "andrewduckett@discover.com", "addresses" : [ {
- *			"type" : "work",
- *			"streetAddress" : "2600 Lake Cook Road", "locality" : "Riverwoods",
- *			"region" : "Illinois",
- *			"postalCode" : "60015"
- *		} ],
- *		"phoneNumbers" : [ {
- *			"type" : "work",
- *			"number" : "224.405.5446" 
- *		} ],
- *		"links" : { 
- *			"accounts" : {
- *				"ref" : "https://www.discoverbank.com/api/accounts",
- *				"allowed" : [ "GET" ] },
- *			"payees" : {
- *				"ref" : "https://www.discoverbank.com/api/payees", "allowed" :[ "GET", 	"POST" ]
- *			},
- *			"payments" : {
- *				"ref" : "https://www.discoverbank.com/api/payments",
- *				"allowed" : [ "GET", "POST" ] 
- *			},
- *			"self" : {
- *				"ref" : "https://www.discoverbank.com/api/customers/1", "allowed" : [ "GET" ]
- *			},
- *			"transfers" : {
- *				"ref" : "https://www.discoverbank.com/api/transfers",
- *				"allowed" : [ "GET", "POST" ]
- *			}
- *		}
- *	}
+ *    "id": "1",
+ *    "name": {
+ *        "givenName": "Andrew",
+ *        "middleName": "M",
+ *        "familyName": "Duckett",
+ *        "formatted": "Andrew M Duckett"
+ *    },
+ *    "email": "andrewduckett@discover.com",
+ *    "addresses": [
+ *        {
+ *            "type": "work",
+ *            "streetAddress": "2600 Lake Cook Road",
+ *            "locality": "Riverwoods",
+ *            "region": "Illinois",
+ *            "postalCode": "60015",
+ *            "formatted": "2600 Lake Cook Road\nRiverwoods Illinois 60015"
+ *        }
+ *    ],
+ *    "phoneNumbers": [
+ *        {
+ *            "type": "work",
+ *            "number": "2244055446"
+ *        }
+ *    ],
+ *    "eligibility": {
+ *        "transfers": {
+ *            "eligible": true,
+ *            "enrolled": true
+ *        },
+ *        "payments": {
+ *            "eligible": true,
+ *            "enrolled": false,
+ *            "links": {
+ *                "terms": {
+ *                    "ref": "https://www.discoverbank.com/api/payments/terms",
+ *                    "allowed": [
+ *                        "GET",
+ *                        "POST"
+ *                    ]
+ *                }
+ *            }
+ *        },
+ *        "deposits": {
+ *            "eligible": false,
+ *            "enrolled": false
+ *        }
+ *    },
+ *    "links": {
+ *        "accounts": {
+ *            "ref": "/api/accounts",
+ *            "allowed": [
+ *                "GET"
+ *            ]
+ *        },
+ *        "payees": {
+ *            "ref": "/api/payees",
+ *            "allowed": [
+ *                "GET",
+ *                "POST"
+ *            ]
+ *        },
+ *        "payments": {
+ *            "ref": "/api/payments",
+ *            "allowed": [
+ *                "GET",
+ *                "POST"
+ *             ]
+ *        },
+ *        "self": {
+ *            "ref": "/api/customers/1",
+ *            "allowed": [
+ *                "GET"
+ *            ]
+ *        },
+ *        "transfers": {
+ *            "ref": "/api/transfers",
+ *            "allowed": [
+ *                "GET",
+ *                "POST"
+ *            ]
+ *        }
+ *    }
+ *}
  * 
  * @author henryoyuela
  *
@@ -99,8 +151,12 @@ public class CustomerServiceCall extends
 			throws IOException {
 		final Customer data = super.parseSuccessResponse(status, headers, body);
 		
-			BankUrlManager.setNewLinks(data.links);
+		//Sets links that are used by other Bank NetworkServiceCall classes
+		BankUrlManager.setNewLinks(data.links);
 		
+		//Stores Customer data into BankUser singleton instance to be referenced
+		//later by the application layer and other classes
+		BankUser.instance().setCustomerInfo(data);
 		return data;
 	}
 

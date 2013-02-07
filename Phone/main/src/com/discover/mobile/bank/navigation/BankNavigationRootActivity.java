@@ -5,11 +5,11 @@ import java.util.Calendar;
 import android.view.MotionEvent;
 
 import com.discover.mobile.R;
+import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.urlmanager.BankUrlManager;
 import com.discover.mobile.navigation.NavigationRootActivity;
-import com.discover.mobile.navigation.Navigator;
 
 /**
  * Root activity for the application after login. This will transition fragment on and off the screen
@@ -74,7 +74,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 			
 			// User has become inactive and will be set to timed-out.
 			if ( secs > BankUrlManager.MAX_IDLE_TIME) {
-				 Navigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED);
+				 BankNavigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED);
 			}
 		}
 	}

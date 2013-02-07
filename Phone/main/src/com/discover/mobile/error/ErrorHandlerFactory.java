@@ -19,6 +19,7 @@ import com.discover.mobile.ErrorHandlerUi;
 import com.discover.mobile.R;
 import com.discover.mobile.alert.ModalAlertWithOneButton;
 import com.discover.mobile.bank.BankActivityManager;
+import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
@@ -26,7 +27,6 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.login.LoginActivity;
-import com.discover.mobile.navigation.Navigator;
 
 /**
  * Used to handle error responses to a NetworkServiceCall<>.
@@ -407,7 +407,7 @@ public class ErrorHandlerFactory {
 			final String errorMessage, final String question, final String id) {
 		final Activity activeActivity = BankActivityManager.getActiveActivity();
 
-		Navigator.navigateToStrongAuth(activeActivity, question, id, errorMessage);
+		BankNavigator.navigateToStrongAuth(activeActivity, question, id, errorMessage);
 	}
 
 	public void handleLoginAuthFailure(final ErrorHandlerUi errorHandlerUi,
@@ -482,7 +482,7 @@ public class ErrorHandlerFactory {
 	public void handleSessionExpired() {
 		final Activity activeActivity = BankActivityManager.getActiveActivity();
 		
-		Navigator.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED);
+		BankNavigator.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED);
 	}
 	
 	
