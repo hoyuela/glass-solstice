@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.paybills.schedule;
+package com.discover.mobile.bank.paybills;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,9 +7,8 @@ import android.view.ViewGroup;
 
 import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
-import com.discover.mobile.bank.BankServiceCallFactory;
 
-public class SchedulePaymentLandingPage extends BaseFragment{
+public class BankSchedulePaymentLandingPage extends BaseFragment{
 
 	/**
 	 * Create the view
@@ -20,18 +19,26 @@ public class SchedulePaymentLandingPage extends BaseFragment{
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.account_summary, null);
 
-		getPayees();
+		final View view;
+		final boolean isEnrolled = false;
+		final boolean isEligible = false;
 
+		//If the user is not eligible then show the no eligible view
+		if(!isEligible){
+			view = new BankPayeeNotEligibleLayout(getActivity(), null);
+
+			//User is eligible but not enrolled
+		} else if(isEligible && !isEnrolled){
+			view = new BankPayTerms(getActivity(), null);
+
+			//User is eligible and enrolled
+		} else{
+			view = new BankSelectPayee(getActivity(), null);
+		}
 
 		return view;
 	}
-
-	public void getPayees(){
-		BankServiceCallFactory.createGetPayeeServiceRequest().submit();
-	}
-
 
 	@Override
 	public int getActionBarTitle() {

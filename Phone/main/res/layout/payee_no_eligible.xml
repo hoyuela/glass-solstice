@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/light_gray_bkgrd" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/forms_inner_padding" 
+        android:paddingBottom="@dimen/forms_inner_padding">
+
+        <ImageButton
+            android:id="@+id/help"
+            style="@style/orange_help_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/question_mark_icon" />
+
+        <TextView
+            android:id="@+id/pay_bills_on_go_title"
+            style="@style/page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:text="@string/pay_bills_on_go_title" />
+
+        <TextView
+            android:id="@+id/pay_bills_on_go_text"
+            style="@style/normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pay_bills_on_go_title"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:text="@string/pay_bills_on_go_text" />
+
+        <TextView
+            android:id="@+id/pay_bills_anywhere_title"
+            style="@style/body_copy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pay_bills_on_go_text"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:text="@string/pay_bills_anywhere_title" />
+
+        <ImageView
+            android:id="@+id/pay_bills_anywhere_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/pay_bills_anywhere_title"
+            android:layout_marginRight="@dimen/forms_inner_padding" />
+
+        <TextView
+            android:id="@+id/pay_bills_anywhere_text"
+            style="@style/normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pay_bills_anywhere_title"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_toRightOf="@+id/pay_bills_anywhere_image"
+            android:text="@string/pay_bills_anywhere_text" />
+
+        <TextView
+            android:id="@+id/pay_bills_simple_title"
+            style="@style/body_copy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pay_bills_anywhere_text"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:text="@string/pay_bills_simple_title" />
+
+        <ImageView
+            android:id="@+id/pay_bills_simple_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/pay_bills_simple_title"
+            android:layout_marginRight="@dimen/forms_inner_padding" />
+
+        <TextView
+            android:id="@+id/pay_bills_simple_text"
+            style="@style/normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pay_bills_simple_title"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_toRightOf="@+id/pay_bills_simple_image"
+            android:text="@string/pay_bills_simple_text" />
+
+        <TextView
+            android:id="@+id/pay_bills_delivery_title"
+            style="@style/body_copy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pay_bills_simple_text"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:text="@string/pay_bills_delivery_title" />
+
+        <ImageView
+            android:id="@+id/pay_bills_delivery_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/pay_bills_delivery_title"
+            android:layout_marginRight="@dimen/forms_inner_padding" />
+
+        <TextView
+            android:id="@+id/pay_bills_delivery_text"
+            style="@style/normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pay_bills_delivery_title"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_toRightOf="@+id/pay_bills_delivery_image"
+            android:text="@string/pay_bills_delivery_text" />
+        
+        <TextView
+            android:id="@+id/provide_feedback_button"
+            style="@style/bank_blue_hyperlink_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:layout_marginBottom="@dimen/orange_button_margin_top"
+            android:layout_below="@+id/pay_bills_delivery_text"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:text="@string/feedback_text" />
+    </RelativeLayout>
+
+</ScrollView>
