@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.discover.mobile.BaseFragment;
 import com.discover.mobile.R;
@@ -19,7 +18,7 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	private LinearLayout bankPhoneNumberList;
 	
 	/** Use this variable to setup the appearance of the screen based on card or bank user.*/
-	private boolean isCardUser = true;
+	private final boolean isCardUser = true;
 	
 	/**
 	 * Return the modified view that we need to display.
@@ -79,16 +78,16 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 */
 	private void hideBankElements(final View mainView) {
 		//Hide the "Discover Card" titles.
-		CommonMethods.setViewInvisible((TextView)mainView.findViewById(R.id.card_phone_title_label));
-		CommonMethods.setViewInvisible((TextView)mainView.findViewById(R.id.card_mail_title_label));
+		CommonMethods.setViewInvisible(mainView.findViewById(R.id.card_phone_title_label));
+		CommonMethods.setViewInvisible(mainView.findViewById(R.id.card_mail_title_label));
 
 		//Hide bank mailing addresses and its title.
-		CommonMethods.setViewGone((TextView)mainView.findViewById(R.id.bank_mail_title_label));
-		CommonMethods.setViewGone((LinearLayout)mainView.findViewById(R.id.bank_mail_address_list));
+		CommonMethods.setViewGone(mainView.findViewById(R.id.bank_mail_title_label));
+		CommonMethods.setViewGone(mainView.findViewById(R.id.bank_mail_address_list));
 
 		//Hide bank phone numbers and its title.
-		CommonMethods.setViewGone((TextView)mainView.findViewById(R.id.bank_phone_title_label));
-		CommonMethods.setViewGone((LinearLayout)mainView.findViewById(R.id.bank_phone_numbers_list));
+		CommonMethods.setViewGone(mainView.findViewById(R.id.bank_phone_title_label));
+		CommonMethods.setViewGone(mainView.findViewById(R.id.bank_phone_numbers_list));
 
 	}
 	
@@ -99,15 +98,15 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 */
 	private void hideCardElements(final View mainView) {
 		//Hide the "Discover Bank" titles.
-		CommonMethods.setViewInvisible((TextView)mainView.findViewById(R.id.bank_mail_title_label));
-		CommonMethods.setViewInvisible((TextView)mainView.findViewById(R.id.bank_phone_title_label));
+		CommonMethods.setViewInvisible(mainView.findViewById(R.id.bank_mail_title_label));
+		CommonMethods.setViewInvisible(mainView.findViewById(R.id.bank_phone_title_label));
 		
-		CommonMethods.setViewGone((TextView)mainView.findViewById(R.id.card_mail_title_label));
-		CommonMethods.setViewGone((LinearLayout)mainView.findViewById(R.id.card_mail_address_list));
+		CommonMethods.setViewGone(mainView.findViewById(R.id.card_mail_title_label));
+		CommonMethods.setViewGone(mainView.findViewById(R.id.card_mail_address_list));
 
 		//Hide bank phone numbers and its title.
-		CommonMethods.setViewGone((TextView)mainView.findViewById(R.id.card_phone_title_label));
-		CommonMethods.setViewGone((LinearLayout)mainView.findViewById(R.id.card_phone_numbers_list));
+		CommonMethods.setViewGone(mainView.findViewById(R.id.card_phone_title_label));
+		CommonMethods.setViewGone(mainView.findViewById(R.id.card_phone_numbers_list));
 	}
 	
 

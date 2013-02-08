@@ -17,4 +17,5 @@
     <string name="toggle_range">Range</string>
     <string name="dollar_sign">$</string>
     <string name="search">Search</string>
+    <string name="transaction_details">Transaction Details</string>
 </resources>
