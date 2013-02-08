@@ -16,8 +16,7 @@
             android:layout_width="@dimen/orange_help_button_size"
             android:layout_height="@dimen/orange_help_button_size"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/question_mark_icon" />
+            android:layout_alignParentTop="true" />
 
         <TextView
             android:id="@+id/pay_bills_on_go_title"
@@ -49,81 +48,102 @@
             android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:text="@string/pay_bills_anywhere_title" />
 
-        <ImageView
-            android:id="@+id/pay_bills_anywhere_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/pay_bills_anywhere_title"
-            android:layout_marginRight="@dimen/forms_inner_padding" />
-
-        <TextView
-            android:id="@+id/pay_bills_anywhere_text"
-            style="@style/normal_static_text"
+        <LinearLayout
+            android:id="@+id/pay_bills_anywhere"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/groups_of_elements_padding"
             android:layout_below="@+id/pay_bills_anywhere_title"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_toRightOf="@+id/pay_bills_anywhere_image"
-            android:text="@string/pay_bills_anywhere_text" />
-
+            android:orientation="horizontal">
+	        
+	        <ImageView
+	            android:id="@+id/pay_bills_anywhere_image"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginRight="@dimen/forms_inner_padding"
+	            android:layout_marginLeft="@dimen/forms_inner_padding"
+	            android:src="@drawable/large_phone_icon" />
+	
+	        <TextView
+	            android:id="@+id/pay_bills_anywhere_text"
+	            style="@style/normal_static_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginRight="@dimen/forms_inner_padding"
+	            android:text="@string/pay_bills_anywhere_text" />
+		</LinearLayout>
+		
         <TextView
             android:id="@+id/pay_bills_simple_title"
             style="@style/body_copy_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/pay_bills_anywhere_text"
+            android:layout_below="@+id/pay_bills_anywhere"
             android:layout_marginBottom="@dimen/between_related_elements_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:text="@string/pay_bills_simple_title" />
 
-        <ImageView
-            android:id="@+id/pay_bills_simple_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/pay_bills_simple_title"
-            android:layout_marginRight="@dimen/forms_inner_padding" />
-
-        <TextView
-            android:id="@+id/pay_bills_simple_text"
-            style="@style/normal_static_text"
+        <LinearLayout
+            android:id="@+id/pay_bills_simple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/groups_of_elements_padding"
             android:layout_below="@+id/pay_bills_simple_title"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_toRightOf="@+id/pay_bills_simple_image"
-            android:text="@string/pay_bills_simple_text" />
+            android:orientation="horizontal">
+	        
+	        <ImageView
+	            android:id="@+id/pay_bills_simple_image"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginRight="@dimen/forms_inner_padding"
+	            android:src="@drawable/large_setup_icon" />
+	
+	        <TextView
+	            android:id="@+id/pay_bills_simple_text"
+	            style="@style/normal_static_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginRight="@dimen/forms_inner_padding"
+	            android:paddingRight="@dimen/between_related_elements_padding"
+	            android:text="@string/pay_bills_simple_text" />
+        
+        </LinearLayout>
 
         <TextView
             android:id="@+id/pay_bills_delivery_title"
             style="@style/body_copy_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/pay_bills_simple_text"
+            android:layout_below="@+id/pay_bills_simple"
             android:layout_marginBottom="@dimen/between_related_elements_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:text="@string/pay_bills_delivery_title" />
 
-        <ImageView
-            android:id="@+id/pay_bills_delivery_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/pay_bills_delivery_title"
-            android:layout_marginRight="@dimen/forms_inner_padding" />
-
-        <TextView
-            android:id="@+id/pay_bills_delivery_text"
-            style="@style/normal_static_text"
+        <LinearLayout
+            android:id="@+id/pay_bills_delivery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/groups_of_elements_padding"
             android:layout_below="@+id/pay_bills_delivery_title"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_toRightOf="@+id/pay_bills_delivery_image"
+            android:orientation="horizontal">
+	        
+	        <ImageView
+	            android:id="@+id/pay_bills_delivery_image"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginRight="@dimen/forms_inner_padding"
+	            android:layout_marginLeft="5dp"
+	            android:src="@drawable/large_calendar_icon" />
+	
+	        <TextView
+	            android:id="@+id/pay_bills_delivery_text"
+	            style="@style/normal_static_text"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginRight="@dimen/forms_inner_padding"
             android:text="@string/pay_bills_delivery_text" />
+        
+        </LinearLayout>
         
         <TextView
             android:id="@+id/provide_feedback_button"
@@ -132,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:layout_marginBottom="@dimen/orange_button_margin_top"
-            android:layout_below="@+id/pay_bills_delivery_text"
+            android:layout_below="@+id/pay_bills_delivery"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:text="@string/feedback_text" />
