@@ -2,7 +2,7 @@
      	android:layout_width="match_parent"
    		android:layout_height="wrap_content"
    		android:orientation="vertical"
-    	style="@style/default_list_item" >
+    	android:background="@drawable/home_list_item" >
         
      <TextView
         android:id="@+id/acct_type"

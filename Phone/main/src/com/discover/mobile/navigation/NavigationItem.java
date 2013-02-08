@@ -33,12 +33,9 @@ public abstract class NavigationItem {
 	 * @param adapter
 	 * @param sectionInfo
 	 */
-	public static void initializeAdapterWithSections(final NavigationItemAdapter adapter, final ImmutableList<ComponentInfo> sectionInfo) {
 	public static void initializeCardAdapterWithSections(final NavigationItemAdapter adapter, final ImmutableList<ComponentInfo> sectionInfo) {
 		section = sectionInfo;
 		initializeAdapterWithSections(adapter);
-		final Fragment homeFragment = new HomeSummaryFragment();
-		initializeAdapterWithRemainingSections(adapter);
 		final Fragment homeFragment = new HomeSummaryFragment();
 		adapter.getNavigationRoot().makeFragmentVisible(homeFragment);
 		// TODO set first section as selected	 
@@ -52,7 +49,7 @@ public abstract class NavigationItem {
 	 */
 	public static void initializeBankAdapterWithSections(final NavigationItemAdapter adapter, final ImmutableList<ComponentInfo> sectionInfo) {
 		section = sectionInfo;
-		initializeAdapterWithRemainingSections(adapter);
+	
 		final Fragment homeFragment = new BankAccountSummaryFragment();
 		adapter.getNavigationRoot().makeFragmentVisible(homeFragment);
 		// TODO set first section as selected	 
