@@ -56,7 +56,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		showActionBar();
 		setupSlidingMenu();
 	}
-	
+
 	/**
 	 * Returns the id for the sliding drawer menu frame
 	 * @return
@@ -93,7 +93,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		navigationToggle.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-					toggle();
+				toggle();
 			}
 		});
 
@@ -112,7 +112,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		/** Used on pause to know when to set Globals isLoggedIn to false **/
 		pendingLogout = true;
 
-		AsyncCallback<Object> callback = AsyncCallbackBuilderLibrary
+		final AsyncCallback<Object> callback = AsyncCallbackBuilderLibrary
 				.createDefaultCardAsyncBuilder(Object.class, this, this, true)
 				.withSuccessListener(new LogOutSuccessFailListener(this))
 				.withErrorResponseHandler(new LogOutSuccessFailListener(this))
@@ -127,13 +127,13 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	 * Set up and style the sliding menu
 	 */
 	private void setupSlidingMenu() {
-		// TODO customize these values
 		final SlidingMenu slidingMenu = getSlidingMenu();
 		slidingMenu.setShadowWidthRes(R.dimen.nav_menu_shadow_width);
 		slidingMenu.setShadowDrawable(R.drawable.nav_menu_shadow);
 		slidingMenu.setBehindOffsetRes(R.dimen.nav_menu_offset);
 		slidingMenu.setFadeDegree(FADE);
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		slidingMenu.setBehindScrollScale(0.0f);
 	}
 
 	/**
@@ -211,7 +211,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	 * @param show
 	 *            Displays logo if true, displays TextView otherwise.
 	 */
-	private void showActionBarLogo(boolean show) {
+	private void showActionBarLogo(final boolean show) {
 		final TextView titleView = (TextView) findViewById(R.id.title_view);
 		final ImageView titleImageView = (ImageView) findViewById(R.id.action_bar_discover_logo);
 

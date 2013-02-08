@@ -7,19 +7,24 @@ import com.discover.mobile.R;
 import com.discover.mobile.section.ComponentInfo;
 
 final class SectionNavigationItemView extends NavigationItemView {
-	
+
 	SectionNavigationItemView(final ComponentInfo componentInfo) {
 		super(R.layout.navigation_menu_section_item, componentInfo);
 	}
-	
+
 	@Override
 	int getViewType() {
 		return NavigationItemAdapter.TYPE_SECTION;
 	}
-	
+
 	@Override
 	void customizeView(final View view, final TextView titleView) {
-		// TODO customize and show highlight if selected
+		if (view.isSelected()){
+			titleView.setTextColor(view.getResources().getColor(R.color.orange));
+		}else {
+			titleView.setTextColor(view.getResources().getColor(R.color.white));
+		}
+
 	}
-	
+
 }
