@@ -40,7 +40,7 @@ public class CustomerServiceContactLists {
 		context = callingContext;
 		res = context.getResources();
 		
-		List<TwoElementListItem> phoneContactList = new ArrayList<TwoElementListItem>();
+		final List<TwoElementListItem> phoneContactList = new ArrayList<TwoElementListItem>();
 		
 		phoneContactList.add(getTwoElementListItemWithText(R.string.inside_us_number, R.string.card_phone_us, true));
 		phoneContactList.add(getTwoElementListItemWithText(R.string.outside_us_number, R.string.card_phone_non_us, true));
@@ -60,7 +60,7 @@ public class CustomerServiceContactLists {
 		context = callingContext;
 		res = context.getResources();
 		
-		List<TwoElementListItem> mailingAddressList = new ArrayList<TwoElementListItem>();
+		final List<TwoElementListItem> mailingAddressList = new ArrayList<TwoElementListItem>();
 		
 		mailingAddressList.add(getTwoElementListItemWithText(R.string.payment_address, R.string.card_mailing_payment, false));
 		mailingAddressList.add(getTwoElementListItemWithText(R.string.customer_service_two_line, R.string.card_mailing_customer_service, false));
@@ -80,7 +80,7 @@ public class CustomerServiceContactLists {
 		context = callingContext;
 		res = context.getResources();
 		
-		List<TwoElementListItem> mailingAddressList = new ArrayList<TwoElementListItem>();
+		final List<TwoElementListItem> mailingAddressList = new ArrayList<TwoElementListItem>();
 
 		mailingAddressList.add(getTwoElementListItemWithText(R.string.bank_general_mail_title, R.string.bank_general_mail, false));
 		mailingAddressList.add(getTwoElementListItemWithText(R.string.bank_new_accounts_mail_title, R.string.bank_new_accounts_mail, false));
@@ -101,7 +101,7 @@ public class CustomerServiceContactLists {
 		context = callingContext;
 		res = context.getResources();
 		
-		List<TwoElementListItem> phoneContactList = new ArrayList<TwoElementListItem>();
+		final List<TwoElementListItem> phoneContactList = new ArrayList<TwoElementListItem>();
 		phoneContactList.add(getTwoElementListItemWithText(R.string.open_an_account, R.string.bank_phone_open_account, true));
 		phoneContactList.add(getTwoElementListItemWithText(R.string.bank_personal_loans, R.string.bank_phone_personal_loans, true));
 		phoneContactList.add(getTwoElementListItemWithText(R.string.bank_tech_support, R.string.bank_phone_tech_support, true));
@@ -121,7 +121,7 @@ public class CustomerServiceContactLists {
 	 * @return a newly created TwoElementListItem with the provided text values and apperance based on if it was a phone number or not.
 	 */
 	private static TwoElementListItem getTwoElementListItemWithText(final int primaryText, final int secondaryText, final boolean isPhoneNumber) {
-		TwoElementListItem newItem = new TwoElementListItem(context);
+		final TwoElementListItem newItem = new TwoElementListItem(context);
 		
 		newItem.setLeftText(res.getString(primaryText));
 		
@@ -150,7 +150,7 @@ public class CustomerServiceContactLists {
 		contactNumber.setOnClickListener(new OnClickListener(){
 
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				CommonMethods.dialNumber(contactNumber.getText().toString(), context);
 			}
 		});

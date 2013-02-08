@@ -87,9 +87,9 @@ public class CustomerServiceContactsActivity extends NotLoggedInRoboActivity {
 	 * @param layout a linear layout to insert view elements into
 	 * @param elementList a list of view elements that can be inserted into a linear layout.
 	 */
-	public static void loadListElementsToLayoutFromList(final LinearLayout layout, List<TwoElementListItem> elementList) {
+	public static void loadListElementsToLayoutFromList(final LinearLayout layout, final List<TwoElementListItem> elementList) {
 		if(layout != null){
-			for(TwoElementListItem element : elementList)
+			for(final TwoElementListItem element : elementList)
 				layout.addView(element);
 		}
 	}
@@ -107,20 +107,20 @@ public class CustomerServiceContactsActivity extends NotLoggedInRoboActivity {
 	}
 
 	@Override
-	public void showCustomAlert(AlertDialog alert) {
+	public void showCustomAlert(final AlertDialog alert) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void showOneButtonAlert(int title, int content, int buttonText) {
+	public void showOneButtonAlert(final int title, final int content, final int buttonText) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void showDynamicOneButtonAlert(int title, String content,
-			int buttonText) {
+	public void showDynamicOneButtonAlert(final int title, final String content,
+			final int buttonText) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -132,7 +132,7 @@ public class CustomerServiceContactsActivity extends NotLoggedInRoboActivity {
 	}
 
 	@Override
-	public void setLastError(int errorCode) {
+	public void setLastError(final int errorCode) {
 		// TODO Auto-generated method stub
 		
 	}

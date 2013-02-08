@@ -27,15 +27,15 @@ public class TwoElementListItem extends RelativeLayout{
 	//A horizontal gray line on the top of each view that acts as a divider.
 	private View dividerLine;
 	
-	public TwoElementListItem(Context context) {
+	public TwoElementListItem(final Context context) {
 		super(context);
 		doSetup(context);
 	}
-	public TwoElementListItem(Context context, AttributeSet attrs) {
+	public TwoElementListItem(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		doSetup(context);
 	}
-	public TwoElementListItem(Context context, AttributeSet attrs, int defStyle) {
+	public TwoElementListItem(final Context context, final AttributeSet attrs, final int defStyle) {
 		super(context, attrs, defStyle);
 		doSetup(context);
 	}
@@ -46,10 +46,17 @@ public class TwoElementListItem extends RelativeLayout{
 	 * @param context - the context/activity that created an instance of this layout.
 	 */
 	private void doSetup(final Context context) {
-		final RelativeLayout mainView = 
-				(RelativeLayout)LayoutInflater.from(context).inflate(R.layout.two_item_list_element, null);
-		addView(mainView);	
+		addView(getInflatedLayout(context));
 		loadViews();
+	}
+	
+	/**
+	 * Returns the inflated layout for this list item.
+	 * @param context the calling context.
+	 * @return the inflated layout for this list item.
+	 */
+	private RelativeLayout getInflatedLayout(final Context context) {
+		return (RelativeLayout)LayoutInflater.from(context).inflate(R.layout.two_item_list_element, null);
 	}
 	
 	/**
@@ -58,7 +65,7 @@ public class TwoElementListItem extends RelativeLayout{
 	private void loadViews() {
 		leftTextView = (TextView)findViewById(R.id.left_text);
 		rightTextView = (TextView)findViewById(R.id.right_text);
-		dividerLine = (View)findViewById(R.id.divider_line);
+		dividerLine = findViewById(R.id.divider_line);
 		addressTextView = (TextView)findViewById(R.id.address_text);
 	}
 	
@@ -134,7 +141,7 @@ public class TwoElementListItem extends RelativeLayout{
 	/**
 	 * @param dividerLine the dividerLine to set
 	 */
-	public void setDividerLine(View dividerLine) {
+	public void setDividerLine(final View dividerLine) {
 		this.dividerLine = dividerLine;
 	}
 }
