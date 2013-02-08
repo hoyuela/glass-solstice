@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="acct_nickname_str">DP Money Market Employee</string>
+    <string name="acct_ending_str">(2976)</string>
+    <string name="acct_balance_str">$4,000,803.25</string>
+    <string name="acct_type_str">Savings Account</string>
+    <string name="acct_total_str">$4,000,803.25</string>
+</resources>

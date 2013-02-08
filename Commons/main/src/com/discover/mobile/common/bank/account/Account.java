@@ -124,6 +124,9 @@ public class Account implements Serializable {
 	@JsonProperty("status")
 	public String status;
 	
+	public static final String ACCOUNT_IRA= "IRA";
+	public static final String ACCOUNT_MONEYMARKET= "MONEYMARKET";
+	public static final String ACCOUNT_CHECKING = "CHECKING";
 	/**
 	 * Contains Bank web-service API Resource links for postedActivity and scheduledActivity
 	 */

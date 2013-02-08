@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/default_list_item"
+    android:paddingBottom="@dimen/table_inner_padding" >
+    
+	 <TextView
+        android:id="@+id/acct_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/acct_nickname_str"/>
+	 
+	  <TextView
+        android:id="@+id/acct_ending"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/acct_nickname"
+        android:layout_toLeftOf="@+id/acct_carat"
+        android:text="@string/acct_ending_str"/>
+	  	 
+	 <TextView
+        android:id="@+id/acct_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/acct_nickname"
+        android:text="@string/acct_balance_str"/>
+	 
+	  <View
+        android:id="@+id/acct_carat"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+       	android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/checkmark_green"/>
+</RelativeLayout>

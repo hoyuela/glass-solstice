@@ -89,5 +89,5 @@
 	<string name="error_request_not_completed_title">Your Request Could Not Be Completed</string>
 	<string name="error_request_not_completed_msg">We\'re sorry. We can\'t complete your request at this time. Please contact us for more information.</string>
 	<string name="lockout_title">You\'ve Been Locked Out</string>
-    
+    <string name="bank_account_summary">Account Summary</string>
 </resources>
