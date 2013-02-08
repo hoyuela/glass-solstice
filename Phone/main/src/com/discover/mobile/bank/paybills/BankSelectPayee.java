@@ -39,6 +39,12 @@ public class BankSelectPayee extends ScrollView{
 		super(context, attrs);
 		this.context = context;
 
+		/**
+		 * This will will have data passed to it from the bundle.
+		 * This way no service call will be owned by this class.
+		 */
+
+
 		addView(LayoutInflater.from(context).inflate(R.layout.select_payee, null));
 	}
 
