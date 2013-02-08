@@ -69,6 +69,7 @@
 	            style="@style/normal_static_text"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="@dimen/forms_inner_padding"
 	            android:layout_marginRight="@dimen/forms_inner_padding"
 	            android:text="@string/pay_bills_anywhere_text" />
 		</LinearLayout>
@@ -141,6 +142,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_marginRight="@dimen/forms_inner_padding"
+	            android:layout_marginLeft="@dimen/forms_inner_padding"
             android:text="@string/pay_bills_delivery_text" />
         
         </LinearLayout>

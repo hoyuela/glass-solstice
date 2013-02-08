@@ -36,6 +36,10 @@ public class BankSchedulePaymentLandingPage extends BaseFragment{
 		final boolean isEligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
 		final boolean isEnrolled = BankUser.instance().getCustomerInfo().getPaymentsEnrolled();
 
+		/**
+		 * This will eventually be moved out of this class.  This class will also need to become a fragment based
+		 * on the new menu design.
+		 */
 		if(!isEligible){
 			view = new BankPayeeNotEligibleLayout(getActivity(), null);
 		} else if(isEligible && !isEnrolled){

@@ -16,16 +16,16 @@
     	android:layout_alignParentLeft="true"
     	android:layout_toLeftOf="@+id/carrot"
     	style="@style/blue_choose_item_text"
-    	android:text="Comcast"/>
+    	android:paddingRight="@dimen/between_related_elements_padding"
+    	android:text="Text"/>
     
-    <TextView
+    <ImageView
         android:id="@+id/carrot"
         android:layout_width="wrap_content"
     	android:layout_height="wrap_content"
     	android:layout_alignParentRight="true"
-    	android:textColor="@color/sub_copy"
-    	android:textSize="@dimen/small_copy_mid"
-    	android:text=">"/>
+    	android:background="@drawable/blue_arrow_right"
+    	android:layout_centerVertical="true"/>
     
 
 </RelativeLayout>
