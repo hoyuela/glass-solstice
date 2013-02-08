@@ -1,5 +1,6 @@
 package com.discover.mobile.common.urlmanager;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
@@ -26,7 +27,7 @@ public class BankUrlManager {
 	private static final String GET_TOKEN_URL = "/api/auth/token";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
 	private static final String CUSTOMER_SERVICE_URL = "/api/customers/current";
-	private static Map<String, ReceivedUrl> links;
+	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
 	/**
 	 * Keys for the urls in order to retrieve from the map
