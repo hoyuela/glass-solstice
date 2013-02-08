@@ -7,7 +7,6 @@ import java.lang.ref.SoftReference;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -45,8 +44,6 @@ final class FragmentNavigationItem extends NavigationItem {
 		}else {
 			makeVisible();
 		}
-
-		final View view = listView.getSelectedView();
 
 		// TODO show highlight if selected
 	}

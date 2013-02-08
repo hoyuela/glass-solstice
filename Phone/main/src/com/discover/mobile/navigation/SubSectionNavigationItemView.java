@@ -19,7 +19,12 @@ final class SubSectionNavigationItemView extends NavigationItemView {
 
 	@Override
 	void customizeView(final View view, final TextView titleView) {
-		// TODO customize and show highlight if selected
+
+		if (view.isSelected()){
+			titleView.setTextColor(view.getResources().getColor(R.color.orange));
+		}else {
+			titleView.setTextColor(view.getResources().getColor(R.color.white));
+		}
 	}
 
 }

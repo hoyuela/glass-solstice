@@ -34,7 +34,7 @@ public abstract class NavigationItem {
 	 */
 	public static void initializeAdapterWithSections(final NavigationItemAdapter adapter, final ImmutableList<ComponentInfo> sectionInfo) {
 		section = sectionInfo;
-		initializeAdapterWithRemainingSections(adapter);
+		initializeAdapterWithSections(adapter);
 		final Fragment homeFragment = new HomeSummaryFragment();
 		adapter.getNavigationRoot().makeFragmentVisible(homeFragment);
 		// TODO set first section as selected	 
@@ -45,7 +45,7 @@ public abstract class NavigationItem {
 	 * Sets up the menu with the main menu options as well as the sections underneath. 
 	 * @param adapter
 	 */
-	private static void initializeAdapterWithRemainingSections(final NavigationItemAdapter adapter) {
+	private static void initializeAdapterWithSections(final NavigationItemAdapter adapter) {
 		for(int i = 0; i < section.size(); i++) {
 			final NavigationItem navItem = createSectionItem(adapter, i);
 			adapter.add(navItem);
