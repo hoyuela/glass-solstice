@@ -59,6 +59,23 @@ public abstract class ServiceCallParams {
 		
 	}
 	
+	@Struct
+	public static class DeleteCallParams extends ServiceCallParams {
+		
+		public DeleteCallParams(final String path) {
+			super("DELETE", path); //$NON-NLS-1$
+		}		
+	}
+	
+	@Struct
+	public static class PutCallParams extends ServiceCallParams {
+		
+		public PutCallParams(final String path) {
+			super("PUT", path); //$NON-NLS-1$
+		}		
+	}
+	
+	
 	private ServiceCallParams(final String httpMethod, final String path) {
 		checkArgument(path != null && !path.isEmpty(), "path cannot be empty"); //$NON-NLS-1$
 		
