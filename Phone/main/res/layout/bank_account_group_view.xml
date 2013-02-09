@@ -1,0 +1,25 @@
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     	android:layout_width="match_parent"
+   		android:layout_height="wrap_content"
+   		android:paddingTop="@dimen/groups_of_elements_padding"
+   		android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+   		android:orientation="vertical" >
+        
+     <TextView
+        android:id="@+id/acct_type"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/acct_type_str"
+        android:layout_marginBottom="@dimen/between_related_elements_padding"
+        style="@style/body_copy_title"/>
+     
+     <TextView
+        android:id="@+id/acct_all_total"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/acct_total_str"
+        android:layout_marginBottom="@dimen/between_related_elements_padding"
+        style="@style/page_title_max"/>
+     
+</LinearLayout>

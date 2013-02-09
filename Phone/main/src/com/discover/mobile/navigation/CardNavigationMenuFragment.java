@@ -10,7 +10,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		NavigationItem.initializeAdapterWithSections(navigationItemAdapter, Sections.CARD_SECTION_LIST);
+		NavigationItem.initializeCardAdapterWithSections(navigationItemAdapter, Sections.CARD_SECTION_LIST);
 		setListAdapter(navigationItemAdapter);
 	}
 	

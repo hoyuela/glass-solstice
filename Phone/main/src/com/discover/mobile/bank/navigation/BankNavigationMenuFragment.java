@@ -15,8 +15,8 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 
 		/**
 		 * Initializes the navigation menu
-		 */
-		NavigationItem.initializeAdapterWithSections(navigationItemAdapter, Sections.BANK_SECTION_LIST);
+		 */		
+		NavigationItem.initializeBankAdapterWithSections(navigationItemAdapter, Sections.BANK_SECTION_LIST);
 		setListAdapter(navigationItemAdapter);
 	}
 

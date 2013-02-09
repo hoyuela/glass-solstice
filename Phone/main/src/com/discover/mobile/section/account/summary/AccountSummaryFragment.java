@@ -44,9 +44,6 @@ public class AccountSummaryFragment extends BaseFragment {
 	/**Account information object*/
 	private AccountDetails info;
 
-	/**Static string representing the dollar sign*/
-	private static final String DOLLAR = "$";
-
 	/**Static string representing the date divider*/
 	private static final String DATE_DIV = "/";
 

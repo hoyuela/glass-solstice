@@ -5,6 +5,7 @@ import java.util.List;
 import android.support.v4.app.Fragment;
 import android.widget.ListView;
 
+import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.section.ComponentInfo;
 import com.discover.mobile.section.FragmentComponentInfo;
 import com.discover.mobile.section.GroupComponentInfo;
@@ -32,7 +33,7 @@ public abstract class NavigationItem {
 	 * @param adapter
 	 * @param sectionInfo
 	 */
-	public static void initializeAdapterWithSections(final NavigationItemAdapter adapter, final ImmutableList<ComponentInfo> sectionInfo) {
+	public static void initializeCardAdapterWithSections(final NavigationItemAdapter adapter, final ImmutableList<ComponentInfo> sectionInfo) {
 		section = sectionInfo;
 		initializeAdapterWithSections(adapter);
 		final Fragment homeFragment = new HomeSummaryFragment();
@@ -41,6 +42,19 @@ public abstract class NavigationItem {
 
 	}
 
+	/**
+	 * Sets up the adapter and make the BankAccountSummaryFragment fragment the first visible fragment when logging in.  
+	 * @param adapter
+	 * @param sectionInfo
+	 */
+	public static void initializeBankAdapterWithSections(final NavigationItemAdapter adapter, final ImmutableList<ComponentInfo> sectionInfo) {
+		section = sectionInfo;
+	
+		final Fragment homeFragment = new BankAccountSummaryFragment();
+		adapter.getNavigationRoot().makeFragmentVisible(homeFragment);
+		// TODO set first section as selected	 
+	}
+	
 	/**
 	 * Sets up the menu with the main menu options as well as the sections underneath. 
 	 * @param adapter
