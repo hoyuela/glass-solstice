@@ -13,10 +13,23 @@
         <item name="android:textSize">@dimen/title_min</item>
         <item name="android:textStyle">bold</item>
     </style>
+    
+    <style name="page_title_max">
+        <item name="android:textColor">@color/title</item>
+        <item name="android:textSize">@dimen/title_max</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
 
     <style name="body_copy_title">
         <item name="android:textColor">@color/body_copy</item>
         <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="body_copy_title_max">
+        <item name="android:textColor">@color/body_copy</item>
+        <item name="android:textSize">@dimen/body_copy_max</item>
         <item name="android:textStyle">bold</item>
     </style>
     

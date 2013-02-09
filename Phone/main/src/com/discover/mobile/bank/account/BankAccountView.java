@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.R;
 import com.discover.mobile.common.bank.account.Account;
+import com.google.common.base.Strings;
 
 public class BankAccountView extends RelativeLayout {
 	
@@ -54,8 +55,15 @@ public class BankAccountView extends RelativeLayout {
 	 * @param value
 	 */
 	public void setBalance(final String value) {
-		//TODO: Format String
-		this.acctBalance.setText(value);
+		if( !Strings.isNullOrEmpty(value)) {
+			try{
+				this.acctBalance.setText(BankStringFormatter.convertToDollars(value));
+			}catch(final Exception ex) {
+				this.acctBalance.setText(R.string.acct_total_str);
+			}
+		} else {
+			this.acctBalance.setText(R.string.acct_total_str);
+		}
 		
 	}
 	
@@ -64,8 +72,11 @@ public class BankAccountView extends RelativeLayout {
 	 * @param value
 	 */
 	public void setEnding(final String value) {
-		//TODO: Format String
-		this.acctEnding.setText(value);
+		try {
+			this.acctEnding.setText(BankStringFormatter.convertToAccountEnding(value));
+		} catch(final Exception ex) {
+			
+		}
 	}
 
 	/**

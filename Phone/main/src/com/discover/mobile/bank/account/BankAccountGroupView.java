@@ -65,7 +65,7 @@ public class BankAccountGroupView extends LinearLayout {
 		if( null != account ) {
 			if( acctList.size() == 0 || acctList.get(0).type == account.type) {
 				//Set the account type for the group
-				type.setText(account.type);
+				type.setText(account.name);
 				
 				layout.addView(new BankAccountView(this.getContext(), account));
 				
