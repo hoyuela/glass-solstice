@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.R;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.common.bank.account.Account;
 import com.google.common.base.Strings;
 

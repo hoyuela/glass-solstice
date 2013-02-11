@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.discover.mobile.BaseFragment;
-import com.discover.mobile.R;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.ViewPagerFragmentFactory.ActivityItem;
+import com.discover.mobile.common.BaseFragment;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 

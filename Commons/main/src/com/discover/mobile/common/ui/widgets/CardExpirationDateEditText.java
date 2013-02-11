@@ -1,10 +1,10 @@
-package com.discover.mobile.common.customui;
+package com.discover.mobile.common.ui.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
 
 import com.discover.mobile.common.R;
-import com.discover.mobile.utils.CommonUtils;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * The card expiration date picker.

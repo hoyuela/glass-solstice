@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.R;
+import com.discover.mobile.bank.R;
 
 /**
  * Simple view that is used to display a sting and a carrot that when selected will go to a different screen.

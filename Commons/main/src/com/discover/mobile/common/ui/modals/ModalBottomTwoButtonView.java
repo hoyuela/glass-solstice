@@ -1,4 +1,4 @@
-package com.discover.mobile.alert;
+package com.discover.mobile.common.ui.modals;
 
 import android.widget.Button;
 

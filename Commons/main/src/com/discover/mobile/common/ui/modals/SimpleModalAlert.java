@@ -1,4 +1,4 @@
-package com.discover.mobile.alert;
+package com.discover.mobile.common.ui.modals;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.discover.mobile.R;
+import com.discover.mobile.common.R;
 
 /**
  * This class is a modal alert with only a top view (no bottom buttons).  This view will only show a title and

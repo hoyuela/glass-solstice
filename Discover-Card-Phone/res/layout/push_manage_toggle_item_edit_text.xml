@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/notifcation_alert_toggle" 
+    android:background="@color/white"
+    android:padding="14dip">
+    
+    <ImageView
+        android:id="@+id/text_toggle_view"
+        android:layout_width="@dimen/push_toggle_box_width"
+        android:layout_height="@dimen/push_toggle_box_height"
+        style="@style/push_toggle_box_default"/> 
+    
+    <TextView
+        android:id="@+id/text_enable_text"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@+id/text_toggle_view"
+    	android:text="@string/text"
+    	style="@style/push_toggle_box_text_style"
+    	android:layout_marginLeft="@dimen/first_toggle_text_margin_left"/>
+    
+    <ImageView
+        android:id="@+id/push_toggle_view"
+        android:layout_width="@dimen/push_toggle_box_width"
+        android:layout_height="@dimen/push_toggle_box_height"
+        android:layout_toRightOf="@+id/text_toggle_view"
+        android:layout_alignTop="@+id/text_toggle_view"
+        style="@style/push_toggle_box_default"
+        android:layout_marginLeft="@dimen/second_toggle_margin_left"/>
+    
+    <TextView
+        android:id="@+id/push_enable_text"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_toRightOf="@+id/text_toggle_view"
+    	android:layout_below="@+id/text_toggle_view"
+    	android:text="@string/push_alerts"
+    	style="@style/push_toggle_box_text_style"
+    	android:layout_marginLeft="@dimen/second_toggle_text_margin_left"/> 
+
+	<TextView
+	    android:id="@+id/header" 
+	    android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+		style="@style/push_header_text_style"
+		android:layout_toRightOf="@+id/push_enable_text"
+		android:layout_alignTop="@+id/text_toggle_view"
+		android:layout_marginLeft="@dimen/push_header_margin_left"/>
+	
+	<com.discover.mobile.common.ui.widgets.PushManageEditText
+	    android:id="@+id/amount_box"
+	    android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_alignLeft="@+id/header"
+    	android:layout_below="@+id/header"
+    	android:maxWidth="@dimen/push_edit_box_max_width"
+    	android:maxLength="9"/>
+	
+	<TextView
+	    android:id="@+id/amount_text_box_view"
+	    android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_toRightOf="@+id/amount_box"
+    	android:layout_alignTop="@+id/amount_box"
+    	android:layout_alignBottom="@+id/amount_box"
+    	android:gravity="center_vertical"
+    	style="@style/push_toggle_item_secondary_text"
+    	android:text="@string/or_more"/>
+	
+	<TextView
+	    android:id="@+id/minimum_amount"
+	    android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@+id/amount_box"
+    	android:layout_alignLeft="@+id/header"
+    	style="@style/push_toggle_item_secondary_text"
+    	android:text="@string/minimum_amount_is"/>
+	
+	<TextView
+	    android:id="@+id/push_edit_text_error_label"
+	    style="@style/error_label_small"
+	    android:layout_below="@+id/minimum_amount"
+	    android:text="@string/doesnt_match_records" />
+	
+</RelativeLayout>

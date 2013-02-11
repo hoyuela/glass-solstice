@@ -46,7 +46,7 @@
             android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:text="@string/account_security_placeholder_text" />
 
-        <com.discover.mobile.common.customui.NonEmptyEditText
+        <com.discover.mobile.common.ui.widgets.NonEmptyEditText
             android:id="@+id/account_security_question_answer_field"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/input_field_height"

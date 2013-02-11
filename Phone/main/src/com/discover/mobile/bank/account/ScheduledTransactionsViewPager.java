@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.discover.mobile.R;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.ViewPagerFragmentFactory.ActivityItem;
 
 /**

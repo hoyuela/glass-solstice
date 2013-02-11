@@ -80,7 +80,7 @@
 		            android:textAppearance="?android:attr/textAppearanceMedium"
 		             style="@style/body_copy"/>
 	
-		        <com.discover.mobile.common.customui.NonEmptyEditText
+		        <com.discover.mobile.common.ui.widgets.NonEmptyEditText
 		            android:id="@+id/username_field"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
 		            android:textAppearance="?android:attr/textAppearanceMedium" 
 		            style="@style/body_copy"/>
 		       
-		        <com.discover.mobile.common.customui.NonEmptyEditText
+		        <com.discover.mobile.common.ui.widgets.NonEmptyEditText
 		            android:id="@+id/password_field"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"

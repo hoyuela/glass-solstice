@@ -1,4 +1,4 @@
-<manifest package="com.discover.mobile"
+<manifest package="com.discover.mobile.bank"
 	android:versionCode="1"
 	android:versionName="4.0" xmlns:android="http://schemas.android.com/apk/res/android">
 	
@@ -19,7 +19,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE"/>
     
 	
-	<application android:name=".DiscoverApplication"
+	<application android:name="com.discover.mobile.DiscoverApplication"
 		android:icon="@drawable/discove_mobile_icn"
 		android:label="@string/app_name"
 		android:allowBackup="false"
@@ -33,7 +33,7 @@
             android:exported="false" />
 	    <!--  Xtify Provider -->
 
-		<activity android:name=".login.LoginActivity"
+		<activity android:name="com.discover.mobile.bank.login.LoginActivity"
 			android:label="@string/app_name"
 			android:theme="@style/AppTheme.NoTitleBar"
 			android:windowSoftInputMode="adjustPan">
@@ -43,43 +43,43 @@
 			</intent-filter>
 		</activity>
 	
-		<activity android:name=".security.EnhancedAccountSecurityActivity"
+		<activity android:name="com.discover.mobile.security.EnhancedAccountSecurityActivity"
 			android:label="@string/app_name"
 			android:launchMode="standard">
 
 			</activity>
 		
-		<activity android:name=".login.LockOutUserActivity"
+		<activity android:name="com.discover.mobile.login.LockOutUserActivity"
 			android:label="@string/app_name"
 			android:launchMode="singleTask"
 			android:screenOrientation="portrait" />
 		
-		<activity android:name=".login.register.RegistrationAccountInformationActivity"
+		<activity android:name="com.discover.mobile.login.register.RegistrationAccountInformationActivity"
 			android:label="@string/app_name"
 			android:launchMode="standard">
 
 		</activity>
 	
-		<activity android:name=".login.register.ForgotPasswordAccountInformationActivity"
+		<activity android:name="com.discover.mobile.login.register.ForgotPasswordAccountInformationActivity"
 			android:label="@string/app_name"
 			android:launchMode="standard" >
 		</activity>
 	
-		<activity android:name=".login.register.ForgotBothAccountInformationActivity"
+		<activity android:name="com.discover.mobile.login.register.ForgotBothAccountInformationActivity"
 			android:label="@string/app_name"
 			android:launchMode="standard" />
 		
-		<activity android:name=".login.register.CreateLoginActivity"
+		<activity android:name="com.discover.mobile.login.register.CreateLoginActivity"
 			android:label="@string/app_name"
 			android:launchMode="standard" >
 			
 			</activity>
 		
-		<activity android:name=".login.register.AccountInformationConfirmationActivity"
+		<activity android:name="com.discover.mobile.login.register.AccountInformationConfirmationActivity"
 			android:label="@string/app_name"
 			android:launchMode="standard" />
 
-		<activity android:name=".login.register.StrengthBarHelpActivity"
+		<activity android:name="com.discover.mobile.login.register.StrengthBarHelpActivity"
 			android:label="@string/app_name"
 			android:launchMode="standard" />
 	
@@ -88,22 +88,22 @@
 			android:launchMode="standard">
 		</activity>
 		
-		<activity android:name=".login.register.ForgotUserIdActivity"
+		<activity android:name="com.discover.mobile.login.register.ForgotUserIdActivity"
 			android:label="@string/app_name"
 			android:launchMode="standard" >
 		</activity>
 		
-		<activity android:name=".login.register.EnterNewPasswordActivity"
+		<activity android:name="com.discover.mobile.login.register.EnterNewPasswordActivity"
 			android:label="@string/app_name"
 			android:launchMode="standard" >
 		</activity>
 		
-		<activity android:name=".help.CustomerServiceContactsActivity"
+		<activity android:name="com.discover.mobile.help.CustomerServiceContactsActivity"
 			android:label="@string/app_name"
 			android:launchMode="standard" >
 		</activity>
 	
-		<activity android:name=".navigation.NavigationMenuRootActivity" />
+		<activity android:name="com.discover.mobile.navigation.NavigationMenuRootActivity" />
 		
 		<!--  Xtify Setup -->
 		<receiver android:name="com.xtify.sdk.c2dm.C2DMBroadcastReceiver" >
@@ -141,7 +141,7 @@
         <service android:name="com.xtify.sdk.alarm.LocationIntentService" />
 		
 		<!--  End Xtify Setup -->
-        <activity android:name=".push.PushTermsAndConditionsActivity"></activity>
+        <activity android:name="com.discover.mobile.push.PushTermsAndConditionsActivity"></activity>
         <activity android:name="com.discover.mobile.navigation.CardNavigationRootActivity"></activity>
         <activity android:name="com.discover.mobile.bank.navigation.BankNavigationRootActivity" ></activity>
         <activity android:name="com.discover.mobile.push.PushEnrollFragment"></activity>

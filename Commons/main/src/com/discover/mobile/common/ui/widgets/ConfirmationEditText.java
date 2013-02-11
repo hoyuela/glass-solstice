@@ -1,4 +1,4 @@
-package com.discover.mobile.common.customui;
+package com.discover.mobile.common.ui.widgets;
 
 import java.util.Locale;
 

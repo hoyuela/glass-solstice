@@ -1,4 +1,4 @@
-package com.discover.mobile.alert;
+package com.discover.mobile.common.ui.modals;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.discover.mobile.R;
+import com.discover.mobile.common.R;
 
 /**
  * Default two button bottom view for the modal

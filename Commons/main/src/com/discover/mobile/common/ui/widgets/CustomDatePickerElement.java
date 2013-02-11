@@ -1,4 +1,4 @@
-package com.discover.mobile.common.customui;
+package com.discover.mobile.common.ui.widgets;
 
 import java.util.Calendar;
 
@@ -12,7 +12,7 @@ import android.widget.DatePicker;
 
 import com.discover.mobile.common.R;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.utils.CommonUtils;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * The parent class for any date picker 

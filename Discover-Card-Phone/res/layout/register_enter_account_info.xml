@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <com.discover.mobile.navigation.HeaderProgressIndicator
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/account_info_scroll_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/light_gray_bkgrd" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="@dimen/forms_inner_padding" >
+
+            <TextView
+                android:id="@+id/account_info_label_one_label"
+                style="@style/title_copy"
+                android:layout_below="@+id/account_info_error_label"
+                android:text="@string/account_info_label_one" />
+
+            <com.discover.mobile.common.ui.widgets.UsernameOrAccountNumberEditText
+                android:id="@+id/account_info_main_input_field"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/input_field_height"
+                android:layout_below="@+id/account_info_label_one_label"
+                android:layout_marginTop="@dimen/between_related_elements_padding"
+                android:imeOptions="actionDone"
+                android:textCursorDrawable="@null" />
+
+            <TextView
+                android:id="@+id/account_information_input_info_label"
+                style="@style/field_copy"
+                android:layout_below="@+id/account_info_card_account_number_error_label"
+                android:paddingTop="@dimen/between_related_elements_padding"
+                android:text="@string/account_info_input_restrictions_label" />
+
+            <TextView
+                android:id="@+id/account_info_card_account_number_error_label"
+                style="@style/error_label"
+                android:layout_below="@+id/account_info_main_input_field"
+                android:text="@string/invalid_input" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/account_info_error_label"
+                style="@style/error_label" />
+
+            <TextView
+                android:id="@+id/account_info_card_expiration_date_label"
+                style="@style/title_copy"
+                android:layout_below="@+id/account_information_input_info_label"
+                android:layout_marginTop="@dimen/forms_inner_padding"
+                android:text="@string/card_expiration_date_text" />
+
+            <TextView
+                android:id="@+id/account_info_ssn_info_label"
+                style="@style/title_copy"
+                android:layout_below="@+id/account_info_expiration_date_error_label"
+                android:layout_marginTop="@dimen/table_inner_padding"
+                android:text="@string/account_info_ssn_info_text" />
+
+            <com.discover.mobile.common.ui.widgets.SsnEditText
+                android:id="@+id/account_info_ssn_input_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_info_ssn_info_label"
+                android:layout_marginTop="@dimen/between_related_elements_padding"
+                android:layout_toRightOf="@+id/account_info_ssn_prefix_label"
+                android:imeOptions="actionDone"
+                android:textCursorDrawable="@null" />
+
+            <TextView
+                android:id="@+id/account_info_ssn_prefix_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@id/account_info_ssn_input_field"
+                android:layout_below="@+id/account_info_ssn_info_label"
+                android:paddingTop="8dp"
+                android:text="@string/ssn_prefix"
+                android:textColor="@color/field_copy" />
+
+            <TextView
+                android:id="@+id/account_info_ssn_error_label"
+                style="@style/error_label"
+                android:layout_alignLeft="@+id/account_info_ssn_input_field"
+                android:layout_below="@+id/account_info_ssn_input_field"
+                android:text="@string/invalid_input" />
+
+            <TextView
+                android:id="@+id/account_info_dob_label"
+                style="@style/title_copy"
+                android:layout_below="@+id/account_info_ssn_error_label"
+                android:layout_marginTop="@dimen/between_related_elements_padding"
+                android:text="@string/account_info_dob_text" />
+
+            <TextView
+                android:id="@+id/account_info_dob_year_error_label"
+                style="@style/error_label"
+                android:layout_below="@+id/account_info_birth_date_picker"
+                android:text="@string/invalid_input" />
+
+            <Button
+                android:id="@+id/account_info_continue_button"
+                style="@style/call_to_action_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_info_birth_date_picker"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/orange_button_margin_top"
+                android:layout_marginTop="@dimen/orange_button_margin_top"
+                android:onClick="validateInfoAndSubmitOnSuccess"
+                android:text="@string/continue_text" />
+
+            <Button
+                android:id="@+id/account_info_cancel_button"
+                style="@style/blue_hyperlink"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_info_continue_button"
+                android:layout_centerHorizontal="true"
+                android:background="@color/none"
+                android:onClick="goBack"
+                android:text="@string/cancel_text" />
+
+            <com.discover.mobile.common.ui.widgets.CardExpirationDateEditText
+                android:id="@+id/account_info_card_exp_date_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_info_card_expiration_date_label"
+                android:layout_marginTop="@dimen/between_related_elements_padding" />
+
+            <TextView
+                android:id="@+id/account_info_expiration_date_error_label"
+                style="@style/error_label"
+                android:layout_below="@+id/account_info_card_exp_date_picker"
+                android:text="@string/invalid_input" />
+
+            <com.discover.mobile.common.ui.widgets.DatePickerEditText
+                android:id="@+id/account_info_birth_date_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_info_dob_label"
+                android:layout_marginTop="@dimen/between_related_elements_padding" />
+
+            <RelativeLayout
+                android:id="@+id/footer"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_info_cancel_button"
+                android:layout_marginTop="@dimen/groups_of_elements_padding" >
+
+                <include layout="@layout/old_general_need_help_footer" />
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/provide_feedback_button"
+                style="@style/blue_hyperlink_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/footer"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/orange_button_margin_top"
+                android:layout_marginTop="@dimen/orange_button_margin_top"
+                android:text="@string/feedback_text" />
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>

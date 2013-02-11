@@ -1,4 +1,4 @@
-package com.discover.mobile.alert;
+package com.discover.mobile.common.ui.modals;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.discover.mobile.R;
-import com.discover.mobile.help.NeedHelpFooter;
+import com.discover.mobile.common.R;
+import com.discover.mobile.common.ui.help.NeedHelpFooter;
 
 /**
  * Default top view to be displayed in the alert modal.  This contains a title as well

@@ -1,12 +1,12 @@
-package com.discover.mobile.help;
+package com.discover.mobile.common.ui.help;
 
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.discover.mobile.R;
 import com.discover.mobile.common.CommonMethods;
+import com.discover.mobile.common.R;
 
 /**
  * Utility class used to wrap the Need Help footer at the bottom of every page or modal. Provides

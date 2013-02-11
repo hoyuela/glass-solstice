@@ -14,7 +14,6 @@
 	<color name="lightRed">#1fff0000</color>
 	<color name="lightBlue">#d0025D96</color>
 	<color name="transparentGray">#50000000</color>
-	<color name="none">#00000000</color>
 	
     <!-- Old -->
     <color name="primary">#00A8BF</color>
@@ -31,8 +30,6 @@
     <color name="field_stroke">#dce3e5</color>
     <color name="header_bg">#d8dde0</color>
     <color name="sub_header_bg">#e8eced</color>
-    <color name="stroke_ruling_line">#c0c8cc</color>
-    <color name="transaction_table_stripe">#f1f1f1</color>
     
     <!-- Discover Secondary Colors -->
     <color name="orange_gradient_light">#ed4b0b</color>
@@ -42,11 +39,8 @@
     <color name="orange_link_idicator">#ff6600</color>
 	<color name="error_indicator">#ed1c24</color>
 	<color name="weak_indicator">#ffdb11</color>
-	<color name="string_indicator">#8ed402</color>
 	<color name="blue_link">#0267b1</color>
 	
-	<!-- Navigation Menu Gradient -->
-	<color name="menu_light_gray">#3D484D</color>
-	<color name="menu_dark_gray">#293033</color>
+	
 	
 </resources>

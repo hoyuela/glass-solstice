@@ -6,9 +6,9 @@ import java.net.HttpURLConnection;
 import android.app.Activity;
 import android.util.Log;
 
-import com.discover.mobile.AlertDialogParent;
-import com.discover.mobile.ErrorHandlerUi;
+import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BankUser;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.bank.BankSchema;
@@ -22,10 +22,10 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponse
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.login.LoginActivity;
 import com.google.common.base.Strings;
 
 /**

@@ -8,6 +8,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
 import android.content.Context;
+import com.discover.mobile.bank.R;
 
 @ReportsCrashes(formKey = "dDAzM3VJakhEcHpvV2dsZlpJcXZqOGc6MQ")
 public class DiscoverApplication extends Application {

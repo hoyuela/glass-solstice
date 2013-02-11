@@ -1,4 +1,4 @@
-package com.discover.mobile.alert;
+package com.discover.mobile.common.ui.modals;
 
 /**
 * Interface to bind to the top views with a title and content view that will be placed in an 

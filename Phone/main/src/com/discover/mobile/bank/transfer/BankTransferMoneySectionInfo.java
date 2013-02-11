@@ -1,9 +1,9 @@
 package com.discover.mobile.bank.transfer;
 
-import com.discover.mobile.R;
-import com.discover.mobile.section.FragmentComponentInfo;
-import com.discover.mobile.section.GroupComponentInfo;
-import com.discover.mobile.section.home.HomeSummaryFragment;
+import com.discover.mobile.bank.R;
+import com.discover.mobile.card.home.HomeSummaryFragment;
+import com.discover.mobile.common.nav.section.FragmentComponentInfo;
+import com.discover.mobile.common.nav.section.GroupComponentInfo;
 
 public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 

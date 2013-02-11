@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.R;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.common.bank.account.Account;
 
 public class BankAccountGroupView extends LinearLayout {

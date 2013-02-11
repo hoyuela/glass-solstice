@@ -1,8 +1,8 @@
 package com.discover.mobile.bank.account;
 
-import com.discover.mobile.R;
-import com.discover.mobile.section.FragmentComponentInfo;
-import com.discover.mobile.section.GroupComponentInfo;
+import com.discover.mobile.bank.R;
+import com.discover.mobile.common.nav.section.FragmentComponentInfo;
+import com.discover.mobile.common.nav.section.GroupComponentInfo;
 
 public final class BankAccountSectionInfo extends GroupComponentInfo {
 

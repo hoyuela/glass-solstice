@@ -1,0 +1,8 @@
+<resources>
+    <string name="section_title_home">Home</string>
+    <string name="section_title_account">Account</string>
+    <string name="sub_section_title_account_summary">Account Summary</string>
+    <string name="sub_section_title_recent_activity">Recent Activity</string>
+    <string name="sub_section_title_search_transaction">Search Transaction</string>
+    <string name="sub_section_title_statements">Statements</string>
+</resources>

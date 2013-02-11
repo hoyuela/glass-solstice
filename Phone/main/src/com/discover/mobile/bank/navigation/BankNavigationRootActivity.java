@@ -4,12 +4,12 @@ import java.util.Calendar;
 
 import android.view.MotionEvent;
 
-import com.discover.mobile.R;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.urlmanager.BankUrlManager;
-import com.discover.mobile.navigation.NavigationRootActivity;
 
 /**
  * Root activity for the application after login. This will transition fragment on and off the screen

@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ScrollView;
 
-import com.discover.mobile.R;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.common.bank.payee.PayeeDetail;

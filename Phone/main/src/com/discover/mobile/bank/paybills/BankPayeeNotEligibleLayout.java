@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ScrollView;
 
-import com.discover.mobile.R;
+import com.discover.mobile.bank.R;
 
 /**
  * ScrollView that will hold the not eligible for payments view.
