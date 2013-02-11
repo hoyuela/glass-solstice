@@ -5,10 +5,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.push.register.PushNowAvailableFragment;
 import com.discover.mobile.card.ui.modals.ModalConfirmationTop;
 import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 
@@ -84,5 +86,12 @@ public class CardNavigationRootActivity extends NavigationRootActivity {
 		});
 		modal.show();
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.discover.mobile.common.BaseFragmentActivity#getErrorHandler()
+	 */
+	public ErrorHandler getErrorHandler() {
+		return CardErrorHandler.getInstance();
 	}
 }

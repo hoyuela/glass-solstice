@@ -11,6 +11,7 @@ import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.security.EnhancedAccountSecurityActivity;
 import com.discover.mobile.common.AlertDialogParent;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 
@@ -113,12 +114,12 @@ public class BankNavigator {
 	}
 
 	public static void navigateToNoAccounts() {
-		((AlertDialogParent)BankActivityManager.getActiveActivity()).closeDialog();
+		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
 		//TODO: Remove this code once implemented. This is only for QA testing purposes only
 		final CharSequence text = "No Accounts Page Under Development";
 		final int duration = Toast.LENGTH_SHORT;
 
-		final Toast toast = Toast.makeText(BankActivityManager.getActiveActivity(), text, duration);
+		final Toast toast = Toast.makeText(DiscoverActivityManager.getActiveActivity(), text, duration);
 		toast.show();
 
 	}

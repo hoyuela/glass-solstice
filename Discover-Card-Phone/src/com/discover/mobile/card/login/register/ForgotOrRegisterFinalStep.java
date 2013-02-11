@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
+import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.card.push.register.PushRegistrationStatusSuccessListener;
@@ -29,6 +30,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListen
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
+import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
@@ -234,6 +236,14 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 	@Override 
 	public void onBackPressed() {
 		goBack();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.discover.mobile.common.NotLoggedInRoboActivity#getErrorHandler()
+	 */
+	@Override
+	public ErrorHandler getErrorHandler() {
+		return CardErrorHandler.getInstance();
 	}
 
 }

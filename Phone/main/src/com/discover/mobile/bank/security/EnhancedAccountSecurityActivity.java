@@ -24,9 +24,10 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.BankServiceCallFactory;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandler;
+import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
@@ -40,6 +41,7 @@ import com.discover.mobile.common.auth.strong.StrongAuthAnswerDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
+import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
@@ -614,5 +616,13 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		} else {
 			continueButton.setEnabled(false);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.discover.mobile.common.NotLoggedInRoboActivity#getErrorHandler()
+	 */
+	@Override
+	public ErrorHandler getErrorHandler() {
+		return CardErrorHandler.getInstance();
 	}
 }

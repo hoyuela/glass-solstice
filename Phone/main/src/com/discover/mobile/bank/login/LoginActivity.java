@@ -28,10 +28,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.BankServiceCallFactory;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
 import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
+import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.card.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
@@ -57,6 +58,7 @@ import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
+import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.push.PushNotificationService;
 import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
@@ -1012,5 +1014,13 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	public boolean getPreAuthHasRun() {
 		return this.preAuthHasRun;
+	}
+	
+	/**
+	 * Returns error handler
+	 */
+	public ErrorHandler getErrorHandler(){
+		return  CardErrorHandler.getInstance();
+		
 	}
 }

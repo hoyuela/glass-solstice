@@ -124,17 +124,6 @@ public interface ErrorHandler {
 
 	public abstract void handleHttpUnauthorizedError();
 
-	/**
-	 * This function handles the response for a 401 with strong auth. The new
-	 * question and id are sent as an intent to the strong auth activity.
-	 * 
-	 * @param errorHandlerUi
-	 * @param errorMessage
-	 * @param question
-	 * @param id
-	 */
-	public abstract void handleStrongAuthFailure(ErrorHandlerUi errorHandlerUi, String errorMessage, BankStrongAuthDetails details);
-
 	public abstract void handleLoginAuthFailure(ErrorHandlerUi errorHandlerUi, String errorMessage);
 
 	/**
@@ -153,10 +142,7 @@ public interface ErrorHandler {
 	 */
 	public abstract ModalAlertWithOneButton handleLockedOut(ErrorHandlerUi errorHandlerUi, String errorText);
 
-	/**
-	     * Launch the strong auth Activity with the question that was retrieved from the get strong auth question call.
-	     */
-	public abstract void handleStrongAuthChallenge();
+	
 
 	/** 
 	 * Navigates to login page after a session expired

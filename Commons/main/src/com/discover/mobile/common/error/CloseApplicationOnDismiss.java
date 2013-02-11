@@ -1,7 +1,7 @@
 /**
  * Copyright Solstice-Mobile 2013
  */
-package com.discover.mobile.bank.error;
+package com.discover.mobile.common.error;
 
 import android.app.Activity;
 import android.content.DialogInterface;

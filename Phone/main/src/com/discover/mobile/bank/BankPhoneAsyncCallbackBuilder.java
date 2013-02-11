@@ -1,24 +1,32 @@
 /**
  * Copyright Solstice-Mobile 2013
  */
-package com.discover.mobile.bank.delegates;
+package com.discover.mobile.bank;
 
 import android.app.Activity;
 
-import com.discover.mobile.bank.BankNetworkServiceCallManager;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback.Builder;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
-import com.discover.mobile.common.delegates.AsyncCallbackDelegate;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 
+
 /**
- * @author ekaram
+ * Every GenericAsyncCallback<> used in a NetworkServiceCall<> should minimally have an 
+ * ExceptionFailureHandler for local errors, ErrorResponseHandler for error responses, and a SuccessListener 
+ * for successful responses. In addition,  a GenericAsyncCallback can have a CompleteListener
+ * which is used to execute some action after all other handlers have been executed. 
+ * 
+ * This class serves as a library of default GenericAsyncCallback builders with the necessary 
+ * ExceptionFailureHandler, ErrorResponseHandler, and CompleteListeners required minimally to handle
+ * a network service call. The builder is returned to the application to apply its own SuccessListener. 
+ * 
+ * @author henryoyuela
  *
  */
-public class BankPhoneAsyncCallbackBuilder implements AsyncCallbackDelegate{
+public class BankPhoneAsyncCallbackBuilder {
 	
 	
 	//FIXME create default card async callback builder
@@ -57,8 +65,7 @@ public class BankPhoneAsyncCallbackBuilder implements AsyncCallbackDelegate{
 	/* (non-Javadoc)
 	 * @see com.discover.mobile.common.delegates.AsyncCallbackDelegate#createDefaultCallbackBuilder(java.lang.Class, android.app.Activity, com.discover.mobile.error.ErrorHandlerUi)
 	 */
-	@Override
-	public <T> Builder<T> createDefaultCallbackBuilder(Class<T> arg0, Activity activity, ErrorHandlerUi arg2) {
+	public static <T> Builder<T> createDefaultCallbackBuilder(Class<T> arg0, Activity activity, ErrorHandlerUi arg2) {
 		Builder<T> builder = null;
 		
 		builder = GenericAsyncCallback.<T>builder(activity)
@@ -76,8 +83,8 @@ public class BankPhoneAsyncCallbackBuilder implements AsyncCallbackDelegate{
 	/* (non-Javadoc)
 	 * @see com.discover.mobile.common.delegates.AsyncCallbackDelegate#createDefaultCallbackBuilder(java.lang.Class, android.app.Activity, com.discover.mobile.error.ErrorHandlerUi, boolean)
 	 */
-	@Override
-	public <T> Builder<T> createDefaultCallbackBuilder(Class<T> arg0, Activity activity, ErrorHandlerUi arg2, boolean hasProgressDialog) {
+	
+	public static <T> Builder<T> createDefaultCallbackBuilder(Class<T> arg0, Activity activity, ErrorHandlerUi arg2, boolean hasProgressDialog) {
 		Builder<T> builder = null;
 		
 		builder = GenericAsyncCallback.<T>builder(activity)
@@ -87,7 +94,6 @@ public class BankPhoneAsyncCallbackBuilder implements AsyncCallbackDelegate{
 				.withStartListener(BankNetworkServiceCallManager.getInstance())
 				.withSuccessListener((SuccessListener<T>) BankNetworkServiceCallManager.getInstance())
 				.withCompletionListener(new LockScreenCompletionListener(activity));
-		
 		
 		return builder;
 	}

@@ -4,6 +4,7 @@ package com.discover.mobile.bank.navigation;
 import android.os.Bundle;
 
 import com.discover.mobile.bank.account.BankAccountSectionInfo;
+import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.atm.BankAtmLocatorInfo;
 import com.discover.mobile.bank.customerservice.BankCustomerServiceSectionInfo;
 import com.discover.mobile.bank.deposit.BankDepositChecksSectionInfo;
@@ -24,7 +25,7 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		/**
 		 * Initializes the navigation menu
 		 */		
-		NavigationItem.initializeAdapterWithSections(navigationItemAdapter, BANK_SECTION_LIST, this);
+		NavigationItem.initializeAdapterWithSections(navigationItemAdapter, BANK_SECTION_LIST, new BankAccountSummaryFragment());
 		setListAdapter(navigationItemAdapter);
 	}
 	

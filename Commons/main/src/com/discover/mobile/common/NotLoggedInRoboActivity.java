@@ -45,21 +45,18 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 		showActionBar();
 	}
 
-	@Override
-	public ErrorHandler getErrorHandler() {
-		//FIXME abstract error handler
-		//return BankErrorHandler.getInstance();
-		return null;
-	}
+	/**
+	 * Child class must supply proper error handler
+	 */
+	public abstract ErrorHandler getErrorHandler();
 
 
 	@Override
 	public void onResume(){
 		super.onResume();
 
-		//Set this activity as the active activity
-		//BankActivityManager.setActiveActivity(this);
-		// FIXME - generic activity manager
+		DiscoverActivityManager.setActiveActivity(this);
+		
 	}
 
 	@Override

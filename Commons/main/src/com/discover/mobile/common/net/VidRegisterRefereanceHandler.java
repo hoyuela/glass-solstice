@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.discover.mobile.common.callback.AsyncCallback;
 
-//FIXME: Comment
+//TODO: Comment
 public class VidRegisterRefereanceHandler <V> extends TypedReferenceHandler<V> {
 	
 	private final AsyncCallback<V> callback;

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BankUser;
 import com.discover.mobile.common.Globals;
@@ -22,6 +23,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponse
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -70,7 +72,7 @@ ErrorResponseHandler, ExceptionFailureHandler {
 	 * Constructor is made private to follow a singleton design pattern.
 	 */
 	private BankNetworkServiceCallManager() {
-		this.errorHandler = new BankBaseErrorResponseHandler((ErrorHandlerUi) BankActivityManager.getActiveActivity());
+		this.errorHandler = new BankBaseErrorResponseHandler((ErrorHandlerUi) DiscoverActivityManager.getActiveActivity());
 	}
 
 	/**
@@ -125,11 +127,11 @@ ErrorResponseHandler, ExceptionFailureHandler {
 	 */
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> error) {
-		final Activity activeActivity = BankActivityManager.getActiveActivity();
+		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
 		if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
 			//Send request to Strong Auth web-service API
-			BankServiceCallFactory.createStrongAuthRequest().submit();
+			DelegateFactory.getStrongAuthDelegate().navToBankStrongAuth(activeActivity);
 		} else {
 			this.errorHandler.handleFailure(sender, error);
 
@@ -145,7 +147,7 @@ ErrorResponseHandler, ExceptionFailureHandler {
 	 */
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> arg0, final Throwable arg1) {
-		final AlertDialogParent activeActivity = (AlertDialogParent)BankActivityManager.getActiveActivity();
+		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 		activeActivity.closeDialog();
 
 		return false;
@@ -159,11 +161,11 @@ ErrorResponseHandler, ExceptionFailureHandler {
 	 */
 	@Override
 	public void success(final NetworkServiceCall<?> sender, final Serializable result) {
-		final Activity activeActivity = BankActivityManager.getActiveActivity();
+		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
 		//Download Customer Information if a Login call is successful
 		if( sender instanceof CreateBankLoginCall ) {
-			final LoginActivity activity = (LoginActivity) BankActivityManager.getActiveActivity();
+			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
 
 			//Set logged in to be able to save user name in persistent storage
 			Globals.setLoggedIn(true);
@@ -220,7 +222,7 @@ ErrorResponseHandler, ExceptionFailureHandler {
 	 */
 	@Override
 	public void start(final NetworkServiceCall<?> sender) {
-		final AlertDialogParent activeActivity = (AlertDialogParent)BankActivityManager.getActiveActivity();
+		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 		activeActivity.startProgressDialog();
 
 		//Update curCall and prevCall it is a different service request

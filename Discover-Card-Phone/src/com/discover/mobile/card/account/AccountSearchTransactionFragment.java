@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.discover.mobile.card.CardAsyncCallbackBuilder;
 import com.discover.mobile.card.R;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.account.CategoriesDetail;
@@ -52,7 +53,7 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 	 */
 	private void getCategories() {
 		
-		final Builder<CategoriesDetail> callback =DelegateFactory.getAsyncCallbackDelegate()
+		final Builder<CategoriesDetail> callback =CardAsyncCallbackBuilder
 				.createDefaultCallbackBuilder(CategoriesDetail.class,
 						getActivity(), (ErrorHandlerUi) this.getActivity(),
 						true);

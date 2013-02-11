@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
+import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.card.push.register.PushRegistrationStatusSuccessListener;
@@ -55,6 +56,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListen
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
+import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -563,6 +565,14 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	@Override
 	public List<EditText> getInputFields() {
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.discover.mobile.common.NotLoggedInRoboActivity#getErrorHandler()
+	 */
+	@Override
+	public ErrorHandler getErrorHandler() {
+		return CardErrorHandler.getInstance();
 	}
 
 }

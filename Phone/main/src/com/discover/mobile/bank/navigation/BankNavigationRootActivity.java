@@ -6,8 +6,10 @@ import android.view.MotionEvent;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.urlmanager.BankUrlManager;
 
@@ -83,5 +85,13 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	public int getBehindContentView() {
 		// TODO Auto-generated method stub
 		return R.layout.navigation_bank_menu_frame;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.discover.mobile.common.BaseFragmentActivity#getErrorHandler()
+	 */
+	@Override
+	public ErrorHandler getErrorHandler() {
+		return BankErrorHandler.getInstance();
 	}
 }

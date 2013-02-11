@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.discover.mobile.card.account.AccountSectionInfo;
 import com.discover.mobile.card.home.HomeSectionInfo;
+import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.profile.ProfileAndSettingsSectionInfo;
 import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.nav.NavigationItem;
@@ -17,7 +18,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		NavigationItem.initializeAdapterWithSections(navigationItemAdapter, CARD_SECTION_LIST,this);
+		NavigationItem.initializeAdapterWithSections(navigationItemAdapter, CARD_SECTION_LIST,new HomeSummaryFragment());
 		setListAdapter(navigationItemAdapter);
 	}
 	

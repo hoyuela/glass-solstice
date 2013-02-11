@@ -1,4 +1,4 @@
-package com.discover.mobile.bank;
+package com.discover.mobile.common;
 
 import android.app.Activity;
 
@@ -12,7 +12,7 @@ import android.app.Activity;
  * @author henryoyuela
  *
  */
-public class BankActivityManager {
+public class DiscoverActivityManager {
 	/**
 	 * Reference to the application's active activity set via setActiveActivity()
 	 */
@@ -23,7 +23,7 @@ public class BankActivityManager {
      * 
      * @throws UnsupportedOperationException Every time this constructor is invoked.
      */
-	private BankActivityManager() {
+	private DiscoverActivityManager() {
 		throw new UnsupportedOperationException("This class is non-instantiable");
 	}
 	

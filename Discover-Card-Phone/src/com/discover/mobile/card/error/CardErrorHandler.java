@@ -1,24 +1,26 @@
-package com.discover.mobile.bank.error;
+package com.discover.mobile.card.error;
 
 import java.net.HttpURLConnection;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 
-import com.discover.mobile.bank.BankNavigator;
-import com.discover.mobile.bank.R;
-import com.discover.mobile.common.AccountType;
+import com.discover.mobile.card.R;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
+import com.discover.mobile.common.delegates.DelegateFactory;
+import com.discover.mobile.common.error.BaseErrorHandler;
 import com.discover.mobile.common.error.CloseApplicationOnDismiss;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
@@ -32,15 +34,15 @@ import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
  * 
  */
 
-public class BankErrorHandler implements ErrorHandler {
+public class CardErrorHandler extends BaseErrorHandler {
 
-	static final String TAG = BankErrorHandler.class.getSimpleName();
-	static final ErrorHandler instance = new BankErrorHandler();
+	static final String TAG = CardErrorHandler.class.getSimpleName();
+	static final ErrorHandler instance = new CardErrorHandler();
 
 	/**
 	 * Uses a singleton design pattern
 	 */
-	private BankErrorHandler() {
+	private CardErrorHandler() {
 	}
 
 	/**
@@ -58,7 +60,6 @@ public class BankErrorHandler implements ErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#showErrorsOnScreen(com.discover
 	 * .mobile.error.ErrorHandlerUi, java.lang.String)
 	 */
-	@Override
 	public void showErrorsOnScreen(final ErrorHandlerUi errorHandlerUi, final String errorText) {
 		// Show error label and display error text
 		if (errorHandlerUi != null) {
@@ -85,7 +86,7 @@ public class BankErrorHandler implements ErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#clearTextOnScreen(com.discover
 	 * .mobile.error.ErrorHandlerUi)
 	 */
-	@Override
+	
 	public void clearTextOnScreen(final ErrorHandlerUi errorHandlerUi) {
 		// Hide error label and display error text
 		if (errorHandlerUi != null) {
@@ -125,23 +126,18 @@ public class BankErrorHandler implements ErrorHandler {
 	 * @see com.discover.mobile.error.ErrorHandler#createErrorModal(int, int,
 	 * int)
 	 */
-	@Override
+	
 	public ModalAlertWithOneButton createErrorModal(final int errorCode, final int titleText, final int errorText) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
 		// Keep track of times an error page is shown for login
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 
-		// Decide on what help number to show
-		int helpResId = 0;
-		if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT) {
-			helpResId = R.string.need_help_number_text;
-		} else {
-			helpResId = com.discover.mobile.bank.R.string.bank_need_help_number_text;
-		}
+
+		
 
 		// Create a one button modal with text as per parameters provided
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, errorText, true, helpResId,
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, errorText, true, R.string.need_help_number_text,
 				R.string.ok);
 
 		// If not logged in then exit the application
@@ -164,7 +160,7 @@ public class BankErrorHandler implements ErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#createErrorModal(java.lang.String,
 	 * java.lang.String)
 	 */
-	@Override
+	
 	public ModalAlertWithOneButton createErrorModal(final String titleText, final String errorText) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
@@ -172,19 +168,15 @@ public class BankErrorHandler implements ErrorHandler {
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 
 		// Decide on what help number to show
-		int helpResId = 0;
-		if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT) {
-			helpResId = R.string.need_help_number_text;
-		} else {
-			helpResId = com.discover.mobile.bank.R.string.bank_need_help_number_text;
-		}
+		int helpResId =  R.string.need_help_number_text;
+	
 
 		// Create a one button modal with text as per parameters provided
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, errorText, true, helpResId,
 				R.string.ok);
 
 		modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
-			@Override
+			
 			public void onClick(final View v) {
 				modal.dismiss();
 
@@ -202,11 +194,11 @@ public class BankErrorHandler implements ErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#handleHttpInternalServerErrorModal
 	 * ()
 	 */
-	@Override
+	
 	public ModalAlertWithOneButton handleHttpInternalServerErrorModal() {
 
 		final ModalAlertWithOneButton modal = createErrorModal(HttpURLConnection.HTTP_INTERNAL_ERROR, R.string.error_500_title,
-				com.discover.mobile.bank.R.string.bank_error_500_message);
+				R.string.error_500);
 		showCustomAlert(modal);
 		return modal;
 
@@ -219,7 +211,7 @@ public class BankErrorHandler implements ErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#handleHttpFraudNotFoundUserErrorModal
 	 * (com.discover.mobile.error.ErrorHandlerUi, java.lang.String)
 	 */
-	@Override
+	
 	public ModalAlertWithOneButton handleHttpFraudNotFoundUserErrorModal(final ErrorHandlerUi mErrorHandlerUi,
 			final String message) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
@@ -237,7 +229,7 @@ public class BankErrorHandler implements ErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#handleHttpServiceUnavailableModal
 	 * (java.lang.String)
 	 */
-	@Override
+	
 	public ModalAlertWithOneButton handleHttpServiceUnavailableModal(final String errorText) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
@@ -250,7 +242,7 @@ public class BankErrorHandler implements ErrorHandler {
 		// received
 		if (null == errorText) {
 			modal = createErrorModal(HttpURLConnection.HTTP_UNAVAILABLE, R.string.error_503_title,
-					com.discover.mobile.bank.R.string.bank_error_503_message);
+					R.string.error_503);
 
 		} else {
 			modal = createErrorModal(title, errorText);
@@ -275,7 +267,7 @@ public class BankErrorHandler implements ErrorHandler {
 	 * 
 	 * @see com.discover.mobile.error.ErrorHandler#handleHttpForbiddenError()
 	 */
-	@Override
+	
 	public void handleHttpForbiddenError() {
 		// TODO: Will complete this in the Handle Technical Difficulties User
 		// Story
@@ -286,7 +278,7 @@ public class BankErrorHandler implements ErrorHandler {
 	 * 
 	 * @see com.discover.mobile.error.ErrorHandler#handleGenericError(int)
 	 */
-	@Override
+	
 	public void handleGenericError(final int httpErrorCode) {
 		final ModalAlertWithOneButton modal = createErrorModal(httpErrorCode, R.string.error_request_not_completed_title,
 				R.string.error_request_not_completed_msg);
@@ -299,12 +291,12 @@ public class BankErrorHandler implements ErrorHandler {
 	 * 
 	 * @see com.discover.mobile.error.ErrorHandler#handleHttpUnauthorizedError()
 	 */
-	@Override
+	
 	public void handleHttpUnauthorizedError() {
 
 	}
 
-
+	
 
 	/*
 	 * (non-Javadoc)
@@ -313,7 +305,7 @@ public class BankErrorHandler implements ErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#handleLoginAuthFailure(com.discover
 	 * .mobile.error.ErrorHandlerUi, java.lang.String)
 	 */
-	@Override
+	
 	public void handleLoginAuthFailure(final ErrorHandlerUi errorHandlerUi, final String errorMessage) {
 		showErrorsOnScreen(errorHandlerUi, errorMessage);
 	}
@@ -325,7 +317,7 @@ public class BankErrorHandler implements ErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#handleLockedOut(com.discover.mobile
 	 * .error.ErrorHandlerUi, java.lang.String)
 	 */
-	@Override
+	
 	public ModalAlertWithOneButton handleLockedOut(final ErrorHandlerUi errorHandlerUi, final String errorText) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
@@ -338,7 +330,7 @@ public class BankErrorHandler implements ErrorHandler {
 		// called during login attempt
 		if (null == errorText) {
 			modal = createErrorModal(HttpURLConnection.HTTP_UNAVAILABLE, R.string.error_403_title,
-					com.discover.mobile.bank.R.string.bank_error_403_message);
+					R.string.error_403);
 		} else {
 			modal = createErrorModal(title, errorText);
 		}
@@ -360,11 +352,12 @@ public class BankErrorHandler implements ErrorHandler {
 	 * 
 	 * @see com.discover.mobile.error.ErrorHandler#handleSessionExpired()
 	 */
-	@Override
+	
 	public void handleSessionExpired() {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
-
-		BankNavigator.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED);
+		final Bundle bundle = new Bundle();
+		bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
+		DelegateFactory.getLoginDelegate().navToLoginWithMessage(activeActivity, bundle);
 	}
 
 }

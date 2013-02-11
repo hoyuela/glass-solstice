@@ -7,7 +7,6 @@ import roboguice.activity.RoboActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
@@ -24,7 +23,7 @@ import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
  * @author ekaram
  *
  */
-public class BaseActivity extends RoboActivity implements ErrorHandlerUi, AlertDialogParent{
+public abstract class BaseActivity extends RoboActivity implements ErrorHandlerUi, AlertDialogParent{
 	
 	private static final String TAG = BaseActivity.class.getSimpleName();
 	/**
@@ -77,33 +76,6 @@ public class BaseActivity extends RoboActivity implements ErrorHandlerUi, AlertD
     }
     
     
-    /**
-	 * A common method used to forward user to error modal dialog with a given static
-	 * string text message
-	 * 
-	 * @param errorCode HTTP error code
-	 * @param errorText Text that is displayed in the content area of dialog
-	 * @param titleText Text that is displayed at the top of the screen which describes the reason of the error
-	 */
-	public void sendToErrorPage(final int errorCode, final int titleText, final int errorText) {
-		//Create a modal dialog based on title, error text, and errorCode provided
-		//FIXME
-		//showCustomAlert(BankErrorHandler.getInstance().createErrorModal(errorCode, titleText, errorText));
-	}
-
-//	FIXME: DETERMINE IF IN USE
-	/**
-//	 * A common method used to forward user to error page with a given static
-//	 * string text message
-//	 * 
-//	 * @param errorText
-//	 */
-//	public void sendToErrorPage(final int errorText) {
-//		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
-//		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
-//		startActivity(maintenancePageIntent);
-//	}
-
 	/* 
 	 * Child classes should override this to implement error handling behavior
 	 * (non-Javadoc)
@@ -157,8 +129,7 @@ public class BaseActivity extends RoboActivity implements ErrorHandlerUi, AlertD
 		Globals.loadPreferences(this);
 		
 		//Set this activity as the active activity
-		//FIXME
-		//BankActivityManager.setActiveActivity(this);
+		DiscoverActivityManager.setActiveActivity(this);
 	}
 	
 	/**
@@ -175,12 +146,11 @@ public class BaseActivity extends RoboActivity implements ErrorHandlerUi, AlertD
 	}
 	
 
-	@Override
-	public ErrorHandler getErrorHandler() {
-		return null;
-		//FIXME
-		//return BankErrorHandler.getInstance();
-	}
+	/**
+	 * To be implemented by the child class
+	 */
+	public abstract ErrorHandler getErrorHandler();
+	
 
 	/**
 	 * @return Return a reference to the current dialog being displayed over this activity.

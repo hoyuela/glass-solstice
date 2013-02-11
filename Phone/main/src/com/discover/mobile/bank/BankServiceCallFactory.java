@@ -3,6 +3,7 @@ package com.discover.mobile.bank;
 import android.app.Activity;
 
 import com.discover.mobile.bank.login.LoginActivity;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.auth.bank.BankLoginData;
 import com.discover.mobile.common.auth.bank.BankLoginDetails;
 import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
@@ -44,13 +45,13 @@ public class BankServiceCallFactory {
 	 * @return Returns the constructed CustomerServiceCall
 	 */
 	public static CustomerServiceCall createCustomerDownloadCall() {
-		final Activity activity = BankActivityManager.getActiveActivity();
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**
 		 * Create an AsyncCallback using the default builder created for Bank related web-service HTTP requests
 		 */
 		final AsyncCallback<Customer> callback =
-				DelegateFactory.getAsyncCallbackDelegate().createDefaultCallbackBuilder(Customer.class, activity, (ErrorHandlerUi) activity)
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Customer.class, activity, (ErrorHandlerUi) activity)
 				.build();
 
 		return  new CustomerServiceCall(activity, callback);
@@ -66,11 +67,11 @@ public class BankServiceCallFactory {
 	 * 			the Bank Service
 	 */
 	public static CreateBankLoginCall createLoginCall(final BankLoginDetails credentials ) {
-		final LoginActivity activity = (LoginActivity) BankActivityManager.getActiveActivity();
+		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
 
 		//Build the handler for the response to the Bank authentication request
 		final AsyncCallback<BankLoginData> callback =
-				DelegateFactory.getAsyncCallbackDelegate().createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
 				.build();
 
 		//Create the NetworkServieCall<> for authenticating with the Bank Authentication Server
@@ -79,27 +80,7 @@ public class BankServiceCallFactory {
 		return loginCall;
 	}
 
-	/**
-	 * Used to construct a CreateStrongAuthRequestCall NetworkServiceCall for invoking the Bank - Authentication
-	 * Service API found at ./api/auth/strongauth. The CreateStrongAuthRequestCall created by this method is used
-	 * to download a question and its id. The callee will only have to call submit on the constructed object to trigger the
-	 * HTTP request.
-	 * 
-	 * @return Reference to the created CreateStrongAuthRequestCall.
-	 */
-	public static CreateStrongAuthRequestCall createStrongAuthRequest() {
-		final Activity activity = BankActivityManager.getActiveActivity();
-
-		/**
-		 * Create an AsyncCallback using the default builder created for Bank related web-service HTTP requests
-		 */
-		final AsyncCallback<BankStrongAuthDetails>  callback =
-				DelegateFactory.getAsyncCallbackDelegate().createDefaultCallbackBuilder(BankStrongAuthDetails.class,
-						activity, (ErrorHandlerUi) activity)
-						.build();
-
-		return new CreateStrongAuthRequestCall(activity, callback);
-	}
+	
 
 	/**
 	 * Used to construct a CreateStrongAuthRequestCall NetworkServiceCall for invoking the Bank - Authentication
@@ -111,13 +92,13 @@ public class BankServiceCallFactory {
 	 * @return Reference to the created CreateStrongAuthRequestCall.
 	 */
 	public static CreateStrongAuthRequestCall createStrongAuthRequest(final BankStrongAuthAnswerDetails details) {
-		final Activity activity = BankActivityManager.getActiveActivity();
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**
 		 * Create an AsyncCallback using the default builder created for Bank related web-service HTTP requests
 		 */
 		final AsyncCallback<BankStrongAuthDetails>  callback =
-				DelegateFactory.getAsyncCallbackDelegate().createDefaultCallbackBuilder(BankStrongAuthDetails.class,
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankStrongAuthDetails.class,
 						activity, (ErrorHandlerUi) activity)
 						.build();
 
@@ -129,10 +110,10 @@ public class BankServiceCallFactory {
 	 * @return the service call to get the payees for a user
 	 */
 	public static GetPayeeServiceCall createGetPayeeServiceRequest(){
-		final Activity activity = BankActivityManager.getActiveActivity();
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<ListPayeeDetail>  callback =
-				DelegateFactory.getAsyncCallbackDelegate().createDefaultCallbackBuilder(ListPayeeDetail.class,
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(ListPayeeDetail.class,
 						activity, (ErrorHandlerUi) activity)
 						.build();
 
@@ -145,10 +126,10 @@ public class BankServiceCallFactory {
 	 * @return the service call to get the account activity
 	 */
 	public static GetActivityServerCall createGetActivityServerCall(final String url){
-		final Activity activity = BankActivityManager.getActiveActivity();
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<ListActivityDetail>  callback =
-				DelegateFactory.getAsyncCallbackDelegate().createDefaultCallbackBuilder(ListActivityDetail.class,
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(ListActivityDetail.class,
 						activity, (ErrorHandlerUi) activity)
 						.build();
 
@@ -162,10 +143,10 @@ public class BankServiceCallFactory {
 	 * @return Reference to the GetCustomerAccountsServerCall object created.
 	 */
 	public static GetCustomerAccountsServerCall createGetCustomerAccountsServerCall() {
-		final Activity activity = BankActivityManager.getActiveActivity();
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<AccountList>  callback =
-				DelegateFactory.getAsyncCallbackDelegate().createDefaultCallbackBuilder(AccountList.class,
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(AccountList.class,
 						activity, (ErrorHandlerUi) activity)
 						.build();
 
@@ -178,10 +159,10 @@ public class BankServiceCallFactory {
 	 * @return
 	 */
 	public static DeletePaymentServiceCall createDeletePaymentServiceCall(final PaymentDetail pmt) {
-		final Activity activity = BankActivityManager.getActiveActivity();
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<PaymentDetail>  callback =
-				DelegateFactory.getAsyncCallbackDelegate().createDefaultCallbackBuilder(PaymentDetail.class,
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PaymentDetail.class,
 						activity, (ErrorHandlerUi) activity)
 						.build();
 

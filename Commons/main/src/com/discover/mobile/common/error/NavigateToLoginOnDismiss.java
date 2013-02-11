@@ -1,17 +1,15 @@
 /**
  * Copyright Solstice-Mobile 2013
  */
-package com.discover.mobile.bank.error;
+package com.discover.mobile.common.error;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.delegates.DelegateFactory;
 
 /**
  * DismissListener which can be applied to an alert dialog to navigate back
@@ -34,21 +32,8 @@ public class NavigateToLoginOnDismiss implements OnDismissListener {
 
 	@Override
 	public void onDismiss(final DialogInterface dialog) {
-		// Send an intent to open login activity if current activity is not
-		// login
-		if (this.activity.getClass() != LoginActivity.class) {
-			final Intent intent = new Intent(activity, LoginActivity.class);
-			final Bundle bundle = new Bundle();
-			bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
-			intent.putExtras(bundle);
-			activity.startActivity(intent);
-
-			// Close current activity
-			activity.finish();
-		} else {
-			if (Log.isLoggable(TAG, Log.DEBUG)) {
-				Log.d(TAG, "Application is already in login view");
-			}
-		}
+		final Bundle bundle = new Bundle();
+		bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+		DelegateFactory.getLoginDelegate().navToLoginWithMessage(activity, bundle);
 	}
 }

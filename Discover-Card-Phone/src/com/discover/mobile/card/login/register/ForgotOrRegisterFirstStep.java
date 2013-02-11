@@ -554,18 +554,6 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		finish();		
 	}
 
-	//FIXME: refactor if used
-//	/**
-//	 * If something has gone wrong and the user is not allowed to proceed, this will send them to an error screen.
-//	 * It also finishes the current activity so that upon a back button press, they will not come back here.
-//	 * @param screenType the type of error to present to the user.
-//	 */
-//	protected void sendToErrorPage(final ScreenType screenType) {
-//		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
-//		screenType.addExtraToIntent(maintenancePageIntent);
-//		startActivity(maintenancePageIntent);
-//		finish();
-//	}
 
 	/**
 	 * Animate scrolling the screen to the top. Used when something has gone wrong. Bad input etc.
@@ -677,7 +665,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 				strongAuthQuestion = value.questionText;
 				strongAuthQuestionId = value.questionId;
 
-				DelegateFactory.getStrongAuthDelegate().navigateToStrongAuth(ForgotOrRegisterFirstStep.this,strongAuthQuestion,strongAuthQuestionId);
+				DelegateFactory.getStrongAuthDelegate().navToCardStrongAuth(ForgotOrRegisterFirstStep.this,strongAuthQuestion,strongAuthQuestionId);
 
 			}
 

@@ -32,8 +32,6 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
@@ -48,7 +46,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  * @author jthornton
  *
  */
-public class BaseFragmentActivity extends SlidingFragmentActivity implements RoboContext, ErrorHandlerUi, AlertDialogParent{
+public abstract class BaseFragmentActivity extends SlidingFragmentActivity implements RoboContext, ErrorHandlerUi, AlertDialogParent{
 	/**
 	 * Contains the last error that occurred with the activity.
 	 * An object that holds a reference to an instance of BaseActivity can set its value by using setLastError.
@@ -105,8 +103,7 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 		this.eventManager.fire(new OnResumeEvent());
 
 		//Set this activity as the active activity
-		//FIXME
-		//BankActivityManager.setActiveActivity(this);
+		DiscoverActivityManager.setActiveActivity(this);
 	}
 
 	@Override
@@ -290,33 +287,6 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
 	}
 
-//FIXME - determine if used
-//	/**
-//	 * A common method used to forward user to error modal dialog with a given static
-//	 * string text message
-//	 * 
-//	 * @param errorCode HTTP error code
-//	 * @param errorText Text that is displayed in the content area of dialog
-//	 * @param titleText Text that is displayed at the top of the screen which describes the reason of the error
-//	 */
-//	public void sendToErrorPage(final int errorCode, final int titleText, final int errorText) {
-//		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
-//		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
-//		startActivity(maintenancePageIntent);
-//		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
-//	}
-//
-//	/**
-//	 * A common method used to forward user to error page with a given static
-//	 * string text message
-//	 * 
-//	 * @param errorText
-//	 */
-//	public void sendToErrorPage(final int errorText) {
-//		final Intent maintenancePageIntent = new Intent(this, LockOutUserActivity.class);
-//		maintenancePageIntent.putExtra(IntentExtraKey.ERROR_TEXT_KEY, errorText);
-//		startActivity(maintenancePageIntent);
-//	}
 
 	/*
 	 * Child classes should override this to implement error handling behavior
@@ -362,12 +332,10 @@ public class BaseFragmentActivity extends SlidingFragmentActivity implements Rob
 		return this.mLastError;
 	}
 
-	@Override
-	public ErrorHandler getErrorHandler() {
-		//FIXME
-		//return BankErrorHandler.getInstance();
-		return null;
-	}
+	/**
+	 * Child class to provide proper error handler
+	 */
+	public abstract ErrorHandler getErrorHandler() ;
 
 	/**
 	 * @return Return a reference to the current dialog being displayed over this activity.
