@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
@@ -31,24 +33,37 @@ public class BankSchedulePaymentLandingPage extends BaseFragment{
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 
-		final View view;
+		final View view = inflater.inflate(R.layout.payee_no_eligible, null);
 
-		final boolean isEligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
-		final boolean isEnrolled = BankUser.instance().getCustomerInfo().getPaymentsEnrolled();
 
 		/**
 		 * This will eventually be moved out of this class.  This class will also need to become a fragment based
 		 * on the new menu design.
 		 */
+		final boolean isEligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
+		final boolean isEnrolled = BankUser.instance().getCustomerInfo().getPaymentsEnrolled();
+
 		if(!isEligible){
-			view = new BankPayeeNotEligibleLayout(getActivity(), null);
+			BankNavigator.navigateToPayBillsLanding();
 		} else if(isEligible && !isEnrolled){
-			view = new BankPayTerms(getActivity(), null);
+			BankNavigator.navigateToPayBillsTerms(null);
 		} else{
-			view = new BankSelectPayee(getActivity(), null);
+			getPayees();
 		}
 
+		/**
+		 * End removal stuff
+		 */
+
 		return view;
+	}
+
+
+	/**
+	 * Starts the service call to get all the payees for the customer
+	 */
+	public void getPayees(){
+		BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 	}
 
 	/**

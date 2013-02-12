@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.discover.mobile.bank.login.LoginActivity;
@@ -191,19 +192,21 @@ ErrorResponseHandler, ExceptionFailureHandler {
 		else if( sender instanceof CreateStrongAuthRequestCall && this.prevCall != null && sender.isGetCall()) {
 			final BankStrongAuthDetails value = (BankStrongAuthDetails)result;
 			if( !BankStrongAuthDetails.ALLOW_STATUS.equals(value.status ) ) {
- 				BankNavigator.navigateToStrongAuth(activeActivity, value, null);
- 			} else {
- 				//Retransmit the previous NetworkServiceCall<> 
- 				prevCall.retransmit(activeActivity);
- 			}
-		} 
+				BankNavigator.navigateToStrongAuth(activeActivity, value, null);
+			} else {
+				//Retransmit the previous NetworkServiceCall<>
+				this.prevCall.retransmit(activeActivity);
+			}
+		}
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
 		else if( sender instanceof CreateStrongAuthRequestCall && this.prevCall != null && sender.isPostCall() ) {
 			this.prevCall.retransmit(activeActivity);
 		}
 		//Handle the payee success call
 		else if( sender instanceof GetPayeeServiceCall){
-			//TODO: Handle this appropriately
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
+			BankNavigator.naviagteToSelectPayee(bundle);
 		}
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {

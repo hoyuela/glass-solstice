@@ -9,11 +9,13 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
 
 /**
- * Temp class stubbing out terms and conditions for payments
+ * ScrollView that will hold the not eligible for payments view.
+ * This just holds static context.
+ * 
  * @author jthornton
  *
  */
-public class BankPayTerms extends BaseFragment{
+public class BankPayeeNotEligibleFragment extends BaseFragment{
 
 	/**
 	 * Create the view
@@ -22,11 +24,8 @@ public class BankPayTerms extends BaseFragment{
 	 * @param savedInstanceState - state of the fragment
 	 */
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-			final Bundle savedInstanceState) {
-
-
-		return inflater.inflate(R.layout.payment_terms_and_conditions, null);
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
+		return inflater.inflate(R.layout.payee_no_eligible, null);
 	}
 
 	/**

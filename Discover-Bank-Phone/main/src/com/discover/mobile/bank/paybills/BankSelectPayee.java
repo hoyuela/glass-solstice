@@ -1,16 +1,19 @@
 package com.discover.mobile.bank.paybills;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ScrollView;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
-import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
+import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.BaseFragmentActivity;
 
 /**
  * Fragment that will be used in the first step of the pay bill process.
@@ -25,34 +28,61 @@ import com.discover.mobile.bank.services.payee.PayeeDetail;
  * @author jthornton
  *
  */
-public class BankSelectPayee extends ScrollView{
+public class BankSelectPayee extends BaseFragment{
 
-	/**Activity context*/
-	private final Context context;
+	/**List of payees*/
+	private ListPayeeDetail payees;
+
+	/**Layout holding the payees*/
+	private LinearLayout payeesList;
+
+	/**Activity showing fragment*/
+	private BaseFragmentActivity activity;
 
 	/**
-	 * Constructor for the view
-	 * @param context - activity context
-	 * @param attrs - attributes to set to the view
+	 * Create the view
+	 * @param inflater - inflater to inflate the layout
+	 * @param container - container holding the group
+	 * @param savedInstanceState - state of the fragment
 	 */
-	public BankSelectPayee(final Context context, final AttributeSet attrs) {
-		super(context, attrs);
-		this.context = context;
+	@Override
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+			final Bundle savedInstanceState) {
 
-		/**
-		 * This will will have data passed to it from the bundle.
-		 * This way no service call will be owned by this class.
-		 */
+		final View view = inflater.inflate(R.layout.select_payee, null);
 
+		this.payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
+		this.activity = (BaseFragmentActivity)this.getActivity();
 
-		addView(LayoutInflater.from(context).inflate(R.layout.select_payee, null));
+		if(null == savedInstanceState){
+			loadListFromBundle(this.getArguments());
+		} else{
+			loadListFromBundle(savedInstanceState);
+		}
+
+		return view;
 	}
 
 	/**
-	 * Starts the service call to get all the payees for the customer
+	 * Save the state of the current fragment
+	 * @param outState - bundle to save the state in.
 	 */
-	public void getPayees(){
-		BankServiceCallFactory.createGetPayeeServiceRequest().submit();
+	@Override
+	public void onSaveInstanceState(final Bundle outState){
+		outState.putSerializable(BankExtraKeys.PAYEES_LIST, this.payees);
+	}
+
+	/**
+	 * Extract the data from the bundles and then display it.
+	 * @param bundle - bundle containing the data to be displayed.
+	 */
+	public void loadListFromBundle(final Bundle bundle){
+		this.payees = (ListPayeeDetail)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
+		if(null == this.payees){return;}
+		this.payeesList.removeAllViews();
+		for(final PayeeDetail payee : this.payees.payees){
+			this.payeesList.addView(createListItem(payee));
+		}
 	}
 
 	/**
@@ -61,7 +91,7 @@ public class BankSelectPayee extends ScrollView{
 	 * @return the single choose list item
 	 */
 	private SimpleChooseListItem createListItem(final PayeeDetail detail){
-		final SimpleChooseListItem item =  new SimpleChooseListItem(this.context, null, detail, detail.name);
+		final SimpleChooseListItem item =  new SimpleChooseListItem(this.getActivity(), null, detail, detail.name);
 		item.setOnClickListener(getOnClickListener(detail));
 		return item;
 	}
@@ -71,19 +101,22 @@ public class BankSelectPayee extends ScrollView{
 	 * @param detail - detail that needs to be passed
 	 * @return the click listener for when a list item it clicked
 	 */
-	private OnClickListener getOnClickListener(final PayeeDetail detail) {
+	private OnClickListener getOnClickListener(final PayeeDetail details) {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
 				final Bundle bundle = new Bundle();
-				bundle.putSerializable("Hey", detail);
-				BankNavigator.navigateToPayBillStepTwo(bundle);
+				bundle.putSerializable(BankExtraKeys.SELECTED_PAYEE, details);
+				BankNavigator.navigateToPayBillStepTwo(BankSelectPayee.this.activity, bundle);
 			}
 		};
 	}
 
-	//	@Override
-	//	public int getActionBarTitle() {
-	//		return R.string.pay_a_bill_title;
-	//	}
+	/**
+	 * Set the title in the action bar.
+	 */
+	@Override
+	public int getActionBarTitle() {
+		return R.string.pay_a_bill_title;
+	}
 }

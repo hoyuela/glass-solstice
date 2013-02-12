@@ -8,12 +8,7 @@ import android.view.ViewGroup;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
 
-/**
- * Temp class stubbing out terms and conditions for payments
- * @author jthornton
- *
- */
-public class BankPayTerms extends BaseFragment{
+public class SchedulePaymentFragment extends BaseFragment{
 
 	/**
 	 * Create the view
@@ -25,8 +20,9 @@ public class BankPayTerms extends BaseFragment{
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 
+		final View view = inflater.inflate(R.layout.schedule_payment, null);
 
-		return inflater.inflate(R.layout.payment_terms_and_conditions, null);
+		return view;
 	}
 
 	/**
@@ -36,4 +32,5 @@ public class BankPayTerms extends BaseFragment{
 	public int getActionBarTitle() {
 		return R.string.pay_a_bill_title;
 	}
+
 }
