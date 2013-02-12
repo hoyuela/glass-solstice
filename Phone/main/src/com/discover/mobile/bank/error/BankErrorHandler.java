@@ -18,7 +18,6 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.error.CloseApplicationOnDismiss;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;

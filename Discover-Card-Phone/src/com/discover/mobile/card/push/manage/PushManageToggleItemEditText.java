@@ -17,10 +17,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
-import com.discover.mobile.common.push.manage.PostPrefDetail;
-import com.discover.mobile.common.push.manage.PostPrefParam;
-import com.discover.mobile.common.push.manage.PostPreferencesDetail;
-import com.discover.mobile.common.push.manage.PreferencesDetail;
+import com.discover.mobile.card.services.push.manage.PostPrefDetail;
+import com.discover.mobile.card.services.push.manage.PostPrefParam;
+import com.discover.mobile.card.services.push.manage.PostPreferencesDetail;
+import com.discover.mobile.card.services.push.manage.PreferencesDetail;
 import com.discover.mobile.common.ui.widgets.PushManageEditText;
 import com.google.common.base.Strings;
 

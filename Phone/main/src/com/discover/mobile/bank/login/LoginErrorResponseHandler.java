@@ -7,13 +7,13 @@ import static com.discover.mobile.common.StandardErrorCodes.AUTH_BAD_ACCOUNT_STA
 import static com.discover.mobile.common.StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.error.ErrorHandlerUi;
+import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 
 /**
@@ -80,7 +80,7 @@ public class LoginErrorResponseHandler extends CardBaseErrorResponseHandler {
 				sendToErrorPage(R.string.secure_login,R.string.max_attempts_exceeded_text);
 				return true;
 				
-			case LOCKED_OUT_ACCOUNT:
+			case RegistrationErrorCodes.LOCKED_OUT_ACCOUNT:
 				TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_LOCKED);
 				sendToErrorPage(R.string.locked_account);
 				return true;

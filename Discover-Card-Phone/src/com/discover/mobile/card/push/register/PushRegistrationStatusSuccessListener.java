@@ -1,10 +1,10 @@
 package com.discover.mobile.card.push.register;
 
-import com.discover.mobile.common.CurrentSessionDetails;
+import com.discover.mobile.card.CardSessionContext;
+import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail;
+import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail.VidStatus;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
-import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail.VidStatus;
 
 /**
  * This is the success listener for when the app tries to get information from Discover's server
@@ -37,11 +37,11 @@ public class PushRegistrationStatusSuccessListener implements SuccessListener<Pu
 	@Override
 	public void success(final NetworkServiceCall<?> sender, final PushRegistrationStatusDetail value) {
 		if(value.vidStatus == VidStatus.MISSING){
-			CurrentSessionDetails.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(false);
+			CardSessionContext.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(false);
 		}else if(value.vidStatus == VidStatus.NOT_ASSOCIATED){
-			CurrentSessionDetails.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(true);
+			CardSessionContext.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(true);
 		}else if(value.vidStatus == VidStatus.ASSOCIATED){
-			CurrentSessionDetails.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(true);
+			CardSessionContext.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(true);
 		}
 	}
 }

@@ -7,14 +7,14 @@ import android.telephony.TelephonyManager;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.push.manage.PushManageFragment;
+import com.discover.mobile.card.services.push.registration.DeviceRegistrationDetail;
+import com.discover.mobile.card.services.push.registration.RegisterVenderIdCall;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
-import com.discover.mobile.common.push.registration.DeviceRegistrationDetail;
-import com.discover.mobile.common.push.registration.RegisterVenderIdCall;
 import com.xtify.sdk.api.XtifySDK;
 
 /**

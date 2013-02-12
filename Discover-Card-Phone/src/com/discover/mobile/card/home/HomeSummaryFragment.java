@@ -11,11 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.CommonMethods;
-import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.AccountDetails;
 
@@ -56,7 +56,7 @@ public class HomeSummaryFragment extends BaseFragment {
 	 */
 	private void setupHomeElements() {
 
-		final AccountDetails accountDetails = CurrentSessionDetails
+		final AccountDetails accountDetails = CardSessionContext
 				.getCurrentSessionDetails().getAccountDetails();
 
 		setupCurrentBalanceElement(accountDetails);

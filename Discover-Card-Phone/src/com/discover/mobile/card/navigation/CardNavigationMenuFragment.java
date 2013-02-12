@@ -6,7 +6,7 @@ import com.discover.mobile.card.account.AccountSectionInfo;
 import com.discover.mobile.card.home.HomeSectionInfo;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.profile.ProfileAndSettingsSectionInfo;
-import com.discover.mobile.common.delegates.DelegateFactory;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.NavigationItem;
 import com.discover.mobile.common.nav.NavigationMenuFragment;
 import com.discover.mobile.common.nav.section.ComponentInfo;
@@ -30,7 +30,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 			.add(new HomeSectionInfo())
 			.add(new AccountSectionInfo())
 			.add(new ProfileAndSettingsSectionInfo())
-			.add(DelegateFactory.getCustomerServiceDelegate().getCustomerServiceSection())
+			.add(FacadeFactory.getCustomerServiceFacade().getCustomerServiceSection())
 			.build();
 	
 	

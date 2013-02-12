@@ -9,12 +9,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.discover.mobile.card.CardSessionContext;
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.services.account.recent.RecentActivityPeriodDetail;
+import com.discover.mobile.card.services.account.recent.RecentActivityPeriodsDetail;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.CurrentSessionDetails;
-import com.discover.mobile.common.account.recent.RecentActivityPeriodDetail;
-import com.discover.mobile.common.account.recent.RecentActivityPeriodsDetail;
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.R;
 /**
  * Fragment that allows the user to select a list of dates that can be selected as sort
  * criteria for the account activity fragment.
@@ -79,7 +78,7 @@ public class ChooseDateRangeFragment extends BaseFragment{
 		if(null != manager && null != outState && null != fragment){
 			manager.putFragment(outState, FRAGMENT, fragment);
 			super.onSaveInstanceState(outState);
-			CurrentSessionDetails.getCurrentSessionDetails().setPeriods(periods);
+			CardSessionContext.getCurrentSessionDetails().setPeriods(periods);
 		}
 	}
 	
@@ -92,7 +91,7 @@ public class ChooseDateRangeFragment extends BaseFragment{
 		final FragmentManager manager = this.getFragmentManager();
 		if(null != manager){
 			this.fragment = (AccountRecentActivityFragment)manager.getFragment(savedInstanceState, FRAGMENT);
-			this.periods = CurrentSessionDetails.getCurrentSessionDetails().getPeriods();
+			this.periods = CardSessionContext.getCurrentSessionDetails().getPeriods();
 		}
 	}
 	

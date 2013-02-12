@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.discover.mobile.common.delegates.DelegateFactory;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
@@ -107,7 +107,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		/** Used on pause to know when to set Globals isLoggedIn to false **/
 		pendingLogout = true;
 		
-		DelegateFactory.getLogoutDelegate().logout(this,this);
+		FacadeFactory.getLogoutFacade().logout(this,this);
 
 	}
 

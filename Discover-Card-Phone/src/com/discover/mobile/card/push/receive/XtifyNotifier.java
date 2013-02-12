@@ -7,7 +7,7 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import com.discover.mobile.card.R;
-import com.discover.mobile.common.delegates.DelegateFactory;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.xtify.sdk.NotificationsUtility;
 import com.xtify.sdk.api.NotificationsPreference;
 import com.xtify.sdk.api.XtifyBroadcastReceiver;
@@ -88,7 +88,7 @@ public class XtifyNotifier extends XtifyBroadcastReceiver{
 				if (pageCode != null) {
 					extras.putString(PAGE_CODE, pageCode);
 					final int flags = Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS;
-					NotificationsUtility.showNotification(context, extras, flags , DelegateFactory.getLoginDelegate().getLoginActivityClass());
+					NotificationsUtility.showNotification(context, extras, flags , FacadeFactory.getLoginFacade().getLoginActivityClass());
 				}
 			}
 		} finally {

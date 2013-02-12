@@ -9,7 +9,7 @@ import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.delegates.DelegateFactory;
+import com.discover.mobile.common.facade.FacadeFactory;
 
 /**
  * DismissListener which can be applied to an alert dialog to navigate back
@@ -34,6 +34,6 @@ public class NavigateToLoginOnDismiss implements OnDismissListener {
 	public void onDismiss(final DialogInterface dialog) {
 		final Bundle bundle = new Bundle();
 		bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
-		DelegateFactory.getLoginDelegate().navToLoginWithMessage(activity, bundle);
+		FacadeFactory.getLoginFacade().navToLoginWithMessage(activity, bundle);
 	}
 }

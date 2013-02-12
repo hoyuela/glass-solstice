@@ -5,7 +5,6 @@ import java.net.HttpURLConnection;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -18,13 +17,12 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
-import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.error.BaseErrorHandler;
 import com.discover.mobile.common.error.CloseApplicationOnDismiss;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.error.NavigateToLoginOnDismiss;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 
 /**
@@ -79,17 +77,17 @@ public class CardErrorHandler extends BaseErrorHandler {
 		}
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.discover.mobile.error.ErrorHandler#clearTextOnScreen(com.discover
-	 * .mobile.error.ErrorHandlerUi)
+	 * com.discover.mobile.error.ErrorHandler#clearTextOnScreen(com.discover.mobile.error.ErrorHandlerUi)
 	 */
-	
 	public void clearTextOnScreen(final ErrorHandlerUi errorHandlerUi) {
+		
 		// Hide error label and display error text
-		if (errorHandlerUi != null) {
+		if (errorHandlerUi != null && errorHandlerUi.getErrorLabel() != null) {
 			errorHandlerUi.getErrorLabel().setVisibility(View.GONE);
 		}
 
@@ -103,7 +101,9 @@ public class CardErrorHandler extends BaseErrorHandler {
 				text.setText("");
 				text.setBackgroundResource(R.drawable.edit_text_default);
 			}
+			
 		}
+		
 	}
 
 	/**
@@ -357,7 +357,7 @@ public class CardErrorHandler extends BaseErrorHandler {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 		final Bundle bundle = new Bundle();
 		bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
-		DelegateFactory.getLoginDelegate().navToLoginWithMessage(activeActivity, bundle);
+		FacadeFactory.getLoginFacade().navToLoginWithMessage(activeActivity, bundle);
 	}
 
 }

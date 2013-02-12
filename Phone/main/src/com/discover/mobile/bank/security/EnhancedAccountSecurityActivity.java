@@ -1,8 +1,5 @@
 package com.discover.mobile.bank.security;
 
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.INCORRECT_STRONG_AUTH_ANSWER;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.STRONG_AUTH_STATUS_INVALID;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +24,8 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandler;
+import com.discover.mobile.bank.services.auth.strong.BankStrongAuthAnswerDetails;
+import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.common.AccountType;
@@ -34,8 +33,6 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
-import com.discover.mobile.common.auth.bank.strong.BankStrongAuthAnswerDetails;
-import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthAnswerCall;
 import com.discover.mobile.common.auth.strong.StrongAuthAnswerDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthDetails;
@@ -44,6 +41,7 @@ import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.google.common.base.Strings;
@@ -486,11 +484,11 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 				progress.dismiss();
 				switch(value.getMessageStatusCode()){
 				
-					case STRONG_AUTH_STATUS_INVALID:
+					case RegistrationErrorCodes.STRONG_AUTH_STATUS_INVALID:
 						showErrorModal(R.string.account_security_text, R.string.account_security_locked_out, true);
 						return true;
 					
-					case INCORRECT_STRONG_AUTH_ANSWER:
+					case RegistrationErrorCodes.INCORRECT_STRONG_AUTH_ANSWER:
 						getStrongAuthQuestion();
 						serverErrorLabel.setText(R.string.account_security_answer_doesnt_match);
 						serverErrorLabel.setVisibility(View.VISIBLE);

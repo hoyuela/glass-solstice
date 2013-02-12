@@ -15,13 +15,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.services.push.history.NotificationDetail;
+import com.discover.mobile.card.services.push.history.PostNotificationRead;
+import com.discover.mobile.card.services.push.history.PostReadDetail;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
-import com.discover.mobile.common.push.history.NotificationDetail;
-import com.discover.mobile.common.push.history.PostNotificationRead;
-import com.discover.mobile.common.push.history.PostReadDetail;
 
 /**
  * Class used to hold information about one notification object

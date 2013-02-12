@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.common.bank.account.Account;
+import com.discover.mobile.bank.services.account.Account;
 import com.google.common.base.Strings;
 
 public class BankAccountView extends RelativeLayout {

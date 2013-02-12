@@ -31,6 +31,8 @@ import android.widget.Toast;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
+import com.discover.mobile.bank.services.auth.BankLoginDetails;
+import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
@@ -38,9 +40,11 @@ import com.discover.mobile.card.login.register.RegistrationAccountInformationAct
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.card.push.register.PushRegistrationStatusSuccessListener;
+import com.discover.mobile.card.services.push.PushNotificationService;
+import com.discover.mobile.card.services.push.registration.GetPushRegistrationStatus;
+import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
-import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.StandardErrorCodes;
@@ -51,8 +55,6 @@ import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
-import com.discover.mobile.common.auth.bank.BankLoginDetails;
-import com.discover.mobile.common.auth.registration.RegistrationErrorCodes;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
@@ -60,9 +62,7 @@ import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.push.PushNotificationService;
-import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
-import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
+import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
@@ -577,7 +577,7 @@ public class LoginActivity extends BaseActivity  {
 						// Update current account based on user logged
 						updateAccountInformation(AccountType.CARD_ACCOUNT);
 
-						CurrentSessionDetails.getCurrentSessionDetails()
+						CardSessionContext.getCurrentSessionDetails()
 								.setAccountDetails(value);
 
 						getXtifyRegistrationStatus();

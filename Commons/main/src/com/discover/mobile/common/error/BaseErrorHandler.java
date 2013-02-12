@@ -10,15 +10,14 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 
 import com.discover.mobile.common.R;
-import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 
 /**
- * FIXME - analyze this
+ * FIXME - analyze this class and fix 
  * @author ekaram
  *
  */
-public class BaseErrorHandler implements ErrorHandler {
+public abstract class BaseErrorHandler implements ErrorHandler {
 
 	static final String TAG = BaseErrorHandler.class.getSimpleName();
 
@@ -169,6 +168,7 @@ public class BaseErrorHandler implements ErrorHandler {
 
 	
 	public ModalAlertWithOneButton handleHttpServiceUnavailableModal(final String errorText) {
+		//FIXME
 //		final Activity activeActivity = BankActivityManager.getActiveActivity();
 //	
 //		// Fetch modal title from resources
@@ -209,6 +209,7 @@ public class BaseErrorHandler implements ErrorHandler {
 
 	
 	public void handleGenericError(final int httpErrorCode) {
+		//FIXME
 //		final ModalAlertWithOneButton modal = createErrorModal(httpErrorCode, R.string.error_request_not_completed_title,
 //				R.string.error_request_not_completed_msg);
 //	
@@ -221,19 +222,8 @@ public class BaseErrorHandler implements ErrorHandler {
 	}
 
 	
-	public void handleStrongAuthFailure(final ErrorHandlerUi errorHandlerUi, final String errorMessage, final BankStrongAuthDetails details) {
-//		final Activity activeActivity = BankActivityManager.getActiveActivity();
-//	
-//		BankNavigator.navigateToStrongAuth(activeActivity, details, errorMessage);
-	}
-
-	
-	public void handleLoginAuthFailure(final ErrorHandlerUi errorHandlerUi, final String errorMessage) {
-		showErrorsOnScreen(errorHandlerUi, errorMessage);
-	}
-
-	
 	public ModalAlertWithOneButton handleLockedOut(final ErrorHandlerUi errorHandlerUi, final String errorText) {
+//FIXME
 //		final Activity activeActivity = BankActivityManager.getActiveActivity();
 //	
 //		// Fetch modal title from resources
@@ -283,5 +273,8 @@ public class BaseErrorHandler implements ErrorHandler {
 //	
 //		BankNavigator.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED);
 	}
+
+	
+	public abstract void handleLoginAuthFailure(ErrorHandlerUi errorHandlerUi, String errorMessage);
 
 }

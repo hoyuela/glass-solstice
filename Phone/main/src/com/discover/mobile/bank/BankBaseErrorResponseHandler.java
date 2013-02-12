@@ -2,12 +2,15 @@ package com.discover.mobile.bank;
 
 import java.net.HttpURLConnection;
 
-import com.discover.mobile.common.auth.bank.BankSchema;
-import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
+import android.app.Activity;
+
+import com.discover.mobile.bank.services.auth.BankSchema;
+import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
-import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -96,7 +99,11 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			//Strong Auth Errors
 			else if( errCode.equals(BankErrorCodes.ERROR_INVALID_STRONG_AUTH) || errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH) ) {
 				final BankStrongAuthDetails details = new BankStrongAuthDetails(msgErrResponse);
-				DelegateFactory.getStrongAuthDelegate().handleBankStrongAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage(), details);
+				
+				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
+
+				BankNavigator.navigateToStrongAuth(activeActivity, details, msgErrResponse.getErrorMessage());
+				
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOCKED_STRONG_AUTH)) {
 				mErrorHandler.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			}
@@ -144,7 +151,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				//Check if strong auth challenge
 				else if( wwwAuthenticateValue.contains(BankSchema.BANKSA)) {
 					//Send request to Strong Auth web-service API
-					DelegateFactory.getStrongAuthDelegate().navToBankStrongAuth(mErrorHandlerUi.getContext());
+					FacadeFactory.getStrongAuthFacade().navToBankStrongAuth(mErrorHandlerUi.getContext());
 				}
 				//Check if not authorized to view page
 				else {

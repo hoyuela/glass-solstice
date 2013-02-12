@@ -8,10 +8,10 @@ import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.ONLINE_STATUS_PROHIBITED;
 import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
+import static com.discover.mobile.common.net.error.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
+import static com.discover.mobile.common.net.error.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
+import static com.discover.mobile.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+import static com.discover.mobile.common.net.error.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
 
 import java.net.HttpURLConnection;
 import java.util.Calendar;
@@ -29,19 +29,19 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
-import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthCheckCall;
 import com.discover.mobile.common.auth.strong.StrongAuthDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthErrorResponse;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -665,7 +665,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 				strongAuthQuestion = value.questionText;
 				strongAuthQuestionId = value.questionId;
 
-				DelegateFactory.getStrongAuthDelegate().navToCardStrongAuth(ForgotOrRegisterFirstStep.this,strongAuthQuestion,strongAuthQuestionId);
+				FacadeFactory.getStrongAuthFacade().navToCardStrongAuth(ForgotOrRegisterFirstStep.this,strongAuthQuestion,strongAuthQuestionId);
 
 			}
 

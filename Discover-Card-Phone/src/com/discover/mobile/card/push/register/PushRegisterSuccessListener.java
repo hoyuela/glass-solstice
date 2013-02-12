@@ -1,8 +1,8 @@
 package com.discover.mobile.card.push.register;
 
+import com.discover.mobile.card.services.push.registration.DeviceRegistrationDetail;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.push.registration.DeviceRegistrationDetail;
 
 /**
  * Success listener for the call to the server that registers the device and the vendor id (Xtify xid) to the current

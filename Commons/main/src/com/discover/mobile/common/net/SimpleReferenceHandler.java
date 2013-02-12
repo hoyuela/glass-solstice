@@ -29,7 +29,7 @@ public class SimpleReferenceHandler <V> extends TypedReferenceHandler<V> {
 	 * @return the callback
 	 */
 	@Override
-	AsyncCallback<V> getCallback() {
+	protected AsyncCallback<V> getCallback() {
 		return callback;
 	}
 	

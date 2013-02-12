@@ -1,8 +1,8 @@
 package com.discover.mobile.card.push.manage;
 
+import com.discover.mobile.card.services.push.manage.PostPreferencesDetail;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.push.manage.PostPreferencesDetail;
 
 /**
  * The success listener for the posting the preferences to the server

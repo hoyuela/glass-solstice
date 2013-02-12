@@ -20,18 +20,18 @@ import android.widget.TextView;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
+import com.discover.mobile.card.services.push.manage.GetNotificationPreferences;
+import com.discover.mobile.card.services.push.manage.PostNotificationPreferences;
+import com.discover.mobile.card.services.push.manage.PostPrefDetail;
+import com.discover.mobile.card.services.push.manage.PostPreferencesDetail;
+import com.discover.mobile.card.services.push.manage.PreferencesDetail;
+import com.discover.mobile.card.services.push.manage.PushManageCategoryParamDetail;
+import com.discover.mobile.card.services.push.manage.PushNotificationPrefsDetail;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
-import com.discover.mobile.common.push.manage.GetNotificationPreferences;
-import com.discover.mobile.common.push.manage.PostNotificationPreferences;
-import com.discover.mobile.common.push.manage.PostPrefDetail;
-import com.discover.mobile.common.push.manage.PostPreferencesDetail;
-import com.discover.mobile.common.push.manage.PreferencesDetail;
-import com.discover.mobile.common.push.manage.PushManageCategoryParamDetail;
-import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.xtify.sdk.api.XtifySDK;
 

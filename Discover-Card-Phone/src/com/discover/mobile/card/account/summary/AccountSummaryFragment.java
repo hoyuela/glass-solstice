@@ -15,12 +15,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardSessionContext;
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.services.account.summary.GetLatePaymentWarning;
+import com.discover.mobile.card.services.account.summary.GetLatePaymentWarningText;
+import com.discover.mobile.card.services.account.summary.LatePaymentWarningDetail;
+import com.discover.mobile.card.services.account.summary.LatePaymentWarningTextDetail;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.CurrentSessionDetails;
-import com.discover.mobile.common.account.summary.GetLatePaymentWarning;
-import com.discover.mobile.common.account.summary.GetLatePaymentWarningText;
-import com.discover.mobile.common.account.summary.LatePaymentWarningDetail;
-import com.discover.mobile.common.account.summary.LatePaymentWarningTextDetail;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
@@ -29,7 +30,6 @@ import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
-import com.discover.mobile.card.R;
 /**
  * Fragment holding the account summary information for both miles and cashback users
  * @author jthornton
@@ -125,7 +125,7 @@ public class AccountSummaryFragment extends BaseFragment {
 			}			
 		});
 
-		info = CurrentSessionDetails.getCurrentSessionDetails().getAccountDetails();
+		info = CardSessionContext.getCurrentSessionDetails().getAccountDetails();
 
 		if(NO_BALANCE.equals(info.currentBalance)){
 			makePayment.setEnabled(false);

@@ -7,9 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.R;
-import com.discover.mobile.common.auth.AccountDetails;
 
 /**
  * Status bar fragment that appears under the action bar. Used to display the account name 
@@ -43,10 +41,8 @@ public class StatusBarFragment extends Fragment {
 	 * @param account
 	 */
 	private void setAccountName(){
-		//TODO This is temporary and used just to populate something in the account Name
-		final AccountDetails accountDetails = CurrentSessionDetails.getCurrentSessionDetails().getAccountDetails();
-		
-//		setStatusBarText(accountDetails.primaryCardMember.nameOnCard);
+		//FIXME This is temporary and used just to populate something in the account Name
+		setStatusBarText("John Doe");
 	}
 	
 	/**

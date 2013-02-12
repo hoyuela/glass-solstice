@@ -4,8 +4,8 @@ import java.util.Calendar;
 
 import android.view.MotionEvent;
 
-import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;

@@ -11,7 +11,7 @@ import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.StandardErrorCodes.SCHEDULED_MAINTENANCE;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
 import static com.discover.mobile.common.StandardErrorCodes.UNSCHEDULED_MAINTENANCE;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
+import static com.discover.mobile.common.net.error.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
 
 import java.net.HttpURLConnection;
 

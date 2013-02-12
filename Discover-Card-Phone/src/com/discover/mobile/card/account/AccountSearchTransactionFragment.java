@@ -19,13 +19,12 @@ import android.widget.ToggleButton;
 
 import com.discover.mobile.card.CardAsyncCallbackBuilder;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.services.account.CategoriesDetail;
+import com.discover.mobile.card.services.account.CategoryDetail;
+import com.discover.mobile.card.services.account.GetTransactionCategories;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.account.CategoriesDetail;
-import com.discover.mobile.common.account.CategoryDetail;
-import com.discover.mobile.common.account.GetTransactionCategories;
 import com.discover.mobile.common.callback.GenericAsyncCallback.Builder;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.net.NetworkServiceCall;
 

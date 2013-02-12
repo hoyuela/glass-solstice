@@ -15,7 +15,7 @@ public class StrongReferenceHandler<V> extends TypedReferenceHandler<V> {
 	}
 	
 	@Override
-	AsyncCallback<V> getCallback() {
+	protected AsyncCallback<V> getCallback() {
 		return callback;
 	}
 	

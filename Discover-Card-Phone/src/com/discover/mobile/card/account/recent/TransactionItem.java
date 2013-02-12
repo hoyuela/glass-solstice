@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.common.account.recent.TransactionDetail;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.services.account.recent.TransactionDetail;
 /**
  * Item shown in the transaction table
  * @author jthornton

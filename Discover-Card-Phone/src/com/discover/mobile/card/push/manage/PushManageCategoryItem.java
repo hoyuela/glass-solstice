@@ -1,6 +1,6 @@
 package com.discover.mobile.card.push.manage;
 
-import com.discover.mobile.common.push.manage.PostPrefDetail;
+import com.discover.mobile.card.services.push.manage.PostPrefDetail;
 
 /**
  * Interface to bind the toggle items to

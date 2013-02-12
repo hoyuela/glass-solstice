@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.common.BankUser;
 import com.discover.mobile.common.BaseFragment;
 
 /**

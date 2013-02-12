@@ -31,7 +31,7 @@ public abstract class TypedReferenceHandler<V> extends Handler {
 	/**
 	 * @return Returns reference to associated AsynCallback which will handle incoming events from NetworkServiceCall
 	 */
-	abstract AsyncCallback<V> getCallback();
+	protected abstract AsyncCallback<V> getCallback();
 	/**
 	 * Method used to process incoming message objects sent from a NetworkServiceCall<> and dispatch them
 	 * to their respective listener.

@@ -10,10 +10,10 @@ import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
 import static com.discover.mobile.common.StandardErrorCodes.ONLINE_STATUS_PROHIBITED;
 import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
+import static com.discover.mobile.common.net.error.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
+import static com.discover.mobile.common.net.error.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
+import static com.discover.mobile.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+import static com.discover.mobile.common.net.error.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
 
 import java.net.HttpURLConnection;
 import java.util.List;
@@ -32,14 +32,18 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.card.push.register.PushRegistrationStatusSuccessListener;
+import com.discover.mobile.card.services.auth.forgot.ForgotUserIdCall;
+import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
+import com.discover.mobile.card.services.push.registration.GetPushRegistrationStatus;
+import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.common.CommonMethods;
-import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
@@ -47,22 +51,18 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
-import com.discover.mobile.common.auth.forgot.ForgotUserIdCall;
-import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
-import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
-import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.discover.mobile.common.ui.widgets.UsernameOrAccountNumberEditText;
 import com.google.common.base.Strings;
@@ -452,7 +452,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 
 						// Update current account based on user logged
 
-						CurrentSessionDetails.getCurrentSessionDetails()
+						CardSessionContext.getCurrentSessionDetails()
 						.setAccountDetails(value);
 
 						getXtifyRegistrationStatus();
@@ -478,7 +478,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 							getResources().getString(R.string.push_progress_registration_loading), 
 							true)
 							.withSuccessListener(new PushConfirmationSuccessListener())
-							.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(DelegateFactory.getLoginDelegate().getLoginActivity()))
+							.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(FacadeFactory.getLoginFacade().getLoginActivity()))
 							.withExceptionFailureHandler(new BaseExceptionFailureHandler())
 							.withCompletionListener(new LockScreenCompletionListener(this))
 							.finishCurrentActivityOnSuccess(this)

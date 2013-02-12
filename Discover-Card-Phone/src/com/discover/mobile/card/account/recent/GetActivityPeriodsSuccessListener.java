@@ -1,6 +1,6 @@
 package com.discover.mobile.card.account.recent;
 
-import com.discover.mobile.common.account.recent.RecentActivityPeriodsDetail;
+import com.discover.mobile.card.services.account.recent.RecentActivityPeriodsDetail;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.NetworkServiceCall;
 

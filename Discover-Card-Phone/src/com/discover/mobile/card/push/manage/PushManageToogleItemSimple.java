@@ -9,8 +9,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
-import com.discover.mobile.common.push.manage.PostPrefDetail;
-import com.discover.mobile.common.push.manage.PostPreferencesDetail;
+import com.discover.mobile.card.services.push.manage.PostPrefDetail;
+import com.discover.mobile.card.services.push.manage.PostPreferencesDetail;
 
 /**
  * View created to be used in the push notification manage layout.

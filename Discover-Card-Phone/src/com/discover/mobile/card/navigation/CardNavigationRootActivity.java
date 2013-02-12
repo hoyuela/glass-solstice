@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.push.register.PushNowAvailableFragment;
 import com.discover.mobile.card.ui.modals.ModalConfirmationTop;
-import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
@@ -27,7 +27,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity {
 	@Override
 	public void onResume(){
 		super.onResume();
-		if(!CurrentSessionDetails.getCurrentSessionDetails().isNotCurrentUserRegisteredForPush()  && !wasPaused){	
+		if(!CardSessionContext.getCurrentSessionDetails().isNotCurrentUserRegisteredForPush()  && !wasPaused){	
 			getSupportFragmentManager().popBackStack();
 			makeFragmentVisible(new PushNowAvailableFragment());	
 		} 

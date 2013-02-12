@@ -180,6 +180,8 @@ public abstract class NetworkServiceCall<R> {
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params) {
 		this(context, params, true);
 	}
+	
+	
 
 	/**
 	 * Network Service call that is used when needing the bank base URL.

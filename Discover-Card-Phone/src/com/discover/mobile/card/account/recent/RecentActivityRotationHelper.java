@@ -2,10 +2,10 @@ package com.discover.mobile.card.account.recent;
 
 import java.util.List;
 
-import com.discover.mobile.common.account.recent.GetTransactionDetails;
-import com.discover.mobile.common.account.recent.RecentActivityPeriodDetail;
-import com.discover.mobile.common.account.recent.RecentActivityPeriodsDetail;
-import com.discover.mobile.common.account.recent.TransactionDetail;
+import com.discover.mobile.card.services.account.recent.GetTransactionDetails;
+import com.discover.mobile.card.services.account.recent.RecentActivityPeriodDetail;
+import com.discover.mobile.card.services.account.recent.RecentActivityPeriodsDetail;
+import com.discover.mobile.card.services.account.recent.TransactionDetail;
 
 /**
  * Singleton class that helps with the rotations of the recent activity screen. This

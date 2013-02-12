@@ -9,31 +9,31 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.card.push.register.PushRegistrationStatusSuccessListener;
+import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
+import com.discover.mobile.card.services.push.registration.GetPushRegistrationStatus;
+import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.common.CommonMethods;
-import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.auth.AccountDetails;
 import com.discover.mobile.common.auth.AuthenticateCall;
-import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
-import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.push.registration.GetPushRegistrationStatus;
-import com.discover.mobile.common.push.registration.PushRegistrationStatusDetail;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -82,7 +82,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 
 						// Update current account based on user logged
 
-						CurrentSessionDetails.getCurrentSessionDetails()
+						CardSessionContext.getCurrentSessionDetails()
 						.setAccountDetails(value);
 
 						getXtifyRegistrationStatus();
@@ -108,7 +108,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 							getResources().getString(R.string.push_progress_registration_loading), 
 							true)
 							.withSuccessListener(new PushConfirmationSuccessListener())
-							.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(DelegateFactory.getLoginDelegate().getLoginActivity()))
+							.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(FacadeFactory.getLoginFacade().getLoginActivity()))
 							.withExceptionFailureHandler(new BaseExceptionFailureHandler())
 							.withCompletionListener(new LockScreenCompletionListener(this))
 							.finishCurrentActivityOnSuccess(this)
@@ -169,7 +169,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 		confirmationAndLoginScreen.putExtra(IntentExtraKey.EMAIL, responseData.email);
 		confirmationAndLoginScreen.putExtra(IntentExtraKey.ACCOUNT_LAST4, responseData.acctLast4);
 
-		if(CurrentSessionDetails.getCurrentSessionDetails().isForgotCreds()){
+		if(CardSessionContext.getCurrentSessionDetails().isForgotCreds()){
 			confirmationAndLoginScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_FORGOT_BOTH);
 		} else{
 			confirmationAndLoginScreen.putExtra(IntentExtraKey.SCREEN_TYPE, IntentExtraKey.SCREEN_REGISTRATION);
@@ -226,7 +226,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 			lastScreen = new Intent(this, ForgotCredentialsActivity.class);
 			startActivity(lastScreen);
 		}else{
-			DelegateFactory.getLoginDelegate().navToLogin(this);
+			FacadeFactory.getLoginFacade().navToLogin(this);
 		}
 
 		finish();

@@ -7,24 +7,23 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.discover.mobile.bank.login.LoginActivity;
+import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
+import com.discover.mobile.bank.services.auth.BankSchema;
+import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
+import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
+import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
+import com.discover.mobile.bank.services.customer.CustomerServiceCall;
+import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.AlertDialogParent;
-import com.discover.mobile.common.BankUser;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.auth.bank.BankSchema;
-import com.discover.mobile.common.auth.bank.CreateBankLoginCall;
-import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
-import com.discover.mobile.common.auth.bank.strong.CreateStrongAuthRequestCall;
-import com.discover.mobile.common.bank.account.GetCustomerAccountsServerCall;
-import com.discover.mobile.common.bank.customer.CustomerServiceCall;
-import com.discover.mobile.common.bank.payee.GetPayeeServiceCall;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.error.ErrorHandlerUi;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -131,7 +130,7 @@ ErrorResponseHandler, ExceptionFailureHandler {
 
 		if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
 			//Send request to Strong Auth web-service API
-			DelegateFactory.getStrongAuthDelegate().navToBankStrongAuth(activeActivity);
+			FacadeFactory.getStrongAuthFacade().navToBankStrongAuth(activeActivity);
 		} else {
 			this.errorHandler.handleFailure(sender, error);
 

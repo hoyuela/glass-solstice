@@ -5,7 +5,7 @@
     android:orientation="vertical" 
     android:background="@drawable/light_gray_bkgrd" >
     
-    <com.discover.mobile.navigation.HeaderProgressIndicator
+    <com.discover.mobile.common.nav.HeaderProgressIndicator
         android:id="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

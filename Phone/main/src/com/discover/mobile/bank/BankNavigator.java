@@ -10,10 +10,10 @@ import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.security.EnhancedAccountSecurityActivity;
+import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 
 /**
  * Utility class to centralize the navigation to and from screens in the application.

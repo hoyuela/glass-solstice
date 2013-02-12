@@ -63,7 +63,7 @@ public class BankPhoneAsyncCallbackBuilder {
 //	}
 
 	/* (non-Javadoc)
-	 * @see com.discover.mobile.common.delegates.AsyncCallbackDelegate#createDefaultCallbackBuilder(java.lang.Class, android.app.Activity, com.discover.mobile.error.ErrorHandlerUi)
+	 * @see com.discover.mobile.common.delegates.AsyncCallbackFacade#createDefaultCallbackBuilder(java.lang.Class, android.app.Activity, com.discover.mobile.error.ErrorHandlerUi)
 	 */
 	public static <T> Builder<T> createDefaultCallbackBuilder(Class<T> arg0, Activity activity, ErrorHandlerUi arg2) {
 		Builder<T> builder = null;
@@ -81,7 +81,7 @@ public class BankPhoneAsyncCallbackBuilder {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.discover.mobile.common.delegates.AsyncCallbackDelegate#createDefaultCallbackBuilder(java.lang.Class, android.app.Activity, com.discover.mobile.error.ErrorHandlerUi, boolean)
+	 * @see com.discover.mobile.common.delegates.AsyncCallbackFacade#createDefaultCallbackBuilder(java.lang.Class, android.app.Activity, com.discover.mobile.error.ErrorHandlerUi, boolean)
 	 */
 	
 	public static <T> Builder<T> createDefaultCallbackBuilder(Class<T> arg0, Activity activity, ErrorHandlerUi arg2, boolean hasProgressDialog) {

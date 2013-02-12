@@ -7,8 +7,8 @@ import java.util.List;
 import android.content.Context;
 
 import com.discover.mobile.card.R;
-import com.discover.mobile.common.push.manage.PreferencesDetail;
-import com.discover.mobile.common.push.manage.PushNotificationPrefsDetail;
+import com.discover.mobile.card.services.push.manage.PreferencesDetail;
+import com.discover.mobile.card.services.push.manage.PushNotificationPrefsDetail;
 
 /**
  * Factory for creating push manage items

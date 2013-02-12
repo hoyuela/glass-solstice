@@ -11,17 +11,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.push.manage.PushManageFragment;
+import com.discover.mobile.card.services.push.history.GetAlertHistory;
+import com.discover.mobile.card.services.push.history.NotificationDetail;
+import com.discover.mobile.card.services.push.history.NotificationListDetail;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
-import com.discover.mobile.common.push.history.GetAlertHistory;
-import com.discover.mobile.common.push.history.NotificationDetail;
-import com.discover.mobile.common.push.history.NotificationListDetail;
 
 public class PushHistoryFragment extends BaseFragment{
 	
@@ -109,7 +109,7 @@ public class PushHistoryFragment extends BaseFragment{
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		outState.putBoolean(ROTATED, true);
-		CurrentSessionDetails.getCurrentSessionDetails().setNotifications(notifications);
+		CardSessionContext.getCurrentSessionDetails().setNotifications(notifications);
 		outState.putInt(INDEX, currentIndex);
 		super.onSaveInstanceState(outState);
 	}
@@ -120,11 +120,11 @@ public class PushHistoryFragment extends BaseFragment{
 	 */
 	private void resumeFragment(final Bundle savedInstanceState) {
 		currentIndex = savedInstanceState.getInt(INDEX);
-		notifications = CurrentSessionDetails.getCurrentSessionDetails().getNotifications();
+		notifications = CardSessionContext.getCurrentSessionDetails().getNotifications();
 		final NotificationListDetail details = new NotificationListDetail();
 		details.notifications = this.notifications;
 		addToList(details);
-		CurrentSessionDetails.getCurrentSessionDetails().getNotifications().clear();
+		CardSessionContext.getCurrentSessionDetails().getNotifications().clear();
 	}
 	
 	/**

@@ -1,8 +1,8 @@
 package com.discover.mobile.card.push.history;
 
+import com.discover.mobile.card.services.push.history.PostReadDetail;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.push.history.PostReadDetail;
 
 /**
  * Success listener for when the application contacts the server letting it know a notification was read

@@ -1,6 +1,6 @@
 package com.discover.mobile.card.account.summary;
 
-import com.discover.mobile.common.account.summary.LatePaymentWarningTextDetail;
+import com.discover.mobile.card.services.account.summary.LatePaymentWarningTextDetail;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.NetworkServiceCall;
 

@@ -10,11 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.common.BankUser;
+import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.bank.account.Account;
-import com.discover.mobile.common.bank.account.AccountList;
 
 public class BankAccountSummaryFragment extends BaseFragment{
 	private LinearLayout accountSummary; 

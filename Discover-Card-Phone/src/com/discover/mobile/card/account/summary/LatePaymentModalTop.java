@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.discover.mobile.common.ui.modals.ModalTopView;
 import com.discover.mobile.card.R;
+import com.discover.mobile.common.ui.modals.ModalTopView;
 /**
  * Late payment modal top view.  This contains a title as well
  * as some content text to be displayed under the text view.

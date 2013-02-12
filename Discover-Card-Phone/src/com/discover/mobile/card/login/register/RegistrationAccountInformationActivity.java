@@ -9,13 +9,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.services.auth.registration.AccountInformationCall;
+import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.auth.registration.AccountInformationCall;
-import com.discover.mobile.common.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 
@@ -61,7 +61,7 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
 	@Override
 	public void goBack() {
 		finish();
-		DelegateFactory.getLoginDelegate().navToLogin(this);
+		FacadeFactory.getLoginFacade().navToLogin(this);
 	}
 
 	/**

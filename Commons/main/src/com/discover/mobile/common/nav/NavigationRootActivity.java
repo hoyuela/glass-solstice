@@ -4,13 +4,10 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.discover.mobile.common.LoggedInRoboActivity;
 import com.discover.mobile.common.R;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 
 /**
  * Root activity for the application after login. This will transition fragment on and off the screen

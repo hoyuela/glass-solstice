@@ -2,8 +2,8 @@ package com.discover.mobile.card.login.register;
 
 import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.SCHEDULED_MAINTENANCE;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
-import static com.discover.mobile.common.auth.registration.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+import static com.discover.mobile.common.net.error.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
+import static com.discover.mobile.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -13,12 +13,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.services.auth.forgot.ForgotPasswordTwoCall;
+import com.discover.mobile.card.services.auth.forgot.ForgotPasswordTwoDetails;
+import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
+import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoCall;
-import com.discover.mobile.common.auth.forgot.ForgotPasswordTwoDetails;
-import com.discover.mobile.common.auth.registration.AccountInformationDetails;
-import com.discover.mobile.common.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;

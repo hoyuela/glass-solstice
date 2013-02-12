@@ -9,7 +9,6 @@ import java.net.HttpURLConnection;
 
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.auth.bank.SessionTokenManager;
 
 /**
  * ServiceCallSessionManager is used to manage the token for a session with a Card or Bank service.

@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.common.bank.account.Account;
+import com.discover.mobile.bank.services.account.Account;
 
 public class BankAccountGroupView extends LinearLayout {
 	private final TextView type;

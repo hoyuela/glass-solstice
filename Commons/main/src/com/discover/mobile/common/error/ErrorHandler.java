@@ -5,7 +5,6 @@ package com.discover.mobile.common.error;
 
 import android.app.AlertDialog;
 
-import com.discover.mobile.common.auth.bank.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 
 /**

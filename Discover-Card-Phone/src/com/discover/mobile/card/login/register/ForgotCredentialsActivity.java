@@ -16,14 +16,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.common.CommonMethods;
-import com.discover.mobile.common.CurrentSessionDetails;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.delegates.DelegateFactory;
 import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.facade.FacadeFactory;
 /**
  * This class handles a user's choice and navigation to the first step of forgot password/user id/ or both.
  * It contains a list of choices, upon tapping a choice, this activity is finished and the selected
@@ -64,7 +64,7 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 				final Option selection = optionAdapter.getItem(arg2);
 				final Class<?> intentClass = selection.getIntentClass();
 				if(selection == Option.BOTH){
-					CurrentSessionDetails.getCurrentSessionDetails().setForgotCreds(true);
+					CardSessionContext.getCurrentSessionDetails().setForgotCreds(true);
 				}
 				startActivity(new Intent(currentContext, intentClass));		
 				endActivity();
@@ -136,7 +136,7 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 
 	@Override
 	public void goBack() {
-		DelegateFactory.getLoginDelegate().navToLogin(this);
+		FacadeFactory.getLoginFacade().navToLogin(this);
 		finish();
 	}
 
