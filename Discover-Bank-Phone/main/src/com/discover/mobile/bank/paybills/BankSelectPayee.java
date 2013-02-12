@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
@@ -39,6 +40,9 @@ public class BankSelectPayee extends BaseFragment{
 	/**Activity showing fragment*/
 	private BaseFragmentActivity activity;
 
+	/**Text view holding the empty list message*/
+	private TextView empty;
+
 	/**
 	 * Create the view
 	 * @param inflater - inflater to inflate the layout
@@ -53,6 +57,7 @@ public class BankSelectPayee extends BaseFragment{
 
 		this.payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
 		this.activity = (BaseFragmentActivity)this.getActivity();
+		this.empty = (TextView)view.findViewById(R.id.no_payees);
 
 		if(null == savedInstanceState){
 			loadListFromBundle(this.getArguments());
@@ -78,10 +83,13 @@ public class BankSelectPayee extends BaseFragment{
 	 */
 	public void loadListFromBundle(final Bundle bundle){
 		this.payees = (ListPayeeDetail)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
-		if(null == this.payees){return;}
-		this.payeesList.removeAllViews();
-		for(final PayeeDetail payee : this.payees.payees){
-			this.payeesList.addView(createListItem(payee));
+		if(null == this.payees || this.payees.payees.isEmpty()){
+			this.empty.setVisibility(View.VISIBLE);
+		}else{
+			this.payeesList.removeAllViews();
+			for(final PayeeDetail payee : this.payees.payees){
+				this.payeesList.addView(createListItem(payee));
+			}
 		}
 	}
 

@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.paybills.BankPayTerms;
 import com.discover.mobile.bank.paybills.BankPayeeNotEligibleFragment;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
@@ -142,7 +143,7 @@ public class BankNavigator {
 	 * to the navigate to pay bills terms and conditions page.
 	 */
 	public static void navigateToPayBillsTerms(final Bundle extras){
-		final BankSelectPayee fragment = new BankSelectPayee();
+		final BankPayTerms fragment = new BankPayTerms();
 		fragment.setArguments(extras);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}

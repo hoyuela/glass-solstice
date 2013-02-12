@@ -26,6 +26,8 @@
             android:layout_marginBottom="@dimen/table_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:layout_toLeftOf="@+id/help"
+            android:layout_alignParentLeft="true"
             android:text="@string/select_payee_title"/>
         
         <TextView
@@ -34,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/select_payee_title"
             android:text="@string/select_payee_empty"
+            style="@style/normal_static_text"
             android:visibility="gone"/>
         
         <LinearLayout
