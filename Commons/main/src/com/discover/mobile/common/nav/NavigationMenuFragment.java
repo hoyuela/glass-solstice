@@ -16,7 +16,7 @@ public abstract class NavigationMenuFragment extends RoboSherlockListFragment {
 		super.onListItemClick(listView, clickedView, position, id);
 		clickedView.setSelected(true);
 		navigationItemAdapter.notifyDataSetChanged();
-		navigationItemAdapter.getItem(position).onClick(listView);
+		navigationItemAdapter.getItem(position).onClick(listView, clickedView);
 	}
 
 

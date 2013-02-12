@@ -2,18 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/navigation_menu_section_gradient"
-    android:orientation="vertical">
-    <!-- android:background="@drawable/navigation_menu_section_gradient" -->
-    
-    <!-- TODO: remove text, add styling -->
-    <TextView android:id="@id/title"
+    android:orientation="vertical" >
+
+    <View
+        android:id="@+id/navigation_divider"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:paddingLeft="5dp"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:gravity="center_vertical"
-        android:text="@string/app_name" />
-    
+        android:layout_height="2dp"
+        android:background="@drawable/navigation_menu_divider_section_gradient" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/navigation_menu_section_gradient"
+        android:orientation="horizontal" >
+
+        <!-- android:background="@drawable/navigation_menu_section_gradient" -->
+
+
+        <!-- TODO: remove text, add styling -->
+
+        <TextView
+            android:id="@id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:text="@string/app_name"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/external"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:src="@drawable/external_link_icon" />
+    </LinearLayout>
+
 </LinearLayout>

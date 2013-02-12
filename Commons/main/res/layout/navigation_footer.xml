@@ -1,11 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    
-    <TextView
-        android:id="@+id/navigation_menu_footer"
+    android:layout_height="wrap_content" 
+    android:background="@color/menu_light_gray">
+
+    <LinearLayout
+        android:id="@+id/navigation_footer_top"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/navigation_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="15dp"
+            android:text="Version" />
+
+        <View
+            android:id="@+id/navigation_divider"
+            android:layout_width="1dip"
+            android:layout_height="15dp"
+            android:layout_toRightOf="@+id/navigation_version"
+            android:background="@color/gray" />
+
+        <TextView
+            android:id="@+id/navigation_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/navigation_divider"
+            android:paddingLeft="15dp"
+            android:text="Privacy Terms" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/navigation_copyright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/navigation_footer_top"
+        android:layout_centerHorizontal="true"
+        android:text="Discover Bank FDIC" />
 
 </RelativeLayout>

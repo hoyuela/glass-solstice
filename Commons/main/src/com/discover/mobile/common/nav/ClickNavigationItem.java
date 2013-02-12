@@ -1,19 +1,26 @@
 package com.discover.mobile.common.nav;
 
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
+
+import com.discover.mobile.common.nav.section.ClickComponentInfo;
 
 public class ClickNavigationItem extends NavigationItem {
 
-	ClickNavigationItem(final NavigationItemAdapter adapter, final NavigationItemView view,
+	final OnClickListener listener;
+	public ClickNavigationItem(final ClickComponentInfo clickComponentInfo, final NavigationItemAdapter adapter, final NavigationItemView view,
 			final int absoluteIndex) {
 		super(adapter, view, absoluteIndex);
-		// TODO Auto-generated constructor stub
+		listener = clickComponentInfo.getOnClickListener();
 	}
 
 	@Override
-	void onClick(final ListView listView) {
-		// TODO Auto-generated method stub
-
+	void onClick(final ListView listView, final View clickedView) {
+		clickedView.setSelected(true);
+		listView.getChildAt(absoluteIndex).setOnClickListener(listener);
+		final View view = listView.getChildAt(absoluteIndex);
+		view.performClick();
 	}
 
 }
