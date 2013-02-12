@@ -46,5 +46,5 @@ public class ListActivityDetail implements Serializable{
 	private static final long serialVersionUID = 8207177094396952741L;
 
 	/**List of activity details*/
-	List<ActivityDetail> activities;
+	public List<ActivityDetail> activities;
 }
