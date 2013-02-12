@@ -118,6 +118,7 @@
 	<string name="error_request_not_completed_msg">We\'re sorry. We can\'t complete your request at this time. Please contact us for more information.</string>
 	<string name="lockout_title">You\'ve Been Locked Out</string>
     <string name="doesnt_match_records">Doesn\'t Match Our Records</string>
+    <string name="privacy_terms">Privacy &amp; Terms</string>
     
     
 </resources>

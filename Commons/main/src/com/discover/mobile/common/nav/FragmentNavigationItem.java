@@ -4,11 +4,9 @@ import static com.discover.mobile.common.ReferenceUtility.safeGetReferenced;
 
 import java.lang.ref.SoftReference;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.discover.mobile.common.nav.section.FragmentComponentInfo;
 import com.google.common.base.Throwables;
@@ -20,8 +18,6 @@ final class FragmentNavigationItem extends NavigationItem {
 
 	private final FragmentComponentInfo fragmentInfo;
 
-	private final String url;
-
 	private SoftReference<Fragment> fragmentRef;
 
 	FragmentNavigationItem(final FragmentComponentInfo fragmentInfo, final NavigationItemAdapter adapter,
@@ -29,35 +25,13 @@ final class FragmentNavigationItem extends NavigationItem {
 
 		super(adapter, view, absoluteIndex);
 
-		this.url = fragmentInfo.getUrl();
 		this.fragmentInfo = fragmentInfo;
 	}
 
 	@Override
-	void onClick(final ListView listView) {
-
-		if (url != null && !url.isEmpty()){
-			//loadURL
-			final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-			listView.getContext().startActivity(browserIntent);
-			Toast.makeText(listView.getContext(), url, Toast.LENGTH_SHORT).show();
-		}else {
+	void onClick(final ListView listView, final View clickedView) {
 			makeVisible();
-		}
-
 		// TODO show highlight if selected
-	}
-
-	void show() {
-		adapter.insert(this, absoluteIndex);
-
-		// TODO
-	}
-
-	void hide() {
-		adapter.remove(this);
-
-		// TODO
 	}
 
 	private void makeVisible() {

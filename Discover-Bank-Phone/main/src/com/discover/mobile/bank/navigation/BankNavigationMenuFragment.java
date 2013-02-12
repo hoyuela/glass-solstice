@@ -1,8 +1,16 @@
 package com.discover.mobile.bank.navigation;
 
 
-import android.os.Bundle;
+import java.util.Calendar;
 
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSectionInfo;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.atm.BankAtmLocatorInfo;
@@ -17,10 +25,32 @@ import com.google.common.collect.ImmutableList;
 
 public class BankNavigationMenuFragment extends NavigationMenuFragment {
 
+	private static final String TAG = "BankMenuFragment";
+
 	@Override
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		final TextView version = (TextView) getActivity().findViewById(R.id.navigation_version);
+		final TextView copy = (TextView) getActivity().findViewById(R.id.navigation_copyright);
+		final Calendar cal = Calendar.getInstance();
+		final View footerView = getActivity().getLayoutInflater().inflate(R.layout.list_view_footer, null);
 
+		final String year = String.valueOf(cal.get(Calendar.YEAR));
+		String versionName = null;
+		try {
+			versionName = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0 ).versionName;
+		} catch (final NameNotFoundException e) {
+			if (Log.isLoggable(TAG, Log.ERROR)){
+				Log.e(TAG, "No Version available.");
+			}
+		
+		}
+		version.setText("Version " + versionName);
+		copy.setText("\u00a9 " + year + " Discover Bank, Member FDIC");
+		final ListView lv = getListView();
+		lv.setDivider(null);
+		lv.setDividerHeight(0);
+		lv.addFooterView(footerView);
 
 		/**
 		 * Initializes the navigation menu

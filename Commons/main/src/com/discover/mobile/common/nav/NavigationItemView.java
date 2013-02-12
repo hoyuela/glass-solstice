@@ -2,8 +2,10 @@ package com.discover.mobile.common.nav;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.discover.mobile.common.R;
 import com.discover.mobile.common.nav.section.ComponentInfo;
 
 abstract class NavigationItemView {
@@ -18,19 +20,29 @@ abstract class NavigationItemView {
 	}
 
 	abstract int getViewType();
+
 	abstract void customizeView(View view, TextView titleView);
 
 	final View getView(final View convertView, final LayoutInflater inflater) {
 		View view;
 
-		if(convertView == null){
+		if (convertView == null) {
 			view = inflater.inflate(viewResource, null);
-		}else{
+		} else {
 			view = convertView;
 		}
 
-		final TextView titleView = (TextView) view.findViewById(com.discover.mobile.common.R.id.title);
+		final TextView titleView = (TextView) view
+				.findViewById(com.discover.mobile.common.R.id.title);
+		final ImageView externalLink = (ImageView) view
+				.findViewById(R.id.external);
 		titleView.setText(componentInfo.getTitleResource());
+
+		if (componentInfo.getIsExternalLink()) {
+			externalLink.setVisibility(View.VISIBLE);
+		} else {
+			externalLink.setVisibility(View.GONE);
+		}
 
 		customizeView(view, titleView);
 

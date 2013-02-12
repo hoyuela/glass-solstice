@@ -3,8 +3,10 @@ package com.discover.mobile.common.nav;
 import java.util.List;
 
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.ListView;
 
+import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.ComponentInfo;
 import com.discover.mobile.common.nav.section.FragmentComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
@@ -24,7 +26,7 @@ public abstract class NavigationItem {
 		this.absoluteIndex = absoluteIndex;
 	}
 
-	abstract void onClick(ListView listView);
+	abstract void onClick(ListView listView, View clickedView);
 
 	/**
 	 * Sets up the adapter and make the home fragment the first visible fragment when logging in.  
@@ -62,6 +64,8 @@ public abstract class NavigationItem {
 			return createSectionGroupItem((GroupComponentInfo)sectionInfo, adapter, index);
 		else if(sectionInfo instanceof FragmentComponentInfo)
 			return createSectionFragmentItem((FragmentComponentInfo)sectionInfo, adapter, index);
+		else if (sectionInfo instanceof ClickComponentInfo)
+			return createSectionClickItem((ClickComponentInfo)sectionInfo, adapter, index);
 		else
 			throw new UnsupportedOperationException("Unknown ComponentInfo: " + sectionInfo); //$NON-NLS-1$
 	}
@@ -76,7 +80,7 @@ public abstract class NavigationItem {
 	private static NavigationItem createSectionGroupItem(final GroupComponentInfo sectionInfo,
 			final NavigationItemAdapter adapter, final int index) {
 
-		final List<FragmentNavigationItem> children = createChildren(sectionInfo, adapter, index);
+		final List<NavigationItem> children = createChildren(sectionInfo, adapter, index);
 
 		final SectionNavigationItemView view = new SectionNavigationItemView(sectionInfo);
 		return new GroupNavigationItem(adapter, view, children, index);
@@ -90,17 +94,23 @@ public abstract class NavigationItem {
 	 * @param groupIndex
 	 * @return
 	 */
-	private static List<FragmentNavigationItem> createChildren(final GroupComponentInfo sectionInfo,
+	private static List<NavigationItem> createChildren(final GroupComponentInfo sectionInfo,
 			final NavigationItemAdapter adapter, final int groupIndex) {
 
-		final List<FragmentNavigationItem> children =
+		final List<NavigationItem> children =
 				Lists.newArrayListWithCapacity(sectionInfo.getSubSections().size());
 
 		for(int i = 0; i < sectionInfo.getSubSections().size(); i++) {
-			final FragmentComponentInfo childInfo = sectionInfo.getSubSections().get(i);
+			final ComponentInfo childInfo = sectionInfo.getSubSections().get(i);
 			final int childIndex = groupIndex + i + 1;
-			final FragmentNavigationItem childItem = createSubSectionFragmentItem(childInfo, adapter, childIndex);
-			children.add(childItem);
+			if (childInfo instanceof FragmentComponentInfo){
+				final FragmentNavigationItem childItem  = createSubSectionFragmentItem((FragmentComponentInfo) childInfo, adapter, childIndex);
+				children.add(childItem);
+			}else if (childInfo instanceof ClickComponentInfo){
+				final ClickNavigationItem childClickItem = createSubSectionClickItem((ClickComponentInfo) childInfo, adapter, childIndex);
+				children.add(childClickItem);
+			}
+
 		}
 
 		return children;
@@ -136,6 +146,46 @@ public abstract class NavigationItem {
 
 		final SubSectionNavigationItemView view = new SubSectionNavigationItemView(componentInfo);
 		return new FragmentNavigationItem(componentInfo, adapter, view, absoluteIndex);
+	}
+
+	/**
+	 * Essentially this is the onclick action for the main menu options. The Fragment Navigation Item
+	 * has an onClick that is what handles making the fragment visible.
+	 * 
+	 * @param componentInfo
+	 * @param adapter
+	 * @param absoluteIndex
+	 * @return
+	 */
+	private static ClickNavigationItem createSectionClickItem(final ClickComponentInfo componentInfo,
+			final NavigationItemAdapter adapter, final int absoluteIndex) {
+
+		final SectionNavigationItemView view = new SectionNavigationItemView(componentInfo);
+		return new ClickNavigationItem(componentInfo, adapter, view, absoluteIndex);
+	}
+
+	/**
+	 * Essentially this is the onclick action for the sub section menu options. The Fragment Navigation Item
+	 * has an onClick that is what handles making the fragment visible.
+	 * 
+	 * @param componentInfo
+	 * @param adapter
+	 * @param absoluteIndex
+	 * @return
+	 */
+	private static ClickNavigationItem createSubSectionClickItem(final ClickComponentInfo componentInfo,
+			final NavigationItemAdapter adapter, final int absoluteIndex) {
+
+		final SubSectionNavigationItemView view = new SubSectionNavigationItemView(componentInfo);
+		return new ClickNavigationItem(componentInfo, adapter, view, absoluteIndex);
+	}
+
+	void show() {
+		adapter.insert(this, absoluteIndex);
+	}
+
+	void hide() {
+		adapter.remove(this);
 	}
 
 }

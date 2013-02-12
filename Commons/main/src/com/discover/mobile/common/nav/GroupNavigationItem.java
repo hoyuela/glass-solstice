@@ -2,6 +2,7 @@ package com.discover.mobile.common.nav;
 
 import java.util.List;
 
+import android.view.View;
 import android.widget.ListView;
 
 /**
@@ -9,12 +10,12 @@ import android.widget.ListView;
  */
 final class GroupNavigationItem extends NavigationItem {
 
-	private final List<FragmentNavigationItem> children;
+	private final List<NavigationItem> children;
 
 	private boolean expanded;
 
 	GroupNavigationItem(final NavigationItemAdapter navigationItemAdapter, final NavigationItemView view,
-			final List<FragmentNavigationItem> children, final int absoluteIndex) {
+			final List<NavigationItem> children, final int absoluteIndex) {
 
 		super(navigationItemAdapter, view, absoluteIndex);
 
@@ -22,7 +23,7 @@ final class GroupNavigationItem extends NavigationItem {
 	}
 
 	@Override
-	void onClick(final ListView listView) {
+	void onClick(final ListView listView, final View clickedView) {
 		if(expanded) {
 			collapse();
 			adapter.setSelectedItem(null);
@@ -40,7 +41,7 @@ final class GroupNavigationItem extends NavigationItem {
 		if(selectedItem != null && selectedItem instanceof GroupNavigationItem)
 			((GroupNavigationItem)selectedItem).collapse();
 
-		for(final FragmentNavigationItem child : children)
+		for(final NavigationItem child : children)
 			child.show();
 
 		expanded = true;
@@ -50,7 +51,7 @@ final class GroupNavigationItem extends NavigationItem {
 		if(!expanded)
 			return;
 
-		for(final FragmentNavigationItem child : children)
+		for(final NavigationItem child : children)
 			child.hide();
 
 		expanded = false;

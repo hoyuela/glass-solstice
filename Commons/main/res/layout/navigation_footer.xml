@@ -1,11 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    
-    <TextView
-        android:id="@+id/navigation_menu_footer"
+    android:layout_height="wrap_content" 
+    android:background="@color/menu_light_gray">
+
+    <LinearLayout
+        android:id="@+id/navigation_footer_top"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/navigation_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="@dimen/nav_footer_padding"/>
+
+        <View
+            android:id="@+id/navigation_divider"
+            android:layout_width="@dimen/nav_footer_divider_width"
+            android:layout_height="@dimen/nav_footer_divider_height"
+            android:layout_toRightOf="@+id/navigation_version"
+            android:background="@color/gray" />
+
+        <TextView
+            android:id="@+id/navigation_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/navigation_divider"
+            android:paddingLeft="@dimen/nav_footer_padding"
+            android:text="@string/privacy_terms" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/navigation_copyright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/navigation_footer_top"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
