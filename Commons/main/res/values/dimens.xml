@@ -57,6 +57,7 @@
      <dimen name="nav_sub_section_pading">16dp</dimen>
      <dimen name="nav_section_size">20dp</dimen>
      <dimen name="nav_image_padding">10dp</dimen>
+     <dimen name="nav_footer_height">1dp</dimen>
      
     
   

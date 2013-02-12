@@ -8,7 +8,7 @@
     <View
         android:id="@+id/navigation_divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/nav_footer_height"
         android:background="@drawable/navigation_menu_divider_section_gradient" />
 
 </RelativeLayout>
