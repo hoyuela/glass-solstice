@@ -18,9 +18,7 @@ public class ClickNavigationItem extends NavigationItem {
 	@Override
 	void onClick(final ListView listView, final View clickedView) {
 		clickedView.setSelected(true);
-		listView.getChildAt(absoluteIndex).setOnClickListener(listener);
-		final View view = listView.getChildAt(absoluteIndex);
-		view.performClick();
+		listener.onClick(clickedView);
 	}
 
 }

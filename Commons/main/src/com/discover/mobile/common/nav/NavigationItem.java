@@ -182,14 +182,10 @@ public abstract class NavigationItem {
 
 	void show() {
 		adapter.insert(this, absoluteIndex);
-
-		// TODO
 	}
 
 	void hide() {
 		adapter.remove(this);
-
-		// TODO
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +25,8 @@ import com.google.common.collect.ImmutableList;
 
 public class BankNavigationMenuFragment extends NavigationMenuFragment {
 
+	private static final String TAG = "BankMenuFragment";
+
 	@Override
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -37,8 +40,10 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		try {
 			versionName = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0 ).versionName;
 		} catch (final NameNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (Log.isLoggable(TAG, Log.ERROR)){
+				Log.e(TAG, "No Version available.");
+			}
+		
 		}
 		version.setText("Version " + versionName);
 		copy.setText("\u00a9 " + year + " Discover Bank, Member FDIC");

@@ -29,8 +29,6 @@ public final class BankAccountSectionInfo extends GroupComponentInfo {
 			public void onClick(final View v) {
 				final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(BankUrlManager.getBaseUrl()));
 				v.getContext().startActivity(browserIntent);
-				Toast.makeText(v.getContext(), BankUrlManager.getBaseUrl(), Toast.LENGTH_SHORT).show();
-
 			}
 		};
 	}
