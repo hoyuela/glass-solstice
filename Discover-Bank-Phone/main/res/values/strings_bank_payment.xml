@@ -13,4 +13,9 @@
  	<string name="pay_bills_simple_text">Add a payee and easily schedule a payment.</string>
  	<string name="pay_bills_delivery_title">On-time Delivery</string>
  	<string name="pay_bills_delivery_text">Your payments are guaranteed to reach your payee by the \"Deliver By\" date.</string>   
+
+	<!-- Select a payee strings -->
+	<string name="select_payee_title">Select Payee</string>
+	<string name="select_payee_empty">You currently have no payees set up.</string>
+	<string name="select_payee_add_new">Add New Payee</string>
 </resources>

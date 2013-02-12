@@ -9,9 +9,14 @@ import android.widget.Toast;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.paybills.BankPayTerms;
+import com.discover.mobile.bank.paybills.BankPayeeNotEligibleFragment;
+import com.discover.mobile.bank.paybills.BankSelectPayee;
+import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.security.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.AlertDialogParent;
+import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
 
@@ -124,8 +129,44 @@ public class BankNavigator {
 
 	}
 
-	public static void navigateToPayBillStepTwo(final Bundle extras){
+	/**
+	 * Let the root activity know that the current fragment needs to be changed from the current fragment
+	 * to the navigate to pay bills landing page.
+	 */
+	public static void navigateToPayBillsLanding(){
+		final BankPayeeNotEligibleFragment fragment = new BankPayeeNotEligibleFragment();
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
 
+	/**
+	 * Let the root activity know that the current fragment needs to be changed from the current fragment
+	 * to the navigate to pay bills terms and conditions page.
+	 */
+	public static void navigateToPayBillsTerms(final Bundle extras){
+		final BankPayTerms fragment = new BankPayTerms();
+		fragment.setArguments(extras);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
+
+	/**
+	 * Let the root activity know that the current fragment needs to be changed from the current fragment
+	 * to the navigate to pay bills select payee page.
+	 */
+	public static void naviagteToSelectPayee(final Bundle extras){
+		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
+		final BankSelectPayee fragment = new BankSelectPayee();
+		fragment.setArguments(extras);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
+
+	/**
+	 * Let the root activity know that the current fragment needs to be changed from the current fragment
+	 * to the navigate to pay bills step two page.
+	 */
+	public static void navigateToPayBillStepTwo(final BaseFragmentActivity activity, final Bundle extras){
+		final SchedulePaymentFragment fragment = new SchedulePaymentFragment();
+		fragment.setArguments(extras);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
 
 }
