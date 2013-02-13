@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
+import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
@@ -207,6 +208,12 @@ ErrorResponseHandler, ExceptionFailureHandler {
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
 			BankNavigator.naviagteToSelectPayee(bundle);
+		}
+		//Handle the get activity service call
+		else if( sender instanceof GetActivityServerCall){
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST, result);
+			BankNavigator.navigateToAccountActivityPage(bundle);
 		}
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {

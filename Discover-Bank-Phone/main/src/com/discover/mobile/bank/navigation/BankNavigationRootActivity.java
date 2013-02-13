@@ -2,9 +2,11 @@ package com.discover.mobile.bank.navigation;
 
 import java.util.Calendar;
 
+import android.os.Bundle;
 import android.view.MotionEvent;
 
 import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.common.Globals;
@@ -19,8 +21,8 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  *
  */
 public class BankNavigationRootActivity extends NavigationRootActivity {
-	
-	
+
+
 	/**
 	 * Resume the activity to the state that it was when the activity went to the background
 	 */
@@ -50,8 +52,8 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	}
 
 	/**
-	 * Determines the current time and gets the time stored in globals. 
-	 * Then updates globals with the current time. 
+	 * Determines the current time and gets the time stored in globals.
+	 * Then updates globals with the current time.
 	 */
 	private void getLastTouchTime() {
 		final Calendar mCalendarInstance = Calendar.getInstance();
@@ -62,9 +64,9 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 		setIsUserTimedOut(previousTime, currentTime);
 		Globals.setOldTouchTimeInMillis(currentTime);
 	}
-	
+
 	/**
-	 * Determines whether or not the user is timed out. 
+	 * Determines whether or not the user is timed out.
 	 * @param previousTime
 	 * @param currentTime
 	 */
@@ -73,10 +75,10 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 		if (previousTime != 0) {
 			final long difference = currentTime - previousTime;
 			final float secs = (float)difference / 1000;
-			
+
 			// User has become inactive and will be set to timed-out.
 			if ( secs > BankUrlManager.MAX_IDLE_TIME) {
-				 BankNavigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED);
+				BankNavigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED);
 			}
 		}
 	}
@@ -93,5 +95,21 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	@Override
 	public ErrorHandler getErrorHandler() {
 		return BankErrorHandler.getInstance();
+	}
+
+	/**
+	 * Determines if the current fragment is an instance of the dynamic date fragment
+	 * @return if the current fragment is an instance of the dynamic date fragment
+	 */
+	public boolean isDynamicDataFragment(){
+		return this.currentFragment instanceof DynamicDataFragment;
+	}
+
+	/**
+	 * Send data to the dynamic data fragment
+	 * @param bundle - bundle of data to pass to the fragment
+	 */
+	public void addDataToDynamicDataFragment(final Bundle bundle){
+		((DynamicDataFragment)this.currentFragment).handleReceivedData(bundle);
 	}
 }

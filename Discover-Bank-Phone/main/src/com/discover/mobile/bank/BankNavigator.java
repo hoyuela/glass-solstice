@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.discover.mobile.bank.account.AccountActivityFragment;
+import com.discover.mobile.bank.account.ScheduledTransactionsViewPager;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -167,6 +169,33 @@ public class BankNavigator {
 		final SchedulePaymentFragment fragment = new SchedulePaymentFragment();
 		fragment.setArguments(extras);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
+
+	/**
+	 * Navigate to the activity detail view pager screen
+	 * @param bundle - bundle to pass into the screen
+	 */
+	public static void navigateToActivityDetailScreen(final Bundle bundle){
+		final ScheduledTransactionsViewPager fragment =  new ScheduledTransactionsViewPager();
+		fragment.setArguments(bundle);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
+
+	/**
+	 * Navigate to the activity detail table screen
+	 * @param bundle - bundle to pass into the screen
+	 */
+	public static void navigateToAccountActivityPage(final Bundle bundle){
+		final BankNavigationRootActivity activity =
+				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
+		((AlertDialogParent)activity).closeDialog();
+		if(activity.isDynamicDataFragment()){
+			activity.addDataToDynamicDataFragment(bundle);
+		}else{
+			final AccountActivityFragment fragment =  new AccountActivityFragment();
+			fragment.setArguments(bundle);
+			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+		}
 	}
 
 }

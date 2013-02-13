@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/table_title"
+        style="@style/body_copy_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/sort_filters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/table_title"
+        android:layout_marginBottom="@dimen/between_related_elements_padding"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/table_inner_padding"
+        android:orientation="horizontal"
+        android:weightSum="5" >
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/date_filter"
+                style="@style/sub_copy_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/recent_activity_date"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/date_filter_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/date_filter"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/date_filter"
+                android:background="@drawable/orange_arrow_down" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="2" >
+
+            <TextView
+                android:id="@+id/description_filter"
+                style="@style/sub_copy_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/recent_activity_description" />
+
+            <ImageView
+                android:id="@+id/description_filter_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/description_filter"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/description_filter"
+                android:background="@drawable/orange_arrow_down"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+	    	android:gravity="right" >
+
+            <TextView
+                android:id="@+id/amount_filter"
+                style="@style/sub_copy_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/recent_activity_amount" />
+
+            <ImageView
+                android:id="@+id/amount_filter_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/amount_filter"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/amount_filter"
+                android:background="@drawable/orange_arrow_down"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/top_line"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/sort_filters"
+        android:background="@drawable/table_solid_line" />
+
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_line"
+        android:background="@color/transaction_table_stripe"
+        android:paddingBottom="@dimen/table_inner_padding"
+        android:paddingLeft="@dimen/between_related_elements_padding"
+        android:paddingRight="@dimen/between_related_elements_padding"
+        android:paddingTop="@dimen/table_inner_padding"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_line"
+        android:divider="@drawable/table_dotted_line"
+        android:orientation="vertical" />
+
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/list"
+        android:background="@drawable/table_solid_line" />
+
+</RelativeLayout>
