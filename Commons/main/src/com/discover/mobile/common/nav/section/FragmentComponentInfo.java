@@ -3,7 +3,13 @@ package com.discover.mobile.common.nav.section;
 import javax.annotation.concurrent.Immutable;
 
 import com.actionbarsherlock.app.SherlockFragment;
-
+/**
+ * This Component info class accepts a fragment class. The default action for this is to just 
+ * transition the fragment into view. 
+ * 
+ * @author ajleeds
+ *
+ */
 @Immutable
 public class FragmentComponentInfo extends ComponentInfo {
 

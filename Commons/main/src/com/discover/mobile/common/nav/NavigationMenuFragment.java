@@ -14,11 +14,12 @@ public abstract class NavigationMenuFragment extends RoboSherlockListFragment {
 	@Override
 	public void onListItemClick(final ListView listView, final View clickedView, final int position, final long id) {
 		super.onListItemClick(listView, clickedView, position, id);
-		clickedView.setSelected(true);
-		navigationItemAdapter.notifyDataSetChanged();
 		navigationItemAdapter.getItem(position).onClick(listView, clickedView);
 	}
 
-
-
+	@Override
+	public void onResume() {
+		super.onResume();
+		this.getListView().performItemClick(getListView().getAdapter().getView(NavigationIndex.getMainIndex(), null, null), NavigationIndex.getMainIndex(), NavigationIndex.getMainIndex());
+	}
 }

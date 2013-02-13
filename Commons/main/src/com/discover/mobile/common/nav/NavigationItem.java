@@ -12,14 +12,19 @@ import com.discover.mobile.common.nav.section.FragmentComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-
+/**
+ * This is the base navigation item class. In this class it initializes the menu adapter with the correction options based on 
+ * whether or not the objects are GroupComponentInfo's or Click/Fragment ComponentInfos. 
+ * 
+ * @author ajleeds
+ *
+ */
 public abstract class NavigationItem {
 
 	final NavigationItemAdapter adapter;
 	final NavigationItemView view;
 	final int absoluteIndex;
 	static ImmutableList<ComponentInfo> section;
-
 	NavigationItem(final NavigationItemAdapter adapter, final NavigationItemView view, final int absoluteIndex) {
 		this.adapter = adapter;
 		this.view = view;
@@ -37,7 +42,6 @@ public abstract class NavigationItem {
 		section = sectionInfo;
 		initializeAdapterWithSections(adapter);
 		adapter.getNavigationRoot().makeFragmentVisible(homeFragment);
-		// TODO set first section as selected	 
 
 	}
 
@@ -53,7 +57,10 @@ public abstract class NavigationItem {
 	}
 
 	/**
-	 * Creates the sections under the main titles
+	 * Creates the sections under the main titles depending on if the section item is a Group Item or not. 
+	 * If its not a group item it will set up the item with its correct action. If it is a group item it
+	 * will create a list of child items to be shown underneath. 
+	 * 
 	 * @param adapter
 	 * @param index
 	 * @return
@@ -71,7 +78,7 @@ public abstract class NavigationItem {
 	}
 
 	/**
-	 * Creates the listview underneath the main menu options. Calls create children which sets up the subsections.
+	 * Creates the the main menu options. Calls create children which sets up the subsections.
 	 * @param sectionInfo
 	 * @param adapter
 	 * @param index
@@ -118,7 +125,8 @@ public abstract class NavigationItem {
 
 	/**
 	 * Essentially this is the onclick action for the main menu options. The Fragment Navigation Item
-	 * has an onClick that is what handles making the fragment visible.
+	 * has an onClick that is what handles making the fragment visible. This is the action that is used
+	 * for the main menu options. 
 	 * 
 	 * @param componentInfo
 	 * @param adapter
@@ -134,7 +142,8 @@ public abstract class NavigationItem {
 
 	/**
 	 * Essentially this is the onclick action for the sub section menu options. The Fragment Navigation Item
-	 * has an onClick that is what handles making the fragment visible.
+	 * has an onClick that is what handles making the fragment visible. This is the action that is used for the 
+	 * sub menu sections. 
 	 * 
 	 * @param componentInfo
 	 * @param adapter
@@ -149,8 +158,8 @@ public abstract class NavigationItem {
 	}
 
 	/**
-	 * Essentially this is the onclick action for the main menu options. The Fragment Navigation Item
-	 * has an onClick that is what handles making the fragment visible.
+	 * Essentially this is the onclick action for the main menu options. The Click Navigation Item
+	 * will accept an onclick listener that the onclick will call. This is for the main menu options. 
 	 * 
 	 * @param componentInfo
 	 * @param adapter
@@ -165,8 +174,8 @@ public abstract class NavigationItem {
 	}
 
 	/**
-	 * Essentially this is the onclick action for the sub section menu options. The Fragment Navigation Item
-	 * has an onClick that is what handles making the fragment visible.
+	 * Essentially this is the onclick action for the sub section menu options. The Click Navigation Item
+	 * will accept an onclick listener that the onclick will call. This is for the sub menu options. 
 	 * 
 	 * @param componentInfo
 	 * @param adapter
@@ -180,10 +189,16 @@ public abstract class NavigationItem {
 		return new ClickNavigationItem(componentInfo, adapter, view, absoluteIndex);
 	}
 
+	/**
+	 * Shows the sub menu sctions. 
+	 */
 	void show() {
 		adapter.insert(this, absoluteIndex);
 	}
 
+	/**
+	 * Hides the sub menu sections. 
+	 */
 	void hide() {
 		adapter.remove(this);
 	}

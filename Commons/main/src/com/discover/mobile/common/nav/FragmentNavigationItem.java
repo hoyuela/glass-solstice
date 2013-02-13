@@ -30,8 +30,9 @@ final class FragmentNavigationItem extends NavigationItem {
 
 	@Override
 	void onClick(final ListView listView, final View clickedView) {
+			NavigationIndex.setSubIndex(absoluteIndex);
+			adapter.notifyDataSetChanged();
 			makeVisible();
-		// TODO show highlight if selected
 	}
 
 	private void makeVisible() {
