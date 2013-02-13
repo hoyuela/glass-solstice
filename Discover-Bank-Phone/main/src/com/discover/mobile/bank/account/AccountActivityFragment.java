@@ -7,12 +7,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.ui.table.ActivityTable;
-import com.discover.mobile.bank.ui.table.BankTable;
 import com.discover.mobile.common.BaseFragment;
 
 /**
@@ -75,7 +75,7 @@ public class AccountActivityFragment extends BaseFragment implements DynamicData
 	 */
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
-		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankTable.DATA_LIST);
+		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.DATA_LIST);
 		this.table.showItems(list.activities);
 		this.table.setActivities(list);
 	}

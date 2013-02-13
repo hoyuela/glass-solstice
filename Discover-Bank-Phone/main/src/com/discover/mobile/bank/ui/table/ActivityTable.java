@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
@@ -89,11 +90,11 @@ public class ActivityTable extends BankTable{
 	 */
 	protected void goToDetailsScreen(final int index){
 		final Bundle bundle = new Bundle();
-		bundle.putSerializable(BankTable.DATA_LIST, this.activities);
-		bundle.putInt(BankTable.DATA_SELECTED_INDEX, index);
-		bundle.putInt(BankTable.CATEGORY_SELECTED, getSelectedCategory());
-		bundle.putInt(BankTable.SORT_ORDER, super.getSortState());
-		bundle.putBoolean(BankTable.TITLE_EXPANDED, true);
+		bundle.putSerializable(BankExtraKeys.DATA_LIST, this.activities);
+		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, index);
+		bundle.putInt(BankExtraKeys.CATEGORY_SELECTED, getSelectedCategory());
+		bundle.putInt(BankExtraKeys.SORT_ORDER, super.getSortState());
+		bundle.putBoolean(BankExtraKeys.TITLE_EXPANDED, true);
 		BankNavigator.navigateToActivityDetailScreen(bundle);
 	}
 

@@ -16,7 +16,6 @@ import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
-import com.discover.mobile.bank.ui.table.BankTable;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -213,7 +212,7 @@ ErrorResponseHandler, ExceptionFailureHandler {
 		//Handle the get activity service call
 		else if( sender instanceof GetActivityServerCall){
 			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankTable.DATA_LIST, result);
+			bundle.putSerializable(BankExtraKeys.DATA_LIST, result);
 			BankNavigator.navigateToAccountActivityPage(bundle);
 		}
 		else {
