@@ -78,5 +78,6 @@ public class AccountActivityFragment extends BaseFragment implements DynamicData
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.DATA_LIST);
 		this.table.showItems(list.activities);
 		this.table.setActivities(list);
+
 	}
 }

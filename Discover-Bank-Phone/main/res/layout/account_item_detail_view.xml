@@ -3,16 +3,16 @@
     android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/light_gray_bkgrd" 
-    android:orientation="vertical">
+    android:background="@drawable/light_gray_bkgrd"
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/relative_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:paddingRight="@dimen/forms_inner_padding"
+        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/forms_inner_padding"
-        android:paddingTop="@dimen/forms_inner_padding">
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:paddingTop="@dimen/forms_inner_padding" >
 
         <TextView
             android:id="@+id/title"
@@ -21,27 +21,31 @@
             android:layout_height="wrap_content"
             android:text="@string/edit" />
 
-        <Button
+        <ImageView
             android:id="@+id/previous_button"
             style="@style/white_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/next_button"
-            android:text="&lt;" />
+            android:contentDescription="@string/empty"
+            android:src="@drawable/drk_blue_arrow_left_square" />
 
-        <Button
+        <ImageView
             android:id="@+id/next_button"
             style="@style/white_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/groups_of_elements_padding"
             android:layout_toLeftOf="@+id/help_button"
-            android:text=">" />
+            android:contentDescription="@string/empty"
+            android:src="@drawable/drk_blue_arrow_right_square" />
 
         <ImageView
             android:id="@+id/help_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:contentDescription="@string/empty"
             android:src="@drawable/question_mark_icon" />
 
         <View
@@ -55,8 +59,7 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="@dimen/between_related_elements_padding" >
+        android:layout_height="match_parent" >
     </android.support.v4.view.ViewPager>
 
 </LinearLayout>
