@@ -1,9 +1,5 @@
 package com.discover.mobile.bank.account;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +10,6 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.services.account.activity.ActivityDateDetail;
-import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.ui.table.ActivityTable;
 import com.discover.mobile.bank.ui.table.BankTable;
@@ -49,6 +43,8 @@ public class AccountActivityFragment extends BaseFragment implements DynamicData
 		this.table = (ActivityTable) view.findViewById(R.id.activity_table);
 		this.title = (TextView) view.findViewById(R.id.title);
 
+		//TODO: show stuff on the on resume to prevent slow performance
+
 		/**
 		 * TODO: Remove this
 		 */
@@ -60,34 +56,6 @@ public class AccountActivityFragment extends BaseFragment implements DynamicData
 			}
 
 		});
-
-		final Bundle bundle = this.getArguments();
-		if(null == bundle){
-
-			final ListActivityDetail list = new ListActivityDetail();
-			list.activities = new ArrayList<ActivityDetail>();
-
-			//TODO: Remove this
-			for (int i = 0; i < 10; ++i){
-				final ActivityDetail item = new ActivityDetail();
-				final Random rand = new Random(new Date().getTime() * i);
-				item.id = "" + (65465432 & rand.nextInt());
-				item.amount = "" + rand.nextInt();
-				item.balance = rand.nextInt();
-				item.type = "TRANSACTION";
-				item.dates = new ActivityDateDetail();
-				item.dates.formattedDate = "13/12/1654" ;
-				item.description = "Some description, Chicago, IL";
-				list.activities.add(item);
-			}
-
-			this.table.setActivities(list);
-			this.table.showItems();
-		}else{
-			final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankTable.DATA_LIST);
-			this.table.setActivities(list);
-			this.table.showItems();
-		}
 
 		return view;
 	}
@@ -108,8 +76,7 @@ public class AccountActivityFragment extends BaseFragment implements DynamicData
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankTable.DATA_LIST);
+		this.table.showItems(list.activities);
 		this.table.setActivities(list);
-		this.table.showItems();
 	}
-
 }

@@ -37,6 +37,15 @@
         <item name="android:textSize">@dimen/small_copy_max</item>
     </style>
     
+    <style name="table_text">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>        
+    </style>
+    
+    <style name="blue_table_text" parent="table_text">
+        <item name="android:textColor">@color/blue_link</item>
+    </style>
+    
     <style name="bank_blue_hyperlink">
         <item name="android:textColor">@color/blue_link</item>
         <item name="android:textSize">@dimen/body_copy_min</item>

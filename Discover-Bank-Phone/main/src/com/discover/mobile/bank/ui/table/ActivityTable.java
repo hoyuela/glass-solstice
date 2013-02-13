@@ -1,5 +1,7 @@
 package com.discover.mobile.bank.ui.table;
 
+import java.util.List;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -8,6 +10,7 @@ import android.view.View;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
+import com.discover.mobile.card.R;
 
 /**
  * Table holding activity detail data
@@ -18,6 +21,9 @@ public class ActivityTable extends BankTable{
 
 	/**List of activities*/
 	private ListActivityDetail activities;
+
+	/**Boolean used to decide background of items*/
+	private boolean isWhiteBackground = false;
 
 	/**
 	 * Constructor for the layout
@@ -32,30 +38,33 @@ public class ActivityTable extends BankTable{
 	/**
 	 * Show the items in the table
 	 */
-	@Override
-	public void showItems() {
-		if(null == this.activities || this.activities.activities.isEmpty()){
+	public void showItems(final List<ActivityDetail> activities) {
+		if(null == activities || activities.isEmpty()){
 			super.showNoDataMessage();
 		}else{
 			super.showDataView();
-			createItems();
+			createItems(activities);
 		}
 	}
 
 	/**
 	 * Create a simple table item and display the data in that item.
 	 */
-	private void createItems() {
-		final int length = this.activities.activities.size();
+	private void createItems(final List<ActivityDetail> activities) {
+		final int length = activities.size();
 		ActivityDetail detail;
 		for(int index = 0; index < length; index++){
-			detail = this.activities.activities.get(index);
+			detail = activities.get(index);
 			final BankTableItem item = new BankTableItem(this.context, null, index);
 			item.setDate(detail.dates.formattedDate);
 			item.setDescription(detail.description);
 			item.setAmount(detail.amount);
 			item.setOnClickListener(getClickListener(index));
+			item.setBackgroundResource((this.isWhiteBackground) ? R.color.white
+					: R.color.transaction_table_stripe);
+			this.isWhiteBackground = (this.isWhiteBackground) ? false : true;
 			super.addItem(item);
+
 		}
 
 	}

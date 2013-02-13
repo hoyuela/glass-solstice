@@ -1,6 +1,8 @@
 package com.discover.mobile.bank.ui.table;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import android.content.Context;
@@ -45,11 +47,11 @@ public class BankTableItem extends RelativeLayout {
 		super(context, attrs);
 
 		final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(context)
-				.inflate(R.layout.transaction_item, null);
+				.inflate(R.layout.bank_table_item, null);
 
-		this.date = (TextView) mainView.findViewById(R.id.transaction_date);
-		this.description = (TextView) mainView.findViewById(R.id.transaction_description);
-		this.amount = (TextView) mainView.findViewById(R.id.transaction_amount);
+		this.date = (TextView) mainView.findViewById(R.id.date);
+		this.description = (TextView) mainView.findViewById(R.id.description);
+		this.amount = (TextView) mainView.findViewById(R.id.amount);
 		this.location = location;
 		addView(mainView);
 	}
@@ -59,7 +61,23 @@ public class BankTableItem extends RelativeLayout {
 	 * @param date - date to be displayed
 	 */
 	public void setDate(final String date){
-		this.date.setText(date);
+		this.date.setText(convertDate(date));
+	}
+
+	/**
+	 * Convert the date from the format dd/MM/yyyy to dd/MM/yy
+	 * @param date - date to be converted
+	 * @return the converted date
+	 */
+	public String convertDate(final String date){
+		final SimpleDateFormat serverFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+		final SimpleDateFormat tableFormat = new SimpleDateFormat("dd/MM/yy", Locale.US);
+
+		try{
+			return tableFormat.format(serverFormat.parse(date));
+		} catch (final ParseException e) {
+			return date;
+		}
 	}
 
 	/**

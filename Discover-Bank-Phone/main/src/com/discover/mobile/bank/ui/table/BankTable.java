@@ -17,7 +17,7 @@ import com.discover.mobile.bank.R;
  */
 public abstract class BankTable extends RelativeLayout{
 
-	//TODO: Remove below
+	//TODO: Remove below will be removed at a later time, waiting for rebase
 
 	/**Used to send a list of details to the detail screen from the table*/
 	public static final String DATA_LIST = "data";
@@ -88,11 +88,6 @@ public abstract class BankTable extends RelativeLayout{
 	public void setTitle(final String title){
 		this.title.setText(title);
 	}
-
-	/**
-	 * Show the items in the list.
-	 */
-	public abstract void showItems();
 
 	/**
 	 * Get the string resource of the no items string
