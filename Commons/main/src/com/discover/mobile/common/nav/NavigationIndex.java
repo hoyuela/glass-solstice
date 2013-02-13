@@ -18,8 +18,9 @@ public class NavigationIndex {
 	private static int SUB_INDEX = 1;
 	
 	public static void setSubIndex(int index){
-		if (index == -1 && SUB_INDEX != -1)
+		if (index == -1 && SUB_INDEX != -1){
 			PREVIOUS_SUB_INDEX = SUB_INDEX;
+		}
 		SUB_INDEX = index;
 	}
 	
