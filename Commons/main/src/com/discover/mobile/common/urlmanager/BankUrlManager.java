@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
+import com.google.common.base.Strings;
 
 /**
  * This class is used for adding and getting URL's for bank services. Any bank
@@ -13,14 +14,15 @@ import com.discover.mobile.common.net.json.bank.ReceivedUrl;
  * 
  */
 public class BankUrlManager {
-	  private static final String BASE_URL = "https://beta.discoverbank.com";
+	private static String BASE_URL = "https://beta.discoverbank.com";
+	private static String DISCOVER_STRIPPED_URL = "http://beta.discoverbank.com";
 	//  private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Erin/";
 	//	private static final String BASE_URL = "http://192.168.2.177:8008"; //Henry's Laptop
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
 	//	private static final String BASE_URL = "http://192.168.1.94:8008";
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
-	//private static final String BASE_URL = "http://192.168.1.70:8009"; //Jon's Laptop
-//	private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
+	//  private static final String BASE_URL = "http://192.168.1.70:8009"; //Jon's Laptop
+	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
 
 	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
 	public static final String EMPTY = "";
@@ -28,6 +30,7 @@ public class BankUrlManager {
 	private static final String GET_TOKEN_URL = "/api/auth/token";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
 	private static final String CUSTOMER_SERVICE_URL = "/api/customers/current";
+	private static final String OPEN_ACCOUNT_URL = "https://www.discoverbank.com/banksvcs/login";
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
 	/**
@@ -41,6 +44,15 @@ public class BankUrlManager {
 	public static final String PAYMENTS_URL_KEY = "payments";
 
 
+	/**
+	 * Sets the base URL used for all NetworkServiceCall<> objects used for Bank Service API
+	 * 
+	 * @param value
+	 */
+	public static void setBaseUrl(final String value ) {
+		BASE_URL = value;
+	}
+	
 	/**
 	 * @return the baseUrl
 	 */
@@ -81,15 +93,7 @@ public class BankUrlManager {
 	 * @param key - The key for the URL that needs to be retrieved
 	 */
 	public static String getUrl(final String key) {
-		final String url = links.get(key).url;
-		if(null != url){
-			/**
-			 * Note this is hard coded now, but this will be removed in the future
-			 */
-			return url.replaceAll("http://beta.discoverbank.com", "");
-		}else{
-			return EMPTY;
-		}
+		return getUrl(links, key);
 	}
 
 	/**
@@ -105,4 +109,53 @@ public class BankUrlManager {
 
 		links.putAll(newLinks);
 	}
+	
+	/**
+	 * Method used to clear links cached after a Customer Download.
+	 */
+	public static void clearLinks() {
+		links.clear();
+	}
+
+	/**
+	 * 
+	 * @return Returns the URL for opening a new user account
+	 */
+	public static String getOpenAccountUrl() {
+		return OPEN_ACCOUNT_URL;
+	}
+	
+	/**
+	 * Utility method used to remove base url from the link
+	 * @param link Link with BASE_URL example: http://beta.discoverbank.com/api/token 
+	 * 		  where http://beta.discoverbank.com is the base url.
+	 * @return Returns Relative path in a url, example  http://beta.discoverbank.com/api/token  would return /api/token
+	 */
+	public static String getRelativePath(final String link) {
+		if( !Strings.isNullOrEmpty(link) ) {
+			/**
+			 * Note this is hard coded now, but this will be removed in the future
+			 */
+			return link.replaceAll(DISCOVER_STRIPPED_URL, "");
+		}else{
+			return EMPTY;
+		}
+	}
+	
+	/**
+	 * Utility method used to fetch a link from a hashmap and remove the base url from it.
+	 * 
+	 * @param urls Hashmap with links
+	 * @param key Key used to read a link from the hashmap provided via urls
+	 * @return Returns URL link that was stored in hashmap
+	 */
+	public static String getUrl( final Map<String, ReceivedUrl> urls, final String key) {
+		if( urls != null ) {
+			final String url = urls.get(key).url;
+			return getRelativePath(url);
+		} else {
+			return EMPTY;
+		}
+	}
+	
 }

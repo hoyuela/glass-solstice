@@ -2,6 +2,7 @@ package com.discover.mobile.bank;
 
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.customer.Customer;
+import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
  * Class used to maintain session information for a user logged into a Bank account. This
@@ -77,4 +78,12 @@ public final class BankUser {
 		this.customerInfo = customerInfo;
 	}
 
+	/**
+	 * Used to clear all cached data during the session of a user logged into Bank
+	 */
+	public void clearSession() {
+		accountList = null;
+		customerInfo = null;
+		BankUrlManager.clearLinks();
+	}
 }

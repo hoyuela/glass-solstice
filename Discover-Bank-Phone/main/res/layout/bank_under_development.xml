@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:background="@drawable/home_list_item"
+     android:paddingLeft="@dimen/forms_inner_padding"
+     android:paddingRight="@dimen/forms_inner_padding"
+     android:paddingBottom="@dimen/table_inner_padding"  >
+    
+	 <TextView
+        android:id="@+id/underDev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bank_under_development"
+     	android:layout_centerInParent="true"
+        style="@style/body_copy_title"/>
+</RelativeLayout>

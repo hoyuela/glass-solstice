@@ -123,9 +123,10 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         final int backStackCount = fragmentManager.getBackStackEntryCount();
         
-        if( backStackCount == 1 ) {
-            this.logout();
-        } else {
+        //Only handle back press if there is a fragment in the stack
+        //Otherwise ignore the back press as we do not want to close the application via
+        //Navigation root activity, it should only be closed from the logged in page
+        if( backStackCount > 1 ) {
             super.onBackPressed();
         }
             
