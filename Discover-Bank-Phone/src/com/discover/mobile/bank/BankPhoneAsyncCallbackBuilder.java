@@ -5,11 +5,11 @@ package com.discover.mobile.bank;
 
 import android.app.Activity;
 
+import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback.Builder;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
-import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 
 
@@ -65,11 +65,12 @@ public class BankPhoneAsyncCallbackBuilder {
 	/* (non-Javadoc)
 	 * @see com.discover.mobile.common.delegates.AsyncCallbackFacade#createDefaultCallbackBuilder(java.lang.Class, android.app.Activity, com.discover.mobile.error.ErrorHandlerUi)
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> Builder<T> createDefaultCallbackBuilder(final Class<T> arg0, final Activity activity, final ErrorHandlerUi arg2) {
 		Builder<T> builder = null;
 		
 		builder = GenericAsyncCallback.<T>builder(activity)
-				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.withExceptionFailureHandler(new BankExceptionHandler())
 				.withExceptionFailureHandler(BankNetworkServiceCallManager.getInstance())
 				.withErrorResponseHandler(BankNetworkServiceCallManager.getInstance())
 				.withStartListener(BankNetworkServiceCallManager.getInstance())
@@ -89,7 +90,7 @@ public class BankPhoneAsyncCallbackBuilder {
 		Builder<T> builder = null;
 		
 		builder = GenericAsyncCallback.<T>builder(activity)
-				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.withExceptionFailureHandler(new BankExceptionHandler())
 				.withExceptionFailureHandler(BankNetworkServiceCallManager.getInstance())
 				.withErrorResponseHandler(BankNetworkServiceCallManager.getInstance())
 				.withStartListener(BankNetworkServiceCallManager.getInstance())
