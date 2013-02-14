@@ -129,7 +129,7 @@ public class BankUrlManager {
 	
 	/**
 	 * 
-	 * @return Returns the URL for opening a new user account
+	 * @return Returns the URL for going to account statements
 	 */
 	public static String getStatementsUrl() {
 		return STATEMENTS_URL;
