@@ -45,8 +45,6 @@ tmp/**/*
 .buildpath
 
 # Ignore Project Files Causing Building Issues
-.Phone/main/project.properties
-.project
 Phone/main/src/com/discover/mobile/login/LoginActivity.java.BACKUP.8438.java
 Phone/main/src/com/discover/mobile/login/LoginActivity.java.BASE.8438.java
 Phone/main/src/com/discover/mobile/login/LoginActivity.java.LOCAL.8438.java
