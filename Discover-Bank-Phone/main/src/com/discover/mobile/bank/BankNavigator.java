@@ -10,9 +10,7 @@ import android.util.Log;
 
 import com.discover.mobile.bank.account.AccountActivityFragment;
 import com.discover.mobile.bank.account.AccountActivityViewPager;
-import com.discover.mobile.bank.account.ScheduledTransactionsViewPager;
 import com.discover.mobile.bank.account.BankOpenAccountFragment;
-import com.discover.mobile.bank.account.ScheduledTransactionsViewPager;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
