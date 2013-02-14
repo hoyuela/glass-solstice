@@ -12,6 +12,7 @@ import com.discover.mobile.bank.account.AccountActivityFragment;
 import com.discover.mobile.bank.account.AccountActivityViewPager;
 import com.discover.mobile.bank.account.ScheduledTransactionsViewPager;
 import com.discover.mobile.bank.account.BankOpenAccountFragment;
+import com.discover.mobile.bank.account.ScheduledTransactionsViewPager;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -20,7 +21,6 @@ import com.discover.mobile.bank.paybills.BankPayeeNotEligibleFragment;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.security.EnhancedAccountSecurityActivity;
-import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragmentActivity;
@@ -126,22 +126,6 @@ public class BankNavigator {
 		}
 	}
 
-	/**
-	 * 
-	 * @param account
-	 */
-	public static void navigateToAccountDetails(final Account account) {
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-
-		if( null != activity  ) {
-			activity.makeFragmentVisible(new BankUnderDevelopmentFragment());
-		} else {
-			if( Log.isLoggable(TAG, Log.ERROR)) {
-				Log.e(TAG, "Unable to load Account Details");
-			}
-		}
-
-	}
 
 	/**
 	 * Let the root activity know that the current fragment needs to be changed from the current fragment
@@ -196,9 +180,6 @@ public class BankNavigator {
 
 		activity.showCustomAlert(modal);
 	}
-
-
-	public static void navigateToPayBillStepTwo(final Bundle extras){
 
 	/**
 	 * Let the root activity know that the current fragment needs to be changed from the current fragment

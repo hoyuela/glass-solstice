@@ -9,7 +9,8 @@ import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankServiceCallFactory;
+import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountNumber;
@@ -153,6 +154,12 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	 */
 	@Override
 	public void onClick(final View v) {
-		BankNavigator.navigateToAccountDetails(account);
+		final String link = account.getLink(Account.LINKS_POSTED_ACTIVITY);
+		
+		//Set Current Account to be accessed by other objects in the application
+		BankUser.instance().setCurrentAccount(this.account);
+		
+		//Send Request to download the current accounts posted activity
+		BankServiceCallFactory.createGetActivityServerCall(link).submit();
 	}
 }

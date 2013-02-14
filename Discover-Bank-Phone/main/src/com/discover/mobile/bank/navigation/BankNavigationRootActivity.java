@@ -100,8 +100,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	public ErrorHandler getErrorHandler() {
 		return BankErrorHandler.getInstance();
 	}
-<<<<<<< HEAD
-
+	
 	/**
 	 * Determines if the current fragment is an instance of the dynamic date fragment
 	 * @return if the current fragment is an instance of the dynamic date fragment
@@ -136,7 +135,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	 */
 	public void addDataToDynamicDataFragment(final Bundle bundle){
 		((DynamicDataFragment)this.currentFragment).handleReceivedData(bundle);
-=======
+	}
 	
 	/**
 	 * Method used to show or hide Navigation Menu Button
@@ -178,6 +177,5 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 		final SlidingMenu slidingMenu = this.getSlidingMenu();
 
 		return (slidingMenu.getTouchModeAbove() == SlidingMenu.TOUCHMODE_FULLSCREEN);
->>>>>>> no message
 	}
 }

@@ -1,5 +1,6 @@
 package com.discover.mobile.bank;
 
+import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.common.urlmanager.BankUrlManager;
@@ -27,7 +28,11 @@ public final class BankUser {
 	 * successful download of customer information.
 	 */
 	private Customer customerInfo;
-
+	/**
+	 * Holds a reference to the Account whose details are currently be viewed by the 
+	 * user.
+	 */
+	private Account currentAccount;
 	/**
 	 * Default constructor made private to allow a single instance
 	 */
@@ -85,5 +90,23 @@ public final class BankUser {
 		accountList = null;
 		customerInfo = null;
 		BankUrlManager.clearLinks();
+		currentAccount = null;
+	}
+	
+	/**
+	 * Method used to set the current account being viewed by the user
+	 * 
+	 * @param value Reference to Account whose details are being viewed by the user
+	 */
+	public void setCurrentAccount(final Account value) {
+		currentAccount = value;
+	}
+	
+	/**
+	 * @return Reference to an Account whose details are currently being accessed by the User, 
+	 * 			if not set then returns null.
+	 */
+	public Account getCurrentAccount() {
+		return currentAccount;
 	}
 }
