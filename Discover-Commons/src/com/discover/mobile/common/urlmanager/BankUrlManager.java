@@ -31,7 +31,8 @@ public class BankUrlManager {
 	private static final String GET_TOKEN_URL = "/api/auth/token";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
 	private static final String CUSTOMER_SERVICE_URL = "/api/customers/current";
-	private static final String OPEN_ACCOUNT_URL = "https://www.discoverbank.com/banksvcs/login";
+	private static final String STATEMENTS_URL = "https://www.discoverbank.com/bankac/loginreg/login ";
+	private static final String OPEN_ACCOUNT_URL = "https://www.discover.com/online-banking/savings.html"; 
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
 	/**
@@ -124,6 +125,14 @@ public class BankUrlManager {
 	 */
 	public static String getOpenAccountUrl() {
 		return OPEN_ACCOUNT_URL;
+	}
+	
+	/**
+	 * 
+	 * @return Returns the URL for going to account statements
+	 */
+	public static String getStatementsUrl() {
+		return STATEMENTS_URL;
 	}
 	
 	/**
