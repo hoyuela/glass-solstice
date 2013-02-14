@@ -128,7 +128,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	public void handleReceivedData(final Bundle bundle) {
 		final ListActivityDetail list = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST);
 		activityItems.activities.addAll( list.activities);
-		updateNavigationButtons(viewPager.getCurrentItem());
+		updateNavigationButtons(getViewPager().getCurrentItem());
 
 	}
 

@@ -121,23 +121,9 @@ public class ListItemGenerator {
 	 * @return the dollar amount in string form
 	 */
 	private String convertCentsToDollars(final String cents){
-		if(null != cents){
-			double amount = Double.parseDouble(cents)/100;
-			final StringBuilder formattedString = new StringBuilder();
-
-			if(amount < 0){
-				amount *= -1;
-				formattedString.append("-");
-			}
-			
-			formattedString.append(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
-			
-			return formattedString.toString();
-			
-		} else{
-			return "$0.00";
-		}
+		return convertCentsToDollars(Integer.parseInt(cents));
 	}
+	
 	/**
 	 * Convert the string amount to a dollar amount
 	 * @param cents - dollar amount
@@ -145,18 +131,18 @@ public class ListItemGenerator {
 	 */
 	//TODO: Move to common methods class.
 	private String convertCentsToDollars(final int cents){
-			double amount = (double)cents/100;
-			final StringBuilder formattedString = new StringBuilder();
+		double amount = (double)cents/100;
+		final StringBuilder formattedString = new StringBuilder();
 
-			//If negative, make positive
-			if(amount < 0){
-				amount *= -1;
-				formattedString.append("-");
-			}
+		//If negative, make positive
+		if(amount < 0){
+			amount *= -1;
+			formattedString.append("-");
+		}
 			
-			formattedString.append(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
+		formattedString.append(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
 
-			return formattedString.toString();
+		return formattedString.toString();
 	}
 	
 	public List<ViewPagerListItem> getDetailTransactionList(final ActivityDetail item){

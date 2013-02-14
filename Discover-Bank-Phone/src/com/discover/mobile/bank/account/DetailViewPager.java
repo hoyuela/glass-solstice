@@ -31,9 +31,8 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
 public abstract class DetailViewPager extends BaseFragment {
 	private final String TAG = DetailViewPager.class.getSimpleName();
 		
-	/** View Pager and the adapter that is assigned to it.*/
-	protected ViewPager viewPager;
-	private ViewPagerFragmentAdapter viewPagerAdapter;
+	/** The View Pager*/
+	private ViewPager viewPager;
 	
 	/** The text label to the left of the next/previous buttons that identifies the kind of transaction visible*/
 	private TextView titleLabel;
@@ -89,6 +88,13 @@ public abstract class DetailViewPager extends BaseFragment {
 	}
 	
 	/**
+	 * @return the viewPager
+	 */
+	public ViewPager getViewPager() {
+		return viewPager;
+	}
+	
+	/**
 	 * Updates the text of the label to the left of the next/previous buttons.
 	 * @param titleTextResource a String resource to use as the title label for a transaction.
 	 */
@@ -112,7 +118,7 @@ public abstract class DetailViewPager extends BaseFragment {
 	 * Setup the ViewPager to accept a collection of fragments to show.
 	 */
 	private void setupViewPager() {
-		viewPagerAdapter = new ViewPagerFragmentAdapter(getFragmentManager());
+		final ViewPagerFragmentAdapter viewPagerAdapter = new ViewPagerFragmentAdapter(getFragmentManager());
 		viewPager.setAdapter(viewPagerAdapter);
 		viewPager.setOffscreenPageLimit(2);
 		viewPager.setCurrentItem(getInitialViewPosition());
@@ -129,14 +135,9 @@ public abstract class DetailViewPager extends BaseFragment {
 			}
 			
 			@Override
-			public void onPageScrolled(final int arg0, final float arg1, final int arg2) {
-				
-			}
-			
+			public void onPageScrolled(final int arg0, final float arg1, final int arg2) {}
 			@Override
-			public void onPageScrollStateChanged(final int arg0) {
-				
-			}
+			public void onPageScrollStateChanged(final int arg0) {}
 		});
 		
 		//Disable the sliding menu if the current item is not the first item.
@@ -192,11 +193,11 @@ public abstract class DetailViewPager extends BaseFragment {
 	 * or decrement the index of the view pager to show a different fragment.
 	 */
 	private void setupClickListeners() {
-		final int MINUS_ONE = -1;
-		final int PLUS_ONE = 1;
+		final int minusOne = -1;
+		final int plusOne = 1;
 		
-		previousViewButton.setOnClickListener(getOnClickListenerToAdjustPageIndexBy(MINUS_ONE));
-		nextViewButton.setOnClickListener(getOnClickListenerToAdjustPageIndexBy(PLUS_ONE));
+		previousViewButton.setOnClickListener(getOnClickListenerToAdjustPageIndexBy(minusOne));
+		nextViewButton.setOnClickListener(getOnClickListenerToAdjustPageIndexBy(plusOne));
 	}
 	
 	/**
@@ -255,5 +256,4 @@ public abstract class DetailViewPager extends BaseFragment {
 		
 	}
 		
-	
 }
