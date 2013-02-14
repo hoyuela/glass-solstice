@@ -6,4 +6,10 @@
     <string name="recent_activity_date">Date</string>
 	<string name="recent_activity_description">Description</string>
 	<string name="recent_activity_amount">Amount</string>
+    <string name="activity_online_checking">Online Checking:</string>
+    <string name="activity_available_balance">Available Balance:</string>
+    <string name="activity_current_balance">Current Balance:</string>
+    <string name="activity_posted_button">Activity</string>
+    <string name="activity_scheduled_button">Scheduled</string>
+  
 </resources>

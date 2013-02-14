@@ -44,11 +44,11 @@ public abstract class BankTable extends RelativeLayout{
 		super(context, attrs);
 		final RelativeLayout view = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.bank_table, null);
 
-		this.title = (TextView) view.findViewById(R.id.table_title);
-		this.list = (LinearLayout) view.findViewById(R.id.list);
-		this.empty = (TextView) view.findViewById(R.id.empty);
-		this.filters = (LinearLayout) view.findViewById(R.id.sort_filters);
-		this.line = view.findViewById(R.id.top_line);
+		title = (TextView) view.findViewById(R.id.table_title);
+		list = (LinearLayout) view.findViewById(R.id.list);
+		empty = (TextView) view.findViewById(R.id.empty);
+		filters = (LinearLayout) view.findViewById(R.id.sort_filters);
+		line = view.findViewById(R.id.top_line);
 		this.context = context;
 
 		addView(view);
@@ -73,37 +73,37 @@ public abstract class BankTable extends RelativeLayout{
 	 * @param item - item to add to the list
 	 */
 	protected void addItem(final BankTableItem item){
-		this.list.addView(item);
+		list.addView(item);
 	}
 
 	/**
 	 * Show the no data message
 	 */
 	protected void showNoDataMessage(){
-		this.title.setVisibility(View.GONE);
-		this.empty.setVisibility(View.VISIBLE);
-		this.filters.setVisibility(View.GONE);
-		this.line.setVisibility(View.GONE);
-		this.list.setVisibility(View.GONE);
-		this.empty.setText(this.getResources().getString(getNoItemsMessage()));
+		title.setVisibility(View.GONE);
+		empty.setVisibility(View.VISIBLE);
+		filters.setVisibility(View.GONE);
+		line.setVisibility(View.GONE);
+		list.setVisibility(View.GONE);
+		empty.setText(this.getResources().getString(getNoItemsMessage()));
 	}
 
 	/**
 	 * Show has data view
 	 */
 	protected void showDataView(){
-		this.title.setVisibility(View.VISIBLE);
-		this.empty.setVisibility(View.GONE);
-		this.filters.setVisibility(View.VISIBLE);
-		this.line.setVisibility(View.VISIBLE);
-		this.list.setVisibility(View.VISIBLE);
+		title.setVisibility(View.VISIBLE);
+		empty.setVisibility(View.GONE);
+		filters.setVisibility(View.VISIBLE);
+		line.setVisibility(View.VISIBLE);
+		list.setVisibility(View.VISIBLE);
 	}
 
 	/**
 	 * Clear all views from the list
 	 */
-	protected void clearList(){
-		this.list.removeAllViews();
+	public void clearList(){
+		list.removeAllViews();
 	}
 
 	/**

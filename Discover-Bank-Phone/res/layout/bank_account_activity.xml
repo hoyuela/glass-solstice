@@ -7,34 +7,59 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/light_gray_bkgrd"
-        android:paddingBottom="@dimen/forms_inner_padding">
+        android:paddingBottom="@dimen/forms_inner_padding" >
 
-        <ImageButton
-            android:id="@+id/help"
-            style="@style/orange_help_button"
-            android:layout_width="@dimen/orange_help_button_size"
-            android:layout_height="@dimen/orange_help_button_size"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true" />
-
-        <TextView
-            android:id="@+id/title"
-            style="@style/page_title"
-            android:layout_width="wrap_content"
+        <com.discover.mobile.bank.account.AccountActivityHeader
+            android:id="@+id/header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true" />
+
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/table_inner_padding"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
-        	android:layout_marginLeft="@dimen/forms_inner_padding" 
-            android:layout_toLeftOf="@+id/help"
-            android:text="@string/activity_title" />
+            android:orientation="horizontal"
+            android:weightSum="2" 
+            android:layout_below="@+id/header">
+
+            <ToggleButton
+                android:id="@+id/posted_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_left_on"
+                android:checked="true"
+                android:textColor="@color/white"
+                android:textOff="@string/activity_posted_button"
+                android:textOn="@string/activity_posted_button"
+                android:textSize="@dimen/small_copy_min"
+                android:textStyle="bold"/>
+
+            <ToggleButton
+                android:id="@+id/scheduled_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="false"
+                android:background="@drawable/toggle_right_off"
+                android:textColor="@color/body_copy"
+                android:textOff="@string/activity_scheduled_button"
+                android:textOn="@string/activity_scheduled_button"
+                android:textSize="@dimen/small_copy_min" 
+                android:textStyle="bold"/>
+        </LinearLayout>
 
         <com.discover.mobile.bank.ui.table.ActivityTable
             android:id="@+id/activity_table"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/title"/>
+            android:layout_below="@+id/buttons" />
 
         <TextView
             android:id="@+id/provide_feedback_button"
@@ -47,7 +72,6 @@
             android:layout_marginBottom="@dimen/orange_button_margin_top"
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:text="@string/feedback_text" />
-
     </RelativeLayout>
 
 </ScrollView>

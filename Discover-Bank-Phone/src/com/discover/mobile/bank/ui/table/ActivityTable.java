@@ -26,6 +26,9 @@ public class ActivityTable extends BankTable{
 	/**Boolean used to decide background of items*/
 	private boolean isWhiteBackground = false;
 
+	/**Index that the table is currently on to display data*/
+	private int currentIndex = 0;
+
 	/**
 	 * Constructor for the layout
 	 * @param context - activity context
@@ -52,22 +55,18 @@ public class ActivityTable extends BankTable{
 	 * Create a simple table item and display the data in that item.
 	 */
 	private void createItems(final List<ActivityDetail> activities) {
-		final int length = activities.size();
-		ActivityDetail detail;
-		for(int index = 0; index < length; index++){
-			detail = activities.get(index);
-			final BankTableItem item = new BankTableItem(this.context, null, index);
+		for(final ActivityDetail detail : activities){
+			final BankTableItem item = new BankTableItem(this.context, null, this.currentIndex);
 			item.setDate(detail.dates.formattedDate);
 			item.setDescription(detail.description);
 			item.setAmount(detail.amount);
-			item.setOnClickListener(getClickListener(index));
+			item.setOnClickListener(getClickListener(this.currentIndex));
 			item.setBackgroundResource((this.isWhiteBackground) ? R.color.white
 					: R.color.transaction_table_stripe);
 			this.isWhiteBackground = (this.isWhiteBackground) ? false : true;
 			super.addItem(item);
-
+			this.currentIndex++;
 		}
-
 	}
 
 	/**
