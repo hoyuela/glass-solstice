@@ -48,6 +48,7 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 		setupFirstVisibleFragment();
 		setUpCurrentFragment(savedInstanceState);
 		setStatusBarVisbility();
+		NavigationIndex.clearAll();
 		
 	}
 	

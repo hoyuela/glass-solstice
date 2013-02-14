@@ -18,17 +18,16 @@ final class GroupNavigationItem extends NavigationItem {
 			final List<NavigationItem> children, final int absoluteIndex) {
 
 		super(navigationItemAdapter, view, absoluteIndex);
-
 		this.children = children;
 	}
 
 	@Override
-	void onClick(final ListView listView, final View clickedView) {
-		if(expanded) {
+	void onClick(final ListView listView, final View clickedView) {		if(expanded) {
 			collapse();
 			adapter.setSelectedItem(null);
 		} else {
 			expand();
+			NavigationIndex.setIndex(absoluteIndex);
 			adapter.setSelectedItem(this);
 		}
 	}
@@ -36,7 +35,6 @@ final class GroupNavigationItem extends NavigationItem {
 	private void expand() {
 		if(expanded)
 			return;
-
 		final NavigationItem selectedItem = adapter.getSelectedItem();
 		if(selectedItem != null && selectedItem instanceof GroupNavigationItem)
 			((GroupNavigationItem)selectedItem).collapse();
@@ -50,7 +48,6 @@ final class GroupNavigationItem extends NavigationItem {
 	private void collapse() {
 		if(!expanded)
 			return;
-
 		for(final NavigationItem child : children)
 			child.hide();
 

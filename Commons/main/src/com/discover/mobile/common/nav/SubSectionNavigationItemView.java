@@ -18,9 +18,8 @@ final class SubSectionNavigationItemView extends NavigationItemView {
 	}
 
 	@Override
-	void customizeView(final View view, final TextView titleView) {
-
-		if (view.isSelected()){
+	void customizeView(final View view, final TextView titleView, final boolean selected) {
+		if (selected){
 			titleView.setTextColor(view.getResources().getColor(R.color.orange));
 		}else {
 			titleView.setTextColor(view.getResources().getColor(R.color.white));

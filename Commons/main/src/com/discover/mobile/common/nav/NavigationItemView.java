@@ -8,6 +8,12 @@ import android.widget.TextView;
 import com.discover.mobile.common.R;
 import com.discover.mobile.common.nav.section.ComponentInfo;
 
+/**
+ * Naviation Item view class is what the listvie adapter will call in the getView method. 
+ * 
+ * @author ajleeds
+ *
+ */
 abstract class NavigationItemView {
 
 	final ComponentInfo componentInfo;
@@ -21,9 +27,9 @@ abstract class NavigationItemView {
 
 	abstract int getViewType();
 
-	abstract void customizeView(View view, TextView titleView);
+	abstract void customizeView(View view, TextView titleView, boolean selected);
 
-	final View getView(final View convertView, final LayoutInflater inflater) {
+	final View getView(final View convertView, final LayoutInflater inflater, final int position) {
 		View view;
 
 		if (convertView == null) {
@@ -37,14 +43,22 @@ abstract class NavigationItemView {
 		final ImageView externalLink = (ImageView) view
 				.findViewById(R.id.external);
 		titleView.setText(componentInfo.getTitleResource());
-
 		if (componentInfo.getIsExternalLink()) {
 			externalLink.setVisibility(View.VISIBLE);
 		} else {
 			externalLink.setVisibility(View.GONE);
+		}	
+		boolean selected = false;
+		
+		if (getViewType() == NavigationItemAdapter.TYPE_SECTION && position == NavigationIndex.getMainIndex()){
+			selected = true;
 		}
-
-		customizeView(view, titleView);
+		
+		if (getViewType() == NavigationItemAdapter.TYPE_SUB_SECTION && position == NavigationIndex.getSubIndex()){
+			selected = true;
+		}
+		
+		customizeView(view, titleView, selected);
 
 		return view;
 	}

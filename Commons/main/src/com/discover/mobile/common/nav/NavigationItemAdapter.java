@@ -21,6 +21,7 @@ class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 	
 	private NavigationItem selectedItem;
 	
+	
 	@Inject
 	NavigationItemAdapter(final Context context) {
 		super(context, 0);
@@ -38,7 +39,7 @@ class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 	
 	@Override
 	public View getView(final int position, final View convertView, final ViewGroup parent) {
-		return getItem(position).view.getView(convertView, layoutInflater);
+		return getItem(position).view.getView(convertView, layoutInflater, position);
 	}
 	
 	NavigationItem getSelectedItem() {

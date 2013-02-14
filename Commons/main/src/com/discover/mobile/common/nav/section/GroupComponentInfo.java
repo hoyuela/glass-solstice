@@ -3,7 +3,13 @@ package com.discover.mobile.common.nav.section;
 import javax.annotation.concurrent.Immutable;
 
 import com.google.common.collect.ImmutableList;
-
+/**
+ * This is the object that creates a group of component infos. This object is what is 
+ * needed in order to create a main and sub menu options that show and hide. 
+ * 
+ * @author ajleeds
+ *
+ */
 @Immutable
 public class GroupComponentInfo extends ComponentInfo {
 

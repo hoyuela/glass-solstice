@@ -6,6 +6,12 @@ import android.widget.ListView;
 
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 
+/**
+ * Navigation Item that overrides the onclick to use the custom component info's on click. 
+ * 
+ * @author ajleeds
+ *
+ */
 public class ClickNavigationItem extends NavigationItem {
 
 	final OnClickListener listener;
@@ -17,7 +23,8 @@ public class ClickNavigationItem extends NavigationItem {
 
 	@Override
 	void onClick(final ListView listView, final View clickedView) {
-		clickedView.setSelected(true);
+		NavigationIndex.setSubIndex(absoluteIndex);
+		adapter.notifyDataSetChanged();
 		listener.onClick(clickedView);
 	}
 

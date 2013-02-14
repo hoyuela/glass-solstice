@@ -1,7 +1,13 @@
 package com.discover.mobile.common.nav.section;
 
 import javax.annotation.concurrent.Immutable;
-
+/**
+ * Base Component info class. This class is needed so that the other classes can all share the 
+ * title resource.
+ * 
+ * @author ajleeds
+ *
+ */
 @Immutable
 public abstract class ComponentInfo {
 
