@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.card.CardSessionContext;
@@ -858,7 +859,7 @@ public class LoginActivity extends BaseActivity  {
 		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback.<PreAuthResult> builder(this)
 				.withSuccessListener(new PreAuthSuccessResponseHandler(this))
 				.withErrorResponseHandler(new PreAuthErrorResponseHandler(this))
-				.withExceptionFailureHandler(new BaseExceptionFailureHandler() )
+				.withExceptionFailureHandler(new BankExceptionHandler() )
 				.withCompletionListener(new LockScreenCompletionListener(this)).build();
 
 		new PreAuthCheckCall(this, callback).submit();
@@ -1019,6 +1020,7 @@ public class LoginActivity extends BaseActivity  {
 	/**
 	 * Returns error handler
 	 */
+	@Override
 	public ErrorHandler getErrorHandler(){
 		return  CardErrorHandler.getInstance();
 		
