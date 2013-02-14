@@ -36,7 +36,6 @@ public class BankSelectPayee extends BaseFragment{
 	/**Layout holding the payees*/
 	private LinearLayout payeesList;
 
-
 	/**Text view holding the empty list message*/
 	private TextView empty;
 

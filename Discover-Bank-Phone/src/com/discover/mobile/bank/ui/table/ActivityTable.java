@@ -60,7 +60,7 @@ public class ActivityTable extends BankTable{
 	private void createItems(final List<ActivityDetail> activities) {
 		if(null == activities){return;}
 		for(final ActivityDetail detail : activities){
-			final BankTableItem item = new BankTableItem(context, null, currentIndex);
+			final BankTableItem item = new BankTableItem(this.getContext(), null, currentIndex);
 			item.setDate(detail.dates.formattedDate);
 			item.setDescription(detail.description);
 			item.setAmount(detail.amount);
@@ -96,9 +96,14 @@ public class ActivityTable extends BankTable{
 		bundle.putSerializable(BankExtraKeys.DATA_LIST, activities);
 		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, index);
 		bundle.putInt(BankExtraKeys.CATEGORY_SELECTED, getSelectedCategory());
-		bundle.putInt(BankExtraKeys.SORT_ORDER, super.getSortState());
+		bundle.putInt(BankExtraKeys.SORT_ORDER, getSortState());
 		bundle.putBoolean(BankExtraKeys.TITLE_EXPANDED, true);
 		BankNavigator.navigateToActivityDetailScreen(bundle);
+	}
+
+	private int getSortState() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	/**

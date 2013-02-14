@@ -18,26 +18,22 @@ import com.discover.mobile.bank.R;
 public abstract class BankTable extends RelativeLayout{
 
 	/**Title View*/
-	protected TextView title;
+	private final TextView title;
 
 	/**List shown to the user*/
-	protected LinearLayout list;
+	private final LinearLayout list;
 
 	/**Empty messageTextView*/
-	protected TextView empty;
+	private final TextView empty;
 
 	/**Linear layout holding the sort filters*/
-	protected LinearLayout filters;
+	private final LinearLayout filters;
 
 	/**Divider Line for the table*/
-	protected View bottomLine;
-
+	private final View bottomLine;
 
 	/**Divider Line for the table*/
-	protected View topLine;
-
-	/**Activity context*/
-	protected Context context;
+	private final View topLine;
 
 	/**
 	 * Constructor for the layout
@@ -54,7 +50,6 @@ public abstract class BankTable extends RelativeLayout{
 		filters = (LinearLayout) view.findViewById(R.id.sort_filters);
 		topLine = view.findViewById(R.id.top_line);
 		bottomLine = view.findViewById(R.id.bottom_line);
-		this.context = context;
 
 		addView(view);
 	}
@@ -111,12 +106,5 @@ public abstract class BankTable extends RelativeLayout{
 	 */
 	public void clearList(){
 		list.removeAllViews();
-	}
-
-	/**
-	 * Get the current sort information
-	 */
-	protected int getSortState(){
-		return 0;
 	}
 }
