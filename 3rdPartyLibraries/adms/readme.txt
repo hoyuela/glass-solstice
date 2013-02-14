@@ -1,1 +1,0 @@
-adobe digital marketing suite
