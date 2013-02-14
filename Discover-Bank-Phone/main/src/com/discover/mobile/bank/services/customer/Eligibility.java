@@ -54,13 +54,13 @@ public class Eligibility implements Serializable {
 	 * @return True if customer is eligible for a product, false otherwise
 	 */
 	public boolean isEnrolled() {
-		return (!Strings.isNullOrEmpty(enrolled) && enrolled == "true");
+		return (!Strings.isNullOrEmpty(enrolled) && enrolled.equals("true"));
 	}
 	/**
 	 * 
 	 * @return True if customer is enrolled in a product, false otherwise.
 	 */
 	public boolean isEligible() {
-		return (!Strings.isNullOrEmpty(enrolled) && eligible == "true");
+		return (!Strings.isNullOrEmpty(enrolled) && eligible.equals("true"));
 	}
 }
