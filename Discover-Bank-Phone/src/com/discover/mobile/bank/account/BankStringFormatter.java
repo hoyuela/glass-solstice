@@ -32,6 +32,36 @@ public class BankStringFormatter {
 		}
 	}
 	
+	
+	/**
+	 * Convert the string amount to a dollar amount
+	 * @param cents - dollar amount
+	 * @return the dollar amount in string form
+	 */
+	public static String convertCentsToDollars(final String cents){
+		return convertCentsToDollars(Integer.parseInt(cents));
+	}
+	
+	/**
+	 * Convert the string amount to a dollar amount
+	 * @param cents - dollar amount
+	 * @return the dollar amount in string form
+	 */
+	public static String convertCentsToDollars(final int cents){
+		double amount = (double)cents/100;
+		final StringBuilder formattedString = new StringBuilder();
+
+		//If negative, make positive
+		if(amount < 0){
+			amount *= -1;
+			formattedString.append("-");
+		}
+			
+		formattedString.append(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
+
+		return formattedString.toString();
+	}
+	
 	/**
 	 * Method formats the value provided to have parentheses around it. This method is used
 	 * for formatting the last four digits of a bank with parentheses.  

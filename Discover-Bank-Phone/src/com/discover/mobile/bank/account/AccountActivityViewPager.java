@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
@@ -21,7 +22,7 @@ import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
  */
 public class AccountActivityViewPager extends DetailViewPager implements DynamicDataFragment, FragmentOnBackPressed{
 	private ListActivityDetail activityItems = null;
-	private int initialViewPositon = 0;
+	private int initialViewPosition = 0;
 
 	/**
 	 * Save the state of the ViewPager for rotation.
@@ -36,8 +37,12 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	 * @return the current Fragment Bundle;
 	 */
 	private Bundle getCurrentFragmentBundle() {
-		final Bundle currentBundle = this.getArguments();
-		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, initialViewPositon);
+		Bundle currentBundle = this.getArguments();
+		
+		if(currentBundle == null)
+			currentBundle = new Bundle();
+		
+		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, initialViewPosition);
 		currentBundle.putSerializable(BankExtraKeys.DATA_LIST, activityItems);
 		return currentBundle;
 	}
@@ -67,7 +72,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	public void loadBundleArgs(final Bundle bundle) {
 		if(bundle != null){
 			activityItems = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST);
-			initialViewPositon = bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX);
+			initialViewPosition = bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX);
 		}
 	}
 
@@ -84,7 +89,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	 */
 	@Override
 	protected int getInitialViewPosition() {
-		return initialViewPositon;
+		return initialViewPosition;
 	}
 
 	/**
@@ -135,6 +140,11 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	@Override
 	protected int getTitleForFragment(final int position) {
 		return R.string.transaction;
+	}
+
+	@Override
+	protected void loadMore() {
+		BankServiceCallFactory.createGetActivityServerCall("/api/accounts/1/activity?status=posted").submit();		
 	}
 
 }

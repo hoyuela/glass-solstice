@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
 import com.slidingmenu.lib.SlidingMenu;
@@ -73,6 +72,11 @@ public abstract class DetailViewPager extends BaseFragment {
 	protected abstract int getTitleForFragment(final int position);
 	
 	/**
+	 * Initiate a server call to load more data.
+	 */
+	protected abstract void loadMore();
+	
+	/**
 	 * Inflates the main View for the ViewPager and initializes the ViewPager and buttons.
 	 */
 	@Override
@@ -83,7 +87,8 @@ public abstract class DetailViewPager extends BaseFragment {
 		loadAllViewsFrom(mainView);		
 		setupClickListeners();
 		setupViewPager();
-
+		updateViewPagerState(viewPager.getCurrentItem());
+		
 		return mainView; 
 	}
 	
@@ -128,10 +133,8 @@ public abstract class DetailViewPager extends BaseFragment {
 			
 			@Override
 			public void onPageSelected(final int position) {
-				updateTitleLabel(getTitleForFragment(position));
-				updateSlidingDrawerLock(position);
-				loadMoreIfNeeded(position);
-				updateNavigationButtons(position);
+				updateViewPagerState(position);
+				
 			}
 			
 			@Override
@@ -139,11 +142,19 @@ public abstract class DetailViewPager extends BaseFragment {
 			@Override
 			public void onPageScrollStateChanged(final int arg0) {}
 		});
-		
-		//Disable the sliding menu if the current item is not the first item.
-		if(viewPager.getCurrentItem() > 0)
-			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 
+	}
+	
+	/**
+	 * Updates the state of the view paget by updating the title label, locking or unlocking the sliding
+	 * drawer menu, loading more data if needed, and enableing or disabling the next and previous buttons.
+	 * @param position
+	 */
+	private void updateViewPagerState(final int position) {
+		updateTitleLabel(getTitleForFragment(position));
+		updateSlidingDrawerLock(position);
+		loadMoreIfNeeded(position);
+		updateNavigationButtons(position);
 	}
 	
 	/**
@@ -152,7 +163,7 @@ public abstract class DetailViewPager extends BaseFragment {
 	 * @param position
 	 */
 	private void updateSlidingDrawerLock(final int position) {
-		if(position == 0){
+		if(isCurrentPositionAtStart()){
 			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		}else{
 			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
@@ -166,17 +177,38 @@ public abstract class DetailViewPager extends BaseFragment {
 	 * @param position
 	 */
 	protected void updateNavigationButtons(final int position) {
-		if(position == 0) {
+		
+		if(isCurrentPositionAtStart()) {
 			previousViewButton.setEnabled(false);
 		}else{
 			previousViewButton.setEnabled(true);
 		}
 		
-		if(position == (getViewCount() - 1))
+		if(isCurrentPositionAtEnd())
 			nextViewButton.setEnabled(false);
 		else
 			nextViewButton.setEnabled(true);
 			
+		if(getViewCount() < 2){
+			nextViewButton.setVisibility(View.INVISIBLE);
+			previousViewButton.setVisibility(View.INVISIBLE);
+		}
+	}
+
+	/**
+	 * Checks to see if the view pager is currently at the last visible fragment.
+	 * @return if the view pager is at the last visible fragment.
+	 */
+	private boolean isCurrentPositionAtEnd(){
+		return viewPager.getCurrentItem() == (getViewCount() - 1);
+	}
+
+	/**
+	 * Checks to see if the view pager is at the first visible fragment.
+	 * @return if the view pager is at the first visible fragment.
+	 */
+	private boolean isCurrentPositionAtStart() {
+		return viewPager.getCurrentItem() == 0;
 	}
 	
 	/**
@@ -185,9 +217,10 @@ public abstract class DetailViewPager extends BaseFragment {
 	 */
 	private void loadMoreIfNeeded(final int position) {
 		if((getViewCount() - 1) == position){
-			BankServiceCallFactory.createGetActivityServerCall("/api/accounts/1/activity?status=posted").submit();
+			loadMore();
 		}
 	}
+
 	/**
 	 * Does the setup for the next and previous buttons so that when they are clicked, they will increment
 	 * or decrement the index of the view pager to show a different fragment.
@@ -225,13 +258,13 @@ public abstract class DetailViewPager extends BaseFragment {
 		}
 		return listener;
 	}
+	
 	/**
 	 * The FragmentStatePagerAdapter that is used to send Fragments to the ViewPager.
 	 * @author scottseward
 	 *
 	 */
 	public class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
-
 
 		@Override
 		public Parcelable saveState() {
@@ -251,8 +284,6 @@ public abstract class DetailViewPager extends BaseFragment {
 		public int getCount() {
 			return getViewCount();
 		}
-		
-		
 		
 	}
 		

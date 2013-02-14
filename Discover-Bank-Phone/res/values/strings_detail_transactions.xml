@@ -16,6 +16,7 @@
     <string name="to">To</string>
     <string name="send_on">Send On</string>
     <string name="deliver_by">Deliver By</string>
+    <string name="delivered_on">Delivered On</string>
     <string name="frequency">Frequency</string>
     <string name="available_balance">Available Balance</string>
     <string name="memo">Memo</string>
@@ -24,4 +25,8 @@
     <string name="status">Status</string>
     <string name="confirmation_number">Confirmation Number</string>
     <string name="payment_detail">Payment Detail</string>
+    <string name="scheduled_payment">Scheduled Payment</string>
+    <string name="completed_payment">Completed Payment</string>
+    <string name="edit_payment">Edit Payment</string>
+    <string name="delete_payment">Delete Payment</string>
 </resources>

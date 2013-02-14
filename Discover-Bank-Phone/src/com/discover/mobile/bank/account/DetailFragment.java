@@ -9,9 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
 
 /**
@@ -23,24 +21,25 @@ import com.discover.mobile.common.DiscoverActivityManager;
  *
  */
 public abstract class DetailFragment extends Fragment {
-	public LinearLayout contentTable;
-	private ListItemGenerator generator;
+	private LinearLayout contentTable;
+	protected final ListItemGenerator generator = new ListItemGenerator(DiscoverActivityManager.getActiveActivity());
 
 	protected abstract int getFragmentLayout();
+	protected abstract void loadListItemsTo(final LinearLayout contentTable);
+	protected void customSetup(final View mainView) {
+		
+	}
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		generator = new ListItemGenerator(DiscoverActivityManager.getActiveActivity());
 		
 		final View mainView = inflater.inflate(getFragmentLayout(), null);
 		contentTable = (LinearLayout)mainView.findViewById(R.id.content_table);
-		final Bundle bundle = getArguments();
-		final ActivityDetail item = (ActivityDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		
-		loadListElementsToLayoutFromList(contentTable, generator.getDetailTransactionList(item));
-		
+		loadListItemsTo(contentTable);
+		customSetup(mainView);
 		return mainView;
 	}
 	
