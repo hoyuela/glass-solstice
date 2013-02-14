@@ -30,7 +30,11 @@ public abstract class BankTable extends RelativeLayout{
 	protected LinearLayout filters;
 
 	/**Divider Line for the table*/
-	protected View line;
+	protected View bottomLine;
+
+
+	/**Divider Line for the table*/
+	protected View topLine;
 
 	/**Activity context*/
 	protected Context context;
@@ -48,7 +52,8 @@ public abstract class BankTable extends RelativeLayout{
 		list = (LinearLayout) view.findViewById(R.id.list);
 		empty = (TextView) view.findViewById(R.id.empty);
 		filters = (LinearLayout) view.findViewById(R.id.sort_filters);
-		line = view.findViewById(R.id.top_line);
+		topLine = view.findViewById(R.id.top_line);
+		bottomLine = view.findViewById(R.id.bottom_line);
 		this.context = context;
 
 		addView(view);
@@ -83,7 +88,8 @@ public abstract class BankTable extends RelativeLayout{
 		title.setVisibility(View.GONE);
 		empty.setVisibility(View.VISIBLE);
 		filters.setVisibility(View.GONE);
-		line.setVisibility(View.GONE);
+		topLine.setVisibility(View.GONE);
+		bottomLine.setVisibility(View.GONE);
 		list.setVisibility(View.GONE);
 		empty.setText(this.getResources().getString(getNoItemsMessage()));
 	}
@@ -95,8 +101,9 @@ public abstract class BankTable extends RelativeLayout{
 		title.setVisibility(View.VISIBLE);
 		empty.setVisibility(View.GONE);
 		filters.setVisibility(View.VISIBLE);
-		line.setVisibility(View.VISIBLE);
+		bottomLine.setVisibility(View.VISIBLE);
 		list.setVisibility(View.VISIBLE);
+		topLine.setVisibility(View.VISIBLE);
 	}
 
 	/**

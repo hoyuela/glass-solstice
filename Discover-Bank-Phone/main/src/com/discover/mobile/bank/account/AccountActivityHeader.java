@@ -43,10 +43,11 @@ public class AccountActivityHeader extends RelativeLayout{
 	}
 
 	public void addAccount(final Account account){
+		if(null == account){return;}
 		title.setText(account.nickname);
-		//		this.checking.setText(account.ending);
-		//		this.availableBalance.setText(account.balance);
-		//		this.currentBalance.setText(account.balance);
+		checking.setText(account.accountNumber.formatted);
+		availableBalance.setText(account.balance.formatted);
+		currentBalance.setText(account.balance.formatted);
 	}
 
 	public OnClickListener onClickListener(){
@@ -54,10 +55,10 @@ public class AccountActivityHeader extends RelativeLayout{
 			@Override
 			public void onClick(final View v){
 				if(availableBalance.getVisibility() == View.VISIBLE){
-					image.setBackgroundResource(R.drawable.blue_arrow_down);
+					image.setBackgroundResource(R.drawable.drk_blue_arrow_down);
 					AccountActivityHeader.this.changeVisibility(View.GONE);
 				}else{
-					image.setBackgroundResource(R.drawable.blue_arrow_up);
+					image.setBackgroundResource(R.drawable.drk_blue_arrow_up);
 					AccountActivityHeader.this.changeVisibility(View.VISIBLE);
 				}
 			}

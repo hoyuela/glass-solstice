@@ -116,12 +116,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/top_line"
-        android:background="@color/transaction_table_stripe"
         android:paddingBottom="@dimen/table_inner_padding"
-        android:paddingLeft="@dimen/between_related_elements_padding"
-        android:paddingRight="@dimen/between_related_elements_padding"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
         android:paddingTop="@dimen/table_inner_padding"
-        android:visibility="gone" />
+        android:visibility="gone" 
+        style="@style/plain_body_copy_title"/>
 
     <LinearLayout
         android:id="@+id/list"

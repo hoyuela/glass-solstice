@@ -76,7 +76,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	 * Constructor is made private to follow a singleton design pattern.
 	 */
 	private BankNetworkServiceCallManager() {
-		this.errorHandler = new BankBaseErrorResponseHandler((ErrorHandlerUi) DiscoverActivityManager.getActiveActivity());
+		errorHandler = new BankBaseErrorResponseHandler((ErrorHandlerUi) DiscoverActivityManager.getActiveActivity());
 	}
 
 	/**
@@ -148,7 +148,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 				((AlertDialogParent)activeActivity).closeDialog();
 			}
 		} else {
-			this.errorHandler.handleFailure(sender, error);
+			errorHandler.handleFailure(sender, error);
 
 			((AlertDialogParent)activeActivity).closeDialog();
 		}
@@ -205,18 +205,18 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 			BankNavigator.navigateToHomePage(activeActivity);
 		}
 		//Display StrongAuth Page if it is a response to a StrongAuth GET request with a question or retansmit previous NetworkServiceCall<>
-		else if( sender instanceof CreateStrongAuthRequestCall && this.prevCall != null && sender.isGetCall()) {
+		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isGetCall()) {
 			final BankStrongAuthDetails value = (BankStrongAuthDetails)result;
 			if( !BankStrongAuthDetails.ALLOW_STATUS.equals(value.status ) ) {
 				BankNavigator.navigateToStrongAuth(activeActivity, value, null);
 			} else {
 				//Retransmit the previous NetworkServiceCall<>
-				this.prevCall.retransmit(activeActivity);
+				prevCall.retransmit(activeActivity);
 			}
 		}
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
-		else if( sender instanceof CreateStrongAuthRequestCall && this.prevCall != null && sender.isPostCall() ) {
-			this.prevCall.retransmit(activeActivity);
+		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isPostCall() ) {
+			prevCall.retransmit(activeActivity);
 		}
 		//Handle the payee success call
 		else if( sender instanceof GetPayeeServiceCall){
@@ -255,9 +255,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		activeActivity.startProgressDialog();
 
 		//Update curCall and prevCall it is a different service request
-		if( this.curCall == null || this.curCall.getClass() != sender.getClass() ) {
-			this.prevCall = this.curCall;
-			this.curCall = sender;
+		if( curCall == null || curCall.getClass() != sender.getClass() ) {
+			prevCall = curCall;
+			curCall = sender;
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "Current NetworkServiceCall was not updated!");
@@ -274,9 +274,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	public void complete(final NetworkServiceCall<?> sender, final Object result) {
 		if( sender instanceof BankLogOutCall ) {
 			/**Clear all user cached data*/
-		 	BankUser.instance().clearSession();
+			BankUser.instance().clearSession();
 		}
-		
+
 	}
 
 }

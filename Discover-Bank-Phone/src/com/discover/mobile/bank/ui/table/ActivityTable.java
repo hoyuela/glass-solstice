@@ -29,6 +29,8 @@ public class ActivityTable extends BankTable{
 	/**Index that the table is currently on to display data*/
 	private int currentIndex = 0;
 
+	private boolean isPosted;
+
 	/**
 	 * Constructor for the layout
 	 * @param context - activity context
@@ -36,13 +38,14 @@ public class ActivityTable extends BankTable{
 	 */
 	public ActivityTable(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		super.setTitle("Transactions");
+		super.setTitle(this.getResources().getString(R.string.activity_table_name));
 	}
 
 	/**
 	 * Show the items in the table
 	 */
-	public void showItems(final List<ActivityDetail> activities) {
+	public void showItems(final List<ActivityDetail> activities, final boolean isPosted) {
+		this.isPosted = isPosted;
 		if(null == activities || activities.isEmpty()){
 			super.showNoDataMessage();
 		}else{
@@ -55,17 +58,18 @@ public class ActivityTable extends BankTable{
 	 * Create a simple table item and display the data in that item.
 	 */
 	private void createItems(final List<ActivityDetail> activities) {
+		if(null == activities){return;}
 		for(final ActivityDetail detail : activities){
-			final BankTableItem item = new BankTableItem(this.context, null, this.currentIndex);
+			final BankTableItem item = new BankTableItem(context, null, currentIndex);
 			item.setDate(detail.dates.formattedDate);
 			item.setDescription(detail.description);
 			item.setAmount(detail.amount);
-			item.setOnClickListener(getClickListener(this.currentIndex));
-			item.setBackgroundResource((this.isWhiteBackground) ? R.color.white
+			item.setOnClickListener(getClickListener(currentIndex));
+			item.setBackgroundResource((isWhiteBackground) ? R.color.white
 					: R.color.transaction_table_stripe);
-			this.isWhiteBackground = (this.isWhiteBackground) ? false : true;
+			isWhiteBackground = (isWhiteBackground) ? false : true;
 			super.addItem(item);
-			this.currentIndex++;
+			currentIndex++;
 		}
 	}
 
@@ -89,7 +93,7 @@ public class ActivityTable extends BankTable{
 	 */
 	protected void goToDetailsScreen(final int index){
 		final Bundle bundle = new Bundle();
-		bundle.putSerializable(BankExtraKeys.DATA_LIST, this.activities);
+		bundle.putSerializable(BankExtraKeys.DATA_LIST, activities);
 		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, index);
 		bundle.putInt(BankExtraKeys.CATEGORY_SELECTED, getSelectedCategory());
 		bundle.putInt(BankExtraKeys.SORT_ORDER, super.getSortState());
@@ -111,15 +115,14 @@ public class ActivityTable extends BankTable{
 	 */
 	@Override
 	public int getNoItemsMessage() {
-		// TODO Auto-generated method stub
-		return 0;
+		return (isPosted) ? R.string.activity_no_posted : R.string.activity_no_scheduled;
 	}
 
 	/**
 	 * @return the activities
 	 */
 	public ListActivityDetail getActivities() {
-		return this.activities;
+		return activities;
 	}
 
 	/**
@@ -130,5 +133,11 @@ public class ActivityTable extends BankTable{
 			activities.activities.addAll(0, this.activities.activities);
 		}
 		this.activities = activities;
+	}
+
+	public void clearActivties(){
+		if(null != activities && null != activities.activities){
+			activities.activities.clear();
+		}
 	}
 }

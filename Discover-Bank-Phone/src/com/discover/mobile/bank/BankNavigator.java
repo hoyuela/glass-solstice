@@ -36,7 +36,7 @@ import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
  * @author henryoyuela
  *
  */
-public class BankNavigator {
+public final class BankNavigator {
 	public static final String TAG = BankNavigator.class.getSimpleName();
 
 	/**
@@ -110,7 +110,8 @@ public class BankNavigator {
 	 * 						message to display on the StrongAuthPage.
 	 * 
 	 */
-	public static void navigateToStrongAuth(final Activity activity, final BankStrongAuthDetails details, final String errorMessage) {
+	public static void navigateToStrongAuth(final Activity activity, 
+			final BankStrongAuthDetails details, final String errorMessage) {
 		if( activity.getClass() != EnhancedAccountSecurityActivity.class ) {
 			final Intent strongAuth = new Intent(activity, EnhancedAccountSecurityActivity.class);
 
@@ -172,13 +173,13 @@ public class BankNavigator {
 
 		//Set the dismiss listener that will navigate the user to the browser	
 		modal.setOnDismissListener(new OnDismissListener() {
-	        @Override
-	        public void onDismiss(final DialogInterface arg0) {
-	        	final Intent i = new Intent(Intent.ACTION_VIEW);
-	    		i.setData(Uri.parse(url));
-	    		activity.startActivity(i);
-	        }
-	    });
+			@Override
+			public void onDismiss(final DialogInterface arg0) {
+				final Intent i = new Intent(Intent.ACTION_VIEW);
+				i.setData(Uri.parse(url));
+				activity.startActivity(i);
+			}
+		});
 
 		activity.showCustomAlert(modal);
 	}
@@ -208,7 +209,7 @@ public class BankNavigator {
 	 * Let the root activity know that the current fragment needs to be changed from the current fragment
 	 * to the navigate to pay bills step two page.
 	 */
-	public static void navigateToPayBillStepTwo(final BaseFragmentActivity activity, final Bundle extras){
+	public static void navigateToPayBillStepTwo(final Bundle extras){
 		final SchedulePaymentFragment fragment = new SchedulePaymentFragment();
 		fragment.setArguments(extras);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
@@ -240,7 +241,7 @@ public class BankNavigator {
 			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 		}
 	}
-	
+
 	/**
 	 * Calls the NavigateToAcountActivityPage with false as the default parameter for isGoingBack.
 	 * So that we could add support for going back to the method without breaking the calls that are already in use
