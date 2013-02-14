@@ -6,6 +6,8 @@ import java.util.Locale;
 import com.google.common.base.Strings;
 
 public class BankStringFormatter {
+	public final static String EMPTY_DOLLAR = "$0.00";
+	
 	/**
 	 * Convert the string amount to a dollar amount
 	 * @param dollar - dollar amount
@@ -13,13 +15,29 @@ public class BankStringFormatter {
 	 */
 	public static String convertToDollars(final String dollar){
 		if(null != dollar){
-			final double amount = Double.parseDouble(dollar);
-			return NumberFormat.getCurrencyInstance(Locale.US).format(amount);
+			try {
+				final double amount = Double.parseDouble(dollar);
+				String value = NumberFormat.getCurrencyInstance(Locale.US).format(amount);
+				
+				if( value.startsWith("(") ) {
+					value = "-" + value.substring(1, value.length()-1);
+				}
+				
+				return value;
+			} catch(final Exception ex) {
+				return EMPTY_DOLLAR;
+			}
 		} else{
-			return "$0.00";
+			return EMPTY_DOLLAR;
 		}
 	}
 	
+	/**
+	 * Method formats the value provided to have parentheses around it. This method is used
+	 * for formatting the last four digits of a bank with parentheses.  
+	 * @param value Last four digits of an account number.
+	 * @return
+	 */
 	public static String convertToAccountEnding(final String value){
 		if(!Strings.isNullOrEmpty(value)){
 			final StringBuilder strBuilder = new StringBuilder();

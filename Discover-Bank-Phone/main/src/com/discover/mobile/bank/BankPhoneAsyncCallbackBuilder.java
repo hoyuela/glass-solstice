@@ -65,7 +65,7 @@ public class BankPhoneAsyncCallbackBuilder {
 	/* (non-Javadoc)
 	 * @see com.discover.mobile.common.delegates.AsyncCallbackFacade#createDefaultCallbackBuilder(java.lang.Class, android.app.Activity, com.discover.mobile.error.ErrorHandlerUi)
 	 */
-	public static <T> Builder<T> createDefaultCallbackBuilder(Class<T> arg0, Activity activity, ErrorHandlerUi arg2) {
+	public static <T> Builder<T> createDefaultCallbackBuilder(final Class<T> arg0, final Activity activity, final ErrorHandlerUi arg2) {
 		Builder<T> builder = null;
 		
 		builder = GenericAsyncCallback.<T>builder(activity)
@@ -74,7 +74,8 @@ public class BankPhoneAsyncCallbackBuilder {
 				.withErrorResponseHandler(BankNetworkServiceCallManager.getInstance())
 				.withStartListener(BankNetworkServiceCallManager.getInstance())
 				.withSuccessListener((SuccessListener<T>) BankNetworkServiceCallManager.getInstance())
-				.withCompletionListener(new LockScreenCompletionListener(activity));
+				.withCompletionListener(new LockScreenCompletionListener(activity))
+				.withCompletionListener( BankNetworkServiceCallManager.getInstance() );
 		
 		
 		return builder;
@@ -84,7 +85,7 @@ public class BankPhoneAsyncCallbackBuilder {
 	 * @see com.discover.mobile.common.delegates.AsyncCallbackFacade#createDefaultCallbackBuilder(java.lang.Class, android.app.Activity, com.discover.mobile.error.ErrorHandlerUi, boolean)
 	 */
 	
-	public static <T> Builder<T> createDefaultCallbackBuilder(Class<T> arg0, Activity activity, ErrorHandlerUi arg2, boolean hasProgressDialog) {
+	public static <T> Builder<T> createDefaultCallbackBuilder(final Class<T> arg0, final Activity activity, final ErrorHandlerUi arg2, final boolean hasProgressDialog) {
 		Builder<T> builder = null;
 		
 		builder = GenericAsyncCallback.<T>builder(activity)
@@ -93,7 +94,8 @@ public class BankPhoneAsyncCallbackBuilder {
 				.withErrorResponseHandler(BankNetworkServiceCallManager.getInstance())
 				.withStartListener(BankNetworkServiceCallManager.getInstance())
 				.withSuccessListener((SuccessListener<T>) BankNetworkServiceCallManager.getInstance())
-				.withCompletionListener(new LockScreenCompletionListener(activity));
+				.withCompletionListener(new LockScreenCompletionListener(activity))
+				.withCompletionListener( BankNetworkServiceCallManager.getInstance() );
 		
 		return builder;
 	}

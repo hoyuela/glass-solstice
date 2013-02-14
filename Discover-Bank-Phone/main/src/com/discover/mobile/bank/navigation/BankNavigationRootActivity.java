@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.DynamicDataFragment;
@@ -15,6 +17,7 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.urlmanager.BankUrlManager;
+import com.slidingmenu.lib.SlidingMenu;
 
 /**
  * Root activity for the application after login. This will transition fragment on and off the screen
@@ -97,7 +100,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	public ErrorHandler getErrorHandler() {
 		return BankErrorHandler.getInstance();
 	}
-
+	
 	/**
 	 * Determines if the current fragment is an instance of the dynamic date fragment
 	 * @return if the current fragment is an instance of the dynamic date fragment
@@ -132,5 +135,47 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	 */
 	public void addDataToDynamicDataFragment(final Bundle bundle){
 		((DynamicDataFragment)this.currentFragment).handleReceivedData(bundle);
+	}
+	
+	/**
+	 * Method used to show or hide Navigation Menu Button
+	 * 
+	 * @param value True to show Navigation Menu Button, false otherwise
+	 */
+	public void showNavigationMenuButton(final boolean value) {
+		final ImageView navigationToggle = (ImageView) findViewById(R.id.navigation_button);
+
+		if( null != navigationToggle) {
+			if( value ) {
+				navigationToggle.setVisibility(View.VISIBLE);
+			} else {
+				navigationToggle.setVisibility(View.INVISIBLE);
+			}
+		}
+	}
+	
+	/**
+	 * Method used to enable or disable sliding navigation menu. If disabled
+	 * then user will not be able to use a swipe gesture to see the navigation menu.
+	 * 
+	 * @param value True to enable sliding navigation menu, false otherwise.
+	 */
+	public void enableSlidingMenu(final boolean value) {
+		final SlidingMenu slidingMenu = this.getSlidingMenu();
+
+		if( value ) {
+			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		} else {
+			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+		}
+	}
+
+	/**
+	 * @return True if Sliding Menu is enabled, false otherwise.
+	 */
+	public boolean isSlidingMenuEnabled() {
+		final SlidingMenu slidingMenu = this.getSlidingMenu();
+
+		return (slidingMenu.getTouchModeAbove() == SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 }

@@ -1,13 +1,16 @@
 package com.discover.mobile.bank;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.discover.mobile.bank.account.AccountActivityFragment;
 import com.discover.mobile.bank.account.AccountActivityViewPager;
+import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -21,6 +24,7 @@ import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 
 /**
  * Utility class to centralize the navigation to and from screens in the application.
@@ -120,16 +124,6 @@ public class BankNavigator {
 		}
 	}
 
-	public static void navigateToNoAccounts() {
-		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
-		//TODO: Remove this code once implemented. This is only for QA testing purposes only
-		final CharSequence text = "No Accounts Page Under Development";
-		final int duration = Toast.LENGTH_SHORT;
-
-		final Toast toast = Toast.makeText(DiscoverActivityManager.getActiveActivity(), text, duration);
-		toast.show();
-
-	}
 
 	/**
 	 * Let the root activity know that the current fragment needs to be changed from the current fragment
@@ -138,6 +132,51 @@ public class BankNavigator {
 	public static void navigateToPayBillsLanding(){
 		final BankPayeeNotEligibleFragment fragment = new BankPayeeNotEligibleFragment();
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
+	/**
+	 * Navigates the application to the Open Accounts Page, which is displayed when a Bank user does not have any accounts.
+	 * 
+	 */
+	public static void navigateToOpenAccount() {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+
+		if( null != activity  ) {
+			activity.makeFragmentVisible(new BankOpenAccountFragment());
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unable to load Open Account Page");
+			}
+		}
+	}
+
+	/**
+	 * Navigates a user to the browser using the URL specified. Prior to moving the user to the 
+	 * browser, a modal will be displayed to warn the user that they are navigating away from the application.
+	 * 
+	 * @param url String that holds the url to be used when opening the browser.
+	 */
+	public static void navigateToBrowser(final String url) {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+
+		// Create a one button modal to notify the user that they are leaving the application
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+				R.string.bank_open_browser_title, 
+				R.string.bank_open_browser_text, 
+				false, 
+				R.string.bank_need_help_number_text, 
+				R.string.continue_text);
+
+		//Set the dismiss listener that will navigate the user to the browser	
+		modal.setOnDismissListener(new OnDismissListener() {
+	        @Override
+	        public void onDismiss(final DialogInterface arg0) {
+	        	final Intent i = new Intent(Intent.ACTION_VIEW);
+	    		i.setData(Uri.parse(url));
+	    		activity.startActivity(i);
+	        }
+	    });
+
+		activity.showCustomAlert(modal);
 	}
 
 	/**

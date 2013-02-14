@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
+import com.discover.mobile.common.urlmanager.BankUrlManager;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -12,20 +13,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Bank Accounts service API invocation via GetCustomerAccountsServerCall.
  * 
  * {
- *   "ending": "1111",
  *   "id": 1,
+ *   "accountNumber" : {
+ *		"ending" : "1111",
+ *		"formatted" : "*****1111"
+ *	 },
  *   "name": "Discover Cashback Checking",
  *   "nickname": "My Rewards Checking",
  *   "type": "CHECKING",
- *   "balance": 123456,
+ *   "balance": {
+ *		"value" : 123456,
+ *		"formatted" : "$1234.56"
+ *	 },
  *   "interestRate": {
  *         "numerator": 6,
  *         "denominator":  100,
  *         "formatted" : "0.06%"
  *   }
- *   "interestEarnedLastStatement": 123,
- *   "interestYearToDate": 4321,
- *   "openDate": 2007-04-06T16:14:24.134455Z
+ *  "interestEarnedLastStatement": {
+ *		"value" : 123,
+ *		"formatted" : "$1.23"
+ *	},
+ *	"interestYearToDate": {
+ *		"value" : 4321,
+ *		"formatted" : "$43.21"
+ *	},
+ *	"openDate": {
+ *		"date": "2007-04-06T16:14:24.134455Z",
+ *		"formattedDate": "04/06/2007"
+ *	},
  *   "status" : "OPEN"
  *   "links": {
  *       "self": {
@@ -52,12 +68,45 @@ public class Account implements Serializable {
 	 * Auto-generated serial UID which is used to serialize and de-serialize Account objects
 	 */
 	private static final long serialVersionUID = 2673259114583039084L;
-
+	
+	/**
+	 * Holds a String sued to represent a Checking Account
+	 */
+	public static final String ACCOUNT_CHECKING = "Checking";
+	/**
+	 * Holds a String used to represent an Online Savings type of account
+	 */
+	public static final String ACCOUNT_SAVINGS = "Savings";
+	/**
+	 * Holds a String used to represent an Money Market type of account
+	 */
+	public static final String ACCOUNT_MMA = "Money Market";
+	/**
+	 * Holds a String used to represent an CDs type of account
+	 */
+	public static final String ACCOUNT_CDS = "CD";
+	/**
+	 * Holds a String used to represent an IRA type of account
+	 */
+	public static final String ACCOUNT_IRA= "IRA";
+	/**
+	 * Holds a String used to represent an Loan type of account
+	 */
+	public static final String ACCOUNT_LOANS = "Loan";
+	/**
+	 * Holds a String used to fetch the URL used to downloaded posted activity
+	 */
+	public static final String LINKS_POSTED_ACTIVITY = "postedActivity";
+	/**
+	  * Holds a String used to fetch the URL used to downloaded posted activity
+	 */
+	public static final String LINKS_SCHEDULED_ACTIVITY = "scheduledActivity";
+	
 	/**
 	 * The last four digits of the account number (e.g. 'ending in 1111).
 	 */
-	@JsonProperty("ending")
-	public String ending;
+	@JsonProperty("accountNumber")
+	public AccountNumber accountNumber;
 	
 	/**
 	 * The account id in the list of all accounts for this Banking Customer.
@@ -89,7 +138,7 @@ public class Account implements Serializable {
 	 * represented in cents. (e.g. 12345 would be $123.45)
 	 */
 	@JsonProperty("balance")
-	public String balance;
+	public Money balance;
 	
 	/**
 	 * The current interest rate for the account, if any, specified as a 
@@ -103,20 +152,20 @@ public class Account implements Serializable {
 	 * from last the last statement, represented in cents.(e.g. 12345 would be $123.45)
 	 */
 	@JsonProperty("interestEarnedLastStatement")
-	public String interestEarnedLastStatement;
+	public Money interestEarnedLastStatement;
 	
 	/**
 	 * The amount of interest that was compounded and added to the account balance 'Year to Date', 
 	 * represented in cents. (e.g. 12345 would be $123.45)
 	 */
 	@JsonProperty("interestYearToDate")
-	public String interestYearToDate;
+	public Money interestYearToDate;
 
 	/**
 	 * The timestamp of when the account was opened. Follows ISO 8601, represented in UTC
 	 */
 	@JsonProperty("openDate")
-	public String openDate;
+	public OpenDate openDate;
 	
 	/**
 	 * The status of the account (e.g. 'OPEN' or 'CLOSED')
@@ -124,13 +173,22 @@ public class Account implements Serializable {
 	@JsonProperty("status")
 	public String status;
 	
-	public static final String ACCOUNT_IRA= "IRA";
-	public static final String ACCOUNT_MONEYMARKET= "MONEYMARKET";
-	public static final String ACCOUNT_CHECKING = "CHECKING";
+
 	/**
 	 * Contains Bank web-service API Resource links for postedActivity and scheduledActivity
 	 */
 	@JsonProperty("links")
 	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
-
+	
+	/**
+	 * Read URL from hash-map of links stored in links using a Key.
+	 * 
+	 * @param Key Can be either LINKS_POSTED_ACTIVITY and LINKS_SCHEDULED_ACTIVITY
+	 * @return Returns a ReceivedUrl object which holds the URL link
+	 */
+	public String getLink(final String Key) {
+		
+		return BankUrlManager.getUrl(links, Key);
+	}
+	
 }

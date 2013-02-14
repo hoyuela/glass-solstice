@@ -20,6 +20,8 @@ import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.auth.LogOutCall;
+import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
@@ -41,7 +43,7 @@ import com.google.common.base.Strings;
  *
  */
 final public class BankNetworkServiceCallManager implements StartListener, SuccessListener<Serializable>,
-ErrorResponseHandler, ExceptionFailureHandler {
+ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	/**
 	 * Used to print logs into Android logcat
 	 */
@@ -182,7 +184,8 @@ ErrorResponseHandler, ExceptionFailureHandler {
 			if( BankUser.instance().getCustomerInfo().hasAccounts() ) {
 				BankServiceCallFactory.createGetCustomerAccountsServerCall().submit();
 			} else {
-				BankNavigator.navigateToNoAccounts();
+				//Navigate to home page which will open the Open Accounts view page
+				BankNavigator.navigateToHomePage(activeActivity);
 			}
 		}
 		//Navigate to Account Summary landing page once Account Summary is downloaded
@@ -243,6 +246,20 @@ ErrorResponseHandler, ExceptionFailureHandler {
 				Log.w(TAG, "Current NetworkServiceCall was not updated!");
 			}
 		}
+	}
+
+	/**
+	 * Method defines the implementation of the complete callback defined by CompletionListener.
+	 * Called by NetworkServcieCall<> when a request has been completed irrespective of whether the success
+	 * passed or failed.
+	 */
+	@Override
+	public void complete(final NetworkServiceCall<?> sender, final Object result) {
+		if( sender instanceof LogOutCall ) {
+			/**Clear all user cached data*/
+		 	BankUser.instance().clearSession();
+		}
+		
 	}
 
 }

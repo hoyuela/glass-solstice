@@ -70,7 +70,7 @@ public class LogOutCall extends NetworkServiceCall<Object> {
 	 * @param callback
 	 * @param isCard
 	 */
-	public LogOutCall(final Context context, final AsyncCallback<Object> callback, Boolean isCard){
+	public LogOutCall(final Context context, final AsyncCallback<Object> callback, final Boolean isCard){
 		super(context, getParams(), isCard);
 		
 		handler = new StrongReferenceHandler<Object>(callback);

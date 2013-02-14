@@ -5,14 +5,17 @@ import java.util.Calendar;
 
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSectionInfo;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
+import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.atm.BankAtmLocatorInfo;
 import com.discover.mobile.bank.customerservice.BankCustomerServiceSectionInfo;
 import com.discover.mobile.bank.deposit.BankDepositChecksSectionInfo;
@@ -55,7 +58,10 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		/**
 		 * Initializes the navigation menu
 		 */		
-		NavigationItem.initializeAdapterWithSections(navigationItemAdapter, BANK_SECTION_LIST, new BankAccountSummaryFragment());
+
+		/**Show BankAccountSummaryFragment if user has any accounts otherwise show BankOpenAccountFragment()*/
+		final Fragment homeFragment = ( BankUser.instance().hasAccounts() ) ? new BankAccountSummaryFragment() : new BankOpenAccountFragment();
+		NavigationItem.initializeAdapterWithSections(navigationItemAdapter, BANK_SECTION_LIST, homeFragment);
 		setListAdapter(navigationItemAdapter);
 	}
 	
