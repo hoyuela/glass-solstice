@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Detail Item Titles -->
+    <string name="funds_transfer">Funds Transfer</string>
+    <string name="repeating_funds_transfer">Repeating Funds Transfer</string>
+    <string name="bill_pay">Bill Pay</string>
+    <string name="check_deposit">Check Deposit</string>
+    <string name="transaction">Transaction</string>
+    
+    <!-- Detail Item Cell Labels -->
+    <string name="amount">Amount</string>
+    <string name="description">Description</string>
+    <string name="balance">Balance</string>
+    <string name="date">Date</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="send_on">Send On</string>
+    <string name="deliver_by">Deliver By</string>
+    <string name="frequency">Frequency</string>
+    <string name="available_balance">Available Balance</string>
+    <string name="memo">Memo</string>
+    <string name="payee">Payee</string>
+    <string name="pay_from_acct_ending_in">Pay From (Account Ending in %s)</string>
+    <string name="status">Status</string>
+    <string name="confirmation_number">Confirmation Number</string>
+    <string name="payment_detail">Payment Detail</string>
+</resources>

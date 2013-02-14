@@ -1,8 +1,7 @@
 package com.discover.mobile.bank.account;
 
-import java.util.List;
-
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -12,11 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.account.ViewPagerFragmentFactory.ActivityItem;
 import com.discover.mobile.common.BaseFragment;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -31,41 +30,52 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  */
 public abstract class DetailViewPager extends BaseFragment {
 	private final String TAG = DetailViewPager.class.getSimpleName();
-	
-	private int ORIGINAL_TOUCH_MODE;
-	
-	private ViewPager viewPager;
+		
+	/** View Pager and the adapter that is assigned to it.*/
+	protected ViewPager viewPager;
 	private ViewPagerFragmentAdapter viewPagerAdapter;
 	
+	/** The text label to the left of the next/previous buttons that identifies the kind of transaction visible*/
 	private TextView titleLabel;
 	
-	private Button previousViewButton;
-	private Button nextViewButton;
+	/** The next and previous buttons that can change the visible Fragment*/
+	private ImageView previousViewButton;
+	private ImageView nextViewButton;
 	
+	/** A reference to the sliding menu so we can easily toggle the swipe to open setting*/
 	private SlidingMenu slidingMenu;
 	
+	/** Requires any subclass to define what title label to use for the ViewPager action bar*/
 	@Override
 	public abstract int getActionBarTitle();
+	
 	/**
 	 * Returns a fully constructed Fragment ready to be shown in the ViewPager
 	 * @return a Fragment ready to be displayed in the ViewPager.
 	 */
 	protected abstract Fragment getDetailItem(final int position);
+	
 	/**
 	 * Returns the number of views that can be presented by the ViewPager
 	 * @return the number of views that can be presented by the ViewPager.
 	 */
 	protected abstract int getViewCount();
-	protected abstract List<ActivityItem> getDataSet();
 	
 	/**
-	 * Can be overridden by a subclass to set the initial view position of the ViewPager.
+	 * Must be overridden by a subclass to set the initial view position of the ViewPager.
 	 * @return the position in the data set that should be presented first.
 	 */
-	protected int getInitialViewPosition(){
-		return 0;
-	};
+	protected abstract int getInitialViewPosition();
 
+	/**
+	 * Will return the title for the current Fragment so that transactions can be identified better.
+	 * @return a String resource for the title of the current Fragment/data
+	 */
+	protected abstract int getTitleForFragment(final int position);
+	
+	/**
+	 * Inflates the main View for the ViewPager and initializes the ViewPager and buttons.
+	 */
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,15 +89,9 @@ public abstract class DetailViewPager extends BaseFragment {
 	}
 	
 	/**
-	 * Reset the touch mode of the sliding menu so that it will 
+	 * Updates the text of the label to the left of the next/previous buttons.
+	 * @param titleTextResource a String resource to use as the title label for a transaction.
 	 */
-	@Override
-	public void onPause() {
-		super.onPause();
-		//Restore the original touch mode for the sliding menu when this fragment is paused.
-		slidingMenu.setTouchModeAbove(ORIGINAL_TOUCH_MODE);
-	}
-	
 	public void updateTitleLabel(final int titleTextResource) {
 		titleLabel.setText(titleTextResource);
 	}
@@ -97,8 +101,8 @@ public abstract class DetailViewPager extends BaseFragment {
 	 * @param mainView the inflated layout that contians views that we want to access.
 	 */
 	private void loadAllViewsFrom(final View mainView) {
-		previousViewButton = (Button)mainView.findViewById(R.id.previous_button);
-		nextViewButton = (Button)mainView.findViewById(R.id.next_button);
+		previousViewButton = (ImageView)mainView.findViewById(R.id.previous_button);
+		nextViewButton = (ImageView)mainView.findViewById(R.id.next_button);
 		viewPager = (ViewPager)mainView.findViewById(R.id.view_pager);
 		slidingMenu = ((SlidingFragmentActivity)this.getActivity()).getSlidingMenu();
 		titleLabel = (TextView)mainView.findViewById(R.id.title);
@@ -108,22 +112,20 @@ public abstract class DetailViewPager extends BaseFragment {
 	 * Setup the ViewPager to accept a collection of fragments to show.
 	 */
 	private void setupViewPager() {
-		ORIGINAL_TOUCH_MODE = slidingMenu.getTouchModeAbove();
-		viewPagerAdapter = new ViewPagerFragmentAdapter(getFragmentManager(), getDataSet());
+		viewPagerAdapter = new ViewPagerFragmentAdapter(getFragmentManager());
 		viewPager.setAdapter(viewPagerAdapter);
 		viewPager.setOffscreenPageLimit(2);
 		viewPager.setCurrentItem(getInitialViewPosition());
+		updateTitleLabel(getTitleForFragment(getInitialViewPosition()));
+
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 			
 			@Override
 			public void onPageSelected(final int position) {
-				updateTitleLabel(TransactionFragmentFactory.getTitleForData(getDataSet().get(position)));
-
-				if(position == 0){
-					slidingMenu.setTouchModeAbove(ORIGINAL_TOUCH_MODE);
-				}else{
-					slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-				}
+				updateTitleLabel(getTitleForFragment(position));
+				updateSlidingDrawerLock(position);
+				loadMoreIfNeeded(position);
+				updateNavigationButtons(position);
 			}
 			
 			@Override
@@ -136,12 +138,55 @@ public abstract class DetailViewPager extends BaseFragment {
 				
 			}
 		});
+		
 		//Disable the sliding menu if the current item is not the first item.
 		if(viewPager.getCurrentItem() > 0)
 			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 
 	}
 	
+	/**
+	 * If the position provided is not zero, or, the start of the list, then lock the sliding drawer
+	 * so that the swiping action will not open it, otherwise unlock it.
+	 * @param position
+	 */
+	private void updateSlidingDrawerLock(final int position) {
+		if(position == 0){
+			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		}else{
+			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+		}
+	}
+	
+	/**
+	 * Disables and enables the next and previous buttons based on a passes position value.
+	 * Intended to disabled the previous button when we are at the start or disable the 
+	 * next button if we are at the end and cannot load any more.
+	 * @param position
+	 */
+	protected void updateNavigationButtons(final int position) {
+		if(position == 0) {
+			previousViewButton.setEnabled(false);
+		}else{
+			previousViewButton.setEnabled(true);
+		}
+		
+		if(position == (getViewCount() - 1))
+			nextViewButton.setEnabled(false);
+		else
+			nextViewButton.setEnabled(true);
+			
+	}
+	
+	/**
+	 * If we reach the end of the list of elements, load more if possible.
+	 * @param position
+	 */
+	private void loadMoreIfNeeded(final int position) {
+		if((getViewCount() - 1) == position){
+			BankServiceCallFactory.createGetActivityServerCall("/api/accounts/1/activity?status=posted").submit();
+		}
+	}
 	/**
 	 * Does the setup for the next and previous buttons so that when they are clicked, they will increment
 	 * or decrement the index of the view pager to show a different fragment.
@@ -179,25 +224,34 @@ public abstract class DetailViewPager extends BaseFragment {
 		}
 		return listener;
 	}
-	
-	public static class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
+	/**
+	 * The FragmentStatePagerAdapter that is used to send Fragments to the ViewPager.
+	 * @author scottseward
+	 *
+	 */
+	public class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
 
-		List<ActivityItem> activityItems;
-		
-		public ViewPagerFragmentAdapter(final android.support.v4.app.FragmentManager fragmentManager, final List<ActivityItem> activityItems) {
+
+		@Override
+		public Parcelable saveState() {
+			return null;
+		}
+
+		public ViewPagerFragmentAdapter(final android.support.v4.app.FragmentManager fragmentManager) {
 			super(fragmentManager);
-			this.activityItems = activityItems;
 		}
 
 		@Override
 		public Fragment getItem(final int position) {
-			return TransactionFragmentFactory.getFragmentForData(activityItems.get(position));
+			return getDetailItem(position);
 		}
 
 		@Override
 		public int getCount() {
-			return activityItems.size();
+			return getViewCount();
 		}
+		
+		
 		
 	}
 		

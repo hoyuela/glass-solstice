@@ -28,6 +28,9 @@ public final class BankExtraKeys {
 	/**Used to signify if the table title was expanded*/
 	public static final String TITLE_EXPANDED = "expanded";
 
+	/**Used to send a single data item to a Fragment in the arguments bundle*/
+	public static final String DATA_LIST_ITEM = "item";
+
 	/**Used to signify sort set up*/
 	public static final int SORT_DATE_DESC = 0;
 	public static final int SORT_DATE_ASC = 1;

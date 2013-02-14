@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.account.FragmentOnBackPressed;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
@@ -103,6 +104,26 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	 */
 	public boolean isDynamicDataFragment(){
 		return this.currentFragment instanceof DynamicDataFragment;
+	}
+	
+	/**
+	 * Determines if the current fragment implements the FragmentOnBackPressed interface.
+	 * @return if the current fragment implements the FragmentOnBackPressed interface.
+	 */
+	public boolean isBackPressFragment() {
+		return this.currentFragment instanceof FragmentOnBackPressed;
+	}
+	
+	/**
+	 * Allows a Fragment that implements the FragmentOnBackPressed interface to override the 
+	 * onBackPressed at the Activity level essentially.
+	 */
+	@Override
+	public void onBackPressed() {
+		if(isBackPressFragment()){
+			((FragmentOnBackPressed)this.currentFragment).onBackPressed();
+		}else
+			super.onBackPressed();
 	}
 
 	/**
