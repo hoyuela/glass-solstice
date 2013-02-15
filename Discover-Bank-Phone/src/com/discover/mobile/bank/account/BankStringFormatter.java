@@ -7,7 +7,10 @@ import com.google.common.base.Strings;
 
 public class BankStringFormatter {
 	public final static String EMPTY_DOLLAR = "$0.00";
-	
+
+	/**String representing a negative*/
+	public static final String NEGATIVE = "-";
+
 	/**
 	 * Convert the string amount to a dollar amount
 	 * @param dollar - dollar amount
@@ -18,11 +21,11 @@ public class BankStringFormatter {
 			try {
 				final double amount = Double.parseDouble(dollar);
 				String value = NumberFormat.getCurrencyInstance(Locale.US).format(amount);
-				
+
 				if( value.startsWith("(") ) {
 					value = "-" + value.substring(1, value.length()-1);
 				}
-				
+
 				return value;
 			} catch(final Exception ex) {
 				return EMPTY_DOLLAR;
@@ -31,8 +34,8 @@ public class BankStringFormatter {
 			return EMPTY_DOLLAR;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Convert the string amount to a dollar amount
 	 * @param cents - dollar amount
@@ -41,7 +44,7 @@ public class BankStringFormatter {
 	public static String convertCentsToDollars(final String cents){
 		return convertCentsToDollars(Integer.parseInt(cents));
 	}
-	
+
 	/**
 	 * Convert the string amount to a dollar amount
 	 * @param cents - dollar amount
@@ -56,12 +59,12 @@ public class BankStringFormatter {
 			amount *= -1;
 			formattedString.append("-");
 		}
-			
+
 		formattedString.append(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
 
 		return formattedString.toString();
 	}
-	
+
 	/**
 	 * Method formats the value provided to have parentheses around it. This method is used
 	 * for formatting the last four digits of a bank with parentheses.  
