@@ -3,6 +3,7 @@ package com.discover.mobile.bank.paybills;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -15,6 +16,12 @@ import com.discover.mobile.common.BaseFragment;
 
 public class ReviewPaymentsTable extends BaseFragment implements DynamicDataFragment, SortableTable{
 
+	private ToggleButton scheduled;
+
+	private ToggleButton completed;
+
+	private ToggleButton canceled;
+
 	/** Create the view
 	 * @param inflater - inflater to inflate the layout
 	 * @param container - container holding the group
@@ -26,6 +33,40 @@ public class ReviewPaymentsTable extends BaseFragment implements DynamicDataFrag
 
 		final View view = inflater.inflate(R.layout.review_payments_header, null);
 		final TableTitles tableTitle = (TableTitles)view.findViewById(R.id.table_titles);
+		scheduled = (ToggleButton) view.findViewById(R.id.toggle_left);
+		completed = (ToggleButton) view.findViewById(R.id.toggle_middle);
+		canceled  = (ToggleButton) view.findViewById(R.id.toggle_right);
+
+		scheduled.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(final View v) {
+				toggleButton(0);
+
+			}
+
+		});
+
+		completed.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(final View v) {
+				toggleButton(1);
+
+			}
+
+		});
+
+		canceled.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(final View v) {
+				toggleButton(2);
+
+			}
+
+		});
+
 		tableTitle.setFragment(this);
 		tableTitle.setFilterOneText("Date");
 		tableTitle.setFilterTwoText("Payee");
@@ -61,27 +102,33 @@ public class ReviewPaymentsTable extends BaseFragment implements DynamicDataFrag
 	 * @param notChecke - toggle button that is not checked
 	 * @param isPosted - boolean to set is posted equal to
 	 */
-	public void toggleButton(final ToggleButton first, final ToggleButton notChecked,  final int checked){
-		//		checked.setTextColor(getResources().getColor(R.color.white));
-		//		notChecked.setTextColor(getResources().getColor(R.color.body_copy));
-		//
-		//
-		//		switch(checked){
-		//		case 0: break;
-		//		case 1: break;
-		//		case 2: break;
-		//		default: break;
-		//		}
-		//
-		//
-		//		if(isPosted){
-		//			notChecked.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_off));
-		//			checked.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_on));
-		//		}else{
-		//			notChecked.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_off));
-		//			checked.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_on));
-		//		}
-		//		notChecked.setChecked(false);
+	public void toggleButton(final int checked){
+		switch(checked){
+		case 0: 
+			scheduled.setTextColor(getResources().getColor(R.color.white));
+			completed.setTextColor(getResources().getColor(R.color.body_copy));
+			canceled.setTextColor(getResources().getColor(R.color.body_copy));
+			scheduled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_on));
+			completed.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_mid_off));
+			canceled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_off));
+			break;
+		case 1: 
+			scheduled.setTextColor(getResources().getColor(R.color.body_copy));
+			completed.setTextColor(getResources().getColor(R.color.white));
+			canceled.setTextColor(getResources().getColor(R.color.body_copy));
+			scheduled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_off));
+			completed.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_mid_on));
+			canceled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_off));
+			break;
+		case 2: 
+			scheduled.setTextColor(getResources().getColor(R.color.body_copy));
+			completed.setTextColor(getResources().getColor(R.color.body_copy));
+			canceled.setTextColor(getResources().getColor(R.color.white));
+			scheduled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_off));
+			completed.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_mid_off));
+			canceled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_on));
+			break;
+		}
 	}
 
 	@Override
