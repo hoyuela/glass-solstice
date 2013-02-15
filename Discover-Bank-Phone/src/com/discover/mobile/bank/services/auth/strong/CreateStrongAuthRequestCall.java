@@ -2,14 +2,14 @@ package com.discover.mobile.bank.services.auth.strong;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
  * The Bank Login call for retrieving a valid token and any URL's that are
@@ -19,7 +19,7 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  * 
  */
 public class CreateStrongAuthRequestCall extends
-		JsonResponseMappingNetworkServiceCall<BankStrongAuthDetails> {
+		BankJsonResponseMappingNetworkServiceCall<BankStrongAuthDetails> {
 
 	private final TypedReferenceHandler<BankStrongAuthDetails> handler;
 
@@ -41,7 +41,7 @@ public class CreateStrongAuthRequestCall extends
 			
 			// Specify what error parser to use when receiving an error response
 			errorResponseParser = BankErrorResponseParser.instance();
-		}}, BankStrongAuthDetails.class, false);
+		}}, BankStrongAuthDetails.class);
 		handler = new StrongReferenceHandler<BankStrongAuthDetails>(callback);
 	}
 	
@@ -62,7 +62,7 @@ public class CreateStrongAuthRequestCall extends
 			
 			sendDeviceIdentifiers = true;
 			body = details;
-		}}, BankStrongAuthDetails.class, false);
+		}}, BankStrongAuthDetails.class);
 		handler = new StrongReferenceHandler<BankStrongAuthDetails>(callback);
 	}
 

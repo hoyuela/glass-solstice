@@ -12,11 +12,11 @@ import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.FragmentOnBackPressed;
 import com.discover.mobile.bank.error.BankErrorHandler;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**

@@ -32,25 +32,15 @@ public abstract class UnamedListJsonResponseMappingNetworkServiceCall<M, I> exte
 	 */
 	protected UnamedListJsonResponseMappingNetworkServiceCall(final Context context, final ServiceCallParams params,
 			final Class<M> modelClass, final Class<I> innerClass) {
-		this(context, params, modelClass, innerClass, true);
-	}
-
-	/**
-	 * JSON Response mapping service for Bank.
-	 * @param context
-	 * @param params
-	 * @param modelClass
-	 * @param isCard Determines if the card base url is used.
-	 */
-	protected UnamedListJsonResponseMappingNetworkServiceCall(final Context context, final ServiceCallParams params,
-			final Class<M> modelClass, final Class<I> innerClass, final boolean isCard) {
-
-		super(context, params, modelClass, isCard);
+		super(context, params, modelClass);
 		checkNotNull(modelClass, "modelClass cannot be null");
 
 		this.innerClass = innerClass;
 		Log.d(TAG, modelClass.toString());
+		
 	}
+
+
 
 	@Override
 	protected M parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)

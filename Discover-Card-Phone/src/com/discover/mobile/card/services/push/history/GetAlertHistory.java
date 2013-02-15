@@ -2,19 +2,19 @@ package com.discover.mobile.card.services.push.history;
 
 import android.content.Context;
 
+import com.discover.mobile.card.services.CardJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.card.services.push.GetPushPreferenceReferenceHandler;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 /**
  * Get the alert history
  * @author jthornton
  *
  */
-public class GetAlertHistory  extends JsonResponseMappingNetworkServiceCall<NotificationListDetail>{
+public class GetAlertHistory  extends CardJsonResponseMappingNetworkServiceCall<NotificationListDetail>{
 
 	/**Reference handler to allow the call to be back on the UI*/
 	private final TypedReferenceHandler<NotificationListDetail> handler;

@@ -7,11 +7,11 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.discover.mobile.card.CardSessionContext;
+import com.discover.mobile.card.services.auth.AccountDetails;
+import com.discover.mobile.card.services.auth.AuthenticateCall;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.auth.AccountDetails;
-import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;

@@ -7,13 +7,14 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
  * Used for invoking the Bank - Payee Service API found at ./api/payees/. The JSON
@@ -72,7 +73,7 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  * @author jthornton
  *
  */
-public class GetPayeeServiceCall extends UnamedListJsonResponseMappingNetworkServiceCall<ListPayeeDetail, PayeeDetail> {
+public class GetPayeeServiceCall extends BankUnamedListJsonResponseMappingNetworkServiceCall<ListPayeeDetail, PayeeDetail> {
 
 	/**Reference handler to return the data to the UI*/
 	private final TypedReferenceHandler<ListPayeeDetail> handler;
@@ -101,7 +102,7 @@ public class GetPayeeServiceCall extends UnamedListJsonResponseMappingNetworkSer
 				this.errorResponseParser = BankErrorResponseParser.instance();
 
 			}
-		}, ListPayeeDetail.class, PayeeDetail.class, false);
+		}, ListPayeeDetail.class, PayeeDetail.class);
 
 		this.handler = new SimpleReferenceHandler<ListPayeeDetail>(callback);
 	}

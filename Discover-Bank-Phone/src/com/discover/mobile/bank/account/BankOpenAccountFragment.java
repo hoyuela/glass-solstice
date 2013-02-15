@@ -10,9 +10,9 @@ import android.widget.Button;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
  * Fragment class used to display the Open Account page to the user when they do not have any accounts.

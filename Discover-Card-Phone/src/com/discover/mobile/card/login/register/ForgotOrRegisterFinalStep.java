@@ -16,16 +16,15 @@ import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.card.push.register.PushRegistrationStatusSuccessListener;
+import com.discover.mobile.card.services.auth.AccountDetails;
+import com.discover.mobile.card.services.auth.AuthenticateCall;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.card.services.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail;
-import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.ScreenType;
-import com.discover.mobile.common.auth.AccountDetails;
-import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
@@ -34,6 +33,7 @@ import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -187,7 +187,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 
 			@Override
 			public void onClick(final View v) {
-				CommonMethods.dialNumber(helpText.getText().toString(), currentContext);
+				CommonUtils.dialNumber(helpText.getText().toString(), currentContext);
 			}
 		});
 	}

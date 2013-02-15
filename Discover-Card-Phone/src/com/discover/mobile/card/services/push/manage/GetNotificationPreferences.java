@@ -2,12 +2,12 @@ package com.discover.mobile.card.services.push.manage;
 
 import android.content.Context;
 
+import com.discover.mobile.card.services.CardJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.card.services.push.GetPushPreferenceReferenceHandler;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -15,7 +15,7 @@ import com.xtify.sdk.api.XtifySDK;
  * @author jthornton
  *
  */
-public class GetNotificationPreferences extends JsonResponseMappingNetworkServiceCall<PushNotificationPrefsDetail>{
+public class GetNotificationPreferences extends CardJsonResponseMappingNetworkServiceCall<PushNotificationPrefsDetail>{
 
 	/**Reference handler to allow the call to be back on the UI*/
 	private final TypedReferenceHandler<PushNotificationPrefsDetail> handler;

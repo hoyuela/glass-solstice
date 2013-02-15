@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.discover.mobile.common.urlmanager.BankUrlManager;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.google.common.base.Strings;
 
 /**

@@ -9,8 +9,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
-import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.R;
+import com.discover.mobile.common.utils.CommonUtils;
 
 public class ConfirmationEditText extends ValidatedInputField {
 	private boolean isUserId = false;
@@ -145,7 +145,7 @@ public class ConfirmationEditText extends ValidatedInputField {
 			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
 
 				if(isUserId)
-					CommonMethods.setInputToLowerCase(s, self);
+					CommonUtils.setInputToLowerCase(s, self);
 				if(count > 0)
 					isInDefaultState = false;
 

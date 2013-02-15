@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.CommonMethods;
+import com.discover.mobile.common.utils.CommonUtils;
 
 public class CustomerServiceContactsFragment extends BaseFragment {
 	/** The LinearLayouts in the view that will have elements inserted into them. */
@@ -78,16 +78,16 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 */
 	private void hideBankElements(final View mainView) {
 		//Hide the "Discover Card" titles.
-		CommonMethods.setViewInvisible(mainView.findViewById(R.id.card_phone_title_label));
-		CommonMethods.setViewInvisible(mainView.findViewById(R.id.card_mail_title_label));
+		CommonUtils.setViewInvisible(mainView.findViewById(R.id.card_phone_title_label));
+		CommonUtils.setViewInvisible(mainView.findViewById(R.id.card_mail_title_label));
 
 		//Hide bank mailing addresses and its title.
-		CommonMethods.setViewGone(mainView.findViewById(R.id.bank_mail_title_label));
-		CommonMethods.setViewGone(mainView.findViewById(R.id.bank_mail_address_list));
+		CommonUtils.setViewGone(mainView.findViewById(R.id.bank_mail_title_label));
+		CommonUtils.setViewGone(mainView.findViewById(R.id.bank_mail_address_list));
 
 		//Hide bank phone numbers and its title.
-		CommonMethods.setViewGone(mainView.findViewById(R.id.bank_phone_title_label));
-		CommonMethods.setViewGone(mainView.findViewById(R.id.bank_phone_numbers_list));
+		CommonUtils.setViewGone(mainView.findViewById(R.id.bank_phone_title_label));
+		CommonUtils.setViewGone(mainView.findViewById(R.id.bank_phone_numbers_list));
 
 	}
 	
@@ -98,15 +98,15 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 */
 	private void hideCardElements(final View mainView) {
 		//Hide the "Discover Bank" titles.
-		CommonMethods.setViewInvisible(mainView.findViewById(R.id.bank_mail_title_label));
-		CommonMethods.setViewInvisible(mainView.findViewById(R.id.bank_phone_title_label));
+		CommonUtils.setViewInvisible(mainView.findViewById(R.id.bank_mail_title_label));
+		CommonUtils.setViewInvisible(mainView.findViewById(R.id.bank_phone_title_label));
 		
-		CommonMethods.setViewGone(mainView.findViewById(R.id.card_mail_title_label));
-		CommonMethods.setViewGone(mainView.findViewById(R.id.card_mail_address_list));
+		CommonUtils.setViewGone(mainView.findViewById(R.id.card_mail_title_label));
+		CommonUtils.setViewGone(mainView.findViewById(R.id.card_mail_address_list));
 
 		//Hide bank phone numbers and its title.
-		CommonMethods.setViewGone(mainView.findViewById(R.id.card_phone_title_label));
-		CommonMethods.setViewGone(mainView.findViewById(R.id.card_phone_numbers_list));
+		CommonUtils.setViewGone(mainView.findViewById(R.id.card_phone_title_label));
+		CommonUtils.setViewGone(mainView.findViewById(R.id.card_phone_numbers_list));
 	}
 	
 

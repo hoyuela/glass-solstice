@@ -10,6 +10,7 @@ import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.card.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.CardFacade;
@@ -48,6 +49,17 @@ public class CardFacadeImpl implements CardFacade{
 	@Override
 	public ErrorHandler getCardErrorHandler() {
 		return CardErrorHandler.getInstance();
+	}
+
+	@Override
+	public String getPreAuthUrl() {
+		return CardUrlManager.getPreAuthUrl();
+	}
+
+	@Override
+	public void initPhoneGap() {
+		//TODO add phone gap initialization code here!
+		
 	}
 	
 	

@@ -5,10 +5,10 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.FragmentComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 public final class BankAccountSectionInfo extends GroupComponentInfo {
 

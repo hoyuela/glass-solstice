@@ -2,19 +2,19 @@ package com.discover.mobile.card.services.account.summary;
 
 import android.content.Context;
 
+import com.discover.mobile.card.services.CardJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 /**
  * Get the late payment warning information
  * @author jthornton
  *
  */
-public class GetLatePaymentWarning  extends JsonResponseMappingNetworkServiceCall<LatePaymentWarningDetail>{
+public class GetLatePaymentWarning  extends CardJsonResponseMappingNetworkServiceCall<LatePaymentWarningDetail>{
 
 	/**Reference handler to allow the call to be back on the UI*/
 	private final TypedReferenceHandler<LatePaymentWarningDetail> handler;

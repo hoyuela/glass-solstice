@@ -29,19 +29,18 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
-import com.discover.mobile.common.CommonMethods;
+import com.discover.mobile.card.services.auth.strong.GetStrongAuthQuestionCall;
+import com.discover.mobile.card.services.auth.strong.StrongAuthCheckCall;
+import com.discover.mobile.card.services.auth.strong.StrongAuthDetails;
+import com.discover.mobile.card.services.auth.strong.StrongAuthErrorResponse;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.GetStrongAuthQuestionCall;
-import com.discover.mobile.common.auth.strong.StrongAuthCheckCall;
-import com.discover.mobile.common.auth.strong.StrongAuthDetails;
-import com.discover.mobile.common.auth.strong.StrongAuthErrorResponse;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
-import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -51,6 +50,7 @@ import com.discover.mobile.common.ui.widgets.CustomDatePickerDialog;
 import com.discover.mobile.common.ui.widgets.DatePickerEditText;
 import com.discover.mobile.common.ui.widgets.SsnEditText;
 import com.discover.mobile.common.ui.widgets.UsernameOrAccountNumberEditText;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * AbstractAccountInformationActivity this activity handles the forgot user password, both, and registration.
@@ -239,7 +239,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 
 			@Override
 			public void onClick(final View v) {
-				CommonMethods.dialNumber(helpNumber.getText().toString(), currentContext);				
+				CommonUtils.dialNumber(helpNumber.getText().toString(), currentContext);				
 			}
 		});
 	}
@@ -393,7 +393,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 * Update the state of all input fields based on their input and hide the main error label.
 	 */
 	private void updateAllErrorStates() {
-		CommonMethods.setViewGone(errorMessageLabel);
+		CommonUtils.setViewGone(errorMessageLabel);
 		accountIdentifierField.updateAppearanceForInput();
 		birthDatePicker.updateAppearanceForInput();
 		cardExpDatePicker.updateAppearanceForInput();
@@ -533,7 +533,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 */
 	public void showMainErrorLabelWithText(final String text) {
 		errorMessageLabel.setText(text);
-		CommonMethods.setViewVisible(errorMessageLabel);
+		CommonUtils.setViewVisible(errorMessageLabel);
 	}
 
 	/**
@@ -665,7 +665,12 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 				strongAuthQuestion = value.questionText;
 				strongAuthQuestionId = value.questionId;
 
-				FacadeFactory.getStrongAuthFacade().navToCardStrongAuth(ForgotOrRegisterFirstStep.this,strongAuthQuestion,strongAuthQuestionId);
+				final Intent strongAuth = new Intent(ForgotOrRegisterFirstStep.this, EnhancedAccountSecurityActivity.class);
+
+				strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, strongAuthQuestion);
+				strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, strongAuthQuestionId);
+
+				startActivity(strongAuth);
 
 			}
 

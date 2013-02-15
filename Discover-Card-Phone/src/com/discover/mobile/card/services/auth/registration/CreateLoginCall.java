@@ -3,14 +3,15 @@ package com.discover.mobile.card.services.auth.registration;
 import android.content.Context;
 import android.util.Base64;
 
+import com.discover.mobile.card.services.CardJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
+import com.google.common.collect.ImmutableMap;
 
-public class CreateLoginCall extends JsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
+public class CreateLoginCall extends CardJsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
 	
 	private final TypedReferenceHandler<RegistrationConfirmationDetails> handler;
 
@@ -18,14 +19,14 @@ public class CreateLoginCall extends JsonResponseMappingNetworkServiceCall<Regis
 			final CreateLoginDetails formData) {
 		
 		super(context, new PostCallParams(CardUrlManager.getLoginUrl()) {{
-			// FIXME remove this code if not necessary
-//			final String authString = getAuthorizationString(formData.acctNbr, formData.password);
-//			headers = ImmutableMap.<String,String>builder()
-//					.put("Authorization", authString)
-//					.put("X-Override-UID", "true")
-//					.build();
 			
-//			clearsSessionBeforeRequest = true;
+			final String authString = getAuthorizationString(formData.acctNbr, formData.password);
+			headers = ImmutableMap.<String,String>builder()
+					.put("Authorization", authString)
+					.put("X-Override-UID", "true")
+					.build();
+			
+			clearsSessionBeforeRequest = true;
 
 			requiresSessionForRequest = true;
 			

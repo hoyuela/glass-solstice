@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/light_gray_bkgrd"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:padding="@dimen/forms_inner_padding" >
+
+        <TextView
+            android:id="@+id/account_security_server_error"
+            style="@style/error_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="@string/account_security_answer_doesnt_match"/>
+
+        <TextView
+            android:id="@+id/account_security_label"
+            style="@style/title_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_server_error"
+            android:text="@string/account_security_text" />
+
+        <TextView
+            android:id="@+id/account_security_info_label"
+            style="@style/small_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/account_security_label"
+            android:layout_below="@+id/account_security_label"
+            android:paddingTop="4dp"
+            android:text="@string/account_security_info_text" />
+
+        <TextView
+            android:id="@+id/account_security_question_placeholder_label"
+            style="@style/smallest_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_info_label"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:text="@string/account_security_placeholder_text" />
+
+        <com.discover.mobile.common.ui.widgets.NonEmptyEditText
+            android:id="@+id/account_security_question_answer_field"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/input_field_height"
+            android:layout_below="@+id/account_security_question_placeholder_label"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:hint="@string/empty"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions"
+            android:textCursorDrawable="@null" />
+
+        <TextView
+            android:id="@+id/error_message_strong_auth"
+            style="@style/error_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_question_answer_field"
+            android:layout_marginTop="@dimen/between_related_elements_padding" />
+
+        <TextView
+            android:id="@+id/account_security_remember_device_label"
+            style="@style/smallest_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/error_message_strong_auth"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:text="@string/account_security_remember_device_text" />
+
+        <RelativeLayout
+            android:id="@+id/account_security_whats_this_relative_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_choice_radio_group"
+            android:onClick="expandHelpMenu" >
+
+            <View
+                android:id="@+id/account_security_separator_line_one"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/field_stroke" />
+
+            <TextView
+                android:id="@+id/account_security_whats_this_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_security_separator_line_one"
+                android:text="@string/account_security_whats_this_text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blue" />
+
+            <TextView
+                android:id="@+id/account_security_plus_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/account_security_whats_this_label"
+                android:layout_alignParentRight="true"
+                android:text="@string/account_security_plus_text"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/blue"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/account_security_separator_line_two"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/account_security_whats_this_detail_label"
+                android:layout_marginTop="4dp"
+                android:background="@color/field_stroke" />
+
+            <TextView
+                android:id="@+id/account_security_whats_this_detail_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_security_whats_this_label"
+                android:maxLines="@integer/ZERO"
+                android:text="@string/account_security_whats_this_detail_text"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+
+        <RadioGroup
+            android:id="@+id/account_security_choice_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_remember_device_label"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:background="@drawable/rounded_table_corners_no_padding"
+            android:divider="@drawable/modal_divider_line"
+            android:orientation="vertical" >
+
+            <RadioButton
+                android:id="@+id/account_security_choice_one_radio"
+                style="@style/small_copy"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:button="@drawable/custom_radio_check"
+                android:checked="true"
+                android:padding="@dimen/forms_inner_padding"
+                android:text="@string/account_security_remember_me_text" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_list_item" />
+
+            <RadioButton
+                android:id="@+id/account_security_choice_two_radio"
+                style="@style/field_copy_small"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:button="@drawable/custom_radio_check"
+                android:padding="@dimen/forms_inner_padding"
+                android:text="@string/account_security_dont_remember_me_text" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/account_security_continue_button"
+            style="@style/call_to_action_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_whats_this_relative_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/orange_button_margin_top"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:onClick="submitSecurityInfo"
+            android:text="@string/continue_text" />
+
+        <TextView
+            android:id="@+id/provide_feedback_button"
+            style="@style/blue_hyperlink_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_security_continue_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/orange_button_margin_top"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:text="@string/feedback_text" />
+    </RelativeLayout>
+
+</ScrollView>

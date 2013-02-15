@@ -7,8 +7,8 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 
-import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.auth.InputValidator;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * This class is an edit text which will function as either a Username field or an AccountNumber field.
@@ -109,7 +109,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 					final int count) {
 				final String currentText = s.toString();
 				String currentTextStylized = 
-						CommonMethods.getStringWithSpacesEvery4Characters(CommonMethods.getSpacelessString(currentText));
+						CommonUtils.getStringWithSpacesEvery4Characters(CommonUtils.getSpacelessString(currentText));
 				//remove the trailing space at the end of the number
 				if(currentTextStylized.length() == VALID_ACCOUNT_NUMBER_LENGTH + 1)
 					currentTextStylized = currentTextStylized.trim();
@@ -219,7 +219,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	public boolean isAccountNumberValid() {
 		final String cardAccountNumber = this.getText().toString();
 
-		return InputValidator.isCardAccountNumberValid(CommonMethods.getSpacelessString(cardAccountNumber));
+		return InputValidator.isCardAccountNumberValid(CommonUtils.getSpacelessString(cardAccountNumber));
 	}
 
 }

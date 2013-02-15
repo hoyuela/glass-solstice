@@ -1,9 +1,9 @@
 package com.discover.mobile.bank;
 
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.customer.Customer;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
  * Class used to maintain session information for a user logged into a Bank account. This

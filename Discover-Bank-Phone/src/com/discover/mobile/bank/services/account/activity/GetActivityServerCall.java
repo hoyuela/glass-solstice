@@ -7,12 +7,12 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
-import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkServiceCall;
 
 /**
  * Used for invoking the Bank - Account Service API found at ./api/accounts/{id}/activity. The JSON
@@ -53,7 +53,7 @@ import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkS
  * @author jthornton
  *
  */
-public class GetActivityServerCall extends UnamedListJsonResponseMappingNetworkServiceCall<ListActivityDetail, ActivityDetail> {
+public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetworkServiceCall<ListActivityDetail, ActivityDetail> {
 
 	/**Reference handler to return the data to the UI*/
 	private final TypedReferenceHandler<ListActivityDetail> handler;
@@ -83,7 +83,7 @@ public class GetActivityServerCall extends UnamedListJsonResponseMappingNetworkS
 				this.errorResponseParser = BankErrorResponseParser.instance();
 
 			}
-		}, ListActivityDetail.class, ActivityDetail.class, false);
+		}, ListActivityDetail.class, ActivityDetail.class);
 
 		this.handler = new SimpleReferenceHandler<ListActivityDetail>(callback);
 	}

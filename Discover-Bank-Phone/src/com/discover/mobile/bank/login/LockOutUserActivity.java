@@ -1,7 +1,6 @@
 package com.discover.mobile.bank.login;
 
 import roboguice.activity.RoboActivity;
-import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;

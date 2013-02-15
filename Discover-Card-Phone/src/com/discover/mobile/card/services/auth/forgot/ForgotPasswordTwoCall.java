@@ -2,15 +2,15 @@ package com.discover.mobile.card.services.auth.forgot;
 
 import android.content.Context;
 
+import com.discover.mobile.card.services.CardJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
 
-public class ForgotPasswordTwoCall extends JsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
+public class ForgotPasswordTwoCall extends CardJsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
 	
 	private static final String TAG = ForgotPasswordTwoCall.class.getSimpleName();
 	

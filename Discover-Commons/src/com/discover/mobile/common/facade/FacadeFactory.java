@@ -25,17 +25,25 @@ public class FacadeFactory {
 	 * @return
 	 */
 	public static LogoutFacade getLogoutFacade(){
-		
-		return (LogoutFacade) getImplClass("com.discover.mobile.bank.facade.LogoutFacadeImpl");
+		return (LogoutFacade) getImplClass("com.discover.mobile.common.facade.LogoutFacadeImpl");
 	}
-	
+
 	/**
-	 * Returns a strong auth facade.  Currently this code lives in bank.  may still need to refactor
+	 * The logout facade
 	 * @return
 	 */
-	public static StrongAuthFacade getStrongAuthFacade(){
-		return (StrongAuthFacade) getImplClass("com.discover.mobile.bank.facade.StrongAuthFacadeImpl");
+	public static BankLogoutFacade getBankLogoutFacade(){
+		return (BankLogoutFacade) getImplClass("com.discover.mobile.bank.facade.BankLogoutFacadeImpl");
 	}
+
+	/**
+	 * The logout facade
+	 * @return
+	 */
+	public static CardLogoutFacade getCardLogoutFacade(){
+		return (CardLogoutFacade) getImplClass("com.discover.mobile.card.facade.CardLogoutFacadeImpl");
+	}
+
 	/**
 	 * The login facade 
 	 * @return

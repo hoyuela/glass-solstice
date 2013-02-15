@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.net.json.bank.Address;
 import com.discover.mobile.common.net.json.bank.Name;
 import com.discover.mobile.common.net.json.bank.PhoneNumber;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

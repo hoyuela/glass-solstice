@@ -9,6 +9,8 @@ import roboguice.util.Strings;
 import android.content.Context;
 import android.util.Log;
 
+import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.SessionTokenManager;
@@ -16,8 +18,6 @@ import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.ExceptionLibrary;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
  * The Bank Login call for retrieving a valid token and any URL's that are
@@ -27,7 +27,7 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  * 
  */
 public class CreateBankLoginCall extends
-		JsonResponseMappingNetworkServiceCall<BankLoginData> {
+		BankJsonResponseMappingNetworkServiceCall<BankLoginData> {
 	
 	private static final String TAG = CreateBankLoginCall.class.getSimpleName();
 	private final TypedReferenceHandler<BankLoginData> handler;
@@ -51,7 +51,7 @@ public class CreateBankLoginCall extends
 				errorResponseParser = BankErrorResponseParser.instance();
 
 			}
-		}, BankLoginData.class, false);
+		}, BankLoginData.class);
 
 		// TODO decide if this is the best type of handler
 		handler = new StrongReferenceHandler<BankLoginData>(callback);

@@ -12,12 +12,12 @@ import android.widget.TextView;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.services.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
-import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * ForgotPasswordAccountInformationActivity - This activity extends the AbstractAccountInformationActivity
@@ -51,7 +51,7 @@ public class ForgotPasswordAccountInformationActivity extends ForgotOrRegisterFi
 	 */
 	@Override
 	protected void doCustomUiSetup() {
-		CommonMethods.setViewGone(accountIdentifierFieldRestrictionsLabel);
+		CommonUtils.setViewGone(accountIdentifierFieldRestrictionsLabel);
 		accountIdentifierFieldLabel.setText(R.string.user_id);
 		accountIdentifierField.setFieldUsername();
 	}

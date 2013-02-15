@@ -3,16 +3,16 @@ package com.discover.mobile.card.services.auth.forgot;
 import android.content.Context;
 import android.util.Base64;
 
+import com.discover.mobile.card.services.CardJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
 import com.google.common.collect.ImmutableMap;
 
-public class ForgotUserIdCall extends JsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
+public class ForgotUserIdCall extends CardJsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
 	
 	private final TypedReferenceHandler<RegistrationConfirmationDetails> handler;
 
