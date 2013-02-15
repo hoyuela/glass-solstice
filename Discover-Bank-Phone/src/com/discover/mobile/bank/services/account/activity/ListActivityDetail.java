@@ -49,10 +49,13 @@ public class ListActivityDetail implements Serializable{
 	/**Unique identifier for the object*/
 	private static final long serialVersionUID = 8207177094396952741L;
 
+	/**String to get the next url from the links onject*/
+	public static final String NEXT = "next";
+
 	/**List of activity details*/
 	public List<ActivityDetail> activities;
 
 
 	/**List of links for for this object*/
-	Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
+	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 }

@@ -14,7 +14,10 @@ public final class BankExtraKeys {
 	public static final String SELECTED_PAYEE = "selected-payee";
 
 	/**Used to send a list of details to the detail screen from the table*/
-	public static final String DATA_LIST = "data";
+	public static final String DATA_LIST = "data1";
+
+	/**Used to send the other list of details to the detail screen from the table*/
+	public static final String OTHER_DATA_LIST = "data2";
 
 	/**Used to send the selected index of the detail to the detail screen*/
 	public static final String DATA_SELECTED_INDEX = "index";

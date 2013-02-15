@@ -8,8 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.discover.mobile.bank.account.AccountActivityFragment;
 import com.discover.mobile.bank.account.AccountActivityViewPager;
+import com.discover.mobile.bank.account.BankAccountActivityTable;
 import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
@@ -236,7 +236,7 @@ public final class BankNavigator {
 		if(activity.isDynamicDataFragment() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(bundle);
 		}else{
-			final AccountActivityFragment fragment =  new AccountActivityFragment();
+			final BankAccountActivityTable fragment =  new BankAccountActivityTable();
 			fragment.setArguments(bundle);
 			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 		}

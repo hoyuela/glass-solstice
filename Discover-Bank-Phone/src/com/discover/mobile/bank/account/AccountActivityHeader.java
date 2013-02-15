@@ -8,24 +8,58 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
+import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
 
+/**
+ * Header displayed at the top of the activity table view screen
+ * @author jthornton
+ *
+ */
 public class AccountActivityHeader extends RelativeLayout{
 
+	/**Layout view*/
 	private final View view;
 
+	/**Value holding the checking name*/
 	private final TextView checking;
 
+	/**Value holding the available balance*/
 	private final TextView availableBalance;
 
+	/**Value holding the current balance*/
 	private final TextView currentBalance;
 
+	/**Title of the header*/
 	private final TextView title;
 
+	/**Image next to the title*/
 	private final ImageView image;
 
+	/**Posted activity toggle button*/
+	private final ToggleButton postedButton;
+
+	/**Scheduled activity toggle button*/
+	private final ToggleButton scheduledButton;
+
+	/**Boolean set to true if the user id viewing posted activity*/
+	private boolean isPosted = true;
+
+	/**Boolean set to true if the header is expanded*/
+	private boolean isHeaderExpanded = false;
+
+	/**Current int representing the sort order*/
+	private int sortOrder = BankExtraKeys.SORT_DATE_DESC;
+
+	/**
+	 * Constructor of the class
+	 * @param context - activity context
+	 * @param attrs - attributes to give to the layout
+	 */
 	public AccountActivityHeader(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 
@@ -35,11 +69,20 @@ public class AccountActivityHeader extends RelativeLayout{
 		currentBalance = (TextView)view.findViewById(R.id.value3);
 		image = (ImageView)view.findViewById(R.id.title_image);
 		title = (TextView) view.findViewById(R.id.title_text);
+		postedButton = (ToggleButton) view.findViewById(R.id.posted_button);
+		scheduledButton = (ToggleButton) view.findViewById(R.id.scheduled_button);
 
-		title.setOnClickListener(onClickListener());
+		title.setOnClickListener(getImageOnClickListener());
+		image.setOnClickListener(getImageOnClickListener());
+		addAccount(BankUser.instance().getCurrentAccount());
+		changeVisibility(View.GONE);
 		addView(view);
 	}
 
+	/**
+	 * Add the account and display it 
+	 * @param account - account to add
+	 */
 	public void addAccount(final Account account){
 		if(null == account){return;}
 		title.setText(account.nickname);
@@ -48,22 +91,32 @@ public class AccountActivityHeader extends RelativeLayout{
 		currentBalance.setText(account.balance.formatted);
 	}
 
-	public OnClickListener onClickListener(){
+	/**
+	 * Get image on click listener
+	 * @return image on click listener
+	 */
+	public OnClickListener getImageOnClickListener(){
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v){
 				if(availableBalance.getVisibility() == View.VISIBLE){
 					image.setBackgroundResource(R.drawable.drk_blue_arrow_down);
 					AccountActivityHeader.this.changeVisibility(View.GONE);
+					setHeaderExpanded(false);
 				}else{
 					image.setBackgroundResource(R.drawable.drk_blue_arrow_up);
 					AccountActivityHeader.this.changeVisibility(View.VISIBLE);
+					setHeaderExpanded(true);
 				}
 			}
 		};
 
 	}
 
+	/**
+	 * Change the visibility of the items under the account title
+	 * @param visibility - the visibility of the items under the account title
+	 */
 	public void changeVisibility(final int visibility){
 		view.findViewById(R.id.lable1).setVisibility(visibility);
 		view.findViewById(R.id.lable2).setVisibility(visibility);
@@ -73,7 +126,117 @@ public class AccountActivityHeader extends RelativeLayout{
 		checking.setVisibility(visibility);
 	}
 
+	/**
+	 * Get the help button in the header
+	 * @return the help button in the header
+	 */
 	public ImageButton getHelp(){
 		return (ImageButton) view.findViewById(R.id.help);
+	}
+
+	/**
+	 * Toggle the buttons look and feel
+	 * @param checked - toggle button that is checked
+	 * @param notChecke - toggle button that is not checked
+	 * @param isPosted - boolean to set is posted equal to
+	 */
+	public void toggleButton(final ToggleButton checked, final ToggleButton notChecked, final boolean isPosted){
+		checked.setTextColor(getResources().getColor(R.color.white));
+		notChecked.setTextColor(getResources().getColor(R.color.body_copy));
+		if(isPosted){
+			notChecked.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_off));
+			checked.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_on));
+		}else{
+			notChecked.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_off));
+			checked.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_on));
+		}
+		notChecked.setChecked(false);
+		this.setPosted(isPosted);
+	}
+
+	/**
+	 * @return the postedButton
+	 */
+	public ToggleButton getPostedButton() {
+		return postedButton;
+	}
+
+	/**
+	 * @return the scheduledButton
+	 */
+	public ToggleButton getScheduledButton() {
+		return scheduledButton;
+	}
+
+	/**
+	 * @return the isPosted
+	 */
+	public boolean isPosted() {
+		return isPosted;
+	}
+
+	/**
+	 * @param isPosted the isPosted to set
+	 */
+	public void setPosted(final boolean isPosted) {
+		this.isPosted = isPosted;
+	}
+
+	/**
+	 * @return the isHeaderExpanded
+	 */
+	public boolean isHeaderExpanded() {
+		return isHeaderExpanded;
+	}
+
+	/**
+	 * @param isHeaderExpanded the isHeaderExpanded to set
+	 */
+	public void setHeaderExpanded(final boolean isHeaderExpanded) {
+		this.isHeaderExpanded = isHeaderExpanded;
+		if(isHeaderExpanded){
+			AccountActivityHeader.this.changeVisibility(View.VISIBLE);
+			image.setBackgroundResource(R.drawable.drk_blue_arrow_down);
+		}else{
+			AccountActivityHeader.this.changeVisibility(View.GONE);
+			image.setBackgroundResource(R.drawable.drk_blue_arrow_up);
+		}
+	}
+
+	/**
+	 * Get the sort order
+	 * @return the sort order
+	 */
+	public int getSortOrder(){
+		return sortOrder;
+	}
+
+	/**
+	 * Set the sort order
+	 * @param order - sort order to set
+	 */
+	public void setSortOrder(final int order){
+		sortOrder = order;
+	}
+
+	/**
+	 * Return the selected category
+	 * @return the selected category
+	 */
+	public boolean getSelectedCategory() {
+		return isPosted;
+	}
+
+	/**
+	 * Set the selected category
+	 * @param the selected category
+	 */
+	public void setSelectedCategory(final boolean isPosted) {
+		this.isPosted = isPosted;
+		if(isPosted){
+			toggleButton(postedButton, scheduledButton, isPosted);
+		}else{
+			toggleButton(scheduledButton, postedButton, isPosted);			
+		}
 	}
 }

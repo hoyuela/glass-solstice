@@ -12,6 +12,7 @@
     <string name="activity_posted_button">Activity</string>
     <string name="activity_scheduled_button">Scheduled</string>
     <string name="activity_no_scheduled">You have no scheduled transactions.</string>
-    <string name="activity_no_posted">No activity has posted to your account.</string>
+    <string name="activity_no_posted">You have no account activity.</string>
     <string name="activity_table_name">Transactions</string>
+    <string name="activity_go_to_top">Go to Top</string>
 </resources>

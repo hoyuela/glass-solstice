@@ -24,7 +24,6 @@ public class BankPayTerms extends BaseFragment{
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
-
 		return inflater.inflate(R.layout.payment_terms_and_conditions, null);
 	}
 
