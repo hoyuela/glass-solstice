@@ -17,7 +17,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 	public BankPayBillsSectionInfo() {
 		super(R.string.section_title_pay_bills,
 				new ClickComponentInfo(R.string.section_title_pay_bills, getPayBillsLandingClickListener()),
-				new FragmentComponentInfo(R.string.sub_section_title_review_payments, BankAccountSummaryFragment.class),
+				new FragmentComponentInfo(R.string.sub_section_title_review_payments, ReviewPaymentsTable.class),
 				new FragmentComponentInfo(R.string.sub_section_title_manage_payees,
 						BankAccountSummaryFragment.class));
 	}
