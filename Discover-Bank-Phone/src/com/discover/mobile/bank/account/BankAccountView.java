@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
@@ -29,7 +30,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	 * TAG used to print logs into Android logcat
 	 */
 	private final static String TAG = BankAccountView.class.getSimpleName();
-	
+
 	/**
 	 * Used to display the nickname field value in an Account object
 	 */
@@ -61,17 +62,17 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	 */
 	public BankAccountView(final Context context) {
 		super(context);
-		
+
 		layout = (RelativeLayout)LayoutInflater.from(context).inflate(R.layout.bank_account_view, null);
-		
+
 		acctNickName = (TextView)layout.findViewById(R.id.acct_nickname);
 		acctBalance = (TextView)layout.findViewById(R.id.acct_balance);
 		acctEnding = (TextView)layout.findViewById(R.id.acct_ending);
 		carat = layout.findViewById(R.id.acct_carat);
-		
+
 		addView(layout);
 	}
-	
+
 	/**
 	 * 
 	 * @param context Reference to Activity that hosts the view
@@ -79,20 +80,20 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	 */
 	public BankAccountView(final Context context, final Account account) {
 		this(context);
-		
+
 		this.setAccountInformation(account);
-		
+
 		this.account = account;
 	}
-	
+
 	/**
 	 * 
 	 * @param value Reference to a string that holds an Account's nickname.
 	 */
 	public void setNickName(final String value) {
-		this.acctNickName.setText(value);
+		acctNickName.setText(value);
 	}
-	
+
 	/**
 	 * 
 	 * @param value Reference to a string that holds an Account's balance.
@@ -101,31 +102,31 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 		if( !Strings.isNullOrEmpty(value.formatted)) {
 			try{
 				/**Set Text view for displaying balance for account */
-				this.acctBalance.setText(value.formatted);
-				
+				acctBalance.setText(value.formatted);
+
 				/**Set color of text to red if negative balance otherwise black*/
 				final int color = (value.formatted.charAt(0) == '-') ? R.color.error_indicator : R.color.black;
-				this.acctBalance.setTextColor(getResources().getColor(color));
-				
+				acctBalance.setTextColor(getResources().getColor(color));
+
 			}catch(final Exception ex) {
-				this.acctBalance.setText(R.string.acct_total_str);
+				acctBalance.setText(R.string.acct_total_str);
 			}
 		} else {
-			this.acctBalance.setText(R.string.acct_total_str);
+			acctBalance.setText(R.string.acct_total_str);
 		}
-		
+
 	}
-	
+
 	/**
 	 * 
 	 * @param value Reference to a string that holds an Account's ending.
 	 */
 	public void setEnding(final AccountNumber value) {
 		try {
-			this.acctEnding.setText(BankStringFormatter.convertToAccountEnding(value.ending));
+			acctEnding.setText(BankStringFormatter.convertToAccountEnding(value.ending));
 		} catch(final Exception ex) {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
-				this.acctEnding.setText("");
+				acctEnding.setText("");
 			}
 		}
 	}
@@ -135,17 +136,17 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	 * @param account Reference to an Account object that holds all the information to display in this view.
 	 */
 	public void setAccountInformation(final Account account) {
-		
+
 		this.setEnding(account.accountNumber);
 		this.setBalance(account.balance);
 		this.setNickName(Strings.nullToEmpty(account.nickname));
-		
+
 		/**User should only be allowed to navigate to account details if it is non-IRA account*/
 		if( account.type.equalsIgnoreCase(Account.ACCOUNT_IRA)) {
-			this.carat.setVisibility(INVISIBLE);
+			carat.setVisibility(INVISIBLE);
 		} else {
 			layout.setOnClickListener(this);
-			this.carat.setVisibility(VISIBLE);
+			carat.setVisibility(VISIBLE);
 		}
 	}
 
@@ -155,10 +156,13 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	@Override
 	public void onClick(final View v) {
 		final String link = account.getLink(Account.LINKS_POSTED_ACTIVITY);
-		
+
 		//Set Current Account to be accessed by other objects in the application
-		BankUser.instance().setCurrentAccount(this.account);
-		
+		BankUser.instance().setCurrentAccount(account);
+
+		//Clear the rotation helper
+		BankRotationHelper.getHelper().setBundle(null);
+
 		//Send Request to download the current accounts posted activity
 		BankServiceCallFactory.createGetActivityServerCall(link).submit();
 	}

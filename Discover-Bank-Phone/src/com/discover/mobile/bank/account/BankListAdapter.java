@@ -15,9 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.R.color;
-import com.discover.mobile.bank.R.id;
-import com.discover.mobile.bank.R.layout;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 
 /**

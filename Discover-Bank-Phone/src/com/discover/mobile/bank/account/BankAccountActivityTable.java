@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -43,16 +41,8 @@ public class BankAccountActivityTable extends BaseTable{
 	/**Footer to put in the bottom of the list view*/
 	private TableLoadMoreFooter footer;
 
-	/**
-	 * Create the view
-	 * @param inflater - inflater to inflate the layout
-	 * @param container - container holding the group
-	 * @param savedInstanceState - state of the fragment
-	 */
-	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-		return super.onCreateView(inflater, container, savedInstanceState);
-	}
+	/**Boolean used to know if the device has been flipped*/
+	private final boolean hasLoaded = false;
 
 	/**
 	 * Handle the received data from the service call
@@ -208,6 +198,7 @@ public class BankAccountActivityTable extends BaseTable{
 	@Override
 	public Bundle saveDataInBundle() {
 		final Bundle bundle = new Bundle();
+		if(null == header){return bundle;}
 		if(header.isPosted()){
 			bundle.putSerializable(BankExtraKeys.DATA_LIST, posted);
 			bundle.putSerializable(BankExtraKeys.OTHER_DATA_LIST, scheduled);
@@ -218,6 +209,7 @@ public class BankAccountActivityTable extends BaseTable{
 		bundle.putBoolean(BankExtraKeys.CATEGORY_SELECTED, header.getSelectedCategory());
 		bundle.putInt(BankExtraKeys.SORT_ORDER, header.getSortOrder());
 		bundle.putBoolean(BankExtraKeys.TITLE_EXPANDED, header.isHeaderExpanded());
+
 		return bundle;
 	}
 
@@ -228,7 +220,7 @@ public class BankAccountActivityTable extends BaseTable{
 	@Override
 	public void loadDataFromBundle(final Bundle bundle) {
 		if(null == bundle){return;}
-		header.setPosted(bundle.getBoolean(BankExtraKeys.CATEGORY_SELECTED, true));
+		header.setSelectedCategory(bundle.getBoolean(BankExtraKeys.CATEGORY_SELECTED, true));
 		final ListActivityDetail current = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST);
 		final ListActivityDetail other = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.OTHER_DATA_LIST);
 		if(header.isPosted()){

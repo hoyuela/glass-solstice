@@ -8,6 +8,7 @@
         android:id="@+id/bank_table"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/light_gray_bkgrd" />
+        android:background="@drawable/light_gray_bkgrd"
+        android:listSelector="@android:color/transparent" />
 
 </LinearLayout>

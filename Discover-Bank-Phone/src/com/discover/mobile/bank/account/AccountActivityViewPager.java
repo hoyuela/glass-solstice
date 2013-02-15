@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
@@ -31,22 +31,23 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	public void onSaveInstanceState(final Bundle outState) {
 		outState.putAll(getCurrentFragmentBundle());
 	}
-	
+
 	/**
 	 * Returns the current Fragment Bundle.
 	 * @return the current Fragment Bundle;
 	 */
 	private Bundle getCurrentFragmentBundle() {
 		Bundle currentBundle = this.getArguments();
-		
-		if(currentBundle == null)
+
+		if(currentBundle == null) {
 			currentBundle = new Bundle();
-		
+		}
+
 		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, initialViewPosition);
 		currentBundle.putSerializable(BankExtraKeys.DATA_LIST, activityItems);
 		return currentBundle;
 	}
-	
+
 	/**
 	 * Handles retrieving data from any arguments passed to the Fragment or from a savedInstanceState from
 	 * rotation changes.
@@ -54,13 +55,14 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		loadBundleArgs(getArguments());
-				
-		if(savedInstanceState != null)
+
+		if(savedInstanceState != null) {
 			activityItems = (ListActivityDetail)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST);
+		}
 	}
-	
+
 	/**
 	 * Gets the list of ActivityDetail objects from a bundle along with the current selected position in that list
 	 * to show.
@@ -98,9 +100,10 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	protected int getViewCount() {
 		int viewCount = 0;
 
-		if(activityItems.activities != null)
+		if(activityItems.activities != null) {
 			viewCount = activityItems.activities.size();
-		
+		}
+
 		return viewCount;
 	}
 
@@ -112,11 +115,11 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	protected Fragment getDetailItem(final int position) {
 		final ActivityDetailFragment temp = new ActivityDetailFragment();
 		final ActivityDetail detailObject = activityItems.activities.get(position);
-		
+
 		final Bundle bundle = new Bundle();
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, detailObject);
 		temp.setArguments(bundle);
-		
+
 		return temp;
 	}
 
@@ -126,9 +129,9 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	 */
 	@Override
 	public void onBackPressed() {
-		BankNavigator.navigateToAccountActivityPage(getCurrentFragmentBundle(), true);
+		BankRotationHelper.getHelper().setBundle(getCurrentFragmentBundle());
 	}
-	
+
 	/**
 	 * What to do after we load more data from the server.
 	 */

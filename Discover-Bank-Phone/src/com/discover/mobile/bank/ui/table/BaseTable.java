@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
@@ -23,6 +24,8 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	/**List View holding the data*/
 	private ListView table;
 
+	private Bundle loadBundle;
+
 	/**
 	 * Create the view
 	 * @param inflater - inflater to inflate the layout
@@ -30,9 +33,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	 * @param savedInstanceState - state of the fragment
 	 */
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-			final Bundle savedInstanceState) {
-
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_list, null);
 		table = (ListView) view.findViewById(R.id.bank_table);
 
@@ -41,12 +42,11 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		setupFooter();
 		setupAdapter();
 
-		final Bundle loadBundle = (null == savedInstanceState) ? this.getArguments() : savedInstanceState;
-		loadDataFromBundle(loadBundle);
-
 		table.addFooterView(getFooter());
 		table.addHeaderView(getHeader());
 		table.setDivider(getResources().getDrawable(R.drawable.table_dotted_line));
+
+		loadBundle = (null == BankRotationHelper.getHelper().getBundle()) ? this.getArguments() : BankRotationHelper.getHelper().getBundle();
 
 		return view;
 	}
@@ -68,6 +68,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	@Override
 	public void onResume(){
 		super.onResume();
+		loadDataFromBundle(loadBundle);
 		table.setAdapter(getAdapter());
 	}
 
@@ -77,7 +78,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
-		outState.putAll(saveDataInBundle());
+		BankRotationHelper.getHelper().setBundle(saveDataInBundle());
 		super.onSaveInstanceState(outState);
 	}
 

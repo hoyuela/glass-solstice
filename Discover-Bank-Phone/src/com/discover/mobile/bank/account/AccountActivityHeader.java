@@ -75,7 +75,9 @@ public class AccountActivityHeader extends RelativeLayout{
 		title.setOnClickListener(getImageOnClickListener());
 		image.setOnClickListener(getImageOnClickListener());
 		addAccount(BankUser.instance().getCurrentAccount());
-		changeVisibility(View.GONE);
+
+		setHeaderExpanded(isHeaderExpanded);
+		setSelectedCategory(isPosted);
 		addView(view);
 	}
 

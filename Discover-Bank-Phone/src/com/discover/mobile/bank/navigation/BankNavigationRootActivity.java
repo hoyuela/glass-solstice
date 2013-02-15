@@ -111,23 +111,23 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	public ErrorHandler getErrorHandler() {
 		return BankErrorHandler.getInstance();
 	}
-	
+
 	/**
 	 * Determines if the current fragment is an instance of the dynamic date fragment
 	 * @return if the current fragment is an instance of the dynamic date fragment
 	 */
 	public boolean isDynamicDataFragment(){
-		return this.currentFragment instanceof DynamicDataFragment;
+		return currentFragment instanceof DynamicDataFragment;
 	}
-	
+
 	/**
 	 * Determines if the current fragment implements the FragmentOnBackPressed interface.
 	 * @return if the current fragment implements the FragmentOnBackPressed interface.
 	 */
 	public boolean isBackPressFragment() {
-		return this.currentFragment instanceof FragmentOnBackPressed;
+		return currentFragment instanceof FragmentOnBackPressed;
 	}
-	
+
 	/**
 	 * Allows a Fragment that implements the FragmentOnBackPressed interface to override the 
 	 * onBackPressed at the Activity level essentially.
@@ -135,9 +135,9 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	@Override
 	public void onBackPressed() {
 		if(isBackPressFragment()){
-			((FragmentOnBackPressed)this.currentFragment).onBackPressed();
-		}else
-			super.onBackPressed();
+			((FragmentOnBackPressed)currentFragment).onBackPressed();
+		}
+		super.onBackPressed();
 	}
 
 	/**
@@ -145,9 +145,9 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	 * @param bundle - bundle of data to pass to the fragment
 	 */
 	public void addDataToDynamicDataFragment(final Bundle bundle){
-		((DynamicDataFragment)this.currentFragment).handleReceivedData(bundle);
+		((DynamicDataFragment)currentFragment).handleReceivedData(bundle);
 	}
-	
+
 	/**
 	 * Method used to show or hide Navigation Menu Button
 	 * 
@@ -164,7 +164,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 			}
 		}
 	}
-	
+
 	/**
 	 * Method used to enable or disable sliding navigation menu. If disabled
 	 * then user will not be able to use a swipe gesture to see the navigation menu.

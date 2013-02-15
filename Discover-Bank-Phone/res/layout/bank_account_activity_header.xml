@@ -30,10 +30,10 @@
         android:id="@+id/title_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="@dimen/forms_inner_padding"
         android:layout_marginTop="30dp"
-        android:layout_alignParentLeft="true"
         android:background="@drawable/drk_blue_arrow_down" />
 
     <TextView
@@ -104,47 +104,46 @@
         android:layout_marginRight="@dimen/forms_inner_padding"
         android:layout_toRightOf="@+id/lable3"
         android:gravity="right" />
-    
-            <LinearLayout
-            android:id="@+id/buttons"
-            android:layout_width="match_parent"
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/value3"
+        android:layout_marginBottom="@dimen/table_inner_padding"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/groups_of_elements_padding"
+        android:orientation="horizontal"
+        android:weightSum="2" >
+
+        <ToggleButton
+            android:id="@+id/posted_button"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/table_inner_padding"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_marginTop="@dimen/groups_of_elements_padding"
-            android:orientation="horizontal"
-            android:weightSum="2" 
-            android:layout_below="@+id/value3">
+            android:layout_weight="1"
+            android:background="@drawable/toggle_left_on"
+            android:checked="true"
+            android:textColor="@color/white"
+            android:textOff="@string/activity_posted_button"
+            android:textOn="@string/activity_posted_button"
+            android:textSize="@dimen/small_copy_min"
+            android:textStyle="bold" />
 
-            <ToggleButton
-                android:id="@+id/posted_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/toggle_left_on"
-                android:checked="true"
-                android:textColor="@color/white"
-                android:textOff="@string/activity_posted_button"
-                android:textOn="@string/activity_posted_button"
-                android:textSize="@dimen/small_copy_min"
-                android:textStyle="bold"/>
+        <ToggleButton
+            android:id="@+id/scheduled_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_right_off"
+            android:checked="false"
+            android:textColor="@color/body_copy"
+            android:textOff="@string/activity_scheduled_button"
+            android:textOn="@string/activity_scheduled_button"
+            android:textSize="@dimen/small_copy_min"
+            android:textStyle="bold" />
+    </LinearLayout>
 
-            <ToggleButton
-                android:id="@+id/scheduled_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="false"
-                android:background="@drawable/toggle_right_off"
-                android:textColor="@color/body_copy"
-                android:textOff="@string/activity_scheduled_button"
-                android:textOn="@string/activity_scheduled_button"
-                android:textSize="@dimen/small_copy_min" 
-                android:textStyle="bold"/>
-        </LinearLayout>
-    
-    
     <TextView
         android:id="@+id/table_title"
         style="@style/body_copy_title"
@@ -180,9 +179,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/recent_activity_date"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
-          <ImageView
+            <ImageView
                 android:id="@+id/date_filter_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -222,7 +221,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-	    	android:gravity="right" >
+            android:gravity="right" >
 
             <TextView
                 android:id="@+id/amount_filter"
@@ -243,7 +242,7 @@
                 android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
-    
+
     <View
         android:id="@+id/top_line"
         android:layout_width="wrap_content"
