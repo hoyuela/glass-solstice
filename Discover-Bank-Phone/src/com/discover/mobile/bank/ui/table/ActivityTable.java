@@ -9,9 +9,9 @@ import android.view.View;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
-import com.discover.mobile.card.R;
 
 /**
  * Table holding activity detail data

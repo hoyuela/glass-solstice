@@ -16,7 +16,7 @@ import com.discover.mobile.common.ScreenType;
  * @author ekaram
  *
  */
-public interface LoginFacade {
+public interface LoginActivityFacade {
 	/**
 	 * Navigates to the Login Activity
 	 * @param context

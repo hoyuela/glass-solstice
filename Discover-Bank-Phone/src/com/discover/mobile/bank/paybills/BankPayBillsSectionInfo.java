@@ -7,7 +7,7 @@ import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.card.home.HomeSummaryFragment;
+import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.FragmentComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
@@ -17,9 +17,9 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 	public BankPayBillsSectionInfo() {
 		super(R.string.section_title_pay_bills,
 				new ClickComponentInfo(R.string.section_title_pay_bills, getPayBillsLandingClickListener()),
-				new FragmentComponentInfo(R.string.sub_section_title_review_payments, HomeSummaryFragment.class),
+				new FragmentComponentInfo(R.string.sub_section_title_review_payments, BankAccountSummaryFragment.class),
 				new FragmentComponentInfo(R.string.sub_section_title_manage_payees,
-						HomeSummaryFragment.class));
+						BankAccountSummaryFragment.class));
 	}
 
 	/**

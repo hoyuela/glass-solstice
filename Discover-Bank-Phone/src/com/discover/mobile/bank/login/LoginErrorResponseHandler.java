@@ -9,7 +9,6 @@ import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING
 import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.error.ErrorHandlerUi;

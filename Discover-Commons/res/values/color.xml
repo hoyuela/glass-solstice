@@ -1,6 +1,8 @@
 <resources>
     <!-- Discover Theme -->
     <color name="body_copy">#3D484D</color>
+    <color name="transaction_table_stripe">#f1f1f1</color>
+    <color name="string_indicator">#8ed402</color>
     
     <!-- Various Colors -->
     <color name="white">#ffffff</color>
