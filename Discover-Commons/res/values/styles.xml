@@ -1,11 +1,31 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+     <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <!-- Theme.Sherlock.Light.DarkActionBar -->
+    <style name="AppBaseTheme" parent="Theme.Sherlock">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
 
-<style name="WhiteTheme">
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="AppTheme.NoTitleBar" parent="Theme.Sherlock.NoActionBar"></style>
+    
+
+	<style name="WhiteTheme">
         <item name="android:background">@drawable/light_gray_bkgrd</item>
         <item name="android:padding">@dimen/forms_inner_padding</item>
     </style>
     
-    <style name="AppTheme" parent="android:Theme.Light" />
     
     <style name="alert_modal_black_bg">
         <item name="android:background">#50000000</item>

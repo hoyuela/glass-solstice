@@ -7,8 +7,6 @@ import static com.discover.mobile.common.CommonMethods.setViewVisible;
 import java.util.ArrayList;
 import java.util.List;
 
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -33,17 +31,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
-import com.discover.mobile.card.CardSessionContext;
-import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
-import com.discover.mobile.card.error.CardErrorHandler;
-import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
-import com.discover.mobile.card.login.register.RegistrationAccountInformationActivity;
-import com.discover.mobile.card.navigation.CardNavigationRootActivity;
-import com.discover.mobile.card.push.register.PushRegistrationStatusErrorHandler;
-import com.discover.mobile.card.push.register.PushRegistrationStatusSuccessListener;
-import com.discover.mobile.card.services.push.PushNotificationService;
-import com.discover.mobile.card.services.push.registration.GetPushRegistrationStatus;
-import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
@@ -51,22 +38,18 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.AccountDetails;
-import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.PreAuthCheckCall;
 import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
-import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.error.ErrorHandler;
-import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.facade.FacadeFactory;
+import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.google.common.base.Strings;
-import com.google.inject.Inject;
 
 /**
  * LoginActivity - This is the login screen for the application. It makes three
@@ -77,11 +60,12 @@ import com.google.inject.Inject;
  * @author scottseward, ekaram
  * 
  */
-@ContentView(R.layout.login_start)
-public class LoginActivity extends BaseActivity  {
+
+public class LoginActivity extends BaseActivity implements LoginActivityInterface  {
 	/*TAG used to print logs for the LoginActivity into logcat*/
 	private static final String TAG = LoginActivity.class.getSimpleName();
 
+	
 
 	/**
 	 * These are string values used when passing extras to the saved instance
@@ -102,53 +86,30 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	// INPUT FIELDS
 
-	@InjectView(R.id.username_field)
+	
 	private NonEmptyEditText idField;
 
-	@InjectView(R.id.password_field)
 	private NonEmptyEditText passField;
 
 	// BUTTONS
 
-	@InjectView(R.id.login_button)
 	private Button loginButton;
-
-
-	@InjectView(R.id.register_now_or_atm_button)
 	private Button registerOrAtmButton;
-	
-	@InjectView(R.id.privacy_and_security_button)
 	private Button privacySecOrTermButton;
-
-	@InjectView(R.id.customer_service_button)
 	private Button customerServiceButton;
 	
 	// TEXT LABELS
 
-	@InjectView(R.id.error_text_view)
 	private TextView errorTextView;
-
-	@InjectView(R.id.forgot_uid_or_pass_text)
 	private TextView forgotUserIdOrPassText;
-
-	@InjectView(R.id.go_to_bank_label)
 	private TextView goToBankLabel;
-
-	@InjectView(R.id.go_to_card_label)
 	private TextView goToCardLabel;
     
 	//IMAGES
 	
-	@InjectView(R.id.card_check_mark)
 	private ImageView cardCheckMark;
-
-	@InjectView(R.id.bank_check_mark)
 	private ImageView bankCheckMark;
-	
-	@InjectView(R.id.remember_user_id_button)
 	private ImageView toggleImage;
-	
-	@InjectView(R.id.splash_progress)
 	private ProgressBar splashProgress;
 
 
@@ -176,12 +137,28 @@ public class LoginActivity extends BaseActivity  {
 	
 	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
 	
-	@Inject
-	private PushNotificationService pushNotificationService;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.login_start);
+		
+		idField = (NonEmptyEditText) findViewById(R.id.username_field);
+		passField = (NonEmptyEditText) findViewById(R.id.password_field);
+		loginButton = (Button) findViewById(R.id.login_button);
+		registerOrAtmButton = (Button) findViewById(R.id.register_now_or_atm_button);
+		privacySecOrTermButton = (Button) findViewById(R.id.privacy_and_security_button);
+		customerServiceButton = (Button) findViewById(R.id.customer_service_button);
+		errorTextView = (TextView) findViewById(R.id.error_text_view);
+		forgotUserIdOrPassText = (TextView) findViewById(R.id.forgot_uid_or_pass_text);
+		goToBankLabel = (TextView) findViewById(R.id.go_to_bank_label);
+		goToCardLabel = (TextView) findViewById(R.id.go_to_card_label);
+		
+		cardCheckMark = (ImageView) findViewById(R.id.card_check_mark); 
+		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark); 
+		toggleImage = (ImageView) findViewById(R.id.remember_user_id_button); 
+		splashProgress = (ProgressBar) findViewById(R.id.splash_progress); 
+		
 		
 		TrackingHelper.startActivity(this);
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
@@ -298,7 +275,7 @@ public class LoginActivity extends BaseActivity  {
 	@Override
 	public void onStart() {
 		super.onStart();
-		pushNotificationService.start(this);
+		FacadeFactory.getPushFacade().startXtifySDK(this);
 	}
 
 	/**
@@ -434,7 +411,7 @@ public class LoginActivity extends BaseActivity  {
 				
 				//Check if registerOrAtm button is displaying text for Card or Bank
 				if( regOrAtmText.equals(regText) ) {
-					launchActivityFromClass(RegistrationAccountInformationActivity.class);
+					FacadeFactory.getCardFacade().navToRegister(LoginActivity.this);
 				} else {
 					openAtmLocator();
 				}
@@ -559,38 +536,7 @@ public class LoginActivity extends BaseActivity  {
 	 * 
 	 */
 	private void cardLogin(final String username, final String password) {
-		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback
-				.<AccountDetails> builder(this)
-				.showProgressDialog("Discover", "Loading...", true)
-				.withSuccessListener(new SuccessListener<AccountDetails>() {
-
-					@Override
-					public CallbackPriority getCallbackPriority() {
-						return CallbackPriority.MIDDLE;
-					}
-
-					@Override
-					public void success(final NetworkServiceCall<?> sender, final AccountDetails value) {
-						// Set logged in to be able to save user name in
-						// persistent storage
-						Globals.setLoggedIn(true);
-
-						// Update current account based on user logged
-						updateAccountInformation(AccountType.CARD_ACCOUNT);
-
-						CardSessionContext.getCurrentSessionDetails()
-								.setAccountDetails(value);
-
-						getXtifyRegistrationStatus();
-
-					}
-				})
-				.withErrorResponseHandler(new CardBaseErrorResponseHandler(this))
-				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(new LockScreenCompletionListener(this))
-				.build();
-
-		new AuthenticateCall(this, callback, username, password).submit();
+		FacadeFactory.getLoginServiceFacade().login(this, username, password);
 	}
 	
 	/**
@@ -798,35 +744,10 @@ public class LoginActivity extends BaseActivity  {
 	 * that it launches the forgot nav screen and is instead called from Java.
 	 */
 	private void forgotIdAndOrPass() {
-		final Intent forgotIdAndOrPassActivity = new Intent(this, ForgotCredentialsActivity.class);
-		this.startActivity(forgotIdAndOrPassActivity);
-		finish();
+		FacadeFactory.getCardFacade().navToForgot(this);
 	}
 
 	
-	/**
-	 * Do a GET request to the server to check to see if this vendor id is
-	 * registered to this user.
-	 * 
-	 * @author jthornton
-	 */
-	protected void getXtifyRegistrationStatus(){
-		final AsyncCallback<PushRegistrationStatusDetail> callback = 
-				GenericAsyncCallback.<PushRegistrationStatusDetail>builder(this)
-				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
-									getResources().getString(R.string.push_progress_registration_loading), 
-									true)
-				.withSuccessListener(new PushRegistrationStatusSuccessListener())
-				.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(this))
-				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(new LockScreenCompletionListener(this))
-				.launchIntentOnSuccess(CardNavigationRootActivity.class)
-				.finishCurrentActivityOnSuccess(this)
-				.clearTextViewsOnComplete(idField, passField)
-				.build();
-	
-		new GetPushRegistrationStatus(this, callback).submit();
-	}
 
 	/**
 	 * showErrorIfAnyFieldsAreEmpty() Sets error tags for input fields if a
@@ -893,31 +814,10 @@ public class LoginActivity extends BaseActivity  {
 	 * @return Returns true if successful, false otherwise.
 	 */
 	public boolean updateAccountInformation(final AccountType account) {
-		boolean ret = false;
 		
-		//Only update account information if logged in
-		if( Globals.isLoggedIn() ) {
-			//Load preferences
-			Globals.loadPreferences(getContext(), account);
-			
-			//Set current user for the current session  
-			Globals.setCurrentUser(idField.getText().toString());
-			
-			//Set the current account selected by the user
-			Globals.setCurrentAccount(account);
-			
-			//Set remember ID value in globals. This will be used to determine whether
-			//Current User is stored in persistent storage by the Globals class
-			Globals.setRememberId(saveUserId);	
-			
-			ret = true;
-		} else {
-			if( Log.isLoggable(TAG, Log.ERROR)) {
-				Log.w(TAG, "Unable to update account information.");
-			}
-		}
-			
-		return ret;
+		return Globals.updateAccountInformation(account,getContext(),idField.getText().toString(),saveUserId);
+		
+		
 	}
 
 	/**
@@ -1022,7 +922,7 @@ public class LoginActivity extends BaseActivity  {
 	 */
 	@Override
 	public ErrorHandler getErrorHandler(){
-		return  CardErrorHandler.getInstance();
+		return FacadeFactory.getCardFacade().getCardErrorHandler();
 		
 	}
 }

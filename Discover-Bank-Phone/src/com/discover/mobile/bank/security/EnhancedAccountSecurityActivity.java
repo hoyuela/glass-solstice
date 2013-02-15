@@ -4,6 +4,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.xml.sax.ErrorHandler;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -26,8 +28,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthAnswerDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
-import com.discover.mobile.card.error.CardErrorHandler;
-import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
@@ -38,7 +38,7 @@ import com.discover.mobile.common.auth.strong.StrongAuthAnswerDetails;
 import com.discover.mobile.common.auth.strong.StrongAuthDetails;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
-import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.RegistrationErrorCodes;
@@ -435,9 +435,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	}
 
 	private void startHomeFragment() {
-		final Intent strongAuth = new Intent(this, CardNavigationRootActivity.class);
-
-		startActivityForResult(strongAuth, 0);
+		FacadeFactory.getCardFacade().navToHomeFragment(this);
 	}
 
 	private void submitCardSecurityInfo(final ProgressDialog progress, final int selectedIndex, final String answer) {
@@ -620,7 +618,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 * @see com.discover.mobile.common.NotLoggedInRoboActivity#getErrorHandler()
 	 */
 	@Override
-	public ErrorHandler getErrorHandler() {
-		return CardErrorHandler.getInstance();
+	public com.discover.mobile.common.error.ErrorHandler getErrorHandler() {
+		return FacadeFactory.getCardFacade().getCardErrorHandler();
 	}
 }

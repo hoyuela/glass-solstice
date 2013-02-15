@@ -40,8 +40,8 @@ public class FacadeFactory {
 	 * The login facade 
 	 * @return
 	 */
-	public static LoginFacade getLoginFacade(){
-		return (LoginFacade) getImplClass("com.discover.mobile.bank.facade.LoginFacadeImpl");
+	public static LoginActivityFacade getLoginFacade(){
+		return (LoginActivityFacade) getImplClass("com.discover.mobile.bank.facade.LoginActivityFacadeImpl");
 	}
 	/**
 	 * Customer service resides in bank code, but is shared
@@ -51,6 +51,30 @@ public class FacadeFactory {
 		return (CustomerServiceFacade) getImplClass("com.discover.mobile.bank.facade.CustomerServiceFacadeImpl");
 	}
 	
+	/**
+	 * Customer service resides in bank code, but is shared
+	 * @return
+	 */
+	public static PushFacade getPushFacade(){
+		return (PushFacade) getImplClass("com.discover.mobile.card.facade.PushFacadeImpl");
+	}
+	
+	
+	/**
+	 * Common card navigation 
+	 * @return
+	 */
+	public static CardFacade getCardFacade(){
+		return (CardFacade) getImplClass("com.discover.mobile.card.facade.CardFacadeImpl");
+	}
+	
+	/**
+	 * Customer service resides in bank code, but is shared
+	 * @return
+	 */
+	public static LoginServiceFacade getLoginServiceFacade(){
+		return (LoginServiceFacade) getImplClass("com.discover.mobile.card.facade.LoginServiceFacadeImpl");
+	}
 	
 	/**
 	 * Loads the impl class, expecting to find it in the classloader.

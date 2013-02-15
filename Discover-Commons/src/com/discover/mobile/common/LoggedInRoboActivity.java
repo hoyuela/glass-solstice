@@ -107,7 +107,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		/** Used on pause to know when to set Globals isLoggedIn to false **/
 		pendingLogout = true;
 		
-		FacadeFactory.getLogoutFacade().logout(this,this);
+		FacadeFactory.getLogoutFacade().logout(this,this,AccountType.CARD_ACCOUNT);
 
 	}
 

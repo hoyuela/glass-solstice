@@ -2,7 +2,6 @@ package com.discover.mobile.bank.login;
 
 import static com.discover.mobile.common.StandardErrorCodes.FORCED_UPGRADE_REQUIRED;
 
-import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;

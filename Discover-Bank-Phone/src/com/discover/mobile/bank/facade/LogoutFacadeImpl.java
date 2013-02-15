@@ -7,6 +7,7 @@ import android.app.Activity;
 
 import com.discover.mobile.bank.BankPhoneAsyncCallbackBuilder;
 import com.discover.mobile.bank.logout.LogOutSuccessFailListener;
+import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
@@ -21,7 +22,8 @@ import com.discover.mobile.common.facade.LogoutFacade;
 public class LogoutFacadeImpl implements LogoutFacade{
 
 	//FIXME logout should have a process where both "sides" are invoked, not just bank or card
-	public void logout(Activity fromActivity, ErrorHandlerUi errorUi){
+	public void logout(Activity fromActivity, ErrorHandlerUi errorUi, AccountType accountType){
+		boolean isCard = (accountType == AccountType.CARD_ACCOUNT);
 		final AsyncCallback<Object> callback = BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Object.class, fromActivity, errorUi, true)
 				.withSuccessListener(new LogOutSuccessFailListener(fromActivity))
 				.withErrorResponseHandler(new LogOutSuccessFailListener(fromActivity))
@@ -29,7 +31,7 @@ public class LogoutFacadeImpl implements LogoutFacade{
 				.withCompletionListener(new LockScreenCompletionListener(fromActivity))
 				.build();
 
-		new LogOutCall(fromActivity, callback, false).submit();
+		new LogOutCall(fromActivity, callback, isCard).submit();
 	}
 
 	

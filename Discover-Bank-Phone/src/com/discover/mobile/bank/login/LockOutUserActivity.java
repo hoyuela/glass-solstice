@@ -1,7 +1,6 @@
 package com.discover.mobile.bank.login;
 
 import roboguice.activity.RoboActivity;
-import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,13 +19,12 @@ import com.discover.mobile.common.IntentExtraKey;
  * @author scottseward, ekaram
  * 
  */
-@ContentView(R.layout.login_locked_out)
 public class LockOutUserActivity extends RoboActivity {
 
 	/**
 	 * The body text on the screen. Used for a long error message.
 	 */
-	@InjectView(R.id.error_text_view)
+	
 	private TextView errorTextView;
 
 	/**
@@ -49,7 +47,9 @@ public class LockOutUserActivity extends RoboActivity {
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.login_locked_out);
+		errorTextView = (TextView) findViewById(R.id.error_text_view);
+		
 		final Integer errorText = (Integer) this.getIntent().getExtras().getSerializable(IntentExtraKey.ERROR_TEXT_KEY);
 		final Integer errorTitleText = (Integer) this.getIntent().getExtras().getSerializable(IntentExtraKey.ERROR_TITLE_TEXT_KEY);
 		if (errorText != null)

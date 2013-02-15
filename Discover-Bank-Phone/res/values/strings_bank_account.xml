@@ -3,5 +3,7 @@
     
     <!-- Account Activity Strings -->
     <string name="activity_title">Discover Online Checking</string>
-    
+    <string name="recent_activity_date">Date</string>
+	<string name="recent_activity_description">Description</string>
+	<string name="recent_activity_amount">Amount</string>
 </resources>

@@ -12,20 +12,29 @@ import com.discover.mobile.bank.login.LockOutUserActivity;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.ScreenType;
-import com.discover.mobile.common.facade.LoginFacade;
+import com.discover.mobile.common.facade.LoginActivityFacade;
 
 /**
+ * A facade for the Login Activity 
  * @author ekaram
  *
  */
-public class LoginFacadeImpl implements LoginFacade {
+public class LoginActivityFacadeImpl implements LoginActivityFacade {
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.discover.mobile.common.facade.LoginActivityFacade#navToLogin(android.content.Context)
+	 */
 	public void navToLogin(Context context){
 		final Intent login = new Intent(context, LoginActivity.class);
 		context.startActivity(login);
 
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.discover.mobile.common.facade.LoginActivityFacade#navToLoginWithMessage(android.app.Activity, android.os.Bundle)
+	 */
 	public void navToLoginWithMessage(Activity currentActivity, Bundle bundle){	
 		
 		// Send an intent to open login activity if current activity is not login
@@ -41,6 +50,10 @@ public class LoginFacadeImpl implements LoginFacade {
 		
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.discover.mobile.common.facade.LoginActivityFacade#navToLockoutScreen(android.content.Context, com.discover.mobile.common.ScreenType)
+	 */
 	public void navToLockoutScreen(Context context, ScreenType screenType){
 		final Intent maintenancePageIntent = new Intent(context, LockOutUserActivity.class);
 		screenType.addExtraToIntent(maintenancePageIntent);

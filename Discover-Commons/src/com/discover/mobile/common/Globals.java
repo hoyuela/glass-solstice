@@ -426,4 +426,40 @@ public final class Globals {
 		isLoggedIn = false;
     }
     
+    /**
+	 * Used to update the globals data stored at login for CARD or BANK and retrieves
+	 * user information. Should only be called if logged in otherwise will return false.
+	 * 
+	 * @param account Specify either Globals.CARD_ACCOUNT or Globals.BANK_ACCOUNT
+	 * 
+	 * @return Returns true if successful, false otherwise.
+	 */
+	public static boolean updateAccountInformation(final AccountType account, Context context, String userId, boolean saveUserId) {
+		boolean ret = false;
+		
+		//Only update account information if logged in
+		if( Globals.isLoggedIn() ) {
+			//Load preferences
+			Globals.loadPreferences(context, account);
+			
+			//Set current user for the current session  
+			Globals.setCurrentUser(userId);
+			
+			//Set the current account selected by the user
+			Globals.setCurrentAccount(account);
+			
+			//Set remember ID value in globals. This will be used to determine whether
+			//Current User is stored in persistent storage by the Globals class
+			Globals.setRememberId(saveUserId);	
+			
+			ret = true;
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.w(TAG, "Unable to update account information.");
+			}
+		}
+			
+		return ret;
+	}
+    
 }
