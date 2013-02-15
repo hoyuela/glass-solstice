@@ -46,7 +46,7 @@ public class LogOutSuccessFailListener implements SuccessListener<Object>, Error
 	@Override
 	public void success(final NetworkServiceCall<?> sender, final Object successObject) {
 		final Bundle bundle = new Bundle();
-		bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+		bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
 		bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
 		FacadeFactory.getLoginFacade().navToLoginWithMessage(activity, bundle);
 	}
@@ -54,7 +54,7 @@ public class LogOutSuccessFailListener implements SuccessListener<Object>, Error
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> arg0) {
 		final Bundle bundle = new Bundle();
-		bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+		bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
 		bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
 		FacadeFactory.getLoginFacade().navToLoginWithMessage(activity, bundle);
 		return false;

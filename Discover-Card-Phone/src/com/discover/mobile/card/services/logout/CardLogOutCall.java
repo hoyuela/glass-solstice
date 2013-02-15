@@ -7,11 +7,9 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.card.services.CardNetworkServiceCall;
 import com.discover.mobile.card.services.CardUrlManager;
-import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
@@ -23,16 +21,13 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
  * @author sseward
  *
  */
-public class CardLogOutCall extends NetworkServiceCall<Object> {
+public class CardLogOutCall extends CardNetworkServiceCall<Object> {
 	
 	
 	/**
 	 * Service call params to be used
 	 */
-//	private static final ServiceCallParams STANDARD_PARAMS = new PostCallParams(UrlManagerCard.getLogoutUrl()) {{
-//		requiresSessionForRequest = true;
-//		clearsSessionAfterRequest = true;
-//	}};
+
 	
 	private static ServiceCallParams getParams(){
 		ServiceCallParams params;
@@ -96,10 +91,5 @@ public class CardLogOutCall extends NetworkServiceCall<Object> {
 		return null;
 	}
 
-	@Override
-	protected String getBaseUrl() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 }
