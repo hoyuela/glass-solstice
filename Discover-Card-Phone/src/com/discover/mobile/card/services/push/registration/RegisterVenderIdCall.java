@@ -2,11 +2,11 @@ package com.discover.mobile.card.services.push.registration;
 
 import android.content.Context;
 
+import com.discover.mobile.card.services.CardJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 /**
  * POST call that will register the device with the user and the vendor id.  
@@ -16,7 +16,7 @@ import com.discover.mobile.common.urlmanager.CardUrlManager;
  * @author jthornton
  *
  */
-public class RegisterVenderIdCall extends JsonResponseMappingNetworkServiceCall<DeviceRegistrationDetail> {
+public class RegisterVenderIdCall extends CardJsonResponseMappingNetworkServiceCall<DeviceRegistrationDetail> {
 	
 	@SuppressWarnings("unused")
 	private static final String TAG = RegisterVenderIdCall.class.getSimpleName();

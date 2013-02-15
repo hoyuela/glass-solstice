@@ -1,9 +1,5 @@
 package com.discover.mobile.bank.login;
 
-import static com.discover.mobile.common.CommonMethods.setViewGone;
-import static com.discover.mobile.common.CommonMethods.setViewInvisible;
-import static com.discover.mobile.common.CommonMethods.setViewVisible;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +27,8 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
+import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
+import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
@@ -39,8 +37,6 @@ import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.auth.PreAuthCheckCall;
-import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.LockScreenCompletionListener;
@@ -49,6 +45,7 @@ import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
 /**
@@ -80,6 +77,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private static final String PW_INPUT_TYPE_KEY = "f";
 	private static final String ERROR_MESSAGE_KEY = "g";
 	private static final String ERROR_MESSAGE_VISIBILITY = "h";
+	
+	
+	/**
+	 * A state flag so that we don't run this twice.
+	 */
+	private static boolean PHONE_GAP_INIT_COMPLETE = false;
 	
 	/**
 	 * Roboguise injections of android interface element references.
@@ -260,6 +263,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		//Show splash screen while completing pre-auth, if pre-auth has not been done and
 		//application is be launched for the first time
 		if( !preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) ) {
+			
 			showSplashScreen(!preAuthHasRun);
 		} else {
 			this.showLoginPane();
@@ -385,7 +389,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				setViewGone(errorTextView);
+				CommonUtils.setViewGone(errorTextView);
 				imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0); 
 				//Clear the last error that occurred
 				setLastError(0);
@@ -446,7 +450,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		forgotUserIdOrPassText.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				setViewGone(errorTextView);
+				CommonUtils.setViewGone(errorTextView);
 				forgotIdAndOrPass();
 			}
 		});
@@ -616,27 +620,27 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	public void toggleBankCardLogin(final View v) { 
 		if (v.equals(goToCardLabel)) {
 			goToCardLabel.setTextColor(getResources().getColor(R.color.black));
-			setViewVisible(cardCheckMark);
+			CommonUtils.setViewVisible(cardCheckMark);
 
-			setViewInvisible(bankCheckMark);
+			CommonUtils.setViewInvisible(bankCheckMark);
 			goToBankLabel.setTextColor(getResources().getColor(R.color.blue_link));
 			
 			registerOrAtmButton.setText(R.string.register_now);
 			privacySecOrTermButton.setText(R.string.privacy_and_security);
-			setViewVisible(this.forgotUserIdOrPassText);
+			CommonUtils.setViewVisible(this.forgotUserIdOrPassText);
 			
 			//Load Card Account Preferences for refreshing UI only
 			Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
 		} else {
 			goToCardLabel.setTextColor(getResources().getColor(
 					R.color.blue_link));
-			setViewInvisible(cardCheckMark);
-			setViewVisible(bankCheckMark);
+			CommonUtils.setViewInvisible(cardCheckMark);
+			CommonUtils.setViewVisible(bankCheckMark);
 			goToBankLabel.setTextColor(getResources().getColor(R.color.black));
 			
 			registerOrAtmButton.setText(R.string.atm_locator);
 			privacySecOrTermButton.setText(R.string.privacy_and_terms);
-			setViewInvisible(this.forgotUserIdOrPassText);
+			CommonUtils.setViewInvisible(this.forgotUserIdOrPassText);
 			
 			//Load Bank Account Preferences for refreshing UI only
 			Globals.loadPreferences(this, AccountType.BANK_ACCOUNT);
@@ -839,7 +843,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				//Show progress bar and hide login view
 		        if( show ) {
 		        	splashProgress.setVisibility(View.VISIBLE);
-		  
+		        	
 		        	loginPane.setVisibility(View.GONE);
 		        	toolbar.setVisibility(View.GONE);
 		        }
@@ -905,7 +909,13 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		//Set flag to detect if pre-authentication needs to be performed 
 		//the next time login activity is launched
 		preAuthHasRun = result;
-	
+		
+		// splash screen is still up - let's init phone gap now before
+		// we take it down
+		if ( !PHONE_GAP_INIT_COMPLETE ) {
+			FacadeFactory.getCardFacade().initPhoneGap();
+			PHONE_GAP_INIT_COMPLETE = true;
+		}
 		showSplashScreen(false);
 		
 	}

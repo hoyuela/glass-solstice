@@ -11,13 +11,13 @@ import android.widget.TextView;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.services.auth.registration.AccountInformationCall;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
-import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * This activity sets up the abstract account information screen to handle user registration.
@@ -48,7 +48,7 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
 	 */
 	@Override
 	protected void addCustomFieldToDetails(final AccountInformationDetails details, final String value) {
-		details.acctNbr = CommonMethods.getSpacelessString(value);
+		details.acctNbr = CommonUtils.getSpacelessString(value);
 	}
 
 	@Override

@@ -3,9 +3,10 @@ package com.discover.mobile.card;
 import java.util.List;
 
 import com.discover.mobile.card.services.account.recent.RecentActivityPeriodsDetail;
+import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.card.services.push.history.NotificationDetail;
 import com.discover.mobile.card.services.push.manage.PushNotificationPrefsDetail;
-import com.discover.mobile.common.auth.AccountDetails;
+
 
 public final class CardSessionContext {
 	

@@ -8,13 +8,13 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.bank.BankUser;
+import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
-import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
  * This is used downloading the Accounts information for a Bank user that is provided in a JSON response to a 
@@ -60,7 +60,7 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  * @author henryoyuela
  *
  */
-public class GetCustomerAccountsServerCall  extends UnamedListJsonResponseMappingNetworkServiceCall<AccountList, Account> {
+public class GetCustomerAccountsServerCall  extends BankUnamedListJsonResponseMappingNetworkServiceCall<AccountList, Account> {
 
 	/**Reference handler to return the data to the UI*/
 	private final TypedReferenceHandler<AccountList> handler;
@@ -88,7 +88,7 @@ public class GetCustomerAccountsServerCall  extends UnamedListJsonResponseMappin
 				this.errorResponseParser = BankErrorResponseParser.instance();
 
 			}
-		}, AccountList.class, Account.class, false);
+		}, AccountList.class, Account.class);
 
 		this.handler = new SimpleReferenceHandler<AccountList>(callback);
 	}

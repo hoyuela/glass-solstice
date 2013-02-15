@@ -8,13 +8,13 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.bank.BankUser;
+import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
  * Used for invoking the Bank - Customer Service API found at ./api/customers/current. The JSON
@@ -112,7 +112,7 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  *
  */
 public class CustomerServiceCall extends
-		JsonResponseMappingNetworkServiceCall<Customer> {
+		BankJsonResponseMappingNetworkServiceCall<Customer> {
 
 	private final TypedReferenceHandler<Customer> handler;
 
@@ -140,7 +140,7 @@ public class CustomerServiceCall extends
 				errorResponseParser = BankErrorResponseParser.instance();
 
 			}
-		}, Customer.class, false);
+		}, Customer.class);
 
 		// TODO decide if this is the best type of handler
 		handler = new StrongReferenceHandler<Customer>(callback);

@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

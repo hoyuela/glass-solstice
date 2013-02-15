@@ -5,8 +5,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.R;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * Utility class used to wrap the Need Help footer at the bottom of every page or modal. Provides
@@ -50,7 +50,7 @@ public class NeedHelpFooter
 		helpNumberTxtVw.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				CommonMethods.dialNumber(helpNumberTxtVw.getText().toString(), helpNumberTxtVw.getContext());
+				CommonUtils.dialNumber(helpNumberTxtVw.getText().toString(), helpNumberTxtVw.getContext());
 			}
 		});
 	}

@@ -39,4 +39,15 @@ public interface CardFacade {
 	 * @return
 	 */
 	public ErrorHandler getCardErrorHandler();
+	
+	/**
+	 * Returns the url for preauth
+	 * @return
+	 */
+	public String getPreAuthUrl();
+	
+	/** 
+	 * Initializes the PhoneGap framework code
+	 */
+	public void initPhoneGap();
 }

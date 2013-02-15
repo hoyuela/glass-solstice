@@ -39,8 +39,6 @@ import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.ErrorResponseParser;
 import com.discover.mobile.common.net.json.JsonMappingRequestBodySerializer;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
@@ -80,14 +78,14 @@ import com.google.common.collect.ImmutableList;
  * The ServiceCallParams consists of the following data members which control
  * how the NetworkServiceCall constructs and handles a request: 
  * <pre> 
- * httpMethod – Specifies HTTP Method to use for the request, either GET or POST path – Specifies the REST web-service relative URL path. This path is concatenated with the BASE_URL to form the full url. The BASE_URL is a data member of the NetworkServiceCall<> class and is set up at instantiation in the constructor. The BASE_URL is determined based on whether the current session is for Bank or Card 
- * errorResponseParser – Holds a reference to the parser that will parse an error response. Most useful when the error response has a JSON body. By default the NetworkServiceCall will use the DelegatingErrorResponseParse which is found in com.discover.mobile.common.net.error, if this data member is set to null. 
- * headers – Contains the collection of headers that should be included in the request message 
- * connectionTimeout – Specifies how long to wait for a data connection to be setup before raising an Exception. By default set to 15 seconds. 
- * readTimeoutSeconds – Specifies how long to wait for a response to a request. By default set to 15 seconds.
- * clearSessionBeforeRequest – Set to TRUE to destroy the session token after a request has completed. The session token is cached in ServiceCallSessionManager, a singleton class object that holds a token that is provided at login. 
- * requireSessionForRequest – Specifies whether a special Header with a token has to be added to the request. 
- * sendDeviceIdentifiers – Specifies whether X-DID, X-SID, and X-OID has to be included in the request.
+ * httpMethod  Specifies HTTP Method to use for the request, either GET or POST path  Specifies the REST web-service relative URL path. This path is concatenated with the BASE_URL to form the full url. The BASE_URL is a data member of the NetworkServiceCall<> class and is set up at instantiation in the constructor. The BASE_URL is determined based on whether the current session is for Bank or Card 
+ * errorResponseParser  Holds a reference to the parser that will parse an error response. Most useful when the error response has a JSON body. By default the NetworkServiceCall will use the DelegatingErrorResponseParse which is found in com.discover.mobile.common.net.error, if this data member is set to null. 
+ * headers  Contains the collection of headers that should be included in the request message 
+ * connectionTimeout  Specifies how long to wait for a data connection to be setup before raising an Exception. By default set to 15 seconds. 
+ * readTimeoutSeconds  Specifies how long to wait for a response to a request. By default set to 15 seconds.
+ * clearSessionBeforeRequest  Set to TRUE to destroy the session token after a request has completed. The session token is cached in ServiceCallSessionManager, a singleton class object that holds a token that is provided at login. 
+ * requireSessionForRequest  Specifies whether a special Header with a token has to be added to the request. 
+ * sendDeviceIdentifiers  Specifies whether X-DID, X-SID, and X-OID has to be included in the request.
  * </pre>
  * 
  * Submitting A Request: 
@@ -178,32 +176,17 @@ public abstract class NetworkServiceCall<R> {
 	 * @param params
 	 */
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params) {
-		this(context, params, true);
-	}
-	
-	
-
-	/**
-	 * Network Service call that is used when needing the bank base URL.
-	 * 
-	 * @param context
-	 * @param params
-	 * @param isCard
-	 *            Determines if the base url is card or bank
-	 */
-	protected NetworkServiceCall(final Context context, final ServiceCallParams params, final boolean isCard) {
 		validateConstructorArgs(context, params);
 		this.context = context;
 		this.params = params;
-		if (!isCard) {
-			BASE_URL = BankUrlManager.getBaseUrl();
-		} else {
-			BASE_URL = CardUrlManager.getBaseUrl();
-		}
+		
+		BASE_URL = getBaseUrl();
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xApplicationVersion);
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xClientPlatform);
 
 	}
+	
+	
 
 	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {
 		checkNotNull(context, "context cannot be null");
@@ -662,5 +645,11 @@ public abstract class NetworkServiceCall<R> {
 		String sid;
 		String oid;
 	}
+	
+	/**
+	 * Returns the baseUrl for the call
+	 * @return
+	 */
+	protected abstract String getBaseUrl();
 
 }

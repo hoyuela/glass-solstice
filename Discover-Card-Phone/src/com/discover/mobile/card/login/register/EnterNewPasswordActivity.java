@@ -17,7 +17,6 @@ import com.discover.mobile.card.services.auth.forgot.ForgotPasswordTwoCall;
 import com.discover.mobile.card.services.auth.forgot.ForgotPasswordTwoDetails;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
@@ -26,6 +25,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.ui.widgets.ConfirmationEditText;
+import com.discover.mobile.common.utils.CommonUtils;
 /**
  * EnterNewPasswordActivit - this activity inherits from AbstractAccountInformationActivity
  * @author scottseward
@@ -187,7 +187,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 				switch (errorResponse.getHttpStatusCode()) {	
 				default:
 					Log.e(TAG, "RegistrationCallOne.errorResponse(ErrorResponse): " + errorResponse.toString());
-					CommonMethods.showLabelWithStringResource(errorMessageLabel,R.string.unkown_error_text, currentContext);
+					CommonUtils.showLabelWithStringResource(errorMessageLabel,R.string.unkown_error_text, currentContext);
 					return true;
 				}
 
@@ -206,16 +206,16 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 				switch(messageErrorResponse.getMessageStatusCode()){
 
 				case REG_AUTHENTICATION_PROBLEM: 
-					CommonMethods.showLabelWithStringResource(errorMessageLabel, R.string.account_info_bad_input_error_text, currentContext);
+					CommonUtils.showLabelWithStringResource(errorMessageLabel, R.string.account_info_bad_input_error_text, currentContext);
 					return true;
 
 				case BAD_ACCOUNT_STATUS:
-					CommonMethods.showLabelWithStringResource(errorMessageLabel,R.string.login_attempt_warning, currentContext);
+					CommonUtils.showLabelWithStringResource(errorMessageLabel,R.string.login_attempt_warning, currentContext);
 					return true;
 
 				case ID_AND_PASS_EQUAL:
-					CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text, currentContext);
-					CommonMethods.showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_id_matches_pass_error_text, currentContext);
+					CommonUtils.showLabelWithStringResource(mainErrorMessageLabel, R.string.account_info_bad_input_error_text, currentContext);
+					CommonUtils.showLabelWithStringResource(errorMessageLabel, R.string.account_info_two_id_matches_pass_error_text, currentContext);
 					return true;
 
 				case SCHEDULED_MAINTENANCE:
@@ -244,7 +244,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 	public void checkInputsThenSubmit(final View v) {
 		passOneField.updateAppearanceForInput();
 		passTwoField.updateAppearanceForInput();
-		CommonMethods.setViewGone(mainErrorMessageLabel);
+		CommonUtils.setViewGone(mainErrorMessageLabel);
 
 		//If the info was all valid - submit it to the service call.
 		if(passOneField.isValid() && passTwoField.isValid()){
@@ -259,7 +259,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 			if(!passOneField.isValid())
 				passOneField.setStrengthMeterInvalid();
 
-			CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, 
+			CommonUtils.showLabelWithStringResource(mainErrorMessageLabel, 
 					R.string.account_info_bad_input_error_text, this);
 		}
 

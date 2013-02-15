@@ -7,13 +7,13 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
-import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 
 /**
  * Used for invoking the Bank - Payment Service API found at ./api/payments/. The JSON
@@ -105,7 +105,7 @@ import com.discover.mobile.common.urlmanager.BankUrlManager;
  * @author jthornton
  *
  */
-public class GetPaymentsServiceCall extends UnamedListJsonResponseMappingNetworkServiceCall<ListPaymentDetail, PaymentDetail> {
+public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNetworkServiceCall<ListPaymentDetail, PaymentDetail> {
 
 	private final TypedReferenceHandler<ListPaymentDetail> handler;
 
@@ -133,7 +133,7 @@ public class GetPaymentsServiceCall extends UnamedListJsonResponseMappingNetwork
 				this.errorResponseParser = BankErrorResponseParser.instance();
 
 			}
-		}, ListPaymentDetail.class, PaymentDetail.class, false);
+		}, ListPaymentDetail.class, PaymentDetail.class);
 
 		// TODO decide if this is the best type of handler
 		this.handler = new SimpleReferenceHandler<ListPaymentDetail>(callback);

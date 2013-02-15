@@ -20,7 +20,6 @@ import com.discover.mobile.card.services.auth.registration.AccountInformationDet
 import com.discover.mobile.card.services.auth.registration.CreateLoginCall;
 import com.discover.mobile.card.services.auth.registration.CreateLoginDetails;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -32,6 +31,7 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.ui.widgets.ConfirmationEditText;
 import com.discover.mobile.common.ui.widgets.EmailEditText;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * CreateLoginActivity - this is the final step of a user either going through "Forgot Both" or "Register".
@@ -290,7 +290,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	 * @param v
 	 */
 	public void checkInputsThenSubmit(final View v){
-		CommonMethods.setViewGone(mainErrorMessageLabel);
+		CommonUtils.setViewGone(mainErrorMessageLabel);
 
 		emailField.updateAppearanceForInput();
 		passField.updateAppearanceForInput();
@@ -308,7 +308,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		}
 		else {
 			mainScrollView.smoothScrollTo(0, 0);
-			CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, 
+			CommonUtils.showLabelWithStringResource(mainErrorMessageLabel, 
 					R.string.account_info_bad_input_error_text, currentActivity);
 		}
 
@@ -351,7 +351,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 				switch (errorResponse.getHttpStatusCode()) {
 				default:
 					Log.e(TAG, "Create Login submission error : " + errorResponse.toString());
-					CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, 
+					CommonUtils.showLabelWithStringResource(mainErrorMessageLabel, 
 							R.string.unkown_error_text, currentActivity);
 					return true;
 				}
@@ -373,29 +373,29 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 
 				switch(messageErrorResponse.getMessageStatusCode()){
 				case REG_AUTHENTICATION_PROBLEM: //Provided information was incorrect.
-					CommonMethods.showLabelWithStringResource(errorMessageLabel, 
+					CommonUtils.showLabelWithStringResource(errorMessageLabel, 
 							R.string.account_info_bad_input_error_text, currentActivity);
 					return true;
 				case BAD_ACCOUNT_STATUS: //Last attempt with this account number warning.
-					CommonMethods.showLabelWithStringResource(errorMessageLabel, 
+					CommonUtils.showLabelWithStringResource(errorMessageLabel, 
 							R.string.login_attempt_warning, currentActivity);
 					return true;
 				case ID_AND_PASS_EQUAL:
-					CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, 
+					CommonUtils.showLabelWithStringResource(mainErrorMessageLabel, 
 							R.string.account_info_bad_input_error_text, currentActivity);
-					CommonMethods.showLabelWithStringResource(mainErrorMessageLabelTwo, 
+					CommonUtils.showLabelWithStringResource(mainErrorMessageLabelTwo, 
 							R.string.account_info_two_id_matches_pass_error_text, currentActivity);
 					return true;
 				case ID_AND_SSN_EQUAL:
-					CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, 
+					CommonUtils.showLabelWithStringResource(mainErrorMessageLabel, 
 							R.string.account_info_bad_input_error_text, currentActivity);
-					CommonMethods.showLabelWithStringResource(mainErrorMessageLabelTwo, 
+					CommonUtils.showLabelWithStringResource(mainErrorMessageLabelTwo, 
 							R.string.id_and_ssn_match_text, currentActivity);
 					return true;
 				case ID_ALREADY_TAKEN:
-					CommonMethods.showLabelWithStringResource(mainErrorMessageLabel, 
+					CommonUtils.showLabelWithStringResource(mainErrorMessageLabel, 
 							R.string.account_info_bad_input_error_text, currentActivity);
-					CommonMethods.showLabelWithStringResource(mainErrorMessageLabelTwo, 
+					CommonUtils.showLabelWithStringResource(mainErrorMessageLabelTwo, 
 							R.string.account_info_two_username_in_use_error_text, currentActivity);
 					return true;
 				case PLANNED_OUTAGE:

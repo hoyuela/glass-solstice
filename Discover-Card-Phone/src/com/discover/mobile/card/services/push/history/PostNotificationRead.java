@@ -2,19 +2,19 @@ package com.discover.mobile.card.services.push.history;
 
 import android.content.Context;
 
+import com.discover.mobile.card.services.CardJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ReadNotificationReferenceHandler;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 /**
  * Call to post a notification as read
  * @author jthornton
  *
  */
-public class PostNotificationRead extends JsonResponseMappingNetworkServiceCall<PostReadDetail>{
+public class PostNotificationRead extends CardJsonResponseMappingNetworkServiceCall<PostReadDetail>{
 
 	/**Reference handler to allow the call to be back on the UI*/
 	private final TypedReferenceHandler<PostReadDetail> handler;

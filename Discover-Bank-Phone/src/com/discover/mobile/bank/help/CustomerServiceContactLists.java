@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.common.CommonMethods;
+import com.discover.mobile.common.utils.CommonUtils;
 /**
  * This class is responsible for returning a list of contact elements to be used in an Android layout.
  * It can return lists of phone numbers that will dial their number on click, or just a list of addresses.
@@ -151,7 +151,7 @@ public class CustomerServiceContactLists {
 
 			@Override
 			public void onClick(final View v) {
-				CommonMethods.dialNumber(contactNumber.getText().toString(), context);
+				CommonUtils.dialNumber(contactNumber.getText().toString(), context);
 			}
 		});
 	}

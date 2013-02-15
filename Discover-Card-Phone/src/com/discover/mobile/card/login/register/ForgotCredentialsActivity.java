@@ -18,12 +18,12 @@ import android.widget.TextView;
 
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
-import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
+import com.discover.mobile.common.utils.CommonUtils;
 /**
  * This class handles a user's choice and navigation to the first step of forgot password/user id/ or both.
  * It contains a list of choices, upon tapping a choice, this activity is finished and the selected
@@ -84,7 +84,7 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 
 			@Override
 			public void onClick(final View v) {
-				CommonMethods.dialNumber(helpNumber.getText().toString(), currentContext);				
+				CommonUtils.dialNumber(helpNumber.getText().toString(), currentContext);				
 			}
 		});
 	}

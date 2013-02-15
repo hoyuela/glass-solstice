@@ -2,9 +2,9 @@ package com.discover.mobile.bank.login;
 
 import android.util.Log;
 
+import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.net.NetworkServiceCall;
 /**

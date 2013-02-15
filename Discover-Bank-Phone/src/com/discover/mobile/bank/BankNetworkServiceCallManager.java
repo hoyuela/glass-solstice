@@ -15,12 +15,12 @@ import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
+import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.auth.LogOutCall;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
@@ -31,6 +31,7 @@ import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.google.common.base.Strings;
 
 /**
@@ -131,10 +132,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> error) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
+		BankErrorResponse bankError = (BankErrorResponse)error;
 
 		if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
 			//Send request to Strong Auth web-service API
-			FacadeFactory.getStrongAuthFacade().navToBankStrongAuth(activeActivity);
+			final BankStrongAuthDetails details = new BankStrongAuthDetails(bankError);
+		
+			BankNavigator.navigateToStrongAuth(activeActivity, details, bankError.getErrorMessage());
 		} else {
 			this.errorHandler.handleFailure(sender, error);
 
@@ -255,7 +259,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	 */
 	@Override
 	public void complete(final NetworkServiceCall<?> sender, final Object result) {
-		if( sender instanceof LogOutCall ) {
+		if( sender instanceof BankLogOutCall ) {
 			/**Clear all user cached data*/
 		 	BankUser.instance().clearSession();
 		}

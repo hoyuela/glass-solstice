@@ -2,19 +2,19 @@ package com.discover.mobile.card.services.account.recent;
 
 import android.content.Context;
 
+import com.discover.mobile.card.services.CardJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 /**
  * Call to get the activity periods to be displayed in the choose activity period fragment
  * @author jthornton
  *
  */
-public class GetActivityPeriods extends JsonResponseMappingNetworkServiceCall<RecentActivityPeriodsDetail>{
+public class GetActivityPeriods extends CardJsonResponseMappingNetworkServiceCall<RecentActivityPeriodsDetail>{
 
 	/**Reference handler to allow the call to be back on the UI*/
 	private final TypedReferenceHandler<RecentActivityPeriodsDetail> handler;

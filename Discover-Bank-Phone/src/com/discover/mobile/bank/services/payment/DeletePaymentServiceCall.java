@@ -7,15 +7,15 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.services.BankNetworkServiceCall;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.DeleteCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
-import com.discover.mobile.common.urlmanager.BankUrlManager;
 
-public class DeletePaymentServiceCall extends NetworkServiceCall<PaymentDetail> {
+public class DeletePaymentServiceCall extends BankNetworkServiceCall<PaymentDetail> {
 	private final TypedReferenceHandler<PaymentDetail> handler;
 	
 	public DeletePaymentServiceCall(final Context context, 
@@ -36,7 +36,7 @@ public class DeletePaymentServiceCall extends NetworkServiceCall<PaymentDetail> 
 				this.errorResponseParser = BankErrorResponseParser.instance();
 
 			}
-		}, false);
+		});
 
 		// TODO decide if this is the best type of handler
 		this.handler = new SimpleReferenceHandler<PaymentDetail>(callback);

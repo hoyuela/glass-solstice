@@ -38,9 +38,10 @@ public class LoginActivityFacadeImpl implements LoginActivityFacade {
 	public void navToLoginWithMessage(Activity currentActivity, Bundle bundle){	
 		
 		// Send an intent to open login activity if current activity is not login
-		if (currentActivity.getClass().equals(LoginActivity.class)){
+		if (! currentActivity.getClass().equals(LoginActivity.class)){
 			
 			final Intent intent = new Intent(currentActivity, LoginActivity.class);
+			intent.putExtras(bundle);
 			
 			currentActivity.startActivity(intent);
 

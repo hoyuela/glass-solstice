@@ -39,18 +39,17 @@ import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.card.push.register.PushRegistrationStatusSuccessListener;
+import com.discover.mobile.card.services.auth.AccountDetails;
+import com.discover.mobile.card.services.auth.AuthenticateCall;
 import com.discover.mobile.card.services.auth.forgot.ForgotUserIdCall;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.card.services.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail;
-import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.AccountDetails;
-import com.discover.mobile.common.auth.AuthenticateCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
@@ -65,6 +64,7 @@ import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.discover.mobile.common.ui.widgets.UsernameOrAccountNumberEditText;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 import com.xtify.sdk.api.XtifySDK;
 
@@ -243,7 +243,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 
 			@Override
 			public void onClick(final View v) {
-				CommonMethods.dialNumber(helpNumberString, currentContext);
+				CommonUtils.dialNumber(helpNumberString, currentContext);
 			}
 		});
 
@@ -277,7 +277,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	private void checkInputsAndSubmit() {
 		cardNumField.updateAppearanceForInput();
 		passField.updateAppearanceForInput();
-		CommonMethods.setViewGone(mainErrLabel);
+		CommonUtils.setViewGone(mainErrLabel);
 
 		if(cardNumField.isValid() && passField.isValid())
 			doForgotUserIdCall();
@@ -397,12 +397,12 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 			}
 		};
 
-		new ForgotUserIdCall(this, callback, CommonMethods.getSpacelessString(cardNumField.getText().toString()), passField.getText().toString()).submit();
+		new ForgotUserIdCall(this, callback, CommonUtils.getSpacelessString(cardNumField.getText().toString()), passField.getText().toString()).submit();
 	}
 
 	private void displayOnMainErrorLabel(final String text){
 		mainErrLabel.setText(text);
-		CommonMethods.setViewVisible(mainErrLabel);
+		CommonUtils.setViewVisible(mainErrLabel);
 	}
 
 	private void resetScrollPosition(){

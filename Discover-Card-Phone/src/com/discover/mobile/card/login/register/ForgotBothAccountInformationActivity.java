@@ -12,12 +12,12 @@ import android.widget.TextView;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.services.auth.registration.AccountInformationCall;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
-import com.discover.mobile.common.CommonMethods;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.utils.CommonUtils;
 /**
  * ForgotBothAccountInformationActivity - provides layout customization to the first step of a user forgetting their
  * credentials.
@@ -47,7 +47,7 @@ public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstS
 	@Override
 	protected void addCustomFieldToDetails(final AccountInformationDetails details, final String value) {
 		//Value is a stylized account number with spaces, remove these spaces and continue.
-		details.acctNbr = CommonMethods.getSpacelessString(value);
+		details.acctNbr = CommonUtils.getSpacelessString(value);
 	}
 
 	@Override

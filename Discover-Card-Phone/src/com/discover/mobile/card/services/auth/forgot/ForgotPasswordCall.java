@@ -7,15 +7,15 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.card.services.CardNetworkServiceCall;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
 
-public class ForgotPasswordCall extends NetworkServiceCall<Object> {
+public class ForgotPasswordCall extends CardNetworkServiceCall<Object> {
 	
 	private static final String TAG = ForgotPasswordCall.class.getSimpleName();
 	

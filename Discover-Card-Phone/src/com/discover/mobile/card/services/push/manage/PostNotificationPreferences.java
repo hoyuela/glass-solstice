@@ -2,18 +2,18 @@ package com.discover.mobile.card.services.push.manage;
 
 import android.content.Context;
 
+import com.discover.mobile.card.services.CardJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
 
 /**
  * Call to post the devices notification preferences.  All the prefs are base of the device's xid.
  * @author jthornton
  *
  */
-public class PostNotificationPreferences extends JsonResponseMappingNetworkServiceCall<PostPreferencesDetail>{
+public class PostNotificationPreferences extends CardJsonResponseMappingNetworkServiceCall<PostPreferencesDetail>{
 
 	/**Reference handler to allow the call to be back on the UI*/
 	private final TypedReferenceHandler<PostPreferencesDetail> handler;

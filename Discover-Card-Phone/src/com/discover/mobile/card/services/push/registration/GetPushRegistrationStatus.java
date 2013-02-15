@@ -2,11 +2,11 @@ package com.discover.mobile.card.services.push.registration;
 
 import android.content.Context;
 
+import com.discover.mobile.card.services.CardJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.urlmanager.CardUrlManager;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -16,7 +16,7 @@ import com.xtify.sdk.api.XtifySDK;
  * @author jthornton
  *
  */
-public class GetPushRegistrationStatus extends JsonResponseMappingNetworkServiceCall<PushRegistrationStatusDetail>{
+public class GetPushRegistrationStatus extends CardJsonResponseMappingNetworkServiceCall<PushRegistrationStatusDetail>{
 
 	private final TypedReferenceHandler<PushRegistrationStatusDetail> handler;
 	
