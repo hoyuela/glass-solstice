@@ -107,5 +107,5 @@ public class ListPaymentDetail implements Serializable{
 
 	/**List of payments for the user to review*/
 	@JsonProperty("Payments")
-	List<PaymentDetail> payments;
+	public List<PaymentDetail> payments;
 }

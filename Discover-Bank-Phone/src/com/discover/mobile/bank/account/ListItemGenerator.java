@@ -1,9 +1,7 @@
 package com.discover.mobile.bank.account;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import android.content.Context;
 import android.view.View;
@@ -53,7 +51,14 @@ public class ListItemGenerator {
 	}
 	
 	public ViewPagerListItem getMemoItemCell(final String memo) {
-		getTwoItemCell(R.string.memo, memo);
+		String memoText;
+		if(memo == null)
+			memoText = "";
+		else
+			memoText = memo;
+
+		listItem = new ViewPagerListItem(this.context);
+		getTwoItemCell(R.string.memo, memoText);
 		listItem.getMiddleLabel().setTextAppearance(context, R.style.field_copy);
 		
 		return listItem;
@@ -64,7 +69,7 @@ public class ListItemGenerator {
 	}
 	
 	public ViewPagerListItem getBalanceCell(final int balance) {
-		return getTwoItemCell(R.string.balance, convertCentsToDollars(balance));
+		return getTwoItemCell(R.string.balance, BankStringFormatter.convertCentsToDollars(balance));
 	}
 	
 	public ViewPagerListItem getDateCell(final String formattedDate) {
@@ -72,7 +77,11 @@ public class ListItemGenerator {
 	}
 	
 	public ViewPagerListItem getAmountCell(final String amount) {
-		return getTwoItemCell(R.string.amount, convertCentsToDollars(amount));
+		return getTwoItemCell(R.string.amount, BankStringFormatter.convertCentsToDollars(amount));
+	}
+	
+	public ViewPagerListItem getAmountCell(final int amount) {
+		return getTwoItemCell(R.string.amount, BankStringFormatter.convertCentsToDollars(amount));
 	}
 	
 	public ViewPagerListItem getFromCell(final String from, final String balance) {
@@ -89,6 +98,10 @@ public class ListItemGenerator {
 	
 	public ViewPagerListItem getDeliverByCell(final String deliverByDate) {
 		return getTwoItemCell(R.string.deliver_by, deliverByDate);
+	}
+	
+	public ViewPagerListItem getDeliveredOnCell(final String deliveredOnDate) {
+		return getTwoItemCell(R.string.delivered_on, deliveredOnDate);
 	}
 	
 	public ViewPagerListItem getFrequencyCell(final String frequency) {
@@ -115,50 +128,6 @@ public class ListItemGenerator {
 		return getTwoItemCell(R.string.confirmation_number, confirmationNumber);
 	}
 	
-	/**
-	 * Convert the string amount to a dollar amount
-	 * @param cents - dollar amount
-	 * @return the dollar amount in string form
-	 */
-	private String convertCentsToDollars(final String cents){
-		if(null != cents){
-			double amount = Double.parseDouble(cents)/100;
-			final StringBuilder formattedString = new StringBuilder();
-
-			if(amount < 0){
-				amount *= -1;
-				formattedString.append("-");
-			}
-			
-			formattedString.append(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
-			
-			return formattedString.toString();
-			
-		} else{
-			return "$0.00";
-		}
-	}
-	/**
-	 * Convert the string amount to a dollar amount
-	 * @param cents - dollar amount
-	 * @return the dollar amount in string form
-	 */
-	//TODO: Move to common methods class.
-	private String convertCentsToDollars(final int cents){
-			double amount = (double)cents/100;
-			final StringBuilder formattedString = new StringBuilder();
-
-			//If negative, make positive
-			if(amount < 0){
-				amount *= -1;
-				formattedString.append("-");
-			}
-			
-			formattedString.append(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
-
-			return formattedString.toString();
-	}
-	
 	public List<ViewPagerListItem> getDetailTransactionList(final ActivityDetail item){
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
 
@@ -171,20 +140,42 @@ public class ListItemGenerator {
 		return items;
 	}
 	
+	/**
+	 * Return a list of ViewPagerListItems that contain the appropriate information contained
+	 * in the detail object that was passed to it
+	 * @param item
+	 * @return
+	 */
 	public List<ViewPagerListItem> getScheduledPaymentDetailList(final PaymentDetail item) {
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
 	
 		items.add(getPayeeCell(item.payee.name));
 		items.get(0).getDividerLine().setVisibility(View.GONE);
 		items.add(getPayFromAccountCell(item.paymentAccount.ending, item.paymentAccount.nickName));
-		items.add(getAmountCell("" + item.amount));
-		final PaymentDateDetail dates = item.dates.get("deliverBy");
-		items.add(getDeliverByCell(dates.formattedDate));
+		items.add(getAmountCell(item.amount));
+		items.add(getPaymentDateCell(item));
 		items.add(getStatusCell(item.status));
 		items.add(getConfirmationCell(item.confirmationNumber));
 		items.add(getMemoItemCell(item.memo));
 		
 		return items;
+	}
+	
+	public ViewPagerListItem getPaymentDateCell(final PaymentDetail item) {
+		final PaymentDateDetail dates;
+		final String itemStatus = item.status;
+		ViewPagerListItem paymentDateItem = null;
+		
+		if("SCHEDULED".equals(itemStatus)){
+			dates = item.dates.get("deliverBy");
+			paymentDateItem = getDeliverByCell(dates.formattedDate);
+		}else if("COMPLETED".equals(itemStatus)){
+			dates = item.dates.get("deliveredOn");
+			paymentDateItem = getDeliveredOnCell(dates.formattedDate);
+		}
+		
+		return paymentDateItem;
+
 	}
 	
 }
