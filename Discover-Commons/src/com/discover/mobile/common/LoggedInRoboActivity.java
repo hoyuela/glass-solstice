@@ -71,11 +71,13 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		final TextView titleView = (TextView) findViewById(R.id.title_view);
 		final ImageView navigationToggle = (ImageView) findViewById(R.id.navigation_button);
 		final Button logout = (Button) findViewById(R.id.logout_button);
+		final ImageView logoutDivider = (ImageView) findViewById(R.id.logout_divider);
 
 		navigationToggle.setVisibility(View.VISIBLE);
 		logout.setVisibility(View.VISIBLE);
 		navigationToggle.setVisibility(View.VISIBLE);
 		titleView.setVisibility(View.VISIBLE);
+		logoutDivider.setVisibility(View.VISIBLE);
 
 		titleView.setOnClickListener(new OnClickListener() {
 			@Override
