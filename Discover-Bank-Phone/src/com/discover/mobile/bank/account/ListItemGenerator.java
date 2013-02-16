@@ -59,7 +59,7 @@ public class ListItemGenerator {
 
 		listItem = new ViewPagerListItem(this.context);
 		getTwoItemCell(R.string.memo, memoText);
-		listItem.getMiddleLabel().setTextAppearance(context, R.style.field_copy);
+		listItem.getMiddleLabel().setTextAppearance(context, R.style.sub_copy_big);
 		
 		return listItem;
 	}
