@@ -15,7 +15,6 @@ import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.FragmentOnBackPressed;
 import com.discover.mobile.bank.account.ViewPagerListItem;
-import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 
@@ -70,9 +69,6 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_one_button_layout, null);
 		
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
-		activity.showStatusBar(false);
-		
 		progressIndicator = (HeaderProgressIndicator)view.findViewById(R.id.header);
 		
 		
@@ -91,17 +87,6 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		loadListElementsToLayoutFromList(contentTable, getContent());
 			
 		return view;
-	}
-	
-	/**
-	 * Displays the status bar on the FragmentActivity hosting this fragment.
-	 */
-	@Override
-	public void onPause(){
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
-		activity.showStatusBar(true);
-		
-		super.onPause();
 	}
 
 	/**

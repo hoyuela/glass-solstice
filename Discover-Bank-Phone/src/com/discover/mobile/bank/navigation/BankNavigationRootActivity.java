@@ -3,13 +3,10 @@ package com.discover.mobile.bank.navigation;
 import java.util.Calendar;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.DynamicDataFragment;
@@ -181,34 +178,6 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 		final SlidingMenu slidingMenu = this.getSlidingMenu();
 
 		return (slidingMenu.getTouchModeAbove() == SlidingMenu.TOUCHMODE_FULLSCREEN);
-	}
-	
-	/**
-	 * Method use to show and hide the status bar
-	 * 
-	 * @param value True to show status bar, false otherwise
-	 */
-	public void showStatusBar(final boolean value) {
-		final Fragment statusBar = this.getSupportFragmentManager()
-				.findFragmentById(R.id.status_bar);
-		
-		final FragmentTransaction ft = this.getSupportFragmentManager()
-				.beginTransaction();
-		
-		
-		final TextView titleView = (TextView) findViewById(R.id.title_view);
-		titleView.setClickable(value);
-		
-		/**
-		 * If its set to false hide the fragment, else show it.
-		 */
-		if (!value) {
-			ft.hide(statusBar);
-		} else {
-			ft.show(statusBar);
-		}
-		
-		ft.commit();
 	}
 	
 	/**
