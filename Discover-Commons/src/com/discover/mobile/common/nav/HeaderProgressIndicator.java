@@ -20,25 +20,25 @@ import com.discover.mobile.common.R;
  */
 public class HeaderProgressIndicator extends RelativeLayout {
 
-	private TextView step1;
-	private TextView step2;
-	private TextView step3;
-	private ImageView step1Confirm;
-	private ImageView step2Confirm;
-	private ImageView indicator1;
-	private ImageView indicator2;
-	private ImageView indicator3;
-	
+	protected TextView step1;
+	protected TextView step2;
+	protected TextView step3;
+	protected ImageView step1Confirm;
+	protected ImageView step2Confirm;
+	protected ImageView indicator1;
+	protected ImageView indicator2;
+	protected ImageView indicator3;
 
-	public HeaderProgressIndicator(Context context) {
+
+	public HeaderProgressIndicator(final Context context) {
 		super(context);
 	}
 
-	public HeaderProgressIndicator(Context context, AttributeSet attrs) {
+	public HeaderProgressIndicator(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public HeaderProgressIndicator(Context context, AttributeSet attrs, int defStyle) {
+	public HeaderProgressIndicator(final Context context, final AttributeSet attrs, final int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
@@ -46,14 +46,14 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	 * Initiates the header and sets the current position for Change Password
 	 * @param position - Current position between 0-2
 	 */
-	public void initChangePasswordHeader(int position) {
+	public void initChangePasswordHeader(final int position) {
 		inflateHeader();
 		setTitle(R.string.enter_info, R.string.create_password,R.string.confirm);
 		setPosition(position);
 	}
 
-	private void inflateHeader() {
-		LayoutInflater inflater = (LayoutInflater) getContext()
+	protected void inflateHeader() {
+		final LayoutInflater inflater = (LayoutInflater) getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		inflater.inflate(R.layout.header_progress_indication, this);
@@ -73,7 +73,7 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	/**
 	 * Sets the titles for the header
 	 */
-	public void setTitle(int title1, int title2, int title3) {
+	public void setTitle(final int title1, final int title2, final int title3) {
 		step1.setText(getResources().getString(title1));
 		step2.setText(getResources().getString(title2));
 		step3.setText(getResources().getString(title3));
@@ -83,18 +83,23 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	 * Sets up the current position of the header
 	 * @param position - number between 0-2
 	 */
-	public void setPosition(int position){
-		if (position == 1){
-			step1Confirm.setVisibility(View.VISIBLE);
+	public void setPosition(final int position){
+		if (position >= 1 ){
+			//If the layout for step 1 is visible then set the confirm image to visible
+			if( step1.getVisibility() == View.VISIBLE ) {
+				step1Confirm.setVisibility(View.VISIBLE);
+			}
 		}
-		if (position == 2){
-			step1Confirm.setVisibility(View.VISIBLE);
-			step2Confirm.setVisibility(View.VISIBLE);
+		if (position >= 2 ){
+			//If the layout for step 2 is visible then set the confirm image to visible
+			if( step2.getVisibility() == View.VISIBLE) {
+				step2Confirm.setVisibility(View.VISIBLE);
+			}	
 		}
 		setIndicatorVisibility(position);
 	}
 	
-	private void setIndicatorVisibility(int position){
+	private void setIndicatorVisibility(final int position){
 		if (position == 0){
 			step1.setTextAppearance(getContext(), R.style.selected_status_indicator_text);
 			indicator1.setVisibility(View.VISIBLE);
@@ -120,5 +125,9 @@ public class HeaderProgressIndicator extends RelativeLayout {
 	 */
 	public void hideStepTwo(){
 		step2.setVisibility(View.GONE);
+		step2Confirm.setVisibility(View.GONE);
 	}
+	
+	
+	
 }

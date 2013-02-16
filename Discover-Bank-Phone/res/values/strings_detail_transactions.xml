@@ -21,7 +21,7 @@
     <string name="available_balance">Available Balance</string>
     <string name="memo">Memo</string>
     <string name="payee">Payee</string>
-    <string name="pay_from_acct_ending_in">Pay From (Account Ending in %s)</string>
+    <string name="pay_from_acct_ending_in">Pay From %s</string>
     <string name="status">Status</string>
     <string name="confirmation_number">Confirmation Number</string>
     <string name="payment_detail">Payment Detail</string>
