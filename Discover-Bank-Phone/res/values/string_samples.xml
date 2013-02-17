@@ -5,4 +5,6 @@
     <string name="acct_balance_str">$0.00</string>
     <string name="acct_type_str">Savings Account</string>
     <string name="acct_total_str">$0.00</string>
+    <string name="action_button">Action Button</string>
+    <string name="action_link">Action Link</string>
 </resources>

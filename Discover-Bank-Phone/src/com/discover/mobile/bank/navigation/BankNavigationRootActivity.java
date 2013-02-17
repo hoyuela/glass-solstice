@@ -3,6 +3,7 @@ package com.discover.mobile.bank.navigation;
 import java.util.Calendar;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -177,5 +178,49 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 		final SlidingMenu slidingMenu = this.getSlidingMenu();
 
 		return (slidingMenu.getTouchModeAbove() == SlidingMenu.TOUCHMODE_FULLSCREEN);
+	}
+	
+	/**
+	 * Method used to search for a fragment of a specific class type within the back stack.
+	 * 
+	 * @param fragmentClassType Class type of a fragment being looked up in the back stack
+	 * 
+	 * @return Return the location of the fragment of the class type specified in the back stack.
+	 */
+	public int getFragmentIndex(final Class<?> fragmentClassType) {
+		int ret = -1;
+		
+		final FragmentManager fragManager = this.getSupportFragmentManager();
+		final int fragCount = fragManager.getBackStackEntryCount() ;
+		if( fragCount > 0 ) {
+			for( int i = 0; i < fragCount; i++ ) {
+				if( fragManager.getBackStackEntryAt(i).getName().equals(fragmentClassType.getSimpleName() ) ) {
+					ret = i;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	/**
+	 * Method used to pop everything from the FragmentActivity's back stack until 
+	 * reaching a fragment with the class type specified. The method will first look-up
+	 * in the back-stack if one is found it will precede with poping the backstack
+	 * until that fragment is reached.
+	 * 
+	 * @param fragmentClassType Class type of the fragment to look for in the back stack.
+	 */
+	public void popTillFragment(final Class<?> fragmentClassType ) {
+		final FragmentManager fragManager = this.getSupportFragmentManager();
+		/**Search for the fragment with the class type specified in the backstack*/
+		final int fragIndex = getFragmentIndex(fragmentClassType);
+		
+		if( fragIndex != -1) {
+			/**How many times the backstack will be popped in order to reach the fragment desired*/
+			final int callsToPop =  (fragManager.getBackStackEntryCount() - 1) - fragIndex;
+			for( int i = 0; i < callsToPop; i++ ) {
+				super.onBackPressed();
+			}
+		}	
 	}
 }

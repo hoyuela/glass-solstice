@@ -27,7 +27,6 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFail
 import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
-import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -132,7 +131,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> error) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
-		BankErrorResponse bankError = (BankErrorResponse)error;
+		final BankErrorResponse bankError = (BankErrorResponse)error;
 
 		if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
 			//Send request to Strong Auth web-service API
@@ -214,7 +213,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		else if( sender instanceof GetPayeeServiceCall){
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
-			BankNavigator.naviagteToSelectPayee(bundle);
+			BankNavigator.navigateToSelectPayee(bundle);
 		}
 		//Handle the get activity service call
 		else if( sender instanceof GetActivityServerCall){

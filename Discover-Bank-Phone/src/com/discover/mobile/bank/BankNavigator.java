@@ -15,11 +15,13 @@ import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.paybills.BankPayConfirmFragment;
 import com.discover.mobile.bank.paybills.BankPayTerms;
 import com.discover.mobile.bank.paybills.BankPayeeNotEligibleFragment;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
+import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -193,7 +195,7 @@ public class BankNavigator {
 	 * Let the root activity know that the current fragment needs to be changed from the current fragment
 	 * to the navigate to pay bills select payee page.
 	 */
-	public static void naviagteToSelectPayee(final Bundle extras){
+	public static void navigateToSelectPayee(final Bundle extras){
 		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
 		final BankSelectPayee fragment = new BankSelectPayee();
 		fragment.setArguments(extras);
@@ -247,4 +249,47 @@ public class BankNavigator {
 		navigateToAccountActivityPage(bundle, false);
 	}
 
+	/**
+	 * Navigation method used to display the BankPayConfirmFragment using the BankNavigationRootActivity. 
+	 * This Fragment will not be added to the back stack as the user should not be able to navigate
+	 * back to this screen from the application. 
+	 * 
+	 * @param value Reference to PaymentDetail information used to schedule a Payment
+	 */
+	public static void navigateToPayConfirmFragment(final PaymentDetail value) {
+		final BankPayConfirmFragment fragment = new BankPayConfirmFragment();
+		final Bundle bundle = new Bundle();
+		
+		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, value);
+		fragment.setArguments(bundle);
+		
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment, false);
+	}
+
+	/**
+	 * Navigation method used to display the Review Payments page
+	 */
+	public static void navigateToReviewPayments() {
+		//Need to Integrate with Jon once he is done
+		navigateToUnderDevelopment();
+	}
+	
+	/**
+	 * Navigation method used to display feedback landing page
+	 */
+	public static void navigateToFeedback() {
+		//Need to integrate with Feedback landing page once completed
+		navigateToUnderDevelopment();
+	}
+	
+	/**
+	 * Navigation method used to display the under development fragment for when screens
+	 * have not been dev complete
+	 */
+	public static void navigateToUnderDevelopment() {
+		final BankUnderDevelopmentFragment fragment =  new BankUnderDevelopmentFragment();
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment, false);
+		
+	}
+	
 }
