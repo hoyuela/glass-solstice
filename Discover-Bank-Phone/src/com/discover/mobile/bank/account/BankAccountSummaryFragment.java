@@ -36,7 +36,11 @@ public class BankAccountSummaryFragment extends BaseFragment{
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_account_summary_view, null);
-
+		
+		
+		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
+		salutation.setText(setFirstName());
+		
 		/**Fetch linear layout that will contain list of account groups*/
 		accountSummary = (LinearLayout)view.findViewById(R.id.bank_summary_list);
 		
@@ -57,6 +61,16 @@ public class BankAccountSummaryFragment extends BaseFragment{
 		});
 		
 		return view;
+	}
+
+	/** Set the first name in the status bar. The first name can sometimes be 
+	 * returned in all caps and only the first letter should be capitalized. 
+	 */
+	private String setFirstName() {
+		final String firstName = BankUser.instance().getCustomerInfo().name.type;
+		final String name = firstName.toLowerCase();
+		String upperString = name.substring(0,1).toUpperCase() + name.substring(1);
+		return "Hi " + upperString;
 	}
 	
 	/**

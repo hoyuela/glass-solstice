@@ -12,4 +12,7 @@
             
     <!-- Splash Screen -->
     <dimen name="splash_progress_toppadding">55dp</dimen>
+    
+    <!-- Status bar height -->
+    <dimen name="status_bar_height">40dp</dimen>
 </resources>
