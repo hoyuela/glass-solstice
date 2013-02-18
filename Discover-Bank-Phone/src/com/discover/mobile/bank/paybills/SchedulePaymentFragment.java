@@ -34,6 +34,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
+import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidAmountCharacterFilter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.BaseFragment;
@@ -92,7 +93,10 @@ public class SchedulePaymentFragment extends BaseFragment {
 	/** Minimum payment amount */
 	private final float MIN_AMOUNT = 1.0f;
 
-	/** Pattern to match the ISO8601 date & time returned by payee service */
+	/**
+	 * Pattern to match the ISO8601 date & time returned by payee service -
+	 * 2013-01-30T05:00:00.000+0000 - old 2013-01-30T05:00:00.00Z - new TODO
+	 */
 	static final Pattern r8601 = Pattern
 			.compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
 					+ "(\\d{2}):(\\d{2})\\.(\\d{3}))((\\+|-)(\\d{4}))");
@@ -130,6 +134,19 @@ public class SchedulePaymentFragment extends BaseFragment {
 		return view;
 	}
 
+	/** Fragment starts. Give focus to amount field if it's empty. */
+	@Override
+	public void onStart() {
+		if (amountEdit.getText().length() < 1) {
+			BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
+			InputMethodManager imm = activity.getInputMethodManager();
+			amountEdit.requestFocus();
+			imm.showSoftInput(amountEdit, InputMethodManager.SHOW_IMPLICIT);
+			imm = null;
+		}
+		super.onStart();
+	}
+
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -151,12 +168,16 @@ public class SchedulePaymentFragment extends BaseFragment {
 			paymentAccountText.setText(defaultPaymentAccount());
 
 			if (bankUser.getAccounts().accounts.size() > 1) {
-				final ArrayAdapter<Account> spinnerAdapter = new ArrayAdapter<Account>(
-						getActivity(), R.layout.push_simple_spinner,
-						R.id.amount, bankUser.getAccounts().accounts);
-				spinnerAdapter
+				final AccountAdapter accountAdapter = new AccountAdapter(
+						getActivity(), R.layout.push_simple_spinner_view,
+						bankUser.getAccounts().accounts);
+
+//				final ArrayAdapter<Account> spinnerAdapter = new ArrayAdapter<Account>(
+//						getActivity(), R.layout.push_simple_spinner,
+//						R.id.amount, bankUser.getAccounts().accounts);
+				accountAdapter
 						.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
-				paymentAccountSpinner.setAdapter(spinnerAdapter);
+				paymentAccountSpinner.setAdapter(accountAdapter);
 			}
 		}
 	}
@@ -195,8 +216,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	}
 
 	/**
-	 * Initializes the views miscellaneous listeners. TODO test after merge with
-	 * Jon.
+	 * Initializes the views miscellaneous listeners.
 	 */
 	private void createItemListeners() {
 		// Listens for a focus change so that we can handle special view
@@ -277,8 +297,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 			}
 		});
 
-		deliverByDatePicker = new SchedulePaymentDatePickerDialog(getActivity(),
-				new OnDateSetListener() {
+		deliverByDatePicker = new SchedulePaymentDatePickerDialog(
+				getActivity(), new OnDateSetListener() {
 
 					@Override
 					public void onDateSet(final DatePicker v, final int year,
@@ -382,6 +402,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 			memoText.setText(memoEdit.getText().toString());
 			imm.hideSoftInputFromWindow(memoEdit.getWindowToken(), 0);
 		}
+		imm = null;
 	}
 
 	/**

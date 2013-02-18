@@ -109,15 +109,15 @@
                         android:text="$"
                         android:textColor="@color/black" />
 
-                   <!--  <com.discover.mobile.common.ui.widgets.CurrencyValidatedEditText -->
-                   <EditText
+                    <EditText
                         android:id="@+id/amount_edit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:background="@drawable/edit_text_default"
                         android:maxLines="1"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textCursorDrawable="@null" />
                 </LinearLayout>
 
                 <TextView
@@ -221,6 +221,7 @@
                     android:maxLength="40"
                     android:scrollHorizontally="false"
                     android:textColor="@color/black"
+                    android:textCursorDrawable="@null"
                     android:visibility="invisible" />
             </RelativeLayout>
         </LinearLayout>
