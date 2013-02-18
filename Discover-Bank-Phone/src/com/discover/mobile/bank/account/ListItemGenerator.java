@@ -59,7 +59,7 @@ public class ListItemGenerator {
 
 		listItem = new ViewPagerListItem(this.context);
 		getTwoItemCell(R.string.memo, memoText);
-		listItem.getMiddleLabel().setTextAppearance(context, R.style.sub_copy_big);
+		listItem.getMiddleLabel().setTextAppearance(context, R.style.smallest_copy);
 		
 		return listItem;
 	}
@@ -113,8 +113,12 @@ public class ListItemGenerator {
 	}
 	
 	public ViewPagerListItem getPayFromAccountCell(final String acctEndingNumber, final String accountName) {
-		final String formattedTitle = 
-				String.format(this.context.getString(R.string.pay_from_acct_ending_in, acctEndingNumber));
+		final StringBuilder formattedTitle = new StringBuilder();
+		final String titleText = this.context.getString(R.string.pay_from_acct_ending_in);
+		
+		formattedTitle.append(titleText);
+		formattedTitle.append(acctEndingNumber);
+		
 		final ViewPagerListItem temp = getTwoItemCell(R.string.empty, accountName);
 		temp.getTopLabel().setText(formattedTitle);
 		return temp;
@@ -170,6 +174,9 @@ public class ListItemGenerator {
 			dates = item.dates.get("deliverBy");
 			paymentDateItem = getDeliverByCell(dates.formattedDate);
 		}else if("COMPLETED".equals(itemStatus)){
+			dates = item.dates.get("deliveredOn");
+			paymentDateItem = getDeliveredOnCell(dates.formattedDate);
+		}else if ("CANCELLED".equals(itemStatus)){
 			dates = item.dates.get("deliveredOn");
 			paymentDateItem = getDeliveredOnCell(dates.formattedDate);
 		}

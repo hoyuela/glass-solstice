@@ -89,8 +89,6 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    
-    
     <style name="modal_content_error_text" parent="sub_copy">
         <item name="android:textSize">@dimen/small_copy_max</item>
         <item name="android:textColor">@color/error_indicator</item>

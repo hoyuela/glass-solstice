@@ -57,10 +57,8 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 		
 		loadBundleArgs(getArguments());
 				
-		if(savedInstanceState != null){
+		if(savedInstanceState != null)
 			activityItems = (ListActivityDetail)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST);
-		}
-
 	}
 	
 	/**
@@ -98,7 +96,12 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	 */
 	@Override
 	protected int getViewCount() {
-		return activityItems.activities.size();
+		int viewCount = 0;
+
+		if(activityItems.activities != null)
+			viewCount = activityItems.activities.size();
+		
+		return viewCount;
 	}
 
 	/**
@@ -106,7 +109,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	 * @return a Fragment to show in the ViewPager.
 	 */
 	@Override
-	protected Fragment getDetailItem(final int position) {		
+	protected Fragment getDetailItem(final int position) {
 		final ActivityDetailFragment temp = new ActivityDetailFragment();
 		final ActivityDetail detailObject = activityItems.activities.get(position);
 		
@@ -145,6 +148,17 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	@Override
 	protected void loadMore() {
 		BankServiceCallFactory.createGetActivityServerCall("/api/accounts/1/activity?status=posted").submit();		
+	}
+
+	@Override
+	protected boolean isUserPrimaryHolder() {
+		// FIXME Need to know how to map object details to this value.
+		return true;
+	}
+
+	@Override
+	protected boolean isFragmentEditable(final int position) {
+		return false;
 	}
 
 }

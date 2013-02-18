@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
@@ -35,6 +36,12 @@ public abstract class DetailViewPager extends BaseFragment {
 	
 	/** The text label to the left of the next/previous buttons that identifies the kind of transaction visible*/
 	private TextView titleLabel;
+	
+	/** 
+	 * The text label that is used to show an error if a user is viewing a scheduled transaction and is not
+	 * the primary account holder.
+	 */
+	private TextView jointAccountWarning;
 	
 	/** The next and previous buttons that can change the visible Fragment*/
 	private ImageView previousViewButton;
@@ -72,9 +79,22 @@ public abstract class DetailViewPager extends BaseFragment {
 	protected abstract int getTitleForFragment(final int position);
 	
 	/**
+	 * If the user is not the primary account holder they will not be able to edit scheduled
+	 * payments. They will see the detail item but not the edit/delete buttons and will be shown
+	 * a message.
+	 * @return if the user is the primary account holder.
+	 */
+	protected abstract boolean isUserPrimaryHolder();
+	
+	/**
 	 * Initiate a server call to load more data.
 	 */
 	protected abstract void loadMore();
+	
+	/**
+	 * Asks the sub class what the current type of the data is.
+	 */
+	protected abstract boolean isFragmentEditable(final int position);
 	
 	/**
 	 * Inflates the main View for the ViewPager and initializes the ViewPager and buttons.
@@ -112,11 +132,16 @@ public abstract class DetailViewPager extends BaseFragment {
 	 * @param mainView the inflated layout that contians views that we want to access.
 	 */
 	private void loadAllViewsFrom(final View mainView) {
-		previousViewButton = (ImageView)mainView.findViewById(R.id.previous_button);
-		nextViewButton = (ImageView)mainView.findViewById(R.id.next_button);
 		viewPager = (ViewPager)mainView.findViewById(R.id.view_pager);
 		slidingMenu = ((SlidingFragmentActivity)this.getActivity()).getSlidingMenu();
-		titleLabel = (TextView)mainView.findViewById(R.id.title);
+		
+		//Access the views that are inside of the nav_buttons layout inside of our layout.
+		final RelativeLayout mainBar = (RelativeLayout)mainView.findViewById(R.id.nav_buttons);
+		previousViewButton = (ImageView)mainBar.findViewById(R.id.previous_button);
+		nextViewButton = (ImageView)mainBar.findViewById(R.id.next_button);
+		titleLabel = (TextView)mainBar.findViewById(R.id.title);
+		jointAccountWarning = (TextView)mainBar.findViewById(R.id.joint_account_warning_label);
+
 	}
 	
 	/**
@@ -134,7 +159,6 @@ public abstract class DetailViewPager extends BaseFragment {
 			@Override
 			public void onPageSelected(final int position) {
 				updateViewPagerState(position);
-				
 			}
 			
 			@Override
@@ -155,6 +179,25 @@ public abstract class DetailViewPager extends BaseFragment {
 		updateSlidingDrawerLock(position);
 		loadMoreIfNeeded(position);
 		updateNavigationButtons(position);
+		updateScheduledPaymentWarning(position);
+	}
+	
+	/**
+	 * 
+	 * @param position
+	 */
+	private void updateScheduledPaymentWarning(final int position) {
+		
+		if(isUserPrimaryHolder() || !isFragmentEditable(position)){
+			jointAccountWarning.setVisibility(View.GONE);
+		}else if(isFragmentEditable(position)){
+			final String accountWarningText = this.getActivity().getString(R.string.non_primary_joint_account_warning);
+			// FIXME Need to know how we are getting the account holder's name to put in here.
+			final String accountHolderName = "Account Holder";
+			final String formattedWarningText = String.format(accountWarningText, accountHolderName);
+			jointAccountWarning.setText(formattedWarningText);
+			jointAccountWarning.setVisibility(View.VISIBLE);
+		}
 	}
 	
 	/**
