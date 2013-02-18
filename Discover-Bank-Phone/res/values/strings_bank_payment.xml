@@ -38,3 +38,15 @@
 	<string name="manage_payees_welcome">Welcome to Manage Payees</string>
 </resources>
 
+	
+	    <!-- Schedule Payments -->
+ 	<string name="schedule_pay_payee">Payee</string>
+ 	<string name="schedule_pay_from">Pay From</string>
+ 	<string name="schedule_pay_amount">Amount</string>
+ 	<string name="schedule_pay_too_high">Too high (more than $25k)</string>
+ 	<string name="schedule_pay_too_low">Too low (less than $1)</string>
+ 	<string name="schedule_pay_date">Deliver By</string>
+ 	<string name="schedule_pay_memo_opt">Memo (Optional)</string>
+ 	<string name="schedule_pay_button">Pay Now</string>
+ 	<string name="schedule_pay_memo">Memo</string>
+</resources>
