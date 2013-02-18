@@ -22,6 +22,7 @@ import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -269,8 +270,20 @@ public class BankNavigator {
 	/**
 	 * Navigation method used to display the Review Payments page
 	 */
-	public static void navigateToReviewPayments() {
-		//Need to Integrate with Jon once he is done
+	public static void navigateToReviewPayments(final Bundle bundle,final Boolean value) {
+		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
+		
+		//View Pager seems to require the bundle and value parameters, need to discuss with 
+		//Jon and Scott what it is meant for
+		
+		//Also needed for after confirmation of a scheduled payment
+		
+		//Need to discuss with Jon - For payment deletion passing a bundle with a
+		//boolean extra BankExtraKeys.CONFIRM_DELETE. Review Page to displays a message 
+		//for 5 seconds with icon above list to confirm to user deletion of payment. 
+		//I can do this via the bundle
+		
+		//Remove this line after integration
 		navigateToUnderDevelopment();
 	}
 	
@@ -292,4 +305,31 @@ public class BankNavigator {
 		
 	}
 	
+	/**
+	 * Navigation method used to display the Delete Transaction modal for when deleting a
+	 * Scheduled Payment Transaction
+	 * 
+	 * @param pmtDetail Reference to PaymentDetail object which contains information about the transaction being deleted.
+	 */
+	public static void navigateToDeleteConfirmation(final PaymentDetail pmtDetail) {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+
+		// Create a one button modal to notify the user that they are leaving the application
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+				R.string.bank_delete_transaction_title, 
+				R.string.bank_delete_transaction_text, 
+				false, 
+				R.string.bank_need_help_number_text, 
+				R.string.bank_yes_delete);
+
+		//Set the dismiss listener that will navigate the user to the browser	
+		modal.setOnDismissListener(new OnDismissListener() {
+	        @Override
+	        public void onDismiss(final DialogInterface arg0) {
+	        	BankServiceCallFactory.createDeletePaymentServiceCall(pmtDetail).submit();
+	        }
+	    });
+
+		activity.showCustomAlert(modal);
+	}
 }

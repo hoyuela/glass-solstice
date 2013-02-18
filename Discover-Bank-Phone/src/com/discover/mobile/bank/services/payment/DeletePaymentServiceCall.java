@@ -15,8 +15,24 @@ import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 
+/**
+ * This is used for deleting a Scheduled Payment Transaction using the Bank 
+ * web-service API DELETE /api/payments/{id}. To confirm the successful deletion
+ * of a Scheduled Payment Transaction a response of 204 No Content should be received
+ * from the server.
+ * 
+ * Error Codes:
+ * 204 (No Content)	 Request was successful
+ * 400 (Bad Request) An input field is malformed
+ * 403 (Forbidden)	 You are not allowed to perform this operation
+ * 404 (Not Found)	 The specific payment does not exist
+ * 
+ * @author henryoyuela
+ *
+ */
 public class DeletePaymentServiceCall extends BankNetworkServiceCall<PaymentDetail> {
 	private final TypedReferenceHandler<PaymentDetail> handler;
+	private final PaymentDetail pmtDetails;
 	
 	public DeletePaymentServiceCall(final Context context, 
 			final AsyncCallback<PaymentDetail> callback, final PaymentDetail pmt) {
@@ -38,6 +54,9 @@ public class DeletePaymentServiceCall extends BankNetworkServiceCall<PaymentDeta
 			}
 		});
 
+		//Hold a reference to payment details for providing context to callbacks
+		pmtDetails = pmt;
+		
 		// TODO decide if this is the best type of handler
 		this.handler = new SimpleReferenceHandler<PaymentDetail>(callback);
 	}
@@ -54,4 +73,11 @@ public class DeletePaymentServiceCall extends BankNetworkServiceCall<PaymentDeta
 		return null;
 	}
 
+	/**
+	 * 
+	 * @return Returns a reference to PaymentDetail which information about the transaction being deleted
+	 */
+	public PaymentDetail getPaymentDetail() {
+		return this.pmtDetails;
+	}
 }

@@ -99,7 +99,7 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	protected void onActionLinkClick() {
-		BankNavigator.navigateToReviewPayments();
+		BankNavigator.navigateToReviewPayments(null, false);
 	}
 	
 }

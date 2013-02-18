@@ -14,15 +14,17 @@ import com.google.common.base.Strings;
  * 
  */
 public class BankUrlManager  {
-	//private static String BASE_URL = "https://beta.discoverbank.com";
-	//private static String BASE_URL = "https://asys.discoverbank.com";
-	private static String DISCOVER_STRIPPED_URL = "http://beta.discoverbank.com";
-	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
-	//private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Erin/";
+
+	private static String BASE_URL = "https://asys.discoverbank.com";
+	private static String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
+	//  private static String BASE_URL = "https://beta.discoverbank.com";
+	//  private static String DISCOVER_STRIPPED_URL = "http://beta.discoverbank.com";
+	//  private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
+	//  private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Erin/";
 	//	private static final String BASE_URL = "http://192.168.2.177:8008"; //Henry's Laptop
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
 	//	private static final String BASE_URL = "http://192.168.1.94:8008";
-	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
+	//	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
 	//  private static final String BASE_URL = "http://192.168.1.70:8009"; //Jon's Laptop
 
 	public static final double MAX_IDLE_TIME = 900; //900 = 15 min

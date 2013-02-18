@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
@@ -153,7 +154,7 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 
 	@Override
 	public void onBackPressed() {
-		//BankNavigator.navigateToPaymentsPage(getCurrentFragmentBundle(), true);
+		BankNavigator.navigateToReviewPayments(getCurrentFragmentBundle(), true);
 	}
 
 	@Override

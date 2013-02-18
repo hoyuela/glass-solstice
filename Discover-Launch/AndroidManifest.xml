@@ -50,7 +50,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.discover.mobile.bank.security.EnhancedAccountSecurityActivity"
+            android:name="com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity"
+            android:label="@string/app_name"
+            android:launchMode="standard" >
+        </activity>
+        <activity
+            android:name="com.discover.mobile.card.auth.strong.EnhancedAccountSecurityActivity"
             android:label="@string/app_name"
             android:launchMode="standard" >
         </activity>
