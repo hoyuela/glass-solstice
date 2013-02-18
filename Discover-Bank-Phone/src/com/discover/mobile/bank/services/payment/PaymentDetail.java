@@ -115,7 +115,7 @@ public class PaymentDetail implements Serializable{
 	 * A positive value denotes a credit, while a negative value denotes a debit.
 	 */
 	@JsonProperty("amount")
-	public int amount;
+	public Amount amount;
 
 	/**Status of the payment*/
 	@JsonProperty("status")

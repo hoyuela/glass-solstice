@@ -19,6 +19,7 @@ import com.discover.mobile.bank.paybills.BankPayConfirmFragment;
 import com.discover.mobile.bank.paybills.BankPayTerms;
 import com.discover.mobile.bank.paybills.BankPayeeNotEligibleFragment;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
+import com.discover.mobile.bank.paybills.ReviewPaymentsTable;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.payees.EnterPayeeFragment;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
@@ -262,10 +263,10 @@ public final class BankNavigator {
 	public static void navigateToPayConfirmFragment(final PaymentDetail value) {
 		final BankPayConfirmFragment fragment = new BankPayConfirmFragment();
 		final Bundle bundle = new Bundle();
-		
+
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, value);
 		fragment.setArguments(bundle);
-		
+
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment, false);
 	}
 
@@ -274,21 +275,21 @@ public final class BankNavigator {
 	 */
 	public static void navigateToReviewPayments(final Bundle bundle,final Boolean value) {
 		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
-		
+
 		//View Pager seems to require the bundle and value parameters, need to discuss with 
 		//Jon and Scott what it is meant for
-		
+
 		//Also needed for after confirmation of a scheduled payment
-		
+
 		//Need to discuss with Jon - For payment deletion passing a bundle with a
 		//boolean extra BankExtraKeys.CONFIRM_DELETE. Review Page to displays a message 
 		//for 5 seconds with icon above list to confirm to user deletion of payment. 
 		//I can do this via the bundle
-		
+
 		//Remove this line after integration
 		navigateToUnderDevelopment();
 	}
-	
+
 	/**
 	 * Navigation method used to display feedback landing page
 	 */
@@ -296,7 +297,7 @@ public final class BankNavigator {
 		//Need to integrate with Feedback landing page once completed
 		navigateToUnderDevelopment();
 	}
-	
+
 	/**
 	 * Navigation method used to display the under development fragment for when screens
 	 * have not been dev complete
@@ -304,9 +305,9 @@ public final class BankNavigator {
 	public static void navigateToUnderDevelopment() {
 		final BankUnderDevelopmentFragment fragment =  new BankUnderDevelopmentFragment();
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment, false);
-		
+
 	}
-	
+
 	/**
 	 * Navigation method used to display the Delete Transaction modal for when deleting a
 	 * Scheduled Payment Transaction
@@ -326,15 +327,15 @@ public final class BankNavigator {
 
 		//Set the dismiss listener that will navigate the user to the browser	
 		modal.setOnDismissListener(new OnDismissListener() {
-	        @Override
-	        public void onDismiss(final DialogInterface arg0) {
-	        	BankServiceCallFactory.createDeletePaymentServiceCall(pmtDetail).submit();
-	        }
-	    });
+			@Override
+			public void onDismiss(final DialogInterface arg0) {
+				BankServiceCallFactory.createDeletePaymentServiceCall(pmtDetail).submit();
+			}
+		});
 
 		activity.showCustomAlert(modal);
 	}
-	
+
 	/**
 	 * Navigation method used to display the Add Payee Step 1. Instantiates an EnterPayeeFragment and makes it visible to user
 	 * via the NavigationRootActivity.
@@ -342,5 +343,33 @@ public final class BankNavigator {
 	public static void navigateToAddPayee() {
 		final EnterPayeeFragment fragment = new EnterPayeeFragment();
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
+
+
+	/**
+	 * Navigate to the Review payments detail table screen
+	 * @param bundle - bundle to pass into the screen
+	 */
+	public static void navigateToReviewPaymentsTable(final Bundle bundle, final boolean isGoingBack){
+		final BankNavigationRootActivity activity =
+				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
+		((AlertDialogParent)activity).closeDialog();
+		if(activity.isDynamicDataFragment() && !isGoingBack){
+			activity.addDataToDynamicDataFragment(bundle);
+		}else{
+			final ReviewPaymentsTable fragment =  new ReviewPaymentsTable();
+			fragment.setArguments(bundle);
+			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+		}
+	}
+
+	/**
+	 * Calls the NavigateToAReviewPaymentsTable with false as the default parameter for isGoingBack.
+	 * So that we could add support for going back to the method without breaking the calls that are already in use
+	 * elsewhere.
+	 * @param bundle
+	 */
+	public static void navigateToReviewPaymentsTable(final Bundle bundle){
+		navigateToReviewPaymentsTable(bundle, false);
 	}
 }

@@ -12,12 +12,25 @@ import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.FragmentComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 
+/**
+ * Menu item for the pay bill section.  Contains the following subsections:
+ * 
+ * Pay a Bill
+ * Review Payments
+ * Manage Payees
+ * 
+ * @author jthornton
+ *
+ */
 public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 
+	/**
+	 * Constructor for the section info.
+	 */
 	public BankPayBillsSectionInfo() {
 		super(R.string.section_title_pay_bills,
 				new ClickComponentInfo(R.string.section_title_pay_bills, getPayBillsLandingClickListener()),
-				new FragmentComponentInfo(R.string.sub_section_title_review_payments, ReviewPaymentsTable.class),
+				new ClickComponentInfo(R.string.sub_section_title_review_payments, getReviewPaymentsClickListener()),
 				new FragmentComponentInfo(R.string.sub_section_title_manage_payees,
 						BankAccountSummaryFragment.class));
 	}
@@ -41,6 +54,20 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 				} else{
 					BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 				}
+			}
+		};
+	}
+
+	/**
+	 * Click listener for the review payments menu item.  Makes the service call to the initial set 
+	 * of data.
+	 * @return the click listener
+	 */
+	public static OnClickListener getReviewPaymentsClickListener(){
+		return new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
 			}
 		};
 	}

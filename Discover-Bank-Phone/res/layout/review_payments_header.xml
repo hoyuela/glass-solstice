@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/light_gray_bkgrd"
     android:orientation="vertical" >
 
     <ImageButton
@@ -27,11 +26,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/selector_toggle_left"
+            android:background="@drawable/toggle_left_on"
             android:checked="true"
             android:textColor="@color/white"
-            android:textOff="@string/toggle_all"
-            android:textOn="@string/toggle_all"
+            android:textOff="@string/review_payments_scheduled_payments"
+            android:textOn="@string/review_payments_scheduled_payments"
             android:textSize="14sp" />
 
         <ToggleButton
@@ -39,11 +38,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/selector_toggle_mid"
+            android:background="@drawable/toggle_mid_off"
             android:checked="false"
-            android:textColor="@color/field_copy"
-            android:textOff="@string/toggle_specific"
-            android:textOn="@string/toggle_specific"
+            android:textColor="@color/body_copy"
+            android:textOff="@string/review_payments_completed_payments"
+            android:textOn="@string/review_payments_completed_payments"
             android:textSize="14sp" />
 
         <ToggleButton
@@ -51,11 +50,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/selector_toggle_right"
+            android:background="@drawable/toggle_right_off"
             android:checked="false"
-            android:textColor="@color/field_copy"
-            android:textOff="@string/toggle_range"
-            android:textOn="@string/toggle_range"
+            android:textColor="@color/body_copy"
+            android:textOff="@string/review_payments_canceled_payments"
+            android:textOn="@string/review_payments_canceled_payments"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -74,7 +73,7 @@
     <View
         android:id="@+id/top_line"
         android:layout_width="wrap_content"
-        android:layout_height="1dp"
+        android:layout_height="3dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/table_titles"

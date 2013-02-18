@@ -1,6 +1,9 @@
 package com.discover.mobile.bank.paybills;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -16,7 +19,7 @@ import com.discover.mobile.bank.account.BankStringFormatter;
 import com.discover.mobile.bank.services.payment.PaymentDateDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 
-public class ReviewPaymentsAdatper  extends ArrayAdapter<List<PaymentDetail>>{
+public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 
 	/**List of details to show*/
 	private List<PaymentDetail> details;
@@ -37,10 +40,8 @@ public class ReviewPaymentsAdatper  extends ArrayAdapter<List<PaymentDetail>>{
 	 * @param items - items to set in the adapter
 	 * @param fragment - fragment using the adapter
 	 */
-	public ReviewPaymentsAdatper(final Context context, final int textViewResourceId, final List<PaymentDetail> items, 
-			final ReviewPaymentsTable fragment) {
+	public ReviewPaymentsAdapter(final Context context, final int textViewResourceId, final ReviewPaymentsTable fragment) {
 		super(context, textViewResourceId);
-		details = items;
 		inflater = LayoutInflater.from(context);
 		res = context.getResources();
 		this.fragment =fragment;
@@ -81,7 +82,7 @@ public class ReviewPaymentsAdatper  extends ArrayAdapter<List<PaymentDetail>>{
 		/**Update the display values*/
 		holder.date.setText(convertDate(detail));
 		holder.payee.setText(detail.payee.nickName);
-		final String amountString = Integer.toString(detail.amount);
+		final String amountString = detail.amount.formatted;
 		holder.amount.setText(amountString);
 		if(!amountString.contains(BankStringFormatter.NEGATIVE)){
 			holder.amount.setTextColor(res.getColor(R.color.string_indicator));
@@ -130,7 +131,23 @@ public class ReviewPaymentsAdatper  extends ArrayAdapter<List<PaymentDetail>>{
 			dates = item.dates.get("deliveredOn");
 			date =  dates.formattedDate;
 		}
-		return date;
+		return convertDate(date);
+	}
+
+	/**
+	 * Convert the date from the format dd/MM/yyyy to dd/MM/yy
+	 * @param date - date to be converted
+	 * @return the converted date
+	 */
+	private String convertDate(final String date){
+		final SimpleDateFormat serverFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+		final SimpleDateFormat tableFormat = new SimpleDateFormat("dd/MM/yy", Locale.US);
+
+		try{
+			return tableFormat.format(serverFormat.parse(date));
+		} catch (final ParseException e) {
+			return date;
+		}
 	}
 
 	/**

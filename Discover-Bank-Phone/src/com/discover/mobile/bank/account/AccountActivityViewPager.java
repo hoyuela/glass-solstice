@@ -44,7 +44,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 		}
 
 		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, initialViewPosition);
-		currentBundle.putSerializable(BankExtraKeys.DATA_LIST, activityItems);
+		currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, activityItems);
 		return currentBundle;
 	}
 
@@ -59,7 +59,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 		loadBundleArgs(getArguments());
 
 		if(savedInstanceState != null) {
-			activityItems = (ListActivityDetail)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST);
+			activityItems = (ListActivityDetail)savedInstanceState.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	 */
 	public void loadBundleArgs(final Bundle bundle) {
 		if(bundle != null){
-			activityItems = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST);
+			activityItems = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 			initialViewPosition = bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX);
 		}
 	}
@@ -137,7 +137,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	 */
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
-		final ListActivityDetail list = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST);
+		final ListActivityDetail list = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		activityItems.activities.addAll( list.activities);
 		updateNavigationButtons(getViewPager().getCurrentItem());
 

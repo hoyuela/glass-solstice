@@ -18,6 +18,7 @@ import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
+import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -132,18 +133,18 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> error) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
-		
+
 		if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
 			//Verify the response has challenge question
 			if( error instanceof BankErrorResponse ) {
 				final BankErrorResponse bankError = (BankErrorResponse)error;
-				
+
 				//Send request to Strong Auth web-service API
 				final BankStrongAuthDetails details = new BankStrongAuthDetails(bankError);
-			
+
 				BankNavigator.navigateToStrongAuth(activeActivity, details, bankError.getErrorMessage());
 			} else {
-				this.errorHandler.handleFailure(sender, error);
+				errorHandler.handleFailure(sender, error);
 
 				((AlertDialogParent)activeActivity).closeDialog();
 			}
@@ -227,7 +228,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		//Handle the get activity service call
 		else if( sender instanceof GetActivityServerCall){
 			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankExtraKeys.DATA_LIST, result);
+			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
 			BankNavigator.navigateToAccountActivityPage(bundle);
 		}
 		//Delete Payment Successful, navigate to Review Payments Page
@@ -235,7 +236,14 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 			final Bundle bundle = new Bundle();
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
 			BankNavigator.navigateToReviewPayments(bundle, false);
-		} else {
+		} 
+		// Get Payment Successful, navigate to the review payments table
+		else if(sender instanceof GetPaymentsServiceCall) {
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
+			BankNavigator.navigateToReviewPaymentsTable(bundle);
+		}
+		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "NetworkServiceCallManager ignored success of a NetworkServiceCall!");
 			}

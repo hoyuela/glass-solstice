@@ -178,8 +178,7 @@
                 style="@style/sub_copy_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/recent_activity_date"
-                android:textStyle="bold" />
+                android:text="@string/recent_activity_date" />
 
             <ImageView
                 android:id="@+id/date_filter_image"
@@ -190,7 +189,7 @@
                 android:layout_marginLeft="@dimen/small_margin"
                 android:layout_toRightOf="@+id/date_filter"
                 android:background="@drawable/orange_arrow_down"
-                android:visibility="visible" />
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout

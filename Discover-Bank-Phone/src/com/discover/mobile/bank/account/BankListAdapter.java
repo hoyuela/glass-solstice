@@ -155,6 +155,4 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		public TextView amount;
 		public int pos;
 	}
-
-
 }

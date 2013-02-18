@@ -50,7 +50,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
-		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.DATA_LIST);
+		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		if(header.isPosted()){
 			handleReceivedData(posted, list);
 		}else{
@@ -200,11 +200,11 @@ public class BankAccountActivityTable extends BaseTable{
 		final Bundle bundle = new Bundle();
 		if(null == header){return bundle;}
 		if(header.isPosted()){
-			bundle.putSerializable(BankExtraKeys.DATA_LIST, posted);
-			bundle.putSerializable(BankExtraKeys.OTHER_DATA_LIST, scheduled);
+			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, posted);
+			bundle.putSerializable(BankExtraKeys.SECOND_DATA_LIST, scheduled);
 		}else{
-			bundle.putSerializable(BankExtraKeys.OTHER_DATA_LIST, posted);
-			bundle.putSerializable(BankExtraKeys.DATA_LIST, scheduled);
+			bundle.putSerializable(BankExtraKeys.SECOND_DATA_LIST, posted);
+			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, scheduled);
 		}
 		bundle.putBoolean(BankExtraKeys.CATEGORY_SELECTED, header.getSelectedCategory());
 		bundle.putInt(BankExtraKeys.SORT_ORDER, header.getSortOrder());
@@ -221,8 +221,8 @@ public class BankAccountActivityTable extends BaseTable{
 	public void loadDataFromBundle(final Bundle bundle) {
 		if(null == bundle){return;}
 		header.setSelectedCategory(bundle.getBoolean(BankExtraKeys.CATEGORY_SELECTED, true));
-		final ListActivityDetail current = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST);
-		final ListActivityDetail other = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.OTHER_DATA_LIST);
+		final ListActivityDetail current = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
+		final ListActivityDetail other = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.SECOND_DATA_LIST);
 		if(header.isPosted()){
 			posted = current;
 			scheduled = other;

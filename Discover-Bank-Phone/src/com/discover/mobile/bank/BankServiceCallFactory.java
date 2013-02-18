@@ -18,6 +18,8 @@ import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
+import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
+import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.AsyncCallback;
@@ -158,15 +160,15 @@ public class BankServiceCallFactory {
 	 * 
 	 * @return Reference to the GetCustomerAccountsServerCall object created.
 	 */
-	public static GetCustomerAccountsServerCall createGetPaymentsServerCall() {
+	public static GetPaymentsServiceCall createGetPaymentsServerCall(final String url) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		final AsyncCallback<AccountList>  callback =
-				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(AccountList.class,
+		final AsyncCallback<ListPaymentDetail>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(ListPaymentDetail.class,
 						activity, (ErrorHandlerUi) activity)
 						.build();
 
-		return new GetCustomerAccountsServerCall(activity, callback);
+		return new GetPaymentsServiceCall(activity, callback, url);
 	}
 
 	/**
