@@ -79,7 +79,7 @@ public class BankServiceCallFactory {
 		return loginCall;
 	}
 
-	
+
 
 	/**
 	 * Used to construct a CreateStrongAuthRequestCall NetworkServiceCall for invoking the Bank - Authentication
@@ -151,7 +151,24 @@ public class BankServiceCallFactory {
 
 		return new GetCustomerAccountsServerCall(activity, callback);
 	}
-	
+
+	/**
+	 * Creates a GetCustomerAccountsServerCall<> object used to download the Account Summary 
+	 * using the Bank Accounts Service API.
+	 * 
+	 * @return Reference to the GetCustomerAccountsServerCall object created.
+	 */
+	public static GetCustomerAccountsServerCall createGetPaymentsServerCall() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<AccountList>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(AccountList.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new GetCustomerAccountsServerCall(activity, callback);
+	}
+
 	/**
 	 * 
 	 * @param pmt
