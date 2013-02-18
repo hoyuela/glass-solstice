@@ -14,45 +14,65 @@
         android:paddingRight="@dimen/forms_inner_padding"
         android:paddingTop="@dimen/forms_inner_padding" >
 
-        <TextView
-            android:id="@+id/title"
-            style="@style/title_copy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/edit" />
+        <RelativeLayout
+            android:id="@+id/nav_buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-        <ImageView
-            android:id="@+id/previous_button"
-            style="@style/white_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/next_button"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/drk_blue_arrow_left_square" />
+            <TextView
+                android:id="@+id/title"
+                style="@style/title_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="@dimen/groups_of_elements_padding"
+                android:layout_toLeftOf="@+id/previous_button"
+                android:text="@string/edit" />
 
-        <ImageView
-            android:id="@+id/next_button"
-            style="@style/white_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/groups_of_elements_padding"
-            android:layout_toLeftOf="@+id/help_button"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/drk_blue_arrow_right_square" />
+            <ImageView
+                android:id="@+id/previous_button"
+                style="@style/white_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/next_button"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/drk_blue_arrow_left_square" />
 
-        <ImageView
-            android:id="@+id/help_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/question_mark_icon" />
+            <ImageView
+                android:id="@+id/next_button"
+                style="@style/white_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/groups_of_elements_padding"
+                android:layout_toLeftOf="@+id/help_button"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/drk_blue_arrow_right_square" />
+
+            <TextView
+                android:id="@+id/joint_account_warning_label"
+                style="@style/field_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/previous_button"
+                android:layout_marginTop="@dimen/between_related_elements_padding"
+                android:text="@string/empty" 
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/help_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/question_mark_icon" />
+        </RelativeLayout>
 
         <View
             android:id="@+id/divider"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/previous_button"
+            android:layout_below="@+id/nav_buttons"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
             android:background="@drawable/table_solid_line" />
     </RelativeLayout>
 
