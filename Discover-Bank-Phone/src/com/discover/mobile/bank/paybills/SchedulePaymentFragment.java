@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.renderscript.Mesh.TriangleMeshBuilder;
 import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,7 +20,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,6 +39,9 @@ import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidAmountCharacterFilter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
+import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.discover.mobile.common.ui.widgets.SchedulePaymentDatePickerDialog;
 
 public class SchedulePaymentFragment extends BaseFragment {
@@ -71,6 +75,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private EditText dateEdit;
 	/** Date Picker calendar icon */
 	private ImageView calendarIcon;
+	/** Cancel button for view */
+	private Button cancelButton;
 
 	/** Payee object (typically passed here via bundle) */
 	private PayeeDetail payee;
@@ -122,6 +128,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 		memoItem = (RelativeLayout) view.findViewById(R.id.memo_element);
 		memoText = (TextView) memoItem.findViewById(R.id.memo_text);
 		memoEdit = (EditText) memoItem.findViewById(R.id.memo_edit);
+		cancelButton = (Button) view.findViewById(R.id.cancel_button);
 
 		bankUser = BankUser.instance();
 
@@ -172,9 +179,6 @@ public class SchedulePaymentFragment extends BaseFragment {
 						getActivity(), R.layout.push_simple_spinner_view,
 						bankUser.getAccounts().accounts);
 
-//				final ArrayAdapter<Account> spinnerAdapter = new ArrayAdapter<Account>(
-//						getActivity(), R.layout.push_simple_spinner,
-//						R.id.amount, bankUser.getAccounts().accounts);
 				accountAdapter
 						.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
 				paymentAccountSpinner.setAdapter(accountAdapter);
@@ -308,6 +312,40 @@ public class SchedulePaymentFragment extends BaseFragment {
 				}, earliestPaymentDate.get(Calendar.YEAR),
 				earliestPaymentDate.get(Calendar.MONTH),
 				earliestPaymentDate.get(Calendar.DAY_OF_MONTH));
+		
+		cancelButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(getActivity(), null);
+				cancelModalTopView.setTitle(R.string.schedule_pay_cancel_title);
+				cancelModalTopView.setContent(R.string.schedule_pay_cancel_body);
+				
+				ModalDefaultTwoButtonBottomView cancelModalButtons = new ModalDefaultTwoButtonBottomView(getActivity(), null);
+				cancelModalButtons.setCancelButtonText(R.string.schedule_pay_cancel_button_cancel);
+				cancelModalButtons.setOkButtonText(R.string.schedule_pay_cancel_button_confirm);
+
+				final ModalAlertWithTwoButtons cancelModal = new ModalAlertWithTwoButtons(getActivity(), cancelModalTopView, cancelModalButtons);
+				((BankNavigationRootActivity)getActivity()).showCustomAlert(cancelModal);
+				
+				cancelModalButtons.getOkButton().setOnClickListener(
+						new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								// TODO Programmatically press Back button and pass data backward to display an error.
+
+							}
+						});
+
+				cancelModalButtons.getCancelButton().setOnClickListener(
+						new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								cancelModal.dismiss();
+							}
+						});
+			}
+		});
 	}
 
 	/**
