@@ -15,11 +15,11 @@ import com.google.common.base.Strings;
  */
 public class BankUrlManager  {
 
-	private static String BASE_URL = "https://asys.discoverbank.com";
-	private static String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
-	//  private static String BASE_URL = "https://beta.discoverbank.com";
-	//  private static String DISCOVER_STRIPPED_URL = "http://beta.discoverbank.com";
-	//  private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
+	//private static String BASE_URL = "https://asys.discoverbank.com";
+	//private static String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
+	//private static String BASE_URL = "https://beta.discoverbank.com";
+	private static String DISCOVER_STRIPPED_URL = "http://beta.discoverbank.com";
+	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
 	//  private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Erin/";
 	//	private static final String BASE_URL = "http://192.168.2.177:8008"; //Henry's Laptop
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
@@ -56,7 +56,7 @@ public class BankUrlManager  {
 	public static void setBaseUrl(final String value ) {
 		BASE_URL = value;
 	}
-	
+
 	/**
 	 * @return the baseUrl
 	 */
@@ -113,7 +113,7 @@ public class BankUrlManager  {
 
 		links.putAll(newLinks);
 	}
-	
+
 	/**
 	 * Method used to clear links cached after a Customer Download.
 	 */
@@ -128,7 +128,7 @@ public class BankUrlManager  {
 	public static String getOpenAccountUrl() {
 		return OPEN_ACCOUNT_URL;
 	}
-	
+
 	/**
 	 * 
 	 * @return Returns the URL for going to account statements
@@ -136,7 +136,7 @@ public class BankUrlManager  {
 	public static String getStatementsUrl() {
 		return STATEMENTS_URL;
 	}
-	
+
 	/**
 	 * Utility method used to remove base url from the link
 	 * @param link Link with BASE_URL example: http://beta.discoverbank.com/api/token 
@@ -153,7 +153,7 @@ public class BankUrlManager  {
 			return EMPTY;
 		}
 	}
-	
+
 	/**
 	 * Utility method used to fetch a link from a hashmap and remove the base url from it.
 	 * 
@@ -169,5 +169,5 @@ public class BankUrlManager  {
 			return EMPTY;
 		}
 	}
-	
+
 }
