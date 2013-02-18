@@ -26,20 +26,18 @@ public class PaymentDetailFragment extends DetailFragment implements OnClickList
 	}
 
 	/**
-	 * Load the list items into the content table.
+	 * Load list elements from the list item generator into the content table.
 	 */
 	@Override
 	protected void loadListItemsTo(final LinearLayout contentTable) {
-		final PaymentDetail paymentObject = (PaymentDetail)getArguments().getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+		final PaymentDetail detailList = (PaymentDetail)getArguments().getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		
-		if(paymentObject != null)
-			loadListElementsToLayoutFromList(contentTable, generator.getScheduledPaymentDetailList(paymentObject));
-		
+		loadListElementsToLayoutFromList(contentTable, generator.getScheduledPaymentDetailList(detailList));
 	}
 	
 	/**
-	 * Hide the edit and delete buttons if the transaction is not scheduled, and is therefore
-	 * posted or cancelled.
+	 * If the current Fragment is a completed payment, hide the
+	 * payment and edit buttons because it is not editable.
 	 */
 	@Override
 	protected void customSetup(final View mainView) {
