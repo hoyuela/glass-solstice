@@ -14,7 +14,6 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
-import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkServiceCall;
 
 /**
  * Used for invoking the Bank - Payee Service API found at ./api/payees/. The JSON
