@@ -11,6 +11,7 @@ import android.util.Log;
 import com.discover.mobile.bank.account.AccountActivityViewPager;
 import com.discover.mobile.bank.account.BankAccountActivityTable;
 import com.discover.mobile.bank.account.BankOpenAccountFragment;
+import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.login.LoginActivity;
@@ -372,4 +373,15 @@ public final class BankNavigator {
 	public static void navigateToReviewPaymentsTable(final Bundle bundle){
 		navigateToReviewPaymentsTable(bundle, false);
 	}
+
+	/**
+	 * Navigate to the payment detail view pager screen
+	 * @param bundle - bundle to pass into the screen
+	 */
+	public static void navigateToPaymentDetailScreen(final Bundle bundle){
+		final PaymentDetailsViewPager fragment =  new PaymentDetailsViewPager();
+		fragment.setArguments(bundle);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
+
 }

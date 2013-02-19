@@ -11,6 +11,9 @@ public class BankStringFormatter {
 	/**String representing a negative*/
 	public static final String NEGATIVE = "-";
 
+	/**String representing a dollar sign*/
+	public static final String DOLLAR = "$";
+
 	/**
 	 * Convert the string amount to a dollar amount
 	 * @param dollar - dollar amount
@@ -42,6 +45,7 @@ public class BankStringFormatter {
 	 * @return the dollar amount in string form
 	 */
 	public static String convertCentsToDollars(final String cents){
+		if(cents.contains(DOLLAR)){return cents;}
 		return convertCentsToDollars(Integer.parseInt(cents));
 	}
 

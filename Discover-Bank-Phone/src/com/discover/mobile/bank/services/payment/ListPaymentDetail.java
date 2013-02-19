@@ -1,7 +1,11 @@
 package com.discover.mobile.bank.services.payment;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 
 /**
  * Json object that that holds a list of payment details that the user can review.
@@ -105,4 +109,7 @@ public class ListPaymentDetail implements Serializable{
 
 	/**List of payments for the user to review*/
 	public List<PaymentDetail> payments;
+
+	/**List of links for for this object*/
+	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 }

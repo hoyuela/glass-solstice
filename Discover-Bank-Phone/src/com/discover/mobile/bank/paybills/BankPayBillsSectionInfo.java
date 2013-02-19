@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
@@ -67,6 +68,10 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
+				//Clear the rotation bundle
+				BankRotationHelper.getHelper().setBundle(null);
+				//Call the first service
+				//TODO: Remove this call, will be in an account object
 				BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
 			}
 		};

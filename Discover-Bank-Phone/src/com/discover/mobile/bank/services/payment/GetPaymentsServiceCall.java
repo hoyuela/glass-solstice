@@ -121,7 +121,6 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 	/**Query string to retrieve all the completed payments*/
 	public static final String COMPLETED = "?status=COMPLETED";
 
-
 	/**
 	 * 
 	 * @param context Reference to the context invoking the API
@@ -145,7 +144,6 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 				errorResponseParser = BankErrorResponseParser.instance();
 			}
 		}, ListPaymentDetail.class, PaymentDetail.class);
-		// TODO decide if this is the best type of handler
 		handler = new SimpleReferenceHandler<ListPaymentDetail>(callback);
 	}
 
@@ -163,9 +161,9 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 			final InputStream body) throws IOException {
 
 
-		//TODO: Parse the headers for this
 		final ListPaymentDetail details = new ListPaymentDetail();
 		details.payments = super.parseUnamedList(body);
+		details.links = parseHeaderForLinks(headers);
 		return details;
 	}
 

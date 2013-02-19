@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
@@ -56,8 +57,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 */
 	public ListPaymentDetail handleReceivedData(final ListPaymentDetail list, final ListPaymentDetail newList){
 		list.payments.addAll(newList.payments);
-		//list.links.clear();
-		//list.links.putAll(newList.links);
+		list.links.clear();
+		list.links.putAll(newList.links);
 		return list;
 	}
 
@@ -76,18 +77,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 
 	@Override
 	public void createDefaultLists() {
-		//		if(null == completed || null == completed.payments){
-		//			completed = new ListPaymentDetail();
-		//			completed.payments = new ArrayList<PaymentDetail>();
-		//		}
-		//		if(null == canceled || null == canceled.payments){
-		//			canceled = new ListPaymentDetail();
-		//			canceled.payments = new ArrayList<PaymentDetail>();
-		//		}
-		//		if(null == scheduled || null == scheduled.payments){
-		//			scheduled = new ListPaymentDetail();
-		//			scheduled.payments = new ArrayList<PaymentDetail>();
-		//		}
+		//This does not need to be implemented with the current design of this class
 	}
 
 
@@ -99,7 +89,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 
 	@Override
 	public void maybeLoadMore() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -172,8 +161,21 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 
 	@Override
 	public void goToDetailsScreen(final int index) {
-		// TODO Auto-generated method stub
+		final Bundle bundle = new Bundle();
+		final int category = header.getCurrentCategory();
+		bundle.putInt(BankExtraKeys.CATEGORY_SELECTED, category);
+		final String scheduleKey = 
+				(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.SCHEDULED_LIST;
+		final String completedKey =
+				(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.COMPLETED_LIST;
+		final String canceledKey =
+				(category == ReviewPaymentsHeader.CANCELED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.CANCELED_LIST;
 
+		bundle.putSerializable(scheduleKey, scheduled);
+		bundle.putSerializable(completedKey, completed);
+		bundle.putSerializable(canceledKey, canceled);
+		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index);
+		BankNavigator.navigateToPaymentDetailScreen(bundle);
 	}
 
 
@@ -183,7 +185,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		if(null == header){return bundle;}
 		final int category = header.getCurrentCategory();
 		bundle.putInt(BankExtraKeys.CATEGORY_SELECTED, category);
-		//TODO: Set current data list
 		bundle.putSerializable(BankExtraKeys.SCHEDULED_LIST, scheduled);
 		bundle.putSerializable(BankExtraKeys.COMPLETED_LIST, completed);
 		bundle.putSerializable(BankExtraKeys.CANCELED_LIST, canceled);

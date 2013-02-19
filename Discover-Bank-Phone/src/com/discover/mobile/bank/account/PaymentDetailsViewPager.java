@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
@@ -162,7 +162,7 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	// FIXME need to have a navigator method defined that allows navigating back to the view payments Fragment.
 	@Override
 	public void onBackPressed() {
-		BankNavigator.navigateToReviewPayments(getCurrentFragmentBundle(), true);
+		BankRotationHelper.getHelper().setBundle(getCurrentFragmentBundle());
 	}
 
 	/**
