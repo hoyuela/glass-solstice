@@ -18,6 +18,8 @@ import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
+import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
+import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
@@ -205,10 +207,15 @@ public class BankServiceCallFactory {
 		return new DeletePaymentServiceCall(activity, callback, pmt);
 	}
 
-	/*TO BE DEFINED Once Service Has been Completed
-	public static Object createPayeeSearchRequest() {
-		// TODO Auto-generated method stub
-		return null;
+	public static SearchPayeeServiceCall createPayeeSearchRequest(final String name) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<SearchPayeeResultList>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(SearchPayeeResultList.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new SearchPayeeServiceCall(activity, callback, name);
 	}
-	*/
+	
 }

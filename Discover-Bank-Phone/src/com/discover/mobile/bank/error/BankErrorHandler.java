@@ -110,6 +110,7 @@ public class BankErrorHandler implements ErrorHandler {
 	 * @param alert
 	 *            - the modal alert to be shown
 	 */
+	@Override
 	public void showCustomAlert(final AlertDialog alert) {
 		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		alert.show();
@@ -147,10 +148,7 @@ public class BankErrorHandler implements ErrorHandler {
 		if (!Globals.isLoggedIn() && HttpURLConnection.HTTP_UNAVAILABLE == errorCode) {
 			// Close application
 			modal.setOnDismissListener(new CloseApplicationOnDismiss(activeActivity));
-		} else if (Globals.isLoggedIn()) {
-			// Navigate back to login
-			modal.setOnDismissListener(new NavigateToLoginOnDismiss(activeActivity));
-		}
+		} 
 
 		// Show one button error dialog
 		return modal;

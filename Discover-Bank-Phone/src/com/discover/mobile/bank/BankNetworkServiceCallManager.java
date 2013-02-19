@@ -18,6 +18,8 @@ import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
+import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
+import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.common.AccountType;
@@ -242,14 +244,16 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		else if( sender instanceof DeletePaymentServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
-			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((DeletePaymentServiceCall) sender).getPaymentDetail());
-			BankNavigator.navigateToReviewPaymentsFromDelete(bundle);
-		} 
-		// Get Payment Successful, navigate to the review payments table
-		else if(sender instanceof GetPaymentsServiceCall) {
-			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
-			BankNavigator.navigateToReviewPaymentsTable(bundle);
+			BankNavigator.navigateToReviewPayments(bundle, false);
+		}
+		//Payee Search Success, navigate to Add Payee Workflow Step 2
+		else if( sender instanceof SearchPayeeServiceCall ) {
+			final SearchPayeeResultList search = (SearchPayeeResultList)result;
+			if( search.results.size() > 0 ) {
+				//BankNavigator.nav
+			} else {
+				
+			}
 		}
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {

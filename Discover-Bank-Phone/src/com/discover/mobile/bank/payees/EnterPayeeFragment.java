@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
 
@@ -109,7 +110,8 @@ public class EnterPayeeFragment extends BaseFragment implements OnClickListener 
 			toast.show();
 		} else if( sender == continueButton ) {
 			if( searchField.isValid() ) {
-				//BankServiceCallFactory.createPayeeSearchRequest().submit();
+				final String search = searchField.getText().toString().trim();
+				BankServiceCallFactory.createPayeeSearchRequest(search).submit();
 			} else {
 				searchField.updateAppearanceForInput();
 			}
