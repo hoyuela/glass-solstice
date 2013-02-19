@@ -134,9 +134,11 @@
 
             <!-- Deliver By -->
 
-            <RelativeLayout style="@style/schedule_pay_list_element" >
+            <RelativeLayout android:id="@+id/date_item" 
+                style="@style/schedule_pay_list_element" >
 
                 <LinearLayout
+                    android:id="@+id/date_llayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -178,6 +180,14 @@
                             android:src="@drawable/calendar_icon" />
                     </LinearLayout>
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/date_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date_llayout"
+                    android:text="@string/schedule_pay_invalid_date"
+                    android:textColor="@color/error_indicator"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <include layout="@layout/divider_horizontal" />

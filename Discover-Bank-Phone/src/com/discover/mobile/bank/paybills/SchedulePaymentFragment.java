@@ -64,6 +64,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private RelativeLayout memoItem;
 	/** Amount table item */
 	private RelativeLayout amountItem;
+	/** Date table item */
+	private RelativeLayout dateItem;
 
 	/** Progress header - breadcrumb */
 	private HeaderProgressIndicator progressHeader;
@@ -85,6 +87,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private EditText amountEdit;
 	/** Edit view for date */
 	private EditText dateEdit;
+	/** Error view for invalid date */
+	private TextView dateError;
 	/** Date Picker calendar icon */
 	private ImageView calendarIcon;
 	/** Cancel button for view */
@@ -150,6 +154,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 		amountItem = (RelativeLayout) view.findViewById(R.id.amount_element);
 		amountError = (TextView) view.findViewById(R.id.amount_error);
 		dateEdit = (EditText) view.findViewById(R.id.date_edit);
+		dateError = (TextView) view.findViewById(R.id.date_error);
+		dateItem = (RelativeLayout) view.findViewById(R.id.date_item);
 		calendarIcon = (ImageView) view.findViewById(R.id.date_icon);
 		memoItem = (RelativeLayout) view.findViewById(R.id.memo_element);
 		memoText = (TextView) memoItem.findViewById(R.id.memo_text);
@@ -419,17 +425,18 @@ public class SchedulePaymentFragment extends BaseFragment {
 				setupCancelButton();
 			}
 		});
-		
+
 		payNowButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Schedule a payment dude
 				/*
-				 * 1. Send payment
-				 * 2. Get response
+				 * 1. Send payment 
+				 * 2. Get response 
 				 * 3. Handle Errors if necessary
 				 * 4. Go to confirmation fragment
 				 */
+				setDateError(Math.random() > 0.5);
 			}
 		});
 	}
@@ -649,6 +656,32 @@ public class SchedulePaymentFragment extends BaseFragment {
 			amountItem.setPadding(padding, padding, padding, padding);
 			amountItem.invalidate();
 			amountError.setVisibility(View.GONE);
+		}
+	}
+
+	/**
+	 * Sets the date error in case a payment is actually sent after the previous
+	 * cut-off time.
+	 * 
+	 * @param isError
+	 *            displays the error if true, and normal if false.
+	 */
+	private void setDateError(boolean isError) {
+		int padding = (int) getResources().getDimension(
+				R.dimen.between_related_elements_padding);
+		if (isError) {
+			dateItem.getLayoutParams().height = (int) getResources()
+					.getDimension(R.dimen.listview_vertical_height)
+					+ (int) getResources().getDimension(R.dimen.small_copy_mid);
+			dateItem.setPadding(padding, padding, padding, padding);
+			dateItem.invalidate();
+			dateError.setVisibility(View.VISIBLE);
+		} else {
+			dateItem.getLayoutParams().height = (int) getResources()
+					.getDimension(R.dimen.listview_vertical_height);
+			dateItem.setPadding(padding, padding, padding, padding);
+			dateItem.invalidate();
+			dateError.setVisibility(View.GONE);
 		}
 	}
 

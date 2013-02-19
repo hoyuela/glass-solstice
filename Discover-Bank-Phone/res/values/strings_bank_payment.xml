@@ -56,4 +56,6 @@
  	<string name="schedule_pay_cancel_button_cancel">Don\'t Cancel</string>
  	<string name="schedule_pay_canceled">Transaction Cancelled</string>
  	<string name="schedule_pay_date_picker_title">Enter Payment Date</string>
+ 	<string name="schedule_pay_duplicate_payment">Duplicate Payment</string>
+ 	<string name="schedule_pay_invalid_date">Invalid Date</string>
 </resources>
