@@ -20,6 +20,7 @@ import com.discover.mobile.bank.paybills.BankPayTerms;
 import com.discover.mobile.bank.paybills.BankPayeeNotEligibleFragment;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
+import com.discover.mobile.bank.payees.EnterPayeeFragment;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
@@ -331,5 +332,14 @@ public class BankNavigator {
 	    });
 
 		activity.showCustomAlert(modal);
+	}
+	
+	/**
+	 * Navigation method used to display the Add Payee Step 1. Instantiates an EnterPayeeFragment and makes it visible to user
+	 * via the NavigationRootActivity.
+	 */
+	public static void navigateToAddPayee() {
+		final EnterPayeeFragment fragment = new EnterPayeeFragment();
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
 }

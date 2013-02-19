@@ -69,7 +69,7 @@ public class BankAccountSummaryFragment extends BaseFragment{
 	private String setFirstName() {
 		final String firstName = BankUser.instance().getCustomerInfo().name.type;
 		final String name = firstName.toLowerCase();
-		String upperString = name.substring(0,1).toUpperCase() + name.substring(1);
+		final String upperString = name.substring(0,1).toUpperCase() + name.substring(1);
 		return "Hi " + upperString;
 	}
 	
