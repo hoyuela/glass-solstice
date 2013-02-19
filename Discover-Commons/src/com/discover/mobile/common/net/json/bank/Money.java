@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.services.account;
+package com.discover.mobile.common.net.json.bank;
 
 import java.io.Serializable;
 

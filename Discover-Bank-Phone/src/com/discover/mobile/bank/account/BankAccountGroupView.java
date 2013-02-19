@@ -11,7 +11,8 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
-import com.discover.mobile.bank.services.account.Money;
+import com.discover.mobile.common.net.json.bank.Money;
+import com.google.common.base.Strings;
 
 /**
  * Widget used to display a user's Account information in a Grouped format. This view will display each account in the group within a BankAccountView.
@@ -64,7 +65,7 @@ public class BankAccountGroupView extends LinearLayout  {
 		
 		try {
 			//Remove any '$' or ',' from the value
-			final String numStrValue = value.value.replaceAll("[$,]+", "");
+			final String numStrValue = value.formatted.replaceAll("[$,]+", "");
 			//Remove any '$' or ',' from the current running value
 			final String numStrTotalValue = total.getText().toString().replaceAll("[$,]+", "");
 			//Convert string representation of sum total to a double to be able to add it
@@ -118,13 +119,16 @@ public class BankAccountGroupView extends LinearLayout  {
 	public void addAccount(final Account account) {
 		if( null != account ) {
 			if( acctList.size() == 0 || acctList.get(0).type.equals(account.type)) {
+				/**Use name for grouping otherwise use type*/
+				final String groupName = (Strings.isNullOrEmpty(account.name)) ? account.type : account.name;
+				
 				if(acctList.size() == 0 ) {
-					//Set the account type for the group
-					type.setText(account.name);
+					//Set the name for the group
+					type.setText(groupName);
 				} else {
-					if( !account.name.endsWith("s")) {
-						//Set the account type for the group with s at the end if more than one
-						type.setText(account.name +"s");
+					if( !groupName.endsWith("s")) {
+						//Set the name for the group with s at the end if more than one
+						type.setText(groupName +"s");
 					}
 				}
 				

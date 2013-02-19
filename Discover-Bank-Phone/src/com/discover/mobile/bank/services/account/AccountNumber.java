@@ -39,5 +39,9 @@ public class AccountNumber implements Serializable {
 	 */
 	@JsonProperty("formatted")
 	public String formatted;
+	
+	
+	@JsonProperty("unmaskedAccountNumber")
+	public String unmaskedAccountNumber;
 
 }
