@@ -8,9 +8,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.discover.mobile.bank.account.AccountActivityFragment;
 import com.discover.mobile.bank.account.AccountActivityViewPager;
+import com.discover.mobile.bank.account.BankAccountActivityTable;
 import com.discover.mobile.bank.account.BankOpenAccountFragment;
+import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.login.LoginActivity;
@@ -19,6 +20,7 @@ import com.discover.mobile.bank.paybills.BankPayConfirmFragment;
 import com.discover.mobile.bank.paybills.BankPayTerms;
 import com.discover.mobile.bank.paybills.BankPayeeNotEligibleFragment;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
+import com.discover.mobile.bank.paybills.ReviewPaymentsTable;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.payees.EnterPayeeFragment;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
@@ -36,7 +38,7 @@ import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
  * @author henryoyuela
  *
  */
-public class BankNavigator {
+public final class BankNavigator {
 	public static final String TAG = BankNavigator.class.getSimpleName();
 
 	/**
@@ -110,7 +112,8 @@ public class BankNavigator {
 	 * 						message to display on the StrongAuthPage.
 	 * 
 	 */
-	public static void navigateToStrongAuth(final Activity activity, final BankStrongAuthDetails details, final String errorMessage) {
+	public static void navigateToStrongAuth(final Activity activity, 
+			final BankStrongAuthDetails details, final String errorMessage) {
 		if( activity.getClass() != EnhancedAccountSecurityActivity.class ) {
 			final Intent strongAuth = new Intent(activity, EnhancedAccountSecurityActivity.class);
 
@@ -172,13 +175,13 @@ public class BankNavigator {
 
 		//Set the dismiss listener that will navigate the user to the browser	
 		modal.setOnDismissListener(new OnDismissListener() {
-	        @Override
-	        public void onDismiss(final DialogInterface arg0) {
-	        	final Intent i = new Intent(Intent.ACTION_VIEW);
-	    		i.setData(Uri.parse(url));
-	    		activity.startActivity(i);
-	        }
-	    });
+			@Override
+			public void onDismiss(final DialogInterface arg0) {
+				final Intent i = new Intent(Intent.ACTION_VIEW);
+				i.setData(Uri.parse(url));
+				activity.startActivity(i);
+			}
+		});
 
 		activity.showCustomAlert(modal);
 	}
@@ -208,7 +211,7 @@ public class BankNavigator {
 	 * Let the root activity know that the current fragment needs to be changed from the current fragment
 	 * to the navigate to pay bills step two page.
 	 */
-	public static void navigateToPayBillStepTwo(final BaseFragmentActivity activity, final Bundle extras){
+	public static void navigateToPayBillStepTwo(final Bundle extras){
 		final SchedulePaymentFragment fragment = new SchedulePaymentFragment();
 		fragment.setArguments(extras);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
@@ -235,12 +238,12 @@ public class BankNavigator {
 		if(activity.isDynamicDataFragment() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(bundle);
 		}else{
-			final AccountActivityFragment fragment =  new AccountActivityFragment();
+			final BankAccountActivityTable fragment =  new BankAccountActivityTable();
 			fragment.setArguments(bundle);
 			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 		}
 	}
-	
+
 	/**
 	 * Calls the NavigateToAcountActivityPage with false as the default parameter for isGoingBack.
 	 * So that we could add support for going back to the method without breaking the calls that are already in use
@@ -261,10 +264,10 @@ public class BankNavigator {
 	public static void navigateToPayConfirmFragment(final PaymentDetail value) {
 		final BankPayConfirmFragment fragment = new BankPayConfirmFragment();
 		final Bundle bundle = new Bundle();
-		
+
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, value);
 		fragment.setArguments(bundle);
-		
+
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment, false);
 	}
 
@@ -273,21 +276,21 @@ public class BankNavigator {
 	 */
 	public static void navigateToReviewPayments(final Bundle bundle,final Boolean value) {
 		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
-		
+
 		//View Pager seems to require the bundle and value parameters, need to discuss with 
 		//Jon and Scott what it is meant for
-		
+
 		//Also needed for after confirmation of a scheduled payment
-		
+
 		//Need to discuss with Jon - For payment deletion passing a bundle with a
 		//boolean extra BankExtraKeys.CONFIRM_DELETE. Review Page to displays a message 
 		//for 5 seconds with icon above list to confirm to user deletion of payment. 
 		//I can do this via the bundle
-		
+
 		//Remove this line after integration
 		navigateToUnderDevelopment();
 	}
-	
+
 	/**
 	 * Navigation method used to display feedback landing page
 	 */
@@ -295,7 +298,7 @@ public class BankNavigator {
 		//Need to integrate with Feedback landing page once completed
 		navigateToUnderDevelopment();
 	}
-	
+
 	/**
 	 * Navigation method used to display the under development fragment for when screens
 	 * have not been dev complete
@@ -303,9 +306,9 @@ public class BankNavigator {
 	public static void navigateToUnderDevelopment() {
 		final BankUnderDevelopmentFragment fragment =  new BankUnderDevelopmentFragment();
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment, false);
-		
+
 	}
-	
+
 	/**
 	 * Navigation method used to display the Delete Transaction modal for when deleting a
 	 * Scheduled Payment Transaction
@@ -325,15 +328,15 @@ public class BankNavigator {
 
 		//Set the dismiss listener that will navigate the user to the browser	
 		modal.setOnDismissListener(new OnDismissListener() {
-	        @Override
-	        public void onDismiss(final DialogInterface arg0) {
-	        	BankServiceCallFactory.createDeletePaymentServiceCall(pmtDetail).submit();
-	        }
-	    });
+			@Override
+			public void onDismiss(final DialogInterface arg0) {
+				BankServiceCallFactory.createDeletePaymentServiceCall(pmtDetail).submit();
+			}
+		});
 
 		activity.showCustomAlert(modal);
 	}
-	
+
 	/**
 	 * Navigation method used to display the Add Payee Step 1. Instantiates an EnterPayeeFragment and makes it visible to user
 	 * via the NavigationRootActivity.
@@ -342,4 +345,43 @@ public class BankNavigator {
 		final EnterPayeeFragment fragment = new EnterPayeeFragment();
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
+
+
+	/**
+	 * Navigate to the Review payments detail table screen
+	 * @param bundle - bundle to pass into the screen
+	 */
+	public static void navigateToReviewPaymentsTable(final Bundle bundle, final boolean isGoingBack){
+		final BankNavigationRootActivity activity =
+				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
+		((AlertDialogParent)activity).closeDialog();
+		if(activity.isDynamicDataFragment() && !isGoingBack){
+			activity.addDataToDynamicDataFragment(bundle);
+		}else{
+			final ReviewPaymentsTable fragment =  new ReviewPaymentsTable();
+			fragment.setArguments(bundle);
+			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+		}
+	}
+
+	/**
+	 * Calls the NavigateToAReviewPaymentsTable with false as the default parameter for isGoingBack.
+	 * So that we could add support for going back to the method without breaking the calls that are already in use
+	 * elsewhere.
+	 * @param bundle
+	 */
+	public static void navigateToReviewPaymentsTable(final Bundle bundle){
+		navigateToReviewPaymentsTable(bundle, false);
+	}
+
+	/**
+	 * Navigate to the payment detail view pager screen
+	 * @param bundle - bundle to pass into the screen
+	 */
+	public static void navigateToPaymentDetailScreen(final Bundle bundle){
+		final PaymentDetailsViewPager fragment =  new PaymentDetailsViewPager();
+		fragment.setArguments(bundle);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
+
 }

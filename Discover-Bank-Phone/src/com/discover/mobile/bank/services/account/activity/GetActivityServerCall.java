@@ -71,21 +71,21 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 			{
 				//This service call is made after authenticating and receiving a token,
 				//therefore the session should not be cleared otherwise the token will be wiped out
-				this.clearsSessionBeforeRequest = false;
+				clearsSessionBeforeRequest = false;
 
 				//This ensures the token is added to the HTTP Authorization Header of the HTTP request
-				this.requiresSessionForRequest = true;
+				requiresSessionForRequest = true;
 
 				//This ensure the required device information is supplied in the Headers of the HTTP request
-				this.sendDeviceIdentifiers = true;
+				sendDeviceIdentifiers = true;
 
 				// Specify what error parser to use when receiving an error response is received
-				this.errorResponseParser = BankErrorResponseParser.instance();
+				errorResponseParser = BankErrorResponseParser.instance();
 
 			}
 		}, ListActivityDetail.class, ActivityDetail.class);
 
-		this.handler = new SimpleReferenceHandler<ListActivityDetail>(callback);
+		handler = new SimpleReferenceHandler<ListActivityDetail>(callback);
 	}
 
 	/**
@@ -98,11 +98,12 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 	 * @return list of details
 	 */
 	@Override
-	protected ListActivityDetail parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
-			throws IOException {
+	protected ListActivityDetail parseSuccessResponse(final int status, 
+			final Map<String,List<String>> headers, final InputStream body) throws IOException {
 
 		final ListActivityDetail details = new ListActivityDetail();
 		details.activities = super.parseUnamedList(body);
+		details.links = parseHeaderForLinks(headers);
 		return details;
 	}
 
@@ -111,6 +112,6 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 	 */
 	@Override
 	public TypedReferenceHandler<ListActivityDetail> getHandler() {
-		return this.handler;
+		return handler;
 	}
 }

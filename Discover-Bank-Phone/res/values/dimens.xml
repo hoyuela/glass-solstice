@@ -4,6 +4,10 @@
     <dimen name="light_text_size">12sp</dimen>
     <dimen name="very_light_text_size">10sp</dimen>
     
+    
+    <dimen name="small_margin">5dp</dimen>
+    <dimen name="large_margin">30dp</dimen>
+    
    
    
     

@@ -14,7 +14,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.BaseFragmentActivity;
 
 /**
  * Fragment that will be used in the first step of the pay bill process.
@@ -37,9 +36,6 @@ public class BankSelectPayee extends BaseFragment{
 	/**Layout holding the payees*/
 	private LinearLayout payeesList;
 
-	/**Activity showing fragment*/
-	private BaseFragmentActivity activity;
-
 	/**Text view holding the empty list message*/
 	private TextView empty;
 
@@ -55,9 +51,8 @@ public class BankSelectPayee extends BaseFragment{
 
 		final View view = inflater.inflate(R.layout.select_payee, null);
 
-		this.payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
-		this.activity = (BaseFragmentActivity)this.getActivity();
-		this.empty = (TextView)view.findViewById(R.id.no_payees);
+		payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
+		empty = (TextView)view.findViewById(R.id.no_payees);
 
 		if(null == savedInstanceState){
 			loadListFromBundle(this.getArguments());
@@ -74,7 +69,7 @@ public class BankSelectPayee extends BaseFragment{
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
-		outState.putSerializable(BankExtraKeys.PAYEES_LIST, this.payees);
+		outState.putSerializable(BankExtraKeys.PAYEES_LIST, payees);
 	}
 
 	/**
@@ -82,13 +77,13 @@ public class BankSelectPayee extends BaseFragment{
 	 * @param bundle - bundle containing the data to be displayed.
 	 */
 	public void loadListFromBundle(final Bundle bundle){
-		this.payees = (ListPayeeDetail)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
-		if(null == this.payees || this.payees.payees.isEmpty()){
-			this.empty.setVisibility(View.VISIBLE);
+		payees = (ListPayeeDetail)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
+		if(null == payees || payees.payees.isEmpty()){
+			empty.setVisibility(View.VISIBLE);
 		}else{
-			this.payeesList.removeAllViews();
-			for(final PayeeDetail payee : this.payees.payees){
-				this.payeesList.addView(createListItem(payee));
+			payeesList.removeAllViews();
+			for(final PayeeDetail payee : payees.payees){
+				payeesList.addView(createListItem(payee));
 			}
 		}
 	}
@@ -115,7 +110,7 @@ public class BankSelectPayee extends BaseFragment{
 			public void onClick(final View v) {
 				final Bundle bundle = new Bundle();
 				bundle.putSerializable(BankExtraKeys.SELECTED_PAYEE, details);
-				BankNavigator.navigateToPayBillStepTwo(BankSelectPayee.this.activity, bundle);
+				BankNavigator.navigateToPayBillStepTwo(bundle);
 			}
 		};
 	}

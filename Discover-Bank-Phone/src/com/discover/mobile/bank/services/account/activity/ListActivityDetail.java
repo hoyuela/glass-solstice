@@ -1,7 +1,11 @@
 package com.discover.mobile.bank.services.account.activity;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 
 /**
  * A ActivityDetails List object and passed to the application layer.
@@ -45,6 +49,13 @@ public class ListActivityDetail implements Serializable{
 	/**Unique identifier for the object*/
 	private static final long serialVersionUID = 8207177094396952741L;
 
+	/**String to get the next url from the links onject*/
+	public static final String NEXT = "next";
+
 	/**List of activity details*/
 	public List<ActivityDetail> activities;
+
+
+	/**List of links for for this object*/
+	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 }

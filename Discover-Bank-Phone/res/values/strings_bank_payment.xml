@@ -18,4 +18,16 @@
 	<string name="select_payee_title">Select Payee</string>
 	<string name="select_payee_empty">You currently have no payees set up.</string>
 	<string name="select_payee_add_new">Add New Payee</string>
+	
+	<!-- Review payments -->
+	<string name="review_payments_title">Review Payments</string>
+	<string name="review_payments_filter_one">Date</string>
+	<string name="review_payments_filter_two">Payee</string>
+	<string name="review_payments_filter_three">Amount</string>
+	<string name="review_payments_scheduled_payments">Scheduled\nPayments</string>
+	<string name="review_payments_completed_payments">Completed\nPayments</string>
+	<string name="review_payments_canceled_payments">Canceled\nPayments</string>
+	<string name="review_payments_scheduled_payments_empty">You have no scheduled payments.</string>
+	<string name="review_payments_completed_payments_empty">You have no completed payments.</string>
+	<string name="review_payments_canceled_payments_empty">You have no cancelled payments.</string>
 </resources>

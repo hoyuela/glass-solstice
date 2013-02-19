@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
@@ -15,12 +15,12 @@ import com.discover.mobile.bank.services.payment.PaymentDetail;
 public class PaymentDetailsViewPager extends DetailViewPager implements FragmentOnBackPressed, DynamicDataFragment {
 	private ListPaymentDetail detailList = new ListPaymentDetail();
 	private int initialViewPosition = 0;
-	
+
 	@Override
 	public int getActionBarTitle() {
 		return R.string.payment_detail;
 	}
-	
+
 	/**
 	 * Get any data that was either passed in from another Fragment as Bundle extras or as savedInstanceState
 	 * extras from a rotation change. In the onCreate we give precedence to a savedInstanceState bundle 
@@ -30,19 +30,20 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		loadBundleArgs(getArguments());
-		
+
 		if(savedInstanceState != null) {
-			detailList = (ListPaymentDetail)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST);
+			detailList = (ListPaymentDetail)savedInstanceState.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		}
-		
+
 		//Make sure the list is not null so that the Fragment will not crash upon getting no data.
-		if(detailList.payments == null)
+		if(detailList.payments == null) {
 			detailList.payments = new ArrayList<PaymentDetail>();
-		
+		}
+
 	}
-	
+
 	/**
 	 * Save the current Bundle state so that we can restore it on rotation change.
 	 */
@@ -59,11 +60,11 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	 */
 	public void loadBundleArgs(final Bundle bundle) {
 		if(bundle != null){
-			detailList = (ListPaymentDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST);
+			detailList = (ListPaymentDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 			initialViewPosition = bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX);
 		}
 	}
-	
+
 	/**
 	 * Get the current Bundle for this Fragment, then update the data list and index fields on it
 	 * and return the updated Bundle
@@ -71,14 +72,15 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	 */
 	private Bundle getCurrentFragmentBundle() {
 		Bundle currentBundle = getArguments();
-		if(currentBundle == null)
+		if(currentBundle == null) {
 			currentBundle = new Bundle();
-		
+		}
+
 		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, initialViewPosition);
-		currentBundle.putSerializable(BankExtraKeys.DATA_LIST, detailList);
+		currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, detailList);
 		return currentBundle;
 	}
-	
+
 	/**
 	 * Called by the DetailViewPager class to retrieve a constructed PaymentDetail Fragment.
 	 * This method returns a payment Fragment that is ready to be shown in the DetailViewPager.
@@ -90,7 +92,7 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 		final Bundle bundle = new Bundle();
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, payment);
 		paymentFragment.setArguments(bundle);
-		
+
 		return paymentFragment;
 	}
 
@@ -117,23 +119,24 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	@Override
 	protected int getTitleForFragment(final int position) {
 		if(detailList.payments.size() > 0){
-		//Scheduled Payment or Completed Payment
+			//Scheduled Payment or Completed Payment
 			final String paymentStatus = detailList.payments.get(position).status;
-			
-			if("SCHEDULED".equals(paymentStatus))
+
+			if("SCHEDULED".equals(paymentStatus)) {
 				return R.string.scheduled_payment;
-			else if ("COMPLETED".equals(paymentStatus))
+			} else if ("COMPLETED".equals(paymentStatus)) {
 				return R.string.completed_payment;
-			else if ("CANCELLED".equals(paymentStatus))
+			} else if ("CANCELLED".equals(paymentStatus)) {
 				return R.string.cancelled_payment;
-			else
+			} else {
 				return R.string.payment_detail;
-		}
-		else 
+			}
+		} else {
 			return R.string.no_data_found;
+		}
 	}
-	
-// FIXME need to have services to determine if the current user is the primary account holder
+
+	// FIXME need to have services to determine if the current user is the primary account holder
 	@Override
 	protected boolean isUserPrimaryHolder() {
 		return true;
@@ -148,7 +151,7 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	 */
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
-		final ListPaymentDetail newDetails = (ListPaymentDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST);
+		final ListPaymentDetail newDetails = (ListPaymentDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		detailList.payments.addAll(newDetails.payments);
 		updateNavigationButtons(getViewPager().getCurrentItem());
 	}
@@ -159,7 +162,7 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	// FIXME need to have a navigator method defined that allows navigating back to the view payments Fragment.
 	@Override
 	public void onBackPressed() {
-		BankNavigator.navigateToReviewPayments(getCurrentFragmentBundle(), true);
+		BankRotationHelper.getHelper().setBundle(getCurrentFragmentBundle());
 	}
 
 	/**
@@ -168,7 +171,7 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	@Override
 	protected void loadMore() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -179,10 +182,11 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	@Override
 	protected boolean isFragmentEditable(final int position) {
 		boolean paymentIsEditable = false;
-		if(detailList.payments.size() > 0)
-			 paymentIsEditable = "SCHEDULED".equals(detailList.payments.get(position).status);
+		if(detailList.payments.size() > 0) {
+			paymentIsEditable = "SCHEDULED".equals(detailList.payments.get(position).status);
+		}
 
 		return paymentIsEditable;
 	}
-	
+
 }

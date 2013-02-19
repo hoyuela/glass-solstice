@@ -15,5 +15,5 @@ public interface DynamicDataFragment{
 	 * Handle the received data from the service call
 	 * @param bundle - bundle received from the service call
 	 */
-	public void handleReceivedData(final Bundle bundle);
+	void handleReceivedData(final Bundle bundle);
 }

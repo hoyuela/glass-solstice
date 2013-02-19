@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageButton
+        android:id="@+id/help"
+        style="@style/orange_help_button"
+        android:layout_width="@dimen/orange_help_button_size"
+        android:layout_height="@dimen/orange_help_button_size"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/help"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:weightSum="3" >
+
+        <ToggleButton
+            android:id="@+id/toggle_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_left_on"
+            android:checked="true"
+            android:textColor="@color/white"
+            android:textOff="@string/review_payments_scheduled_payments"
+            android:textOn="@string/review_payments_scheduled_payments"
+            android:textSize="14sp" />
+
+        <ToggleButton
+            android:id="@+id/toggle_middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_mid_off"
+            android:checked="false"
+            android:textColor="@color/body_copy"
+            android:textOff="@string/review_payments_completed_payments"
+            android:textOn="@string/review_payments_completed_payments"
+            android:textSize="14sp" />
+
+        <ToggleButton
+            android:id="@+id/toggle_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_right_off"
+            android:checked="false"
+            android:textColor="@color/body_copy"
+            android:textOff="@string/review_payments_canceled_payments"
+            android:textOn="@string/review_payments_canceled_payments"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <com.discover.mobile.bank.ui.table.TableTitles
+        android:id="@+id/table_titles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/buttons"
+        android:layout_marginBottom="@dimen/between_related_elements_padding"
+        android:layout_marginTop="@dimen/groups_of_elements_padding" />
+
+</RelativeLayout>

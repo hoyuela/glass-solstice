@@ -18,6 +18,8 @@ import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
+import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
+import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.AsyncCallback;
@@ -79,7 +81,7 @@ public class BankServiceCallFactory {
 		return loginCall;
 	}
 
-	
+
 
 	/**
 	 * Used to construct a CreateStrongAuthRequestCall NetworkServiceCall for invoking the Bank - Authentication
@@ -151,7 +153,24 @@ public class BankServiceCallFactory {
 
 		return new GetCustomerAccountsServerCall(activity, callback);
 	}
-	
+
+	/**
+	 * Creates a GetCustomerAccountsServerCall<> object used to download the Account Summary 
+	 * using the Bank Accounts Service API.
+	 * 
+	 * @return Reference to the GetCustomerAccountsServerCall object created.
+	 */
+	public static GetPaymentsServiceCall createGetPaymentsServerCall(final String url) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<ListPaymentDetail>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(ListPaymentDetail.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new GetPaymentsServiceCall(activity, callback, url);
+	}
+
 	/**
 	 * 
 	 * @param pmt

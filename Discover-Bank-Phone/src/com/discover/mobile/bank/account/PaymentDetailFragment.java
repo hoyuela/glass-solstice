@@ -16,7 +16,7 @@ public class PaymentDetailFragment extends DetailFragment implements OnClickList
 	 * Reference to button used to delete a scheduled payment
 	 */
 	private Button deleteButton;
-	
+
 	/**
 	 * The layout for a PaymentDetail fragment.
 	 */
@@ -30,11 +30,11 @@ public class PaymentDetailFragment extends DetailFragment implements OnClickList
 	 */
 	@Override
 	protected void loadListItemsTo(final LinearLayout contentTable) {
-		final PaymentDetail detailList = (PaymentDetail)getArguments().getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-		
-		loadListElementsToLayoutFromList(contentTable, generator.getScheduledPaymentDetailList(detailList));
+		item = (PaymentDetail)getArguments().getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+
+		loadListElementsToLayoutFromList(contentTable, generator.getScheduledPaymentDetailList(item));
 	}
-	
+
 	/**
 	 * If the current Fragment is a completed payment, hide the
 	 * payment and edit buttons because it is not editable.
@@ -59,5 +59,5 @@ public class PaymentDetailFragment extends DetailFragment implements OnClickList
 			BankNavigator.navigateToDeleteConfirmation(item);
 		}	
 	}
-	
+
 }

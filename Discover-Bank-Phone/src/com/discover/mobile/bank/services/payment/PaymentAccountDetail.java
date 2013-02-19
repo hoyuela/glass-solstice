@@ -68,7 +68,7 @@ public class PaymentAccountDetail implements Serializable{
 
 	/**Balance of the account*/
 	@JsonProperty("balance")
-	public int balance;
+	public Amount balance;
 
 	/**Interest rate of the account*/
 	@JsonProperty("interestRate")
@@ -76,15 +76,15 @@ public class PaymentAccountDetail implements Serializable{
 
 	/**Interest earned for the account*/
 	@JsonProperty("interestEarnedLastStatement")
-	public int interestEarned;
+	public Amount interestEarned;
 
 	/**Interest earned to date*/
 	@JsonProperty("interestYearToDate")
-	public int interestToDate;
+	public Amount interestToDate;
 
 	/**Date the account was opened*/
 	@JsonProperty("openDate")
-	public int openDate;
+	public PaymentDateDetail openDate;
 
 	/**Status of the account*/
 	@JsonProperty("status")
