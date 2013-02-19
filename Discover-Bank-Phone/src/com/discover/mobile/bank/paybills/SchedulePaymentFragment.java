@@ -89,6 +89,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private ImageView calendarIcon;
 	/** Cancel button for view */
 	private Button cancelButton;
+	/** Payment button */
+	private Button payNowButton;
 
 	/** Payee object (typically passed here via bundle) */
 	private PayeeDetail payee;
@@ -415,6 +417,19 @@ public class SchedulePaymentFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				setupCancelButton();
+			}
+		});
+		
+		payNowButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				// TODO Schedule a payment dude
+				/*
+				 * 1. Send payment
+				 * 2. Get response
+				 * 3. Handle Errors if necessary
+				 * 4. Go to confirmation fragment
+				 */
 			}
 		});
 	}
