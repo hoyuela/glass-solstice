@@ -135,13 +135,13 @@
             <!-- Deliver By -->
 
             <RelativeLayout android:id="@+id/date_item" 
-                style="@style/schedule_pay_list_element" >
+                style="@style/schedule_pay_list_element"
+                android:gravity="center_vertical"  >
 
                 <LinearLayout
                     android:id="@+id/date_llayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:orientation="horizontal"
                     android:weightSum="4" >
 

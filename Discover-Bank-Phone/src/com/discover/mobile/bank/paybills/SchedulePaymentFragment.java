@@ -160,6 +160,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 		memoItem = (RelativeLayout) view.findViewById(R.id.memo_element);
 		memoText = (TextView) memoItem.findViewById(R.id.memo_text);
 		memoEdit = (EditText) memoItem.findViewById(R.id.memo_edit);
+		payNowButton = (Button) view.findViewById(R.id.pay_now);
 		cancelButton = (Button) view.findViewById(R.id.cancel_button);
 
 		bankUser = BankUser.instance();
