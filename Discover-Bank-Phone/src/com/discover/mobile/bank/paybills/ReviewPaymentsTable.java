@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.table.BaseTable;
@@ -121,11 +121,9 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	public void maybeLoadMore() {
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
-			//footer.showDone();
-
-			footer.showLoading();
-			loadMore("/api/payments");
+			footer.showDone();
 		}else{
+			footer.showLoading();
 			loadMore(url.url);
 		}
 	}
@@ -137,11 +135,11 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	private ReceivedUrl getLoadMoreUrl(){
 		final int category = header.getCurrentCategory();
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
-			return scheduled.links.get("Next");
+			return scheduled.links.get(ListActivityDetail.NEXT);
 		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS){
-			return completed.links.get("Next");
+			return completed.links.get(ListActivityDetail.NEXT);
 		}else{
-			return canceled.links.get("Next");
+			return canceled.links.get(ListActivityDetail.NEXT);
 		}
 	}
 
@@ -163,9 +161,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			@Override
 			public void onClick(final View v) {
 				header.setCurrentCategory(ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
-				Toast.makeText(getSherlockActivity(), "Getting Scheduled", 3000).show();
 				if(null == scheduled){
-					//TODO: Append the correct query string
 					BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
 				}
 			}
@@ -175,9 +171,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			@Override
 			public void onClick(final View v) {
 				header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
-				Toast.makeText(getSherlockActivity(), "Getting Completed", 3000).show();
 				if(null == completed){
-					//TODO: Append the correct query string
 					BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
 				}
 			}
@@ -187,9 +181,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			@Override
 			public void onClick(final View v) {
 				header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
-				Toast.makeText(getSherlockActivity(), "Getting Canceled", 3000).show();
 				if(null == canceled){
-					//TODO: Append the correct query string
 					BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
 				}
 			}
