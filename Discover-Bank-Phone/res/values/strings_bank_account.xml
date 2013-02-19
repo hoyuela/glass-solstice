@@ -14,5 +14,5 @@
     <string name="activity_no_scheduled">You have no scheduled transactions.</string>
     <string name="activity_no_posted">You have no account activity.</string>
     <string name="activity_table_name">Transactions</string>
-    <string name="activity_go_to_top">Go to Top</string>
+    <string name="activity_go_to_top">Back to Top</string>
 </resources>

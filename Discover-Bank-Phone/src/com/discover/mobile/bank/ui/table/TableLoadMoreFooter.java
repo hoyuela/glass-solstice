@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.account;
+package com.discover.mobile.bank.ui.table;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -26,6 +26,9 @@ public class TableLoadMoreFooter extends RelativeLayout{
 	/**Empty view for the message*/
 	private final TextView empty;
 
+	/**Divider line*/
+	private final View line;
+
 	/**Constructor for the class
 	 * @param context - activity context
 	 * @param attrs - attributes to apply to the layouts
@@ -38,6 +41,7 @@ public class TableLoadMoreFooter extends RelativeLayout{
 		load = view.findViewById(R.id.load_more);
 		go = (TextView) view.findViewById(R.id.go_to_top);
 		empty = (TextView) view.findViewById(R.id.message);
+		line = view.findViewById(R.id.line);
 		hideAll();
 		addView(view);
 	}
@@ -46,10 +50,11 @@ public class TableLoadMoreFooter extends RelativeLayout{
 	 * Show the loading bar
 	 */
 	public void showLoading(){
-		load.setVisibility(View.GONE);
+		load.setVisibility(View.VISIBLE);
 		load.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.rotate_full_circle));
-		go.setVisibility(View.INVISIBLE);
-		empty.setVisibility(View.INVISIBLE);
+		go.setVisibility(View.VISIBLE);
+		empty.setVisibility(View.GONE);
+		line.setVisibility(View.VISIBLE);
 	}
 
 	/**
@@ -59,7 +64,8 @@ public class TableLoadMoreFooter extends RelativeLayout{
 		load.setVisibility(View.GONE);
 		load.clearAnimation();
 		go.setVisibility(View.VISIBLE);
-		empty.setVisibility(View.INVISIBLE);
+		empty.setVisibility(View.GONE);
+		line.setVisibility(View.VISIBLE);
 	}
 
 	/**
@@ -69,8 +75,9 @@ public class TableLoadMoreFooter extends RelativeLayout{
 	public void showEmpty(final String message){
 		load.setVisibility(View.GONE);
 		load.clearAnimation();
-		go.setVisibility(View.INVISIBLE);
-		empty.setVisibility(View.VISIBLE);
+		go.setVisibility(View.GONE);
+		empty.setVisibility(View.GONE);
+		line.setVisibility(View.GONE);
 		empty.setText(message);
 	}
 
@@ -82,6 +89,7 @@ public class TableLoadMoreFooter extends RelativeLayout{
 		load.clearAnimation();
 		go.setVisibility(View.GONE);
 		empty.setVisibility(View.GONE);
+		line.setVisibility(View.GONE);
 	}
 
 	/**

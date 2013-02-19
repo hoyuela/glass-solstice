@@ -36,14 +36,14 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	@Override
 	public void onResume(){
 		super.onResume();
-		
+
 		/** Status bar should always be hidden for bank. It's possbile it will also go away card.
 		 * This is a temp solution. If it goes away for card this code will be removed.  */
 		final Fragment statusBar = this.getSupportFragmentManager().findFragmentById(R.id.status_bar);
 		final FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
 		ft.hide(statusBar);
 		ft.commit();
-		
+
 		getLastTouchTime();
 	}
 
@@ -189,7 +189,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 
 		return (slidingMenu.getTouchModeAbove() == SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
-	
+
 	/**
 	 * Method used to search for a fragment of a specific class type within the back stack.
 	 * 
@@ -199,7 +199,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	 */
 	public int getFragmentIndex(final Class<?> fragmentClassType) {
 		int ret = -1;
-		
+
 		final FragmentManager fragManager = this.getSupportFragmentManager();
 		final int fragCount = fragManager.getBackStackEntryCount() ;
 		if( fragCount > 0 ) {
@@ -211,7 +211,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 		}
 		return ret;
 	}
-	
+
 	/**
 	 * Method used to pop everything from the FragmentActivity's back stack until 
 	 * reaching a fragment with the class type specified. The method will first look-up
@@ -224,7 +224,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 		final FragmentManager fragManager = this.getSupportFragmentManager();
 		/**Search for the fragment with the class type specified in the backstack*/
 		final int fragIndex = getFragmentIndex(fragmentClassType);
-		
+
 		if( fragIndex != -1) {
 			/**How many times the backstack will be popped in order to reach the fragment desired*/
 			final int callsToPop =  (fragManager.getBackStackEntryCount() - 1) - fragIndex;

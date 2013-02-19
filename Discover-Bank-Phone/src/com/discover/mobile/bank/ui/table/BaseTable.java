@@ -43,9 +43,10 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		setupFooter();
 		setupAdapter();
 
-		table.addFooterView(getFooter());
+		//table.addFooterView(getFooter());
 		table.addHeaderView(getHeader());
 		table.setDivider(getResources().getDrawable(R.drawable.table_dotted_line));
+		//table.setFooterDividersEnabled(true);
 
 		final Bundle bundle = BankRotationHelper.getHelper().getBundle();
 		loadBundle = (null == bundle) ? this.getArguments() : bundle;
@@ -94,7 +95,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	 * Method that is called when the adapter gets to the bottom of the list.  
 	 * This will show the go to top or show the loading bar for most fragments.
 	 */
-	public abstract  void maybeLoadMore();
+	public abstract void maybeLoadMore();
 
 	/**
 	 * Set up the header

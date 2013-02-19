@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
@@ -60,18 +61,19 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	 */
 	@Override
 	public View getView(final int position, View view, final ViewGroup parent){
-		ViewHolder holder = null;
-
-		final ActivityDetail detail = details.get(position);
+		ItemViewHolder holder = null;
 
 		/**At the end of the list try loading more*/
-		if(position == this.getCount()-1){
+		if(position == details.size()){
 			fragment.maybeLoadMore();
+			view = fragment.getFooter();
+			return view;
 		}
 
+		final ActivityDetail detail = details.get(position);
 		/**If the view is null, create a new one*/
-		if(null == view || !(view.getTag() instanceof ViewHolder)){
-			holder = new ViewHolder();
+		if(null == view || !(view.getTag() instanceof ItemViewHolder)){
+			holder = new ItemViewHolder();
 			if(null != detail){
 				view = inflater.inflate(R.layout.bank_table_item, null);
 				holder.date = (TextView) view.findViewById(R.id.date);
@@ -81,7 +83,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 			}
 			/**Else reuse the old one*/
 		}else{
-			holder = (ViewHolder) view.getTag();
+			holder = (ItemViewHolder) view.getTag();
 		}
 
 		/**Update the display values*/
@@ -103,7 +105,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	 */
 	@Override
 	public int getCount(){
-		return details.size();
+		return details.size()+1;
 	}
 
 	/**
@@ -149,10 +151,13 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	 * @author jthornton
 	 *
 	 */
-	private class ViewHolder {
+	private class ItemViewHolder {
 		public TextView date;
 		public TextView desc;
 		public TextView amount;
 		public int pos;
+		public ImageView loadMore;
+		public TextView message;
+		public TextView top;
 	}
 }

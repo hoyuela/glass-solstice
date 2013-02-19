@@ -17,6 +17,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.ui.table.BaseTable;
+import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 
 /**
@@ -40,9 +41,6 @@ public class BankAccountActivityTable extends BaseTable{
 
 	/**Footer to put in the bottom of the list view*/
 	private TableLoadMoreFooter footer;
-
-	/**Boolean used to know if the device has been flipped*/
-	private final boolean hasLoaded = false;
 
 	/**
 	 * Handle the received data from the service call
@@ -150,13 +148,20 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	@Override
 	public void maybeLoadMore() {
-		final ReceivedUrl url = (header.isPosted()) ? posted.links.get(ListActivityDetail.NEXT) : scheduled.links.get(ListActivityDetail.NEXT);
+		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
 			footer.showDone();
 		}else{
 			footer.showLoading();
 			loadMore(url.url);
 		}
+	}
+
+	/**
+	 * Get the load more URL
+	 */
+	private ReceivedUrl getLoadMoreUrl(){
+		return (header.isPosted()) ? posted.links.get(ListActivityDetail.NEXT) : scheduled.links.get(ListActivityDetail.NEXT);
 	}
 
 	/**

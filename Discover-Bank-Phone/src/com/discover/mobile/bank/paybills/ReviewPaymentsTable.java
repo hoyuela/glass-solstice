@@ -13,10 +13,10 @@ import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.account.TableLoadMoreFooter;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.table.BaseTable;
+import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 
 /**
@@ -121,9 +121,11 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	public void maybeLoadMore() {
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
-			footer.showDone();
-		}else{
+			//footer.showDone();
+
 			footer.showLoading();
+			loadMore("/api/payments");
+		}else{
 			loadMore(url.url);
 		}
 	}
