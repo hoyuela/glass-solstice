@@ -50,15 +50,21 @@ extends UnamedListJsonResponseMappingNetworkServiceCall<M, I> {
 	 */
 	protected Map<String, ReceivedUrl> parseHeaderForLinks(final Map<String,List<String>> headers){
 		final Map<String, ReceivedUrl> urls = new HashMap<String, ReceivedUrl>();
-		final List<String> links = headers.get("Link");
-		if(null == links && links.isEmpty()){return urls;}
-		for(final String string : links){
-			final String[] pieces = string.replaceAll("<|>|rel=|\"| ", "").split(";");
-			final ReceivedUrl url = new ReceivedUrl();
-			url.url = pieces[0];
-			urls.put(pieces[1], url);
+
+		try{
+			final List<String> links = headers.get("Link");
+			if(null == links || links.isEmpty()){return urls;}
+			for(final String string : links){
+				final String[] pieces = string.replaceAll("<|>|rel=|\"| ", "").split(";");
+				final ReceivedUrl url = new ReceivedUrl();
+				url.url = pieces[0];
+				urls.put(pieces[1], url);
+			}
+			return urls;
+		}catch(final Exception e){
+			//Return an empty link object if any exception occurs
+			return urls;
 		}
-		return urls;
 	}
 
 }

@@ -46,7 +46,8 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		table.addHeaderView(getHeader());
 		table.setDivider(getResources().getDrawable(R.drawable.table_dotted_line));
 
-		loadBundle = (null == BankRotationHelper.getHelper().getBundle()) ? this.getArguments() : BankRotationHelper.getHelper().getBundle();
+		final Bundle bundle = BankRotationHelper.getHelper().getBundle();
+		loadBundle = (null == bundle) ? this.getArguments() : bundle;
 
 		return view;
 	}

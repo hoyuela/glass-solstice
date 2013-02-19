@@ -17,6 +17,7 @@ import com.discover.mobile.bank.account.TableLoadMoreFooter;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.table.BaseTable;
+import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 
 public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragment{
 
@@ -89,7 +90,31 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 
 	@Override
 	public void maybeLoadMore() {
+		final ReceivedUrl url = getLoadMoreUrl();
+		if(null == url){
+			footer.showDone();
+		}else{
+			footer.showLoading();
+			loadMore(url.url);
+		}
+	}
 
+	private ReceivedUrl getLoadMoreUrl(){
+		final int category = header.getCurrentCategory();
+		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
+			return scheduled.links.get("Next");
+		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS){
+			return completed.links.get("Next");
+		}else{
+			return canceled.links.get("Next");
+		}
+	}
+
+	/**
+	 * Load more activities
+	 */
+	public void loadMore(final String url){
+		BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 	}
 
 
@@ -196,10 +221,16 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	public void loadDataFromBundle(final Bundle bundle) {
 		if(null == bundle){return;}
 		final int category = bundle.getInt(BankExtraKeys.CATEGORY_SELECTED, ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
+		final String scheduleKey = 
+				(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.SCHEDULED_LIST;
+		final String completedKey =
+				(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.COMPLETED_LIST;
+		final String canceledKey =
+				(category == ReviewPaymentsHeader.CANCELED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.CANCELED_LIST;
 		header.setCurrentCategory(category);
-		scheduled = (ListPaymentDetail)bundle.getSerializable(BankExtraKeys.SCHEDULED_LIST);
-		completed = (ListPaymentDetail)bundle.getSerializable(BankExtraKeys.COMPLETED_LIST);
-		canceled = (ListPaymentDetail)bundle.getSerializable(BankExtraKeys.CANCELED_LIST);
+		scheduled = (ListPaymentDetail)bundle.getSerializable(scheduleKey);
+		completed = (ListPaymentDetail)bundle.getSerializable(completedKey);
+		canceled = (ListPaymentDetail)bundle.getSerializable(canceledKey);
 		createDefaultLists();
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
 			this.updateAdapter(scheduled.payments);
