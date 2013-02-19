@@ -1,7 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.discover.mobile.bank"
-    android:versionCode="1"
-    android:versionName="4.0" >
+    package="com.discover.mobile.bank">
 
     <uses-sdk
         android:minSdkVersion="9"
