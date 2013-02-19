@@ -817,6 +817,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * 
 	 * @return Returns true if successful, false otherwise.
 	 */
+	@Override
 	public boolean updateAccountInformation(final AccountType account) {
 		
 		return Globals.updateAccountInformation(account,getContext(),idField.getText().toString(),saveUserId);

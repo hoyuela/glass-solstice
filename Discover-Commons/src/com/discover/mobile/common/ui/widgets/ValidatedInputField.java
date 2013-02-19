@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -79,11 +80,13 @@ public abstract class ValidatedInputField extends EditText{
 	 * focus changed listeners and sets the default appearance and input restrictions on the field.
 	 */
 	private void basicSetup() {
+		
 		setupFocusChangedListener();
 		setupTextChangedListener();
 		setupInputRestrictions();
 		setupDefaultAppearance();
 		thisEditText = this;
+		thisEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		setupRightDrawableTouchRegion();
 	}
 
@@ -156,20 +159,31 @@ public abstract class ValidatedInputField extends EditText{
 
 		});
 	}
+	
+	/**Converts DP int into px for setting drawable padding */
+	private int getRightDrawablePadding() {
+		final int paddingInDp = 10;
+	    final float scale = getResources().getDisplayMetrics().density;
+	    int paddingInPx = (int) (paddingInDp * scale + 0.5f);
+		return paddingInPx;
+	}
 
 	/**Sets the right drawable to the gray X image*/
 	protected void setRightDrawableGrayX() {
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getGrayX(), null);
+		this.setCompoundDrawablePadding(getRightDrawablePadding());
 	}
 
 	/**Sets the right drawable to the red X image*/
 	protected void setRightDrawableRedX() {
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getRedX(), null);
+		this.setCompoundDrawablePadding(getRightDrawablePadding());
 	}
 
 	/**Clears the right drawable so that no image is present*/
 	protected void clearRightDrawable() {
 		this.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+		
 	}
 
 
@@ -294,7 +308,7 @@ public abstract class ValidatedInputField extends EditText{
 			@Override
 			public boolean onTouch(final View v, final MotionEvent event) {
 				final Drawable rightDrawable = thisEditText.getCompoundDrawables()[2];
-				
+
 				if (drawableIsClickable(rightDrawable) && isTouchRegionValid(event)) {
 					clearInputFieldState();
 				}
