@@ -10,14 +10,26 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 
+/**
+ * Load more footer for the tables.
+ * @author jthornton
+ *
+ */
 public class TableLoadMoreFooter extends RelativeLayout{
 
+	/**View that shows the loading*/
 	private final View load;
 
+	/**View that shows the go to top*/
 	private final TextView go;
 
+	/**Empty view for the message*/
 	private final TextView empty;
 
+	/**Constructor for the class
+	 * @param context - activity context
+	 * @param attrs - attributes to apply to the layouts
+	 */
 	public TableLoadMoreFooter(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 
@@ -30,7 +42,9 @@ public class TableLoadMoreFooter extends RelativeLayout{
 		addView(view);
 	}
 
-
+	/**
+	 * Show the loading bar
+	 */
 	public void showLoading(){
 		load.setVisibility(View.GONE);
 		load.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.rotate_full_circle));
@@ -38,6 +52,9 @@ public class TableLoadMoreFooter extends RelativeLayout{
 		empty.setVisibility(View.INVISIBLE);
 	}
 
+	/**
+	 * Show the more loading view
+	 */
 	public void showDone(){
 		load.setVisibility(View.GONE);
 		load.clearAnimation();
@@ -45,6 +62,10 @@ public class TableLoadMoreFooter extends RelativeLayout{
 		empty.setVisibility(View.INVISIBLE);
 	}
 
+	/**
+	 * Show the list is empty view
+	 * @param message
+	 */
 	public void showEmpty(final String message){
 		load.setVisibility(View.GONE);
 		load.clearAnimation();
@@ -53,9 +74,11 @@ public class TableLoadMoreFooter extends RelativeLayout{
 		empty.setText(message);
 	}
 
+	/**
+	 * Show the hide all view
+	 */
 	public void hideAll(){
 		load.setVisibility(View.GONE);
-
 		load.clearAnimation();
 		go.setVisibility(View.GONE);
 		empty.setVisibility(View.GONE);
@@ -74,5 +97,4 @@ public class TableLoadMoreFooter extends RelativeLayout{
 	public TextView getGo() {
 		return go;
 	}
-
 }

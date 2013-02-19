@@ -19,22 +19,38 @@ import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 
+/**
+ * Table holding payments that the user can review.  It has the possible 
+ * categories scheduled, completed and canceled.  When an items is clicked 
+ * be sent the detail fragment. 
+ * 
+ * @author jthornton
+ *
+ */
 public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragment{
 
+	/**List of completed payment details*/
 	private ListPaymentDetail completed;
 
+	/**List of scheduled payment details*/
 	private ListPaymentDetail scheduled;
 
+	/**List of canceled payment details*/
 	private ListPaymentDetail canceled;
 
+	/**Header for the list*/
 	private ReviewPaymentsHeader header;
 
 	/**Footer to put in the bottom of the list view*/
 	private TableLoadMoreFooter footer;
 
+	/**Adapter to show data*/
 	private ReviewPaymentsAdapter adapter;
 
-
+	/**
+	 * Handle the received data.
+	 * @param bundle - bundle of received data
+	 */
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
 		final int category = header.getCurrentCategory();
@@ -63,31 +79,44 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		return list;
 	}
 
-
+	/**
+	 * @return the action bar title resource
+	 */
 	@Override
 	public int getActionBarTitle() {
 		return R.string.review_payments_title;
 	}
 
-
+	/**
+	 * Set up the adapter for this list
+	 */
 	@Override
 	public void setupAdapter() {
 		adapter = new ReviewPaymentsAdapter(this.getActivity(), R.layout.bank_table_item, this);
 	}
 
-
+	/**
+	 * Setup the lists of details that are not already created
+	 */
 	@Override
 	public void createDefaultLists() {
 		//This does not need to be implemented with the current design of this class
 	}
 
 
+	/**
+	 * Get the adapter that needs to be attached to the fragment.
+	 * @param adatper - adapter to be attached to the list
+	 */
 	@Override
 	public ArrayAdapter<?> getAdapter() {
 		return adapter;
 	}
 
-
+	/**
+	 * Method that is called when the adapter gets to the bottom of the list.  
+	 * This will show the go to top or show the loading bar for most fragments.
+	 */
 	@Override
 	public void maybeLoadMore() {
 		final ReceivedUrl url = getLoadMoreUrl();
@@ -99,6 +128,10 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		}
 	}
 
+	/**
+	 * Get the load more URL
+	 * @return get the load more URL from the correct object
+	 */
 	private ReceivedUrl getLoadMoreUrl(){
 		final int category = header.getCurrentCategory();
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
@@ -117,7 +150,9 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 	}
 
-
+	/**
+	 * Set up the header
+	 */
 	@Override
 	public void setupHeader() {
 		header = new ReviewPaymentsHeader(this.getActivity(), null);
@@ -159,7 +194,9 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		});
 	}
 
-
+	/**
+	 * Set up the footer
+	 */
 	@Override
 	public void setupFooter() {
 		footer = new TableLoadMoreFooter(this.getActivity(), null);
@@ -171,19 +208,26 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		});
 	}
 
-
+	/**
+	 * Get the header that should be shown at the top of the list.
+	 */
 	@Override
 	public View getHeader() {
 		return header;
 	}
 
-
+	/**
+	 * Get the footer that should be shown at the top of the list.
+	 */
 	@Override
 	public View getFooter() {
 		return footer;
 	}
 
-
+	/**
+	 * Go to the details screen associated with this view
+	 * @param index - index to pass to the detail screen
+	 */
 	@Override
 	public void goToDetailsScreen(final int index) {
 		final Bundle bundle = new Bundle();
@@ -203,7 +247,10 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		BankNavigator.navigateToPaymentDetailScreen(bundle);
 	}
 
-
+	/**
+	 * Save all the data on the screen in a bundle
+	 * @return bundle containing all the data
+	 */
 	@Override
 	public Bundle saveDataInBundle() {
 		final Bundle bundle  = new Bundle();
@@ -216,21 +263,18 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		return bundle;
 	}
 
-
+	/**
+	 * Load the data from the bundle
+	 * @param bundle - bundle to load the data from
+	 */
 	@Override
 	public void loadDataFromBundle(final Bundle bundle) {
 		if(null == bundle){return;}
 		final int category = bundle.getInt(BankExtraKeys.CATEGORY_SELECTED, ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
-		final String scheduleKey = 
-				(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.SCHEDULED_LIST;
-		final String completedKey =
-				(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.COMPLETED_LIST;
-		final String canceledKey =
-				(category == ReviewPaymentsHeader.CANCELED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.CANCELED_LIST;
 		header.setCurrentCategory(category);
-		scheduled = (ListPaymentDetail)bundle.getSerializable(scheduleKey);
-		completed = (ListPaymentDetail)bundle.getSerializable(completedKey);
-		canceled = (ListPaymentDetail)bundle.getSerializable(canceledKey);
+		scheduled = (ListPaymentDetail)bundle.getSerializable(getScheduleKey(category));
+		completed = (ListPaymentDetail)bundle.getSerializable(getCompletedKey(category));
+		canceled = (ListPaymentDetail)bundle.getSerializable(getCanceledKey(category));
 		createDefaultLists();
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
 			this.updateAdapter(scheduled.payments);
@@ -240,6 +284,27 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			this.updateAdapter(canceled.payments);
 		}
 
+	}
+
+	/**
+	 * @return the schedule key that will be used in the bundle
+	 */
+	private String getScheduleKey(final int category){
+		return (category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.SCHEDULED_LIST;
+	}
+
+	/**
+	 * @return the completed key that will be used in the bundle
+	 */
+	private String getCompletedKey(final int category){
+		return (category == ReviewPaymentsHeader.COMPLETED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.COMPLETED_LIST;
+	}
+
+	/**
+	 * @return the canceled key that will be used in the bundle
+	 */
+	private String getCanceledKey(final int category){
+		return (category == ReviewPaymentsHeader.CANCELED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.CANCELED_LIST;
 	}
 
 	/**

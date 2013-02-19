@@ -24,6 +24,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	/**List View holding the data*/
 	private ListView table;
 
+	/**Bundle to load data from*/
 	private Bundle loadBundle;
 
 	/**

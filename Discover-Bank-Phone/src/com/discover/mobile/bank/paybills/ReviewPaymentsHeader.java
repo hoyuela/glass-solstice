@@ -41,6 +41,11 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	/**Current category being displayed*/
 	private int currentCategory;
 
+	/**
+	 * Constructor for the layout
+	 * @param context - activity context
+	 * @param attrs - attributes to apply to the layout
+	 */
 	public ReviewPaymentsHeader(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 
@@ -57,6 +62,9 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 		addView(view);
 	}
 
+	/**
+	 * Set the scheduled button selected and unselect the other buttons
+	 */
 	public void selectScheduledButton(){
 		scheduled.setTextColor(getResources().getColor(R.color.white));
 		completed.setTextColor(getResources().getColor(R.color.body_copy));
@@ -66,6 +74,9 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 		canceled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_off));
 	}
 
+	/**
+	 * Set the completed button selected and unselect the other buttons
+	 */
 	public void selectCompletedButton(){
 		scheduled.setTextColor(getResources().getColor(R.color.body_copy));
 		completed.setTextColor(getResources().getColor(R.color.white));
@@ -75,6 +86,9 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 		canceled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_off));
 	}
 
+	/**
+	 * Set the canceled button selected and unselect the other buttons
+	 */
 	public void selectCanceledButton(){
 		scheduled.setTextColor(getResources().getColor(R.color.body_copy));
 		completed.setTextColor(getResources().getColor(R.color.body_copy));
