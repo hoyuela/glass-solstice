@@ -47,7 +47,7 @@
  	<string name="schedule_pay_too_low">Too low (less than $1)</string>
  	<string name="schedule_pay_date">Deliver By</string>
  	<string name="schedule_pay_memo_opt">Memo (Optional)</string>
- 	<string name="schedule_pay_button">Pay Now</string>
+ 	<string name="schedule_pay_button">Schedule Payment</string>
  	<string name="schedule_pay_memo">Memo</string>
  	<string name="schedule_pay_spinner_body">Account Ending in</string>
  	<string name="schedule_pay_cancel_title">Cancel Transaction</string>

@@ -45,9 +45,16 @@ import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.discover.mobile.common.ui.widgets.CustomTitleDatePickerDialog;
-import com.discover.mobile.common.ui.widgets.DatePickerEditText;
 
 public class SchedulePaymentFragment extends BaseFragment {
+
+	/** Keys used to save/load values possibly lost during rotation. */
+	private static final String PAY_FROM_ACCOUNT_ID = "a";
+	private static final String AMOUNT = "b";
+	private static final String DATE_YEAR = "c";
+	private static final String DATE_MONTH = "d";
+	private static final String DATE_DAY = "e";
+	private static final String MEMO = "f";
 
 	private ScrollView parentView;
 
@@ -90,8 +97,10 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 	/** True when the amount had focus at some point */
 	private boolean amountHadFocus = false;
-	/** Currently selected account */
+	/** Id for currently selected account */
 	private String accountId;
+	/** List position for current Account */
+	private int accountIndex;
 	/** Earliest payment date */
 	private Calendar earliestPaymentDate;
 	/** Chosen payment date */
@@ -103,7 +112,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private final float MAX_AMOUNT = 25000.0f;
 	/** Minimum payment amount */
 	private final float MIN_AMOUNT = 1.0f;
-	
+
 	/** Reference to the Activity's canceled listener */
 	OnPaymentCanceledListener canceledListener;
 
@@ -114,10 +123,11 @@ public class SchedulePaymentFragment extends BaseFragment {
 	static final Pattern r8601 = Pattern
 			.compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
 					+ "(\\d{2}):(\\d{2})\\.(\\d{3}))((\\+|-)(\\d{4}))");
+
 	// NEW PATTERN NOT YET THERE:
-//	static final Pattern r8601 = Pattern
-//			.compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
-//					+ "(\\d{2}):(\\d{2})Z)");
+	// static final Pattern r8601 = Pattern
+	// .compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
+	// + "(\\d{2}):(\\d{2})Z)");
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
@@ -126,7 +136,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		parentView = (ScrollView) view;
 		payeeText = (TextView) view.findViewById(R.id.payee_text);
-		progressHeader = (HeaderProgressIndicator) view.findViewById(R.id.schedule_pay_header);
+		progressHeader = (HeaderProgressIndicator) view
+				.findViewById(R.id.schedule_pay_header);
 		paymentAccountItem = (RelativeLayout) view
 				.findViewById(R.id.payment_acct_element);
 		paymentAccountText = (TextView) view
@@ -147,9 +158,10 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		loadDataFromBundle();
 		setInitialViewData();
-		setAmountFieldValidation();
+		setAmountFieldRestrictions();
 		setMemoFieldValidation();
 		createItemListeners();
+		restoreState(savedInstanceState);
 
 		return view;
 	}
@@ -165,7 +177,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 		try {
 			canceledListener = (OnPaymentCanceledListener) activity;
 		} catch (ClassCastException e) {
-			Log.e("SchedulePayment", "Activity must implement OnPaymentCanceledListener.");
+			Log.e("SchedulePayment",
+					"Activity must implement OnPaymentCanceledListener.");
 		}
 	}
 
@@ -183,8 +196,43 @@ public class SchedulePaymentFragment extends BaseFragment {
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
+	public void onSaveInstanceState(final Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putInt(PAY_FROM_ACCOUNT_ID, accountIndex);
+		outState.putString(AMOUNT, amountEdit.getText().toString());
+		String[] datesToSave = dateEdit.getText().toString().split("/");
+		outState.putString(DATE_DAY, datesToSave[1]);
+		outState.putString(DATE_MONTH, datesToSave[0]);
+		outState.putString(DATE_YEAR, datesToSave[2]);
+		outState.putString(MEMO, memoText.getText().toString());
+
+		SchedulePaymentSingleton.getInstance().setState(outState);
+	}
+
+	/**
+	 * Restores the widget's states from before rotation.
+	 * 
+	 * @param savedInstanceState
+	 *            the Bundle from which the data is loaded.
+	 */
+	public void restoreState(Bundle savedInstanceState) {
+		if (savedInstanceState == null) {
+			savedInstanceState = SchedulePaymentSingleton.getInstance()
+					.getState();
+		}
+
+		if (savedInstanceState != null) {
+			paymentAccountSpinner.setSelection(savedInstanceState
+					.getInt(PAY_FROM_ACCOUNT_ID));
+			amountEdit.setText(savedInstanceState.getString(AMOUNT));
+			dateEdit.setText(formatPaymentDate(
+					savedInstanceState.getString(DATE_YEAR),
+					savedInstanceState.getString(DATE_MONTH),
+					savedInstanceState.getString(DATE_DAY)));
+			memoEdit.setText(savedInstanceState.getString(MEMO));
+			memoText.setText(savedInstanceState.getString(MEMO));
+		}
 	}
 
 	@Override
@@ -220,10 +268,11 @@ public class SchedulePaymentFragment extends BaseFragment {
 				paymentAccountSpinner.setAdapter(accountAdapter);
 			}
 		}
-		
+
 		progressHeader.initChangePasswordHeader(0);
 		progressHeader.hideStepTwo();
-		progressHeader.setTitle(R.string.bank_pmt_details, R.string.bank_pmt_scheduled, R.string.bank_pmt_scheduled);
+		progressHeader.setTitle(R.string.bank_pmt_details,
+				R.string.bank_pmt_scheduled, R.string.bank_pmt_scheduled);
 	}
 
 	/**
@@ -326,6 +375,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 						final Account a = (Account) paymentAccountSpinner
 								.getSelectedItem();
 						accountId = a.id;
+						accountIndex = position;
 						paymentAccountText.setText(a.nickname);
 					}
 
@@ -340,7 +390,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 				deliverByDatePicker.show();
 			}
 		});
-		
+
 		dateEdit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -348,8 +398,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 			}
 		});
 
-		deliverByDatePicker = new CustomTitleDatePickerDialog(
-				getActivity(), new OnDateSetListener() {
+		deliverByDatePicker = new CustomTitleDatePickerDialog(getActivity(),
+				new OnDateSetListener() {
 
 					@Override
 					public void onDateSet(final DatePicker v, final int year,
@@ -364,45 +414,51 @@ public class SchedulePaymentFragment extends BaseFragment {
 		cancelButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(
-						getActivity(), null);
-				cancelModalTopView.setTitle(R.string.schedule_pay_cancel_title);
-				cancelModalTopView
-						.setContent(R.string.schedule_pay_cancel_body);
-				cancelModalTopView.hideNeedHelpFooter();
-
-				ModalDefaultTwoButtonBottomView cancelModalButtons = new ModalDefaultTwoButtonBottomView(
-						getActivity(), null);
-				cancelModalButtons
-						.setCancelButtonText(R.string.schedule_pay_cancel_button_cancel);
-				cancelModalButtons
-						.setOkButtonText(R.string.schedule_pay_cancel_button_confirm);
-
-				final ModalAlertWithTwoButtons cancelModal = new ModalAlertWithTwoButtons(
-						getActivity(), cancelModalTopView, cancelModalButtons);
-				((BankNavigationRootActivity) getActivity())
-						.showCustomAlert(cancelModal);
-
-				cancelModalButtons.getOkButton().setOnClickListener(
-						new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								canceledListener.onPaymentCanceled();
-								cancelModal.dismiss();
-								((BankNavigationRootActivity)getActivity()).popTillFragment(BankSelectPayee.class);
-							}
-						});
-
-				cancelModalButtons.getCancelButton().setOnClickListener(
-						new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								cancelModal.dismiss();
-							}
-						});
+				setupCancelButton();
 			}
 		});
+	}
+
+	/**
+	 * Instantiates the Cancel Button's modal and the modal's button listeners.
+	 */
+	private void setupCancelButton() {
+		ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(
+				getActivity(), null);
+		cancelModalTopView.setTitle(R.string.schedule_pay_cancel_title);
+		cancelModalTopView.setContent(R.string.schedule_pay_cancel_body);
+		cancelModalTopView.hideNeedHelpFooter();
+
+		ModalDefaultTwoButtonBottomView cancelModalButtons = new ModalDefaultTwoButtonBottomView(
+				getActivity(), null);
+		cancelModalButtons
+				.setCancelButtonText(R.string.schedule_pay_cancel_button_cancel);
+		cancelModalButtons
+				.setOkButtonText(R.string.schedule_pay_cancel_button_confirm);
+
+		final ModalAlertWithTwoButtons cancelModal = new ModalAlertWithTwoButtons(
+				getActivity(), cancelModalTopView, cancelModalButtons);
+		((BankNavigationRootActivity) getActivity())
+				.showCustomAlert(cancelModal);
+
+		cancelModalButtons.getOkButton().setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						canceledListener.onPaymentCanceled();
+						cancelModal.dismiss();
+						((BankNavigationRootActivity) getActivity())
+								.popTillFragment(BankSelectPayee.class);
+					}
+				});
+
+		cancelModalButtons.getCancelButton().setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						cancelModal.dismiss();
+					}
+				});
 	}
 
 	/**
@@ -434,11 +490,13 @@ public class SchedulePaymentFragment extends BaseFragment {
 	}
 
 	/**
+	 * Checks to see if the chosen date is a valid date according to the
+	 * earliest payment date.
 	 * 
 	 * @param chosenYear
 	 * @param chosenMonth
 	 * @param chosenDay
-	 * @return
+	 * @return true if valid, false otherwise.
 	 */
 	private boolean isValidPaymentDate(final int chosenYear,
 			final int chosenMonth, final int chosenDay) {
@@ -511,9 +569,9 @@ public class SchedulePaymentFragment extends BaseFragment {
 	}
 
 	/**
-	 * 
+	 * Sets restrictions related to the amount-to-pay field.
 	 */
-	private void setAmountFieldValidation() {
+	private void setAmountFieldRestrictions() {
 		InputFilter[] filters = new InputFilter[2];
 		filters[0] = new InvalidAmountCharacterFilter();
 		filters[1] = new InputFilter.LengthFilter(9);
@@ -553,6 +611,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 	}
 
 	/**
+	 * Sets the Error state of the amount field if isError is true and resets
+	 * the state if false.
 	 * 
 	 * @param isError
 	 */
