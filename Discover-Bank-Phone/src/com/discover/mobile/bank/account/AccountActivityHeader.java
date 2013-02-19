@@ -65,8 +65,10 @@ public class AccountActivityHeader extends RelativeLayout{
 	/**View holding labels*/
 	private final RelativeLayout labels;
 
+	/**Collapse amimation*/
 	private final Animation collapse;
 
+	/**Expand animation*/
 	private final Animation expand;
 
 	/**
