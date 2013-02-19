@@ -15,7 +15,7 @@
     
     <string name="year_hint">YYYY</string>
     <string name="secure_login">Secure Credit Card Log In</string>
-    <string name="register_now">Register Now </string>
+    <string name="register_now">Register \nNow </string>
     <string name="card_login_button_text">Secure Credit Card Login</string>
     <string name="image_description">Discover</string>
     <string name="strength_bar_text">Strength!</string>
