@@ -66,17 +66,6 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/buttons"
         android:layout_marginBottom="@dimen/between_related_elements_padding"
-        android:layout_marginLeft="@dimen/forms_inner_padding"
-        android:layout_marginRight="@dimen/forms_inner_padding"
         android:layout_marginTop="@dimen/groups_of_elements_padding" />
-
-    <View
-        android:id="@+id/top_line"
-        android:layout_width="wrap_content"
-        android:layout_height="3dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/table_titles"
-        android:background="@drawable/table_solid_line" />
 
 </RelativeLayout>

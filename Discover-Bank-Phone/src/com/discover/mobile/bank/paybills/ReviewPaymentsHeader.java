@@ -50,7 +50,6 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 		super(context, attrs);
 
 		final View view = LayoutInflater.from(context).inflate(R.layout.review_payments_header, null);
-		view.findViewById(R.id.table_titles);
 		scheduled = (ToggleButton) view.findViewById(R.id.toggle_left);
 		completed = (ToggleButton) view.findViewById(R.id.toggle_middle);
 		canceled  = (ToggleButton) view.findViewById(R.id.toggle_right);

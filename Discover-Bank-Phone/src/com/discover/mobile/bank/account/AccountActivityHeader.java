@@ -14,6 +14,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.ui.table.TableTitles;
 
 /**
  * Header displayed at the top of the activity table view screen
@@ -55,6 +56,9 @@ public class AccountActivityHeader extends RelativeLayout{
 	/**Current int representing the sort order*/
 	private int sortOrder = BankExtraKeys.SORT_DATE_DESC;
 
+	/**Table titles in the view*/
+	private final TableTitles titles;
+
 	/**
 	 * Constructor of the class
 	 * @param context - activity context
@@ -71,6 +75,12 @@ public class AccountActivityHeader extends RelativeLayout{
 		title = (TextView) view.findViewById(R.id.title_text);
 		postedButton = (ToggleButton) view.findViewById(R.id.posted_button);
 		scheduledButton = (ToggleButton) view.findViewById(R.id.scheduled_button);
+
+		titles = (TableTitles) view.findViewById(R.id.table_titles);
+
+		titles.setLabel1(this.getResources().getString(R.string.recent_activity_date));
+		titles.setLabel2(this.getResources().getString(R.string.recent_activity_description));
+		titles.setLabel3(this.getResources().getString(R.string.recent_activity_amount));
 
 		title.setOnClickListener(getImageOnClickListener());
 		image.setOnClickListener(getImageOnClickListener());
