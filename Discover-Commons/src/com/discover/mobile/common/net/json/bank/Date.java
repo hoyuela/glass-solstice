@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.services.account;
+package com.discover.mobile.common.net.json.bank;
 
 import java.io.Serializable;
 
@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author henryoyuela
  *
  */
-public class OpenDate implements Serializable {
+public class Date implements Serializable {
 
 	/**
 	 * Auto-generated serial UID which is used to serialize and de-serialize OpenDate objects
@@ -39,3 +39,4 @@ public class OpenDate implements Serializable {
 	@JsonProperty("formattedDate")
 	public String formatted;
 }
+

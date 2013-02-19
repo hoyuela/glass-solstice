@@ -14,7 +14,7 @@ import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountNumber;
-import com.discover.mobile.bank.services.account.Money;
+import com.discover.mobile.common.net.json.bank.Money;
 import com.google.common.base.Strings;
 
 /**

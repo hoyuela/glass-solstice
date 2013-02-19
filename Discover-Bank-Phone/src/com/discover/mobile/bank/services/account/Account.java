@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.common.net.json.bank.Money;
+import com.discover.mobile.common.net.json.bank.Percentage;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,53 +15,50 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Bank Accounts service API invocation via GetCustomerAccountsServerCall.
  * 
  * {
- *   "id": 1,
- *   "accountNumber" : {
- *		"ending" : "1111",
- *		"formatted" : "*****1111"
- *	 },
- *   "name": "Discover Cashback Checking",
- *   "nickname": "My Rewards Checking",
- *   "type": "CHECKING",
- *   "balance": {
- *		"value" : 123456,
- *		"formatted" : "$1234.56"
- *	 },
- *   "interestRate": {
- *         "numerator": 6,
- *         "denominator":  100,
- *         "formatted" : "0.06%"
- *   }
- *  "interestEarnedLastStatement": {
- *		"value" : 123,
- *		"formatted" : "$1.23"
- *	},
- *	"interestYearToDate": {
- *		"value" : 4321,
- *		"formatted" : "$43.21"
- *	},
- *	"openDate": {
- *		"date": "2007-04-06T16:14:24.134455Z",
- *		"formattedDate": "04/06/2007"
- *	},
- *   "status" : "OPEN"
- *   "links": {
- *       "self": {
- *           "ref": "https://www.discoverbank.com/api/accounts/1",
- *            "allowed": [ "GET", "POST" ] 
- *       }
- *
- *        "postedActivity": {
- *            "ref": "https://www.discoverbank.com/api/accounts/1/activity?status=posted",
- *            "allowed": [ "GET" ]
- *        },
- *        "scheduledActivity": {
- *            "ref": "https://www.discoverbank.com/api/accounts/1/activity?status=scheduled",
- *            "allowed": [ "GET" ]
- *        }
- *
- *    }
- *}
+ * 	"accountNumber": {
+ * 		"ending": "5125",
+ * 		"formatted": "****5125",
+ * 	},
+ * 	"id": 2,
+ * 	"nickName": "Discover Online Savings Acct",
+ * 	"type": "Savings",
+ * 	"balance": {
+ * 		"value": 20046958,
+ * 		"formatted": "$200,469.58"
+ * 	},
+ * 	"interestRate": {
+ * 		"value": 0.008,
+ * 		"formatted": "0.80%"
+ * 	},
+ * 	"apy": { 
+ * 		"value": 0.008,
+ * 		"formatted": "0.80%"
+ * 	},
+ * 	"interestEarnedLastStatement": {
+ * 		"value": 13616,
+ * 		"formatted": "$136.16"
+ * 	},
+ * 	"interestEarnedYearToDate": {
+ * 		"value": 13616,
+ * 		"formatted": "$136.16"
+ * 	},
+ * 	"openDate": "2012-10-17T05:00:00.000+0000",
+ * 	"status": "Open",
+ * 	"links": {
+ * 		"postedActivity": {
+ * 			"ref": "/api/accounts/2/activity?status=posted",
+ * 			"allowed": [
+ * 				"GET"
+ * 			]
+ * 		},
+ * 		"self": {
+ * 			"ref": "/api/accounts/2",
+ * 			"allowed": [
+ * 				"GET"
+ * 			]
+ * 		}
+ * 	}
+ * }
  * @author henryoyuela
  *
  */
@@ -145,7 +144,11 @@ public class Account implements Serializable {
 	 * composite object of a numerator, denomenator, and a preferred display string.
 	 */
 	@JsonProperty("interestRate")
-	public InterestRate interestRate;
+	public Percentage interestRate;
+	
+	
+	@JsonProperty("apy")
+	public Percentage apy;
 	
 	/**
 	 * The amount of interest that was compounded and added to the account balance 
@@ -165,7 +168,7 @@ public class Account implements Serializable {
 	 * The timestamp of when the account was opened. Follows ISO 8601, represented in UTC
 	 */
 	@JsonProperty("openDate")
-	public OpenDate openDate;
+	public String openDate;
 	
 	/**
 	 * The status of the account (e.g. 'OPEN' or 'CLOSED')
@@ -173,7 +176,46 @@ public class Account implements Serializable {
 	@JsonProperty("status")
 	public String status;
 	
-
+	/**
+	 * The current amount that is due
+	 */
+	@JsonProperty("currentAmountDue")
+	public Money currentAmontDue;
+	
+	/**
+	 * The date that the next payment is due
+	 */
+	public String nextPaymentDueDate;
+	
+	/**
+	 * The original balance
+	 */
+	public Money originalBalance;
+	
+	/**
+	 * The last payment amount received
+	 * */
+	@JsonProperty("lastPaymentReceivedAmount")
+	public Money lastPaymentReceivedAmount;
+	
+	/**
+	 * The length of the CD in months (eg. "24" for 2 year CD)
+	 * */
+	@JsonProperty("accountTerm")
+	public String accountTerm;
+	
+	/**
+	 * The initial deposit to fund this CD
+	 * */
+	@JsonProperty("initialDeposit")
+	public Money initialDeposit;
+	
+	/**
+	 * The date at which this CD will fully mature
+	 * */
+	@JsonProperty("matureDate")
+	public String matureDatae;
+	
 	/**
 	 * Contains Bank web-service API Resource links for postedActivity and scheduledActivity
 	 */
