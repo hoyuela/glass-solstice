@@ -42,6 +42,11 @@
         <item name="android:textSize">@dimen/small_copy_max</item>
     </style>
     
+        <style name="error_static_text">
+        <item name="android:textColor">@color/error_indicator</item>
+        <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+    
     <style name="table_text">
         <item name="android:textColor">@color/sub_copy</item>
         <item name="android:textSize">@dimen/small_copy_min</item>        

@@ -5,11 +5,12 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.renderscript.Mesh.TriangleMeshBuilder;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,10 +40,12 @@ import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidAmountCharacterFilter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
-import com.discover.mobile.common.ui.widgets.SchedulePaymentDatePickerDialog;
+import com.discover.mobile.common.ui.widgets.CustomTitleDatePickerDialog;
+import com.discover.mobile.common.ui.widgets.DatePickerEditText;
 
 public class SchedulePaymentFragment extends BaseFragment {
 
@@ -55,8 +58,10 @@ public class SchedulePaymentFragment extends BaseFragment {
 	/** Amount table item */
 	private RelativeLayout amountItem;
 
+	/** Progress header - breadcrumb */
+	private HeaderProgressIndicator progressHeader;
 	/** Date picker for selecint a Deliver By date */
-	private SchedulePaymentDatePickerDialog deliverByDatePicker;
+	private CustomTitleDatePickerDialog deliverByDatePicker;
 	/** Spinner used to display all the user bank accounts */
 	private Spinner paymentAccountSpinner;
 	/** Error view for improper amount */
@@ -98,14 +103,21 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private final float MAX_AMOUNT = 25000.0f;
 	/** Minimum payment amount */
 	private final float MIN_AMOUNT = 1.0f;
+	
+	/** Reference to the Activity's canceled listener */
+	OnPaymentCanceledListener canceledListener;
 
 	/**
 	 * Pattern to match the ISO8601 date & time returned by payee service -
-	 * 2013-01-30T05:00:00.000+0000 - old 2013-01-30T05:00:00.00Z - new TODO
+	 * 2013-01-30T05:00:00.000+0000 - old 2013-01-30T05:00:00Z - new TODO
 	 */
 	static final Pattern r8601 = Pattern
 			.compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
 					+ "(\\d{2}):(\\d{2})\\.(\\d{3}))((\\+|-)(\\d{4}))");
+	// NEW PATTERN NOT YET THERE:
+//	static final Pattern r8601 = Pattern
+//			.compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
+//					+ "(\\d{2}):(\\d{2})Z)");
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
@@ -114,6 +126,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		parentView = (ScrollView) view;
 		payeeText = (TextView) view.findViewById(R.id.payee_text);
+		progressHeader = (HeaderProgressIndicator) view.findViewById(R.id.schedule_pay_header);
 		paymentAccountItem = (RelativeLayout) view
 				.findViewById(R.id.payment_acct_element);
 		paymentAccountText = (TextView) view
@@ -141,6 +154,21 @@ public class SchedulePaymentFragment extends BaseFragment {
 		return view;
 	}
 
+	/**
+	 * The Fragment is attached to the Activity. We register this interface that
+	 * its parent must implement. Used to pass information back to the Activity.
+	 */
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		try {
+			canceledListener = (OnPaymentCanceledListener) activity;
+		} catch (ClassCastException e) {
+			Log.e("SchedulePayment", "Activity must implement OnPaymentCanceledListener.");
+		}
+	}
+
 	/** Fragment starts. Give focus to amount field if it's empty. */
 	@Override
 	public void onStart() {
@@ -165,6 +193,14 @@ public class SchedulePaymentFragment extends BaseFragment {
 	}
 
 	/**
+	 * Informs the implementing Activity that this fragment's transaction was
+	 * canceled.
+	 */
+	public interface OnPaymentCanceledListener {
+		public void onPaymentCanceled();
+	}
+
+	/**
 	 * Initializes the layout's elements with dynamic data either passed to the
 	 * fragment or loaded from elsewhere.
 	 */
@@ -184,6 +220,10 @@ public class SchedulePaymentFragment extends BaseFragment {
 				paymentAccountSpinner.setAdapter(accountAdapter);
 			}
 		}
+		
+		progressHeader.initChangePasswordHeader(0);
+		progressHeader.hideStepTwo();
+		progressHeader.setTitle(R.string.bank_pmt_details, R.string.bank_pmt_scheduled, R.string.bank_pmt_scheduled);
 	}
 
 	/**
@@ -300,8 +340,15 @@ public class SchedulePaymentFragment extends BaseFragment {
 				deliverByDatePicker.show();
 			}
 		});
+		
+		dateEdit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				deliverByDatePicker.show();
+			}
+		});
 
-		deliverByDatePicker = new SchedulePaymentDatePickerDialog(
+		deliverByDatePicker = new CustomTitleDatePickerDialog(
 				getActivity(), new OnDateSetListener() {
 
 					@Override
@@ -311,29 +358,39 @@ public class SchedulePaymentFragment extends BaseFragment {
 					}
 				}, earliestPaymentDate.get(Calendar.YEAR),
 				earliestPaymentDate.get(Calendar.MONTH),
-				earliestPaymentDate.get(Calendar.DAY_OF_MONTH));
-		
+				earliestPaymentDate.get(Calendar.DAY_OF_MONTH),
+				getString(R.string.schedule_pay_date_picker_title));
+
 		cancelButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
-				ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(getActivity(), null);
+				ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(
+						getActivity(), null);
 				cancelModalTopView.setTitle(R.string.schedule_pay_cancel_title);
-				cancelModalTopView.setContent(R.string.schedule_pay_cancel_body);
-				
-				ModalDefaultTwoButtonBottomView cancelModalButtons = new ModalDefaultTwoButtonBottomView(getActivity(), null);
-				cancelModalButtons.setCancelButtonText(R.string.schedule_pay_cancel_button_cancel);
-				cancelModalButtons.setOkButtonText(R.string.schedule_pay_cancel_button_confirm);
+				cancelModalTopView
+						.setContent(R.string.schedule_pay_cancel_body);
+				cancelModalTopView.hideNeedHelpFooter();
 
-				final ModalAlertWithTwoButtons cancelModal = new ModalAlertWithTwoButtons(getActivity(), cancelModalTopView, cancelModalButtons);
-				((BankNavigationRootActivity)getActivity()).showCustomAlert(cancelModal);
-				
+				ModalDefaultTwoButtonBottomView cancelModalButtons = new ModalDefaultTwoButtonBottomView(
+						getActivity(), null);
+				cancelModalButtons
+						.setCancelButtonText(R.string.schedule_pay_cancel_button_cancel);
+				cancelModalButtons
+						.setOkButtonText(R.string.schedule_pay_cancel_button_confirm);
+
+				final ModalAlertWithTwoButtons cancelModal = new ModalAlertWithTwoButtons(
+						getActivity(), cancelModalTopView, cancelModalButtons);
+				((BankNavigationRootActivity) getActivity())
+						.showCustomAlert(cancelModal);
+
 				cancelModalButtons.getOkButton().setOnClickListener(
 						new OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								// TODO Programmatically press Back button and pass data backward to display an error.
-
+								canceledListener.onPaymentCanceled();
+								cancelModal.dismiss();
+								((BankNavigationRootActivity)getActivity()).popTillFragment(BankSelectPayee.class);
 							}
 						});
 

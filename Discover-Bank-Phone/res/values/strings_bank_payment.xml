@@ -54,4 +54,6 @@
  	<string name="schedule_pay_cancel_body">Are you sure you want to cancel this transaction? Tap Cancel This Transaction to end it, or tap Don\'t Cancel to return to the previous page.</string>
  	<string name="schedule_pay_cancel_button_confirm">Cancel This Transaction</string>
  	<string name="schedule_pay_cancel_button_cancel">Don\'t Cancel</string>
+ 	<string name="schedule_pay_canceled">Transaction Cancelled</string>
+ 	<string name="schedule_pay_date_picker_title">Enter Payment Date</string>
 </resources>

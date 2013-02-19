@@ -14,6 +14,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.common.BaseFragment;
@@ -44,7 +45,11 @@ public class BankSelectPayee extends BaseFragment{
 	private TextView empty;
 	
 	private View view;
-
+	
+	/**Text view holding the error message*/
+	private TextView error;
+	
+	public boolean errorExists;
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -69,10 +74,12 @@ public class BankSelectPayee extends BaseFragment{
 
 		payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
 		empty = (TextView)view.findViewById(R.id.no_payees);
-
+		error = (TextView)view.findViewById(R.id.payee_error_text);
+		
 		setupAddNewPayeeButton(view);
 		initViewWithBundleData();
 		customSetup();
+		
 		return view;
 	}
 	
@@ -80,6 +87,17 @@ public class BankSelectPayee extends BaseFragment{
 	 * Optional Override in subclass
 	 */
 	protected void customSetup(){}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if(((BankNavigationRootActivity)getActivity()).consumeFragmentError()) {
+			error.setVisibility(View.VISIBLE);
+		}
+	}
+
+
 
 	/**
 	 * Save the state of the current fragment

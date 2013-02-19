@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,6 +17,7 @@ import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandler;
+import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.Globals;
@@ -30,9 +32,13 @@ import com.slidingmenu.lib.SlidingMenu;
  * bar.
  * 
  */
-public class BankNavigationRootActivity extends NavigationRootActivity {
+public class BankNavigationRootActivity extends NavigationRootActivity
+		implements OnPaymentCanceledListener {
 
+	/** Allows access to and manual control of the soft keyboard. */
 	private InputMethodManager imm;
+	/** If a fragment error exists this will be set to true. */
+	private boolean fragmentErrorShown = false;
 
 	/**
 	 * Resume the activity to the state that it was when the activity went to
@@ -274,5 +280,26 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 	 */
 	public InputMethodManager getInputMethodManager() {
 		return imm;
+	}
+
+	/**
+	 * Returns error whether or not an error exists. Once this has been called
+	 * the error is consumed.
+	 * 
+	 * @return true if an error exists, false otherwise.
+	 */
+	public boolean consumeFragmentError() {
+		boolean returnValue = fragmentErrorShown;
+		fragmentErrorShown = false;
+		return returnValue;
+	}
+
+	/**
+	 * Called when a payment was canceled and a previous fragment needs to be
+	 * informed.
+	 */
+	@Override
+	public void onPaymentCanceled() {
+		fragmentErrorShown = true;
 	}
 }
