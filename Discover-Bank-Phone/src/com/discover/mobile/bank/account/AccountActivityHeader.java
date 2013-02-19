@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,6 +16,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.transfer.Animator;
 import com.discover.mobile.bank.ui.table.TableTitles;
 
 /**
@@ -59,6 +62,13 @@ public class AccountActivityHeader extends RelativeLayout{
 	/**Table titles in the view*/
 	private final TableTitles titles;
 
+	/**View holding labels*/
+	private final RelativeLayout labels;
+
+	private final Animation collapse;
+
+	private final Animation expand;
+
 	/**
 	 * Constructor of the class
 	 * @param context - activity context
@@ -75,12 +85,46 @@ public class AccountActivityHeader extends RelativeLayout{
 		title = (TextView) view.findViewById(R.id.title_text);
 		postedButton = (ToggleButton) view.findViewById(R.id.posted_button);
 		scheduledButton = (ToggleButton) view.findViewById(R.id.scheduled_button);
+		labels = (RelativeLayout) view.findViewById(R.id.header_labels);
 
 		titles = (TableTitles) view.findViewById(R.id.table_titles);
 
 		titles.setLabel1(this.getResources().getString(R.string.recent_activity_date));
 		titles.setLabel2(this.getResources().getString(R.string.recent_activity_description));
 		titles.setLabel3(this.getResources().getString(R.string.recent_activity_amount));
+
+		collapse = Animator.collapse(labels);
+		expand = Animator.expand(labels);
+		collapse.setAnimationListener(new AnimationListener(){
+
+			@Override
+			public void onAnimationEnd(final Animation animation) { 
+				changeVisibility(View.GONE);
+			}
+
+			@Override
+			public void onAnimationRepeat(final Animation animation) { }
+
+			@Override
+			public void onAnimationStart(final Animation animation) { }
+
+		});
+
+		expand.setAnimationListener(new AnimationListener(){
+
+			@Override
+			public void onAnimationEnd(final Animation animation) { 	
+			}
+
+			@Override
+			public void onAnimationRepeat(final Animation animation) { }
+
+			@Override
+			public void onAnimationStart(final Animation animation) { 
+				changeVisibility(View.VISIBLE);
+			}
+
+		});
 
 		title.setOnClickListener(getImageOnClickListener());
 		image.setOnClickListener(getImageOnClickListener());
@@ -113,11 +157,11 @@ public class AccountActivityHeader extends RelativeLayout{
 			public void onClick(final View v){
 				if(availableBalance.getVisibility() == View.VISIBLE){
 					image.setBackgroundResource(R.drawable.drk_blue_arrow_down);
-					AccountActivityHeader.this.changeVisibility(View.GONE);
+					labels.startAnimation(collapse);
 					setHeaderExpanded(false);
 				}else{
 					image.setBackgroundResource(R.drawable.drk_blue_arrow_up);
-					AccountActivityHeader.this.changeVisibility(View.VISIBLE);
+					labels.startAnimation(expand);
 					setHeaderExpanded(true);
 				}
 			}
