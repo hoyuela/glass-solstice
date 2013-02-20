@@ -31,11 +31,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
+import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
 import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidAmountCharacterFilter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
@@ -104,7 +106,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	/** True when the amount had focus at some point */
 	private boolean amountHadFocus = false;
 	/** Id for currently selected account */
-	private String accountId;
+	private int accountId;
 	/** List position for current Account */
 	private int accountIndex;
 	/** Earliest payment date */
@@ -293,13 +295,13 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private String defaultPaymentAccount() {
 		for (Account a : bankUser.getAccounts().accounts) {
 			if (a.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {
-				accountId = a.id;
+				accountId = Integer.valueOf(a.id);
 				return a.nickname;
 			}
 		}
 		for (Account a : bankUser.getAccounts().accounts) {
 			if (a.type.equalsIgnoreCase(Account.ACCOUNT_MMA)) {
-				accountId = a.id;
+				accountId = Integer.valueOf(a.id);
 				return a.nickname;
 			}
 		}
@@ -692,7 +694,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 							final View v, final int position, final long id) {
 						final Account a = (Account) paymentAccountSpinner
 								.getSelectedItem();
-						accountId = a.id;
+						accountId = Integer.valueOf(a.id);
 						accountIndex = position;
 						paymentAccountText.setText(a.nickname);
 					}
@@ -741,12 +743,29 @@ public class SchedulePaymentFragment extends BaseFragment {
 			public void onClick(View arg0) {
 				// TODO Schedule a payment dude
 				/*
+				 * 0. Validate we can send it.
 				 * 1. Send payment 
 				 * 2. Get response 
 				 * 3. Handle Errors if necessary
 				 * 4. Go to confirmation fragment
 				 */
-				setDateError(Math.random() > 0.5);
+//				setDateError(Math.random() > 0.5);
+				
+				String memo = memoText.getText().toString();
+				final CreatePaymentDetail payment = new CreatePaymentDetail();
+				payment.payee = payee.id;
+				// TODO Commons way to send currency amount as Integer; and back.
+				payment.amount = 2344;
+				payment.paymentMethod = accountId;
+				// TODO Commons way to format a date in their way; and back.
+				payment.deliverBy = "2013-03-28T00:00:00Z";
+				if(!memo.equals("")) {
+					payment.memo = memo;
+				}
+				
+				// TODO is this correct?
+				BankServiceCallFactory.createMakePaymentCall(payment).submit();
+				
 			}
 		});
 	}
