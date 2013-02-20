@@ -1,13 +1,14 @@
 package com.discover.mobile.bank.account;
 
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -41,9 +42,6 @@ public class AccountActivityHeader extends RelativeLayout{
 	/**Title of the header*/
 	private final TextView title;
 
-	/**Image next to the title*/
-	private final ImageView image;
-
 	/**Posted activity toggle button*/
 	private final ToggleButton postedButton;
 
@@ -71,6 +69,9 @@ public class AccountActivityHeader extends RelativeLayout{
 	/**Expand animation*/
 	private final Animation expand;
 
+	/**Current Account*/
+	private final Account account;
+
 	/**
 	 * Constructor of the class
 	 * @param context - activity context
@@ -83,7 +84,6 @@ public class AccountActivityHeader extends RelativeLayout{
 		checking = (TextView)view.findViewById(R.id.value1);
 		availableBalance = (TextView)view.findViewById(R.id.value2);
 		currentBalance = (TextView)view.findViewById(R.id.value3);
-		image = (ImageView)view.findViewById(R.id.title_image);
 		title = (TextView) view.findViewById(R.id.title_text);
 		postedButton = (ToggleButton) view.findViewById(R.id.posted_button);
 		scheduledButton = (ToggleButton) view.findViewById(R.id.scheduled_button);
@@ -129,9 +129,9 @@ public class AccountActivityHeader extends RelativeLayout{
 		});
 
 		title.setOnClickListener(getImageOnClickListener());
-		image.setOnClickListener(getImageOnClickListener());
-		addAccount(BankUser.instance().getCurrentAccount());
+		account = BankUser.instance().getCurrentAccount();
 
+		addAccount();
 		setHeaderExpanded(isHeaderExpanded);
 		setSelectedCategory(isPosted);
 		addView(view);
@@ -141,12 +141,23 @@ public class AccountActivityHeader extends RelativeLayout{
 	 * Add the account and display it 
 	 * @param account - account to add
 	 */
-	public void addAccount(final Account account){
+	public void addAccount(){
 		if(null == account){return;}
 		title.setText(account.nickname);
 		checking.setText(account.accountNumber.formatted);
 		availableBalance.setText(account.balance.formatted);
 		currentBalance.setText(account.balance.formatted);
+		setSpan(R.drawable.drk_blue_arrow_down);
+	}
+
+	/**
+	 * Set the image span
+	 */
+	private void setSpan(final int res){
+		final ImageSpan imagespan = new ImageSpan(this.getContext(), res, ImageSpan.ALIGN_BASELINE); 
+		final SpannableString text = new SpannableString(account.nickname + "  ");
+		text.setSpan(imagespan, text.length()-1, text.length(), SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
+		title.setText(text);
 	}
 
 	/**
@@ -158,11 +169,11 @@ public class AccountActivityHeader extends RelativeLayout{
 			@Override
 			public void onClick(final View v){
 				if(availableBalance.getVisibility() == View.VISIBLE){
-					image.setBackgroundResource(R.drawable.drk_blue_arrow_down);
+					setSpan(R.drawable.drk_blue_arrow_down);
 					labels.startAnimation(collapse);
 					setHeaderExpanded(false);
 				}else{
-					image.setBackgroundResource(R.drawable.drk_blue_arrow_up);
+					setSpan(R.drawable.drk_blue_arrow_up);
 					labels.startAnimation(expand);
 					setHeaderExpanded(true);
 				}
@@ -254,10 +265,10 @@ public class AccountActivityHeader extends RelativeLayout{
 		this.isHeaderExpanded = isHeaderExpanded;
 		if(isHeaderExpanded){
 			AccountActivityHeader.this.changeVisibility(View.VISIBLE);
-			image.setBackgroundResource(R.drawable.drk_blue_arrow_down);
+			setSpan(R.drawable.drk_blue_arrow_up);
 		}else{
 			AccountActivityHeader.this.changeVisibility(View.GONE);
-			image.setBackgroundResource(R.drawable.drk_blue_arrow_up);
+			setSpan(R.drawable.drk_blue_arrow_down);
 		}
 	}
 

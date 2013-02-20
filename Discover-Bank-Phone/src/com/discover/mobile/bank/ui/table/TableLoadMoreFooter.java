@@ -76,7 +76,7 @@ public class TableLoadMoreFooter extends RelativeLayout{
 		load.setVisibility(View.GONE);
 		load.clearAnimation();
 		go.setVisibility(View.GONE);
-		empty.setVisibility(View.GONE);
+		empty.setVisibility(View.VISIBLE);
 		line.setVisibility(View.GONE);
 		empty.setText(message);
 	}

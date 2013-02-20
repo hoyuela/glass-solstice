@@ -9,6 +9,7 @@ import android.widget.ToggleButton;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.table.TableTitles;
+import com.discover.mobile.bank.ui.widgets.StatusMessageView;
 
 /**
  * Header for the review payments list.  This contains the controls for the buttons.
@@ -26,6 +27,9 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	/**Int value the represents at the list is showing canceled payments*/
 	public static final int CANCELED_PAYMENTS = 2;
 
+	/**Duration the message to show*/
+	public static final int DURATION = 5000;
+
 	/**Scheduled toggle button*/
 	private final ToggleButton scheduled;
 
@@ -41,6 +45,9 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	/**Current category being displayed*/
 	private int currentCategory;
 
+	/**Status message*/
+	private final StatusMessageView status;
+
 	/**
 	 * Constructor for the layout
 	 * @param context - activity context
@@ -54,6 +61,7 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 		completed = (ToggleButton) view.findViewById(R.id.toggle_middle);
 		canceled  = (ToggleButton) view.findViewById(R.id.toggle_right);
 		titles = (TableTitles) view.findViewById(R.id.table_titles);
+		status = (StatusMessageView) view.findViewById(R.id.status);
 
 		titles.setLabel1(this.getResources().getString(R.string.review_payments_filter_one));
 		titles.setLabel2(this.getResources().getString(R.string.review_payments_filter_two));
@@ -95,6 +103,14 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 		scheduled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_off));
 		completed.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_mid_off));
 		canceled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_on));
+	}
+
+	/**
+	 * Show the status message
+	 */
+	public void showStatusMessage(){
+		status.setText(R.string.review_payments_scheduled_deleted);
+		status.showAndHide(DURATION);
 	}
 
 	/**

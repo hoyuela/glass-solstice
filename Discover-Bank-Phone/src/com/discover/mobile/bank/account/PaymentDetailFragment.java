@@ -11,7 +11,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.DetailFragment;
 
-public class PaymentDetailFragment extends DetailFragment implements OnClickListener {
+public class PaymentDetailFragment extends DetailFragment{
 	private PaymentDetail item;
 	/**
 	 * Reference to button used to delete a scheduled payment
@@ -43,22 +43,18 @@ public class PaymentDetailFragment extends DetailFragment implements OnClickList
 	@Override
 	protected void customSetup(final View mainView) {
 		//If the payment is not a scheduled payment, hide the delete and edit button.
+		deleteButton = (Button)mainView.findViewById(R.id.delete_payment_button);
 		if(!"SCHEDULED".equals(item.status)){
-			((Button)mainView.findViewById(R.id.delete_payment_button)).setVisibility(View.GONE);
+			deleteButton.setVisibility(View.GONE);
 			((Button)mainView.findViewById(R.id.edit_payment_button)).setVisibility(View.GONE);
+		}else{
+			deleteButton.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(final View v) {
+					BankNavigator.navigateToDeleteConfirmation(item);
+				}
+			});
 		}
 	}
-
-	/**
-	 * Method used to handle on click events generated form views within this fragment.
-	 */
-	@Override
-	public void onClick(final View sender) {
-		//Verify delete button generated the click event
-		if( sender == deleteButton ) {
-			//Display a modal to confirm user action
-			BankNavigator.navigateToDeleteConfirmation(item);
-		}	
-	}
-
 }

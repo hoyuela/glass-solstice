@@ -295,4 +295,14 @@ public class BankAccountActivityTable extends BaseTable{
 			scheduled.activities = new ArrayList<ActivityDetail>();
 		}
 	}
+
+	/**
+	 * Show the empty message in the footer
+	 * @return 
+	 */
+	@Override
+	public void showFooterMessage() {
+		footer.showEmpty(getEmptyStringText());
+
+	}
 }
