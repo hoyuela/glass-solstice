@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
     <!-- Section titles -->
     <string name="pay_a_bill_title">Pay a Bill</string>
        
@@ -36,10 +35,8 @@
 	<string name="manage_payees">Manage Payees</string>
 	<string name="payee">Payee</string>
 	<string name="manage_payees_welcome">Welcome to Manage Payees</string>
-</resources>
-
 	
-	    <!-- Schedule Payments -->
+	<!-- Schedule Payments -->
  	<string name="schedule_pay_payee">Payee</string>
  	<string name="schedule_pay_from">Pay From</string>
  	<string name="schedule_pay_amount">Amount</string>
