@@ -28,7 +28,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  * @author scottseward
  *
  */
-public abstract class DetailViewPager extends BaseFragment {
+public abstract class DetailViewPager extends BaseFragment implements FragmentOnBackPressed{
 	private final String TAG = DetailViewPager.class.getSimpleName();
 		
 	/** The View Pager*/
@@ -117,6 +117,14 @@ public abstract class DetailViewPager extends BaseFragment {
 	 */
 	public ViewPager getViewPager() {
 		return viewPager;
+	}
+	
+	/**
+	 * If back is pressed we need to make sure that the sliding drawer is unlocked.
+	 */
+	@Override
+	public void onBackPressed() {
+		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 	
 	/**

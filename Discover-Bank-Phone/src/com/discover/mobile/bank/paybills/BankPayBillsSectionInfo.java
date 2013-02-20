@@ -31,9 +31,8 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 	public BankPayBillsSectionInfo() {
 		super(R.string.section_title_pay_bills,
 				new ClickComponentInfo(R.string.section_title_pay_bills, getPayBillsLandingClickListener()),
-				new ClickComponentInfo(R.string.sub_section_title_review_payments, getReviewPaymentsClickListener()),
-				new FragmentComponentInfo(R.string.sub_section_title_manage_payees,
-						BankAccountSummaryFragment.class));
+				new FragmentComponentInfo(R.string.sub_section_title_review_payments, BankAccountSummaryFragment.class),
+				new ClickComponentInfo(R.string.sub_section_title_manage_payees, getManagePayeesClickListener()));
 	}
 
 	/**
@@ -56,6 +55,30 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 					BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 				}
 			}
+		};
+	}
+	
+	/**
+	 * Click listener for the manage payees screen. The app will send the user to the appropriate section of the
+	 * application bsed on their eligibility and enrollment status for paybills.
+	 * @return the click listener for the manage payees title.
+	 */
+	public static OnClickListener getManagePayeesClickListener() {
+		return new OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				final boolean isEligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
+				final boolean isEnrolled = BankUser.instance().getCustomerInfo().getPaymentsEnrolled();
+				
+				if(!isEligible)
+					BankNavigator.navigateToPayBillsLanding();
+				else if (isEligible && !isEnrolled)
+					BankNavigator.navigateToPayBillsTerms(null);
+				if(isEligible && isEnrolled)
+					BankServiceCallFactory.createManagePayeeServiceRequest().submit();
+			}
+			
 		};
 	}
 

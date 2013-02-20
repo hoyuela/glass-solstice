@@ -31,7 +31,7 @@ public class PaymentDetailFragment extends DetailFragment implements OnClickList
 	@Override
 	protected void loadListItemsTo(final LinearLayout contentTable) {
 		item = (PaymentDetail)getArguments().getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-
+		
 		loadListElementsToLayoutFromList(contentTable, generator.getScheduledPaymentDetailList(item));
 	}
 

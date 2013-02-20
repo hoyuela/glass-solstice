@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,6 +39,8 @@ public class BankSelectPayee extends BaseFragment{
 
 	/**Text view holding the empty list message*/
 	private TextView empty;
+	
+	private View view;
 
 	/**
 	 * Create the view
@@ -49,7 +52,7 @@ public class BankSelectPayee extends BaseFragment{
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 
-		final View view = inflater.inflate(R.layout.select_payee, null);
+		view = inflater.inflate(R.layout.select_payee, null);
 
 		payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
 		empty = (TextView)view.findViewById(R.id.no_payees);
@@ -59,9 +62,15 @@ public class BankSelectPayee extends BaseFragment{
 		} else{
 			loadListFromBundle(savedInstanceState);
 		}
-
+		setupAddNewPayeeButton(view);
+		customSetup();
 		return view;
 	}
+	
+	/**
+	 * Optional Override in subclass
+	 */
+	protected void customSetup(){}
 
 	/**
 	 * Save the state of the current fragment
@@ -104,7 +113,7 @@ public class BankSelectPayee extends BaseFragment{
 	 * @param detail - detail that needs to be passed
 	 * @return the click listener for when a list item it clicked
 	 */
-	private OnClickListener getOnClickListener(final PayeeDetail details) {
+	protected OnClickListener getOnClickListener(final PayeeDetail details) {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
@@ -114,6 +123,20 @@ public class BankSelectPayee extends BaseFragment{
 			}
 		};
 	}
+	
+	/**
+	 * Setup the add new payee button to navigate to the add new payee flow when clicked
+	 */
+	private void setupAddNewPayeeButton(final View view) {
+		final Button addPayee = (Button)view.findViewById(R.id.add_payee);
+		addPayee.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				BankNavigator.navigateToAddPayee();
+			}
+		});
+	}
 
 	/**
 	 * Set the title in the action bar.
@@ -122,4 +145,34 @@ public class BankSelectPayee extends BaseFragment{
 	public int getActionBarTitle() {
 		return R.string.pay_a_bill_title;
 	}
+
+	/**
+	 * @return the payees
+	 */
+	public ListPayeeDetail getPayees() {
+		return payees;
+	}
+
+	/**
+	 * @return the payeesList
+	 */
+	public LinearLayout getPayeesList() {
+		return payeesList;
+	}
+
+	/**
+	 * @return the empty
+	 */
+	public TextView getEmpty() {
+		return empty;
+	}
+
+	/**
+	 * @return the view
+	 */
+	@Override
+	public View getView() {
+		return view;
+	}
+
 }

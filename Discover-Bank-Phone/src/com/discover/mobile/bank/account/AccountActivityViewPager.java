@@ -21,6 +21,7 @@ import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
  * @author scottseward
  */
 public class AccountActivityViewPager extends DetailViewPager implements DynamicDataFragment, FragmentOnBackPressed{
+	//The list that is used to display detail Activity information.
 	private ListActivityDetail activityItems = null;
 	private int initialViewPosition = 0;
 
@@ -129,6 +130,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	 */
 	@Override
 	public void onBackPressed() {
+		super.onBackPressed();
 		BankRotationHelper.getHelper().setBundle(getCurrentFragmentBundle());
 	}
 
@@ -143,22 +145,36 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 
 	}
 
+	/**
+	 * Return the title for the current fragment.
+	 * These fragments do not need to change their title.
+	 */
 	@Override
 	protected int getTitleForFragment(final int position) {
 		return R.string.transaction;
 	}
 
+	/**
+	 * Submit the load more service call to load more data.
+	 */
 	@Override
 	protected void loadMore() {
 		BankServiceCallFactory.createGetActivityServerCall("/api/accounts/1/activity?status=posted").submit();		
 	}
 
+	/**
+	 * Returns if the current use is the primary account holder.
+	 */
 	@Override
 	protected boolean isUserPrimaryHolder() {
 		// FIXME Need to know how to map object details to this value.
 		return true;
 	}
 
+	/**
+	 * Returns if the current fragment can be edited through user action, such as an 
+	 * edit or delete button.
+	 */
 	@Override
 	protected boolean isFragmentEditable(final int position) {
 		return false;

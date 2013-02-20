@@ -17,6 +17,7 @@ import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
+import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
@@ -110,7 +111,8 @@ public class BankServiceCallFactory {
 	 * Create the service call to get the payees for a user
 	 * @return the service call to get the payees for a user
 	 */
-	public static GetPayeeServiceCall createGetPayeeServiceRequest(){
+	public static GetPayeeServiceCall createGetPayeeServiceRequest() {
+
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<ListPayeeDetail>  callback =
@@ -119,6 +121,22 @@ public class BankServiceCallFactory {
 						.build();
 
 		return new GetPayeeServiceCall(activity, callback);
+	}
+	
+	/**
+	 * Create the service call to get the payees for a user
+	 * @return the service call to get the payees for a user
+	 */
+	public static ManagePayeeServiceCall createManagePayeeServiceRequest() {
+
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<ListPayeeDetail>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(ListPayeeDetail.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new ManagePayeeServiceCall(activity, callback);
 	}
 
 	/**

@@ -77,6 +77,14 @@ public class PayeeDetail implements Serializable{
 	/**Payee phone number*/
 	@JsonProperty("phone")
 	public PhoneNumber phone;
+	
+	/**Payee address for Unmanaged payees*/
+	@JsonProperty("address")
+	public Address address;
+	
+	/**Payee memo, for Unmanaged payees*/
+	@JsonProperty("memo")
+	public String memo;
 
 	/**
 	 * Contains Bank web-service API Resource links
