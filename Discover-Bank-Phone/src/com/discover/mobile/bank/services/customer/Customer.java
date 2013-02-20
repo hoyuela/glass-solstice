@@ -147,7 +147,8 @@ public class Customer implements Serializable {
 	 * The customer's eligibility and enrollment and various products.
 	 */
 	@JsonProperty("eligibility")
-	public Map<String, Eligibility> eligibilities;
+	public List<Eligibility> eligibilities;
+//	public Map<String, Eligibility> eligibilities;
 
 	/**
 	 * 
@@ -187,7 +188,7 @@ public class Customer implements Serializable {
 	 * and eligibility status for transfers
 	 */
 	public Eligibility getTransfersEligibility() {
-		return ( this.eligibilities != null )? this.eligibilities.get("transfers") : null;
+		return ( this.eligibilities != null )? getEligibilityValues("transfers") : null;
 	}
 
 	/**
@@ -195,7 +196,7 @@ public class Customer implements Serializable {
 	 * @return Returns boolean that specifies a Customer's eligibility status for Payments
 	 */
 	public boolean getPaymentsEligibility() {
-		return ( this.eligibilities != null )? this.eligibilities.get("payments").isEligible() : false;
+		return ( this.eligibilities != null )? getEligibilityValues("payments").isEligible() : false;
 	}
 
 	/**
@@ -203,7 +204,7 @@ public class Customer implements Serializable {
 	 * @return Returns boolean object that specifies a Customer's enrollment status for Payments
 	 */
 	public boolean getPaymentsEnrolled() {
-		return ( this.eligibilities != null )? this.eligibilities.get("payments").isEnrolled() : false;
+		return ( this.eligibilities != null )? getEligibilityValues("payments").isEnrolled() : false;
 	}
 
 	/**
@@ -212,6 +213,22 @@ public class Customer implements Serializable {
 	 * enrollment and eligibility status for Transfers
 	 */
 	public Eligibility getDepositsEligibility() {
-		return ( this.eligibilities != null )? this.eligibilities.get("deposits") : null;
+		return ( this.eligibilities != null )? getEligibilityValues("deposits") : null;
+	}
+	
+	/**
+	 * Returns the eligibility object for the given key
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public Eligibility getEligibilityValues(String key){
+		for (int i = 0; i < eligibilities.size(); i++) {
+		    String serviceName = eligibilities.get(i).service;
+		    if (serviceName != null && serviceName.equals(key)){
+		        return eligibilities.get(i);
+		    }
+		}
+		return null;
 	}
 }
