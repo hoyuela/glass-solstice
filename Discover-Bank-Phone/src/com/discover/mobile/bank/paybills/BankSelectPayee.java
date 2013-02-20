@@ -152,7 +152,7 @@ public class BankSelectPayee extends BaseFragment{
 
 			@Override
 			public void onClick(final View v) {
-				BankNavigator.navigateToAddPayee();
+				//BankNavigator.navigateToAddPayee();
 			}
 		});
 	}

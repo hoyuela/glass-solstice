@@ -22,12 +22,11 @@ import com.discover.mobile.bank.paybills.BankPayeeNotEligibleFragment;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.paybills.ReviewPaymentsTable;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
-import com.discover.mobile.bank.payees.BankManagePayee;
-import com.discover.mobile.bank.payees.EnterPayeeFragment;
-import com.discover.mobile.bank.payees.PayeeDetailViewPager;
 import com.discover.mobile.bank.payees.BankAddPayeeFragment;
 import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
+import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.BankSearchSelectPayeeFragment;
+import com.discover.mobile.bank.payees.PayeeDetailViewPager;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
@@ -400,21 +399,32 @@ public final class BankNavigator {
 	}
 
 	/**
-	 * Navigation method used to display the Add Payee Step 1. Instantiates an EnterPayeeFragment and makes it visible to user
-	 * via the NavigationRootActivity.
+	 * Navigation method used to display the Add Payee a Step in the Add Payee Work-Flow. Instantiates an EnterPayeeFragment and makes it visible to user
+	 * via the NavigationRootActivity. This method should only be called if the application is in the BankNavigationRootActivity.
+	 * 
+	 * @param step - Class type of a fragment that is to be displayed. Can be BankEnterPaymentFragment or BankSearchSelectPaymentFragment
+	 * @param bundle - Contains the arguments that is to be provided to the fragment that will be displayed
 	 */
 	public static void navigateToAddPayee(final Class<?>  step, final Bundle bundle) {
 		BaseFragment fragment = null;
 		
 		if( step == BankEnterPayeeFragment.class ) {
 			fragment = new BankEnterPayeeFragment();	
-		} else if( step == BankSearchSelectPayeeFragment.class ) {
+		} else if( step == BankAddPayeeFragment.class ) {
 			fragment = new BankAddPayeeFragment();
 			fragment.setArguments(bundle);
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Invalid Class Type provided");
+			}
 		}
 		
-		if( fragment != null  ) {
+		if( fragment != null  && DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity ) {
 			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);		
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Appication is currently not in the right activity");
+			}
 		}
 	}
 
@@ -491,7 +501,7 @@ public final class BankNavigator {
 				//Provide the text used for running a search
 				bundle.putSerializable(BankSearchSelectPayeeFragment.SEARCH_ITEM, searchCall.getSearchText());
 				//Provide list of results sent from the server
-				bundle.putSerializable(BankExtraKeys.DATA_LIST, search);
+				bundle.putSerializable(BankExtraKeys.PAYEES_LIST, search);
 				fragment.setArguments(bundle);
 				
 				activity.makeFragmentVisible(fragment);

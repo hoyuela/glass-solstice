@@ -91,7 +91,7 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		/**Linear Layout which holds the results for the Payees Search**/
 		this.payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
 		
-		/**TextView whose text will dynamically be changed depending on whether you have search results or not
+		/**TextView whose text will dynamically be changed depending on whether you have search results or not*/
 		this.matches = (TextView)view.findViewById(R.id.matches);
 		
 		/**TextView which shows the user what the search criteria was used to generate the list of Payees*/
@@ -128,7 +128,7 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 * @param bundle - bundle containing the data to be displayed.
 	 */
 	public void loadListFromBundle(final Bundle bundle){
-		this.search = (SearchPayeeResultList)bundle.getSerializable(BankExtraKeys.DATA_LIST);
+		this.search = (SearchPayeeResultList)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
 		if(null == this.search || null == this.search.results || this.search.results.isEmpty()) {
 			this.matches.setText(R.string.bank_no_matches_for);
 			this.payeesList.setVisibility(View.GONE);
@@ -182,7 +182,8 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 			
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
-			BankNavigator.navigateToAddPayee(BankAddPayeeFragment.class, bundle);
+			//THIS HAS NOT BEEN COMPLETED
+			//BankNavigator.navigateToAddPayee(BankAddPayeeFragment.class, bundle);
 		} 
 		
 	}

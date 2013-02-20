@@ -23,7 +23,6 @@ import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
-import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
