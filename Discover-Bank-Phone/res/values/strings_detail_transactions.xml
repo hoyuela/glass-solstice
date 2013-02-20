@@ -34,4 +34,12 @@
         This payment has been scheduled by %1$s. It can only be edited/deleted by %1$s.
     </string>
     
+    <string name="payee_name">Payee Name</string>
+    <string name="nickname">Nickname</string>
+    <string name="account_number">Account #</string>
+    <string name="phone_number">Phone #</string>
+    <string name="address">Address</string>
+    <string name="payee_details">Payee Details</string>
+    <string name="payee_memo">Account #/Memo (Optional)</string>
+    
 </resources>

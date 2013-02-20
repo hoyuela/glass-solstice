@@ -5,6 +5,7 @@ import android.widget.LinearLayout;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
+import com.discover.mobile.bank.ui.fragments.DetailFragment;
 
 public class ActivityDetailFragment extends DetailFragment {
 	

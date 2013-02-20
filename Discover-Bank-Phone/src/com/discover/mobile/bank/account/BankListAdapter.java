@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
+import com.discover.mobile.bank.util.BankStringFormatter;
 
 /**
  * Adapter used to display data on the account activity table

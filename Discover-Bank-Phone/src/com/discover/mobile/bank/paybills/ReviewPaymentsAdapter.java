@@ -15,9 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.account.BankStringFormatter;
 import com.discover.mobile.bank.services.payment.PaymentDateDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.util.BankStringFormatter;
 
 public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 

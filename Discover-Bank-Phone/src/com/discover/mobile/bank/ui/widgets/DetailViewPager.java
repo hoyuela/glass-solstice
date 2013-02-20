@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.account;
+package com.discover.mobile.bank.ui.widgets;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -28,7 +29,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  * @author scottseward
  *
  */
-public abstract class DetailViewPager extends BaseFragment {
+public abstract class DetailViewPager extends BaseFragment implements FragmentOnBackPressed{
 	private final String TAG = DetailViewPager.class.getSimpleName();
 		
 	/** The View Pager*/
@@ -117,6 +118,14 @@ public abstract class DetailViewPager extends BaseFragment {
 	 */
 	public ViewPager getViewPager() {
 		return viewPager;
+	}
+	
+	/**
+	 * If back is pressed we need to make sure that the sliding drawer is unlocked.
+	 */
+	@Override
+	public void onBackPressed() {
+		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 	
 	/**

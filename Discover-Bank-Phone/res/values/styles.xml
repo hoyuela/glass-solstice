@@ -4,7 +4,6 @@
         <item name="android:background">@drawable/splash_screen</item>
     </style>
     
-    
     <style name="WhiteThemeFooter">
         <item name="android:textColor">@color/blue</item>
     </style>
@@ -14,7 +13,6 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
-    
     <style name="login_bottom_bar_button">
         <item name="android:padding">@dimen/content_padding</item>
         <item name="android:textSize">@dimen/small_copy_min</item>
@@ -23,14 +21,6 @@
         <item name="android:height">@dimen/login_bottom_button_height</item>
     </style>
 
-    
-
-   
-    
-   
-
-   
-    
     <style name="simple_white_button">
         <item name="android:textColor">@color/sub_copy</item>
         <item name="android:textSize">@dimen/body_copy_min</item>
@@ -48,14 +38,6 @@
         <item name="android:orientation">vertical</item>
         <item name="android:background">@drawable/rounded_table_corners_no_padding</item>
     </style>
-    
-    
-    
-    
-    
-    
-    
-
     
     <style name="login_white_pane">
         <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>

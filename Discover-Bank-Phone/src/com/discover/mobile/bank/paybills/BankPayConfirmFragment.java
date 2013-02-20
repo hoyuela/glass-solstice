@@ -11,11 +11,11 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
-import com.discover.mobile.bank.account.ListItemGenerator;
-import com.discover.mobile.bank.account.ViewPagerListItem;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
+import com.discover.mobile.bank.ui.table.ListItemGenerator;
+import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.DiscoverActivityManager;
 
 /**

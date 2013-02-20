@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.account;
+package com.discover.mobile.bank.ui.table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,10 @@ import android.view.View;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
+import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payment.PaymentDateDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.util.BankStringFormatter;
 
 /**
  * this detail item class is able to return the individual table cells to present
@@ -132,7 +134,55 @@ public class ListItemGenerator {
 	public ViewPagerListItem getConfirmationCell(final String confirmationNumber) {
 		return getTwoItemCell(R.string.confirmation_number, confirmationNumber);
 	}
+	
+	public ViewPagerListItem getPayeeNameCell(final String payeeName) {
+		return getTwoItemCell(R.string.payee_name, payeeName);
+	}
+	
+	public ViewPagerListItem getPayeeNicknameCell(final String nickname) {
+		return getTwoItemCell(R.string.nickname, nickname);
+	}
+	
+	public ViewPagerListItem getAccountNumberCell(final String formattedAccountNumber) {
+		return getTwoItemCell(R.string.account_number, formattedAccountNumber);
+	}
+	
+	public ViewPagerListItem getPhoneNumberCell(final String phoneNumber) {
+		return getTwoItemCell(R.string.phone_number, badPhoneNumberFormatter(unformatPhoneNumber(phoneNumber)));
+	}
 
+// TEMP this may (and should) be replaced with the server formatting the phone numbers.
+	private String badPhoneNumberFormatter(final String phoneNumber) {
+		if(phoneNumber == null)
+			return "";
+		else if (phoneNumber.length() < 5)
+			return phoneNumber;
+		else
+			return phoneNumber.subSequence(0, 3) + "-" + badPhoneNumberFormatter(phoneNumber.substring(3));
+	}
+	
+// TEMP should not be necessary if we get a formatted phone number from the server.
+	private String unformatPhoneNumber(final String phoneNumber){
+		//removes all characters that are not a number from a String.
+		return phoneNumber.replaceAll("[^0-9]", "");
+	}
+	
+	public ViewPagerListItem getAddressCell(final String address){
+		return (address == null) ? getTwoItemCell(R.string.address, "") : getTwoItemCell(R.string.address, address);
+	}
+	
+	public ViewPagerListItem getUnmanagedPayeeMemoCell(final String memo) {
+		final ViewPagerListItem payeeMemo = getMemoItemCell(memo);
+		payeeMemo.getTopLabel().setText(R.string.payee_memo);
+		
+		return payeeMemo;
+	}
+	
+	/**
+	 * Returns a list of ViewPagerListItems for a given Transaction from an ActivityDetail object.
+	 * @param item an ActivityDetail object.
+	 * @return a list of ViewPagerListItems for a given Transaction from an ActivityDetail object.
+	 */
 	public List<ViewPagerListItem> getDetailTransactionList(final ActivityDetail item){
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
 
@@ -165,7 +215,37 @@ public class ListItemGenerator {
 
 		return items;
 	}
+	
+	/**
+	 * Get a payee detail list from a PayeeDetail object. Returns a list that is based on if the Payee
+	 * is verified or not.
+	 * @param item a PayeeDetail object.
+	 * @return an appropritate list for a PayeeDetail object.
+	 */
+	public List<ViewPagerListItem> getPayeeDetailList(final PayeeDetail item) {
+		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
+		//verified payees have different content to show.
+		items.add(getPayeeNameCell(item.name));
+		items.get(0).getDividerLine().setVisibility(View.GONE);
+		items.add(getPayeeNicknameCell(item.nickName));
 
+		if(item.verified){
+			items.add(getAccountNumberCell(item.account.formatted));
+		}else{
+			items.add(getPhoneNumberCell(item.phone.number));
+			items.add(getAddressCell(item.address.formattedAddress));
+			items.add(getUnmanagedPayeeMemoCell(item.memo));	
+		}
+		
+		return items;
+	}
+	
+	/**
+	 * Returns a payment date cell based on a PaymentDetail object. It returns a date based on the kind of
+	 * payment that was passed to it, like SCHEDULED, COMPLETED, or CANCELLED.
+	 * @param item
+	 * @return a ViewPagerListItem that contains a formatted date.
+	 */
 	public ViewPagerListItem getPaymentDateCell(final PaymentDetail item) {
 		final PaymentDateDetail dates;
 		final String itemStatus = item.status;

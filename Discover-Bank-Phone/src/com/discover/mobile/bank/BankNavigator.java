@@ -22,7 +22,9 @@ import com.discover.mobile.bank.paybills.BankPayeeNotEligibleFragment;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.paybills.ReviewPaymentsTable;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
+import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.EnterPayeeFragment;
+import com.discover.mobile.bank.payees.PayeeDetailViewPager;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
@@ -140,6 +142,7 @@ public final class BankNavigator {
 		final BankPayeeNotEligibleFragment fragment = new BankPayeeNotEligibleFragment();
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
+	
 	/**
 	 * Navigates the application to the Open Accounts Page, which is displayed when a Bank user does not have any accounts.
 	 * 
@@ -226,6 +229,16 @@ public final class BankNavigator {
 		fragment.setArguments(bundle);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
+	
+	/**
+	 * Navigate to the view pager that will display payee details.
+	 * @param bundle - bundle to pass info to the view pager.
+	 */
+	public static void navigateToPayeeDetailScreen(final Bundle bundle){
+		final PayeeDetailViewPager fragment = new PayeeDetailViewPager();
+		fragment.setArguments(bundle);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
 
 	/**
 	 * Navigate to the activity detail table screen
@@ -243,7 +256,36 @@ public final class BankNavigator {
 			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 		}
 	}
-
+	
+	/**
+	 * Navigate to the manage payee Fragment with a bundle of extras to display.
+	 * @param extras
+	 * @param isGoingBack
+	 */
+	public static void navigateToManagePayee(final Bundle extras, final boolean isGoingBack){
+		final BankNavigationRootActivity activity =
+				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
+		
+		((AlertDialogParent)activity).closeDialog();
+		if(activity.isDynamicDataFragment() && !isGoingBack){
+			activity.addDataToDynamicDataFragment(extras);
+		}else{
+		final BankManagePayee fragment = new BankManagePayee();
+			fragment.setArguments(extras);
+			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+		
+		}
+	}
+	
+	/**
+	 * A convenience method for navigateToManagePayee(Bundle, boolean). Passes false as the default parameter
+	 * to the boolean value for isGoingBack.
+	 * @param extras a Bundle of extras to display in the manage payee Fragment.
+	 */
+	public static void navigateToManagePayee(final Bundle extras){
+		navigateToManagePayee(extras, false);
+	}
+	
 	/**
 	 * Calls the NavigateToAcountActivityPage with false as the default parameter for isGoingBack.
 	 * So that we could add support for going back to the method without breaking the calls that are already in use

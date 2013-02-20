@@ -17,6 +17,7 @@ import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
+import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.common.AccountType;
@@ -218,6 +219,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
 		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isPostCall() ) {
 			prevCall.retransmit(activeActivity);
+		}
+		//Handle the manage payee service call (which is a get payee service call).
+		else if( sender instanceof ManagePayeeServiceCall) {
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
+			BankNavigator.navigateToManagePayee(bundle);
 		}
 		//Handle the payee success call
 		else if( sender instanceof GetPayeeServiceCall){

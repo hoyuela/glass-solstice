@@ -9,6 +9,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.ui.fragments.DetailFragment;
 
 public class PaymentDetailFragment extends DetailFragment implements OnClickListener {
 	private PaymentDetail item;
@@ -31,7 +32,7 @@ public class PaymentDetailFragment extends DetailFragment implements OnClickList
 	@Override
 	protected void loadListItemsTo(final LinearLayout contentTable) {
 		item = (PaymentDetail)getArguments().getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-
+		
 		loadListElementsToLayoutFromList(contentTable, generator.getScheduledPaymentDetailList(item));
 	}
 
