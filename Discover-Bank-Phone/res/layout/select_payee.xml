@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:layout_marginBottom="@dimen/orange_button_margin_top"
-            android:layout_below="@+id/payee_list"
+            android:layout_below="@+id/add_payee"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:text="@string/feedback_text" />
