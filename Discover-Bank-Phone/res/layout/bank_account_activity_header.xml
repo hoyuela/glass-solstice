@@ -22,19 +22,8 @@
         android:layout_marginRight="@dimen/forms_inner_padding"
         android:layout_marginTop="@dimen/groups_of_elements_padding"
         android:layout_toLeftOf="@+id/help"
-        android:layout_toRightOf="@+id/title_image"
         android:gravity="left"
-        android:text="@string/activity_title" />
-
-    <ImageView
-        android:id="@+id/title_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/forms_inner_padding"
-        android:layout_marginTop="@dimen/large_margin"
-        android:background="@drawable/drk_blue_arrow_down" />
+        android:text="@string/activity_title"/>
 
     <RelativeLayout
         android:id="@+id/header_labels"
