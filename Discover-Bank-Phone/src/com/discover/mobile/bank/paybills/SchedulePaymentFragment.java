@@ -318,131 +318,6 @@ public class SchedulePaymentFragment extends BaseFragment {
 	}
 
 	/**
-	 * Initializes the views miscellaneous listeners.
-	 */
-	private void createItemListeners() {
-		// Listens for a focus change so that we can handle special view
-		// behavior
-		parentView.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (!v.equals(memoEdit)) {
-					flipMemoElements(false);
-				}
-				if (!v.equals(amountEdit) && amountHadFocus) {
-					validateAmountField();
-				}
-				return false;
-			}
-		});
-
-		memoItem.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				if (memoText.getVisibility() == View.VISIBLE) {
-					flipMemoElements(true);
-				}
-			}
-		});
-
-		memoEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (!hasFocus) {
-					flipMemoElements(false);
-				}
-			}
-		});
-
-		amountEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (!hasFocus && amountHadFocus) {
-					validateAmountField();
-				} else {
-					String stripCommas = amountEdit.getText().toString();
-					stripCommas = stripCommas.replaceAll(",", "");
-					amountEdit.setText(stripCommas);
-					amountHadFocus = true;
-				}
-			}
-		});
-
-		paymentAccountItem.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				paymentAccountSpinner.performClick();
-			}
-		});
-
-		paymentAccountSpinner
-				.setOnItemSelectedListener(new OnItemSelectedListener() {
-					@Override
-					public void onItemSelected(final AdapterView<?> parent,
-							final View v, final int position, final long id) {
-						final Account a = (Account) paymentAccountSpinner
-								.getSelectedItem();
-						accountId = a.id;
-						accountIndex = position;
-						paymentAccountText.setText(a.nickname);
-					}
-
-					@Override
-					public void onNothingSelected(AdapterView<?> arg0) {
-					}
-				});
-
-		calendarIcon.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				deliverByDatePicker.show();
-			}
-		});
-
-		dateEdit.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				deliverByDatePicker.show();
-			}
-		});
-
-		deliverByDatePicker = new CustomTitleDatePickerDialog(getActivity(),
-				new OnDateSetListener() {
-
-					@Override
-					public void onDateSet(final DatePicker v, final int year,
-							final int month, final int day) {
-						setChosenPaymentDate(year, month + 1, day);
-					}
-				}, earliestPaymentDate.get(Calendar.YEAR),
-				earliestPaymentDate.get(Calendar.MONTH),
-				earliestPaymentDate.get(Calendar.DAY_OF_MONTH),
-				getString(R.string.schedule_pay_date_picker_title));
-
-		cancelButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				setupCancelButton();
-			}
-		});
-
-		payNowButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				// TODO Schedule a payment dude
-				/*
-				 * 1. Send payment 
-				 * 2. Get response 
-				 * 3. Handle Errors if necessary
-				 * 4. Go to confirmation fragment
-				 */
-				setDateError(Math.random() > 0.5);
-			}
-		});
-	}
-
-	/**
 	 * Instantiates the Cancel Button's modal and the modal's button listeners.
 	 */
 	private void setupCancelButton() {
@@ -717,7 +592,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * 
 	 * @param year
 	 * @param month
-	 *            formatted 1-12, not 0 for January
+	 *            formatted 1-12 (i.e. not 0 for January)
 	 * @param day
 	 * @return formatted date
 	 */
@@ -749,5 +624,130 @@ public class SchedulePaymentFragment extends BaseFragment {
 		sb.append('/');
 		sb.append(year.toString()); // Year
 		return sb.toString();
+	}
+
+	/**
+	 * Initializes the view's miscellaneous listeners.
+	 */
+	private void createItemListeners() {
+		// Listens for a focus change so that we can handle special view
+		// behavior
+		parentView.setOnTouchListener(new OnTouchListener() {
+	
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (!v.equals(memoEdit)) {
+					flipMemoElements(false);
+				}
+				if (!v.equals(amountEdit) && amountHadFocus) {
+					validateAmountField();
+				}
+				return false;
+			}
+		});
+	
+		memoItem.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				if (memoText.getVisibility() == View.VISIBLE) {
+					flipMemoElements(true);
+				}
+			}
+		});
+	
+		memoEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) {
+					flipMemoElements(false);
+				}
+			}
+		});
+	
+		amountEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus && amountHadFocus) {
+					validateAmountField();
+				} else {
+					String stripCommas = amountEdit.getText().toString();
+					stripCommas = stripCommas.replaceAll(",", "");
+					amountEdit.setText(stripCommas);
+					amountHadFocus = true;
+				}
+			}
+		});
+	
+		paymentAccountItem.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				paymentAccountSpinner.performClick();
+			}
+		});
+	
+		paymentAccountSpinner
+				.setOnItemSelectedListener(new OnItemSelectedListener() {
+					@Override
+					public void onItemSelected(final AdapterView<?> parent,
+							final View v, final int position, final long id) {
+						final Account a = (Account) paymentAccountSpinner
+								.getSelectedItem();
+						accountId = a.id;
+						accountIndex = position;
+						paymentAccountText.setText(a.nickname);
+					}
+	
+					@Override
+					public void onNothingSelected(AdapterView<?> arg0) {
+					}
+				});
+	
+		calendarIcon.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				deliverByDatePicker.show();
+			}
+		});
+	
+		dateEdit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				deliverByDatePicker.show();
+			}
+		});
+	
+		deliverByDatePicker = new CustomTitleDatePickerDialog(getActivity(),
+				new OnDateSetListener() {
+	
+					@Override
+					public void onDateSet(final DatePicker v, final int year,
+							final int month, final int day) {
+						setChosenPaymentDate(year, month + 1, day);
+					}
+				}, earliestPaymentDate.get(Calendar.YEAR),
+				earliestPaymentDate.get(Calendar.MONTH),
+				earliestPaymentDate.get(Calendar.DAY_OF_MONTH),
+				getString(R.string.schedule_pay_date_picker_title));
+	
+		cancelButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setupCancelButton();
+			}
+		});
+	
+		payNowButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				// TODO Schedule a payment dude
+				/*
+				 * 1. Send payment 
+				 * 2. Get response 
+				 * 3. Handle Errors if necessary
+				 * 4. Go to confirmation fragment
+				 */
+				setDateError(Math.random() > 0.5);
+			}
+		});
 	}
 }
