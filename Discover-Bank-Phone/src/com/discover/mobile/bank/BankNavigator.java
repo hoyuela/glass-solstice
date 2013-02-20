@@ -329,8 +329,14 @@ public final class BankNavigator {
 		//for 5 seconds with icon above list to confirm to user deletion of payment. 
 		//I can do this via the bundle
 
+		//TODO: Fix this
+		//		final ReviewPaymentsTable fragment =  new ReviewPaymentsTable();
+		//		BankRotationHelper.getHelper().getBundle().putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
+		//		//fragment.setArguments();
+		//		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+
 		//Remove this line after integration
-		navigateToUnderDevelopment();
+		//navigateToUnderDevelopment();
 	}
 
 	/**

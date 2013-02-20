@@ -277,6 +277,11 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		}else{
 			this.updateAdapter(canceled.payments);
 		}
+		final boolean showStatus = bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE, false);
+		if(showStatus){
+			header.showStatusMessage();
+			bundle.putBoolean(BankExtraKeys.COMPLETED_LIST, false);
+		}
 
 	}
 
