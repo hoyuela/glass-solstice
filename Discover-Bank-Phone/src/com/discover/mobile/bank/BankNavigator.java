@@ -142,7 +142,7 @@ public final class BankNavigator {
 		final BankPayeeNotEligibleFragment fragment = new BankPayeeNotEligibleFragment();
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
-	
+
 	/**
 	 * Navigates the application to the Open Accounts Page, which is displayed when a Bank user does not have any accounts.
 	 * 
@@ -229,7 +229,7 @@ public final class BankNavigator {
 		fragment.setArguments(bundle);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
-	
+
 	/**
 	 * Navigate to the view pager that will display payee details.
 	 * @param bundle - bundle to pass info to the view pager.
@@ -256,7 +256,7 @@ public final class BankNavigator {
 			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 		}
 	}
-	
+
 	/**
 	 * Navigate to the manage payee Fragment with a bundle of extras to display.
 	 * @param extras
@@ -265,18 +265,18 @@ public final class BankNavigator {
 	public static void navigateToManagePayee(final Bundle extras, final boolean isGoingBack){
 		final BankNavigationRootActivity activity =
 				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
-		
+
 		((AlertDialogParent)activity).closeDialog();
 		if(activity.isDynamicDataFragment() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(extras);
 		}else{
-		final BankManagePayee fragment = new BankManagePayee();
+			final BankManagePayee fragment = new BankManagePayee();
 			fragment.setArguments(extras);
 			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
-		
+
 		}
 	}
-	
+
 	/**
 	 * A convenience method for navigateToManagePayee(Bundle, boolean). Passes false as the default parameter
 	 * to the boolean value for isGoingBack.
@@ -285,7 +285,7 @@ public final class BankNavigator {
 	public static void navigateToManagePayee(final Bundle extras){
 		navigateToManagePayee(extras, false);
 	}
-	
+
 	/**
 	 * Calls the NavigateToAcountActivityPage with false as the default parameter for isGoingBack.
 	 * So that we could add support for going back to the method without breaking the calls that are already in use
@@ -324,19 +324,18 @@ public final class BankNavigator {
 
 		//Also needed for after confirmation of a scheduled payment
 
-		//Need to discuss with Jon - For payment deletion passing a bundle with a
-		//boolean extra BankExtraKeys.CONFIRM_DELETE. Review Page to displays a message 
-		//for 5 seconds with icon above list to confirm to user deletion of payment. 
-		//I can do this via the bundle
-
-		//TODO: Fix this
-		//		final ReviewPaymentsTable fragment =  new ReviewPaymentsTable();
-		//		BankRotationHelper.getHelper().getBundle().putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
-		//		//fragment.setArguments();
-		//		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
-
 		//Remove this line after integration
-		//navigateToUnderDevelopment();
+		navigateToUnderDevelopment();
+	}
+
+	/**
+	 * Navigation method used to display the Review Payments page with the delete message
+	 */
+	public static void navigateToReviewPaymentsFromDelete(final Bundle bundle) {
+		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
+		final ReviewPaymentsTable fragment =  new ReviewPaymentsTable();
+		BankRotationHelper.getHelper().getBundle().putAll(bundle);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
 
 	/**

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
@@ -238,6 +239,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		bundle.putSerializable(completedKey, completed);
 		bundle.putSerializable(canceledKey, canceled);
 		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index);
+		BankRotationHelper.getHelper().setBundle(bundle);
 		BankNavigator.navigateToPaymentDetailScreen(bundle);
 	}
 
@@ -281,8 +283,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		if(showStatus){
 			header.showStatusMessage();
 			bundle.putBoolean(BankExtraKeys.COMPLETED_LIST, false);
+			scheduled.payments.remove(bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM));
 		}
-
 	}
 
 	/**

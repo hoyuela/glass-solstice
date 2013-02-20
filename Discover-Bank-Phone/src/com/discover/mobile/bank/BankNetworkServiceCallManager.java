@@ -242,7 +242,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		else if( sender instanceof DeletePaymentServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
-			BankNavigator.navigateToReviewPayments(bundle, false);
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((DeletePaymentServiceCall) sender).getPaymentDetail());
+			BankNavigator.navigateToReviewPaymentsFromDelete(bundle);
 		} 
 		// Get Payment Successful, navigate to the review payments table
 		else if(sender instanceof GetPaymentsServiceCall) {

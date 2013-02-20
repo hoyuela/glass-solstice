@@ -8,9 +8,7 @@ import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
-import com.discover.mobile.common.nav.section.FragmentComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 
 /**
@@ -31,7 +29,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 	public BankPayBillsSectionInfo() {
 		super(R.string.section_title_pay_bills,
 				new ClickComponentInfo(R.string.section_title_pay_bills, getPayBillsLandingClickListener()),
-				new FragmentComponentInfo(R.string.sub_section_title_review_payments, BankAccountSummaryFragment.class),
+				new ClickComponentInfo(R.string.sub_section_title_review_payments, getReviewPaymentsClickListener()),
 				new ClickComponentInfo(R.string.sub_section_title_manage_payees, getManagePayeesClickListener()));
 	}
 
@@ -57,7 +55,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 			}
 		};
 	}
-	
+
 	/**
 	 * Click listener for the manage payees screen. The app will send the user to the appropriate section of the
 	 * application bsed on their eligibility and enrollment status for paybills.
@@ -70,15 +68,17 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 			public void onClick(final View v) {
 				final boolean isEligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
 				final boolean isEnrolled = BankUser.instance().getCustomerInfo().getPaymentsEnrolled();
-				
-				if(!isEligible)
+
+				if(!isEligible) {
 					BankNavigator.navigateToPayBillsLanding();
-				else if (isEligible && !isEnrolled)
+				} else if (isEligible && !isEnrolled) {
 					BankNavigator.navigateToPayBillsTerms(null);
-				if(isEligible && isEnrolled)
+				}
+				if(isEligible && isEnrolled) {
 					BankServiceCallFactory.createManagePayeeServiceRequest().submit();
+				}
 			}
-			
+
 		};
 	}
 
