@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.account.FragmentOnBackPressed;
-import com.discover.mobile.bank.account.ViewPagerListItem;
+import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 

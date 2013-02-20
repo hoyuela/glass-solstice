@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.account;
+package com.discover.mobile.bank.payees;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +8,8 @@ import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
+import com.discover.mobile.bank.ui.widgets.DetailViewPager;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
 
 public class PayeeDetailViewPager extends DetailViewPager implements FragmentOnBackPressed, DynamicDataFragment {
 	private ListPayeeDetail detailList = new ListPayeeDetail();

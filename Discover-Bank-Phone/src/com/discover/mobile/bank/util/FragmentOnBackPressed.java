@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.account;
+package com.discover.mobile.bank.util;
 
 /**
  * Implement this interface if a Fragment needs to support overriding the hardware back button.

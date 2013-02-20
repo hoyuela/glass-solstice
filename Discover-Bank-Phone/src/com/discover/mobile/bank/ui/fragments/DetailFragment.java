@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.account;
+package com.discover.mobile.bank.ui.fragments;
 
 import java.util.List;
 
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.ui.table.ListItemGenerator;
+import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.DiscoverActivityManager;
 
 /**

@@ -10,6 +10,8 @@ import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
+import com.discover.mobile.bank.ui.widgets.DetailViewPager;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
 
 /**
  * This is a subclass of the DetailView pager.

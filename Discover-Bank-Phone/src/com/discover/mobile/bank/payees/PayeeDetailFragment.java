@@ -1,10 +1,11 @@
-package com.discover.mobile.bank.account;
+package com.discover.mobile.bank.payees;
 
 import android.widget.LinearLayout;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
+import com.discover.mobile.bank.ui.fragments.DetailFragment;
 
 public class PayeeDetailFragment extends DetailFragment {
 	private PayeeDetail item;

@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.paybills;
+package com.discover.mobile.bank.payees;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 
 /**

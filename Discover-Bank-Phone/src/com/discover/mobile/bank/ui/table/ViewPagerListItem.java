@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.account;
+package com.discover.mobile.bank.ui.table;
 
 import android.content.Context;
 import android.util.AttributeSet;

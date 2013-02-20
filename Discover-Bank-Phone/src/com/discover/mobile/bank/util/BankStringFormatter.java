@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.account;
+package com.discover.mobile.bank.util;
 
 import java.text.NumberFormat;
 import java.util.Locale;
