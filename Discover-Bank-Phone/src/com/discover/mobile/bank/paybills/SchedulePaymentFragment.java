@@ -47,6 +47,7 @@ import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.discover.mobile.common.ui.widgets.CustomTitleDatePickerDialog;
+import com.discover.mobile.common.utils.CommonUtils;
 
 public class SchedulePaymentFragment extends BaseFragment {
 
@@ -91,6 +92,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private EditText dateEdit;
 	/** Error view for invalid date */
 	private TextView dateError;
+	/** Error view for duplicate payment conflict */
+	private TextView conflictError;
 	/** Date Picker calendar icon */
 	private ImageView calendarIcon;
 	/** Cancel button for view */
@@ -103,8 +106,6 @@ public class SchedulePaymentFragment extends BaseFragment {
 	/** BankUser singleton */
 	private BankUser bankUser;
 
-	/** True when the amount had focus at some point */
-	private boolean amountHadFocus = false;
 	/** Id for currently selected account */
 	private int accountId;
 	/** List position for current Account */
@@ -113,7 +114,12 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private Calendar earliestPaymentDate;
 	/** Chosen payment date */
 	private Calendar chosenPaymentDate;
-
+	/** True when the amount had focus at some point */
+	private boolean amountHadFocus = false;
+	/** date error exists - Cannot submit payment */
+	private boolean isDateError = false;
+	/** amount error exists - Cannot submit payment */
+	private boolean isAmountError = false;
 	/** Max character length for memo */
 	private final int MAX_CHAR_MEMO = 40;
 	/** Maximum payment amount */
@@ -136,6 +142,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	// static final Pattern r8601 = Pattern
 	// .compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
 	// + "(\\d{2}):(\\d{2})Z)");
+	
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
@@ -146,6 +153,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 		payeeText = (TextView) view.findViewById(R.id.payee_text);
 		progressHeader = (HeaderProgressIndicator) view
 				.findViewById(R.id.schedule_pay_header);
+		conflictError = (TextView) view.findViewById(R.id.conflict_error);
 		paymentAccountItem = (RelativeLayout) view
 				.findViewById(R.id.payment_acct_element);
 		paymentAccountText = (TextView) view
@@ -172,9 +180,15 @@ public class SchedulePaymentFragment extends BaseFragment {
 		setAmountFieldRestrictions();
 		setMemoFieldValidation();
 		createItemListeners();
-		restoreState(savedInstanceState);
+		
 
 		return view;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		restoreState(savedInstanceState);
+		super.onCreate(savedInstanceState);
 	}
 
 	/**
@@ -379,10 +393,11 @@ public class SchedulePaymentFragment extends BaseFragment {
 			chosenPaymentDate.set(year, month - 1, day);
 
 		} else {
-			dateEdit.setText(formatPaymentDate(
-					earliestPaymentDate.get(Calendar.YEAR),
-					earliestPaymentDate.get(Calendar.MONTH) + 1,
-					earliestPaymentDate.get(Calendar.DAY_OF_MONTH)));
+			String date = CommonUtils.getFormattedDate(
+					earliestPaymentDate.get(Calendar.MONTH),
+					earliestPaymentDate.get(Calendar.DAY_OF_MONTH),
+					earliestPaymentDate.get(Calendar.YEAR));
+			dateEdit.setText(date);
 			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
 					earliestPaymentDate.get(Calendar.MONTH),
 					earliestPaymentDate.get(Calendar.DAY_OF_MONTH));
@@ -485,25 +500,24 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * Handles validation of the amount field.
 	 */
 	private void validateAmountField() {
-		String amountStringNoCommas = amountEdit.getText().toString();
-		amountStringNoCommas = amountStringNoCommas.replaceAll(",", "");
+		String inAmount = amountEdit.getText().toString();
+		String outAmount = CommonUtils.formatCurrencyAsStringWithoutSign(inAmount);
+		amountEdit.setText(outAmount);
+		
 		double d;
 		try {
-			d = Double.parseDouble(amountStringNoCommas);
+			d = Double.parseDouble(inAmount.replaceAll(",", ""));
 		} catch (Exception e) {
 			d = 0.0f;
 		}
-		String outAmount = NumberFormat.getCurrencyInstance().format(d);
-		outAmount = outAmount.replaceAll("\\$", "");
-		amountEdit.setText(outAmount);
 
-		if (d > MAX_AMOUNT) {
-			setAmountError(true);
-			amountError.setText(getString(R.string.schedule_pay_too_high));
-
-		} else if (d < MIN_AMOUNT) {
+		if (d < MIN_AMOUNT) {
 			setAmountError(true);
 			amountError.setText(getString(R.string.schedule_pay_too_low));
+
+		} else if (d > MAX_AMOUNT) {
+			setAmountError(true);
+			amountError.setText(getString(R.string.schedule_pay_too_high));
 
 		} else {
 			setAmountError(false);
@@ -519,6 +533,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private void setAmountError(boolean isError) {
 		int padding = (int) getResources().getDimension(
 				R.dimen.between_related_elements_padding);
+		isAmountError = isError;
 		if (isError) {
 			amountEdit.setBackgroundResource(R.drawable.edit_text_red);
 			amountItem.getLayoutParams().height = (int) getResources()
@@ -544,9 +559,10 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * @param isError
 	 *            displays the error if true, and normal if false.
 	 */
-	private void setDateError(boolean isError) {
+	public void setDateError(boolean isError) {
 		int padding = (int) getResources().getDimension(
 				R.dimen.between_related_elements_padding);
+		isDateError = isError;
 		if (isError) {
 			dateItem.getLayoutParams().height = (int) getResources()
 					.getDimension(R.dimen.listview_vertical_height)
@@ -560,6 +576,21 @@ public class SchedulePaymentFragment extends BaseFragment {
 			dateItem.setPadding(padding, padding, padding, padding);
 			dateItem.invalidate();
 			dateError.setVisibility(View.GONE);
+		}
+	}
+
+	/**
+	 * Sets an error message underneath the error upon a 409 Conflict from the
+	 * payment request.
+	 * 
+	 * @param isError
+	 *            displays the error if true, and hides it if false.
+	 */
+	public void setDuplicatePaymentError(boolean isError) {
+		if (isError) {
+			conflictError.setVisibility(View.VISIBLE);
+		} else {
+			conflictError.setVisibility(View.GONE);
 		}
 	}
 
@@ -610,32 +641,13 @@ public class SchedulePaymentFragment extends BaseFragment {
 	}
 
 	/**
-	 * Formats date as MM/dd/YYYY.
-	 * 
-	 * @param year
-	 * @param month
-	 * @param day
-	 * @return
-	 */
-	private String formatPaymentDate(final Integer year, final Integer month,
-			final Integer day) {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(month.toString()); // Month
-		sb.append('/');
-		sb.append(day.toString()); // Day
-		sb.append('/');
-		sb.append(year.toString()); // Year
-		return sb.toString();
-	}
-
-	/**
 	 * Initializes the view's miscellaneous listeners.
 	 */
 	private void createItemListeners() {
 		// Listens for a focus change so that we can handle special view
 		// behavior
 		parentView.setOnTouchListener(new OnTouchListener() {
-	
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (!v.equals(memoEdit)) {
@@ -647,7 +659,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 				return false;
 			}
 		});
-	
+
 		memoItem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -656,7 +668,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 				}
 			}
 		});
-	
+
 		memoEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
@@ -665,7 +677,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 				}
 			}
 		});
-	
+
 		amountEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
@@ -679,14 +691,14 @@ public class SchedulePaymentFragment extends BaseFragment {
 				}
 			}
 		});
-	
+
 		paymentAccountItem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				paymentAccountSpinner.performClick();
 			}
 		});
-	
+
 		paymentAccountSpinner
 				.setOnItemSelectedListener(new OnItemSelectedListener() {
 					@Override
@@ -698,29 +710,31 @@ public class SchedulePaymentFragment extends BaseFragment {
 						accountIndex = position;
 						paymentAccountText.setText(a.nickname);
 					}
-	
+
 					@Override
 					public void onNothingSelected(AdapterView<?> arg0) {
 					}
 				});
-	
+
 		calendarIcon.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				setDateError(false);
 				deliverByDatePicker.show();
 			}
 		});
-	
+
 		dateEdit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				setDateError(false);
 				deliverByDatePicker.show();
 			}
 		});
-	
+
 		deliverByDatePicker = new CustomTitleDatePickerDialog(getActivity(),
 				new OnDateSetListener() {
-	
+
 					@Override
 					public void onDateSet(final DatePicker v, final int year,
 							final int month, final int day) {
@@ -730,42 +744,40 @@ public class SchedulePaymentFragment extends BaseFragment {
 				earliestPaymentDate.get(Calendar.MONTH),
 				earliestPaymentDate.get(Calendar.DAY_OF_MONTH),
 				getString(R.string.schedule_pay_date_picker_title));
-	
+
 		cancelButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				setupCancelButton();
 			}
 		});
-	
+
 		payNowButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				// TODO Schedule a payment dude
-				/*
-				 * 0. Validate we can send it.
-				 * 1. Send payment 
-				 * 2. Get response 
-				 * 3. Handle Errors if necessary
-				 * 4. Go to confirmation fragment
-				 */
-//				setDateError(Math.random() > 0.5);
-				
-				String memo = memoText.getText().toString();
-				final CreatePaymentDetail payment = new CreatePaymentDetail();
-				payment.payee = payee.id;
-				// TODO Commons way to send currency amount as Integer; and back.
-				payment.amount = 2344;
-				payment.paymentMethod = accountId;
-				// TODO Commons way to format a date in their way; and back.
-				payment.deliverBy = "2013-03-28T00:00:00Z";
-				if(!memo.equals("")) {
-					payment.memo = memo;
+				setDuplicatePaymentError(false);
+
+				validateAmountField();
+
+				if (!(isDateError || isAmountError)) {
+					String memo = memoText.getText().toString();
+					final CreatePaymentDetail payment = new CreatePaymentDetail();
+					payment.payee = payee.id;
+					payment.amount = CommonUtils
+							.formatCurrencyStringAsBankInt(amountEdit.getText()
+									.toString());
+					payment.paymentMethod = accountId;
+					payment.deliverBy = CommonUtils
+							.getServiceFormattedISO8601Date(chosenPaymentDate
+									.get(Calendar.MONTH), chosenPaymentDate
+									.get(Calendar.DAY_OF_MONTH),
+									chosenPaymentDate.get(Calendar.YEAR));
+					if (!memo.equals("")) {
+						payment.memo = memo;
+					}
+					BankServiceCallFactory.createMakePaymentCall(payment)
+							.submit();
 				}
-				
-				// TODO is this correct?
-				BankServiceCallFactory.createMakePaymentCall(payment).submit();
-				
 			}
 		});
 	}

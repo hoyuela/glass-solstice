@@ -213,7 +213,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 				//Retransmit the previous NetworkServiceCall<>
 				prevCall.retransmit(activeActivity);
 			}
-		// 
+		// Navigate to Payment Confirmation upon a successful payment.
 		} else if( sender instanceof CreatePaymentCall) {
 			final PaymentDetail value = (PaymentDetail)result;
 			BankNavigator.navigateToPayConfirmFragment(value);

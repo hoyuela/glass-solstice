@@ -7,7 +7,11 @@ import android.app.Activity;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.services.auth.BankSchema;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
+import com.discover.mobile.bank.services.payment.CreatePaymentCall;
+import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.error.ErrorHandler;
@@ -113,6 +117,20 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				mErrorHandler.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_MAINTENANCE_UNPLANNED )) {
 				mErrorHandler.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
+			// TODO temporary until Bank updates the error response in their API doc...
+			} else if(errCode.equals("customer.firstname.NotBlank")) { // TODO Will be Duplicate Payment error (409)
+				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
+				BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
+				if(f instanceof SchedulePaymentFragment) {
+					((SchedulePaymentFragment)f).setDuplicatePaymentError(true);
+				}
+			// TODO temporary until Bank updates the error response in their API doc...
+			} else if(errCode.equals("customer.firstname.NotBlank")) { // TODO Will be Invalid Date error
+				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
+				BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
+				if(f instanceof SchedulePaymentFragment) {
+					((SchedulePaymentFragment)f).setDateError(true);
+				}
 			} else {
 				mErrorHandler.handleGenericError(msgErrResponse.getHttpStatusCode());
 			}
@@ -138,7 +156,25 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	 */
 	protected boolean handleHTTPErrorCode(final int httpErrorCode, final HttpURLConnection conn) {
 
-		
+		return handleHTTPErrorCode(httpErrorCode, conn, null);
+	}
+	
+	/**
+	 * Exposed as protected method in case of need to override by child class.
+	 * 
+	 * IF the calling class wants HTTP error codes suppressed, then they should
+	 * override this method with a "return true"
+	 * 
+	 * @param messageErrorResponse
+	 * @param sender
+	 *            The sender so decisions can be made on a call-by-call basis.
+	 *            Sender may come as null due to legacy code, null checks are
+	 *            absolutely required!
+	 * @return
+	 */
+	protected boolean handleHTTPErrorCode(final int httpErrorCode,
+			final HttpURLConnection conn, final NetworkServiceCall<?> sender) {
+
 		switch (httpErrorCode) {
 		case HttpURLConnection.HTTP_UNAUTHORIZED:
 			final String wwwAuthenticateValue = conn
@@ -169,6 +205,15 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 		case HttpURLConnection.HTTP_FORBIDDEN:
 			mErrorHandler.handleGenericError(httpErrorCode);
 			return true;
+		case HttpURLConnection.HTTP_CONFLICT:
+			if(sender != null && sender instanceof CreatePaymentCall) {
+				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
+				BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
+				if(f instanceof SchedulePaymentFragment) {
+					((SchedulePaymentFragment)f).setDuplicatePaymentError(true);
+				}
+			}
+			return true;
 		default:
 			mErrorHandler.handleGenericError(httpErrorCode);
 			return true;
@@ -185,6 +230,4 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	public CallbackPriority getCallbackPriority() {
 		return CallbackPriority.MIDDLE;
 	}
-
-
 }

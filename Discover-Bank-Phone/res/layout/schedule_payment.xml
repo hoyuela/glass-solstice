@@ -12,12 +12,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
+        
+        <TextView
+            android:id="@+id/conflict_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/schedule_pay_header"
+            android:text="@string/schedule_pay_duplicate_payment"
+            android:textColor="@color/error_indicator"
+            android:padding="@dimen/between_related_elements_padding"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/sched_pay_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/schedule_pay_header"
+            android:layout_below="@id/conflict_error"
             android:layout_margin="15dp"
             android:background="@drawable/rounded_table_corners_shape"
             android:orientation="vertical"

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -20,6 +19,7 @@ import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
+import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.error.ErrorHandler;
@@ -220,6 +220,19 @@ public class BankNavigationRootActivity extends NavigationRootActivity
 		final SlidingMenu slidingMenu = this.getSlidingMenu();
 
 		return (slidingMenu.getTouchModeAbove() == SlidingMenu.TOUCHMODE_FULLSCREEN);
+	}
+
+	/**
+	 * Returns the current fragment in the content section,
+	 * {@code R.id.navigation_content}, of the Navigation activity.
+	 */
+	public BaseFragment getCurrentContentFragment() {
+
+		final FragmentManager fragMan = this.getSupportFragmentManager();
+		BaseFragment currentFragment = (BaseFragment) fragMan
+				.findFragmentById(R.id.navigation_content);
+
+		return currentFragment;
 	}
 
 	/**

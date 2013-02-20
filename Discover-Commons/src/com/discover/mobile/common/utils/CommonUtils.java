@@ -1,5 +1,6 @@
 package com.discover.mobile.common.utils;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -22,6 +23,9 @@ public class CommonUtils {
 	
 	/**Static int for the minimum length of a phone number*/
 	private static int PHONE_NUMBER_MIN = 10;
+	
+	/** Number of cents in a dollar */
+	private static int CENTS_IN_DOLLAR = 100;
 
 	/**
 	 * Convert the simple number into a phone number string
@@ -51,6 +55,29 @@ public class CommonUtils {
 		calendarValue.set(Calendar.DAY_OF_MONTH, day);
 
 		return new SimpleDateFormat("MM/dd/yy", Locale.getDefault()).format(calendarValue.getTime());
+	}
+
+	/**
+	 * Returns a date formatted as {@code YYYY-MM-ddTHH:MM:ssZ}, (e.g.
+	 * 2012-10-06T00:00:00Z). This is required for some Bank services.
+	 * 
+	 * @param month
+	 * @param day
+	 * @param year
+	 * @return
+	 */
+	public static String getServiceFormattedISO8601Date(final int month,
+			final int day, final int year) {
+		Calendar calendarValue = Calendar.getInstance();
+		calendarValue.set(Calendar.YEAR, year);
+		calendarValue.set(Calendar.MONTH, month);
+		calendarValue.set(Calendar.DAY_OF_MONTH, day);
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendarValue.getTime()));
+		sb.append("T00:00:00Z");
+		
+		return sb.toString();
 	}
 	
 	/**
@@ -187,5 +214,45 @@ public class CommonUtils {
 		setViewVisible(label);
 	}
 
+	/**
+	 * This takes a String that is formatted as a form of currency (e.g.
+	 * 1244.500, $1244.50, $1,244.5) and returns an int formatted as Bank
+	 * services use it (e.g. 124450). 
+	 * 
+	 * @param amount
+	 * @return Integer representation of a currency amount
+	 */
+	public final static int formatCurrencyStringAsBankInt(String amount) {
+		
+		amount = formatCurrencyAsStringWithoutSign(amount);
+		amount = amount.replaceAll(",", "");
+		double d = Double.parseDouble(amount);
+		
+		return (int)(d * CENTS_IN_DOLLAR);
+	}
 	
+	/**
+	 * This takes a String that is formatted as a form of currency (e.g.
+	 * 1244.500, $1244.50, $1,244.5) and returns a String formatted without '$' (e.g. 1,244.50).
+	 * 
+	 * @param amount
+	 * @return String representation of a currency amount without '$'. Returns
+	 *         "0.00" if an errors occurs.
+	 */
+	public final static String formatCurrencyAsStringWithoutSign(String amount) {
+
+		amount = amount.replaceAll("\\$", "");
+		amount = amount.replaceAll(",", "");
+		double d;
+		try {
+			d = Double.parseDouble(amount);
+		} catch (Exception e) {
+			d = 0.0f;
+		}
+		String outAmount = NumberFormat.getCurrencyInstance().format(d);
+		outAmount = outAmount.replaceAll("\\$", "");
+		//
+		
+		return outAmount;
+	}
 }
