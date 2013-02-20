@@ -332,4 +332,14 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			return getResources().getString(R.string.review_payments_canceled_payments_empty);
 		}
 	}
+
+	/**
+	 * Show the empty message in the footer
+	 * @return 
+	 */
+	@Override
+	public void showFooterMessage() {
+		footer.showEmpty(getEmptyStringText());
+
+	}
 }

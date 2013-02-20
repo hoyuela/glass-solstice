@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
@@ -63,6 +62,13 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	@Override
 	public View getView(final int position, View view, final ViewGroup parent){
 		ItemViewHolder holder = null;
+
+		/**If the details is empty show the message*/
+		if(details.isEmpty()){
+			fragment.showFooterMessage();
+			view = fragment.getFooter();
+			return view;
+		}
 
 		/**At the end of the list try loading more*/
 		if(position == details.size()){
@@ -157,8 +163,5 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		public TextView desc;
 		public TextView amount;
 		public int pos;
-		public ImageView loadMore;
-		public TextView message;
-		public TextView top;
 	}
 }

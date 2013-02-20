@@ -144,4 +144,10 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		table.setAdapter(getAdapter());
 		getAdapter().notifyDataSetChanged();
 	}
+
+	/**
+	 * Show the empty message in the footer
+	 * @return 
+	 */
+	public abstract void showFooterMessage();
 }

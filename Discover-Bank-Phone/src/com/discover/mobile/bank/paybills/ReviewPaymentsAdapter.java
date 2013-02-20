@@ -57,6 +57,12 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	public View getView(final int position, View view, final ViewGroup parent){
 		ViewHolder holder = null;
 
+		if(details.isEmpty()){
+			fragment.showFooterMessage();
+			view = fragment.getFooter();
+			return view;
+		}
+
 		/**At the end of the list try loading more*/
 		if(position == details.size()){
 			fragment.maybeLoadMore();
