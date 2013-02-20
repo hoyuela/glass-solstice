@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
@@ -44,6 +43,7 @@ public class PayeeDetailViewPager extends DetailViewPager implements FragmentOnB
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		outState.putAll(getCurrentFragmentBundle());
+
 	}
 
 	/**
@@ -87,17 +87,6 @@ public class PayeeDetailViewPager extends DetailViewPager implements FragmentOnB
 	@Override
 	protected boolean isUserPrimaryHolder() {
 		return true;
-	}
-
-
-	/**
-	 * This method is called when the back button is pressed on this Fragment.
-	 */
-	// FIXME need to have a navigator method defined that allows navigating back to the view payments Fragment.
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-		BankRotationHelper.getHelper().setBundle(getCurrentFragmentBundle());
 	}
 
 	/**

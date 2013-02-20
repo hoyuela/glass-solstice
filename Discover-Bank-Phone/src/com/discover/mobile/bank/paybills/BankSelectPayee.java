@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.paybills;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,7 +31,8 @@ import com.discover.mobile.common.BaseFragment;
  *
  */
 public class BankSelectPayee extends BaseFragment{
-
+	final String TAG = BankSelectPayee.class.getSimpleName();
+	
 	/**List of payees*/
 	private ListPayeeDetail payees;
 
@@ -42,6 +44,16 @@ public class BankSelectPayee extends BaseFragment{
 	
 	private View view;
 
+	
+	@Override
+	public void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if(null == savedInstanceState){
+			loadListFromBundle(this.getArguments());
+		} else{
+			loadListFromBundle(savedInstanceState);
+		}
+	}
 	/**
 	 * Create the view
 	 * @param inflater - inflater to inflate the layout
@@ -57,12 +69,8 @@ public class BankSelectPayee extends BaseFragment{
 		payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
 		empty = (TextView)view.findViewById(R.id.no_payees);
 
-		if(null == savedInstanceState){
-			loadListFromBundle(this.getArguments());
-		} else{
-			loadListFromBundle(savedInstanceState);
-		}
 		setupAddNewPayeeButton(view);
+		initViewWithBundleData();
 		customSetup();
 		return view;
 	}
@@ -80,13 +88,12 @@ public class BankSelectPayee extends BaseFragment{
 	public void onSaveInstanceState(final Bundle outState){
 		outState.putSerializable(BankExtraKeys.PAYEES_LIST, payees);
 	}
-
+	
 	/**
-	 * Extract the data from the bundles and then display it.
-	 * @param bundle - bundle containing the data to be displayed.
+	 * This method will take the loaded list of payees and fill 
+	 * the list on the screen with the data.
 	 */
-	public void loadListFromBundle(final Bundle bundle){
-		payees = (ListPayeeDetail)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
+	private void initViewWithBundleData() {
 		if(null == payees || payees.payees.isEmpty()){
 			empty.setVisibility(View.VISIBLE);
 		}else{
@@ -94,6 +101,18 @@ public class BankSelectPayee extends BaseFragment{
 			for(final PayeeDetail payee : payees.payees){
 				payeesList.addView(createListItem(payee));
 			}
+		}
+	}
+
+	/**
+	 * Extract the data from the bundles and then display it.
+	 * @param bundle - bundle containing the data to be displayed.
+	 */
+	public void loadListFromBundle(final Bundle bundle){
+		if(bundle != null){
+			payees = (ListPayeeDetail)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
+		}else{
+			Log.e(TAG, "NO BUNDLE DATA FOUND");
 		}
 	}
 
