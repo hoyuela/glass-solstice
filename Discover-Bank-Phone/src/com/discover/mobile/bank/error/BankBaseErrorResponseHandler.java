@@ -1,14 +1,18 @@
-package com.discover.mobile.bank;
+package com.discover.mobile.bank.error;
 
 import java.net.HttpURLConnection;
 
 import android.app.Activity;
 
+import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankServiceCallFactory;
+import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
+import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.bank.BankErrorCodes;
@@ -136,6 +140,29 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 
 		
 		switch (httpErrorCode) {
+		case HttpURLConnection.HTTP_UNAUTHORIZED:
+			final String wwwAuthenticateValue = conn
+					.getHeaderField(HttpHeaders.Authentication);
+
+			if (!Strings.isNullOrEmpty(wwwAuthenticateValue)) {
+				// Check if token expired
+				if (wwwAuthenticateValue.contains(BankSchema.BANKAUTH)) {
+					// Navigate back to home page
+					mErrorHandler.handleSessionExpired();
+				}
+				// Check if strong auth challenge
+				else if (wwwAuthenticateValue.contains(BankSchema.BANKSA)) {
+					BankServiceCallFactory.createStrongAuthRequest().submit();
+				}
+				// Check if not authorized to view page
+				else {
+					// Display a modal and return to previous page
+					mErrorHandler.handleGenericError(httpErrorCode);
+				}
+			} else {
+				mErrorHandler.handleGenericError(httpErrorCode);
+			}
+			return true;
 		case HttpURLConnection.HTTP_UNAVAILABLE:
 			mErrorHandler.handleHttpServiceUnavailableModal(null);
 			return true;

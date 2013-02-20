@@ -25,14 +25,21 @@ import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.EnterPayeeFragment;
 import com.discover.mobile.bank.payees.PayeeDetailViewPager;
+import com.discover.mobile.bank.payees.BankAddPayeeFragment;
+import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
+import com.discover.mobile.bank.payees.BankSearchSelectPayeeFragment;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
+import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
+import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.common.AlertDialogParent;
+import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.google.common.base.Strings;
 
 /**
  * Utility class to centralize the navigation to and from screens in the application.
@@ -58,16 +65,24 @@ public final class BankNavigator {
 	 * closes the referenced activity in the parameter list.
 	 * 
 	 * @param activity Reference to Activity from where the application will navigate to Login
-	 * @param cause Current supported values are IntentExtras SHOW_SUCESSFUL_LOGOUT_MESSAGE and SESSION_EXPIRED
+	 * @param cause Current supported values are IntentExtras SHOW_SUCESSFUL_LOGOUT_MESSAGE, SHOW_ERROR_MESSAGE and SESSION_EXPIRED
+	 * @param message Used to pass in a message to the LoginActivity and display to the user. Used only if cause is SHOW_ERROR_MESSAGE.
 	 */
-	public static void navigateToLoginPage(final Activity activity,final String cause) {
+	public static void navigateToLoginPage(final Activity activity,final String cause, final String message) {
 		//Send an intent to open login activity if current activity is not login
 		if( activity.getClass() != LoginActivity.class ) {
 			final Intent intent = new Intent(activity, LoginActivity.class);
 			final Bundle bundle = new Bundle();
 			bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
 			bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
-			bundle.putBoolean(cause, true);
+			
+			//Verify cause is not empty and is not equal to SHOW_ERROR_MESSAGE
+			if( !Strings.isNullOrEmpty(cause) && !IntentExtraKey.SHOW_ERROR_MESSAGE.equals(cause) ) {
+				bundle.putBoolean(cause, true);
+			} else {
+				bundle.putString(IntentExtraKey.SHOW_ERROR_MESSAGE, message);
+			}
+			
 			intent.putExtras(bundle);
 			activity.startActivity(intent);
 
@@ -209,7 +224,7 @@ public final class BankNavigator {
 		fragment.setArguments(extras);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
-
+	
 	/**
 	 * Let the root activity know that the current fragment needs to be changed from the current fragment
 	 * to the navigate to pay bills step two page.
@@ -388,9 +403,19 @@ public final class BankNavigator {
 	 * Navigation method used to display the Add Payee Step 1. Instantiates an EnterPayeeFragment and makes it visible to user
 	 * via the NavigationRootActivity.
 	 */
-	public static void navigateToAddPayee() {
-		final EnterPayeeFragment fragment = new EnterPayeeFragment();
-		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	public static void navigateToAddPayee(final Class<?>  step, final Bundle bundle) {
+		BaseFragment fragment = null;
+		
+		if( step == BankEnterPayeeFragment.class ) {
+			fragment = new BankEnterPayeeFragment();	
+		} else if( step == BankSearchSelectPayeeFragment.class ) {
+			fragment = new BankAddPayeeFragment();
+			fragment.setArguments(bundle);
+		}
+		
+		if( fragment != null  ) {
+			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);		
+		}
 	}
 
 
@@ -431,4 +456,53 @@ public final class BankNavigator {
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
 
+	
+	/**
+	 * Navigation method used to show the Select Payee Page displayed after searching for a Payee in the Add Payee work-flow.
+	 * If the search argument has no results, then a modal is displayed to the user indicating that there were no matches found.
+	 * 
+	 * @param search Reference to a SearchPayeeResultList object generated from a response to a Payee Search request.
+	 */
+	public static void navigateToSelectPayees(final SearchPayeeResultList search) {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		activity.closeDialog();
+		
+		//Show No Matches Modal if no results found
+		if( search.results.size() <= 0 ) {
+			// Create a one button modal to notify the user that they are leaving the application
+			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+					R.string.bank_no_payees_modal_title, 
+					R.string.bank_no_payees_modal_msg, 
+					false, 
+					R.string.bank_need_help_number_text, 
+					R.string.ok);
+
+			activity.showCustomAlert(modal);
+		}
+		//Show Select Payee Page for Add a Payee work-flow
+		else {
+			
+			if( BankNetworkServiceCallManager.getInstance().getLastServiceCall() instanceof SearchPayeeServiceCall ) {
+				final BankSearchSelectPayeeFragment fragment = new BankSearchSelectPayeeFragment();
+				final SearchPayeeServiceCall searchCall = (SearchPayeeServiceCall)BankNetworkServiceCallManager.getInstance().getLastServiceCall();
+						
+				final Bundle bundle = new Bundle();
+				
+				//Provide the text used for running a search
+				bundle.putSerializable(BankSearchSelectPayeeFragment.SEARCH_ITEM, searchCall.getSearchText());
+				//Provide list of results sent from the server
+				bundle.putSerializable(BankExtraKeys.DATA_LIST, search);
+				fragment.setArguments(bundle);
+				
+				activity.makeFragmentVisible(fragment);
+			} else {
+				//Show catch all error to the user, this should never happen
+				BankErrorHandler.getInstance().handleGenericError(0);
+		
+				if(Log.isLoggable(TAG, Log.ERROR)) {
+					Log.e(TAG, "Unexpected Service Call Found!");
+				}
+			}
+		}
+	}
 }

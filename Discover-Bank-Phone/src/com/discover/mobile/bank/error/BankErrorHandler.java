@@ -116,8 +116,6 @@ public class BankErrorHandler implements ErrorHandler {
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	}
-
-	
 	
 	/*
 	 * (non-Javadoc)
@@ -257,11 +255,8 @@ public class BankErrorHandler implements ErrorHandler {
 		if (!Globals.isLoggedIn()) {
 			// Close application
 			modal.setOnDismissListener(new CloseApplicationOnDismiss(activeActivity));
-		} else if (Globals.isLoggedIn()) {
-			// Navigate back to login
-			modal.setOnDismissListener(new NavigateToLoginOnDismiss(activeActivity));
-		}
-
+		}  
+			
 		showCustomAlert(modal);
 
 		return modal;
@@ -301,8 +296,6 @@ public class BankErrorHandler implements ErrorHandler {
 
 	}
 
-
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -312,7 +305,8 @@ public class BankErrorHandler implements ErrorHandler {
 	 */
 	@Override
 	public void handleLoginAuthFailure(final ErrorHandlerUi errorHandlerUi, final String errorMessage) {
-		showErrorsOnScreen(errorHandlerUi, errorMessage);
+		/** Navigate to login page if not already on this page*/
+		BankNavigator.navigateToLoginPage(DiscoverActivityManager.getActiveActivity(), IntentExtraKey.SHOW_ERROR_MESSAGE, errorMessage);
 	}
 
 	/*
@@ -361,7 +355,7 @@ public class BankErrorHandler implements ErrorHandler {
 	public void handleSessionExpired() {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
-		BankNavigator.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED);
+		BankNavigator.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
 	}
 
 }

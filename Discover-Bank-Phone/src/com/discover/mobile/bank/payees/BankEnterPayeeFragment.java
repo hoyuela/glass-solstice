@@ -1,10 +1,12 @@
 package com.discover.mobile.bank.payees;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -27,7 +29,7 @@ import com.discover.mobile.common.BaseFragment;
  * @author henryoyuela
  *
  */
-public class EnterPayeeFragment extends BaseFragment implements OnClickListener {
+public class BankEnterPayeeFragment extends BaseFragment implements OnClickListener {
 	/**
 	 * Reference to feedback link in the view of this fragment. When clicked on
 	 * will open the Feedback Landing Page
@@ -109,6 +111,10 @@ public class EnterPayeeFragment extends BaseFragment implements OnClickListener 
 			final Toast toast = Toast.makeText(this.getActivity(), text, duration);
 			toast.show();
 		} else if( sender == continueButton ) {
+			//Close Soft Input Keyboard
+			final InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+			inputManager.hideSoftInputFromInputMethod(searchField.getWindowToken(), 0);
+			
 			if( searchField.isValid() ) {
 				final String search = searchField.getText().toString().trim();
 				BankServiceCallFactory.createPayeeSearchRequest(search).submit();

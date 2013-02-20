@@ -459,6 +459,6 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 */
 	@Override
 	public com.discover.mobile.common.error.ErrorHandler getErrorHandler() {
-		return FacadeFactory.getCardFacade().getCardErrorHandler();
+		return BankErrorHandler.getInstance();
 	}
 }

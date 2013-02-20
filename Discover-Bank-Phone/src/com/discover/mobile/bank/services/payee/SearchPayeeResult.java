@@ -18,9 +18,9 @@ public class SearchPayeeResult implements Serializable {
 	public String nickName;
 	
 	@JsonProperty("merchantNumber")
-	public int merchangeNumber;
+	public String merchantNumber;
 	
 	@JsonProperty("isZipRequired")
-	public boolean isZipRequired;
+	public String isZipRequired;
 
 }

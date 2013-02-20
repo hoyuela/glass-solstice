@@ -89,10 +89,10 @@ public class BankServiceCallFactory {
 	/**
 	 * Used to construct a CreateStrongAuthRequestCall NetworkServiceCall for invoking the Bank - Authentication
 	 * Service API found at ./api/auth/strongauth. The CreateStrongAuthRequestCall created by this method is used
-	 * to POST an answer to a question downloaded prior. The callee will only have to call submit on the constructed object to trigger the
-	 * HTTP request.
+	 * to POST an answer to a question downloaded prior. The callee will only have to call submit on the constructed 
+	 * object to trigger the HTTP request.
 	 * 
-	 * @param details Contains the answer and the question ID the answer is for to be sent in the body of the request.
+	 * @param details Contains the answer and the question ID the answer is for to be sent in the body of the request
 	 * @return Reference to the created CreateStrongAuthRequestCall.
 	 */
 	public static CreateStrongAuthRequestCall createStrongAuthRequest(final BankStrongAuthAnswerDetails details) {
@@ -108,6 +108,29 @@ public class BankServiceCallFactory {
 
 		return new CreateStrongAuthRequestCall(activity, callback, details);
 	}
+	
+	/**
+	 * Used to construct a CreateStrongAuthRequestCall NetworkServiceCall for invoking the Bank - Authentication
+	 * Service API found at ./api/auth/strongauth. The CreateStrongAuthRequestCall created by this method is used
+	 * to download a question and its id. The callee will only have to call submit on the constructed object to trigger the
+	 * HTTP request.
+	 * 
+	 * @return Reference to the created CreateStrongAuthRequestCall.
+	 */
+	public static CreateStrongAuthRequestCall createStrongAuthRequest() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		/**
+		 * Create an AsyncCallback using the default builder created for Bank related web-service HTTP requests
+		 */
+		final AsyncCallback<BankStrongAuthDetails>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankStrongAuthDetails.class,
+						activity, (ErrorHandlerUi) activity)
+							.build();
+
+		return new CreateStrongAuthRequestCall(activity, callback);
+	}
+
 
 	/**
 	 * Create the service call to get the payees for a user

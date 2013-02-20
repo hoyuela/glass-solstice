@@ -93,7 +93,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity {
 
 			// User has become inactive and will be set to timed-out.
 			if ( secs > BankUrlManager.MAX_IDLE_TIME) {
-				BankNavigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED);
+				BankNavigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED, null);
 			}
 		}
 	}

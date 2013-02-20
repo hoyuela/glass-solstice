@@ -40,6 +40,7 @@ public final class IntentExtraKey {
 	public static final String STRONG_AUTH_DETAILS = "SA-Details";
 	public static final String ACCOUNT_LOCKED_FAILED_ATTEMPTS = "Account-Locked-Failed-Attempts";
 	public static final String SHOW_SUCESSFUL_LOGOUT_MESSAGE = "Show-Successful-Logout";
+	public static final String SHOW_ERROR_MESSAGE = "Show-error-message";
 	/**
 	 * Used to specify to the application that the token for the session is no longer valid
 	 */
