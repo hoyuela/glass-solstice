@@ -47,6 +47,7 @@ import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.discover.mobile.common.ui.widgets.CustomTitleDatePickerDialog;
+import com.discover.mobile.common.ui.widgets.SchedulePaymentAmountEditText;
 import com.discover.mobile.common.utils.CommonUtils;
 
 public class SchedulePaymentFragment extends BaseFragment {
@@ -114,6 +115,10 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private Calendar earliestPaymentDate;
 	/** Chosen payment date */
 	private Calendar chosenPaymentDate;
+	
+	/** saved bundle data */
+	private Bundle savedBundle;
+	
 	/** True when the amount had focus at some point */
 	private boolean amountHadFocus = false;
 	/** date error exists - Cannot submit payment */
@@ -180,15 +185,19 @@ public class SchedulePaymentFragment extends BaseFragment {
 		setAmountFieldRestrictions();
 		setMemoFieldValidation();
 		createItemListeners();
-		
+		restoreState(savedInstanceState);
 
 		return view;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		restoreState(savedInstanceState);
+		if(savedInstanceState != null) {
+			savedBundle = new Bundle(savedInstanceState);
+		}
+		
 		super.onCreate(savedInstanceState);
+		
 	}
 
 	/**
@@ -242,9 +251,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 *            the Bundle from which the data is loaded.
 	 */
 	public void restoreState(Bundle savedInstanceState) {
-		if (savedInstanceState == null) {
-			savedInstanceState = SchedulePaymentSingleton.getInstance()
-					.getState();
+		if (savedInstanceState == null && savedBundle != null) {
+			savedInstanceState = new Bundle(savedBundle);
 		}
 
 		if (savedInstanceState != null) {
@@ -500,26 +508,26 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * Handles validation of the amount field.
 	 */
 	private void validateAmountField() {
-		String inAmount = amountEdit.getText().toString();
-		String outAmount = CommonUtils.formatCurrencyAsStringWithoutSign(inAmount);
-		amountEdit.setText(outAmount);
-		
-		double d;
-		try {
-			d = Double.parseDouble(inAmount.replaceAll(",", ""));
-		} catch (Exception e) {
-			d = 0.0f;
-		}
+			String inAmount = amountEdit.getText().toString();
+			String outAmount = CommonUtils
+					.formatCurrencyAsStringWithoutSign(inAmount);
+			amountEdit.setText(outAmount);
 
-		if (d < MIN_AMOUNT) {
-			setAmountError(true);
-			amountError.setText(getString(R.string.schedule_pay_too_low));
+			double d;
+			try {
+				d = Double.parseDouble(inAmount.replaceAll(",", ""));
+			} catch (Exception e) {
+				d = 0.0f;
+			}
 
-		} else if (d > MAX_AMOUNT) {
-			setAmountError(true);
-			amountError.setText(getString(R.string.schedule_pay_too_high));
+			if (d < MIN_AMOUNT) {
+				setAmountError(true);
+				amountError.setText(getString(R.string.schedule_pay_too_low));
 
-		} else {
+			} else if (d > MAX_AMOUNT) {
+				setAmountError(true);
+				amountError.setText(getString(R.string.schedule_pay_too_high));
+			} else {
 			setAmountError(false);
 		}
 	}
@@ -758,7 +766,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 				setDuplicatePaymentError(false);
 
 				validateAmountField();
-
+				
 				if (!(isDateError || isAmountError)) {
 					String memo = memoText.getText().toString();
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
