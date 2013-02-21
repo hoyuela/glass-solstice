@@ -50,7 +50,8 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 		else if ( sender instanceof BankLogOutCall ) {
 			BankNavigator.navigateToLoginPage(
 					DiscoverActivityManager.getActiveActivity(),
-					IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
+					IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE,
+					null);
 		}
 		//Catch-all exception handler
 		else {

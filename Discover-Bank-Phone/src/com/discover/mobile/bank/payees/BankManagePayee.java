@@ -1,8 +1,11 @@
 package com.discover.mobile.bank.payees;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
@@ -19,9 +22,25 @@ import com.discover.mobile.bank.services.payee.PayeeDetail;
  * @author scottseward
  *
  */
-public class BankManagePayee extends BankSelectPayee{
+public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 	private int index = 0;
-
+	/**
+	 * Reference to button that will open the step 2 in the Add Payee work flow
+	 */
+	private Button addPayee;
+	
+	@Override
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+		final View view = super.onCreateView(inflater, container, savedInstanceState);
+		
+		/**Set click listener to open BankEnterPayeeFragment*/
+		addPayee = (Button)view.findViewById(R.id.add_payee);
+		addPayee.setOnClickListener(this);
+		
+		return view;
+	}
+	
+	
 	/**
 	 * Set the title in the action bar.
 	 */
@@ -77,6 +96,19 @@ public class BankManagePayee extends BankSelectPayee{
 	 */
 	private int getIndex() {
 		return index++;
+	}
+
+
+	/**
+	 * Click Event handler for any widgets hosted by this fragment's layout
+	 * 
+	 * @param sender View that generated the onClick event.
+	 */
+	@Override
+	public void onClick(final View sender) {
+		if(sender == addPayee) {
+			BankNavigator.navigateToAddPayee(BankEnterPayeeFragment.class, null);
+		}
 	}
 	
 }

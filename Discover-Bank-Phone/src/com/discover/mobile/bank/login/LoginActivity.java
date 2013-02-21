@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
@@ -213,6 +214,31 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	}
 	
 	/**
+	 * Check to see if an error occurred which lead to the navigation to the Login Page
+	 */
+	private void maybeShowErrorMessage() {
+		final Intent intent = this.getIntent();
+		final Bundle extras = intent.getExtras();
+
+		if(extras != null){
+			final String errorMessage = extras.getString(IntentExtraKey.SHOW_ERROR_MESSAGE);
+			if( !Strings.isNullOrEmpty(errorMessage) ){
+				showErrorMessage(errorMessage);
+				this.getIntent().putExtra(IntentExtraKey.SHOW_ERROR_MESSAGE, "");
+			}
+		}
+	}
+	
+	/**
+	 * Display the error message provided in the argument list in red text.
+	 * 
+	 * @param errorMessage Reference to error message that is to be displayed.
+	 */
+	public void showErrorMessage(final String errorMessage) {
+		BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);
+	}
+	
+	/**
 	 * Display session expired message
 	 */
 	public void showSessionExpired() {
@@ -241,6 +267,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		
 		//Check if the login activity was launched because of a session expire
 		maybeShowSessionExpired();
+		
+		//Check if the login activity was launched because of an invalid token
+		maybeShowErrorMessage();
 		
 		final int lastError = getLastError();
 		
@@ -933,7 +962,10 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	@Override
 	public ErrorHandler getErrorHandler(){
-		return FacadeFactory.getCardFacade().getCardErrorHandler();
-		
+		if( Globals.getCurrentAccount() == AccountType.CARD_ACCOUNT) {
+			return FacadeFactory.getCardFacade().getCardErrorHandler();
+		} else {
+			return BankErrorHandler.getInstance();
+		}
 	}
 }

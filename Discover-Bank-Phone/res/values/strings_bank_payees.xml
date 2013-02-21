@@ -7,4 +7,10 @@
     <string name="bank_invalid_num_characters">Invalid Number of Characters</string>
     <string name="bank_manage_payees">Manage Payees</string>
   	<string name="bank_no_payees_msg">You can not pay a bill until you have set up a payee to receive the payment</string>
+	<string name="bank_no_payees_modal_title">No Payees Found</string>
+	<string name="bank_no_payees_modal_msg">There are no payees for this search. Please try again.</string>
+	<string name="bank_matches_for">Matches for </string>
+	<string name="bank_no_matches_for">There are no matches for </string>
+	<string name="bank_connie_smith"> \"Connie Smith\"</string>
+	<string name="bank_enter_payee_details">Enter Payee Details</string>
 </resources>

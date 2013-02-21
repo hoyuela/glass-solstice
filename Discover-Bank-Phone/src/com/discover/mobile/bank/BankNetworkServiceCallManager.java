@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
+import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
@@ -18,8 +20,9 @@ import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
+import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
+import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
-import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -33,7 +36,6 @@ import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.google.common.base.Strings;
 
 /**
@@ -135,22 +137,14 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> error) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
+		//Check if the error is a Strong Auth Challenge
 		if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
-			//Verify the response has challenge question
-			if( error instanceof BankErrorResponse ) {
-				final BankErrorResponse bankError = (BankErrorResponse)error;
-
-				//Send request to Strong Auth web-service API
-				final BankStrongAuthDetails details = new BankStrongAuthDetails(bankError);
-
-				BankNavigator.navigateToStrongAuth(activeActivity, details, bankError.getErrorMessage());
-			} else {
-				errorHandler.handleFailure(sender, error);
-
-				((AlertDialogParent)activeActivity).closeDialog();
-			}
-		} else {
-			errorHandler.handleFailure(sender, error);
+			//Send request to Strong Auth web-service API
+			BankServiceCallFactory.createStrongAuthRequest().submit();
+		}
+		//Dispatch response to BankBaseErrorHandler to determine how to handle the error
+		else {
+			this.errorHandler.handleFailure(sender, error);
 
 			((AlertDialogParent)activeActivity).closeDialog();
 		}
@@ -217,8 +211,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 			}
 		}
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
-		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isPostCall() ) {
-			prevCall.retransmit(activeActivity);
+		else if( sender instanceof CreateStrongAuthRequestCall && this.prevCall != null && sender.isPostCall() ) {
+			//If Strong Auth Activity is open close it, so that it goes back to NavigationRootActivity
+			if( DiscoverActivityManager.getActiveActivity() instanceof EnhancedAccountSecurityActivity) {
+				final EnhancedAccountSecurityActivity activity =  (EnhancedAccountSecurityActivity)DiscoverActivityManager.getActiveActivity();
+				activity.finish();
+			}
+			
+			//Retransmit the previous call that triggered the Strong Auth call
+			this.prevCall.retransmit(activeActivity);
 		}
 		//Handle the manage payee service call (which is a get payee service call).
 		else if( sender instanceof ManagePayeeServiceCall) {
@@ -242,14 +243,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		else if( sender instanceof DeletePaymentServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
-			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((DeletePaymentServiceCall) sender).getPaymentDetail());
-			BankNavigator.navigateToReviewPaymentsFromDelete(bundle);
-		} 
-		// Get Payment Successful, navigate to the review payments table
-		else if(sender instanceof GetPaymentsServiceCall) {
-			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
-			BankNavigator.navigateToReviewPaymentsTable(bundle);
+			BankNavigator.navigateToReviewPayments(bundle, false);
+		}
+		//Payee Search Success, navigate to Add Payee Workflow Step 4
+		else if( sender instanceof SearchPayeeServiceCall ) {
+			BankNavigator.navigateToSelectPayees((SearchPayeeResultList)result);
 		}
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
@@ -293,6 +291,10 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 			BankUser.instance().clearSession();
 		}
 
+	}
+	
+	public NetworkServiceCall<?> getLastServiceCall() {
+		return curCall;
 	}
 
 }
