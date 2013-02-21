@@ -1,13 +1,11 @@
 package com.discover.mobile.bank.paybills;
 
-import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
@@ -39,7 +37,6 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
 import com.discover.mobile.bank.ui.AccountAdapter;
-import com.discover.mobile.bank.ui.InvalidAmountCharacterFilter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
@@ -88,7 +85,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	/** Text view for the payee */
 	private TextView payeeText;
 	/** Edit view for amount */
-	private EditText amountEdit;
+	private SchedulePaymentAmountEditText amountEdit;
 	/** Edit view for date */
 	private EditText dateEdit;
 	/** Error view for invalid date */
@@ -119,8 +116,6 @@ public class SchedulePaymentFragment extends BaseFragment {
 	/** saved bundle data */
 	private Bundle savedBundle;
 	
-	/** True when the amount had focus at some point */
-	private boolean amountHadFocus = false;
 	/** date error exists - Cannot submit payment */
 	private boolean isDateError = false;
 	/** amount error exists - Cannot submit payment */
@@ -165,7 +160,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 				.findViewById(R.id.payment_acct_text);
 		paymentAccountSpinner = (Spinner) view
 				.findViewById(R.id.payment_acct_spinner);
-		amountEdit = (EditText) view.findViewById(R.id.amount_edit);
+		amountEdit = (SchedulePaymentAmountEditText) view.findViewById(R.id.amount_edit);
 		amountItem = (RelativeLayout) view.findViewById(R.id.amount_element);
 		amountError = (TextView) view.findViewById(R.id.amount_error);
 		dateEdit = (EditText) view.findViewById(R.id.date_edit);
@@ -182,7 +177,6 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		loadDataFromBundle();
 		setInitialViewData();
-		setAmountFieldRestrictions();
 		setMemoFieldValidation();
 		createItemListeners();
 		restoreState(savedInstanceState);
@@ -301,7 +295,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 				paymentAccountSpinner.setAdapter(accountAdapter);
 			}
 		}
-
+		amountEdit.attachErrorLabelAndLayout(amountError, amountItem);
+		amountEdit.setLowAndHighErrorText(getString(R.string.schedule_pay_too_low), getString(R.string.schedule_pay_too_high));
 		progressHeader.initChangePasswordHeader(0);
 		progressHeader.hideStepTwo();
 		progressHeader.setTitle(R.string.bank_pmt_details,
@@ -492,75 +487,6 @@ public class SchedulePaymentFragment extends BaseFragment {
 	}
 
 	/**
-	 * Sets restrictions related to the amount-to-pay field.
-	 */
-	private void setAmountFieldRestrictions() {
-		InputFilter[] filters = new InputFilter[2];
-		filters[0] = new InvalidAmountCharacterFilter();
-		filters[1] = new InputFilter.LengthFilter(9);
-		amountEdit.setFilters(filters);
-
-		// Shows numeric keyboard as default.
-		amountEdit.setRawInputType(Configuration.KEYBOARD_QWERTY);
-	}
-
-	/**
-	 * Handles validation of the amount field.
-	 */
-	private void validateAmountField() {
-			String inAmount = amountEdit.getText().toString();
-			String outAmount = CommonUtils
-					.formatCurrencyAsStringWithoutSign(inAmount);
-			amountEdit.setText(outAmount);
-
-			double d;
-			try {
-				d = Double.parseDouble(inAmount.replaceAll(",", ""));
-			} catch (Exception e) {
-				d = 0.0f;
-			}
-
-			if (d < MIN_AMOUNT) {
-				setAmountError(true);
-				amountError.setText(getString(R.string.schedule_pay_too_low));
-
-			} else if (d > MAX_AMOUNT) {
-				setAmountError(true);
-				amountError.setText(getString(R.string.schedule_pay_too_high));
-			} else {
-			setAmountError(false);
-		}
-	}
-
-	/**
-	 * Sets the Error state of the amount field if isError is true and resets
-	 * the state if false.
-	 * 
-	 * @param isError
-	 */
-	private void setAmountError(boolean isError) {
-		int padding = (int) getResources().getDimension(
-				R.dimen.between_related_elements_padding);
-		isAmountError = isError;
-		if (isError) {
-			amountEdit.setBackgroundResource(R.drawable.edit_text_red);
-			amountItem.getLayoutParams().height = (int) getResources()
-					.getDimension(R.dimen.listview_vertical_height)
-					+ (int) getResources().getDimension(R.dimen.small_copy_mid);
-			amountItem.setPadding(padding, padding, padding, padding);
-			amountItem.invalidate();
-			amountError.setVisibility(View.VISIBLE);
-		} else {
-			amountEdit.setBackgroundResource(R.drawable.edit_text_default);
-			amountItem.getLayoutParams().height = (int) getResources()
-					.getDimension(R.dimen.listview_vertical_height);
-			amountItem.setPadding(padding, padding, padding, padding);
-			amountItem.invalidate();
-			amountError.setVisibility(View.GONE);
-		}
-	}
-
-	/**
 	 * Sets the date error in case a payment is actually sent after the previous
 	 * cut-off time.
 	 * 
@@ -661,8 +587,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 				if (!v.equals(memoEdit)) {
 					flipMemoElements(false);
 				}
-				if (!v.equals(amountEdit) && amountHadFocus) {
-					validateAmountField();
+				if (!v.equals(amountEdit)) {
+					amountEdit.clearFocus();
 				}
 				return false;
 			}
@@ -682,20 +608,6 @@ public class SchedulePaymentFragment extends BaseFragment {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (!hasFocus) {
 					flipMemoElements(false);
-				}
-			}
-		});
-
-		amountEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (!hasFocus && amountHadFocus) {
-					validateAmountField();
-				} else {
-					String stripCommas = amountEdit.getText().toString();
-					stripCommas = stripCommas.replaceAll(",", "");
-					amountEdit.setText(stripCommas);
-					amountHadFocus = true;
 				}
 			}
 		});
@@ -764,10 +676,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 			@Override
 			public void onClick(View arg0) {
 				setDuplicatePaymentError(false);
-
-				validateAmountField();
 				
-				if (!(isDateError || isAmountError)) {
+				if (!isDateError && amountEdit.isValid()) {
 					String memo = memoText.getText().toString();
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
 					payment.payee = payee.id;

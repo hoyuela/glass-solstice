@@ -20,7 +20,4 @@
     <!-- Status bar height -->
     <dimen name="status_bar_height">40dp</dimen>
     
-    <!-- Schedule Payments list height -->
-    <dimen name="listview_vertical_height">60dp</dimen>
-        
 </resources>

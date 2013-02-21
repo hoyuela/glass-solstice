@@ -50,6 +50,7 @@ public abstract class ValidatedInputField extends EditText{
 	public boolean isInErrorState = false;
 
 	public boolean isInDefaultState = true;
+	
 	/**
 	 * If an error label is provided, this will be shown and hidden on 
 	 * error states.

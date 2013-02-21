@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.ui;
+package com.discover.mobile.common.ui;
 
 import android.text.InputFilter;
 import android.text.Spanned;
