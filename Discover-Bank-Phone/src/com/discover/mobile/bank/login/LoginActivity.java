@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -63,8 +62,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	/*TAG used to print logs for the LoginActivity into logcat*/
 	private static final String TAG = LoginActivity.class.getSimpleName();
 
-	
-
 	/**
 	 * These are string values used when passing extras to the saved instance
 	 * state bundle for restoring the state of the screen upon orientation
@@ -73,9 +70,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private static final String PASS_KEY = "a";
 	private static final String ID_KEY = "b";
 	private static final String SAVE_ID_KEY = "c";
-	private static final String LOGIN_TYPE_KEY = "d";
 	private static final String PRE_AUTH_KEY = "e";
-	private static final String PW_INPUT_TYPE_KEY = "f";
 	private static final String ERROR_MESSAGE_KEY = "g";
 	private static final String ERROR_MESSAGE_VISIBILITY = "h";
 	
@@ -84,19 +79,14 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * A state flag so that we don't run this twice.
 	 */
 	private static boolean PHONE_GAP_INIT_COMPLETE = false;
-	
-	/**
-	 * Roboguise injections of android interface element references.
-	 */
-	// INPUT FIELDS
 
+	// INPUT FIELDS	
 	
 	private NonEmptyEditText idField;
-
 	private NonEmptyEditText passField;
 
 	// BUTTONS
-
+	
 	private Button loginButton;
 	private Button registerOrAtmButton;
 	private Button privacySecOrTermButton;
@@ -115,14 +105,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private ImageView bankCheckMark;
 	private ImageView toggleImage;
 	private ProgressBar splashProgress;
-
-
-	/**
-	 * Non roboguise attributes
-	 */
 	
-	private Resources res;
-
 	/*Used to specify whether the pre-authenciation call has been made for the application. 
 	 * Should only be done at application start-up.
 	 */
@@ -131,7 +114,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 	private boolean saveUserId = false;
 	
-	InputMethodManager imm;
+	private InputMethodManager imm;
 	
 	/**
 	 * Used to remember the lastLoginAccount at startup of the application, in case the user toggles to a different account
@@ -141,12 +124,36 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	
 	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
 	
-
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_start);
+		 
+		loadResources();
 		
+		TrackingHelper.startActivity(this);
+		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
+		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+
+		restoreState(savedInstanceState);
+		setupButtons();
+		
+		imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+		
+		
+		//Check to see if pre-auth request is required. Should only 
+		//be done at application start-up
+		if (!preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
+			startPreAuthCheck();
+		} 
+		
+	}
+	
+	/**
+	 * Assign local references to interface elements that we need to access in some way.
+	 */
+	private void loadResources() {
 		idField = (NonEmptyEditText) findViewById(R.id.username_field);
 		passField = (NonEmptyEditText) findViewById(R.id.password_field);
 		loginButton = (Button) findViewById(R.id.login_button);
@@ -161,26 +168,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		cardCheckMark = (ImageView) findViewById(R.id.card_check_mark); 
 		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark); 
 		toggleImage = (ImageView) findViewById(R.id.remember_user_id_button); 
-		splashProgress = (ProgressBar) findViewById(R.id.splash_progress); 
-		
-		
-		TrackingHelper.startActivity(this);
-		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
-		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
-		res = getResources();
-		restoreState(savedInstanceState);
-		setupButtons();
-		
-		imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-		
-		
-		//Check to see if pre-auth request is required. Should only 
-		//be done at application start-up
-		if (!preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
-			startPreAuthCheck();
-		} 
-		
+		splashProgress = (ProgressBar) findViewById(R.id.splash_progress);
 	}
 
 	/**
@@ -261,7 +249,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	@Override
 	public void onResume(){
 		super.onResume();
-		
+
 		//Check if the login activity was launched because of a logout
 		maybeShowUserLoggedOut();
 		
@@ -297,6 +285,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		} else {
 			this.showLoginPane();
 		}
+
 	}
 	
 
@@ -317,17 +306,16 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
+
 		outState.putString(ID_KEY, idField.getText().toString());
 		outState.putString(PASS_KEY, passField.getText().toString());
 		outState.putBoolean(SAVE_ID_KEY, saveUserId);
 		outState.putBoolean(PRE_AUTH_KEY, preAuthHasRun);
-		outState.putInt(PW_INPUT_TYPE_KEY, passField.getInputType());
-		outState.putInt(LOGIN_TYPE_KEY, cardCheckMark.getVisibility());
 		outState.putString(ERROR_MESSAGE_KEY, errorTextView.getText().toString());
 		outState.putInt(ERROR_MESSAGE_VISIBILITY, errorTextView.getVisibility());
 		super.onSaveInstanceState(outState);
 	}
-
+	
 	/**
 	 * Restore the state of the screen on orientation change.
 	 * 
@@ -335,13 +323,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	public void restoreState(final Bundle savedInstanceState) {
 		if (savedInstanceState != null) {
+
 			idField.setText(savedInstanceState.getString(ID_KEY));
+			
 			passField.setText(savedInstanceState.getString(PASS_KEY));
 			preAuthHasRun = savedInstanceState.getBoolean(PRE_AUTH_KEY);
 
-			passField.setInputType(savedInstanceState.getInt(PW_INPUT_TYPE_KEY));
-
-			setLoginType(savedInstanceState.getInt(LOGIN_TYPE_KEY));
 			setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY), true);
 
 			restoreErrorTextView(savedInstanceState);
@@ -382,10 +369,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final boolean errorTextIsNotLogoutMessage = 
 				!getResources().getString(R.string.logout_sucess).equals(errorTextView.getText().toString());
 				
-		if( errorTextViewIsVisible & errorTextIsNotLogoutMessage )
-			return true;
-		else
-			return false;
+		return errorTextViewIsVisible && errorTextIsNotLogoutMessage;		
 	}
 	
 	/**
@@ -398,10 +382,10 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		rememberIdCheckState = Globals.isRememberId();
 		
 		if(rememberIdCheckState){
-			clearInputs();
-			
-			idField.setText(Globals.getCurrentUser());
-
+			final String savedId = Globals.getCurrentUser();
+			if(!Strings.isNullOrEmpty(savedId)){
+				idField.setText(savedId);
+			}
 			setCheckMark(rememberIdCheckState, true);
 		} else {
 			setCheckMark(rememberIdCheckState, false);
@@ -600,12 +584,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	public void toggleCheckBox(final View v, final boolean cache) {
 	
 		if (saveUserId) {
-			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.gray_gradient_square));
-			toggleImage.setImageDrawable(res.getDrawable(R.drawable.transparent_square));
+			toggleImage.setBackgroundResource(R.drawable.gray_gradient_square);
+			toggleImage.setImageResource(R.drawable.transparent_square);
 			saveUserId = false;
 		} else {
-			toggleImage.setBackgroundDrawable(res.getDrawable(R.drawable.black_gradient_square));
-			toggleImage.setImageDrawable(res.getDrawable(R.drawable.white_check_mark));
+			toggleImage.setBackgroundResource(R.drawable.black_gradient_square);
+			toggleImage.setImageResource(R.drawable.white_check_mark);
 			saveUserId = true;
 		}
 
@@ -647,6 +631,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * row buttons.
 	 */
 	public void toggleBankCardLogin(final View v) { 
+		clearInputs();
 		if (v.equals(goToCardLabel)) {
 			goToCardLabel.setTextColor(getResources().getColor(R.color.black));
 			CommonUtils.setViewVisible(cardCheckMark);
@@ -706,20 +691,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private void setCheckMark(final boolean shouldBeChecked, final boolean cached) {
 		saveUserId = !shouldBeChecked;
 		toggleCheckBox(toggleImage, cached);
-	}
-	
-	
-	/**
-	 * Sets the login type of the login screen. This is for users who want to log in with their "Card" or "Bank" info.
-	 * 
-	 * @param loginType The visibility of the Card login check mark. If visible - then login as Card, else Bank.
-	 */
-	private void setLoginType(final int loginType) {
-		if (View.VISIBLE == loginType)
-			toggleBankCardLogin(goToCardLabel);		
-		else
-			toggleBankCardLogin(goToBankLabel);
-
 	}
 
 	/**
