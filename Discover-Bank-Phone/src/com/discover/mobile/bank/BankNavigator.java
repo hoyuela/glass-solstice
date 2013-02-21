@@ -92,6 +92,8 @@ public final class BankNavigator {
 				((LoginActivity)activity).showSessionExpired();
 			} else if( IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE.equals(cause)) {
 				((LoginActivity)activity).showLogoutSuccessful();
+			} else if( !Strings.isNullOrEmpty(message)) {
+				((LoginActivity)activity).showErrorMessage(message);
 			}
 		}
 	}

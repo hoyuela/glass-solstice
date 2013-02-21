@@ -79,13 +79,6 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		titleView.setVisibility(View.VISIBLE);
 		logoutDivider.setVisibility(View.VISIBLE);
 
-		titleView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				updateStatusBarVisibility();
-			}
-		});
-
 		navigationToggle.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
