@@ -18,8 +18,8 @@ public abstract class NavigationMenuFragment extends RoboSherlockListFragment {
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
+	public void onStart() {
+		super.onStart();
 		this.getListView().performItemClick(getListView().getAdapter().getView(NavigationIndex.getMainIndex(), null, null), NavigationIndex.getMainIndex(), NavigationIndex.getMainIndex());
 	}
 }

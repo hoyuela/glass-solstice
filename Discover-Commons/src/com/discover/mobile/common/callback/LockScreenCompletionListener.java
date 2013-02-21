@@ -36,7 +36,7 @@ public class LockScreenCompletionListener implements CompletionListener {
 	
 	public LockScreenCompletionListener(final Activity activityToLock) {
 		activity = activityToLock;
-		activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);	
+//		activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);	
 	}
 	@Override
 	public CallbackPriority getCallbackPriority() {
@@ -46,8 +46,20 @@ public class LockScreenCompletionListener implements CompletionListener {
 	@Override
 	public void complete(final NetworkServiceCall<?> sender, final Object arg0) {
 		if( null != activity ) {
-			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+//			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		}
+	}
+	
+	public void setScreenOrientation(Activity a){
+		int orientation = 0;
+		if (null != a){
+			if (activity.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
+				orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+			}else {
+				orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+			}
+		}
+		activity.setRequestedOrientation(orientation);
 	}
 
 }

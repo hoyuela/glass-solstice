@@ -3,9 +3,8 @@ package com.discover.mobile.bank.login;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Service;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +38,6 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.facade.LoginActivityInterface;
@@ -137,10 +135,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 		restoreState(savedInstanceState);
 		setupButtons();
-		
-		imm = (InputMethodManager)this.getSystemService(Service.INPUT_METHOD_SERVICE);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-		
 		
 		//Check to see if pre-auth request is required. Should only 
 		//be done at application start-up
@@ -404,7 +398,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			@Override
 			public void onClick(final View v) {
 				CommonUtils.setViewGone(errorTextView);
-				imm.hideSoftInputFromWindow(loginButton.getWindowToken(), 0); 
+				
+				//Checking if imm is null before trying to hide the keyboard. This was causing a 
+				//null pointer exception in landscape.
+				if (imm != null){
+					imm.hideSoftInputFromWindow(v.getWindowToken(), 0); 
+				}
 				//Clear the last error that occurred
 				setLastError(0);
 				
@@ -788,8 +787,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback.<PreAuthResult> builder(this)
 				.withSuccessListener(new PreAuthSuccessResponseHandler(this))
 				.withErrorResponseHandler(new PreAuthErrorResponseHandler(this))
-				.withExceptionFailureHandler(new BankExceptionHandler() )
-				.withCompletionListener(new LockScreenCompletionListener(this)).build();
+				.withExceptionFailureHandler(new BankExceptionHandler() ).build();
 
 		new PreAuthCheckCall(this, callback).submit();
 	}
