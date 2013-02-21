@@ -127,6 +127,7 @@
                         android:background="@drawable/edit_text_default"
                         android:maxLines="1"
                         android:textColor="@color/black"
+                        android:imeOptions="flagNoExtractUi"
                         android:textCursorDrawable="@null" />
                 </LinearLayout>
 
@@ -242,6 +243,7 @@
                     android:scrollHorizontally="false"
                     android:textColor="@color/black"
                     android:textCursorDrawable="@null"
+                    android:imeOptions="flagNoExtractUi"
                     android:visibility="invisible" />
             </RelativeLayout>
         </LinearLayout>
