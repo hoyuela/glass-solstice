@@ -9,7 +9,6 @@ import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback.Builder;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 
 
@@ -75,7 +74,6 @@ public class BankPhoneAsyncCallbackBuilder {
 				.withErrorResponseHandler(BankNetworkServiceCallManager.getInstance())
 				.withStartListener(BankNetworkServiceCallManager.getInstance())
 				.withSuccessListener((SuccessListener<T>) BankNetworkServiceCallManager.getInstance())
-				.withCompletionListener(new LockScreenCompletionListener(activity))
 				.withCompletionListener( BankNetworkServiceCallManager.getInstance() );
 		
 		
@@ -95,7 +93,6 @@ public class BankPhoneAsyncCallbackBuilder {
 				.withErrorResponseHandler(BankNetworkServiceCallManager.getInstance())
 				.withStartListener(BankNetworkServiceCallManager.getInstance())
 				.withSuccessListener((SuccessListener<T>) BankNetworkServiceCallManager.getInstance())
-				.withCompletionListener(new LockScreenCompletionListener(activity))
 				.withCompletionListener( BankNetworkServiceCallManager.getInstance() );
 		
 		return builder;

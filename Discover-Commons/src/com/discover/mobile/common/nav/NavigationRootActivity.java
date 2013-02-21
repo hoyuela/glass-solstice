@@ -1,6 +1,5 @@
 package com.discover.mobile.common.nav;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -74,7 +73,6 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	@Override
 	public void onResume(){
 		super.onResume();
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 		if(null != resumeFragment && !wasPaused){
 			getSupportFragmentManager().popBackStack();
 			makeFragmentVisible(resumeFragment, false);

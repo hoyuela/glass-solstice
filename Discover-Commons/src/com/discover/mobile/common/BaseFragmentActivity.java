@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
@@ -47,6 +48,8 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  *
  */
 public abstract class BaseFragmentActivity extends SlidingFragmentActivity implements RoboContext, ErrorHandlerUi, AlertDialogParent{
+	
+	private static final String TAG = BaseFragmentActivity.class.getSimpleName();
 	/**
 	 * Contains the last error that occurred with the activity.
 	 * An object that holds a reference to an instance of BaseActivity can set its value by using setLastError.
@@ -335,6 +338,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	/**
 	 * Child class to provide proper error handler
 	 */
+	@Override
 	public abstract ErrorHandler getErrorHandler() ;
 
 	/**
@@ -359,21 +363,30 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	 */
 	@Override
 	public void closeDialog() {
-		if( this.mActiveDialog != null && this.mActiveDialog.isShowing()) {
-			this.mActiveDialog.dismiss();
-			this.mActiveDialog = null;
+		if( mActiveDialog != null && mActiveDialog.isShowing()) {
+			mActiveDialog.dismiss();
+			mActiveDialog = null;
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Activity does not have a dialog associated with it!" );
+			}
 		}
+		
 	}
-
+	
 	/**
 	 * Starts a Progress dialog using this activity as the context. The ProgressDialog created
 	 * will be set at the active dialog.
 	 */
 	@Override
-	public void startProgressDialog() {
-		if( this.mActiveDialog == null ) {
-			this.mActiveDialog = ProgressDialog.show(this,"Discover", "Loading...", true);
-			setDialog(this.mActiveDialog);
+	public void startProgressDialog() {		
+		if( mActiveDialog == null ) {
+			mActiveDialog = ProgressDialog.show(this,"Discover", "Loading...", true);	
+			setDialog(mActiveDialog);
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Activity does not have a dialog associated with it!" );
+			}
 		}
 	}
 }
