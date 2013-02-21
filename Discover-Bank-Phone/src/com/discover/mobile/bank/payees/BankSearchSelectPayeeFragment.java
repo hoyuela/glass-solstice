@@ -100,6 +100,7 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		/**Custom Widget used to navigate to the Add Payees fragment*/
 		this.enterPayeeDetails = (SimpleChooseListItem)view.findViewById(R.id.enter_payee_details);
 		this.enterPayeeDetails.setTitleText(R.string.bank_enter_payee_details);
+		this.enterPayeeDetails.setOnClickListener(this);
 				
 		if(null == savedInstanceState) {
 			/**Set text to show what the criteria was used to generate the list of payees found*/
@@ -168,23 +169,32 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 */
 	@Override
 	public void onClick(final View sender) {
+		/**Feedback link was clicked**/
 		if( sender == feedback ) {
 			BankNavigator.navigateToFeedback();
-		} else if( sender == helpButton ) {
+		}
+		/**Help button was clicked**/
+		else if( sender == helpButton ) {
 			final CharSequence text = "Help Under Development";
 			final int duration = Toast.LENGTH_SHORT;
 
 			final Toast toast = Toast.makeText(this.getActivity(), text, duration);
 			toast.show();
-		}  else if( sender instanceof SimpleChooseListItem ) {
+		}
+		/**A list item with a Managed Verified Payee Name was clicked*/
+		else if( sender instanceof SimpleChooseListItem ) {
 			final SimpleChooseListItem item = (SimpleChooseListItem)sender;
 			final SearchPayeeResult result = (SearchPayeeResult)item.getItem();
 			
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
-			//THIS HAS NOT BEEN COMPLETED
-			//BankNavigator.navigateToAddPayee(BankAddPayeeFragment.class, bundle);
-		} 
+			
+			BankNavigator.navigateToAddPayee(BankAddPayeeFragment.class, bundle);
+		}
+		/**Enter Payee Details was clicked*/
+		else if( sender instanceof SimpleChooseListItem ) {
+			BankNavigator.navigateToAddPayee(BankAddPayeeFragment.class, null);
+		}
 		
 	}
 }

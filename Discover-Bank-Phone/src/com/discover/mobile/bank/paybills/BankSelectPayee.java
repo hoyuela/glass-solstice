@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.common.BaseFragment;
@@ -152,7 +153,7 @@ public class BankSelectPayee extends BaseFragment{
 
 			@Override
 			public void onClick(final View v) {
-				//BankNavigator.navigateToAddPayee();
+				BankNavigator.navigateToAddPayee(BankEnterPayeeFragment.class, null);
 			}
 		});
 	}

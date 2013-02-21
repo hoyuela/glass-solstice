@@ -407,7 +407,7 @@ public final class BankNavigator {
 	 */
 	public static void navigateToAddPayee(final Class<?>  step, final Bundle bundle) {
 		BaseFragment fragment = null;
-		
+
 		if( step == BankEnterPayeeFragment.class ) {
 			fragment = new BankEnterPayeeFragment();	
 		} else if( step == BankAddPayeeFragment.class ) {

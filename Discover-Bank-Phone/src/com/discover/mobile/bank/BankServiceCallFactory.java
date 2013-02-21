@@ -15,9 +15,11 @@ import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
+import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
+import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
@@ -215,9 +217,12 @@ public class BankServiceCallFactory {
 	}
 
 	/**
+	 * Creates a DeletePaymentServiceCall object used to delete a Scheduled Payment from
+	 * a users Bank Account using the service API DELETE /api/payments/{id}.
 	 * 
-	 * @param pmt
-	 * @return
+	 * @param pmt Reference to a PaymentDetail with information about the Scheduled Payment being deleted.
+	 * 
+	 * @return Reference to the DeletePaymentServiceCall object created.
 	 */
 	public static DeletePaymentServiceCall createDeletePaymentServiceCall(final PaymentDetail pmt) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
@@ -230,6 +235,15 @@ public class BankServiceCallFactory {
 		return new DeletePaymentServiceCall(activity, callback, pmt);
 	}
 
+	/**
+	 * Creates a SearchPayeeServiceCall object used to send a request to download a list of Verified Managed Payees 
+	 * which contain the string found in the name parameter. An HTTP GET Request is sent
+	 * to /api/payees/search upon calling submit() on the SearchPayeeServiceCall created.
+	 * 
+	 * @param name Holds a string with the name of payees to be matched against at the server.
+	 * 
+	 * @return Reference to the SearchPayeeServiceCall object created.
+	 */
 	public static SearchPayeeServiceCall createPayeeSearchRequest(final String name) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
@@ -241,4 +255,22 @@ public class BankServiceCallFactory {
 		return new SearchPayeeServiceCall(activity, callback, name);
 	}
 	
+	/**
+	 * Creates a AddPayeeServiceCall object used to add a payee to the session user's account via
+	 * an HTTP POST request to the Bank Web-service API "Add a Payee" using the url /api/payees.
+     * 
+	 * @param value - Holds information about the Payee being added to the session user's account
+	 * 
+	 * @return Reference to the AddPayeeServiceCall object created.
+	 */
+	public static AddPayeeServiceCall createAddPayeeRequest(final PayeeDetail value) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<PayeeDetail>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PayeeDetail.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new AddPayeeServiceCall(activity, callback, value);
+	}
 }
