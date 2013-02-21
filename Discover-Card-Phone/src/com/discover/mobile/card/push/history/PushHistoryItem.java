@@ -20,7 +20,6 @@ import com.discover.mobile.card.services.push.history.PostNotificationRead;
 import com.discover.mobile.card.services.push.history.PostReadDetail;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 
 /**
@@ -117,7 +116,6 @@ public class PushHistoryItem extends RelativeLayout{
 				.withSuccessListener(new ReadNotificationSucessListener(this))
 				.withErrorResponseHandler(new ReadNotificationErrorHandler())
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(new LockScreenCompletionListener(activity))
 				.build();
 		
 		new PostNotificationRead(activity, callback, detail).submit();

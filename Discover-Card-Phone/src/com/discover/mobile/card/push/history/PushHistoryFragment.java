@@ -20,7 +20,6 @@ import com.discover.mobile.card.services.push.history.NotificationListDetail;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 
 public class PushHistoryFragment extends BaseFragment{
@@ -153,7 +152,6 @@ public class PushHistoryFragment extends BaseFragment{
 				.withSuccessListener(new PushHistorySuccessListener(this))
 				.withErrorResponseHandler(new PushHistoryErrorHandler())
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
 				.build();
 		
 		new GetAlertHistory(getActivity(), callback, begin, amount).submit();
@@ -192,7 +190,7 @@ public class PushHistoryFragment extends BaseFragment{
 	 * @param details - list of items that will be used to updated the list
 	 */
 	private void updateList(final NotificationListDetail details) {
-		for(NotificationDetail detail : details.notifications){
+		for(final NotificationDetail detail : details.notifications){
 			list.addView(createListItem(detail));
 		}
 	}

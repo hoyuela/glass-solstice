@@ -15,9 +15,7 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
-import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.facade.LoginServiceFacade;
@@ -31,7 +29,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 public class LoginServiceFacadeImpl implements LoginServiceFacade{
 
 	@Override
-	public void login(final LoginActivityInterface callingActivity, String username, String password) {
+	public void login(final LoginActivityInterface callingActivity, final String username, final String password) {
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback
 				.<AccountDetails> builder((Activity) callingActivity)
 				.showProgressDialog("Discover", "Loading...", true)
@@ -58,9 +56,8 @@ public class LoginServiceFacadeImpl implements LoginServiceFacade{
 
 					}
 				})
-				.withErrorResponseHandler(new com.discover.mobile.card.error.CardBaseErrorResponseHandler((ErrorHandlerUi) callingActivity))
+				.withErrorResponseHandler(new com.discover.mobile.card.error.CardBaseErrorResponseHandler(callingActivity))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(new LockScreenCompletionListener((Activity) callingActivity))
 				.build();
 
 		new AuthenticateCall((Context) callingActivity, callback, username, password).submit();

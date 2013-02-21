@@ -30,7 +30,6 @@ import com.discover.mobile.card.services.push.manage.PushNotificationPrefsDetail
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.xtify.sdk.api.XtifySDK;
@@ -237,7 +236,6 @@ public class PushManageFragment extends BaseFragment{
 				.withSuccessListener(new GetPushPrefsSuccessListener(this))
 				.withErrorResponseHandler(new GetPushPrefsErrorResponseHandler())
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
 				.build();
 		
 		new GetNotificationPreferences(this.context, callback).submit();
@@ -364,9 +362,9 @@ public class PushManageFragment extends BaseFragment{
 				prefs.remindersEnrollResults.preferences.isEmpty()){return defaultValue;}
 		
 		
-		for(PreferencesDetail item: prefs.remindersEnrollResults.preferences){
+		for(final PreferencesDetail item: prefs.remindersEnrollResults.preferences){
 			if(null != item.params && !item.params.isEmpty() && item.prefTypeCode.equals(category)){
-				for(PushManageCategoryParamDetail param : item.params){
+				for(final PushManageCategoryParamDetail param : item.params){
 					if(PushManageCategoryParamDetail.AMOUNT_CODE.equals(param.code)){
 						return Integer.parseInt(param.value);
 					}
@@ -484,7 +482,7 @@ public class PushManageFragment extends BaseFragment{
 	 * Sets up the master toggle switches
 	 */
 	private void setUpMasterToggles() {
-		for(PreferencesDetail item: prefs.remindersEnrollResults.preferences){
+		for(final PreferencesDetail item: prefs.remindersEnrollResults.preferences){
 			if(item.accepted.equals(PreferencesDetail.ACCEPTED)){
 				if(item.categoryId.equals(PreferencesDetail.PUSH_PARAM)){
 					setMasterPushSwitchActive();
@@ -507,7 +505,6 @@ public class PushManageFragment extends BaseFragment{
 				.withSuccessListener(new PostPrefsSuccessListener(this))
 				.withErrorResponseHandler(new PushPrefsErrorHandler((CardNavigationRootActivity)this.getActivity()))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
 				.build();
 		
 		new PostNotificationPreferences(this.context, callback, getPreferences()).submit();
@@ -548,7 +545,7 @@ public class PushManageFragment extends BaseFragment{
 	private List<PostPrefDetail> getPrefs() {
 		final List<PostPrefDetail> newPrefs = new ArrayList<PostPrefDetail>();
 		final boolean textIsEnabled = (this.isMasterTextEnabled && (null != prefs.remindersEnrollResults.phoneNumber));
-		for(PushManageCategoryItem item : categoriesList){
+		for(final PushManageCategoryItem item : categoriesList){
 			newPrefs.add(item.getTextPreferencesDetail(textIsEnabled));
 			newPrefs.add(item.getPushPreferencesDetail(isMasterPushEnabled));
 		}
@@ -579,7 +576,7 @@ public class PushManageFragment extends BaseFragment{
 	public void showSaveBar(){
 		boolean isValid = true;
 		
-		for(PushManageCategoryItem item : categoriesList){
+		for(final PushManageCategoryItem item : categoriesList){
 			if(!item.isValid()){
 				isValid = false;
 			}

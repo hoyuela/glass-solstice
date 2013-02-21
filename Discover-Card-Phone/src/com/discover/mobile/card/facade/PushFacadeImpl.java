@@ -13,7 +13,6 @@ import com.discover.mobile.card.services.push.registration.PushRegistrationStatu
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.facade.PushFacade;
 /**
@@ -24,7 +23,7 @@ import com.discover.mobile.common.facade.PushFacade;
 public class PushFacadeImpl implements PushFacade{
 
 	@Override
-	public void getXtifyRegistrationStatus(BaseActivity callingActivity) {
+	public void getXtifyRegistrationStatus(final BaseActivity callingActivity) {
 		final AsyncCallback<PushRegistrationStatusDetail> callback = 
 				GenericAsyncCallback.<PushRegistrationStatusDetail>builder(callingActivity)
 				.showProgressDialog(callingActivity.getResources().getString(R.string.push_progress_get_title), 
@@ -33,7 +32,6 @@ public class PushFacadeImpl implements PushFacade{
 				.withSuccessListener(new PushRegistrationStatusSuccessListener())
 				.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(callingActivity))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(new LockScreenCompletionListener(callingActivity))
 				.launchIntentOnSuccess(CardNavigationRootActivity.class)
 				.finishCurrentActivityOnSuccess(callingActivity)
 				//FIXME need to clear these text fields.  determine best way with facade
@@ -43,7 +41,8 @@ public class PushFacadeImpl implements PushFacade{
 		new GetPushRegistrationStatus(callingActivity, callback).submit();
 	}
 
-	public void startXtifySDK(BaseActivity callingActivity) {
+	@Override
+	public void startXtifySDK(final BaseActivity callingActivity) {
 		new PushNotificationService ().start(callingActivity) ;
 		
 	}

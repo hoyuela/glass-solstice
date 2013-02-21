@@ -22,7 +22,6 @@ import com.discover.mobile.card.services.account.recent.RecentActivityPeriodsDet
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
@@ -186,9 +185,7 @@ public class AccountRecentActivityFragment extends BaseFragment {
 						new GetActivityPeriodsSuccessListener(this))
 						.withErrorResponseHandler(new RecentActivityErrorHandler(this))
 						.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-						.withCompletionListener(
-								new LockScreenCompletionListener(this.getActivity()))
-								.build();
+						.build();
 
 		new GetActivityPeriods(getActivity(), callback).submit();
 
@@ -205,9 +202,7 @@ public class AccountRecentActivityFragment extends BaseFragment {
 				.withSuccessListener(new GetTransactionsSuccessListener(this))
 				.withErrorResponseHandler(new RecentActivityErrorHandler(this))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(
-						new LockScreenCompletionListener(this.getActivity()))
-						.build();
+				.build();
 	}
 
 	/**

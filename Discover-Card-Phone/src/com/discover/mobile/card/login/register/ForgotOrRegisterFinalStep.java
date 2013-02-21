@@ -28,7 +28,6 @@ import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
@@ -66,7 +65,6 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 				.showProgressDialog("Discover", "Loading...", true)
 				.withErrorResponseHandler(new CardBaseErrorResponseHandler(this))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(new LockScreenCompletionListener(this))
 				.withSuccessListener(new SuccessListener<AccountDetails>() {
 
 					@Override
@@ -110,7 +108,6 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity {
 							.withSuccessListener(new PushConfirmationSuccessListener())
 							.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(FacadeFactory.getLoginFacade().getLoginActivity()))
 							.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-							.withCompletionListener(new LockScreenCompletionListener(this))
 							.finishCurrentActivityOnSuccess(this)
 							.build();
 

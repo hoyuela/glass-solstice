@@ -25,7 +25,6 @@ import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
@@ -298,7 +297,6 @@ public class AccountSummaryFragment extends BaseFragment {
 					.withSuccessListener(new LatePaymentWarningSuccessListener(this))
 					.withErrorResponseHandler(new LatePaymentErrorHandler(this))
 					.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-					.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
 					.build();
 
 			new GetLatePaymentWarning(getActivity(), callback).submit();
@@ -319,7 +317,6 @@ public class AccountSummaryFragment extends BaseFragment {
 					.withSuccessListener(new LatePaymentWarningTextSuccessListener(this))
 					.withErrorResponseHandler(new LatePaymentErrorHandler(this))
 					.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-					.withCompletionListener(new LockScreenCompletionListener(this.getActivity()))
 					.build();
 
 			new GetLatePaymentWarningText(getActivity(), callback).submit();
