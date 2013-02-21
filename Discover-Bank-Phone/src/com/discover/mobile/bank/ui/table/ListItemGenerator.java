@@ -1,7 +1,10 @@
 package com.discover.mobile.bank.ui.table;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.view.View;
@@ -76,7 +79,7 @@ public class ListItemGenerator {
 	}
 
 	public ViewPagerListItem getDateCell(final String formattedDate) {
-		return getTwoItemCell(R.string.date, formattedDate);
+		return getTwoItemCell(R.string.date, convertDate(formattedDate.split(ActivityDetail.DATE_DIVIDER)[0]));
 	}
 
 	public ViewPagerListItem getAmountCell(final String amount) {
@@ -134,50 +137,51 @@ public class ListItemGenerator {
 	public ViewPagerListItem getConfirmationCell(final String confirmationNumber) {
 		return getTwoItemCell(R.string.confirmation_number, confirmationNumber);
 	}
-	
+
 	public ViewPagerListItem getPayeeNameCell(final String payeeName) {
 		return getTwoItemCell(R.string.payee_name, payeeName);
 	}
-	
+
 	public ViewPagerListItem getPayeeNicknameCell(final String nickname) {
 		return getTwoItemCell(R.string.nickname, nickname);
 	}
-	
+
 	public ViewPagerListItem getAccountNumberCell(final String formattedAccountNumber) {
 		return getTwoItemCell(R.string.account_number, formattedAccountNumber);
 	}
-	
+
 	public ViewPagerListItem getPhoneNumberCell(final String phoneNumber) {
 		return getTwoItemCell(R.string.phone_number, badPhoneNumberFormatter(unformatPhoneNumber(phoneNumber)));
 	}
 
-// TEMP this may (and should) be replaced with the server formatting the phone numbers.
+	// TEMP this may (and should) be replaced with the server formatting the phone numbers.
 	private String badPhoneNumberFormatter(final String phoneNumber) {
-		if(phoneNumber == null)
+		if(phoneNumber == null) {
 			return "";
-		else if (phoneNumber.length() < 5)
+		} else if (phoneNumber.length() < 5) {
 			return phoneNumber;
-		else
+		} else {
 			return phoneNumber.subSequence(0, 3) + "-" + badPhoneNumberFormatter(phoneNumber.substring(3));
+		}
 	}
-	
-// TEMP should not be necessary if we get a formatted phone number from the server.
+
+	// TEMP should not be necessary if we get a formatted phone number from the server.
 	private String unformatPhoneNumber(final String phoneNumber){
 		//removes all characters that are not a number from a String.
 		return phoneNumber.replaceAll("[^0-9]", "");
 	}
-	
+
 	public ViewPagerListItem getAddressCell(final String address){
 		return (address == null) ? getTwoItemCell(R.string.address, "") : getTwoItemCell(R.string.address, address);
 	}
-	
+
 	public ViewPagerListItem getUnmanagedPayeeMemoCell(final String memo) {
 		final ViewPagerListItem payeeMemo = getMemoItemCell(memo);
 		payeeMemo.getTopLabel().setText(R.string.payee_memo);
-		
+
 		return payeeMemo;
 	}
-	
+
 	/**
 	 * Returns a list of ViewPagerListItems for a given Transaction from an ActivityDetail object.
 	 * @param item an ActivityDetail object.
@@ -186,11 +190,11 @@ public class ListItemGenerator {
 	public List<ViewPagerListItem> getDetailTransactionList(final ActivityDetail item){
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
 
-		items.add(getAmountCell(item.amount));
+		items.add(getAmountCell(item.amount.value));
 		items.get(0).getDividerLine().setVisibility(View.GONE);
 		items.add(getDescriptionCell(item.description, item.id));
-		items.add(getDateCell(item.dates.formattedDate));
-		items.add(getBalanceCell(item.balance));
+		items.add(getDateCell(item.dates.get(ActivityDetail.POSTED)));
+		items.add(getBalanceCell(Integer.parseInt(item.balance.value)));
 
 		return items;
 	}
@@ -215,7 +219,7 @@ public class ListItemGenerator {
 
 		return items;
 	}
-	
+
 	/**
 	 * Get a payee detail list from a PayeeDetail object. Returns a list that is based on if the Payee
 	 * is verified or not.
@@ -236,10 +240,10 @@ public class ListItemGenerator {
 			items.add(getAddressCell(item.address.formattedAddress));
 			items.add(getUnmanagedPayeeMemoCell(item.memo));	
 		}
-		
+
 		return items;
 	}
-	
+
 	/**
 	 * Returns a payment date cell based on a PaymentDetail object. It returns a date based on the kind of
 	 * payment that was passed to it, like SCHEDULED, COMPLETED, or CANCELLED.
@@ -263,7 +267,22 @@ public class ListItemGenerator {
 		}
 
 		return paymentDateItem;
+	}
 
+	/**
+	 * Convert the date from the format dd/MM/yyyy to dd/MM/yy
+	 * @param date - date to be converted
+	 * @return the converted date
+	 */
+	private String convertDate(final String date){
+		final SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+		final SimpleDateFormat tableFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+
+		try{
+			return tableFormat.format(serverFormat.parse(date));
+		} catch (final ParseException e) {
+			return date;
+		}
 	}
 
 }

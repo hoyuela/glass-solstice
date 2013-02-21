@@ -67,7 +67,7 @@ public class Account implements Serializable {
 	 * Auto-generated serial UID which is used to serialize and de-serialize Account objects
 	 */
 	private static final long serialVersionUID = 2673259114583039084L;
-	
+
 	/**
 	 * Holds a String sued to represent a Checking Account
 	 */
@@ -97,66 +97,66 @@ public class Account implements Serializable {
 	 */
 	public static final String LINKS_POSTED_ACTIVITY = "postedActivity";
 	/**
-	  * Holds a String used to fetch the URL used to downloaded posted activity
+	 * Holds a String used to fetch the URL used to downloaded posted activity
 	 */
 	public static final String LINKS_SCHEDULED_ACTIVITY = "scheduledActivity";
-	
+
 	/**
 	 * The last four digits of the account number (e.g. 'ending in 1111).
 	 */
 	@JsonProperty("accountNumber")
 	public AccountNumber accountNumber;
-	
+
 	/**
 	 * The account id in the list of all accounts for this Banking Customer.
 	 */
 	@JsonProperty("id")
 	public String id;
-	
+
 	/**
 	 * The name of the account. This generally derived from its account type.
 	 */
 	@JsonProperty("name")
 	public String name;
-	
+
 	/**
 	 * The nick name of the account, given by the Banking Customer.
 	 */
-	@JsonProperty("nickname")
+	@JsonProperty("nickName")
 	public String nickname;
-	
+
 	/**
 	 * The account type code which signifies which type of account this is.
 	 * 
 	 */
 	@JsonProperty("type")
 	public String type;
-	
+
 	/**
 	 * The monetary value that is available for withdrawl at this instant, 
 	 * represented in cents. (e.g. 12345 would be $123.45)
 	 */
 	@JsonProperty("balance")
 	public Money balance;
-	
+
 	/**
 	 * The current interest rate for the account, if any, specified as a 
 	 * composite object of a numerator, denomenator, and a preferred display string.
 	 */
 	@JsonProperty("interestRate")
 	public Percentage interestRate;
-	
-	
+
+
 	@JsonProperty("apy")
 	public Percentage apy;
-	
+
 	/**
 	 * The amount of interest that was compounded and added to the account balance 
 	 * from last the last statement, represented in cents.(e.g. 12345 would be $123.45)
 	 */
 	@JsonProperty("interestEarnedLastStatement")
 	public Money interestEarnedLastStatement;
-	
+
 	/**
 	 * The amount of interest that was compounded and added to the account balance 'Year to Date', 
 	 * represented in cents. (e.g. 12345 would be $123.45)
@@ -169,59 +169,59 @@ public class Account implements Serializable {
 	 */
 	@JsonProperty("openDate")
 	public String openDate;
-	
+
 	/**
 	 * The status of the account (e.g. 'OPEN' or 'CLOSED')
 	 */
 	@JsonProperty("status")
 	public String status;
-	
+
 	/**
 	 * The current amount that is due
 	 */
 	@JsonProperty("currentAmountDue")
 	public Money currentAmontDue;
-	
+
 	/**
 	 * The date that the next payment is due
 	 */
 	public String nextPaymentDueDate;
-	
+
 	/**
 	 * The original balance
 	 */
 	public Money originalBalance;
-	
+
 	/**
 	 * The last payment amount received
 	 * */
 	@JsonProperty("lastPaymentReceivedAmount")
 	public Money lastPaymentReceivedAmount;
-	
+
 	/**
 	 * The length of the CD in months (eg. "24" for 2 year CD)
 	 * */
 	@JsonProperty("accountTerm")
 	public String accountTerm;
-	
+
 	/**
 	 * The initial deposit to fund this CD
 	 * */
 	@JsonProperty("initialDeposit")
 	public Money initialDeposit;
-	
+
 	/**
 	 * The date at which this CD will fully mature
 	 * */
 	@JsonProperty("matureDate")
 	public String matureDatae;
-	
+
 	/**
 	 * Contains Bank web-service API Resource links for postedActivity and scheduledActivity
 	 */
 	@JsonProperty("links")
 	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
-	
+
 	/**
 	 * Read URL from hash-map of links stored in links using a Key.
 	 * 
@@ -229,8 +229,8 @@ public class Account implements Serializable {
 	 * @return Returns a ReceivedUrl object which holds the URL link
 	 */
 	public String getLink(final String Key) {
-		
+
 		return BankUrlManager.getUrl(links, Key);
 	}
-	
+
 }
