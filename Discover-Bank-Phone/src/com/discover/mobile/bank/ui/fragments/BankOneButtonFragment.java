@@ -58,7 +58,17 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 * Reference to a Progress indicator used to display a users progress in the current work-flow
 	 */
 	protected HeaderProgressIndicator progressIndicator;
-
+	/**
+	 * Reference to a TextView which displays a title for the instructions or note provided to the user.
+	 * By default view is gone, sub-class to make it visible as required.
+	 */
+	protected TextView noteTitle;
+	/**
+	 * Reference to a TextView which displays a note or instructions to the user. By default view is gone, 
+	 * sub-class to make it visible as required.
+	 */
+	protected TextView noteTextMsg;
+	
 	/**
 	 * Sets click listeners for the actionButton, actionLink, feedbackLink. Calls the method to populate
 	 * content on the contentTable and loads a reference to view for progressIndicator. Finally,
@@ -83,7 +93,13 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		
 		feedbackLink = (TextView)view.findViewById(R.id.provide_feedback);
 		feedbackLink.setOnClickListener(this);
-
+		
+		noteTitle = (TextView)view.findViewById(R.id.note_text_title);
+		noteTitle.setVisibility(View.GONE);
+		
+		noteTextMsg = (TextView)view.findViewById(R.id.note_text_msg);
+		noteTextMsg.setVisibility(View.GONE);
+		
 		loadListElementsToLayoutFromList(contentTable, getContent());
 			
 		return view;
@@ -121,6 +137,7 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 			this.onActionLinkClick();
 		}
 	}
+	
 	
 	/**
 	 * Disable back press for this fragment
