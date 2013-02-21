@@ -15,7 +15,7 @@ import com.google.common.base.Strings;
  */
 public class BankUrlManager  {
 
-//	private static String BASE_URL = "https://asys.discoverbank.com";
+	private static String BASE_URL = "https://asys.discoverbank.com";
 	private static String DISCOVER_STRIPPED_URL = "https://www.discoverbank.com";
 	//private static String BASE_URL = "https://beta.discoverbank.com";
 	//	private static String DISCOVER_STRIPPED_URL = "https://www.discoverbank.com";
