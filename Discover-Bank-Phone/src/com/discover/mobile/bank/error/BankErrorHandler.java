@@ -18,7 +18,6 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.error.CloseApplicationOnDismiss;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.error.NavigateToLoginOnDismiss;
@@ -142,12 +141,6 @@ public class BankErrorHandler implements ErrorHandler {
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, errorText, true, helpResId,
 				R.string.ok);
 
-		// If not logged in then exit the application
-		if (!Globals.isLoggedIn() && HttpURLConnection.HTTP_UNAVAILABLE == errorCode) {
-			// Close application
-			modal.setOnDismissListener(new CloseApplicationOnDismiss(activeActivity));
-		} 
-
 		// Show one button error dialog
 		return modal;
 	}
@@ -249,13 +242,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 		} else {
 			modal = createErrorModal(title, errorText);
-		}
-
-		// If not logged in then exit the application
-		if (!Globals.isLoggedIn()) {
-			// Close application
-			modal.setOnDismissListener(new CloseApplicationOnDismiss(activeActivity));
-		}  
+		} 
 			
 		showCustomAlert(modal);
 
