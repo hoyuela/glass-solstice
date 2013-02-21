@@ -9,7 +9,6 @@ import android.app.Activity;
 import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback.Builder;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 
@@ -49,13 +48,11 @@ public class CardAsyncCallbackBuilder {
 			builder = GenericAsyncCallback.<T>builder(activity)
 								.showProgressDialog("Discover", "Loading...", true)
 								.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-								.withErrorResponseHandler(new CardBaseErrorResponseHandler(errorHandler))
-								.withCompletionListener(new LockScreenCompletionListener(activity));
+								.withErrorResponseHandler(new CardBaseErrorResponseHandler(errorHandler));
 		} else {
 			builder = GenericAsyncCallback.<T>builder(activity)
 					.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-					.withErrorResponseHandler(new CardBaseErrorResponseHandler(errorHandler))
-					.withCompletionListener(new LockScreenCompletionListener(activity));
+					.withErrorResponseHandler(new CardBaseErrorResponseHandler(errorHandler));
 		}
 		
 		return builder;

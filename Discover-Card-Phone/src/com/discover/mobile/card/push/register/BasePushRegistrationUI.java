@@ -12,7 +12,6 @@ import com.discover.mobile.card.services.push.registration.RegisterVenderIdCall;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.LockScreenCompletionListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.xtify.sdk.api.XtifySDK;
@@ -57,7 +56,6 @@ public abstract class BasePushRegistrationUI extends BaseFragment implements Pus
 				.withSuccessListener(new PushRegisterSuccessListener(this, sendToMange))
 				.withErrorResponseHandler(new PushRegisterErrorHandler((ErrorHandlerUi)this.getActivity(),this, sendToMange))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-				.withCompletionListener(new LockScreenCompletionListener((Activity)context))
 				.build();
 		
 		new RegisterVenderIdCall(context, callback, detail).submit();
