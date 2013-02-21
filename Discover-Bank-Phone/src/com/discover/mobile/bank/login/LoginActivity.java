@@ -71,8 +71,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private final String PRE_AUTH_KEY = "e";
 	private final String ERROR_MESSAGE_KEY = "g";
 	private final String ERROR_MESSAGE_VISIBILITY = "h";
-	
-	
+
 	/**
 	 * A state flag so that we don't run this twice.
 	 */
@@ -376,14 +375,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	
 		rememberIdCheckState = Globals.isRememberId();
 		
-		if(rememberIdCheckState){
+		if(!Strings.isNullOrEmpty(Globals.getCurrentUser())){
 			final String savedId = Globals.getCurrentUser();
-			if(!Strings.isNullOrEmpty(savedId)){
-				idField.setText(savedId);
-			}
+			idField.setText(savedId);
 			setCheckMark(rememberIdCheckState, true);
 		} else {
-			setCheckMark(rememberIdCheckState, false);
+			setCheckMark(false, false);
 		}
 
 	}
