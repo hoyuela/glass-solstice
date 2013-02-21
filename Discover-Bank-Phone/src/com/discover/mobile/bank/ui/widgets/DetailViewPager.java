@@ -31,42 +31,42 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  */
 public abstract class DetailViewPager extends BaseFragment implements FragmentOnBackPressed{
 	private final String TAG = DetailViewPager.class.getSimpleName();
-		
+
 	/** The View Pager*/
 	private ViewPager viewPager;
-	
+
 	/** The text label to the left of the next/previous buttons that identifies the kind of transaction visible*/
 	private TextView titleLabel;
-	
+
 	/** 
 	 * The text label that is used to show an error if a user is viewing a scheduled transaction and is not
 	 * the primary account holder.
 	 */
 	private TextView jointAccountWarning;
-	
+
 	/** The next and previous buttons that can change the visible Fragment*/
 	private ImageView previousViewButton;
 	private ImageView nextViewButton;
-	
+
 	/** A reference to the sliding menu so we can easily toggle the swipe to open setting*/
 	private SlidingMenu slidingMenu;
-	
+
 	/** Requires any subclass to define what title label to use for the ViewPager action bar*/
 	@Override
 	public abstract int getActionBarTitle();
-	
+
 	/**
 	 * Returns a fully constructed Fragment ready to be shown in the ViewPager
 	 * @return a Fragment ready to be displayed in the ViewPager.
 	 */
 	protected abstract Fragment getDetailItem(final int position);
-	
+
 	/**
 	 * Returns the number of views that can be presented by the ViewPager
 	 * @return the number of views that can be presented by the ViewPager.
 	 */
 	protected abstract int getViewCount();
-	
+
 	/**
 	 * Must be overridden by a subclass to set the initial view position of the ViewPager.
 	 * @return the position in the data set that should be presented first.
@@ -78,7 +78,7 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 	 * @return a String resource for the title of the current Fragment/data
 	 */
 	protected abstract int getTitleForFragment(final int position);
-	
+
 	/**
 	 * If the user is not the primary account holder they will not be able to edit scheduled
 	 * payments. They will see the detail item but not the edit/delete buttons and will be shown
@@ -86,17 +86,17 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 	 * @return if the user is the primary account holder.
 	 */
 	protected abstract boolean isUserPrimaryHolder();
-	
+
 	/**
 	 * Initiate a server call to load more data.
 	 */
-	protected abstract void loadMore();
-	
+	protected abstract void loadMore(final String url);
+
 	/**
 	 * Asks the sub class what the current type of the data is.
 	 */
 	protected abstract boolean isFragmentEditable(final int position);
-	
+
 	/**
 	 * Inflates the main View for the ViewPager and initializes the ViewPager and buttons.
 	 */
@@ -104,22 +104,22 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		final View mainView = inflater.inflate(R.layout.account_item_detail_view, null);
-		
+
 		loadAllViewsFrom(mainView);		
 		setupClickListeners();
 		setupViewPager();
 		updateViewPagerState(viewPager.getCurrentItem());
-		
+
 		return mainView; 
 	}
-	
+
 	/**
 	 * @return the viewPager
 	 */
 	public ViewPager getViewPager() {
 		return viewPager;
 	}
-	
+
 	/**
 	 * If back is pressed we need to make sure that the sliding drawer is unlocked.
 	 */
@@ -127,7 +127,7 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 	public void onBackPressed() {
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
-	
+
 	/**
 	 * Updates the text of the label to the left of the next/previous buttons.
 	 * @param titleTextResource a String resource to use as the title label for a transaction.
@@ -135,7 +135,7 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 	public void updateTitleLabel(final int titleTextResource) {
 		titleLabel.setText(titleTextResource);
 	}
-	
+
 	/**
 	 * Get all of the views in the layout that we will need to have access to.
 	 * @param mainView the inflated layout that contians views that we want to access.
@@ -143,7 +143,7 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 	private void loadAllViewsFrom(final View mainView) {
 		viewPager = (ViewPager)mainView.findViewById(R.id.view_pager);
 		slidingMenu = ((SlidingFragmentActivity)this.getActivity()).getSlidingMenu();
-		
+
 		//Access the views that are inside of the nav_buttons layout inside of our layout.
 		final RelativeLayout mainBar = (RelativeLayout)mainView.findViewById(R.id.nav_buttons);
 		previousViewButton = (ImageView)mainBar.findViewById(R.id.previous_button);
@@ -152,7 +152,7 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 		jointAccountWarning = (TextView)mainBar.findViewById(R.id.joint_account_warning_label);
 
 	}
-	
+
 	/**
 	 * Setup the ViewPager to accept a collection of fragments to show.
 	 */
@@ -164,12 +164,12 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 		updateTitleLabel(getTitleForFragment(getInitialViewPosition()));
 
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
-			
+
 			@Override
 			public void onPageSelected(final int position) {
 				updateViewPagerState(position);
 			}
-			
+
 			@Override
 			public void onPageScrolled(final int arg0, final float arg1, final int arg2) {}
 			@Override
@@ -177,7 +177,7 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 		});
 
 	}
-	
+
 	/**
 	 * Updates the state of the view paget by updating the title label, locking or unlocking the sliding
 	 * drawer menu, loading more data if needed, and enableing or disabling the next and previous buttons.
@@ -190,13 +190,13 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 		updateNavigationButtons(position);
 		updateScheduledPaymentWarning(position);
 	}
-	
+
 	/**
 	 * 
 	 * @param position
 	 */
 	private void updateScheduledPaymentWarning(final int position) {
-		
+
 		if(isUserPrimaryHolder() || !isFragmentEditable(position)){
 			jointAccountWarning.setVisibility(View.GONE);
 		}else if(isFragmentEditable(position)){
@@ -208,7 +208,7 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 			jointAccountWarning.setVisibility(View.VISIBLE);
 		}
 	}
-	
+
 	/**
 	 * If the position provided is not zero, or, the start of the list, then lock the sliding drawer
 	 * so that the swiping action will not open it, otherwise unlock it.
@@ -221,7 +221,7 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 		}
 	}
-	
+
 	/**
 	 * Disables and enables the next and previous buttons based on a passes position value.
 	 * Intended to disabled the previous button when we are at the start or disable the 
@@ -229,18 +229,19 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 	 * @param position
 	 */
 	protected void updateNavigationButtons(final int position) {
-		
+
 		if(isCurrentPositionAtStart()) {
 			previousViewButton.setEnabled(false);
 		}else{
 			previousViewButton.setEnabled(true);
 		}
-		
-		if(isCurrentPositionAtEnd())
+
+		if(isCurrentPositionAtEnd()) {
 			nextViewButton.setEnabled(false);
-		else
+		} else {
 			nextViewButton.setEnabled(true);
-			
+		}
+
 		if(getViewCount() < 2){
 			nextViewButton.setVisibility(View.INVISIBLE);
 			previousViewButton.setVisibility(View.INVISIBLE);
@@ -262,16 +263,12 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 	private boolean isCurrentPositionAtStart() {
 		return viewPager.getCurrentItem() == 0;
 	}
-	
+
 	/**
 	 * If we reach the end of the list of elements, load more if possible.
 	 * @param position
 	 */
-	private void loadMoreIfNeeded(final int position) {
-		if((getViewCount() - 1) == position){
-			loadMore();
-		}
-	}
+	protected abstract void loadMoreIfNeeded(final int position);
 
 	/**
 	 * Does the setup for the next and previous buttons so that when they are clicked, they will increment
@@ -280,11 +277,11 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 	private void setupClickListeners() {
 		final int minusOne = -1;
 		final int plusOne = 1;
-		
+
 		previousViewButton.setOnClickListener(getOnClickListenerToAdjustPageIndexBy(minusOne));
 		nextViewButton.setOnClickListener(getOnClickListenerToAdjustPageIndexBy(plusOne));
 	}
-	
+
 	/**
 	 * Returns an OnClickListener that will change the view of the view pager by the provided index.
 	 * @param adjustIndexBy the value that will be used to adjust the index of the view pager upon clicking.
@@ -292,7 +289,7 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 	 */
 	private OnClickListener getOnClickListenerToAdjustPageIndexBy(final int adjustIndexBy) {
 		OnClickListener listener = null;
-		
+
 		if(viewPager != null){
 			listener = new OnClickListener() {
 				@Override
@@ -310,7 +307,7 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 		}
 		return listener;
 	}
-	
+
 	/**
 	 * The FragmentStatePagerAdapter that is used to send Fragments to the ViewPager.
 	 * @author scottseward
@@ -336,7 +333,7 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 		public int getCount() {
 			return getViewCount();
 		}
-		
+
 	}
-		
+
 }

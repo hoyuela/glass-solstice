@@ -22,6 +22,7 @@
         android:layout_marginRight="@dimen/forms_inner_padding"
         android:layout_marginTop="@dimen/groups_of_elements_padding"
         android:layout_toLeftOf="@+id/help"
+        android:layout_alignParentLeft="true"
         android:gravity="left"
         android:text="@string/activity_title"/>
 

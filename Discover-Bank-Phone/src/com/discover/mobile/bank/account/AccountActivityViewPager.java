@@ -157,11 +157,22 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	}
 
 	/**
+	 * If we reach the end of the list of elements, load more if possible.
+	 * @param position
+	 */
+	@Override
+	protected void loadMoreIfNeeded(final int position) {
+		if((getViewCount() - 1) == position && null != activityItems.links.get(ListActivityDetail.NEXT)){
+			loadMore(activityItems.links.get(ListActivityDetail.NEXT).url);
+		}
+	}
+
+	/**
 	 * Submit the load more service call to load more data.
 	 */
 	@Override
-	protected void loadMore() {
-		BankServiceCallFactory.createGetActivityServerCall("/api/accounts/1/activity?status=posted").submit();		
+	protected void loadMore(final String url) {
+		BankServiceCallFactory.createGetActivityServerCall(url).submit();		
 	}
 
 	/**

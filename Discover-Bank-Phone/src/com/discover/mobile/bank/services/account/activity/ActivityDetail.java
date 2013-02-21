@@ -1,7 +1,9 @@
 package com.discover.mobile.bank.services.account.activity;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
+import com.discover.mobile.common.net.json.bank.Money;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -11,18 +13,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  * JSON Example:
  * 
- * 		{
- *        "id" : "123182309128",
- *        "description" : "CUSTOMER DEPOSIT",
- *        "amount" : 35000,
- *        "dates": {
- *                         "date" : "20120416T00:00:00Z",
- *                         "dateClassifier" : "POSTED_DATE",
- *                         "formattedDate" : " 04/16/2012"
- *                    },
- *        "balance" : 47000,
- *        "transactionType" : "DEPOSIT"
- *     }
+ * {
+ * 	"id": "0",
+ * 	"description": "INTEREST PAID",
+ * 	"amount": {
+ * 		"value": 681,
+ * 		"formatted": "$6.81"
+ * 	},
+ * 	"balance": {
+ * 		"value": 1002634,
+ * 		"formatted": "$10,026.34"
+ * 	},
+ * 	"status": "POSTED",
+ * 	"dates": {
+ * 		"posted": "2013-01-31T06:00:00.000+0000"
+ * 	}
+ * }
  * 
  * @author jthornton
  *
@@ -32,7 +38,13 @@ public class ActivityDetail implements Serializable{
 	/**Unique identifier*/
 	private static final long serialVersionUID = -180698452175670553L;
 
-	/**Id for the actvity*/
+	/**Key to get posted date*/
+	public static final String POSTED = "posted";
+
+	/**Key of the date divider*/
+	public static final String DATE_DIVIDER = "T";
+
+	/**Id for the activity*/
 	@JsonProperty("id")
 	public String id;
 
@@ -42,15 +54,15 @@ public class ActivityDetail implements Serializable{
 
 	/**Amount of the activity*/
 	@JsonProperty("amount")
-	public String amount;
+	public Money amount;
 
 	/**Date associated with the activity*/
 	@JsonProperty("dates")
-	public ActivityDateDetail dates;
+	public HashMap<String, String> dates;
 
 	/**Balance of activity*/
 	@JsonProperty("balance")
-	public int balance;
+	public Money balance;
 
 	/**Type of activity*/
 	@JsonProperty("transactionType")

@@ -14,12 +14,12 @@ import com.discover.mobile.bank.util.FragmentOnBackPressed;
 public class PayeeDetailViewPager extends DetailViewPager implements FragmentOnBackPressed, DynamicDataFragment {
 	private ListPayeeDetail detailList = new ListPayeeDetail();
 	private int initialViewPosition = 0;
-	
+
 	@Override
 	public int getActionBarTitle() {
 		return R.string.payee_details;
 	}
-	
+
 	/**
 	 * Get any data that was either passed in from another Fragment as Bundle extras or as savedInstanceState
 	 * extras from a rotation change. In the onCreate we give precedence to a savedInstanceState bundle 
@@ -29,16 +29,16 @@ public class PayeeDetailViewPager extends DetailViewPager implements FragmentOnB
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		loadBundleArgs(getArguments());
-		
+
 		if(savedInstanceState != null) {
 			detailList = (ListPayeeDetail)savedInstanceState.getSerializable(BankExtraKeys.PAYEES_LIST);
 			initialViewPosition = savedInstanceState.getInt(BankExtraKeys.SELECTED_PAYEE);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Save the current Bundle state so that we can restore it on rotation change.
 	 */
@@ -60,7 +60,7 @@ public class PayeeDetailViewPager extends DetailViewPager implements FragmentOnB
 			initialViewPosition = bundle.getInt(BankExtraKeys.SELECTED_PAYEE);
 		}
 	}
-	
+
 	/**
 	 * Get the current Bundle for this Fragment, then update the data list and index fields on it
 	 * and return the updated Bundle
@@ -68,9 +68,10 @@ public class PayeeDetailViewPager extends DetailViewPager implements FragmentOnB
 	 */
 	private Bundle getCurrentFragmentBundle() {
 		Bundle currentBundle = getArguments();
-		if(currentBundle == null)
+		if(currentBundle == null) {
 			currentBundle = new Bundle();
-		
+		}
+
 		currentBundle.putInt(BankExtraKeys.SELECTED_PAYEE, initialViewPosition);
 		currentBundle.putSerializable(BankExtraKeys.PAYEES_LIST, detailList);
 		return currentBundle;
@@ -84,19 +85,11 @@ public class PayeeDetailViewPager extends DetailViewPager implements FragmentOnB
 		return initialViewPosition;
 	}
 
-	
-// FIXME need to have services to determine if the current user is the primary account holder
+
+	// FIXME need to have services to determine if the current user is the primary account holder
 	@Override
 	protected boolean isUserPrimaryHolder() {
 		return true;
-	}
-
-	/**
-	 * This method is responsible for initiating a service call to load more payments.
-	 */
-	@Override
-	protected void loadMore() {
-		//unsupported for payees
 	}
 
 	@Override
@@ -111,11 +104,11 @@ public class PayeeDetailViewPager extends DetailViewPager implements FragmentOnB
 	protected Fragment getDetailItem(final int position) {
 		final PayeeDetailFragment payeeDetail = new PayeeDetailFragment();
 		final PayeeDetail detailObject = detailList.payees.get(position);
-		
+
 		final Bundle bundle = new Bundle();
 		bundle.putSerializable(BankExtraKeys.SELECTED_PAYEE, detailObject);
 		payeeDetail.setArguments(bundle);
-		
+
 		return payeeDetail;
 	}
 
@@ -132,6 +125,17 @@ public class PayeeDetailViewPager extends DetailViewPager implements FragmentOnB
 	@Override
 	protected boolean isFragmentEditable(final int position) {
 		return false;
+	}
+
+	@Override
+	protected void loadMore(final String url) {
+		//unsupported for payees
+
+	}
+
+	@Override
+	protected void loadMoreIfNeeded(final int position) {
+		//unsupported for payees
 	}
 
 }

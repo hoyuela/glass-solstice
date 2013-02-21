@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
-import com.discover.mobile.bank.util.BankStringFormatter;
 
 /**
  * Adapter used to display data on the account activity table
@@ -94,11 +93,11 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		}
 
 		/**Update the display values*/
-		holder.date.setText(convertDate(detail.dates.formattedDate));
+		holder.date.setText(convertDate(detail.dates.get(ActivityDetail.POSTED).split(ActivityDetail.DATE_DIVIDER)[0]));
 		holder.desc.setText(detail.description);
-		final String amountString = BankStringFormatter.convertToDollars(detail.amount);
-		holder.amount.setText(amountString);
-		if(!amountString.contains(BankStringFormatter.NEGATIVE)){
+		//final String amountString = BankStringFormatter.convertToDollars(detail.amount);
+		holder.amount.setText(detail.amount.formatted);
+		if(Double.parseDouble(detail.amount.value) < 0){
 			holder.amount.setTextColor(res.getColor(R.color.string_indicator));
 		}
 		view.setOnClickListener(getClickListener(holder.pos));
@@ -135,7 +134,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	 * @return the converted date
 	 */
 	private String convertDate(final String date){
-		final SimpleDateFormat serverFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+		final SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		final SimpleDateFormat tableFormat = new SimpleDateFormat("dd/MM/yy", Locale.US);
 
 		try{

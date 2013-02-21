@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankRotationHelper;
+import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
@@ -171,12 +173,22 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	}
 
 	/**
-	 * This method is responsible for initiating a service call to load more payments.
+	 * If we reach the end of the list of elements, load more if possible.
+	 * @param position
 	 */
 	@Override
-	protected void loadMore() {
-		// TODO Auto-generated method stub
+	protected void loadMoreIfNeeded(final int position) {
+		if((getViewCount() - 1) == position && null != detailList.links.get(ListActivityDetail.NEXT)){
+			loadMore(detailList.links.get(ListActivityDetail.NEXT).url);
+		}
+	}
 
+	/**
+	 * Submit the load more service call to load more data.
+	 */
+	@Override
+	protected void loadMore(final String url) {
+		BankServiceCallFactory.createGetActivityServerCall(url).submit();		
 	}
 
 	/**

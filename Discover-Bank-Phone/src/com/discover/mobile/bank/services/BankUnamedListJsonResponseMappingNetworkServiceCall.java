@@ -54,8 +54,9 @@ extends UnamedListJsonResponseMappingNetworkServiceCall<M, I> {
 		try{
 			final List<String> links = headers.get("Link");
 			if(null == links || links.isEmpty()){return urls;}
-			for(final String string : links){
-				final String[] pieces = string.replaceAll("<|>|rel=|\"| ", "").split(";");
+			final String[] strings = links.get(0).replaceAll("<|>|rel=|\"| ", "").split(",");
+			for(final String string : strings){
+				final String[] pieces = string.split(";");
 				final ReceivedUrl url = new ReceivedUrl();
 				url.url = pieces[0];
 				urls.put(pieces[1], url);
