@@ -60,19 +60,19 @@ import com.google.common.base.Strings;
 
 public class LoginActivity extends BaseActivity implements LoginActivityInterface  {
 	/*TAG used to print logs for the LoginActivity into logcat*/
-	private static final String TAG = LoginActivity.class.getSimpleName();
+	private final String TAG = LoginActivity.class.getSimpleName();
 
 	/**
 	 * These are string values used when passing extras to the saved instance
 	 * state bundle for restoring the state of the screen upon orientation
 	 * changes.
 	 */
-	private static final String PASS_KEY = "a";
-	private static final String ID_KEY = "b";
-	private static final String SAVE_ID_KEY = "c";
-	private static final String PRE_AUTH_KEY = "e";
-	private static final String ERROR_MESSAGE_KEY = "g";
-	private static final String ERROR_MESSAGE_VISIBILITY = "h";
+	private final String PASS_KEY = "a";
+	private final String ID_KEY = "b";
+	private final String SAVE_ID_KEY = "c";
+	private final String PRE_AUTH_KEY = "e";
+	private final String ERROR_MESSAGE_KEY = "g";
+	private final String ERROR_MESSAGE_VISIBILITY = "h";
 	
 	
 	/**
@@ -275,8 +275,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		}
 		
 		//Default to the last path user chose for login Card or Bank
-		this.setApplicationAccount();		
-		
+		this.setApplicationAccount();
+
 		//Show splash screen while completing pre-auth, if pre-auth has not been done and
 		//application is be launched for the first time
 		if( !preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) ) {
@@ -313,6 +313,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		outState.putBoolean(PRE_AUTH_KEY, preAuthHasRun);
 		outState.putString(ERROR_MESSAGE_KEY, errorTextView.getText().toString());
 		outState.putInt(ERROR_MESSAGE_VISIBILITY, errorTextView.getVisibility());
+		
 		super.onSaveInstanceState(outState);
 	}
 	
@@ -330,7 +331,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			preAuthHasRun = savedInstanceState.getBoolean(PRE_AUTH_KEY);
 
 			setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY), true);
-
+			
 			restoreErrorTextView(savedInstanceState);
 			resetInputFieldColors();
 		}
@@ -493,16 +494,16 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * Set the background color of the input fields back to their default values
 	 */
 	private void setInputFieldsDrawablesToDefault() {
-		idField.setBackgroundResource(R.drawable.edit_text_default);
-		passField.setBackgroundResource(R.drawable.edit_text_default);
+		idField.clearErrors();
+		passField.clearErrors();
 	}
 	
 	/**
 	 * Set the input fields to be highlighted in red.
 	 */
 	private void setInputFieldsDrawableToRed() {
-		idField.setBackgroundResource(R.drawable.edit_text_red);
-		passField.setBackgroundResource(R.drawable.edit_text_red);
+		idField.setErrors();
+		passField.setErrors();
 	}
 	
 	/**
@@ -520,7 +521,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			errorTextView.setVisibility(View.VISIBLE);
 			clearInputs();
 			toggleCheckBox(idField, true);
-			setInputFieldsDrawableToRed();
+			idField.updateAppearanceForInput();
+			passField.updateAppearanceForInput();
 			return true;
 		}
 		else{
@@ -631,7 +633,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * row buttons.
 	 */
 	public void toggleBankCardLogin(final View v) { 
-		clearInputs();
+		final AccountType initialAccountType = Globals.getCurrentAccount();
 		if (v.equals(goToCardLabel)) {
 			goToCardLabel.setTextColor(getResources().getColor(R.color.black));
 			CommonUtils.setViewVisible(cardCheckMark);
@@ -659,15 +661,16 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			//Load Bank Account Preferences for refreshing UI only
 			Globals.loadPreferences(this, AccountType.BANK_ACCOUNT);
 		}
+		final AccountType afterAccountType = Globals.getCurrentAccount();
 		
+		//If theis method was called, and the account type changed, clear the input fields.
+		//as it can be called without changing the login type, from an orientation change.
+		if(!initialAccountType.equals(afterAccountType))
+			clearInputs();
+
 		//Refresh Screen based on Selected Account Preferences
 		loadSavedCredentials();
-		
-		//Revert data back to original last logged in account.
-		//Last logged in is only remembered if user logins successfully
-		if( lastLoginAcct != Globals.getCurrentAccount() ) {
-			Globals.loadPreferences(this, lastLoginAcct);
-		}
+
 	}
 
 	/**
@@ -768,7 +771,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			errorTextView.setTextColor(getResources().getColor(R.color.red));
 			errorTextView.setText(R.string.login_error);
 			errorTextView.setVisibility(View.VISIBLE);
-			setInputFieldsDrawableToRed();
+			idField.updateAppearanceForInput();
+			passField.updateAppearanceForInput();
 			return true;
 		}
 		// All fields were populated.
@@ -841,44 +845,44 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		//Verify loginStartLayout has a valid instance of ViewGroup
 		if( null != loginStartLayout && null != loginPane && null != toolbar ) {
 
-				//Show progress bar and hide login view
-		        if( show ) {
-		        	splashProgress.setVisibility(View.VISIBLE);
+			//Show progress bar and hide login view
+	        if( show ) {
+	        	splashProgress.setVisibility(View.VISIBLE);
+	        	
+	        	loginPane.setVisibility(View.GONE);
+	        	toolbar.setVisibility(View.GONE);
+	        }
+	        //Hide progress bar and fade in login view
+	        else {
+	        	//If login views already visible nothing more needs to be done
+	        	if( loginPane.getVisibility() != View.VISIBLE ) {
+		        	splashProgress.setVisibility(View.GONE);	
 		        	
-		        	loginPane.setVisibility(View.GONE);
-		        	toolbar.setVisibility(View.GONE);
-		        }
-		        //Hide progress bar and fade in login view
-		        else {
-		        	//If login views already visible nothing more needs to be done
-		        	if( loginPane.getVisibility() != View.VISIBLE ) {
-			        	splashProgress.setVisibility(View.GONE);	
-			        	
-			        	loginPane.setVisibility(View.VISIBLE);
-			        	
-			        	final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
-			        	animationFadeIn.setAnimationListener(new AnimationListener() {
-		                    @Override
-							public void onAnimationStart(final Animation anim)
-		                    {
-		                    };
-		                    @Override
-							public void onAnimationRepeat(final Animation anim)
-		                    {
-		                    };
-		                    @Override
-							public void onAnimationEnd(final Animation anim)
-		                    {
-		                       toolbar.setVisibility(View.VISIBLE);
-		                    };
-		                });
-						loginPane.startAnimation(animationFadeIn);    
-		        	} else {
-		        		if( Log.isLoggable(TAG, Log.WARN)) {
-		    				Log.w(TAG,"login views already visible");
-		    			}
-		        	}
-		        }
+		        	loginPane.setVisibility(View.VISIBLE);
+		        	
+		        	final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
+		        	animationFadeIn.setAnimationListener(new AnimationListener() {
+	                    @Override
+						public void onAnimationStart(final Animation anim)
+	                    {
+	                    };
+	                    @Override
+						public void onAnimationRepeat(final Animation anim)
+	                    {
+	                    };
+	                    @Override
+						public void onAnimationEnd(final Animation anim)
+	                    {
+	                       toolbar.setVisibility(View.VISIBLE);
+	                    };
+	                });
+					loginPane.startAnimation(animationFadeIn);    
+	        	} else {
+	        		if( Log.isLoggable(TAG, Log.WARN)) {
+	    				Log.w(TAG,"login views already visible");
+	    			}
+	        	}
+	        }
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG,"Unable to find views");
