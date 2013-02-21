@@ -292,8 +292,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		//Show splash screen while completing pre-auth, if pre-auth has not been done and
 		//application is be launched for the first time
 		if( !preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) ) {
-			
 			showSplashScreen(!preAuthHasRun);
+			preAuthHasRun = true;
 		} else {
 			this.showLoginPane();
 		}
@@ -938,7 +938,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	public void preAuthComplete(final boolean result) {
 		//Set flag to detect if pre-authentication needs to be performed 
 		//the next time login activity is launched
-		preAuthHasRun = result;
+		preAuthHasRun = true;
 		
 		// splash screen is still up - let's init phone gap now before
 		// we take it down
