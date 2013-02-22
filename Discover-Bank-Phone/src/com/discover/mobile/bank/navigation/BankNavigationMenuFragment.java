@@ -49,7 +49,7 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		
 		}
 		version.setText("Version " + versionName);
-		copy.setText("\u00a9 " + year + " Discover Bank, Member FDIC");
+		copy.setText("\u00a9" + year + " Discover Bank, Member FDIC");
 		final ListView lv = getListView();
 		lv.setDivider(null);
 		lv.setDividerHeight(0);
