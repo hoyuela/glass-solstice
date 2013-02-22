@@ -22,7 +22,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -87,13 +86,11 @@ public class SchedulePaymentFragment extends BaseFragment {
 	/** Edit view for amount */
 	private SchedulePaymentAmountEditText amountEdit;
 	/** Edit view for date */
-	private EditText dateEdit;
+	private TextView dateText;
 	/** Error view for invalid date */
 	private TextView dateError;
 	/** Error view for duplicate payment conflict */
 	private TextView conflictError;
-	/** Date Picker calendar icon */
-	private ImageView calendarIcon;
 	/** Cancel button for view */
 	private Button cancelButton;
 	/** Payment button */
@@ -118,14 +115,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 	
 	/** date error exists - Cannot submit payment */
 	private boolean isDateError = false;
-	/** amount error exists - Cannot submit payment */
-	private boolean isAmountError = false;
 	/** Max character length for memo */
 	private final int MAX_CHAR_MEMO = 40;
-	/** Maximum payment amount */
-	private final float MAX_AMOUNT = 25000.0f;
-	/** Minimum payment amount */
-	private final float MIN_AMOUNT = 1.0f;
 
 	/** Reference to the Activity's canceled listener */
 	OnPaymentCanceledListener canceledListener;
@@ -163,10 +154,9 @@ public class SchedulePaymentFragment extends BaseFragment {
 		amountEdit = (SchedulePaymentAmountEditText) view.findViewById(R.id.amount_edit);
 		amountItem = (RelativeLayout) view.findViewById(R.id.amount_element);
 		amountError = (TextView) view.findViewById(R.id.amount_error);
-		dateEdit = (EditText) view.findViewById(R.id.date_edit);
+		dateText = (TextView) view.findViewById(R.id.date_text);
 		dateError = (TextView) view.findViewById(R.id.date_error);
 		dateItem = (RelativeLayout) view.findViewById(R.id.date_item);
-		calendarIcon = (ImageView) view.findViewById(R.id.date_icon);
 		memoItem = (RelativeLayout) view.findViewById(R.id.memo_element);
 		memoText = (TextView) memoItem.findViewById(R.id.memo_text);
 		memoEdit = (EditText) memoItem.findViewById(R.id.memo_edit);
@@ -229,7 +219,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		outState.putInt(PAY_FROM_ACCOUNT_ID, accountIndex);
 		outState.putString(AMOUNT, amountEdit.getText().toString());
-		String[] datesToSave = dateEdit.getText().toString().split("/");
+		String[] datesToSave = dateText.getText().toString().split("/");
 		outState.putString(DATE_DAY, datesToSave[1]);
 		outState.putString(DATE_MONTH, datesToSave[0]);
 		outState.putString(DATE_YEAR, datesToSave[2]);
@@ -253,7 +243,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 			paymentAccountSpinner.setSelection(savedInstanceState
 					.getInt(PAY_FROM_ACCOUNT_ID));
 			amountEdit.setText(savedInstanceState.getString(AMOUNT));
-			dateEdit.setText(formatPaymentDate(
+			dateText.setText(formatPaymentDate(
 					savedInstanceState.getString(DATE_YEAR),
 					savedInstanceState.getString(DATE_MONTH),
 					savedInstanceState.getString(DATE_DAY)));
@@ -281,7 +271,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 */
 	private void setInitialViewData() {
 		if (payee != null) {
-			dateEdit.setText(getPaymentDate(payee.paymentDate.date));
+			dateText.setText(getPaymentDate(payee.paymentDate.date));
 			payeeText.setText(payee.nickName);
 			paymentAccountText.setText(defaultPaymentAccount());
 
@@ -391,7 +381,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 			final Integer day) {
 
 		if (isValidPaymentDate(year, month, day)) {
-			dateEdit.setText(formatPaymentDate(year.toString(),
+			dateText.setText(formatPaymentDate(year.toString(),
 					month.toString(), day.toString()));
 			chosenPaymentDate.set(year, month - 1, day);
 
@@ -400,7 +390,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 					earliestPaymentDate.get(Calendar.MONTH),
 					earliestPaymentDate.get(Calendar.DAY_OF_MONTH),
 					earliestPaymentDate.get(Calendar.YEAR));
-			dateEdit.setText(date);
+			dateText.setText(date);
 			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
 					earliestPaymentDate.get(Calendar.MONTH),
 					earliestPaymentDate.get(Calendar.DAY_OF_MONTH));
@@ -636,15 +626,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 					}
 				});
 
-		calendarIcon.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				setDateError(false);
-				deliverByDatePicker.show();
-			}
-		});
-
-		dateEdit.setOnClickListener(new OnClickListener() {
+		dateItem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				setDateError(false);
