@@ -61,8 +61,8 @@
 	<color name="stroke_ruling_line">#c0c8cc</color>
 	
 	<!-- Navigation Menu Gradient -->
-	<color name="menu_light_gray">#3D484D</color>
-	<color name="menu_dark_gray">#293033</color>
+	<color name="menu_light_gray">#617277</color>
+	<color name="menu_dark_gray">#516064</color>
 	<color name="none">#00000000</color>
     
 </resources>
