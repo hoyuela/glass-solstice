@@ -136,36 +136,28 @@ public abstract class ValidatedInputField extends EditText{
 	 */
 	protected void setupFocusChangedListener() {
 		this.setOnFocusChangeListener(new OnFocusChangeListener() {
-
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
 				clearRightDrawable();
-
-				//If Lost Focus
-				if( !hasFocus ){
+				if(hasFocus)
+					clearErrors();					
+				else{
 					updateAppearanceForInput();
 					if(!isInErrorState) {
 						clearErrors();
 						clearRightDrawable();
 					}
 				}
-				//If Selected/Has Focus
-				else {
-					setRightDrawableGrayX();
-					if(isInErrorState)
-						setRightDrawableRedX();
-				}
-
 			}
-
 		});
 	}
 	
 	/**Converts DP int into px for setting drawable padding */
 	private int getRightDrawablePadding() {
 		final int paddingInDp = 10;
+		final float padding = 0.5f;
 	    final float scale = getResources().getDisplayMetrics().density;
-	    int paddingInPx = (int) (paddingInDp * scale + 0.5f);
+	    final int paddingInPx = (int) (paddingInDp * scale + padding);
 		return paddingInPx;
 	}
 
@@ -206,11 +198,9 @@ public abstract class ValidatedInputField extends EditText{
 			@Override
 			public void beforeTextChanged(final CharSequence s, final int start, final int count,
 					final int after){/*Intentionally Empty*/}
-
 			@Override
 			public void onTextChanged(final CharSequence s, final int start, final int before,
 					final int count) {/*Intentionally Empty*/}
-
 		});
 	}
 

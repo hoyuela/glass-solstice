@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.error;
 
 import java.net.HttpURLConnection;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
@@ -22,6 +24,7 @@ import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.error.NavigateToLoginOnDismiss;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.widgets.ValidatedInputField;
 
 /**
  * Used to handle error responses to a NetworkServiceCall<>.
@@ -59,20 +62,39 @@ public class BankErrorHandler implements ErrorHandler {
 	@Override
 	public void showErrorsOnScreen(final ErrorHandlerUi errorHandlerUi, final String errorText) {
 		// Show error label and display error text
+		// Set Focus to first field in screen
+		errorHandlerUi.getInputFields().get(0).requestFocus();
+
 		if (errorHandlerUi != null) {
-			errorHandlerUi.getErrorLabel().setText(errorText);
-			errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
+			final TextView errorLabel = errorHandlerUi.getErrorLabel();
+			final int red = errorHandlerUi.getContext().getResources().getColor(R.color.red);
+			
+			errorLabel.setText(errorText);
+			errorLabel.setVisibility(View.VISIBLE);
+			errorLabel.setTextColor(red);
 		}
 
 		// Set the input fields to be highlighted in red and clears text
 		if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
-			for (final EditText text : errorHandlerUi.getInputFields()) {
-				text.setBackgroundResource(R.drawable.edit_text_red);
-				text.setText("");
+			final List<EditText> inputFields = errorHandlerUi.getInputFields();
+			final int numberOfFields = inputFields.size();
+			Object genericField = null;
+			
+			//Loop through the input fields, determine what kind of field they are, set their error state
+			//and clear the text in them.
+			for(int i = 0; i < numberOfFields; ++i){
+				genericField = inputFields.get(i);
+				
+				//If the current field is a ValidatedInputField we should use its method for setting errors.
+				if(genericField instanceof ValidatedInputField){
+					((ValidatedInputField)genericField).setErrors();
+				}else{
+					((EditText)genericField).setBackgroundResource(R.drawable.edit_text_red);
+				}
+				//Clear the text in the field.
+				((EditText)genericField).setText("");
 			}
 
-			// Set Focus to first field in screen
-			errorHandlerUi.getInputFields().get(0).requestFocus();
 		}
 	}
 
