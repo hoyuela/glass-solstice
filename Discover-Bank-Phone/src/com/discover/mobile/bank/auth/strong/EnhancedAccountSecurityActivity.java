@@ -67,7 +67,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	private static final int HELP_DROPDOWN_LINE_HEIGHT = 10;
 
 	private static final String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
-	
+
 	private String strongAuthQuestion;
 	private String strongAuthQuestionId;
 	/**
@@ -75,9 +75,9 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 * via an Intent in the onResume() method of this activity or via updateQuestion().
 	 */
 	private BankStrongAuthDetails strongAuthDetails;
-	
+
 	private String questionId;
-	
+
 	private RadioGroup securityRadioGroup;
 	private TextView detailHelpLabel;
 	private TextView statusIconLabel;
@@ -88,27 +88,27 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 * answer in the TextView with id account_security_question_answer_field.
 	 */
 	private Button continueButton;
-	
+
 	private String inputErrorText;
 	private int inputErrorVisibility;
 	private String dropdownSymbol;
-	
+
 	//INPUT FIELDS
 	private NonEmptyEditText questionAnswerField;
 
 	//RADIO BUTTONS
 	private RadioButton radioButtonOne;
 	private RadioButton radioButtonTwo;
-	
+
 	//ERROR LABELS
 	private TextView serverErrorLabel;
 	private TextView errorMessage;
-	
+
 	//SCROLL VIEW
 	private ScrollView mainScrollView;
-	
+
 	private int activityResult = RESULT_CANCELED;
-	
+
 	private static final String SERVER_ERROR_VISIBILITY ="a";
 	private static final String SERVER_ERROR_TEXT = "c";
 	private static final String ANSWER_ERROR_VISIBILITY = "b";
@@ -118,78 +118,78 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 * Minimum string length allowed to be sent as an answer to a Strong Auth Challenge Question
 	 */
 	private static final int MIN_ANSWER_LENGTH = 2;
-	
-	 /**
-     * Callback to watch the text field for empty/non-empty entered text from user
-     */
-    private final TextWatcher mTextWatcher = new TextWatcher() {
 
-        @Override
+	/**
+	 * Callback to watch the text field for empty/non-empty entered text from user
+	 */
+	private final TextWatcher mTextWatcher = new TextWatcher() {
+
+		@Override
 		public void beforeTextChanged(final CharSequence s, final int start, final int before, final int after) { }
 
-        @Override
+		@Override
 		public void onTextChanged(final CharSequence s, final int start, final int before, final int after) {
-        	EnhancedAccountSecurityActivity.this.onTextChanged(s);
-        }
+			EnhancedAccountSecurityActivity.this.onTextChanged(s);
+		}
 
-        @Override
+		@Override
 		public void afterTextChanged(final Editable s) {
-        }
-    };
-    
-	
+		}
+	};
+
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.strongauth_page);
+		setContentView(R.layout.bank_strongauth_page);
 		loadAllViews();
 		setupRadioGroupListener();
 
 		restoreState(savedInstanceState);
-		
+
 		//Disabling continue button only applies to Bank
 		if( Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT) {
 			//Add text change listener to determine when the user has entered text
 			//to enable/disable continue button
 			questionAnswerField.addTextChangedListener(mTextWatcher);
-			
+
 			//Disable continue button by default
 			continueButton.setEnabled(false);
 		}
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		outState.putInt(SERVER_ERROR_VISIBILITY, serverErrorLabel.getVisibility());
 		outState.putString(SERVER_ERROR_TEXT, serverErrorLabel.getText().toString());
-		
+
 		outState.putInt(ANSWER_ERROR_VISIBILITY, errorMessage.getVisibility());
 		outState.putString(ANSWER_ERROR_TEXT, errorMessage.getText().toString());
-		
+
 		outState.putString(WHATS_THIS_STATE, statusIconLabel.getText().toString());
 		super.onSaveInstanceState(outState);
 	}
-	
+
 	private void restoreState(final Bundle savedInstanceState) {
 		if(savedInstanceState != null){
 			final String serverErrorText = savedInstanceState.getString(SERVER_ERROR_TEXT);
 			final int serverErrorVisibility = savedInstanceState.getInt(SERVER_ERROR_VISIBILITY);
-			
+
 			inputErrorVisibility = savedInstanceState.getInt(ANSWER_ERROR_VISIBILITY);
 			inputErrorText = savedInstanceState.getString(ANSWER_ERROR_TEXT);
-			
+
 			dropdownSymbol = savedInstanceState.getString(WHATS_THIS_STATE);
-			
+
 			serverErrorLabel.setText(serverErrorText);
 			serverErrorLabel.setVisibility(serverErrorVisibility);
 			restoreInputField();
-			
+
 			restoreExpandableHelpMenu();		
 		}	
-		
+
 	}
-	
+
 	private void loadAllViews() {
 		questionAnswerField = (NonEmptyEditText) findViewById(R.id.account_security_question_answer_field);
 		securityRadioGroup = (RadioGroup) findViewById(R.id.account_security_choice_radio_group);
@@ -205,27 +205,27 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		continueButton = (Button)findViewById(R.id.account_security_continue_button);
 		questionAnswerField.attachErrorLabel(errorMessage);
 	}
-	
+
 	private void setupRadioGroupListener() {
 		securityRadioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			final int subCopyColor = getResources().getColor(R.color.sub_copy);
-		    final int fieldCopyColor = getResources().getColor(R.color.field_copy);
+			final int fieldCopyColor = getResources().getColor(R.color.field_copy);
 
-            @Override
-            public void onCheckedChanged(final RadioGroup group, final int checkedId) { 
-            	
-            	final RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
-            	if (checkedRadioButton.equals(radioButtonOne) ){
-            		radioButtonOne.setTextColor(subCopyColor);
-            		radioButtonTwo.setTextColor(fieldCopyColor);
-            	}else {
-            		radioButtonOne.setTextColor(fieldCopyColor);
-            		radioButtonTwo.setTextColor(subCopyColor);
-            	}
-            }
+			@Override
+			public void onCheckedChanged(final RadioGroup group, final int checkedId) { 
+
+				final RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
+				if (checkedRadioButton.equals(radioButtonOne) ){
+					radioButtonOne.setTextColor(subCopyColor);
+					radioButtonTwo.setTextColor(fieldCopyColor);
+				}else {
+					radioButtonOne.setTextColor(fieldCopyColor);
+					radioButtonTwo.setTextColor(subCopyColor);
+				}
+			}
 		});
 	}
-	
+
 	/**
 	 * Moved intent logic to onResume instead of onCreate. onNewIntent will update the intent before onResume is 
 	 * called. 
@@ -237,22 +237,22 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		final Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			//Determine if the activity was created from a Card or a Bank logical path
-			
+
 			//Check if activity was created via a Card or Bank logical path
-			
-				//Read Strong Auth Details provided via intent that started this activity
-				strongAuthDetails = (BankStrongAuthDetails)extras.getSerializable(IntentExtraKey.STRONG_AUTH_DETAILS);
-				//Set question for the strong auth challenge
-				questionLabel.setText(strongAuthDetails.question);
-				
+
+			//Read Strong Auth Details provided via intent that started this activity
+			strongAuthDetails = (BankStrongAuthDetails)extras.getSerializable(IntentExtraKey.STRONG_AUTH_DETAILS);
+			//Set question for the strong auth challenge
+			questionLabel.setText(strongAuthDetails.question);
+
 		}
 
-	
-			whatsThisLayout.setVisibility(View.GONE);
-	
-		
+
+		whatsThisLayout.setVisibility(View.GONE);
+
+
 	}
-	
+
 	/**
 	 * Method used to update the challenge question on the page.
 	 * 
@@ -261,17 +261,17 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	public void updateQuestion(final BankStrongAuthDetails details ) {
 		//Close any opened dialog
 		this.closeDialog();
-		
+
 		//Update strong auth details reference to new object 
-		this.strongAuthDetails = details;
-		
+		strongAuthDetails = details;
+
 		//Update UI with new question being asekd
 		questionLabel.setText(details.question);
-		
+
 		//What's this layout is hidden for bank
 		whatsThisLayout.setVisibility(View.GONE);
 	}
-	
+
 	/**
 	 * When the activity is finished, set the result so that the calling activity knows if strong auth exited
 	 * properly or not.
@@ -281,7 +281,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		setResult(activityResult);
 		super.finish();
 	}
-	
+
 	/**
 	 * Restore the sate of the input field based on its error label.
 	 * If the label is present, its in an error state and must be updated.
@@ -289,12 +289,13 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	private void restoreInputField() {
 		errorMessage.setText(inputErrorText);
 		errorMessage.setVisibility(inputErrorVisibility);
-		 
-		if(errorMessage.getVisibility() == View.VISIBLE)
+
+		if(errorMessage.getVisibility() == View.VISIBLE) {
 			questionAnswerField.updateAppearanceForInput();
+		}
 
 	}
-	
+
 	/**
 	 * When orientation changes, we need to restore the state of the dropdown menu.
 	 * This is done by comparing the String character of the menu to known open and close
@@ -302,19 +303,20 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 */
 	private void restoreExpandableHelpMenu() {
 		statusIconLabel.setText(dropdownSymbol);
-		if("+".equals(statusIconLabel.getText().toString()))
+		if("+".equals(statusIconLabel.getText().toString())) {
 			closeHelpMenu();
-		else
+		} else {
 			openHelpMenu();
+		}
 	}
-	
+
 	@Override
-    protected void onNewIntent(final Intent intent){
-        super.onNewIntent(intent);
-        
-        //Grab the updated intent
-        setIntent(intent);
-    }
+	protected void onNewIntent(final Intent intent){
+		super.onNewIntent(intent);
+
+		//Grab the updated intent
+		setIntent(intent);
+	}
 
 	/**
 	 *  Toggles the help menu based on its current state.
@@ -364,17 +366,17 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 			final int radioButtonId = securityRadioGroup.getCheckedRadioButtonId();
 			final View selectedButton = securityRadioGroup.findViewById(radioButtonId);
 			final int selectedIndex = securityRadioGroup.indexOfChild(selectedButton);
-			
-			
-				submitBankSecurityInfo(answer, (selectedIndex==0));
-			
+
+
+			submitBankSecurityInfo(answer, (selectedIndex==0));
+
 		} else {
 			BankErrorHandler.getInstance().showErrorsOnScreen(
 					this, this.getResources().getString(R.string.error_strongauth_noanswer));
 		}
 
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.discover.mobile.ErrorHandlerUi#getErrorLabel()
 	 */
@@ -402,7 +404,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	private void submitBankSecurityInfo(final String answer, final boolean bindDevice) {
 		//Create an object to hold the response to the challenge
 		final BankStrongAuthAnswerDetails details = new BankStrongAuthAnswerDetails(strongAuthDetails, answer, bindDevice);
-		
+
 		//Create a strong auth post request to send credentials to the server 
 		BankServiceCallFactory.createStrongAuthRequest(details).submit();
 	}
@@ -411,7 +413,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		FacadeFactory.getCardFacade().navToHomeFragment(this);
 	}
 
-	
+
 	/**
 	 * If the back button is pressed then cancel the strong auth activity and notify the
 	 * calling activity that this activity was canceled.
@@ -438,7 +440,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		onBackPressed();
 	}
 
-	
+
 	/**
 	 * Event handler for text change events on the TextView with id account_security_question_answer_field.
 	 * If no text is detected then the continue button at the bottom of the page is disabled, else it 
