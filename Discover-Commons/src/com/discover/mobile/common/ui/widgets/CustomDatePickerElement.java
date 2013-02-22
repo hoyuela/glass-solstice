@@ -56,6 +56,8 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 		this.setCursorVisible(false);
 		this.setKeyListener(null);
 	}
+	
+	abstract protected int getTitleText();
 
 	/**
 	 * This allows support for clicking the elemnt rather than touching it.
@@ -127,7 +129,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 			}
 		}, currentYearMinusEighteen, currentMonth, currentDay);
 
-		final String dobPickerTitle = getResources().getString(R.string.account_info_dob_text);
+		final String dobPickerTitle = getResources().getString(getTitleText());
 		attachedDatePickerDialog.setTitle(dobPickerTitle);	
 
 	}
