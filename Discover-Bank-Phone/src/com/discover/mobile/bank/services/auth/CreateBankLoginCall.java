@@ -29,7 +29,7 @@ import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 public class CreateBankLoginCall extends
 		BankJsonResponseMappingNetworkServiceCall<BankLoginData> {
 	
-	private static final String TAG = CreateBankLoginCall.class.getSimpleName();
+	private final String TAG = CreateBankLoginCall.class.getSimpleName();
 	private final TypedReferenceHandler<BankLoginData> handler;
 
 	public CreateBankLoginCall(final Context context,
@@ -87,7 +87,7 @@ public class CreateBankLoginCall extends
 			SessionTokenManager.setToken(BankSchema.BANKBASIC +" " +data.token);
 			BankUrlManager.setNewLinks(data.links);
 		} else {
-			String message = "Response does not include token";
+			final String message = "Response does not include token";
 			
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, message);
