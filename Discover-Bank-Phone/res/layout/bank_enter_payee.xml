@@ -40,7 +40,7 @@
 	            android:layout_alignParentTop="true" 
 	            android:contentDescription="@null"/>
 	     
-	     <com.discover.mobile.bank.payees.PayeeSearchField
+	     <com.discover.mobile.bank.payees.PayeeValidatedEditField
 	         android:id="@+id/search_field"
 	         android:layout_width="fill_parent"
 	         android:layout_height="@dimen/input_field_height"

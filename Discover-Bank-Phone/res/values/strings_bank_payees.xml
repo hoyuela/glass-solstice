@@ -3,8 +3,11 @@
     <!--Add New Payee Strings  -->
     <string name="bank_payee_enter_name">Enter Payee Name</string>
     <string name="bank_payee_company">Payee / Company Name</string>
-    <string name="bank_invalid_characters">Invalid Characters</string>
-    <string name="bank_invalid_num_characters">Invalid Number of Characters</string>
+    <string name="bank_invalid_characters">Invalid characters</string>
+    <string name="bank_invalid_num_characters">Invalid number of characters</string>
+    <string name="bank_nonmatching_acct">Non-matching #</string>
+    <string name="bank_invalid_acct">Invalid account #</string>
+    <string name="bank_invalid_zip">Invalid zip code</string>
     <string name="bank_manage_payees">Manage Payees</string>
   	<string name="bank_no_payees_msg">You can not pay a bill until you have set up a payee to receive the payment</string>
 	<string name="bank_no_payees_modal_title">No Payees Found</string>
@@ -17,4 +20,12 @@
 	<string name="bank_verified_payees_address_msg">This payee is recognized by Discover. You do not need to enter the Payee address.</string>
 	<string name="bank_payee_details">Payee Details</string>
 	<string name="bank_payee_added">Payee Added</string>
+	<string name="bank_payee_edit">EDIT</string>
+	<string name="bank_payee_name">Payee Name</string>
+	<string name="bank_payee_nickname">Nickname</string>
+	<string name="bank_payee_account">Account #</string>
+	<string name="bank_payee_reenter_account">Re-Enter Account #</string>
+	<string name="bank_payee_zip">Zip Code</string>
+	<string name="bank_add_payee">Add Payee</string>
+	<string name="bank_add_cancel">Cancel</string>
 </resources>

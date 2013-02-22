@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.BankNavigator;
@@ -68,6 +69,10 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 * sub-class to make it visible as required.
 	 */
 	protected TextView noteTextMsg;
+	/**
+	 * Holds list of items that are generated using the method getViewPagerListContent() or getRelativeLayoutListContent()
+	 */
+	protected List<?> content;
 	
 	/**
 	 * Sets click listeners for the actionButton, actionLink, feedbackLink. Calls the method to populate
@@ -100,7 +105,15 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		noteTextMsg = (TextView)view.findViewById(R.id.note_text_msg);
 		noteTextMsg.setVisibility(View.GONE);
 		
-		loadListElementsToLayoutFromList(contentTable, getContent());
+		/**Check to see if ViewPagerListItems are provided*/
+		content = getViewPagerListContent();
+		
+		/**If there aren't any ViewPagerListItems then see if any RelativeLayout list items are provided*/
+		if( null == content) { 
+			content = getRelativeLayoutListContent();
+		}
+		
+		loadListElementsToLayoutFromList(contentTable, content);
 			
 		return view;
 	}
@@ -110,17 +123,39 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 * @param layout a LinearLayout that will show a list of ViewPagerListItems
 	 * @param elementList a list of ViewPagerListItems
 	 */
-	public void loadListElementsToLayoutFromList(final LinearLayout layout, final List<ViewPagerListItem> elementList){
+	public void loadListElementsToLayoutFromList(final LinearLayout layout, final List<?> elementList){
 		if(layout != null && elementList != null){
-			for(final ViewPagerListItem element : elementList)
-				layout.addView(element);
+			for(final Object element : elementList)
+				layout.addView((View)element);
 		}
 	}
 	
-	protected abstract List<ViewPagerListItem> getContent();
+	/**
+	 * Abstract method to be implemented by sub-class to provid a list of ViewPagerListItems to be
+	 * displayed by this fragment. Sub-class can choose to return null for this method and use getRelativeLayoutListContent() 
+	 * instead.
+	 * 
+	 * @return Returns a list of ViewPagerListItem objects 
+	 */
+	protected abstract List<ViewPagerListItem> getViewPagerListContent();
 	
+	/**
+	 * Abstract method to be implemented by sub-class to provide a list of RelativeLayout objects to be
+	 * displayed by this fragment. Sub-class can choose to return null for this method and use getRelativeLayoutListContent() 
+	 * instead.
+	 * 
+	 * @return Returns a list of RelativeLayout objects 
+	 */
+	protected abstract List<RelativeLayout> getRelativeLayoutListContent();
+	
+	/**
+	 * Abstract Method to be implemented by sub-class to handle when the action button is clicked
+	 */
 	protected abstract void onActionButtonClick();
 	
+	/**
+	 * Abstract Method to be implmented by sub-class to handle when the action link is clicked
+	 */
 	protected abstract void onActionLinkClick();
 
 	/**

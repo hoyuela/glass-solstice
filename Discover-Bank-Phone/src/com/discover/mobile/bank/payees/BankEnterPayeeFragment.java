@@ -1,6 +1,6 @@
 package com.discover.mobile.bank.payees;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +43,7 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 	/**
 	 * Field used to run a search of Payees using the Bank API Web Services
 	 */
-	private PayeeSearchField searchField;
+	private PayeeValidatedEditField searchField;
 	/**
 	 * Executes the Bank API Web Service GET /api/payees/search using the text in searchField
 	 */
@@ -64,7 +64,9 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		continueButton.setOnClickListener(this);
 				
 		/**Lookup EditText field used for searching for a payee**/
-		searchField = (PayeeSearchField)view.findViewById(R.id.search_field);
+		searchField = (PayeeValidatedEditField)view.findViewById(R.id.search_field);
+		searchField.setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
+		searchField.setMinimum(2);
 		searchField.attachErrorLabel(errorLabel);
 		
 		/**Hyperlink used to provide feedback*/
@@ -102,6 +104,10 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 	 */
 	@Override
 	public void onClick(final View sender ) {
+		/**Hide Keyboard*/
+		final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromInputMethod(searchField.getWindowToken(), 0);
+	
 		if( sender == feedback ) {
 			BankNavigator.navigateToFeedback();
 		} else if( sender == helpButton ) {
@@ -111,10 +117,6 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 			final Toast toast = Toast.makeText(this.getActivity(), text, duration);
 			toast.show();
 		} else if( sender == continueButton ) {
-			//Close Soft Input Keyboard
-			final InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-			inputManager.hideSoftInputFromInputMethod(searchField.getWindowToken(), 0);
-			
 			if( searchField.isValid() ) {
 				final String search = searchField.getText().toString().trim();
 				BankServiceCallFactory.createPayeeSearchRequest(search).submit();
