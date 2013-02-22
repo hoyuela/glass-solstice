@@ -1,7 +1,9 @@
 package com.discover.mobile.bank.services.payee;
 
 import java.io.Serializable;
+import java.util.List;
 
+import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -47,4 +49,15 @@ public class AddPayeeDetail implements Serializable {
 	
 	@JsonProperty("merchantNumber")
 	public String merchantNumber;
+	
+	@JsonProperty("phone")
+	public String phone;
+
+	/**
+	 * Contains Bank web-service API Resource links
+	 */
+	@JsonProperty("links")
+	public List<ReceivedUrl> links;
+	
+	public boolean isZipRequired;
 }

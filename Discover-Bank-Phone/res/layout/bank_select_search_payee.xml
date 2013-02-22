@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:fillViewport="true"
     android:layout_height="match_parent" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/forms_inner_padding" 
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/forms_inner_padding" 
+        android:paddingLeft="@dimen/forms_inner_padding" 
+        android:paddingRight="@dimen/forms_inner_padding" 
+        android:paddingBottom="@dimen/orange_button_margin_top"
         android:background="@drawable/light_gray_bkgrd">
 
         <ImageButton
@@ -68,10 +72,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/orange_button_margin_top"
-            android:paddingBottom="@dimen/orange_button_margin_top"
             android:layout_below="@+id/enter_payee_details"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:gravity="bottom"
             android:text="@string/feedback_text" />
         
     </RelativeLayout>

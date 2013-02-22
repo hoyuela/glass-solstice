@@ -22,6 +22,7 @@ import com.discover.mobile.bank.paybills.BankPayeeNotEligibleFragment;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.paybills.ReviewPaymentsTable;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
+import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
 import com.discover.mobile.bank.payees.BankAddPayeeFragment;
 import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
 import com.discover.mobile.bank.payees.BankManagePayee;
@@ -408,12 +409,13 @@ public final class BankNavigator {
 	 * @param step - Class type of a fragment that is to be displayed. Can be BankEnterPaymentFragment or BankSearchSelectPaymentFragment
 	 * @param bundle - Contains the arguments that is to be provided to the fragment that will be displayed
 	 */
-	public static void navigateToAddPayee(final Class<?>  step, final Bundle bundle) {
+	public static void navigateToAddPayee(final Class<?>  step, final Bundle bundle) {		
 		BaseFragment fragment = null;
 
 		//Verify the current activity is the BankNavigationRootActivity
 		if(  DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity ) {
 			final BaseFragmentActivity activity = (BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();		
+			activity.closeDialog();
 			
 			//If class type is BankEnterPayeeFragment then open the Search Payee Fragment Step 2 of work-flow
 			if( step == BankEnterPayeeFragment.class ) {
@@ -423,8 +425,14 @@ public final class BankNavigator {
 			//If class type is BankAddPayeeFragment then open the Add Payee Fragment Step 4 of work-flow
 			else if( step == BankAddPayeeFragment.class ) {
 				fragment = new BankAddPayeeFragment();
-				activity.makeFragmentVisible(fragment,false);
 				fragment.setArguments(bundle);
+				activity.makeFragmentVisible(fragment,false);
+			}
+			//If class type is BankAddPayeeConfirmFragment then open the Add Payee Confirmation Fragment Step 5 of work-flow
+			else if( step == BankAddPayeeConfirmFragment.class) {
+				fragment = new BankAddPayeeConfirmFragment();
+				fragment.setArguments(bundle);
+				activity.makeFragmentVisible(fragment, false);
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
 					Log.e(TAG, "Invalid Class Type provided");

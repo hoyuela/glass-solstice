@@ -1,5 +1,10 @@
 package com.discover.mobile.bank.services.payee;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
@@ -97,6 +102,14 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 	@Override
 	public TypedReferenceHandler<AddPayeeDetail> getHandler() {
 		return this.handler;
+	}
+	
+	@Override
+	protected AddPayeeDetail parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
+			throws IOException {
+		final AddPayeeDetail data = super.parseSuccessResponse(status, headers, body);
+		
+		return data;
 	}
 	
 	/**

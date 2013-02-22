@@ -3,6 +3,7 @@ package com.discover.mobile.common.nav;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.discover.mobile.common.LoggedInRoboActivity;
@@ -26,6 +27,8 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	
 	/**String to get modal state*/
 	private static final String MODAL_STATE = "modalState";
+
+	private static final String TAG = "Navigation";
 	
 	/**Boolean to show the modal*/
 	protected boolean shouldShowModal = true;
@@ -89,7 +92,16 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		wasPaused = true;
-		this.getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT, currentFragment);
+		
+		/**Crashes here when fragment is not in the backstack, by surrounding with try issue goes away*/
+		try {
+			this.getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT, currentFragment);
+		}catch(final Exception ex) {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "An unexpected error occurred when attempting to store state of applicaiton");
+			}
+		}
+		
 		outState.putString(TITLE, getActionBarTitle());
 		outState.putBoolean(MODAL_STATE, shouldShowModal);
 		super.onSaveInstanceState(outState);

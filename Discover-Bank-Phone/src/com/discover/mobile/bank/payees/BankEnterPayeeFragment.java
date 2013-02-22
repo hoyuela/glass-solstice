@@ -120,6 +120,9 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 			if( searchField.isValid() ) {
 				final String search = searchField.getText().toString().trim();
 				BankServiceCallFactory.createPayeeSearchRequest(search).submit();
+				
+				/**Clear text so when the user navigates back it doesn't have the text they had originall typed in*/
+				searchField.getText().clear();
 			} else {
 				searchField.updateAppearanceForInput();
 			}

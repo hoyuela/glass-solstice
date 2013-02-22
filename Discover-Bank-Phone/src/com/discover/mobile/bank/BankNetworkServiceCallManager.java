@@ -9,8 +9,8 @@ import android.util.Log;
 
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
-import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.login.LoginActivity;
+import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
@@ -19,13 +19,13 @@ import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
+import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
-import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
@@ -256,6 +256,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		//Payee Search Success, navigate to Add Payee Workflow Step 4
 		else if( sender instanceof SearchPayeeServiceCall ) {
 			BankNavigator.navigateToSelectPayees((SearchPayeeResultList)result);
+		}
+		//Payee Add Success, navigate to Add Payee Confirmation Pge in Workflow Step 5
+		else if( sender instanceof AddPayeeServiceCall ) {
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
+			BankNavigator.navigateToAddPayee(BankAddPayeeConfirmFragment.class, bundle);
 		}
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
