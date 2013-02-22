@@ -3,6 +3,7 @@ package com.discover.mobile.bank.services.payee;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 
 /**
  * Class used for holding information for a Search Result item sent from the Search Payee Bank API Web-service
@@ -41,6 +42,13 @@ public class SearchPayeeResult implements Serializable {
 	public String merchantNumber;
 	
 	@JsonProperty("isZipRequired")
-	public String isZipRequired;
+	public String zipRequired;
+	
+	/**
+	 * @return Returns true is zip code is required when adding the payee with the information held by this object
+	 */
+	public boolean isZipRequired() {
+		return (!Strings.isNullOrEmpty(zipRequired) && zipRequired.equals("true"));
+	}
 
 }

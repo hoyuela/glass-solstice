@@ -99,6 +99,10 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		feedbackLink = (TextView)view.findViewById(R.id.provide_feedback);
 		feedbackLink.setOnClickListener(this);
 		
+		/**Hide top note as it is not needed for this view**/
+		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
+		topNote.setVisibility(View.GONE);
+		
 		noteTitle = (TextView)view.findViewById(R.id.note_text_title);
 		noteTitle.setVisibility(View.GONE);
 		
