@@ -13,8 +13,8 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.common.BaseFragment;
@@ -34,7 +34,7 @@ import com.discover.mobile.common.BaseFragment;
  */
 public class BankSelectPayee extends BaseFragment{
 	final String TAG = BankSelectPayee.class.getSimpleName();
-	
+
 	/**List of payees*/
 	private ListPayeeDetail payees;
 
@@ -43,14 +43,14 @@ public class BankSelectPayee extends BaseFragment{
 
 	/**Text view holding the empty list message*/
 	private TextView empty;
-	
+
 	private View view;
-	
+
 	/**Text view holding the error message*/
 	private TextView error;
-	
+
 	public boolean errorExists;
-	
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,14 +75,14 @@ public class BankSelectPayee extends BaseFragment{
 		payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
 		empty = (TextView)view.findViewById(R.id.no_payees);
 		error = (TextView)view.findViewById(R.id.payee_error_text);
-		
+
 		setupAddNewPayeeButton(view);
 		initViewWithBundleData();
 		customSetup();
-		
+
 		return view;
 	}
-	
+
 	/**
 	 * Optional Override in subclass
 	 */
@@ -91,7 +91,7 @@ public class BankSelectPayee extends BaseFragment{
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		if(((BankNavigationRootActivity)getActivity()).consumeFragmentError()) {
 			error.setVisibility(View.VISIBLE);
 		}
@@ -107,7 +107,7 @@ public class BankSelectPayee extends BaseFragment{
 	public void onSaveInstanceState(final Bundle outState){
 		outState.putSerializable(BankExtraKeys.PAYEES_LIST, payees);
 	}
-	
+
 	/**
 	 * This method will take the loaded list of payees and fill 
 	 * the list on the screen with the data.
@@ -115,6 +115,8 @@ public class BankSelectPayee extends BaseFragment{
 	private void initViewWithBundleData() {
 		if(null == payees || payees.payees.isEmpty()){
 			empty.setVisibility(View.VISIBLE);
+			final Button addPayee = (Button)view.findViewById(R.id.add_payee);
+			addPayee.setText(getResources().getString(R.string.select_payee_no_payees));
 		}else{
 			payeesList.removeAllViews();
 			for(final PayeeDetail payee : payees.payees){
@@ -161,7 +163,7 @@ public class BankSelectPayee extends BaseFragment{
 			}
 		};
 	}
-	
+
 	/**
 	 * Setup the add new payee button to navigate to the add new payee flow when clicked
 	 */

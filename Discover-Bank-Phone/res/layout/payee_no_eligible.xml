@@ -147,6 +147,19 @@
         
         </LinearLayout>
         
+        <Button
+            android:id="@+id/openAccount"
+            style="@style/call_to_action_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/pay_bills_delivery"
+            android:drawableRight="@drawable/external_link_icon"
+            android:layout_marginTop="@dimen/modal_top_margin"
+            android:drawablePadding="@dimen/between_related_elements_padding"
+            android:layout_gravity="center"
+            android:text="@string/bank_open_account" />
+        
         <TextView
             android:id="@+id/provide_feedback_button"
             style="@style/bank_blue_hyperlink_small"
@@ -154,7 +167,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:layout_marginBottom="@dimen/orange_button_margin_top"
-            android:layout_below="@+id/pay_bills_delivery"
+            android:layout_below="@+id/openAccount"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:text="@string/feedback_text" />
