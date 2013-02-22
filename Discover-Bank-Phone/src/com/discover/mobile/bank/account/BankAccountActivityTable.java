@@ -86,7 +86,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	@Override
 	public int getActionBarTitle() {
-		return R.string.pay_a_bill_title;
+		return R.string.bank_account_summary;
 	}
 
 	/**
