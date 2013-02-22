@@ -12,10 +12,10 @@ import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 
 /**
  * Used for invoking the Bank - Add a Payee Service API invoked via POST /api/payees. The JSON
- * response to this web-service API is de-serialized into a PayeeDetail object and passed to the
+ * response to this web-service API is de-serialized into a AddPayeeDetail object and passed to the
  * application layer for processing.
  * 
- * The following is an example of the Search JSON response:
+ * The following is an example of the Add Managed Payee JSON response:
  * {
  *		"name" : "VERIZON WIRELESS",
  *		"nickName" : "Phone Bill",
@@ -26,17 +26,17 @@ import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
  * }
  * 
  */
-public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCall<PayeeDetail>{
+public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCall<AddPayeeDetail>{
 	/**
 	 * Used for printing logs into Android Logcat
 	 */
 	private static final String TAG = AddPayeeServiceCall.class.getSimpleName();
 
 	/** Reference handler to return the data to the UI */
-	private final TypedReferenceHandler<PayeeDetail> handler;
+	private final TypedReferenceHandler<AddPayeeDetail> handler;
 
 	/** Reference to the PayeeDetail with the information that will be sent to the server for adding a payee**/
-	private final PayeeDetail payeeDetail;
+	private final AddPayeeDetail payeeDetail;
 	
 	/**
 	 * 
@@ -46,17 +46,17 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 	 *            Reference to the Handler for the response
 	 */
 	public AddPayeeServiceCall(final Context context,
-			final AsyncCallback<PayeeDetail> callback,
-			final PayeeDetail details) {
+			final AsyncCallback<AddPayeeDetail> callback,
+			final AddPayeeDetail details) {
 
 		/**Generate the ServiceCall Params and provide the Paramter Types to be used by the Super Class**/
-		super(context, generateCallParams(), PayeeDetail.class);
+		super(context, generateCallParams(), AddPayeeDetail.class);
 
 		/**Information about the Payee being added*/
 		payeeDetail = details;
 		
 		/**Create the handler for the response for this request*/
-		this.handler = new SimpleReferenceHandler<PayeeDetail>(callback);
+		this.handler = new SimpleReferenceHandler<AddPayeeDetail>(callback);
 	}
 	
 	/**
@@ -95,7 +95,7 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 	 * @return the handler
 	 */
 	@Override
-	public TypedReferenceHandler<PayeeDetail> getHandler() {
+	public TypedReferenceHandler<AddPayeeDetail> getHandler() {
 		return this.handler;
 	}
 	
@@ -103,7 +103,7 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 	 * Returns a reference to a PayeeDetail object which was used for generating a JSON Post Request
 	 * to add a Payee.
 	 */
-	public PayeeDetail getAddedPayee() {
+	public AddPayeeDetail getAddedPayee() {
 		return this.payeeDetail;
 	}
 

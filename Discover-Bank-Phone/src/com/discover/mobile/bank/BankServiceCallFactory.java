@@ -16,11 +16,11 @@ import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
+import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
-import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
@@ -283,11 +283,11 @@ public class BankServiceCallFactory {
 	 * 
 	 * @return Reference to the AddPayeeServiceCall object created.
 	 */
-	public static AddPayeeServiceCall createAddPayeeRequest(final PayeeDetail value) {
+	public static AddPayeeServiceCall createAddPayeeRequest(final AddPayeeDetail value) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		final AsyncCallback<PayeeDetail>  callback =
-				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PayeeDetail.class,
+		final AsyncCallback<AddPayeeDetail>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(AddPayeeDetail.class,
 						activity, (ErrorHandlerUi) activity)
 						.build();
 

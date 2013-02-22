@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
@@ -74,15 +75,6 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	}
 
 	/**
-	 * Returns list of content generated in onCreate to the base class BankOneButtonFragment to display
-	 * the content.
-	 */
-	@Override
-	protected List<ViewPagerListItem> getContent() {
-		return contentItems;
-	}
-
-	/**
 	 * Method implementation of Bank com.discover.mobile.bank.ui.fragments.BankOneButtonFragment.onActionButtonClick()
 	 * Navigates User to previous BankSelectPayee which originally brought the user to this Fragment
 	 */
@@ -100,6 +92,21 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	@Override
 	protected void onActionLinkClick() {
 		BankNavigator.navigateToReviewPayments(null, false);
+	}
+
+	/**
+	 * Returns list of content generated in onCreate to the base class BankOneButtonFragment to display
+	 * the content.
+	 */
+	@Override
+	protected List<ViewPagerListItem> getViewPagerListContent() {
+		return contentItems;
+	}
+
+
+	@Override
+	protected List<RelativeLayout> getRelativeLayoutListContent() {
+		return null;
 	}
 	
 }

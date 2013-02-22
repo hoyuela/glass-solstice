@@ -26,6 +26,7 @@
             style="@style/field_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:layout_below="@+id/divider_line"
             android:text="@string/edit" />
 
@@ -36,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/top_label"
             android:text="@string/edit"
+            android:singleLine="true"
             android:textStyle="bold" />
 
         <TextView
@@ -44,6 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/middle_label"
+            android:singleLine="true"
             android:text="@string/edit" />
     </RelativeLayout>
 

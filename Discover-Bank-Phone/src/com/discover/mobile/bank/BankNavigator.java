@@ -411,19 +411,25 @@ public final class BankNavigator {
 	public static void navigateToAddPayee(final Class<?>  step, final Bundle bundle) {
 		BaseFragment fragment = null;
 
-		if( step == BankEnterPayeeFragment.class ) {
-			fragment = new BankEnterPayeeFragment();	
-		} else if( step == BankAddPayeeFragment.class ) {
-			fragment = new BankAddPayeeFragment();
-			fragment.setArguments(bundle);
-		} else {
-			if( Log.isLoggable(TAG, Log.ERROR)) {
-				Log.e(TAG, "Invalid Class Type provided");
+		//Verify the current activity is the BankNavigationRootActivity
+		if(  DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity ) {
+			final BaseFragmentActivity activity = (BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();		
+			
+			//If class type is BankEnterPayeeFragment then open the Search Payee Fragment Step 2 of work-flow
+			if( step == BankEnterPayeeFragment.class ) {
+				fragment = new BankEnterPayeeFragment();
+				activity.makeFragmentVisible(fragment);
 			}
-		}
-		
-		if( fragment != null  && DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity ) {
-			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);		
+			//If class type is BankAddPayeeFragment then open the Add Payee Fragment Step 4 of work-flow
+			else if( step == BankAddPayeeFragment.class ) {
+				fragment = new BankAddPayeeFragment();
+				activity.makeFragmentVisible(fragment,false);
+				fragment.setArguments(bundle);
+			} else {
+				if( Log.isLoggable(TAG, Log.ERROR)) {
+					Log.e(TAG, "Invalid Class Type provided");
+				}
+			}	
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Appication is currently not in the right activity");
