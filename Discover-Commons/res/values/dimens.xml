@@ -69,5 +69,9 @@
   	 
      <!-- Divider Dimensions -->
      <dimen name="divider_height">1dp</dimen>
+     
+    <!-- Schedule Payments static list height -->
+    <dimen name="listview_vertical_height">60dp</dimen>
+        
     
 </resources>

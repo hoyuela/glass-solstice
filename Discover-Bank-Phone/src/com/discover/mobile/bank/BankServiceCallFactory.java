@@ -3,6 +3,7 @@ package com.discover.mobile.bank;
 import android.app.Activity;
 
 import com.discover.mobile.bank.login.LoginActivity;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
@@ -22,6 +23,8 @@ import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
+import com.discover.mobile.bank.services.payment.CreatePaymentCall;
+import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
@@ -86,7 +89,24 @@ public class BankServiceCallFactory {
 		return loginCall;
 	}
 
+	/**
+	 * Used to construct a CreatePaymentCall NetworkServiceCall for making a
+	 * payment to a payee. API found at ./api/payments/. The CreatePaymentCall
+	 * created here is used to POST the details needed to make a payment.
+	 * 
+	 * @param payment
+	 * @return
+	 */
+	public static CreatePaymentCall createMakePaymentCall(final CreatePaymentDetail paymentDetails) {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 
+		final AsyncCallback<PaymentDetail> callback = BankPhoneAsyncCallbackBuilder
+				.createDefaultCallbackBuilder(PaymentDetail.class, activity,
+						(ErrorHandlerUi) activity).build();
+
+		final CreatePaymentCall paymentCall = new CreatePaymentCall(activity, callback, paymentDetails);
+		return paymentCall;
+	}
 
 	/**
 	 * Used to construct a CreateStrongAuthRequestCall NetworkServiceCall for invoking the Bank - Authentication

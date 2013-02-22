@@ -19,4 +19,5 @@
     
     <!-- Status bar height -->
     <dimen name="status_bar_height">40dp</dimen>
+    
 </resources>

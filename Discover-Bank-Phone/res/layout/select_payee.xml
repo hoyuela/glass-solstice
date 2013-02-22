@@ -7,9 +7,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/forms_inner_padding" 
+        android:background="@drawable/light_gray_bkgrd"
         android:paddingBottom="@dimen/forms_inner_padding"
-        android:background="@drawable/light_gray_bkgrd">
+        android:paddingLeft="@dimen/forms_inner_padding" >
 
         <ImageButton
             android:id="@+id/help"
@@ -24,40 +24,50 @@
             style="@style/page_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_marginBottom="@dimen/table_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:layout_toLeftOf="@+id/help"
-            android:layout_alignParentLeft="true"
-            android:text="@string/select_payee_title"/>
-        
+            android:text="@string/select_payee_title" />
+
         <TextView
             android:id="@+id/no_payees"
+            style="@style/normal_static_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/select_payee_title"
             android:text="@string/select_payee_empty"
-            style="@style/normal_static_text"
-            android:visibility="gone"/>
-        
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/payee_error_text"
+            style="@style/error_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/select_payee_title"
+            android:text="@string/schedule_pay_canceled"
+            android:paddingBottom="@dimen/between_related_elements_padding"
+            android:visibility="gone" />
+
         <LinearLayout
             android:id="@+id/payee_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/payee_error_text"
             android:orientation="vertical"
-            android:layout_below="@+id/select_payee_title"
-        	android:paddingRight="@dimen/forms_inner_padding" />
-        
-        <Button 
+            android:paddingRight="@dimen/forms_inner_padding" />
+
+        <Button
             android:id="@+id/add_payee"
             style="@style/call_to_action_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/payee_list"
-            android:layout_marginTop="@dimen/orange_button_margin_top"
             android:layout_centerHorizontal="true"
-            android:text="@string/select_payee_add_new"/>
-        
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:text="@string/select_payee_add_new" />
+
         <TextView
             android:id="@+id/provide_feedback_button"
             style="@style/bank_blue_hyperlink_small"
@@ -69,8 +79,6 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:text="@string/feedback_text" />
-        
     </RelativeLayout>
-    
 
 </ScrollView>

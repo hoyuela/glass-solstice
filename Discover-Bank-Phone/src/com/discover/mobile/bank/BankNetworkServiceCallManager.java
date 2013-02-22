@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
+import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
@@ -22,7 +23,10 @@ import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
+import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
+import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
+import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -209,6 +213,10 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 				//Retransmit the previous NetworkServiceCall<>
 				prevCall.retransmit(activeActivity);
 			}
+		// Navigate to Payment Confirmation upon a successful payment.
+		} else if( sender instanceof CreatePaymentCall) {
+			final PaymentDetail value = (PaymentDetail)result;
+			BankNavigator.navigateToPayConfirmFragment(value);
 		}
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
 		else if( sender instanceof CreateStrongAuthRequestCall && this.prevCall != null && sender.isPostCall() ) {

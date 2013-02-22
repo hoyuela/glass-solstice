@@ -320,6 +320,7 @@ public final class BankNavigator {
 	 * @param value Reference to PaymentDetail information used to schedule a Payment
 	 */
 	public static void navigateToPayConfirmFragment(final PaymentDetail value) {
+		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
 		final BankPayConfirmFragment fragment = new BankPayConfirmFragment();
 		final Bundle bundle = new Bundle();
 

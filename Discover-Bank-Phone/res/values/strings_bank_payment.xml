@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
     <!-- Section titles -->
     <string name="pay_a_bill_title">Pay a Bill</string>
        
@@ -36,5 +35,24 @@
 	<string name="manage_payees">Manage Payees</string>
 	<string name="payee">Payee</string>
 	<string name="manage_payees_welcome">Welcome to Manage Payees</string>
+	
+	<!-- Schedule Payments -->
+ 	<string name="schedule_pay_payee">Payee</string>
+ 	<string name="schedule_pay_from">Pay From</string>
+ 	<string name="schedule_pay_amount">Amount</string>
+ 	<string name="schedule_pay_too_high">Too high (more than $25k)</string>
+ 	<string name="schedule_pay_too_low">Too low (less than $1)</string>
+ 	<string name="schedule_pay_date">Deliver By</string>
+ 	<string name="schedule_pay_memo_opt">Memo (Optional)</string>
+ 	<string name="schedule_pay_button">Schedule Payment</string>
+ 	<string name="schedule_pay_memo">Memo</string>
+ 	<string name="schedule_pay_spinner_body">Account Ending in</string>
+ 	<string name="schedule_pay_cancel_title">Cancel Transaction</string>
+ 	<string name="schedule_pay_cancel_body">Are you sure you want to cancel this transaction? Tap Cancel This Transaction to end it, or tap Don\'t Cancel to return to the previous page.</string>
+ 	<string name="schedule_pay_cancel_button_confirm">Cancel This Transaction</string>
+ 	<string name="schedule_pay_cancel_button_cancel">Don\'t Cancel</string>
+ 	<string name="schedule_pay_canceled">Transaction Cancelled</string>
+ 	<string name="schedule_pay_date_picker_title">Enter Payment Date</string>
+ 	<string name="schedule_pay_duplicate_payment">Duplicate Payment</string>
+ 	<string name="schedule_pay_invalid_date">Invalid Date</string>
 </resources>
-

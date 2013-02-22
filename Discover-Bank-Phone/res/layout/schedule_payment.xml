@@ -1,11 +1,274 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Schedule A Payement"/>
-</LinearLayout>
+    android:background="@drawable/light_gray_bkgrd" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.discover.mobile.common.nav.HeaderProgressIndicator
+            android:id="@+id/schedule_pay_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+        
+        <TextView
+            android:id="@+id/conflict_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/schedule_pay_header"
+            android:text="@string/schedule_pay_duplicate_payment"
+            android:textColor="@color/error_indicator"
+            android:padding="@dimen/between_related_elements_padding"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/sched_pay_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/conflict_error"
+            android:layout_margin="15dp"
+            android:background="@drawable/rounded_table_corners_shape"
+            android:orientation="vertical"
+            android:padding="0dp" >
+
+            <!-- Payee -->
+
+            <RelativeLayout style="@style/schedule_pay_list_element" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/schedule_pay_payee" />
+
+                <TextView
+                    android:id="@+id/payee_text"
+                    style="@style/title_copy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="Comcast" />
+            </RelativeLayout>
+
+            <include layout="@layout/divider_horizontal" />
+
+            <!-- Pay From Account -->
+
+            <RelativeLayout
+                android:id="@+id/payment_acct_element"
+                style="@style/schedule_pay_list_element" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/schedule_pay_from" />
+
+                <TextView
+                    android:id="@+id/payment_acct_text"
+                    style="@style/title_copy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="4dp"
+                    android:src="@drawable/blue_arrow_right" />
+
+                <Spinner
+                    android:id="@+id/payment_acct_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+            <include layout="@layout/divider_horizontal" />
+
+            <!-- Amount -->
+
+            <RelativeLayout
+                android:id="@+id/amount_element"
+                style="@style/schedule_pay_list_element"
+                android:gravity="center_vertical" >
+
+                <LinearLayout
+                    android:id="@+id/amount_llayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="4" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/schedule_pay_amount" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingRight="3dp"
+                        android:text="$"
+                        android:textColor="@color/black" />
+
+                    <com.discover.mobile.common.ui.widgets.SchedulePaymentAmountEditText
+                        android:id="@+id/amount_edit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:background="@drawable/edit_text_default"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:imeOptions="flagNoExtractUi"
+                        android:textCursorDrawable="@null" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/amount_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/amount_llayout"
+                    android:text="@string/schedule_pay_too_high"
+                    android:textColor="@color/error_indicator"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <include layout="@layout/divider_horizontal" />
+
+            <!-- Deliver By -->
+
+            <RelativeLayout android:id="@+id/date_item" 
+                style="@style/schedule_pay_list_element"
+                android:gravity="center_vertical"  >
+
+                <LinearLayout
+                    android:id="@+id/date_llayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="4" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="2"
+                        android:text="@string/schedule_pay_date" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal"
+                        android:paddingRight="7dp"
+                        android:weightSum="5" >
+
+                        <EditText
+                            android:id="@+id/date_edit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/between_related_elements_padding"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text_default"
+                            android:focusable="false"
+                            android:textColor="@color/black" />
+
+                        <ImageView
+                            android:id="@+id/date_icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="4"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/calendar_icon" />
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/date_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/date_llayout"
+                    android:text="@string/schedule_pay_invalid_date"
+                    android:textColor="@color/error_indicator"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <include layout="@layout/divider_horizontal" />
+
+            <!-- Memo -->
+
+            <RelativeLayout
+                android:id="@+id/memo_element"
+                style="@style/schedule_pay_list_element" >
+
+                <TextView
+                    android:id="@+id/memo_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/schedule_pay_memo_opt" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="4dp"
+                    android:src="@drawable/blue_arrow_right" />
+
+                <TextView
+                    android:id="@+id/memo_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/memo_title"
+                    android:text=""
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/memo_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/memo_title"
+                    android:background="@drawable/edit_text_default"
+                    android:inputType="textWebEditText"
+                    android:maxLength="40"
+                    android:scrollHorizontally="false"
+                    android:textColor="@color/black"
+                    android:textCursorDrawable="@null"
+                    android:imeOptions="flagNoExtractUi"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/pay_now"
+            style="@style/call_to_action_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sched_pay_list"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/modal_orange_margin_bottom"
+            android:layout_marginTop="@dimen/modal_orange_margin_top"
+            android:text="@string/schedule_pay_button" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            style="@style/blue_hyperlink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pay_now"
+            android:layout_centerHorizontal="true"
+            android:background="@null"
+            android:text="@string/cancel_text" >
+        </Button>
+    </RelativeLayout>
+
+</ScrollView>
