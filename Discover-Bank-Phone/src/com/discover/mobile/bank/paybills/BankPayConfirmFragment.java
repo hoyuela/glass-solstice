@@ -80,9 +80,8 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	protected void onActionButtonClick() {
-		//Henry: Need to change this to BankSelectPayee once all screens have been completed to navigate to this page
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
-		activity.popTillFragment(BankAccountSummaryFragment.class);
+		activity.popTillFragment(BankSelectPayee.class);
 	}
 
 	/**
