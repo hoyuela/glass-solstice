@@ -1,0 +1,53 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+        <!-- Status Indicator Styles -->
+    <style name="status_indicator_style">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:background">@drawable/light_gray_bkgrd</item>
+    </style>
+
+    <style name="status_check_mark">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/gray_check_mark</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
+    <style name="status_linear_layouts">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="status_indicator_image">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:src">@drawable/orange_down_arrow</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
+    <style name="status_indicator_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:lines">1</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+     <style name="selected_status_indicator_text">
+        <item name="android:textColor">@color/body_copy</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lines">1</item>
+        <item name="android:padding">0dp</item>
+    </style>
+</resources>

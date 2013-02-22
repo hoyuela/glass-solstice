@@ -1,7 +1,0 @@
-<resources>
-	<string name="error_401">Sorry. The User ID and/or Password does not match our records, or you are not registered. Please try again.</string>
-	<string name="error_403">The request has been understood but has been refused due to incompatible client version.</string>
-	<string name="error_415">Unsupported Media Type</string>
-	<!-- <string name="error_500"><h3>Discover.com Mobile Error</h3>We're sorry. Your request cannot be completed at this time. We sincerely apologize for this inconvenience and are working to resolve this issue soon. For further assistance please call 1&#8211;877&#8211;742&#8211;7822</string>
-	<string name="error_503">We're sorry. Our services are unavailable at this time. <br/>We apologize for any inconvenience.</string> -->
-</resources>

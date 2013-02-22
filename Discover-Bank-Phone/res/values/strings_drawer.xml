@@ -1,0 +1,5 @@
+<resources>
+    <string name="section_title_account">Account</string>
+    <string name="sub_section_title_account_summary">Account Summary</string>
+    <string name="sub_section_title_statements">Statements</string>
+</resources>

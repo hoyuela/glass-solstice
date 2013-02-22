@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" 
+    android:background="#EDF1F2">
+    
+    <Button
+        android:id="@+id/notification_save_button"
+        android:layout_width="wrap_content"
+   		android:layout_height="wrap_content"
+		android:text="@string/save_changes"
+		style="@style/special_push_orange_button"/>
+    
+    <TextView
+        android:id="@+id/terms_of_use_view_1"
+        android:layout_width="wrap_content"
+   		android:layout_height="wrap_content"
+   		android:layout_centerVertical="true"
+   		android:layout_toRightOf="@+id/notification_save_button"
+   		android:layout_alignTop="@+id/notification_save_button"
+   		android:layout_alignBottom="@+id/notification_save_button"
+   		android:maxLines="2"
+   		style="@style/sub_copy_small"/>
+    
+    <TextView 
+        android:id="@+id/clickable_view"
+        android:layout_width="@dimen/dummy_push_box_width"
+   		android:layout_height="wrap_content"
+   		android:layout_alignRight="@+id/terms_of_use_view_1"
+   		android:layout_alignBottom="@+id/terms_of_use_view_1"
+   		android:layout_alignTop="@+id/terms_of_use_view_1"/>
+
+</RelativeLayout>

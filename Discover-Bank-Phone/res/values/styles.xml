@@ -1,0 +1,55 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="OrangeTheme">
+        <item name="android:background">@drawable/splash_screen</item>
+    </style>
+    
+    <style name="WhiteThemeFooter">
+        <item name="android:textColor">@color/blue</item>
+    </style>
+
+    <style name="Theme.Splash" parent="android:Theme">
+        <item name="android:background">@drawable/splash</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="login_bottom_bar_button">
+        <item name="android:padding">@dimen/content_padding</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+        <item name="android:background">@drawable/login_bottom_bar_button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:height">@dimen/login_bottom_button_height</item>
+    </style>
+
+    <style name="simple_white_button">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:background">@drawable/white_button</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:paddingLeft">@dimen/white_button_left_right_padding</item>
+        <item name="android:paddingRight">@dimen/white_button_left_right_padding</item>
+        <item name="android:layout_marginBottom">@dimen/between_related_elements_padding</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="customer_service_table">
+        <item name="android:padding">2dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/rounded_table_corners_no_padding</item>
+    </style>
+    
+        <style name="schedule_pay_list_element">
+        <item name="android:padding">7dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/listview_vertical_height</item>
+    </style>
+        
+    <style name="login_white_pane">
+        <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
+        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
+        <item name="android:padding">30dp</item>
+        <item name="android:background">@drawable/login_white_bkgrd</item>
+    </style>
+   
+</resources>

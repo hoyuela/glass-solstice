@@ -1,0 +1,81 @@
+<resources>
+    
+    <!-- Account Info Screen 1 -->
+    <string name="account_info_dob_text">Primary Cardmember\'s Birthday</string>
+	<string name="account_info_ssn_info_text">Primary Cardmember\'s Social Security Number (Last 4 Digits)</string>
+	<string name="account_info_bad_input_error_text">
+	    You have entered invalid information.
+	     Carefully review your information and please try again.
+	</string>
+	<string name="account_info_sams_club_card_error_text">As a Sam\'s Club Discover Cardmember, you cannot register for
+	    Account Center access at discover.com. We\'d love to have you, but for now you must
+	    register through the Sam\'s Club Website to manage your account.</string>
+
+	<string name="account_info_input_restrictions_label">This is a 16&#8211;digit number starting with 6011.
+	    Do not include spaces or hyphens.
+	</string>
+	
+	<!-- Account Info Screen 2 -->
+    <string name="account_info_two_id_detail_info_text">6&#8211;16 characters can contain most special characters except: (\"), (\'), (\\) and spaces.</string>
+	<string name="account_info_two_create_id_text">New User ID</string>
+	<string name="account_info_two_pass_text">New Password</string>
+	<string name="account_info_two_pass_info_text">
+	    8&#8211;32 characters. At least one number. Case sensitive. Special characters can be used.
+	</string>
+	
+	<string name="email_sub_copy">
+	    You\'ll be sent an email confirming your online account registration.
+	</string>
+	
+	<string name="account_info_two_confirm_id_text">Confirm User ID</string>
+	<string name="account_info_two_id_strength_text">User ID Strength</string>
+	<string name="account_info_two_pass_strength_text">Password Strength</string>
+	<string name="account_info_two_pass_confirm_text">Confirm Password</string>
+	<string name="account_info_two_email_text">Email Address</string>
+	<string name="account_info_two_id_matches_pass_error_text">User ID and password must not be the same.</string>
+	<string name="account_info_two_username_in_use_error_text">User ID is already in use. Please choose another one.</string>
+	<string name="account_info_two_passwords_dont_match_text">Passwords don\'t match</string>
+	<string name="account_info_two_ids_must_match_text">User ID\'s don\'t match</string>
+	<string name="account_info_two_new_pass_confirm_text">Confirm New Password</string>
+	<string name="strength_text">Strength</string>
+
+	<!-- Choose Activity Period Strings -->
+	<string name="choose_activty_period">Choose Activity Period</string>
+
+	<!--  Account Summary Strings -->
+	<string name="account_summary_make_a_payment">Make a Payment</string>
+	<string name="account_summary_current_balance">Current Balance</string>
+	<string name="account_summary_last_statement">Last Statement Balance</string>
+	<string name="account_summary_minimum_payment">Minimum Payment (Due: %s)</string>
+	<string name="account_summary_last_payment">Last Payment (%s)</string>
+	<string name="account_summary_credit_available">Credit Available</string>
+	<string name="account_summary_cash_back_bonus">Cashback Bonus Balance</string>
+	<string name="account_summary_miles_bonus">Miles Balance</string>
+	<string name="account_summary_learn_more">LEARN MORE</string>
+	
+	<!--  Account Summary Modals -->
+	<string name="account_summary_modal_button">Continue</string>
+	<string name="credit_line_modal_title">Credit Line Available</string>
+	<string name="credit_line_modal_text">This is the unused portion of your credit line. Certain pending transactions might affect the available balance you see displayed here.</string>
+	<string name="late_payment_modal_title">Late Payment Warning</string>
+	<string name="late_payment_modal_date_text">Minimum Payment Due:</string>
+	<string name="late_payment_modal_text">If we do not receive your minimum payment by the date listed above, you may have to pay a late fee of up to $35.00 and your purchase and balance transfer APRs for new transactions may be increased up to the Penalty APR of 15.99% variable.</string>
+	<string name="late_payment_modal_error_message">Some of our web site features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.</string>
+	<string name="late_payment_modal_error_title">We\'re Sorry</string>
+	
+	<!-- Recent Account Activity Strings -->
+	<string name="view_trans_actions_by_period">View Transactions by Activity Period:</string>
+	<string name="recent_activity_since">Recent Activity Since </string>
+	<string name="recent_activity_narrow_list">To narrow list, </string>
+	<string name="recent_activity_search_transactions"> search transactions.</string>
+	<string name="recent_activity_transactions">Transactions</string>
+	<string name="recent_activity_posted_transactions">Posted Transactions</string>
+	<string name="recent_activity_pending_transactions">Pending Transactions</string>
+	<string name="recent_activity_load_more">Load More</string>
+	<string name="recent_activity_date">Date</string>
+	<string name="recent_activity_description">Description</string>
+	<string name="recent_activity_amount">Amount</string>
+	<string name="recent_activity_no_activity">There was no activity for the selected period.</string>
+	<string name="recent_activity_no_new_pending">You have no new pending transactions.</string>
+	<string name="recent_activity_no_new_posted">No activity has posted to your account since your last statement.</string>
+</resources>

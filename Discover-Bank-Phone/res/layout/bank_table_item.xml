@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:paddingBottom="@dimen/table_inner_padding"
+        android:paddingTop="@dimen/table_inner_padding"
+        android:weightSum="4" >
+
+        <TextView
+            android:id="@+id/date"
+            style="@style/table_text"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingRight="@dimen/between_related_elements_padding" />
+
+        <TextView
+            android:id="@+id/description"
+            style="@style/blue_table_text"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:paddingRight="@dimen/between_related_elements_padding" />
+
+        <TextView
+            android:id="@+id/amount"
+            style="@style/table_text"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right" />
+    </LinearLayout>
+
+    <!--
+         <View
+	    android:id="@+id/dotted_line"
+   		android:layout_width="wrap_content"
+    	android:layout_height="1dp"
+	    android:background="@drawable/table_dotted_line"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/content"/>
+    -->
+
+</RelativeLayout>

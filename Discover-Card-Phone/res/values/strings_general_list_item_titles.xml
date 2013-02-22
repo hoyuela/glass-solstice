@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="current_balance">Current Balance:</string>
+    <string name="credit_available">Credit Available:</string>
+    <string name="last_statement_balance">Last Statement Balance:</string>
+    <string name="min_payment_due">Min. Payment Due </string>
+    <string name="cashback_bonus_balance"><i>Cashback Bonus</i> Balance:</string>
+    <string name="miles_balance">Miles Balance:</string>
+    <string name="cashback_bonus_offer"><i>Cashback Bonus</i> Offer:</string>
+    <string name="miles_offer">Miles Offer:</string>
+    <string name="cashback_miles_offer_subtext">Start earning right now!</string>
+    <string name="newly_earned">Newly Earned:</string>
+    <string name="dollar_sign">$</string>
+    <string name="pay_blue_button_text">PAY</string>
+    <string name="view_blue_button_text">VIEW</string>
+    <string name="redeem_blue_button_text">REDEEM</string>
+    <string name="sign_up_blue_button_text">SIGN UP</string>
+
+</resources>

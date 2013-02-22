@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="edit_text_drawable_gradient_angle">270</integer>
+     <integer name="MAX_INPUT_LINES">1</integer>
+    <integer name="ZERO">0</integer>
+    <integer name="MAX_ID_LENGTH">16</integer>
+    <integer name="MAX_PASSWORD_LENGTH">32</integer>
+
+</resources>

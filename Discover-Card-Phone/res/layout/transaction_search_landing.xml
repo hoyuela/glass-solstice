@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/light_gray_bkgrd"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:paddingTop="7dp" >
+
+        <!-- Keyword Section -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/title_keywords"
+                style="@style/title_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7dp"
+                android:paddingRight="7dp"
+                android:text="@string/title_keywords" />
+
+            <TextView
+                android:id="@+id/title_keywords_sub"
+                style="@style/body_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/title_keywords"
+                android:paddingBottom="7dp"
+                android:text="@string/subtitle_keywords"
+                android:textColor="@color/sub_copy" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/input_keywords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_default"
+            android:inputType="text"
+            android:text="" />
+
+        <!-- Date Section -->
+
+        <TextView
+            android:id="@+id/title_date"
+            style="@style/title_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3dp"
+            android:paddingTop="20dp"
+            android:text="@string/title_date" />
+
+        <TextView
+            android:id="@+id/title_date_sub"
+            style="@style/body_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="7dp"
+            android:text="@string/subtitle_date"
+            android:textColor="@color/sub_copy" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <include
+                android:id="@+id/transaction_date_selector"
+                layout="@layout/toggle_range_selector"
+                android:paddingBottom="7dp" />
+
+            <LinearLayout
+                android:id="@+id/date_input_fields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/transaction_date_selector"
+                android:orientation="horizontal" >
+
+                <include
+                    android:id="@+id/date_from_element"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    layout="@layout/date_input"
+                    android:visibility="gone" />
+
+                <include
+                    android:id="@+id/date_to_element"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    layout="@layout/date_input"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Amount Section -->
+
+        <TextView
+            android:id="@+id/title_amount"
+            style="@style/title_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="7dp"
+            android:paddingTop="20dp"
+            android:text="@string/title_amount" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <include
+                android:id="@+id/transaction_amount_selector"
+                layout="@layout/toggle_range_selector"
+                android:paddingBottom="7dp" />
+
+            <LinearLayout
+                android:id="@+id/amount_input_fields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/transaction_amount_selector"
+                android:orientation="horizontal" >
+
+                <include
+                    android:id="@+id/amount_from_element"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    layout="@layout/amount_input"
+                    android:visibility="gone" />
+
+                <include
+                    android:id="@+id/amount_to_element"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    layout="@layout/amount_input"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Category Section -->
+
+        <TextView
+            android:id="@+id/title_category"
+            style="@style/title_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="7dp"
+            android:paddingTop="20dp"
+            android:text="@string/title_category" />
+
+        <Spinner
+            android:id="@+id/spinner_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            style="@style/call_to_action_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/call_to_action_button"
+            android:paddingTop="20dp"
+            android:text="@string/search" />
+    </LinearLayout>
+
+</ScrollView>

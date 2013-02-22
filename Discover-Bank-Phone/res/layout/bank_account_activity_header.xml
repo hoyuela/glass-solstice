@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageButton
+        android:id="@+id/help"
+        style="@style/orange_help_button"
+        android:layout_width="@dimen/orange_help_button_size"
+        android:layout_height="@dimen/orange_help_button_size"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/title_text"
+        style="@style/page_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/table_inner_padding"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/groups_of_elements_padding"
+        android:layout_toLeftOf="@+id/help"
+        android:layout_alignParentLeft="true"
+        android:gravity="left"
+        android:text="@string/activity_title"/>
+
+    <RelativeLayout
+        android:id="@+id/header_labels"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_text" >
+
+        <TextView
+            android:id="@+id/lable1"
+            style="@style/plain_body_copy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/title_text"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:text="@string/activity_online_checking" />
+
+        <TextView
+            android:id="@+id/value1"
+            style="@style/plain_body_copy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/lable1"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/lable1"
+            android:layout_below="@+id/title_text"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_toRightOf="@+id/lable2"
+            android:gravity="right" />
+
+        <TextView
+            android:id="@+id/lable2"
+            style="@style/plain_body_copy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/lable1"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:text="@string/activity_available_balance" />
+
+        <TextView
+            android:id="@+id/value2"
+            style="@style/plain_body_copy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/lable2"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/lable2"
+            android:layout_below="@+id/lable1"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_toRightOf="@+id/lable2"
+            android:gravity="right" />
+
+        <TextView
+            android:id="@+id/lable3"
+            style="@style/plain_body_copy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/lable2"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:text="@string/activity_current_balance" />
+
+        <TextView
+            android:id="@+id/value3"
+            style="@style/plain_body_copy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/lable3"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/lable3"
+            android:layout_below="@+id/lable2"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_toRightOf="@+id/lable3"
+            android:gravity="right" />
+        
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header_labels"
+        android:layout_marginBottom="@dimen/table_inner_padding"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/groups_of_elements_padding"
+        android:orientation="horizontal"
+        android:weightSum="2" >
+
+        <ToggleButton
+            android:id="@+id/posted_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_left_on"
+            android:checked="true"
+            android:textColor="@color/white"
+            android:textOff="@string/activity_posted_button"
+            android:textOn="@string/activity_posted_button"
+            android:textSize="@dimen/small_copy_min"
+            android:textStyle="bold" />
+
+        <ToggleButton
+            android:id="@+id/scheduled_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_right_off"
+            android:checked="false"
+            android:textColor="@color/body_copy"
+            android:textOff="@string/activity_scheduled_button"
+            android:textOn="@string/activity_scheduled_button"
+            android:textSize="@dimen/small_copy_min"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/table_title"
+        style="@style/body_copy_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/buttons"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:text="@string/activity_table_name"
+        android:textStyle="bold" />
+
+    <com.discover.mobile.bank.ui.table.TableTitles
+        android:id="@+id/table_titles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/table_title"
+        android:layout_marginBottom="@dimen/between_related_elements_padding"
+        android:layout_marginTop="@dimen/between_related_elements_padding" />
+
+</RelativeLayout>

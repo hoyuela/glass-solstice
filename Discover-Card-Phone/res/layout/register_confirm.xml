@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="@dimen/forms_inner_padding" >
+
+    <TextView
+        android:id="@+id/account_info_confirm_first_paragraph_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/groups_of_elements_padding"
+        android:layout_marginTop="@dimen/groups_of_elements_padding"
+        android:text="@string/account_info_confirm_first_paragraph_text"
+        android:textColor="@color/sub_copy"
+        android:textSize="@dimen/small_copy_mid" />
+
+    <RelativeLayout
+        android:id="@+id/account_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/account_info_confirm_first_paragraph_label"
+        android:background="@drawable/notification_list_item"
+        android:padding="@dimen/forms_inner_padding" >
+
+        <TextView
+            android:id="@+id/account_info_confirm_summary_label"
+            style="@style/confirmation_info_value_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_confirm_security_precaution_label"
+            android:text="@string/account_info_confirm_summary_text"
+            android:textSize="@dimen/small_copy_mid" />
+
+        <TextView
+            android:id="@+id/account_info_confirm_id_title_label"
+            style="@style/confirmation_info_header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_confirm_summary_label"
+            android:text="@string/account_info_confirm_id_title_text" />
+
+        <TextView
+            android:id="@+id/account_info_confirm_id_label"
+            style="@style/confirmation_info_value_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_confirm_id_title_label"
+            android:text="@string/account_info_confirm_id_placeholder_text" />
+
+        <TextView
+            android:id="@+id/account_info_confirm_email_title_label"
+            style="@style/confirmation_info_header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_confirm_id_label"
+            android:text="@string/account_info_confirm_email_title_text" />
+
+        <TextView
+            android:id="@+id/account_info_confirm_email_label"
+            style="@style/confirmation_info_value_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_confirm_email_title_label"
+            android:maxLines="@integer/MAX_INPUT_LINES"
+            android:text="@string/email_placeholder" />
+
+        <TextView
+            android:id="@+id/account_info_confirm_account_title_label"
+            style="@style/confirmation_info_header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_confirm_email_label"
+            android:text="@string/account_info_confirm_account_title_text" />
+
+        <TextView
+            android:id="@+id/account_info_confirm_account_label"
+            style="@style/confirmation_info_value_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_confirm_account_title_label"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@+id/account_info_confirm_account_stars_label"
+            android:paddingTop="4dp"
+            android:text="@string/account_info_confirm_account_text" />
+
+        <TextView
+            android:id="@+id/account_info_confirm_account_stars_label"
+            style="@style/confirmation_info_value_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_confirm_account_title_label"
+            android:layout_marginLeft="4dp"
+            android:text="@string/account_info_confirm_account_stars_text"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/account_info_confirm_note_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_info_confirm_account_stars_label"
+            android:layout_marginTop="@dimen/table_inner_padding"
+            android:textColor="@color/sub_copy"
+        	android:textSize="@dimen/small_copy_mid" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/account_info_confirm_security_precaution_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/account_info_layout"
+        android:paddingTop="@dimen/forms_inner_padding"
+        android:text="@string/account_info_confirm_security_precaution_text"
+        android:textColor="@color/sub_copy"
+        android:textSize="@dimen/small_copy_mid" />
+    
+    <Button
+        android:id="@+id/home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/modal_orange_margin_top"
+        android:layout_marginBottom="@dimen/modal_orange_margin_bottom"
+        style="@style/call_to_action_theme"
+        android:layout_below="@+id/account_info_confirm_security_precaution_label"
+        android:layout_centerHorizontal="true"
+        android:text="@string/home_text"/>
+
+</RelativeLayout>
+</ScrollView>

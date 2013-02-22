@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+   <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        
+        <TextView
+            android:id="@+id/need_help_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/need_help_text"
+            android:layout_centerHorizontal="true"
+            style="@style/body_copy" />
+
+	    <TextView
+	        android:id="@+id/help_number_label"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:layout_below="@+id/need_help_label"
+	        android:text="@string/need_help_number_text"
+	        style="@style/blue_hyperlink"
+	        android:padding="@dimen/content_padding"/>
+    </RelativeLayout>  
+
+</merge>

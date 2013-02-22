@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Detail Item Titles -->
+    <string name="funds_transfer">Funds Transfer</string>
+    <string name="repeating_funds_transfer">Repeating Funds Transfer</string>
+    <string name="bill_pay">Bill Pay</string>
+    <string name="check_deposit">Check Deposit</string>
+    <string name="transaction">Transaction</string>
+    
+    <!-- Detail Item Cell Labels -->
+    <string name="amount">Amount</string>
+    <string name="description">Description</string>
+    <string name="balance">Balance</string>
+    <string name="date">Date</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="send_on">Send On</string>
+    <string name="deliver_by">Deliver By</string>
+    <string name="delivered_on">Delivered On</string>
+    <string name="frequency">Frequency</string>
+    <string name="available_balance">Available Balance</string>
+    <string name="memo">Memo</string>
+    <string name="payee">Payee</string>
+    <string name="pay_from_acct_ending_in">Pay From Account Ending in </string>
+    <string name="status">Status</string>
+    <string name="confirmation_number">Confirmation Number</string>
+    <string name="payment_detail">Payment Detail</string>
+    <string name="scheduled_payment">Scheduled Payment</string>
+    <string name="completed_payment">Completed Payment</string>
+    <string name="cancelled_payment">Cancelled Payment</string>
+    <string name="edit_payment">Edit Payment</string>
+    <string name="delete_payment">Delete Payment</string>
+    <string name="non_primary_joint_account_warning">
+        This payment has been scheduled by %1$s. It can only be edited/deleted by %1$s.
+    </string>
+    
+    <string name="payee_name">Payee Name</string>
+    <string name="nickname">Nickname</string>
+    <string name="account_number">Account #</string>
+    <string name="phone_number">Phone #</string>
+    <string name="address">Address</string>
+    <string name="payee_details">Payee Details</string>
+    <string name="payee_memo">Account #/Memo (Optional)</string>
+    
+</resources>

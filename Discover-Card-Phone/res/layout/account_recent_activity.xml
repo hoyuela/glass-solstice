@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.discover.mobile.common.ui.widgets.ExtendingScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/light_gray_bkgrd" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/groups_of_elements_padding"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/groups_of_elements_padding" >
+
+        <TextView
+            android:id="@+id/view_transactions_label"
+            style="@style/body_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_trans_actions_by_period"
+       		android:layout_marginLeft="@dimen/forms_inner_padding"
+        	android:layout_marginRight="@dimen/forms_inner_padding"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/view_transactions"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/home_list_item"
+            android:paddingBottom="@dimen/table_inner_padding"
+            android:paddingLeft="@dimen/forms_inner_padding"
+            android:paddingRight="@dimen/forms_inner_padding"
+            android:paddingTop="@dimen/table_inner_padding"
+        	android:layout_marginLeft="@dimen/forms_inner_padding"
+        	android:layout_marginRight="@dimen/forms_inner_padding"
+            android:text="@string/recent_activity_since" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        	android:layout_marginLeft="@dimen/forms_inner_padding"
+        	android:layout_marginRight="@dimen/forms_inner_padding"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/narrow_list"
+                style="@style/sub_copy_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/recent_activity_narrow_list" />
+
+            <TextView
+                android:id="@+id/search_transactions"
+                style="@style/blue_hyperlink_smallest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/recent_activity_search_transactions"
+                android:layout_marginLeft="1dp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <com.discover.mobile.card.account.recent.TransactionTable
+            android:id="@+id/pending_transactions"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/groups_of_elements_padding" />
+
+        <com.discover.mobile.card.account.recent.TransactionTable
+            android:id="@+id/posted_transactions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/groups_of_elements_padding" />
+
+        <TextView
+            android:id="@+id/provide_feedback_button"
+            style="@style/blue_hyperlink_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/orange_button_margin_top"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/feedback_text"/>
+    </LinearLayout>
+
+</com.discover.mobile.common.ui.widgets.ExtendingScrollView>

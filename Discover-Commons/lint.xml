@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="NewApi">
+        <ignore path="src/com/discover/mobile/common/nav/NavigationMenuFragment.java" />
+        <ignore path="src/com/discover/mobile/common/nav/SectionNavigationItemView.java" />
+        <ignore path="src/com/discover/mobile/common/ui/widgets/CheckedLinearLayout.java" />
+    </issue>
+</lint>

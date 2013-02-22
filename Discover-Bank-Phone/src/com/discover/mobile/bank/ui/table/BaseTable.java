@@ -1,0 +1,153 @@
+package com.discover.mobile.bank.ui.table;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.discover.mobile.bank.BankRotationHelper;
+import com.discover.mobile.bank.DynamicDataFragment;
+import com.discover.mobile.bank.R;
+import com.discover.mobile.common.BaseFragment;
+
+/**
+ * Base table item.  Forces the sub classes to implement exactly what it needs
+ * to be created and displayed. 
+ * 
+ * @author jthornton
+ *
+ */
+public abstract class BaseTable extends BaseFragment  implements DynamicDataFragment{
+
+	/**List View holding the data*/
+	private ListView table;
+
+	/**Bundle to load data from*/
+	private Bundle loadBundle;
+
+	/**
+	 * Create the view
+	 * @param inflater - inflater to inflate the layout
+	 * @param container - container holding the group
+	 * @param savedInstanceState - state of the fragment
+	 */
+	@Override
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+		final View view = inflater.inflate(R.layout.bank_list, null);
+		table = (ListView) view.findViewById(R.id.bank_table);
+
+		createDefaultLists();
+		setupHeader();
+		setupFooter();
+		setupAdapter();
+
+		//table.addFooterView(getFooter());
+		table.addHeaderView(getHeader());
+		table.setDivider(getResources().getDrawable(R.drawable.table_dotted_line));
+		//table.setFooterDividersEnabled(true);
+
+		final Bundle bundle = BankRotationHelper.getHelper().getBundle();
+		loadBundle = (null == bundle) ? this.getArguments() : bundle;
+
+		return view;
+	}
+
+
+	/**
+	 * Set up the adapter for this list
+	 */
+	public abstract void setupAdapter();
+
+	/**
+	 * Setup the lists of details that are not already created
+	 */
+	public abstract void createDefaultLists();
+
+	/**
+	 * Resume the fragment
+	 */
+	@Override
+	public void onResume(){
+		super.onResume();
+		loadDataFromBundle(loadBundle);
+		table.setAdapter(getAdapter());
+	}
+
+	/**
+	 * Save all the data on the screen in a bundle
+	 * @param outState -  bundle containing all the data
+	 */
+	@Override
+	public void onSaveInstanceState(final Bundle outState){
+		BankRotationHelper.getHelper().setBundle(saveDataInBundle());
+		super.onSaveInstanceState(outState);
+	}
+
+	/**
+	 * Get the adapter that needs to be attached to the fragment.
+	 * @param adatper - adapter to be attached to the list
+	 */
+	public abstract ArrayAdapter<?> getAdapter();
+
+	/**
+	 * Method that is called when the adapter gets to the bottom of the list.  
+	 * This will show the go to top or show the loading bar for most fragments.
+	 */
+	public abstract void maybeLoadMore();
+
+	/**
+	 * Set up the header
+	 */
+	public abstract void setupHeader();
+
+	/**
+	 * Set up the footer
+	 */
+	public abstract void setupFooter();
+
+	/**
+	 * Get the header that should be shown at the top of the list.
+	 */
+	public abstract View getHeader();
+
+	/**
+	 * Get the footer that should be shown at the top of the list.
+	 */
+	public abstract View getFooter();
+
+	/**
+	 * Go to the details screen associated with this view
+	 * @param index - index to pass to the detail screen
+	 */
+	public abstract void goToDetailsScreen(final int index);
+
+	/**
+	 * Save all the data on the screen in a bundle
+	 * @return bundle containing all the data
+	 */
+	public abstract Bundle saveDataInBundle();
+
+	/**
+	 * Extract all the data from a bundle
+	 * @param bundle - bundle to pull data from
+	 */
+	public abstract void loadDataFromBundle(final Bundle bundle);
+
+	/**
+	 * Scroll the list to the top of the layout.  
+	 * This is a little hacky, there is an issue with scroll to top
+	 */
+	protected void scrollToTop(){
+		table.setAdapter(null);
+		table.setAdapter(getAdapter());
+		getAdapter().notifyDataSetChanged();
+	}
+
+	/**
+	 * Show the empty message in the footer
+	 * @return 
+	 */
+	public abstract void showFooterMessage();
+}

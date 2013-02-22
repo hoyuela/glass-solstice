@@ -1,0 +1,30 @@
+<resources>
+
+    <!-- Account Info Strength Bar Help Screen -->
+    <string name="account_info_help_pass_strength_text">Password Strength:</string>
+    <string name="account_info_help_msg1">The User ID doesn\'t meet minimum
+requirements (not 6-16 characters, looks like an
+account number, or uses spaces or the 
+following special characters: (\&quot;&quot;), (\'), (\\)).</string>
+    <string name="account_info_help_pswd_msg1">The password doesn\'t meet minimum
+requirements (not 8-32 characters, does not
+contain at least 1 letter and 1 number, or is the
+word \&quot;password\&quot;).</string>
+    <string name="account_info_help_msg2">Meets minimum requirements but does not
+include a variation of upper and lower case
+letters, numbers and special characters.</string>
+    <string name="account_info_help_msg3">Meets minimum requirements and combines a
+variation of letters, numbers and special
+characters.</string>
+    <string name="account_info_help_pass_strong_text">	    Meets minimum requirements and combines upper case letters, lower case letters, 
+	    numbers, and special characters.</string>
+    <string name="account_info_help_id_strength_text">User ID Strength</string>
+    <string name="account_info_help_bar_title_text">User ID Strength:</string>
+    <string name="account_info_help_action1">Keep trying.</string>
+    <string name="account_info_help_action2">That works, but it could be stronger.</string>
+    <string name="account_info_help_action3">Outstanding!</string>
+    <string name="account_info_help_level1">Not valid</string>
+    <string name="account_info_help_level2">Moderate</string>
+    <string name="account_info_help_level3">Strong</string>
+
+</resources>
