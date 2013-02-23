@@ -31,6 +31,8 @@
             android:textColor="@color/white"
             android:textOff="@string/review_payments_scheduled_payments"
             android:textOn="@string/review_payments_scheduled_payments"
+            android:paddingTop="@dimen/between_related_elements_padding"
+            android:paddingBottom="@dimen/between_related_elements_padding"
             android:textSize="14sp" />
 
         <ToggleButton
@@ -43,6 +45,8 @@
             android:textColor="@color/body_copy"
             android:textOff="@string/review_payments_completed_payments"
             android:textOn="@string/review_payments_completed_payments"
+            android:paddingTop="@dimen/between_related_elements_padding"
+            android:paddingBottom="@dimen/between_related_elements_padding"
             android:textSize="14sp" />
 
         <ToggleButton
@@ -55,6 +59,8 @@
             android:textColor="@color/body_copy"
             android:textOff="@string/review_payments_canceled_payments"
             android:textOn="@string/review_payments_canceled_payments"
+            android:paddingTop="@dimen/between_related_elements_padding"
+            android:paddingBottom="@dimen/between_related_elements_padding"
             android:textSize="14sp" />
     </LinearLayout>
     
