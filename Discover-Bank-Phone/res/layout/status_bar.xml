@@ -2,8 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/default_background"
     android:layout_width="match_parent"
-    android:layout_marginLeft="@dimen/forms_inner_padding"
-    android:layout_marginRight="@dimen/forms_inner_padding"
     android:layout_height="@dimen/status_bar_height" >
 
     <TextView
@@ -16,7 +14,8 @@
         android:gravity="center"
         android:maxLength="20"
         android:singleLine="true"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/title"/>
 
     <ImageView
         android:id="@+id/end_line"
@@ -31,7 +30,7 @@
         android:layout_height="@dimen/orange_help_button_size"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/groups_of_elements_padding"
+        android:layout_marginRight="@dimen/between_related_elements_padding"
         android:background="@drawable/question_mark_icon" />
 
     <ImageView

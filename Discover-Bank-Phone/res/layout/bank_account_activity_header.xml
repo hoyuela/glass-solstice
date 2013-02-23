@@ -126,6 +126,8 @@
             android:textOff="@string/activity_posted_button"
             android:textOn="@string/activity_posted_button"
             android:textSize="@dimen/small_copy_min"
+            android:paddingTop="@dimen/between_related_elements_padding"
+            android:paddingBottom="@dimen/between_related_elements_padding"
             android:textStyle="bold" />
 
         <ToggleButton
@@ -139,6 +141,8 @@
             android:textOff="@string/activity_scheduled_button"
             android:textOn="@string/activity_scheduled_button"
             android:textSize="@dimen/small_copy_min"
+            android:paddingTop="@dimen/between_related_elements_padding"
+            android:paddingBottom="@dimen/between_related_elements_padding"
             android:textStyle="bold" />
     </LinearLayout>
 

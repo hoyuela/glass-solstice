@@ -31,22 +31,22 @@ import com.discover.mobile.common.DiscoverActivityManager;
  */
 public class BankAccountSummaryFragment extends BaseFragment{
 	private LinearLayout accountSummary; 
-	
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_account_summary_view, null);
-		
-		
+
+
 		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
 		salutation.setText(setFirstName());
-		
+
 		/**Fetch linear layout that will contain list of account groups*/
 		accountSummary = (LinearLayout)view.findViewById(R.id.bank_summary_list);
-		
+
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
-			
+
 		/**Hyperlink used to provide feedback*/
 		final TextView feedback = (TextView)view.findViewById(R.id.provide_feedback_button);
 		feedback.setOnClickListener(new OnClickListener(){
@@ -59,7 +59,7 @@ public class BankAccountSummaryFragment extends BaseFragment{
 				toast.show();
 			}			
 		});
-		
+		this.showActionBarLogo();
 		return view;
 	}
 
@@ -70,9 +70,9 @@ public class BankAccountSummaryFragment extends BaseFragment{
 		final String firstName = BankUser.instance().getCustomerInfo().name.type;
 		final String name = firstName.toLowerCase();
 		final String upperString = name.substring(0,1).toUpperCase() + name.substring(1);
-		return "Hi " + upperString;
+		return "Hi, " + upperString;
 	}
-	
+
 	/**
 	 * Method used to display the account information stored in the AccountList object. This method
 	 * sorts the list of accounts stored in accountList, groups them based on account name, then add
@@ -84,29 +84,29 @@ public class BankAccountSummaryFragment extends BaseFragment{
 	public void populateList(final AccountList accountList) {
 		if( null != accountList ) {
 			final Context context = this.getActivity();
-		
+
 			//Create a hash map to help sort accounts into groups 
 			final HashMap<String, BankAccountGroupView> groupsMap = new HashMap<String, BankAccountGroupView>();
-			
+
 			Collections.sort(accountList.accounts, new BankAccountComparable());
-					
+
 			//Iterate through list of accounts, group them together and add to the summary list view
 			for(final Account account : accountList.accounts) {
 				//Fetch group from hashmap if it already exists
 				BankAccountGroupView group = groupsMap.get(account.type);
-				
+
 				//if group type does not exist add new group to hashmap
 				if( null == group ) {
 					//Create new group to hold list of accounts for the type specified in account
 					group = new BankAccountGroupView(context);
-					
+
 					//Add group to hashmap to help sort
 					groupsMap.put(account.type, group);
-					
+
 					//Add new group view to the summary list
 					accountSummary.addView(group);
 				}
-				
+
 				//Add account to group
 				group.addAccount(account);	
 			}
@@ -114,9 +114,18 @@ public class BankAccountSummaryFragment extends BaseFragment{
 			//TODO: Log an error
 			return;
 		}
-		
+
 	}
-	
+
+	/**
+	 * On the pause of the fragment hide the action bar logo so that the title will show again.
+	 */
+	@Override
+	public void onPause(){
+		this.hideActionBarLogo();
+		super.onPause();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.discover.mobile.BaseFragment#getActionBarTitle()

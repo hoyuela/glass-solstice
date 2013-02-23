@@ -223,8 +223,6 @@
     
     <style name="logout_actionbar_button">
         <item name="android:textSize">14sp</item>
-	    <item name="android:layout_marginTop">@dimen/logout_margin_top</item>
-	    <item name="android:layout_marginBottom">@dimen/logout_margin_bottom</item>
 	    <item name="android:paddingRight">@dimen/logout_padding</item>
 	    <item name="android:paddingLeft">@dimen/logout_padding</item>
 	    <item name="android:textStyle">bold</item>
