@@ -30,6 +30,8 @@ import com.discover.mobile.common.BaseFragment;
  *
  */
 public class BankEnterPayeeFragment extends BaseFragment implements OnClickListener {
+	private static final String KEY_KEEP_TEXT = "keep-text";
+	
 	/**
 	 * Reference to feedback link in the view of this fragment. When clicked on
 	 * will open the Feedback Landing Page
@@ -52,6 +54,10 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 	 * Button used to open a help guide when clicked on
 	 */
 	private ImageButton helpButton;
+	/**
+	 * Used to determine if text should be cleared onResume. Uses bundle saveInstanceState in onCreateView to determine this.
+	 */
+	private boolean clearText = false;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -91,6 +97,10 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 			msgText.setVisibility(View.GONE);
 		}
 		
+		if( null == savedInstanceState || !savedInstanceState.getBoolean(KEY_KEEP_TEXT) ) {
+			clearText = true;
+		}
+		
 		return view;
 	}
 	
@@ -106,7 +116,7 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 	public void onClick(final View sender ) {
 		/**Hide Keyboard*/
 		final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromInputMethod(searchField.getWindowToken(), 0);
+		imm.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
 	
 		if( sender == feedback ) {
 			BankNavigator.navigateToFeedback();
@@ -121,12 +131,31 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 				final String search = searchField.getText().toString().trim();
 				BankServiceCallFactory.createPayeeSearchRequest(search).submit();
 				
-				/**Clear text so when the user navigates back it doesn't have the text they had originall typed in*/
-				searchField.getText().clear();
 			} else {
 				searchField.updateAppearanceForInput();
 			}
 		}
 	}
-
+	
+	/**
+	 * Save the state of the current fragment
+	 * @param outState - bundle to save the state in.
+	 */
+	@Override
+	public void onSaveInstanceState(final Bundle outState){
+		super.onSaveInstanceState(outState);
+		
+		outState.putBoolean(KEY_KEEP_TEXT, true);
+		
+	}
+	
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if( clearText ) {
+			searchField.getText().clear();
+		}
+	}
 }

@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;

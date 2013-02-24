@@ -23,6 +23,7 @@ import com.discover.mobile.bank.paybills.BankPayBillsSectionInfo;
 import com.discover.mobile.bank.transfer.BankTransferMoneySectionInfo;
 import com.discover.mobile.common.nav.NavigationItem;
 import com.discover.mobile.common.nav.NavigationMenuFragment;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.nav.section.ComponentInfo;
 import com.google.common.collect.ImmutableList;
 
@@ -59,9 +60,20 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		 * Initializes the navigation menu
 		 */		
 
-		/**Show BankAccountSummaryFragment if user has any accounts otherwise show BankOpenAccountFragment()*/
-		final Fragment homeFragment = ( BankUser.instance().hasAccounts() ) ? new BankAccountSummaryFragment() : new BankOpenAccountFragment();
-		NavigationItem.initializeAdapterWithSections(navigationItemAdapter, BANK_SECTION_LIST, homeFragment);
+		
+		final NavigationRootActivity activity = (NavigationRootActivity) getActivity();
+		Fragment homeFragment = activity.getCurrentContentFragment();
+		
+		/**Check if there are no fragments already loaded and this is the first time the app is launched **/
+		if( homeFragment == null ) {		
+			/**Show BankAccountSummaryFragment if user has any accounts otherwise show BankOpenAccountFragment()*/
+			homeFragment = ( BankUser.instance().hasAccounts() ) ? new BankAccountSummaryFragment() : new BankOpenAccountFragment();
+			NavigationItem.initializeAdapterWithSections(navigationItemAdapter, BANK_SECTION_LIST, homeFragment);
+		} else {
+			NavigationItem.initializeAdapterWithSections(navigationItemAdapter, BANK_SECTION_LIST, null);
+		}
+		
+		
 		setListAdapter(navigationItemAdapter);
 	}
 	
