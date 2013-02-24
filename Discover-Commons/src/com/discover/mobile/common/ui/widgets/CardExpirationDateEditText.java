@@ -51,6 +51,11 @@ public class CardExpirationDateEditText extends CustomDatePickerElement{
 		attachedDatePickerDialog.hideDayPicker();
 	}
 	
+	@Override
+	protected int getTitleText() {
+		return R.string.card_expiration_date_text;
+	}
+	
 	/**
 	 * If the date picker has valid values, update its label to a formatted date with those
 	 * values.

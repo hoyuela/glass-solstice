@@ -3,6 +3,8 @@ package com.discover.mobile.common.ui.widgets;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.discover.mobile.common.R;
+
 /**
  * The date of birth date picker.
  * This is a stylized edit text field. It is attached to a date picker dialog that is responsible
@@ -33,6 +35,11 @@ public class DatePickerEditText extends CustomDatePickerElement {
 	@Override
 	protected int getYearOffset() {
 		return DOB_YEAR_OFFSET;
+	}
+
+	@Override
+	protected int getTitleText() {
+		return R.string.account_info_dob_text;
 	}
 
 }

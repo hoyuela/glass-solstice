@@ -172,6 +172,13 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 
 	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(!accountIdentifierField.isUsernameField())
+			accountIdentifierField.setText(accountIdentifierField.getText().toString());
+	}
 
 
 	/**
@@ -208,7 +215,12 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
-		outState.putString(MAIN_FIELD_KEY, accountIdentifierField.getText().toString());
+		final String mainFieldSpacelessText = CommonUtils.getSpacelessString(accountIdentifierField.getText().toString());
+		
+		if(!accountIdentifierField.isUsernameField())
+			outState.putString(MAIN_FIELD_KEY, mainFieldSpacelessText);
+		else
+			outState.putString(MAIN_FIELD_KEY, accountIdentifierField.getText().toString());
 
 		saveCardExpirationDateEditText(outState);
 		saveBirthDatePicker(outState);
@@ -278,9 +290,9 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 */
 	public void restoreState(final Bundle savedInstanceState) {
 
-		if(savedInstanceState != null){
+		if(savedInstanceState != null){	
 			accountIdentifierField.setText(savedInstanceState.getString(MAIN_FIELD_KEY));
-
+				
 			cardErrorLabel.setVisibility(savedInstanceState.getInt(MAIN_FIELD_ERROR_KEY));
 			if(cardErrorLabel.getVisibility() == View.VISIBLE)
 				accountIdentifierField.updateAppearanceForInput();
@@ -670,7 +682,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 				strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, strongAuthQuestion);
 				strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, strongAuthQuestionId);
 
-				startActivity(strongAuth);
+				startActivityForResult(strongAuth, STRONG_AUTH_ACTIVITY);
 
 			}
 
