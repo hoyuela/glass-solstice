@@ -27,6 +27,9 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	/**Bundle to load data from*/
 	private Bundle loadBundle;
 
+	/**Boolean used to determine if the fragment is loading more*/
+	private boolean isLoadingMore = false;
+
 	/**
 	 * Create the view
 	 * @param inflater - inflater to inflate the layout
@@ -150,4 +153,23 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	 * @return 
 	 */
 	public abstract void showFooterMessage();
+
+	/**
+	 * Set if the fragment is loading more
+	 * @param isLoadingMore - if the fragment is loading more
+	 */
+	@Override
+	public void setIsLoadingMore(final boolean isLoadingMore){
+		this.isLoadingMore = isLoadingMore;
+	}
+
+	/**
+	 * Get if the fragment is loading more
+	 * @return isLoadingMore - if the fragment is loading more
+	 */
+	@Override
+	public boolean getIsLoadingMore(){
+		return isLoadingMore;
+	}
+
 }
