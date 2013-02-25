@@ -3,8 +3,10 @@ package com.discover.mobile.bank.login;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -119,7 +121,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	private AccountType lastLoginAcct = AccountType.CARD_ACCOUNT;
 	
-	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
+	private final int LOGOUT_TEXT_COLOR = R.color.body_copy;
+	private final ScreenOffService screenOffService = new ScreenOffService();
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -134,13 +137,30 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 		restoreState(savedInstanceState);
 		setupButtons();
-		
+
 		//Check to see if pre-auth request is required. Should only 
 		//be done at application start-up
 		if (!preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
 			startPreAuthCheck();
 		} 
 		
+	}
+
+	/**
+	 * A broadcast receiver that will clear the password field if the screen is shut off.
+	 * and the ID field if the check mark is not checked when the screen is turned off.
+	 * @author scottseward
+	 *
+	 */
+	public class ScreenOffService extends BroadcastReceiver {
+		@Override
+		public void onReceive(final Context context, final Intent intent) {
+			passField.setText("");
+			if(!saveUserId){
+				idField.setText("");
+				deleteAndSaveCurrentUserPrefs();
+			}
+		}
 	}
 	
 	/**
@@ -162,6 +182,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark); 
 		toggleImage = (ImageView) findViewById(R.id.remember_user_id_button); 
 		splashProgress = (ProgressBar) findViewById(R.id.splash_progress);
+		
 	}
 
 	/**
@@ -185,7 +206,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private void maybeShowSessionExpired() {
 		final Intent intent = this.getIntent();
 		final Bundle extras = intent.getExtras();
-
+		
 		if(extras != null){
 			if(extras.getBoolean(IntentExtraKey.SESSION_EXPIRED, false)){
 				showSessionExpired();
@@ -206,6 +227,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			if( !Strings.isNullOrEmpty(errorMessage) ){
 				showErrorMessage(errorMessage);
 				this.getIntent().putExtra(IntentExtraKey.SHOW_ERROR_MESSAGE, "");
+				final int red = getResources().getColor(R.color.red);
+				errorTextView.setTextColor(red);
 			}
 		}
 	}
@@ -226,6 +249,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		errorTextView.setText(getString(R.string.session_expired));
 		errorTextView.setVisibility(View.VISIBLE);
 		errorTextView.setTextColor(getResources().getColor(R.color.red));
+		clearInputs();
 	}
 	
 	/**
@@ -236,6 +260,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		errorTextView.setVisibility(View.VISIBLE);
 		errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 	}
+	
 	/**
 	 * Resume the activity
 	 */
@@ -253,18 +278,26 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		maybeShowErrorMessage();
 		
 		final int lastError = getLastError();
+		final boolean saveIdWasChecked = saveUserId;
 		
 		//Do not load saved credentials if there was a previous login attempt 
 		//which failed because of a lock out
 		if( StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS != lastError &&
 			RegistrationErrorCodes.LOCKED_OUT_ACCOUNT != lastError) {
-			loadSavedCredentials();
+			if(idField.length() < 1)
+				loadSavedCredentials();
 		} else {
 			//Clear Text Fields for username and password
 			clearInputs();
 			
 			//Uncheck remember user id checkbox without remembering change
 			setCheckMark(false, false);
+			deleteAndSaveCurrentUserPrefs();
+		}
+		//The check box got unchecked from loadSavedCredentials
+		//but should be checked from a rotation change.
+		if(!saveUserId && saveIdWasChecked){
+			setCheckMark(saveIdWasChecked, false);
 		}
 		
 		//Default to the last path user chose for login Card or Bank
@@ -278,9 +311,10 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		} else {
 			this.showLoginPane();
 		}
-
+		
+		final IntentFilter intentFilter = new IntentFilter("android.intent.action.SCREEN_OFF");
+		registerReceiver(screenOffService, intentFilter);
 	}
-	
 
 	/**
 	 * Ran at the start of an activity when an activity is brought to the front.
@@ -339,7 +373,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private void restoreErrorTextView(final Bundle savedInstanceState) {
 		errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
 		errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
-		if(!errorIsVisible())
+		if(!errorIsVisible() && errorTextView.length() > 0)
 			errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 		
 	}
@@ -371,13 +405,15 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * Set user ID field to the saved value, if it was supposed to be saved.
 	 */
 	private void loadSavedCredentials() {
+
 		boolean rememberIdCheckState = false;
-	
+
 		rememberIdCheckState = Globals.isRememberId();
+
+		final String savedId = Globals.getCurrentUser();
+		idField.setText(savedId );
 		
 		if(!Strings.isNullOrEmpty(Globals.getCurrentUser())){
-			final String savedId = Globals.getCurrentUser();
-			idField.setText(savedId);
 			setCheckMark(rememberIdCheckState, true);
 		} else {
 			setCheckMark(false, false);
@@ -390,7 +426,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * execute the specified functionality in onClick when they are clicked...
 	 */
 	private void setupButtons() {
-	
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -464,7 +499,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				forgotIdAndOrPass();
 			}
 		});
-
 	}
 
 	/**
@@ -492,6 +526,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private void setInputFieldsDrawablesToDefault() {
 		idField.clearErrors();
 		passField.clearErrors();
+		idField.setCompoundDrawables(null, null, null, null);
+		passField.setCompoundDrawables(null, null, null, null);
 	}
 	
 	/**
@@ -614,9 +650,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private void setApplicationAccount() {
 		lastLoginAcct = Globals.getCurrentAccount();
 		if (AccountType.BANK_ACCOUNT == lastLoginAcct) {
-			toggleBankCardLogin(goToBankLabel);	
+			setLoginTypeToBank();
 		} else {
-			toggleBankCardLogin(goToCardLabel);	
+			setLoginTypeToCard();
 		}
 	}
 
@@ -630,50 +666,121 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	public void toggleBankCardLogin(final View v) { 
 		final AccountType initialAccountType = Globals.getCurrentAccount();
-		if (v.equals(goToCardLabel)) {
-			goToCardLabel.setTextColor(getResources().getColor(R.color.black));
-			CommonUtils.setViewVisible(cardCheckMark);
-
-			CommonUtils.setViewInvisible(bankCheckMark);
-			goToBankLabel.setTextColor(getResources().getColor(R.color.blue_link));
-			
-			registerOrAtmButton.setText(R.string.register_now);
-			privacySecOrTermButton.setText(R.string.privacy_and_security);
-			CommonUtils.setViewVisible(this.forgotUserIdOrPassText);
-			
-			//Load Card Account Preferences for refreshing UI only
-			Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
-		} else {
-			goToCardLabel.setTextColor(getResources().getColor(
-					R.color.blue_link));
-			CommonUtils.setViewInvisible(cardCheckMark);
-			CommonUtils.setViewVisible(bankCheckMark);
-			goToBankLabel.setTextColor(getResources().getColor(R.color.black));
-			
-			registerOrAtmButton.setText(R.string.atm_locator);
-			privacySecOrTermButton.setText(R.string.privacy_and_terms);
-			CommonUtils.setViewInvisible(this.forgotUserIdOrPassText);
-			
-			//Load Bank Account Preferences for refreshing UI only
-			Globals.loadPreferences(this, AccountType.BANK_ACCOUNT);
-		}
-		final AccountType afterAccountType = Globals.getCurrentAccount();
+		boolean isTogglingCardOrBank = false;
 		
-		//If theis method was called, and the account type changed, clear the input fields.
-		//as it can be called without changing the login type, from an orientation change.
-		if(!initialAccountType.equals(afterAccountType))
+		//See if we are toggling or not (the user didn't press the selection they are on again.)
+		if (v.equals(goToCardLabel) && initialAccountType.equals(AccountType.CARD_ACCOUNT)) {
+			isTogglingCardOrBank = false;
+			
+		}else if(v.equals(goToBankLabel) && initialAccountType.equals(AccountType.BANK_ACCOUNT)){
+			isTogglingCardOrBank = false;
+		}
+		else{
+			isTogglingCardOrBank = true;
+		}
+		
+		//Do Common setup between Bank and Card toggling
+		if(isTogglingCardOrBank){
 			clearInputs();
+			Globals.setCurrentUser("");
+			errorTextView.setText("");
+			errorTextView.setVisibility(View.GONE);
+			
+			//Delete saved use if toggle is made and save user ID is not checked.
+			if(!saveUserId){
+				deleteAndSaveCurrentUserPrefs();
+			}
+			
+			if(v.equals(goToCardLabel)){
+				setLoginTypeToCard();
+			}
+			//Setup Bank Login.
+			else {
+				setLoginTypeToBank();
+			}
 
-		//Refresh Screen based on Selected Account Preferences
-		loadSavedCredentials();
+			//Refresh Screen based on Selected Account Preferences
+			loadSavedCredentials();
 
+			if(Strings.isNullOrEmpty(idField.getText().toString())){
+				setIdFieldFocused();
+			}
+			else{
+				setPassFieldFocused();
+			}	
+		}
+	}
+	
+	private void deleteAndSaveCurrentUserPrefs() {
+		Globals.setRememberId(false);
+		Globals.setCurrentUser("");
+		Globals.savePreferences(this);
+	}
+	
+	/**
+	 * Set the focus to the password field and make sure the ID field looks default.
+	 */
+	private void setPassFieldFocused() {
+		idField.requestFocus();
+		passField.requestFocus();
+		
+		idField.setupDefaultAppearance();
+		idField.setCompoundDrawables(null, null, null, null);
+	}
+	
+	/**
+	 * Set the focus to the ID field and make sure the password field looks default.
+	 */
+	private void setIdFieldFocused() {
+		passField.requestFocus();
+		idField.requestFocus();
+		
+		passField.setupDefaultAppearance();
+		passField.setCompoundDrawables(null, null, null, null);
+	}
+	
+	/**
+	 * Sets the login screen to display the proper UI elements for a Card login.
+	 */
+	private void setLoginTypeToCard() {
+		goToCardLabel.setTextColor(getResources().getColor(R.color.black));
+		
+		CommonUtils.setViewVisible(cardCheckMark);
+		CommonUtils.setViewInvisible(bankCheckMark);
+		
+		goToBankLabel.setTextColor(getResources().getColor(R.color.blue_link));
+		
+		registerOrAtmButton.setText(R.string.register_now);
+		privacySecOrTermButton.setText(R.string.privacy_and_security);
+		
+		CommonUtils.setViewVisible(this.forgotUserIdOrPassText);
+		
+		//Load Card Account Preferences for refreshing UI only
+		Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
+	}
+	
+	/**
+	 * Sets the login screen to display the proper UI elements for a Bank login.
+	 */
+	private void setLoginTypeToBank() {
+		goToCardLabel.setTextColor(getResources().getColor(R.color.blue_link));
+		CommonUtils.setViewInvisible(cardCheckMark);
+		CommonUtils.setViewVisible(bankCheckMark);
+		goToBankLabel.setTextColor(getResources().getColor(R.color.black));
+		
+		registerOrAtmButton.setText(R.string.atm_locator);
+		privacySecOrTermButton.setText(R.string.privacy_and_terms);
+		CommonUtils.setViewInvisible(this.forgotUserIdOrPassText);
+		
+		//Load Bank Account Preferences for refreshing UI only
+		Globals.loadPreferences(this, AccountType.BANK_ACCOUNT);
 	}
 
 	/**
 	 * clearInputs() Removes any text in the login input fields.
 	 */
 	private void clearInputs() {
-		final String emptyString = ""; //$NON-NLS-1$
+		final String emptyString = "";
 		
 		idField.setText(emptyString);
 		passField.setText(emptyString);
@@ -686,7 +793,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * @param shouldBeChecked Sets the check mark to checked or unchecked for true or false respectively.
 	 * @param cached Sets whether the state change should be remembered
 	 */
-
 	private void setCheckMark(final boolean shouldBeChecked, final boolean cached) {
 		saveUserId = !shouldBeChecked;
 		toggleCheckBox(toggleImage, cached);
@@ -749,8 +855,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private void forgotIdAndOrPass() {
 		FacadeFactory.getCardFacade().navToForgot(this);
 	}
-
-	
 
 	/**
 	 * showErrorIfAnyFieldsAreEmpty() Sets error tags for input fields if a
@@ -818,10 +922,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	@Override
 	public boolean updateAccountInformation(final AccountType account) {
-		
 		return Globals.updateAccountInformation(account,getContext(),idField.getText().toString(),saveUserId);
-		
-		
 	}
 
 	/**

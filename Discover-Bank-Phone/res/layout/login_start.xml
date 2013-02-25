@@ -65,7 +65,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_marginTop="@dimen/groups_of_elements_padding"
-		            android:textColor="@color/red"
+		            style="@style/error_label"
 		            android:layout_below="@+id/discoverLogo"
 		            android:visibility="gone" />
 
