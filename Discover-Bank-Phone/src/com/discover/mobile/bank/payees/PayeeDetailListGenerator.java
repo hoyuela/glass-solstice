@@ -7,6 +7,7 @@ import android.content.Context;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.RelativeLayout;
 
 import com.discover.mobile.bank.R;
@@ -33,13 +34,12 @@ final public class PayeeDetailListGenerator  {
 	 */
 	public static BankEditDetail createBankEditDetail(final Context context, 
 											  final int topLabelResource, 
-											  final String middleLabelText) {
+											  final String text) {
 		final BankEditDetail item = new BankEditDetail(context);
 		
-		if(middleLabelText != null) {
+		if(text != null) {
 			item.getTopLabel().setText(topLabelResource);
-			item.setText(middleLabelText);
-			item.getEditableField().setText(middleLabelText);
+			item.setText(text);
 		}
 		return item;
 	}
@@ -56,6 +56,7 @@ final public class PayeeDetailListGenerator  {
 		final BankEditDetail name = createBankEditDetail(context,  R.string.bank_payee_name, text);
 		name.enableEditing(!isVerified && isEditable);
 		name.getDividerLine().setVisibility(View.GONE);
+		name.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT);
 		return name;
 	}
 	
@@ -73,7 +74,7 @@ final public class PayeeDetailListGenerator  {
 		nickName.getEditableField().setFilters(inputFilters);
 		nickName.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		nickName.enableEditing(isEditable);
-		
+		nickName.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT);
 		return nickName;
 	}
 	
@@ -93,7 +94,7 @@ final public class PayeeDetailListGenerator  {
 		account.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
 		account.getEditableField().setError(R.string.bank_invalid_acct);
 		account.enableEditing(isEditable);
-		
+		account.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT);
 		return account;
 	}
 	
@@ -103,7 +104,7 @@ final public class PayeeDetailListGenerator  {
 	 * @param text
 	 * @return
 	 */
-	public static BankEditDetail createReenterAccount(final Context context, final String text) {
+	public static BankEditDetail createReenterAccount(final Context context, final String text, final boolean isLast) {
 		/**Add Re-Enter Account #, Validation 1 char min./32 char max, Invalid characters <>;"[]{}, and matches Account #*/
 		final BankEditDetail reenterAccount = createBankEditDetail(context, R.string.bank_payee_reenter_account, text);
 		reenterAccount.getEditableField().setMinimum(1);
@@ -111,6 +112,13 @@ final public class PayeeDetailListGenerator  {
 		reenterAccount.getEditableField().setFilters(inputFilters);
 		reenterAccount.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		reenterAccount.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
+		
+		/**If it is last field then show done button in keyboard*/
+		if( isLast ) {
+			reenterAccount.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE);
+		} else {
+			reenterAccount.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT);
+		}
 		return reenterAccount;
 	}
 	
@@ -130,7 +138,7 @@ final public class PayeeDetailListGenerator  {
 		zipCode.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
 		zipCode.getEditableField().setError(R.string.bank_invalid_zip);
 		zipCode.enableEditing(isEditable);
-		
+		zipCode.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE);
 		return zipCode;
 	}
 	
@@ -146,13 +154,15 @@ final public class PayeeDetailListGenerator  {
 
 		/**Add Payee Name*/
 		items.add(createName(context, item.name, item.verified, true));
-		items.add(createNickName(context, "", true));
-		items.add(createAccount(context, "", true));
-		items.add(createReenterAccount(context, ""));
+		items.add(createNickName(context, item.nickName, true));
+		items.add(createAccount(context, item.accountNumber, true));
 		
 		/**Only add an editable field to enter zip code if required*/
 		if( item.isZipRequired) {
-			items.add(createZipCode(context, "", true));
+			items.add(createReenterAccount(context, item.accountNumberConfirmed, false));
+			items.add(createZipCode(context, item.zip, true));
+		} else {
+			items.add(createReenterAccount(context, item.accountNumberConfirmed, true));
 		}
 		
 		return items;
@@ -162,7 +172,7 @@ final public class PayeeDetailListGenerator  {
 	 * Get a payee detail list from an AddPayeeDetail object used for the Add Payee Confirmation Page.
 	 * 
 	 * @param item a PayeeDetail object.
-	 * @return an appropritate list for a PayeeDetail object.
+	 * @return an appropriate list for a PayeeDetail object.
 	 */
 	public static List<RelativeLayout> getConfirmedPayeeDetailList(final Context context, final AddPayeeDetail item) {
 		final List<RelativeLayout> items = new ArrayList<RelativeLayout>();
@@ -173,8 +183,8 @@ final public class PayeeDetailListGenerator  {
 		items.add(createAccount(context, item.accountNumber, false));
 		
 		/**Only add an item for zip code if required*/
-		if( item.isZipRequired) {
-			items.add(createZipCode(context, item.zip,false));
+		if( item.hasZip()) {
+			items.add(createZipCode(context, item.zip, false));
 		}
 		
 		return items;

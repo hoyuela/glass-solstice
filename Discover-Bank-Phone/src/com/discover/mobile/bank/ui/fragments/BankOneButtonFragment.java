@@ -183,7 +183,11 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 */
 	@Override
 	public void onBackPressed() {
-		
+		/**
+		 * Remove this fragment from the transactions list, this seems to be required since 
+		 * makeVisible(fragment, boolean) was used.
+		 */
+		getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 	}
 
 }

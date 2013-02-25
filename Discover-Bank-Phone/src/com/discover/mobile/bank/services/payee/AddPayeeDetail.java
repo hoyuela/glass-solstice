@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 
 /**
   * Class used for holding information for a Managed Payee that will be added to a user's list of payees
@@ -41,6 +42,8 @@ public class AddPayeeDetail implements Serializable {
 	@JsonProperty("accountNumber")
 	public String accountNumber;
 	
+	public String accountNumberConfirmed;
+	
 	@JsonProperty("addressZip")
 	public String zip;
 	
@@ -60,4 +63,19 @@ public class AddPayeeDetail implements Serializable {
 	public List<ReceivedUrl> links;
 	
 	public boolean isZipRequired;
+	
+	public AddPayeeDetail() {
+		name = "";
+		nickName = "";
+		accountNumber = "";
+		zip = "";
+		verified = false;
+		merchantNumber = "";
+		phone = "";
+		accountNumberConfirmed = "";
+	}
+	
+	public boolean hasZip() {
+		return !(Strings.isNullOrEmpty(zip));
+	}
 }

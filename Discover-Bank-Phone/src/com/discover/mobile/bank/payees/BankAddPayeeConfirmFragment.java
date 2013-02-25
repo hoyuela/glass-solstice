@@ -81,6 +81,11 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	protected void onActionButtonClick()  {
 		if( getActivity() instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
+			/**
+			 * Remove this fragment from the transactions list, this seems to be required since 
+			 * makeVisible(fragment, boolean) was used.
+			 */
+			getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 			
 			//Pop everything out of the stack till we get to AccountSummary
 			activity.popTillFragment(BankAccountSummaryFragment.class);
@@ -97,6 +102,11 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	protected void onActionLinkClick() {
 		if( getActivity() instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
+			/**
+			 * Remove this fragment from the transactions list, this seems to be required since 
+			 * makeVisible(fragment, boolean) was used.
+			 */
+			getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 			
 			//Pop all fragments in stack till you get the user to BankEnterPayeeFragment where they can run as search for a verified Payee again
 			activity.popTillFragment(BankEnterPayeeFragment.class);

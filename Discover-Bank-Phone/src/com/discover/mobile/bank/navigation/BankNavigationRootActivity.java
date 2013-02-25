@@ -19,7 +19,6 @@ import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
-import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.error.ErrorHandler;
@@ -59,7 +58,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(final Bundle savedInstanceState) {
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		super.onCreate(savedInstanceState);
 	}
@@ -222,18 +221,6 @@ public class BankNavigationRootActivity extends NavigationRootActivity
 		return (slidingMenu.getTouchModeAbove() == SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 
-	/**
-	 * Returns the current fragment in the content section,
-	 * {@code R.id.navigation_content}, of the Navigation activity.
-	 */
-	public BaseFragment getCurrentContentFragment() {
-
-		final FragmentManager fragMan = this.getSupportFragmentManager();
-		BaseFragment currentFragment = (BaseFragment) fragMan
-				.findFragmentById(R.id.navigation_content);
-
-		return currentFragment;
-	}
 
 	/**
 	 * Method used to search for a fragment of a specific class type within the
@@ -255,6 +242,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity
 				if (fragManager.getBackStackEntryAt(i).getName()
 						.equals(fragmentClassType.getSimpleName())) {
 					ret = i;
+					break;
 				}
 			}
 		}
@@ -282,7 +270,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity
 			/**How many times the backstack will be popped in order to reach the fragment desired*/
 			final int callsToPop =  (fragManager.getBackStackEntryCount() - 1) - fragIndex;
 			for( int i = 0; i < callsToPop; i++ ) {
-				super.onBackPressed();
+				fragManager.popBackStackImmediate();
 			}
 		}
 	}
@@ -302,7 +290,7 @@ public class BankNavigationRootActivity extends NavigationRootActivity
 	 * @return true if an error exists, false otherwise.
 	 */
 	public boolean consumeFragmentError() {
-		boolean returnValue = fragmentErrorShown;
+		final boolean returnValue = fragmentErrorShown;
 		fragmentErrorShown = false;
 		return returnValue;
 	}

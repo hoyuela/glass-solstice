@@ -1,11 +1,10 @@
 package com.discover.mobile.common.nav;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.widget.TextView;
 
+import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.LoggedInRoboActivity;
 import com.discover.mobile.common.R;
 
@@ -15,13 +14,6 @@ import com.discover.mobile.common.R;
  *
  */
 public abstract class NavigationRootActivity extends LoggedInRoboActivity implements NavigationRoot {
-	
-	/**Fragment that needs to be resumed**/
-	protected Fragment resumeFragment;
-	
-	/**String that is the key to getting the current fragment out of the saved bundle.*/
-	private static final String CURRENT_FRAGMENT = "currentFragment";
-	
 	/**String that is the key to getting the current fragment title out of the saved bundle.*/
 	private static final String TITLE = "title";
 	
@@ -63,11 +55,6 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	private void setUpCurrentFragment(final Bundle savedInstanceState) {
 		if(null == savedInstanceState){return;}
 		shouldShowModal = savedInstanceState.getBoolean(MODAL_STATE, true);
-		final Fragment fragment = this.getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT);
-		if(null != fragment){
-			resumeFragment = fragment;
-			setActionBarTitle(savedInstanceState.getString(TITLE));
-		}
 	}
 
 	/**
@@ -75,12 +62,7 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	 */
 	@Override
 	public void onResume(){
-		super.onResume();
-		if(null != resumeFragment && !wasPaused){
-			getSupportFragmentManager().popBackStack();
-			makeFragmentVisible(resumeFragment, false);
-		}
-		
+		super.onResume();		
 	}
 
 	
@@ -92,16 +74,7 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		wasPaused = true;
-		
-		/**Crashes here when fragment is not in the backstack, by surrounding with try issue goes away*/
-		try {
-			this.getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT, currentFragment);
-		}catch(final Exception ex) {
-			if( Log.isLoggable(TAG, Log.ERROR)) {
-				Log.e(TAG, "An unexpected error occurred when attempting to store state of applicaiton");
-			}
-		}
-		
+				
 		outState.putString(TITLE, getActionBarTitle());
 		outState.putBoolean(MODAL_STATE, shouldShowModal);
 		super.onSaveInstanceState(outState);
@@ -142,4 +115,16 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
             
     }
 
+	/**
+	 * Returns the current fragment in the content section,
+	 * {@code R.id.navigation_content}, of the Navigation activity.
+	 */
+	public BaseFragment getCurrentContentFragment() {
+
+		final FragmentManager fragMan = this.getSupportFragmentManager();
+		final BaseFragment currentFragment = (BaseFragment) fragMan
+				.findFragmentById(R.id.navigation_content);
+
+		return currentFragment;
+	}
 }
