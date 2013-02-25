@@ -93,7 +93,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		final String amountString = detail.amount.formatted;
 		holder.amount.setText(amountString);
 		if(!amountString.contains(BankStringFormatter.NEGATIVE)){
-			holder.amount.setTextColor(res.getColor(R.color.string_indicator));
+			holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
 		}
 		view.setOnClickListener(getClickListener(holder.pos));
 		view.setBackgroundResource((holder.pos%2 == 0) ? R.color.white : R.color.transaction_table_stripe);

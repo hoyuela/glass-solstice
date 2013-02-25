@@ -71,13 +71,11 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		final TextView titleView = (TextView) findViewById(R.id.title_view);
 		final ImageView navigationToggle = (ImageView) findViewById(R.id.navigation_button);
 		final Button logout = (Button) findViewById(R.id.logout_button);
-		final ImageView logoutDivider = (ImageView) findViewById(R.id.logout_divider);
 
 		navigationToggle.setVisibility(View.VISIBLE);
 		logout.setVisibility(View.VISIBLE);
 		navigationToggle.setVisibility(View.VISIBLE);
 		titleView.setVisibility(View.VISIBLE);
-		logoutDivider.setVisibility(View.VISIBLE);
 
 		navigationToggle.setOnClickListener(new OnClickListener() {
 			@Override
@@ -98,10 +96,10 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	 * Log the user out of card
 	 */
 	public void logout() {
-		
+
 		/** Used on pause to know when to set Globals isLoggedIn to false **/
 		pendingLogout = true;
-		
+
 		FacadeFactory.getLogoutFacade().logout(this,this,AccountType.CARD_ACCOUNT);
 
 	}

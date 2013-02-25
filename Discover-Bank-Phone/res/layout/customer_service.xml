@@ -7,14 +7,27 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/forms_inner_padding" >
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:paddingBottom="@dimen/forms_inner_padding" >
 
         <TextView
             android:id="@+id/phone_title_label"
-            style="@style/title_copy"
+            style="@style/page_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:text="@string/by_phone" />
+        
+       <ImageButton
+            android:id="@+id/help"
+            style="@style/orange_help_button"
+            android:layout_width="@dimen/orange_help_button_size"
+            android:layout_height="@dimen/orange_help_button_size"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true" />
 
         <TextView
             android:id="@+id/card_phone_title_label"
