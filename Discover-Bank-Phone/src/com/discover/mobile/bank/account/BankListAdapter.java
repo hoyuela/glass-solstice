@@ -98,7 +98,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		//final String amountString = BankStringFormatter.convertToDollars(detail.amount);
 		holder.amount.setText(detail.amount.formatted);
 		if(Double.parseDouble(detail.amount.value) < 0){
-			holder.amount.setTextColor(res.getColor(R.color.string_indicator));
+			holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
 		}
 		view.setOnClickListener(getClickListener(holder.pos));
 		view.setBackgroundResource((holder.pos%2 == 0) ? R.color.white : R.color.transaction_table_stripe);

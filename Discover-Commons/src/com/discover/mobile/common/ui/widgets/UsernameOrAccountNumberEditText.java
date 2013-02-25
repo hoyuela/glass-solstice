@@ -222,4 +222,18 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		return InputValidator.isCardAccountNumberValid(CommonUtils.getSpacelessString(cardAccountNumber));
 	}
 
+	/**
+	 * @return the isUsernameField
+	 */
+	public boolean isUsernameField() {
+		return isUsernameField;
+	}
+
+	/**
+	 * @param isUsernameField the isUsernameField to set
+	 */
+	public void setUsernameField(final boolean isUsernameField) {
+		this.isUsernameField = isUsernameField;
+	}
+
 }

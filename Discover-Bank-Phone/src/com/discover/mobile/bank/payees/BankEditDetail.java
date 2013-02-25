@@ -2,13 +2,16 @@ package com.discover.mobile.bank.payees;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.discover.mobile.bank.R;
 
@@ -19,7 +22,7 @@ import com.discover.mobile.bank.R;
  * @author henryoyuela
  *
  */
-public class BankEditDetail extends RelativeLayout implements OnClickListener, OnFocusChangeListener{
+public class BankEditDetail extends RelativeLayout implements OnClickListener, OnFocusChangeListener, OnEditorActionListener{
 	private TextView topLabel;
 	private TextView middleLabel;
 	private PayeeValidatedEditField editableField;
@@ -61,7 +64,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		editableField = (PayeeValidatedEditField)findViewById(R.id.editable_field);
 		editableField.attachErrorLabel(errorLabel);
 		editableField.setOnFocusChangeListener(this);
-		
+		editableField.setOnEditorActionListener(this);
 		editLabel = (TextView)findViewById(R.id.edit_label);
 		
 		view.setOnClickListener(this);
@@ -94,13 +97,21 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	}
 	
 	/**
+	 * 
+	 * @return Returns the text both the editable and textview fields have been set to.
+	 */
+	public String getText() {
+		return middleLabel.getText().toString();
+	}
+	
+	/**
 	 * Method used to set the text for the middle label and editable field at once.
 	 * 
 	 * @param text Reference to string to use to set the editable field and middle label
 	 */
 	public void setText(final String text) {
-		editableField.setText(text);
 		middleLabel.setText(text);
+		editableField.setText(text);
 	}
 	
 	/** 
@@ -151,14 +162,14 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 			middleLabel.setVisibility(View.GONE);
 			editableField.setFocusable(true);
 			editableField.requestFocus();
-			
-			imm.showSoftInputFromInputMethod(editableField.getWindowToken(), InputMethodManager.SHOW_FORCED);
+		
+			imm.showSoftInput(editableField, InputMethodManager.SHOW_FORCED);
 		} else {
 			middleLabel.setText(editableField.getText());
 			editableField.setVisibility(View.GONE);
 			middleLabel.setVisibility(View.VISIBLE);
 			
-			imm.hideSoftInputFromInputMethod(editableField.getWindowToken(), 0);
+			imm.hideSoftInputFromWindow(editableField.getWindowToken(), 0);
 		}
 	}
 
@@ -183,6 +194,24 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	@Override
 	public void onFocusChange(final View arg0, final boolean arg1) {
 		setEditMode(arg1);	
+	}
+
+	/**
+	 * Method used to detect if user has pressed done on the soft keyboard. This callback will only be called
+	 * if the ime option for the editable field has been set to EditorInfo.IME_ACTION_DONE.
+	 * 
+	 * @param v	The view that was clicked.
+	 * @param actionId	Identifier of the action. This will be either the identifier you supplied, or EditorInfo.IME_NULL if being called due to the enter key being pressed.
+	 * @param event	If triggered by an enter key, this is the event; otherwise, this is null.
+	 * 
+	 * @return Return true if you have consumed the action, else false.
+	 */
+	@Override
+	public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
+		if (actionId == EditorInfo.IME_ACTION_DONE) {
+			setEditMode(false);
+        }
+        return false;
 	}
 	
 

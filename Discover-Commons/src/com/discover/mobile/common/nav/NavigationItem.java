@@ -41,7 +41,11 @@ public abstract class NavigationItem {
 	public static void initializeAdapterWithSections(final NavigationItemAdapter adapter, final ImmutableList<ComponentInfo> sectionInfo, final Fragment homeFragment) {
 		section = sectionInfo;
 		initializeAdapterWithSections(adapter);
-		adapter.getNavigationRoot().makeFragmentVisible(homeFragment);
+				
+		/**If home fragment is not null then show home fragment **/
+		if( homeFragment != null ) {		
+			adapter.getNavigationRoot().makeFragmentVisible(homeFragment);
+		}
 
 	}
 

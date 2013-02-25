@@ -1,8 +1,10 @@
 package com.discover.mobile.bank.paybills;
 
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankServiceCallFactory;
@@ -44,11 +46,12 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 			public void onClick(final View v) {
 				final boolean isEligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
 				final boolean isEnrolled = BankUser.instance().getCustomerInfo().getPaymentsEnrolled();
-
 				if(!isEligible){
 					BankNavigator.navigateToPayBillsLanding();
 				} else if(isEligible && !isEnrolled){
-					BankNavigator.navigateToPayBillsTerms(null);
+					final Bundle bundle = new Bundle();
+					bundle.putInt(BankExtraKeys.TITLE_TEXT, R.string.section_title_pay_bills);
+					BankNavigator.navigateToPayBillsTerms(bundle);
 				} else{
 					BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 				}
@@ -63,22 +66,20 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 	 */
 	public static OnClickListener getManagePayeesClickListener() {
 		return new OnClickListener() {
-
 			@Override
 			public void onClick(final View v) {
 				final boolean isEligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
 				final boolean isEnrolled = BankUser.instance().getCustomerInfo().getPaymentsEnrolled();
-
 				if(!isEligible) {
 					BankNavigator.navigateToPayBillsLanding();
 				} else if (isEligible && !isEnrolled) {
-					BankNavigator.navigateToPayBillsTerms(null);
-				}
-				if(isEligible && isEnrolled) {
+					final Bundle bundle = new Bundle();
+					bundle.putInt(BankExtraKeys.TITLE_TEXT, R.string.sub_section_title_manage_payees);
+					BankNavigator.navigateToPayBillsTerms(bundle);
+				}else {
 					BankServiceCallFactory.createManagePayeeServiceRequest().submit();
 				}
 			}
-
 		};
 	}
 
@@ -94,7 +95,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 				//Clear the rotation bundle
 				BankRotationHelper.getHelper().setBundle(null);
 				//Call the first service
-				//TODO: Remove this call, will be in an account object
+				// TODO Remove this call, will be in an account object
 				BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
 			}
 		};

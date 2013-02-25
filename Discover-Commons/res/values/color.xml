@@ -42,6 +42,7 @@
 	<color name="weak_indicator">#ffdb11</color>
 	<color name="strong_indicator">#8ed402</color>
 	<color name="blue_link">#0267b1</color>
+	<color name="green_acceptance">#4ba90a</color>
 	
 	<!-- Discover Secondary Colors Darker -->
 	<color name="strong_indicator_dark">#8ed402</color>

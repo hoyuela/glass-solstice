@@ -60,6 +60,7 @@ public class BankSelectPayee extends BaseFragment{
 			loadListFromBundle(savedInstanceState);
 		}
 	}
+	
 	/**
 	 * Create the view
 	 * @param inflater - inflater to inflate the layout

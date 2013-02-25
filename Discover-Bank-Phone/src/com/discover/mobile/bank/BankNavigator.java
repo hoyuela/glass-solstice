@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.account.AccountActivityViewPager;
 import com.discover.mobile.bank.account.BankAccountActivityTable;
@@ -75,14 +77,14 @@ public final class BankNavigator {
 			final Bundle bundle = new Bundle();
 			bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
 			bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
-			
+
 			//Verify cause is not empty and is not equal to SHOW_ERROR_MESSAGE
 			if( !Strings.isNullOrEmpty(cause) && !IntentExtraKey.SHOW_ERROR_MESSAGE.equals(cause) ) {
 				bundle.putBoolean(cause, true);
 			} else {
 				bundle.putString(IntentExtraKey.SHOW_ERROR_MESSAGE, message);
 			}
-			
+
 			intent.putExtras(bundle);
 			activity.startActivity(intent);
 
@@ -194,9 +196,9 @@ public final class BankNavigator {
 				R.string.continue_text);
 
 		//Set the dismiss listener that will navigate the user to the browser	
-		modal.setOnDismissListener(new OnDismissListener() {
+		modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
 			@Override
-			public void onDismiss(final DialogInterface arg0) {
+			public void onClick(final View v) {
 				final Intent i = new Intent(Intent.ACTION_VIEW);
 				i.setData(Uri.parse(url));
 				activity.startActivity(i);
@@ -211,6 +213,8 @@ public final class BankNavigator {
 	 * to the navigate to pay bills terms and conditions page.
 	 */
 	public static void navigateToPayBillsTerms(final Bundle extras){
+		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
+
 		final BankPayTerms fragment = new BankPayTerms();
 		fragment.setArguments(extras);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
@@ -226,7 +230,7 @@ public final class BankNavigator {
 		fragment.setArguments(extras);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
-	
+
 	/**
 	 * Let the root activity know that the current fragment needs to be changed from the current fragment
 	 * to the navigate to pay bills step two page.
@@ -416,7 +420,7 @@ public final class BankNavigator {
 		if(  DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity ) {
 			final BaseFragmentActivity activity = (BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();		
 			activity.closeDialog();
-			
+
 			//If class type is BankEnterPayeeFragment then open the Search Payee Fragment Step 2 of work-flow
 			if( step == BankEnterPayeeFragment.class ) {
 				fragment = new BankEnterPayeeFragment();
@@ -483,7 +487,7 @@ public final class BankNavigator {
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
 
-	
+
 	/**
 	 * Navigation method used to show the Select Payee Page displayed after searching for a Payee in the Add Payee work-flow.
 	 * If the search argument has no results, then a modal is displayed to the user indicating that there were no matches found.
@@ -493,7 +497,7 @@ public final class BankNavigator {
 	public static void navigateToSelectPayees(final SearchPayeeResultList search) {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
-		
+
 		//Show No Matches Modal if no results found
 		if( search.results.size() <= 0 ) {
 			// Create a one button modal to notify the user that they are leaving the application
@@ -508,24 +512,24 @@ public final class BankNavigator {
 		}
 		//Show Select Payee Page for Add a Payee work-flow
 		else {
-			
+
 			if( BankNetworkServiceCallManager.getInstance().getLastServiceCall() instanceof SearchPayeeServiceCall ) {
 				final BankSearchSelectPayeeFragment fragment = new BankSearchSelectPayeeFragment();
 				final SearchPayeeServiceCall searchCall = (SearchPayeeServiceCall)BankNetworkServiceCallManager.getInstance().getLastServiceCall();
-						
+
 				final Bundle bundle = new Bundle();
-				
+
 				//Provide the text used for running a search
 				bundle.putSerializable(BankSearchSelectPayeeFragment.SEARCH_ITEM, searchCall.getSearchText());
 				//Provide list of results sent from the server
 				bundle.putSerializable(BankExtraKeys.PAYEES_LIST, search);
 				fragment.setArguments(bundle);
-				
+
 				activity.makeFragmentVisible(fragment);
 			} else {
 				//Show catch all error to the user, this should never happen
 				BankErrorHandler.getInstance().handleGenericError(0);
-		
+
 				if(Log.isLoggable(TAG, Log.ERROR)) {
 					Log.e(TAG, "Unexpected Service Call Found!");
 				}

@@ -22,8 +22,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthAnswerDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
-import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.facade.FacadeFactory;
@@ -148,15 +146,6 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 
 		restoreState(savedInstanceState);
 
-		//Disabling continue button only applies to Bank
-		if( Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT) {
-			//Add text change listener to determine when the user has entered text
-			//to enable/disable continue button
-			questionAnswerField.addTextChangedListener(mTextWatcher);
-
-			//Disable continue button by default
-			continueButton.setEnabled(false);
-		}
 	}
 
 	@Override

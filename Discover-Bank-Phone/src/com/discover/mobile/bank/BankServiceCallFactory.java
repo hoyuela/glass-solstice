@@ -23,11 +23,14 @@ import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
+import com.discover.mobile.bank.services.payment.AcceptPayBillsTerms;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
+import com.discover.mobile.bank.services.payment.GetPayBillsTermsAndConditionsCall;
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
+import com.discover.mobile.bank.services.payment.PayBillsTermsAndConditionsDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.AsyncCallback;
@@ -102,7 +105,7 @@ public class BankServiceCallFactory {
 
 		final AsyncCallback<PaymentDetail> callback = BankPhoneAsyncCallbackBuilder
 				.createDefaultCallbackBuilder(PaymentDetail.class, activity,
-						(ErrorHandlerUi) activity).build();
+						activity).build();
 
 		final CreatePaymentCall paymentCall = new CreatePaymentCall(activity, callback, paymentDetails);
 		return paymentCall;
@@ -153,7 +156,6 @@ public class BankServiceCallFactory {
 		return new CreateStrongAuthRequestCall(activity, callback);
 	}
 
-
 	/**
 	 * Create the service call to get the payees for a user
 	 * @return the service call to get the payees for a user
@@ -171,6 +173,20 @@ public class BankServiceCallFactory {
 	}
 	
 	/**
+	 * Create a POST request to tell the Bank APIs that the user has accepted a terms and conditions 
+	 * that was presented to them.
+	 * @return a POST request to accept bill pay terms and conditions.
+	 */
+	public static AcceptPayBillsTerms createAcceptPayBillsTermsRequest() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
+		final AsyncCallback<Object> callback = 
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Object.class, activity, null).build();
+
+		return new AcceptPayBillsTerms(activity, callback);
+	}
+	
+	/**
 	 * Create the service call to get the payees for a user
 	 * @return the service call to get the payees for a user
 	 */
@@ -184,6 +200,20 @@ public class BankServiceCallFactory {
 						.build();
 
 		return new ManagePayeeServiceCall(activity, callback);
+	}
+	
+	/**
+	 * Create a service call to retrieve the terms and conditions for Pay Bills from the Bank APIs.
+	 * @return the service call that will retrieve the terms and conditions for Pay Bills from the Bank APIs.
+	 */
+	public static GetPayBillsTermsAndConditionsCall createGetPayBillsTermsAndConditionsCall() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
+		final AsyncCallback<PayBillsTermsAndConditionsDetail> callback = 
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PayBillsTermsAndConditionsDetail.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+		return new GetPayBillsTermsAndConditionsCall(activity, callback);
 	}
 
 	/**

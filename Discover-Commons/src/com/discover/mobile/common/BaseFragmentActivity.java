@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
@@ -180,6 +181,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	 * @param fragment - fragment to be shown
 	 */
 	private void setVisibleFragment(final Fragment fragment) {
+		
 		this.currentFragment = fragment;
 		getSupportFragmentManager()
 		.beginTransaction()
@@ -187,6 +189,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 		//Adds the class name and fragment to the back stack
 		.addToBackStack(fragment.getClass().getSimpleName())
 		.commit();
+		
 		hideSlidingMenuIfVisible();
 	}
 
@@ -200,6 +203,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 		.beginTransaction()
 		.replace(R.id.navigation_content, fragment)
 		.commit();
+		
 		hideSlidingMenuIfVisible();
 	}
 
@@ -386,6 +390,20 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "Activity does not have a dialog associated with it!" );
+			}
+		}
+	}
+	
+	/**
+	 * Utility method used for debugging issues in the back stack
+	 */
+	public void printFragmentsInBackStack() {
+
+		final FragmentManager fragManager = this.getSupportFragmentManager();
+		final int fragCount = fragManager.getBackStackEntryCount();
+		if (fragCount > 0) {
+			for (int i = 0; i < fragCount; i++) {
+				Log.v(TAG, fragManager.getBackStackEntryAt(i).getName());
 			}
 		}
 	}

@@ -38,6 +38,10 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	public static final String SEARCH_ITEM = "search";
 	
 	/**
+	 * Search criteria used to generate the list of payees displayed to the user
+	 */
+	private String searchCriteria;
+	/**
 	 * List of payees
 	 * */
 	private SearchPayeeResultList search;
@@ -102,16 +106,21 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		this.enterPayeeDetails.setTitleText(R.string.bank_enter_payee_details);
 		this.enterPayeeDetails.setOnClickListener(this);
 				
+		/**Check whether to use values from arguments passed into fragment or from savedInstanceState bundle*/
 		if(null == savedInstanceState) {
-			/**Set text to show what the criteria was used to generate the list of payees found*/
-			this.searchName.setText("\"" +bundle.getString(SEARCH_ITEM) +"\"");
+			searchCriteria = bundle.getString(SEARCH_ITEM);
 			
 			/**Generate list of payees found using the search criteria read from bundle*/
 			loadListFromBundle(bundle);
 		} else{
+			searchCriteria = savedInstanceState.getString(SEARCH_ITEM);
+			
 			loadListFromBundle(savedInstanceState);
 		}
 
+		/**Set text to show what the criteria was used to generate the list of payees found*/
+		this.searchName.setText(" \"" +searchCriteria +"\"");
+		
 		return view;
 	}
 
@@ -121,7 +130,10 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
+		super.onSaveInstanceState(outState);
+		
 		outState.putSerializable(BankExtraKeys.PAYEES_LIST, this.search);
+		outState.putString(SEARCH_ITEM, searchCriteria);
 	}
 
 	/**
@@ -197,5 +209,6 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		}
 		
 	}
+	
 }
 
