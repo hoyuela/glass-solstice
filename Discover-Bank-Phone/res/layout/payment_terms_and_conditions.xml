@@ -1,18 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/light_gray_bkgrd" >
 
     <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:paddingTop="@dimen/forms_inner_padding" >
+
+        <TextView
+            android:id="@+id/select_payee_title"
+            style="@style/page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/help"
+            android:text="@string/welcome_to_pay_bills" />
+
+        <ImageButton
+            android:id="@+id/help"
+            style="@style/orange_help_button"
+            android:layout_width="@dimen/orange_help_button_size"
+            android:layout_height="@dimen/orange_help_button_size"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/empty" />
+    </RelativeLayout>
+
+    <WebView
+        android:id="@+id/agreement_web_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-        
-        <TextView 
+        android:layout_height="match_parent"
+        android:layout_above="@+id/footer"
+        android:layout_below="@+id/header"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:cacheColorHint="#00000000"
+        android:visibility="invisible" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp" 
+        android:background="@drawable/shadow_gradient"
+        android:layout_above="@+id/footer"/>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/field_stroke"
+        android:padding="@dimen/forms_inner_padding" >
+
+        <Button
+            android:id="@+id/accept_button"
+            style="@style/call_to_action_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/accept" />
+
+        <TextView
+            android:id="@+id/acceptance_label"
+            style="@style/sub_copy_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/accept_button"
+            android:layout_marginLeft="@dimen/between_related_elements_padding"
+            android:layout_toRightOf="@+id/accept_button"
+            android:text="@string/acceptance_text"
+            android:textColor="@color/sub_copy"
+            android:textSize="@dimen/small_copy_mid" />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Payment Terms and Conditions"/> 
-        
-    </RelativeLayout>
-    
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 
-</ScrollView>
+</RelativeLayout>
