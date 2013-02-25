@@ -59,8 +59,17 @@ public class BankAccountSummaryFragment extends BaseFragment{
 				toast.show();
 			}			
 		});
-		this.showActionBarLogo();
 		return view;
+	}
+
+	/**
+	 * Resume the fragment
+	 */
+	@Override
+	public void onResume(){
+		super.onResume();
+		//Show the logo, which by default is hidden when the app is resumed
+		this.showActionBarLogo();
 	}
 
 	/** Set the first name in the status bar. The first name can sometimes be 
