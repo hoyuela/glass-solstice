@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
@@ -212,10 +213,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		//If the user accepts the Bank terms and services for pay bills, navigate them to the originally
 		//chosen option. 
 		else if(sender instanceof AcceptPayBillsTerms){
-			final Activity activity = DiscoverActivityManager.getActiveActivity();
+			final FragmentActivity activity = (FragmentActivity)DiscoverActivityManager.getActiveActivity();
 			final String currentTitle = activity.getTitle().toString();
 			final String payBills = activity.getString(R.string.section_title_pay_bills);
-
+			activity.getSupportFragmentManager().popBackStack();
+			
 			if(currentTitle.equals(payBills))
 				BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 			else

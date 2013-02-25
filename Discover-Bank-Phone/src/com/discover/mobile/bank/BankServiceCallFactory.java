@@ -180,8 +180,8 @@ public class BankServiceCallFactory {
 	public static AcceptPayBillsTerms createAcceptPayBillsTermsRequest() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		
-		final AsyncCallback<PaymentDetail> callback = 
-				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PaymentDetail.class, activity, null).build();
+		final AsyncCallback<Object> callback = 
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Object.class, activity, null).build();
 
 		return new AcceptPayBillsTerms(activity, callback);
 	}
