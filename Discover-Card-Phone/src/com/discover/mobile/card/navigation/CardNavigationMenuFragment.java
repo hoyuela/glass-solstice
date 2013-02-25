@@ -9,6 +9,7 @@ import com.discover.mobile.card.profile.ProfileAndSettingsSectionInfo;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.NavigationItem;
 import com.discover.mobile.common.nav.NavigationMenuFragment;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.nav.section.ComponentInfo;
 import com.google.common.collect.ImmutableList;
 
@@ -18,7 +19,15 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		NavigationItem.initializeAdapterWithSections(navigationItemAdapter, CARD_SECTION_LIST,new HomeSummaryFragment());
+		final NavigationRootActivity activity = (NavigationRootActivity) getActivity();
+		
+		/**Check if there are no fragments already loaded and this is the first time the app is launched **/
+		if( activity.getCurrentContentFragment() == null ) {	
+			NavigationItem.initializeAdapterWithSections(navigationItemAdapter, CARD_SECTION_LIST,new HomeSummaryFragment());
+		} else {
+			NavigationItem.initializeAdapterWithSections(navigationItemAdapter, CARD_SECTION_LIST, null);
+		}
+		
 		setListAdapter(navigationItemAdapter);
 	}
 	
