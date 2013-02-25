@@ -67,7 +67,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 		if (errorHandlerUi != null) {
 			final TextView errorLabel = errorHandlerUi.getErrorLabel();
-			final int red = errorHandlerUi.getContext().getResources().getColor(R.color.red);
+			final int red = DiscoverActivityManager.getActiveActivity().getResources().getColor(R.color.red);
 			
 			errorLabel.setText(errorText);
 			errorLabel.setVisibility(View.VISIBLE);
