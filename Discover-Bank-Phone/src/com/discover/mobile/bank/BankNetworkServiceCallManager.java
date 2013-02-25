@@ -24,8 +24,10 @@ import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
+import com.discover.mobile.bank.services.payment.AcceptPayBillsTerms;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
+import com.discover.mobile.bank.services.payment.GetPayBillsTermsAndConditionsCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
@@ -199,6 +201,26 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 				//Navigate to home page which will open the Open Accounts view page
 				BankNavigator.navigateToHomePage(activeActivity);
 			}
+		}
+		//If a GET request for terms and conditions succeeds, navigate to the terms and conditions page
+		//with an appropriate title from the Fragment that initated the call.
+		else if(sender instanceof GetPayBillsTermsAndConditionsCall){
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
+			BankNavigator.navigateToPayBillsTerms(bundle);
+		}
+		//If the user accepts the Bank terms and services for pay bills, navigate them to the originally
+		//chosen option. 
+		else if(sender instanceof AcceptPayBillsTerms){
+			final Activity activity = DiscoverActivityManager.getActiveActivity();
+			final String currentTitle = activity.getTitle().toString();
+			final String payBills = activity.getString(R.string.section_title_pay_bills);
+
+			if(currentTitle.equals(payBills))
+				BankServiceCallFactory.createGetPayeeServiceRequest().submit();
+			else
+				BankServiceCallFactory.createManagePayeeServiceRequest().submit();
+						
 		}
 		//Navigate to Account Summary landing page once Account Summary is downloaded
 		else if( sender instanceof GetCustomerAccountsServerCall) {

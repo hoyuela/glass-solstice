@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
     <!-- Section titles -->
     <string name="pay_a_bill_title">Pay a Bill</string>
+    <string name="welcome_to_pay_bills">Welcome to Pay Bills</string>
+   	<string name="manage_payees_welcome">Welcome to Manage Payees</string>
+	<string name="manage_payees">Manage Payees</string>
        
     <!-- Payee Not Eligible Strings -->
     <string name="pay_bills_on_go_title">Pay Bills On The Go</string>
@@ -33,11 +37,13 @@
 	<string name="review_payments_scheduled_deleted">Scheduled Payment Deleted</string>
 	
 	<!-- Manage Payees Strings  -->
-	<string name="manage_payees">Manage Payees</string>
 	<string name="payee">Payee</string>
 	<string name="manage_payees_welcome">Welcome to Manage Payees</string>
 	
 	<!-- Schedule Payments -->
+	<string name="payee">Payee</string>
+	<string name="accept">Accept</string>
+	<string name="acceptance_text">By tapping on Accept, I \nagree to the Terms of Use.</string>
  	<string name="schedule_pay_payee">Payee</string>
  	<string name="schedule_pay_from">Pay From</string>
  	<string name="schedule_pay_amount">Amount</string>

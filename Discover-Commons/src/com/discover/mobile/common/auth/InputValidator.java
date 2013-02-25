@@ -162,9 +162,6 @@ public class InputValidator {
 	 * @return returns true if the value is greater than or equal to the min and less than or equal to the max.
 	 */
 	public static boolean isValueBoundedBy(final int value, final int min, final int max){
-		if(value >= min && value <= max)
-			return true;
-		else
-			return false;
+		return value >= min && value <= max;
 	}
 }

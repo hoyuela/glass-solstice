@@ -211,6 +211,8 @@ public final class BankNavigator {
 	 * to the navigate to pay bills terms and conditions page.
 	 */
 	public static void navigateToPayBillsTerms(final Bundle extras){
+		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
+		
 		final BankPayTerms fragment = new BankPayTerms();
 		fragment.setArguments(extras);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);

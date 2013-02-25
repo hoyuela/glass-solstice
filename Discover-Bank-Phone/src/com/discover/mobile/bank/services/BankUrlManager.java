@@ -16,16 +16,18 @@ import com.google.common.base.Strings;
 public class BankUrlManager  {
 
 	private static String BASE_URL = "https://asys.discoverbank.com";
-	private static String DISCOVER_STRIPPED_URL = "https://www.discoverbank.com";
+	private static String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
 	//private static String BASE_URL = "https://beta.discoverbank.com";
-//	private static String DISCOVER_STRIPPED_URL = "https://www.discoverbank.com";
-//	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank"; //Jon Mock Service
+	//private static String DISCOVER_STRIPPED_URL = "http://beta.discoverbank.com";
+//	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
 	//  private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Erin/";
 	//	private static final String BASE_URL = "http://192.168.2.177:8008"; //Henry's Laptop
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
 	//	private static final String BASE_URL = "http://192.168.1.94:8008";
 	//	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
-	//  private static final String BASE_URL = "http://192.168.1.70:8009"; //Jon's Laptop
+//	  private static String BASE_URL = "http://192.168.1.70:8009"; //Jon's Laptop
+//	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Scott/DiscoverBank"; //Scott's Mock Service
+//	private static String BASE_URL = "http://192.168.2.173:8008";
 
 	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
 	public static final String EMPTY = "";
@@ -35,6 +37,9 @@ public class BankUrlManager  {
 	private static final String CUSTOMER_SERVICE_URL = "/api/customers/current";
 	private static final String STATEMENTS_URL = "https://www.discoverbank.com/bankac/loginreg/login ";
 	private static final String OPEN_ACCOUNT_URL = "https://www.discover.com/online-banking/savings.html"; 
+	private static final String TERMS_AND_CONDITIONS_URL = "/api/content/payments/terms.js";
+	private static final String ACCEPT_PAY_BILLS_TERMS_URL = "/api/payments/terms";
+	
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
 	/**
@@ -47,6 +52,7 @@ public class BankUrlManager  {
 	public static final String LOGOUT_URL_KEY = "logout";
 	public static final String PAYMENTS_URL_KEY = "payments";
 	public static final String DEPOSITS_URL_KEY = "deposits";
+	public static final String ACCEPT_PAY_BILLS_TERMS_KEY = "billpayterms";
 
 
 	/**
@@ -136,6 +142,22 @@ public class BankUrlManager  {
 	 */
 	public static String getStatementsUrl() {
 		return STATEMENTS_URL;
+	}
+	
+	/**
+	 * 
+	 * @return - the URL for retrieving the terms and conditions content for pay bills.
+	 */
+	public static String getTermsAndConditionsUrl() {
+		return TERMS_AND_CONDITIONS_URL;
+	}
+	
+	/**
+	 * 
+	 * @return - the URL for POSTing user acceptance of the terms and conditions for pay bills.
+	 */
+	public static String getAcceptPayBillsTerms() {
+		return ACCEPT_PAY_BILLS_TERMS_URL;
 	}
 
 	/**

@@ -45,6 +45,9 @@ public final class BankExtraKeys {
 
 	/**Used to notify a fragment that a transaction item has been deleted from its list*/
 	public static final String CONFIRM_DELETE = "delete";
+	
+	/**Used to pass a String resource that is meant to be displayed as the title in the action bar*/
+	public static final String TITLE_TEXT = "title";
 
 	/**Used to signify sort set up*/
 	public static final int SORT_DATE_DESC = 0;
