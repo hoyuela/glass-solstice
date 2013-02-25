@@ -73,6 +73,6 @@
         android:background="@drawable/log_out_button"
         android:layout_above="@+id/gradient_line"
         android:text="@string/log_out"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </RelativeLayout>
