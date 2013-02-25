@@ -6,12 +6,10 @@ import android.support.v4.app.Fragment;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankServiceCallFactory;
-import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
-import com.discover.mobile.bank.util.FragmentOnBackPressed;
 
 /**
  * This is a subclass of the DetailView pager.
@@ -22,7 +20,7 @@ import com.discover.mobile.bank.util.FragmentOnBackPressed;
  * 
  * @author scottseward
  */
-public class AccountActivityViewPager extends DetailViewPager implements DynamicDataFragment, FragmentOnBackPressed{
+public class AccountActivityViewPager extends DetailViewPager{
 	//The list that is used to display detail Activity information.
 	private ListActivityDetail activityItems = null;
 	private int initialViewPosition = 0;
@@ -141,6 +139,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	 */
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
+		setIsLoadingMore(false);
 		final ListActivityDetail list = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		activityItems.activities.addAll( list.activities);
 		updateNavigationButtons(getViewPager().getCurrentItem());
@@ -172,6 +171,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Dynamic
 	 */
 	@Override
 	protected void loadMore(final String url) {
+		setIsLoadingMore(true);
 		BankServiceCallFactory.createGetActivityServerCall(url).submit();		
 	}
 

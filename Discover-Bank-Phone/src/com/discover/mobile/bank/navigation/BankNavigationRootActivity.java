@@ -32,7 +32,7 @@ import com.slidingmenu.lib.SlidingMenu;
  * 
  */
 public class BankNavigationRootActivity extends NavigationRootActivity
-		implements OnPaymentCanceledListener {
+implements OnPaymentCanceledListener {
 
 	/** Allows access to and manual control of the soft keyboard. */
 	private InputMethodManager imm;
@@ -133,14 +133,16 @@ public class BankNavigationRootActivity extends NavigationRootActivity
 	}
 
 	/**
-	 * Determines if the current fragment is an instance of the dynamic date
-	 * fragment
+	 * Determines if the current fragment is attempting to load more
 	 * 
-	 * @return if the current fragment is an instance of the dynamic date
-	 *         fragment
+	 * @return if the current fragment is attempting to load more
 	 */
-	public boolean isDynamicDataFragment(){
-		return currentFragment instanceof DynamicDataFragment;
+	public boolean isFragmentLoadingMore(){
+		boolean isLoadingMore = false;
+		if(currentFragment instanceof DynamicDataFragment){
+			isLoadingMore = ((DynamicDataFragment)currentFragment).getIsLoadingMore();
+		}
+		return isLoadingMore;
 	}
 
 	/**
@@ -302,5 +304,16 @@ public class BankNavigationRootActivity extends NavigationRootActivity
 	@Override
 	public void onPaymentCanceled() {
 		fragmentErrorShown = true;
+	}
+
+	/**
+	 * Starts a Progress dialog using this activity as the context. The ProgressDialog created
+	 * will be set at the active dialog.
+	 */
+	@Override
+	public void startProgressDialog() {		
+		if(!isFragmentLoadingMore()){
+			super.startProgressDialog();
+		}
 	}
 }

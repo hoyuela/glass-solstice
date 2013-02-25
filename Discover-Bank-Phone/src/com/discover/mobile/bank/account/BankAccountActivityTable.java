@@ -48,6 +48,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
+		setIsLoadingMore(false);
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		if(header.isPosted()){
 			handleReceivedData(posted, list);
@@ -168,6 +169,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 * Load more activities
 	 */
 	public void loadMore(final String url){
+		setIsLoadingMore(true);
 		BankServiceCallFactory.createGetActivityServerCall(url).submit();
 	}
 

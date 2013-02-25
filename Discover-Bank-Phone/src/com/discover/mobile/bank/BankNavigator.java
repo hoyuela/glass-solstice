@@ -269,7 +269,7 @@ public final class BankNavigator {
 		final BankNavigationRootActivity activity =
 				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 		((AlertDialogParent)activity).closeDialog();
-		if(activity.isDynamicDataFragment() && !isGoingBack){
+		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(bundle);
 		}else{
 			final BankAccountActivityTable fragment =  new BankAccountActivityTable();
@@ -288,7 +288,7 @@ public final class BankNavigator {
 				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 
 		((AlertDialogParent)activity).closeDialog();
-		if(activity.isDynamicDataFragment() && !isGoingBack){
+		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(extras);
 		}else{
 			final BankManagePayee fragment = new BankManagePayee();
@@ -458,7 +458,7 @@ public final class BankNavigator {
 		final BankNavigationRootActivity activity =
 				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 		((AlertDialogParent)activity).closeDialog();
-		if(activity.isDynamicDataFragment() && !isGoingBack){
+		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(bundle);
 		}else{
 			final ReviewPaymentsTable fragment =  new ReviewPaymentsTable();

@@ -54,6 +54,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 */
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
+		setIsLoadingMore(false);
 		final int category = header.getCurrentCategory();
 		final ListPaymentDetail list = (ListPaymentDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
@@ -148,6 +149,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 * Load more activities
 	 */
 	public void loadMore(final String url){
+		setIsLoadingMore(true);
 		BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 	}
 

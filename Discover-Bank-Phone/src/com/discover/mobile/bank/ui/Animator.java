@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.transfer;
+package com.discover.mobile.bank.ui;
 
 import android.view.View;
 import android.view.animation.Animation;
@@ -20,6 +20,9 @@ public final class Animator {
 
 	/**Collapse height amount*/
 	private static final float COLLAPSE_AMT = .1f;
+
+	/**Expand collapse time*/
+	private static final int DURATION = 300;
 
 	/**
 	 * Create an expand item
@@ -47,7 +50,7 @@ public final class Animator {
 		};
 
 		// 1dp/ms
-		animation.setDuration((int)(targtetHeight / v.getContext().getResources().getDisplayMetrics().density));
+		animation.setDuration(DURATION);
 		return animation;
 
 	}
@@ -63,10 +66,10 @@ public final class Animator {
 		final Animation animation = new Animation(){
 			@Override
 			protected void applyTransformation(final float interpolatedTime, final Transformation t) {
-				if(interpolatedTime == INTERPOLATED_TIME){
+				if(interpolatedTime == DURATION){
 					v.setVisibility(View.INVISIBLE);
 				}else{
-					v.getLayoutParams().height = initialHeight - (int)(initialHeight * COLLAPSE_AMT);
+					v.getLayoutParams().height = (initialHeight - (int)(initialHeight * COLLAPSE_AMT));
 					v.requestLayout();
 				}
 			}
@@ -77,9 +80,7 @@ public final class Animator {
 			}
 		};
 
-		// 1dp/ms
-		final int duration = (int)(INTERPOLATED_TIME*initialHeight / (v.getContext().getResources().getDisplayMetrics().density));
-		animation.setDuration((duration));
+		animation.setDuration(DURATION);
 		return animation;
 	}
 }
