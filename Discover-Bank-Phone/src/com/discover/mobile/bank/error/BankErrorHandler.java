@@ -14,9 +14,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -152,12 +150,7 @@ public class BankErrorHandler implements ErrorHandler {
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 
 		// Decide on what help number to show
-		int helpResId = 0;
-		if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT) {
-			helpResId = R.string.need_help_number_text;
-		} else {
-			helpResId = com.discover.mobile.bank.R.string.bank_need_help_number_text;
-		}
+		final int helpResId = com.discover.mobile.bank.R.string.bank_need_help_number_text;
 
 		// Create a one button modal with text as per parameters provided
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, errorText, true, helpResId,
@@ -182,12 +175,8 @@ public class BankErrorHandler implements ErrorHandler {
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 
 		// Decide on what help number to show
-		int helpResId = 0;
-		if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT) {
-			helpResId = R.string.need_help_number_text;
-		} else {
-			helpResId = com.discover.mobile.bank.R.string.bank_need_help_number_text;
-		}
+		final int helpResId = com.discover.mobile.bank.R.string.bank_need_help_number_text;
+
 
 		// Create a one button modal with text as per parameters provided
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, errorText, true, helpResId,
