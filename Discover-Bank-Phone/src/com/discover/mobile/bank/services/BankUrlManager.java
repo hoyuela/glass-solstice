@@ -185,7 +185,7 @@ public class BankUrlManager  {
 	 * @return Returns URL link that was stored in hashmap
 	 */
 	public static String getUrl( final Map<String, ReceivedUrl> urls, final String key) {
-		if( urls != null ) {
+		if( urls != null && urls.containsKey(key)  ) {
 			final String url = urls.get(key).url;
 			return getRelativePath(url);
 		} else {
