@@ -24,58 +24,60 @@ import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
  *
  */
 public abstract class BaseActivity extends RoboActivity implements ErrorHandlerUi, AlertDialogParent{
-	
+
 	private static final String TAG = BaseActivity.class.getSimpleName();
 	/**
-	* Contains the last error that occurred with the activity. 
-	* An object that holds a reference to an instance of BaseActivity can set its value by using setLastError.
-	*/
+	 * Contains the last error that occurred with the activity. 
+	 * An object that holds a reference to an instance of BaseActivity can set its value by using setLastError.
+	 */
 	private int mLastError = 0;
 	/**
 	 * Reference to the dialog currently being displayed on top of this activity. Is set using setDialog();
 	 */
 	private AlertDialog mActiveDialog;
-	
-    /**
-     * Show a custom modal alert dialog for the activity
-     * @param alert - the modal alert to be shown
-     */
-    @Override
+
+	/**
+	 * Show a custom modal alert dialog for the activity
+	 * @param alert - the modal alert to be shown
+	 */
+	@Override
 	public void showCustomAlert(final AlertDialog alert){
-    	alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		DiscoverModalManager.setActiveModal(alert);
+		DiscoverModalManager.setAlertShowing(true);
+		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-    }
-    
-    /**
-     * Show the default one-button alert with a custom title, content an button text
-     * 
-     * Uses the orange button
-     * 
-     * @param title - the resource id for title for the alert
-     * @param content - the resource id for content to display on the box
-     * @param buttonText - the resource id for button text to display on the button
-     */
-    @Override
+	}
+
+	/**
+	 * Show the default one-button alert with a custom title, content an button text
+	 * 
+	 * Uses the orange button
+	 * 
+	 * @param title - the resource id for title for the alert
+	 * @param content - the resource id for content to display on the box
+	 * @param buttonText - the resource id for button text to display on the button
+	 */
+	@Override
 	public void showOneButtonAlert(final int title, final int content, final int buttonText){    	
 		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
-    }
-    
-    /**
-     * Show the default one-button alert with a custom title, content an button text
-     * 
-     * Uses the orange button
-     * 
-     * @param title - the resource id for title for the alert
-     * @param content - the resource id for content to display on the box
-     * @param buttonText - the resource id for button text to display on the button
-     */
-    @Override
+	}
+
+	/**
+	 * Show the default one-button alert with a custom title, content an button text
+	 * 
+	 * Uses the orange button
+	 * 
+	 * @param title - the resource id for title for the alert
+	 * @param content - the resource id for content to display on the box
+	 * @param buttonText - the resource id for button text to display on the button
+	 */
+	@Override
 	public void showDynamicOneButtonAlert(final int title, final String content, final int buttonText){    	
 		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
-    }
-    
-    
+	}
+
+
 	/* 
 	 * Child classes should override this to implement error handling behavior
 	 * (non-Javadoc)
@@ -95,7 +97,7 @@ public abstract class BaseActivity extends RoboActivity implements ErrorHandlerU
 	public List<EditText> getInputFields(){
 		return null;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.discover.mobile.ErrorHandlerUi#getContext()
 	 */
@@ -103,54 +105,69 @@ public abstract class BaseActivity extends RoboActivity implements ErrorHandlerU
 	public Context getContext() {
 		return this;
 	}
-    
+
 	/* (non-Javadoc)
-	* @see com.discover.mobile.ErrorHandlerUi#setLastError()
-	*/
+	 * @see com.discover.mobile.ErrorHandlerUi#setLastError()
+	 */
 	@Override
 	public void setLastError(final int errorCode) {
 		mLastError = errorCode;
 	}
 
 	/* (non-Javadoc)
-	* @see com.discover.mobile.ErrorHandlerUi#getLastError()
-	*/
+	 * @see com.discover.mobile.ErrorHandlerUi#getLastError()
+	 */
 	@Override
 	public int getLastError() {
 		return mLastError;
 	}
-	
+
 
 	@Override
 	public void onResume(){
 		super.onResume();
-		
+
 		//Load all application and user preferences from persistent storage
 		Globals.loadPreferences(this);
-		
+
 		//Set this activity as the active activity
 		DiscoverActivityManager.setActiveActivity(this);
+
+		//If a modal was showing show the modal
+		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
+			DiscoverModalManager.getActiveModal().show();
+			DiscoverModalManager.setAlertShowing(true);
+		}
 	}
-	
+
 	/**
 	 * 
 	 */
 	@Override
 	public void onPause() {
 		super.onPause();
-		
+
 		//Save all application and user preferences into persistent storage
 		Globals.savePreferences(this);
-		
+
+		//Close the modal if it is showing
+		if(null != DiscoverModalManager.getActiveModal() && DiscoverModalManager.getActiveModal().isShowing()){
+			DiscoverModalManager.getActiveModal().dismiss();
+			DiscoverModalManager.setAlertShowing(true);
+		}else{
+			DiscoverModalManager.setAlertShowing(false);
+		}
+
 		closeDialog();
 	}
-	
+
 
 	/**
 	 * To be implemented by the child class
 	 */
+	@Override
 	public abstract ErrorHandler getErrorHandler();
-	
+
 
 	/**
 	 * @return Return a reference to the current dialog being displayed over this activity.
@@ -166,7 +183,7 @@ public abstract class BaseActivity extends RoboActivity implements ErrorHandlerU
 	@Override
 	public void setDialog(final AlertDialog dialog) {
 		mActiveDialog = dialog;
-		
+
 	}
 
 	/**
@@ -183,9 +200,9 @@ public abstract class BaseActivity extends RoboActivity implements ErrorHandlerU
 				Log.w(TAG, "Activity does not have a dialog associated with it!" );
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Starts a Progress dialog using this activity as the context. The ProgressDialog created
 	 * will be set at the active dialog.

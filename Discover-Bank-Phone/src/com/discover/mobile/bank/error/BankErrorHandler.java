@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -66,7 +67,7 @@ public class BankErrorHandler implements ErrorHandler {
 		if (errorHandlerUi != null) {
 			final TextView errorLabel = errorHandlerUi.getErrorLabel();
 			final int red = DiscoverActivityManager.getActiveActivity().getResources().getColor(R.color.red);
-			
+
 			errorLabel.setText(errorText);
 			errorLabel.setVisibility(View.VISIBLE);
 			errorLabel.setTextColor(red);
@@ -77,12 +78,12 @@ public class BankErrorHandler implements ErrorHandler {
 			final List<EditText> inputFields = errorHandlerUi.getInputFields();
 			final int numberOfFields = inputFields.size();
 			Object genericField = null;
-			
+
 			//Loop through the input fields, determine what kind of field they are, set their error state
 			//and clear the text in them.
 			for(int i = 0; i < numberOfFields; ++i){
 				genericField = inputFields.get(i);
-				
+
 				//If the current field is a ValidatedInputField we should use its method for setting errors.
 				if(genericField instanceof ValidatedInputField){
 					((ValidatedInputField)genericField).setErrors();
@@ -131,11 +132,13 @@ public class BankErrorHandler implements ErrorHandler {
 	 */
 	@Override
 	public void showCustomAlert(final AlertDialog alert) {
+		DiscoverModalManager.setActiveModal(alert);
+		DiscoverModalManager.setAlertShowing(true);
 		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -254,7 +257,7 @@ public class BankErrorHandler implements ErrorHandler {
 		} else {
 			modal = createErrorModal(title, errorText);
 		} 
-			
+
 		showCustomAlert(modal);
 
 		return modal;
@@ -343,7 +346,7 @@ public class BankErrorHandler implements ErrorHandler {
 		return modal;
 	}
 
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
