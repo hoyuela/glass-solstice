@@ -162,7 +162,6 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 
 		} else {
 			if (handleHTTPErrorCode(errorResponse.getHttpStatusCode())) {
-//				setEditTextErrors(errorHandlerUi);
 				return true;
 			}
 			// If we get to this block of code, the HTTP error code has not been
