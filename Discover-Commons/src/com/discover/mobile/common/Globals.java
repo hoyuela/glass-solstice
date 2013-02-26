@@ -99,7 +99,7 @@ public final class Globals {
 	 * 
 	 * @return APP_LEVEL_PREF or USER_LEVEL_PREF
 	 */
-	public static int getPreferenceLevel(String key) {
+	public static int getPreferenceLevel(final String key) {
 		int level = PreferenceLevel.APP_LEVEL_PREF.getValue();
 		
 		//Verify key name is not not null or empty
@@ -128,8 +128,8 @@ public final class Globals {
 	 * @param key
 	 * @return
 	 */
-	private static String getStoredKeyName(String key) {
-		StringBuilder keyName = new StringBuilder();
+	private static String getStoredKeyName(final String key) {
+		final StringBuilder keyName = new StringBuilder();
 
 		//Check if key provided is an account level preference
 		if( (getPreferenceLevel(key) & PreferenceLevel.ACCOUNT_LEVEL_PREF.getValue()) == PreferenceLevel.ACCOUNT_LEVEL_PREF.getValue() ) {
@@ -158,7 +158,7 @@ public final class Globals {
      */
     public static void loadPreferences(final Context context) {	
     	//Load all application level specific preferences
-		SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 		
 		currentAccount = AccountType.values()[settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), AccountType.CARD_ACCOUNT.ordinal())];
 		rememberId = settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
@@ -192,10 +192,10 @@ public final class Globals {
      * @param account CARD_ACCOUNT or BANK_ACCOUNT
      * 
      */
-    public static void loadPreferences(final Context context, AccountType account) {
+    public static void loadPreferences(final Context context, final AccountType account) {
     	
     	//Load all application level specific preferences
-		SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 		
 		currentAccount = account;
 		rememberId = settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
@@ -233,7 +233,7 @@ public final class Globals {
     	//Verify a valid account type is provided
     	if( isLoggedIn ) {
     		//Load all application level specific preferences
-			SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+			final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 						
 			//Load user level settings only if logged in
 			showLoginModal = settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true);
@@ -266,8 +266,8 @@ public final class Globals {
      */
     public static void savePreferences(final Context context) {
     	//Store all application level specific preferences
-        SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = settings.edit();
+        final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+		final SharedPreferences.Editor editor = settings.edit();
 		editor.putInt(getStoredKeyName(CURRENT_ACCOUNT), currentAccount.ordinal());
 		editor.putBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
 		editor.putBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility);
@@ -313,7 +313,7 @@ public final class Globals {
      * 
      * @param value CARD_ACCOUNT or BANK_ACCOUNT
      */
-    public static void setCurrentAccount(AccountType value) {
+    public static void setCurrentAccount(final AccountType value) {
     	//Validate that an acceptable value is provided
     	currentAccount = value;
     }
@@ -324,7 +324,7 @@ public final class Globals {
 	 * 
 	 * @param user Name of the current user logged into the application.
 	 */
-	public static void setCurrentUser(String user) {
+	public static void setCurrentUser(final String user) {
 		currentUser = user;
 	}
 	
@@ -348,7 +348,7 @@ public final class Globals {
      * 
      * @param rememberId True to store current user id, otherwise false.
      */
-	public static void setRememberId(boolean rememberId) {
+	public static void setRememberId(final boolean rememberId) {
 		Globals.rememberId = rememberId;
 	}
 	
@@ -363,7 +363,7 @@ public final class Globals {
 	/**
 	 * @param statusBarVisibility Set to true if status bar should be visible, false otherwise
 	 */
-	public static void setStatusBarVisibility(boolean statusBarVisibility) {
+	public static void setStatusBarVisibility(final boolean statusBarVisibility) {
 		Globals.statusBarVisibility = statusBarVisibility;
 	}
 	
@@ -381,7 +381,7 @@ public final class Globals {
 	 * 
 	 * @param showLoginModal True is show next time the user signs in, false otherwise.
 	 */
-	public static void setShowLoginModal(boolean showLoginModal) {
+	public static void setShowLoginModal(final boolean showLoginModal) {
 		Globals.showLoginModal = showLoginModal;
 	}
 	
@@ -397,7 +397,7 @@ public final class Globals {
 		return oldTouchTimeinMillis;
 	}
 	
-	public static void setOldTouchTimeInMillis(long touch){
+	public static void setOldTouchTimeInMillis(final long touch){
 		oldTouchTimeinMillis = touch;
 	}
 
@@ -406,7 +406,7 @@ public final class Globals {
 	 * 
 	 * @param isLoggedIn True if user is logged in, false otherwise
 	 */
-	public static void setLoggedIn(boolean isLoggedIn) {
+	public static void setLoggedIn(final boolean isLoggedIn) {
 		Globals.isLoggedIn = isLoggedIn;
 	}
 
@@ -434,7 +434,7 @@ public final class Globals {
 	 * 
 	 * @return Returns true if successful, false otherwise.
 	 */
-	public static boolean updateAccountInformation(final AccountType account, Context context, String userId, boolean saveUserId) {
+	public static boolean updateAccountInformation(final AccountType account, final Context context, final String userId, final boolean saveUserId) {
 		boolean ret = false;
 		
 		//Only update account information if logged in
