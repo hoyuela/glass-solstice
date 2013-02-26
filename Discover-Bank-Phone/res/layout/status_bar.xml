@@ -14,15 +14,8 @@
         android:gravity="center"
         android:maxLength="20"
         android:singleLine="true"
-        android:textStyle="bold"
-        android:textColor="@color/title"/>
-
-    <ImageView
-        android:id="@+id/end_line"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/gray_line" />
+        android:textColor="@color/title"
+        android:textStyle="bold" />
 
     <ImageButton
         android:id="@+id/help"
@@ -41,7 +34,8 @@
         android:layout_toRightOf="@+id/account_name"
         android:paddingLeft="@dimen/nav_section_pading"
         android:src="@drawable/bank_gray_icon" />
-     <ImageView
+
+    <ImageView
         android:id="@+id/downArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
