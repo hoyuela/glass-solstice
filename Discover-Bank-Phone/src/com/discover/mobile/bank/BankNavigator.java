@@ -199,6 +199,7 @@ public final class BankNavigator {
 		modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
+				modal.dismiss();
 				final Intent i = new Intent(Intent.ACTION_VIEW);
 				i.setData(Uri.parse(url));
 				activity.startActivity(i);
