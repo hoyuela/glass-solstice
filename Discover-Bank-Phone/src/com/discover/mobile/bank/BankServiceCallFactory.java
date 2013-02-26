@@ -253,9 +253,10 @@ public class BankServiceCallFactory {
 	 * Creates a GetCustomerAccountsServerCall<> object used to download the Account Summary 
 	 * using the Bank Accounts Service API.
 	 * 
+	 * @param Specify one of the queries supported by the GetPaymentsServiceCall. Refer to the class definition for the supported queries.
 	 * @return Reference to the GetCustomerAccountsServerCall object created.
 	 */
-	public static GetPaymentsServiceCall createGetPaymentsServerCall(final String url) {
+	public static GetPaymentsServiceCall createGetPaymentsServerCall(final String query) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<ListPaymentDetail>  callback =
@@ -263,7 +264,7 @@ public class BankServiceCallFactory {
 						activity, (ErrorHandlerUi) activity)
 						.build();
 
-		return new GetPaymentsServiceCall(activity, callback, url);
+		return new GetPaymentsServiceCall(activity, callback, query);
 	}
 
 	/**

@@ -29,6 +29,7 @@ import com.discover.mobile.bank.services.payment.AcceptPayBillsTerms;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPayBillsTermsAndConditionsCall;
+import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
@@ -275,11 +276,18 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		else if( sender instanceof DeletePaymentServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
-			BankNavigator.navigateToReviewPayments(bundle, false);
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((DeletePaymentServiceCall)sender).getPaymentDetail());
+			BankNavigator.navigateToReviewPaymentsFromDelete(bundle);
 		}
 		//Payee Search Success, navigate to Add Payee Workflow Step 4
 		else if( sender instanceof SearchPayeeServiceCall ) {
 			BankNavigator.navigateToSelectPayees((SearchPayeeResultList)result);
+		}
+		//Get Payment Successful, navigate to the review payments table
+		else if( sender instanceof GetPaymentsServiceCall ) {
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
+			BankNavigator.navigateToReviewPaymentsTable(bundle);
 		}
 		//Payee Add Success, navigate to Add Payee Confirmation Pge in Workflow Step 5
 		else if( sender instanceof AddPayeeServiceCall ) {

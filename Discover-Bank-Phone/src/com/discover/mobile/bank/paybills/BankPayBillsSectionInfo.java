@@ -10,6 +10,7 @@ import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 
@@ -95,8 +96,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 				//Clear the rotation bundle
 				BankRotationHelper.getHelper().setBundle(null);
 				//Call the first service
-				// TODO Remove this call, will be in an account object
-				BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
+				BankServiceCallFactory.createGetPaymentsServerCall(GetPaymentsServiceCall.SCHEDULED).submit();
 			}
 		};
 	}

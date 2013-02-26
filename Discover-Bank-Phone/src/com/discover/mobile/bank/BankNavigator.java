@@ -355,9 +355,18 @@ public final class BankNavigator {
 	 * Navigation method used to display the Review Payments page with the delete message
 	 */
 	public static void navigateToReviewPaymentsFromDelete(final Bundle bundle) {
+		//TODO: final Activity activity = 
 		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
+		
 		final ReviewPaymentsTable fragment =  new ReviewPaymentsTable();
 		BankRotationHelper.getHelper().getBundle().putAll(bundle);
+		
+		/**
+		 * Remove this fragment from the transactions list, this seems to be required since 
+		 * makeVisible(fragment, boolean) was used.
+		 */
+		//TODO: getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+		
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
 
@@ -485,7 +494,7 @@ public final class BankNavigator {
 	public static void navigateToPaymentDetailScreen(final Bundle bundle){
 		final PaymentDetailsViewPager fragment =  new PaymentDetailsViewPager();
 		fragment.setArguments(bundle);
-		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment, false);
 	}
 
 

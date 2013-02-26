@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
@@ -79,6 +80,12 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	protected void onActionButtonClick() {
+		/**
+		 * Remove this fragment from the transactions list, this seems to be required since 
+		 * makeVisible(fragment, boolean) was used.
+		 */
+		getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+		
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
 		activity.popTillFragment(BankSelectPayee.class);
 	}
@@ -89,7 +96,13 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	protected void onActionLinkClick() {
-		BankNavigator.navigateToReviewPayments(null, false);
+		/**
+		 * Remove this fragment from the transactions list, this seems to be required since 
+		 * makeVisible(fragment, boolean) was used.
+		 */
+		getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+		
+		BankServiceCallFactory.createGetPaymentsServerCall(GetPaymentsServiceCall.SCHEDULED).submit();
 	}
 
 	/**

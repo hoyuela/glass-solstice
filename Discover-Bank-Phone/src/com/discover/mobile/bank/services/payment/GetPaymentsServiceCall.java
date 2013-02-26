@@ -8,6 +8,7 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
@@ -126,9 +127,9 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 	 * @param context Reference to the context invoking the API
 	 * @param callback Reference to the Handler for the response
 	 */
-	public GetPaymentsServiceCall(final Context context, final AsyncCallback<ListPaymentDetail> callback, final String url) {
+	public GetPaymentsServiceCall(final Context context, final AsyncCallback<ListPaymentDetail> callback, final String query) {
 
-		super(context, new GetCallParams(url) {
+		super(context, new GetCallParams(BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY) +query) {
 			{
 				//This service call is made after authenticating and receiving a token,
 				//therefore the session should not be cleared otherwise the token will be wiped out

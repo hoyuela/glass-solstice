@@ -14,6 +14,7 @@ import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
+import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.table.BaseTable;
@@ -165,7 +166,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			public void onClick(final View v) {
 				header.setCurrentCategory(ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
 				if(null == scheduled){
-					BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
+					BankServiceCallFactory.createGetPaymentsServerCall(GetPaymentsServiceCall.SCHEDULED).submit();
 				}
 			}
 		});
@@ -175,7 +176,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			public void onClick(final View v) {
 				header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
 				if(null == completed){
-					BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
+					BankServiceCallFactory.createGetPaymentsServerCall(GetPaymentsServiceCall.COMPLETED).submit();
 				}
 			}
 		});
@@ -185,7 +186,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			public void onClick(final View v) {
 				header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
 				if(null == canceled){
-					BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
+					BankServiceCallFactory.createGetPaymentsServerCall(GetPaymentsServiceCall.CANCELLED).submit();
 				}
 			}
 		});
