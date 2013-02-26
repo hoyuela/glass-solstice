@@ -113,7 +113,7 @@
     <string name="go_back">Go back</string>
     <string name="logout">Logout</string>
     <string name="problem_authenticating">There was a problem authenticating your registration information.</string>
-    <string name="error_strongauth_noanswer">Please enter the Challenge Answer.</string>
+    <string name="error_strongauth_noanswer">The answer does not match your Account information.</string>
 	<string name="error_request_not_completed_title">Your Request Could Not Be Completed</string>
 	<string name="error_request_not_completed_msg">We\'re sorry. We can\'t complete your request at this time. Please contact us for more information.</string>
 	<string name="lockout_title">You\'ve Been Locked Out</string>
