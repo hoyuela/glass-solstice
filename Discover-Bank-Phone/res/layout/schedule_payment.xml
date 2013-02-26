@@ -48,6 +48,8 @@
                     style="@style/title_copy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:scrollHorizontally="true"
                     android:layout_alignParentBottom="true" />
             </RelativeLayout>
 
@@ -70,6 +72,8 @@
                     style="@style/title_copy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:scrollHorizontally="true"
                     android:layout_alignParentBottom="true" />
 
                 <include android:id="@+id/payment_acct_edit_button"
