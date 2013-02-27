@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandler;
@@ -111,6 +112,9 @@ implements OnPaymentCanceledListener {
 
 			// User has become inactive and will be set to timed-out.
 			if ( secs > BankUrlManager.MAX_IDLE_TIME) {
+				Globals.setLoggedIn(false);
+				Globals.setCurrentUser("");
+				BankUser.instance().clearSession();
 				BankNavigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED, null);
 			}
 		}
