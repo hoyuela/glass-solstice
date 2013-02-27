@@ -316,6 +316,11 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		registerReceiver(screenOffService, intentFilter);
 	}
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(screenOffService);
+	}
 	/**
 	 * Ran at the start of an activity when an activity is brought to the front.
 	 * This also will trigger the Xtify SDK to start.

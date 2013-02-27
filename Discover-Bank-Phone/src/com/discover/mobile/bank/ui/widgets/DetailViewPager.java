@@ -163,7 +163,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	private void setupViewPager() {
 		final ViewPagerFragmentAdapter viewPagerAdapter = new ViewPagerFragmentAdapter(getFragmentManager());
 		viewPager.setAdapter(viewPagerAdapter);
-		viewPager.setOffscreenPageLimit(25);
+		viewPager.setOffscreenPageLimit(2);
 		viewPager.setCurrentItem(getInitialViewPosition());
 		updateTitleLabel(getTitleForFragment(getInitialViewPosition()));
 
