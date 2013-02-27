@@ -40,6 +40,7 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.google.common.base.Strings;
 
@@ -355,10 +356,22 @@ public final class BankNavigator {
 	 * Navigation method used to display the Review Payments page with the delete message
 	 */
 	public static void navigateToReviewPaymentsFromDelete(final Bundle bundle) {
-		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
-		final ReviewPaymentsTable fragment =  new ReviewPaymentsTable();
-		BankRotationHelper.getHelper().getBundle().putAll(bundle);
-		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
+		//Fetch the current activity
+		if( activity instanceof BaseFragmentActivity ) {
+			final NavigationRootActivity fragActivity = (NavigationRootActivity)activity;
+					
+			fragActivity.closeDialog();
+			
+			BankRotationHelper.getHelper().getBundle().putAll(bundle);
+			
+			fragActivity.getSupportFragmentManager().popBackStackImmediate();
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Unable to get current Activity");
+			}
+		}
 	}
 
 	/**
@@ -459,9 +472,18 @@ public final class BankNavigator {
 		final BankNavigationRootActivity activity =
 				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 		((AlertDialogParent)activity).closeDialog();
+		
+		//Handle the case where loading more data
 		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(bundle);
-		}else{
+		} 
+		//Handle the case where switch between different types of payments scheduled, cancelled, payment
+		else if( activity.getCurrentContentFragment() instanceof ReviewPaymentsTable ) {
+			final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable)activity.getCurrentContentFragment();
+			revPmtFrag.handleReceivedData(bundle);
+		} 
+		//Handle the first time user opens Review Payments page
+		else {
 			final ReviewPaymentsTable fragment =  new ReviewPaymentsTable();
 			fragment.setArguments(bundle);
 			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);

@@ -30,13 +30,13 @@ public class Date implements Serializable {
 	/**
 	 * The the timestamp of when the account was opened in UTC format
 	 */
-	@JsonProperty("value")
-	public String value;
+	@JsonProperty("date")
+	public String date;
 	
 	/**
 	 * The the timestamp of when the account was opened in formatted String following mm/dd/yyyy
 	 */
 	@JsonProperty("formattedDate")
-	public String formatted;
+	public String formattedDate;
 }
 

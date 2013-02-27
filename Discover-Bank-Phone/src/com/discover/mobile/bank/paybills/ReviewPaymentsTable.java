@@ -13,9 +13,11 @@ import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
@@ -165,7 +167,9 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			public void onClick(final View v) {
 				header.setCurrentCategory(ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
 				if(null == scheduled){
-					BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
+					//Generate a url to download schedule payments
+					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 				}
 			}
 		});
@@ -175,7 +179,9 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			public void onClick(final View v) {
 				header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
 				if(null == completed){
-					BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
+					//Generate a url to download completed payments
+					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.COMPLETED);
+					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 				}
 			}
 		});
@@ -185,7 +191,9 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			public void onClick(final View v) {
 				header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
 				if(null == canceled){
-					BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
+					//Generate a url to download cancelled payments
+					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.CANCELLED);
+					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 				}
 			}
 		});

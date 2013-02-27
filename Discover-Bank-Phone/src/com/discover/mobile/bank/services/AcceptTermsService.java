@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.services.payment;
+package com.discover.mobile.bank.services;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,8 +8,7 @@ import java.util.Map;
 
 import android.content.Context;
 
-import com.discover.mobile.bank.services.BankNetworkServiceCall;
-import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.customer.Eligibility;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
@@ -23,15 +22,21 @@ import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
  * @author scottseward
  *
  */
-public class AcceptPayBillsTerms extends BankNetworkServiceCall<Object> implements Serializable {
+public class AcceptTermsService extends BankNetworkServiceCall<Object> implements Serializable {
 	private static final long serialVersionUID = 5311990873372013208L;
 
 	/**Reference handler to allow the call to be back on the UI*/
 	private final TypedReferenceHandler<Object> handler;
 	
-	public AcceptPayBillsTerms(final Context context, final AsyncCallback<Object> callback) {
-		
-		super(context, new PostCallParams(BankUrlManager.getAcceptPayBillsTerms()) {{
+	/**
+	 * 
+	 * @param context Reference to service or activity making the service call
+	 * @param callback Reference to an AsyncCallback object where callback's will be called from to notify application on status of the service call.
+	 * @param eligibility Reference to an Eligibility object from where the URL for this service call will be fetched from.
+	 */
+	public AcceptTermsService(final Context context, final AsyncCallback<Object> callback, final Eligibility eligibility) {
+				
+		super(context, new PostCallParams(eligibility.getEnrollmentUrl()) {{
 			requiresSessionForRequest = true;
 			
 			errorResponseParser = BankErrorResponseParser.instance();
@@ -50,7 +55,7 @@ public class AcceptPayBillsTerms extends BankNetworkServiceCall<Object> implemen
 	protected Object parseSuccessResponse(final int status, final Map<String,List<String>> headers, 
 			final InputStream body)throws IOException {
 		
-		return this;
+		return null;
 	}
 
 }

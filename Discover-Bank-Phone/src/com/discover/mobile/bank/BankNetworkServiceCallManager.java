@@ -12,6 +12,7 @@ import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
+import com.discover.mobile.bank.services.AcceptTermsService;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
@@ -25,10 +26,10 @@ import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
-import com.discover.mobile.bank.services.payment.AcceptPayBillsTerms;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPayBillsTermsAndConditionsCall;
+import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
@@ -212,7 +213,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		}
 		//If the user accepts the Bank terms and services for pay bills, navigate them to the originally
 		//chosen option. 
-		else if(sender instanceof AcceptPayBillsTerms){
+		else if(sender instanceof AcceptTermsService){
 			final FragmentActivity activity = (FragmentActivity)DiscoverActivityManager.getActiveActivity();
 			final String currentTitle = activity.getTitle().toString();
 			final String payBills = activity.getString(R.string.section_title_pay_bills);
@@ -275,11 +276,18 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		else if( sender instanceof DeletePaymentServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
-			BankNavigator.navigateToReviewPayments(bundle, false);
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((DeletePaymentServiceCall)sender).getPaymentDetail());
+			BankNavigator.navigateToReviewPaymentsFromDelete(bundle);
 		}
 		//Payee Search Success, navigate to Add Payee Workflow Step 4
 		else if( sender instanceof SearchPayeeServiceCall ) {
 			BankNavigator.navigateToSelectPayees((SearchPayeeResultList)result);
+		}
+		//Get Payment Successful, navigate to the review payments table
+		else if( sender instanceof GetPaymentsServiceCall ) {
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
+			BankNavigator.navigateToReviewPaymentsTable(bundle);
 		}
 		//Payee Add Success, navigate to Add Payee Confirmation Pge in Workflow Step 5
 		else if( sender instanceof AddPayeeServiceCall ) {

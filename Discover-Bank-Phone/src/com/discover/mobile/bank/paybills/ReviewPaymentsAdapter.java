@@ -15,9 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.services.payment.PaymentDateDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.util.BankStringFormatter;
+import com.discover.mobile.common.net.json.bank.Date;
 
 public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 
@@ -129,7 +129,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	 * @return the converted date
 	 */
 	private String convertDate(final PaymentDetail item){
-		final PaymentDateDetail dates;
+		final Date dates;
 		final String itemStatus = item.status;
 		String date = "";
 		if("SCHEDULED".equals(itemStatus)){

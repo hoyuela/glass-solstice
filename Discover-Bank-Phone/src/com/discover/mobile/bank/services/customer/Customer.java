@@ -195,7 +195,7 @@ public class Customer implements Serializable {
 	 * 
 	 * @return Returns boolean that specifies a Customer's eligibility status for Payments
 	 */
-	public boolean getPaymentsEligibility() {
+	public boolean isPaymentsEligibility() {
 		return ( this.eligibilities != null )? getEligibilityValues(BankUrlManager.PAYMENTS_URL_KEY).isEligible() : false;
 	}
 
@@ -203,7 +203,7 @@ public class Customer implements Serializable {
 	 * 
 	 * @return Returns boolean object that specifies a Customer's enrollment status for Payments
 	 */
-	public boolean getPaymentsEnrolled() {
+	public boolean isPaymentsEnrolled() {
 		return ( this.eligibilities != null )? getEligibilityValues(BankUrlManager.PAYMENTS_URL_KEY).isEnrolled() : false;
 	}
 
@@ -217,14 +217,23 @@ public class Customer implements Serializable {
 	}
 	
 	/**
+	 * 
+	 * @return Returns Payment Eligibility object that specifies a Customer's
+	 * enrollment and eligibility status for Payments
+	 */
+	public Eligibility getPaymentsEligibility() {
+		return ( this.eligibilities != null )? getEligibilityValues(BankUrlManager.PAYMENTS_URL_KEY) : null;
+	}
+	
+	/**
 	 * Returns the eligibility object for the given key
 	 * 
 	 * @param key
 	 * @return
 	 */
-	public Eligibility getEligibilityValues(String key){
+	public Eligibility getEligibilityValues(final String key){
 		for (int i = 0; i < eligibilities.size(); i++) {
-		    String serviceName = eligibilities.get(i).service;
+		    final String serviceName = eligibilities.get(i).service;
 		    if (serviceName != null && serviceName.equals(key)){
 		        return eligibilities.get(i);
 		    }
