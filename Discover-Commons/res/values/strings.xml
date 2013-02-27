@@ -124,7 +124,7 @@
     <string name="bank_under_development">Under Development</string>
     <string name="bank_open_account_details">When you open up a Discover\nBank Account you\'ll enjoy\ncompetitive online banking rates that\nhelp you earn and manage your money\nfrom your mobile device.</string>
     <string name="bank_open_browser_title">You\'re Leaving this Application</string>
-    <string name="bank_open_browser_text">The page your are about to view is not optimized for mobile devices. Tap Continue to view this page on discover.com</string>
+    <string name="bank_open_browser_text">The page you are about to view is not optimized for mobile devices. Tap Continue to view this page on discover.com</string>
     <string name="bank_pmt_make_another">Make Another Payment</string> 
     <string name="bank_pmt_review">Review Payments</string>
     <string name="bank_pmt_details">Payment Details</string>
