@@ -32,6 +32,7 @@ public class BankUrlManager  {
 
 	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
 	public static final String EMPTY = "";
+	public static final String SLASH = "/";
 	private static final String AUTHENTICATE_CURRENT_CUSTOMER_URL = "/api/customers/current";
 	private static final String GET_TOKEN_URL = "/api/auth/token";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
@@ -174,7 +175,8 @@ public class BankUrlManager  {
 			 */
 			return link.replaceAll(DISCOVER_STRIPPED_URL, "");
 		}else{
-			return EMPTY;
+			/**Return a "/" here to trigger an error response from server, since url is not available**/
+			return SLASH;
 		}
 	}
 
@@ -190,7 +192,8 @@ public class BankUrlManager  {
 			final String url = urls.get(key).url;
 			return getRelativePath(url);
 		} else {
-			return EMPTY;
+			/**Return a "/" here to trigger an error response from server, since url is not available**/
+			return SLASH;
 		}
 	}
 	

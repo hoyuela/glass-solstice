@@ -12,6 +12,7 @@ import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
+import com.discover.mobile.bank.services.AcceptTermsService;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
@@ -25,7 +26,6 @@ import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
-import com.discover.mobile.bank.services.payment.AcceptPayBillsTerms;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPayBillsTermsAndConditionsCall;
@@ -213,7 +213,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		}
 		//If the user accepts the Bank terms and services for pay bills, navigate them to the originally
 		//chosen option. 
-		else if(sender instanceof AcceptPayBillsTerms){
+		else if(sender instanceof AcceptTermsService){
 			final FragmentActivity activity = (FragmentActivity)DiscoverActivityManager.getActiveActivity();
 			final String currentTitle = activity.getTitle().toString();
 			final String payBills = activity.getString(R.string.section_title_pay_bills);

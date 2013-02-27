@@ -46,8 +46,8 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				final boolean isEligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
-				final boolean isEnrolled = BankUser.instance().getCustomerInfo().getPaymentsEnrolled();
+				final boolean isEligible = BankUser.instance().getCustomerInfo().isPaymentsEligibility();
+				final boolean isEnrolled = BankUser.instance().getCustomerInfo().isPaymentsEnrolled();
 				if(!isEligible){
 					BankNavigator.navigateToPayBillsLanding();
 				} else if(isEligible && !isEnrolled){
@@ -70,8 +70,8 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 		return new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				final boolean isEligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
-				final boolean isEnrolled = BankUser.instance().getCustomerInfo().getPaymentsEnrolled();
+				final boolean isEligible = BankUser.instance().getCustomerInfo().isPaymentsEligibility();
+				final boolean isEnrolled = BankUser.instance().getCustomerInfo().isPaymentsEnrolled();
 				if(!isEligible) {
 					BankNavigator.navigateToPayBillsLanding();
 				} else if (isEligible && !isEnrolled) {
