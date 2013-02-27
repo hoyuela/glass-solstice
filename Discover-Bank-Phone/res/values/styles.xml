@@ -43,6 +43,7 @@
         <item name="android:padding">7dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/listview_vertical_height</item>
+        <item name="android:background">@drawable/home_list_item_no_stroke_padding</item>
     </style>
         
     <style name="login_white_pane">
