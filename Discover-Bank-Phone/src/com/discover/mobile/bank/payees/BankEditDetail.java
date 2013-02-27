@@ -27,7 +27,6 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	private TextView middleLabel;
 	private PayeeValidatedEditField editableField;
 	private TextView errorLabel;
-	private TextView editLabel;
 	private View dividerLine;
 	private View caret;
 	private View view;
@@ -65,7 +64,6 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		editableField.attachErrorLabel(errorLabel);
 		editableField.setOnFocusChangeListener(this);
 		editableField.setOnEditorActionListener(this);
-		editLabel = (TextView)findViewById(R.id.edit_label);
 		
 		view.setOnClickListener(this);
 		
@@ -129,10 +127,8 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	 */
 	public void enableEditing(final boolean value) {
 		if( value ) {
-			editLabel.setVisibility(View.VISIBLE);
 			caret.setVisibility(View.VISIBLE);
 		} else {
-			editLabel.setVisibility(View.GONE);
 			caret.setVisibility(View.GONE);
 		}
 		
