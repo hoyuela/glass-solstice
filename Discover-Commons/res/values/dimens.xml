@@ -26,6 +26,7 @@
     <dimen name="groups_of_elements_padding">20dp</dimen>
     <dimen name="orange_button_margin_top">40dp</dimen>
     <dimen name="orange_help_button_size">30dp</dimen>
+    <dimen name="toggle_button_height">35dp</dimen>
     
      <!-- Discover Font Sizes -->
     <dimen name="title_max">27sp</dimen>

@@ -76,16 +76,6 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		return view;
 	}
 
-	/**
-	 * Resume the fragment
-	 */
-	@Override
-	public void onResume(){
-		super.onResume();
-		//Show the logo, which by default is hidden when the app is resumed
-		this.showActionBarLogo();
-	}
-
 	/** Set the first name in the status bar. The first name can sometimes be 
 	 * returned in all caps and only the first letter should be capitalized. 
 	 */
@@ -140,22 +130,13 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 	}
 
-	/**
-	 * On the pause of the fragment hide the action bar logo so that the title will show again.
-	 */
-	@Override
-	public void onPause(){
-		this.hideActionBarLogo();
-		super.onPause();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see com.discover.mobile.BaseFragment#getActionBarTitle()
 	 */
 	@Override
 	public int getActionBarTitle() {
-		return R.string.bank_account_summary;
+		return BaseFragment.NO_TITLE;
 	}
 
 	@Override

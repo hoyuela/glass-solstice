@@ -264,11 +264,11 @@ public class AccountActivityHeader extends RelativeLayout{
 	public void setHeaderExpanded(final boolean isHeaderExpanded) {
 		this.isHeaderExpanded = isHeaderExpanded;
 		if(isHeaderExpanded){
-			AccountActivityHeader.this.changeVisibility(View.VISIBLE);
 			setSpan(R.drawable.drk_blue_arrow_up);
+			labels.startAnimation(expand);
 		}else{
-			AccountActivityHeader.this.changeVisibility(View.GONE);
 			setSpan(R.drawable.drk_blue_arrow_down);
+			labels.startAnimation(collapse);
 		}
 	}
 

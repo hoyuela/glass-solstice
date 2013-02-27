@@ -1,0 +1,70 @@
+/*
+ * © Copyright Solstice Mobile 2013
+ */
+package com.discover.mobile.common;
+
+import android.app.AlertDialog;
+
+
+/**
+ * Utility class used to keep a reference of the active modal for the application. Base classes such as 
+ * BaseActivity, BaseFragmentActivity, and NotLoggedInRoboActivity all call setActiveActivity onResume(). 
+ * This class allows to keep a single reference of the modal in focus to be used by all other classes 
+ * that may need to interact with
+ * the active modal
+ * 
+ * @author jthornton
+ *
+ */
+public final class DiscoverModalManager {
+	/**
+	 * Reference to the application's active modal set via setActiveModal()
+	 */
+	private static AlertDialog mModal;
+
+	/**
+	 * Boolean used to let the activity know if a modal needs to be shown on resume
+	 */
+	private static boolean alertShowing;
+
+	/**
+	 * This constructor is not supported and throws an UnsupportedOperationException when called.
+	 * 
+	 * @throws UnsupportedOperationException Every time this constructor is invoked.
+	 */
+	private DiscoverModalManager() {
+		throw new UnsupportedOperationException("This class is non-instantiable");
+	}
+
+
+	/**
+	 * 
+	 * @return Returns a reference to the active modal set via setActiveModal
+	 */
+	public static AlertDialog getActiveModal() {
+		return mModal;
+	}
+
+	/** 
+	 * @param modal - Set to the current modal for the application
+	 */
+	public static void setActiveModal(final AlertDialog modal) {
+		mModal = modal;
+	}
+
+
+	/**
+	 * @return the alertShowing
+	 */
+	public static boolean isAlertShowing() {
+		return alertShowing;
+	}
+
+
+	/**
+	 * @param alertShowing the alertShowing to set
+	 */
+	public static void setAlertShowing(final boolean alertShowing) {
+		DiscoverModalManager.alertShowing = alertShowing;
+	}
+}

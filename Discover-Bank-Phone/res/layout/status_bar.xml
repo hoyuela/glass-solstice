@@ -22,7 +22,7 @@
         android:layout_width="@dimen/orange_help_button_size"
         android:layout_height="@dimen/orange_help_button_size"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/between_related_elements_padding"
         android:layout_marginRight="@dimen/between_related_elements_padding"
         android:background="@drawable/question_mark_icon" />
 
