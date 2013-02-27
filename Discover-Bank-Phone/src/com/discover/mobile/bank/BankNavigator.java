@@ -40,6 +40,7 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.google.common.base.Strings;
 
@@ -355,19 +356,22 @@ public final class BankNavigator {
 	 * Navigation method used to display the Review Payments page with the delete message
 	 */
 	public static void navigateToReviewPaymentsFromDelete(final Bundle bundle) {
-		//TODO: final Activity activity = 
-		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		
-		final ReviewPaymentsTable fragment =  new ReviewPaymentsTable();
-		BankRotationHelper.getHelper().getBundle().putAll(bundle);
-		
-		/**
-		 * Remove this fragment from the transactions list, this seems to be required since 
-		 * makeVisible(fragment, boolean) was used.
-		 */
-		//TODO: getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-		
-		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+		//Fetch the current activity
+		if( activity instanceof BaseFragmentActivity ) {
+			final NavigationRootActivity fragActivity = (NavigationRootActivity)activity;
+					
+			fragActivity.closeDialog();
+			
+			BankRotationHelper.getHelper().getBundle().putAll(bundle);
+			
+			fragActivity.getSupportFragmentManager().popBackStackImmediate();
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Unable to get current Activity");
+			}
+		}
 	}
 
 	/**
@@ -494,7 +498,7 @@ public final class BankNavigator {
 	public static void navigateToPaymentDetailScreen(final Bundle bundle){
 		final PaymentDetailsViewPager fragment =  new PaymentDetailsViewPager();
 		fragment.setArguments(bundle);
-		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment, false);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
 
 
