@@ -12,8 +12,9 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
-import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
@@ -102,7 +103,10 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		 */
 		getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 		
-		BankServiceCallFactory.createGetPaymentsServerCall(GetPaymentsServiceCall.SCHEDULED).submit();
+		//Generate a url to download schedule payments
+		final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+		
+		BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 	}
 
 	/**

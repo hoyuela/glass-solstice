@@ -10,7 +10,8 @@ import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
+import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 
@@ -95,8 +96,12 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 			public void onClick(final View v) {
 				//Clear the rotation bundle
 				BankRotationHelper.getHelper().setBundle(null);
+				
+				//Generate a url to download schedule payments
+				final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+				
 				//Call the first service
-				BankServiceCallFactory.createGetPaymentsServerCall(GetPaymentsServiceCall.SCHEDULED).submit();
+				BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 			}
 		};
 	}

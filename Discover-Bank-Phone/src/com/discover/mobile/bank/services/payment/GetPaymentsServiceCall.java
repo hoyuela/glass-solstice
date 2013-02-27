@@ -8,7 +8,6 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
@@ -110,26 +109,15 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 	/**Reference handler for returning to the UI*/
 	private final TypedReferenceHandler<ListPaymentDetail> handler;
 
-	/**Query string to retrieve all the payments*/
-	public static final String ALL = "?status=ALL";
-
-	/**Query string to retrieve all the scheduled payments*/
-	public static final String SCHEDULED = "?status=SCHEDULED";
-
-	/**Query string to retrieve all the cancelled payments*/
-	public static final String CANCELLED = "?status=CANCELLED";
-
-	/**Query string to retrieve all the completed payments*/
-	public static final String COMPLETED = "?status=COMPLETED";
 
 	/**
 	 * 
 	 * @param context Reference to the context invoking the API
 	 * @param callback Reference to the Handler for the response
 	 */
-	public GetPaymentsServiceCall(final Context context, final AsyncCallback<ListPaymentDetail> callback, final String query) {
+	public GetPaymentsServiceCall(final Context context, final AsyncCallback<ListPaymentDetail> callback, final String url) {
 
-		super(context, new GetCallParams(BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY) +query) {
+		super(context, new GetCallParams(url) {
 			{
 				//This service call is made after authenticating and receiving a token,
 				//therefore the session should not be cleared otherwise the token will be wiped out

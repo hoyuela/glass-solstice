@@ -3,6 +3,7 @@ package com.discover.mobile.bank.services;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.google.common.base.Strings;
 
@@ -191,6 +192,16 @@ public class BankUrlManager  {
 		} else {
 			return EMPTY;
 		}
+	}
+	
+	/**
+	 * Method used to construct a query URL string using the Payments URL provided in Customer Download.
+	 * 
+	 * @param query Value can be eitherSCHEDULED, CANCELLED, COMPLETED, or ALL. Static Strings are found in GetPaymentsServiceCall.
+	 * @return Returns a URL to use when using GetPaymentsServiceCall to send a request.
+	 */
+	public static String generateGetPaymentsUrl(final PaymentQueryType query) {
+		return BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY) +"?status=" +query;
 	}
 
 }
