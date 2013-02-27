@@ -314,12 +314,7 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 				//If the current field is a ValidatedInputField we should use its method for setting errors.
 				if(genericField instanceof ValidatedInputField){
 					((ValidatedInputField)genericField).setErrors();
-					
-				}else{
-					((EditText)genericField).setBackgroundResource(R.drawable.edit_text_red);
 				}
-				//Clear the text in the field.
-				((EditText)genericField).setText("");
 			}
 
 		}
