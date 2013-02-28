@@ -13,6 +13,7 @@ import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
 import com.discover.mobile.bank.services.AcceptTermsService;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
@@ -31,6 +32,7 @@ import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPayBillsTermsAndConditionsCall;
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -152,7 +154,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		}
 		//Dispatch response to BankBaseErrorHandler to determine how to handle the error
 		else {
-			this.errorHandler.handleFailure(sender, error);
+			errorHandler.handleFailure(sender, error);
 
 			((AlertDialogParent)activeActivity).closeDialog();
 		}
@@ -217,13 +219,18 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 			final FragmentActivity activity = (FragmentActivity)DiscoverActivityManager.getActiveActivity();
 			final String currentTitle = activity.getTitle().toString();
 			final String payBills = activity.getString(R.string.section_title_pay_bills);
+			final String managePayees = activity.getString(R.string.sub_section_title_manage_payees);
 			activity.getSupportFragmentManager().popBackStack();
-			
-			if(currentTitle.equals(payBills))
+
+			if(currentTitle.equals(payBills)) {
 				BankServiceCallFactory.createGetPayeeServiceRequest().submit();
-			else
+			} else if(currentTitle.equals(managePayees)) {
 				BankServiceCallFactory.createManagePayeeServiceRequest().submit();
-						
+			} else{
+				BankRotationHelper.getHelper().setBundle(null);
+				final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+				BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+			}		
 		}
 		//Navigate to Account Summary landing page once Account Summary is downloaded
 		else if( sender instanceof GetCustomerAccountsServerCall) {
@@ -238,21 +245,21 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 				//Retransmit the previous NetworkServiceCall<>
 				prevCall.retransmit(activeActivity);
 			}
-		// Navigate to Payment Confirmation upon a successful payment.
+			// Navigate to Payment Confirmation upon a successful payment.
 		} else if( sender instanceof CreatePaymentCall) {
 			final PaymentDetail value = (PaymentDetail)result;
 			BankNavigator.navigateToPayConfirmFragment(value);
 		}
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
-		else if( sender instanceof CreateStrongAuthRequestCall && this.prevCall != null && sender.isPostCall() ) {
+		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isPostCall() ) {
 			//If Strong Auth Activity is open close it, so that it goes back to NavigationRootActivity
 			if( DiscoverActivityManager.getActiveActivity() instanceof EnhancedAccountSecurityActivity) {
 				final EnhancedAccountSecurityActivity activity =  (EnhancedAccountSecurityActivity)DiscoverActivityManager.getActiveActivity();
 				activity.finish();
 			}
-			
+
 			//Retransmit the previous call that triggered the Strong Auth call
-			this.prevCall.retransmit(activeActivity);
+			prevCall.retransmit(activeActivity);
 		}
 		//Handle the manage payee service call (which is a get payee service call).
 		else if( sender instanceof ManagePayeeServiceCall) {
@@ -338,7 +345,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		}
 
 	}
-	
+
 	public NetworkServiceCall<?> getLastServiceCall() {
 		return curCall;
 	}
