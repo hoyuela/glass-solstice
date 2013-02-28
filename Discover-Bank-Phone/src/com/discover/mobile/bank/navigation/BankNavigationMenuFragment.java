@@ -47,7 +47,7 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 			if (Log.isLoggable(TAG, Log.ERROR)){
 				Log.e(TAG, "No Version available.");
 			}
-		
+
 		}
 		version.setText("Version " + versionName);
 		copy.setText("\u00a9" + year + " Discover Bank, Member FDIC");
@@ -60,10 +60,11 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		 * Initializes the navigation menu
 		 */		
 
-		
+
 		final NavigationRootActivity activity = (NavigationRootActivity) getActivity();
 		Fragment homeFragment = activity.getCurrentContentFragment();
-		
+		activity.setMenu(this);
+
 		/**Check if there are no fragments already loaded and this is the first time the app is launched **/
 		if( homeFragment == null ) {		
 			/**Show BankAccountSummaryFragment if user has any accounts otherwise show BankOpenAccountFragment()*/
@@ -72,11 +73,11 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		} else {
 			NavigationItem.initializeAdapterWithSections(navigationItemAdapter, BANK_SECTION_LIST, null);
 		}
-		
-		
+
+
 		setListAdapter(navigationItemAdapter);
 	}
-	
+
 	public static final ImmutableList<ComponentInfo> BANK_SECTION_LIST = ImmutableList.<ComponentInfo>builder()
 			//Add Sections below
 			.add(new BankAccountSectionInfo())
