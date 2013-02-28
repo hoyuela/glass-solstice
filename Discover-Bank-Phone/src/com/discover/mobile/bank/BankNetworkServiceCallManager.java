@@ -5,12 +5,12 @@ import java.net.HttpURLConnection;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.bank.login.LoginActivity;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
 import com.discover.mobile.bank.services.AcceptTermsService;
 import com.discover.mobile.bank.services.BankUrlManager;
@@ -216,8 +216,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		//If the user accepts the Bank terms and services for pay bills, navigate them to the originally
 		//chosen option. 
 		else if(sender instanceof AcceptTermsService){
-			final FragmentActivity activity = (FragmentActivity)DiscoverActivityManager.getActiveActivity();
-			final String currentTitle = activity.getTitle().toString();
+			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+			final String currentTitle = activity.getActionBarTitle();
 			final String payBills = activity.getString(R.string.section_title_pay_bills);
 			final String managePayees = activity.getString(R.string.sub_section_title_manage_payees);
 			activity.getSupportFragmentManager().popBackStack();
