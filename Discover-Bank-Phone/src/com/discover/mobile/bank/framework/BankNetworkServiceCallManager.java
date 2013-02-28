@@ -1,4 +1,4 @@
-package com.discover.mobile.bank;
+package com.discover.mobile.bank.framework;
 
 import java.io.Serializable;
 import java.net.HttpURLConnection;
@@ -7,6 +7,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankRotationHelper;
+import com.discover.mobile.bank.BankUser;
+import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.R.string;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.bank.login.LoginActivity;
@@ -43,6 +49,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFail
 import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
+import com.discover.mobile.common.framework.NetworkServiceCallManager;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -57,7 +64,7 @@ import com.google.common.base.Strings;
  * @author henryoyuela
  *
  */
-final public class BankNetworkServiceCallManager implements StartListener, SuccessListener<Serializable>,
+final public class BankNetworkServiceCallManager extends NetworkServiceCallManager implements StartListener, SuccessListener<Serializable>,
 ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	/**
 	 * Used to print logs into Android logcat
@@ -172,6 +179,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		activeActivity.closeDialog();
 
 		return false;
+	}
+	
+	/**
+	 * FIXME: This will need to be implemented properly
+	 * @return 
+	 */
+	protected boolean customHandleSuccessResult(final NetworkServiceCall<?> sender, final Serializable result, Bundle bundle){ 
+		this.success(sender,result);
+		return true;
 	}
 
 	/**
@@ -348,6 +364,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 
 	public NetworkServiceCall<?> getLastServiceCall() {
 		return curCall;
+	}
+
+	@Override
+	protected AccountType getAccountType() {
+		return AccountType.BANK_ACCOUNT;
 	}
 
 }

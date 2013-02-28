@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.IntentExtraKey;
 
 import com.discover.mobile.common.net.NetworkServiceCall;
 /**
@@ -37,12 +38,14 @@ public abstract class Conductor   {
 	/**
 	 * A map to manage the caller's requested destination and the network
 	 * service call
+	 * 
+	 * the key is the networkServiceCall's hashcode
 	 */
 	@SuppressWarnings("rawtypes")
-	protected HashMap<NetworkServiceCall, DestinationDetails> destinationMap = new HashMap<NetworkServiceCall, DestinationDetails>();
+	protected HashMap<Integer, DestinationDetails> destinationMap = new HashMap<Integer, DestinationDetails>();
 
 	/** the service call factory used to create the call object */
-	ServiceCallFactoryInterface serviceCallFactory;
+	protected ServiceCallFactory serviceCallFactory;
 
 	/**
 	 * provides the card/bank specific service call factory impl class
@@ -52,7 +55,7 @@ public abstract class Conductor   {
 	 * 
 	 * @param serviceCallFactory
 	 */
-	protected Conductor(ServiceCallFactoryInterface pServiceCallFactory) {
+	public Conductor(ServiceCallFactory pServiceCallFactory) {
 		serviceCallFactory = pServiceCallFactory;
 	}
 
@@ -94,18 +97,18 @@ public abstract class Conductor   {
 	}
 	
 	/**
-	 * Navigates to the given fragment. 1. checks to see if fragment requires
-	 * data 2. requests data from cache manager 3. makes service call if cache
-	 * data unavailable 4. navigates to class
+	 * Navigates to the given fragment. 
+	 * <pre>
+	 * 1. checks to see if fragment requires data 
+	 * 2. requests data from cache manager 
+	 * 3. makes service call if cache data unavailable 
+	 * 4. navigates to class
 	 * 
 	 * @param fragmentClass
 	 *            - the destination class
 	 * @param payload  - the payload for the service call, if necessary
 	 * @param bundle
-	 *            - bundle to pass on when navigating. Note: if this fragment
-	 *            requires cache data, it is expected that a PAYLOAD_BUNDLE_KEY
-	 *            is packaged into the bundle as necessary to make the service
-	 *            call
+	 *            - bundle to pass on when navigating.
 	 */
 	public void launchFragment(Class<Fragment> fragmentClass, Serializable payload, Bundle bundle) {
 		@SuppressWarnings("rawtypes")
@@ -122,7 +125,7 @@ public abstract class Conductor   {
 				@SuppressWarnings("unchecked")
 				NetworkServiceCall<?> call = serviceCallFactory.createServiceCall(cacheObjReq,payload);
 				// associate the destination with the call
-				destinationMap.put(call, new DestinationDetails(
+				destinationMap.put(call.hashCode(), new DestinationDetails(
 						DestinationType.FRAGMENT, fragmentClass, bundle));
 				call.submit();
 			}
@@ -154,10 +157,9 @@ public abstract class Conductor   {
 
 				// call payload in the bundle
 				@SuppressWarnings("unchecked")
-				NetworkServiceCall<?> call = serviceCallFactory
-						.createServiceCall(cacheObjReq,payload);
+				NetworkServiceCall<?> call = serviceCallFactory.createServiceCall(cacheObjReq,payload);
 				// associate the destination with the call
-				destinationMap.put(call, new DestinationDetails(
+				destinationMap.put(call.hashCode(), new DestinationDetails(
 						DestinationType.ACTIVITY, activityClass, bundle));
 				call.submit();
 			}
@@ -215,7 +217,8 @@ public abstract class Conductor   {
 	
 
 	/**
-	 * Navigates to the caller's original destination 
+	 * Navigates to the caller's original destination.  Puts the service call results 
+	 * into the bundle for the destination activity/fragment
 	 * 
 	 * @param sender
 	 * @param value
@@ -223,18 +226,26 @@ public abstract class Conductor   {
 	public void success(NetworkServiceCall<?> sender, Serializable value) {
 
 		// let's navigate !
-		DestinationDetails destinationDetails = destinationMap.get(sender);
+		DestinationDetails destinationDetails = destinationMap.get(sender.hashCode());
 		
 		if ( destinationDetails == null ){
 			Log.w(TAG,"Created a network service call without using the Conductor Pattern!  Sender: " + sender.getClass().getSimpleName());
 			return;
 		}
+		
+		// stuff the result into the bundle where the caller can find it 
+		Bundle bundle = destinationDetails.getDestBundle();
+		if ( bundle == null ){ 
+			bundle = new Bundle();
+		}
+		bundle.putSerializable(IntentExtraKey.SERVICE_RESULT,value);
+		
 		if (destinationDetails.getDestType() == DestinationType.FRAGMENT) {
 			navigateToFrament(destinationDetails.getDestFragment(),
-					destinationDetails.getDestBundle());
+					bundle);
 		} else {
 			navigateToActivity(destinationDetails.getDestFragment(),
-					destinationDetails.getDestBundle());
+					bundle);
 		}
 
 	}
@@ -298,6 +309,19 @@ public abstract class Conductor   {
 			this.destType = destinationType;
 		}
 
+	}
+
+	/**
+	 * A way to retrieve the bundle for the specified call
+	 * @param callClass
+	 * @return
+	 */
+	public Bundle getBundleForCall(int callHashCode) {
+		DestinationDetails destDetails =  this.destinationMap.get(callHashCode);
+		if ( destDetails != null ){ 
+			return destDetails.getDestBundle();
+		}
+		return null;
 	}
 
 }

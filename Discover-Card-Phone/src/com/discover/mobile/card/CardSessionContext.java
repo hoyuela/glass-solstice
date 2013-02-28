@@ -7,7 +7,7 @@ import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.card.services.push.history.NotificationDetail;
 import com.discover.mobile.card.services.push.manage.PushNotificationPrefsDetail;
 
-
+@Deprecated
 public final class CardSessionContext {
 	
 	private static CardSessionContext currentSessionDetails;

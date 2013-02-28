@@ -5,7 +5,6 @@ package com.discover.mobile.common.framework;
 
 import java.io.Serializable;
 
-import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.net.NetworkServiceCall;
 
 /**
@@ -13,7 +12,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
  * @author ekaram
  *
  */
-public interface ServiceCallFactoryInterface {
+public interface ServiceCallFactory {
 	
 	/**
 	 * The implementing class is expected to map the cache object class to a

@@ -2,6 +2,7 @@ package com.discover.mobile.common.framework;
 
 import java.io.Serializable;
 
+import android.os.Bundle;
 import android.util.Log;
 
 import com.discover.mobile.common.AccountType;
@@ -43,7 +44,14 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	 */
 	protected NetworkServiceCall<?> curCall;
 	
+	/**
+	 * indicates bank / card
+	 * 
+	 * @return
+	 */
 	protected abstract AccountType getAccountType();
+	
+	
 	
 	/**
 	 * @return Returns the priority that should be assigned to NetworkServiceCallManager within the
@@ -77,10 +85,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	 */
 	@Override
 	public void success(final NetworkServiceCall<?> sender, final Serializable result) {
-		// FIRST UPDATE GLOBAL CACHE 
-		CacheManager.instance().updateCache(result);
+		// FIRST UPDATE GLOBAL CACHE IF DESIRED
+		if ( sender.cacheResults() ) { 
+			CacheManager.instance().updateCache(result);
+		}
 		
-		boolean isHandled = customHandleSuccessResult(sender,result);
+		Bundle bundle = FacadeFactory.getConductorFacade(getAccountType()).getBundleForCall(sender.hashCode());
+		boolean isHandled = handleCustomServiceResult(sender,result,bundle);
 		
 		// the default success handler just uses the conductor to navigate to the caller's requested destination
 		if ( !isHandled ) { 
@@ -89,13 +100,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	}
 
 	/**
-	 * Override this method to support custom handling of success results
-	 * 
-	 * 
-	 * 
+	 *  Override this method to support custom handling of success results
+	 *  
+	 * @param sender
+	 * @param result
+	 * @param bundle
+	 * @return 
 	 * @return
 	 */
-	protected boolean customHandleSuccessResult(final NetworkServiceCall<?> sender, final Serializable result){
+	protected boolean handleCustomServiceResult(final NetworkServiceCall<?> sender, final Serializable result, Bundle bundle){
 		// override me for custom handling 
 		return false;
 	}

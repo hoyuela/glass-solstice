@@ -10,6 +10,9 @@ import java.util.HashMap;
  * upon receiving a successful response. As an example, the customerInfo object
  * is updated by the CustomerServiceCall class.
  * 
+ * NOTE:  this cachemanager holds a single value per networkServiceCall class, 
+ * as the key s the class name itself. 
+ * 
  * @author ekaram
  * 
  */
