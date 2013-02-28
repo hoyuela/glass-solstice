@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+    <!--  Account Summary Strings --> 
+    <string name="bank_savings_account">Savings Accounts</string>
+    <string name="bank_checking_account">Checking Accounts</string>
+    <string name="bank_ira_account">Retirement Plans</string>
+    <string name="bank_loan_account">Personal Loans</string>
+    <string name="bank_unknown_account">Other Accounts</string>
+     
     <!-- Account Activity Strings -->
     <string name="activity_screen_title">Account Activity</string>
     <string name="activity_title">Discover Online Checking</string>

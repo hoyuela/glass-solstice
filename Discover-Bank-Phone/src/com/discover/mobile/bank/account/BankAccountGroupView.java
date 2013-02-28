@@ -13,7 +13,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.net.json.bank.Money;
-import com.google.common.base.Strings;
 
 /**
  * Widget used to display a user's Account information in a Grouped format. This view will display each account in the group within a BankAccountView.
@@ -111,48 +110,64 @@ public class BankAccountGroupView extends LinearLayout  {
 		}	
 	}
 	/**
-	 * Method used to associate an account with group. First account added to the group will
-	 * dictate what type of accounts will be allowed to be added subsequently. If an account
-	 * does match the group type then it will not be added to the group.
+	 * Method used to associate an account with a group.
 	 * 
 	 * @param account Reference to an account object 
 	 */
 	public void addAccount(final Account account) {
-		if( null != account ) {
-			if( acctList.size() == 0 || acctList.get(0).type.equals(account.type)) {
-				/**Use name for grouping otherwise use type*/
-				final String groupName = (Strings.isNullOrEmpty(account.name)) ? account.type : account.name;
-				
-				if(acctList.size() == 0 ) {
-					//Set the name for the group
-					type.setText(groupName);
-				} else {
-					if( !groupName.endsWith("s")) {
-						//Set the name for the group with s at the end if more than one
-						type.setText(groupName +"s");
-					}
-				}
-				
-				
-				layout.addView(new BankAccountView(this.getContext(), account));
-				
-				this.addToBlance(account.balance);
-	
-				this.acctList.add(account);
-						
-				//Show Balance only if more than one account in group
-				showBalance(acctList.size() > 1);
-			} else {
-				if( Log.isLoggable(TAG, Log.ERROR)) {
-					Log.e(TAG, "Unable to add account to group [Invalid Type]");
-				}
-			}
+		if( null != account ) {						
+			//Set the title for the group
+			type.setText(getGroupTitle(account));
+			
+			layout.addView(new BankAccountView(this.getContext(), account));
+			
+			this.addToBlance(account.balance);
+
+			this.acctList.add(account);
+					
+			//Show Balance only if more than one account in group
+			showBalance(acctList.size() > 1);
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Unable to add account to group [Null]");
 			}
 			return;
 		}
+	}
+	
+	/**
+	 * Method used to fetch the title for the group based on account type
+	 * 
+	 * @param account Reference to Account object whose type will be used to determien the title
+	 * 
+	 * @return Return a Resource Identifier for a string to use as a title
+	 */
+	public int getGroupTitle( final Account account ) {
+		int ret = 0;
+		
+		//Group for Checking: Holds only Checking Types
+		if( account.type.equals(Account.ACCOUNT_CHECKING)) {		
+			ret = R.string.bank_checking_account;	
+		}
+		//Group for Savings: Holds Online Savings, MMA, CDs
+		else if( account.type.equals(Account.ACCOUNT_SAVINGS) || 
+				 account.type.equals(Account.ACCOUNT_MMA) ||
+				 account.type.equals(Account.ACCOUNT_CD)) {
+			ret = R.string.bank_savings_account;
+			
+		}
+		//Group for Retirement Plans: Holds IRA, IRA CDs
+		else if( account.type.equals(Account.ACCOUNT_IRA)) {
+			ret = R.string.bank_ira_account;
+		}
+		//Group Personal Loans: Personal Loans
+		else if( account.type.equals(Account.ACCOUNT_LOAN)) {
+			ret = R.string.bank_loan_account;
+		} else {
+			ret = R.string.bank_unknown_account;
+		}
+		
+		return ret;
 	}
 
 
