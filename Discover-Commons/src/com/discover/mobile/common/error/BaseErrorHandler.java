@@ -259,7 +259,7 @@ public abstract class BaseErrorHandler implements ErrorHandler {
 //		// Verify user is not in login page, if they are then the challenge will
 //		// be handled elsewhere
 //		if (activeActivity.getClass() != LoginActivity.class) {
-//			BankServiceCallFactory.createStrongAuthRequest().submit();
+//			ServiceCallFactory.createStrongAuthRequest().submit();
 //		} else {
 //			if (Log.isLoggable(TAG, Log.WARN)) {
 //				Log.w(TAG, "In login activity, so ignoring strong auth challenge");
