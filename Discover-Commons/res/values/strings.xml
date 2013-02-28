@@ -73,7 +73,8 @@
 	    please contact Customer Service at 
 	    <a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a>
 	</string>
-	<string name="login_error">Sorry. The User ID and/or Password does not match our records, or you are not registered. Please try again.</string>
+<!--<string name="login_error">Sorry. The User ID and/or Password does not match our records, or you are not registered. Please try again.</string>-->
+    	<string name="login_error">The information you provided does not match our records, or you are not registered for the Account Center.</string>
     <string name="internal_server_error_500">Your request cannot be completed at this time. We sincerely apologize for this inconvenience and are working to resolve this issue soon. For further assistance please call 
 	     <a href='tel:18777427822'>1&#8211;877&#8211;742&#8211;7822</a>
 	</string>
