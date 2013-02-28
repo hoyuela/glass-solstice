@@ -10,16 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.ui.help.NeedHelpFooter;
 
 /**
  * Fragment used to display all of a user's account information in a single view using BankGroupView and BankAccountView
@@ -29,8 +33,10 @@ import com.discover.mobile.common.DiscoverActivityManager;
  * @author henryoyuela
  *
  */
-public class BankAccountSummaryFragment extends BaseFragment{
+public class BankAccountSummaryFragment extends BaseFragment implements OnClickListener {
 	private LinearLayout accountSummary; 
+	private Button openAccount;
+	private NeedHelpFooter helpFooter;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -43,7 +49,15 @@ public class BankAccountSummaryFragment extends BaseFragment{
 
 		/**Fetch linear layout that will contain list of account groups*/
 		accountSummary = (LinearLayout)view.findViewById(R.id.bank_summary_list);
+		
+		/**Button used to open a new account*/
+		openAccount = (Button)view.findViewById(R.id.openAccount);
+		openAccount.setOnClickListener(this);
 
+		/**Create footer that will listen when user taps on Need Help Number to dial*/
+		helpFooter = new NeedHelpFooter((ViewGroup)view);
+		helpFooter.setToDialNumberOnClick(com.discover.mobile.bank.R.string.bank_need_help_number_text);
+		
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
 
@@ -59,7 +73,6 @@ public class BankAccountSummaryFragment extends BaseFragment{
 				toast.show();
 			}			
 		});
-		this.showActionBarLogo();
 		return view;
 	}
 
@@ -117,22 +130,21 @@ public class BankAccountSummaryFragment extends BaseFragment{
 
 	}
 
-	/**
-	 * On the pause of the fragment hide the action bar logo so that the title will show again.
-	 */
-	@Override
-	public void onPause(){
-		this.hideActionBarLogo();
-		super.onPause();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see com.discover.mobile.BaseFragment#getActionBarTitle()
 	 */
 	@Override
 	public int getActionBarTitle() {
-		return R.string.bank_account_summary;
+		return BaseFragment.NO_TITLE;
+	}
+
+	@Override
+	public void onClick(final View sender) {
+		if( sender == openAccount ) {
+			BankNavigator.navigateToBrowser(BankUrlManager.getOpenAccountUrl());
+		}
+		
 	}
 
 }

@@ -16,22 +16,24 @@ import com.discover.mobile.common.R;
 public abstract class NavigationRootActivity extends LoggedInRoboActivity implements NavigationRoot {
 	/**String that is the key to getting the current fragment title out of the saved bundle.*/
 	private static final String TITLE = "title";
-	
+
 	/**String to get modal state*/
 	private static final String MODAL_STATE = "modalState";
 
 	private static final String TAG = "Navigation";
-	
+
 	/**Boolean to show the modal*/
 	protected boolean shouldShowModal = true;
-	
+
 	/**
 	 * Boolean set to true when the app was paused. If the fragment was paused this will stay true, but if the
 	 * screen was rotated this will be recreated as false.
 	 */
 	protected boolean wasPaused = false;
-	
-	
+
+	private NavigationMenuFragment menu;
+
+
 	/**
 	 * Create the activity
 	 * @param savedInstatnceState - saved state of the activity
@@ -43,11 +45,11 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 		setUpCurrentFragment(savedInstanceState);
 		setStatusBarVisbility();
 		NavigationIndex.clearAll();
-		
+
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Sets up the fragment that was visible before the app went into the background
 	 * @param savedInstanceState - bundle containing the state
@@ -65,7 +67,7 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 		super.onResume();		
 	}
 
-	
+
 
 	/**
 	 * Save the state of the activity when it goes to the background.
@@ -74,12 +76,12 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		wasPaused = true;
-				
+
 		outState.putString(TITLE, getActionBarTitle());
 		outState.putBoolean(MODAL_STATE, shouldShowModal);
 		super.onSaveInstanceState(outState);
 	}
-	
+
 	/**
 	 * Set up the first visible fragment
 	 */
@@ -91,7 +93,7 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 		 */
 		setContentView(R.layout.content_view);
 	}
-	
+
 	/**
 	 * Get the current title in the action bar 
 	 * @return the current title in the action bar
@@ -100,20 +102,20 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 		final TextView titleView= (TextView)findViewById(R.id.title_view);
 		return titleView.getText().toString();
 	}
-	
+
 	@Override
-    public void onBackPressed() {
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        final int backStackCount = fragmentManager.getBackStackEntryCount();
-        
-        //Only handle back press if there is a fragment in the stack
-        //Otherwise ignore the back press as we do not want to close the application via
-        //Navigation root activity, it should only be closed from the logged in page
-        if( backStackCount > 1 ) {
-            super.onBackPressed();
-        }
-            
-    }
+	public void onBackPressed() {
+		final FragmentManager fragmentManager = this.getSupportFragmentManager();
+		final int backStackCount = fragmentManager.getBackStackEntryCount();
+
+		//Only handle back press if there is a fragment in the stack
+		//Otherwise ignore the back press as we do not want to close the application via
+		//Navigation root activity, it should only be closed from the logged in page
+		if( backStackCount > 1 ) {
+			super.onBackPressed();
+		}
+
+	}
 
 	/**
 	 * Returns the current fragment in the content section,
@@ -126,5 +128,23 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 				.findFragmentById(R.id.navigation_content);
 
 		return currentFragment;
+	}
+
+
+
+	/**
+	 * @return the menu
+	 */
+	public NavigationMenuFragment getMenu() {
+		return menu;
+	}
+
+
+
+	/**
+	 * @param menu the menu to set
+	 */
+	public void setMenu(final NavigationMenuFragment menu) {
+		this.menu = menu;
 	}
 }

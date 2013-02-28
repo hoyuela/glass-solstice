@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="customer_service">
-        Customer Service
+        Customer\nService
     </string>
     <string name="privacy_and_security">
-        Privacy &amp; Security
+        Privacy &amp;\nSecurity
     </string>
     <string name="register_now">
         Register\nNow
@@ -69,7 +69,7 @@
         ATM\nLocator
     </string>
 	<string name="privacy_and_terms">
-        Privacy &amp;\n Terms
+        Privacy &amp;\nTerms
     </string>
     
 </resources>

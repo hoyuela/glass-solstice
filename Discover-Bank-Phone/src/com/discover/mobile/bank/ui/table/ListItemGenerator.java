@@ -12,9 +12,9 @@ import android.view.View;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
-import com.discover.mobile.bank.services.payment.PaymentDateDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.util.BankStringFormatter;
+import com.discover.mobile.common.net.json.bank.Date;
 
 /**
  * this detail item class is able to return the individual table cells to present
@@ -210,7 +210,7 @@ public class ListItemGenerator {
 
 		items.add(getPayeeCell(item.payee.name));
 		items.get(0).getDividerLine().setVisibility(View.GONE);
-		items.add(getPayFromAccountCell(item.paymentAccount.ending, item.paymentAccount.nickName));
+		items.add(getPayFromAccountCell(item.paymentAccount.accountNumber.ending, item.paymentAccount.nickname));
 		items.add(getAmountCell(item.amount.formatted));
 		items.add(getPaymentDateCell(item));
 		items.add(getStatusCell(item.status));
@@ -251,7 +251,7 @@ public class ListItemGenerator {
 	 * @return a ViewPagerListItem that contains a formatted date.
 	 */
 	public ViewPagerListItem getPaymentDateCell(final PaymentDetail item) {
-		final PaymentDateDetail dates;
+		final Date dates;
 		final String itemStatus = item.status;
 		ViewPagerListItem paymentDateItem = null;
 

@@ -109,17 +109,6 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 	/**Reference handler for returning to the UI*/
 	private final TypedReferenceHandler<ListPaymentDetail> handler;
 
-	/**Query string to retrieve all the payments*/
-	public static final String ALL = "?status=ALL";
-
-	/**Query string to retrieve all the scheduled payments*/
-	public static final String SCHEDULED = "?status=SCHEDULED";
-
-	/**Query string to retrieve all the cancelled payments*/
-	public static final String CANCELLED = "?status=CANCELLED";
-
-	/**Query string to retrieve all the completed payments*/
-	public static final String COMPLETED = "?status=COMPLETED";
 
 	/**
 	 * 

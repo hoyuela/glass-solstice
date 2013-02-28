@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
@@ -29,7 +30,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  * @author scottseward
  *
  */
-public abstract class DetailViewPager extends BaseFragment implements FragmentOnBackPressed{
+public abstract class DetailViewPager extends BaseFragment implements DynamicDataFragment, FragmentOnBackPressed{
 	private final String TAG = DetailViewPager.class.getSimpleName();
 
 	/** The View Pager*/
@@ -37,6 +38,9 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 
 	/** The text label to the left of the next/previous buttons that identifies the kind of transaction visible*/
 	private TextView titleLabel;
+
+	/**Boolean used to determine if the fragment is loading more*/
+	private boolean isLoadingMore = false;
 
 	/** 
 	 * The text label that is used to show an error if a user is viewing a scheduled transaction and is not
@@ -309,6 +313,24 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 	}
 
 	/**
+	 * Set if the fragment is loading more
+	 * @param isLoadingMore - if the fragment is loading more
+	 */
+	@Override
+	public void setIsLoadingMore(final boolean isLoadingMore){
+		this.isLoadingMore = isLoadingMore;
+	}
+
+	/**
+	 * Get if the fragment is loading more
+	 * @return isLoadingMore - if the fragment is loading more
+	 */
+	@Override
+	public boolean getIsLoadingMore(){
+		return isLoadingMore;
+	}
+
+	/**
 	 * The FragmentStatePagerAdapter that is used to send Fragments to the ViewPager.
 	 * @author scottseward
 	 *
@@ -335,5 +357,4 @@ public abstract class DetailViewPager extends BaseFragment implements FragmentOn
 		}
 
 	}
-
 }

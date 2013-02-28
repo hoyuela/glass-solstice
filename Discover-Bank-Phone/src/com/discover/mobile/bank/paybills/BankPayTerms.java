@@ -15,7 +15,9 @@ import android.widget.ProgressBar;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankServiceCallFactory;
+import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.customer.Eligibility;
 import com.discover.mobile.common.BaseFragment;
 
 /**
@@ -116,7 +118,8 @@ public class BankPayTerms extends BaseFragment{
 
 			@Override
 			public void onClick(final View v) {
-				BankServiceCallFactory.createAcceptPayBillsTermsRequest().submit();				
+				final Eligibility eligibility = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
+				BankServiceCallFactory.createAcceptPayBillsTermsRequest(eligibility).submit();				
 			}
 		});
 	}

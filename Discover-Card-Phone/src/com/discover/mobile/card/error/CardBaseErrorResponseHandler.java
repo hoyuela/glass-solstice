@@ -14,6 +14,7 @@ import static com.discover.mobile.common.StandardErrorCodes.UNSCHEDULED_MAINTENA
 import static com.discover.mobile.common.net.error.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
 
 import java.net.HttpURLConnection;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -33,6 +34,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.widgets.ValidatedInputField;
 
 /**
  * A base class for error response handling.
@@ -242,6 +244,7 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 			setErrorText(R.string.login_error);
 			setInputFieldsDrawableToRed();
 			clearInputs();
+			setEditTextErrors(errorHandlerUi);
 			return true;
 
 		case HttpURLConnection.HTTP_INTERNAL_ERROR:
@@ -294,6 +297,26 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 		if (errorHandlerUi != null) {
 			errorHandlerUi.getErrorLabel().setText(((Context) errorHandlerUi).getResources().getString(errorText));
 			errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
+		}
+	}
+	
+	protected void setEditTextErrors(ErrorHandlerUi errorHandlerUi) {
+		if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
+			final List<EditText> inputFields = errorHandlerUi.getInputFields();
+			final int numberOfFields = inputFields.size();
+			Object genericField = null;
+			
+			//Loop through the input fields, determine what kind of field they are, set their error state
+			//and clear the text in them.
+			for(int i = 0; i < numberOfFields; ++i){
+				genericField = inputFields.get(i);
+				
+				//If the current field is a ValidatedInputField we should use its method for setting errors.
+				if(genericField instanceof ValidatedInputField){
+					((ValidatedInputField)genericField).setErrors();
+				}
+			}
+
 		}
 	}
 

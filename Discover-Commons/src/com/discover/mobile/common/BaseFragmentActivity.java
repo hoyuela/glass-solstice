@@ -49,7 +49,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  *
  */
 public abstract class BaseFragmentActivity extends SlidingFragmentActivity implements RoboContext, ErrorHandlerUi, AlertDialogParent{
-	
+
 	private static final String TAG = BaseFragmentActivity.class.getSimpleName();
 	/**
 	 * Contains the last error that occurred with the activity.
@@ -70,10 +70,10 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		final RoboInjector injector = RoboGuice.getInjector(this);
-		this.eventManager = injector.getInstance(EventManager.class);
+		eventManager = injector.getInstance(EventManager.class);
 		injector.injectMembersWithoutViews(this);
 		super.onCreate(savedInstanceState);
-		this.eventManager.fire(new OnCreateEvent(savedInstanceState));
+		eventManager.fire(new OnCreateEvent(savedInstanceState));
 	}
 
 	/**
@@ -88,13 +88,13 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		this.eventManager.fire(new OnRestartEvent());
+		eventManager.fire(new OnRestartEvent());
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		this.eventManager.fire(new OnStartEvent());
+		eventManager.fire(new OnStartEvent());
 	}
 
 	@Override
@@ -104,10 +104,16 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 		//Load all application and user preferences from persistent storage
 		Globals.loadPreferences(this);
 
-		this.eventManager.fire(new OnResumeEvent());
+		eventManager.fire(new OnResumeEvent());
 
 		//Set this activity as the active activity
 		DiscoverActivityManager.setActiveActivity(this);
+
+		//If a modal was showing show the modal
+		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
+			DiscoverModalManager.getActiveModal().show();
+			DiscoverModalManager.setAlertShowing(true);
+		}
 	}
 
 	@Override
@@ -117,22 +123,30 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 		//Save all application and user preferences into persistent storage
 		Globals.savePreferences(this);
 
-		this.eventManager.fire(new OnPauseEvent());
+		eventManager.fire(new OnPauseEvent());
 
 		closeDialog();
+
+		//Close the modal if it is showing
+		if(null != DiscoverModalManager.getActiveModal() && DiscoverModalManager.getActiveModal().isShowing()){
+			DiscoverModalManager.getActiveModal().dismiss();
+			DiscoverModalManager.setAlertShowing(true);
+		}else{
+			DiscoverModalManager.setAlertShowing(false);
+		}
 	}
 
 
 	@Override
 	protected void onNewIntent( final Intent intent ) {
 		super.onNewIntent(intent);
-		this.eventManager.fire(new OnNewIntentEvent());
+		eventManager.fire(new OnNewIntentEvent());
 	}
 
 	@Override
 	protected void onStop() {
 		try {
-			this.eventManager.fire(new OnStopEvent());
+			eventManager.fire(new OnStopEvent());
 		} finally {
 			super.onStop();
 		}
@@ -141,7 +155,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	@Override
 	protected void onDestroy() {
 		try {
-			this.eventManager.fire(new OnDestroyEvent());
+			eventManager.fire(new OnDestroyEvent());
 		} finally {
 			try {
 				RoboGuice.destroyInjector(this);
@@ -155,25 +169,25 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	public void onConfigurationChanged(final Configuration newConfig) {
 		final Configuration currentConfig = getResources().getConfiguration();
 		super.onConfigurationChanged(newConfig);
-		this.eventManager.fire(new OnConfigurationChangedEvent(currentConfig, newConfig));
+		eventManager.fire(new OnConfigurationChangedEvent(currentConfig, newConfig));
 	}
 
 	@Override
 	public void onContentChanged() {
 		super.onContentChanged();
 		RoboGuice.getInjector(this).injectViewMembers(this);
-		this.eventManager.fire(new OnContentChangedEvent());
+		eventManager.fire(new OnContentChangedEvent());
 	}
 
 	@Override
 	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		this.eventManager.fire(new OnActivityResultEvent(requestCode, resultCode, data));
+		eventManager.fire(new OnActivityResultEvent(requestCode, resultCode, data));
 	}
 
 	@Override
 	public Map<Key<?>, Object> getScopedObjectMap() {
-		return this.scopedObjects;
+		return scopedObjects;
 	}
 
 	/**
@@ -181,15 +195,15 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	 * @param fragment - fragment to be shown
 	 */
 	private void setVisibleFragment(final Fragment fragment) {
-		
-		this.currentFragment = fragment;
+
+		currentFragment = fragment;
 		getSupportFragmentManager()
 		.beginTransaction()
 		.replace(R.id.navigation_content, fragment)
 		//Adds the class name and fragment to the back stack
 		.addToBackStack(fragment.getClass().getSimpleName())
 		.commit();
-		
+
 		hideSlidingMenuIfVisible();
 	}
 
@@ -198,12 +212,12 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	 * @param fragment - fragment to be shown
 	 */
 	private void setVisibleFragmentNoHistory(final Fragment fragment) {
-		this.currentFragment = fragment;
+		currentFragment = fragment;
 		getSupportFragmentManager()
 		.beginTransaction()
 		.replace(R.id.navigation_content, fragment)
 		.commit();
-		
+
 		hideSlidingMenuIfVisible();
 	}
 
@@ -212,7 +226,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	 * @param fragment - fragment that is currently shown
 	 */
 	public void setCurrentFragment(final BaseFragment fragment){
-		this.currentFragment = fragment;
+		currentFragment = fragment;
 	}
 
 	/**
@@ -261,6 +275,8 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	 */
 	@Override
 	public void showCustomAlert(final AlertDialog alert){
+		DiscoverModalManager.setActiveModal(alert);
+		DiscoverModalManager.setAlertShowing(true);
 		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -328,7 +344,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	 */
 	@Override
 	public void setLastError(final int errorCode) {
-		this.mLastError = errorCode;
+		mLastError = errorCode;
 	}
 
 	/* (non-Javadoc)
@@ -336,7 +352,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	 */
 	@Override
 	public int getLastError() {
-		return this.mLastError;
+		return mLastError;
 	}
 
 	/**
@@ -350,7 +366,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	 */
 	@Override
 	public AlertDialog getDialog() {
-		return this.mActiveDialog;
+		return mActiveDialog;
 	}
 
 	/**
@@ -358,7 +374,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	 */
 	@Override
 	public void setDialog(final AlertDialog dialog) {
-		this.mActiveDialog = dialog;
+		mActiveDialog = dialog;
 	}
 
 	/**
@@ -375,9 +391,9 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 				Log.w(TAG, "Activity does not have a dialog associated with it!" );
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Starts a Progress dialog using this activity as the context. The ProgressDialog created
 	 * will be set at the active dialog.
@@ -393,7 +409,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 			}
 		}
 	}
-	
+
 	/**
 	 * Utility method used for debugging issues in the back stack
 	 */

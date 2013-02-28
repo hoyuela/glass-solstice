@@ -26,6 +26,7 @@
     <dimen name="groups_of_elements_padding">20dp</dimen>
     <dimen name="orange_button_margin_top">40dp</dimen>
     <dimen name="orange_help_button_size">30dp</dimen>
+    <dimen name="toggle_button_height">35dp</dimen>
     
      <!-- Discover Font Sizes -->
     <dimen name="title_max">27sp</dimen>
@@ -51,10 +52,10 @@
     <dimen name="nav_footer_padding">15dp</dimen>
      <dimen name="nav_footer_divider_height">15dp</dimen>
      <dimen name="nav_footer_divider_width">1dp</dimen>
-     <dimen name="nav_divider_height">2dp</dimen>
+     <dimen name="nav_divider_height">3dp</dimen>
      <dimen name="nav_section_height">55dp</dimen>
-     <dimen name="nav_section_pading">10dp</dimen>
-     <dimen name="nav_sub_section_pading">16dp</dimen>
+     <dimen name="nav_section_pading">15dp</dimen>
+     <dimen name="nav_sub_section_pading">30dp</dimen>
      <dimen name="nav_section_size">20dp</dimen>
      <dimen name="nav_image_padding">10dp</dimen>
      <dimen name="nav_footer_height">1dp</dimen>

@@ -8,15 +8,13 @@ import android.support.v4.app.Fragment;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankServiceCallFactory;
-import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
-import com.discover.mobile.bank.util.FragmentOnBackPressed;
 
-public class PaymentDetailsViewPager extends DetailViewPager implements FragmentOnBackPressed, DynamicDataFragment {
+public class PaymentDetailsViewPager extends DetailViewPager {
 	private ListPaymentDetail detailList = new ListPaymentDetail();
 	private int initialViewPosition = 0;
 
@@ -155,6 +153,7 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	 */
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
+		setIsLoadingMore(false);
 		final ListPaymentDetail newDetails = (ListPaymentDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		detailList.payments.addAll(newDetails.payments);
 		updateNavigationButtons(getViewPager().getCurrentItem());
@@ -188,6 +187,7 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	 */
 	@Override
 	protected void loadMore(final String url) {
+		setIsLoadingMore(true);
 		BankServiceCallFactory.createGetActivityServerCall(url).submit();		
 	}
 

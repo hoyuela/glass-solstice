@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -56,6 +57,15 @@ public class Eligibility implements Serializable {
 	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 	
 	/**
+	 * Key used to read enroll url link from the links map.
+	 */
+	public final static String ENROLL_KEY = "enroll";
+	/**
+	 * Key used to read terms url link from the links map.
+	 */
+	public final static String TERMS_KEY = "terms";
+	
+	/**
 	 * 
 	 * @return True if customer is eligible for a product, false otherwise
 	 */
@@ -69,4 +79,22 @@ public class Eligibility implements Serializable {
 	public boolean isEligible() {
 		return eligible;
 	}
+	
+	/**
+	 * 
+	 * @return Returns the url string for enroll stored in the eligibility object.
+	 */
+	public String getEnrollmentUrl() {
+		return BankUrlManager.getUrl(links, ENROLL_KEY);
+	}
+	
+	/**
+	 * 
+	 * @return Returns the url string for terms store in the eligibility object.
+	 */
+	public String getTermsUrl() {
+		return BankUrlManager.getUrl(links, TERMS_KEY);
+	}
+	
+
 }

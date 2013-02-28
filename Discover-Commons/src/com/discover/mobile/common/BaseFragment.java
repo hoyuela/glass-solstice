@@ -16,6 +16,9 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
  */
 public abstract class BaseFragment extends SherlockFragment {
 
+	/**Static int used to signify that the logo should be shown and the title should not be shown*/
+	public static final int NO_TITLE = -1;
+
 	/**
 	 * Create the fragment
 	 * 
@@ -82,9 +85,14 @@ public abstract class BaseFragment extends SherlockFragment {
 	 *            - title to show in the display
 	 */
 	public void setActionBarTitle(final int title) {
-		final BaseFragmentActivity activity = (BaseFragmentActivity) this
-				.getActivity();
-		activity.setActionBarTitle(activity.getResources().getString(title));
+		if(NO_TITLE == title){
+			this.showActionBarLogo();
+		}else{
+			final BaseFragmentActivity activity = (BaseFragmentActivity) this.getActivity();
+			this.hideActionBarLogo();
+			activity.setActionBarTitle(activity.getResources().getString(title));
+		}
+
 	}
 
 	/**
