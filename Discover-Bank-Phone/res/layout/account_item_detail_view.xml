@@ -31,22 +31,21 @@
 
             <ImageView
                 android:id="@+id/previous_button"
-                style="@style/white_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/next_button"
                 android:contentDescription="@string/empty"
-                android:src="@drawable/drk_blue_arrow_left_square" />
+                android:src="@drawable/left_page_control" />
 
             <ImageView
                 android:id="@+id/next_button"
-                style="@style/white_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/between_related_elements_padding"
                 android:layout_marginRight="@dimen/groups_of_elements_padding"
                 android:layout_toLeftOf="@+id/help_button"
                 android:contentDescription="@string/empty"
-                android:src="@drawable/drk_blue_arrow_right_square" />
+                android:src="@drawable/right_page_control" />
 
             <TextView
                 android:id="@+id/joint_account_warning_label"

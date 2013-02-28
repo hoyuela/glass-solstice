@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.paybills;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -15,10 +16,14 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.services.payment.PaymentDateDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
-import com.discover.mobile.bank.util.BankStringFormatter;
+import com.discover.mobile.common.net.json.bank.Date;
 
+/**
+ * Adapter for the review payments table.  Used to display each item as it comes on the screen.
+ * @author jthornton
+ *
+ */
 public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 
 	/**List of details to show*/
@@ -90,10 +95,12 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		/**Update the display values*/
 		holder.date.setText(convertDate(detail));
 		holder.payee.setText(detail.payee.nickName);
-		final String amountString = detail.amount.formatted;
-		holder.amount.setText(amountString);
-		if(!amountString.contains(BankStringFormatter.NEGATIVE)){
+		final double amount = Double.parseDouble(detail.amount.value);
+		if(amount < 0){
+			holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
+		}else{
 			holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
+			holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
 		}
 		view.setOnClickListener(getClickListener(holder.pos));
 		view.setBackgroundResource((holder.pos%2 == 0) ? R.color.white : R.color.transaction_table_stripe);
@@ -129,7 +136,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	 * @return the converted date
 	 */
 	private String convertDate(final PaymentDetail item){
-		final PaymentDateDetail dates;
+		final Date dates;
 		final String itemStatus = item.status;
 		String date = "";
 		if("SCHEDULED".equals(itemStatus)){
@@ -149,7 +156,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	 */
 	private String convertDate(final String date){
 		final SimpleDateFormat serverFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-		final SimpleDateFormat tableFormat = new SimpleDateFormat("dd/MM/yy", Locale.US);
+		final SimpleDateFormat tableFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
 
 		try{
 			return tableFormat.format(serverFormat.parse(date));
@@ -177,6 +184,4 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		public TextView amount;
 		public int pos;
 	}
-
-
 }

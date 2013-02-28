@@ -20,4 +20,6 @@
     <!-- Status bar height -->
     <dimen name="status_bar_height">40dp</dimen>
     
+    <!-- RadioGroup Image Inner Padding -->
+    <dimen name="radio_group_inner_padding">25dp</dimen>
 </resources>

@@ -5,13 +5,15 @@ import java.net.HttpURLConnection;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.bank.login.LoginActivity;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
+import com.discover.mobile.bank.services.AcceptTermsService;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
@@ -25,11 +27,12 @@ import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
-import com.discover.mobile.bank.services.payment.AcceptPayBillsTerms;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPayBillsTermsAndConditionsCall;
+import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -151,7 +154,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		}
 		//Dispatch response to BankBaseErrorHandler to determine how to handle the error
 		else {
-			this.errorHandler.handleFailure(sender, error);
+			errorHandler.handleFailure(sender, error);
 
 			((AlertDialogParent)activeActivity).closeDialog();
 		}
@@ -212,17 +215,22 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		}
 		//If the user accepts the Bank terms and services for pay bills, navigate them to the originally
 		//chosen option. 
-		else if(sender instanceof AcceptPayBillsTerms){
-			final FragmentActivity activity = (FragmentActivity)DiscoverActivityManager.getActiveActivity();
-			final String currentTitle = activity.getTitle().toString();
+		else if(sender instanceof AcceptTermsService){
+			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+			final String currentTitle = activity.getActionBarTitle();
 			final String payBills = activity.getString(R.string.section_title_pay_bills);
+			final String managePayees = activity.getString(R.string.sub_section_title_manage_payees);
 			activity.getSupportFragmentManager().popBackStack();
-			
-			if(currentTitle.equals(payBills))
+
+			if(currentTitle.equals(payBills)) {
 				BankServiceCallFactory.createGetPayeeServiceRequest().submit();
-			else
+			} else if(currentTitle.equals(managePayees)) {
 				BankServiceCallFactory.createManagePayeeServiceRequest().submit();
-						
+			} else{
+				BankRotationHelper.getHelper().setBundle(null);
+				final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+				BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+			}		
 		}
 		//Navigate to Account Summary landing page once Account Summary is downloaded
 		else if( sender instanceof GetCustomerAccountsServerCall) {
@@ -237,21 +245,21 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 				//Retransmit the previous NetworkServiceCall<>
 				prevCall.retransmit(activeActivity);
 			}
-		// Navigate to Payment Confirmation upon a successful payment.
+			// Navigate to Payment Confirmation upon a successful payment.
 		} else if( sender instanceof CreatePaymentCall) {
 			final PaymentDetail value = (PaymentDetail)result;
 			BankNavigator.navigateToPayConfirmFragment(value);
 		}
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
-		else if( sender instanceof CreateStrongAuthRequestCall && this.prevCall != null && sender.isPostCall() ) {
+		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isPostCall() ) {
 			//If Strong Auth Activity is open close it, so that it goes back to NavigationRootActivity
 			if( DiscoverActivityManager.getActiveActivity() instanceof EnhancedAccountSecurityActivity) {
 				final EnhancedAccountSecurityActivity activity =  (EnhancedAccountSecurityActivity)DiscoverActivityManager.getActiveActivity();
 				activity.finish();
 			}
-			
+
 			//Retransmit the previous call that triggered the Strong Auth call
-			this.prevCall.retransmit(activeActivity);
+			prevCall.retransmit(activeActivity);
 		}
 		//Handle the manage payee service call (which is a get payee service call).
 		else if( sender instanceof ManagePayeeServiceCall) {
@@ -275,11 +283,18 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		else if( sender instanceof DeletePaymentServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
-			BankNavigator.navigateToReviewPayments(bundle, false);
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((DeletePaymentServiceCall)sender).getPaymentDetail());
+			BankNavigator.navigateToReviewPaymentsFromDelete(bundle);
 		}
 		//Payee Search Success, navigate to Add Payee Workflow Step 4
 		else if( sender instanceof SearchPayeeServiceCall ) {
 			BankNavigator.navigateToSelectPayees((SearchPayeeResultList)result);
+		}
+		//Get Payment Successful, navigate to the review payments table
+		else if( sender instanceof GetPaymentsServiceCall ) {
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
+			BankNavigator.navigateToReviewPaymentsTable(bundle);
 		}
 		//Payee Add Success, navigate to Add Payee Confirmation Pge in Workflow Step 5
 		else if( sender instanceof AddPayeeServiceCall ) {
@@ -330,7 +345,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		}
 
 	}
-	
+
 	public NetworkServiceCall<?> getLastServiceCall() {
 		return curCall;
 	}

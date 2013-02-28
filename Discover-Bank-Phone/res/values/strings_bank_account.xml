@@ -2,6 +2,7 @@
 <resources>
     
     <!-- Account Activity Strings -->
+    <string name="activity_screen_title">Account Activity</string>
     <string name="activity_title">Discover Online Checking</string>
     <string name="recent_activity_date">Date</string>
 	<string name="recent_activity_description">Description</string>

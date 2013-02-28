@@ -48,7 +48,9 @@
                     style="@style/title_copy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true" />
+                    android:layout_alignParentBottom="true"
+                    android:ellipsize="end"
+                    android:scrollHorizontally="true" />
             </RelativeLayout>
 
             <include layout="@layout/divider_horizontal" />
@@ -70,10 +72,17 @@
                     style="@style/title_copy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true" />
+                    android:layout_alignParentBottom="true"
+                    android:ellipsize="end"
+                    android:scrollHorizontally="true" />
 
-                <include android:id="@+id/payment_acct_edit_button"
-                    layout="@layout/edit_view" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/caret_description"
+                    android:src="@drawable/blue_arrow_right" />
 
                 <Spinner
                     android:id="@+id/payment_acct_spinner"
@@ -158,18 +167,22 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true" />
 
-                <include
-                    android:id="@+id/date_edit_button"
-                    layout="@layout/edit_view" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/caret_description"
+                    android:src="@drawable/blue_arrow_right" />
 
                 <TextView
                     android:id="@+id/date_error"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/date_title"
+                    android:paddingLeft="@dimen/between_related_elements_padding"
                     android:text="@string/schedule_pay_invalid_date"
                     android:textColor="@color/error_indicator"
-                    android:paddingLeft="@dimen/between_related_elements_padding"
-                    android:layout_toRightOf="@id/date_title"
                     android:visibility="gone" />
             </RelativeLayout>
 
@@ -177,8 +190,10 @@
 
             <!-- Memo -->
 
-            <RelativeLayout android:id="@+id/memo_element"
-                style="@style/schedule_pay_list_element" >
+            <RelativeLayout
+                android:id="@+id/memo_element"
+                style="@style/schedule_pay_list_element"
+                android:layout_marginBottom="1dp" >
 
                 <TextView
                     android:id="@+id/memo_title"
@@ -187,8 +202,13 @@
                     android:layout_alignParentTop="true"
                     android:text="@string/schedule_pay_memo_opt" />
 
-                <include android:id="@+id/memo_edit_button"
-                    layout="@layout/edit_view" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/caret_description"
+                    android:src="@drawable/blue_arrow_right" />
 
                 <TextView
                     android:id="@+id/memo_text"

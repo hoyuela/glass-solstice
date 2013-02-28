@@ -17,7 +17,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
-import com.discover.mobile.bank.transfer.Animator;
+import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.bank.ui.table.TableTitles;
 
 /**
@@ -264,11 +264,11 @@ public class AccountActivityHeader extends RelativeLayout{
 	public void setHeaderExpanded(final boolean isHeaderExpanded) {
 		this.isHeaderExpanded = isHeaderExpanded;
 		if(isHeaderExpanded){
-			AccountActivityHeader.this.changeVisibility(View.VISIBLE);
 			setSpan(R.drawable.drk_blue_arrow_up);
+			labels.startAnimation(expand);
 		}else{
-			AccountActivityHeader.this.changeVisibility(View.GONE);
 			setSpan(R.drawable.drk_blue_arrow_down);
+			labels.startAnimation(collapse);
 		}
 	}
 

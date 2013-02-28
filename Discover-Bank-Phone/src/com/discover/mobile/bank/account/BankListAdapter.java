@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.account;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -95,10 +96,12 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		/**Update the display values*/
 		holder.date.setText(convertDate(detail.dates.get(ActivityDetail.POSTED).split(ActivityDetail.DATE_DIVIDER)[0]));
 		holder.desc.setText(detail.description);
-		//final String amountString = BankStringFormatter.convertToDollars(detail.amount);
-		holder.amount.setText(detail.amount.formatted);
-		if(Double.parseDouble(detail.amount.value) < 0){
+		final double amount = Double.parseDouble(detail.amount.value);
+		if(amount < 0){
+			holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
+		}else{
 			holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
+			holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
 		}
 		view.setOnClickListener(getClickListener(holder.pos));
 		view.setBackgroundResource((holder.pos%2 == 0) ? R.color.white : R.color.transaction_table_stripe);
@@ -135,7 +138,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	 */
 	private String convertDate(final String date){
 		final SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-		final SimpleDateFormat tableFormat = new SimpleDateFormat("dd/MM/yy", Locale.US);
+		final SimpleDateFormat tableFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
 
 		try{
 			return tableFormat.format(serverFormat.parse(date));

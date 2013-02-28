@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.services.AcceptTermsService;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
@@ -16,6 +17,7 @@ import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
+import com.discover.mobile.bank.services.customer.Eligibility;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
@@ -23,7 +25,6 @@ import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
-import com.discover.mobile.bank.services.payment.AcceptPayBillsTerms;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
@@ -175,15 +176,17 @@ public class BankServiceCallFactory {
 	/**
 	 * Create a POST request to tell the Bank APIs that the user has accepted a terms and conditions 
 	 * that was presented to them.
+	 * @param Eligibility object with the link to use to enroll for a specific service.
+	 * 
 	 * @return a POST request to accept bill pay terms and conditions.
 	 */
-	public static AcceptPayBillsTerms createAcceptPayBillsTermsRequest() {
+	public static AcceptTermsService createAcceptPayBillsTermsRequest(final Eligibility eligibility) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		
 		final AsyncCallback<Object> callback = 
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Object.class, activity, null).build();
 
-		return new AcceptPayBillsTerms(activity, callback);
+		return new AcceptTermsService(activity, callback, eligibility);
 	}
 	
 	/**
@@ -253,6 +256,7 @@ public class BankServiceCallFactory {
 	 * Creates a GetCustomerAccountsServerCall<> object used to download the Account Summary 
 	 * using the Bank Accounts Service API.
 	 * 
+	 * @param Specify url to use for GetPaymentsServiceCall. Refer to the class definition for the supported queries.
 	 * @return Reference to the GetCustomerAccountsServerCall object created.
 	 */
 	public static GetPaymentsServiceCall createGetPaymentsServerCall(final String url) {

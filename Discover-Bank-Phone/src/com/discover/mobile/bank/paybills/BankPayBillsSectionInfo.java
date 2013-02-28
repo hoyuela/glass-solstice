@@ -10,6 +10,8 @@ import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 
@@ -44,14 +46,10 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				final boolean isEligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
-				final boolean isEnrolled = BankUser.instance().getCustomerInfo().getPaymentsEnrolled();
-				if(!isEligible){
+				if(!isEligible()){
 					BankNavigator.navigateToPayBillsLanding();
-				} else if(isEligible && !isEnrolled){
-					final Bundle bundle = new Bundle();
-					bundle.putInt(BankExtraKeys.TITLE_TEXT, R.string.section_title_pay_bills);
-					BankNavigator.navigateToPayBillsTerms(bundle);
+				} else if(isEligible() && !isEnrolled()){
+					sendToTermsScreen(R.string.section_title_pay_bills);
 				} else{
 					BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 				}
@@ -68,19 +66,25 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 		return new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				final boolean isEligible = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
-				final boolean isEnrolled = BankUser.instance().getCustomerInfo().getPaymentsEnrolled();
-				if(!isEligible) {
+				if(!isEligible()) {
 					BankNavigator.navigateToPayBillsLanding();
-				} else if (isEligible && !isEnrolled) {
-					final Bundle bundle = new Bundle();
-					bundle.putInt(BankExtraKeys.TITLE_TEXT, R.string.sub_section_title_manage_payees);
-					BankNavigator.navigateToPayBillsTerms(bundle);
+				} else if (isEligible() && !isEnrolled()) {
+					sendToTermsScreen(R.string.sub_section_title_manage_payees);
 				}else {
 					BankServiceCallFactory.createManagePayeeServiceRequest().submit();
 				}
 			}
 		};
+	}
+
+	/**
+	 * Send the user to the pay bill terms and conditions page
+	 * @param title used to signify what screen should come next
+	 */
+	protected static void sendToTermsScreen(final int title){
+		final Bundle bundle = new Bundle();
+		bundle.putInt(BankExtraKeys.TITLE_TEXT, title);
+		BankNavigator.navigateToPayBillsTerms(bundle);
 	}
 
 	/**
@@ -92,13 +96,32 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				//Clear the rotation bundle
-				BankRotationHelper.getHelper().setBundle(null);
-				//Call the first service
-				// TODO Remove this call, will be in an account object
-				BankServiceCallFactory.createGetPaymentsServerCall("/api/payments").submit();
+				if(!isEligible()){
+					BankNavigator.navigateToPayBillsLanding();
+				} else if(isEligible() && !isEnrolled()){
+					sendToTermsScreen(R.string.review_payments_title);
+				} else{
+					BankRotationHelper.getHelper().setBundle(null);
+					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}
 			}
 		};
 	}
 
+	/**
+	 * Method call to see if a uses is eligible for payments
+	 * @return if a user is eligible for payments
+	 */
+	protected static boolean isEligible(){
+		return BankUser.instance().getCustomerInfo().isPaymentsEligibility();
+	}
+
+	/**
+	 * Method call to see if a users is enrolled in payments
+	 * @return if a user is enrolled in payments
+	 */
+	protected static boolean isEnrolled(){
+		return BankUser.instance().getCustomerInfo().isPaymentsEnrolled();
+	}
 }
