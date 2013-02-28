@@ -51,9 +51,6 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		table.setDivider(getResources().getDrawable(R.drawable.table_dotted_line));
 		//table.setFooterDividersEnabled(true);
 
-		final Bundle bundle = BankRotationHelper.getHelper().getBundle();
-		loadBundle = (null == bundle) ? this.getArguments() : bundle;
-
 		return view;
 	}
 
@@ -74,6 +71,8 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	@Override
 	public void onResume(){
 		super.onResume();
+		final Bundle bundle = BankRotationHelper.getHelper().getBundle();
+		loadBundle = (null == bundle) ? this.getArguments() : bundle;
 		loadDataFromBundle(loadBundle);
 		table.setAdapter(getAdapter());
 	}
