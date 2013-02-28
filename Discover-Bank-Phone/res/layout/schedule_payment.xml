@@ -192,7 +192,8 @@
 
             <RelativeLayout
                 android:id="@+id/memo_element"
-                style="@style/schedule_pay_list_element" >
+                style="@style/schedule_pay_list_element"
+                android:layout_marginBottom="1dp" >
 
                 <TextView
                     android:id="@+id/memo_title"
