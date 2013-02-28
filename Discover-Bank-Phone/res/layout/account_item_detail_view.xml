@@ -9,15 +9,13 @@
     <RelativeLayout
         android:id="@+id/relative_layout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/forms_inner_padding"
-        android:paddingRight="@dimen/forms_inner_padding"
-        android:paddingTop="@dimen/forms_inner_padding" >
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:id="@+id/nav_buttons"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content" 
+            android:layout_marginBottom="@dimen/between_related_elements_padding">
 
             <TextView
                 android:id="@+id/title"
@@ -27,6 +25,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginRight="@dimen/groups_of_elements_padding"
                 android:layout_toLeftOf="@+id/previous_button"
+                android:layout_alignTop="@+id/help_button"
+                android:layout_marginLeft="@dimen/forms_inner_padding"
                 android:text="@string/edit" />
 
             <ImageView
@@ -35,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/next_button"
                 android:contentDescription="@string/empty"
+                android:layout_marginTop="@dimen/forms_inner_padding"
                 android:src="@drawable/left_page_control" />
 
             <ImageView
@@ -42,9 +43,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/between_related_elements_padding"
-                android:layout_marginRight="@dimen/groups_of_elements_padding"
                 android:layout_toLeftOf="@+id/help_button"
                 android:contentDescription="@string/empty"
+                android:layout_marginTop="@dimen/forms_inner_padding"
                 android:src="@drawable/right_page_control" />
 
             <TextView
@@ -59,11 +60,12 @@
 
             <ImageView
                 android:id="@+id/help_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:contentDescription="@string/empty"
-                android:src="@drawable/question_mark_icon" />
+		        style="@style/orange_help_button"
+        		android:layout_width="@dimen/orange_help_button_size"
+       			android:layout_height="@dimen/orange_help_button_size"
+       			android:layout_alignParentRight="true"
+        		android:layout_alignParentTop="true" />
+
         </RelativeLayout>
 
         <View
@@ -72,6 +74,8 @@
             android:layout_height="1dp"
             android:layout_below="@+id/nav_buttons"
             android:layout_marginTop="@dimen/between_related_elements_padding"
+        	android:layout_marginRight="@dimen/forms_inner_padding"
+        	android:layout_marginLeft="@dimen/forms_inner_padding" 
             android:background="@drawable/table_solid_line" />
     </RelativeLayout>
 
