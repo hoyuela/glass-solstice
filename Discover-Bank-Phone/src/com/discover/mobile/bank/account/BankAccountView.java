@@ -102,11 +102,18 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	public void setBalance(final Money value) {
 		if( !Strings.isNullOrEmpty(value.formatted)) {
 			try{
+				String formatted = value.formatted;
+				
+				if(formatted.charAt(0)=='(') {
+					formatted = formatted.replaceAll("\\(", "-");
+					formatted = formatted.replaceAll("\\)", "");
+				}
+				
 				/**Set Text view for displaying balance for account */
-				acctBalance.setText(value.formatted);
+				acctBalance.setText(formatted);
 
 				/**Set color of text to red if negative balance otherwise black*/
-				final int color = (value.formatted.charAt(0) == '-') ? R.color.error_indicator : R.color.black;
+				final int color = (formatted.charAt(0) == '-') ? R.color.error_indicator : R.color.black;
 				acctBalance.setTextColor(getResources().getColor(color));
 
 			}catch(final Exception ex) {
