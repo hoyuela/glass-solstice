@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.BankUrlManager;
@@ -49,5 +50,15 @@ public class BankPayeeNotEligibleFragment extends BaseFragment{
 	@Override
 	public int getActionBarTitle() {
 		return R.string.pay_a_bill_title;
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_SECTION;
 	}
 }

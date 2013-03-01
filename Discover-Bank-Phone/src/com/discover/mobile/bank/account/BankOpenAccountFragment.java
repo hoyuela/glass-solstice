@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -30,13 +31,13 @@ public class BankOpenAccountFragment extends BaseFragment implements OnClickList
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_open_account_view, null);
 		final Button openAccountBtn = (Button)view.findViewById(R.id.openAccount);
-		
+
 		/**Set the fragment activity as the handler for the button click event*/
 		openAccountBtn.setOnClickListener(this);
-		
+
 		return view;
 	}
-	
+
 	@Override
 	public int getActionBarTitle() {
 		return R.string.bank_open_account;
@@ -46,28 +47,37 @@ public class BankOpenAccountFragment extends BaseFragment implements OnClickList
 	public void onClick(final View arg0) {
 		BankNavigator.navigateToBrowser(BankUrlManager.getOpenAccountUrl());	
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		/**Disable Sliding Navigation Menu and Hide Menu Button in Acction Bar**/
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();	
 		activity.enableSlidingMenu(false);
 		activity.showNavigationMenuButton(false);
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
-		
-		
+
+
 		/**Enable Sliding Navigation Menu and Show Menu Button in Acction Bar**/
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();	
 		activity.enableSlidingMenu(true);
 		activity.showNavigationMenuButton(true);
 	}
-	
-	
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.OPEN_NEW_ACCOUNT_SECTION;
+	}
+
 
 }

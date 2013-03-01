@@ -3,6 +3,7 @@ package com.discover.mobile.bank.account;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
@@ -191,6 +192,16 @@ public class AccountActivityViewPager extends DetailViewPager{
 	@Override
 	protected boolean isFragmentEditable(final int position) {
 		return false;
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
 	}
 
 }

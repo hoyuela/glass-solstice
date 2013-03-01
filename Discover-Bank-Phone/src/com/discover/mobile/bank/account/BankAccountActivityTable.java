@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
@@ -314,5 +315,15 @@ public class BankAccountActivityTable extends BaseTable{
 	public void showFooterMessage() {
 		footer.showEmpty(getEmptyStringText());
 
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
 	}
 }

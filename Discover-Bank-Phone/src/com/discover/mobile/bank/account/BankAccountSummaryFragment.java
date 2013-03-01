@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
@@ -51,7 +52,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		/**Fetch linear layout that will contain list of account groups*/
 		accountSummary = (LinearLayout)view.findViewById(R.id.bank_summary_list);
-		
+
 		/**Button used to open a new account*/
 		openAccount = (Button)view.findViewById(R.id.openAccount);
 		openAccount.setOnClickListener(this);
@@ -59,7 +60,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		/**Create footer that will listen when user taps on Need Help Number to dial*/
 		helpFooter = new NeedHelpFooter((ViewGroup)view);
 		helpFooter.setToDialNumberOnClick(com.discover.mobile.bank.R.string.bank_need_help_number_text);
-		
+
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
 
@@ -167,7 +168,18 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		if( sender == openAccount ) {
 			BankNavigator.navigateToBrowser(BankUrlManager.getOpenAccountUrl());
 		}
-		
+
+	}
+
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
 	}
 
 }

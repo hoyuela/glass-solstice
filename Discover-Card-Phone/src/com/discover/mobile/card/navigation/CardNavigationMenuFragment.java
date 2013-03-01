@@ -14,23 +14,24 @@ import com.discover.mobile.common.nav.section.ComponentInfo;
 import com.google.common.collect.ImmutableList;
 
 public class CardNavigationMenuFragment extends NavigationMenuFragment {
-	
+
 	@Override
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+
 		final NavigationRootActivity activity = (NavigationRootActivity) getActivity();
-		
+		activity.setMenu(this);
+
 		/**Check if there are no fragments already loaded and this is the first time the app is launched **/
 		if( activity.getCurrentContentFragment() == null ) {	
 			NavigationItem.initializeAdapterWithSections(navigationItemAdapter, CARD_SECTION_LIST,new HomeSummaryFragment());
 		} else {
 			NavigationItem.initializeAdapterWithSections(navigationItemAdapter, CARD_SECTION_LIST, null);
 		}
-		
+
 		setListAdapter(navigationItemAdapter);
 	}
-	
+
 	/**
 	 * Immutable list showing all the top level sections that are displayed in the sliding nav menu
 	 */
@@ -41,6 +42,6 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 			.add(new ProfileAndSettingsSectionInfo())
 			.add(FacadeFactory.getCustomerServiceFacade().getCustomerServiceSection())
 			.build();
-	
-	
+
+
 }

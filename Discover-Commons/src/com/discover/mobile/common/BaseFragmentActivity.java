@@ -255,7 +255,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	/**
 	 * Hides the sliding menu is it is currently visible
 	 */
-	private void hideSlidingMenuIfVisible() {
+	protected void hideSlidingMenuIfVisible() {
 		final SlidingMenu slidingMenu = getSlidingMenu();
 		if(slidingMenu.isBehindShowing()) {
 			slidingMenu.showAbove();

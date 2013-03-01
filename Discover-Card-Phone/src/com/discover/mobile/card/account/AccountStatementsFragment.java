@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.common.BaseFragment;
 
@@ -29,6 +30,16 @@ public class AccountStatementsFragment extends BaseFragment {
 	public int getActionBarTitle() {
 		//FIXME: Put the correct title here
 		return R.string.bank_account_summary;
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return CardMenuItemLocationIndex.ACCOUNT_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return CardMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
 	}
 
 }
