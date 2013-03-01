@@ -248,7 +248,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	public void showSessionExpired() {
 		errorTextView.setText(getString(R.string.session_expired));
 		errorTextView.setVisibility(View.VISIBLE);
-		errorTextView.setTextColor(getResources().getColor(R.color.red));
+		errorTextView.setTextColor(getResources().getColor(R.color.black));
 		clearInputs();
 	}
 	
