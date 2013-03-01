@@ -125,18 +125,8 @@ public class BankAccountGroupView extends LinearLayout  {
 		if( null != account ) {
 			if( acctList.size() == 0 || acctList.get(0).type.equals(account.type)) {
 				/**Use name for grouping otherwise use type*/
-				final String groupName = (Strings.isNullOrEmpty(account.name)) ? account.type : account.name;
 				
-				if(acctList.size() == 0 ) {
-					//Set the name for the group
-					type.setText(groupName);
-				} else {
-					if( !groupName.endsWith("s")) {
-						//Set the name for the group with s at the end if more than one
-						type.setText(groupName +"s");
-					}
-				}
-				
+				type.setText(getGroupTitle(account));
 				
 				layout.addView(lastAccountReference = new BankAccountView(this.getContext(), account));
 				

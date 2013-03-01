@@ -145,8 +145,9 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				}
 			}
 		} else {
-			//TODO: Log an error
-			return;
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Account List is Empty");
+			}
 		}
 
 	}
