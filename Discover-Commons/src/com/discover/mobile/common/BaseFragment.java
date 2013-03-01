@@ -55,6 +55,7 @@ public abstract class BaseFragment extends SherlockFragment {
 				.getActivity();
 		activity.setCurrentFragment(this);
 		setActionBarTitle(getActionBarTitle());
+		activity.highlightMenuItems(getGroupMenuLocation(), getSectionMenuLocation());
 	}
 
 	/**
@@ -129,6 +130,16 @@ public abstract class BaseFragment extends SherlockFragment {
 	 *         bar
 	 */
 	public abstract int getActionBarTitle();
+
+	/**
+	 * Get the group that should be highlighted when the fragment is shown
+	 */
+	public abstract int getGroupMenuLocation();
+
+	/**
+	 * Get the sub section location under the group
+	 */
+	public abstract int getSectionMenuLocation();
 
 	/**
 	 * Used to show the provide feedback fragment

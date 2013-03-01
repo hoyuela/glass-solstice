@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankRotationHelper;
@@ -359,5 +360,15 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	public void showFooterMessage() {
 		footer.showEmpty(getEmptyStringText());
 
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.REVIEW_PAYEMENTS_SECTION;
 	}
 }

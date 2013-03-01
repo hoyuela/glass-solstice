@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
@@ -60,7 +61,7 @@ public class BankSelectPayee extends BaseFragment{
 			loadListFromBundle(savedInstanceState);
 		}
 	}
-	
+
 	/**
 	 * Create the view
 	 * @param inflater - inflater to inflate the layout
@@ -214,6 +215,16 @@ public class BankSelectPayee extends BaseFragment{
 	@Override
 	public View getView() {
 		return view;
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_SECTION;
 	}
 
 }

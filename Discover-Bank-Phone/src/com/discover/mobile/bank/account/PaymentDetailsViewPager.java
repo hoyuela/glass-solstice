@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
@@ -204,6 +205,17 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		}
 
 		return paymentIsEditable;
+	}
+
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.REVIEW_PAYEMENTS_SECTION;
 	}
 
 }
