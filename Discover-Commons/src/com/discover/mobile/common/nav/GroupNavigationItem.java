@@ -22,35 +22,40 @@ final class GroupNavigationItem extends NavigationItem {
 	}
 
 	@Override
-	void onClick(final ListView listView, final View clickedView) {		if(expanded) {
+	void onClick(final ListView listView, final View clickedView) {		
+		if(expanded) {
 			collapse();
-			adapter.setSelectedItem(null);
 		} else {
 			expand();
-			NavigationIndex.setIndex(absoluteIndex);
-			adapter.setSelectedItem(this);
 		}
 	}
 
-	private void expand() {
-		if(expanded)
+	public void expand() {
+		if(expanded) {
 			return;
+		}
 		final NavigationItem selectedItem = adapter.getSelectedItem();
-		if(selectedItem != null && selectedItem instanceof GroupNavigationItem)
+		if(selectedItem != null && selectedItem instanceof GroupNavigationItem) {
 			((GroupNavigationItem)selectedItem).collapse();
+		}
 
-		for(final NavigationItem child : children)
+		for(final NavigationItem child : children) {
 			child.show();
-
+		}
 		expanded = true;
+		NavigationIndex.setIndex(absoluteIndex);
+		adapter.setSelectedItem(this);
 	}
 
-	private void collapse() {
-		if(!expanded)
+	public void collapse() {
+		if(!expanded) {
 			return;
-		for(final NavigationItem child : children)
+		}
+		for(final NavigationItem child : children) {
 			child.hide();
+		}
 
+		adapter.setSelectedItem(null);
 		expanded = false;
 	}
 

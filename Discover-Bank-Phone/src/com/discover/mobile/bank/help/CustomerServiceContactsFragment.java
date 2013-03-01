@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.utils.CommonUtils;
@@ -16,10 +17,10 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	private LinearLayout cardMailingAddressList;
 	private LinearLayout bankMailingAddressList;
 	private LinearLayout bankPhoneNumberList;
-	
+
 	/** Use this variable to setup the appearance of the screen based on card or bank user.*/
 	private final boolean isCardUser = true;
-	
+
 	/**
 	 * Return the modified view that we need to display.
 	 */
@@ -27,13 +28,13 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		final View mainView = inflater.inflate(R.layout.customer_service, null);
-		
+
 		loadViewsIn(mainView);
 		loadLists(mainView);
-		
+
 		return mainView;
 	}
-	
+
 	/**
 	 * The title of the screen that will be presented in the action bar.
 	 */
@@ -41,7 +42,7 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	public int getActionBarTitle() {
 		return R.string.contact_us;
 	}
-	
+
 	/**
 	 * Initialize the local variables to the views that we will need to modify.
 	 * 
@@ -50,11 +51,11 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	private void loadViewsIn(final View mainView) {
 		cardPhoneNumberList = (LinearLayout)mainView.findViewById(R.id.card_phone_numbers_list);
 		cardMailingAddressList = (LinearLayout)mainView.findViewById(R.id.card_mail_address_list);
-		
+
 		bankPhoneNumberList = (LinearLayout)mainView.findViewById(R.id.bank_phone_numbers_list);
 		bankMailingAddressList = (LinearLayout)mainView.findViewById(R.id.bank_mail_address_list);
 	}
-	
+
 	/**
 	 * Get the lists of elements that go into the contacts tables and insert them into the tables.
 	 */
@@ -70,7 +71,7 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 			hideCardElements(mainView);
 		}
 	}
-	
+
 	/**
 	 * Set the bank elements to be invisible.
 	 * 
@@ -90,7 +91,7 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 		CommonUtils.setViewGone(mainView.findViewById(R.id.bank_phone_numbers_list));
 
 	}
-	
+
 	/**
 	 * Set the card elements to be invisible.
 	 * 
@@ -100,7 +101,7 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 		//Hide the "Discover Bank" titles.
 		CommonUtils.setViewInvisible(mainView.findViewById(R.id.bank_mail_title_label));
 		CommonUtils.setViewInvisible(mainView.findViewById(R.id.bank_phone_title_label));
-		
+
 		CommonUtils.setViewGone(mainView.findViewById(R.id.card_mail_title_label));
 		CommonUtils.setViewGone(mainView.findViewById(R.id.card_mail_address_list));
 
@@ -108,6 +109,15 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 		CommonUtils.setViewGone(mainView.findViewById(R.id.card_phone_title_label));
 		CommonUtils.setViewGone(mainView.findViewById(R.id.card_phone_numbers_list));
 	}
-	
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.CONTACT_US_SECTION;
+	}
 
 }

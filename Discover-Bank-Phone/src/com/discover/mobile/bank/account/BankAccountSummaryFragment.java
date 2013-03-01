@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
@@ -34,6 +36,7 @@ import com.discover.mobile.common.ui.help.NeedHelpFooter;
  *
  */
 public class BankAccountSummaryFragment extends BaseFragment implements OnClickListener {
+	private static final String TAG = "AccountSummary";
 	private LinearLayout accountSummary; 
 	private Button openAccount;
 	private NeedHelpFooter helpFooter;
@@ -49,7 +52,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		/**Fetch linear layout that will contain list of account groups*/
 		accountSummary = (LinearLayout)view.findViewById(R.id.bank_summary_list);
-		
+
 		/**Button used to open a new account*/
 		openAccount = (Button)view.findViewById(R.id.openAccount);
 		openAccount.setOnClickListener(this);
@@ -57,7 +60,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		/**Create footer that will listen when user taps on Need Help Number to dial*/
 		helpFooter = new NeedHelpFooter((ViewGroup)view);
 		helpFooter.setToDialNumberOnClick(com.discover.mobile.bank.R.string.bank_need_help_number_text);
-		
+
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
 
@@ -102,33 +105,54 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 			final HashMap<String, BankAccountGroupView> groupsMap = new HashMap<String, BankAccountGroupView>();
 
 			Collections.sort(accountList.accounts, new BankAccountComparable());
-
+			BankAccountGroupView prevGroup = null;
 			//Iterate through list of accounts, group them together and add to the summary list view
 			for(final Account account : accountList.accounts) {
+				final String groupKey = account.getGroupCategory();
+				
 				//Fetch group from hashmap if it already exists
-				BankAccountGroupView group = groupsMap.get(account.type);
-
+				BankAccountGroupView group = groupsMap.get(groupKey);	
+				
 				//if group type does not exist add new group to hashmap
 				if( null == group ) {
+					// Ensures that previous group has last element drawn correctly.
+					if(prevGroup != null) {
+						if(prevGroup.getGroupSize() == 1) {
+							prevGroup.addAllStrokes(context);
+						} else {
+							prevGroup.addBottomStroke(context);
+						}
+					}
 					//Create new group to hold list of accounts for the type specified in account
 					group = new BankAccountGroupView(context);
-
+					prevGroup = group;
 					//Add group to hashmap to help sort
-					groupsMap.put(account.type, group);
+					groupsMap.put(groupKey, group);
 
 					//Add new group view to the summary list
 					accountSummary.addView(group);
 				}
 
-				//Add account to group
-				group.addAccount(account);	
+				// Add account to group
+				group.addAccount(account);
+				group.addTopStroke(context);
+			}
+			//Ensures the last group drawn has the bottom as a solid stroke.
+			if(prevGroup != null) {
+				if(prevGroup.getGroupSize() == 1) {
+					prevGroup.addAllStrokes(context);
+				} else {
+					prevGroup.addBottomStroke(context);
+				}
 			}
 		} else {
-			//TODO: Log an error
-			return;
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Account List is Empty");
+			}
 		}
 
 	}
+	
 
 	/*
 	 * (non-Javadoc)
@@ -144,7 +168,18 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		if( sender == openAccount ) {
 			BankNavigator.navigateToBrowser(BankUrlManager.getOpenAccountUrl());
 		}
-		
+
+	}
+
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
 	}
 
 }

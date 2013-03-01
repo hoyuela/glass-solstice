@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.common.BaseFragment;
 
@@ -28,7 +29,7 @@ public class PushTermsAndConditionsFragment extends BaseFragment{
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
-		
+
 		final View view = inflater.inflate(R.layout.push_terms_and_conditions, null);
 		return view;
 	}
@@ -39,5 +40,15 @@ public class PushTermsAndConditionsFragment extends BaseFragment{
 	@Override
 	public int getActionBarTitle() {
 		return R.string.manage_push_fragment_title;
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return CardMenuItemLocationIndex.PROFILE_AND_SETTINGS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return CardMenuItemLocationIndex.MANAGE_ALERTS_SECTION;
 	}
 }

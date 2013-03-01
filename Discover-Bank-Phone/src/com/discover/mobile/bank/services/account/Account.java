@@ -83,7 +83,7 @@ public class Account implements Serializable {
 	/**
 	 * Holds a String used to represent an CDs type of account
 	 */
-	public static final String ACCOUNT_CDS = "CD";
+	public static final String ACCOUNT_CD = "CD";
 	/**
 	 * Holds a String used to represent an IRA type of account
 	 */
@@ -91,7 +91,7 @@ public class Account implements Serializable {
 	/**
 	 * Holds a String used to represent an Loan type of account
 	 */
-	public static final String ACCOUNT_LOANS = "Loan";
+	public static final String ACCOUNT_LOAN = "Loan";
 	/**
 	 * Holds a String used to fetch the URL used to downloaded posted activity
 	 */
@@ -231,6 +231,39 @@ public class Account implements Serializable {
 	public String getLink(final String Key) {
 
 		return BankUrlManager.getUrl(links, Key);
+	}
+	
+	/**
+	 * Method used to determine the group the Account belongs in
+	 * 
+	 * @return Returns a string that specifies the group to use for the account.
+	 */
+	public String getGroupCategory() {
+		String ret = "";
+		
+		//Group for Checking: Holds only Checking Types
+		if( this.type.equals(Account.ACCOUNT_CHECKING)) {		
+			ret = Account.ACCOUNT_CHECKING;	
+		}
+		//Group for Savings: Holds Online Savings, MMA, CDs
+		else if( this.type.equals(Account.ACCOUNT_SAVINGS) || 
+				 this.type.equals(Account.ACCOUNT_MMA) ||
+				 this.type.equals(Account.ACCOUNT_CD)) {
+			ret = Account.ACCOUNT_SAVINGS;
+			
+		}
+		//Group for Retirement Plans: Holds IRA, IRA CDs
+		else if( this.type.equals(Account.ACCOUNT_IRA)) {
+			ret = Account.ACCOUNT_IRA;
+		}
+		//Group Personal Loans: Personal Loans
+		else if( this.type.equals(Account.ACCOUNT_LOAN)) {
+			ret = Account.ACCOUNT_LOAN;
+		} else {
+			ret = this.type;
+		}
+		
+		return ret;
 	}
 
 }

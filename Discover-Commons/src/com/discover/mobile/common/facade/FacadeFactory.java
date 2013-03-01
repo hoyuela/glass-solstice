@@ -5,6 +5,9 @@ package com.discover.mobile.common.facade;
 
 import java.util.HashMap;
 
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.framework.Conductor;
+
 
 
 /**
@@ -83,6 +86,19 @@ public class FacadeFactory {
 	public static LoginServiceFacade getLoginServiceFacade(){
 		return (LoginServiceFacade) getImplClass("com.discover.mobile.card.facade.LoginServiceFacadeImpl");
 	}
+	
+	
+	
+	public static Conductor getConductorFacade(AccountType accountType){ 
+		if ( accountType == AccountType.CARD_ACCOUNT ){ 
+			return (Conductor) getImplClass("com.discover.mobile.card.facade.CardConductorFacadeImpl");
+		}else{ 
+			return (Conductor) getImplClass("com.discover.mobile.card.facade.BankConductorFacadeImpl");
+		}
+	}
+	
+	
+	
 	
 	/**
 	 * Loads the impl class, expecting to find it in the classloader.

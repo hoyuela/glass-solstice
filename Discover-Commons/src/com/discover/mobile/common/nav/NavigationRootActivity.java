@@ -48,8 +48,6 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 
 	}
 
-
-
 	/**
 	 * Sets up the fragment that was visible before the app went into the background
 	 * @param savedInstanceState - bundle containing the state
@@ -67,7 +65,12 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 		super.onResume();		
 	}
 
-
+	/**
+	 * Set the menu highlighting
+	 */
+	public void highlightMenuItems(final int group, final int section){
+		menu.setItemSelected(group, section);
+	}
 
 	/**
 	 * Save the state of the activity when it goes to the background.

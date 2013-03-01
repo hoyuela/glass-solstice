@@ -5,8 +5,8 @@ import java.net.HttpURLConnection;
 import android.app.Activity;
 
 import com.discover.mobile.bank.BankNavigator;
-import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.services.auth.BankSchema;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;

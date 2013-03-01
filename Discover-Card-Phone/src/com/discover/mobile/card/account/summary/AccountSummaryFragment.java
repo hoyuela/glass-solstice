@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.services.account.summary.GetLatePaymentWarning;
@@ -330,7 +331,7 @@ public class AccountSummaryFragment extends BaseFragment {
 	 * @param detail- the populate detail object
 	 */
 	public void prepLatePaymentModalInfo(final LatePaymentWarningDetail detail){
-		this.details = detail;
+		details = detail;
 	}
 
 	/**
@@ -382,6 +383,16 @@ public class AccountSummaryFragment extends BaseFragment {
 	 * @param detail - populated text detail
 	 */
 	public void storeInfoStrings(final LatePaymentWarningTextDetail detail) {
-		this.text = detail;	
+		text = detail;	
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return CardMenuItemLocationIndex.ACCOUNT_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return CardMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
 	}
 }

@@ -1,7 +1,10 @@
-package com.discover.mobile.bank;
+package com.discover.mobile.bank.framework;
+
+import java.io.Serializable;
 
 import android.app.Activity;
 
+import com.discover.mobile.bank.BankPhoneAsyncCallbackBuilder;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.AcceptTermsService;
@@ -36,6 +39,8 @@ import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.error.ErrorHandlerUi;
+import com.discover.mobile.common.framework.ServiceCallFactory;
+import com.discover.mobile.common.net.NetworkServiceCall;
 
 /**
  * Utility class used to construct NetworkServiceCall<> objects used for invoking Bank related web-service API.
@@ -43,9 +48,9 @@ import com.discover.mobile.common.error.ErrorHandlerUi;
  * @author henryoyuela
  *
  */
-public class BankServiceCallFactory {
+public class BankServiceCallFactory  implements ServiceCallFactory {
 
-	private BankServiceCallFactory() {
+	public BankServiceCallFactory() {
 
 	}
 
@@ -327,4 +332,26 @@ public class BankServiceCallFactory {
 
 		return new AddPayeeServiceCall(activity, callback, value);
 	}
+
+	@Override
+	public NetworkServiceCall<?> createServiceCall(@SuppressWarnings("rawtypes") Class cacheObject,
+			Serializable payload) {
+		
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
+		if ( cacheObject == AddPayeeDetail.class ) { 
+			
+			final AsyncCallback<AddPayeeDetail>  callback =
+					BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(AddPayeeDetail.class,
+							activity, (ErrorHandlerUi) activity)
+							.build();
+
+			return new AddPayeeServiceCall(activity, callback, (AddPayeeDetail) payload);
+			
+		}
+		// FIXME : Add the rest in here!!! 
+		return null;
+	}
+	
+
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 
 /**
@@ -20,7 +21,7 @@ import com.discover.mobile.card.R;
  *
  */
 public class PushEnrollFragment extends BasePushRegistrationUI{
-	
+
 	/**String representing this class to enter into the back stack*/
 	private static final String TAG = PushEnrollFragment.class.getSimpleName();
 
@@ -35,18 +36,20 @@ public class PushEnrollFragment extends BasePushRegistrationUI{
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		final View view = inflater.inflate(R.layout.push_enroll, null);
 		final Button enroll = (Button) view.findViewById(R.id.enroll_accept);
 		final TextView cancel = (TextView) view.findViewById(R.id.enroll_decline);
-		
+
 		enroll.setOnClickListener(new OnClickListener(){
+			@Override
 			public void onClick(final View v){
 				registerWithDiscover(ACCEPT, true);
 			}
 		});
-		
+
 		cancel.setOnClickListener(new OnClickListener(){
+			@Override
 			public void onClick(final View v){
 				changeToDeclineScreen();
 			}
@@ -76,5 +79,15 @@ public class PushEnrollFragment extends BasePushRegistrationUI{
 	@Override
 	public int getActionBarTitle() {
 		return R.string.enroll_fragment_title;
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return CardMenuItemLocationIndex.PROFILE_AND_SETTINGS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return CardMenuItemLocationIndex.ENROLL_REMINDERS_SECTION;
 	}
 }

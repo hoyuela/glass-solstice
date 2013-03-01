@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
@@ -36,7 +37,7 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 
 	/**Key to read from a bundle the search criteria used to generate a list of results*/
 	public static final String SEARCH_ITEM = "search";
-	
+
 	/**
 	 * Search criteria used to generate the list of payees displayed to the user
 	 */
@@ -70,7 +71,7 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 * 
 	 */
 	private SimpleChooseListItem enterPayeeDetails;
-	
+
 	/**
 	 * Create the view
 	 * @param inflater - inflater to inflate the layout
@@ -87,40 +88,40 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		/**Hyperlink used to provide feedback*/
 		feedback = (TextView)view.findViewById(R.id.provide_feedback);
 		feedback.setOnClickListener(this);
-		
+
 		/**Button for help**/
 		helpButton = (ImageButton)view.findViewById(R.id.help);
 		helpButton.setOnClickListener(this);
-		
+
 		/**Linear Layout which holds the results for the Payees Search**/
-		this.payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
-		
+		payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
+
 		/**TextView whose text will dynamically be changed depending on whether you have search results or not*/
-		this.matches = (TextView)view.findViewById(R.id.matches);
-		
+		matches = (TextView)view.findViewById(R.id.matches);
+
 		/**TextView which shows the user what the search criteria was used to generate the list of Payees*/
-		this.searchName = (TextView)view.findViewById(R.id.search_name);
-		
+		searchName = (TextView)view.findViewById(R.id.search_name);
+
 		/**Custom Widget used to navigate to the Add Payees fragment*/
-		this.enterPayeeDetails = (SimpleChooseListItem)view.findViewById(R.id.enter_payee_details);
-		this.enterPayeeDetails.setTitleText(R.string.bank_enter_payee_details);
-		this.enterPayeeDetails.setOnClickListener(this);
-				
+		enterPayeeDetails = (SimpleChooseListItem)view.findViewById(R.id.enter_payee_details);
+		enterPayeeDetails.setTitleText(R.string.bank_enter_payee_details);
+		enterPayeeDetails.setOnClickListener(this);
+
 		/**Check whether to use values from arguments passed into fragment or from savedInstanceState bundle*/
 		if(null == savedInstanceState) {
 			searchCriteria = bundle.getString(SEARCH_ITEM);
-			
+
 			/**Generate list of payees found using the search criteria read from bundle*/
 			loadListFromBundle(bundle);
 		} else{
 			searchCriteria = savedInstanceState.getString(SEARCH_ITEM);
-			
+
 			loadListFromBundle(savedInstanceState);
 		}
 
 		/**Set text to show what the criteria was used to generate the list of payees found*/
-		this.searchName.setText(" \"" +searchCriteria +"\"");
-		
+		searchName.setText(" \"" +searchCriteria +"\"");
+
 		return view;
 	}
 
@@ -131,8 +132,8 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		super.onSaveInstanceState(outState);
-		
-		outState.putSerializable(BankExtraKeys.PAYEES_LIST, this.search);
+
+		outState.putSerializable(BankExtraKeys.PAYEES_LIST, search);
 		outState.putString(SEARCH_ITEM, searchCriteria);
 	}
 
@@ -141,17 +142,17 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 * @param bundle - bundle containing the data to be displayed.
 	 */
 	public void loadListFromBundle(final Bundle bundle){
-		this.search = (SearchPayeeResultList)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
-		if(null == this.search || null == this.search.results || this.search.results.isEmpty()) {
-			this.matches.setText(R.string.bank_no_matches_for);
-			this.payeesList.setVisibility(View.GONE);
+		search = (SearchPayeeResultList)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
+		if(null == search || null == search.results || search.results.isEmpty()) {
+			matches.setText(R.string.bank_no_matches_for);
+			payeesList.setVisibility(View.GONE);
 		}else{
-			this.matches.setText(R.string.bank_matches_for);
-			this.payeesList.setVisibility(View.VISIBLE);
-			
-			this.payeesList.removeAllViews();
-			for(final SearchPayeeResult result : this.search.results){
-				this.payeesList.addView(createListItem(result));
+			matches.setText(R.string.bank_matches_for);
+			payeesList.setVisibility(View.VISIBLE);
+
+			payeesList.removeAllViews();
+			for(final SearchPayeeResult result : search.results){
+				payeesList.addView(createListItem(result));
 			}
 		}
 	}
@@ -197,18 +198,28 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		else if( sender instanceof SimpleChooseListItem ) {
 			final SimpleChooseListItem item = (SimpleChooseListItem)sender;
 			final SearchPayeeResult result = (SearchPayeeResult)item.getItem();
-			
+
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
-			
+
 			BankNavigator.navigateToAddPayee(BankAddPayeeFragment.class, bundle);
 		}
 		/**Enter Payee Details was clicked*/
 		else if( sender instanceof SimpleChooseListItem ) {
 			BankNavigator.navigateToAddPayee(BankAddPayeeFragment.class, null);
 		}
-		
+
 	}
-	
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.MANAGE_PAYEES_SECTION;
+	}
+
 }
 

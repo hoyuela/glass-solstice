@@ -27,10 +27,11 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
@@ -109,10 +110,10 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private Calendar earliestPaymentDate;
 	/** Chosen payment date */
 	private Calendar chosenPaymentDate;
-	
+
 	/** saved bundle data */
 	private Bundle savedBundle;
-	
+
 	/** date error exists - Cannot submit payment */
 	private boolean isDateError = false;
 	/** Max character length for memo */
@@ -133,7 +134,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	// static final Pattern r8601 = Pattern
 	// .compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
 	// + "(\\d{2}):(\\d{2})Z)");
-	
+
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
@@ -175,13 +176,13 @@ public class SchedulePaymentFragment extends BaseFragment {
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(final Bundle savedInstanceState) {
 		if(savedInstanceState != null) {
 			savedBundle = new Bundle(savedInstanceState);
 		}
-		
+
 		super.onCreate(savedInstanceState);
-		
+
 	}
 
 	/**
@@ -189,12 +190,12 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * its parent must implement. Used to pass information back to the Activity.
 	 */
 	@Override
-	public void onAttach(Activity activity) {
+	public void onAttach(final Activity activity) {
 		super.onAttach(activity);
 
 		try {
 			canceledListener = (OnPaymentCanceledListener) activity;
-		} catch (ClassCastException e) {
+		} catch (final ClassCastException e) {
 			Log.e("SchedulePayment",
 					"Activity must implement OnPaymentCanceledListener.");
 		}
@@ -204,7 +205,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	@Override
 	public void onStart() {
 		if (amountEdit.getText().length() < 1) {
-			BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
+			final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
 			InputMethodManager imm = activity.getInputMethodManager();
 			amountEdit.requestFocus();
 			imm.showSoftInput(amountEdit, InputMethodManager.SHOW_IMPLICIT);
@@ -219,7 +220,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		outState.putInt(PAY_FROM_ACCOUNT_ID, accountIndex);
 		outState.putString(AMOUNT, amountEdit.getText().toString());
-		String[] datesToSave = dateText.getText().toString().split("/");
+		final String[] datesToSave = dateText.getText().toString().split("/");
 		outState.putString(DATE_DAY, datesToSave[1]);
 		outState.putString(DATE_MONTH, datesToSave[0]);
 		outState.putString(DATE_YEAR, datesToSave[2]);
@@ -281,7 +282,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 						bankUser.getAccounts().accounts);
 
 				accountAdapter
-						.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
+				.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
 				paymentAccountSpinner.setAdapter(accountAdapter);
 			}
 		}
@@ -300,13 +301,13 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * @return Name of default account
 	 */
 	private String defaultPaymentAccount() {
-		for (Account a : bankUser.getAccounts().accounts) {
+		for (final Account a : bankUser.getAccounts().accounts) {
 			if (a.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {
 				accountId = Integer.valueOf(a.id);
 				return a.nickname;
 			}
 		}
-		for (Account a : bankUser.getAccounts().accounts) {
+		for (final Account a : bankUser.getAccounts().accounts) {
 			if (a.type.equalsIgnoreCase(Account.ACCOUNT_MMA)) {
 				accountId = Integer.valueOf(a.id);
 				return a.nickname;
@@ -319,7 +320,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * Loads the required view-data from the bundle/resources.
 	 */
 	private void loadDataFromBundle() {
-		Bundle b = getArguments();
+		final Bundle b = getArguments();
 		if (b != null) {
 			payee = (PayeeDetail) b
 					.getSerializable(BankExtraKeys.SELECTED_PAYEE);
@@ -330,39 +331,39 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * Instantiates the Cancel Button's modal and the modal's button listeners.
 	 */
 	private void setupCancelButton() {
-		ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(
+		final ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(
 				getActivity(), null);
 		cancelModalTopView.setTitle(R.string.schedule_pay_cancel_title);
 		cancelModalTopView.setContent(R.string.schedule_pay_cancel_body);
 		cancelModalTopView.hideNeedHelpFooter();
 
-		ModalDefaultTwoButtonBottomView cancelModalButtons = new ModalDefaultTwoButtonBottomView(
+		final ModalDefaultTwoButtonBottomView cancelModalButtons = new ModalDefaultTwoButtonBottomView(
 				getActivity(), null);
 		cancelModalButtons
-				.setCancelButtonText(R.string.schedule_pay_cancel_button_cancel);
+		.setCancelButtonText(R.string.schedule_pay_cancel_button_cancel);
 		cancelModalButtons
-				.setOkButtonText(R.string.schedule_pay_cancel_button_confirm);
+		.setOkButtonText(R.string.schedule_pay_cancel_button_confirm);
 
 		final ModalAlertWithTwoButtons cancelModal = new ModalAlertWithTwoButtons(
 				getActivity(), cancelModalTopView, cancelModalButtons);
 		((BankNavigationRootActivity) getActivity())
-				.showCustomAlert(cancelModal);
+		.showCustomAlert(cancelModal);
 
 		cancelModalButtons.getOkButton().setOnClickListener(
 				new OnClickListener() {
 					@Override
-					public void onClick(View v) {
+					public void onClick(final View v) {
 						canceledListener.onPaymentCanceled();
 						cancelModal.dismiss();
 						((BankNavigationRootActivity) getActivity())
-								.popTillFragment(BankSelectPayee.class);
+						.popTillFragment(BankSelectPayee.class);
 					}
 				});
 
 		cancelModalButtons.getCancelButton().setOnClickListener(
 				new OnClickListener() {
 					@Override
-					public void onClick(View v) {
+					public void onClick(final View v) {
 						cancelModal.dismiss();
 					}
 				});
@@ -386,7 +387,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 			chosenPaymentDate.set(year, month - 1, day);
 
 		} else {
-			String date = CommonUtils.getFormattedDate(
+			final String date = CommonUtils.getFormattedDate(
 					earliestPaymentDate.get(Calendar.MONTH),
 					earliestPaymentDate.get(Calendar.DAY_OF_MONTH),
 					earliestPaymentDate.get(Calendar.YEAR));
@@ -443,8 +444,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * @param showEditable
 	 *            shows the editable field if true; the text field if false.
 	 */
-	private void flipMemoElements(boolean showEditable) {
-		BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
+	private void flipMemoElements(final boolean showEditable) {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
 		InputMethodManager imm = activity.getInputMethodManager();
 
 		// EditText will be shown.
@@ -470,7 +471,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * Limits the memo's character length and prevents invalid characters.
 	 */
 	private void setMemoFieldValidation() {
-		InputFilter[] filters = new InputFilter[2];
+		final InputFilter[] filters = new InputFilter[2];
 		filters[0] = new InvalidCharacterFilter();
 		filters[1] = new InputFilter.LengthFilter(MAX_CHAR_MEMO);
 		memoEdit.setFilters(filters);
@@ -483,8 +484,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * @param isError
 	 *            displays the error if true, and normal if false.
 	 */
-	public void setDateError(boolean isError) {
-		int padding = (int) getResources().getDimension(
+	public void setDateError(final boolean isError) {
+		final int padding = (int) getResources().getDimension(
 				R.dimen.between_related_elements_padding);
 		isDateError = isError;
 		if (isError) {
@@ -510,7 +511,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * @param isError
 	 *            displays the error if true, and hides it if false.
 	 */
-	public void setDuplicatePaymentError(boolean isError) {
+	public void setDuplicatePaymentError(final boolean isError) {
 		if (isError) {
 			conflictError.setVisibility(View.VISIBLE);
 		} else {
@@ -526,8 +527,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * @param date
 	 * @return
 	 */
-	private String getPaymentDate(String date) {
-		Matcher m = r8601.matcher(date);
+	private String getPaymentDate(final String date) {
+		final Matcher m = r8601.matcher(date);
 		if (m.lookingAt()) {
 			earliestPaymentDate = Calendar.getInstance();
 			// Month - 1 is because Calendar starts Months at 0.
@@ -573,7 +574,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 		parentView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
-			public boolean onTouch(View v, MotionEvent event) {
+			public boolean onTouch(final View v, final MotionEvent event) {
 				if (!v.equals(memoEdit)) {
 					flipMemoElements(false);
 				}
@@ -586,7 +587,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		memoItem.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(final View arg0) {
 				if (memoText.getVisibility() == View.VISIBLE) {
 					flipMemoElements(true);
 				}
@@ -595,7 +596,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		memoEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
+			public void onFocusChange(final View v, final boolean hasFocus) {
 				if (!hasFocus) {
 					flipMemoElements(false);
 				}
@@ -604,31 +605,31 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		paymentAccountItem.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				paymentAccountSpinner.performClick();
 			}
 		});
 
 		paymentAccountSpinner
-				.setOnItemSelectedListener(new OnItemSelectedListener() {
-					@Override
-					public void onItemSelected(final AdapterView<?> parent,
-							final View v, final int position, final long id) {
-						final Account a = (Account) paymentAccountSpinner
-								.getSelectedItem();
-						accountId = Integer.valueOf(a.id);
-						accountIndex = position;
-						paymentAccountText.setText(a.nickname);
-					}
+		.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(final AdapterView<?> parent,
+					final View v, final int position, final long id) {
+				final Account a = (Account) paymentAccountSpinner
+						.getSelectedItem();
+				accountId = Integer.valueOf(a.id);
+				accountIndex = position;
+				paymentAccountText.setText(a.nickname);
+			}
 
-					@Override
-					public void onNothingSelected(AdapterView<?> arg0) {
-					}
-				});
+			@Override
+			public void onNothingSelected(final AdapterView<?> arg0) {
+			}
+		});
 
 		dateItem.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				setDateError(false);
 				deliverByDatePicker.show();
 			}
@@ -637,30 +638,30 @@ public class SchedulePaymentFragment extends BaseFragment {
 		deliverByDatePicker = new CustomTitleDatePickerDialog(getActivity(),
 				new OnDateSetListener() {
 
-					@Override
-					public void onDateSet(final DatePicker v, final int year,
-							final int month, final int day) {
-						setChosenPaymentDate(year, month + 1, day);
-					}
-				}, earliestPaymentDate.get(Calendar.YEAR),
-				earliestPaymentDate.get(Calendar.MONTH),
-				earliestPaymentDate.get(Calendar.DAY_OF_MONTH),
-				getString(R.string.schedule_pay_date_picker_title));
+			@Override
+			public void onDateSet(final DatePicker v, final int year,
+					final int month, final int day) {
+				setChosenPaymentDate(year, month + 1, day);
+			}
+		}, earliestPaymentDate.get(Calendar.YEAR),
+		earliestPaymentDate.get(Calendar.MONTH),
+		earliestPaymentDate.get(Calendar.DAY_OF_MONTH),
+		getString(R.string.schedule_pay_date_picker_title));
 
 		cancelButton.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				setupCancelButton();
 			}
 		});
 
 		payNowButton.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(final View arg0) {
 				setDuplicatePaymentError(false);
-				
+
 				if (!isDateError && amountEdit.isValid()) {
-					String memo = memoText.getText().toString();
+					final String memo = memoText.getText().toString();
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
 					payment.payee = payee.id;
 					payment.amount = CommonUtils
@@ -676,9 +677,19 @@ public class SchedulePaymentFragment extends BaseFragment {
 						payment.memo = memo;
 					}
 					BankServiceCallFactory.createMakePaymentCall(payment)
-							.submit();
+					.submit();
 				}
 			}
 		});
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_SECTION;
 	}
 }

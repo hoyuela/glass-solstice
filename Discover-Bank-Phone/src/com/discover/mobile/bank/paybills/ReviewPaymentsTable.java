@@ -7,12 +7,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankRotationHelper;
-import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
@@ -170,6 +171,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 					//Generate a url to download schedule payments
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}else{
+					updateAdapter(scheduled.payments);
 				}
 			}
 		});
@@ -182,6 +185,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 					//Generate a url to download completed payments
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.COMPLETED);
 					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}else{
+					updateAdapter(completed.payments);
 				}
 			}
 		});
@@ -194,6 +199,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 					//Generate a url to download cancelled payments
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.CANCELLED);
 					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}else{
+					updateAdapter(canceled.payments);
 				}
 			}
 		});
@@ -353,5 +360,15 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	public void showFooterMessage() {
 		footer.showEmpty(getEmptyStringText());
 
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.REVIEW_PAYEMENTS_SECTION;
 	}
 }

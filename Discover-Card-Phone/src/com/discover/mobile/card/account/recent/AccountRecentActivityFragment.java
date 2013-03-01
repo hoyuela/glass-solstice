@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.account.AccountSearchTransactionFragment;
 import com.discover.mobile.card.account.summary.LatePaymentModalTop;
@@ -146,11 +147,11 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	private void resumeFragment() {
 		final RecentActivityRotationHelper helper = RecentActivityRotationHelper
 				.getHelper();
-		this.currentRange = helper.getCurrentRange();
-		this.pending.showTransactions(helper.getPending());
-		this.posted.showTransactions(helper.getPosted());
-		this.periods = helper.getPeriods();
-		this.transactions = helper.getTransactions();
+		currentRange = helper.getCurrentRange();
+		pending.showTransactions(helper.getPending());
+		posted.showTransactions(helper.getPosted());
+		periods = helper.getPeriods();
+		transactions = helper.getTransactions();
 		helper.clearHelper();
 		showTransactions();
 	}
@@ -410,5 +411,15 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		if (null != transactions && null != transactions.loadMoreLink) {
 			loadMoreTransactions(transactions.loadMoreLink);
 		}
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return CardMenuItemLocationIndex.ACCOUNT_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return CardMenuItemLocationIndex.RECENT_ACTIVITY_SECTION;
 	}
 }

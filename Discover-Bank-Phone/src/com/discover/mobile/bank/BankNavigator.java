@@ -16,6 +16,8 @@ import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
+import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.BankPayConfirmFragment;
@@ -108,9 +110,12 @@ public final class BankNavigator {
 	 * 
 	 * @param activity Reference to Activity from where it will navigate to home page
 	 */
-	public static void navigateToHomePage(final Activity activity) {
+	public static void navigateToHomePage() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
 		if( activity.getClass() != BankNavigationRootActivity.class ) {
 			final Intent home = new Intent(activity, BankNavigationRootActivity.class);
+			home.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			activity.startActivity(home);
 
 			//Close current activity
