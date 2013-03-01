@@ -2,8 +2,11 @@ package com.discover.mobile.bank.framework;
 
 import java.io.Serializable;
 import java.net.HttpURLConnection;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,7 +15,6 @@ import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.R.string;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.bank.login.LoginActivity;
@@ -65,7 +67,7 @@ import com.google.common.base.Strings;
  *
  */
 final public class BankNetworkServiceCallManager extends NetworkServiceCallManager implements StartListener, SuccessListener<Serializable>,
-ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
+ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	/**
 	 * Used to print logs into Android logcat
 	 */
@@ -98,6 +100,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	 */
 	private BankNetworkServiceCallManager() {
 		errorHandler = new BankBaseErrorResponseHandler((ErrorHandlerUi) DiscoverActivityManager.getActiveActivity());
+		DiscoverActivityManager.addListener(this);
 	}
 
 	/**
@@ -185,7 +188,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	 * FIXME: This will need to be implemented properly
 	 * @return 
 	 */
-	protected boolean customHandleSuccessResult(final NetworkServiceCall<?> sender, final Serializable result, Bundle bundle){ 
+	protected boolean customHandleSuccessResult(final NetworkServiceCall<?> sender, final Serializable result, final Bundle bundle){ 
 		this.success(sender,result);
 		return true;
 	}
@@ -199,9 +202,22 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	@Override
 	public void success(final NetworkServiceCall<?> sender, final Serializable result) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
-
+		
+		//If Strong Auth Activity is open close it only in the case when the user is NOT logging in
+		if( !(sender instanceof CreateStrongAuthRequestCall) && 		//Shouldn't close strong auth page on a strong auth success
+			!(sender instanceof CustomerServiceCall) &&					//Customer Service call is only made when logging in
+			!(sender instanceof GetCustomerAccountsServerCall) &&       //Account Download is only made when logging in
+			DiscoverActivityManager.getActiveActivity() instanceof EnhancedAccountSecurityActivity) {
+			//Bring Navigation Root Activity to the foreground, to allow to switch fragments on it
+			BankNavigator.navigateToHomePage();
+			
+			//Handle success for a service call after Navigation root activity is in the foreground.
+			//Cannot swap fragments on the navigation root activity because it is not in the foreground
+			//during a strong auth or after. Have to wait for navigation root to come to foreground first.
+			this.handleSuccessLater(sender, result);
+		}
 		//Download Customer Information if a Login call is successful
-		if( sender instanceof CreateBankLoginCall ) {
+		else if( sender instanceof CreateBankLoginCall ) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
 
 			//Set logged in to be able to save user name in persistent storage
@@ -219,7 +235,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 				BankServiceCallFactory.createGetCustomerAccountsServerCall().submit();
 			} else {
 				//Navigate to home page which will open the Open Accounts view page
-				BankNavigator.navigateToHomePage(activeActivity);
+				BankNavigator.navigateToHomePage();
 			}
 		}
 		//If a GET request for terms and conditions succeeds, navigate to the terms and conditions page
@@ -250,7 +266,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		}
 		//Navigate to Account Summary landing page once Account Summary is downloaded
 		else if( sender instanceof GetCustomerAccountsServerCall) {
-			BankNavigator.navigateToHomePage(activeActivity);
+			BankNavigator.navigateToHomePage();
 		}
 		//Display StrongAuth Page if it is a response to a StrongAuth GET request with a question or retansmit previous NetworkServiceCall<>
 		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isGetCall()) {
@@ -268,12 +284,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 		}
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
 		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isPostCall() ) {
-			//If Strong Auth Activity is open close it, so that it goes back to NavigationRootActivity
-			if( DiscoverActivityManager.getActiveActivity() instanceof EnhancedAccountSecurityActivity) {
-				final EnhancedAccountSecurityActivity activity =  (EnhancedAccountSecurityActivity)DiscoverActivityManager.getActiveActivity();
-				activity.finish();
-			}
-
 			//Retransmit the previous call that triggered the Strong Auth call
 			prevCall.retransmit(activeActivity);
 		}
@@ -347,6 +357,47 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 			}
 		}
 	}
+	
+	/**
+	 * Method used after successfully answering a Strong Auth Challenge Question and receiving a successful response to the
+	 * NetworkSerivceCall<> that triggered the Strong Auth Challenge. Must wait for the Strong Auth Activity to close
+	 * and the NavigationRootActivity to resume in order to handle the success event, which may require changing fragments on 
+	 * the NavigationRootActivity.
+	 * 
+	 * @param sender Reference to NetworkServiceCall<> which has received a successful response.
+	 * @param result Result from NetworkServiceCall<> response if any
+	 */
+	private void handleSuccessLater(final NetworkServiceCall<?> sender, final Serializable result) {
+		final AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+			/**
+			 * Thid method does not execute in a UI Thread
+			 */
+			@Override
+			protected Void doInBackground(final Void... params) {	
+				synchronized (instance) {
+					/**Wait for Navigation root activity to be brought to the foreground*/
+					try {
+						instance.wait();
+					} catch (final InterruptedException e) {
+						if( Log.isLoggable(TAG, Log.ERROR)) {
+							Log.e(TAG,"An error occurred while waiting for activities to switch.");
+						}
+					}
+				}
+				return null;
+			}
+			
+			/**
+			 * This method is executed in a UI thread after doInBackground has completed.
+			 */
+			@Override
+			protected void onPostExecute(final Void arg) {
+				success(sender, result);
+			}
+	    };
+	    
+		task.execute();
+	}
 
 	/**
 	 * Method defines the implementation of the complete callback defined by CompletionListener.
@@ -362,13 +413,28 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 
 	}
 
+	/**
+	 * Method used to retrieve the last service call made by the application
+	 */
+	@Override
 	public NetworkServiceCall<?> getLastServiceCall() {
 		return curCall;
 	}
 
+
 	@Override
 	protected AccountType getAccountType() {
 		return AccountType.BANK_ACCOUNT;
+	}
+
+	/**
+	 * Method used to notify this class when the active Activity has changed on the application.
+	 */
+	@Override
+	public void update(final Observable arg0, final Object arg1) {
+		synchronized (instance) {
+			instance.notifyAll();
+		}
 	}
 
 }

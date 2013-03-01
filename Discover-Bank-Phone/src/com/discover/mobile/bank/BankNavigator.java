@@ -110,9 +110,12 @@ public final class BankNavigator {
 	 * 
 	 * @param activity Reference to Activity from where it will navigate to home page
 	 */
-	public static void navigateToHomePage(final Activity activity) {
+	public static void navigateToHomePage() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
 		if( activity.getClass() != BankNavigationRootActivity.class ) {
 			final Intent home = new Intent(activity, BankNavigationRootActivity.class);
+			home.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			activity.startActivity(home);
 
 			//Close current activity
