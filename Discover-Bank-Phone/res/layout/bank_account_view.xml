@@ -15,9 +15,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="@dimen/between_related_elements_padding"
-        android:layout_marginBottom="@dimen/between_related_elements_padding"
         android:text="@string/acct_nickname_str"
-        style="@style/normal_static_text"/>
+        style="@style/light_static_text"/>
 	 	 
 	  <TextView
         android:id="@+id/acct_ending"
@@ -28,7 +27,7 @@
         android:layout_toLeftOf="@+id/acct_carat"
         android:layout_margin="@dimen/between_related_elements_padding"
         android:text="@string/acct_ending_str"
-        style="@style/normal_static_text"/>
+        style="@style/light_static_text"/>
 	  	 
 	 <TextView
         android:id="@+id/acct_balance"
@@ -40,10 +39,10 @@
         android:text="@string/acct_balance_str"
         style="@style/page_title"/>
 	 
-	  <View
+	  <ImageView
         android:id="@+id/acct_carat"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
        	android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/blue_arrow_right"/>

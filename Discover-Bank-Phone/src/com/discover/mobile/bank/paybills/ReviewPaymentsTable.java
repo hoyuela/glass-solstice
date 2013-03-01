@@ -170,6 +170,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 					//Generate a url to download schedule payments
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}else{
+					updateAdapter(scheduled.payments);
 				}
 			}
 		});
@@ -182,6 +184,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 					//Generate a url to download completed payments
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.COMPLETED);
 					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}else{
+					updateAdapter(completed.payments);
 				}
 			}
 		});
@@ -194,6 +198,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 					//Generate a url to download cancelled payments
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.CANCELLED);
 					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}else{
+					updateAdapter(canceled.payments);
 				}
 			}
 		});

@@ -35,8 +35,11 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	/**Resources of the application*/
 	private final Resources res;
 
-	/*Fragment currently displayed*/
+	/**Fragment currently displayed*/
 	private final ReviewPaymentsTable fragment;
+
+	/**Integer value to convert from cents to dollar*/
+	private static final int DOLLAR_CONVERSION = 100;
 
 	/**
 	 * Constuctor for the adapter
@@ -95,7 +98,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		/**Update the display values*/
 		holder.date.setText(convertDate(detail));
 		holder.payee.setText(detail.payee.nickName);
-		final double amount = Double.parseDouble(detail.amount.value);
+		final double amount = Double.parseDouble(detail.amount.value)/DOLLAR_CONVERSION;
 		if(amount < 0){
 			holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
 		}else{
