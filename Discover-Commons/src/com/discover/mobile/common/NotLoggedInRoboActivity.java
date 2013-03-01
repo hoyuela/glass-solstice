@@ -48,6 +48,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	/**
 	 * Child class must supply proper error handler
 	 */
+	@Override
 	public abstract ErrorHandler getErrorHandler();
 
 
@@ -57,12 +58,25 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 
 		DiscoverActivityManager.setActiveActivity(this);
 		
+		//If a modal was showing show the modal
+		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
+			DiscoverModalManager.getActiveModal().show();
+			DiscoverModalManager.setAlertShowing(true);
+		}
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		closeDialog();
+		
+		//Close the modal if it is showing
+		if(null != DiscoverModalManager.getActiveModal() && DiscoverModalManager.getActiveModal().isShowing()){
+			DiscoverModalManager.getActiveModal().dismiss();
+			DiscoverModalManager.setAlertShowing(true);
+		}else{
+			DiscoverModalManager.setAlertShowing(false);
+		}
 	}
 
 	/**
@@ -233,6 +247,9 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 
 	@Override
 	public void showCustomAlert(final AlertDialog alert) {
+		DiscoverModalManager.setActiveModal(alert);
+		DiscoverModalManager.setAlertShowing(true);
+		
 		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
