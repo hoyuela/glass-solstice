@@ -21,7 +21,7 @@ import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 
 /**
- * View that allows the user to view posted and scheduled acvitivies for an account
+ * View that allows the user to view posted and scheduled activities for an account
  * @author jthornton
  *
  */
@@ -49,11 +49,17 @@ public class BankAccountActivityTable extends BaseTable{
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
 		setIsLoadingMore(false);
+		super.refreshListener();
+		footer.showDone();
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		if(header.isPosted()){
 			handleReceivedData(posted, list);
 		}else{
 			handleReceivedData(scheduled, list);
+		}
+		final ReceivedUrl url = getLoadMoreUrl();
+		if(null == url){
+			showNothingToLoad();
 		}
 	}
 
@@ -151,6 +157,7 @@ public class BankAccountActivityTable extends BaseTable{
 	public void maybeLoadMore() {
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
+			showNothingToLoad();
 			footer.showDone();
 		}else{
 			footer.showLoading();
@@ -272,6 +279,7 @@ public class BankAccountActivityTable extends BaseTable{
 				scrollToTop();
 			}
 		});
+		footer.showDone();
 	}
 
 	/**

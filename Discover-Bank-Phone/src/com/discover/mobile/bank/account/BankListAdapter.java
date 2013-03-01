@@ -66,6 +66,11 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	public View getView(final int position, View view, final ViewGroup parent){
 		ItemViewHolder holder = null;
 
+		/**Show the header if is is at the top of the list*/
+		if (position == 0){
+			view = fragment.getHeader();
+			return view;
+		}
 		/**If the details is empty show the message*/
 		if(details.isEmpty()){
 			fragment.showFooterMessage();
@@ -74,13 +79,12 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		}
 
 		/**At the end of the list try loading more*/
-		if(position == details.size()){
-			fragment.maybeLoadMore();
+		if(position == details.size() + 1){
 			view = fragment.getFooter();
 			return view;
 		}
 
-		final ActivityDetail detail = details.get(position);
+		final ActivityDetail detail = details.get(position-1);
 		/**If the view is null, create a new one*/
 		if(null == view || !(view.getTag() instanceof ItemViewHolder)){
 			holder = new ItemViewHolder();
@@ -117,7 +121,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	 */
 	@Override
 	public int getCount(){
-		return details.size()+1;
+		return details.size() + 2;
 	}
 
 	/**
