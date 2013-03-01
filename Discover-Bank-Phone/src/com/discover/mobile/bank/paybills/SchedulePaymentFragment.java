@@ -272,7 +272,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 */
 	private void setInitialViewData() {
 		if (payee != null) {
-			dateText.setText(getPaymentDate(payee.paymentDate.date));
+			dateText.setText(getPaymentDate(payee.paymentDate));
 			payeeText.setText(payee.nickName);
 			paymentAccountText.setText(defaultPaymentAccount());
 

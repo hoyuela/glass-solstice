@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.discover.mobile.bank.services.account.AccountNumber;
-import com.discover.mobile.common.net.json.bank.Date;
 import com.discover.mobile.common.net.json.bank.PhoneNumber;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -68,7 +67,7 @@ public class PayeeDetail implements Serializable{
 
 	/**Earliest payment date*/
 	@JsonProperty("earliestPaymentDate")
-	public Date paymentDate;
+	public String paymentDate;
 
 	/**Boolean for if the payee is verified*/
 	@JsonProperty("isVerified")
@@ -77,11 +76,11 @@ public class PayeeDetail implements Serializable{
 	/**Payee phone number*/
 	@JsonProperty("phone")
 	public PhoneNumber phone;
-	
+
 	/**Payee address for Unmanaged payees*/
 	@JsonProperty("address")
 	public Address address;
-	
+
 	/**Payee memo, for Unmanaged payees*/
 	@JsonProperty("memo")
 	public String memo;

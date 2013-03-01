@@ -411,6 +411,8 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	public void onBackPressed() {
 		activityResult = RESULT_CANCELED;
 		finish();
+		
+		super.onBackPressed();
 	}
 
 	/**
