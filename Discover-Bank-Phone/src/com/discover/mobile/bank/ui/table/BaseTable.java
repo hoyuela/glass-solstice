@@ -11,6 +11,10 @@ import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 /**
  * Base table item.  Forces the sub classes to implement exactly what it needs
@@ -22,7 +26,7 @@ import com.discover.mobile.common.BaseFragment;
 public abstract class BaseTable extends BaseFragment  implements DynamicDataFragment{
 
 	/**List View holding the data*/
-	private ListView table;
+	private PullToRefreshListView table;
 
 	/**Bundle to load data from*/
 	private Bundle loadBundle;
@@ -39,19 +43,33 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_list, null);
-		table = (ListView) view.findViewById(R.id.bank_table);
+		table = (PullToRefreshListView) view.findViewById(R.id.bank_table);
 
 		createDefaultLists();
 		setupHeader();
 		setupFooter();
 		setupAdapter();
-
-		//table.addFooterView(getFooter());
-		table.addHeaderView(getHeader());
-		table.setDivider(getResources().getDrawable(R.drawable.table_dotted_line));
-		//table.setFooterDividersEnabled(true);
-
 		return view;
+	}
+
+	/**
+	 * Set up the table
+	 */
+	private void setUpTable(){
+		table.setMode(Mode.PULL_FROM_END);
+		table.setShowDividers(R.drawable.table_dotted_line);
+		table.getLoadingLayoutProxy().setLoadingDrawable(null);
+		table.getLoadingLayoutProxy().setPullLabel("");
+		table.getLoadingLayoutProxy().setRefreshingLabel("");
+		table.getLoadingLayoutProxy().setReleaseLabel("");
+		table.setOnRefreshListener(new OnRefreshListener<ListView>() {
+			@Override
+			public void onRefresh(final PullToRefreshBase<ListView> refreshView) {
+				table.setShowViewWhileRefreshing(false);
+				maybeLoadMore();
+
+			}
+		});
 	}
 
 
@@ -71,6 +89,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	@Override
 	public void onResume(){
 		super.onResume();
+		setUpTable();
 		final Bundle bundle = BankRotationHelper.getHelper().getBundle();
 		loadBundle = (null == bundle) ? this.getArguments() : bundle;
 		loadDataFromBundle(loadBundle);
@@ -169,6 +188,21 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	@Override
 	public boolean getIsLoadingMore(){
 		return isLoadingMore;
+	}
+
+	/**
+	 * Refresh the pull to reset listener so that it can load more
+	 */
+	public void refreshListener(){
+		table.onRefreshComplete();
+		table.setShowViewWhileRefreshing(true);
+	}
+
+	/**
+	 * Stop the table from showing that it can be refreshed
+	 */
+	public void showNothingToLoad(){
+		table.setMode(Mode.DISABLED);
 	}
 
 }
