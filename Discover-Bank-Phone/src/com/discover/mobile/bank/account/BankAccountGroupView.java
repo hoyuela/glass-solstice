@@ -43,6 +43,11 @@ public class BankAccountGroupView extends LinearLayout  {
 	 */
 	final LinearLayout layout;
 	
+	/** Reference to the last {@code BankAccountView} that belongs to this view. */
+	private BankAccountView lastAccountReference;
+	/** Reference to the first {@code BankAccountView} that belongs to this view. */
+	private BankAccountView firstAccountReference;
+	
 	public BankAccountGroupView(final Context context) {
 		super(context);
 		
@@ -51,6 +56,8 @@ public class BankAccountGroupView extends LinearLayout  {
 		type = (TextView)layout.findViewById(R.id.acct_type);
 		total = (TextView) layout.findViewById(R.id.acct_all_total);
 		acctList = new ArrayList<Account>();
+		lastAccountReference = null;
+		firstAccountReference = null;
 		
 		addView(layout);
 		
@@ -115,18 +122,40 @@ public class BankAccountGroupView extends LinearLayout  {
 	 * @param account Reference to an account object 
 	 */
 	public void addAccount(final Account account) {
-		if( null != account ) {						
-			//Set the title for the group
-			type.setText(getGroupTitle(account));
-			
-			layout.addView(new BankAccountView(this.getContext(), account));
-			
-			this.addToBlance(account.balance);
-
-			this.acctList.add(account);
-					
-			//Show Balance only if more than one account in group
-			showBalance(acctList.size() > 1);
+		if( null != account ) {
+			if( acctList.size() == 0 || acctList.get(0).type.equals(account.type)) {
+				/**Use name for grouping otherwise use type*/
+				final String groupName = (Strings.isNullOrEmpty(account.name)) ? account.type : account.name;
+				
+				if(acctList.size() == 0 ) {
+					//Set the name for the group
+					type.setText(groupName);
+				} else {
+					if( !groupName.endsWith("s")) {
+						//Set the name for the group with s at the end if more than one
+						type.setText(groupName +"s");
+					}
+				}
+				
+				
+				layout.addView(lastAccountReference = new BankAccountView(this.getContext(), account));
+				
+				if(firstAccountReference == null) {
+					firstAccountReference = lastAccountReference;
+				}
+				
+				
+				this.addToBlance(account.balance);
+	
+				this.acctList.add(account);
+						
+				//Show Balance only if more than one account in group
+				showBalance(acctList.size() > 1);
+			} else {
+				if( Log.isLoggable(TAG, Log.ERROR)) {
+					Log.e(TAG, "Unable to add account to group [Invalid Type]");
+				}
+			}
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Unable to add account to group [Null]");
@@ -169,6 +198,43 @@ public class BankAccountGroupView extends LinearLayout  {
 		
 		return ret;
 	}
+	
+	/**
+	 * Returns the number of {@code BankAccountView} belonging to this group.
+	 * 
+	 * @return number of children in group.
+	 */
+	public int getGroupSize() {
+		return acctList.size();
+	}
 
+	/**
+	 * Draws a solid stroke (not dashed) on the bottom of the last element of
+	 * the group.
+	 * 
+	 * @param context
+	 */
+	public void addBottomStroke(Context context) {
+		lastAccountReference.drawBottomStroke(context);
+	}
 
+	/**
+	 * Draws a solid stroke (not dashed) on the top of the first element of the
+	 * group.
+	 * 
+	 * @param context
+	 */
+	public void addTopStroke(Context context) {
+		firstAccountReference.drawTopStroke(context);
+	}
+
+	/**
+	 * Draws a solid stroke (not dashed) on all sides of the first element of
+	 * the group.
+	 * 
+	 * @param context
+	 */
+	public void addAllStrokes(Context context) {
+		firstAccountReference.drawAllStrokes(context);
+	}
 }

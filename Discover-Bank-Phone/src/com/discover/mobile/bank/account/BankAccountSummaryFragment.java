@@ -104,7 +104,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 			final HashMap<String, BankAccountGroupView> groupsMap = new HashMap<String, BankAccountGroupView>();
 
 			Collections.sort(accountList.accounts, new BankAccountComparable());
-
+			BankAccountGroupView prevGroup = null;
 			//Iterate through list of accounts, group them together and add to the summary list view
 			for(final Account account : accountList.accounts) {
 				final String groupKey = account.getGroupCategory();
@@ -114,9 +114,17 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				
 				//if group type does not exist add new group to hashmap
 				if( null == group ) {
+					// Ensures that previous group has last element drawn correctly.
+					if(prevGroup != null) {
+						if(prevGroup.getGroupSize() == 1) {
+							prevGroup.addAllStrokes(context);
+						} else {
+							prevGroup.addBottomStroke(context);
+						}
+					}
 					//Create new group to hold list of accounts for the type specified in account
 					group = new BankAccountGroupView(context);
-
+					prevGroup = group;
 					//Add group to hashmap to help sort
 					groupsMap.put(groupKey, group);
 
@@ -124,13 +132,21 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 					accountSummary.addView(group);
 				}
 
-				//Add account to group
-				group.addAccount(account);	
-			}	
-		} else {
-			if( Log.isLoggable(TAG, Log.WARN)) {
-				Log.w(TAG, "Account List is Empty");
+				// Add account to group
+				group.addAccount(account);
+				group.addTopStroke(context);
 			}
+			//Ensures the last group drawn has the bottom as a solid stroke.
+			if(prevGroup != null) {
+				if(prevGroup.getGroupSize() == 1) {
+					prevGroup.addAllStrokes(context);
+				} else {
+					prevGroup.addBottomStroke(context);
+				}
+			}
+		} else {
+			//TODO: Log an error
+			return;
 		}
 
 	}

@@ -174,4 +174,64 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 		//Send Request to download the current accounts posted activity
 		BankServiceCallFactory.createGetActivityServerCall(link).submit();
 	}
+
+	/**
+	 * Changes this view's background drawable such that it draws a solid stroke
+	 * on all sides but the top, which is dashed.
+	 * 
+	 * @param context
+	 */
+	public void drawBottomStroke(final Context context) {
+		RelativeLayout lastView = (RelativeLayout) this
+				.getChildAt(0);
+		lastView.setBackgroundDrawable(context.getResources().getDrawable(
+				R.drawable.home_list_item_dash));
+		lastView.setPadding(
+				(int)context.getResources()
+						.getDimension(R.dimen.forms_inner_padding), 0,
+				(int)context.getResources()
+						.getDimension(R.dimen.forms_inner_padding),
+				(int)context.getResources()
+						.getDimension(R.dimen.table_inner_padding));
+	}
+	
+	/**
+	 * Changes this view's background drawable such that it draws a solid stroke
+	 * on all sides but the but the bottom, which is blank.
+	 * 
+	 * @param context
+	 */
+	public void drawTopStroke(final Context context) {
+		RelativeLayout lastView = (RelativeLayout) this
+				.getChildAt(0);
+		lastView.setBackgroundDrawable(context.getResources().getDrawable(
+				R.drawable.home_list_item_no_bottom_stroke));
+		lastView.setPadding(
+				(int)context.getResources()
+						.getDimension(R.dimen.forms_inner_padding), 0,
+				(int)context.getResources()
+						.getDimension(R.dimen.forms_inner_padding),
+				(int)context.getResources()
+						.getDimension(R.dimen.table_inner_padding));
+	}
+	
+	/**
+	 * Changes this view's background drawable such that it draws a solid stroke
+	 * on all sides.
+	 * 
+	 * @param context
+	 */
+	public void drawAllStrokes(final Context context) {
+		RelativeLayout lastView = (RelativeLayout) this
+				.getChildAt(0);
+		lastView.setBackgroundDrawable(context.getResources().getDrawable(
+				R.drawable.home_list_item));
+		lastView.setPadding(
+				(int)context.getResources()
+						.getDimension(R.dimen.forms_inner_padding), 0,
+				(int)context.getResources()
+						.getDimension(R.dimen.forms_inner_padding),
+				(int)context.getResources()
+						.getDimension(R.dimen.table_inner_padding));
+	}
 }
