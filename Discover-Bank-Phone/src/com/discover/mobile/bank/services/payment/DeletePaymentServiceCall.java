@@ -64,7 +64,6 @@ public class DeletePaymentServiceCall extends BankNetworkServiceCall<PaymentDeta
 	private static String generateUrl(final PaymentDetail pmt) {
 		final StringBuilder url = new StringBuilder();
 		url.append(BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY));
-		url.append(BankUrlManager.SLASH);
 		url.append(pmt.id);
 		url.append(BankUrlManager.DELETE_METHOD);
 		return url.toString();
