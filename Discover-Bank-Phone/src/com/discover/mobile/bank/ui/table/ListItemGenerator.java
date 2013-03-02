@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.ui.table;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,12 +10,12 @@ import java.util.Locale;
 import android.content.Context;
 import android.view.View;
 
+import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.util.BankStringFormatter;
-import com.discover.mobile.common.net.json.bank.Date;
 
 /**
  * this detail item class is able to return the individual table cells to present
@@ -23,7 +24,7 @@ import com.discover.mobile.common.net.json.bank.Date;
  * @author scottseward
  *
  */
-public class ListItemGenerator {
+public class ListItemGenerator { 
 
 	private ViewPagerListItem listItem;
 	private Context context = null;
@@ -208,10 +209,10 @@ public class ListItemGenerator {
 	public List<ViewPagerListItem> getScheduledPaymentDetailList(final PaymentDetail item) {
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
 
-		items.add(getPayeeCell(item.payee.name));
+		items.add(getPayeeCell(BankUser.instance().getPayees().getNameFromId(item.payee.id)));
 		items.get(0).getDividerLine().setVisibility(View.GONE);
 		items.add(getPayFromAccountCell(item.paymentAccount.accountNumber.ending, item.paymentAccount.nickname));
-		items.add(getAmountCell(item.amount.formatted));
+		items.add(getAmountCell(NumberFormat.getCurrencyInstance(Locale.US).format(item.amount)));
 		items.add(getPaymentDateCell(item));
 		items.add(getStatusCell(item.status));
 		items.add(getConfirmationCell(item.confirmationNumber));
@@ -251,19 +252,19 @@ public class ListItemGenerator {
 	 * @return a ViewPagerListItem that contains a formatted date.
 	 */
 	public ViewPagerListItem getPaymentDateCell(final PaymentDetail item) {
-		final Date dates;
+		final String dates;
 		final String itemStatus = item.status;
 		ViewPagerListItem paymentDateItem = null;
 
 		if("SCHEDULED".equals(itemStatus)){
-			dates = item.dates.get("deliverBy");
-			paymentDateItem = getDeliverByCell(dates.formattedDate);
-		}else if("COMPLETED".equals(itemStatus)){
-			dates = item.dates.get("deliveredOn");
-			paymentDateItem = getDeliveredOnCell(dates.formattedDate);
+			dates = item.deliverBy;
+			paymentDateItem = getDeliverByCell(convertDate(dates.split(PaymentDetail.DATE_DIVIDER)[0]));
+		}else if("PAID".equals(itemStatus)){
+			dates = item.deliverBy;
+			paymentDateItem = getDeliverByCell(convertDate(dates.split(PaymentDetail.DATE_DIVIDER)[0]));
 		}else if ("CANCELLED".equals(itemStatus)){
-			dates = item.dates.get("deliveredOn");
-			paymentDateItem = getDeliveredOnCell(dates.formattedDate);
+			dates = item.deliverBy;
+			paymentDateItem = getDeliverByCell(convertDate(dates.split(PaymentDetail.DATE_DIVIDER)[0]));
 		}
 
 		return paymentDateItem;
