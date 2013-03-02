@@ -22,22 +22,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *  "id": "000001",
  *	"name": "Comcast",
  *	"nickName": "Mom's Comcast",
- *	"accountNumber": "******1114",
+ *	"merchantNumber": -999,
+ *	"accountNumber": {
+ *      "ending": "6789",
+ *      "formatted": "****6789",
+ *      "unmaskedAccountNumber": "23456789"
+ *  },
  *	"earliestPaymentDate": "2013-01-30T05:00:00.000+0000",
- *	"isVerified": true,
- *	"phone": "800.841.3000",
+ *  "phoneNumber": {
+ *   	"number": "8955464564",
+ *      "type": "BUSINESS",
+ *      "formatted": "8955464564"
+ *  },
+ *  "address": {
+ * 		"streetAddress": "TX",
+ *      "postalCode": "75015null",
+ *      "type": "BUSINESS"
+ *  },	
+ *  "verified": true,
  *	"links": [
  *		"self" : {
  *			"ref": "https://beta.discoverbank.com/api/payees/000001",
- *			"allowed": ["GET"]
- *		},
- *		"update" : {
- *			"ref" : "https://beta.discoverbank.com/api/payees/000001/put",
- *			"allowed" : ["POST"]
- *		},
- *		"delete" : {
- *			"ref" : "https://beta.discoverbank.com/api/payees/000001/delete",
- *			"allowed" : ["POST"]
+ *			 "allowed": ["GET","POST","DELETE"]
  *		}
  *	]
  * 
@@ -61,6 +67,9 @@ public class PayeeDetail implements Serializable{
 	@JsonProperty("nickName")
 	public String nickName;
 
+	@JsonProperty("merchantNumber")
+	public String merchantNumber;
+	
 	/**Account number for the payee*/
 	@JsonProperty("accountNumber")
 	public AccountNumber account;
@@ -74,7 +83,7 @@ public class PayeeDetail implements Serializable{
 	public boolean verified;
 
 	/**Payee phone number*/
-	@JsonProperty("phone")
+	@JsonProperty("phoneNumber")
 	public PhoneNumber phone;
 
 	/**Payee address for Unmanaged payees*/
@@ -90,5 +99,4 @@ public class PayeeDetail implements Serializable{
 	 */
 	@JsonProperty("links")
 	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
-
 }

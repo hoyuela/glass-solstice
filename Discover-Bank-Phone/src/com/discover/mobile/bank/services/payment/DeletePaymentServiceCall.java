@@ -10,7 +10,7 @@ import android.content.Context;
 import com.discover.mobile.bank.services.BankNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.net.ServiceCallParams.DeleteCallParams;
+import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
@@ -33,10 +33,10 @@ import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 public class DeletePaymentServiceCall extends BankNetworkServiceCall<PaymentDetail> {
 	private final TypedReferenceHandler<PaymentDetail> handler;
 	private final PaymentDetail pmtDetails;
-	
+			
 	public DeletePaymentServiceCall(final Context context, 
 			final AsyncCallback<PaymentDetail> callback, final PaymentDetail pmt) {
-		super(context, new DeleteCallParams(BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY) +"/" +pmt.id) {
+		super(context, new PostCallParams(generateUrl(pmt)) {
 			{
 				//This service call is made after authenticating and receiving a token,
 				//therefore the session should not be cleared otherwise the token will be wiped out
@@ -61,6 +61,14 @@ public class DeletePaymentServiceCall extends BankNetworkServiceCall<PaymentDeta
 		this.handler = new SimpleReferenceHandler<PaymentDetail>(callback);
 	}
 
+	private static String generateUrl(final PaymentDetail pmt) {
+		final StringBuilder url = new StringBuilder();
+		url.append(BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY));
+		url.append(BankUrlManager.SLASH);
+		url.append(pmt.id);
+		url.append(BankUrlManager.DELETE_METHOD);
+		return url.toString();
+	}
 	@Override
 	protected TypedReferenceHandler<PaymentDetail> getHandler() {
 		return handler;
