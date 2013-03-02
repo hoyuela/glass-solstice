@@ -19,7 +19,6 @@ import java.util.Calendar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -489,8 +488,9 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 			@Override
 			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse messageErrorResponse) {
 				boolean handled = false;
-				progress.dismiss();
-				progress = null;
+				
+				if(progress != null && progress.isShowing())
+					progress.dismiss();
 				
 				resetScrollPosition();
 
@@ -583,7 +583,9 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	}
 
 	protected void checkForStrongAuth() {
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		//Used to prevent application from crashing during orientation
+		DiscoverModalManager.setActiveModal(progress);
+		DiscoverModalManager.setAlertShowing(true);
 
 		final AsyncCallbackAdapter<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
@@ -594,7 +596,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 
 			@Override
 			public void complete(final NetworkServiceCall<?> sender, final Object result) {
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+				
 			}
 
 			@Override
@@ -675,7 +677,9 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	private void getStrongAuthQuestion() {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		//Used to prevent application from crashing during orientation
+		DiscoverModalManager.setActiveModal(progress);
+		DiscoverModalManager.setAlertShowing(true);
 
 		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
 			@Override
@@ -696,7 +700,7 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 
 			@Override
 			public void complete(final NetworkServiceCall<?> sender, final Object result) {
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+				
 			}
 
 			@Override

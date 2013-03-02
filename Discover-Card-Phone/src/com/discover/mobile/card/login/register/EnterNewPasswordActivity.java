@@ -5,7 +5,6 @@ import static com.discover.mobile.common.StandardErrorCodes.SCHEDULED_MAINTENANC
 import static com.discover.mobile.common.net.error.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
 import static com.discover.mobile.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
 import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +16,7 @@ import com.discover.mobile.card.services.auth.forgot.ForgotPasswordTwoCall;
 import com.discover.mobile.card.services.auth.forgot.ForgotPasswordTwoDetails;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
@@ -161,28 +161,31 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 	private void submitFormInfo() {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 
-		//Lock orientation while request is being processed
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		//Used to prevent application from crashing during orientation
+		DiscoverModalManager.setActiveModal(progress);
+		DiscoverModalManager.setAlertShowing(true);
 
 		final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = 
 				new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
 
 			@Override
 			public void complete(final NetworkServiceCall<?> sender, final Object result) {
-				//Unlock orientation after request has been processed
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+				
 			}
 
 			@Override
 			public void success(final NetworkServiceCall<?> sender, final RegistrationConfirmationDetails responseData) {
-				progress.dismiss();
+				if( progress != null && progress.isShowing())
+					progress.dismiss();
+				
 				confirmationDetails = responseData;
 				retrieveAccountDetailsFromServer();
 			}
 
 			@Override
 			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
-				progress.dismiss();
+				if( progress != null && progress.isShowing())
+					progress.dismiss();
 
 				switch (errorResponse.getHttpStatusCode()) {	
 				default:
@@ -202,7 +205,9 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 
 			@Override
 			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse messageErrorResponse) {
-				progress.dismiss();
+				if( progress != null && progress.isShowing())
+					progress.dismiss();
+				
 				switch(messageErrorResponse.getMessageStatusCode()){
 
 				case REG_AUTHENTICATION_PROBLEM: 
