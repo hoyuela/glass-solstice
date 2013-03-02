@@ -58,6 +58,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
 		setIsLoadingMore(false);
+		super.refreshListener();
+		footer.showDone();
 		final int category = header.getCurrentCategory();
 		final ListPaymentDetail list = (ListPaymentDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
@@ -69,6 +71,10 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		}else{
 			canceled = (null == canceled) ? list : handleReceivedData(scheduled, list);
 			updateAdapter(canceled.payments);
+		}
+		final ReceivedUrl url = getLoadMoreUrl();
+		if(null == url){
+			showNothingToLoad();
 		}
 	}
 
@@ -126,6 +132,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	public void maybeLoadMore() {
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
+			showNothingToLoad();
 			footer.showDone();
 		}else{
 			footer.showLoading();
@@ -218,6 +225,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 				scrollToTop();
 			}
 		});
+		footer.showDone();
 	}
 
 	/**
@@ -255,7 +263,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		bundle.putSerializable(scheduleKey, scheduled);
 		bundle.putSerializable(completedKey, completed);
 		bundle.putSerializable(canceledKey, canceled);
-		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index);
+		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index-1);
 		BankRotationHelper.getHelper().setBundle(bundle);
 		BankNavigator.navigateToPaymentDetailScreen(bundle);
 	}
@@ -301,6 +309,10 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			header.showStatusMessage();
 			bundle.putBoolean(BankExtraKeys.COMPLETED_LIST, false);
 			scheduled.payments.remove(bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM));
+		}		
+		final ReceivedUrl url = getLoadMoreUrl();
+		if(null == url){
+			showNothingToLoad();
 		}
 	}
 
@@ -333,6 +345,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		adapter.setData(activities);
 		if(adapter.getCount() < 1){
 			footer.showEmpty(this.getEmptyStringText());
+		}else{
+			footer.showDone();
 		}
 		adapter.notifyDataSetChanged();
 	}

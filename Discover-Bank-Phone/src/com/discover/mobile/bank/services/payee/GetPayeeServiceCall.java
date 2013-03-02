@@ -75,7 +75,10 @@ import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 public class GetPayeeServiceCall extends BankUnamedListJsonResponseMappingNetworkServiceCall<ListPayeeDetail, PayeeDetail> {
 
 	/**Reference handler to return the data to the UI*/
-	private final TypedReferenceHandler<ListPayeeDetail> handler;
+	private final TypedReferenceHandler<ListPayeeDetail> handler; 
+
+	/**Boolean used to let the service call manager know that app needs to make the next call*/
+	private boolean isChainCall = false;
 
 	/**
 	 * 
@@ -89,21 +92,51 @@ public class GetPayeeServiceCall extends BankUnamedListJsonResponseMappingNetwor
 			{
 				//This service call is made after authenticating and receiving a token,
 				//therefore the session should not be cleared otherwise the token will be wiped out
-				this.clearsSessionBeforeRequest = false;
+				clearsSessionBeforeRequest = false;
 
 				//This ensures the token is added to the HTTP Authorization Header of the HTTP request
-				this.requiresSessionForRequest = true;
+				requiresSessionForRequest = true;
 
 				//This ensure the required device information is supplied in the Headers of the HTTP request
-				this.sendDeviceIdentifiers = true;
+				sendDeviceIdentifiers = true;
 
 				// Specify what error parser to use when receiving an error response is received
-				this.errorResponseParser = BankErrorResponseParser.instance();
+				errorResponseParser = BankErrorResponseParser.instance();
 
 			}
 		}, ListPayeeDetail.class, PayeeDetail.class);
 
-		this.handler = new SimpleReferenceHandler<ListPayeeDetail>(callback);
+		handler = new SimpleReferenceHandler<ListPayeeDetail>(callback);
+	}
+
+	/**
+	 * 
+	 * @param context Reference to the context invoking the API
+	 * @param callback Reference to the Handler for the response
+	 * @oaram isChainCall - used to let the service know another call needs to be made
+	 */
+	public GetPayeeServiceCall(final Context context,
+			final AsyncCallback<ListPayeeDetail> callback, final boolean isChainCall) {
+
+		super(context, new GetCallParams(BankUrlManager.getUrl(BankUrlManager.PAYEES_URL_KEY)) {
+			{
+				//This service call is made after authenticating and receiving a token,
+				//therefore the session should not be cleared otherwise the token will be wiped out
+				clearsSessionBeforeRequest = false;
+
+				//This ensures the token is added to the HTTP Authorization Header of the HTTP request
+				requiresSessionForRequest = true;
+
+				//This ensure the required device information is supplied in the Headers of the HTTP request
+				sendDeviceIdentifiers = true;
+
+				// Specify what error parser to use when receiving an error response is received
+				errorResponseParser = BankErrorResponseParser.instance();
+
+			}
+		}, ListPayeeDetail.class, PayeeDetail.class);
+		this.isChainCall = isChainCall;
+		handler = new SimpleReferenceHandler<ListPayeeDetail>(callback);
 	}
 
 	/**
@@ -130,6 +163,13 @@ public class GetPayeeServiceCall extends BankUnamedListJsonResponseMappingNetwor
 	 */
 	@Override
 	public TypedReferenceHandler<ListPayeeDetail> getHandler() {
-		return this.handler;
+		return handler;
+	}
+
+	/**
+	 * @return the isChainCall
+	 */
+	public boolean isChainCall() {
+		return isChainCall;
 	}
 }

@@ -32,6 +32,7 @@ import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
+import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
@@ -77,7 +78,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 * retransmit a NetworkServiceCall<> when required. Set in the start() method implementation
 	 * each time a NetworkServiceCall<> is made.
 	 */
-	private NetworkServiceCall<?> prevCall;
+	private NetworkServiceCall<?> prevCall; 
 	/**
 	 * Holds a reference to the Current NetworkServiceCall<> being processed by the application, used to
 	 * keep context of the state of the application with respect to NetworkServiceCalls. Set in the start()
@@ -183,7 +184,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		return false;
 	}
-	
+
 	/**
 	 * FIXME: This will need to be implemented properly
 	 * @return 
@@ -202,15 +203,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	@Override
 	public void success(final NetworkServiceCall<?> sender, final Serializable result) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
-		
+
 		//If Strong Auth Activity is open close it only in the case when the user is NOT logging in
 		if( !(sender instanceof CreateStrongAuthRequestCall) && 		//Shouldn't close strong auth page on a strong auth success
-			!(sender instanceof CustomerServiceCall) &&					//Customer Service call is only made when logging in
-			!(sender instanceof GetCustomerAccountsServerCall) &&       //Account Download is only made when logging in
-			DiscoverActivityManager.getActiveActivity() instanceof EnhancedAccountSecurityActivity) {
+				!(sender instanceof CustomerServiceCall) &&					//Customer Service call is only made when logging in
+				!(sender instanceof GetCustomerAccountsServerCall) &&       //Account Download is only made when logging in
+				DiscoverActivityManager.getActiveActivity() instanceof EnhancedAccountSecurityActivity) {
 			//Bring Navigation Root Activity to the foreground, to allow to switch fragments on it
 			BankNavigator.navigateToHomePage();
-			
+
 			//Handle success for a service call after Navigation root activity is in the foreground.
 			//Cannot swap fragments on the navigation root activity because it is not in the foreground
 			//during a strong auth or after. Have to wait for navigation root to come to foreground first.
@@ -295,9 +296,16 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Handle the payee success call
 		else if( sender instanceof GetPayeeServiceCall){
-			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
-			BankNavigator.navigateToSelectPayee(bundle);
+			BankUser.instance().setPayees((ListPayeeDetail)result);
+			if(((GetPayeeServiceCall)sender).isChainCall()){
+				BankRotationHelper.getHelper().setBundle(null);
+				final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+				BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+			}else{
+				final Bundle bundle = new Bundle();
+				bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
+				BankNavigator.navigateToSelectPayee(bundle);
+			}
 		}
 		//Handle the get activity service call
 		else if( sender instanceof GetActivityServerCall){
@@ -357,7 +365,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			}
 		}
 	}
-	
+
 	/**
 	 * Method used after successfully answering a Strong Auth Challenge Question and receiving a successful response to the
 	 * NetworkSerivceCall<> that triggered the Strong Auth Challenge. Must wait for the Strong Auth Activity to close
@@ -386,7 +394,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				}
 				return null;
 			}
-			
+
 			/**
 			 * This method is executed in a UI thread after doInBackground has completed.
 			 */
@@ -394,8 +402,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			protected void onPostExecute(final Void arg) {
 				success(sender, result);
 			}
-	    };
-	    
+		};
+
 		task.execute();
 	}
 

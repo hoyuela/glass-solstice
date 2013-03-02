@@ -4,6 +4,7 @@ import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.customer.Customer;
+import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 
 /**
  * Class used to maintain session information for a user logged into a Bank
@@ -36,6 +37,9 @@ public final class BankUser {
 	 */
 	private Account currentAccount;
 
+	/**List of payees*/
+	private ListPayeeDetail payees;
+
 	/**
 	 * Default constructor made private to allow a single instance
 	 */
@@ -67,8 +71,8 @@ public final class BankUser {
 	 *            id of the Account to be returned.
 	 * @return Account or {@code null} if not found.
 	 */
-	public Account getAccount(String accountId) {
-		for (Account a : accountList.accounts) {
+	public Account getAccount(final String accountId) {
+		for (final Account a : accountList.accounts) {
 			if (a.id.equals(accountId)) {
 				return a;
 			}
@@ -83,7 +87,7 @@ public final class BankUser {
 	 *            GetCustomerAccountsServerCall
 	 */
 	public void setAccounts(final AccountList accounts) {
-		this.accountList = accounts;
+		accountList = accounts;
 	}
 
 	/**
@@ -123,6 +127,7 @@ public final class BankUser {
 		customerInfo = null;
 		BankUrlManager.clearLinks();
 		currentAccount = null;
+		payees = null;
 	}
 
 	/**
@@ -142,5 +147,19 @@ public final class BankUser {
 	 */
 	public Account getCurrentAccount() {
 		return currentAccount;
+	}
+
+	/**
+	 * @return the payees
+	 */
+	public ListPayeeDetail getPayees() {
+		return payees;
+	}
+
+	/**
+	 * @param payees the payees to set
+	 */
+	public void setPayees(final ListPayeeDetail payees) {
+		this.payees = payees;
 	}
 }

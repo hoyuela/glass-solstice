@@ -32,7 +32,7 @@ public final class BankMenuItemLocationIndex {
 	/**
 	 * Check Deposit Indexes
 	 */
-	public static final int DEPOSIT_CHECK_GROU = 2;
+	public static final int DEPOSIT_CHECK_GROUP = 2;
 	public static final int DEPOSIT_NOW_SECTION = 1;
 
 	/**

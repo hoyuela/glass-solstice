@@ -124,10 +124,10 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		if(detailList.payments.size() > 0){
 			//Scheduled Payment or Completed Payment
 			final String paymentStatus = detailList.payments.get(position).status;
-
+			if(null == paymentStatus){return R.string.no_data_found;}
 			if("SCHEDULED".equals(paymentStatus)) {
 				return R.string.scheduled_payment;
-			} else if ("COMPLETED".equals(paymentStatus)) {
+			} else if ("PAID".equals(paymentStatus)) {
 				return R.string.completed_payment;
 			} else if ("CANCELLED".equals(paymentStatus)) {
 				return R.string.cancelled_payment;
