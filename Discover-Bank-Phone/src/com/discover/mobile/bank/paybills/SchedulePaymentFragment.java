@@ -663,11 +663,11 @@ public class SchedulePaymentFragment extends BaseFragment {
 				if (!isDateError && amountEdit.isValid()) {
 					final String memo = memoText.getText().toString();
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
-					payment.payee = payee.id;
+					payment.payee.id = payee.id;
 					payment.amount = CommonUtils
 							.formatCurrencyStringAsBankInt(amountEdit.getText()
 									.toString());
-					payment.paymentMethod = accountId;
+					payment.paymentMethod.id = Integer.toString(accountId);
 					payment.deliverBy = CommonUtils
 							.getServiceFormattedISO8601Date(chosenPaymentDate
 									.get(Calendar.MONTH), chosenPaymentDate

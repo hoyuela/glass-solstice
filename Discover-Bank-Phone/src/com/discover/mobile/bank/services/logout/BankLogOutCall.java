@@ -22,20 +22,13 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
  *
  */
 public class BankLogOutCall extends BankNetworkServiceCall<Object> {
-	
-	
 	/**
 	 * Service call params to be used
-	 */
-//	private static final ServiceCallParams STANDARD_PARAMS = new PostCallParams(UrlManagerCard.getLogoutUrl()) {{
-//		requiresSessionForRequest = true;
-//		clearsSessionAfterRequest = true;
-//	}};
-	
+	 */	
 	private static ServiceCallParams getParams(){
 		ServiceCallParams params;
 		String url;
-		url = BankUrlManager.getUrl(BankUrlManager.LOGOUT_URL_KEY);
+		url = BankUrlManager.getGetTokenUrl() +BankUrlManager.DELETE_METHOD;
 		params = new PostCallParams(url) {{
 			requiresSessionForRequest = true;
 			clearsSessionAfterRequest = true;

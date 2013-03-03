@@ -51,12 +51,19 @@ public class BankUrlManager  {
 	public static final String TRANSFER_URL_KEY = "transfers";
 	public static final String PING_URL_KEY = "ping";
 	public static final String PAYEES_URL_KEY = "payees";
-	public static final String LOGOUT_URL_KEY = "logout";
 	public static final String PAYMENTS_URL_KEY = "payments";
 	public static final String DEPOSITS_URL_KEY = "deposits";
 	public static final String ACCEPT_PAY_BILLS_TERMS_KEY = "billpayterms";
 
-
+	/**
+	 * String used to construct a URL used for deleting. Example /api/auth/token?_method=DELETE
+	 */
+	public static final String DELETE_METHOD = "?method=DELETE";
+	/**
+	 * String used to construct a URL used for updating an item. Example /api/auth/token?_method=PUT
+	 */
+	public static final String PUT_METHOD = "?method=PUT";
+	
 	/**
 	 * Sets the base URL used for all NetworkServiceCall<> objects used for Bank Service API
 	 * 
