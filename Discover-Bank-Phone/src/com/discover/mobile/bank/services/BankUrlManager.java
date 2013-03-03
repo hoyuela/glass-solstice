@@ -26,7 +26,7 @@ public class BankUrlManager  {
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
 	//	private static final String BASE_URL = "http://192.168.1.94:8008";
 	//	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
-//	private static String BASE_URL = "http://192.168.1.110:8009"; //Jon's Laptop
+	//  private static String BASE_URL = "http://192.168.1.110:8009"; //Jon's Laptop
 	//	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Scott/DiscoverBank"; //Scott's Mock Service
 	//	private static String BASE_URL = "http://192.168.2.173:8008";
 
