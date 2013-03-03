@@ -54,7 +54,7 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		final ListView lv = getListView();
 		lv.setDivider(null);
 		lv.setDividerHeight(0);
-		lv.addFooterView(footerView);
+		lv.addFooterView(footerView, null, false);
 
 		/**
 		 * Initializes the navigation menu
