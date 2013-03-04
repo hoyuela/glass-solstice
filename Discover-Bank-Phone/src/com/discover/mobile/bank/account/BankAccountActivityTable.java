@@ -249,6 +249,11 @@ public class BankAccountActivityTable extends BaseTable{
 		header.setHeaderExpanded(bundle.getBoolean(BankExtraKeys.TITLE_EXPANDED, false));
 		createDefaultLists();
 		this.updateAdapter(current.activities);
+		
+		final ReceivedUrl url = getLoadMoreUrl();
+		if(null == url){
+			showNothingToLoad();
+		}
 	}
 
 	/**
