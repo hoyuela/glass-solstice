@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bank_table"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/light_gray_bkgrd"
+        android:listSelector="@android:color/transparent" 
+        ptr:ptrDrawable="@null"
+        ptr:ptrShowIndicator="false"
+        android:cacheColorHint="@android:color/transparent"/>
+
+</LinearLayout>

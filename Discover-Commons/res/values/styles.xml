@@ -1,0 +1,304 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+     <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <!-- Theme.Sherlock.Light.DarkActionBar -->
+    <style name="AppBaseTheme" parent="Theme.Sherlock">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="AppTheme.NoTitleBar" parent="Theme.Sherlock.NoActionBar"></style>
+    
+
+	<style name="WhiteTheme">
+        <item name="android:background">@drawable/light_gray_bkgrd</item>
+        <item name="android:padding">@dimen/forms_inner_padding</item>
+    </style>
+    
+    
+    <style name="alert_modal_black_bg">
+        <item name="android:background">#50000000</item>
+    </style>
+
+    <style name="alert_modal_white_bg">
+        <item name="android:background">@drawable/rounded_white_background</item>
+        <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
+        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
+    </style>
+    
+    <style name="call_to_action_theme">
+        <item name="android:textColor">@drawable/call_to_action_text_color</item>
+        <item name="android:textSize">@dimen/body_copy_max</item>
+        <item name="android:paddingLeft">@dimen/orange_button_left_right_padding</item>
+        <item name="android:paddingRight">@dimen/orange_button_left_right_padding</item>
+        <item name="android:background">@drawable/call_to_action_button</item>
+        <item name="android:paddingTop">@dimen/call_to_actions_padding</item>
+        <item name="android:paddingBottom">@dimen/call_to_actions_padding</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <!--  Blue Hyperlink styles -->
+    <style name="blue_hyperlink">
+        <item name="android:textColor">@color/blue_link</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="blue_hyperlink_small" parent="blue_hyperlink">
+        <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+    
+    <style name="blue_hyperlink_extra_small"  parent="blue_hyperlink">
+        <item name="android:textSize">12sp</item>
+    </style>
+    
+     <!--
+    FROM STYLE GUIDE 
+    
+    All typography for Android to be set in Roboto Bold and Roboto Regular. 
+    Leading/Line-Height is defined for each type size to the right. 
+    Tracking/Letter-Spacing will be defined at the default 0.
+
+	The secondary smallest font sizes used sparsely are 28px and 24px for legal lines, sub-copy, and header links.
+	
+
+	The font sizes specified are for .PSD purposes and will be converted on-screen to 1/2 the specified font size.
+	For instance, 50px in Photoshop will appear as 25px on Android.
+    -->
+
+    <style name="discover_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="title_copy" parent="discover_text">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textColor">@color/title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="modal_content_error_text" parent="sub_copy">
+        <item name="android:textSize">@dimen/small_copy_max</item>
+        <item name="android:textColor">@color/error_indicator</item>
+    </style>
+    
+
+    <!-- 5. BODY COPY / #3d484d / 34px font-size / 42px line-height / regular -->
+    <style name="title_medium" parent="discover_text">
+        <item name="android:textSize">@dimen/title_mid</item>
+        <item name="android:textColor">@color/title</item>
+    </style>
+    
+    <style name="body_copy" parent="discover_text">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textColor">@color/body_copy</item>
+        <item name="android:typeface">normal</item>
+    </style>
+
+    <style name="small_copy" parent="discover_text">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textColor">@color/sub_copy</item>
+    </style>
+
+    <style name="smallest_copy" parent="discover_text">
+        <item name="android:textSize">@dimen/small_copy_mid</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/sub_copy</item>
+    </style>
+    
+    <style name="sub_copy" parent="discover_text">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/sub_copy</item>
+    </style>
+
+    <style name="field_copy" parent="discover_text">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textColor">@color/field_copy</item>
+    </style>
+    
+    <style name="field_copy_small" parent="discover_text">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textColor">@color/field_copy</item>
+    </style>
+    
+    <style name="field_stroke" parent="discover_text">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textColor">@color/field_stroke</item>
+    </style>
+
+    <style name="error_label" parent="discover_text">
+        <item name="android:textColor">@color/error_indicator</item>
+        <item name="android:visibility">gone</item>     
+		<item name="android:textSize">@dimen/body_copy_min</item>
+    </style>
+
+    <style name="edit_copy" parent="discover_text"></style>
+    
+    <!-- Sub Copy Styles  -->
+    <style name="sub_copy_small">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+    </style>
+    
+    <style name="sub_copy_big">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+    
+    <style name="sub_copy_medium">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_mid</item>
+    </style>
+    
+    <!--  Field Copy Styles-->
+    <style name="field_copy_small">
+        <item name="android:textColor">@color/field_copy</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+    </style>
+    
+    <style name="field_copy_big">
+        <item name="android:textColor">@color/field_copy</item>
+        <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+    
+    <style name="field_copy_medium">
+        <item name="android:textColor">@color/field_copy</item>
+        <item name="android:textSize">@dimen/small_copy_mid</item>
+    </style>
+    
+    <style name="modal_title_text" parent="title_copy">
+        <item name="android:layout_marginTop">@dimen/modal_text_padding</item>
+        <item name="android:layout_marginBottom">@dimen/modal_text_padding</item>
+        <item name="android:textSize">@dimen/title_min</item>
+    </style>
+
+    <style name="modal_content_text" parent="sub_copy">
+        <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+    
+    <style name="modal_body_copy_content_text" parent="body_copy">
+        <item name="android:textSize">@dimen/body_copy_min</item>
+    </style>
+
+    <style name="modal_error_image">
+        <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item>
+        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
+    </style>
+
+    <style name="orange_action_bar_buttons" parent = "action_bar_theme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/square_menu_button</item>
+        <item name="android:layout_marginLeft">9dp</item>
+    </style>
+    
+    <style name="action_bar_theme">
+        <item name="android:visibility">gone</item>
+    </style>
+    
+     <style name="action_bar_text" parent="action_bar_theme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_marginTop">@dimen/table_inner_padding</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:textColor">@color/title</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingRight">5dp</item>
+    </style>
+    
+    <style name="logout_actionbar_button">
+        <item name="android:textSize">14sp</item>
+	    <item name="android:paddingRight">@dimen/logout_padding</item>
+	    <item name="android:paddingLeft">@dimen/logout_padding</item>
+	    <item name="android:textStyle">bold</item>
+	    <item name="android:textColor">@color/sub_copy</item>
+    </style>
+      <style name="white_button">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:background">@drawable/white_button</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:paddingLeft">@dimen/white_button_left_right_padding</item>
+        <item name="android:paddingRight">@dimen/white_button_left_right_padding</item>
+        <item name="android:layout_marginBottom">@dimen/between_related_elements_padding</item>
+        <item name="android:layout_marginRight">@dimen/between_related_elements_padding</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+     <style name="blue_hyperlink_smallest">
+        <item name="android:textColor">@color/blue_link</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+     <!-- Default Page Background Styling -->
+    <style name="default_background">
+        <item name="android:background">@drawable/light_gray_bkgrd</item>
+    </style>
+    
+    <!-- Default List Styling -->
+    <style name="default_list_background">
+        <item name="android:background">@drawable/notification_list_item</item>
+    </style>
+    
+    
+    <!-- Default List Item Styling -->
+    <style name="default_list_item">
+        <item name="android:background">@drawable/home_list_item</item>
+        <item name="android:padding">@dimen/forms_inner_padding</item>
+    </style>
+    
+    <!-- NEED HELP? TEXT / #3d484d / 34pt font-size / centered / bold -->
+    <style name="need_help_text" parent="body_copy">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 1-800-347-2683 NUMBER LINK / #0267b1 / 34pt / regular -->
+    <style name="need_help_number_link" parent="body_copy">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textColor">@color/blue_link</item>
+    </style>
+    
+    <style name="terms_and_conditions_title" parent="title_copy">
+        <item name="android:textSize">@dimen/title_max</item>
+        <item name="android:layout_marginTop">@dimen/groups_of_elements_padding</item>
+        <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
+        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
+    </style>
+
+    <style name="terms_and_conditions_content" parent="sub_copy">
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:layout_marginTop">@dimen/groups_of_elements_padding</item>
+        <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
+        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
+    </style>
+    
+     <style name="error_label_small" parent="discover_text">
+        <item name="android:textColor">@color/error_indicator</item>
+        <item name="android:visibility">gone</item>     
+		<item name="android:textSize">14sp</item>
+
+    </style>
+
+    <style name="sub_copy_small">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingTop">@dimen/between_related_elements_padding</item>
+    </style>
+</resources>

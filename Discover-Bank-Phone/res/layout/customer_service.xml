@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/light_gray_bkgrd" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:paddingBottom="@dimen/forms_inner_padding" >
+
+        <TextView
+            android:id="@+id/phone_title_label"
+            style="@style/page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:text="@string/by_phone" />
+        
+       <ImageButton
+            android:id="@+id/help"
+            style="@style/orange_help_button"
+            android:layout_width="@dimen/orange_help_button_size"
+            android:layout_height="@dimen/orange_help_button_size"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:id="@+id/card_phone_title_label"
+            style="@style/need_help_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/phone_title_label"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:text="@string/discover_card" />
+
+        <LinearLayout
+            android:id="@+id/card_phone_numbers_list"
+            style="@style/customer_service_table"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_phone_title_label" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bank_phone_title_label"
+            style="@style/need_help_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_phone_numbers_list"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:text="@string/discover_bank" />
+
+        <LinearLayout
+            android:id="@+id/bank_phone_numbers_list"
+            style="@style/customer_service_table"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bank_phone_title_label" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/mail_title_label"
+            style="@style/title_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bank_phone_numbers_list"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:text="@string/by_mail" />
+
+        <TextView
+            android:id="@+id/card_mail_title_label"
+            style="@style/need_help_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mail_title_label"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:text="@string/discover_card" />
+
+        <LinearLayout
+            android:id="@+id/card_mail_address_list"
+            style="@style/customer_service_table"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_mail_title_label" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bank_mail_title_label"
+            style="@style/need_help_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_mail_address_list"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:text="@string/discover_bank" />
+
+        <LinearLayout
+            android:id="@+id/bank_mail_address_list"
+            style="@style/customer_service_table"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bank_mail_title_label" >
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/provide_feedback_button"
+            style="@style/call_to_action_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bank_mail_address_list"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:text="@string/feedback_text" />
+
+        <TextView
+            android:id="@+id/discover_copyright"
+            style="@style/sub_copy_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/provide_feedback_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:text="@string/discover_copyright_text" />
+    </RelativeLayout>
+
+</ScrollView>

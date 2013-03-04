@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/default_background"
+    android:fillViewport="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/forms_inner_padding"
+   		android:paddingRight="@dimen/forms_inner_padding"
+   		android:paddingBottom="@dimen/forms_inner_padding">        
+
+        <LinearLayout
+              android:id="@+id/status_bar_layout"
+              android:layout_alignParentTop="true"
+		      android:layout_width="match_parent"
+		      android:layout_height="wrap_content"
+		      android:layout_centerHorizontal="true"
+		      android:layout_marginBottom="@dimen/between_related_elements_padding"
+		      android:orientation="vertical" >
+         	<include layout="@layout/status_bar" />
+        </LinearLayout>
+         
+        <TextView
+	        android:id="@+id/openAccountDetails"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/status_bar_layout"
+	        android:text="@string/bank_open_account_details"
+			style="@style/body_copy_mid"/>
+                 
+        <Button
+            android:id="@+id/openAccount"
+            style="@style/call_to_action_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/openAccountDetails"
+            android:drawableRight="@drawable/external_link_icon"
+            android:layout_marginTop="@dimen/modal_footer_topmargin"
+            android:drawablePadding="@dimen/between_related_elements_padding"
+            android:layout_gravity="center"
+            android:text="@string/bank_open_account" />
+
+         <LinearLayout
+             	android:id="@+id/footer_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/openAccount"
+                android:layout_alignParentBottom="true"
+	            android:layout_centerHorizontal="true"
+	            android:layout_marginTop="@dimen/modal_footer_topmargin"            
+   				android:paddingBottom="@dimen/between_related_elements_padding"
+                android:orientation="vertical">
+                
+                <include 
+                    layout="@layout/old_general_need_help_footer" 
+                    android:layout_weight="0.25"
+                    android:id="@+id/need_help_footer"/>
+                
+                <TextView
+		            android:id="@+id/provide_feedback_button"
+		            style="@style/bank_blue_hyperlink_small"
+		            android:layout_weight="0.75"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginTop="@dimen/between_related_elements_padding"
+		            android:gravity="center_horizontal|bottom"
+		            android:text="@string/feedback_text" />
+        </LinearLayout> 
+    </RelativeLayout>
+
+</ScrollView>

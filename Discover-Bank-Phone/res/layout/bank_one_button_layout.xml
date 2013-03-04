@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" 
+    android:background="@drawable/light_gray_bkgrd" >
+
+
+    <com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator
+       android:id="@+id/header"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content" />
+
+   	<View
+	    android:id="@+id/divider"
+	    android:layout_width="wrap_content"
+	    android:layout_height="@dimen/divider_height"
+	    android:layout_marginLeft="@dimen/forms_inner_padding"
+	    android:layout_marginRight="@dimen/forms_inner_padding"
+	    android:layout_marginBottom="@dimen/forms_inner_padding"
+	    android:background="@drawable/gray_solid_line"
+	    />
+    	
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/forms_inner_padding" >
+
+             <TextView 
+                android:id="@+id/top_note_text"
+                android:layout_marginBottom="@dimen/groups_of_elements_padding"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/note_title"
+                style="@style/field_copy"/>
+             
+            <LinearLayout
+                android:id="@+id/content_table"
+                android:layout_below="@+id/top_note_text"
+                style="@style/customer_service_table"
+                android:layout_centerHorizontal="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+            </LinearLayout>
+            
+            <TextView 
+                android:id="@+id/note_text_title"
+                android:layout_below="@+id/content_table"
+                android:layout_marginTop="@dimen/groups_of_elements_padding"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/note_title"
+                style="@style/body_copy_title"/>
+            
+            <TextView 
+                android:id="@+id/note_text_msg"
+                android:layout_below="@+id/note_text_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/note_text"
+                style="@style/sub_copy_medium"/>
+                
+            <!-- Action Button  -->
+            <Button
+                android:id="@+id/actionButton"
+                style="@style/call_to_action_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/note_text_msg"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/between_related_elements_padding"
+                android:layout_marginTop="@dimen/groups_of_elements_padding"
+                android:drawablePadding="@dimen/between_related_elements_padding"
+                android:text="@string/action_button" />
+
+            <!-- Action Link  -->
+            <TextView
+                android:id="@+id/actionLink"
+                style="@style/blue_hyperlink_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/actionButton"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/orange_button_margin_top"
+                android:layout_marginTop="@dimen/between_related_elements_padding"
+                android:text="@string/action_link" />
+
+            <!-- Feedback Link -->
+            <TextView
+                android:id="@+id/provide_feedback"
+                style="@style/bank_blue_hyperlink_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/actionLink"
+                android:gravity="bottom"
+                android:layout_marginBottom="@dimen/orange_button_margin_top"
+                android:layout_marginTop="@dimen/orange_button_margin_top"
+                android:text="@string/feedback_text" />
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

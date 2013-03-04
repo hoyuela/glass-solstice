@@ -1,0 +1,18 @@
+<resources>
+     <!--  Push Toggle Box Sizes -->
+    <dimen name="push_toggle_box_width">25dp</dimen>
+    <dimen name="push_toggle_box_height">25dp</dimen>
+    <dimen name="second_toggle_margin_left">20dp</dimen>
+   	<dimen name="first_toggle_text_margin_left">9dp</dimen>
+    <dimen name="second_toggle_text_margin_left">17dp</dimen>
+    <dimen name="push_header_margin_left">20dp</dimen>
+    <dimen name="push_spinner_width">100dp</dimen>
+    <dimen name="push_edit_box_max_width">125dp</dimen>
+    <dimen name="dummy_push_box_width">125dp</dimen>
+    <dimen name="dummy_push_box_height">50dp</dimen>
+    <dimen name="push_master_toggle_height">30dp</dimen>
+   	<dimen name="push_master_toggle_width">75dp</dimen>
+   	<dimen name="push_master_toggle_margin_right">25dp</dimen>
+   	<dimen name="text_master_toggle_margin_right">50dp</dimen>
+   	<dimen name="push_toggle_text_from_center">150dp</dimen>
+</resources>

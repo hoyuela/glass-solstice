@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  Account Summary Strings --> 
+    <string name="bank_savings_account">Savings Accounts</string>
+    <string name="bank_checking_account">Checking Accounts</string>
+    <string name="bank_ira_account">Retirement Plans</string>
+    <string name="bank_loan_account">Personal Loans</string>
+    <string name="bank_unknown_account">Other Accounts</string>
+     
+    <!-- Account Activity Strings -->
+    <string name="activity_screen_title">Account Activity</string>
+    <string name="activity_title">Discover Online Checking</string>
+    <string name="recent_activity_date">Date</string>
+	<string name="recent_activity_description">Description</string>
+	<string name="recent_activity_amount">Amount</string>
+    <string name="activity_online_checking">Online Checking:</string>
+    <string name="activity_available_balance">Available Balance:</string>
+    <string name="activity_current_balance">Current Balance:</string>
+    <string name="activity_posted_button">Activity</string>
+    <string name="activity_scheduled_button">Scheduled</string>
+    <string name="activity_no_scheduled">You have no scheduled transactions.</string>
+    <string name="activity_no_posted">You have no account activity.</string>
+    <string name="activity_table_name">Transactions</string>
+    <string name="activity_go_to_top">Back to Top</string>
+</resources>

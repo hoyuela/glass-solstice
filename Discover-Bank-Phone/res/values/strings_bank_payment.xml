@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- Section titles -->
+    <string name="pay_a_bill_title">Pay a Bill</string>
+    <string name="welcome_to_pay_bills">Welcome to Pay Bills</string>
+   	<string name="manage_payees_welcome">Welcome to Manage Payees</string>
+	<string name="manage_payees">Manage Payees</string>
+       
+    <!-- Payee Not Eligible Strings -->
+    <string name="pay_bills_on_go_title">Pay Bills On The Go</string>
+    <string name="pay_bills_on_go_text">Your account is eligible for online Bill Pay. To start, simply open a Money Market Account and enjoy these great features.</string>
+    <string name="pay_bills_anywhere_title">Pay Bills Anytime, Anywhere</string>
+    <string name="pay_bills_anywhere_text">Schedule payments at your convenience and avoid unnecessary trips to the mailbox. Plus, we don\'t charge enrollment or usage fees.</string>
+    <string name="pay_bills_simple_title">Simple Set-up</string>
+ 	<string name="pay_bills_simple_text">Add a payee and easily schedule a payment.</string>
+ 	<string name="pay_bills_delivery_title">On-time Delivery</string>
+ 	<string name="pay_bills_delivery_text">Your payments are guaranteed to reach your payee by the \"Deliver By\" date.</string>   
+
+	<!-- Select a payee strings -->
+	<string name="select_payee_title">Select Payee</string>
+	<string name="select_payee_empty">You have no payees set up. You must set up payees in order to pay bills.</string>
+	<string name="select_payee_add_new">Add New Payee</string>
+	<string name="select_payee_no_payees">Add a Payee</string>
+	
+	<!-- Review payments -->
+	<string name="review_payments_title">Review Payments</string>
+	<string name="review_payments_filter_one">Date</string>
+	<string name="review_payments_filter_two">Payee</string>
+	<string name="review_payments_filter_three">Amount</string>
+	<string name="review_payments_scheduled_payments">Scheduled\nPayments</string>
+	<string name="review_payments_completed_payments">Completed\nPayments</string>
+	<string name="review_payments_canceled_payments">Canceled\nPayments</string>
+	<string name="review_payments_scheduled_payments_empty">You have no scheduled payments.</string>
+	<string name="review_payments_completed_payments_empty">You have no completed payments.</string>
+	<string name="review_payments_canceled_payments_empty">You have no cancelled payments.</string>
+	<string name="review_payments_scheduled_deleted">Scheduled Payment Deleted</string>
+	
+	<!-- Manage Payees Strings  -->
+	<string name="payee">Payee</string>
+	<string name="manage_payees_welcome">Welcome to Manage Payees</string>
+	
+	<!-- Schedule Payments -->
+	<string name="payee">Payee</string>
+	<string name="accept">Accept</string>
+	<string name="acceptance_text">By tapping on Accept, I \nagree to the Terms of Use.</string>
+ 	<string name="schedule_pay_payee">Payee</string>
+ 	<string name="schedule_pay_from">Pay From</string>
+ 	<string name="schedule_pay_amount">Amount</string>
+ 	<string name="schedule_pay_too_high">Too high (more than $25k)</string>
+ 	<string name="schedule_pay_too_low">Too low (less than $1)</string>
+ 	<string name="schedule_pay_date">Deliver By</string>
+ 	<string name="schedule_pay_memo_opt">Memo (Optional)</string>
+ 	<string name="schedule_pay_button">Schedule Payment</string>
+ 	<string name="schedule_pay_memo">Memo</string>
+ 	<string name="schedule_pay_spinner_body">Account Ending in</string>
+ 	<string name="schedule_pay_cancel_title">Cancel Transaction</string>
+ 	<string name="schedule_pay_cancel_body">Are you sure you want to cancel this transaction? Tap Cancel This Transaction to end it, or tap Don\'t Cancel to return to the previous page.</string>
+ 	<string name="schedule_pay_cancel_button_confirm">Cancel This Transaction</string>
+ 	<string name="schedule_pay_cancel_button_cancel">Don\'t Cancel</string>
+ 	<string name="schedule_pay_canceled">Transaction Cancelled</string>
+ 	<string name="schedule_pay_date_picker_title">Enter Payment Date</string>
+ 	<string name="schedule_pay_duplicate_payment">Duplicate Payment</string>
+ 	<string name="schedule_pay_invalid_date">Invalid Date</string>
+</resources>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/default_background"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding"       
+   		android:paddingBottom="@dimen/forms_inner_padding"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+         <LinearLayout
+		      android:layout_width="match_parent"
+		      android:layout_height="wrap_content"
+		      android:layout_weight="0.0625"
+		      android:layout_marginBottom="@dimen/between_related_elements_padding"
+		      android:orientation="vertical" >
+         	<include layout="@layout/status_bar" />
+         </LinearLayout>
+         
+        <LinearLayout
+            android:id="@+id/bank_summary_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_weight="0.875"
+            android:orientation="vertical" />
+        
+         <Button
+            android:id="@+id/openAccount"
+            style="@style/call_to_action_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/external_link_icon"
+            android:layout_marginTop="@dimen/modal_top_margin"
+            android:drawablePadding="@dimen/between_related_elements_padding"
+            android:layout_gravity="center"
+            android:text="@string/bank_open_new_account" />
+
+         <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/modal_footer_topmargin">
+                
+                <include layout="@layout/old_general_need_help_footer" android:id="@+id/need_help_footer"/>
+        </RelativeLayout> 
+
+        <TextView
+            android:id="@+id/provide_feedback_button"
+            style="@style/bank_blue_hyperlink_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"                      
+   			android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:layout_weight="0.0625"
+            android:gravity="bottom"
+            android:singleLine="true"
+            android:text="@string/feedback_text" />
+    </LinearLayout>
+</ScrollView>

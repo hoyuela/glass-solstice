@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/default_background"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/status_bar_height"
+    android:layout_marginBottom="@dimen/between_related_elements_padding" >
+
+    <TextView
+        android:id="@+id/account_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/between_related_elements_padding"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:maxLength="20"
+        android:singleLine="true"
+        android:textColor="@color/title"
+        android:textStyle="bold"
+        android:text="@string/hi_text"/>
+
+    <ImageButton
+        android:id="@+id/help"
+        android:layout_width="@dimen/orange_help_button_size"
+        android:layout_height="@dimen/orange_help_button_size"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/between_related_elements_padding"
+        android:layout_marginBottom="@dimen/between_related_elements_padding"
+        android:background="@drawable/question_mark_icon" />
+
+    <ImageView
+        android:id="@+id/cardBankIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/account_name"
+        android:paddingLeft="@dimen/nav_section_pading"
+        android:src="@drawable/bank_gray_icon" />
+
+    <ImageView
+        android:id="@+id/downArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/cardBankIcon"
+        android:paddingLeft="@dimen/nav_section_pading"
+        android:src="@drawable/orange_down_carrot" />
+     
+     <ImageView
+        android:id="@+id/bottom_line"
+        android:layout_width="fill_parent"
+        android:layout_height="3dp"
+        android:layout_below="@+id/help"
+        android:src="@drawable/table_solid_line" />
+
+</RelativeLayout>

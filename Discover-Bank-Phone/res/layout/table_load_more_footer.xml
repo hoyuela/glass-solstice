@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:paddingBottom="@dimen/groups_of_elements_padding">
+
+    <View
+        android:id="@+id/load_more"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/large_loading_icon"
+        android:layout_marginTop="@dimen/groups_of_elements_padding"
+        android:layout_marginBottom="@dimen/groups_of_elements_padding"/>
+
+
+    <TextView
+        android:id="@+id/message"
+        style="@style/plain_body_copy_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/between_related_elements_padding"
+        android:layout_marginTop="@dimen/between_related_elements_padding"
+        android:layout_marginRight="@dimen/between_related_elements_padding"/>
+    
+     <View
+        android:id="@+id/line"
+        android:layout_width="wrap_content"
+        android:layout_height="3dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/field_stroke"
+        android:layout_below="@+id/load_more" />
+        
+        
+    <TextView
+        android:id="@+id/go_to_top"
+        style="@style/bank_blue_hyperlink_small"
+        android:textSize="@dimen/small_copy_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/groups_of_elements_padding"
+        android:layout_marginBottom="@dimen/groups_of_elements_padding"
+        android:gravity="center"
+        android:text="@string/activity_go_to_top" 
+        android:layout_below="@+id/line"/>
+
+</RelativeLayout>

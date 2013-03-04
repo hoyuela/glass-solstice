@@ -1,0 +1,46 @@
+package com.discover.mobile.card.account.summary;
+
+import com.discover.mobile.card.services.account.summary.LatePaymentWarningDetail;
+import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.net.NetworkServiceCall;
+
+/**
+ * Success listener for the late payment modal.  This applies specifically to the retrieval
+ * of the user specific details.  The text is retrieved in another call.
+ * 
+ * @author jthornton
+ *
+ */
+public class LatePaymentWarningSuccessListener  implements SuccessListener<LatePaymentWarningDetail>{
+	
+	/**Fragment to return the successful nature of the call*/
+	private final AccountSummaryFragment fragment;
+	
+	/**
+	 * Constructor for the class
+	 * @param fragment - fragment using this listener
+	 */
+	public LatePaymentWarningSuccessListener(final AccountSummaryFragment fragment){
+		this.fragment = fragment;
+	}
+
+	/**
+	 * Get the callback priority of the success handler
+	 * @return the callback priority of the success handler
+	 */
+	@Override
+	public CallbackPriority getCallbackPriority() {
+		return CallbackPriority.MIDDLE;
+	}
+
+	/**
+	 * Handle the successful response
+	 * @param detail - object retrieved from the server
+	 * @return the successful response
+	 */
+	@Override
+	public void success(final NetworkServiceCall<?> sender, final LatePaymentWarningDetail detail) {
+		fragment.getLatePaymentTextInformation();
+		fragment.prepLatePaymentModalInfo(detail);
+	}
+}

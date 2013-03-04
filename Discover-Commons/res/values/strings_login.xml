@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="customer_service">
+        Customer\nService
+    </string>
+    <string name="privacy_and_security">
+        Privacy &amp;\nSecurity
+    </string>
+    <string name="register_now">
+        Register\nNow
+    </string>
+    <string name="forgot_id_or_pass_text">
+        Forgot User ID/Password?
+    </string>
+    <string name="card">
+        Card
+    </string>
+    <string name="bank">
+        Bank
+    </string>
+    <string name="go_to">
+        Go to:
+    </string>
+    <string name="login_button_text">
+        Secure Login
+    </string>
+    <string name="hide">
+        Hide
+    </string>
+    <string name="show">
+        Show
+    </string>
+    <string name="remember_user_id">
+        Remember User ID
+    </string>
+    <string name="password">
+        Password
+    </string>
+    <string name="user_id">
+        User ID
+    </string>
+    <string name="vertical_separator">
+        |
+    </string>
+    <string name="logout_sucess">
+        You are now logged out. Thank you for using Discover Mobile.
+    </string>
+    <string name="session_expired">
+        We\'ve logged you out to protect your account security.  Please log in again.
+    </string>
+<!--  LOGIN ERRORS -->
+	<string name="id_invalid">
+	    Please check your ID and try again.
+	</string>
+	<string name="pass_invalid">
+	    Please check your password and try again.
+	</string>
+	<string name="we_are_sorry">We\'re Sorry</string>
+	
+	
+	
+	
+	<string name="cashback_bonus_unavailable">
+	    Cashback Bonus is currently unavailable. We apologize for the inconvenience. Please try again later.
+	</string>
+	
+	
+	<string name="atm_locator">
+        ATM\nLocator
+    </string>
+	<string name="privacy_and_terms">
+        Privacy &amp;\nTerms
+    </string>
+    
+</resources>

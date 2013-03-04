@@ -1,0 +1,16 @@
+<resources>
+    <string name="forgot_password_text">Forgot Password</string>
+    <string name="forgot_both_text">Forgot Both</string>
+    <string name="forgot_password_field_title_text">Credit Card User ID</string>
+    <string name="forgot_credentials_text">Forgot User ID or Password</string>
+    <string name="forgot_pass_create_new_text">Create a New Password:</string>
+    <string name="forgot_pass_step_two_text">Step 2 of 2: Create New Password</string>
+    <string name="register_text">Register</string>
+    <string name="account_info_label_one">Credit Card Account Number</string>
+    <string name="ssn_prefix">XXX &#8211; XX &#8211;</string>
+    <string name="forgot_id_title_text">Forgot User ID</string>
+    <string name="forgot_id_password_text">Account Center Password</string>
+    <string name="create_login">Create Login</string>
+    <string name="id_and_ssn_match_text">User ID must not look like your social security number. Please choose another one.</string>
+    
+</resources>

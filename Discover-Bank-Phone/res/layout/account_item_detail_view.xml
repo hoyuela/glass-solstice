@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/light_gray_bkgrd"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/relative_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/nav_buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" 
+            android:layout_marginBottom="@dimen/between_related_elements_padding">
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/title_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="@dimen/groups_of_elements_padding"
+                android:layout_toLeftOf="@+id/previous_button"
+                android:layout_alignTop="@+id/help_button"
+                android:layout_marginLeft="@dimen/forms_inner_padding"
+                android:text="@string/edit" />
+
+            <ImageView
+                android:id="@+id/previous_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/next_button"
+                android:contentDescription="@string/empty"
+                android:layout_marginTop="@dimen/forms_inner_padding"
+                android:src="@drawable/left_page_control" />
+
+            <ImageView
+                android:id="@+id/next_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/between_related_elements_padding"
+                android:layout_toLeftOf="@+id/help_button"
+                android:contentDescription="@string/empty"
+                android:layout_marginTop="@dimen/forms_inner_padding"
+                android:src="@drawable/right_page_control" />
+
+            <TextView
+                android:id="@+id/joint_account_warning_label"
+                style="@style/field_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/previous_button"
+                android:layout_marginTop="@dimen/between_related_elements_padding"
+                android:text="@string/empty" 
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/help_button"
+		        style="@style/orange_help_button"
+        		android:layout_width="@dimen/orange_help_button_size"
+       			android:layout_height="@dimen/orange_help_button_size"
+       			android:layout_alignParentRight="true"
+        		android:layout_alignParentTop="true" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/nav_buttons"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+        	android:layout_marginRight="@dimen/forms_inner_padding"
+        	android:layout_marginLeft="@dimen/forms_inner_padding" 
+            android:background="@drawable/table_solid_line" />
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>
