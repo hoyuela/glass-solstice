@@ -27,7 +27,7 @@
     <string name="payment_detail">Payment Detail</string>
     <string name="scheduled_payment">Scheduled Payment</string>
     <string name="completed_payment">Completed Payment</string>
-    <string name="cancelled_payment">Cancelled Payment</string>
+    <string name="cancelled_payment">Canceled Payment</string>
     <string name="edit_payment">Edit Payment</string>
     <string name="delete_payment">Delete Payment</string>
     <string name="non_primary_joint_account_warning">

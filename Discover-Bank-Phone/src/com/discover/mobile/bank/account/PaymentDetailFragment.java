@@ -1,5 +1,8 @@
 package com.discover.mobile.bank.account;
 
+import java.util.List;
+
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -10,6 +13,8 @@ import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.DetailFragment;
+import com.discover.mobile.bank.ui.table.ListItemGenerator;
+import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 
 public class PaymentDetailFragment extends DetailFragment{
 	private PaymentDetail item;
@@ -17,30 +22,34 @@ public class PaymentDetailFragment extends DetailFragment{
 	 * Reference to button used to delete a scheduled payment
 	 */
 	private Button deleteButton;
-
-	/**
-	 * The layout for a PaymentDetail fragment.
-	 */
 	@Override
 	protected int getFragmentLayout() {
+		// TODO Auto-generated method stub
 		return R.layout.payment_detail;
 	}
-
+	
 	/**
-	 * Load list elements from the list item generator into the content table.
+	 * Insert the appropriate data into the layout to be displayed.
 	 */
 	@Override
-	protected void loadListItemsTo(final LinearLayout contentTable) {
-		item = (PaymentDetail)getArguments().getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+	protected void setupFragmentLayout(final View fragmentView) {
+		final Bundle argumentBundle = getArguments();
+		item = (PaymentDetail)argumentBundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+		final ListItemGenerator generator = new ListItemGenerator(this.getActivity());
+		final List<ViewPagerListItem>elementList = generator.getScheduledPaymentDetailList(item);
+		final LinearLayout contentTable = (LinearLayout)fragmentView.findViewById(R.id.content_table);
 		
-		loadListElementsToLayoutFromList(contentTable, generator.getScheduledPaymentDetailList(item));
+		for(final ViewPagerListItem element : elementList)
+			contentTable.addView(element);
+		
+		customSetup(fragmentView);
 	}
+
 
 	/**
 	 * If the current Fragment is a completed payment, hide the
 	 * payment and edit buttons because it is not editable.
 	 */
-	@Override
 	protected void customSetup(final View mainView) {
 		//If the payment is not a scheduled payment, hide the delete and edit button.
 		deleteButton = (Button)mainView.findViewById(R.id.delete_payment_button);
