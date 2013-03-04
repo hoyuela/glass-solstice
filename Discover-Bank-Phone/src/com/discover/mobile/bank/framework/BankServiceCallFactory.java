@@ -202,7 +202,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * 
 	 * @return a POST request to accept bill pay terms and conditions.
 	 */
-	public static AcceptTermsService createAcceptPayBillsTermsRequest(final Eligibility eligibility) {
+	public static AcceptTermsService createAcceptTermsRequest(final Eligibility eligibility) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<Object> callback = 
