@@ -59,7 +59,7 @@ public class Eligibility implements Serializable {
 	/**
 	 * Key used to read enroll url link from the links map.
 	 */
-	public final static String ENROLL_KEY = "enroll";
+	public final static String ENROLL_KEY = "enrollment";
 	/**
 	 * Key used to read terms url link from the links map.
 	 */
