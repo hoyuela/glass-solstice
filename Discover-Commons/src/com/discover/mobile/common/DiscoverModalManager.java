@@ -67,4 +67,27 @@ public final class DiscoverModalManager {
 	public static void setAlertShowing(final boolean alertShowing) {
 		DiscoverModalManager.alertShowing = alertShowing;
 	}
+
+	/**
+	 * Method used to destroy any reference to a modal being held by DiscoverModalManager and
+	 * as well as clear the flag indicating that the modal has to be recreated.
+	 */
+	public static void clearActiveModal() {
+		alertShowing = false;
+	
+		if( hasActiveModal() ) {
+			mModal.dismiss();
+		}
+		
+		mModal = null;
+	}
+	
+	/**
+	 * Method used to check if there is a Modal being shown to the user.
+	 * 
+	 * @return True if an active modal is in the foreground, false otherwise.
+	 */
+	public static boolean hasActiveModal() {
+		return (null != DiscoverModalManager.getActiveModal() && DiscoverModalManager.getActiveModal().isShowing());
+	}
 }

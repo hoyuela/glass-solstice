@@ -25,7 +25,8 @@ public class LoginActivityFacadeImpl implements LoginActivityFacade {
 	 * (non-Javadoc)
 	 * @see com.discover.mobile.common.facade.LoginActivityFacade#navToLogin(android.content.Context)
 	 */
-	public void navToLogin(Context context){
+	@Override
+	public void navToLogin(final Context context){
 		final Intent login = new Intent(context, LoginActivity.class);
 		context.startActivity(login);
 
@@ -35,12 +36,14 @@ public class LoginActivityFacadeImpl implements LoginActivityFacade {
 	 * (non-Javadoc)
 	 * @see com.discover.mobile.common.facade.LoginActivityFacade#navToLoginWithMessage(android.app.Activity, android.os.Bundle)
 	 */
-	public void navToLoginWithMessage(Activity currentActivity, Bundle bundle){	
+	@Override
+	public void navToLoginWithMessage(final Activity currentActivity, final Bundle bundle){	
 		
 		// Send an intent to open login activity if current activity is not login
 		if (! currentActivity.getClass().equals(LoginActivity.class)){
 			
 			final Intent intent = new Intent(currentActivity, LoginActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			intent.putExtras(bundle);
 			
 			currentActivity.startActivity(intent);
@@ -55,7 +58,8 @@ public class LoginActivityFacadeImpl implements LoginActivityFacade {
 	 * (non-Javadoc)
 	 * @see com.discover.mobile.common.facade.LoginActivityFacade#navToLockoutScreen(android.content.Context, com.discover.mobile.common.ScreenType)
 	 */
-	public void navToLockoutScreen(Context context, ScreenType screenType){
+	@Override
+	public void navToLockoutScreen(final Context context, final ScreenType screenType){
 		final Intent maintenancePageIntent = new Intent(context, LockOutUserActivity.class);
 		screenType.addExtraToIntent(maintenancePageIntent);
 		context.startActivity(maintenancePageIntent);
