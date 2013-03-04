@@ -581,9 +581,6 @@ public class SchedulePaymentFragment extends BaseFragment {
 				if (!v.equals(memoEdit)) {
 					flipMemoElements(false);
 				}
-				if (!v.equals(amountEdit)) {
-					amountEdit.clearFocus();
-				}
 				return false;
 			}
 		});
@@ -664,12 +661,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		        if(actionId==EditorInfo.IME_ACTION_DONE){
 		        	amountEdit.clearFocus();
-		        	final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
-		    		InputMethodManager imm = activity.getInputMethodManager();
-		    		imm.hideSoftInputFromWindow(memoEdit.getWindowToken(), 0);
-		    		imm = null;
 		        }
-		    return false;
+		    return true;
 		    }
 		});
 
