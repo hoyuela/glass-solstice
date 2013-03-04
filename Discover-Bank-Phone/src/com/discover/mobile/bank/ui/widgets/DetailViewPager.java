@@ -1,7 +1,6 @@
 package com.discover.mobile.bank.ui.widgets;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -179,7 +178,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 			@Override
 			public void onPageScrollStateChanged(final int arg0) {}
 		});
-
+		
 	}
 
 	/**
@@ -336,12 +335,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 *
 	 */
 	public class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
-
-		@Override
-		public Parcelable saveState() {
-			return null;
-		}
-
+		
 		public ViewPagerFragmentAdapter(final android.support.v4.app.FragmentManager fragmentManager) {
 			super(fragmentManager);
 		}
