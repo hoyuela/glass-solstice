@@ -18,7 +18,7 @@
     <dimen name="splash_progress_toppadding">55dp</dimen>
     
     <!-- Status bar height -->
-    <dimen name="status_bar_height">40dp</dimen>
+    <dimen name="status_bar_height">50dp</dimen>
     
     <!-- RadioGroup Image Inner Padding -->
     <dimen name="radio_group_inner_padding">25dp</dimen>

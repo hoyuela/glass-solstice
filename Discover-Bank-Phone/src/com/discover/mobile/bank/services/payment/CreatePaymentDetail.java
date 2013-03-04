@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.annotation.Nullable;
 
+import com.discover.mobile.common.net.json.bank.ID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /*
@@ -26,7 +27,7 @@ public class CreatePaymentDetail implements Serializable {
 
 	/* ID of Payee */
 	@JsonProperty("payee")
-	public String payee;
+	public ID payee;
 	
 	/* $23.44 should be sent as 2344 */
 	@JsonProperty("amount")
@@ -34,7 +35,7 @@ public class CreatePaymentDetail implements Serializable {
 	
 	/* ID of Payment Account */
 	@JsonProperty("paymentMethod")
-	public int paymentMethod; 
+	public ID paymentMethod; 
 	
 	/* Date to deliver as "3012-10-06T00:00:00Z" */
 	@JsonProperty("deliverBy")
@@ -44,4 +45,11 @@ public class CreatePaymentDetail implements Serializable {
 	@Nullable
 	@JsonProperty("memo")
 	public String memo;
+	
+	public CreatePaymentDetail() {
+		payee = new ID();
+		amount = 0;
+		paymentMethod = new ID();
+		deliverBy = "";
+	}
 }

@@ -50,8 +50,14 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 					BankNavigator.navigateToPayBillsLanding();
 				} else if(isEligible() && !isEnrolled()){
 					sendToTermsScreen(R.string.section_title_pay_bills);
-				} else{
-					BankServiceCallFactory.createGetPayeeServiceRequest().submit();
+				} else{					
+					if(null == BankUser.instance().getPayees()) {
+						BankServiceCallFactory.createGetPayeeServiceRequest().submit();
+					} else{
+						final Bundle bundle = new Bundle();
+						bundle.putSerializable(BankExtraKeys.PAYEES_LIST, BankUser.instance().getPayees());
+						BankNavigator.navigateToSelectPayee(bundle);
+					}
 				}
 			}
 		};
@@ -101,9 +107,13 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 				} else if(isEligible() && !isEnrolled()){
 					sendToTermsScreen(R.string.review_payments_title);
 				} else{
-					BankRotationHelper.getHelper().setBundle(null);
-					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
-					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+					if(null == BankUser.instance().getPayees()) {
+						BankServiceCallFactory.createGetPayeeServiceRequest(true).submit();
+					} else{
+						BankRotationHelper.getHelper().setBundle(null);
+						final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+						BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+					}
 				}
 			}
 		};

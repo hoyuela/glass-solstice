@@ -23,7 +23,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,6 +44,7 @@ import com.discover.mobile.card.services.auth.forgot.ForgotUserIdCall;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.card.services.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
@@ -292,26 +292,30 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	private void doForgotUserIdCall() {
 		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 
-		//Lock orientation while request is being processed
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		//Used to prevent application from crashing during orientation
+		DiscoverModalManager.setActiveModal(progress);
+		DiscoverModalManager.setAlertShowing(true);
 
 		final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
 			@Override
 			public void success(final NetworkServiceCall<?> sender, final RegistrationConfirmationDetails value) {
-				progress.dismiss();
+				if( progress != null && progress.isShowing())
+					progress.dismiss();
+				
 				confirmationDetails = value;
 				getAccountDetails();
 			}
 
 			@Override
 			public void complete(final NetworkServiceCall<?> sender, final Object result) {
-				//Unlock orientation after request has been proceesed
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+				
 			}
 
 			@Override
 			public void failure(final NetworkServiceCall<?> sender, final Throwable error) {
-				progress.dismiss();
+				if( progress != null && progress.isShowing())
+					progress.dismiss();
+				
 				Log.e(TAG, "Error: " + error.getMessage());
 				showOkAlertDialog("Error", error.getMessage());
 
@@ -321,7 +325,9 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 
 			@Override
 			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
-				progress.dismiss();
+				if( progress != null && progress.isShowing())
+					progress.dismiss();
+				
 				resetScrollPosition();
 
 				switch (errorResponse.getHttpStatusCode()) {
@@ -341,7 +347,9 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 
 			@Override
 			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse messageErrorResponse) {
-				progress.dismiss();
+				if( progress != null && progress.isShowing())
+					progress.dismiss();
+				
 				resetScrollPosition();
 
 				idErrLabel.setText(messageErrorResponse.getMessage());

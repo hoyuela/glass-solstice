@@ -7,7 +7,6 @@ import java.util.Map;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.common.net.json.bank.Date;
-import com.discover.mobile.common.net.json.bank.Money;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -105,6 +104,9 @@ public class PaymentDetail implements Serializable{
 	/**Unique identifier for the class*/
 	private static final long serialVersionUID = -1968961896410192306L;
 
+	/**Key of the date divider*/
+	public static final String DATE_DIVIDER = "T";
+
 	/**Id of the payment*/
 	@JsonProperty("id")
 	public String id;
@@ -118,7 +120,7 @@ public class PaymentDetail implements Serializable{
 	 * A positive value denotes a credit, while a negative value denotes a debit.
 	 */
 	@JsonProperty("amount")
-	public Money amount;
+	public int amount;
 
 	/**Status of the payment*/
 	@JsonProperty("status")
@@ -128,13 +130,20 @@ public class PaymentDetail implements Serializable{
 	@JsonProperty("dates")
 	public Map<String, Date> dates;
 
+	/**Deliver by date*/
+	@JsonProperty("deliverBy")
+	public String deliverBy;
+
+	/**Deliver by date*/
+	@JsonProperty("deliveredOn")
+	public String deliveredOn;
 
 	/**Details about the payee*/
 	@JsonProperty("payee")
 	public PayeeDetail payee;
 
 	/**Payment account*/
-	@JsonProperty("paymentAccount")
+	@JsonProperty("paymentMethod")
 	public Account paymentAccount;
 
 	/**Payment confirmation number*/

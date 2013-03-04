@@ -9,5 +9,6 @@
     <string name="action_link">Action Link</string>
     <string name="status_text">Status Message</string>
     <string name="note_title">Note Title</string> 
+    <string name="hi_text">Hi, John</string> 
     <string name="note_text">This here is nothing more than a sample of what the note text would like.</string>
 </resources>

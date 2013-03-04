@@ -113,7 +113,7 @@ public class BankAccountActivityTable extends BaseTable{
 	@Override
 	public void goToDetailsScreen(final int index){
 		final Bundle bundle = saveDataInBundle();
-		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, index);
+		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, index-1);
 		BankNavigator.navigateToActivityDetailScreen(bundle);
 	}
 

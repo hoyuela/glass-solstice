@@ -6,14 +6,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.ui.help.NeedHelpFooter;
 
 /**
  * Fragment class used to display the Open Account page to the user when they do not have any accounts.
@@ -25,19 +28,37 @@ import com.discover.mobile.common.DiscoverActivityManager;
  *
  */
 public class BankOpenAccountFragment extends BaseFragment implements OnClickListener {
-
+	private NeedHelpFooter helpFooter;
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_open_account_view, null);
 		final Button openAccountBtn = (Button)view.findViewById(R.id.openAccount);
 
+		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
+		salutation.setText(setFirstName());
+		
 		/**Set the fragment activity as the handler for the button click event*/
 		openAccountBtn.setOnClickListener(this);
+
+		/**Create footer that will listen when user taps on Need Help Number to dial*/
+		helpFooter = new NeedHelpFooter((ViewGroup)view);
+		helpFooter.setToDialNumberOnClick(com.discover.mobile.bank.R.string.bank_need_help_number_text);
 
 		return view;
 	}
 
+	/** Set the first name in the status bar. The first name can sometimes be 
+	 * returned in all caps and only the first letter should be capitalized. 
+	 */
+	private String setFirstName() {
+		final String firstName = BankUser.instance().getCustomerInfo().name.type;
+		final String name = firstName.toLowerCase();
+		final String upperString = name.substring(0,1).toUpperCase() + name.substring(1);
+		return "Hi, " + upperString;
+	}
+	
 	@Override
 	public int getActionBarTitle() {
 		return R.string.bank_open_account;
@@ -52,7 +73,7 @@ public class BankOpenAccountFragment extends BaseFragment implements OnClickList
 	public void onResume() {
 		super.onResume();
 
-		/**Disable Sliding Navigation Menu and Hide Menu Button in Acction Bar**/
+		/**Disable Sliding Navigation Menu and Hide Menu Button in Action Bar**/
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();	
 		activity.enableSlidingMenu(false);
 		activity.showNavigationMenuButton(false);
@@ -61,12 +82,6 @@ public class BankOpenAccountFragment extends BaseFragment implements OnClickList
 	@Override
 	public void onPause() {
 		super.onPause();
-
-
-		/**Enable Sliding Navigation Menu and Show Menu Button in Acction Bar**/
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();	
-		activity.enableSlidingMenu(true);
-		activity.showNavigationMenuButton(true);
 	}
 
 	@Override
