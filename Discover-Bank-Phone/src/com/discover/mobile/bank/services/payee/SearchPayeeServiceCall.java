@@ -78,7 +78,7 @@ public class SearchPayeeServiceCall extends
 	 * @return Returns a GetCallParams that is to be provided to the NetworkServiceCall<> base class in the constructor.
 	 */
 	private static GetCallParams generateCallParams(final String name) {
-		final String url = BankUrlManager.getUrl(BankUrlManager.PAYEES_URL_KEY)+"search?name=" +name;
+		final String url = BankUrlManager.getUrl(BankUrlManager.PAYEES_URL_KEY)+"search?q=" +name;
 		final GetCallParams callParams = new GetCallParams(url);
 		// This service call is made after authenticating and receiving
 		// a token,
