@@ -15,7 +15,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
-import com.discover.mobile.bank.services.payee.AddPayeeDetail;
+import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 
@@ -30,7 +30,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	/** 
 	 * Reference to a AddPayeeDetail object used to hold the information of the Payee that will be added.
 	 */
-	AddPayeeDetail detail = new AddPayeeDetail();
+	PayeeDetail detail = new PayeeDetail();
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -39,7 +39,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 		/**Fetch payee detail passed in from Step 4 in Add Payee Fragment*/
 		final Bundle bundle = this.getArguments();
 		if( null != bundle &&  null != bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM)) {
-			detail =  (AddPayeeDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);				
+			detail =  (PayeeDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);				
 		} 
 
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
