@@ -57,7 +57,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	 */
 	private void setUpTable(){
 		table.setMode(Mode.PULL_FROM_END);
-		table.setShowDividers(R.drawable.table_dotted_line);
+		table.getRefreshableView().setDivider(getResources().getDrawable(R.drawable.table_dotted_line));
 		table.getLoadingLayoutProxy().setLoadingDrawable(null);
 		table.getLoadingLayoutProxy().setPullLabel("");
 		table.getLoadingLayoutProxy().setRefreshingLabel("");
