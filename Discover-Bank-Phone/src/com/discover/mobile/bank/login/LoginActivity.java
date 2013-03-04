@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
@@ -167,8 +169,13 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * Assign local references to interface elements that we need to access in some way.
 	 */
 	private void loadResources() {
+		final InputFilter[] filters = new InputFilter[1];
+		filters[0] = new InvalidCharacterFilter();
 		idField = (NonEmptyEditText) findViewById(R.id.username_field);
+		idField.setFilters(filters);
 		passField = (NonEmptyEditText) findViewById(R.id.password_field);
+		passField.setFilters(filters);
+		
 		loginButton = (Button) findViewById(R.id.login_button);
 		registerOrAtmButton = (Button) findViewById(R.id.register_now_or_atm_button);
 		privacySecOrTermButton = (Button) findViewById(R.id.privacy_and_security_button);
