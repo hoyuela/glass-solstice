@@ -125,6 +125,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	public OnCheckedChangeListener getPostedListener(){
 		return new OnCheckedChangeListener(){
+			
 			@Override
 			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
 				if(isChecked){
@@ -139,7 +140,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 * Get the scheduled button click listener
 	 * @return the scheduled button click listener
 	 */
-	public OnCheckedChangeListener getShceduledListener(){
+	public OnCheckedChangeListener getScheduledListener(){
 		return new OnCheckedChangeListener(){
 
 			@Override 
@@ -272,7 +273,7 @@ public class BankAccountActivityTable extends BaseTable{
 	public void setupHeader() {
 		header = new AccountActivityHeader(this.getActivity(), null);
 		header.getPostedButton().setOnCheckedChangeListener(this.getPostedListener());
-		header.getScheduledButton().setOnCheckedChangeListener(this.getShceduledListener());
+		header.getScheduledButton().setOnCheckedChangeListener(this.getScheduledListener());
 	}
 
 	/**
