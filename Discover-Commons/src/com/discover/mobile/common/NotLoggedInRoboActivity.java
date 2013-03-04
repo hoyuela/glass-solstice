@@ -71,12 +71,20 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 		closeDialog();
 		
 		//Close the modal if it is showing
-		if(null != DiscoverModalManager.getActiveModal() && DiscoverModalManager.getActiveModal().isShowing()){
+		if(DiscoverModalManager.hasActiveModal()){
 			DiscoverModalManager.getActiveModal().dismiss();
 			DiscoverModalManager.setAlertShowing(true);
 		}else{
-			DiscoverModalManager.setAlertShowing(false);
+			DiscoverModalManager.clearActiveModal();
 		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		/**Clear any modal that may have been created during the life of this activity*/
+		DiscoverModalManager.clearActiveModal();
+		
+		super.onDestroy();
 	}
 
 	/**
