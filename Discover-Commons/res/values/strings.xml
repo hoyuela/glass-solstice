@@ -122,8 +122,9 @@
     <string name="privacy_terms">Privacy &amp; Terms</string>
      <string name="bank_account_summary">Account Summary</string>
     <string name="bank_open_account">Open an Account</string>
+    <string name="bank_open_new_account">Open a New Account</string>
     <string name="bank_under_development">Under Development</string>
-    <string name="bank_open_account_details">When you open up a Discover\nBank Account you\'ll enjoy\ncompetitive online banking rates that\nhelp you earn and manage your money\nfrom your mobile device.</string>
+    <string name="bank_open_account_details">Open up a Discover Bank Account and enjoy competitive online banking rates. You can earn and manage your money right from your mobile device.</string>
     <string name="bank_open_browser_title">You\'re Leaving this Application</string>
     <string name="bank_open_browser_text">The page you are about to view is not optimized for mobile devices. Tap Continue to view this page on discover.com</string>
     <string name="bank_pmt_make_another">Make Another Payment</string> 

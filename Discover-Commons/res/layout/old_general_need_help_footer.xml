@@ -23,7 +23,9 @@
 	        android:layout_below="@+id/need_help_label"
 	        android:text="@string/need_help_number_text"
 	        style="@style/blue_hyperlink"
-	        android:padding="@dimen/content_padding"/>
+	        android:paddingRight="@dimen/content_padding"
+	        android:paddingLeft="@dimen/content_padding"
+	        android:paddingBottom="@dimen/content_padding"/>
     </RelativeLayout>  
 
 </merge>
