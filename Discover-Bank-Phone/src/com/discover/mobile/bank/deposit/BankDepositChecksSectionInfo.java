@@ -37,7 +37,7 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 						if( BankUser.instance().getAccounts().accounts.size() > 1 ) {
 							//Navigate to Select account
 						} else {
-							//Navigate to Set 
+							//Navigate to Set Amount
 						}
 					}
 				}
@@ -50,7 +50,7 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 	 * @return if a user is eligible for payments
 	 */
 	protected static boolean isEligible(){
-		return BankUser.instance().getCustomerInfo().isPaymentsEligibility();
+		return BankUser.instance().getCustomerInfo().isDepositEligibility();
 	}
 
 	/**
@@ -58,6 +58,6 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 	 * @return if a user is enrolled in payments
 	 */
 	protected static boolean isEnrolled(){
-		return BankUser.instance().getCustomerInfo().isPaymentsEnrolled();
+		return BankUser.instance().getCustomerInfo().isDepositEnrolled();
 	}
 }

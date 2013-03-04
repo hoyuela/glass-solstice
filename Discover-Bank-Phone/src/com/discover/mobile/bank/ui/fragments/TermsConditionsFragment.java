@@ -18,8 +18,18 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
 
 /**
- * The Generic terms and conditions page for al
+ * The Generic terms and conditions fragment to be used as a base class for any  of the terms and conditions
+ * pages including: Payments, Transfers and Deposits. The sub-class is required to implement the following
+ * methods:
  * 
+ *  //Method Used to fetch the URL for downloading the Terms and Condition from the sub-class
+ *  public abstract String getTermsUrl();
+ *  
+ *  //Method to be implemented by sub-class for handling when the user taps Accept on the screen
+ *  public abstract void onAcceptClicked();
+ *  
+ *  //Method to be implemented by sub-class to return the title that is shown at the top of the layout.
+ *  public abstract int getPageTitle();
  * 
  * The content is loaded from a URL into a web view and allows the user to review and accept
  * the terms and conditions, or cancel and go back if they please.
