@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	 <string name="bank_deposit_title">Deposit a Check</string>
+     <string name="bank_deposit_page_title">Welcome to Mobile Check Deposit</string>
+</resources>

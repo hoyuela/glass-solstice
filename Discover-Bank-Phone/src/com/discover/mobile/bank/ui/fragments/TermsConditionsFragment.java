@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.paybills;
+package com.discover.mobile.bank.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -12,29 +12,32 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.discover.mobile.BankMenuItemLocationIndex;
-import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.framework.BankServiceCallFactory;
-import com.discover.mobile.bank.services.customer.Eligibility;
 import com.discover.mobile.common.BaseFragment;
 
 /**
- * The terms and conditions page for Pay Bills or Mange Payees.
+ * The Generic terms and conditions fragment to be used as a base class for any  of the terms and conditions
+ * pages including: Payments, Transfers and Deposits. The sub-class is required to implement the following
+ * methods:
  * 
- * This page presents the terms and conditions of the Bill Payment service to the user.
+ *  //Method Used to fetch the URL for downloading the Terms and Condition from the sub-class
+ *  public abstract String getTermsUrl();
+ *  
+ *  //Method to be implemented by sub-class for handling when the user taps Accept on the screen
+ *  public abstract void onAcceptClicked();
+ *  
+ *  //Method to be implemented by sub-class to return the title that is shown at the top of the layout.
+ *  public abstract int getPageTitle();
+ * 
  * The content is loaded from a URL into a web view and allows the user to review and accept
  * the terms and conditions, or cancel and go back if they please.
  * 
- * @author scottseward
+ * @author scottseward, hoyuela
  *
  */
-public class BankPayTerms extends BaseFragment{
-
-	/**The default title text that will be used if for some reason one is not passed in the Bundle */
-	int titleText = R.string.pay_a_bill_title;
+public abstract class TermsConditionsFragment extends BaseFragment implements OnClickListener{
 
 	/**We need an api call that is avaialable in API11+ so this is defined to check against version numbers*/
 	final int apiEleven = 11;
@@ -43,16 +46,16 @@ public class BankPayTerms extends BaseFragment{
 	int titleStringResource;
 
 	/**The ProgressBar that is shown while the web view loads its content */
-	private ProgressBar loadingSpinner;
+	protected ProgressBar loadingSpinner;
 
 	/**The button that the user needs to press to accept the terms and conditions */
-	private Button acceptButton;
+	protected Button acceptButton;
 
 	/**The web view that displays the content for the terms of service to the user */
-	private WebView termsWebView;
+	protected WebView termsWebView;
 
-	/**The URL that provides the terms and conditiond content for the URL */
-	private final String termsUrl = "https://asys.discoverbank.com/api/content/payments/terms.html";
+	/**TextView that displays the title of the page within the fragment*/
+	protected TextView pageTitle;
 
 	/**
 	 * Get the title text that was passed in by the previous Fragment.
@@ -60,18 +63,7 @@ public class BankPayTerms extends BaseFragment{
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		final Bundle argBundle = getArguments();
 
-		if(argBundle != null){
-			titleStringResource  = argBundle.getInt(BankExtraKeys.TITLE_TEXT);
-		}else if (savedInstanceState != null){
-			titleStringResource  = savedInstanceState.getInt(BankExtraKeys.TITLE_TEXT);
-		}
-
-		//If there was a valid resource retrieved from the Bundle, use it.
-		if(titleStringResource != 0) {
-			titleText = titleStringResource;
-		}
 	}
 
 	/**
@@ -82,6 +74,7 @@ public class BankPayTerms extends BaseFragment{
 		termsWebView = (WebView)mainView.findViewById(R.id.agreement_web_view);
 		acceptButton = (Button)mainView.findViewById(R.id.accept_button);
 		loadingSpinner = (ProgressBar)mainView.findViewById(R.id.progress_bar);
+		pageTitle = (TextView)mainView.findViewById(R.id.select_payee_title);
 	}
 
 	/**
@@ -93,7 +86,7 @@ public class BankPayTerms extends BaseFragment{
 	 */
 	@SuppressLint("NewApi")
 	private void setupWebView() {
-		termsWebView.loadUrl(termsUrl);
+		termsWebView.loadUrl(this.getTermsUrl());
 		termsWebView.setBackgroundColor(Color.TRANSPARENT);
 		termsWebView.setWebViewClient(new WebViewClient() {
 			@Override
@@ -112,20 +105,6 @@ public class BankPayTerms extends BaseFragment{
 		}
 	}
 
-	/**
-	 * Set the onClickListener for the accept button to submit the accept
-	 * service call.
-	 */
-	private void setupAcceptButton() {
-		acceptButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				final Eligibility eligibility = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
-				BankServiceCallFactory.createAcceptTermsRequest(eligibility).submit();				
-			}
-		});
-	}
 
 	/**
 	 * Inflates the view and loads needed resources from the layout.
@@ -141,26 +120,39 @@ public class BankPayTerms extends BaseFragment{
 		final View mainView = inflater.inflate(R.layout.payment_terms_and_conditions, null);
 		loadResources(mainView);
 		setupWebView();
-		setupAcceptButton();
 
+		/***Set the title of the page*/
+		pageTitle.setText(this.getPageTitle());
+		
+		/**Set click listener for accept button*/
+		acceptButton.setOnClickListener(this);
+		
 		return mainView;
 	}
-
+	
 	/**
-	 * Set the title in the action bar.
+	 * Click Handler for all buttons in this fragment calls the respective callback depending
+	 * on which button was clicked.
 	 */
 	@Override
-	public int getActionBarTitle() {
-		return titleText;
+	public void onClick(final View v) {
+		if( v == acceptButton) {
+			this.onAcceptClicked();
+		}
 	}
-
-	@Override
-	public int getGroupMenuLocation() {
-		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
-	}
-
-	@Override
-	public int getSectionMenuLocation() {
-		return BankMenuItemLocationIndex.PAY_BILLS_SECTION;
-	}
+	
+	/**
+	 * Returns the URL to use for Terms and Conditions.
+	 */
+	public abstract String getTermsUrl();
+	
+	/**
+	 * Method signature for Accept Button Click Handler to be implemented by sub-classes
+	 */
+	public abstract void onAcceptClicked();
+	
+	/**
+	 * Method signature for retrieving the title displayed to the user within the Fragment. 
+	 */
+	public abstract int getPageTitle();
 }

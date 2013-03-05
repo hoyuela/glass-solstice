@@ -15,6 +15,7 @@ import com.discover.mobile.bank.account.BankAccountActivityTable;
 import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
+import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
@@ -564,6 +565,25 @@ public final class BankNavigator {
 				if(Log.isLoggable(TAG, Log.ERROR)) {
 					Log.e(TAG, "Unexpected Service Call Found!");
 				}
+			}
+		}
+	}
+
+	/**
+	 * Navigation method used to navigate to Check Deposit Terms & Conditions Page
+	 */
+	public static void navigateToDepositTerms() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+			
+			final BankDepositTermsFragment termsFragment = new BankDepositTermsFragment();
+			
+			navActivity.makeFragmentVisible(termsFragment);
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unable to navigate to terms page, incorrect Activity");
 			}
 		}
 	}

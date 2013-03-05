@@ -248,22 +248,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//If the user accepts the Bank terms and services for pay bills, navigate them to the originally
 		//chosen option. 
-		else if(sender instanceof AcceptTermsService){
-			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-			final String currentTitle = activity.getActionBarTitle();
-			final String payBills = activity.getString(R.string.section_title_pay_bills);
-			final String managePayees = activity.getString(R.string.sub_section_title_manage_payees);
-			activity.getSupportFragmentManager().popBackStack();
-
-			if(currentTitle.equals(payBills)) {
-				BankServiceCallFactory.createGetPayeeServiceRequest().submit();
-			} else if(currentTitle.equals(managePayees)) {
-				BankServiceCallFactory.createManagePayeeServiceRequest().submit();
-			} else{
-				BankRotationHelper.getHelper().setBundle(null);
-				final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
-				BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
-			}		
+		else if(sender instanceof AcceptTermsService ){
+			final AcceptTermsService acceptTerms = (AcceptTermsService)sender;
+			if( acceptTerms.getEligibility().isPaymentsEligibility() ) {
+				handleAcceptPaymentTerms();
+			} else if( acceptTerms.getEligibility().isDepositsEligibility() ) {
+				handleAcceptDepositsTerms();
+			}
 		}
 		//Navigate to Account Summary landing page once Account Summary is downloaded
 		else if( sender instanceof GetCustomerAccountsServerCall) {
@@ -341,6 +332,39 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				Log.w(TAG, "NetworkServiceCallManager ignored success of a NetworkServiceCall!");
 			}
 		}
+	}
+	
+	/**
+	 * Method to handle a successful Accept Deposits Terms and Conditions
+	 */
+	public void handleAcceptDepositsTerms() {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		activity.closeDialog();
+		activity.getSupportFragmentManager().popBackStack();
+		
+		activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+		activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+	}
+	
+	/**
+	 * Method to handle a successful Accept Payments Terms and Conditions
+	 */
+	public void handleAcceptPaymentTerms() {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		final String currentTitle = activity.getActionBarTitle();
+		final String payBills = activity.getString(R.string.section_title_pay_bills);
+		final String managePayees = activity.getString(R.string.sub_section_title_manage_payees);
+		activity.getSupportFragmentManager().popBackStack();
+
+		if(currentTitle.equals(payBills)) {
+			BankServiceCallFactory.createGetPayeeServiceRequest().submit();
+		} else if(currentTitle.equals(managePayees)) {
+			BankServiceCallFactory.createManagePayeeServiceRequest().submit();
+		} else{
+			BankRotationHelper.getHelper().setBundle(null);
+			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+			BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+		}		
 	}
 
 	/**
