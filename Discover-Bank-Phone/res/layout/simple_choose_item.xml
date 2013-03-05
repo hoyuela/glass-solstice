@@ -16,6 +16,7 @@
     	android:layout_alignParentLeft="true"
     	android:layout_toLeftOf="@+id/carrot"
     	android:singleLine="true"
+    	android:textStyle="bold"
     	style="@style/blue_choose_item_text"
     	android:paddingRight="@dimen/between_related_elements_padding"
     	android:text="Text"/>
