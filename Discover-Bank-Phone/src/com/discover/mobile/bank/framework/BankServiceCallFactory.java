@@ -1,7 +1,10 @@
-package com.discover.mobile.bank;
+package com.discover.mobile.bank.framework;
+
+import java.io.Serializable;
 
 import android.app.Activity;
 
+import com.discover.mobile.bank.BankPhoneAsyncCallbackBuilder;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.AcceptTermsService;
@@ -23,6 +26,7 @@ import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
+import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
@@ -36,6 +40,8 @@ import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.error.ErrorHandlerUi;
+import com.discover.mobile.common.framework.ServiceCallFactory;
+import com.discover.mobile.common.net.NetworkServiceCall;
 
 /**
  * Utility class used to construct NetworkServiceCall<> objects used for invoking Bank related web-service API.
@@ -43,9 +49,9 @@ import com.discover.mobile.common.error.ErrorHandlerUi;
  * @author henryoyuela
  *
  */
-public class BankServiceCallFactory {
+public class BankServiceCallFactory  implements ServiceCallFactory {
 
-	private BankServiceCallFactory() {
+	public BankServiceCallFactory() {
 
 	}
 
@@ -134,7 +140,7 @@ public class BankServiceCallFactory {
 
 		return new CreateStrongAuthRequestCall(activity, callback, details);
 	}
-	
+
 	/**
 	 * Used to construct a CreateStrongAuthRequestCall NetworkServiceCall for invoking the Bank - Authentication
 	 * Service API found at ./api/auth/strongauth. The CreateStrongAuthRequestCall created by this method is used
@@ -152,7 +158,7 @@ public class BankServiceCallFactory {
 		final AsyncCallback<BankStrongAuthDetails>  callback =
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankStrongAuthDetails.class,
 						activity, (ErrorHandlerUi) activity)
-							.build();
+						.build();
 
 		return new CreateStrongAuthRequestCall(activity, callback);
 	}
@@ -172,7 +178,23 @@ public class BankServiceCallFactory {
 
 		return new GetPayeeServiceCall(activity, callback);
 	}
-	
+
+	/**
+	 * Create the service call to get the payees for a user
+	 * @return the service call to get the payees for a user
+	 */
+	public static GetPayeeServiceCall createGetPayeeServiceRequest(final boolean isChainCall) {
+
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<ListPayeeDetail>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(ListPayeeDetail.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new GetPayeeServiceCall(activity, callback, isChainCall);
+	}
+
 	/**
 	 * Create a POST request to tell the Bank APIs that the user has accepted a terms and conditions 
 	 * that was presented to them.
@@ -182,13 +204,13 @@ public class BankServiceCallFactory {
 	 */
 	public static AcceptTermsService createAcceptPayBillsTermsRequest(final Eligibility eligibility) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		
+
 		final AsyncCallback<Object> callback = 
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Object.class, activity, null).build();
 
 		return new AcceptTermsService(activity, callback, eligibility);
 	}
-	
+
 	/**
 	 * Create the service call to get the payees for a user
 	 * @return the service call to get the payees for a user
@@ -204,14 +226,14 @@ public class BankServiceCallFactory {
 
 		return new ManagePayeeServiceCall(activity, callback);
 	}
-	
+
 	/**
 	 * Create a service call to retrieve the terms and conditions for Pay Bills from the Bank APIs.
 	 * @return the service call that will retrieve the terms and conditions for Pay Bills from the Bank APIs.
 	 */
 	public static GetPayBillsTermsAndConditionsCall createGetPayBillsTermsAndConditionsCall() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		
+
 		final AsyncCallback<PayBillsTermsAndConditionsDetail> callback = 
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PayBillsTermsAndConditionsDetail.class,
 						activity, (ErrorHandlerUi) activity)
@@ -308,11 +330,11 @@ public class BankServiceCallFactory {
 
 		return new SearchPayeeServiceCall(activity, callback, name);
 	}
-	
+
 	/**
 	 * Creates a AddPayeeServiceCall object used to add a payee to the session user's account via
 	 * an HTTP POST request to the Bank Web-service API "Add a Payee" using the url /api/payees.
-     * 
+	 * 
 	 * @param value - Holds information about the Payee being added to the session user's account
 	 * 
 	 * @return Reference to the AddPayeeServiceCall object created.
@@ -320,11 +342,33 @@ public class BankServiceCallFactory {
 	public static AddPayeeServiceCall createAddPayeeRequest(final AddPayeeDetail value) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		final AsyncCallback<AddPayeeDetail>  callback =
-				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(AddPayeeDetail.class,
+		final AsyncCallback<PayeeDetail>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PayeeDetail.class,
 						activity, (ErrorHandlerUi) activity)
 						.build();
 
 		return new AddPayeeServiceCall(activity, callback, value);
 	}
+
+	@Override
+	public NetworkServiceCall<?> createServiceCall(@SuppressWarnings("rawtypes") final Class cacheObject,
+			final Serializable payload) {
+
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		if ( cacheObject == PayeeDetail.class ) { 
+
+			final AsyncCallback<PayeeDetail>  callback =
+					BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PayeeDetail.class,
+							activity, (ErrorHandlerUi) activity)
+							.build();
+
+			return new AddPayeeServiceCall(activity, callback, (AddPayeeDetail) payload);
+
+		}
+		// FIXME : Add the rest in here!!! 
+		return null;
+	}
+
+
 }

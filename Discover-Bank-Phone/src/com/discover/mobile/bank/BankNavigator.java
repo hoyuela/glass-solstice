@@ -16,6 +16,8 @@ import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
+import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.BankPayConfirmFragment;
@@ -75,6 +77,7 @@ public final class BankNavigator {
 		//Send an intent to open login activity if current activity is not login
 		if( activity.getClass() != LoginActivity.class ) {
 			final Intent intent = new Intent(activity, LoginActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			final Bundle bundle = new Bundle();
 			bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
 			bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
@@ -108,9 +111,12 @@ public final class BankNavigator {
 	 * 
 	 * @param activity Reference to Activity from where it will navigate to home page
 	 */
-	public static void navigateToHomePage(final Activity activity) {
+	public static void navigateToHomePage() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
 		if( activity.getClass() != BankNavigationRootActivity.class ) {
 			final Intent home = new Intent(activity, BankNavigationRootActivity.class);
+			home.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			activity.startActivity(home);
 
 			//Close current activity
@@ -186,28 +192,30 @@ public final class BankNavigator {
 	 * @param url String that holds the url to be used when opening the browser.
 	 */
 	public static void navigateToBrowser(final String url) {
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-
-		// Create a one button modal to notify the user that they are leaving the application
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
-				R.string.bank_open_browser_title, 
-				R.string.bank_open_browser_text, 
-				false, 
-				R.string.bank_need_help_number_text, 
-				R.string.continue_text);
-
-		//Set the dismiss listener that will navigate the user to the browser	
-		modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				modal.dismiss();
-				final Intent i = new Intent(Intent.ACTION_VIEW);
-				i.setData(Uri.parse(url));
-				activity.startActivity(i);
-			}
-		});
-
-		activity.showCustomAlert(modal);
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
+		if(activity != null && activity instanceof BankNavigationRootActivity ) {
+			// Create a one button modal to notify the user that they are leaving the application
+			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+					R.string.bank_open_browser_title, 
+					R.string.bank_open_browser_text, 
+					false, 
+					R.string.bank_need_help_number_text, 
+					R.string.continue_text);
+	
+			//Set the dismiss listener that will navigate the user to the browser	
+			modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(final View v) {
+					modal.dismiss();
+					final Intent i = new Intent(Intent.ACTION_VIEW);
+					i.setData(Uri.parse(url));
+					activity.startActivity(i);
+				}
+			});
+	
+			((BankNavigationRootActivity)activity).showCustomAlert(modal);
+		}
 	}
 
 	/**

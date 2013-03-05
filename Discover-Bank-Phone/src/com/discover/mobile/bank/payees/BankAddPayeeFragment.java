@@ -11,9 +11,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResult;
@@ -77,7 +78,7 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 	 * Key used for storing the payeeSearchResult data member in a bundle when onSaveInstanceState() is called.
 	 */
 	final private static String KEY_SEARCH_RESULT = "search-result";
-	
+
 	private enum ManagedPayeeFields {
 		PayeeName,
 		PayeeNickName,
@@ -85,11 +86,11 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 		PayeeAccountNumberConfirmed,
 		PayeeZipCode
 	}
-	
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
-		
+
 		/**Check if an Unverified Managed Payee was passed from Add Payee - Step 3 BankSearchSelectPayeeFragment*/
 		final Bundle bundle = this.getArguments();
 		if( null != savedInstanceState ) {
@@ -102,16 +103,16 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 			detail.merchantNumber = payeeSearchResult.merchantNumber;
 			detail.isZipRequired = payeeSearchResult.isZipRequired();
 		} 
-		
+
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-				
+
 		/**initialize content to be displayed on fragment*/
 		initialize(view);
-		
-		
+
+
 		return view;
 	}
-	
+
 	/**
 	 * Method used to initialize the views in the layout used for this fragment.
 	 * 
@@ -121,34 +122,34 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)mainView.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
-		
+
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
-		this.progressIndicator.initChangePasswordHeader(0);
-		this.progressIndicator.hideStepTwo();
-		this.progressIndicator.setTitle(R.string.bank_payee_details, R.string.bank_payee_added, R.string.bank_payee_added);
-			
+		progressIndicator.initChangePasswordHeader(0);
+		progressIndicator.hideStepTwo();
+		progressIndicator.setTitle(R.string.bank_payee_details, R.string.bank_payee_added, R.string.bank_payee_added);
+
 		/**Make the note title/text visible to the user if Verified Payee*/
 		if( null != payeeSearchResult) {
-			this.noteTitle.setText(R.string.bank_verified_payees_address);
-			this.noteTitle.setVisibility(View.VISIBLE);
-			this.noteTextMsg.setText(R.string.bank_verified_payees_address_msg);
-			this.noteTextMsg.setVisibility(View.VISIBLE);
+			noteTitle.setText(R.string.bank_verified_payees_address);
+			noteTitle.setVisibility(View.VISIBLE);
+			noteTextMsg.setText(R.string.bank_verified_payees_address_msg);
+			noteTextMsg.setVisibility(View.VISIBLE);
 		} else {
-			this.noteTitle.setVisibility(View.GONE);
-			this.noteTextMsg.setVisibility(View.GONE);
+			noteTitle.setVisibility(View.GONE);
+			noteTextMsg.setVisibility(View.GONE);
 		}
-		
-		this.actionButton.setText(R.string.bank_add_payee);
-		
-		this.actionLink.setText(R.string.bank_add_cancel);
+
+		actionButton.setText(R.string.bank_add_payee);
+
+		actionLink.setText(R.string.bank_add_cancel);
 	}
-	
-	
+
+
 	@Override
 	public int getActionBarTitle() {
 		return R.string.bank_manage_payees;
 	}
-	
+
 	/**
 	 * Method used to validate all input fields to make sure they meet the 
 	 * criteria associated with each at creation. Refer to PayeeDetailListGenerator
@@ -158,28 +159,28 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 	 */
 	private boolean canProceed() {
 		boolean ret = true;
-		
+
 		/**Iterate through each BankEditDetail object and make sure their editable field validates correctly*/
 		if( content != null){
 			for(final Object element : content) {
 				if( element instanceof BankEditDetail) {
 					ret = ((BankEditDetail)element).getEditableField().isValid();
-					
+
 					if( !ret ) {					
 						break;
 					}
 				}
 			}
 		}
-		
+
 		/**Make sure account number matches re-enter account number*/
 		if( ret ) {
 			ret = doAcctNumbersMatch();
 		}
-		
+
 		return ret;
 	}
-	
+
 	/**
 	 * Method used to check if values entered by the user in account # and re-entered account #  match.
 	 * 
@@ -188,13 +189,13 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 	private boolean doAcctNumbersMatch() {
 		final BankEditDetail acctNum = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumber.ordinal()));
 		final BankEditDetail acctConfirm = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal()));
-		
+
 		final String accountNum =  acctNum.getEditableField().getText().toString();;
 		final String accountMatch =  acctConfirm.getEditableField().getText().toString();
-		
+
 		return accountNum.equals(accountMatch); 
 	}
-	
+
 	/**
 	 * Shows inline errors for all BankEditDetail objects if fields do not validate correctly.
 	 */
@@ -208,17 +209,17 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 				}
 			}
 		}
-		
+
 		/**Verify if account numbers entered by the user's match otherwise show inline error*/
 		if( !doAcctNumbersMatch() ) {
 			final BankEditDetail acctConfirm = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal()));
-			
+
 			/**Show non-matching acct# error inline*/
 			acctConfirm.showErrorLabel(R.string.bank_nonmatching_acct);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Generates an AddPayeeDetail object using the text values stored in each BankEditDetail that is
 	 * part of the content list.
@@ -231,23 +232,23 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 			final BankEditDetail acctNum = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumber.ordinal()));
 			final BankEditDetail name = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeName.ordinal()));
 			final BankEditDetail acctConfirm = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal()));
-		
+
 			detail.name = name.getText();
 			detail.nickName = nickName.getText();
 			detail.accountNumber =  acctNum.getText();
 			detail.accountNumberConfirmed = acctConfirm.getText();
-			
+
 			/**If Zip is required then set zip for the payee being added*/
-			if(payeeSearchResult != null && this.payeeSearchResult.isZipRequired() ) {
+			if(payeeSearchResult != null && payeeSearchResult.isZipRequired() ) {
 				final BankEditDetail zip = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeZipCode.ordinal()));
-				
+
 				detail.zip =  zip.getText();
 				detail.isZipRequired = true;
 			} else {
 				detail.isZipRequired = false;
 			}
 		}
-		
+
 		return detail;
 	}
 
@@ -273,24 +274,24 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 	protected void onActionLinkClick() {
 		// Create a one button modal to notify the user that they are cancelling the Add Payee transaction
 		final ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(getActivity(), null);
-		
+
 		cancelModalTopView.setTitle(R.string.bank_cancel_title);
 		cancelModalTopView.setContent(R.string.bank_cancel_msg);
 
 		final ModalDefaultTwoButtonBottomView cancelModalButtons = new ModalDefaultTwoButtonBottomView(
 				getActivity(), null);
 		cancelModalButtons
-				.setCancelButtonText(R.string.bank_cancel_noaction);
+		.setCancelButtonText(R.string.bank_cancel_noaction);
 		cancelModalButtons
-				.setOkButtonText(R.string.bank_cancel_yesaction);
+		.setOkButtonText(R.string.bank_cancel_yesaction);
 
 		final ModalAlertWithTwoButtons cancelModal = new ModalAlertWithTwoButtons(
 				getActivity(), cancelModalTopView, cancelModalButtons);
-				((BankNavigationRootActivity) getActivity())
-				.showCustomAlert(cancelModal);
+		((BankNavigationRootActivity) getActivity())
+		.showCustomAlert(cancelModal);
 
 		final Fragment thisFragment = this;
-		
+
 		cancelModalButtons.getOkButton().setOnClickListener(
 				new OnClickListener() {
 					@Override
@@ -340,17 +341,17 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-		
+
 		final AddPayeeDetail curPayeeDetail = getPayeeDetail();
 		if( null != curPayeeDetail ) {
 			outState.putSerializable(KEY_PAYEE_DETAIL, curPayeeDetail);
 		}
-		
+
 		if( null != payeeSearchResult) {
 			outState.putSerializable(KEY_SEARCH_RESULT, payeeSearchResult);
 		}
 	}
-	
+
 	/**
 	 * Restores the widget's states from before rotation.
 	 * 
@@ -363,23 +364,33 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 			final BankEditDetail nickName =  (BankEditDetail)content.get(ManagedPayeeFields.PayeeNickName.ordinal()); 
 			final BankEditDetail acctNum = (BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumber.ordinal());
 			final BankEditDetail acctConfirm = (BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal());
-			
-			
+
+
 			name.setText(detail.name);
 			nickName.setText(detail.nickName);
 			acctNum.setText(detail.accountNumber);
 			acctConfirm.setText(detail.accountNumberConfirmed);
-			
+
 			if(detail.isZipRequired){
 				final BankEditDetail zip = (BankEditDetail)content.get(ManagedPayeeFields.PayeeZipCode.ordinal());
 				zip.setText(detail.zip);
 			}		
 		} 
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		restoreState();
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.MANAGE_PAYEES_SECTION;
 	}
 }

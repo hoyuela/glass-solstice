@@ -7,9 +7,9 @@ import android.view.View.OnClickListener;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankRotationHelper;
-import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
@@ -50,8 +50,14 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 					BankNavigator.navigateToPayBillsLanding();
 				} else if(isEligible() && !isEnrolled()){
 					sendToTermsScreen(R.string.section_title_pay_bills);
-				} else{
-					BankServiceCallFactory.createGetPayeeServiceRequest().submit();
+				} else{					
+					if(null == BankUser.instance().getPayees()) {
+						BankServiceCallFactory.createGetPayeeServiceRequest().submit();
+					} else{
+						final Bundle bundle = new Bundle();
+						bundle.putSerializable(BankExtraKeys.PAYEES_LIST, BankUser.instance().getPayees());
+						BankNavigator.navigateToSelectPayee(bundle);
+					}
 				}
 			}
 		};
@@ -101,9 +107,13 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 				} else if(isEligible() && !isEnrolled()){
 					sendToTermsScreen(R.string.review_payments_title);
 				} else{
-					BankRotationHelper.getHelper().setBundle(null);
-					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
-					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+					if(null == BankUser.instance().getPayees()) {
+						BankServiceCallFactory.createGetPayeeServiceRequest(true).submit();
+					} else{
+						BankRotationHelper.getHelper().setBundle(null);
+						final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+						BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+					}
 				}
 			}
 		};

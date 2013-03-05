@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/forms_inner_padding"
-        android:paddingRight="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding"       
+   		android:paddingBottom="@dimen/forms_inner_padding"
         android:gravity="center_horizontal"
         android:orientation="vertical" >
 
@@ -35,18 +36,15 @@
             style="@style/call_to_action_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/openAccountDetails"
             android:drawableRight="@drawable/external_link_icon"
             android:layout_marginTop="@dimen/modal_top_margin"
             android:drawablePadding="@dimen/between_related_elements_padding"
             android:layout_gravity="center"
-            android:text="@string/bank_open_account" />
+            android:text="@string/bank_open_new_account" />
 
          <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/provide_feedback_button"
                 android:layout_marginTop="@dimen/modal_footer_topmargin">
                 
                 <include layout="@layout/old_general_need_help_footer" android:id="@+id/need_help_footer"/>
@@ -56,8 +54,8 @@
             android:id="@+id/provide_feedback_button"
             style="@style/bank_blue_hyperlink_small"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/orange_button_margin_top"
+            android:layout_height="wrap_content"                      
+   			android:layout_marginBottom="@dimen/between_related_elements_padding"
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:layout_weight="0.0625"
             android:gravity="bottom"

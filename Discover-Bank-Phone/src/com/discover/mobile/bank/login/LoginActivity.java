@@ -22,10 +22,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.error.BankExceptionHandler;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
@@ -196,6 +196,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
 				showLogoutSuccessful();
 				this.getIntent().putExtra(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+				passField.getText().clear();
 			}
 		}
 	}
@@ -211,6 +212,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			if(extras.getBoolean(IntentExtraKey.SESSION_EXPIRED, false)){
 				showSessionExpired();
 				this.getIntent().putExtra(IntentExtraKey.SESSION_EXPIRED, false);
+				passField.getText().clear();
 			}
 		}
 	}
@@ -248,7 +250,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	public void showSessionExpired() {
 		errorTextView.setText(getString(R.string.session_expired));
 		errorTextView.setVisibility(View.VISIBLE);
-		errorTextView.setTextColor(getResources().getColor(R.color.red));
+		errorTextView.setTextColor(getResources().getColor(R.color.black));
 		clearInputs();
 	}
 	
@@ -259,6 +261,17 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		errorTextView.setText(getString(R.string.logout_sucess));
 		errorTextView.setVisibility(View.VISIBLE);
 		errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
+	}
+	
+	/**
+	 * Called as a result of the activity's being brought to the front when 
+	 * using the Intent flag FLAG_ACTIVITY_REORDER_TO_FRONT.
+	 */
+	@Override
+	protected void onNewIntent(final Intent intent) { 
+		super.onNewIntent(intent);
+		
+		this.setIntent(intent);
 	}
 	
 	/**

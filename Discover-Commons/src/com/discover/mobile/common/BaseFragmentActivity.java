@@ -128,11 +128,11 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 		closeDialog();
 
 		//Close the modal if it is showing
-		if(null != DiscoverModalManager.getActiveModal() && DiscoverModalManager.getActiveModal().isShowing()){
+		if(DiscoverModalManager.hasActiveModal()){
 			DiscoverModalManager.getActiveModal().dismiss();
 			DiscoverModalManager.setAlertShowing(true);
 		}else{
-			DiscoverModalManager.setAlertShowing(false);
+			DiscoverModalManager.clearActiveModal();
 		}
 	}
 
@@ -154,6 +154,9 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 
 	@Override
 	protected void onDestroy() {
+		/**Clear any modal that may have been created during the life of this activity*/
+		DiscoverModalManager.clearActiveModal();
+		
 		try {
 			eventManager.fire(new OnDestroyEvent());
 		} finally {
@@ -255,7 +258,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	/**
 	 * Hides the sliding menu is it is currently visible
 	 */
-	private void hideSlidingMenuIfVisible() {
+	protected void hideSlidingMenuIfVisible() {
 		final SlidingMenu slidingMenu = getSlidingMenu();
 		if(slidingMenu.isBehindShowing()) {
 			slidingMenu.showAbove();

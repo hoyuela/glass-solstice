@@ -73,4 +73,14 @@ public class ListPayeeDetail implements Serializable{
 
 	/**List of payees returned*/
 	public List<PayeeDetail> payees;
+
+	public String getNameFromId(final String id){
+		String name = "";
+		for(final PayeeDetail detail : payees){
+			if(detail.id.equals(id)){
+				name = detail.nickName;
+			}
+		}
+		return name;
+	}
 }

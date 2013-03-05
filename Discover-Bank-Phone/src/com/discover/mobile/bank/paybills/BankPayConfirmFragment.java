@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
@@ -35,7 +36,7 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	 * base class.
 	 */
 	private List<ViewPagerListItem> contentItems;
-	
+
 	/**
 	 * Generates the list of content required for this view using ListItemGenerator class. Configures
 	 * the Progress Indicator to be in step 2 in the work-flow. Sets any attributes required for the
@@ -46,26 +47,26 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 			final Bundle savedInstanceState) {	
 		/**Create list of items that will be render the Payment Detail information on the screen*/
 		final ListItemGenerator generator = new ListItemGenerator(DiscoverActivityManager.getActiveActivity());
-	
+
 		/**Fetch data from bundle passed to fragment**/
 		final Bundle bundle = getArguments();
 		final PaymentDetail item = (PaymentDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		contentItems =  generator.getScheduledPaymentDetailList(item);
-		
-		final View view = super.onCreateView(inflater, container, savedInstanceState);
-			
-		/**Set text to Make Another Payment*/
-		this.actionButton.setText(R.string.bank_pmt_make_another);
-		
-		/**Set text to Review Payment*/
-		this.actionLink.setText(R.string.bank_pmt_review);
-		
-		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
-		this.progressIndicator.initChangePasswordHeader(2);
-		this.progressIndicator.hideStepTwo();
-		this.progressIndicator.setTitle(R.string.bank_pmt_details, R.string.bank_pmt_scheduled, R.string.bank_pmt_scheduled);
 
-		
+		final View view = super.onCreateView(inflater, container, savedInstanceState);
+
+		/**Set text to Make Another Payment*/
+		actionButton.setText(R.string.bank_pmt_make_another);
+
+		/**Set text to Review Payment*/
+		actionLink.setText(R.string.bank_pmt_review);
+
+		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
+		progressIndicator.initChangePasswordHeader(2);
+		progressIndicator.hideStepTwo();
+		progressIndicator.setTitle(R.string.bank_pmt_details, R.string.bank_pmt_scheduled, R.string.bank_pmt_scheduled);
+
+
 		return view;
 	}
 
@@ -86,7 +87,7 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		 * makeVisible(fragment, boolean) was used.
 		 */
 		getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-		
+
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
 		activity.popTillFragment(BankSelectPayee.class);
 	}
@@ -102,10 +103,10 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		 * makeVisible(fragment, boolean) was used.
 		 */
 		getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-		
+
 		//Generate a url to download schedule payments
 		final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
-		
+
 		BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 	}
 
@@ -123,5 +124,15 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
 		return null;
 	}
-	
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_SECTION;
+	}
+
 }

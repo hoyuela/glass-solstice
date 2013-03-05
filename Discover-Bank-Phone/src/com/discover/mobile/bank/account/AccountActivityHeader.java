@@ -132,8 +132,8 @@ public class AccountActivityHeader extends RelativeLayout{
 		account = BankUser.instance().getCurrentAccount();
 
 		addAccount();
-		setHeaderExpanded(isHeaderExpanded);
 		setSelectedCategory(isPosted);
+		setHeaderExpanded(isHeaderExpanded);
 		addView(view);
 	}
 

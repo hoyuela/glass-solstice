@@ -3,6 +3,7 @@ package com.discover.mobile.bank.payees;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
@@ -134,5 +135,15 @@ public class PayeeDetailViewPager extends DetailViewPager {
 	@Override
 	protected void loadMoreIfNeeded(final int position) {
 		//unsupported for payees
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.MANAGE_PAYEES_SECTION;
 	}
 }

@@ -7,12 +7,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankRotationHelper;
-import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
@@ -57,6 +58,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
 		setIsLoadingMore(false);
+		super.refreshListener();
+		footer.showDone();
 		final int category = header.getCurrentCategory();
 		final ListPaymentDetail list = (ListPaymentDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
@@ -68,6 +71,10 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		}else{
 			canceled = (null == canceled) ? list : handleReceivedData(scheduled, list);
 			updateAdapter(canceled.payments);
+		}
+		final ReceivedUrl url = getLoadMoreUrl();
+		if(null == url){
+			showNothingToLoad();
 		}
 	}
 
@@ -125,6 +132,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	public void maybeLoadMore() {
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
+			showNothingToLoad();
 			footer.showDone();
 		}else{
 			footer.showLoading();
@@ -170,6 +178,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 					//Generate a url to download schedule payments
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}else{
+					updateAdapter(scheduled.payments);
 				}
 			}
 		});
@@ -182,6 +192,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 					//Generate a url to download completed payments
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.COMPLETED);
 					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}else{
+					updateAdapter(completed.payments);
 				}
 			}
 		});
@@ -194,6 +206,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 					//Generate a url to download cancelled payments
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.CANCELLED);
 					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}else{
+					updateAdapter(canceled.payments);
 				}
 			}
 		});
@@ -211,6 +225,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 				scrollToTop();
 			}
 		});
+		footer.showDone();
 	}
 
 	/**
@@ -248,7 +263,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		bundle.putSerializable(scheduleKey, scheduled);
 		bundle.putSerializable(completedKey, completed);
 		bundle.putSerializable(canceledKey, canceled);
-		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index);
+		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index-1);
 		BankRotationHelper.getHelper().setBundle(bundle);
 		BankNavigator.navigateToPaymentDetailScreen(bundle);
 	}
@@ -294,6 +309,10 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			header.showStatusMessage();
 			bundle.putBoolean(BankExtraKeys.COMPLETED_LIST, false);
 			scheduled.payments.remove(bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM));
+		}		
+		final ReceivedUrl url = getLoadMoreUrl();
+		if(null == url){
+			showNothingToLoad();
 		}
 	}
 
@@ -326,6 +345,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		adapter.setData(activities);
 		if(adapter.getCount() < 1){
 			footer.showEmpty(this.getEmptyStringText());
+		}else{
+			footer.showDone();
 		}
 		adapter.notifyDataSetChanged();
 	}
@@ -353,5 +374,15 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	public void showFooterMessage() {
 		footer.showEmpty(getEmptyStringText());
 
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.REVIEW_PAYEMENTS_SECTION;
 	}
 }

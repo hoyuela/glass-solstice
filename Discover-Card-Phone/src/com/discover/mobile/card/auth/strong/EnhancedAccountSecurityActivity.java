@@ -28,6 +28,7 @@ import com.discover.mobile.card.services.auth.strong.StrongAuthAnswerCall;
 import com.discover.mobile.card.services.auth.strong.StrongAuthAnswerDetails;
 import com.discover.mobile.card.services.auth.strong.StrongAuthDetails;
 import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
@@ -395,20 +396,22 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		serverErrorLabel.setVisibility(View.GONE);
 		questionAnswerField.updateAppearanceForInput();
 		
-		//Lock Orientation while processing request
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		//Used to prevent application from crashing during orientation
+		DiscoverModalManager.setActiveModal(progress);
+		DiscoverModalManager.setAlertShowing(true);
 		
 		final AsyncCallbackAdapter<StrongAuthAnswerDetails> callback = new AsyncCallbackAdapter<StrongAuthAnswerDetails>() {
 			@Override
 			public void success( final NetworkServiceCall<?> networkServiceCall, final StrongAuthAnswerDetails value) {
-				progress.dismiss();
+				if( progress != null && progress.isShowing())
+					progress.dismiss();
+				
 				finishWithResultOK();
 			}
 			
 			@Override
 			public void complete( final NetworkServiceCall<?> networkServiceCall, final Object result) {
-				//Unlock orientation to be able to support orientation
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+				
 			}
 			
 			@Override

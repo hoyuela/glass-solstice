@@ -159,6 +159,14 @@ public class BankErrorHandler implements ErrorHandler {
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, errorText, true, helpResId,
 				R.string.ok);
 
+		modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				modal.dismiss();
+
+			}
+		});
+		
 		// Show one button error dialog
 		return modal;
 	}

@@ -10,9 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.BankRotationHelper;
-import com.discover.mobile.bank.BankServiceCallFactory;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountNumber;
 import com.discover.mobile.bank.util.BankStringFormatter;
@@ -102,11 +102,18 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	public void setBalance(final Money value) {
 		if( !Strings.isNullOrEmpty(value.formatted)) {
 			try{
+				String formatted = value.formatted;
+				
+				if(formatted.charAt(0)=='(') {
+					formatted = formatted.replaceAll("\\(", "-");
+					formatted = formatted.replaceAll("\\)", "");
+				}
+				
 				/**Set Text view for displaying balance for account */
-				acctBalance.setText(value.formatted);
+				acctBalance.setText(formatted);
 
 				/**Set color of text to red if negative balance otherwise black*/
-				final int color = (value.formatted.charAt(0) == '-') ? R.color.error_indicator : R.color.black;
+				final int color = (formatted.charAt(0) == '-') ? R.color.error_indicator : R.color.black;
 				acctBalance.setTextColor(getResources().getColor(color));
 
 			}catch(final Exception ex) {
@@ -166,5 +173,65 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 
 		//Send Request to download the current accounts posted activity
 		BankServiceCallFactory.createGetActivityServerCall(link).submit();
+	}
+
+	/**
+	 * Changes this view's background drawable such that it draws a solid stroke
+	 * on all sides but the top, which is dashed.
+	 * 
+	 * @param context
+	 */
+	public void drawBottomStroke(final Context context) {
+		RelativeLayout lastView = (RelativeLayout) this
+				.getChildAt(0);
+		lastView.setBackgroundDrawable(context.getResources().getDrawable(
+				R.drawable.home_list_item_dash));
+		lastView.setPadding(
+				(int)context.getResources()
+						.getDimension(R.dimen.forms_inner_padding), 0,
+				(int)context.getResources()
+						.getDimension(R.dimen.forms_inner_padding),
+				(int)context.getResources()
+						.getDimension(R.dimen.table_inner_padding));
+	}
+	
+	/**
+	 * Changes this view's background drawable such that it draws a solid stroke
+	 * on all sides but the but the bottom, which is blank.
+	 * 
+	 * @param context
+	 */
+	public void drawTopStroke(final Context context) {
+		RelativeLayout lastView = (RelativeLayout) this
+				.getChildAt(0);
+		lastView.setBackgroundDrawable(context.getResources().getDrawable(
+				R.drawable.home_list_item_no_bottom_stroke));
+		lastView.setPadding(
+				(int)context.getResources()
+						.getDimension(R.dimen.forms_inner_padding), 0,
+				(int)context.getResources()
+						.getDimension(R.dimen.forms_inner_padding),
+				(int)context.getResources()
+						.getDimension(R.dimen.table_inner_padding));
+	}
+	
+	/**
+	 * Changes this view's background drawable such that it draws a solid stroke
+	 * on all sides.
+	 * 
+	 * @param context
+	 */
+	public void drawAllStrokes(final Context context) {
+		RelativeLayout lastView = (RelativeLayout) this
+				.getChildAt(0);
+		lastView.setBackgroundDrawable(context.getResources().getDrawable(
+				R.drawable.home_list_item));
+		lastView.setPadding(
+				(int)context.getResources()
+						.getDimension(R.dimen.forms_inner_padding), 0,
+				(int)context.getResources()
+						.getDimension(R.dimen.forms_inner_padding),
+				(int)context.getResources()
+						.getDimension(R.dimen.table_inner_padding));
 	}
 }

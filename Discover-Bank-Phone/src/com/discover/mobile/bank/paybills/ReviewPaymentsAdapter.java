@@ -15,9 +15,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
-import com.discover.mobile.common.net.json.bank.Date;
 
 /**
  * Adapter for the review payments table.  Used to display each item as it comes on the screen.
@@ -35,8 +36,14 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	/**Resources of the application*/
 	private final Resources res;
 
-	/*Fragment currently displayed*/
+	/**Fragment currently displayed*/
 	private final ReviewPaymentsTable fragment;
+
+	/**Integer value to convert from cents to dollar*/
+	private static final int DOLLAR_CONVERSION = 100;
+
+	/**List of payees in the application*/
+	private final ListPayeeDetail payees;
 
 	/**
 	 * Constuctor for the adapter
@@ -50,6 +57,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		inflater = LayoutInflater.from(context);
 		res = context.getResources();
 		this.fragment =fragment;
+		payees = BankUser.instance().getPayees();
 	}
 
 	/**
@@ -62,6 +70,12 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	public View getView(final int position, View view, final ViewGroup parent){
 		ViewHolder holder = null;
 
+		/**Show the header if is is at the top of the list*/
+		if (position == 0){
+			view = fragment.getHeader();
+			return view;
+		}
+		/**If the details is empty show the message*/
 		if(details.isEmpty()){
 			fragment.showFooterMessage();
 			view = fragment.getFooter();
@@ -69,13 +83,12 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		}
 
 		/**At the end of the list try loading more*/
-		if(position == details.size()){
-			fragment.maybeLoadMore();
+		if(position == details.size() + 1){
 			view = fragment.getFooter();
 			return view;
 		}
 
-		final PaymentDetail detail = details.get(position);
+		final PaymentDetail detail = details.get(position-1);
 
 		/**If the view is null, create a new one*/
 		if(null == view || !(view.getTag() instanceof ViewHolder)){
@@ -94,8 +107,8 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 
 		/**Update the display values*/
 		holder.date.setText(convertDate(detail));
-		holder.payee.setText(detail.payee.nickName);
-		final double amount = Double.parseDouble(detail.amount.value);
+		holder.payee.setText(payees.getNameFromId(detail.payee.id));
+		final double amount = ((double)detail.amount)/DOLLAR_CONVERSION;
 		if(amount < 0){
 			holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
 		}else{
@@ -113,7 +126,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	 */
 	@Override
 	public int getCount(){
-		return details.size()+1;
+		return details.size()+2;
 	}
 
 	/**
@@ -136,15 +149,14 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	 * @return the converted date
 	 */
 	private String convertDate(final PaymentDetail item){
-		final Date dates;
 		final String itemStatus = item.status;
 		String date = "";
 		if("SCHEDULED".equals(itemStatus)){
-			dates = item.dates.get("deliverBy");
-			date = dates.formattedDate;
-		}else if("COMPLETED".equals(itemStatus)){
-			dates = item.dates.get("deliveredOn");
-			date =  dates.formattedDate;
+			date = item.deliverBy.split(PaymentDetail.DATE_DIVIDER)[0];
+		}else if("PAID".equals(itemStatus)){
+			date = item.deliverBy.split(PaymentDetail.DATE_DIVIDER)[0];
+		}else{
+			date = item.deliverBy.split(PaymentDetail.DATE_DIVIDER)[0];
 		}
 		return convertDate(date);
 	}
@@ -155,11 +167,12 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	 * @return the converted date
 	 */
 	private String convertDate(final String date){
-		final SimpleDateFormat serverFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+		final SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		final SimpleDateFormat tableFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
 
 		try{
-			return tableFormat.format(serverFormat.parse(date));
+			final String dateString = date.split(PaymentDetail.DATE_DIVIDER)[0];
+			return tableFormat.format(serverFormat.parse(dateString));
 		} catch (final ParseException e) {
 			return date;
 		}

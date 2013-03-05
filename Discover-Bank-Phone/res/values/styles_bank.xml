@@ -32,6 +32,12 @@
         <item name="android:textStyle">bold</item>
     </style>
     
+    <style name="body_copy_mid">
+        <item name="android:textColor">@color/body_copy</item>
+        <item name="android:typeface">normal</item>
+        <item name="android:textSize">@dimen/body_copy_mid</item>
+    </style>
+    
     <style name="plain_body_copy_title">
         <item name="android:textColor">@color/body_copy</item>
         <item name="android:textSize">@dimen/body_copy_min</item>
@@ -42,7 +48,12 @@
         <item name="android:textSize">@dimen/small_copy_max</item>
     </style>
     
-        <style name="error_static_text">
+    <style name="light_static_text">
+        <item name="android:textColor">@color/field_copy</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+    </style>
+    
+    <style name="error_static_text">
         <item name="android:textColor">@color/error_indicator</item>
         <item name="android:textSize">@dimen/small_copy_max</item>
     </style>
@@ -62,7 +73,7 @@
     </style>
 
     <style name="bank_blue_hyperlink_small" parent="bank_blue_hyperlink">
-        <item name="android:textSize">@dimen/small_copy_max</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
     </style>
     
     <style name="blue_choose_item_text">

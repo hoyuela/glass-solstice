@@ -8,6 +8,8 @@ package com.discover.mobile.common;
  */
 public final class IntentExtraKey {
 	
+	public static final String SERVICE_RESULT = "SERVICE_RESULT";
+	
 	/**Intent extra for email used to send the users email to the confirmation modal*/
 	public static final String EMAIL = "Email";
 	

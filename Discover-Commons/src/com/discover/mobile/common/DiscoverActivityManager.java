@@ -1,5 +1,8 @@
 package com.discover.mobile.common;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import android.app.Activity;
 
 /**
@@ -12,34 +15,56 @@ import android.app.Activity;
  * @author henryoyuela
  *
  */
-public class DiscoverActivityManager {
+public class DiscoverActivityManager extends Observable {
 	/**
 	 * Reference to the application's active activity set via setActiveActivity()
 	 */
 	private static Activity mActivity;
-	
 	/**
-     * This constructor is not supported and throws an UnsupportedOperationException when called.
-     * 
-     * @throws UnsupportedOperationException Every time this constructor is invoked.
-     */
-	private DiscoverActivityManager() {
-		throw new UnsupportedOperationException("This class is non-instantiable");
+	 * Singleton instance of DiscoverActivityManager
+	 */
+	private static final DiscoverActivityManager instance = new DiscoverActivityManager();
+	
+	private DiscoverActivityManager() {	
 	}
-	
-	
+		
 	/**
 	 * 
 	 * @return Returns a reference to the active activity set via setActiveActivity
 	 */
 	public static Activity getActiveActivity() {
-		return mActivity;
+		return instance.mActivity;
 	}
 	
 	/** 
 	 * @param activity - Set to the current activity for the application
 	 */
 	public static void setActiveActivity(final Activity activity) {
-		mActivity = activity;
+		instance.mActivity = activity;	
+		
+		instance.setChanged();
+		
+		instance.notifyObservers(activity);
+	}
+	
+	/**
+	 *  Adds an observer to the set of observers for this object, provided 
+	 *  that it is not the same as some observer already in the set. This
+	 *  Observer will be called whenever the active Activity is changed
+	 *  via this class using the method setActiveActivity().
+	 * 
+	 * @param o an observer to be added.
+	 */
+	public static void addListener(final Observer o ) {
+		instance.addObserver(o);
+	}
+	
+	/**
+	 *  Deletes an observer from the set of observers of this object.
+	 * 
+	 * @param o an observer to be Remvoed. 
+	 */
+	public static void removeListener(final Observer o) {
+		instance.deleteObserver(o);
 	}
 }

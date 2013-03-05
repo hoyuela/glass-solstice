@@ -168,6 +168,11 @@ public abstract class NetworkServiceCall<R> {
 	private RequestBodySerializer requestBodySerializer;
 
 	private volatile boolean submitted = false;
+	
+	/**
+	 * Override this in child classes to change the mechanism for what to store in cache after a service call
+	 */
+	protected boolean cacheResult = false;
 
 	/**
 	 * Network service call used with the base url defaulted to card.
@@ -651,5 +656,13 @@ public abstract class NetworkServiceCall<R> {
 	 * @return
 	 */
 	protected abstract String getBaseUrl();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean cacheResults(){
+		return cacheResult;
+	}
 
 }
