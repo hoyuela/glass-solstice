@@ -209,6 +209,22 @@ public class Customer implements Serializable {
 
 	/**
 	 * 
+	 * @return Returns boolean that specifies a Customer's eligibility status for Deposit
+	 */
+	public boolean isDepositEligibility() {
+		return ( this.eligibilities != null )? getEligibilityValues(BankUrlManager.DEPOSITS_URL_KEY).isEligible() : false;
+	}
+
+	/**
+	 * 
+	 * @return Returns boolean object that specifies a Customer's enrollment status for Deposit
+	 */
+	public boolean isDepositEnrolled() {
+		return ( this.eligibilities != null )? getEligibilityValues(BankUrlManager.DEPOSITS_URL_KEY).isEnrolled() : false;
+	}
+
+	/**
+	 * 
 	 * @return Returns Transfers Eligibility object that specifies a Customer's
 	 * enrollment and eligibility status for Transfers
 	 */

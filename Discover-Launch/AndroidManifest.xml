@@ -31,6 +31,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     
     <application
         android:name="com.discover.mobile.DiscoverApplication"
@@ -231,6 +233,7 @@
             </intent-filter>
         
         </receiver>
+        <activity android:name=".bank.atm.AtmLocatorActivity"></activity>
     
     </application>
 

@@ -7,6 +7,7 @@ import java.util.Map;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 
 /**
  * This class is used for mapping an Eligibility JSON object. The JSON
@@ -61,6 +62,10 @@ public class Eligibility implements Serializable {
 	 */
 	public final static String ENROLL_KEY = "enrollment";
 	/**
+	 * Key used to read enrollment url link from the links map.
+	 */
+	public final static String ENROLLMENT_KEY = "enrollment";
+	/**
 	 * Key used to read terms url link from the links map.
 	 */
 	public final static String TERMS_KEY = "terms";
@@ -79,13 +84,19 @@ public class Eligibility implements Serializable {
 	public boolean isEligible() {
 		return eligible;
 	}
-	
+	/**
+	 * 
+	 * @return Returns the url string for enroll stored in the eligibility object.
+	 */
+	public String getEnroll() {
+		return BankUrlManager.getUrl(links, ENROLL_KEY);
+	}
 	/**
 	 * 
 	 * @return Returns the url string for enroll stored in the eligibility object.
 	 */
 	public String getEnrollmentUrl() {
-		return BankUrlManager.getUrl(links, ENROLL_KEY);
+		return BankUrlManager.getUrl(links, ENROLLMENT_KEY);
 	}
 	
 	/**
@@ -94,6 +105,30 @@ public class Eligibility implements Serializable {
 	 */
 	public String getTermsUrl() {
 		return BankUrlManager.getUrl(links, TERMS_KEY);
+	}
+	
+	/**
+	 * 
+	 * @return Returns true if eligibility objects is meant for transfer services, false otherwise.
+	 */
+	public boolean isTransfersEligibility() {
+		return ( !Strings.isNullOrEmpty(this.service) && service.equals("transfers"));
+	}
+	
+	/**
+	 * 
+	 * @return  Returns true if eligibility objects is meant for deposits services, false otherwise.
+	 */
+	public boolean isDepositsEligibility() {
+		return ( !Strings.isNullOrEmpty(this.service) && service.equals("deposits"));
+	}
+	
+	/**
+	 * 
+	 * @return  Returns true if eligibility objects is meant for payment services, false otherwise.
+	 */
+	public boolean isPaymentsEligibility() {
+		return ( !Strings.isNullOrEmpty(this.service) && service.equals("payments"));
 	}
 	
 

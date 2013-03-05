@@ -61,7 +61,7 @@ public class BankOpenAccountFragment extends BaseFragment implements OnClickList
 	
 	@Override
 	public int getActionBarTitle() {
-		return R.string.bank_open_account;
+		return BaseFragment.NO_TITLE;
 	}
 
 	@Override

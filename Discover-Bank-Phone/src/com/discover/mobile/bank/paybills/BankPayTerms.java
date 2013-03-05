@@ -122,7 +122,7 @@ public class BankPayTerms extends BaseFragment{
 			@Override
 			public void onClick(final View v) {
 				final Eligibility eligibility = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
-				BankServiceCallFactory.createAcceptPayBillsTermsRequest(eligibility).submit();				
+				BankServiceCallFactory.createAcceptTermsRequest(eligibility).submit();				
 			}
 		});
 	}

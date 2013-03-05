@@ -37,8 +37,8 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/footer"
         android:layout_below="@+id/header"
-        android:layout_marginLeft="@dimen/forms_inner_padding"
-        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginLeft="@dimen/between_related_elements_padding"
+        android:layout_marginRight="@dimen/between_related_elements_padding"
         android:cacheColorHint="#00000000"
         android:visibility="invisible" />
 

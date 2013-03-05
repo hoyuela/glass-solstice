@@ -1,0 +1,85 @@
+/*
+ * © Copyright Solstice Mobile 2013
+ */
+package com.discover.mobile.bank.atm;
+
+import android.location.Location;
+
+/**
+ * Interface for any fragment that will be getting location
+ * information.
+ * @author jthornton
+ *
+ */
+public interface LocationFragment {
+
+	/**State of the fragment meaning that location services are not enabled*/ 
+	int NOT_ENABLED = 0;
+
+	/**
+	 * State of the fragment meaning that location services are enabled,
+	 * but the app does not yet have a user confirmation of using
+	 * their current location.
+	 */ 
+	int ENABLED = 1;
+
+	/**
+	 * State of the fragment meaning that location services are enabled and
+	 * the app is currently searching for the location.
+	 */ 
+	int SEARCHING = 2;
+
+	/**
+	 * State of the fragment meaning that location services are enabled and
+	 * the app has the users current location.
+	 */ 
+	int LOCKED_ON = 3;
+
+	/**
+	 * State of the fragment meaning that location of the user cannot or
+	 * will not be enabled or retrieved.
+	 */ 
+	int NOT_USING_LOCATION = 4;
+
+	/**Key to get the location status out of a buncle*/
+	String LOCATION_STATUS = "status";
+
+	/**Constant to save the users longitude location*/
+	String LONG_KEY = "long";
+
+	/**Constant to save the users latitude location*/
+	String LAT_KEY = "lat";
+
+	/**
+	 * Set the users location on the map.
+	 */
+	void setUserLocation(final Location location);
+
+	/**
+	 * @return the locationStatus
+	 */
+
+	void getLocation();
+
+	/**
+	 * @param locationStatus the locationStatus to set
+	 */
+	void setLocationStatus(final int locationStatus);
+
+	/**
+	 * Launch the settings activity so that the user can turn the location services on.
+	 */
+	void launchSettings();
+
+	/**
+	 * Show that either the location could not be retrieved. 
+	 */
+	void showNoLocation();
+
+	/**
+	 * Handle the timeout of the listeners.  Meaning that the listeners
+	 * were unable to get the location in a reasonable amount of time.
+	 */
+	void handleTimeOut();
+
+}
