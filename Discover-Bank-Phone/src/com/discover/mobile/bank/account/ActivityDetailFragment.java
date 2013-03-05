@@ -34,14 +34,14 @@ public class ActivityDetailFragment extends DetailFragment {
 		final LinearLayout contentTable = (LinearLayout)fragmentView.findViewById(R.id.content_table);
 
 		((TextView)contentTable.findViewById(R.id.amount_cell))
-		.setText(BankStringFormatter.convertStringFloatToDollars(item.amount.value));
+		.setText(BankStringFormatter.convertCentsToDollars(item.amount.value));
 		((TextView)contentTable.findViewById(R.id.description_cell)).setText(item.description);
 		((TextView)contentTable.findViewById(R.id.transaction_id)).setText(item.id);
 		((TextView)contentTable.findViewById(R.id.date_cell)).setText(
 				BankStringFormatter.convertDate(
 						item.dates.get(ActivityDetail.POSTED).split(ActivityDetail.DATE_DIVIDER)[0]));
 		((TextView)contentTable.findViewById(R.id.balance_cell))
-		.setText(BankStringFormatter.convertStringFloatToDollars(item.balance.value));		
+		.setText(BankStringFormatter.convertCentsToDollars(item.balance.value));		
 	}
 
 }
