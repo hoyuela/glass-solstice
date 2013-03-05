@@ -51,11 +51,6 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 * */
 	private LinearLayout payeesList;
 	/**
-	 * Reference to feedback link in the view of this fragment. When clicked on
-	 * will open the Feedback Landing Page
-	 */
-	private TextView feedback;
-	/**
 	 * Button used to open a help guide when clicked on
 	 */
 	private ImageButton helpButton;
@@ -84,10 +79,6 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 
 		final View view = inflater.inflate(R.layout.bank_select_search_payee, null);
 		final Bundle bundle = this.getArguments();
-
-		/**Hyperlink used to provide feedback*/
-		feedback = (TextView)view.findViewById(R.id.provide_feedback);
-		feedback.setOnClickListener(this);
 
 		/**Button for help**/
 		helpButton = (ImageButton)view.findViewById(R.id.help);
@@ -182,12 +173,9 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 */
 	@Override
 	public void onClick(final View sender) {
-		/**Feedback link was clicked**/
-		if( sender == feedback ) {
-			BankNavigator.navigateToFeedback();
-		}
+		
 		/**Help button was clicked**/
-		else if( sender == helpButton ) {
+		if( sender == helpButton ) {
 			final CharSequence text = "Help Under Development";
 			final int duration = Toast.LENGTH_SHORT;
 

@@ -16,9 +16,10 @@
             style="@style/orange_help_button"
             android:layout_width="@dimen/orange_help_button_size"
             android:layout_height="@dimen/orange_help_button_size"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true" />
-
+        
         <TextView
             android:id="@+id/select_payee_title"
             style="@style/page_title"
