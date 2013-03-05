@@ -85,6 +85,8 @@ public class BankAccountActivityTable extends BaseTable{
 		adapter.setData(activities);
 		if(adapter.getCount() < 1){
 			footer.showEmpty(this.getEmptyStringText());
+		} else {
+			footer.showDone();
 		}
 		adapter.notifyDataSetChanged();
 	}
