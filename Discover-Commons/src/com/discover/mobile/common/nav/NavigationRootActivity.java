@@ -69,7 +69,9 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	 * Set the menu highlighting
 	 */
 	public void highlightMenuItems(final int group, final int section){
-		menu.setItemSelected(group, section);
+		if(null != menu){
+			menu.setItemSelected(group, section);
+		}
 	}
 
 	/**
