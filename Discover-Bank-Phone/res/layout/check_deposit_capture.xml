@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <SurfaceView
+        android:id="@+id/camera_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:id="@+id/step_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/check_deposit_step_background" >
+
+        <ImageView
+            android:id="@+id/front_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:contentDescription="@string/empty"
+            android:src="@drawable/black_check_mark" />
+
+        <TextView
+            android:id="@+id/front_label"
+            style="@style/sub_copy_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:layout_toRightOf="@+id/front_check"
+            android:text="@string/front" />
+
+        <View
+            android:id="@+id/vertical_separator"
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:layout_toRightOf="@+id/front_label"
+            android:background="@color/sub_copy" />
+
+        <ImageView
+            android:id="@+id/back_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:layout_toRightOf="@+id/vertical_separator"
+            android:contentDescription="@string/empty"
+            android:visibility="invisible"
+            android:src="@drawable/black_check_mark" />
+
+        <TextView
+            android:id="@+id/back_label"
+            style="@style/sub_copy_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:layout_toRightOf="@+id/back_check"
+            android:text="@string/back" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/button_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/field_stroke" >
+
+        <Button
+            android:id="@+id/help_button"
+            style="@style/white_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginLeft="@dimen/between_related_elements_padding"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:text="@string/question_mark" />
+
+        <Button
+            style="@style/call_to_action_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/help_button"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:text="@string/capture" />
+    </RelativeLayout>
+
+</FrameLayout>

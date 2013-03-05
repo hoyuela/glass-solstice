@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="capture">Capture</string>
+    <string name="front">Front</string>
+    <string name="back">Back</string>
+    <string name="question_mark">\?</string>
+
+</resources>
