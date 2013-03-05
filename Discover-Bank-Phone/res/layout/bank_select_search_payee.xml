@@ -65,18 +65,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/payee_list"
             />
-     
-        <TextView
-            android:id="@+id/provide_feedback"
-            style="@style/bank_blue_hyperlink_small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/orange_button_margin_top"
-            android:layout_below="@+id/enter_payee_details"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:gravity="bottom"
-            android:text="@string/feedback_text" />
         
     </RelativeLayout>
     
