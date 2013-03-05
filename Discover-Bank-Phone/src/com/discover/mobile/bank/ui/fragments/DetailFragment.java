@@ -20,7 +20,8 @@ import com.discover.mobile.bank.R;
  */
 public abstract class DetailFragment extends Fragment {
 	protected View mainView;
-	
+	private LayoutCreatorTask creatorTask;
+	protected boolean isTaskRunning = false;
 	/**
 	 * Returns the layout to be used by the current Fragment.
 	 * @return the layout to be used by the current Fragment.
@@ -44,8 +45,20 @@ public abstract class DetailFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		mainView = inflater.inflate(R.layout.spinner_layout, null);
 		
-		new LayoutCreatorTask().execute();
+		creatorTask = new LayoutCreatorTask();
+		creatorTask.execute();
 		return mainView;
+	}
+	
+	/**
+	 * If the async task has not completed when the Fragment gets stopped, we need to cancel it.
+	 */
+	@Override
+	public void onStop() {
+		super.onStop();
+		
+		if(isTaskRunning)
+			creatorTask.cancel(true);
 	}
 	
 	
@@ -61,6 +74,10 @@ public abstract class DetailFragment extends Fragment {
 		View subView;
 		RelativeLayout mainViewRelativeLayout;
 		
+		@Override
+		protected void onPreExecute() {
+			isTaskRunning = true;
+		}
 		/**
 		 * During background thread processing, inflate the layout that will be used,
 		 * and insert the data from the ActivityDetail item into the parts of the layout
@@ -86,6 +103,7 @@ public abstract class DetailFragment extends Fragment {
 		protected void onPostExecute(final Void result) {
 			mainViewRelativeLayout.removeAllViews();
 			mainViewRelativeLayout.addView(subView);
+			isTaskRunning = false;
 		}
 		
 	}
