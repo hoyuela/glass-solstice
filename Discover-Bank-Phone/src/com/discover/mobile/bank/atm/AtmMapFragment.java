@@ -198,11 +198,11 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 
 	@Override
 	public int getGroupMenuLocation() {
-		return BankMenuItemLocationIndex.SEARCH_BY_LOCATION;
+		return BankMenuItemLocationIndex.ATM_LOCATOR_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return BankMenuItemLocationIndex.ATM_LOCATOR_GROUP;
+		return BankMenuItemLocationIndex.SEARCH_BY_LOCATION;
 	}
 }

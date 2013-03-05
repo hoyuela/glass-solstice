@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.ui.modals.ModalTwoButtonWhiteBottom;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalBottomTwoButtonView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
@@ -73,7 +74,7 @@ public final class AtmModalFactory{
 	 */
 	public static ModalAlertWithTwoButtons getLocationAcceptanceModal(final Context context, final LocationFragment fragment){
 		final ModalDefaultTopView top = new ModalDefaultTopView(context, null);
-		final ModalBottomTwoButtonView bottom = new ModalDefaultTwoButtonBottomView(context, null);
+		final ModalTwoButtonWhiteBottom bottom = new ModalTwoButtonWhiteBottom(context, null);
 		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(context, top, bottom);
 		top.setTitle(R.string.atm_location_modal_title);
 		top.setContent(R.string.atm_location_modal_content);
@@ -81,6 +82,7 @@ public final class AtmModalFactory{
 		top.hideNeedHelpFooter();
 		bottom.setOkButtonText(R.string.atm_location_modal_allow);
 		bottom.setCancelButtonText(R.string.atm_location_modal_decline);
+		bottom.getCancelButton().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.white_button));
 		bottom.getOkButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
