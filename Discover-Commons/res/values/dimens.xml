@@ -42,7 +42,7 @@
     <dimen name="small_copy_mid">15sp</dimen>
     
     <dimen name="table_inner_padding">15dp</dimen>
-    <dimen name="white_button_left_right_padding">10dp</dimen>
+    <dimen name="white_button_left_right_padding">15dp</dimen>
     <dimen name="white_button_margin_top">15dp</dimen>
     
      <!-- Navigation Menu -->

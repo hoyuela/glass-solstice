@@ -84,8 +84,8 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 			.add(new BankTransferMoneySectionInfo())
 			.add(new BankDepositChecksSectionInfo())
 			.add(new BankPayBillsSectionInfo())
-			.add(new BankCustomerServiceSectionInfo())
 			.add(new BankAtmLocatorInfo())
+			.add(new BankCustomerServiceSectionInfo())
 			.build();
 
 
