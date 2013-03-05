@@ -176,7 +176,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		idField.setFilters(filters);
 		passField = (NonEmptyEditText) findViewById(R.id.password_field);
 		passField.setFilters(filters);
-		
+
 		loginButton = (Button) findViewById(R.id.login_button);
 		registerOrAtmButton = (Button) findViewById(R.id.register_now_or_atm_button);
 		privacySecOrTermButton = (Button) findViewById(R.id.privacy_and_security_button);
@@ -840,15 +840,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * in the BANK Login Screen
 	 */
 	public void openAtmLocator() {
-		//TODO: Add ATM handler here
 		launchActivityFromClass(AtmLocatorActivity.class);
-
-		//TODO: Remove this code once implemented. This is only for QA testing purposes only
-		//		final CharSequence text = "ATM Locator Under Development";
-		//		final int duration = Toast.LENGTH_SHORT;
-		//
-		//		final Toast toast = Toast.makeText(this, text, duration);
-		//		toast.show();
 	}
 
 	/**
