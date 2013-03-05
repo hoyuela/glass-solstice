@@ -11,12 +11,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.LatLng;
+import com.slidingmenu.lib.SlidingMenu;
 
 public class AtmMapFragment extends BaseFragment implements LocationFragment{
 
@@ -34,13 +40,24 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 
 	private ModalAlertWithTwoButtons settingsModal;
 
+	private GoogleMap map;
+
 	/**
 	 */
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-			final Bundle savedInstanceState) {	
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		final View view = inflater.inflate(R.layout.bank_atm_map, null);
 
+		map = ((SupportMapFragment) this.getActivity().getSupportFragmentManager().findFragmentById(R.id.discover_map)).getMap();
+		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+		final UiSettings settings = map.getUiSettings();
+		settings.setMyLocationButtonEnabled(false);
+		settings.setCompassEnabled(false);
+		settings.setRotateGesturesEnabled(false);
+		settings.setTiltGesturesEnabled(false);
+		settings.setZoomControlsEnabled(false);
+
+		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 		createSettingsModal();
 		createLocationModal();
 		manager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);	
@@ -56,6 +73,7 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 				location.setLongitude(savedInstanceState.getDouble(LONG_KEY));
 			}
 		}
+
 		return view;
 	}
 
@@ -98,7 +116,7 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 	}
 
 	/**
-	 * Get the users current locaiton
+	 * Get the users current location
 	 */
 	@Override
 	public void getLocation(){
@@ -115,13 +133,15 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 		removeListeners();
 		locationStatus = LOCKED_ON;
 		this.location = location;
-		final String locationString = "Retrieved Location and the Latitude is " + location.getLatitude() + 
-				" and Longitude is " + location.getLongitude();
-		Toast.makeText(getActivity(), locationString, 5000).show();
+
+		map.setMyLocationEnabled(true);
+		map.getMyLocation();
+		map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+		map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17f));
 	}
 
 	/**
-	 * Remove all the listeners that are currently lookin for location.
+	 * Remove all the listeners that are currently looking for location.
 	 */
 	private void removeListeners() {
 		manager.removeUpdates(networkListener);
@@ -145,7 +165,8 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 			outState.putDouble(LAT_KEY, location.getLatitude());
 			outState.putDouble(LONG_KEY, location.getLongitude());
 		}
-		super.onSaveInstanceState(outState);	
+		super.onSaveInstanceState(outState);
+		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 	}
 
 	/**
