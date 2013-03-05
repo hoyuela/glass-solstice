@@ -9,7 +9,7 @@
        
     <!-- Payee Not Eligible Strings -->
     <string name="pay_bills_on_go_title">Pay Bills On The Go</string>
-    <string name="pay_bills_on_go_text">Your account is eligible for online Bill Pay. To start, simply open a Money Market Account and enjoy these great features.</string>
+    <string name="pay_bills_on_go_text">Your account is not eligible for online Bill Pay. To start, simply open a Money Market Account and enjoy these great features.</string>
     <string name="pay_bills_anywhere_title">Pay Bills Anytime, Anywhere</string>
     <string name="pay_bills_anywhere_text">Schedule payments at your convenience and avoid unnecessary trips to the mailbox. Plus, we don\'t charge enrollment or usage fees.</string>
     <string name="pay_bills_simple_title">Simple Set-up</string>
