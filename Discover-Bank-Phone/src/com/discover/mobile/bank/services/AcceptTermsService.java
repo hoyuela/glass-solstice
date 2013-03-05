@@ -29,6 +29,11 @@ public class AcceptTermsService extends BankNetworkServiceCall<Object> implement
 	private final TypedReferenceHandler<Object> handler;
 	
 	/**
+	 * Holds Reference to Eligibility object used to construct the URL for sending a request to accept terms and conditions.
+	 */
+	private final Eligibility eligibility;
+	
+	/**
 	 * 
 	 * @param context Reference to service or activity making the service call
 	 * @param callback Reference to an AsyncCallback object where callback's will be called from to notify application on status of the service call.
@@ -42,6 +47,8 @@ public class AcceptTermsService extends BankNetworkServiceCall<Object> implement
 			errorResponseParser = BankErrorResponseParser.instance();
 			
 		}});
+		
+		this.eligibility = eligibility;
 		
 		handler = new StrongReferenceHandler<Object>(callback);
 	}
@@ -58,4 +65,11 @@ public class AcceptTermsService extends BankNetworkServiceCall<Object> implement
 		return null;
 	}
 
+	/**
+	 * 
+	 * @return Returns reference to Eligibility object used to construct URL for accepting terms and conditions.
+	 */
+	public Eligibility getEligibility() {
+		return this.eligibility;
+	}
 }

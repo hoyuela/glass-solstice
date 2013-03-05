@@ -7,6 +7,7 @@ import java.util.Map;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 
 /**
  * This class is used for mapping an Eligibility JSON object. The JSON
@@ -104,6 +105,30 @@ public class Eligibility implements Serializable {
 	 */
 	public String getTermsUrl() {
 		return BankUrlManager.getUrl(links, TERMS_KEY);
+	}
+	
+	/**
+	 * 
+	 * @return Returns true if eligibility objects is meant for transfer services, false otherwise.
+	 */
+	public boolean isTransfersEligibility() {
+		return ( !Strings.isNullOrEmpty(this.service) && service.equals("transfers"));
+	}
+	
+	/**
+	 * 
+	 * @return  Returns true if eligibility objects is meant for deposits services, false otherwise.
+	 */
+	public boolean isDepositsEligibility() {
+		return ( !Strings.isNullOrEmpty(this.service) && service.equals("deposits"));
+	}
+	
+	/**
+	 * 
+	 * @return  Returns true if eligibility objects is meant for payment services, false otherwise.
+	 */
+	public boolean isPaymentsEligibility() {
+		return ( !Strings.isNullOrEmpty(this.service) && service.equals("payments"));
 	}
 	
 
