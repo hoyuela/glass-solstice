@@ -439,7 +439,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		rememberIdCheckState = Globals.isRememberId();
 
 		final String savedId = Globals.getCurrentUser();
-		idField.setText(savedId );
+		Log.e("TEXT", "remember: " + rememberIdCheckState);
+		if(rememberIdCheckState) {
+			idField.setText(savedId );
+		} else {
+			clearInputs();
+		}
 
 		if(!Strings.isNullOrEmpty(Globals.getCurrentUser())){
 			setCheckMark(rememberIdCheckState, true);
