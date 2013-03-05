@@ -5,7 +5,7 @@ import android.text.Spanned;
 
 public class InvalidCharacterFilter implements InputFilter {
 
-	char[] invalidCharacters = { '<', '>', '(', ')', '&', ';', '\'', '"', '[',
+	char[] invalidCharacters = {'/', '\\', '<', '>', '(', ')', '&', ';', '\'', '"', '[',
 			']', '{', '}' };
 
 	@Override
