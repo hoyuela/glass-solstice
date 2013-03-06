@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:paddingTop="@dimen/table_inner_padding"
+    android:paddingBottom="@dimen/table_inner_padding"
+    android:paddingRight="@dimen/forms_inner_padding"
+    android:paddingLeft="@dimen/forms_inner_padding"
+	android:background="@drawable/home_list_item_no_bottom_dash">
+    
+    <TextView 
+        android:id="@+id/text"
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_alignParentLeft="true"
+    	android:layout_toLeftOf="@+id/carrot"
+    	android:singleLine="true"
+    	android:textStyle="bold"
+    	style="@style/blue_choose_item_text"
+    	android:paddingRight="@dimen/between_related_elements_padding"
+    	android:text="Text"/>
+    
+    <ImageView
+        android:id="@+id/carrot"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_alignParentRight="true"
+    	android:background="@drawable/blue_arrow_right"
+    	android:layout_centerVertical="true"/>
+    
+
+</RelativeLayout>

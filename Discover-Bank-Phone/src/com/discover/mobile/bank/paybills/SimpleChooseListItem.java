@@ -46,9 +46,22 @@ public class SimpleChooseListItem extends RelativeLayout{
 	 */
 	public SimpleChooseListItem(final Context context, final AttributeSet attrs,
 			final Serializable item, final String text) {
+		this(context, attrs, item, text, R.layout.simple_choose_item);
+	}
+	
+	/**
+	 * Constructor - creates a background based on the layout id sent.
+	 * @param context - activity context
+	 * @param attrs - attributes to give to the layout
+	 * @param item - item that is associated with this view
+	 * @param text - text to display
+	 * @param layoutResourceId - custom layout to use for element
+	 */
+	public SimpleChooseListItem(final Context context, final AttributeSet attrs,
+			final Serializable item, final String text, final int layoutResourceId) {
 		super(context, attrs);
 
-		this.mainView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.simple_choose_item, null);
+		this.mainView = (RelativeLayout) LayoutInflater.from(context).inflate(layoutResourceId, null);
 		
 		final TextView title = (TextView) this.mainView.findViewById(R.id.text);
 		title.setText(text);
@@ -58,7 +71,7 @@ public class SimpleChooseListItem extends RelativeLayout{
 	}
 
 	/**
-	 * Constructor of the class
+	 * Constructor of the class - creates a background with solid stroke on all sides.
 	 * @param context - activity context
 	 * @param attrs - attributes to give to the layout
 	 * @param item - item that is associated with this view
@@ -81,11 +94,56 @@ public class SimpleChooseListItem extends RelativeLayout{
 
 		addView(this.mainView);
 	}
+	
+	/**
+	 * Sets the background resource to a solid stroke on all sides except for
+	 * the top. The top is a dashed line.
+	 * 
+	 * @param context
+	 */
+	public void setBackgroundAsBottomItem(final Context context) {
+		RelativeLayout view = (RelativeLayout) this
+				.getChildAt(0);
+		view.setBackgroundDrawable(context.getResources().getDrawable(
+				R.drawable.home_list_item_dash));
+		view.setPadding(
+				(int) context.getResources().getDimension(
+						R.dimen.forms_inner_padding),
+				(int) context.getResources().getDimension(
+						R.dimen.table_inner_padding),
+				(int) context.getResources().getDimension(
+						R.dimen.forms_inner_padding),
+				(int) context.getResources().getDimension(
+						R.dimen.table_inner_padding));
+	}
 
+	/**
+	 * Sets the background resource to a solid stroke on all sides except for
+	 * the bottom. The bottom is a blank.
+	 * 
+	 * @param context
+	 */
+	public void setBackgroundAsTopItem(final Context context) {
+		RelativeLayout view = (RelativeLayout) this
+				.getChildAt(0);
+		view.setBackgroundDrawable(context.getResources().getDrawable(
+				R.drawable.home_list_item_no_bottom_stroke));
+		view.setPadding(
+				(int) context.getResources().getDimension(
+						R.dimen.forms_inner_padding),
+				(int) context.getResources().getDimension(
+						R.dimen.table_inner_padding),
+				(int) context.getResources().getDimension(
+						R.dimen.forms_inner_padding),
+				(int) context.getResources().getDimension(
+						R.dimen.table_inner_padding));
+	}
 	
 	/**
 	 * Set the on click listener of the item
-	 * @param listener - listener to attach to the view
+	 * 
+	 * @param listener
+	 *            - listener to attach to the view
 	 */
 	public void setClickListener(final OnClickListener listener){
 		this.mainView.setOnClickListener(listener);
