@@ -34,6 +34,7 @@ import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.StandardErrorCodes;
@@ -296,7 +297,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		
 		//Check if the login activity was launched because of an invalid token
 		maybeShowErrorMessage();
-		
+				
 		final int lastError = getLastError();
 		final boolean saveIdWasChecked = saveUserId;
 		
@@ -339,6 +340,15 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		
 		final IntentFilter intentFilter = new IntentFilter("android.intent.action.SCREEN_OFF");
 		registerReceiver(screenOffService, intentFilter);
+		
+		//If previous screen was Strong Auth Page then clear text fields and show text fields in red
+		//because that means the user did not login successfully
+		if( null != DiscoverActivityManager.getPreviousActiveActivity() && 
+			DiscoverActivityManager.getPreviousActiveActivity().getSimpleName().equals("EnhancedAccountSecurityActivity")) {
+			this.getErrorHandler().showErrorsOnScreen(this, null);
+			DiscoverActivityManager.clearPreviousActiveActivity();
+		}
+
 	}
 
 	@Override
@@ -902,11 +912,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 		
 		if(wasIdEmpty || wasPassEmpty) {	
-			errorTextView.setTextColor(getResources().getColor(R.color.red));
-			errorTextView.setText(R.string.login_error);
-			errorTextView.setVisibility(View.VISIBLE);
-			idField.updateAppearanceForInput();
-			passField.updateAppearanceForInput();
+			final String errorText = this.getResources().getString(R.string.login_error);
+			this.getErrorHandler().showErrorsOnScreen(this, errorText);
 			return true;
 		}
 		// All fields were populated.
