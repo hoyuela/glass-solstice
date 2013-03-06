@@ -31,7 +31,7 @@ public class BankErrorCodes {
 	/**
 	 * Error Code used to describe an Invalid Strong Auth error response with HTTP Status Code 401
 	 */
-	public static final String ERROR_INVALID_STRONG_AUTH = "Auth.SA.Fail";
+	public static final String ERROR_INVALID_STRONG_AUTH = "Auth.SA.Failed";
 	/**
 	 * Error Code used to describe a Last Attempt to a Strong Auth error response with HTTP Status Code 401
 	 */

@@ -10,6 +10,7 @@ public class HttpHeaders {
 	public static final String Authorization = "Authorization";
 	public static final String XSecToken = "X-Sec-Token";
 	public static final String Authentication = "WWW-Authenticate";
+	public static final String XHttpMethodOveride = "X-HTTP-Method-Override";
 	
 	
 	private HttpHeaders(){
