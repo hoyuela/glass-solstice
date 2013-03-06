@@ -13,15 +13,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
 
-        <ImageButton
-            android:id="@+id/help"
-            style="@style/orange_help_button"
-            android:layout_width="@dimen/orange_help_button_size"
-            android:layout_height="@dimen/orange_help_button_size"
-            android:layout_marginRight="@dimen/between_related_elements_padding"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@id/schedule_pay_header" />
-        
         <TextView
             android:id="@+id/conflict_error"
             android:layout_width="wrap_content"
