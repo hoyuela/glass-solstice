@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.discover.mobile.bank.services.account.Account;
-import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.common.net.json.bank.Date;
+import com.discover.mobile.common.net.json.bank.ID;
+import com.discover.mobile.common.net.json.bank.Money;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -120,7 +120,7 @@ public class PaymentDetail implements Serializable{
 	 * A positive value denotes a credit, while a negative value denotes a debit.
 	 */
 	@JsonProperty("amount")
-	public int amount;
+	public Money amount;
 
 	/**Status of the payment*/
 	@JsonProperty("status")
@@ -140,11 +140,11 @@ public class PaymentDetail implements Serializable{
 
 	/**Details about the payee*/
 	@JsonProperty("payee")
-	public PayeeDetail payee;
+	public ID payee;
 
 	/**Payment account*/
 	@JsonProperty("paymentMethod")
-	public Account paymentAccount;
+	public ID paymentAccount;
 
 	/**Payment confirmation number*/
 	@JsonProperty("confirmationNumber")
