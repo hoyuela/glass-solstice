@@ -6,11 +6,10 @@ package com.discover.mobile.bank.atm;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.util.Log;
 
 /**
  * Location listener to be used by a location fragment
- * when trying to reveive the users current location.
+ * when trying to receive the users current location.
  * @author jthornton
  *
  */
@@ -30,25 +29,15 @@ public class DiscoverLocationListener implements LocationListener{
 	@Override
 	public void onLocationChanged(final Location location) {
 		fragment.setUserLocation(location);
-
 	}
 
 	@Override
-	public void onProviderDisabled(final String provider) {
-		// TODO Auto-generated method stub
-
-	}
+	public void onProviderDisabled(final String provider) { }
 
 	@Override
-	public void onProviderEnabled(final String provider) {
-		// TODO Auto-generated method stub
-
-	}
+	public void onProviderEnabled(final String provider) { }
 
 	@Override
-	public void onStatusChanged(final String provider, final int status, final Bundle extras) {
-		Log.i("This", "Changed");
-
-	}
+	public void onStatusChanged(final String provider, final int status, final Bundle extras) { }
 
 }

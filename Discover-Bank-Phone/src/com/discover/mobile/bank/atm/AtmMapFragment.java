@@ -11,42 +11,83 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.LatLng;
+import com.slidingmenu.lib.SlidingMenu;
 
-public class AtmMapFragment extends BaseFragment implements LocationFragment{
+/**
+ * Main fragment of the ATM locator. Will display a map and do searches based
+ * off the users current location or off a location entered by the user.
+ * 
+ * @author jthornton
+ *
+ */
+public class AtmMapFragment extends BaseFragment implements LocationFragment, OnMyLocationChangeListener{
 
+	/**
+	 * Location status of the fragment. Is set based off of user input and the ability
+	 * to get the users location.  Defaults to NOT_ENABLED.
+	 */
 	private int locationStatus = NOT_ENABLED;
 
+	/**Users current location*/
 	private Location location;
 
+	/** Location manager of the application*/
 	private LocationManager manager;
 
-	private DiscoverLocationListener networkListener, gpsListener;
-
-	private DiscoverGpsStatusListener gpsStatusListener;
-
+	/**Modal that asks the user if the app can use their current location*/
 	private ModalAlertWithTwoButtons locationModal;
 
+	/**Modal that lets the user know that their location services are disabled*/
 	private ModalAlertWithTwoButtons settingsModal;
+
+	/**Google map instance*/
+	private GoogleMap map;
+
+	/**Zoom level that the app should zoom into when the users current location is found*/
+	private final float MAP_CURRENT_GPS_ZOOM = 15f;
+
+	/**Zoom level that the app should zoom into when the users current location is found*/
+	private final float MAP_CURRENT_NETWORK_ZOOM = 13f;
+
+	/**Latitude used to center the map over the United States*/
+	private static final Double MAP_CENTER_LAT = 37.88;
+
+	/**Longitude used to center the map over the United States*/
+	private static final Double MAP_CENTER_LONG = -98.21;
+
+	/**GPS status listener to attach to the location manager when trying to the users current location*/
+	private DiscoverGpsStatusListener gpsStatusListener;
+
+	/**Location listener to attach to the location manager when trying to get the users current location*/
+	private DiscoverLocationListener gpsListener, networkListener;
 
 	/**
 	 */
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-			final Bundle savedInstanceState) {	
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		final View view = inflater.inflate(R.layout.bank_atm_map, null);
 
+		map = ((SupportMapFragment) this.getActivity().getSupportFragmentManager().findFragmentById(R.id.discover_map)).getMap();
+
+		disableMenu();
 		createSettingsModal();
 		createLocationModal();
-		manager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);	
-		networkListener = new DiscoverLocationListener(this);
-		gpsListener = new DiscoverLocationListener(this);
+		manager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
 		gpsStatusListener = new DiscoverGpsStatusListener(this);
+		gpsListener = new DiscoverLocationListener(this);
+		networkListener = new DiscoverLocationListener(this);
 
 		if(null != savedInstanceState){
 			locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
@@ -60,14 +101,42 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 	}
 
 	/**
+	 * Set up the map
+	 */
+	private void setupMap(){
+		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+		final UiSettings settings = map.getUiSettings();
+		settings.setMyLocationButtonEnabled(false);
+		settings.setCompassEnabled(false);
+		settings.setRotateGesturesEnabled(false);
+		settings.setTiltGesturesEnabled(false);
+		settings.setZoomControlsEnabled(false);
+	}
+
+	/**
+	 * Disable the sliding menu
+	 */
+	private void disableMenu(){
+		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+	}
+
+	/**
+	 * Enable the sliding menu
+	 */
+	private void enableMenu(){
+		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+	}
+
+	/**
 	 * Resume the fragment
 	 */
 	@Override
 	public void onResume(){
 		super.onResume();
+		setupMap();
 
 		if(NOT_ENABLED == locationStatus){
-			locationStatus = (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) ? ENABLED : NOT_ENABLED;
+			locationStatus = (areProvidersenabled()) ? ENABLED : NOT_ENABLED;
 		}
 
 		if(NOT_ENABLED == locationStatus){
@@ -77,10 +146,17 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 		}else if(SEARCHING == locationStatus){
 			getLocation();
 		}else if(LOCKED_ON == locationStatus){
-			//TODO: Place the user on the map
-		}else{
-			//TODO: Show default user map with search
+			getLocation();
 		}
+
+		if(LOCKED_ON != locationStatus){
+			map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(MAP_CENTER_LAT, MAP_CENTER_LONG)));
+		}
+	}
+
+	private boolean areProvidersenabled(){
+		return manager.isProviderEnabled(LocationManager.GPS_PROVIDER) 
+				&& manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 	}
 
 	/**
@@ -98,13 +174,21 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 	}
 
 	/**
-	 * Get the users current locaiton
+	 * Get the users current location
 	 */
 	@Override
 	public void getLocation(){
-		manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, networkListener);
-		manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
+		map.setMyLocationEnabled(true);
+		map.setOnMyLocationChangeListener(this);
 		manager.addGpsStatusListener(gpsStatusListener);
+		manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
+		manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, networkListener);
+	}
+
+	private void removeListeners(){
+		manager.removeGpsStatusListener(gpsStatusListener);
+		manager.removeUpdates(gpsListener);
+		manager.removeUpdates(networkListener);
 	}
 
 	/**
@@ -114,19 +198,24 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 	public void setUserLocation(final Location location){
 		removeListeners();
 		locationStatus = LOCKED_ON;
-		this.location = location;
-		final String locationString = "Retrieved Location and the Latitude is " + location.getLatitude() + 
-				" and Longitude is " + location.getLongitude();
-		Toast.makeText(getActivity(), locationString, 5000).show();
+		this.location = (null == map.getMyLocation()) ? location : map.getMyLocation();
+		if(LocationManager.GPS_PROVIDER == location.getProvider()){
+			zoomToLocation(this.location, MAP_CURRENT_GPS_ZOOM);
+		}else{
+			zoomToLocation(this.location, MAP_CURRENT_NETWORK_ZOOM);
+		}
+		manager.removeGpsStatusListener(gpsStatusListener);
 	}
 
 	/**
-	 * Remove all the listeners that are currently lookin for location.
+	 * Zoom to a location
+	 * @param location - location to zoom to
+	 * @param zoomLevel - level to zoom to
 	 */
-	private void removeListeners() {
-		manager.removeUpdates(networkListener);
-		manager.removeUpdates(gpsListener);
-		manager.removeGpsStatusListener(gpsStatusListener);
+	public void zoomToLocation(final Location location, final float zoomLevel){
+		final LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+		map.animateCamera(CameraUpdateFactory.newLatLng(currentLatLng));
+		map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, zoomLevel));
 	}
 
 	/**
@@ -135,6 +224,8 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		removeListeners();
+		map.setMyLocationEnabled(false);
+		manager.removeGpsStatusListener(gpsStatusListener);
 		if(locationModal.isShowing()){
 			locationModal.dismiss();
 		} else if(settingsModal.isShowing()){
@@ -145,7 +236,8 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 			outState.putDouble(LAT_KEY, location.getLatitude());
 			outState.putDouble(LONG_KEY, location.getLongitude());
 		}
-		super.onSaveInstanceState(outState);	
+		enableMenu();
+		super.onSaveInstanceState(outState);
 	}
 
 	/**
@@ -153,9 +245,10 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 	 */
 	@Override
 	public void showNoLocation() {
+		removeListeners();
 		locationStatus = NOT_USING_LOCATION;
-		//TODO: show a modal saying we could not retrieve your location
-		//TODO: display a default map
+		map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(MAP_CENTER_LAT, MAP_CENTER_LONG)));
+		map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MAP_CENTER_LAT, MAP_CENTER_LONG), map.getMaxZoomLevel()));
 	}
 
 	/**
@@ -188,7 +281,12 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 	@Override
 	public void handleTimeOut() {
 		removeListeners();
-		showNoLocation();
+		map.setMyLocationEnabled(false);
+		manager.removeGpsStatusListener(gpsStatusListener);
+		if(null == location){
+			//TODO: Show modal
+			showNoLocation();
+		}
 	}
 
 	@Override
@@ -204,5 +302,17 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.SEARCH_BY_LOCATION;
+	}
+
+	@Override
+	public void setLocation(final Location location) {
+		this.location = location;
+	}
+
+	@Override
+	public void onMyLocationChange(final Location location) {
+		if(null != location && location.getProvider().equals(LocationManager.GPS_PROVIDER)){
+			setUserLocation(location);
+		}
 	}
 }

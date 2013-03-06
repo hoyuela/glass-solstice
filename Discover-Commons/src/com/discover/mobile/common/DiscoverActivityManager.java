@@ -21,6 +21,11 @@ public class DiscoverActivityManager extends Observable {
 	 */
 	private static Activity mActivity;
 	/**
+	 * Holds the class type of the previous activity that was the active activity
+	 */
+	private Class<?>	mPrevActivityClass;
+	
+	/**
 	 * Singleton instance of DiscoverActivityManager
 	 */
 	private static final DiscoverActivityManager instance = new DiscoverActivityManager();
@@ -40,12 +45,35 @@ public class DiscoverActivityManager extends Observable {
 	 * @param activity - Set to the current activity for the application
 	 */
 	public static void setActiveActivity(final Activity activity) {
+		/**
+		 * Store the class type of the current active activity as the previous active activity,
+		 * if it is not null and the new active activity is different from current active activity.
+		 */
+		if( null != instance.mActivity  && activity.getClass() != instance.mActivity.getClass() ) {
+			instance.mPrevActivityClass = mActivity.getClass();
+		}
+		
 		instance.mActivity = activity;	
 		
 		instance.setChanged();
 		
 		instance.notifyObservers(activity);
 	}
+	
+	/** 
+	 * @return Returns the class type of the previous Active Activity
+	 */
+	public static Class<?> getPreviousActiveActivity() {
+		return instance.mPrevActivityClass;
+	}
+	
+	/**
+	 * Used to clear the previsou active activity class type stored.
+	 */
+	public static void clearPreviousActiveActivity() {
+		instance.mPrevActivityClass = null;
+	}
+	
 	
 	/**
 	 *  Adds an observer to the set of observers for this object, provided 
