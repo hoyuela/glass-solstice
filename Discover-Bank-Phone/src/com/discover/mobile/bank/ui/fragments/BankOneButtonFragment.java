@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.bank.util.BankNeedHelpFooter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
@@ -70,9 +71,17 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 */
 	protected TextView noteTextMsg;
 	/**
+	 * Reference to a TextView which displays page title for the layout.
+	 */
+	protected TextView pageTitle;
+	/**
 	 * Holds list of items that are generated using the method getViewPagerListContent() or getRelativeLayoutListContent()
 	 */
 	protected List<?> content;
+	/**
+	 * Helper class for enabling the user to dial the Need Help Number
+	 */
+	private BankNeedHelpFooter helpFooter;
 	
 	/**
 	 * Sets click listeners for the actionButton, actionLink, feedbackLink. Calls the method to populate
@@ -112,14 +121,37 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		/**Check to see if ViewPagerListItems are provided*/
 		content = getViewPagerListContent();
 		
+		/**Set Page title if required by the sub-class*/
+		pageTitle = (TextView)view.findViewById(R.id.page_title);
+		if( getPageTitle() > 0 ) {
+			pageTitle.setVisibility(View.VISIBLE);
+			pageTitle.setText(getPageTitle());
+		} else {
+			pageTitle.setVisibility(View.GONE);
+		}
+		
 		/**If there aren't any ViewPagerListItems then see if any RelativeLayout list items are provided*/
 		if( null == content) { 
 			content = getRelativeLayoutListContent();
 		}
 		
+		/**Create footer that will listen when user taps on Need Help Number to dial*/
+		helpFooter = new BankNeedHelpFooter((ViewGroup)view, promptUserForNeedHelp() );
+		helpFooter.setToDialNumberOnClick(com.discover.mobile.bank.R.string.bank_need_help_number_text);
+		
 		loadListElementsToLayoutFromList(contentTable, content);
 			
 		return view;
+	}
+
+	/**
+	 * Method to be overridden by sub-class if a title is required for the layout. Otherwise
+	 * the title will be hidden.
+	 * 
+	 * @return Return number that identifies the resource string in res/string.
+	 */
+	protected int getPageTitle() {
+		return 0;
 	}
 
 	/**
@@ -188,6 +220,14 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		 * makeVisible(fragment, boolean) was used.
 		 */
 		getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+	}
+	
+	/**
+	 * Method used to determine whether the user should be prompted with a modal before navigating
+	 * to dialer when tapping on Need Help footer.
+	 */
+	public boolean promptUserForNeedHelp(){
+		return false;
 	}
 
 }

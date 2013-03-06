@@ -2,4 +2,8 @@
 <resources>
 	 <string name="bank_deposit_title">Deposit a Check</string>
      <string name="bank_deposit_page_title">Welcome to Mobile Check Deposit</string>
+     <string name="bank_deposit_enter_details">Enter Details</string>
+     <string name="bank_deposit_capture">Capture</string>
+     <string name="bank_deposit_confirmation">Confirmation</string>
+     <string name="bank_deposit_select_account">Select Account</string>
 </resources>

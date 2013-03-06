@@ -22,4 +22,6 @@
     
     <!-- RadioGroup Image Inner Padding -->
     <dimen name="radio_group_inner_padding">25dp</dimen>
+    
+    <dimen name="header_progress_height">45dp</dimen>
 </resources>

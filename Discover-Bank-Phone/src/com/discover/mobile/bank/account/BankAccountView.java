@@ -30,7 +30,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	/**
 	 * TAG used to print logs into Android logcat
 	 */
-	private final static String TAG = BankAccountView.class.getSimpleName();
+	protected final static String TAG = BankAccountView.class.getSimpleName();
 
 	/**
 	 * Used to display the nickname field value in an Account object
@@ -43,7 +43,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	/**
 	 * Used to display the account ending number value in an Account object
 	 */
-	private final TextView acctEnding;
+	protected final TextView acctEnding;
 	/**
 	 * Holds a reference to the view that displays a carat image
 	 */
@@ -51,7 +51,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	/**
 	 * Holds a reference to the Account object whose data is displayed in the view
 	 */
-	private Account account;
+	protected Account account;
 	/**
 	 * Reference to layout used for this view
 	 */
@@ -82,9 +82,9 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	public BankAccountView(final Context context, final Account account) {
 		this(context);
 
-		this.setAccountInformation(account);
-
 		this.account = account;
+		
+		this.setAccountInformation(account);
 	}
 
 	/**
@@ -182,7 +182,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	 * @param context
 	 */
 	public void drawBottomStroke(final Context context) {
-		RelativeLayout lastView = (RelativeLayout) this
+		final RelativeLayout lastView = (RelativeLayout) this
 				.getChildAt(0);
 		lastView.setBackgroundDrawable(context.getResources().getDrawable(
 				R.drawable.home_list_item_dash));
@@ -202,7 +202,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	 * @param context
 	 */
 	public void drawTopStroke(final Context context) {
-		RelativeLayout lastView = (RelativeLayout) this
+		final RelativeLayout lastView = (RelativeLayout) this
 				.getChildAt(0);
 		lastView.setBackgroundDrawable(context.getResources().getDrawable(
 				R.drawable.home_list_item_no_bottom_stroke));
@@ -222,7 +222,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	 * @param context
 	 */
 	public void drawAllStrokes(final Context context) {
-		RelativeLayout lastView = (RelativeLayout) this
+		final RelativeLayout lastView = (RelativeLayout) this
 				.getChildAt(0);
 		lastView.setBackgroundDrawable(context.getResources().getDrawable(
 				R.drawable.home_list_item));
