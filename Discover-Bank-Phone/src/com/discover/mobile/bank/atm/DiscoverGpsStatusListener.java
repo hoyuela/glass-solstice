@@ -19,7 +19,7 @@ public class DiscoverGpsStatusListener implements Listener{
 	private long time;
 
 	/**Time that the app will search for a location*/
-	private static final long STAY_ALIVE_TIME = 20000; //20 seconds
+	private static final long STAY_ALIVE_TIME = 10000; //10 seconds
 
 	/**Fragment that is waiting for the received locaiton*/
 	private final LocationFragment fragment;

@@ -25,27 +25,53 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.slidingmenu.lib.SlidingMenu;
 
+/**
+ * Main fragment of the ATM locator. Will display a map and do searches based
+ * off the users current location or off a location entered by the user.
+ * 
+ * @author jthornton
+ *
+ */
 public class AtmMapFragment extends BaseFragment implements LocationFragment, OnMyLocationChangeListener{
 
+	/**
+	 * Location status of the fragment. Is set based off of user input and the ability
+	 * to get the users location.  Defaults to NOT_ENABLED.
+	 */
 	private int locationStatus = NOT_ENABLED;
 
+	/**Users current location*/
 	private Location location;
 
+	/** Location manager of the application*/
 	private LocationManager manager;
 
+	/**Modal that asks the user if the app can use their current location*/
 	private ModalAlertWithTwoButtons locationModal;
 
+	/**Modal that lets the user know that their location services are disabled*/
 	private ModalAlertWithTwoButtons settingsModal;
 
+	/**Google map instance*/
 	private GoogleMap map;
 
-	private final float MAP_CURRENT_LOCATION_ZOOM = 17f;
+	/**Zoom level that the app should zoom into when the users current location is found*/
+	private final float MAP_CURRENT_GPS_ZOOM = 15f;
 
-	private final Double MAP_CENTER_LAT = 37.88;
+	/**Zoom level that the app should zoom into when the users current location is found*/
+	private final float MAP_CURRENT_NETWORK_ZOOM = 13f;
 
-	private final Double MAP_CENTER_LONG = -98.21;
+	/**Latitude used to center the map over the United States*/
+	private static final Double MAP_CENTER_LAT = 37.88;
 
+	/**Longitude used to center the map over the United States*/
+	private static final Double MAP_CENTER_LONG = -98.21;
+
+	/**GPS status listener to attach to the location manager when trying to the users current location*/
 	private DiscoverGpsStatusListener gpsStatusListener;
+
+	/**Location listener to attach to the location manager when trying to get the users current location*/
+	private DiscoverLocationListener gpsListener, networkListener;
 
 	/**
 	 */
@@ -60,6 +86,8 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 		createLocationModal();
 		manager = (LocationManager) this.getActivity().getSystemService(Context.LOCATION_SERVICE);
 		gpsStatusListener = new DiscoverGpsStatusListener(this);
+		gpsListener = new DiscoverLocationListener(this);
+		networkListener = new DiscoverLocationListener(this);
 
 		if(null != savedInstanceState){
 			locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
@@ -153,6 +181,14 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 		map.setMyLocationEnabled(true);
 		map.setOnMyLocationChangeListener(this);
 		manager.addGpsStatusListener(gpsStatusListener);
+		manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
+		manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, networkListener);
+	}
+
+	private void removeListeners(){
+		manager.removeGpsStatusListener(gpsStatusListener);
+		manager.removeUpdates(gpsListener);
+		manager.removeUpdates(networkListener);
 	}
 
 	/**
@@ -160,9 +196,14 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	 */
 	@Override
 	public void setUserLocation(final Location location){
+		removeListeners();
 		locationStatus = LOCKED_ON;
 		this.location = (null == map.getMyLocation()) ? location : map.getMyLocation();
-		zoomToLocation(this.location, MAP_CURRENT_LOCATION_ZOOM);
+		if(LocationManager.GPS_PROVIDER == location.getProvider()){
+			zoomToLocation(this.location, MAP_CURRENT_GPS_ZOOM);
+		}else{
+			zoomToLocation(this.location, MAP_CURRENT_NETWORK_ZOOM);
+		}
 		manager.removeGpsStatusListener(gpsStatusListener);
 	}
 
@@ -182,6 +223,9 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
+		removeListeners();
+		map.setMyLocationEnabled(false);
+		manager.removeGpsStatusListener(gpsStatusListener);
 		if(locationModal.isShowing()){
 			locationModal.dismiss();
 		} else if(settingsModal.isShowing()){
@@ -193,8 +237,6 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 			outState.putDouble(LONG_KEY, location.getLongitude());
 		}
 		enableMenu();
-		map.setMyLocationEnabled(false);
-		manager.removeGpsStatusListener(gpsStatusListener);
 		super.onSaveInstanceState(outState);
 	}
 
@@ -203,8 +245,10 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	 */
 	@Override
 	public void showNoLocation() {
+		removeListeners();
 		locationStatus = NOT_USING_LOCATION;
 		map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(MAP_CENTER_LAT, MAP_CENTER_LONG)));
+		map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MAP_CENTER_LAT, MAP_CENTER_LONG), map.getMaxZoomLevel()));
 	}
 
 	/**
@@ -236,10 +280,13 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	 */
 	@Override
 	public void handleTimeOut() {
+		removeListeners();
 		map.setMyLocationEnabled(false);
 		manager.removeGpsStatusListener(gpsStatusListener);
-		//TODO: Show modal
-		showNoLocation();
+		if(null == location){
+			//TODO: Show modal
+			showNoLocation();
+		}
 	}
 
 	@Override
