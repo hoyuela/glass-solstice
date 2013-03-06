@@ -320,6 +320,11 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			setCheckMark(saveIdWasChecked, false);
 		}
 		
+		// User Loggedout without Remember User ID Checked
+		if(!(saveUserId || saveIdWasChecked)) {
+			clearInputs();
+		}
+
 		//Default to the last path user chose for login Card or Bank
 		this.setApplicationAccount();
 
