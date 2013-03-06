@@ -67,6 +67,7 @@ public class DiscoverActivityManager extends Observable {
 		return instance.mPrevActivityClass;
 	}
 	
+	
 	/**
 	 * Used to clear the previsou active activity class type stored.
 	 */
