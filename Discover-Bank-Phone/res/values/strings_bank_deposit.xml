@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	 <string name="bank_deposit_title">Deposit a Check</string>
-     <string name="bank_deposit_page_title">Welcome to Mobile Check Deposit</string>
-     <string name="bank_deposit_enter_details">Enter Details</string>
-     <string name="bank_deposit_capture">Capture</string>
-     <string name="bank_deposit_confirmation">Confirmation</string>
-     <string name="bank_deposit_select_account">Select Account</string>
+
+    <string name="bank_deposit_title">Deposit a Check</string>
+    <string name="bank_deposit_page_title">Welcome to Mobile Check Deposit</string>
+    
+    <string name="capture">Capture</string>
+    <string name="front">Front</string>
+    <string name="back">Back</string>
+    <string name="question_mark">\?</string>
+    <string name="retake">Retake</string>
+
 </resources>
