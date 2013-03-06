@@ -9,11 +9,14 @@ import android.content.Context;
 
 import com.discover.mobile.bank.services.BankNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.XHttpMethodOverrideValues;
 import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Logout call for the application.  This will make a call to the services that will terminate the session
@@ -32,6 +35,10 @@ public class BankLogOutCall extends BankNetworkServiceCall<Object> {
 		params = new PostCallParams(url) {{
 			requiresSessionForRequest = true;
 			clearsSessionAfterRequest = true;
+			
+			headers = ImmutableMap.<String,String>builder()
+					.put(HttpHeaders.XHttpMethodOveride, XHttpMethodOverrideValues.DELETE.toString())
+					.build();
 		}};
 		return params;
 	}
