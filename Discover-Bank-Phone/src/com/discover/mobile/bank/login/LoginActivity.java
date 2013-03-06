@@ -348,6 +348,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		if( null != DiscoverActivityManager.getPreviousActiveActivity() && 
 			DiscoverActivityManager.getPreviousActiveActivity().getSimpleName().equals("EnhancedAccountSecurityActivity")) {
 			this.getErrorHandler().showErrorsOnScreen(this, null);
+			DiscoverActivityManager.clearPreviousActiveActivity();
 		}
 
 	}

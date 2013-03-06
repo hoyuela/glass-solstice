@@ -67,6 +67,13 @@ public class DiscoverActivityManager extends Observable {
 		return instance.mPrevActivityClass;
 	}
 	
+	/**
+	 * Used to clear the previsou active activity class type stored.
+	 */
+	public static void clearPreviousActiveActivity() {
+		instance.mPrevActivityClass = null;
+	}
+	
 	
 	/**
 	 *  Adds an observer to the set of observers for this object, provided 
