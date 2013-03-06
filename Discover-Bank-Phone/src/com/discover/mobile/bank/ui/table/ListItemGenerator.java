@@ -1,6 +1,5 @@
 package com.discover.mobile.bank.ui.table;
 
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -195,7 +194,7 @@ public class ListItemGenerator {
 		items.get(0).getDividerLine().setVisibility(View.GONE);
 		items.add(getDescriptionCell(item.description, item.id));
 		items.add(getDateCell(item.dates.get(ActivityDetail.POSTED)));
-		items.add(getBalanceCell(Integer.parseInt(item.balance.value)));
+		items.add(getBalanceCell(item.balance.value));
 
 		return items;
 	}
@@ -208,11 +207,11 @@ public class ListItemGenerator {
 	 */
 	public List<ViewPagerListItem> getScheduledPaymentDetailList(final PaymentDetail item) {
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
-
+		
 		items.add(getPayeeCell(BankUser.instance().getPayees().getNameFromId(item.payee.id)));
 		items.get(0).getDividerLine().setVisibility(View.GONE);
-		items.add(getPayFromAccountCell(item.paymentAccount.accountNumber.ending, item.paymentAccount.nickname));
-		items.add(getAmountCell(NumberFormat.getCurrencyInstance(Locale.US).format(item.amount)));
+		items.add(getPayFromAccountCell(BankUser.instance().getAccount(item.paymentAccount.id).name, BankUser.instance().getAccount(item.paymentAccount.id).nickname));
+		items.add(getAmountCell(item.amount.value));
 		items.add(getPaymentDateCell(item));
 		items.add(getStatusCell(item.status));
 		items.add(getConfirmationCell(item.confirmationNumber));
