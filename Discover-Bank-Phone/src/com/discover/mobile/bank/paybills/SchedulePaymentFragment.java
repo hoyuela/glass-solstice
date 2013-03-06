@@ -41,8 +41,8 @@ import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
 import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
+import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
@@ -72,7 +72,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private RelativeLayout dateItem;
 
 	/** Progress header - breadcrumb */
-	private HeaderProgressIndicator progressHeader;
+	private BankHeaderProgressIndicator progressHeader;
 	/** Date picker for selecint a Deliver By date */
 	private CustomTitleDatePickerDialog deliverByDatePicker;
 	/** Spinner used to display all the user bank accounts */
@@ -146,7 +146,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		parentView = (ScrollView) view;
 		payeeText = (TextView) view.findViewById(R.id.payee_text);
-		progressHeader = (HeaderProgressIndicator) view
+		progressHeader = (BankHeaderProgressIndicator) view
 				.findViewById(R.id.schedule_pay_header);
 		conflictError = (TextView) view.findViewById(R.id.conflict_error);
 		paymentAccountItem = (RelativeLayout) view
