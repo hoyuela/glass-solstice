@@ -340,10 +340,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	public void handleAcceptDepositsTerms() {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
-		activity.getSupportFragmentManager().popBackStack();
 		
-		activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
-		activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+		/**Remove the Check Deposit Terms and Conditions View from fragment back stack*/
+		activity.getSupportFragmentManager().popBackStack();
+	
+		
+		BankNavigator.navigateToCheckDepositWorkFlow();
 	}
 	
 	/**

@@ -4,7 +4,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.BankNavigator;
-import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
@@ -26,38 +25,9 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				if(!isEligible()){
-					//TODO: Need to figure out to see where to go if not eligible
-				} else if(isEligible() && !isEnrolled()){
-					BankNavigator.navigateToDepositTerms();
-				} else{
-					//Check if User has accounts
-					if( BankUser.instance().hasAccounts() ) {
-						//Check if User has more than one account
-						if( BankUser.instance().getAccounts().accounts.size() > 1 ) {
-							//Navigate to Select account
-						} else {
-							//Navigate to Set Amount
-						}
-					}
-				}
+				BankNavigator.navigateToCheckDepositWorkFlow();
 			}
 		};
 	}
-
-	/**
-	 * Method call to see if a uses is eligible for Check Deposit
-	 * @return if a user is eligible for payments
-	 */
-	protected static boolean isEligible(){
-		return BankUser.instance().getCustomerInfo().isDepositEligibility();
-	}
-
-	/**
-	 * Method call to see if a users is enrolled in Check Deposit
-	 * @return if a user is enrolled in payments
-	 */
-	protected static boolean isEnrolled(){
-		return BankUser.instance().getCustomerInfo().isDepositEnrolled();
-	}
+	
 }
