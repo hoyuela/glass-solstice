@@ -339,6 +339,15 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		
 		final IntentFilter intentFilter = new IntentFilter("android.intent.action.SCREEN_OFF");
 		registerReceiver(screenOffService, intentFilter);
+		
+		//If previous screen was Strong Auth Page then clear text fields and show text fields in red
+		//because that means the user did not login successfully
+		if( null != DiscoverActivityManager.getPreviousActiveActivity() && 
+			DiscoverActivityManager.getPreviousActiveActivity().getSimpleName().equals("EnhancedAccountSecurityActivity")) {
+			this.getErrorHandler().showErrorsOnScreen(this, null);
+			DiscoverActivityManager.clearPreviousActiveActivity();
+		}
+
 	}
 
 	@Override
