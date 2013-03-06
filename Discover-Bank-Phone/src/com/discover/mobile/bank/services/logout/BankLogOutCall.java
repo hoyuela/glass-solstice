@@ -36,6 +36,7 @@ public class BankLogOutCall extends BankNetworkServiceCall<Object> {
 			requiresSessionForRequest = true;
 			clearsSessionAfterRequest = true;
 			
+			//Custom headers for delete
 			headers = ImmutableMap.<String,String>builder()
 					.put(HttpHeaders.XHttpMethodOveride, XHttpMethodOverrideValues.DELETE.toString())
 					.build();
