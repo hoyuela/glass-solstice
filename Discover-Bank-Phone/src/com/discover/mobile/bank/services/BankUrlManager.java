@@ -58,7 +58,7 @@ public class BankUrlManager  {
 	/**
 	 * String used to construct a URL used for deleting. Example /api/auth/token?_method=DELETE
 	 */
-	public static final String DELETE_METHOD = "?method=DELETE";
+	public static final String DELETE_METHOD = "?_method=DELETE";
 	/**
 	 * String used to construct a URL used for updating an item. Example /api/auth/token?_method=PUT
 	 */
