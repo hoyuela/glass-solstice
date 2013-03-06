@@ -6,6 +6,7 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +16,7 @@ import com.discover.mobile.bank.account.BankAccountActivityTable;
 import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
+import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
@@ -45,6 +47,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
 /**
@@ -570,21 +573,75 @@ public final class BankNavigator {
 	}
 
 	/**
-	 * Navigation method used to navigate to Check Deposit Terms & Conditions Page
+	 * Navigation method used to navigate to Check Deposit work-flow. Navigates to Check Deposit - Terms 
+	 * and Conditions if user is eligible and not enrolled. If it is the start of the work flow, then navigates
+	 * user to Select Account Page.
 	 */
-	public static void navigateToDepositTerms() {
+	public static void navigateToCheckDepositWorkFlow() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		
+		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+			Fragment fragment;
 			
-			final BankDepositTermsFragment termsFragment = new BankDepositTermsFragment();
+			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligibility();
+			final boolean isEnrolled = BankUser.instance().getCustomerInfo().isDepositEnrolled();
 			
-			navActivity.makeFragmentVisible(termsFragment);
+			if(!isEligible){
+				//TODO: Need to figure out to see where to go if not eligible
+			} else if(isEligible && !isEnrolled){
+				fragment = new BankDepositTermsFragment();
+				navActivity.makeFragmentVisible(fragment);
+			} else{
+				//Check if User has accounts
+				if( BankUser.instance().hasAccounts() ) {
+					//Check if User has more than one account
+					if( BankUser.instance().getAccounts().accounts.size() > 1 ) {
+						fragment = new BankDepositSelectAccount();
+						navActivity.makeFragmentVisible(fragment);
+					} else {
+						//Navigate to Set Amount
+					}
+				}
+			}
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
-				Log.e(TAG, "Unable to navigate to terms page, incorrect Activity");
+				Log.e(TAG, "Unable to navigate to check deposit work-flow");
 			}
 		}
 	}
+	
+	/**
+	 * Navigation method used to display the Call modal for when tapping on a phone number link
+	 * 
+	 * @param number Number to send to dialer if user acknowledges the modal.
+	 */
+	public static void navigateToCallModal(final String number) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+			// Create a one button modal to notify the user that they are leaving the application
+			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+					R.string.bank_callmodal_title, 
+					R.string.bank_callmodal_msg, 
+					false, 
+					R.string.bank_need_help_number_text, 
+					R.string.bank_callmodal_action);
+	
+			//Set the dismiss listener that will navigate the user to the dialer
+			modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(final View v) {
+					modal.dismiss();
+					CommonUtils.dialNumber(number, activity);
+				}
+			});
+	
+			((BankNavigationRootActivity) activity).showCustomAlert(modal);
+		}
+	}
 }
+
+

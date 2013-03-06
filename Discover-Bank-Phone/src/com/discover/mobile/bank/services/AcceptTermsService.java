@@ -62,6 +62,9 @@ public class AcceptTermsService extends BankNetworkServiceCall<Object> implement
 	protected Object parseSuccessResponse(final int status, final Map<String,List<String>> headers, 
 			final InputStream body)throws IOException {
 		
+		eligibility.eligible = true;
+		eligibility.enrolled = true;
+		
 		return null;
 	}
 

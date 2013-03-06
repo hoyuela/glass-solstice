@@ -265,5 +265,12 @@ public class Account implements Serializable {
 		
 		return ret;
 	}
+	
+	/**
+	 * @return Returns true if account is eligible for check deposit, false otherwise.
+	 */
+	public boolean isDepositEligible() {
+		return ( type.equals(ACCOUNT_CHECKING) || type.equals(ACCOUNT_SAVINGS) || type.equals(ACCOUNT_MMA));
+	}
 
 }

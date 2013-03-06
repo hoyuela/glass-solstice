@@ -18,7 +18,7 @@ import com.discover.mobile.common.utils.CommonUtils;
 public class NeedHelpFooter 
 {
 	/**View that holds the content text*/
-	private TextView helpNumberTxtVw;
+	protected TextView helpNumberTxtVw;
 
 	/**
 	 * Default Constructor Not Used

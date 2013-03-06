@@ -104,7 +104,7 @@ public class Eligibility implements Serializable {
 	 * @return Returns the url string for terms store in the eligibility object.
 	 */
 	public String getTermsUrl() {
-		return BankUrlManager.getUrl(links, TERMS_KEY);
+		return BankUrlManager.getBaseUrl() +BankUrlManager.SLASH +BankUrlManager.getUrl(links, TERMS_KEY);
 	}
 	
 	/**
