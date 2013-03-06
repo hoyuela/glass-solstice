@@ -108,7 +108,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		/**Update the display values*/
 		holder.date.setText(convertDate(detail));
 		holder.payee.setText(payees.getNameFromId(detail.payee.id));
-		final double amount = ((double)detail.amount)/DOLLAR_CONVERSION;
+		final double amount = ((double)detail.amount.value)/DOLLAR_CONVERSION;
 		if(amount < 0){
 			holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
 		}else{
