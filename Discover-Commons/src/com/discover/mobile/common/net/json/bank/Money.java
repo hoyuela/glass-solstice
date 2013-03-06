@@ -32,7 +32,7 @@ public class Money implements Serializable {
 	 * The money value in its floating point representation
 	 */
 	@JsonProperty("value")
-	public String value;
+	public int value;
 	
 	/**
 	 * The money value in its formatted form with a $ as a prefix

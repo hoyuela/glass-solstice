@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.common.BaseFragment;
@@ -33,11 +32,6 @@ import com.discover.mobile.common.BaseFragment;
 public class BankEnterPayeeFragment extends BaseFragment implements OnClickListener {
 	private static final String KEY_KEEP_TEXT = "keep-text";
 
-	/**
-	 * Reference to feedback link in the view of this fragment. When clicked on
-	 * will open the Feedback Landing Page
-	 */
-	private TextView feedback;
 	/**
 	 * Reference to TextView used to display a help message when the user navigates
 	 * to this page as a result of a failed attempt to Enter A Pay Bill with no Payees
@@ -75,10 +69,6 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		searchField.setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		searchField.setMinimum(2);
 		searchField.attachErrorLabel(errorLabel);
-
-		/**Hyperlink used to provide feedback*/
-		feedback = (TextView)view.findViewById(R.id.provide_feedback);
-		feedback.setOnClickListener(this);
 
 		/**Button for help**/
 		helpButton = (ImageButton)view.findViewById(R.id.help);
@@ -119,9 +109,7 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
 
-		if( sender == feedback ) {
-			BankNavigator.navigateToFeedback();
-		} else if( sender == helpButton ) {
+		if( sender == helpButton ) {
 			final CharSequence text = "Help Under Development";
 			final int duration = Toast.LENGTH_SHORT;
 
