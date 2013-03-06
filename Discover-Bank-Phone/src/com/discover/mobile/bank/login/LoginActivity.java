@@ -297,7 +297,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		
 		//Check if the login activity was launched because of an invalid token
 		maybeShowErrorMessage();
-		
+				
 		final int lastError = getLastError();
 		final boolean saveIdWasChecked = saveUserId;
 		
@@ -912,11 +912,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 		
 		if(wasIdEmpty || wasPassEmpty) {	
-			errorTextView.setTextColor(getResources().getColor(R.color.red));
-			errorTextView.setText(R.string.login_error);
-			errorTextView.setVisibility(View.VISIBLE);
-			idField.updateAppearanceForInput();
-			passField.updateAppearanceForInput();
+			final String errorText = this.getResources().getString(R.string.login_error);
+			this.getErrorHandler().showErrorsOnScreen(this, errorText);
 			return true;
 		}
 		// All fields were populated.
