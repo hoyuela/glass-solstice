@@ -24,6 +24,7 @@ import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.error.NavigateToLoginOnDismiss;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.widgets.ValidatedInputField;
+import com.google.common.base.Strings;
 
 /**
  * Used to handle error responses to a NetworkServiceCall<>.
@@ -60,11 +61,12 @@ public class BankErrorHandler implements ErrorHandler {
 	 */
 	@Override
 	public void showErrorsOnScreen(final ErrorHandlerUi errorHandlerUi, final String errorText) {
-		// Show error label and display error text
+		
 		// Set Focus to first field in screen
 		errorHandlerUi.getInputFields().get(0).requestFocus();
 
-		if (errorHandlerUi != null) {
+		// Show error label and display error text
+		if (errorHandlerUi != null && !Strings.isNullOrEmpty(errorText)) {
 			final TextView errorLabel = errorHandlerUi.getErrorLabel();
 			final int red = DiscoverActivityManager.getActiveActivity().getResources().getColor(R.color.red);
 
@@ -91,7 +93,7 @@ public class BankErrorHandler implements ErrorHandler {
 					((EditText)genericField).setBackgroundResource(R.drawable.edit_text_red);
 				}
 				//Clear the text in the field.
-				((EditText)genericField).setText("");
+				((EditText)genericField).getEditableText().clear();
 			}
 
 		}
@@ -293,6 +295,12 @@ public class BankErrorHandler implements ErrorHandler {
 				R.string.error_request_not_completed_msg);
 
 		showCustomAlert(modal);
+		
+		//If it is a screen with inline errors then clear the text fields on an error
+		if( DiscoverActivityManager.getActiveActivity() instanceof ErrorHandlerUi ) {
+			final ErrorHandlerUi currentUi = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
+			this.showErrorsOnScreen(currentUi, null);
+		}
 	}
 
 	/*
