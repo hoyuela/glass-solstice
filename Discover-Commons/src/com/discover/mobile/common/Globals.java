@@ -74,6 +74,7 @@ public final class Globals {
 	 */
 	private static boolean showLoginModal;
 	
+
 	/**Used to determine whether the user is logged in or not**/
 	private static boolean isLoggedIn;
 	
@@ -268,13 +269,14 @@ public final class Globals {
     	//Store all application level specific preferences
         final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 		final SharedPreferences.Editor editor = settings.edit();
-		editor.putInt(getStoredKeyName(CURRENT_ACCOUNT), currentAccount.ordinal());
-		editor.putBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
 		editor.putBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility);
 		editor.putBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), showLoginModal);
 		
 		//Username should only be saved if logged in and user has checked remember me in login screen
 		if( isLoggedIn ) {
+			editor.putInt(getStoredKeyName(CURRENT_ACCOUNT), currentAccount.ordinal());
+			editor.putBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
+				
     		if( rememberId) {
     			editor.putString(getStoredKeyName(USER_ID),currentUser);
     		} else {
@@ -461,5 +463,6 @@ public final class Globals {
 			
 		return ret;
 	}
-    
+	
+	
 }
