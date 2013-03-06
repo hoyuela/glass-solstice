@@ -5,6 +5,7 @@ package com.discover.mobile.bank.atm;
 
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -19,17 +20,25 @@ public class DiscoverLocationListener implements LocationListener{
 	/**Fragment to return the location to*/
 	final LocationFragment fragment;
 
+	/**Provider that is using the listener*/
+	final String provider;
+
 	/**
 	 * Constructor for the listener
 	 * @param fragment - fragment to return the location to.
 	 */
-	public DiscoverLocationListener(final LocationFragment fragment){
+	public DiscoverLocationListener(final LocationFragment fragment, final String provider){
 		this.fragment = fragment;
+		this.provider = provider;
 	}
 
 	@Override
 	public void onLocationChanged(final Location location) {
-		fragment.setUserLocation(location);
+		if(provider.equals(LocationManager.GPS_PROVIDER)){
+			fragment.setUserLocation(location);
+		}else if(provider.equals(LocationManager.NETWORK_PROVIDER)){
+			fragment.setLocation(location); 
+		}
 
 	}
 
