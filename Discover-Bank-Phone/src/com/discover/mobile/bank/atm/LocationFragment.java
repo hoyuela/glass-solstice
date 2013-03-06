@@ -82,4 +82,10 @@ public interface LocationFragment {
 	 */
 	void handleTimeOut();
 
+	/**
+	 * Set the location of the current user
+	 * @param location - location of the current user
+	 */
+	void setLocation(Location location);
+
 }
