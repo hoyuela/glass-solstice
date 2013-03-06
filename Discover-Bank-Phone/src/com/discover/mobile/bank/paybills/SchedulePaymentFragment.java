@@ -9,6 +9,7 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -26,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
@@ -38,8 +41,8 @@ import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
 import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
+import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
@@ -69,7 +72,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private RelativeLayout dateItem;
 
 	/** Progress header - breadcrumb */
-	private HeaderProgressIndicator progressHeader;
+	private BankHeaderProgressIndicator progressHeader;
 	/** Date picker for selecint a Deliver By date */
 	private CustomTitleDatePickerDialog deliverByDatePicker;
 	/** Spinner used to display all the user bank accounts */
@@ -143,7 +146,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		parentView = (ScrollView) view;
 		payeeText = (TextView) view.findViewById(R.id.payee_text);
-		progressHeader = (HeaderProgressIndicator) view
+		progressHeader = (BankHeaderProgressIndicator) view
 				.findViewById(R.id.schedule_pay_header);
 		conflictError = (TextView) view.findViewById(R.id.conflict_error);
 		paymentAccountItem = (RelativeLayout) view
@@ -163,7 +166,6 @@ public class SchedulePaymentFragment extends BaseFragment {
 		memoEdit = (EditText) memoItem.findViewById(R.id.memo_edit);
 		payNowButton = (Button) view.findViewById(R.id.pay_now);
 		cancelButton = (Button) view.findViewById(R.id.cancel_button);
-
 		bankUser = BankUser.instance();
 
 		loadDataFromBundle();
@@ -569,6 +571,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 * Initializes the view's miscellaneous listeners.
 	 */
 	private void createItemListeners() {
+		
 		// Listens for a focus change so that we can handle special view
 		// behavior
 		parentView.setOnTouchListener(new OnTouchListener() {
@@ -577,9 +580,6 @@ public class SchedulePaymentFragment extends BaseFragment {
 			public boolean onTouch(final View v, final MotionEvent event) {
 				if (!v.equals(memoEdit)) {
 					flipMemoElements(false);
-				}
-				if (!v.equals(amountEdit)) {
-					amountEdit.clearFocus();
 				}
 				return false;
 			}
@@ -606,7 +606,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 		paymentAccountItem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				paymentAccountSpinner.performClick();
+				if(bankUser.getAccounts().accounts.size() > 1)
+					paymentAccountSpinner.performClick();
 			}
 		});
 
@@ -654,13 +655,29 @@ public class SchedulePaymentFragment extends BaseFragment {
 				setupCancelButton();
 			}
 		});
+		
+		amountEdit.setOnEditorActionListener(new OnEditorActionListener() {        
+		    @Override
+		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		        if(actionId==EditorInfo.IME_ACTION_DONE){
+		        	amountEdit.clearFocus();
+		        	final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
+					final InputMethodManager imm = activity.getInputMethodManager();
+					imm.hideSoftInputFromWindow(memoEdit.getWindowToken(), 0);
+		        }
+		    return true;
+		    }
+		});
 
 		payNowButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View arg0) {
 				setDuplicatePaymentError(false);
-
-				if (!isDateError && amountEdit.isValid()) {
+				if(!amountEdit.isValid()) {
+					amountEdit.setErrors();
+				}
+				
+				if (amountEdit.isValid() && !isDateError) {
 					final String memo = memoText.getText().toString();
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
 					payment.payee.id = payee.id;

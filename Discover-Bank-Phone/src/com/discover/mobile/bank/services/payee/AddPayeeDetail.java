@@ -19,8 +19,8 @@ import com.google.common.base.Strings;
   *		"name" : "VERIZON WIRELESS",
   *		"nickName" : "Phone Bill",
   *		"accountNumber": "8888888",
-  *		"addressZip" : "60070",
-  *		"isVerified" : true,
+  *		"billingPostalCode" : "60070",
+  *		"verified" : true,
   *		"merchantNumber" : "2082"
   * }
   * 
@@ -43,16 +43,16 @@ public class AddPayeeDetail implements Serializable {
 	public String accountNumber;
 	
 	public String accountNumberConfirmed;
-	
-	@JsonProperty("addressZip")
+//	
+	@JsonProperty("billingPostalCode")
 	public String zip;
 	
-	@JsonProperty("isVerified")
+	@JsonProperty("verified")
 	public boolean verified;
 	
 	@JsonProperty("merchantNumber")
 	public String merchantNumber;
-	
+//	
 	@JsonProperty("phone")
 	public String phone;
 

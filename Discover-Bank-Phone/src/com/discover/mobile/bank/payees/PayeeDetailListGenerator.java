@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
+import com.discover.mobile.bank.services.payee.PayeeDetail;
 
 /**
  * Utility class used to generate a list of BankEditDetail objects that are to be displayed in a view.
@@ -174,17 +175,17 @@ final public class PayeeDetailListGenerator  {
 	 * @param item a PayeeDetail object.
 	 * @return an appropriate list for a PayeeDetail object.
 	 */
-	public static List<RelativeLayout> getConfirmedPayeeDetailList(final Context context, final AddPayeeDetail item) {
+	public static List<RelativeLayout> getConfirmedPayeeDetailList(final Context context, final PayeeDetail item) {
 		final List<RelativeLayout> items = new ArrayList<RelativeLayout>();
 
 		/**Add Payee Name*/
 		items.add(createName(context, item.name, item.verified,false));
 		items.add(createNickName(context, item.nickName, false));
-		items.add(createAccount(context, item.accountNumber, false));
+		items.add(createAccount(context, item.account.formatted, false));
 		
 		/**Only add an item for zip code if required*/
-		if( item.hasZip()) {
-			items.add(createZipCode(context, item.zip, false));
+		if( !item.address.postalCode.isEmpty()) {
+			items.add(createZipCode(context, item.address.postalCode, false));
 		}
 		
 		return items;

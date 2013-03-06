@@ -9,11 +9,14 @@ import android.content.Context;
 
 import com.discover.mobile.bank.services.BankNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.XHttpMethodOverrideValues;
 import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * This is used for deleting a Scheduled Payment Transaction using the Bank 
@@ -50,6 +53,11 @@ public class DeletePaymentServiceCall extends BankNetworkServiceCall<PaymentDeta
 
 				// Specify what error parser to use when receiving an error response is received
 				this.errorResponseParser = BankErrorResponseParser.instance();
+				
+				//Custom headers for delete
+				headers = ImmutableMap.<String,String>builder()
+						.put(HttpHeaders.XHttpMethodOveride, XHttpMethodOverrideValues.DELETE.toString())
+						.build();
 
 			}
 		});

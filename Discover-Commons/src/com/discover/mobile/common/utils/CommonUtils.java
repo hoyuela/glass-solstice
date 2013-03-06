@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -249,7 +248,7 @@ public class CommonUtils {
 		} catch (Exception e) {
 			d = 0.0f;
 		}
-		String outAmount = NumberFormat.getCurrencyInstance().format(d);
+		String outAmount = NumberFormat.getCurrencyInstance(Locale.US).format(d);
 		outAmount = outAmount.replaceAll("\\$", "");
 		//
 		

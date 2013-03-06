@@ -5,10 +5,10 @@ import java.net.HttpURLConnection;
 import android.app.Activity;
 
 import com.discover.mobile.bank.BankNavigator;
-import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
+import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.common.BaseFragment;
@@ -66,6 +66,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	@Override
 	public final boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 		boolean handled = false;
+		
 		if (errorResponse instanceof BankErrorResponse) {
 			//Use JSON Error Response Handler if error response has a JSON body in it
 			handled = handleJsonErrorCode((BankErrorResponse)errorResponse);
@@ -73,6 +74,13 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			//Use HTTP Error Response Handler if error response has no JSON body in it
 			handled = handleHTTPErrorCode(errorResponse.getHttpStatusCode(), errorResponse.getConnection());
 		}
+		
+		//If it is a screen with inline errors then clear the text fields on an error
+		if( DiscoverActivityManager.getActiveActivity() instanceof ErrorHandlerUi ) {
+			final ErrorHandlerUi currentUi = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
+			mErrorHandler.showErrorsOnScreen(currentUi, null);
+		}
+		
 		return handled;
 	}
 
@@ -120,14 +128,14 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			// TODO temporary until Bank updates the error response in their API doc...
 			} else if(errCode.equals("customer.firstname.NotBlank")) { // TODO Will be Duplicate Payment error (409)
 				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
-				BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
+				final BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
 				if(f instanceof SchedulePaymentFragment) {
 					((SchedulePaymentFragment)f).setDuplicatePaymentError(true);
 				}
 			// TODO temporary until Bank updates the error response in their API doc...
 			} else if(errCode.equals("customer.firstname.NotBlank")) { // TODO Will be Invalid Date error
 				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
-				BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
+				final BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
 				if(f instanceof SchedulePaymentFragment) {
 					((SchedulePaymentFragment)f).setDateError(true);
 				}
@@ -208,7 +216,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 		case HttpURLConnection.HTTP_CONFLICT:
 			if(sender != null && sender instanceof CreatePaymentCall) {
 				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
-				BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
+				final BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
 				if(f instanceof SchedulePaymentFragment) {
 					((SchedulePaymentFragment)f).setDuplicatePaymentError(true);
 				}

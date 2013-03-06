@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
@@ -110,5 +111,17 @@ public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 			BankNavigator.navigateToAddPayee(BankEnterPayeeFragment.class, null);
 		}
 	}
+	
+
+	@Override
+	public int getGroupMenuLocation() {
+		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return BankMenuItemLocationIndex.MANAGE_PAYEES_SECTION;
+	}
+
 	
 }

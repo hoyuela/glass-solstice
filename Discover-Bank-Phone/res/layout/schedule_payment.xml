@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <com.discover.mobile.common.nav.HeaderProgressIndicator
+        <com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator
             android:id="@+id/schedule_pay_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -18,7 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/schedule_pay_header"
-            android:padding="@dimen/between_related_elements_padding"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="@dimen/between_related_elements_padding"
             android:text="@string/schedule_pay_duplicate_payment"
             android:textColor="@color/error_indicator"
             android:visibility="gone" />
@@ -116,6 +117,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        style="@style/field_copy_big"
                         android:layout_weight="1"
                         android:gravity="right"
                         android:paddingRight="3dp"
@@ -128,8 +130,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:background="@drawable/edit_text_default"
-                        android:imeOptions="flagNoExtractUi"
-                        android:maxLines="1"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
                         android:textColor="@color/black"
                         android:textCursorDrawable="@null" />
                 </LinearLayout>
@@ -233,6 +235,9 @@
                     android:visibility="invisible" />
             </RelativeLayout>
         </LinearLayout>
+        
+        
+        <!-- Pay Now Button -->
 
         <Button
             android:id="@+id/pay_now"
@@ -244,6 +249,8 @@
             android:layout_marginBottom="@dimen/modal_orange_margin_bottom"
             android:layout_marginTop="@dimen/modal_orange_margin_top"
             android:text="@string/schedule_pay_button" />
+        
+        <!-- Cancel Button -->
 
         <Button
             android:id="@+id/cancel_button"
@@ -255,6 +262,7 @@
             android:background="@null"
             android:text="@string/cancel_text" >
         </Button>
+        
     </RelativeLayout>
 
 </ScrollView>

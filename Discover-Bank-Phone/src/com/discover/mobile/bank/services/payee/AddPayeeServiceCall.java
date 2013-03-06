@@ -31,14 +31,14 @@ import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
  * }
  * 
  */
-public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCall<AddPayeeDetail>{
+public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCall<PayeeDetail>{
 	/**
 	 * Used for printing logs into Android Logcat
 	 */
 	private static final String TAG = AddPayeeServiceCall.class.getSimpleName();
 
 	/** Reference handler to return the data to the UI */
-	private final TypedReferenceHandler<AddPayeeDetail> handler;
+	private final TypedReferenceHandler<PayeeDetail> handler;
 
 	/** Reference to the PayeeDetail with the information that will be sent to the server for adding a payee**/
 	private final AddPayeeDetail payeeDetail;
@@ -51,26 +51,27 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 	 *            Reference to the Handler for the response
 	 */
 	public AddPayeeServiceCall(final Context context,
-			final AsyncCallback<AddPayeeDetail> callback,
+			final AsyncCallback<PayeeDetail> callback,
 			final AddPayeeDetail details) {
 
 		/**Generate the ServiceCall Params and provide the Paramter Types to be used by the Super Class**/
-		super(context, generateCallParams(), AddPayeeDetail.class);
-
+		super(context, generateCallParams(details), PayeeDetail.class);
+		
 		/**Information about the Payee being added*/
 		payeeDetail = details;
 		
 		/**Create the handler for the response for this request*/
-		this.handler = new SimpleReferenceHandler<AddPayeeDetail>(callback);
+		this.handler = new SimpleReferenceHandler<PayeeDetail>(callback);
 	}
 	
 	/**
 	 * Method used to generate the ServiceCallParams used to configure the handling of a Service Call when
 	 * a request is sent; in addition to when a response is received.
+	 * @param details 
 	 * 
 	 * @return Returns a PostCallParams that is to be provided to the NetworkServiceCall<> base class in the constructor.
 	 */
-	private static PostCallParams generateCallParams() {
+	private static PostCallParams generateCallParams(final AddPayeeDetail details) {
 		final String url = BankUrlManager.getUrl(BankUrlManager.PAYEES_URL_KEY);
 		final PostCallParams callParams = new PostCallParams(url);
 		// This service call is made after authenticating and receiving
@@ -86,10 +87,15 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 		// This ensure the required device information is supplied in
 		// the Headers of the HTTP request
 		callParams.sendDeviceIdentifiers = true;
+		
+		/**Information about the Payee being added*/
+		callParams.body = details;
 
 		// Specify what error parser to use when receiving an error
 		// response is received
 		callParams.errorResponseParser = BankErrorResponseParser.instance();
+		
+		
 		
 		return callParams;
 
@@ -100,14 +106,14 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 	 * @return the handler
 	 */
 	@Override
-	public TypedReferenceHandler<AddPayeeDetail> getHandler() {
+	public TypedReferenceHandler<PayeeDetail> getHandler() {
 		return this.handler;
 	}
 	
 	@Override
-	protected AddPayeeDetail parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
+	protected PayeeDetail parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
-		final AddPayeeDetail data = super.parseSuccessResponse(status, headers, body);
+		final PayeeDetail data = super.parseSuccessResponse(status, headers, body);
 		
 		return data;
 	}

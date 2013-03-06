@@ -122,30 +122,24 @@ public class BankAccountGroupView extends LinearLayout  {
 	 * @param account Reference to an account object 
 	 */
 	public void addAccount(final Account account) {
-		if( null != account ) {
-			if( acctList.size() == 0 || acctList.get(0).type.equals(account.type)) {
-				/**Use name for grouping otherwise use type*/
-				
-				type.setText(getGroupTitle(account));
-				
-				layout.addView(lastAccountReference = new BankAccountView(this.getContext(), account));
-				
-				if(firstAccountReference == null) {
-					firstAccountReference = lastAccountReference;
-				}
-				
-				
-				this.addToBlance(account.balance);
-	
-				this.acctList.add(account);
-						
-				//Show Balance only if more than one account in group
-				showBalance(acctList.size() > 1);
-			} else {
-				if( Log.isLoggable(TAG, Log.ERROR)) {
-					Log.e(TAG, "Unable to add account to group [Invalid Type]");
-				}
+		if( null != account ) {	
+			/**Use name for grouping otherwise use type*/
+			
+			type.setText(getGroupTitle(account));
+			
+			layout.addView(lastAccountReference = new BankAccountView(this.getContext(), account));
+			
+			if(firstAccountReference == null) {
+				firstAccountReference = lastAccountReference;
 			}
+			
+			
+			this.addToBlance(account.balance);
+
+			this.acctList.add(account);
+					
+			//Show Balance only if more than one account in group
+			showBalance(acctList.size() > 1);		
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Unable to add account to group [Null]");
@@ -204,7 +198,7 @@ public class BankAccountGroupView extends LinearLayout  {
 	 * 
 	 * @param context
 	 */
-	public void addBottomStroke(Context context) {
+	public void addBottomStroke(final Context context) {
 		lastAccountReference.drawBottomStroke(context);
 	}
 
@@ -214,7 +208,7 @@ public class BankAccountGroupView extends LinearLayout  {
 	 * 
 	 * @param context
 	 */
-	public void addTopStroke(Context context) {
+	public void addTopStroke(final Context context) {
 		firstAccountReference.drawTopStroke(context);
 	}
 
@@ -224,7 +218,7 @@ public class BankAccountGroupView extends LinearLayout  {
 	 * 
 	 * @param context
 	 */
-	public void addAllStrokes(Context context) {
+	public void addAllStrokes(final Context context) {
 		firstAccountReference.drawAllStrokes(context);
 	}
 }
