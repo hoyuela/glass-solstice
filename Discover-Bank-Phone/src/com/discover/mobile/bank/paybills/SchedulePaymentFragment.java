@@ -661,6 +661,9 @@ public class SchedulePaymentFragment extends BaseFragment {
 		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		        if(actionId==EditorInfo.IME_ACTION_DONE){
 		        	amountEdit.clearFocus();
+		        	final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
+					final InputMethodManager imm = activity.getInputMethodManager();
+					imm.hideSoftInputFromWindow(memoEdit.getWindowToken(), 0);
 		        }
 		    return true;
 		    }
