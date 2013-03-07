@@ -3,17 +3,26 @@
  */
 package com.discover.mobile.bank.atm;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.services.atm.AtmDetail;
+import com.discover.mobile.bank.services.atm.AtmResults;
+import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
@@ -22,7 +31,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
@@ -73,6 +84,18 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	/**Location listener to attach to the location manager when trying to get the users current location*/
 	private DiscoverLocationListener gpsListener, networkListener;
 
+	/**Boolean set to true when the app has loaded the atms to that the app does not trigger the call more than one time*/
+	private boolean hasLoadedAtms = false;
+
+	/**Amount of ATMs that can be shown at one time*/
+	private static final int INDEX_INCREMENT = 10;
+
+	/**current index of the next atm that needs to be displayed*/
+	private int currentIndex = 0;
+
+	/**Atms close to the users locaiton*/
+	private AtmResults results;
+
 	/**
 	 */
 	@Override
@@ -90,14 +113,29 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 		networkListener = new DiscoverLocationListener(this);
 
 		if(null != savedInstanceState){
-			locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
-			if(LOCKED_ON == locationStatus){
-				location = new Location(LocationManager.GPS_PROVIDER);
-				location.setLatitude(savedInstanceState.getDouble(LAT_KEY));
-				location.setLongitude(savedInstanceState.getDouble(LONG_KEY));
-			}
+			resumeStateOfFragment(savedInstanceState);
 		}
 		return view;
+	}
+
+	/**
+	 * Resume the state of the fragment
+	 * @param savedInstanceState - bundle holding the state of the fragment
+	 */
+	private void resumeStateOfFragment(final Bundle savedInstanceState) {
+		locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
+		if(LOCKED_ON == locationStatus){
+			location = new Location(LocationManager.GPS_PROVIDER);
+			location.setLatitude(savedInstanceState.getDouble(LAT_KEY));
+			location.setLongitude(savedInstanceState.getDouble(LONG_KEY));
+			map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), MAP_CURRENT_GPS_ZOOM));
+		}
+		results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+		currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
+		if(null != results){
+			addAtmsToMap(results.results.atms.subList(0, currentIndex));
+			hasLoadedAtms = true;
+		}
 	}
 
 	/**
@@ -134,6 +172,7 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	public void onResume(){
 		super.onResume();
 		setupMap();
+		((NavigationRootActivity)this.getActivity()).setCurrentFragment(this);
 
 		if(NOT_ENABLED == locationStatus){
 			locationStatus = (areProvidersenabled()) ? ENABLED : NOT_ENABLED;
@@ -146,12 +185,43 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 		}else if(SEARCHING == locationStatus){
 			getLocation();
 		}else if(LOCKED_ON == locationStatus){
-			getLocation();
+			//getLocation();
 		}
 
 		if(LOCKED_ON != locationStatus){
 			map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(MAP_CENTER_LAT, MAP_CENTER_LONG)));
 		}
+	}
+
+	/**
+	 * Handle the ATMs that are received from the services and display them on the map.
+	 * @param bundle - bundle
+	 */
+	public void handleRecievedAtms(final Bundle bundle){
+		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+
+		addAtmsToMap(results.results.atms.subList(currentIndex, INDEX_INCREMENT));
+		currentIndex += INDEX_INCREMENT;
+	}
+
+	private void addAtmsToMap(final List<AtmDetail> atms){
+		for(final AtmDetail atm : atms){
+			map.addMarker(createMapMarker(atm));
+		}
+	}
+
+	/**
+	 * Create the marker for the map
+	 * @param atm - to create the marker for
+	 * @return the marker to be added to the map
+	 */
+	private MarkerOptions createMapMarker(final AtmDetail atm){
+		final LatLng item = new LatLng(Double.parseDouble(atm.latitude), Double.parseDouble(atm.longitude));
+		final int drawable = (atm.isAtmSearchargeFree()) ? R.drawable.atm_orange_pin_sm : R.drawable.atm_drk_pin_sm;	
+
+		return new MarkerOptions().position(item)
+				.icon(BitmapDescriptorFactory.fromResource(drawable));
+
 	}
 
 	private boolean areProvidersenabled(){
@@ -205,6 +275,23 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 			zoomToLocation(this.location, MAP_CURRENT_NETWORK_ZOOM);
 		}
 		manager.removeGpsStatusListener(gpsStatusListener);
+		if(!hasLoadedAtms){
+			getAtms(location);
+			hasLoadedAtms = true;
+		}
+	}
+
+	/**
+	 * Get atms near location
+	 * @param location - location to get atms near
+	 */
+	private void getAtms(final Location location){
+		final AtmServiceHelper helper = new AtmServiceHelper(location);
+		//TODO: Eventually remove these
+		helper.setDistance(10);
+		helper.setMaxResults(30);
+		helper.setSurchargeFree(false);
+		BankServiceCallFactory.createGetAtmServiceCall(helper).submit();
 	}
 
 	/**
@@ -236,8 +323,23 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 			outState.putDouble(LAT_KEY, location.getLatitude());
 			outState.putDouble(LONG_KEY, location.getLongitude());
 		}
-		enableMenu();
+		if(results != null){
+			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, results);
+		}
+		outState.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
+
+
 		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onPause(){
+		super.onPause();
+		final Fragment fragment = (getActivity().getSupportFragmentManager().findFragmentById(R.id.discover_map));  
+		final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+		ft.remove(fragment);
+		ft.commit();
+		enableMenu();
 	}
 
 	/**
@@ -315,4 +417,16 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 			setUserLocation(location);
 		}
 	}
+
+	//	@Override
+	//	public void onDestroyView() {
+	//		final Activity activity = getActivity();
+	//		if(activity instanceof BankNavigationRootActivity){
+	//			final Fragment fragment = (getActivity().getSupportFragmentManager().findFragmentById(R.id.discover_map));  
+	//			final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+	//			ft.remove(fragment);
+	//			ft.commit();
+	//		}
+	//		super.onDestroyView(); 
+	//	}
 }

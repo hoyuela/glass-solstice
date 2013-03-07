@@ -24,15 +24,19 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
  */
 public class AtmLocatorActivity extends NavigationRootActivity{
 
+	/**Atm Fragment that is being shown on the screen*/
+	private AtmMapFragment mapFragment;
+
 	/**
-	 * Crete the activity
+	 * Create the activity
 	 */
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.bank_atm_locator_activity);
-
 		showActionBar();
+
+		setMapFragment((AtmMapFragment) this.getSupportFragmentManager().findFragmentById(R.id.map));
 	}
 
 	/**
@@ -66,7 +70,6 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 
 	@Override
 	public ErrorHandler getErrorHandler() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -78,5 +81,19 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 		final Intent intent = new Intent(this, LoginActivity.class);
 		startActivity(intent);
 		this.finish();
+	}
+
+	/**
+	 * @return the fragment
+	 */
+	public AtmMapFragment getMapFragment() {
+		return mapFragment;
+	}
+
+	/**
+	 * @param fragment the fragment to set
+	 */
+	private void setMapFragment(final AtmMapFragment fragment) {
+		mapFragment = fragment;
 	}
 }
