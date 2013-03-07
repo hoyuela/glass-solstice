@@ -657,7 +657,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 		
 		amountEdit.setOnEditorActionListener(new OnEditorActionListener() {        
 		    @Override
-		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		    public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
 		        if(actionId==EditorInfo.IME_ACTION_DONE){
 		        	amountEdit.clearFocus();
 		        	final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
