@@ -58,7 +58,7 @@
 	   
 	     <TextView
 	         android:id="@+id/error_text"
-	         style="@style/error_label"
+	         style="@style/payee_error_label"
 	         android:layout_below="@+id/search_field"
 	         android:layout_width="fill_parent"
 	         android:layout_height="wrap_content" 
