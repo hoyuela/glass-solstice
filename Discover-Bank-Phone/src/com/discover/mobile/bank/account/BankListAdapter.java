@@ -74,7 +74,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		}
 
 		/**At the end of the list try loading more*/
-		if(position == details.size()){ //+1
+		if(position == details.size()){
 			view = fragment.getFooter();
 			return view;
 		}
