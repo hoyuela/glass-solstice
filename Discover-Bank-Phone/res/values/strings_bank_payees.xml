@@ -17,7 +17,7 @@
 	<string name="bank_connie_smith"> \"Connie Smith\"</string>
 	<string name="bank_enter_payee_details">Enter Payee Details</string>
 	<string name="bank_verified_payees_address">Verified Payee Address</string>
-	<string name="bank_verified_payees_address_msg">This payee is recognized by Discover. You do not need to enter the Payee address.</string>
+	<string name="bank_verified_payees_address_msg">This Payee is recognized by Discover. You do not need to enter the Payee address.</string>
 	<string name="bank_payee_details">Payee Details</string>
 	<string name="bank_payee_added">Payee Added</string>
 	<string name="bank_payee_edit">EDIT</string>
