@@ -20,7 +20,7 @@
 	<!-- Select a payee strings -->
 	<string name="select_payee_title">Select Payee</string>
 	<string name="select_payee_empty">You have no payees set up.</string>
-	<string name="select_payee_add_new">Add Another Payee</string>
+	<string name="select_payee_add_new">Add Payee</string>
 	<string name="select_payee_no_payees">Add Payee</string>
 	
 	<!-- Review payments -->

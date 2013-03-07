@@ -131,7 +131,7 @@
     <string name="bank_pmt_review">Review Payments</string>
     <string name="bank_pmt_details">Payment Details</string>
     <string name="bank_pmt_scheduled">Confirmation</string>
-    <string name="bank_delete_transaction_title">Delete Transaction</string>
+    <string name="bank_delete_transaction_title">Delete Payment</string>
     <string name="bank_delete_transaction_text">Are you sure you want to delete this scheduled payment?</string>
     <string name="bank_yes_delete">Yes, Delete</string>
     <string name="bank_status_image_descr">Status Indicator</string>
