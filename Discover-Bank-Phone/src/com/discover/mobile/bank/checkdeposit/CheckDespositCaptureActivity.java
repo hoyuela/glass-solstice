@@ -344,7 +344,11 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 		final boolean stepOneChecked = stepOneCheck.getVisibility() == View.VISIBLE;
 		final boolean stepTwoChecked = stepTwoCheck.getVisibility() == View.VISIBLE;
 		
-		if(stepTwoChecked)
+		final int retakeValue = getIntent().getExtras().getInt(BankExtraKeys.RETAKE_PICTURE);
+		if(retakeValue == RETAKE_FRONT){
+			stepOneCheck.setVisibility(View.INVISIBLE);
+		}
+		else if(stepTwoChecked)
 			stepTwoCheck.setVisibility(View.INVISIBLE);
 		else if(stepOneChecked)
 			stepOneCheck.setVisibility(View.INVISIBLE);
