@@ -28,12 +28,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.error.ErrorHandler;
 
 public class CheckDespositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
 	private final String TAG = CheckDespositCaptureActivity.class.getSimpleName();
+	
+	public static final int RETAKE_FRONT = 1;
+	public static final int RETAKE_BACK  = 2;
 	
 	//BUTTONS
 	private Button captureButton;
@@ -94,6 +98,51 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 		loadDrawables();
 		setupButtons();
 		cameraPreview.setOnClickListener(autoFocusClickListener);
+		final Bundle extras = getIntent().getExtras();
+		
+		if(extras != null)
+			setupPictureRetake(extras.getInt(BankExtraKeys.RETAKE_PICTURE));
+	}
+	
+	/**
+	 * On resume of the Activity, get the camera ready to use.
+	 */
+	@Override
+	public void onResume() {
+		super.onResume();
+		isPaused = false;
+		camera = Camera.open();
+		startPreview();
+
+		setCameraDisplayOrientation(this, 0, camera);
+		setupCameraParameters();
+	}
+
+	/**
+	 * When this Activity gets paused, release control of the camera.
+	 */
+	@Override
+	public void onPause() {
+		super.onPause();
+		isPaused = true;
+		if(inPreview) {
+			camera.stopPreview();
+		}
+		
+		camera.release();
+		inPreview = false;
+	}
+	
+	/**
+	 * If the async task is not finished when the activity stops, we need to cancel it.
+	 */
+	@Override
+	public void onStop() {
+		super.onStop();
+		if(timerTask.isRunning())
+			timerTask.cancel(true);
+
+		resetCountdown();
 	}
 	
 	/**
@@ -102,7 +151,7 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 	private void loadViews() {
 		cameraPreview = (SurfaceView)findViewById(R.id.camera_preview);
 		countdownLogo = (ImageView)findViewById(R.id.countdown_logo);
-		previewHolder = cameraPreview.getHolder();
+		previewHolder = cameraPreview.getHolder();		
 		previewHolder.addCallback(this);
 		
 		bracketTopLeft = (ImageView)findViewById(R.id.image_bracket_top_left);
@@ -141,6 +190,22 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 	private void setupButtons() {
 		retakeButton.setOnClickListener(retakeClickListener);
 		setDefaultButtons();
+		closeButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(final View v) {
+				finish();
+			}
+		});
+	}
+	
+	private void setupPictureRetake(final int retakeValue) {
+		if(retakeValue == RETAKE_FRONT){
+			stepTwoCheck.setVisibility(View.VISIBLE);
+		}else if(retakeValue == RETAKE_BACK){
+			setNextCheckVisible();
+			goToNextStep();
+		}
 	}
 	
 	/**
@@ -214,6 +279,7 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 			goToNextStep();
 			resetCamera();
 			setDefaultButtons();
+			showImageBrackets();
 		}
 	};
 	
@@ -286,18 +352,6 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 	}
 	
 	/**
-	 * If the async task is not finished when the activity stops, we need to cancel it.
-	 */
-	@Override
-	public void onStop() {
-		super.onStop();
-		if(timerTask.isRunning())
-			timerTask.cancel(true);
-
-		resetCountdown();
-	}
-	
-	/**
 	 * Reset the countdown timer.
 	 * Hide the contdown logo, reset its image, and reset the counter.
 	 */
@@ -323,7 +377,6 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 
 	    @Override
 	    public void onPictureTaken(final byte[] data, final Camera camera) {
-	    	
 	    	cameraPreview.setOnClickListener(null);
 	    	
 	    	setPictureConfirmationButtons();
@@ -379,6 +432,7 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 		captureButton.setPressed(false);
 		captureButton.setClickable(true);
 		cameraPreview.setOnClickListener(autoFocusClickListener);
+
 	}
 	
 	/** 
@@ -432,35 +486,6 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 				camera.cancelAutoFocus();
 			}
 		});
-	}
-	
-	/**
-	 * On resume of the Activity, get the camera ready to use.
-	 */
-	@Override
-	public void onResume() {
-		super.onResume();
-		isPaused = false;
-		camera = Camera.open();
-		startPreview();
-
-		setCameraDisplayOrientation(this, 0, camera);
-		setupCameraParameters();
-	}
-
-	/**
-	 * When this Activity gets paused, release control of the camera.
-	 */
-	@Override
-	public void onPause() {
-		super.onPause();
-		isPaused = true;
-		if(inPreview) {
-			camera.stopPreview();
-		}
-		
-		camera.release();
-		inPreview = false;
 	}
 	
 	/**
@@ -521,7 +546,7 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 	 * Start the camera preview.
 	 */
 	private void startPreview() {
-		if(camera != null && cameraConfigured) {
+		if(camera != null && cameraConfigured) {			
 			camera.startPreview();
 			inPreview = true;
 		}
