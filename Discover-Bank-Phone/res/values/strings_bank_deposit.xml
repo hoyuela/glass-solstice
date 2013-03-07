@@ -9,6 +9,7 @@
     <string name="bank_deposit_select_account">Select Account</string>
     
     <string name="capture">Capture</string>
+    <string name="picture_confirm">Confirm</string>
     <string name="front">Front</string>
     <string name="back">Back</string>
     <string name="question_mark">\?</string>
