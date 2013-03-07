@@ -24,6 +24,7 @@ import com.discover.mobile.bank.services.AcceptTermsService;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
+import com.discover.mobile.bank.services.atm.GetAtmDetailsCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
@@ -327,27 +328,33 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
 			BankNavigator.navigateToAddPayee(BankAddPayeeConfirmFragment.class, bundle);
 		}
+		//ATM locator service call
+		else if(sender instanceof GetAtmDetailsCall){
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
+			BankNavigator.navigateToAtmLocatorFragment(bundle);
+		}
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "NetworkServiceCallManager ignored success of a NetworkServiceCall!");
 			}
 		}
 	}
-	
+
 	/**
 	 * Method to handle a successful Accept Deposits Terms and Conditions
 	 */
 	public void handleAcceptDepositsTerms() {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
-		
+
 		/**Remove the Check Deposit Terms and Conditions View from fragment back stack*/
 		activity.getSupportFragmentManager().popBackStack();
-	
-		
+
+
 		BankNavigator.navigateToCheckDepositWorkFlow();
 	}
-	
+
 	/**
 	 * Method to handle a successful Accept Payments Terms and Conditions
 	 */

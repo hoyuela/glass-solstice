@@ -15,6 +15,8 @@ import com.discover.mobile.bank.account.AccountActivityViewPager;
 import com.discover.mobile.bank.account.BankAccountActivityTable;
 import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.account.PaymentDetailsViewPager;
+import com.discover.mobile.bank.atm.AtmLocatorActivity;
+import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
@@ -117,7 +119,7 @@ public final class BankNavigator {
 	 */
 	public static void navigateToHomePage() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		
+
 		if( activity.getClass() != BankNavigationRootActivity.class ) {
 			final Intent home = new Intent(activity, BankNavigationRootActivity.class);
 			home.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -197,7 +199,7 @@ public final class BankNavigator {
 	 */
 	public static void navigateToBrowser(final String url) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		
+
 		if(activity != null && activity instanceof BankNavigationRootActivity ) {
 			// Create a one button modal to notify the user that they are leaving the application
 			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
@@ -206,7 +208,7 @@ public final class BankNavigator {
 					false, 
 					R.string.bank_need_help_number_text, 
 					R.string.continue_text);
-	
+
 			//Set the dismiss listener that will navigate the user to the browser	
 			modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
 				@Override
@@ -217,7 +219,7 @@ public final class BankNavigator {
 					activity.startActivity(i);
 				}
 			});
-	
+
 			((BankNavigationRootActivity)activity).showCustomAlert(modal);
 		}
 	}
@@ -369,15 +371,15 @@ public final class BankNavigator {
 	 */
 	public static void navigateToReviewPaymentsFromDelete(final Bundle bundle) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		
+
 		//Fetch the current activity
 		if( activity instanceof BaseFragmentActivity ) {
 			final NavigationRootActivity fragActivity = (NavigationRootActivity)activity;
-					
+
 			fragActivity.closeDialog();
-			
+
 			BankRotationHelper.getHelper().getBundle().putAll(bundle);
-			
+
 			fragActivity.getSupportFragmentManager().popBackStackImmediate();
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
@@ -484,7 +486,7 @@ public final class BankNavigator {
 		final BankNavigationRootActivity activity =
 				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 		((AlertDialogParent)activity).closeDialog();
-		
+
 		//Handle the case where loading more data
 		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(bundle);
@@ -579,15 +581,15 @@ public final class BankNavigator {
 	 */
 	public static void navigateToCheckDepositWorkFlow() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		
+
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			Fragment fragment;
-			
+
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligibility();
 			final boolean isEnrolled = BankUser.instance().getCustomerInfo().isDepositEnrolled();
-			
+
 			if(!isEligible){
 				//TODO: Need to figure out to see where to go if not eligible
 			} else if(isEligible && !isEnrolled){
@@ -611,7 +613,7 @@ public final class BankNavigator {
 			}
 		}
 	}
-	
+
 	/**
 	 * Navigation method used to display the Call modal for when tapping on a phone number link
 	 * 
@@ -629,7 +631,7 @@ public final class BankNavigator {
 					false, 
 					R.string.bank_need_help_number_text, 
 					R.string.bank_callmodal_action);
-	
+
 			//Set the dismiss listener that will navigate the user to the dialer
 			modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
 				@Override
@@ -638,8 +640,26 @@ public final class BankNavigator {
 					CommonUtils.dialNumber(number, activity);
 				}
 			});
-	
+
 			((BankNavigationRootActivity) activity).showCustomAlert(modal);
+		}
+	}
+
+	/**
+	 * Get the list of atm to the atm locator fragment
+	 * @param bundle
+	 */
+	public static void navigateToAtmLocatorFragment(final Bundle bundle) {
+		if(DiscoverActivityManager.getActiveActivity() instanceof AtmLocatorActivity){
+			final AtmLocatorActivity activity = (AtmLocatorActivity)DiscoverActivityManager.getActiveActivity();
+			activity.closeDialog();
+			activity.getMapFragment().handleRecievedAtms(bundle);
+		}else if(DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity){
+			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+			if(activity.getCurrentContentFragment() instanceof AtmMapFragment){
+				activity.closeDialog();
+				((AtmMapFragment)activity.getCurrentContentFragment()).handleRecievedAtms(bundle);
+			}
 		}
 	}
 }

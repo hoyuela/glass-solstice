@@ -50,6 +50,18 @@ public interface LocationFragment {
 	/**Constant to save the users latitude location*/
 	String LAT_KEY = "lat";
 
+	/**Zoom level that the app should zoom into when the users current location is found*/
+	float MAP_CURRENT_GPS_ZOOM = 16f;
+
+	/**Zoom level that the app should zoom into when the users current location is found*/
+	float MAP_CURRENT_NETWORK_ZOOM = 16f;
+
+	/**Latitude used to center the map over the United States*/
+	Double MAP_CENTER_LAT = 37.88;
+
+	/**Longitude used to center the map over the United States*/
+	Double MAP_CENTER_LONG = -98.21;
+
 	/**
 	 * Set the users location on the map.
 	 */

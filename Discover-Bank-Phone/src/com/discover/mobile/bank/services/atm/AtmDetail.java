@@ -28,6 +28,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AtmDetail implements Serializable{
 
+	/**Static string to show that the atm is surcharge free*/
+	public static String SURCHARGE_FREE = "Y";
+
 	/**Unique serialized object id*/
 	private static final long serialVersionUID = -3207359834100328198L;
 
@@ -94,4 +97,11 @@ public class AtmDetail implements Serializable{
 	/**State the atm is in*/
 	@JsonProperty("stateName")
 	public String state;
+
+	/**
+	 * @return if the atm is surcharge free
+	 */
+	public boolean isAtmSearchargeFree(){
+		return SURCHARGE_FREE.equals(surchargeFee);
+	}
 }
