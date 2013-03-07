@@ -44,6 +44,8 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
 /**
@@ -413,9 +415,13 @@ public final class BankNavigator {
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
 				R.string.bank_delete_transaction_title, 
 				R.string.bank_delete_transaction_text, 
-				false, 
-				R.string.bank_need_help_number_text, 
 				R.string.bank_yes_delete);
+		
+		/**
+		 * Hide the need help footer for the delete modal.
+		 */
+		final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
+		topView.hideNeedHelpFooter();
 
 		//Set the dismiss listener that will navigate the user to the browser	
 		modal.setOnDismissListener(new OnDismissListener() {
