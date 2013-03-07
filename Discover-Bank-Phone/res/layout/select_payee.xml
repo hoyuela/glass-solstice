@@ -14,8 +14,6 @@
         <ImageButton
             android:id="@+id/help"
             style="@style/orange_help_button"
-            android:layout_width="@dimen/orange_help_button_size"
-            android:layout_height="@dimen/orange_help_button_size"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true" />
         
