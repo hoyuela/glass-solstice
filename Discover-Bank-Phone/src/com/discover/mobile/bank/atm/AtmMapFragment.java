@@ -30,11 +30,11 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -45,7 +45,7 @@ import com.slidingmenu.lib.SlidingMenu;
  * @author jthornton
  *
  */
-public class AtmMapFragment extends BaseFragment implements LocationFragment, OnMyLocationChangeListener{
+public class AtmMapFragment extends BaseFragment implements LocationFragment{
 
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
@@ -97,6 +97,9 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 
 	/**Boolean that is true if the map is showing*/
 	private boolean isOnMap = true;
+
+	/**Current location marker*/
+	private Marker currentLocMarker;
 
 	/**
 	 */
@@ -164,7 +167,8 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 			location = new Location(LocationManager.GPS_PROVIDER);
 			location.setLatitude(savedInstanceState.getDouble(LAT_KEY));
 			location.setLongitude(savedInstanceState.getDouble(LONG_KEY));
-			map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), MAP_CURRENT_GPS_ZOOM));
+			map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+					new LatLng(location.getLatitude(), location.getLongitude()), MAP_CURRENT_GPS_ZOOM));
 		}
 		results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
@@ -182,7 +186,6 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	private void setupMap(){
 		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		final UiSettings settings = map.getUiSettings();
-		settings.setMyLocationButtonEnabled(false);
 		settings.setCompassEnabled(false);
 		settings.setRotateGesturesEnabled(false);
 		settings.setTiltGesturesEnabled(false);
@@ -284,8 +287,6 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	 */
 	@Override
 	public void getLocation(){
-		map.setMyLocationEnabled(true);
-		map.setOnMyLocationChangeListener(this);
 		manager.addGpsStatusListener(gpsStatusListener);
 		manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
 		manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, networkListener);
@@ -304,7 +305,13 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	public void setUserLocation(final Location location){
 		removeListeners();
 		locationStatus = LOCKED_ON;
-		this.location = (null == map.getMyLocation()) ? location : map.getMyLocation();
+		this.location = location;
+		if(null != currentLocMarker){
+			currentLocMarker.remove();
+		}
+		final LatLng item = new LatLng(location.getLatitude(), location.getLongitude());
+		currentLocMarker = map.addMarker(new MarkerOptions().position(item)
+				.icon(BitmapDescriptorFactory.fromResource(R.drawable.atm_starting_point_pin)));
 		if(LocationManager.GPS_PROVIDER == location.getProvider()){
 			zoomToLocation(this.location, MAP_CURRENT_GPS_ZOOM);
 		}else{
@@ -344,7 +351,6 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		removeListeners();
-		map.setMyLocationEnabled(false);
 		manager.removeGpsStatusListener(gpsStatusListener);
 		if(locationModal.isShowing()){
 			locationModal.dismiss();
@@ -417,7 +423,6 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	@Override
 	public void handleTimeOut() {
 		removeListeners();
-		map.setMyLocationEnabled(false);
 		manager.removeGpsStatusListener(gpsStatusListener);
 		if(null == location){
 			//TODO: Show modal
@@ -443,12 +448,5 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	@Override
 	public void setLocation(final Location location) {
 		this.location = location;
-	}
-
-	@Override
-	public void onMyLocationChange(final Location location) {
-		if(null != location && location.getProvider().equals(LocationManager.GPS_PROVIDER)){
-			setUserLocation(location);
-		}
 	}
 }
