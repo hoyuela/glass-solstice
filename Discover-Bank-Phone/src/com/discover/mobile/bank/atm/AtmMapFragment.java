@@ -14,7 +14,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
@@ -51,6 +53,9 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	 */
 	private int locationStatus = NOT_ENABLED;
 
+	/**Key to get the state of the buttons*/
+	private static final String BUTTON_KEY = "buttonState";
+
 	/**Users current location*/
 	private Location location;
 
@@ -65,18 +70,6 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 
 	/**Google map instance*/
 	private GoogleMap map;
-
-	/**Zoom level that the app should zoom into when the users current location is found*/
-	private final float MAP_CURRENT_GPS_ZOOM = 15f;
-
-	/**Zoom level that the app should zoom into when the users current location is found*/
-	private final float MAP_CURRENT_NETWORK_ZOOM = 13f;
-
-	/**Latitude used to center the map over the United States*/
-	private static final Double MAP_CENTER_LAT = 37.88;
-
-	/**Longitude used to center the map over the United States*/
-	private static final Double MAP_CENTER_LONG = -98.21;
 
 	/**GPS status listener to attach to the location manager when trying to the users current location*/
 	private DiscoverGpsStatusListener gpsStatusListener;
@@ -93,8 +86,17 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	/**current index of the next atm that needs to be displayed*/
 	private int currentIndex = 0;
 
-	/**Atms close to the users locaiton*/
+	/**Atms close to the users location*/
 	private AtmResults results;
+
+	/**Button that is used to show the map view*/
+	private Button mapButton;
+
+	/**Button that is used to show the list view*/
+	private Button listButton;
+
+	/**Boolean that is true if the map is showing*/
+	private boolean isOnMap = true;
 
 	/**
 	 */
@@ -103,6 +105,25 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 		final View view = inflater.inflate(R.layout.bank_atm_map, null);
 
 		map = ((SupportMapFragment) this.getActivity().getSupportFragmentManager().findFragmentById(R.id.discover_map)).getMap();
+		mapButton = (Button) view.findViewById(R.id.map_nav);
+		listButton = (Button) view .findViewById(R.id.list_nav);
+
+		mapButton.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				if(!isOnMap) {
+					toggleButton();
+				}
+			}
+		});
+		listButton.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				if(isOnMap) {
+					toggleButton();
+				}
+			}
+		});
 
 		disableMenu();
 		createSettingsModal();
@@ -116,6 +137,21 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 			resumeStateOfFragment(savedInstanceState);
 		}
 		return view;
+	}
+
+	/**
+	 * Toggle Between the buttons
+	 */
+	private void toggleButton(){
+		if(isOnMap){
+			mapButton.setBackgroundResource(R.drawable.atm_pinview_button);
+			listButton.setBackgroundResource(R.drawable.atm_listview_button_ds);
+			isOnMap = false;
+		}else{
+			mapButton.setBackgroundResource(R.drawable.atm_pinview_button_ds);
+			listButton.setBackgroundResource(R.drawable.atm_list_view_button);
+			isOnMap = true;
+		}
 	}
 
 	/**
@@ -136,6 +172,8 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 			addAtmsToMap(results.results.atms.subList(0, currentIndex));
 			hasLoadedAtms = true;
 		}
+		isOnMap = !savedInstanceState.getBoolean(BUTTON_KEY, true);
+		toggleButton();
 	}
 
 	/**
@@ -184,8 +222,6 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 			locationModal.show();
 		}else if(SEARCHING == locationStatus){
 			getLocation();
-		}else if(LOCKED_ON == locationStatus){
-			//getLocation();
 		}
 
 		if(LOCKED_ON != locationStatus){
@@ -217,7 +253,7 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	 */
 	private MarkerOptions createMapMarker(final AtmDetail atm){
 		final LatLng item = new LatLng(Double.parseDouble(atm.latitude), Double.parseDouble(atm.longitude));
-		final int drawable = (atm.isAtmSearchargeFree()) ? R.drawable.atm_orange_pin_sm : R.drawable.atm_drk_pin_sm;	
+		final int drawable = (atm.isAtmSearchargeFree()) ? R.drawable.atm_orange_pin : R.drawable.atm_gray_pin;	
 
 		return new MarkerOptions().position(item)
 				.icon(BitmapDescriptorFactory.fromResource(drawable));
@@ -287,9 +323,6 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	 */
 	private void getAtms(final Location location){
 		final AtmServiceHelper helper = new AtmServiceHelper(location);
-		//TODO: Eventually remove these
-		helper.setDistance(10);
-		helper.setMaxResults(30);
 		helper.setSurchargeFree(false);
 		BankServiceCallFactory.createGetAtmServiceCall(helper).submit();
 	}
@@ -327,6 +360,7 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, results);
 		}
 		outState.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
+		outState.putBoolean(BUTTON_KEY, isOnMap);
 
 
 		super.onSaveInstanceState(outState);
@@ -417,16 +451,4 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 			setUserLocation(location);
 		}
 	}
-
-	//	@Override
-	//	public void onDestroyView() {
-	//		final Activity activity = getActivity();
-	//		if(activity instanceof BankNavigationRootActivity){
-	//			final Fragment fragment = (getActivity().getSupportFragmentManager().findFragmentById(R.id.discover_map));  
-	//			final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-	//			ft.remove(fragment);
-	//			ft.commit();
-	//		}
-	//		super.onDestroyView(); 
-	//	}
 }

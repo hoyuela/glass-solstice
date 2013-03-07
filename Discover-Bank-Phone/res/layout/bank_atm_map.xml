@@ -27,18 +27,21 @@
         android:weightSum="2" 
         android:orientation="horizontal">
         
-        <ImageButton
+        <Button
             android:id="@+id/list_nav"
        		android:layout_width="0dp"
         	android:layout_height="wrap_content"
-        	android:layout_weight="1"/>
+        	android:layout_weight="1"
+        	android:background="@drawable/atm_list_view_button"
+        	android:layout_marginRight="@dimen/between_related_elements_padding"/>
         
-        <ImageButton
+        <Button
             android:id="@+id/map_nav"
        		android:layout_width="0dp"
         	android:layout_height="wrap_content"
-        	android:layout_weight="1"/>
-        
+        	android:layout_weight="1"
+        	android:background="@drawable/atm_pinview_button_ds"
+        	android:layout_marginLeft="@dimen/between_related_elements_padding"/>     
         
         
     </LinearLayout>

@@ -28,16 +28,22 @@ public class AtmServiceHelper {
 	private static final String SURCHARGE_FREE = "Y";
 
 	/**Maximum number of results the service should return*/
-	private int maxResults;
+	private int maxResults = DEFAULT_RESULT_NUMBER;
 
 	/**Distance in miles for the search around the location*/
-	private int distance;
+	private int distance = DEFAULT_DISTANCE;
 
 	/**Boolean letting the application know if the ATM should not have a surcharge*/
 	private boolean isSurchargeFree = false;
 
 	/**Location to search for atms around*/
 	private final Location location;
+
+	/**Default mile distance from the user*/
+	private static final int DEFAULT_DISTANCE = 10;
+
+	/**Default number of atms to return*/
+	private static final int DEFAULT_RESULT_NUMBER = 30;
 
 	/**
 	 * Constructor for the helper
