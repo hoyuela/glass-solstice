@@ -19,11 +19,11 @@ import com.discover.mobile.common.net.ServiceCallParams;
  * @param <M> The <u>m</u>odel type for the JSON result
  */
 public abstract class JsonResponseMappingNetworkServiceCall<M> extends NetworkServiceCall<M> {
-	
+
 	private static final String TAG = JsonResponseMappingNetworkServiceCall.class.getSimpleName();
-	
+
 	private final Class<M> modelClass;
-	
+
 	/**
 	 * JSON mapping service call used with the base url defaulted to card.
 	 * @param context
@@ -33,17 +33,31 @@ public abstract class JsonResponseMappingNetworkServiceCall<M> extends NetworkSe
 			final Class<M> modelClass) {
 		super(context,params);
 		checkNotNull(modelClass, "modelClass cannot be null");
-		
+
 		this.modelClass = modelClass;
 		Log.d(TAG, modelClass.toString());
 	}
-	
-	
-	
+
+	/**
+	 * JSON mapping service call used with the base url defaulted to card.
+	 * @param context
+	 * @param params
+	 */
+	protected JsonResponseMappingNetworkServiceCall(final Context context, final ServiceCallParams params,
+			final Class<M> modelClass, final String url) {
+		super(context,params, url);
+		checkNotNull(modelClass, "modelClass cannot be null");
+
+		this.modelClass = modelClass;
+		Log.d(TAG, modelClass.toString());
+	}
+
+
+
 	@Override
 	protected M parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 		return JacksonObjectMapperHolder.mapper.readValue(body, modelClass);
 	}
-	
+
 }

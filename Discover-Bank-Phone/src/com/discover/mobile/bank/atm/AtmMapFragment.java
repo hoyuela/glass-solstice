@@ -124,7 +124,7 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, On
 	 * Enable the sliding menu
 	 */
 	private void enableMenu(){
-		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 
 	/**

@@ -19,10 +19,22 @@ public abstract class BankJsonResponseMappingNetworkServiceCall<M> extends JsonR
 	 * @param params
 	 * @param modelClass
 	 */
-	protected BankJsonResponseMappingNetworkServiceCall(Context context,
-			ServiceCallParams params, Class<M> modelClass) {
+	protected BankJsonResponseMappingNetworkServiceCall(final Context context,
+			final ServiceCallParams params, final Class<M> modelClass) {
 		super(context, params, modelClass);
-		
+
+	}
+
+	/**
+	 * 
+	 * @param context
+	 * @param params
+	 * @param modelClass
+	 */
+	protected BankJsonResponseMappingNetworkServiceCall(final Context context,
+			final ServiceCallParams params, final Class<M> modelClass, final String url) {
+		super(context, params, modelClass, url);
+
 	}
 
 	@Override
@@ -30,6 +42,6 @@ public abstract class BankJsonResponseMappingNetworkServiceCall<M> extends JsonR
 		return BankUrlManager.getBaseUrl();
 	}
 
-	
+
 
 }
