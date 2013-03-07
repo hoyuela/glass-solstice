@@ -64,6 +64,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		editableField.attachErrorLabel(errorLabel);
 		editableField.setOnFocusChangeListener(this);
 		editableField.setOnEditorActionListener(this);
+	
 		
 		view.setOnClickListener(this);
 		
@@ -153,13 +154,15 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		final InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		
 		if( value ) {
-			editableField.setText(middleLabel.getText());
-			editableField.setVisibility(View.VISIBLE);
-			middleLabel.setVisibility(View.GONE);
-			editableField.setFocusable(true);
-			editableField.requestFocus();
-		
-			imm.showSoftInput(editableField, InputMethodManager.SHOW_FORCED);
+			if( !editableField.hasFocus() ) {
+				editableField.setText(middleLabel.getText());
+				editableField.setVisibility(View.VISIBLE);
+				middleLabel.setVisibility(View.GONE);
+				editableField.setFocusable(true);
+				editableField.requestFocus();
+				
+				imm.showSoftInput(editableField, InputMethodManager.SHOW_FORCED);
+			}
 		} else {
 			middleLabel.setText(editableField.getText());
 			editableField.setVisibility(View.GONE);
