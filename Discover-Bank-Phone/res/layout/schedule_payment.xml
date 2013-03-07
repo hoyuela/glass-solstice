@@ -50,6 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
+                    android:singleLine="true"
                     android:ellipsize="end"
                     android:scrollHorizontally="true" />
             </RelativeLayout>
@@ -74,6 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
+                    android:singleLine="true"
                     android:ellipsize="end"
                     android:scrollHorizontally="true" />
 
