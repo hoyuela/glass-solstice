@@ -48,7 +48,10 @@ public final class BankExtraKeys {
 	
 	/**Used to pass a String resource that is meant to be displayed as the title in the action bar*/
 	public static final String TITLE_TEXT = "title";
-
+	
+	/**Used to let the check deposit capture screen know which image is being retaken */
+	public static final String RETAKE_PICTURE = "retake";
+	
 	/**Used to signify sort set up*/
 	public static final int SORT_DATE_DESC = 0;
 	public static final int SORT_DATE_ASC = 1;

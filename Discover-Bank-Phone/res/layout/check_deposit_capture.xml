@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="fill_parent" >
+
+    <SurfaceView
+        android:id="@+id/camera_preview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/button_bar" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/button_bar" >
-
-        <SurfaceView
-            android:id="@+id/camera_preview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/countdown_logo"
@@ -48,8 +49,7 @@
             android:layout_below="@+id/close_button"
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:contentDescription="@string/empty"
-            android:rotation="90"
-            android:src="@drawable/chckdep_photo_corner" />
+            android:src="@drawable/chckdep_photo_corner_tr" />
 
         <ImageView
             android:id="@+id/image_bracket_bottom_left"
@@ -60,8 +60,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/between_related_elements_padding"
             android:contentDescription="@string/empty"
-            android:rotation="-90"
-            android:src="@drawable/chckdep_photo_corner" />
+            android:src="@drawable/chckdep_photo_corner_bl" />
 
         <ImageView
             android:id="@+id/image_bracket_bottom_right"
@@ -72,8 +71,7 @@
             android:layout_alignRight="@+id/close_button"
             android:layout_marginBottom="@dimen/between_related_elements_padding"
             android:contentDescription="@string/empty"
-            android:rotation="180"
-            android:src="@drawable/chckdep_photo_corner" />
+            android:src="@drawable/chckdep_photo_corner_br" />
 
         <ImageView
             android:id="@+id/close_button"
