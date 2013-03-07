@@ -263,7 +263,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		bundle.putSerializable(scheduleKey, scheduled);
 		bundle.putSerializable(completedKey, completed);
 		bundle.putSerializable(canceledKey, canceled);
-		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index-1);
+		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index);
 		BankRotationHelper.getHelper().setBundle(bundle);
 		BankNavigator.navigateToPaymentDetailScreen(bundle);
 	}
