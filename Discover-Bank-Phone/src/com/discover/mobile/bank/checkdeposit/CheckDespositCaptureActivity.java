@@ -9,6 +9,7 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -95,6 +96,9 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 
 		timerTask = new CameraCountdownTask();
 		
+		getWindow().setFormat(PixelFormat.UNKNOWN);
+		previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+		
 		loadDrawables();
 		setupButtons();
 		cameraPreview.setOnClickListener(autoFocusClickListener);
@@ -102,6 +106,7 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 		
 		if(extras != null)
 			setupPictureRetake(extras.getInt(BankExtraKeys.RETAKE_PICTURE));
+		
 	}
 	
 	/**
@@ -116,6 +121,7 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 
 		setCameraDisplayOrientation(this, 0, camera);
 		setupCameraParameters();
+
 	}
 
 	/**

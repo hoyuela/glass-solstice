@@ -49,8 +49,7 @@
             android:layout_below="@+id/close_button"
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:contentDescription="@string/empty"
-            android:rotation="90"
-            android:src="@drawable/chckdep_photo_corner" />
+            android:src="@drawable/chckdep_photo_corner_tr" />
 
         <ImageView
             android:id="@+id/image_bracket_bottom_left"
@@ -61,8 +60,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/between_related_elements_padding"
             android:contentDescription="@string/empty"
-            android:rotation="-90"
-            android:src="@drawable/chckdep_photo_corner" />
+            android:src="@drawable/chckdep_photo_corner_bl" />
 
         <ImageView
             android:id="@+id/image_bracket_bottom_right"
@@ -73,8 +71,7 @@
             android:layout_alignRight="@+id/close_button"
             android:layout_marginBottom="@dimen/between_related_elements_padding"
             android:contentDescription="@string/empty"
-            android:rotation="180"
-            android:src="@drawable/chckdep_photo_corner" />
+            android:src="@drawable/chckdep_photo_corner_br" />
 
         <ImageView
             android:id="@+id/close_button"
