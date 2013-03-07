@@ -34,5 +34,5 @@
 	<string name="bank_cancel_noaction">Don\'t Cancel</string>
 	<string name="bank_add_confirm">The new payee has been setup. You may now schedule a payment.</string>
 	<string name="bank_sch_payment">Schedule a Payment</string>
-	<string name="bank_add_another">Add Another Payee</string>
+	<string name="bank_add_another">Add Payee</string>
 </resources>
