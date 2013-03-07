@@ -57,8 +57,6 @@ public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 	@Override
 	protected void customSetup() {
 		final TextView title = (TextView)getView().findViewById(R.id.select_payee_title);
-		final TextView feedbackButton = (TextView)getView().findViewById(R.id.provide_feedback_button);
-		feedbackButton.setVisibility(View.GONE);
 		if(getPayees().payees == null || getPayees().payees.size() < 1){
 			title.setText(R.string.manage_payees_welcome);
 		}else{
