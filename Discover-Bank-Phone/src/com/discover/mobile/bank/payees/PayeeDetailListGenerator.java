@@ -75,7 +75,7 @@ final public class PayeeDetailListGenerator  {
 		nickName.getEditableField().setFilters(inputFilters);
 		nickName.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		nickName.enableEditing(isEditable);
-		nickName.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT);
+		nickName.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		return nickName;
 	}
 	
@@ -95,7 +95,7 @@ final public class PayeeDetailListGenerator  {
 		account.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
 		account.getEditableField().setError(R.string.bank_invalid_acct);
 		account.enableEditing(isEditable);
-		account.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT);
+		account.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		return account;
 	}
 	
@@ -116,9 +116,9 @@ final public class PayeeDetailListGenerator  {
 		
 		/**If it is last field then show done button in keyboard*/
 		if( isLast ) {
-			reenterAccount.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE);
+			reenterAccount.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		} else {
-			reenterAccount.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT);
+			reenterAccount.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		}
 		return reenterAccount;
 	}
@@ -139,7 +139,7 @@ final public class PayeeDetailListGenerator  {
 		zipCode.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
 		zipCode.getEditableField().setError(R.string.bank_invalid_zip);
 		zipCode.enableEditing(isEditable);
-		zipCode.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE);
+		zipCode.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		return zipCode;
 	}
 	
