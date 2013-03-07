@@ -112,7 +112,6 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		if(amount < 0){
 			holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
 		}else{
-			holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
 			holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
 		}
 		view.setOnClickListener(getClickListener(holder.pos));
