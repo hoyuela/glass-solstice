@@ -72,17 +72,6 @@
             android:layout_centerHorizontal="true"
             android:text="@string/select_payee_add_new" />
 
-        <TextView
-            android:id="@+id/provide_feedback_button"
-            style="@style/bank_blue_hyperlink_small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/add_payee"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/orange_button_margin_top"
-            android:layout_marginTop="@dimen/orange_button_margin_top"
-            android:text="@string/feedback_text" />
     </RelativeLayout>
 
 </ScrollView>
