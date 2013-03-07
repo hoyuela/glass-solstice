@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/light_gray_bkgrd"
         android:paddingBottom="@dimen/forms_inner_padding"
-        android:paddingLeft="@dimen/forms_inner_padding">
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding">
 
         <ImageButton
             android:id="@+id/help"

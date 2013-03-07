@@ -387,16 +387,21 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	public void start(final NetworkServiceCall<?> sender) {
 		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 		activeActivity.startProgressDialog();
-
-		//Update curCall and prevCall it is a different service request
+		
+		/**
+		 * Update prevCall only if it is a different service request from current call
+		 * or if current call is null
+		 * */
 		if( curCall == null || curCall.getClass() != sender.getClass() ) {
-			prevCall = curCall;
-			curCall = sender;
+			prevCall = curCall;			
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
-				Log.w(TAG, "Current NetworkServiceCall was not updated!");
+				Log.w(TAG, "Previous NetworkServiceCall was not updated!");
 			}
 		}
+		
+		/**Update current call*/
+		curCall = sender;
 	}
 
 	/**
