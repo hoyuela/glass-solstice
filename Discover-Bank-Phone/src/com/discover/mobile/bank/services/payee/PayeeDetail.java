@@ -79,7 +79,7 @@ public class PayeeDetail implements Serializable{
 	public String paymentDate;
 
 	/**Boolean for if the payee is verified*/
-	@JsonProperty("isVerified")
+	@JsonProperty("verified")
 	public boolean verified;
 
 	/**Payee phone number*/

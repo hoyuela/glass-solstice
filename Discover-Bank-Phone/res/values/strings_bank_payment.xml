@@ -18,10 +18,10 @@
  	<string name="pay_bills_delivery_text">Your payments are guaranteed to reach your payee by the \"Deliver By\" date.</string>   
 
 	<!-- Select a payee strings -->
-	<string name="select_payee_title">Select a Payee</string>
-	<string name="select_payee_empty">You have no payees set up. You must set up payees in order to pay bills.</string>
+	<string name="select_payee_title">Select Payee</string>
+	<string name="select_payee_empty">You have no payees set up.</string>
 	<string name="select_payee_add_new">Add Another Payee</string>
-	<string name="select_payee_no_payees">Add a Payee</string>
+	<string name="select_payee_no_payees">Add Payee</string>
 	
 	<!-- Review payments -->
 	<string name="review_payments_title">Review Payments</string>
@@ -33,7 +33,7 @@
 	<string name="review_payments_canceled_payments">Canceled\nPayments</string>
 	<string name="review_payments_scheduled_payments_empty">You have no scheduled payments.</string>
 	<string name="review_payments_completed_payments_empty">You have no completed payments.</string>
-	<string name="review_payments_canceled_payments_empty">You have no cancelled payments.</string>
+	<string name="review_payments_canceled_payments_empty">You have no canceled payments.</string>
 	<string name="review_payments_scheduled_deleted">Scheduled Payment Deleted</string>
 	
 	<!-- Manage Payees Strings  -->
