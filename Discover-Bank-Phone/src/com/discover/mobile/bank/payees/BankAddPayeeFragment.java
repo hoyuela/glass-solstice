@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -151,7 +150,7 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 		actionLink.setText(R.string.bank_add_cancel);
 		
 		//Need Help and feedback footer not required for this view
-		final LinearLayout footer = (LinearLayout)mainView.findViewById(R.id.footer_layout);
+		final View footer = mainView.findViewById(R.id.provide_feedback);
 		footer.setVisibility(View.GONE);
 	}
 

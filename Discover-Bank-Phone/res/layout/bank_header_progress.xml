@@ -29,8 +29,7 @@
             <TextView
                 android:id="@+id/step1_title"
                 android:layout_weight="0.50"
-                android:gravity="center"
-                android:text="@string/bank_deposit_enter_details"        
+                android:gravity="center"    
                 style="@style/status_indicator_text" />
         </LinearLayout>
 
@@ -58,7 +57,6 @@
             <TextView
                 android:id="@+id/step2_title"
                 android:layout_marginTop="@dimen/between_related_elements_padding"
-                android:text="@string/bank_deposit_capture"
                 android:layout_weight="0.50"
                 android:gravity="center"
                 style="@style/status_indicator_text"/>
@@ -79,7 +77,6 @@
             <TextView
                 android:id="@+id/step3_title"
                 android:layout_marginTop="@dimen/between_related_elements_padding"
-                android:text="@string/bank_deposit_confirmation"
                 android:layout_weight="0.50"
                 android:gravity="center"
                 style="@style/status_indicator_text" />
