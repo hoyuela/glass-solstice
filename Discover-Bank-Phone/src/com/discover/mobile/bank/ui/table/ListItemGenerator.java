@@ -122,7 +122,7 @@ public class ListItemGenerator {
 		final StringBuilder formattedTitle = new StringBuilder();
 		final String titleText = context.getString(R.string.pay_from_acct_ending_in);
 
-		formattedTitle.append(titleText);
+		formattedTitle.append(titleText + " ");
 		formattedTitle.append(acctEndingNumber);
 
 		final ViewPagerListItem temp = getTwoItemCell(R.string.empty, accountName);
@@ -210,7 +210,7 @@ public class ListItemGenerator {
 		
 		items.add(getPayeeCell(BankUser.instance().getPayees().getNameFromId(item.payee.id)));
 		items.get(0).getDividerLine().setVisibility(View.GONE);
-		items.add(getPayFromAccountCell(BankUser.instance().getAccount(item.paymentAccount.id).name, BankUser.instance().getAccount(item.paymentAccount.id).nickname));
+		items.add(getPayFromAccountCell(BankUser.instance().getAccount(item.paymentAccount.id).accountNumber.ending, BankUser.instance().getAccount(item.paymentAccount.id).nickname));
 		items.add(getAmountCell(item.amount.value));
 		items.add(getPaymentDateCell(item));
 		items.add(getStatusCell(item.status));
