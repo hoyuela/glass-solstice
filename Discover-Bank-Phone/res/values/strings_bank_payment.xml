@@ -19,9 +19,9 @@
 
 	<!-- Select a payee strings -->
 	<string name="select_payee_title">Select Payee</string>
-	<string name="select_payee_empty">You have no payees set up. You must set up payees in order to pay bills.</string>
+	<string name="select_payee_empty">You have no payees set up.</string>
 	<string name="select_payee_add_new">Add Another Payee</string>
-	<string name="select_payee_no_payees">Add a Payee</string>
+	<string name="select_payee_no_payees">Add Payee</string>
 	
 	<!-- Review payments -->
 	<string name="review_payments_title">Review Payments</string>
