@@ -3,11 +3,13 @@ package com.discover.mobile.bank.payees;
 import java.util.List;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -69,7 +71,11 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 	/**
 	 * Reference to a AddPayeeDetail object used to hold the information of the Payee that will be added.
 	 */
-	AddPayeeDetail detail = new AddPayeeDetail();
+	private AddPayeeDetail detail = new AddPayeeDetail();
+	/**
+	 * Reference to bundle provided in onCreateView or via getArguments() depending on what created the fragment.
+	 */
+	private Bundle bundle = null;
 	/**
 	 * Key used for storing the detail data member in a bundle when onSaveInstanceState() is called.
 	 */
@@ -92,8 +98,9 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 			final Bundle savedInstanceState) {
 
 		/**Check if an Unverified Managed Payee was passed from Add Payee - Step 3 BankSearchSelectPayeeFragment*/
-		final Bundle bundle = this.getArguments();
+		bundle = this.getArguments();
 		if( null != savedInstanceState ) {
+			bundle = savedInstanceState;
 			detail = (AddPayeeDetail)savedInstanceState.getSerializable(KEY_PAYEE_DETAIL);
 			payeeSearchResult = (SearchPayeeResult)savedInstanceState.getSerializable(KEY_SEARCH_RESULT);
 		} else if( null != bundle &&  null != bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM)) {
@@ -142,6 +149,10 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 		actionButton.setText(R.string.bank_add_payee);
 
 		actionLink.setText(R.string.bank_add_cancel);
+		
+		//Need Help and feedback footer not required for this view
+		final LinearLayout footer = (LinearLayout)mainView.findViewById(R.id.footer_layout);
+		footer.setVisibility(View.GONE);
 	}
 
 
@@ -350,6 +361,16 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 		if( null != payeeSearchResult) {
 			outState.putSerializable(KEY_SEARCH_RESULT, payeeSearchResult);
 		}
+		
+		/**Store the state of the editable fields, to re-open keyboard on orientation change if necessary*/
+		for( final Object object : this.content) {
+			if( object instanceof BankEditDetail ) {
+				final BankEditDetail item = (BankEditDetail)object;
+				final boolean hasFocus = item.getEditableField().hasFocus();
+				final String key = item.getTopLabel().getText().toString();
+				outState.putBoolean(key, hasFocus );
+			}
+		}
 	}
 
 	/**
@@ -374,8 +395,37 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 			if(detail.isZipRequired){
 				final BankEditDetail zip = (BankEditDetail)content.get(ManagedPayeeFields.PayeeZipCode.ordinal());
 				zip.setText(detail.zip);
-			}		
+			}	
+			
+			/**Restore the state of the editable fields and re-open keyboard if either of them had focus*/
+			if( bundle != null  ) {
+				for( final Object object : this.content) {
+					if( object instanceof BankEditDetail ) {
+						
+						final BankEditDetail item = (BankEditDetail)object;
+						final String key = item.getTopLabel().getText().toString();
+						final boolean hasFocus  = bundle.getBoolean(key, false);
+						
+						/**
+						 * Have to execute the setting of the editable field to edit mode asyncronously otherwise
+						 * the keyboard doesn't open.
+						 */
+						new Handler().postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								if( hasFocus ) {
+									/**Setting edit mode to true makes editable field visible and opens keyboard*/
+									item.setEditMode(hasFocus);
+								}
+							}
+						}, 1000);
+					}
+				}
+			}
+			
 		} 
+		
+		bundle = null;
 	}
 
 	@Override
