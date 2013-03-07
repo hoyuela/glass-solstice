@@ -33,7 +33,7 @@
 	<string name="review_payments_canceled_payments">Canceled\nPayments</string>
 	<string name="review_payments_scheduled_payments_empty">You have no scheduled payments.</string>
 	<string name="review_payments_completed_payments_empty">You have no completed payments.</string>
-	<string name="review_payments_canceled_payments_empty">You have no cancelled payments.</string>
+	<string name="review_payments_canceled_payments_empty">You have no canceled payments.</string>
 	<string name="review_payments_scheduled_deleted">Scheduled Payment Deleted</string>
 	
 	<!-- Manage Payees Strings  -->
