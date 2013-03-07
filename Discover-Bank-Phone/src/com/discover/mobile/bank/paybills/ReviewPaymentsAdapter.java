@@ -70,11 +70,6 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	public View getView(final int position, View view, final ViewGroup parent){
 		ViewHolder holder = null;
 
-		/**Show the header if is is at the top of the list*/
-		if (position == 0){
-			view = fragment.getHeader();
-			return view;
-		}
 		/**If the details is empty show the message*/
 		if(details.isEmpty()){
 			fragment.showFooterMessage();
@@ -83,12 +78,12 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		}
 
 		/**At the end of the list try loading more*/
-		if(position == details.size() + 1){
+		if(position == details.size()){
 			view = fragment.getFooter();
 			return view;
 		}
 
-		final PaymentDetail detail = details.get(position-1);
+		final PaymentDetail detail = details.get(position);
 
 		/**If the view is null, create a new one*/
 		if(null == view || !(view.getTag() instanceof ViewHolder)){
@@ -125,7 +120,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	 */
 	@Override
 	public int getCount(){
-		return details.size()+2;
+		return details.size() + 1;
 	}
 
 	/**
