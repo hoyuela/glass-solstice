@@ -225,6 +225,8 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 			locationModal.show();
 		}else if(SEARCHING == locationStatus){
 			getLocation();
+		}else if(LOCKED_ON == locationStatus){
+			setUserLocation(location);
 		}
 
 		if(LOCKED_ON != locationStatus){
