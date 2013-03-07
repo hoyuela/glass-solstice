@@ -55,7 +55,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	/**
 	 * Reference to layout used for this view
 	 */
-	private final RelativeLayout layout;
+	protected final RelativeLayout layout;
 
 	/**
 	 * 

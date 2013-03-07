@@ -19,6 +19,7 @@ import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
+import com.discover.mobile.bank.deposit.BankDepositSelectAmount;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
@@ -584,14 +585,14 @@ public final class BankNavigator {
 	 * and Conditions if user is eligible and not enrolled. If it is the start of the work flow, then navigates
 	 * user to Select Account Page.
 	 */
-	public static void navigateToCheckDepositWorkFlow() {
+	public static void navigateToCheckDepositWorkFlow(final Bundle bundle) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
-			Fragment fragment;
-
+			Fragment fragment = null;
+			
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligibility();
 			final boolean isEnrolled = BankUser.instance().getCustomerInfo().isDepositEnrolled();
 
@@ -599,18 +600,20 @@ public final class BankNavigator {
 				//TODO: Need to figure out to see where to go if not eligible
 			} else if(isEligible && !isEnrolled){
 				fragment = new BankDepositTermsFragment();
-				navActivity.makeFragmentVisible(fragment);
 			} else{
-				//Check if User has accounts
-				if( BankUser.instance().hasAccounts() ) {
-					//Check if User has more than one account
-					if( BankUser.instance().getAccounts().accounts.size() > 1 ) {
-						fragment = new BankDepositSelectAccount();
-						navActivity.makeFragmentVisible(fragment);
-					} else {
-						//Navigate to Set Amount
-					}
+				//Check if user is in select accounts, navigate to second step in work-flow
+				if( navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount ) {
+					fragment = new BankDepositSelectAmount();
+					fragment.setArguments(bundle);
 				}
+				//Check if User has accounts, this is the first step in work-flow
+				else if( BankUser.instance().hasAccounts() ) {	
+					fragment = new BankDepositSelectAccount();	
+				}
+			}
+			
+			if( fragment != null ) {
+				navActivity.makeFragmentVisible(fragment);
 			}
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {

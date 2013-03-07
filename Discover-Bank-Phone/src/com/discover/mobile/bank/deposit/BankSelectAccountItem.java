@@ -16,8 +16,12 @@ import com.discover.mobile.bank.services.account.AccountNumber;
  *
  */
 public class BankSelectAccountItem extends BankAccountView {
-	public BankSelectAccountItem(final Context context, final Account account) {
+	final private OnClickListener listener;
+	
+	public BankSelectAccountItem(final Context context, final Account account, final OnClickListener listener) {
 		super(context, account);
+		
+		this.listener = listener;
 	}
 	/**
 	 * Method used to retrieve the Account associated with this view.
@@ -48,7 +52,7 @@ public class BankSelectAccountItem extends BankAccountView {
 	 */
 	@Override
 	public void onClick(final View v) {
-		//NOTHING TO DO HERE
+		listener.onClick(this);
 	}
 
 }

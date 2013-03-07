@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.BankMenuItemLocationIndex;
+import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
-import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 
 /**
@@ -25,7 +25,7 @@ import com.discover.mobile.bank.ui.table.ViewPagerListItem;
  * @author henryoyuela
  *
  */
-public class BankDepositSelectAccount extends BankOneButtonFragment {
+public class BankDepositSelectAccount extends BankDepositBaseFragment {
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -37,15 +37,12 @@ public class BankDepositSelectAccount extends BankOneButtonFragment {
 		actionLink.setVisibility(View.GONE);
 		noteTitle.setVisibility(View.GONE);
 		noteTextMsg.setVisibility(View.GONE);
-	
+
+		
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
 		
-		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
-		progressIndicator.initChangePasswordHeader(0);
-		progressIndicator.setTitle(R.string.bank_deposit_enter_details, R.string.bank_deposit_capture, R.string.bank_deposit_confirmation);
-
 		return view;
 	}
 	
@@ -74,13 +71,12 @@ public class BankDepositSelectAccount extends BankOneButtonFragment {
 			final Account account = accounts.get(i);
 			
 			if( account.isDepositEligible() ) {		
-				item = new BankSelectAccountItem(context, account);	
+				item = new BankSelectAccountItem(context, account, this);	
 				
 				if( items.size() > 0 ) {
 					item.drawTopStroke(context);
 				} 
 				
-				item.setOnClickListener(this);
 				items.add(item);
 			}
 		}
@@ -96,8 +92,8 @@ public class BankDepositSelectAccount extends BankOneButtonFragment {
 	 * Method called by base class in onCreateView to determine what the title of the page should be.
 	 */
 	@Override
-	protected int getPageTitle() {
-		return R.string.bank_deposit_select_account;
+	protected String getPageTitle() {
+		return getActivity().getResources().getString( R.string.bank_deposit_select_account );
 	}
 	
 	@Override
@@ -109,30 +105,6 @@ public class BankDepositSelectAccount extends BankOneButtonFragment {
 	protected void onActionLinkClick() {
 		//Nothing to do here		
 	}
-
-	/**
-	 * Method called by base class in onCreateView to determine what string to display in the action bar
-	 */
-	@Override
-	public int getActionBarTitle() {
-		return R.string.bank_deposit_title;
-	}
-
-	/**
-	 * Method used to retrieve menu group this fragment class is associated with.
-	 */
-	@Override
-	public int getGroupMenuLocation() {
-		return BankMenuItemLocationIndex.DEPOSIT_CHECK_GROUP;
-	}
-
-	/**
-	 * Method used to retreive the menu section this fragment class is associated with.
-	 */
-	@Override
-	public int getSectionMenuLocation() {
-		return BankMenuItemLocationIndex.DEPOSIT_NOW_SECTION;
-	}
 	
 	/**
 	 * Click handler for when an item in the list displayed is selected by the user.
@@ -142,17 +114,17 @@ public class BankDepositSelectAccount extends BankOneButtonFragment {
 		super.onClick(sender);
 		
 		if( sender instanceof BankSelectAccountItem) {
+			/**Navigate to select account step 2 in check deposit work flow and send selected account*/
 			final BankSelectAccountItem item = (BankSelectAccountItem) sender;
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, item.getAccount());
+			BankNavigator.navigateToCheckDepositWorkFlow(bundle);
 		}
 	}
-	
-	/**
-	 * Method used to determine whether the user should be prompted with a modal before navigating
-	 * to dialer when tapping on Need Help footer.
-	 */
+
 	@Override
-	public boolean promptUserForNeedHelp(){
-		return true;
+	protected int getProgressIndicatorStep() {
+		return 0;
 	}
 
 	@Override

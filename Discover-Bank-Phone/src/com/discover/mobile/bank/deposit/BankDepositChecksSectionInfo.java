@@ -25,7 +25,7 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				BankNavigator.navigateToCheckDepositWorkFlow();
+				BankNavigator.navigateToCheckDepositWorkFlow(null);
 			}
 		};
 	}
