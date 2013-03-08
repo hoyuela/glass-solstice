@@ -159,6 +159,16 @@ implements OnPaymentCanceledListener {
 	public boolean isBackPressFragment() {
 		return currentFragment instanceof FragmentOnBackPressed;
 	}
+	
+	/**
+	 * Facade for FragmentOnBackPressed.isBackPressDisabled method. Used to determine
+	 * if back press has been disbaled for the current fragment.
+	 * 
+	 * @return True if fragment does not allow back press, false otherwise.
+	 */
+	public boolean isBackPressDisabled() {
+		return ( isBackPressFragment() && ((FragmentOnBackPressed)currentFragment).isBackPressDisabled());
+	}
 
 	/**
 	 * Allows a Fragment that implements the FragmentOnBackPressed interface to
@@ -169,7 +179,10 @@ implements OnPaymentCanceledListener {
 		if(isBackPressFragment()){
 			((FragmentOnBackPressed)currentFragment).onBackPressed();
 		}
-		super.onBackPressed();
+		
+		if( !isBackPressDisabled() ) {
+			super.onBackPressed();
+		}
 	}
 
 	/**
