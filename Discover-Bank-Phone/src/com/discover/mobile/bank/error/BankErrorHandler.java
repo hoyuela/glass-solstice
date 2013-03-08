@@ -61,41 +61,43 @@ public class BankErrorHandler implements ErrorHandler {
 	 */
 	@Override
 	public void showErrorsOnScreen(final ErrorHandlerUi errorHandlerUi, final String errorText) {
-		
-		// Set Focus to first field in screen
-		errorHandlerUi.getInputFields().get(0).requestFocus();
-
-		// Show error label and display error text
-		if (errorHandlerUi != null && !Strings.isNullOrEmpty(errorText)) {
-			final TextView errorLabel = errorHandlerUi.getErrorLabel();
-			final int red = DiscoverActivityManager.getActiveActivity().getResources().getColor(R.color.red);
-
-			errorLabel.setText(errorText);
-			errorLabel.setVisibility(View.VISIBLE);
-			errorLabel.setTextColor(red);
-		}
-
-		// Set the input fields to be highlighted in red and clears text
-		if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
-			final List<EditText> inputFields = errorHandlerUi.getInputFields();
-			final int numberOfFields = inputFields.size();
-			Object genericField = null;
-
-			//Loop through the input fields, determine what kind of field they are, set their error state
-			//and clear the text in them.
-			for(int i = 0; i < numberOfFields; ++i){
-				genericField = inputFields.get(i);
-
-				//If the current field is a ValidatedInputField we should use its method for setting errors.
-				if(genericField instanceof ValidatedInputField){
-					((ValidatedInputField)genericField).setErrors();
-				}else{
-					((EditText)genericField).setBackgroundResource(R.drawable.edit_text_red);
-				}
-				//Clear the text in the field.
-				((EditText)genericField).getEditableText().clear();
+		//Make sure the error handler UI interface has input fields
+		if( errorHandlerUi.getInputFields() != null ) {
+			// Set Focus to first field in screen
+			errorHandlerUi.getInputFields().get(0).requestFocus();
+	
+			// Show error label and display error text
+			if (errorHandlerUi != null && !Strings.isNullOrEmpty(errorText)) {
+				final TextView errorLabel = errorHandlerUi.getErrorLabel();
+				final int red = DiscoverActivityManager.getActiveActivity().getResources().getColor(R.color.red);
+	
+				errorLabel.setText(errorText);
+				errorLabel.setVisibility(View.VISIBLE);
+				errorLabel.setTextColor(red);
 			}
-
+	
+			// Set the input fields to be highlighted in red and clears text
+			if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
+				final List<EditText> inputFields = errorHandlerUi.getInputFields();
+				final int numberOfFields = inputFields.size();
+				Object genericField = null;
+	
+				//Loop through the input fields, determine what kind of field they are, set their error state
+				//and clear the text in them.
+				for(int i = 0; i < numberOfFields; ++i){
+					genericField = inputFields.get(i);
+	
+					//If the current field is a ValidatedInputField we should use its method for setting errors.
+					if(genericField instanceof ValidatedInputField){
+						((ValidatedInputField)genericField).setErrors();
+					}else{
+						((EditText)genericField).setBackgroundResource(R.drawable.edit_text_red);
+					}
+					//Clear the text in the field.
+					((EditText)genericField).getEditableText().clear();
+				}
+	
+			}
 		}
 	}
 
