@@ -54,8 +54,10 @@ public class SchedulePaymentAmountEditText extends ValidatedInputField {
 		
 		if (amountSplit.length > 1) {
 			outAmount = amountSplit[0];
-			outAmount = outAmount.substring(outAmount.length() - 5,
-					outAmount.length());
+			if(outAmount.length() > 4) {
+				outAmount = outAmount.substring(outAmount.length() - 5,
+						outAmount.length());
+			}
 			outAmount = outAmount + "." + amountSplit[1];
 			try {
 				d = Double.parseDouble(outAmount);
@@ -196,8 +198,10 @@ public class SchedulePaymentAmountEditText extends ValidatedInputField {
 					// Values cannot be greater than 25,000.00. This truncates
 					// it to resolve a "defect".
 					outAmount = amountSplit[0];
-					outAmount = outAmount.substring(outAmount.length() - 5,
-							outAmount.length());
+					if (outAmount.length() > 4) {
+						outAmount = outAmount.substring(outAmount.length() - 5,
+								outAmount.length());
+					}
 					outAmount = outAmount + "." + amountSplit[1];
 					outAmount = CommonUtils
 							.formatCurrencyAsStringWithoutSign(outAmount);
