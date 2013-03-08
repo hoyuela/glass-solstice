@@ -72,7 +72,13 @@ public class BankAccountGroupView extends LinearLayout  {
 		
 		try {
 			//Remove any '$' or ',' from the value
-			final String numStrValue = value.formatted.replaceAll("[$,]+", "");
+			String numStrValue = value.formatted.replaceAll("[$,]+", "");
+			
+			if(numStrValue.length() > 0 && numStrValue.charAt(0) == '(') {
+				numStrValue = numStrValue.replaceAll("\\(", "-");
+				numStrValue = numStrValue.replaceAll("\\)", "");
+			}
+			
 			//Remove any '$' or ',' from the current running value
 			final String numStrTotalValue = total.getText().toString().replaceAll("[$,]+", "");
 			//Convert string representation of sum total to a double to be able to add it
