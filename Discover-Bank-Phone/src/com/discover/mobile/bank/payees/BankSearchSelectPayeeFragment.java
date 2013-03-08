@@ -62,10 +62,6 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 * TextView which displays what search criteria was used to run the Payees Search
 	 */
 	private TextView searchName;
-	/**
-	 * 
-	 */
-	private SimpleChooseListItem enterPayeeDetails;
 
 	/**
 	 * Create the view
@@ -92,11 +88,6 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 
 		/**TextView which shows the user what the search criteria was used to generate the list of Payees*/
 		searchName = (TextView)view.findViewById(R.id.search_name);
-
-		/**Custom Widget used to navigate to the Add Payees fragment*/
-		enterPayeeDetails = (SimpleChooseListItem)view.findViewById(R.id.enter_payee_details);
-		enterPayeeDetails.setTitleText(R.string.bank_enter_payee_details);
-		enterPayeeDetails.setOnClickListener(this);
 
 		/**Check whether to use values from arguments passed into fragment or from savedInstanceState bundle*/
 		if(null == savedInstanceState) {
