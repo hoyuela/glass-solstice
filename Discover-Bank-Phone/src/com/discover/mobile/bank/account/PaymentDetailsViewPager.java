@@ -218,4 +218,9 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		return BankMenuItemLocationIndex.REVIEW_PAYEMENTS_SECTION;
 	}
 
+	@Override
+	public boolean isBackPressDisabled() {
+		return false;
+	}
+
 }
