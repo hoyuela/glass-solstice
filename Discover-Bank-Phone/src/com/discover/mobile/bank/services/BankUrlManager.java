@@ -41,6 +41,7 @@ public class BankUrlManager  {
 	private static final String OPEN_ACCOUNT_URL = "https://www.discover.com/online-banking/savings.html"; 
 	private static final String TERMS_AND_CONDITIONS_URL = "/api/content/payments/terms.js";
 	private static final String ACCEPT_PAY_BILLS_TERMS_URL = "/api/payments/terms";
+	private static final String ATM_LOCATOR_URL = "https://api.discover.com/api/atmLocator/SearchGeocodedLocation.xml";
 
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
@@ -63,7 +64,7 @@ public class BankUrlManager  {
 	 * String used to construct a URL used for updating an item. Example /api/auth/token?_method=PUT
 	 */
 	public static final String PUT_METHOD = "?method=PUT";
-	
+
 	/**
 	 * Sets the base URL used for all NetworkServiceCall<> objects used for Bank Service API
 	 * 
@@ -212,6 +213,13 @@ public class BankUrlManager  {
 	 */
 	public static String generateGetPaymentsUrl(final PaymentQueryType query) {
 		return BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY) +"?status=" +query;
+	}
+
+	/**
+	 * @return the atmLocatorUrl
+	 */
+	public static String getAtmLocatorUrl() {
+		return ATM_LOCATOR_URL;
 	}
 
 }

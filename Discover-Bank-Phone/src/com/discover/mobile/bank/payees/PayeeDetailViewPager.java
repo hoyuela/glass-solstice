@@ -146,4 +146,9 @@ public class PayeeDetailViewPager extends DetailViewPager {
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.MANAGE_PAYEES_SECTION;
 	}
+
+	@Override
+	public boolean isBackPressDisabled() {
+		return false;
+	}
 }

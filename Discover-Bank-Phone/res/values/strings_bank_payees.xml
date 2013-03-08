@@ -17,9 +17,9 @@
 	<string name="bank_connie_smith"> \"Connie Smith\"</string>
 	<string name="bank_enter_payee_details">Enter Payee Details</string>
 	<string name="bank_verified_payees_address">Verified Payee Address</string>
-	<string name="bank_verified_payees_address_msg">This payee is recognized by Discover. You do not need to enter the Payee address.</string>
+	<string name="bank_verified_payees_address_msg">This Payee is recognized by Discover. You do not need to enter the Payee address.</string>
 	<string name="bank_payee_details">Payee Details</string>
-	<string name="bank_payee_added">Payee Added</string>
+	<string name="bank_payee_added">Confirmation</string>
 	<string name="bank_payee_edit">EDIT</string>
 	<string name="bank_payee_name">Payee Name</string>
 	<string name="bank_payee_nickname">Nickname</string>
@@ -30,9 +30,9 @@
 	<string name="bank_add_cancel">Cancel</string>
 	<string name="bank_cancel_title">Cancel This Action?</string>
 	<string name="bank_cancel_msg">Are you sure you want to cancel? All information you have entered will be lost.</string>
-	<string name="bank_cancel_yesaction">Cancel This Action</string>
+	<string name="bank_cancel_yesaction">Yes</string>
 	<string name="bank_cancel_noaction">Don\'t Cancel</string>
 	<string name="bank_add_confirm">The new payee has been setup. You may now schedule a payment.</string>
 	<string name="bank_sch_payment">Schedule a Payment</string>
-	<string name="bank_add_another">Add Another Payee</string>
+	<string name="bank_add_another">Add Payee</string>
 </resources>

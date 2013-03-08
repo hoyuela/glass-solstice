@@ -41,14 +41,28 @@ public class SchedulePaymentAmountEditText extends ValidatedInputField {
 		String inAmount = this.getText().toString();
 		String outAmount = CommonUtils
 				.formatCurrencyAsStringWithoutSign(inAmount);
-
-		double d;
+		outAmount = outAmount.replaceAll(",", "");
+		
+		Double d;
 		try {
-			d = Double.parseDouble(outAmount.replaceAll(",", ""));
+			d = Double.parseDouble(outAmount);
 		} catch (Exception e) {
-			d = 0.0f;
+			d = 0.0d;
 		}
-
+		final String amountSplit[] = d.toString().split(".");
+		// Values cannot be greater than 25,000.00. This truncates it to resolve a "defect".
+		
+		if (amountSplit.length > 1) {
+			outAmount = amountSplit[0];
+			outAmount = outAmount.substring(outAmount.length() - 5,
+					outAmount.length());
+			outAmount = outAmount + "." + amountSplit[1];
+			try {
+				d = Double.parseDouble(outAmount);
+			} catch (Exception e) {
+				d = 0.0d;
+			}
+		}
 		if (d < MIN_AMOUNT) {
 			if (amountTooLow != null) {
 				amountError.setText(amountTooLow);
@@ -173,9 +187,21 @@ public class SchedulePaymentAmountEditText extends ValidatedInputField {
 			}
 
 			private void setFormattedText(View v) {
-				String inAmount = ((EditText)v).getText().toString();
+				final String inAmount = ((EditText)v).getText().toString();
 				String outAmount = CommonUtils
 						.formatCurrencyAsStringWithoutSign(inAmount);
+				outAmount = outAmount.replace(",", "");
+				String amountSplit[] = outAmount.split("\\.");
+				if (amountSplit.length > 1) {
+					// Values cannot be greater than 25,000.00. This truncates
+					// it to resolve a "defect".
+					outAmount = amountSplit[0];
+					outAmount = outAmount.substring(outAmount.length() - 5,
+							outAmount.length());
+					outAmount = outAmount + "." + amountSplit[1];
+					outAmount = CommonUtils
+							.formatCurrencyAsStringWithoutSign(outAmount);
+				}
 				((EditText)v).setText(outAmount);
 			}
 		});

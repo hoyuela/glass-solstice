@@ -7,6 +7,7 @@ import roboguice.activity.RoboActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
@@ -162,13 +163,29 @@ public abstract class BaseActivity extends RoboActivity implements ErrorHandlerU
 	}
 
 	@Override
-	protected void onDestroy() {
+	public void onBackPressed() {
 		/**Clear any modal that may have been created during the life of this activity*/
 		DiscoverModalManager.clearActiveModal();
 		
-		super.onDestroy();
+		super.onBackPressed();
+	}
+	
+	@Override
+	public void startActivity (final Intent intent) {
+		/**Clear any modal that may have been created during the life of the current fragment*/
+		DiscoverModalManager.clearActiveModal();
+		
+		super.startActivity(intent);
 	}
 
+	@Override
+	public void startActivityForResult (final Intent intent, final int requestCode) {
+		/**Clear any modal that may have been created during the life of the current fragment*/
+		DiscoverModalManager.clearActiveModal();
+		
+		super.startActivityForResult(intent, requestCode);
+	}
+	
 	/**
 	 * To be implemented by the child class
 	 */

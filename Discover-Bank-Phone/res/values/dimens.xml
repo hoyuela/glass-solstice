@@ -24,4 +24,8 @@
     <dimen name="radio_group_inner_padding">25dp</dimen>
     
     <dimen name="header_progress_height">45dp</dimen>
+    
+    <!-- Padding for Help Icon in bank_header_progress layout-->
+    <dimen name="breadcrumb_help_leftpadding">30dp</dimen>
+    <dimen name="breadcrumb_help_rightpadding">7dp</dimen>
 </resources>

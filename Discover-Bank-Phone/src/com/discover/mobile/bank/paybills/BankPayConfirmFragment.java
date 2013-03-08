@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
@@ -66,6 +68,9 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_pmt_details, R.string.bank_pmt_scheduled, R.string.bank_pmt_scheduled);
 
+		/**Need Help and feedback footer not required for this view**/
+		final LinearLayout footer = (LinearLayout)view.findViewById(R.id.footer_layout);
+		footer.setVisibility(View.GONE);
 
 		return view;
 	}
@@ -107,6 +112,9 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		//Generate a url to download schedule payments
 		final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
+		activity.popTillFragment(BankAccountSummaryFragment.class);
+		
 		BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 	}
 
@@ -135,4 +143,13 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		return BankMenuItemLocationIndex.PAY_BILLS_SECTION;
 	}
 
+	@Override
+	public boolean isBackPressDisabled() {
+		return true;
+	}
+
+	@Override
+	public void onBackPressed() {
+		//Nothing todo here
+	}
 }

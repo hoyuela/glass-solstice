@@ -5,21 +5,17 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="@dimen/forms_inner_padding" 
-        android:paddingLeft="@dimen/forms_inner_padding" 
-        android:paddingRight="@dimen/forms_inner_padding" 
-        android:paddingBottom="@dimen/orange_button_margin_top"
-        android:background="@drawable/light_gray_bkgrd">
+       android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/light_gray_bkgrd"
+        android:paddingBottom="@dimen/forms_inner_padding"
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding">
 
         <ImageButton
             android:id="@+id/help"
-            android:background="@drawable/question_mark_icon"
-            android:layout_width="@dimen/orange_help_button_size"
-            android:layout_height="@dimen/orange_help_button_size"
+            style="@style/orange_help_button"
             android:layout_alignParentRight="true"
-            android:contentDescription="@null"
             android:layout_alignParentTop="true" />
 
         <TextView
@@ -58,13 +54,6 @@
             android:orientation="vertical"
             android:layout_below="@+id/matches"
             android:layout_marginBottom="@dimen/groups_of_elements_padding"/>
-        
-        <com.discover.mobile.bank.paybills.SimpleChooseListItem
-            android:id="@+id/enter_payee_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/payee_list"
-            />
         
     </RelativeLayout>
     

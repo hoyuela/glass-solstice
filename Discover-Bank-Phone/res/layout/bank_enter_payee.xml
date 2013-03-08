@@ -2,13 +2,15 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView1"
     android:fillViewport="true"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:padding="@dimen/forms_inner_padding" 
-	    android:background="@drawable/light_gray_bkgrd" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+	
+	<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/light_gray_bkgrd"
+        android:paddingBottom="@dimen/forms_inner_padding"
+        android:paddingLeft="@dimen/forms_inner_padding" >
 	
 	    <TextView
 	        android:id="@+id/title_text"
@@ -16,8 +18,11 @@
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentTop="true"
 	        android:layout_centerHorizontal="true"
-	        android:paddingBottom="@dimen/forms_inner_padding"
 	        android:text="@string/bank_payee_enter_name" 
+	        android:paddingLeft="@dimen/forms_inner_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:layout_toLeftOf="@+id/help"
 	        style="@style/page_title"/>
 	    
 	     <TextView
@@ -26,19 +31,16 @@
 	        android:layout_height="wrap_content"
 	        android:layout_below="@+id/title_text"
 	        android:layout_centerHorizontal="true"
+	        android:paddingLeft="@dimen/forms_inner_padding"
 	        android:text="@string/bank_no_payees_msg" 
 	        android:visibility="gone"
 	        style="@style/sub_copy_medium"/>
 	    
 	     <ImageButton
-	            android:id="@+id/help"
-	            android:background="@drawable/question_mark_icon"
-	            android:layout_toLeftOf="@+id/title_text"
-	            android:layout_width="@dimen/orange_help_button_size"
-	            android:layout_height="@dimen/orange_help_button_size"
-	            android:layout_alignParentRight="true"
-	            android:layout_alignParentTop="true" 
-	            android:contentDescription="@null"/>
+            android:id="@+id/help"
+            style="@style/orange_help_button"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true" />
 	     
 	     <com.discover.mobile.bank.payees.PayeeValidatedEditField
 	         android:id="@+id/search_field"
@@ -49,17 +51,19 @@
 	         android:hint="@string/bank_payee_company"
 	         android:imeOptions="actionDone"
 	         android:inputType="textNoSuggestions"
+	         android:layout_marginLeft="@dimen/forms_inner_padding"
 	         android:maxLength="32"
 	         android:textCursorDrawable="@null"
 	         android:layout_marginTop="@dimen/forms_inner_padding"/>
 	   
 	     <TextView
 	         android:id="@+id/error_text"
-	         style="@style/error_label"
+	         style="@style/payee_error_label"
 	         android:layout_below="@+id/search_field"
 	         android:layout_width="fill_parent"
 	         android:layout_height="wrap_content" 
 	         android:layout_centerHorizontal="true"
+	         android:paddingLeft="@dimen/forms_inner_padding"
 	      	 android:layout_marginBottom="@dimen/forms_inner_padding"
 	         android:text="@string/bank_invalid_characters"/>
 	     

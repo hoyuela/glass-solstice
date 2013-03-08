@@ -158,9 +158,9 @@ public abstract class NetworkServiceCall<R> {
 	static final int RESULT_START = 3;
 
 	private final ServiceCallParams params;
-	private String BASE_URL;
-	private String X_APP_VERSION;
-	private String X_CLIENT_PLATFORM;
+	private final String BASE_URL;
+	private final String X_APP_VERSION;
+	private final String X_CLIENT_PLATFORM;
 
 	private Context context;
 	private HttpURLConnection conn;
@@ -168,7 +168,7 @@ public abstract class NetworkServiceCall<R> {
 	private RequestBodySerializer requestBodySerializer;
 
 	private volatile boolean submitted = false;
-	
+
 	/**
 	 * Override this in child classes to change the mechanism for what to store in cache after a service call
 	 */
@@ -184,14 +184,32 @@ public abstract class NetworkServiceCall<R> {
 		validateConstructorArgs(context, params);
 		this.context = context;
 		this.params = params;
-		
+
 		BASE_URL = getBaseUrl();
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xApplicationVersion);
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xClientPlatform);
 
 	}
-	
-	
+
+	/**
+	 * Network service call used with the base url defaulted to card.
+	 * 
+	 * @param context
+	 * @param params
+	 * @param url
+	 */
+	protected NetworkServiceCall(final Context context, final ServiceCallParams params, final String url) {
+		validateConstructorArgs(context, params);
+		this.context = context;
+		this.params = params;
+
+		BASE_URL = url;
+		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xApplicationVersion);
+		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xClientPlatform);
+
+	}
+
+
 
 	private static void validateConstructorArgs(final Context context, final ServiceCallParams params) {
 		checkNotNull(context, "context cannot be null");
@@ -271,8 +289,9 @@ public abstract class NetworkServiceCall<R> {
 		this.getHandler().getCallback().start(this);
 
 		final boolean shouldContinue = useAndClearContext();
-		if (!shouldContinue)
+		if (!shouldContinue) {
 			return;
+		}
 
 		NetworkTrafficExecutorHolder.networkTrafficExecutor.submit(new Runnable() {
 			@Override
@@ -309,15 +328,16 @@ public abstract class NetworkServiceCall<R> {
 			return false;
 		} finally {
 			context = null; // allow context garbage collection no matter what
-							// the result is
+			// the result is
 		}
 
 		return true;
 	}
 
 	private void checkAndUpdateSubmittedState() {
-		if (submitted)
+		if (submitted) {
 			throw new AssertionError("This call has already been submitted, it cannot be re-used");
+		}
 
 		submitted = true;
 	}
@@ -331,8 +351,9 @@ public abstract class NetworkServiceCall<R> {
 
 	// TODO Move this out and put into a POJO maybe
 	private void setupDeviceIdentifiers() {
-		if (!params.sendDeviceIdentifiers)
+		if (!params.sendDeviceIdentifiers) {
 			return;
+		}
 
 		deviceIdentifiers = new DeviceIdentifiers() {
 			{
@@ -378,13 +399,15 @@ public abstract class NetworkServiceCall<R> {
 	}
 
 	private void prepareGlobalSessionForConnection() {
-		if (params.clearsSessionBeforeRequest)
+		if (params.clearsSessionBeforeRequest) {
 			ServiceCallSessionManager.clearSession();
+		}
 	}
 
 	private void postRequestClearGlobalSessionIfRequested() {
-		if (params.clearsSessionAfterRequest)
+		if (params.clearsSessionAfterRequest) {
 			ServiceCallSessionManager.clearSession();
+		}
 	}
 
 	private HttpURLConnection createConnection() throws IOException {
@@ -468,20 +491,23 @@ public abstract class NetworkServiceCall<R> {
 	private void doHttpMethodSpecificSetup() throws IOException {
 		conn.setRequestMethod(params.httpMethod);
 
-		if (isPostCall())
+		if (isPostCall()) {
 			doPostSpecificSetup();
+		}
 	}
 
 	private void doPostSpecificSetup() {
 		final PostCallParams postParams = (PostCallParams) params;
 		requestBodySerializer = findRequestBodySerializer(postParams, postParams.body);
 
-		if (requestBodySerializer == null)
+		if (requestBodySerializer == null) {
 			throw new UnsupportedOperationException("Unable to serialize body: " + postParams.body);
+		}
 
 		final String contentType = requestBodySerializer.getContentType();
-		if (!Strings.isNullOrEmpty(contentType))
+		if (!Strings.isNullOrEmpty(contentType)) {
 			conn.setRequestProperty("Content-Type", contentType);
+		}
 
 		conn.setDoOutput(true);
 	}
@@ -494,21 +520,25 @@ public abstract class NetworkServiceCall<R> {
 	private void setSessionHeaders() throws IOException {
 		final boolean foundToken = ServiceCallSessionManager.prepareWithSecurityToken(conn);
 
-		if (!foundToken && params.requiresSessionForRequest)
+		if (!foundToken && params.requiresSessionForRequest) {
 			throw new IOException("No session available when one was required for NetworkServiceCall to url: " + conn.getURL());
+		}
 	}
 
 	private void setCustomHeaders() {
-		if (params.headers == null || params.headers.isEmpty())
+		if (params.headers == null || params.headers.isEmpty()) {
 			return;
+		}
 
-		for (final Map.Entry<String, String> headerEntry : params.headers.entrySet())
+		for (final Map.Entry<String, String> headerEntry : params.headers.entrySet()) {
 			conn.setRequestProperty(headerEntry.getKey(), headerEntry.getValue());
+		}
 	}
 
 	private void setDeviceIdentifierHeaders() throws NoSuchAlgorithmException {
-		if (deviceIdentifiers == null)
+		if (deviceIdentifiers == null) {
 			return;
+		}
 
 		// TODO consider not setting headers if did/oid/sid is null/empty
 		conn.setRequestProperty("X-DID", getSha256Hash(deviceIdentifiers.did));
@@ -521,7 +551,7 @@ public abstract class NetworkServiceCall<R> {
 
 		final MessageDigest digester = MessageDigest.getInstance("SHA-256");
 		final byte[] preHash = safeToHash.getBytes(); // TODO consider
-														// specifying charset
+		// specifying charset
 
 		// Reset happens automatically after digester.digest() but we don't know
 		// its state beforehand so call reset()
@@ -541,8 +571,9 @@ public abstract class NetworkServiceCall<R> {
 	}
 
 	private void sendRequestBody() throws IOException {
-		if (!isPostCall())
+		if (!isPostCall()) {
 			return;
+		}
 
 		final PostCallParams postParams = (PostCallParams) params;
 		final OutputStream requestStream = conn.getOutputStream();
@@ -554,16 +585,18 @@ public abstract class NetworkServiceCall<R> {
 	}
 
 	private static RequestBodySerializer findRequestBodySerializer(final PostCallParams postParams, final Object body) {
-		if (postParams.customBodySerializer != null && postParams.customBodySerializer.canSerialize(body))
+		if (postParams.customBodySerializer != null && postParams.customBodySerializer.canSerialize(body)) {
 			return postParams.customBodySerializer;
+		}
 
 		return findCapableDefaultRequestBodySerializer(body);
 	}
 
 	private static RequestBodySerializer findCapableDefaultRequestBodySerializer(final Object body) {
 		for (final RequestBodySerializer serializer : REQUEST_BODY_SERIALIZERS) {
-			if (serializer.canSerialize(body))
+			if (serializer.canSerialize(body)) {
 				return serializer;
+			}
 		}
 
 		return null;
@@ -632,8 +665,9 @@ public abstract class NetworkServiceCall<R> {
 	private static InputStream getMarkSupportedErrorStream(final HttpURLConnection conn) {
 		final InputStream orig = conn.getErrorStream();
 
-		if (!orig.markSupported())
+		if (!orig.markSupported()) {
 			return new BufferedInputStream(orig);
+		}
 
 		return orig;
 	}
@@ -650,13 +684,13 @@ public abstract class NetworkServiceCall<R> {
 		String sid;
 		String oid;
 	}
-	
+
 	/**
 	 * Returns the baseUrl for the call
 	 * @return
 	 */
 	protected abstract String getBaseUrl();
-	
+
 	/**
 	 * 
 	 * @return

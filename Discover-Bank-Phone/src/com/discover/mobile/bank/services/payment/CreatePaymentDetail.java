@@ -2,8 +2,6 @@ package com.discover.mobile.bank.services.payment;
 
 import java.io.Serializable;
 
-import javax.annotation.Nullable;
-
 import com.discover.mobile.common.net.json.bank.ID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -42,7 +40,6 @@ public class CreatePaymentDetail implements Serializable {
 	public String deliverBy;
 
 	/* Memo (if it exists) */
-	@Nullable
 	@JsonProperty("memo")
 	public String memo;
 	
@@ -51,5 +48,6 @@ public class CreatePaymentDetail implements Serializable {
 		amount = 0;
 		paymentMethod = new ID();
 		deliverBy = "";
+		memo = "";
 	}
 }

@@ -7,16 +7,13 @@
         android:layout_height="@dimen/header_progress_height"
         android:layout_marginBottom="@dimen/forms_inner_padding"
         android:layout_marginLeft="@dimen/forms_inner_padding"
-        android:layout_marginRight="@dimen/forms_inner_padding"
         android:background="@drawable/light_gray_bkgrd">
 
         <ImageView
             android:id="@+id/step1_confirm"
             android:layout_alignParentLeft="true"
             style="@style/status_check_mark" 
-            android:visibility="gone"
             android:layout_marginTop="@dimen/between_related_elements_padding"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
             android:layout_marginRight="@dimen/between_related_elements_padding"/>
 
         <LinearLayout
@@ -42,6 +39,7 @@
             android:layout_toRightOf="@+id/step_1"
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:layout_height="fill_parent"
+            android:visibility="gone"
             style="@style/status_check_mark" />
            
         <LinearLayout
@@ -93,7 +91,8 @@
 	        android:layout_height="@dimen/orange_help_button_size"	        
 	        android:layout_centerVertical="true"
 	        android:layout_alignParentRight="true"
-	        android:layout_marginLeft="@dimen/forms_inner_padding"
+	        android:layout_marginLeft="@dimen/breadcrumb_help_leftpadding"
+	        android:layout_marginRight="@dimen/breadcrumb_help_rightpadding"
 	        android:layout_marginBottom="@dimen/between_related_elements_padding"
 	        android:src="@drawable/question_mark_icon"/>  
     </RelativeLayout>
