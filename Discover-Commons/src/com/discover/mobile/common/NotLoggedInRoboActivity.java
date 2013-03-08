@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -80,11 +81,27 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 	}
 	
 	@Override
-	protected void onDestroy() {
-		/**Clear any modal that may have been created during the life of this activity*/
+	public void onBackPressed() {
+		/**Clear any modal that may have been created during the life of the current activity*/
 		DiscoverModalManager.clearActiveModal();
 		
-		super.onDestroy();
+		super.onBackPressed();
+	}
+	
+	@Override
+	public void startActivity (final Intent intent) {
+		/**Clear any modal that may have been created during the life of the current activity*/
+		DiscoverModalManager.clearActiveModal();
+		
+		super.startActivity(intent);
+	}
+	
+	@Override
+	public void startActivityForResult (final Intent intent, final int requestCode) {
+		/**Clear any modal that may have been created during the life of the current fragment*/
+		DiscoverModalManager.clearActiveModal();
+		
+		super.startActivityForResult(intent, requestCode);
 	}
 
 	/**
