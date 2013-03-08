@@ -3,16 +3,19 @@ package com.discover.mobile.bank.deposit;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.checkdeposit.CheckDepositCaptureActivity;
 import com.discover.mobile.bank.services.account.Account;
 
 /**
@@ -60,8 +63,22 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 
 		final Drawable d = getActivity().getResources().getDrawable(R.drawable.light_gray_bkgrd);
 		contentTable.setBackgroundDrawable(d);
-		
+		setupButtonClickListener();
 		return view;
+	}
+	
+	/**
+	 * Add a click listener to the continue button to launch the check deposit capture activity when clicked.
+	 */
+	private void setupButtonClickListener() {
+		actionButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(final View v) {
+				final Intent captureCheckActivity = new Intent(getActivity(), CheckDepositCaptureActivity.class);
+				startActivity(captureCheckActivity);
+			}
+		});
 	}
 	
 	/**

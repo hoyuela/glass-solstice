@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.checkdeposit;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -184,6 +185,44 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		retakeButton = (Button)findViewById(R.id.retake_button);
 		
 		helpButton.setClickable(true);
+	}
+	
+	/**
+	 * Deletes the front check image from storage.
+	 * @param context the calling context.
+	 * @return if the image was deleted.
+	 */
+	public static boolean deleteFrontImage(final Context context) {
+		return deleteImage(FRONT_PICTURE, context);
+	}
+	
+	/**
+	 * Deletes the back check image from storage.
+	 * @param context the calling context.
+	 * @return if the image was deleted.
+	 */
+	public static boolean deleteBackImage(final Context context) {
+		return deleteImage(BACK_PICTURE, context);
+	}
+	
+	/**
+	 * Finds the absolute path to an imageName and then attempts to delete that image. 
+	 * @param imageName the name of an an image to delete
+	 * @param context the calling context
+	 * @return if the image was deleted.
+	 */
+	private static boolean deleteImage(final String imageName, final Context context){
+		final File frontPic = context.getFileStreamPath(imageName);
+		return context.deleteFile(frontPic.getAbsolutePath());
+	}
+	
+	/**
+	 * Attempts to delete both check images, one after the other.
+	 * @param context the calling context.
+	 * @return if both images were deleted.
+	 */
+	public static boolean deleteBothImages(final Context context) {
+		return deleteBackImage(context) & deleteFrontImage(context);
 	}
 	
 	/**
