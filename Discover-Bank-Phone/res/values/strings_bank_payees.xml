@@ -35,4 +35,6 @@
 	<string name="bank_add_confirm">The new payee has been setup. You may now schedule a payment.</string>
 	<string name="bank_sch_payment">Schedule a Payment</string>
 	<string name="bank_add_another">Add Payee</string>
+	<string name="bank_dollar_sign">$</string>
+	<string name="bank_deposit_amount">Deposit Amount</string>
 </resources>

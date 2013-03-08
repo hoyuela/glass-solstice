@@ -272,5 +272,9 @@ public class Account implements Serializable {
 	public boolean isDepositEligible() {
 		return ( type.equals(ACCOUNT_CHECKING) || type.equals(ACCOUNT_SAVINGS) || type.equals(ACCOUNT_MMA));
 	}
+	
+	public String getDottedFormattedAccountNumber() {
+		return this.nickname +" (..." +this.accountNumber.ending +")";
+	}
 
 }
