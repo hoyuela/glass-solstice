@@ -12,6 +12,15 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 
+/**
+ * Base fragment class used for the Check Deposit - work flow. This class is based off of BankOneButton Fragment which uses the layout
+ * defined in the res/layout/bank_one_button_layout.xml. In addition to the abstract methods expected to be implemented for BankOneButtonFragment
+ * the getProgressIndicatorStep() method is required to be implemented by sub-classes to specify the step in the check deposit work-flow
+ * the sub-class is representing.
+ * 
+ * @author henryoyuela
+ *
+ */
 public abstract class BankDepositBaseFragment extends BankOneButtonFragment {
 
 	@Override
@@ -64,7 +73,6 @@ public abstract class BankDepositBaseFragment extends BankOneButtonFragment {
 	
 	@Override
 	protected List<ViewPagerListItem> getViewPagerListContent() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -25,6 +25,7 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
+				/**Navigates to either to Check Deposit - Select Account Page or Check Deposit - Accept Terms page*/
 				BankNavigator.navigateToCheckDepositWorkFlow(null);
 			}
 		};

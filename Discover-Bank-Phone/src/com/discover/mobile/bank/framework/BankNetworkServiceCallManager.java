@@ -351,7 +351,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		/**Remove the Check Deposit Terms and Conditions View from fragment back stack*/
 		activity.getSupportFragmentManager().popBackStack();
 	
-		
+		/**Navigates to Select Account Page for Check-Deposit*/
 		BankNavigator.navigateToCheckDepositWorkFlow(null);
 	}
 
