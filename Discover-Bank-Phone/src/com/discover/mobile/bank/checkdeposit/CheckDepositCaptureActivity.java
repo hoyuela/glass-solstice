@@ -1,13 +1,11 @@
 package com.discover.mobile.bank.checkdeposit;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
@@ -15,7 +13,6 @@ import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -34,11 +31,13 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.error.ErrorHandler;
 
-public class CheckDespositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
-	private final String TAG = CheckDespositCaptureActivity.class.getSimpleName();
+public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
+	private final String TAG = CheckDepositCaptureActivity.class.getSimpleName();
 	
 	public static final int RETAKE_FRONT = 1;
 	public static final int RETAKE_BACK  = 2;
+	public static final String FRONT_PICTURE = "pic1";
+	public static final String BACK_PICTURE = "pic2";
 	
 	//BUTTONS
 	private Button captureButton;
@@ -349,8 +348,12 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 	private void resetCurrentCheckMark() {
 		final boolean stepOneChecked = stepOneCheck.getVisibility() == View.VISIBLE;
 		final boolean stepTwoChecked = stepTwoCheck.getVisibility() == View.VISIBLE;
+		final Bundle extras = getIntent().getExtras();
+		int retakeValue = 0;
 		
-		final int retakeValue = getIntent().getExtras().getInt(BankExtraKeys.RETAKE_PICTURE);
+		if(extras != null)
+			retakeValue = extras.getInt(BankExtraKeys.RETAKE_PICTURE);
+		
 		if(retakeValue == RETAKE_FRONT){
 			stepOneCheck.setVisibility(View.INVISIBLE);
 		}
@@ -392,15 +395,10 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 	    	setPictureConfirmationButtons();
 	    	hideImageBrackets();
 	    	setNextCheckVisible();
-	    	
-	        final File pictureFile = getOutputMediaFile();
-	        if (pictureFile == null){
-	            Log.d(TAG, "Error creating media file, check storage permissions: ");
-	            return;
-	        }
 
+	    	//Write the image to disk.
 	        try {
-	        	final FileOutputStream fos = new FileOutputStream(pictureFile);
+	        	final FileOutputStream fos = getFileOutputStream();
 	            fos.write(data);
 	            fos.close();
 	        } catch (final FileNotFoundException e) {
@@ -442,30 +440,34 @@ public class CheckDespositCaptureActivity extends BaseActivity implements Surfac
 		captureButton.setPressed(false);
 		captureButton.setClickable(true);
 		cameraPreview.setOnClickListener(autoFocusClickListener);
-
+		
 	}
 	
 	/** 
 	 * Create a File for saving the image 
 	 *	This method will possibly be removed once Andy gives his input on how best to save and resize images. 
 	 */
-	private static File getOutputMediaFile(){
-
-		final File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-				Environment.DIRECTORY_PICTURES), "MyCameraApp");
-		if (! mediaStorageDir.exists()){
-			if (! mediaStorageDir.mkdirs()){
-				Log.d("MyCameraApp", "failed to create directory");
-				return null;
+	private FileOutputStream getFileOutputStream() {
+		FileOutputStream fos = null;
+		int retakePicture = 0;
+		
+		final Bundle extras = getIntent().getExtras();
+		if(extras != null)
+			retakePicture = extras.getInt(BankExtraKeys.RETAKE_PICTURE);
+		
+		try {
+			if(retakePicture == RETAKE_FRONT) { 
+				fos = openFileOutput(FRONT_PICTURE, Context.MODE_PRIVATE);
 			}
+			else if (stepOneCheck.getVisibility() == View.VISIBLE && stepTwoCheck.getVisibility() == View.VISIBLE){
+				fos = openFileOutput(BACK_PICTURE, Context.MODE_PRIVATE);
+			}else
+				fos = openFileOutput(FRONT_PICTURE, Context.MODE_PRIVATE);
+		} catch (final FileNotFoundException e) {
+			Log.e(TAG, "Cannot find file : " + e);
 		}
-
-		// Create a media file name
-		final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-		File mediaFile;
-		mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_"+ timeStamp + ".jpg");
-
-		return mediaFile;
+		
+		return fos;	
 	}
 
 	/**
