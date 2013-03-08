@@ -40,7 +40,7 @@ public class AtmServiceHelper {
 	private final Location location;
 
 	/**Default mile distance from the user*/
-	private static final int DEFAULT_DISTANCE = 10;
+	private static final int DEFAULT_DISTANCE = 30;
 
 	/**Default number of atms to return*/
 	private static final int DEFAULT_RESULT_NUMBER = 30;
