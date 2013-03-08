@@ -107,5 +107,9 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		//this is not used for this screen
 	}
 
-	
+	@Override
+	public void onBackPressed() {
+		//this is not required for this screen
+		
+	}
 }
