@@ -463,7 +463,7 @@ public final class BankNavigator {
 			else if( step == BankAddPayeeFragment.class ) {
 				fragment = new BankAddPayeeFragment();
 				fragment.setArguments(bundle);
-				activity.makeFragmentVisible(fragment,false);
+				activity.makeFragmentVisible(fragment);
 			}
 			//If class type is BankAddPayeeConfirmFragment then open the Add Payee Confirmation Fragment Step 5 of work-flow
 			else if( step == BankAddPayeeConfirmFragment.class) {

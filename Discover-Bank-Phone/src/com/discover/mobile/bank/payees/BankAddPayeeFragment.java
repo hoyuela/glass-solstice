@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -301,18 +300,11 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 		((BankNavigationRootActivity) getActivity())
 		.showCustomAlert(cancelModal);
 
-		final Fragment thisFragment = this;
-
 		cancelModalButtons.getOkButton().setOnClickListener(
 				new OnClickListener() {
 					@Override
 					public void onClick(final View v) {
 						cancelModal.dismiss();
-						/**
-						 * Remove this fragment from the transactions list, this seems to be required since 
-						 * makeVisible(fragment, boolean) was used.
-						 */
-						getActivity().getSupportFragmentManager().beginTransaction().remove(thisFragment).commit();
 						/**
 						 * Pop all fragments till we reach BankManagePayee
 						 */
@@ -442,5 +434,10 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.MANAGE_PAYEES_SECTION;
+	}
+
+	@Override
+	public void onBackPressed() {
+		//Nothing To Do Here
 	}
 }
