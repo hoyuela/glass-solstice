@@ -19,7 +19,7 @@
 	<string name="bank_verified_payees_address">Verified Payee Address</string>
 	<string name="bank_verified_payees_address_msg">This Payee is recognized by Discover. You do not need to enter the Payee address.</string>
 	<string name="bank_payee_details">Payee Details</string>
-	<string name="bank_payee_added">Payee Added</string>
+	<string name="bank_payee_added">Confirmation</string>
 	<string name="bank_payee_edit">EDIT</string>
 	<string name="bank_payee_name">Payee Name</string>
 	<string name="bank_payee_nickname">Nickname</string>

@@ -159,7 +159,7 @@ public class BankSelectPayee extends BaseFragment{
 	 */
 	private SimpleChooseListItem createListItem(final PayeeDetail detail) {
 		final SimpleChooseListItem item = new SimpleChooseListItem(
-				this.getActivity(), null, detail, detail.name,
+				this.getActivity(), null, detail, detail.nickName,
 				R.layout.simple_choose_item_dash);
 		item.setOnClickListener(getOnClickListener(detail));
 		return item;
@@ -174,7 +174,7 @@ public class BankSelectPayee extends BaseFragment{
 	 */
 	private SimpleChooseListItem createLastListItem(final PayeeDetail detail) {
 		final SimpleChooseListItem item = new SimpleChooseListItem(
-				this.getActivity(), null, detail, detail.name);
+				this.getActivity(), null, detail, detail.nickName);
 		item.setBackgroundAsBottomItem(getActivity());
 		item.setOnClickListener(getOnClickListener(detail));
 		return item;
@@ -189,7 +189,7 @@ public class BankSelectPayee extends BaseFragment{
 	 */
 	private SimpleChooseListItem createFirstListItem(final PayeeDetail detail) {
 		final SimpleChooseListItem item = new SimpleChooseListItem(
-				this.getActivity(), null, detail, detail.name);
+				this.getActivity(), null, detail, detail.nickName);
 		item.setBackgroundAsTopItem(getActivity());
 		item.setOnClickListener(getOnClickListener(detail));
 		return item;
@@ -204,7 +204,7 @@ public class BankSelectPayee extends BaseFragment{
 	 */
 	private SimpleChooseListItem createSingleListItem(final PayeeDetail detail) {
 		final SimpleChooseListItem item = new SimpleChooseListItem(
-				this.getActivity(), null, detail, detail.name);
+				this.getActivity(), null, detail, detail.nickName);
 		item.setOnClickListener(getOnClickListener(detail));
 		return item;
 	}
