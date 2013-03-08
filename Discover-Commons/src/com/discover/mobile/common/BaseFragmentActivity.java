@@ -154,9 +154,6 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 
 	@Override
 	protected void onDestroy() {
-		/**Clear any modal that may have been created during the life of this activity*/
-		DiscoverModalManager.clearActiveModal();
-		
 		try {
 			eventManager.fire(new OnDestroyEvent());
 		} finally {
@@ -237,6 +234,9 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	 * @param fragment - fragment to be made visible
 	 */
 	public void makeFragmentVisible(final Fragment fragment) {
+		/**Clear any modal that may have been created during the life of the current fragment*/
+		DiscoverModalManager.clearActiveModal();
+		
 		setVisibleFragment(fragment);
 		hideSlidingMenuIfVisible();
 	}
@@ -247,6 +247,9 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 	 * @param addToHistory - boolean indicating if the fragment should be added to the back stack
 	 */
 	public void makeFragmentVisible(final Fragment fragment, final boolean addToHistory) {
+		/**Clear any modal that may have been created during the life of the current fragment*/
+		DiscoverModalManager.clearActiveModal();
+		
 		if(addToHistory){
 			setVisibleFragment(fragment);
 		}else{
@@ -413,6 +416,30 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 		}
 	}
 
+	@Override
+	public void onBackPressed() {
+		/**Clear any modal that may have been created during the life of the current activity*/
+		DiscoverModalManager.clearActiveModal();
+		
+		super.onBackPressed();
+	}
+	
+	@Override
+	public void startActivity (final Intent intent) {
+		/**Clear any modal that may have been created during the life of the current activity*/
+		DiscoverModalManager.clearActiveModal();
+		
+		super.startActivity(intent);
+	}
+	
+	@Override
+	public void startActivityForResult (final Intent intent, final int requestCode) {
+		/**Clear any modal that may have been created during the life of the current activity*/
+		DiscoverModalManager.clearActiveModal();
+		
+		super.startActivityForResult(intent, requestCode);
+	}
+	
 	/**
 	 * Utility method used for debugging issues in the back stack
 	 */
