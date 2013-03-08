@@ -23,19 +23,19 @@ import com.discover.mobile.common.ui.help.NeedHelpFooter;
 public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	
 	/**Resources for showing strings*/
-	private Resources res;
+	private final Resources res;
 	
 	/**Optional error image to be placed to the left of the title*/
-	private ImageView errorImage;
+	private final ImageView errorImage;
 	
 	/**View that holds the title*/
-	private TextView title;
+	private final TextView title;
 	
 	/**View that holds the content text*/
 	private TextView text;
 	
 	/**View that holds the footer text*/
-	private NeedHelpFooter helpFooter;
+	private final NeedHelpFooter helpFooter;
 
 	/**
 	 * Constructor for the view
@@ -45,7 +45,7 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	public ModalDefaultTopView(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		
-		final View mainView = (View) LayoutInflater.from(context)
+		final View mainView = LayoutInflater.from(context)
                 .inflate(R.layout.modal_default_top_view, null);
 		
 		res = context.getResources();
@@ -89,10 +89,25 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	 * Set the text in the content view
 	 * @param content - String with text to be displayed as the message
 	 */
+	@Override
 	public void setContent(final String content) {
 		text.setText(content);
 	}
 	
+	/**
+	 * @return the text
+	 */
+	public TextView getContentTextView() {
+		return text;
+	}
+
+	/**
+	 * @param text the text to set
+	 */
+	public void setText(final TextView text) {
+		this.text = text;
+	}
+
 	/**
 	 * Show an error icon to the left of the modal dialog title.
 	 * @param isError - tells the dialog to show an error icon or not.

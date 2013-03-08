@@ -232,11 +232,19 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 
-		final View mainView = this.getLayoutInflater().inflate(R.layout.modal_alert_layout, null);
+		final View mainView = this.getLayoutInflater().inflate(getMainLayout(), null);
 		this.setContentView(mainView);
-		linearLayout = (LinearLayout) mainView.findViewById(R.id.modal_linear_layout);		
+		linearLayout = (LinearLayout) mainView.findViewById(getLinearLayout());		
 
 		this.createOrientationListener();
+	}
+	
+	protected int getMainLayout() {
+		return R.layout.modal_alert_layout;
+	}
+	
+	protected int getLinearLayout() {
+		return R.id.modal_linear_layout;
 	}
 
 	/**
@@ -335,4 +343,5 @@ public class ModalAlertWithOneButton extends AlertDialog{
 			linearLayout.addView((View)bottom, p2);
 		}
 	}
+
 }
