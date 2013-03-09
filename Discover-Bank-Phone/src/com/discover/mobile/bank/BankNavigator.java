@@ -207,8 +207,6 @@ public final class BankNavigator {
 			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
 					R.string.bank_open_browser_title, 
 					R.string.bank_open_browser_text, 
-					false, 
-					R.string.bank_need_help_number_text, 
 					R.string.continue_text);
 
 			//Set the dismiss listener that will navigate the user to the browser	
@@ -221,8 +219,12 @@ public final class BankNavigator {
 					activity.startActivity(i);
 				}
 			});
-
+			
+			/**Hide Need Help footer*/
+			((ModalDefaultTopView)modal.getTop()).hideNeedHelpFooter();
+			
 			((BankNavigationRootActivity)activity).showCustomAlert(modal);
+			
 		}
 	}
 
@@ -550,7 +552,7 @@ public final class BankNavigator {
 					false, 
 					R.string.bank_need_help_number_text, 
 					R.string.ok);
-
+			
 			activity.showCustomAlert(modal);
 		}
 		//Show Select Payee Page for Add a Payee work-flow
@@ -635,9 +637,7 @@ public final class BankNavigator {
 			// Create a one button modal to notify the user that they are leaving the application
 			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
 					R.string.bank_callmodal_title, 
-					R.string.bank_callmodal_msg, 
-					false, 
-					R.string.bank_need_help_number_text, 
+					R.string.bank_callmodal_msg,
 					R.string.bank_callmodal_action);
 
 			//Set the dismiss listener that will navigate the user to the dialer
@@ -649,6 +649,12 @@ public final class BankNavigator {
 				}
 			});
 
+			/**
+			 * Hide the need help footer for the delete modal.
+			 */
+			final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
+			topView.hideNeedHelpFooter();
+			
 			((BankNavigationRootActivity) activity).showCustomAlert(modal);
 		}
 	}
