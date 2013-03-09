@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -108,15 +109,20 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
 		final List<RelativeLayout> items = new ArrayList<RelativeLayout>();
 		
-		items.add( new BankAmountItem(getActivity()) );
+		amountItem = new BankAmountItem(getActivity());
+		items.add( amountItem  );
 		
 		return items;
 	}
 
 	@Override
 	protected void onActionButtonClick() {
-		
-		
+		if( amountItem.getEditableField().isValid() ) {
+			//Navigate to next screen
+
+		} else {
+			amountItem.getEditableField().updateAppearanceForInput();
+		}
 	}
 
 	@Override
@@ -128,5 +134,23 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	public void onBackPressed() {
 		//this is not required for this screen
 		
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		/**
+		 * Have to execute the setting of the editable field to edit mode asyncronously otherwise
+		 * the keyboard doesn't open.
+		 */
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if( amountItem != null ) {
+					amountItem.getEditableField().requestFocus();
+				}
+			}
+		}, 1000);
 	}
 }

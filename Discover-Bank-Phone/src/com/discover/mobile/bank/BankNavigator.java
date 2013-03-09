@@ -592,6 +592,8 @@ public final class BankNavigator {
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+			navActivity.closeDialog();
+			
 			Fragment fragment = null;
 			
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligibility();

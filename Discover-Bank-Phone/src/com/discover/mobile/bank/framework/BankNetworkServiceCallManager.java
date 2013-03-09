@@ -30,6 +30,7 @@ import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
+import com.discover.mobile.bank.services.deposit.GetAccountLimits;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
@@ -333,6 +334,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
 			BankNavigator.navigateToAtmLocatorFragment(bundle);
+		}
+		//Handler for GetAccountLimits service call
+		else if( sender instanceof GetAccountLimits) {
+			//Navigate to Check Deposit - Select Amount Page
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((GetAccountLimits)sender).getAccount());
+			BankNavigator.navigateToCheckDepositWorkFlow(bundle);
 		}
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {

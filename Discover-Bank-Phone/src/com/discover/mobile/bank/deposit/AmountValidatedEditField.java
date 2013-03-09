@@ -1,8 +1,12 @@
 package com.discover.mobile.bank.deposit;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
+import com.discover.mobile.bank.services.deposit.AccountLimits;
 import com.discover.mobile.common.ui.widgets.ValidatedInputField;
 
 /**
@@ -23,7 +27,8 @@ import com.discover.mobile.common.ui.widgets.ValidatedInputField;
 *
 */
 public class AmountValidatedEditField extends ValidatedInputField {
-
+	private AccountLimits limits = null;
+	
 	public AmountValidatedEditField(final Context context) {
 		super(context);	
 	}
@@ -36,10 +41,54 @@ public class AmountValidatedEditField extends ValidatedInputField {
 		super(context, attrs, defStyle);
 	}
 
+	/**
+	 * Set the visibility of the attached error label to GONE.
+	 */
+	@Override
+	protected void hideErrorLabel() {
+		if(errorLabel != null)
+			this.errorLabel.setVisibility(View.INVISIBLE);
+	}
+	
+	public void setAccountLimits(final AccountLimits limits) {
+		this.limits = limits;
+	}
+	
 	@Override
 	public boolean isValid() {
-		//TO BE DEFINED IN ANOTHER PULL REQUEST
-		return false;
+		boolean ret = false;
+		
+		if( limits != null ) {
+			if( limits.dailyDepositAmount.hasReachedLimit() ) {
+				this.errorLabel.setText(limits.dailyDepositAmount.error.message);
+			} else if( limits.dailyDepositCount.hasReachedLimit() ) {
+				this.errorLabel.setText(limits.dailyDepositCount.error.message);
+			} else if( limits.depositAmount.hasReachedLimit() ) {
+				this.errorLabel.setText(limits.depositAmount.error.message);
+			} else if( limits.monthlyDepositAmount.hasReachedLimit() ) {
+				this.errorLabel.setText(limits.monthlyDepositAmount.error.message);
+			} else if( limits.monthlyDepositCount.hasReachedLimit() ) {
+				this.errorLabel.setText(limits.monthlyDepositCount.error.message);
+			} else {
+				ret = true;
+			}		
+		} else {
+			//limits not set
+		}
+		return ret;
+	}
+	
+	@Override
+	public void onFocusChanged(final boolean focused, final int direction, final Rect previouslyFocusedRect) {
+		super.onFocusChanged(focused, direction, previouslyFocusedRect);
+		
+		final InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+		if( focused ) {
+			imm.showSoftInput(this, InputMethodManager.SHOW_FORCED);
+		} else {
+			imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
+		}
 	}
 
 }

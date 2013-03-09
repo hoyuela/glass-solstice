@@ -142,7 +142,6 @@ public class CustomerServiceCall extends
 			}
 		}, Customer.class);
 
-		// TODO decide if this is the best type of handler
 		handler = new StrongReferenceHandler<Customer>(callback);
 	}
 	
