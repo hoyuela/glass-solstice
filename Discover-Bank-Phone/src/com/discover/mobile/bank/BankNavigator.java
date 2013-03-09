@@ -201,8 +201,6 @@ public final class BankNavigator {
 			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
 					R.string.bank_open_browser_title, 
 					R.string.bank_open_browser_text, 
-					false, 
-					R.string.bank_need_help_number_text, 
 					R.string.continue_text);
 	
 			//Set the dismiss listener that will navigate the user to the browser	
@@ -215,8 +213,12 @@ public final class BankNavigator {
 					activity.startActivity(i);
 				}
 			});
-	
+			
+			/**Hide Need Help footer*/
+			((ModalDefaultTopView)modal.getTop()).hideNeedHelpFooter();
+			
 			((BankNavigationRootActivity)activity).showCustomAlert(modal);
+			
 		}
 	}
 
@@ -544,7 +546,7 @@ public final class BankNavigator {
 					false, 
 					R.string.bank_need_help_number_text, 
 					R.string.ok);
-
+			
 			activity.showCustomAlert(modal);
 		}
 		//Show Select Payee Page for Add a Payee work-flow
@@ -570,6 +572,101 @@ public final class BankNavigator {
 				if(Log.isLoggable(TAG, Log.ERROR)) {
 					Log.e(TAG, "Unexpected Service Call Found!");
 				}
+			}
+		}
+	}
+
+	/**
+	 * Navigation method used to navigate to Check Deposit work-flow. Navigates to Check Deposit - Terms 
+	 * and Conditions if user is eligible and not enrolled. If it is the start of the work flow, then navigates
+	 * user to Select Account Page.
+	 */
+	public static void navigateToCheckDepositWorkFlow(final Bundle bundle) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+			Fragment fragment = null;
+			
+			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligibility();
+			final boolean isEnrolled = BankUser.instance().getCustomerInfo().isDepositEnrolled();
+
+			if(!isEligible){
+				//TODO: Need to figure out to see where to go if not eligible
+			} else if(isEligible && !isEnrolled){
+				fragment = new BankDepositTermsFragment();
+			} else{
+				//Check if user is in select accounts, navigate to second step in work-flow
+				if( navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount ) {
+					fragment = new BankDepositSelectAmount();
+					fragment.setArguments(bundle);
+				}
+				//Check if User has accounts, this is the first step in work-flow
+				else if( BankUser.instance().hasAccounts() ) {	
+					fragment = new BankDepositSelectAccount();	
+				}
+			}
+			
+			if( fragment != null ) {
+				navActivity.makeFragmentVisible(fragment);
+			}
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unable to navigate to check deposit work-flow");
+			}
+		}
+	}
+
+	/**
+	 * Navigation method used to display the Call modal for when tapping on a phone number link
+	 * 
+	 * @param number Number to send to dialer if user acknowledges the modal.
+	 */
+	public static void navigateToCallModal(final String number) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+			// Create a one button modal to notify the user that they are leaving the application
+			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+					R.string.bank_callmodal_title, 
+					R.string.bank_callmodal_msg,
+					R.string.bank_callmodal_action);
+
+			//Set the dismiss listener that will navigate the user to the dialer
+			modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(final View v) {
+					modal.dismiss();
+					CommonUtils.dialNumber(number, activity);
+				}
+			});
+
+			/**
+			 * Hide the need help footer for the delete modal.
+			 */
+			final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
+			topView.hideNeedHelpFooter();
+			
+			((BankNavigationRootActivity) activity).showCustomAlert(modal);
+		}
+	}
+
+	/**
+	 * Get the list of atm to the atm locator fragment
+	 * @param bundle
+	 */
+	public static void navigateToAtmLocatorFragment(final Bundle bundle) {
+		if(DiscoverActivityManager.getActiveActivity() instanceof AtmLocatorActivity){
+			final AtmLocatorActivity activity = (AtmLocatorActivity)DiscoverActivityManager.getActiveActivity();
+			activity.closeDialog();
+			activity.getMapFragment().handleRecievedAtms(bundle);
+		}else if(DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity){
+			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+			if(activity.getCurrentContentFragment() instanceof AtmMapFragment){
+				activity.closeDialog();
+				((AtmMapFragment)activity.getCurrentContentFragment()).handleRecievedAtms(bundle);
 			}
 		}
 	}
