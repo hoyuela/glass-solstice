@@ -17,6 +17,7 @@ import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
+import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.deposit.BankDepositSelectAmount;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
@@ -624,6 +625,31 @@ public final class BankNavigator {
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Unable to navigate to check deposit work-flow");
+			}
+		}
+	}
+	
+	/**
+	 * Navigation method used to navigate to Check Deposit Forbidden User screen. This screen
+	 * is shown if user does not have access to Check Deposit feature and receives a 403
+	 * in an attempt to access a Check Deposit Service.
+	 */
+	public static void navigateToDepositForbidden(final Bundle bundle) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+			navActivity.closeDialog();
+			
+			final Fragment fragment = new BankDepositForbidden();
+			fragment.setArguments(bundle);
+			
+			/**Navigate user to forbidden user screen*/
+			navActivity.makeFragmentVisible(fragment);
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unable to navigate to check deposit forbidden screen");
 			}
 		}
 	}
