@@ -312,9 +312,12 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 					public void onClick(final View v) {
 						cancelModal.dismiss();
 						/**
-						 * Pop all fragments till we reach BankManagePayee
+						 * Pop all fragments till we reach BankManagePayee. 
+						 * Checking if the Activity is null due to a crash occuring when the modal is open
+						 * and you tap yes quickly the activity is null and the app will crash. 
 						 */
-						((BankNavigationRootActivity) getActivity()).popTillFragment(BankManagePayee.class);
+						if ((BankNavigationRootActivity) getActivity() != null)
+							((BankNavigationRootActivity) getActivity()).popTillFragment(BankManagePayee.class);
 					}
 				});
 
