@@ -35,6 +35,9 @@ public class AccountActivityHeader extends RelativeLayout{
 
 	/**Value holding the available balance*/
 	private final TextView availableBalance;
+	
+	/**VAlue holding the type of account in header*/
+	private final TextView type;
 
 	/**Value holding the current balance*/
 	private final TextView currentBalance;
@@ -88,7 +91,7 @@ public class AccountActivityHeader extends RelativeLayout{
 		postedButton = (ToggleButton) view.findViewById(R.id.posted_button);
 		scheduledButton = (ToggleButton) view.findViewById(R.id.scheduled_button);
 		labels = (RelativeLayout) view.findViewById(R.id.header_labels);
-
+		type = (TextView)view.findViewById(R.id.lable1);
 		titles = (TableTitles) view.findViewById(R.id.table_titles);
 
 		titles.setLabel1(this.getResources().getString(R.string.recent_activity_date));
@@ -143,6 +146,7 @@ public class AccountActivityHeader extends RelativeLayout{
 	 */
 	public void addAccount(){
 		if(null == account){return;}
+		type.setText(account.type);
 		title.setText(account.nickname);
 		checking.setText(account.accountNumber.formatted);
 		availableBalance.setText(account.balance.formatted);

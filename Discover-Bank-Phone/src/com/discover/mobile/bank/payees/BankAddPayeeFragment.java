@@ -300,6 +300,12 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 		((BankNavigationRootActivity) getActivity())
 		.showCustomAlert(cancelModal);
 
+		/**
+		 * Hide the need help footer for the modal.
+		 */
+		final ModalDefaultTopView topView = (ModalDefaultTopView)cancelModal.getTop();
+		topView.hideNeedHelpFooter();
+		
 		cancelModalButtons.getOkButton().setOnClickListener(
 				new OnClickListener() {
 					@Override

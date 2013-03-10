@@ -1,8 +1,6 @@
 package com.discover.mobile.bank;
 
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -431,10 +429,11 @@ public final class BankNavigator {
 		final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
 		topView.hideNeedHelpFooter();
 
-		//Set the dismiss listener that will navigate the user to the browser	
-		modal.setOnDismissListener(new OnDismissListener() {
+		//Set the click listener that will delete the payment
+		modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
 			@Override
-			public void onDismiss(final DialogInterface arg0) {
+			public void onClick(final View v) {
+				modal.dismiss();
 				BankServiceCallFactory.createDeletePaymentServiceCall(pmtDetail).submit();
 			}
 		});
