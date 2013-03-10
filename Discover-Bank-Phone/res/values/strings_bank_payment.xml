@@ -50,6 +50,7 @@
  	<string name="schedule_pay_too_high">Too high (more than $25k)</string>
  	<string name="schedule_pay_too_low">Too low (less than $1)</string>
  	<string name="schedule_pay_date">Deliver By</string>
+ 	<string name="completed_pay_date">Delivered On</string>
  	<string name="schedule_pay_memo_opt">Memo (Optional)</string>
  	<string name="schedule_pay_button">Schedule Payment</string>
  	<string name="schedule_pay_memo">Memo</string>
