@@ -5,6 +5,7 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 import com.discover.mobile.bank.util.BankStringFormatter;
+import com.google.common.base.Strings;
 
 /**
  * TextWatcher to format text as the user types, only allowing numerical input. 
@@ -33,6 +34,12 @@ class BankAmountTextWatcher implements TextWatcher {
 	 */
 	protected double MAX_VALUE = 99999.99;
 
+	public BankAmountTextWatcher( final String startValue ) {
+		if( !Strings.isNullOrEmpty(startValue) ) {
+			valueText = startValue;
+			value = Double.parseDouble(startValue.replace(",", ""));
+		}
+	}
 	
 	public void setWatchee(final EditText watchee) {
 		this.watchee = watchee;

@@ -101,7 +101,9 @@
         <item name="android:imeOptions">actionDone</item>
         <item name="android:inputType">numberDecimal</item>
         <item name="android:ems">8</item>
+        <item name="android:focusable">true</item>
         <item name="android:singleLine">true</item>
         <item name="android:textCursorDrawable">@null</item>
+        <item name="android:hint">@string/bank_deposit_amount_hint</item>
     </style>
 </resources>

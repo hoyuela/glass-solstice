@@ -43,11 +43,12 @@ public class Limit implements Serializable {
 	public BankError error;
 	
 	/**
-	 * Method used to check if the limit has been reached.
+	 * Method used to check if the amount does not exceed the limit.
 	 * 
-	 * @return True if limit has been exceeded or met, false otherwise.
+	 * @return True if amount does not exceeded limit, false otherwise.
 	 */
-	public boolean hasReachedLimit() {
-		return (remaining <= 0 );
+	public boolean isValidAmount(final double amount) {
+		final double remainingDbl = (double)remaining/100;
+		return (remainingDbl > 0 && amount <= remainingDbl );
 	}
 }

@@ -354,13 +354,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 */
 	public void handleAcceptDepositsTerms() {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-		activity.closeDialog();
 
 		/**Remove the Check Deposit Terms and Conditions View from fragment back stack*/
 		activity.getSupportFragmentManager().popBackStack();
 	
 		/**Navigates to Select Account Page for Check-Deposit*/
 		BankNavigator.navigateToCheckDepositWorkFlow(null);
+		
+		/**close the progress dialog created for when service was started to download terms and conditions for deposits*/
+		activity.closeDialog();
 	}
 
 	/**

@@ -20,7 +20,7 @@ import com.discover.mobile.common.facade.FacadeFactory;
  */
 public class NavigateToLoginOnDismiss implements OnDismissListener {
 	
-	static final String TAG = CloseApplicationOnDismiss.class.getSimpleName();
+	static final String TAG = "NavigateToLogin";
 	
 	
 	// Reference of the activity to be able to close out the application

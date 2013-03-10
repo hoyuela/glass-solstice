@@ -78,27 +78,27 @@ public class AccountLimits implements Serializable {
 	/**
 	 * Number of deposits allowed on this account per month.
 	 */
-	@JsonProperty("monthlyDepositCount")
+	@JsonProperty("MonthlyDepositCount")
 	public Limit monthlyDepositCount;
 	/**
 	 * Number of deposits allowed on this account per day.
 	 */
-	@JsonProperty("monthlyDepositAmount")
+	@JsonProperty("MonthlyDepositAmount")
 	public Limit monthlyDepositAmount;
 	/**
 	 * Total amount allowed to be deposited in this account per month.
 	 */
-	@JsonProperty("dailyDepositCount")
+	@JsonProperty("DailyDepositCount")
 	public Limit dailyDepositCount;
 	/**
 	 * Total amount allowed to be deposited in this account per day.
 	 */
-	@JsonProperty("dailyDepositAmount")
+	@JsonProperty("DailyDepositAmount")
 	public Limit dailyDepositAmount;
 	/**
 	 * Maximum amount allowed to be deposited in this account per transaction.
 	 */
-	@JsonProperty("depositAmount")
+	@JsonProperty("DepositAmount")
 	public Limit depositAmount;
 	/**
 	 * Contains Bank web-service API Resource links

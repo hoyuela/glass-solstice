@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.account.AccountActivityViewPager;
 import com.discover.mobile.bank.account.BankAccountActivityTable;
+import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.atm.AtmLocatorActivity;
@@ -131,6 +132,8 @@ public final class BankNavigator {
 			if( Log.isLoggable(TAG, Log.DEBUG)) {
 				Log.d(TAG, "Application is already in Home Page view");
 			}
+			
+			((BankNavigationRootActivity)activity).popTillFragment(BankAccountSummaryFragment.class);
 		}
 	}
 

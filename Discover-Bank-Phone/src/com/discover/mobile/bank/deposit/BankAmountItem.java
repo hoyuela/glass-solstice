@@ -2,6 +2,7 @@ package com.discover.mobile.bank.deposit;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,10 +30,6 @@ public class BankAmountItem extends RelativeLayout {
 	 */
 	private TextView errorLabel = null;
 	/**
-	 * Reference to TextWatcher which formats the text in amountField.
-	 */
-	private BankAmountTextWatcher textWatcher = null;
-	/**
 	 * Reference to layout used for this view
 	 */
 	private final RelativeLayout layout;
@@ -50,11 +47,6 @@ public class BankAmountItem extends RelativeLayout {
 		/**Associate the error label with the amount field*/
 		amountField.attachErrorLabel(errorLabel);
 		
-		/**Associate a text watcher that handles formatting of Amount Field into currency format*/
-		textWatcher = new BankAmountTextWatcher();
-		textWatcher.setWatchee(amountField);
-		amountField.addTextChangedListener(textWatcher);
-		
 		addView(layout);
 	}
 	
@@ -67,11 +59,18 @@ public class BankAmountItem extends RelativeLayout {
 	}
 	
 	/**
+	 * Method used to show and hide the keyboard.
 	 * 
-	 * @return Returns the TextWacher that formats the editable field
+	 * @param show True opens keyboard and false closes it.
 	 */
-	public BankAmountTextWatcher getTextWatcher() {
-		return textWatcher;
+	public void showKeyboard(final boolean show) {
+		final InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+		if( show ) {
+			imm.showSoftInput(this.getEditableField(), InputMethodManager.SHOW_FORCED);
+		} else {
+			imm.hideSoftInputFromWindow(this.getEditableField().getWindowToken(), 0);
+		}
 	}
 	
 
