@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -14,6 +15,12 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.deposit.BankDepositForbidden;
+import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
+import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.services.AcceptTermsService;
+import com.discover.mobile.bank.services.deposit.GetAccountLimits;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.IntentExtraKey;
@@ -22,6 +29,8 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.error.NavigateToLoginOnDismiss;
+import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.widgets.ValidatedInputField;
 import com.google.common.base.Strings;
@@ -284,6 +293,44 @@ public class BankErrorHandler implements ErrorHandler {
 	public void handleHttpForbiddenError() {
 		// TODO: Will complete this in the Handle Technical Difficulties User
 		// Story
+	}
+	
+	/**
+	 * Handler for 403 Forbidden for Check Deposit work-flow. Error message is expected to be provided from server.
+	 * 
+	 * @param msgErrResponse Reference to object that represents the response from the Server with error message to display.
+	 * 
+	 * @return True if handled, false otherwise
+	 */
+	public boolean handleHttpForbidden(final BankErrorResponse msgErrResponse) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		boolean handled = false;
+		
+		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {			
+			final NetworkServiceCall<?> lastCall = BankNetworkServiceCallManager.getInstance().getLastServiceCall();
+			
+			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
+			
+			/**Remove the Check Deposit Terms and Conditions View from fragment back stack*/
+			if( navActivity.getCurrentContentFragment() instanceof BankDepositTermsFragment) {			
+				navActivity.getSupportFragmentManager().popBackStack();
+			}
+			
+			/**Verify the user is currently in the check deposit work-flow*/
+			if ( lastCall instanceof GetAccountLimits ||
+				 (lastCall instanceof AcceptTermsService &&
+			     ((AcceptTermsService)lastCall).getEligibility().isDepositsEligibility())) {
+				
+				final Bundle bundle = new Bundle();
+				bundle.putString(BankDepositForbidden.KEY_ERROR_MESSAGE, msgErrResponse.getErrorMessage());
+				BankNavigator.navigateToDepositForbidden(bundle);
+				handled = true;
+			}
+		}
+		
+		return handled;
+		
 	}
 
 	/*

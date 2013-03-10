@@ -139,6 +139,14 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				if(f instanceof SchedulePaymentFragment) {
 					((SchedulePaymentFragment)f).setDateError(true);
 				}
+			} 
+			//Error handling for 403 Forbidden
+			else if( msgErrResponse.getHttpStatusCode() == HttpURLConnection.HTTP_FORBIDDEN ) {
+				//Check if 403 is meant for check deposit functionality otherwise send to generic handler
+				final BankErrorHandler errorHandler = (BankErrorHandler)BankErrorHandler.getInstance();
+				if( !errorHandler.handleHttpForbidden(msgErrResponse) ) {
+					mErrorHandler.handleGenericError(msgErrResponse.getHttpStatusCode());
+				}
 			} else {
 				mErrorHandler.handleGenericError(msgErrResponse.getHttpStatusCode());
 			}
@@ -149,7 +157,6 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			
 		return handled;
 	}
-
 
 	
 	/**
