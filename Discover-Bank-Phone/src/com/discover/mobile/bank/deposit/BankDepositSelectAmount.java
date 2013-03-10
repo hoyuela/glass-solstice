@@ -121,7 +121,10 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	}
 
 	@Override
-	protected void onActionButtonClick() {		
+	protected void onActionButtonClick() {	
+		/**Clear focus to close keyboard*/
+		amountItem.getEditableField().clearFocus();
+		
 		if( amountItem.getEditableField().isValid() ) {
 			/**
 			 * Launch the check deposit capture activity when Continue is clicked and all limits are not exceeded
@@ -147,6 +150,9 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		
+		/**Reset flag*/
+		isOrientationChanging = false;
 		
 		/**Enable text watcher which will format text in text field*/
 		this.amountItem.getEditableField().enableBankAmountTextWatcher(true);
@@ -190,9 +196,5 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		if( !isOrientationChanging ) {
 			this.amountItem.showKeyboard(false);
 		}
-		
-		/**Reset flag*/
-		isOrientationChanging = false;
-		
 	}
 }
