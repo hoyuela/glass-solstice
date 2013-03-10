@@ -39,6 +39,8 @@ implements OnPaymentCanceledListener {
 	private InputMethodManager imm;
 	/** If a fragment error exists this will be set to true. */
 	private boolean fragmentErrorShown = false;
+	
+	private final String BANK_USER_KEY_TEMP = "helloWorldThisIsATemporaryBundleKey";
 
 	/**
 	 * Resume the activity to the state that it was when the activity went to
@@ -62,6 +64,20 @@ implements OnPaymentCanceledListener {
 	public void onCreate(final Bundle savedInstanceState) {
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		super.onCreate(savedInstanceState);
+		
+		// Application was previously destroyed; reloading the BankUser Singleton.
+		if(BankUser.instance().getCustomerInfo() == null) {
+			BankUser.instance().setBankUser((BankUser)savedInstanceState.getSerializable(BANK_USER_KEY_TEMP));
+			BankUrlManager.setNewLinks(BankUser.instance().getCustomerInfo().links);
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+		
+		outState.putSerializable(BANK_USER_KEY_TEMP, BankUser.instance());
 	}
 
 	/**
