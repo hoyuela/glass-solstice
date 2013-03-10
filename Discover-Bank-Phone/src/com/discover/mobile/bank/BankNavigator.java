@@ -1,8 +1,6 @@
 package com.discover.mobile.bank;
 
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,7 +43,6 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
-import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
 /**
@@ -201,8 +198,6 @@ public final class BankNavigator {
 			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
 					R.string.bank_open_browser_title, 
 					R.string.bank_open_browser_text, 
-					false, 
-					R.string.bank_need_help_number_text, 
 					R.string.continue_text);
 	
 			//Set the dismiss listener that will navigate the user to the browser	
@@ -215,8 +210,12 @@ public final class BankNavigator {
 					activity.startActivity(i);
 				}
 			});
-	
+			
+			/**Hide Need Help footer*/
+			((ModalDefaultTopView)modal.getTop()).hideNeedHelpFooter();
+			
 			((BankNavigationRootActivity)activity).showCustomAlert(modal);
+			
 		}
 	}
 
@@ -423,10 +422,11 @@ public final class BankNavigator {
 		final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
 		topView.hideNeedHelpFooter();
 
-		//Set the dismiss listener that will navigate the user to the browser	
-		modal.setOnDismissListener(new OnDismissListener() {
+		//Set the click listener that will delete the payment
+		modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
 			@Override
-			public void onDismiss(final DialogInterface arg0) {
+			public void onClick(final View v) {
+				modal.dismiss();
 				BankServiceCallFactory.createDeletePaymentServiceCall(pmtDetail).submit();
 			}
 		});
@@ -544,7 +544,7 @@ public final class BankNavigator {
 					false, 
 					R.string.bank_need_help_number_text, 
 					R.string.ok);
-
+			
 			activity.showCustomAlert(modal);
 		}
 		//Show Select Payee Page for Add a Payee work-flow
