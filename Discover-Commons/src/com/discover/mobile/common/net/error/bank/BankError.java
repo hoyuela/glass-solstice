@@ -1,5 +1,7 @@
 package com.discover.mobile.common.net.error.bank;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -8,8 +10,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author ajleeds
  *
  */
-public class BankError {
+public class BankError implements Serializable{
 	
+	/**
+	 * Auto-generated serial UID which is used to serialize and de-serialize BankError objects
+	 */
+	private static final long serialVersionUID = -3685256863066024211L;
+
 	@JsonProperty("name")
 	public String name;
 	

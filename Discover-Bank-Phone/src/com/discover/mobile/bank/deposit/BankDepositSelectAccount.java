@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 
@@ -26,6 +28,10 @@ import com.discover.mobile.bank.ui.table.ViewPagerListItem;
  *
  */
 public class BankDepositSelectAccount extends BankDepositBaseFragment {
+	/**
+	 * Used to log into Android logcat
+	 */
+	private static final String TAG = "SelectAccount";
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -113,12 +119,31 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	public void onClick(final View sender) {
 		super.onClick(sender);
 		
+		/**Verify that a BankSelectAccountItem generated the click event*/
 		if( sender instanceof BankSelectAccountItem) {
-			/**Navigate to select account step 2 in check deposit work flow and send selected account*/
-			final BankSelectAccountItem item = (BankSelectAccountItem) sender;
-			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, item.getAccount());
-			BankNavigator.navigateToCheckDepositWorkFlow(bundle);
+			/**Fetch reference to account object associated with the BankSelectAccountItem that generated the click event*/
+			final Account account = ((BankSelectAccountItem)sender).getAccount();
+			
+			/**Verify account reference is not null*/
+			if( null != account ) {
+				/**See if the limits for the account have already been downloaded and cached*/
+				if( null != account.limits) {
+					/**Navigate to Check Deposit - Select Amount Page*/
+					final Bundle bundle = new Bundle();
+					bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
+					BankNavigator.navigateToCheckDepositWorkFlow(bundle);
+				} else {
+					/**
+					 * Send a request to download account limits for the selected account. If successful
+					 * it will navigate to select account step 2 in check deposit work flow and send selected account
+					 * */
+					BankServiceCallFactory.createGetAccountLimits(account).submit();
+				}
+			} else {
+				if( Log.isLoggable(TAG, Log.ERROR)) {
+					Log.e(TAG, "Unable to retreive account limits");
+				}
+			}
 		}
 	}
 

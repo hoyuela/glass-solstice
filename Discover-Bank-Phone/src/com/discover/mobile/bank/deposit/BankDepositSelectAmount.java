@@ -6,9 +6,11 @@ import java.util.List;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,6 +38,10 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	 * Reference to view that will contains the amount field value which validates user entries.
 	 */
 	private BankAmountItem amountItem;
+	/**
+	 * Boolean flag to detect if fragment's orientation is changing
+	 */
+	private boolean isOrientationChanging = false;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -63,22 +69,17 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 
 		final Drawable d = getActivity().getResources().getDrawable(R.drawable.light_gray_bkgrd);
 		contentTable.setBackgroundDrawable(d);
-		setupButtonClickListener();
+		
+		/**Listen when user taps on the layout to close the keyboard*/
+		view.findViewById(R.id.main_layout).setOnTouchListener(new OnTouchListener() {           
+	        @Override
+			public boolean onTouch(final View v, final MotionEvent event) {
+	         	amountItem.showKeyboard(false);
+	            return false;
+	        }
+	    });
+		
 		return view;
-	}
-	
-	/**
-	 * Add a click listener to the continue button to launch the check deposit capture activity when clicked.
-	 */
-	private void setupButtonClickListener() {
-		actionButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(final View v) {
-				final Intent captureCheckActivity = new Intent(getActivity(), CheckDepositCaptureActivity.class);
-				startActivity(captureCheckActivity);
-			}
-		});
 	}
 	
 	/**
@@ -108,15 +109,31 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
 		final List<RelativeLayout> items = new ArrayList<RelativeLayout>();
 		
-		items.add( new BankAmountItem(getActivity()) );
+		amountItem = new BankAmountItem(getActivity());
+		
+		/**Set the limits to use to verify if what the user has entered is valid*/
+		amountItem.getEditableField().setAccountLimits(account.limits);
+		
+		/**Add item to the content list table*/
+		items.add( amountItem  );
 		
 		return items;
 	}
 
 	@Override
-	protected void onActionButtonClick() {
+	protected void onActionButtonClick() {	
+		/**Clear focus to close keyboard*/
+		amountItem.getEditableField().clearFocus();
 		
-		
+		if( amountItem.getEditableField().isValid() ) {
+			/**
+			 * Launch the check deposit capture activity when Continue is clicked and all limits are not exceeded
+			 */
+			final Intent captureCheckActivity = new Intent(getActivity(), CheckDepositCaptureActivity.class);
+			startActivity(captureCheckActivity);
+		} else {
+			amountItem.getEditableField().updateAppearanceForInput();
+		}
 	}
 
 	@Override
@@ -128,5 +145,56 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	public void onBackPressed() {
 		//this is not required for this screen
 		
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		/**Reset flag*/
+		isOrientationChanging = false;
+		
+		/**Enable text watcher which will format text in text field*/
+		this.amountItem.getEditableField().enableBankAmountTextWatcher(true);
+		
+		/**
+		 * Have to execute the setting of the editable field to edit mode asyncronously otherwise
+		 * the keyboard doesn't open.
+		 */
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if( amountItem != null ) {
+					amountItem.getEditableField().requestFocus();
+				}
+			}
+		}, 1000);
+		
+	}
+	
+	@Override
+	public void onSaveInstanceState(final Bundle outState){
+		super.onSaveInstanceState(outState);
+		
+		/**Set to true so that keyboard is not closed in onPause*/
+		isOrientationChanging = true;
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		/**Disable Text Watcher to support rotation*/
+		this.amountItem.getEditableField().enableBankAmountTextWatcher(false);
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		/**Check if onPause was called because of an orientation change*/
+		if( !isOrientationChanging ) {
+			this.amountItem.showKeyboard(false);
+		}
 	}
 }

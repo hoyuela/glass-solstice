@@ -33,8 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editable_field"
-        android:singleLine="true"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:text="@string/bank_invalid_characters" />
 
 </RelativeLayout>

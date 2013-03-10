@@ -18,7 +18,7 @@ import android.util.Log;
  */
 public class CloseApplicationOnDismiss implements OnDismissListener {
 	
-	static final String TAG = CloseApplicationOnDismiss.class.getSimpleName();
+	static final String TAG = "CloseApp";
 	
 	// Reference of the activity to be able to close out the application
 	private final Activity activity;

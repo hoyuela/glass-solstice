@@ -7,6 +7,9 @@
     <string name="bank_deposit_capture">Capture</string>
     <string name="bank_deposit_confirmation">Confirmation</string>
     <string name="bank_deposit_select_account">Select Account</string>
+    <string name="bank_deposit_amount_hint">0.00</string>
+    <string name="bank_deposit_invalid_amount">Invalid amount</string>
+    <string name="bank_deposit_unknown_limit">We\'re sorry. We are unable to determine a valid limit.</string>
     
     <string name="capture">Capture</string>
     <string name="picture_confirm">Confirm</string>
