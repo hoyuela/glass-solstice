@@ -91,7 +91,6 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	@Override
 	public void onResume(){
 		super.onResume();
-		
 		final Bundle bundle = BankRotationHelper.getHelper().getBundle();
 		loadBundle = (null == bundle) ? this.getArguments() : bundle;
 		loadDataFromBundle(loadBundle);
