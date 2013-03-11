@@ -121,7 +121,7 @@ implements OnPaymentCanceledListener {
 		final long currentTime = mCalendarInstance.getTimeInMillis();
 
 		if(!setIsUserTimedOut(previousTime, currentTime)) {
-			// TODO Make /ping call for Bank
+			// TODO US6990 - Make /ping call for Bank
 		}
 		Globals.setOldTouchTimeInMillis(currentTime);
 	}
