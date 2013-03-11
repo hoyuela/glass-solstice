@@ -3,17 +3,31 @@
  */
 package com.discover.mobile.bank.atm;
 
+import java.io.IOException;
+
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
@@ -21,6 +35,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
+import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
@@ -78,6 +93,15 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 	/**Wrapper for the location manager*/
 	private DiscoverLocationMangerWrapper locationManagerWrapper;
 
+	private EditText searchBox;
+
+	private LinearLayout filterLayout;
+
+	private ImageView filterToggle;
+
+	private boolean isFilterOn = true;
+
+
 	/**
 	 */
 	@Override
@@ -87,6 +111,11 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 		mapButton = (Button) view.findViewById(R.id.map_nav);
 		listButton = (Button) view .findViewById(R.id.list_nav);
 
+		view.findViewById(R.id.search);
+		filterLayout = (LinearLayout) view.findViewById(R.id.filter_bar);
+		searchBox = (EditText)view.findViewById(R.id.search_box);
+		filterToggle = (ImageView) view.findViewById(R.id.filter_enable);
+
 		final SupportMapFragment fragment = 
 				(SupportMapFragment) this.getActivity().getSupportFragmentManager().findFragmentById(R.id.discover_map);
 		final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(this.getActivity());
@@ -94,6 +123,46 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 		mapWrapper = new DiscoverMapWrapper(fragment.getMap(), adapter);
 		locationManagerWrapper = new DiscoverLocationMangerWrapper(this);
 
+		setUpListeners();
+		disableMenu();
+		createSettingsModal();
+		createLocationModal();
+		if(null != savedInstanceState){
+			resumeStateOfFragment(savedInstanceState);
+		}
+		return view;
+	}
+
+	private void performSearch() {
+		Toast.makeText(getActivity(), "Searching", 3000).show();
+		final Geocoder coder = new Geocoder(this.getActivity());
+		try {
+			final Address address = coder.getFromLocationName(searchBox.getText().toString(), 1).get(0);
+			final Location location = new Location(LocationManager.GPS_PROVIDER);
+			location.setLatitude(address.getLatitude());
+			location.setLongitude(address.getLongitude());
+			mapWrapper.clear();
+			currentIndex = 0;
+			mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin);
+			if(LocationManager.GPS_PROVIDER == location.getProvider()){
+				mapWrapper.zoomToLocation(location, MAP_CURRENT_GPS_ZOOM);
+			}else{
+				mapWrapper.zoomToLocation(location, MAP_CURRENT_NETWORK_ZOOM);
+			}
+			hasLoadedAtms = false;
+			if(!hasLoadedAtms){
+				getAtms(location);
+				hasLoadedAtms = true;
+			}
+		} catch (final IOException e) {
+			//TODO: handle this
+		}
+	}
+
+	/**
+	 * Set up the click listeners
+	 */
+	private void setUpListeners(){
 		mapButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
@@ -112,13 +181,50 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 			}
 		});
 
-		disableMenu();
-		createSettingsModal();
-		createLocationModal();
-		if(null != savedInstanceState){
-			resumeStateOfFragment(savedInstanceState);
-		}
-		return view;
+		searchBox.setOnFocusChangeListener(new OnFocusChangeListener(){
+
+			@Override
+			public void onFocusChange(final View v, final boolean hasFocus) {
+				if(hasFocus){
+					filterLayout.startAnimation(Animator.expand(filterLayout));
+				}else{
+					filterLayout.startAnimation(Animator.collapseAndHide(filterLayout));
+				}
+			}
+
+		});
+
+		searchBox.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(final TextView arg0, final int arg1, final KeyEvent arg2) {
+				if (arg1 == EditorInfo.IME_ACTION_DONE) {
+					searchBox.clearFocus();
+					filterLayout.setVisibility(View.GONE);
+					final InputMethodManager manager = 
+							(InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+					manager.hideSoftInputFromWindow(searchBox.getWindowToken(), 0);
+					performSearch();
+					return true;
+				}
+				return false;
+			}
+		});
+
+		filterToggle.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(final View v) {
+				if(isFilterOn){
+					filterToggle.setBackgroundDrawable(getResources().getDrawable(R.drawable.swipe_off));
+					isFilterOn = false;
+				}else{
+					filterToggle.setBackgroundDrawable(getResources().getDrawable(R.drawable.swipe_on));
+					isFilterOn = true;
+				}
+
+			}
+
+		});
 	}
 
 	/**
@@ -256,7 +362,7 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment{
 	 */
 	private void getAtms(final Location location){
 		final AtmServiceHelper helper = new AtmServiceHelper(location);
-		helper.setSurchargeFree(false);
+		helper.setSurchargeFree(isFilterOn);
 		BankServiceCallFactory.createGetAtmServiceCall(helper).submit();
 	}
 

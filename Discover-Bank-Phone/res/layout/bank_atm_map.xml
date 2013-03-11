@@ -4,48 +4,145 @@
     android:layout_height="match_parent"
     android:background="@drawable/light_gray_bkgrd" >
 
-    <fragment 
+    <RelativeLayout
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/atm_search_bar_background"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical" >
+
+        <ImageButton
+            android:id="@+id/search_show"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/search_bar_arrow_margin_top"
+            android:alpha=".5"
+            android:background="@drawable/drk_blue_arrow_left_square" />
+
+        <EditText
+            android:id="@+id/search_box"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignTop="@+id/help"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_toLeftOf="@+id/help"
+            android:layout_toRightOf="@+id/search_show"
+            android:background="@drawable/edit_text_default"
+            android:cursorVisible="true"
+            android:drawableLeft="@drawable/magnifying_glass"
+            android:drawablePadding="@dimen/between_related_elements_padding"
+            android:drawableRight="@drawable/atm_current_location_button"
+            android:ellipsize="end"
+            android:focusable="true"
+            android:hint="@string/atm_location_search_help"
+            android:inputType="textPostalAddress"
+            android:textColor="@color/body_copy"
+            android:textCursorDrawable="@null" />
+
+        <ImageButton
+            android:id="@+id/help"
+            style="@style/orange_help_button"
+            android:layout_width="@dimen/orange_help_button_size"
+            android:layout_height="@dimen/orange_help_button_size"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true" />
+
+        <ImageView
+            android:id="@+id/drop_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/search_box"
+            android:background="@drawable/atm_search_dropshadow" />
+
+        <LinearLayout
+            android:id="@+id/filter_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/drop_shadow"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/forms_inner_padding"
+            android:visibility="gone" >
+
+            <ImageView
+                android:id="@+id/toggle_enable_push"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/between_related_elements_padding"
+                android:background="@drawable/atm_orange_pin_sm"
+                android:textColor="@color/title" />
+
+            <TextView
+                android:id="@+id/filter_text"
+                style="@style/filter_static_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/atm_location_surcharge_free" />
+
+            <ImageView
+                android:id="@+id/filter_enable"
+                android:layout_width="75dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/between_related_elements_padding"
+                android:background="@drawable/swipe_on"
+                android:textColor="@color/title" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/drop_shadow_2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/filter_bar"
+            android:background="@drawable/atm_search_dropshadow" />
+    </RelativeLayout>
+
+    <fragment
         android:id="@+id/discover_map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/map_navigation_panel"
-        android:layout_alignParentTop="true" 
-        class="com.google.android.gms.maps.SupportMapFragment"/>
+        android:layout_below="@+id/search"
+        class="com.google.android.gms.maps.SupportMapFragment" />
 
     <LinearLayout
         android:id="@+id/map_navigation_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/forms_inner_padding"
-        android:paddingBottom="@dimen/forms_inner_padding"
-        android:paddingRight="@dimen/forms_inner_padding"
-        android:paddingLeft="@dimen/forms_inner_padding"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:weightSum="2" 
-        android:orientation="horizontal">
-        
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/forms_inner_padding"
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:paddingTop="@dimen/forms_inner_padding"
+        android:weightSum="2" >
+
         <Button
             android:id="@+id/list_nav"
-       		android:layout_width="0dp"
-        	android:layout_height="wrap_content"
-        	android:layout_weight="1"
-        	android:background="@drawable/atm_list_view_button"
-        	android:layout_marginRight="@dimen/between_related_elements_padding"/>
-        
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:layout_weight="1"
+            android:background="@drawable/atm_list_view_button" />
+
         <Button
             android:id="@+id/map_nav"
-       		android:layout_width="0dp"
-        	android:layout_height="wrap_content"
-        	android:layout_weight="1"
-        	android:background="@drawable/atm_pinview_button_ds"
-        	android:layout_marginLeft="@dimen/between_related_elements_padding"/>     
-        
-        
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/between_related_elements_padding"
+            android:layout_weight="1"
+            android:background="@drawable/atm_pinview_button_ds" />
     </LinearLayout>
-        
-
 
 </RelativeLayout>

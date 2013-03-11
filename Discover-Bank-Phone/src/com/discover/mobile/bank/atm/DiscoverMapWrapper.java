@@ -64,6 +64,13 @@ public class DiscoverMapWrapper {
 	}
 
 	/**
+	 * Clear the map of all markers
+	 */
+	public void clear(){
+		map.clear();
+	}
+
+	/**
 	 * Set the users current location on the map
 	 * @param location - location of the user
 	 * @param drawable - drawable to pin on the map

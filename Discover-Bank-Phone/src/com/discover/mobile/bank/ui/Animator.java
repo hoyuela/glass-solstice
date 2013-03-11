@@ -83,4 +83,33 @@ public final class Animator {
 		animation.setDuration(DURATION);
 		return animation;
 	}
+
+	/**
+	 * Create a collapse animation
+	 * @param v - view to base the animation off of
+	 * @return the collapse animation
+	 */
+	public static Animation collapseAndHide(final View v) {
+		final int initialHeight = v.getMeasuredHeight();
+
+		final Animation animation = new Animation(){
+			@Override
+			protected void applyTransformation(final float interpolatedTime, final Transformation t) {
+				if(interpolatedTime == DURATION){
+					v.setVisibility(View.GONE);
+				}else{
+					v.getLayoutParams().height = (initialHeight - (int)(initialHeight * COLLAPSE_AMT));
+					v.requestLayout();
+				}
+			}
+
+			@Override
+			public boolean willChangeBounds() {
+				return true;
+			}
+		};
+
+		animation.setDuration(DURATION);
+		return animation;
+	}
 }
