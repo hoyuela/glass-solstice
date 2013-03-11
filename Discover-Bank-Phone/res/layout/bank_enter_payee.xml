@@ -19,7 +19,6 @@
 	        android:layout_alignParentTop="true"
 	        android:layout_centerHorizontal="true"
 	        android:text="@string/bank_payee_enter_name" 
-	        android:paddingLeft="@dimen/forms_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:layout_toLeftOf="@+id/help"
