@@ -356,8 +356,14 @@ public class SchedulePaymentFragment extends BaseFragment {
 					public void onClick(final View v) {
 						canceledListener.onPaymentCanceled();
 						cancelModal.dismiss();
-						((BankNavigationRootActivity) getActivity())
-						.popTillFragment(BankSelectPayee.class);
+						
+						/**
+						 * Checking if the activity is null before navigating. If it is null 
+						 * the app would crash. 
+						 */
+						if ((BankNavigationRootActivity) getActivity() != null){
+							((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
+						}
 					}
 				});
 
@@ -381,10 +387,9 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 */
 	private void setChosenPaymentDate(final Integer year, final Integer month,
 			final Integer day) {
-
 		if (isValidPaymentDate(year, month, day)) {
 			dateText.setText(formatPaymentDate(year.toString(),
-					month.toString(), day.toString()));
+					formateDayMonth(month), formateDayMonth(day)));
 			chosenPaymentDate.set(year, month - 1, day);
 
 		} else {
@@ -397,6 +402,14 @@ public class SchedulePaymentFragment extends BaseFragment {
 					earliestPaymentDate.get(Calendar.MONTH),
 					earliestPaymentDate.get(Calendar.DAY_OF_MONTH));
 		}
+	}
+	
+	private String formateDayMonth(final Integer value){
+		String valueString = value.toString();
+		if (value < 10){
+			valueString = "0" + valueString;
+		}
+		return valueString;
 	}
 
 	/**
@@ -677,7 +690,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 				}
 				
 				if (amountEdit.isValid() && !isDateError) {
-					final String memo = memoText.getText().toString();
+					final String memo = memoEdit.getText().toString();
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
 					payment.payee.id = payee.id;
 					payment.amount = CommonUtils
