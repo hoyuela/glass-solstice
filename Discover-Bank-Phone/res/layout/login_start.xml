@@ -65,7 +65,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/discoverLogo"
                     android:layout_marginTop="@dimen/groups_of_elements_padding"
-                    android:visibility="gone" />
+                    android:paddingLeft="@dimen/element_side_padding"
+                    android:paddingRight="@dimen/element_side_padding"
+                    android:visibility="visible"
+                    android:gravity="center_horizontal"
+                    android:text="Lorem ipsum valor din tun iskh lwk owjeksahsk kliesh lksheios lkshei lksi liek is kjhs js s uskjdu" />
 
                 <TextView
                     android:id="@+id/user_id_label"
