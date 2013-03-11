@@ -356,8 +356,14 @@ public class SchedulePaymentFragment extends BaseFragment {
 					public void onClick(final View v) {
 						canceledListener.onPaymentCanceled();
 						cancelModal.dismiss();
-						((BankNavigationRootActivity) getActivity())
-						.popTillFragment(BankSelectPayee.class);
+						
+						/**
+						 * Checking if the activity is null before navigating. If it is null 
+						 * the app would crash. 
+						 */
+						if ((BankNavigationRootActivity) getActivity() != null){
+							((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
+						}
 					}
 				});
 
