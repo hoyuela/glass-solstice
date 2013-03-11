@@ -68,8 +68,7 @@
                     android:paddingLeft="@dimen/element_side_padding"
                     android:paddingRight="@dimen/element_side_padding"
                     android:visibility="visible"
-                    android:gravity="center_horizontal"
-                    android:text="Lorem ipsum valor din tun iskh lwk owjeksahsk kliesh lksheios lkshei lksi liek is kjhs js s uskjdu" />
+                    android:gravity="center_horizontal" />
 
                 <TextView
                     android:id="@+id/user_id_label"
@@ -230,7 +229,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/card_login_selector"
+                        android:background="@drawable/card_login_background_off"
                         android:bottom="@dimen/bottom_pad"
                         android:clickable="true"
                         android:onClick="toggleBankCardLogin"
@@ -265,7 +264,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/bank_login_selector"
+                        android:background="@drawable/bank_login_background_off"
                         android:checkable="true"
                         android:checked="true"
                         android:clickable="true"
