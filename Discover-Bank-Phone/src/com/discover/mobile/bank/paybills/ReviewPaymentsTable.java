@@ -111,7 +111,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 */
 	@Override
 	public void createDefaultLists() {
-		
+		//This does not need to be implemented with the current design of this class
 	}
 
 
