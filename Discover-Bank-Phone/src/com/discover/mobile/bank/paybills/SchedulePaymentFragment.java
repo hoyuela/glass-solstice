@@ -387,10 +387,9 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 */
 	private void setChosenPaymentDate(final Integer year, final Integer month,
 			final Integer day) {
-
 		if (isValidPaymentDate(year, month, day)) {
 			dateText.setText(formatPaymentDate(year.toString(),
-					month.toString(), day.toString()));
+					formateDayMonth(month), formateDayMonth(day)));
 			chosenPaymentDate.set(year, month - 1, day);
 
 		} else {
@@ -403,6 +402,14 @@ public class SchedulePaymentFragment extends BaseFragment {
 					earliestPaymentDate.get(Calendar.MONTH),
 					earliestPaymentDate.get(Calendar.DAY_OF_MONTH));
 		}
+	}
+	
+	private String formateDayMonth(final Integer value){
+		String valueString = value.toString();
+		if (value < 10){
+			valueString = "0" + valueString;
+		}
+		return valueString;
 	}
 
 	/**
