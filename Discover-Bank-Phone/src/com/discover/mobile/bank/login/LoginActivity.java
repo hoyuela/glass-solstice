@@ -683,12 +683,10 @@ public class LoginActivity extends BaseActivity implements
 	public void toggleCheckBox(final View v, final boolean cache) {
 
 		if (saveUserId) {
-			toggleImage.setBackgroundResource(R.drawable.gray_gradient_square);
-			toggleImage.setImageResource(R.drawable.transparent_square);
+			toggleImage.setBackgroundResource(R.drawable.swipe_off);
 			saveUserId = false;
 		} else {
-			toggleImage.setBackgroundResource(R.drawable.black_gradient_square);
-			toggleImage.setImageResource(R.drawable.white_check_mark);
+			toggleImage.setBackgroundResource(R.drawable.swipe_on);
 			saveUserId = true;
 		}
 
