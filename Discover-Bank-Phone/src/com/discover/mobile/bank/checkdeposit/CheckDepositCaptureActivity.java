@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.checkdeposit;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,7 +14,10 @@ import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -22,6 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +35,9 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
+import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 
 public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
 	private final String TAG = CheckDepositCaptureActivity.class.getSimpleName();
@@ -180,6 +188,44 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	}
 	
 	/**
+	 * Deletes the front check image from storage.
+	 * @param context the calling context.
+	 * @return if the image was deleted.
+	 */
+	public static boolean deleteFrontImage(final Context context) {
+		return deleteImage(FRONT_PICTURE, context);
+	}
+	
+	/**
+	 * Deletes the back check image from storage.
+	 * @param context the calling context.
+	 * @return if the image was deleted.
+	 */
+	public static boolean deleteBackImage(final Context context) {
+		return deleteImage(BACK_PICTURE, context);
+	}
+	
+	/**
+	 * Finds the absolute path to an imageName and then attempts to delete that image. 
+	 * @param imageName the name of an an image to delete
+	 * @param context the calling context
+	 * @return if the image was deleted.
+	 */
+	private static boolean deleteImage(final String imageName, final Context context){
+		final File frontPic = context.getFileStreamPath(imageName);
+		return context.deleteFile(frontPic.getAbsolutePath());
+	}
+	
+	/**
+	 * Attempts to delete both check images, one after the other.
+	 * @param context the calling context.
+	 * @return if both images were deleted.
+	 */
+	public static boolean deleteBothImages(final Context context) {
+		return deleteBackImage(context) & deleteFrontImage(context);
+	}
+	
+	/**
 	 * Load the drawables that are used for the countdown timer.
 	 */
 	private void loadDrawables() {
@@ -202,8 +248,27 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				finish();
 			}
 		});
+		
+		final String windowService = this.WINDOW_SERVICE;
+		helpButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(final View v) {
+				final ModalAlertWithOneButton modal = getHelpModal();
+				modal.show();
+				
+				final Display display = ((WindowManager)getSystemService(windowService)).getDefaultDisplay();
+				modal.getWindow().setLayout(display.getWidth(), display.getHeight());
+				
+			}
+		});
 	}
 	
+	/**
+	 * Sets up the front/back breadcrumb trail to display either the front or back
+	 * as already been taken if we are retaking an image.
+	 * @param retakeValue
+	 */
 	private void setupPictureRetake(final int retakeValue) {
 		if(retakeValue == RETAKE_FRONT){
 			stepTwoCheck.setVisibility(View.VISIBLE);
@@ -591,6 +656,33 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Returns a constructed modal dialog that provides instructions on how to use the
+	 * check capture feature.
+	 * @return a modal dialog with check capture help content.
+	 */
+	private ModalAlertWithOneButton getHelpModal() {
+		final Spanned helpContent = Html.fromHtml(
+				getResources().getString(R.string.bank_deposit_capture_help_content));
+
+		final ModalDefaultTopView top = new ModalDefaultTopView(this, null);
+		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this, null);
+		final CheckDepositModal modal = new CheckDepositModal(this, top, bottom);
+		top.setTitle(R.string.bank_deposit_capture_help_title);
+		top.getContentTextView().setText(helpContent, TextView.BufferType.SPANNABLE);
+		top.showErrorIcon(false);
+		top.hideNeedHelpFooter();
+		bottom.setButtonText(R.string.ok);
+		bottom.getButton().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				modal.dismiss();
+			}
+		});
+		
+		return modal;
 	}
 
 	/**

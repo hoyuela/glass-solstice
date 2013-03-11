@@ -8,6 +8,7 @@ import com.discover.mobile.bank.BankPhoneAsyncCallbackBuilder;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.AcceptTermsService;
+import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
@@ -24,6 +25,8 @@ import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.customer.Eligibility;
+import com.discover.mobile.bank.services.deposit.AccountLimits;
+import com.discover.mobile.bank.services.deposit.GetAccountLimits;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
@@ -354,7 +357,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	}
 
 	/**
-	 * Creates a GetAtmDetailsCall ibject used to get the information about atms close to a user
+	 * Creates a GetAtmDetailsCall object used to get the information about atms close to a user
 	 * via an HTTP GET.  API is /api/atmLocator/SearchGeocodedLocation.xml
 	 * 
 	 * @param value - Holds information about the query string for the search of the call
@@ -370,6 +373,26 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						.build();
 
 		return new GetAtmDetailsCall(activity, callback, helper);
+	}
+	
+	/**
+	 * Creates a GetAccountLimits object used to fetch deposit limits for an Acoount via
+	 * an HTTP GET request to the Bank Web-service API "Get Account Limits" using the url 
+	 * /api/deposits/limits/{id}.
+	 * 
+	 * @param value - Holds information about the Account whose deposit's limits are being retrieved.
+	 * 
+	 * @return Reference to the GetAccountLimits object created.
+	 */
+	public static GetAccountLimits createGetAccountLimits(final Account account) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<AccountLimits>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(AccountLimits.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new GetAccountLimits(activity, callback, account);
 	}
 
 	@Override

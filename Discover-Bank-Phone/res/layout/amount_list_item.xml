@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/default_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/light_gray_bkgrd" >
+
+    <TextView
+        android:id="@+id/top_label"
+        style="@style/small_copy"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/between_related_elements_padding"
+        android:singleLine="true"
+        android:textStyle="bold"
+        android:text="@string/bank_deposit_amount" />
+
+    <TextView
+        android:id="@+id/dollar_sign"
+        android:layout_below="@+id/top_label"
+        android:layout_above="@+id/error_label"
+ 		style="@style/dollar_sign_style"/>
+    
+    <com.discover.mobile.bank.deposit.AmountValidatedEditField
+        android:id="@+id/editable_field"
+        style="@style/amount_style"/>
+
+    <TextView
+        android:id="@+id/error_label"
+        style="@style/error_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editable_field"
+        android:visibility="gone"
+        android:text="@string/bank_invalid_characters" />
+
+</RelativeLayout>

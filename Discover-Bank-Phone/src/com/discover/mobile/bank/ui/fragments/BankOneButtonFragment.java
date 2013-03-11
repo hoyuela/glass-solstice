@@ -19,6 +19,7 @@ import com.discover.mobile.bank.util.BankNeedHelpFooter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
+import com.google.common.base.Strings;
 
 /**
  * An abstract base Fragment class that uses the layout defined in bank_one_button_layout.xml to display
@@ -123,7 +124,7 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		
 		/**Set Page title if required by the sub-class*/
 		pageTitle = (TextView)view.findViewById(R.id.page_title);
-		if( getPageTitle() > 0 ) {
+		if( !Strings.isNullOrEmpty(getPageTitle()) ) {
 			pageTitle.setVisibility(View.VISIBLE);
 			pageTitle.setText(getPageTitle());
 		} else {
@@ -148,10 +149,11 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 * Method to be overridden by sub-class if a title is required for the layout. Otherwise
 	 * the title will be hidden.
 	 * 
-	 * @return Return number that identifies the resource string in res/string.
+	 * @return Return String that holds the text to display in the page title. 
+	 * 		   Return null if page title should be hidden.
 	 */
-	protected int getPageTitle() {
-		return 0;
+	protected String getPageTitle() {
+		return null;
 	}
 
 	/**

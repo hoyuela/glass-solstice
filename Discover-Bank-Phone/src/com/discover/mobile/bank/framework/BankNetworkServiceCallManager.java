@@ -30,6 +30,7 @@ import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
+import com.discover.mobile.bank.services.deposit.GetAccountLimits;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
@@ -334,6 +335,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
 			BankNavigator.navigateToAtmLocatorFragment(bundle);
 		}
+		//Handler for GetAccountLimits service call
+		else if( sender instanceof GetAccountLimits) {
+			//Navigate to Check Deposit - Select Amount Page
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((GetAccountLimits)sender).getAccount());
+			BankNavigator.navigateToCheckDepositWorkFlow(bundle);
+		}
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "NetworkServiceCallManager ignored success of a NetworkServiceCall!");
@@ -346,13 +354,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 */
 	public void handleAcceptDepositsTerms() {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-		activity.closeDialog();
 
 		/**Remove the Check Deposit Terms and Conditions View from fragment back stack*/
 		activity.getSupportFragmentManager().popBackStack();
-
-
-		BankNavigator.navigateToCheckDepositWorkFlow();
+	
+		/**Navigates to Select Account Page for Check-Deposit*/
+		BankNavigator.navigateToCheckDepositWorkFlow(null);
+		
+		/**close the progress dialog created for when service was started to download terms and conditions for deposits*/
+		activity.closeDialog();
 	}
 
 	/**

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center" 
+    android:paddingTop="@dimen/between_related_elements_padding"
+    android:paddingLeft="@dimen/groups_of_elements_padding"
+    android:paddingRight="@dimen/groups_of_elements_padding"
+    android:paddingBottom="@dimen/modal_top_padding">
+
+    <LinearLayout
+        android:id="@+id/modal_linear_layout"
+        style="@style/alert_modal_white_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/modal_orange_margin_bottom"
+        android:weightSum="10">
+    </LinearLayout>
+
+</RelativeLayout>

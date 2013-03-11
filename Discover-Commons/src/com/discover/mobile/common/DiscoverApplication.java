@@ -1,4 +1,4 @@
-package com.discover.mobile;
+package com.discover.mobile.common;
 
 import org.acra.annotation.ReportsCrashes;
 

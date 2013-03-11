@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.deposit.AccountLimits;
 import com.discover.mobile.common.net.json.bank.Money;
 import com.discover.mobile.common.net.json.bank.Percentage;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
@@ -217,6 +218,11 @@ public class Account implements Serializable {
 	public String matureDatae;
 
 	/**
+	 * Holds a reference to limits for this account
+	 */
+	public AccountLimits limits;
+	
+	/**
 	 * Contains Bank web-service API Resource links for postedActivity and scheduledActivity
 	 */
 	@JsonProperty("links")
@@ -271,6 +277,10 @@ public class Account implements Serializable {
 	 */
 	public boolean isDepositEligible() {
 		return ( type.equals(ACCOUNT_CHECKING) || type.equals(ACCOUNT_SAVINGS) || type.equals(ACCOUNT_MMA));
+	}
+	
+	public String getDottedFormattedAccountNumber() {
+		return this.nickname +" (..." +this.accountNumber.ending +")";
 	}
 
 }

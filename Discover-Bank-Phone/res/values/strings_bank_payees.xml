@@ -31,8 +31,10 @@
 	<string name="bank_cancel_title">Cancel This Action?</string>
 	<string name="bank_cancel_msg">Are you sure you want to cancel? All information you have entered will be lost.</string>
 	<string name="bank_cancel_yesaction">Yes</string>
-	<string name="bank_cancel_noaction">Don\'t Cancel</string>
+	<string name="bank_cancel_noaction">Cancel</string>
 	<string name="bank_add_confirm">The new payee has been setup. You may now schedule a payment.</string>
 	<string name="bank_sch_payment">Schedule a Payment</string>
 	<string name="bank_add_another">Add Payee</string>
+	<string name="bank_dollar_sign">$</string>
+	<string name="bank_deposit_amount">Deposit Amount</string>
 </resources>

@@ -65,6 +65,15 @@ public  class CacheManager {
 	public void clearSession() {
 		cacheData.clear();
 	}
-
+	
+	
+	/**
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public Object removeObjectFromCache(Class c){ 
+		return cacheData.remove(c);
+	}
 	
 }

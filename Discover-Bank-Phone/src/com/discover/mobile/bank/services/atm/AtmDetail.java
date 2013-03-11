@@ -5,6 +5,8 @@ package com.discover.mobile.bank.services.atm;
 
 import java.io.Serializable;
 
+import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.atm.LocationObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -26,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author jthornton
  * 
  */
-public class AtmDetail implements Serializable{
+public class AtmDetail extends LocationObject implements Serializable{
 
 	/**Static string to show that the atm is surcharge free*/
 	public static String SURCHARGE_FREE = "Y";
@@ -98,10 +100,33 @@ public class AtmDetail implements Serializable{
 	@JsonProperty("stateName")
 	public String state;
 
+	/**Distance from the user*/
+	public double distanceFromUser;
+
 	/**
 	 * @return if the atm is surcharge free
 	 */
 	public boolean isAtmSearchargeFree(){
 		return SURCHARGE_FREE.equals(surchargeFee);
+	}
+
+	@Override
+	public double getLongitude() {
+		return Double.parseDouble(longitude);
+	}
+
+	@Override
+	public double getLatitude() {
+		return Double.parseDouble(latitude);
+	}
+
+	@Override
+	public int getPinDrawable() {
+		return (isAtmSearchargeFree()) ? R.drawable.atm_orange_pin : R.drawable.atm_gray_pin;	
+	}
+
+	@Override
+	public void setDistanceFromUser(final double distance) {
+		distanceFromUser = distance;
 	}
 }

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:maxWidth="250dp"
+    android:minWidth="250dp" >
+
+    <LinearLayout
+        android:id="@+id/top_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/forms_inner_padding" >
+
+        <LinearLayout
+            android:id="@+id/top_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="200dp"
+            android:minWidth="200dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/name"
+                style="@style/balloon_large_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/between_related_elements_padding"
+                android:text="ATM Merchant Name" />
+
+            <TextView
+                android:id="@+id/address"
+                style="@style/balloon_sub_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/forms_inner_padding"
+                android:text="109 W North Ave, IL 60614" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/street_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:background="@drawable/atm_street_view_icon_sm" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/divider1"
+        android:layout_width="wrap_content"
+        android:layout_height="3px"
+        android:layout_alignLeft="@id/top_layout"
+        android:layout_alignRight="@id/top_layout"
+        android:layout_below="@+id/top_layout"
+        android:background="@color/field_stroke" />
+
+    <TextView
+        android:id="@+id/hours_label"
+        style="@style/balloon_sub_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/top_layout"
+        android:layout_below="@+id/divider1"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/between_related_elements_padding"
+        android:text="Hours" />
+
+    <TextView
+        android:id="@+id/hours"
+        style="@style/balloon_sub_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/top_layout"
+        android:layout_below="@+id/hours_label"
+        android:layout_marginBottom="@dimen/forms_inner_padding"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:maxLines="2"
+        android:text="Mon - Fri 9:00 AM - 6:00 PM" />
+
+    <ImageView
+        android:id="@+id/divider3"
+        android:layout_width="wrap_content"
+        android:layout_height="3px"
+        android:layout_alignLeft="@id/top_layout"
+        android:layout_alignRight="@id/top_layout"
+        android:layout_below="@+id/hours"
+        android:background="@color/field_stroke" />
+
+    <TextView
+        android:id="@+id/directions_label"
+        style="@style/balloon_large_blue_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider3"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/between_related_elements_padding"
+        android:maxWidth="215dp"
+        android:minWidth="215dp"
+        android:text="Get Directions 1.1 M" />
+
+    <ImageView
+        android:id="@+id/directions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider3"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/between_related_elements_padding"
+        android:layout_toRightOf="@+id/directions_label"
+        android:background="@drawable/atm_directional_arrows"
+        android:layout_alignLeft="@+id/street_view" />
+
+</RelativeLayout>

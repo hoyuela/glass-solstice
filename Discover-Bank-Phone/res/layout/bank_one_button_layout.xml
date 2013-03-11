@@ -3,6 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     android:orientation="vertical" 
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:background="@drawable/light_gray_bkgrd" >
 
 
@@ -23,6 +25,7 @@
 	    />
     	
     <ScrollView
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
@@ -32,6 +35,8 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+             android:focusable="true"
+    		android:focusableInTouchMode="true"
             android:padding="@dimen/forms_inner_padding" >
             
              <TextView
@@ -41,7 +46,7 @@
 	            android:layout_height="wrap_content"
 	            android:layout_alignParentLeft="true"
 	            android:layout_alignParentTop="true"
-	            android:layout_marginBottom="@dimen/groups_of_elements_padding"
+	            android:layout_marginBottom="@dimen/forms_inner_padding"
 	            android:text="@string/page_title" />
 
              <TextView 
@@ -114,6 +119,8 @@
                 android:layout_below="@+id/actionLink"
                 android:layout_alignParentBottom="true"
 	            android:layout_centerHorizontal="true"
+	            android:focusable="true"
+   				android:focusableInTouchMode="true"
 	            android:layout_marginTop="@dimen/modal_footer_topmargin"            
    				android:paddingBottom="@dimen/between_related_elements_padding"
                 android:orientation="vertical">

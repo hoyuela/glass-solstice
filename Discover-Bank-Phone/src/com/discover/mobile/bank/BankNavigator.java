@@ -1,8 +1,6 @@
 package com.discover.mobile.bank;
 
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,12 +11,15 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.account.AccountActivityViewPager;
 import com.discover.mobile.bank.account.BankAccountActivityTable;
+import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
+import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
+import com.discover.mobile.bank.deposit.BankDepositSelectAmount;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
@@ -132,6 +133,8 @@ public final class BankNavigator {
 			if( Log.isLoggable(TAG, Log.DEBUG)) {
 				Log.d(TAG, "Application is already in Home Page view");
 			}
+			
+			((BankNavigationRootActivity)activity).popTillFragment(BankAccountSummaryFragment.class);
 		}
 	}
 
@@ -206,8 +209,6 @@ public final class BankNavigator {
 			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
 					R.string.bank_open_browser_title, 
 					R.string.bank_open_browser_text, 
-					false, 
-					R.string.bank_need_help_number_text, 
 					R.string.continue_text);
 
 			//Set the dismiss listener that will navigate the user to the browser	
@@ -220,8 +221,12 @@ public final class BankNavigator {
 					activity.startActivity(i);
 				}
 			});
-
+			
+			/**Hide Need Help footer*/
+			((ModalDefaultTopView)modal.getTop()).hideNeedHelpFooter();
+			
 			((BankNavigationRootActivity)activity).showCustomAlert(modal);
+			
 		}
 	}
 
@@ -428,10 +433,11 @@ public final class BankNavigator {
 		final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
 		topView.hideNeedHelpFooter();
 
-		//Set the dismiss listener that will navigate the user to the browser	
-		modal.setOnDismissListener(new OnDismissListener() {
+		//Set the click listener that will delete the payment
+		modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
 			@Override
-			public void onDismiss(final DialogInterface arg0) {
+			public void onClick(final View v) {
+				modal.dismiss();
 				BankServiceCallFactory.createDeletePaymentServiceCall(pmtDetail).submit();
 			}
 		});
@@ -549,7 +555,7 @@ public final class BankNavigator {
 					false, 
 					R.string.bank_need_help_number_text, 
 					R.string.ok);
-
+			
 			activity.showCustomAlert(modal);
 		}
 		//Show Select Payee Page for Add a Payee work-flow
@@ -584,14 +590,16 @@ public final class BankNavigator {
 	 * and Conditions if user is eligible and not enrolled. If it is the start of the work flow, then navigates
 	 * user to Select Account Page.
 	 */
-	public static void navigateToCheckDepositWorkFlow() {
+	public static void navigateToCheckDepositWorkFlow(final Bundle bundle) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
-			Fragment fragment;
-
+			navActivity.closeDialog();
+			
+			Fragment fragment = null;
+			
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligibility();
 			final boolean isEnrolled = BankUser.instance().getCustomerInfo().isDepositEnrolled();
 
@@ -599,22 +607,49 @@ public final class BankNavigator {
 				//TODO: Need to figure out to see where to go if not eligible
 			} else if(isEligible && !isEnrolled){
 				fragment = new BankDepositTermsFragment();
-				navActivity.makeFragmentVisible(fragment);
 			} else{
-				//Check if User has accounts
-				if( BankUser.instance().hasAccounts() ) {
-					//Check if User has more than one account
-					if( BankUser.instance().getAccounts().accounts.size() > 1 ) {
-						fragment = new BankDepositSelectAccount();
-						navActivity.makeFragmentVisible(fragment);
-					} else {
-						//Navigate to Set Amount
-					}
+				//Check if user is in select accounts, navigate to second step in work-flow
+				if( navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount ) {
+					fragment = new BankDepositSelectAmount();
+					fragment.setArguments(bundle);
 				}
+				//Check if User has accounts, this is the first step in work-flow
+				else if( BankUser.instance().hasAccounts() ) {	
+					fragment = new BankDepositSelectAccount();	
+				}
+			}
+			
+			if( fragment != null ) {
+				navActivity.makeFragmentVisible(fragment);
 			}
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Unable to navigate to check deposit work-flow");
+			}
+		}
+	}
+	
+	/**
+	 * Navigation method used to navigate to Check Deposit Forbidden User screen. This screen
+	 * is shown if user does not have access to Check Deposit feature and receives a 403
+	 * in an attempt to access a Check Deposit Service.
+	 */
+	public static void navigateToDepositForbidden(final Bundle bundle) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+			navActivity.closeDialog();
+			
+			final Fragment fragment = new BankDepositForbidden();
+			fragment.setArguments(bundle);
+			
+			/**Navigate user to forbidden user screen*/
+			navActivity.makeFragmentVisible(fragment);
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unable to navigate to check deposit forbidden screen");
 			}
 		}
 	}
@@ -632,9 +667,7 @@ public final class BankNavigator {
 			// Create a one button modal to notify the user that they are leaving the application
 			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
 					R.string.bank_callmodal_title, 
-					R.string.bank_callmodal_msg, 
-					false, 
-					R.string.bank_need_help_number_text, 
+					R.string.bank_callmodal_msg,
 					R.string.bank_callmodal_action);
 
 			//Set the dismiss listener that will navigate the user to the dialer
@@ -646,6 +679,12 @@ public final class BankNavigator {
 				}
 			});
 
+			/**
+			 * Hide the need help footer for the delete modal.
+			 */
+			final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
+			topView.hideNeedHelpFooter();
+			
 			((BankNavigationRootActivity) activity).showCustomAlert(modal);
 		}
 	}
