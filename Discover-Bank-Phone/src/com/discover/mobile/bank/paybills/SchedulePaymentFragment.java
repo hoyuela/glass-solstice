@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -156,6 +157,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 		paymentAccountSpinner = (Spinner) view
 				.findViewById(R.id.payment_acct_spinner);
 		amountEdit = (SchedulePaymentAmountEditText) view.findViewById(R.id.amount_edit);
+		amountEdit.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 		amountItem = (RelativeLayout) view.findViewById(R.id.amount_element);
 		amountError = (TextView) view.findViewById(R.id.amount_error);
 		dateText = (TextView) view.findViewById(R.id.date_text);
