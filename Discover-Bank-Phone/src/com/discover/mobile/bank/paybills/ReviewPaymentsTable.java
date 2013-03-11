@@ -66,10 +66,10 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			scheduled = (null == scheduled) ? list : handleReceivedData(scheduled, list);
 			updateAdapter(scheduled.payments);
 		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS){
-			completed = (null == completed) ? list : handleReceivedData(scheduled, list);
+			completed = (null == completed) ? list : handleReceivedData(completed, list);
 			updateAdapter(completed.payments);
 		}else{
-			canceled = (null == canceled) ? list : handleReceivedData(scheduled, list);
+			canceled = (null == canceled) ? list : handleReceivedData(canceled, list);
 			updateAdapter(canceled.payments);
 		}
 		final ReceivedUrl url = getLoadMoreUrl();
@@ -263,7 +263,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		bundle.putSerializable(scheduleKey, scheduled);
 		bundle.putSerializable(completedKey, completed);
 		bundle.putSerializable(canceledKey, canceled);
-		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index-1);
+		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index);
 		BankRotationHelper.getHelper().setBundle(bundle);
 		BankNavigator.navigateToPaymentDetailScreen(bundle);
 	}
@@ -342,6 +342,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 * @param activities - activities to update the adapter with
 	 */
 	public void updateAdapter(final List<PaymentDetail> activities){
+		adapter.clear();
 		adapter.setData(activities);
 		if(adapter.getCount() < 1){
 			footer.showEmpty(this.getEmptyStringText());

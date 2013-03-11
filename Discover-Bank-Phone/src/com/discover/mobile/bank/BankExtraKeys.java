@@ -20,7 +20,7 @@ public final class BankExtraKeys {
 	public static final String SECOND_DATA_LIST = "data2";
 
 	/**Used to send the other list of details to the detail screen from the table*/
-	public static final String SCHEDULED_LIST = "data1";
+	public static final String SCHEDULED_LIST = "data4";
 
 	/**Used to send the other list of details to the detail screen from the table*/
 	public static final String COMPLETED_LIST = "data2";
@@ -45,9 +45,12 @@ public final class BankExtraKeys {
 
 	/**Used to notify a fragment that a transaction item has been deleted from its list*/
 	public static final String CONFIRM_DELETE = "delete";
-	
+
 	/**Used to pass a String resource that is meant to be displayed as the title in the action bar*/
 	public static final String TITLE_TEXT = "title";
+
+	/**Used to let the check deposit capture screen know which image is being retaken */
+	public static final String RETAKE_PICTURE = "retake";
 
 	/**Used to signify sort set up*/
 	public static final int SORT_DATE_DESC = 0;

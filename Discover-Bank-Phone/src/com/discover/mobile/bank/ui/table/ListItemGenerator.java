@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
@@ -122,7 +123,7 @@ public class ListItemGenerator {
 		final StringBuilder formattedTitle = new StringBuilder();
 		final String titleText = context.getString(R.string.pay_from_acct_ending_in);
 
-		formattedTitle.append(titleText);
+		formattedTitle.append(titleText + " ");
 		formattedTitle.append(acctEndingNumber);
 
 		final ViewPagerListItem temp = getTwoItemCell(R.string.empty, accountName);
@@ -207,13 +208,17 @@ public class ListItemGenerator {
 	 */
 	public List<ViewPagerListItem> getScheduledPaymentDetailList(final PaymentDetail item) {
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
-		
+
+		final Account account = BankUser.instance().getAccount(item.paymentAccount.id);
+
 		items.add(getPayeeCell(BankUser.instance().getPayees().getNameFromId(item.payee.id)));
 		items.get(0).getDividerLine().setVisibility(View.GONE);
-		items.add(getPayFromAccountCell(BankUser.instance().getAccount(item.paymentAccount.id).name, BankUser.instance().getAccount(item.paymentAccount.id).nickname));
+		items.add(getPayFromAccountCell(account.accountNumber.ending, account.nickname));
 		items.add(getAmountCell(item.amount.value));
 		items.add(getPaymentDateCell(item));
-		items.add(getStatusCell(item.status));
+		if("SCHEDULED".equals(item.status)){
+			items.add(getStatusCell(item.status));
+		}
 		items.add(getConfirmationCell(item.confirmationNumber));
 		items.add(getMemoItemCell(item.memo));
 
@@ -261,9 +266,11 @@ public class ListItemGenerator {
 		}else if("PAID".equals(itemStatus)){
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(convertDate(dates.split(PaymentDetail.DATE_DIVIDER)[0]));
+			paymentDateItem.getTopLabel().setText(R.string.completed_pay_date);
 		}else if ("CANCELLED".equals(itemStatus)){
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(convertDate(dates.split(PaymentDetail.DATE_DIVIDER)[0]));
+			paymentDateItem.getTopLabel().setText(R.string.completed_pay_date);
 		}
 
 		return paymentDateItem;

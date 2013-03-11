@@ -204,4 +204,9 @@ public class AccountActivityViewPager extends DetailViewPager{
 		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
 	}
 
+	@Override
+	public boolean isBackPressDisabled() {
+		return false;
+	}
+
 }

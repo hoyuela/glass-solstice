@@ -150,4 +150,21 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.MANAGE_PAYEES_SECTION;
 	}
+
+	@Override
+	public boolean isBackPressDisabled() {
+		return false;
+	}
+
+	/**
+	 * Disable back press for this fragment
+	 */
+	@Override
+	public void onBackPressed() {
+		/**
+		 * Remove this fragment from the transactions list, this seems to be required since 
+		 * makeVisible(fragment, boolean) was used.
+		 */
+		getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+	}
 } 

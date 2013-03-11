@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.discover.mobile.bank.R;
@@ -141,5 +142,18 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 		}
 				
 		return valid;
+	}
+	
+	/**
+	 * Event handler used to clear focus from this EditText view, if user closes the keyboard by pressing back hardware key.
+	 */
+	@Override
+	public boolean onKeyPreIme(final int keyCode, final KeyEvent event) {
+		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK
+				&& event.getAction() == KeyEvent.ACTION_UP) {
+			this.clearFocus();
+
+		}
+		return super.dispatchKeyEvent(event);
 	}
 }
