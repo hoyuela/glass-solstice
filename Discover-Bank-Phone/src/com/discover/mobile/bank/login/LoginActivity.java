@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,8 +63,9 @@ import com.google.common.base.Strings;
  * 
  */
 
-public class LoginActivity extends BaseActivity implements LoginActivityInterface  {
-	/*TAG used to print logs for the LoginActivity into logcat*/
+public class LoginActivity extends BaseActivity implements
+		LoginActivityInterface {
+	/* TAG used to print logs for the LoginActivity into logcat */
 	private final String TAG = LoginActivity.class.getSimpleName();
 
 	/**
@@ -83,7 +85,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	private static boolean PHONE_GAP_INIT_COMPLETE = false;
 
-	// INPUT FIELDS	
+	// INPUT FIELDS
 
 	private NonEmptyEditText idField;
 	private NonEmptyEditText passField;
@@ -92,17 +94,20 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 	private Button loginButton;
 	private Button registerOrAtmButton;
-	private Button privacySecOrTermButton;
 	private Button customerServiceButton;
+	private Button provideFeedbackButton;
+
+	private RelativeLayout goToBankButton;
+	private RelativeLayout goToCardButton;
 
 	// TEXT LABELS
-
+	private TextView privacySecOrTermButton;
 	private TextView errorTextView;
 	private TextView forgotUserIdOrPassText;
 	private TextView goToBankLabel;
 	private TextView goToCardLabel;
 
-	//IMAGES
+	// IMAGES
 
 	private ImageView cardCheckMark;
 	private ImageView bankCheckMark;
@@ -178,14 +183,18 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		passField = (NonEmptyEditText) findViewById(R.id.password_field);
 		passField.setFilters(filters);
 
+		provideFeedbackButton = (Button) findViewById(R.id.provide_feedback_button);
 		loginButton = (Button) findViewById(R.id.login_button);
 		registerOrAtmButton = (Button) findViewById(R.id.register_now_or_atm_button);
-		privacySecOrTermButton = (Button) findViewById(R.id.privacy_and_security_button);
+		privacySecOrTermButton = (TextView) findViewById(R.id.privacy_and_security_button);
 		customerServiceButton = (Button) findViewById(R.id.customer_service_button);
 		errorTextView = (TextView) findViewById(R.id.error_text_view);
 		forgotUserIdOrPassText = (TextView) findViewById(R.id.forgot_uid_or_pass_text);
 		goToBankLabel = (TextView) findViewById(R.id.go_to_bank_label);
 		goToCardLabel = (TextView) findViewById(R.id.go_to_card_label);
+		
+		goToBankButton = (RelativeLayout) findViewById(R.id.bank_login_toggle);
+		goToCardButton = (RelativeLayout) findViewById(R.id.card_login_toggle);
 
 		cardCheckMark = (ImageView) findViewById(R.id.card_check_mark); 
 		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark); 
@@ -498,6 +507,15 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			}
 		});
 
+		provideFeedbackButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Fill-Out, later Sprint
+				
+			}
+		});
+		
 		registerOrAtmButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -665,12 +683,10 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	public void toggleCheckBox(final View v, final boolean cache) {
 
 		if (saveUserId) {
-			toggleImage.setBackgroundResource(R.drawable.gray_gradient_square);
-			toggleImage.setImageResource(R.drawable.transparent_square);
+			toggleImage.setBackgroundResource(R.drawable.swipe_off);
 			saveUserId = false;
 		} else {
-			toggleImage.setBackgroundResource(R.drawable.black_gradient_square);
-			toggleImage.setImageResource(R.drawable.white_check_mark);
+			toggleImage.setBackgroundResource(R.drawable.swipe_on);
 			saveUserId = true;
 		}
 
@@ -716,10 +732,10 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		boolean isTogglingCardOrBank = false;
 
 		//See if we are toggling or not (the user didn't press the selection they are on again.)
-		if (v.equals(goToCardLabel) && initialAccountType.equals(AccountType.CARD_ACCOUNT)) {
+		if (v.equals(goToCardButton) && initialAccountType.equals(AccountType.CARD_ACCOUNT)) {
 			isTogglingCardOrBank = false;
 
-		}else if(v.equals(goToBankLabel) && initialAccountType.equals(AccountType.BANK_ACCOUNT)){
+		}else if(v.equals(goToBankButton) && initialAccountType.equals(AccountType.BANK_ACCOUNT)){
 			isTogglingCardOrBank = false;
 		}
 		else{
@@ -738,7 +754,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				deleteAndSaveCurrentUserPrefs();
 			}
 
-			if(v.equals(goToCardLabel)){
+			if(v.equals(goToCardButton)){
 				setLoginTypeToCard();
 			}
 			//Setup Bank Login.
@@ -791,18 +807,32 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	private void setLoginTypeToCard() {
 		goToCardLabel.setTextColor(getResources().getColor(R.color.black));
+		goToCardButton
+				.setBackgroundResource(R.drawable.card_login_background_on);
+		goToCardButton.setPadding(
+				(int) this.getResources().getDimension(R.dimen.top_pad),
+				(int) this.getResources().getDimension(R.dimen.top_pad),
+				(int) this.getResources().getDimension(R.dimen.top_pad),
+				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
 
 		CommonUtils.setViewVisible(cardCheckMark);
 		CommonUtils.setViewInvisible(bankCheckMark);
 
 		goToBankLabel.setTextColor(getResources().getColor(R.color.blue_link));
+		goToBankButton
+				.setBackgroundResource(R.drawable.bank_login_background_off);
+		goToBankButton.setPadding(
+				(int) this.getResources().getDimension(R.dimen.top_pad),
+				(int) this.getResources().getDimension(R.dimen.top_pad),
+				(int) this.getResources().getDimension(R.dimen.top_pad),
+				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
 
 		registerOrAtmButton.setText(R.string.register_now);
 		privacySecOrTermButton.setText(R.string.privacy_and_security);
 
-		CommonUtils.setViewVisible(forgotUserIdOrPassText);
+//		CommonUtils.setViewVisible(forgotUserIdOrPassText);
 
-		//Load Card Account Preferences for refreshing UI only
+		// Load Card Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
 	}
 
@@ -811,15 +841,29 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	private void setLoginTypeToBank() {
 		goToCardLabel.setTextColor(getResources().getColor(R.color.blue_link));
+		goToCardButton
+				.setBackgroundResource(R.drawable.card_login_background_off);
+		goToCardButton.setPadding(
+				(int) this.getResources().getDimension(R.dimen.top_pad),
+				(int) this.getResources().getDimension(R.dimen.top_pad),
+				(int) this.getResources().getDimension(R.dimen.top_pad),
+				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
 		CommonUtils.setViewInvisible(cardCheckMark);
 		CommonUtils.setViewVisible(bankCheckMark);
-		goToBankLabel.setTextColor(getResources().getColor(R.color.black));
 
+		goToBankLabel.setTextColor(getResources().getColor(R.color.black));
+		goToBankButton
+				.setBackgroundResource(R.drawable.bank_login_background_on);
+		goToBankButton.setPadding(
+				(int) this.getResources().getDimension(R.dimen.top_pad),
+				(int) this.getResources().getDimension(R.dimen.top_pad),
+				(int) this.getResources().getDimension(R.dimen.top_pad),
+				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
 		registerOrAtmButton.setText(R.string.atm_locator);
 		privacySecOrTermButton.setText(R.string.privacy_and_terms);
 		CommonUtils.setViewInvisible(forgotUserIdOrPassText);
 
-		//Load Bank Account Preferences for refreshing UI only
+		// Load Bank Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.BANK_ACCOUNT);
 	}
 
