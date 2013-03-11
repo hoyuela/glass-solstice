@@ -67,7 +67,7 @@
                     android:layout_marginTop="@dimen/groups_of_elements_padding"
                     android:paddingLeft="@dimen/element_side_padding"
                     android:paddingRight="@dimen/element_side_padding"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:gravity="center_horizontal" />
 
                 <TextView
