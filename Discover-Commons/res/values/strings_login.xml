@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="provide_feedback">
+        Provide\nFeedback
+    </string>
     <string name="customer_service">
         Customer\nService
     </string>
     <string name="privacy_and_security">
-        Privacy &amp;\nSecurity
+        Privacy &amp; Terms
     </string>
     <string name="register_now">
         Register\nNow
@@ -13,10 +16,10 @@
         Forgot User ID/Password?
     </string>
     <string name="card">
-        Card
+        Card Login
     </string>
     <string name="bank">
-        Bank
+        Bank Login
     </string>
     <string name="go_to">
         Go to:
@@ -69,7 +72,7 @@
         ATM\nLocator
     </string>
 	<string name="privacy_and_terms">
-        Privacy &amp;\nTerms
+        Privacy &amp; Terms
     </string>
     
 </resources>
