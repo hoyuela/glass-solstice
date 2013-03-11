@@ -690,7 +690,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 				}
 				
 				if (amountEdit.isValid() && !isDateError) {
-					final String memo = memoText.getText().toString();
+					final String memo = memoEdit.getText().toString();
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
 					payment.payee.id = payee.id;
 					payment.amount = CommonUtils
