@@ -24,6 +24,7 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.net.SessionTokenManager;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
@@ -39,6 +40,9 @@ implements OnPaymentCanceledListener {
 	private InputMethodManager imm;
 	/** If a fragment error exists this will be set to true. */
 	private boolean fragmentErrorShown = false;
+	
+	private final String BANK_USER_KEY = "bankUser";
+	private final String BANK_SESSION_KEY = "session";
 
 	/**
 	 * Resume the activity to the state that it was when the activity went to
@@ -62,6 +66,21 @@ implements OnPaymentCanceledListener {
 	public void onCreate(final Bundle savedInstanceState) {
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		super.onCreate(savedInstanceState);
+		
+		// Application was previously destroyed; reloading the BankUser Singleton.
+		if(BankUser.instance().getCustomerInfo() == null) {
+			BankUser.instance().setBankUser((BankUser)savedInstanceState.getSerializable(BANK_USER_KEY));
+			BankUrlManager.setNewLinks(BankUser.instance().getCustomerInfo().links);
+			SessionTokenManager.setToken(savedInstanceState.getString(BANK_SESSION_KEY));
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		BankUser.instance().getCustomerInfo().links = BankUrlManager.getLinks();
+		outState.putSerializable(BANK_USER_KEY, BankUser.instance());
+		outState.putString(BANK_SESSION_KEY, SessionTokenManager.getToken());
 	}
 
 	/**
