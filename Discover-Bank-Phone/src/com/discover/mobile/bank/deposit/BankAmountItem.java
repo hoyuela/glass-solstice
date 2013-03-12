@@ -2,7 +2,6 @@ package com.discover.mobile.bank.deposit;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,7 +23,7 @@ public class BankAmountItem extends RelativeLayout {
 	/**
 	 * Reference to EditText where the user can enter a dollar amount to submit for check deposit.
 	 */
-	private AmountValidatedEditField amountField = null;
+	private BankAmountLimitValidatedField amountField = null;
 	/**
 	 * Reference to TextView that shows inline errors beneath amountField. The text is set by amountField via its isValid() method.
 	 */
@@ -41,7 +40,7 @@ public class BankAmountItem extends RelativeLayout {
 		
 		/**UI Controls for this view*/
 		topLabel = (TextView)layout.findViewById(R.id.top_label);
-		amountField = (AmountValidatedEditField)layout.findViewById(R.id.editable_field);
+		amountField = (BankAmountLimitValidatedField)layout.findViewById(R.id.editable_field);
 		errorLabel = (TextView)layout.findViewById(R.id.error_label);
 		
 		/**Associate the error label with the amount field*/
@@ -54,24 +53,10 @@ public class BankAmountItem extends RelativeLayout {
 	 * 
 	 * @return Returns a reference to the editable field in this view.
 	 */
-	public AmountValidatedEditField getEditableField() {
+	public BankAmountLimitValidatedField getEditableField() {
 		return this.amountField;
 	}
 	
-	/**
-	 * Method used to show and hide the keyboard.
-	 * 
-	 * @param show True opens keyboard and false closes it.
-	 */
-	public void showKeyboard(final boolean show) {
-		final InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-		if( show ) {
-			imm.showSoftInput(this.getEditableField(), InputMethodManager.SHOW_FORCED);
-		} else {
-			imm.hideSoftInputFromWindow(this.getEditableField().getWindowToken(), 0);
-		}
-	}
 	
 
 }
