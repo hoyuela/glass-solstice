@@ -17,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
@@ -36,7 +35,7 @@ import com.slidingmenu.lib.SlidingMenu;
  * @author jthornton
  *
  */
-public class AtmMapFragment extends BaseFragment implements LocationFragment, AtmMapSearchFragment{
+public abstract class AtmMapFragment extends BaseFragment implements LocationFragment, AtmMapSearchFragment{
 
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
@@ -92,7 +91,7 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, At
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		//Check to see if the view has already been inflated
 		if(null == view){
-			view = inflater.inflate(R.layout.bank_atm_map, null);
+			view = inflater.inflate(getLayout(), null);
 		}else{
 			//Remove the view from its current parent so that it can be attached to the new parent
 			final ViewGroup parent = (ViewGroup)(view.getParent());
@@ -102,7 +101,7 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, At
 		listButton = (Button) view .findViewById(R.id.list_nav);
 
 		final SupportMapFragment fragment = 
-				(SupportMapFragment) this.getActivity().getSupportFragmentManager().findFragmentById(R.id.discover_map);
+				(SupportMapFragment) this.getActivity().getSupportFragmentManager().findFragmentById(getMapFragmentId());
 
 		final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(this.getActivity());
 		final DiscoverInfoWindowAdapter adapter = new DiscoverInfoWindowAdapter(balloon);
@@ -120,6 +119,13 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, At
 		}
 		return view;
 	}
+
+	/*
+	 * Get the layout for the file
+	 */
+	public abstract int getLayout();
+
+	public abstract int getMapFragmentId();
 
 	/**
 	 * @return the current location address string
@@ -400,16 +406,6 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, At
 	@Override
 	public int getActionBarTitle() {
 		return R.string.atm_locator_title;
-	}
-
-	@Override
-	public int getGroupMenuLocation() {
-		return BankMenuItemLocationIndex.ATM_LOCATOR_GROUP;
-	}
-
-	@Override
-	public int getSectionMenuLocation() {
-		return BankMenuItemLocationIndex.SEARCH_BY_LOCATION;
 	}
 
 	@Override
