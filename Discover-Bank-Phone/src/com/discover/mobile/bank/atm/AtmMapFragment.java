@@ -215,6 +215,7 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, At
 			hasLoadedAtms = true;
 		}
 		isOnMap = !savedInstanceState.getBoolean(BUTTON_KEY, true);
+		searchBar.restoreState(savedInstanceState);
 		toggleButton();
 	}
 
@@ -325,6 +326,7 @@ public class AtmMapFragment extends BaseFragment implements LocationFragment, At
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		locationManagerWrapper.stopGettingLocaiton();
+		searchBar.saveState(outState);
 		if(locationModal.isShowing()){
 			locationModal.dismiss();
 		} else if(settingsModal.isShowing()){

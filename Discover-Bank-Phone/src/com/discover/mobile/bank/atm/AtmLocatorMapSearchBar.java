@@ -59,6 +59,14 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	private AtmMapSearchFragment fragment;
 
 	/**
+	 * Keys for saving the bundle
+	 */	
+	private static final String FILTER_STATE = "filterState";
+	private static final String SEARCH_BOX_STATE = "searchBoxState";
+	private static final String SEARCH_BOX_FOCUSED = "searchBoxFocused";
+	private static final String SEARCH_TEXT = "searchText";
+
+	/**
 	 * Constructor for the class
 	 * @param context
 	 * @param attrs
@@ -104,9 +112,10 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 			@Override
 			public void onClick(final View v) {
 				if(!isSearchExpanded){
-					show.setVisibility(View.GONE);
 					searchLayout.startAnimation(Animator.createSlideToRightAnimation(context, searchLayout));
 					isSearchExpanded = true;
+					searchLayout.setVisibility(View.VISIBLE);
+					show.setVisibility(View.GONE);
 				}
 			}
 
@@ -159,7 +168,7 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 			public boolean onTouch(final View v, final MotionEvent event) {
 				if (isTouchRegionValid(event) && !searchBox.getText().toString().isEmpty()) {
 					searchBox.setText("");
-				}else{
+				}else if(isTouchRegionValid(event)){
 					searchBox.setText(fragment.getCurrentLocationAddress());
 				}
 
@@ -235,14 +244,31 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	/**
 	 * Save all the data in a bundle
 	 */
-	public Bundle saveState(){
-		return new Bundle();
+	public void saveState(final Bundle outState){
+		outState.putBoolean(FILTER_STATE, isFilterOn);
+		outState.putBoolean(SEARCH_BOX_STATE, isSearchExpanded);
+		outState.putBoolean(SEARCH_BOX_FOCUSED, searchBox.isFocused());
+		outState.putString(SEARCH_TEXT, searchBox.getText().toString());
 	}
 
 	/**
 	 * Restore the state of the view
 	 */
 	public void restoreState(final Bundle bundle){
-
+		isFilterOn = bundle.getBoolean(FILTER_STATE, true);		
+		filterToggle.setBackgroundDrawable(getResources().getDrawable(
+				(isFilterOn) ? R.drawable.swipe_on : R.drawable.swipe_off));
+		isSearchExpanded = bundle.getBoolean(SEARCH_BOX_STATE, true);
+		if(isSearchExpanded){
+			show.setVisibility(View.GONE);
+			searchLayout.setVisibility(View.VISIBLE);
+		}else{
+			show.setVisibility(View.VISIBLE);
+			searchLayout.setVisibility(View.GONE);
+		}
+		searchBox.setText(bundle.getString(SEARCH_TEXT));
+		if(bundle.getBoolean(SEARCH_BOX_FOCUSED, false)){
+			searchBox.requestFocusFromTouch();
+		}
 	}
 }

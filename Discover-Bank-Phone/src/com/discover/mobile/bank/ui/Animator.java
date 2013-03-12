@@ -118,6 +118,12 @@ public final class Animator {
 		return animation;
 	}
 
+	/**
+	 * Animation used to slide the layout to the left off the screen and at the end hide the layout
+	 * @param context - context
+	 * @param view - view to slide
+	 * @return the Animation used to slide the layout to the left off the screen and at the end hide the layout
+	 */
 	public static Animation createSlideToLeftAnimation(final Context context, final View view){
 		final Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_left);
 		animation.setAnimationListener(new AnimationListener(){
@@ -137,6 +143,12 @@ public final class Animator {
 		return animation;
 	}
 
+	/**
+	 * Animation used to slide the layout to the right on to the screen
+	 * @param context - context
+	 * @param view - view to slide
+	 * @return Animation used to slide the layout to the right on to the screen
+	 */
 	public static Animation createSlideToRightAnimation(final Context context, final View view){
 		final Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_right);
 		animation.setAnimationListener(new AnimationListener(){
