@@ -3,8 +3,12 @@
  */
 package com.discover.mobile.bank.atm;
 
+import java.io.IOException;
 import java.util.List;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 
@@ -37,6 +41,9 @@ public class DiscoverMapWrapper {
 
 	/**Conversion to convert to miles*/
 	private static final double MILES_PER_KILOMETER = 0.000621371;
+
+	/**Address of the users current location*/
+	private static String addressString;
 
 	/**
 	 * 
@@ -75,7 +82,7 @@ public class DiscoverMapWrapper {
 	 * @param location - location of the user
 	 * @param drawable - drawable to pin on the map
 	 */
-	public void setUsersCurrentLocation(final Location location, final int drawable){
+	public void setUsersCurrentLocation(final Location location, final int drawable, final Context context){
 		this.location = location;
 		if(null != currentMarker){
 			currentMarker.remove();
@@ -83,7 +90,24 @@ public class DiscoverMapWrapper {
 		final LatLng item = new LatLng(location.getLatitude(), location.getLongitude());
 		currentMarker = map.addMarker(new MarkerOptions().position(item)
 				.icon(BitmapDescriptorFactory.fromResource(drawable)));
+		createAddressString(context);
 
+	}
+
+	/**
+	 * Create address string
+	 * @param context - activity context
+	 */
+	public void createAddressString(final Context context){
+		if(location == null){addressString = "";}
+
+		final Geocoder coder = new Geocoder(context);
+		try {
+			final Address address = coder.getFromLocation(location.getLatitude(), location.getLongitude(), 1).get(0);
+			addressString =  address.getFeatureName() + " " + address.getAddressLine(0) +", " + address.getLocality() +", " + address.getAdminArea() + ", " + address.getCountryName();
+		} catch (final IOException e) {
+			addressString =  location.getLatitude() + " , " + location.getLongitude();
+		}
 	}
 
 	/**
@@ -144,6 +168,12 @@ public class DiscoverMapWrapper {
 		map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
 	}
 
+	/**
+	 * Focus the camera on a location
+	 * @param latitude
+	 * @param longitude
+	 * @param zoomLevel
+	 */
 	public void focusCameraOnLocation(final Double latitude, final Double longitude, final float zoomLevel){
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(
 				new LatLng(location.getLatitude(), location.getLongitude()), zoomLevel));
@@ -161,6 +191,15 @@ public class DiscoverMapWrapper {
 	 */
 	public void setCurrentLocation(final Location location) {
 		this.location = location;
+	}
+
+	/**
+	 * 
+	 * @return the string representing the address of the current location
+	 */
+	public String getGetAddressString(){
+		return addressString;
+
 	}
 
 }

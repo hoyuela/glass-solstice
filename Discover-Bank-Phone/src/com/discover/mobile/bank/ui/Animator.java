@@ -1,9 +1,14 @@
 package com.discover.mobile.bank.ui;
 
+import android.content.Context;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
 import android.widget.RelativeLayout.LayoutParams;
+
+import com.discover.mobile.bank.R;
 
 /**
  * Animator class that is a common place for Java animations
@@ -112,4 +117,43 @@ public final class Animator {
 		animation.setDuration(DURATION);
 		return animation;
 	}
+
+	public static Animation createSlideToLeftAnimation(final Context context, final View view){
+		final Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_left);
+		animation.setAnimationListener(new AnimationListener(){
+
+			@Override
+			public void onAnimationEnd(final Animation animation) {
+				view.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void onAnimationRepeat(final Animation animation) { }
+
+			@Override
+			public void onAnimationStart(final Animation animation) { }
+
+		});
+		return animation;
+	}
+
+	public static Animation createSlideToRightAnimation(final Context context, final View view){
+		final Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_right);
+		animation.setAnimationListener(new AnimationListener(){
+
+			@Override
+			public void onAnimationEnd(final Animation animation) { }
+
+			@Override
+			public void onAnimationRepeat(final Animation animation) { }
+
+			@Override
+			public void onAnimationStart(final Animation animation) {
+				view.setVisibility(View.VISIBLE);
+			}
+
+		});
+		return animation;
+	}
 }
+
