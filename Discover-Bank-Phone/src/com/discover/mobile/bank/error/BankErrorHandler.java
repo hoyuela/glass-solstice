@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -326,6 +327,51 @@ public class BankErrorHandler implements ErrorHandler {
 				bundle.putString(BankDepositForbidden.KEY_ERROR_MESSAGE, msgErrResponse.getErrorMessage());
 				BankNavigator.navigateToDepositForbidden(bundle);
 				handled = true;
+			} else {
+				if( Log.isLoggable(TAG, Log.ERROR)) {
+					Log.e(TAG, "Unable to process 403 invalid service call");
+				}
+			}
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unable to process 403 invalid activity type");
+			}
+		}
+		
+		return handled;
+		
+	}
+	
+	
+	/**
+	 * Handler for 422 UnprocessableEntiry from execution of a Bank service call. Error message is expected to be provided from server.
+	 * 
+	 * @param msgErrResponse Reference to object that represents the response from the Server with error message to display.
+	 * 
+	 * @return True if handled, false otherwise
+	 */
+	public boolean handleUnprocessableEntity(final BankErrorResponse msgErrResponse) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		boolean handled = false;
+		
+		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {			
+			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
+			
+			if( navActivity.getCurrentContentFragment() != null &&
+				navActivity.getCurrentContentFragment() instanceof BankErrorHandlerDelegate ) {
+			
+				final BankErrorHandlerDelegate errorHandler = (BankErrorHandlerDelegate)navActivity.getCurrentContentFragment();
+				
+				handled = errorHandler.handleError(msgErrResponse);
+			} else {
+				if( Log.isLoggable(TAG, Log.ERROR)) {
+					Log.e(TAG, "Unable to process 422 invalid fragment type");
+				}
+			}
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unable to process 422 invalid activity type");
 			}
 		}
 		

@@ -83,6 +83,11 @@
         <item name="android:textSize">@dimen/body_copy_min</item>
     </style>
     
+    <style name="filter_static_text">
+        <item name="android:textColor">@color/body_copy</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+    
     <style name="dollar_sign_style" parent="field_copy_big">
        <item name="android:layout_width">wrap_content</item>      
        <item name="android:layout_height">wrap_content</item>        
@@ -106,4 +111,14 @@
         <item name="android:textCursorDrawable">@null</item>
         <item name="android:hint">@string/bank_deposit_amount_hint</item>
     </style>
+    
+   <style name="pmt_amount_style" parent="amount_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:background">@drawable/edit_text_default</item>
+        <item name="android:ems">10</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:padding">7dp</item>
+    </style>
+   
 </resources>
