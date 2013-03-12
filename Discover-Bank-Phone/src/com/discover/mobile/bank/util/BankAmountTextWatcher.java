@@ -1,10 +1,9 @@
-package com.discover.mobile.bank.deposit;
+package com.discover.mobile.bank.util;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import com.discover.mobile.bank.util.BankStringFormatter;
 import com.google.common.base.Strings;
 
 /**
@@ -16,7 +15,7 @@ import com.google.common.base.Strings;
  * @author asheehan, hoyuela
  * 
  */
-class BankAmountTextWatcher implements TextWatcher {
+public class BankAmountTextWatcher implements TextWatcher {
 	/**
 	 * Holds the last string assigned to the watched EditText by this TextWatcher after formatting it.
 	 */
