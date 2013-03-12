@@ -136,6 +136,14 @@ public class BankUrlManager  {
 	public static void clearLinks() {
 		links.clear();
 	}
+	
+	public static int getLinksCount() {
+		return links.size();
+	}
+	
+	public static Map<String, ReceivedUrl> getLinks() {
+		return links;
+	}
 
 	/**
 	 * 

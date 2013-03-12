@@ -1,5 +1,7 @@
 package com.discover.mobile.bank;
 
+import java.io.Serializable;
+
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
@@ -16,11 +18,15 @@ import com.discover.mobile.bank.services.payee.ListPayeeDetail;
  * @author henryoyuela
  * 
  */
-public final class BankUser {
+public final class BankUser implements Serializable {
+	/**
+	 * Serialized!
+	 */
+	private static final long serialVersionUID = -8534001018414145158L;
 	/**
 	 * Singleton instance of this class
 	 */
-	private final static BankUser currentBankUser = new BankUser();
+	private static BankUser currentBankUser = new BankUser();
 	/**
 	 * Holds a reference to a AccountList set from the
 	 * GetCustomerAccountServerCall on a successful download of accounts.
@@ -161,5 +167,9 @@ public final class BankUser {
 	 */
 	public void setPayees(final ListPayeeDetail payees) {
 		this.payees = payees;
+	}
+	
+	public void setBankUser(BankUser bu) {
+		currentBankUser = bu;
 	}
 }
