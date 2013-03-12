@@ -76,7 +76,7 @@ public class BankErrorResponse extends AbstractErrorResponse<BankErrorResponse> 
 		return errorCode;
 	}
 	/**
-	 * @return Returns the name used to decribe the error found in the JSON error response
+	 * @return Returns the name used to decribe the error found in the JSON error response for the first error object in the list
 	 */
 	public String getErrorName() {
 		String errorName = null;
@@ -92,7 +92,7 @@ public class BankErrorResponse extends AbstractErrorResponse<BankErrorResponse> 
 		return errorName;
 	}
 	/**
-	 * @return Returns the Message found in the JSON error response
+	 * @return Returns the Message found in the JSON error response for the first error object in the list
 	 */
 	public String getErrorMessage() {
 		String errorMessage = null;
@@ -113,9 +113,8 @@ public class BankErrorResponse extends AbstractErrorResponse<BankErrorResponse> 
 	 * @param key 
 	 * @return Returns the string with the key
 	 */
-	public String getDataValue(String key){
+	public String getDataValue(final String key){
 		
 		return data.get(key);
 	}
-
 }
