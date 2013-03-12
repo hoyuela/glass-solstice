@@ -132,14 +132,15 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				if(f instanceof SchedulePaymentFragment) {
 					((SchedulePaymentFragment)f).setDuplicatePaymentError(true);
 				}
-			// TODO temporary until Bank updates the error response in their API doc...
-			} else if(errCode.equals("customer.firstname.NotBlank")) { // TODO Will be Invalid Date error
-				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
-				final BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
-				if(f instanceof SchedulePaymentFragment) {
-					((SchedulePaymentFragment)f).setDateError(true);
+			} 
+			//Error Handling for 422 Unprocessable Entity
+			else if( msgErrResponse.getHttpStatusCode() == BankHttpStatusCodes.HTTP_UNPROCESSABLE_ENTITY.getValue() ) {
+				//Check if 422 is meant for Schedule Payments functionality otherwise send to generic handler
+				final BankErrorHandler errorHandler = (BankErrorHandler)BankErrorHandler.getInstance();
+				if( !errorHandler.handleUnprocessableEntity(msgErrResponse) ) {
+					mErrorHandler.handleGenericError(msgErrResponse.getHttpStatusCode());
 				}
-			} else {
+			}  else {
 				mErrorHandler.handleGenericError(msgErrResponse.getHttpStatusCode());
 			}
 		} else {

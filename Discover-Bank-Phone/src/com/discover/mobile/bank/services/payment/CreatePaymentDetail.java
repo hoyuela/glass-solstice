@@ -23,6 +23,27 @@ public class CreatePaymentDetail implements Serializable {
 	/** Identifier id for class */
 	private static final long serialVersionUID = 7318356891841603871L;
 
+	/**
+	 * Holds the name of the payee field in a JSON request.
+	 */
+	public static final String PAYEE_FIELD = "payee";
+	/**
+	 * Holds the name of the amount field in a JSON request.
+	 */
+	public static final String AMOUNT_FIELD = "amount";
+	/**
+	 * Holds the name of the payment method field in a JSON request.
+	 */
+	public static final String PAYMENT_METHOD_FIELD = "paymentMethod";
+	/**
+	 * Holds the name of the delivery by field in a JSON request.
+	 */
+	public static final String DELIVERBY_FIELD = "deliverBy";
+	/**
+	 * Holds the name of the memo field in a JSON request.
+	 */
+	public static final String MEMO_FIELD = "memo";
+	
 	/* ID of Payee */
 	@JsonProperty("payee")
 	public ID payee;
