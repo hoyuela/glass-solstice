@@ -15,10 +15,10 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.bank.util.BankNeedHelpFooter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.google.common.base.Strings;
 
 /**
@@ -60,7 +60,7 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	/**
 	 * Reference to a Progress indicator used to display a users progress in the current work-flow
 	 */
-	protected HeaderProgressIndicator progressIndicator;
+	protected BankHeaderProgressIndicator progressIndicator;
 	/**
 	 * Reference to a TextView which displays a title for the instructions or note provided to the user.
 	 * By default view is gone, sub-class to make it visible as required.
@@ -94,7 +94,7 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_one_button_layout, null);
 		
-		progressIndicator = (HeaderProgressIndicator)view.findViewById(R.id.header);
+		progressIndicator = (BankHeaderProgressIndicator)view.findViewById(R.id.header);
 		
 		
 		/**Fetch layout that will contain list of account groups*/

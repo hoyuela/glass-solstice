@@ -12,7 +12,7 @@
     <string name="bank_deposit_unknown_limit">We\'re sorry. We are unable to determine a valid limit.</string>
     <string name="bank_deposit_forbidden_title">Mobile Check\nDeposit Unavailable</string>
     <string name="bank_deposit_forbidden_message">Please contact us for assistance in accessing the Mobile Check Deposit feature.</string>
-    <string name="bank_deposit_forbidden_number">1-800-450-7067</string>
+    <string name="bank_deposit_forbidden_number">1&#8211;800&#8211;450&#8211;7067</string>
     <string name="capture">Capture</string>
     <string name="picture_confirm">Confirm</string>
     <string name="front">Front</string>
@@ -22,4 +22,15 @@
 
     <string name="bank_deposit_capture_help_title">Auto Capture &amp; Review Help</string>
     <string name="bank_deposit_capture_help_content"><![CDATA[<b>Auto Capture Tips:</b><br/><b>•</b> Frame the check within the white box<br/><b>•</b> Tap the middle of the screen to focus the image<br/><b>•</b> Tap the Capture button and stay steady as it counts down 3, 2, 1<br/><b>•</b> Tap Retake if the image isn\'t clear<br/><b>•</b> Tap Confirm if you are satisfied with the image<br/><b>•</b> Repeat these steps for the back of the check<br/><br/><b>Review the Capture:</b><br/><b>•</b> Ensure the front and back are in focus<br/><b>•</b> Ensure the back is endorsed]]></string>
+
+	<string name="how_it_works">How It Works</string>
+	
+	<string name="select_bank_account">1. Select Bank Account</string>
+	<string name="select_bank_account_info">Choose where you\'ll\ndeposit your check.</string>
+	<string name="enter_amount">2. Enter Amount</string>
+	<string name="enter_amount_info">You must deposit the\nwhole value of the check.</string>
+	<string name="take_the_picture">3. Take the Picture</string>
+	<string name="take_the_picture_info">Use the camera on your\nphone to capture the front\nand back of the check.</string>
+	
+	
 </resources>

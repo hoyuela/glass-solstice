@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
+    android:paddingLeft="@dimen/forms_inner_padding"
+    android:paddingRight="@dimen/forms_inner_padding" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/forms_inner_padding" >
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/title_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/how_it_works" />
+
+        <TextView
+            android:id="@+id/select_account_title"
+            style="@style/sub_copy_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:text="@string/select_bank_account"
+            android:textColor="@color/sub_copy"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/select_account_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/select_account_title"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:contentDescription="@string/empty"
+            android:src="@drawable/how_it_works_1" />
+
+        <TextView
+            android:id="@+id/select_account_title_info"
+            style="@style/sub_copy_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/select_account_image"
+            android:layout_marginLeft="@dimen/between_related_elements_padding"
+            android:layout_toRightOf="@+id/select_account_image"
+            android:text="@string/select_bank_account_info"
+            android:textColor="@color/sub_copy" />
+
+        <TextView
+            android:id="@+id/enter_amount_title"
+            style="@style/sub_copy_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/select_account_image"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:text="@string/enter_amount"
+            android:textColor="@color/sub_copy"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/enter_amount_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/enter_amount_title"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:contentDescription="@string/empty"
+            android:src="@drawable/how_it_works_2" />
+
+        <TextView
+            android:id="@+id/enter_amount_info"
+            style="@style/sub_copy_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/enter_amount_image"
+            android:layout_marginLeft="@dimen/between_related_elements_padding"
+            android:layout_toRightOf="@+id/enter_amount_image"
+            android:text="@string/enter_amount_info"
+            android:textColor="@color/sub_copy" />
+
+        <TextView
+            android:id="@+id/take_picture_title"
+            style="@style/sub_copy_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/enter_amount_image"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:text="@string/take_the_picture"
+            android:textColor="@color/sub_copy"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/take_picture_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/take_picture_title"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:contentDescription="@string/empty"
+            android:src="@drawable/how_it_works_3" />
+
+        <TextView
+            android:id="@+id/take_picture_info"
+            style="@style/sub_copy_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/take_picture_image"
+            android:layout_marginLeft="@dimen/between_related_elements_padding"
+            android:layout_toRightOf="@+id/take_picture_image"
+            android:text="@string/take_the_picture_info"
+            android:textColor="@color/sub_copy" />
+    </RelativeLayout>
+
+</ScrollView>
