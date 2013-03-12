@@ -35,6 +35,7 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
@@ -44,14 +45,17 @@ import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.net.error.bank.BankError;
+import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.discover.mobile.common.ui.widgets.CustomTitleDatePickerDialog;
 import com.discover.mobile.common.ui.widgets.SchedulePaymentAmountEditText;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.google.common.base.Strings;
 
-public class SchedulePaymentFragment extends BaseFragment {
+public class SchedulePaymentFragment extends BaseFragment implements BankErrorHandlerDelegate {
 
 	/** Keys used to save/load values possibly lost during rotation. */
 	private static final String PAY_FROM_ACCOUNT_ID = "a";
@@ -82,12 +86,18 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private TextView amountError;
 	/** Text view for payment account choice */
 	private TextView paymentAccountText;
+	/** Text View for payment account error*/
+	private TextView paymentAccountError;
 	/** Text view for memo */
 	private TextView memoText;
 	/** Edit view for memo */
 	private EditText memoEdit;
+	/**Text view for memo error*/
+	private TextView memoError;
 	/** Text view for the payee */
 	private TextView payeeText;
+	/** Text view for inline payee error*/
+	private TextView payeeError;
 	/** Edit view for amount */
 	private SchedulePaymentAmountEditText amountEdit;
 	/** Edit view for date */
@@ -147,6 +157,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		parentView = (ScrollView) view;
 		payeeText = (TextView) view.findViewById(R.id.payee_text);
+		payeeError = (TextView)view.findViewById(R.id.payee_error);
 		progressHeader = (BankHeaderProgressIndicator) view
 				.findViewById(R.id.schedule_pay_header);
 		conflictError = (TextView) view.findViewById(R.id.conflict_error);
@@ -156,6 +167,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 				.findViewById(R.id.payment_acct_text);
 		paymentAccountSpinner = (Spinner) view
 				.findViewById(R.id.payment_acct_spinner);
+		paymentAccountError = (TextView)view.findViewById(R.id.payment_acct_error);
 		amountEdit = (SchedulePaymentAmountEditText) view.findViewById(R.id.amount_edit);
 		amountEdit.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 		amountItem = (RelativeLayout) view.findViewById(R.id.amount_element);
@@ -166,6 +178,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 		memoItem = (RelativeLayout) view.findViewById(R.id.memo_element);
 		memoText = (TextView) memoItem.findViewById(R.id.memo_text);
 		memoEdit = (EditText) memoItem.findViewById(R.id.memo_edit);
+		memoError = (TextView) view.findViewById(R.id.memo_error);
 		payNowButton = (Button) view.findViewById(R.id.pay_now);
 		cancelButton = (Button) view.findViewById(R.id.cancel_button);
 		bankUser = BankUser.instance();
@@ -289,7 +302,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 				paymentAccountSpinner.setAdapter(accountAdapter);
 			}
 		}
-		amountEdit.attachErrorLabelAndLayout(amountError, amountItem);
+		amountEdit.attachErrorLabel(amountError);
 		amountEdit.setLowAndHighErrorText(getString(R.string.schedule_pay_too_low), getString(R.string.schedule_pay_too_high));
 		progressHeader.initChangePasswordHeader(0);
 		progressHeader.hideStepTwo();
@@ -464,6 +477,9 @@ public class SchedulePaymentFragment extends BaseFragment {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
 		InputMethodManager imm = activity.getInputMethodManager();
 
+		/**Hide memo error code*/
+		memoError.setVisibility(View.GONE);
+		
 		// EditText will be shown.
 		if (showEditable) {
 			memoText.setVisibility(View.INVISIBLE);
@@ -501,21 +517,10 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 *            displays the error if true, and normal if false.
 	 */
 	public void setDateError(final boolean isError) {
-		final int padding = (int) getResources().getDimension(
-				R.dimen.between_related_elements_padding);
 		isDateError = isError;
 		if (isError) {
-			dateItem.getLayoutParams().height = (int) getResources()
-					.getDimension(R.dimen.listview_vertical_height)
-					+ (int) getResources().getDimension(R.dimen.small_copy_mid);
-			dateItem.setPadding(padding, padding, padding, padding);
-			dateItem.invalidate();
 			dateError.setVisibility(View.VISIBLE);
 		} else {
-			dateItem.getLayoutParams().height = (int) getResources()
-					.getDimension(R.dimen.listview_vertical_height);
-			dateItem.setPadding(padding, padding, padding, padding);
-			dateItem.invalidate();
 			dateError.setVisibility(View.GONE);
 		}
 	}
@@ -620,6 +625,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 		paymentAccountItem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
+				paymentAccountError.setVisibility(View.GONE);
 				if(bankUser.getAccounts().accounts.size() > 1)
 					paymentAccountSpinner.performClick();
 			}
@@ -692,6 +698,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 				}
 				
 				if (amountEdit.isValid() && !isDateError) {
+					clearErrors();
+					
 					final String memo = memoEdit.getText().toString();
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
 					payment.payee.id = payee.id;
@@ -723,4 +731,55 @@ public class SchedulePaymentFragment extends BaseFragment {
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.PAY_BILLS_SECTION;
 	}
+
+	@Override
+	public boolean handleError(final BankErrorResponse msgErrResponse) {		
+		for( final BankError error : msgErrResponse.errors ) {
+			if( !Strings.isNullOrEmpty(error.name) ) {
+				/**Check if error is for Payee field*/
+				if( error.name.equals(CreatePaymentDetail.PAYEE_FIELD) ) {
+					payeeError.setText(error.message);
+					payeeError.setVisibility(View.VISIBLE);
+				}
+				/**Check if error is for amount field*/
+				else if( error.name.equals(CreatePaymentDetail.AMOUNT_FIELD)) {
+					amountEdit.showErrorLabelText(error.message);
+				}
+				/**Check if error is for Payment method field*/
+				else if( error.name.equals(CreatePaymentDetail.PAYMENT_METHOD_FIELD)) {
+					paymentAccountError.setText(error.message);
+					paymentAccountError.setVisibility(View.VISIBLE);
+				}
+				/**Check if error is for Deliver by field*/
+				else if( error.name.equals(CreatePaymentDetail.DELIVERBY_FIELD) ) {
+					dateError.setText(error.message);
+					setDateError(true);
+				}
+				/**Check if error is for Memo Field*/
+				else if( error.name.equals(CreatePaymentDetail.MEMO_FIELD)) {
+					memoError.setText(error.message);
+					memoError.setVisibility(View.VISIBLE);
+				}
+				/**Show error at the top of the screen */
+				else {
+					conflictError.setText(error.message);
+					conflictError.setVisibility(View.VISIBLE);
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Clear any inline errors shown
+	 */
+	public void clearErrors() {
+		payeeError.setVisibility(View.GONE);
+		paymentAccountError.setVisibility(View.GONE);
+		amountError.setVisibility(View.GONE);
+		setDateError(false);
+		memoError.setVisibility(View.GONE);
+		conflictError.setVisibility(View.GONE);
+	}
+	
 }
