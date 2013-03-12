@@ -5,7 +5,7 @@
     android:background="@drawable/light_gray_bkgrd" >
 
     <fragment
-        android:id="@+id/discover_map"
+        android:id="@+id/discover_map_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/map_navigation_panel"

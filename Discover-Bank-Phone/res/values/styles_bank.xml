@@ -83,6 +83,11 @@
         <item name="android:textSize">@dimen/body_copy_min</item>
     </style>
     
+    <style name="filter_static_text">
+        <item name="android:textColor">@color/body_copy</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+    
     <style name="dollar_sign_style" parent="field_copy_big">
        <item name="android:layout_width">wrap_content</item>      
        <item name="android:layout_height">wrap_content</item>        
