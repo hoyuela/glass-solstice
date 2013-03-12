@@ -52,17 +52,22 @@ public class KeepAliveService {
 	}
 
 	/**
-	 *  
+	 *  Task that will make the call to refresh the Bank session.
 	 */
 	private class BankTimerTask extends TimerTask {
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
+			// TODO Make a call to service.
 
+			
+			// Remember, all UI updates need to be ran on UI thread. Cheers.
 		}
 	}
 
+	/**
+	 * Task that will make the call to Card's facade that will refresh the session.
+	 */
 	private class CardTimerTask extends TimerTask {
 
 		@Override
