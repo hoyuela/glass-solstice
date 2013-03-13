@@ -150,7 +150,9 @@ public class BankAddPayeeFragment extends BankOneButtonFragment {
 		
 		//Need Help and feedback footer not required for this view
 		final View footer = mainView.findViewById(R.id.provide_feedback);
-		footer.setVisibility(View.GONE);
+		if( footer != null ) {
+			footer.setVisibility(View.GONE);
+		}
 	}
 
 
