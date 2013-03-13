@@ -41,7 +41,7 @@ public interface LocationFragment {
 	 */ 
 	int NOT_USING_LOCATION = 4;
 
-	/**Key to get the location status out of a buncle*/
+	/**Key to get the location status out of a bundle*/
 	String LOCATION_STATUS = "status";
 
 	/**Constant to save the users longitude location*/
@@ -51,10 +51,10 @@ public interface LocationFragment {
 	String LAT_KEY = "lat";
 
 	/**Zoom level that the app should zoom into when the users current location is found*/
-	float MAP_CURRENT_GPS_ZOOM = 16f;
+	float MAP_CURRENT_GPS_ZOOM = 14f;
 
 	/**Zoom level that the app should zoom into when the users current location is found*/
-	float MAP_CURRENT_NETWORK_ZOOM = 16f;
+	float MAP_CURRENT_NETWORK_ZOOM = 14f;
 
 	/**Latitude used to center the map over the United States*/
 	Double MAP_CENTER_LAT = 37.88;

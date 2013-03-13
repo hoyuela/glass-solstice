@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import android.content.Context;
+import android.location.Address;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,8 +38,8 @@ public class AtmMarkerBalloonManager{
 	/**Image for the street view*/
 	private ImageView streetView;
 
-	/**Image for the get directions view*/
-	private ImageView directions;
+	/**Current location address object*/
+	private Address address;
 
 	/**
 	 * Constructor for the class
@@ -55,21 +56,39 @@ public class AtmMarkerBalloonManager{
 	 * @return the view that needs to be displayed above the marker
 	 */
 	public View getViewForMarker(final Marker marker){
-		final View view = LayoutInflater.from(context).inflate(R.layout.bank_atm_marker_info, null);
-		view.setClickable(false);
 		final AtmDetail atm = markerMap.get(marker); 
 
 		//Means it was the current location that was clicked.
 		if(null == atm){
-			return null;
+			return getCurrentLocationView();
+		}else{
+			return getMarkerView(atm);
 		}
 
+
+	}
+
+	private View getCurrentLocationView() {
+		final View view = LayoutInflater.from(context).inflate(R.layout.bank_atm_current_locaiton, null);
+		final TextView name = (TextView) view.findViewById(R.id.name);
+		final TextView addressBox = (TextView) view.findViewById(R.id.address);
+		final TextView city = (TextView) view.findViewById(R.id.city);
+
+		if(null != address.getFeatureName() && !address.getFeatureName().isEmpty()){
+			name.setText(address.getFeatureName());
+		}
+		addressBox.setText(address.getAddressLine(0));
+		city.setText(address.getLocality() +", " + address.getAdminArea());
+		return view;
+	}
+
+	private View getMarkerView(final AtmDetail atm) {
+		final View view = LayoutInflater.from(context).inflate(R.layout.bank_atm_marker_info, null);
 		final TextView name = (TextView) view.findViewById(R.id.name);
 		final TextView address = (TextView) view.findViewById(R.id.address);
 		streetView = (ImageView) view.findViewById(R.id.street_view);
 		final TextView hours = (TextView) view.findViewById(R.id.hours);
 		final TextView directionsLabel = (TextView) view.findViewById(R.id.directions_label);
-		directions = (ImageView) view.findViewById(R.id.directions);
 
 		name.setText(atm.locationName);
 		address.setText(atm.address1);
@@ -96,14 +115,28 @@ public class AtmMarkerBalloonManager{
 		return new OnInfoWindowClickListener(){
 
 			@Override
-			public void onInfoWindowClick(final Marker arg0) {
+			public void onInfoWindowClick(final Marker marker) {
+				final AtmDetail atm = markerMap.get(marker); 
 
-				Toast.makeText(context, "Street view is under construction", 3000).show();	
-				//				if(v == streetView){
-				//				}else if(v == directions){
-				//					Toast.makeText(context, "Getting directions is under construction.", 3000).show();		
-				//				}
+				//Means it was the current location that was clicked.
+				if(null != atm){
+					Toast.makeText(context, "Street view is under construction", 3000).show();	
+				}				
 			}
 		};
+	}
+
+	/**
+	 * @return the address
+	 */
+	public Address getAddress() {
+		return address;
+	}
+
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(final Address address) {
+		this.address = address;
 	}
 }
