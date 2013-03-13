@@ -51,6 +51,15 @@ public final class BankExtraKeys {
 
 	/**Used to let the check deposit capture screen know which image is being retaken */
 	public static final String RETAKE_PICTURE = "retake";
+	
+	/**Used to pass the amount of the check deposit around between fragments and activities*/
+	public static final String AMOUNT = "amount";
+	
+	/**
+	 * Used to let the first step of check deposit know if the user has just accepted 
+	 * the terms and should see the how it works modal
+	 */
+	public static final String ACCEPTED_TERMS = "accepted";
 
 	/**Used to signify sort set up*/
 	public static final int SORT_DATE_DESC = 0;

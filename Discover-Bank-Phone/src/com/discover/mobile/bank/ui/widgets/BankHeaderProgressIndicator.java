@@ -79,4 +79,11 @@ public class BankHeaderProgressIndicator extends HeaderProgressIndicator impleme
 		toast.show();
 		
 	}
+
+	/**
+	 * @return the helpView
+	 */
+	public ImageView getHelpView() {
+		return helpView;
+	}
 }

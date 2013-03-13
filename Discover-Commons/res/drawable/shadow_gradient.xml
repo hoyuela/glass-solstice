@@ -5,9 +5,4 @@
         android:startColor="#22000000"
         android:endColor="#22ffffff"
         android:angle="90"/>
-    <padding android:left="7dp"
-        android:top="7dp"
-        android:right="7dp"
-        android:bottom="7dp" />
-    <corners android:radius="8dp" />
 </shape>

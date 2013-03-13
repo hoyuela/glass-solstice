@@ -3,12 +3,16 @@ package com.discover.mobile.bank.deposit;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,7 +22,10 @@ import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.ui.modals.HowItWorksModalTop;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 
 /**
  * Fragment used to display the Check Deposit - Select Account page. This is the first step in the
@@ -31,10 +38,18 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	/**
 	 * Used to log into Android logcat
 	 */
-	private static final String TAG = "SelectAccount";
+	private final String TAG = "SelectAccount";
 
+	private HowItWorksModal modal = null;
+
+	/**
+	 * Boolean flag to detect if the user just accepted the terms and conditions,
+	 * so that the how it works modal can be shown.
+	 */
+	private boolean acceptedTerms = false;
+	
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, 
 			final Bundle savedInstanceState) {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
@@ -44,12 +59,36 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		noteTitle.setVisibility(View.GONE);
 		noteTextMsg.setVisibility(View.GONE);
 
+		//Load the terms boolean from the arguments bundle
+		loadTermsBoolean(getArguments());		
 		
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
-		
+		setupHelpClickListener();
+
 		return view;
+	}
+
+	/**
+	 * Show the modal if it needs to be shown.
+	 */
+	@Override
+	public void onResume() {
+		super.onResume();
+		showHowItWorksModal();
+	}
+	
+	/**
+	 * Always close the modal on pause. This solves the problem of having more than one modal
+	 * show up when the activity is paused but not destroyed. Such as when the app is put into the
+	 * background and not rotated.
+	 */
+	@Override
+	public void onPause() {
+		super.onPause();
+		if(modal != null)
+			modal.dismiss();
 	}
 	
 	@Override
@@ -146,7 +185,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 			}
 		}
 	}
-
+	
 	@Override
 	protected int getProgressIndicatorStep() {
 		return 0;
@@ -160,5 +199,73 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	@Override
 	public void onBackPressed() {
 		//Nothing To Do Here
+	}
+	
+	/**
+	 * Show the how it works modal if the acceptedTerms boolean is true. It will be true if the have just accepted 
+	 * the terms and have not closed the modal before.
+	 */
+	private void showHowItWorksModal() {
+		if(acceptedTerms){
+			final HowItWorksModalTop top = new HowItWorksModalTop(this.getActivity(), null);
+			final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this.getActivity(), null);
+			modal = new HowItWorksModal(this.getActivity(), top, bottom);
+			
+			bottom.setButtonText(R.string.ok);
+			bottom.getButton().setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(final View v) {
+					modal.dismiss();
+					acceptedTerms = false;
+					updateArgumentBoolean();
+				}
+			});
+			final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
+
+			final String windowService = activeActivity.WINDOW_SERVICE;
+			final Display display = ((WindowManager)activeActivity.getSystemService(windowService)).getDefaultDisplay();
+		
+			modal.show();
+			modal.getWindow().setLayout(display.getWidth(), display.getHeight());
+		}
+	}
+
+	/**
+	 * Add a click listener to the help button so that when it is clicked, it will open the help modal.
+	 */
+	private void setupHelpClickListener() {
+		progressIndicator.getHelpView().setOnClickListener(showHelpModal);
+	}
+	
+	/**
+	 * A click listener that will launch the how it works modal when the thing it is attached to gets clicked.
+	 */
+	private final OnClickListener showHelpModal = new OnClickListener() {
+		
+		@Override
+		public void onClick(final View v) {
+			acceptedTerms = true;
+			updateArgumentBoolean();
+			showHowItWorksModal();
+		}
+	};
+	
+	/**
+	 * Update the boolean value that is in the argument bundle to be the current value of acceptedTerms.
+	 */
+	private void updateArgumentBoolean() {
+		//Update the argument bundle.
+		final Bundle args = getArguments();
+		if(args != null)
+			args.putBoolean(BankExtraKeys.ACCEPTED_TERMS, acceptedTerms);
+	}
+	
+	/**
+	 * Loads the terms boolean value from a Bundle.
+	 * @param arguments a Bundle that was supplied from this fragment.
+	 */
+	private void loadTermsBoolean(final Bundle bundle) {
+		if(bundle != null)
+			acceptedTerms = bundle.getBoolean(BankExtraKeys.ACCEPTED_TERMS);
 	}
 }
