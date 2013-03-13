@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.common.R;
+import com.google.common.base.Strings;
 
 
 /**
@@ -339,4 +340,16 @@ public abstract class ValidatedInputField extends EditText{
 		isInDefaultState = true;
 	}
 
+	/**
+	 * Method used to set the text for the error label.
+	 * 
+	 * @param text Reference to a string with the error to show inline.
+	 */
+	public void showErrorLabelText(final String text) {
+		if( errorLabel != null && !Strings.isNullOrEmpty(text)) {
+			errorLabel.setText(text);
+		
+			this.showErrorLabel();
+		}
+	}
 }

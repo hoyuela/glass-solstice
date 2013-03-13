@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
@@ -35,6 +36,7 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
@@ -44,14 +46,17 @@ import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.net.error.bank.BankError;
+import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.discover.mobile.common.ui.widgets.CustomTitleDatePickerDialog;
 import com.discover.mobile.common.ui.widgets.SchedulePaymentAmountEditText;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.google.common.base.Strings;
 
-public class SchedulePaymentFragment extends BaseFragment {
+public class SchedulePaymentFragment extends BaseFragment implements BankErrorHandlerDelegate {
 
 	/** Keys used to save/load values possibly lost during rotation. */
 	private static final String PAY_FROM_ACCOUNT_ID = "a";
@@ -60,6 +65,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private static final String DATE_MONTH = "d";
 	private static final String DATE_DAY = "e";
 	private static final String MEMO = "f";
+	private static final String CONFLICT = "conflict";
 
 	private ScrollView parentView;
 
@@ -82,12 +88,18 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private TextView amountError;
 	/** Text view for payment account choice */
 	private TextView paymentAccountText;
+	/** Text View for payment account error*/
+	private TextView paymentAccountError;
 	/** Text view for memo */
 	private TextView memoText;
 	/** Edit view for memo */
 	private EditText memoEdit;
+	/**Text view for memo error*/
+	private TextView memoError;
 	/** Text view for the payee */
 	private TextView payeeText;
+	/** Text view for inline payee error*/
+	private TextView payeeError;
 	/** Edit view for amount */
 	private SchedulePaymentAmountEditText amountEdit;
 	/** Edit view for date */
@@ -147,6 +159,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 
 		parentView = (ScrollView) view;
 		payeeText = (TextView) view.findViewById(R.id.payee_text);
+		payeeError = (TextView)view.findViewById(R.id.payee_error);
 		progressHeader = (BankHeaderProgressIndicator) view
 				.findViewById(R.id.schedule_pay_header);
 		conflictError = (TextView) view.findViewById(R.id.conflict_error);
@@ -156,6 +169,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 				.findViewById(R.id.payment_acct_text);
 		paymentAccountSpinner = (Spinner) view
 				.findViewById(R.id.payment_acct_spinner);
+		paymentAccountError = (TextView)view.findViewById(R.id.payment_acct_error);
 		amountEdit = (SchedulePaymentAmountEditText) view.findViewById(R.id.amount_edit);
 		amountEdit.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 		amountItem = (RelativeLayout) view.findViewById(R.id.amount_element);
@@ -166,6 +180,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 		memoItem = (RelativeLayout) view.findViewById(R.id.memo_element);
 		memoText = (TextView) memoItem.findViewById(R.id.memo_text);
 		memoEdit = (EditText) memoItem.findViewById(R.id.memo_edit);
+		memoError = (TextView) view.findViewById(R.id.memo_error);
 		payNowButton = (Button) view.findViewById(R.id.pay_now);
 		cancelButton = (Button) view.findViewById(R.id.cancel_button);
 		bankUser = BankUser.instance();
@@ -230,6 +245,21 @@ public class SchedulePaymentFragment extends BaseFragment {
 		outState.putString(DATE_MONTH, datesToSave[0]);
 		outState.putString(DATE_YEAR, datesToSave[2]);
 		outState.putString(MEMO, memoText.getText().toString());
+		
+		/**Store current error state*/
+		if( payeeError.getVisibility() == View.VISIBLE )
+			outState.putString(CreatePaymentDetail.PAYEE_FIELD, payeeError.getText().toString());
+		if( paymentAccountError.getVisibility() == View.VISIBLE )
+			outState.putString(CreatePaymentDetail.PAYMENT_METHOD_FIELD, paymentAccountError.getText().toString());
+		if( amountError.getVisibility() == View.VISIBLE )
+			outState.putString(CreatePaymentDetail.AMOUNT_FIELD, amountError.getText().toString());
+		if( dateError.getVisibility() == View.VISIBLE )
+			outState.putString(CreatePaymentDetail.DELIVERBY_FIELD, dateError.getText().toString());
+		if( memoError.getVisibility() == View.VISIBLE )
+			outState.putString(CreatePaymentDetail.MEMO_FIELD, memoError.getText().toString());
+		if( conflictError.getVisibility() == View.VISIBLE )
+			outState.putString(CONFLICT, conflictError.getText().toString());
+		
 	}
 
 	/**
@@ -253,9 +283,37 @@ public class SchedulePaymentFragment extends BaseFragment {
 					savedInstanceState.getString(DATE_DAY)));
 			memoEdit.setText(savedInstanceState.getString(MEMO));
 			memoText.setText(savedInstanceState.getString(MEMO));
+			
+			/**Restore error state*/
+			final Bundle data = savedInstanceState;
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					setErrorString(payeeError,data.getString(CreatePaymentDetail.PAYEE_FIELD));
+					setErrorString(paymentAccountError,data.getString(CreatePaymentDetail.PAYMENT_METHOD_FIELD));
+					setErrorString(amountError,data.getString(CreatePaymentDetail.AMOUNT_FIELD));
+					setErrorString(dateError, data.getString(CreatePaymentDetail.DELIVERBY_FIELD));
+					setErrorString(memoError,data.getString(CreatePaymentDetail.MEMO_FIELD));
+					setErrorString(conflictError,data.getString(CONFLICT));
+				}
+			}, 1000);
+			
 		}
 	}
 
+	/**
+	 * Method used to set the error string for an inline error label and make it visible.
+	 * 
+	 * @param view TextView that represents an inline error whose text will be set using the param text.
+	 * @param text String to show to the user as an inline error
+	 */
+	public void setErrorString(final TextView view, final String text ) {
+		if( view != null && !Strings.isNullOrEmpty(text)  ) {
+			view.setText(text);
+			view.setVisibility(View.VISIBLE);
+		}
+	}
+	
 	@Override
 	public int getActionBarTitle() {
 		return R.string.pay_a_bill_title;
@@ -289,7 +347,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 				paymentAccountSpinner.setAdapter(accountAdapter);
 			}
 		}
-		amountEdit.attachErrorLabelAndLayout(amountError, amountItem);
+		amountEdit.attachErrorLabel(amountError);
 		amountEdit.setLowAndHighErrorText(getString(R.string.schedule_pay_too_low), getString(R.string.schedule_pay_too_high));
 		progressHeader.initChangePasswordHeader(0);
 		progressHeader.hideStepTwo();
@@ -463,9 +521,12 @@ public class SchedulePaymentFragment extends BaseFragment {
 	private void flipMemoElements(final boolean showEditable) {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
 		InputMethodManager imm = activity.getInputMethodManager();
-
+	
 		// EditText will be shown.
 		if (showEditable) {
+			/**Hide memo error code*/
+			memoError.setVisibility(View.GONE);
+		
 			memoText.setVisibility(View.INVISIBLE);
 			memoEdit.setVisibility(View.VISIBLE);
 			memoEdit.setText(memoText.getText().toString());
@@ -501,21 +562,10 @@ public class SchedulePaymentFragment extends BaseFragment {
 	 *            displays the error if true, and normal if false.
 	 */
 	public void setDateError(final boolean isError) {
-		final int padding = (int) getResources().getDimension(
-				R.dimen.between_related_elements_padding);
 		isDateError = isError;
 		if (isError) {
-			dateItem.getLayoutParams().height = (int) getResources()
-					.getDimension(R.dimen.listview_vertical_height)
-					+ (int) getResources().getDimension(R.dimen.small_copy_mid);
-			dateItem.setPadding(padding, padding, padding, padding);
-			dateItem.invalidate();
 			dateError.setVisibility(View.VISIBLE);
 		} else {
-			dateItem.getLayoutParams().height = (int) getResources()
-					.getDimension(R.dimen.listview_vertical_height);
-			dateItem.setPadding(padding, padding, padding, padding);
-			dateItem.invalidate();
 			dateError.setVisibility(View.GONE);
 		}
 	}
@@ -620,6 +670,7 @@ public class SchedulePaymentFragment extends BaseFragment {
 		paymentAccountItem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
+				paymentAccountError.setVisibility(View.GONE);
 				if(bankUser.getAccounts().accounts.size() > 1)
 					paymentAccountSpinner.performClick();
 			}
@@ -692,6 +743,8 @@ public class SchedulePaymentFragment extends BaseFragment {
 				}
 				
 				if (amountEdit.isValid() && !isDateError) {
+					clearErrors();
+					
 					final String memo = memoEdit.getText().toString();
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
 					payment.payee.id = payee.id;
@@ -723,4 +776,50 @@ public class SchedulePaymentFragment extends BaseFragment {
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.PAY_BILLS_SECTION;
 	}
+
+	@Override
+	public boolean handleError(final BankErrorResponse msgErrResponse) {		
+		for( final BankError error : msgErrResponse.errors ) {
+			if( !Strings.isNullOrEmpty(error.name) ) {
+				/**Check if error is for Payee field*/
+				if( error.name.equals(CreatePaymentDetail.PAYEE_FIELD) ) {
+					setErrorString(payeeError,error.message);
+				}
+				/**Check if error is for amount field*/
+				else if( error.name.equals(CreatePaymentDetail.AMOUNT_FIELD)) {
+					setErrorString(amountError, error.message);
+				}
+				/**Check if error is for Payment method field*/
+				else if( error.name.equals(CreatePaymentDetail.PAYMENT_METHOD_FIELD)) {
+					setErrorString(paymentAccountError,error.message);
+				}
+				/**Check if error is for Deliver by field*/
+				else if( error.name.equals(CreatePaymentDetail.DELIVERBY_FIELD) ) {
+					setErrorString(dateError,error.message);
+				}
+				/**Check if error is for Memo Field*/
+				else if( error.name.equals(CreatePaymentDetail.MEMO_FIELD)) {
+					setErrorString(memoError,error.message);
+				}
+				/**Show error at the top of the screen */
+				else {
+					setErrorString(conflictError,error.message);
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Clear any inline errors shown
+	 */
+	public void clearErrors() {
+		payeeError.setVisibility(View.GONE);
+		paymentAccountError.setVisibility(View.GONE);
+		amountError.setVisibility(View.GONE);
+		setDateError(false);
+		memoError.setVisibility(View.GONE);
+		conflictError.setVisibility(View.GONE);
+	}
+	
 }

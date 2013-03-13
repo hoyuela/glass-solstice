@@ -39,10 +39,14 @@
         <item name="android:background">@drawable/rounded_table_corners_no_padding</item>
     </style>
     
-        <style name="schedule_pay_list_element">
-        <item name="android:padding">7dp</item>
+    <style name="schedule_pay_list_element">
+        <item name="android:paddingTop">@dimen/forms_inner_padding</item>
+        <item name="android:paddingBottom">7dp</item>
+        <item name="android:paddingLeft">@dimen/forms_inner_padding</item>
+        <item name="android:paddingRight">@dimen/forms_inner_padding</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/listview_vertical_height</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/listview_vertical_height</item>
         <item name="android:background">@drawable/home_list_item_no_stroke_padding</item>
     </style>
         
