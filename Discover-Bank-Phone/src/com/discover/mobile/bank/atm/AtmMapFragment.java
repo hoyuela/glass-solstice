@@ -126,7 +126,6 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 		searchBar = (AtmLocatorMapSearchBar) view.findViewById(R.id.full_search_bar);
 		searchBar.setFragment(this);
 
-		showMap();
 		setUpListeners();
 		disableMenu();
 		createSettingsModal();
@@ -275,6 +274,13 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 	public void onResume(){
 		super.onResume();
 		this.disableMenu();
+
+		if(isOnMap){
+			showMap();
+		}else{
+			showList();
+		}
+
 		((NavigationRootActivity)this.getActivity()).setCurrentFragment(this);
 
 		if(NOT_ENABLED == locationStatus){
@@ -452,8 +458,8 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 		help.setVisibility(View.GONE);
 		searchBar.showListView();
 		searchBar.setFragment(null);
-		this.getActivity().getSupportFragmentManager().beginTransaction().hide(fragment).commit();
-		this.getActivity().getSupportFragmentManager().beginTransaction().show(listFragment).commit();
+		this.getActivity().getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
+		this.getActivity().getSupportFragmentManager().beginTransaction().show(listFragment).commitAllowingStateLoss();
 	}
 
 	@Override
@@ -461,7 +467,7 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 		help.setVisibility(View.VISIBLE);
 		searchBar.showMapView();
 		searchBar.setFragment(this);
-		this.getActivity().getSupportFragmentManager().beginTransaction().hide(listFragment).commit();
-		this.getActivity().getSupportFragmentManager().beginTransaction().show(fragment).commit();
+		this.getActivity().getSupportFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
+		this.getActivity().getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
 	}
 }
