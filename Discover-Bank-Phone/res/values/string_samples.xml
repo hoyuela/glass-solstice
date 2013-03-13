@@ -11,4 +11,5 @@
     <string name="note_title">Note Title</string> 
     <string name="hi_text">Hi, John</string> 
     <string name="note_text">This here is nothing more than a sample of what the note text would like.</string>
+    <string name="page_title">Page Title</string>
 </resources>
