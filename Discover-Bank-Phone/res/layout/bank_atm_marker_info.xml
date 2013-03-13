@@ -100,16 +100,4 @@
         android:minWidth="215dp"
         android:text="Get Directions 1.1 M" />
 
-    <ImageView
-        android:id="@+id/directions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/divider3"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="@dimen/forms_inner_padding"
-        android:layout_marginTop="@dimen/between_related_elements_padding"
-        android:layout_toRightOf="@+id/directions_label"
-        android:background="@drawable/atm_directional_arrows"
-        android:layout_alignLeft="@+id/street_view" />
-
 </RelativeLayout>

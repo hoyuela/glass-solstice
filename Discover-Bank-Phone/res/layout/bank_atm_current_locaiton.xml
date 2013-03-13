@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/name"
+        style="@style/balloon_large_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/between_related_elements_padding"
+        android:text="Unkown" />
+
+    <TextView
+        android:id="@+id/address"
+        style="@style/balloon_sub_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="109 W North Ave" />
+
+    <TextView
+        android:id="@+id/city"
+        style="@style/balloon_sub_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/forms_inner_padding"
+        android:text="Chicago, IL 60614" />
+
+</LinearLayout>

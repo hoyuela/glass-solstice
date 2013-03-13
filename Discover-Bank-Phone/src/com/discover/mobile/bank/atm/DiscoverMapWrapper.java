@@ -104,7 +104,9 @@ public class DiscoverMapWrapper {
 		final Geocoder coder = new Geocoder(context);
 		try {
 			final Address address = coder.getFromLocation(location.getLatitude(), location.getLongitude(), 1).get(0);
-			addressString =  address.getFeatureName() + " " + address.getAddressLine(0) +", " + address.getLocality() +", " + address.getAdminArea() + ", " + address.getCountryName();
+			adapter.setCurrentLocation(address);
+			addressString =  address.getFeatureName() + " " + address.getAddressLine(0) +", " 
+					+ address.getLocality() +", " + address.getAdminArea() + ", " + address.getCountryName();
 		} catch (final IOException e) {
 			addressString =  location.getLatitude() + " , " + location.getLongitude();
 		}

@@ -3,6 +3,7 @@
  */
 package com.discover.mobile.bank.atm;
 
+import android.location.Address;
 import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -59,6 +60,13 @@ public class DiscoverInfoWindowAdapter implements InfoWindowAdapter{
 	 */
 	public GoogleMap.OnInfoWindowClickListener getInfoWindowClickListener(){
 		return manager.getOnClickListener();
+	}
+
+	/**
+	 * Set the current location
+	 */
+	public void setCurrentLocation(final Address address){
+		manager.setAddress(address);
 	}
 
 }

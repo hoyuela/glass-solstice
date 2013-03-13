@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/map_navigation_panel"
         android:layout_alignParentTop="true" 
+        android:layout_alignParentBottom="true"
         class="com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment"/>
 
     <com.discover.mobile.bank.atm.AtmLocatorMapSearchBar
