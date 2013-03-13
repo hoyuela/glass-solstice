@@ -11,5 +11,15 @@ import com.discover.mobile.common.net.error.bank.BankErrorResponse;
  *
  */
 public interface BankErrorHandlerDelegate {
+	/**
+	 * Interface to be implemented will iterate through the BankError list in msgErrResponse
+	 * to know which fields generated the inline error from the server. The delegate will need
+	 * to know the name of the field in the JSON request that generated the error response 
+	 * and compare the JSON field name with the name field in a BankError object.
+	 * 
+	 * @param msgErrResponse Error Response from Server after making a request
+	 * 
+	 * @return True if error was handled false otherwise.
+	 */
 	public boolean handleError(final BankErrorResponse msgErrResponse);
 }

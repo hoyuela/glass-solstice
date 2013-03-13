@@ -33,6 +33,24 @@ public class AddPayeeDetail implements Serializable {
 	 */
 	private static final long serialVersionUID = -554027199107573402L;
 
+	/**
+	 * Holds the name of the name field in a JSON request.
+	 */
+	public static final String NAME_FIELD = "name";
+	/**
+	 * Holds the name of the nickname field in a JSON request.
+	 */
+	public static final String NICKNAME_FIELD = "nickName";
+	/**
+	 * Holds the name of the account number field in a JSON request.
+	 */
+	public static final String ACCOUNT_NUMBER_FIELD = "accountNumber";
+	/**
+	 * Holds the name of the billing postal code field field in a JSON request.
+	 */
+	public static final String BILLING_POSTAL_CODE_FIELD = "billingPostalCode";
+	
+	
 	@JsonProperty("name")
 	public String name;
 	
@@ -43,7 +61,7 @@ public class AddPayeeDetail implements Serializable {
 	public String accountNumber;
 	
 	public String accountNumberConfirmed;
-//	
+
 	@JsonProperty("billingPostalCode")
 	public String zip;
 	
@@ -52,7 +70,7 @@ public class AddPayeeDetail implements Serializable {
 	
 	@JsonProperty("merchantNumber")
 	public String merchantNumber;
-//	
+	
 	@JsonProperty("phone")
 	public String phone;
 
