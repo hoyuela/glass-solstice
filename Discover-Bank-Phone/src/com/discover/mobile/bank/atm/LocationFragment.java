@@ -100,4 +100,8 @@ public interface LocationFragment {
 	 */
 	void setLocation(Location location);
 
+	void showList();
+
+	void showMap();
+
 }
