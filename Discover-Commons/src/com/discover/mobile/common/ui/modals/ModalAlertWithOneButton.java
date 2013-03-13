@@ -35,22 +35,22 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	private LinearLayout linearLayout;
 
 	/**Static int for the heights of the top and bottom views*/
-	private static final int VIEW_HEIGHTS = 0;
+	private final int VIEW_HEIGHTS = 0;
 
 	/**Static weight for the top view in portrait mode*/
-	private static final float NO_BOTTOM_WEIGHT = 10f;
+	private final float NO_BOTTOM_WEIGHT = 10f;
 
 	/**Static weight for the top view in portrait mode*/
-	private static final float PORTRAIT_TOP_WEIGHT = 7f;
+	private final float PORTRAIT_TOP_WEIGHT = 7f;
 
 	/**Static weight for the bottom view in portrait mode*/
-	private static final float PORTRAIT_BOTTOM_WEIGHT = 3f;
+	private final float PORTRAIT_BOTTOM_WEIGHT = 3f;
 
 	/**Static weight for the top view in landscape mode*/
-	private static final float LANDSCAPE_TOP_WEIGHT = 5f;
+	private final float LANDSCAPE_TOP_WEIGHT = 5f;
 
 	/**Static weight for the bottom view in landscape mode*/
-	private static final float LANDSCAPE_BOTTOM_WEIGHT = 5f;
+	private final float LANDSCAPE_BOTTOM_WEIGHT = 5f;
 
 	/**An attached activity that will be closed if the dialog is dismissed with the back button*/
 	private Activity toClose;

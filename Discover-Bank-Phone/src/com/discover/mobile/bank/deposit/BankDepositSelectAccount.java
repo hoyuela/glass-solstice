@@ -3,13 +3,16 @@ package com.discover.mobile.bank.deposit;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,7 +24,7 @@ import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.modals.HowItWorksModalTop;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 
 /**
@@ -37,7 +40,8 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	 */
 	private final String TAG = "SelectAccount";
 
-	
+	private HowItWorksModal modal = null;
+
 	/**
 	 * Boolean flag to detect if the user just accepted the terms and conditions,
 	 * so that the how it works modal can be shown.
@@ -62,16 +66,29 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
 		setupHelpClickListener();
+
 		return view;
 	}
-	
+
 	/**
-	 * onResume() show the how it works modal if necessary.
+	 * Show the modal if it needs to be shown.
 	 */
 	@Override
 	public void onResume() {
 		super.onResume();
 		showHowItWorksModal();
+	}
+	
+	/**
+	 * Always close the modal on pause. This solves the problem of having more than one modal
+	 * show up when the activity is paused but not destroyed. Such as when the app is put into the
+	 * background and not rotated.
+	 */
+	@Override
+	public void onPause() {
+		super.onPause();
+		if(modal != null)
+			modal.dismiss();
 	}
 	
 	@Override
@@ -192,7 +209,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		if(acceptedTerms){
 			final HowItWorksModalTop top = new HowItWorksModalTop(this.getActivity(), null);
 			final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this.getActivity(), null);
-			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(this.getActivity(), top, bottom);
+			modal = new HowItWorksModal(this.getActivity(), top, bottom);
 			
 			bottom.setButtonText(R.string.ok);
 			bottom.getButton().setOnClickListener(new OnClickListener() {
@@ -203,11 +220,16 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 					updateArgumentBoolean();
 				}
 			});
+			final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
+			final String windowService = activeActivity.WINDOW_SERVICE;
+			final Display display = ((WindowManager)activeActivity.getSystemService(windowService)).getDefaultDisplay();
+		
 			modal.show();
+			modal.getWindow().setLayout(display.getWidth(), display.getHeight());
 		}
 	}
-	
+
 	/**
 	 * Add a click listener to the help button so that when it is clicked, it will open the help modal.
 	 */
