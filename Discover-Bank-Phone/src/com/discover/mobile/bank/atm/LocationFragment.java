@@ -51,7 +51,7 @@ public interface LocationFragment {
 	String LAT_KEY = "lat";
 
 	/**Zoom level that the app should zoom into when the users current location is found*/
-	float MAP_CURRENT_GPS_ZOOM =413f;
+	float MAP_CURRENT_GPS_ZOOM = 14f;
 
 	/**Zoom level that the app should zoom into when the users current location is found*/
 	float MAP_CURRENT_NETWORK_ZOOM = 14f;
