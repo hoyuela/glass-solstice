@@ -3,12 +3,12 @@
     
     <!--  ATM locator strings -->
     <string name="atm_locator_title">ATM Locator</string>
-    <string name="atm_location_modal_title">Discover: ATM Locator</string>
-    <string name="atm_location_modal_content">Discover would like to use your current location.</string>
+    <string name="atm_location_modal_title">Use Current Location</string>
+    <string name="atm_location_modal_content">By clicking the \"Allow\" button, you hearby agree that Discover may access and use your current location information to show you the nearest ATM.</string>
     <string name="atm_location_modal_allow">Allow</string>
     <string name="atm_location_modal_decline">Don\'t Allow</string>
-    <string name="atm_location_modal_service_title">Temp on string title</string>
-    <string name="atm_location_modal_service_content">Temp off string of content</string>
+    <string name="atm_location_modal_service_title">Turn On Location Services To Allow \"Discover\" To Determine Your Location</string>
+    <string name="atm_location_modal_service_content">To show your location on the map, give you turn-by-turn navigation and search around your current location.</string>
     <string name="atm_location_modal_settings">Settings</string>
     <string name="atm_location_modal_cancel">Cancel</string>
     <string name="atm_location_get_directions">Distance Away %s M</string>
