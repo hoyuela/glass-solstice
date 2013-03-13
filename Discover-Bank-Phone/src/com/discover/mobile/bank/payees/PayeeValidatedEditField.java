@@ -47,6 +47,10 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 * Holds referent to a string resource identifier. If 0 then the default strings are used in isValid()
 	 */
 	private int errorTextResId = 0;
+	/**
+	 * Flag used to specify whether an inline error is being shown. If set to true isValid() returns false.
+	 */
+	private boolean showingError = false;
 	
 	/**
 	 * Default constructor 
@@ -81,8 +85,12 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 * @param text - Reference to a string that holds the error to be displayed to the user
 	 */
 	public void showErrorLabel(final int text) {
-		this.errorLabel.setText(text);
-		this.errorLabel.setVisibility(View.VISIBLE);
+		if( errorLabel != null ) {
+			this.errorLabel.setText(text);
+			this.errorLabel.setVisibility(View.VISIBLE);
+			this.showingError = true;
+			this.updateAppearanceForInput();
+		}
 	}
 	
 	/**
@@ -91,8 +99,26 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 * @param text String Resource Identifier from res/string
 	 */
 	public void setError(final int text) {
-		errorTextResId = text;
-		this.errorLabel.setText(text);
+		if( errorLabel != null ) {
+			errorTextResId = text;
+			this.errorLabel.setText(text);
+		}
+	}
+	
+	/**
+	 * Method used to set the error string for an inline error label and make it visible.
+	 * 
+	 * @param view TextView that represents an inline error whose text will be set using the param text.
+	 * @param text String to show to the user as an inline error
+	 */
+	public void showErrorLabel(final String text ) {
+		if( errorLabel != null && !Strings.isNullOrEmpty(text)  ) {
+			errorLabel.setText(text);
+			errorLabel.setVisibility(View.VISIBLE);
+			this.showingError = true;
+			this.updateAppearanceForInput();
+			this.showingError = true;
+		}
 	}
 	
 	/**
@@ -112,34 +138,38 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 */
 	@Override
 	public boolean isValid() {
-		boolean valid = false;
-		final String text = this.getText().toString();
+		boolean valid = !showingError;
 		
-		//Validate text field Is Not Empty or null
-		valid = !Strings.isNullOrEmpty(text);
-		
-		//Validate that a minimum characters has been entered
 		if( valid ) {
-			valid &= (text.length() >= minValue);
-		}
-		
-		//Validate non of the Invalid characters "<>()&;'"[]{}" have been entered
-		if( valid ) {
-			if( pattern != null ) {
+			final String text = this.getText().toString();
+			
+			//Validate text field Is Not Empty or null
+			valid = !Strings.isNullOrEmpty(text);
+			
+			//Validate that a minimum characters has been entered
+			if( valid ) {
+				valid &= (text.length() >= minValue);
+			}
+			
+			//Validate non of the Invalid characters "<>()&;'"[]{}" have been entered
+			if( valid ) {
+				if( pattern != null ) {
+					if( 0 == errorTextResId ) {
+						//Error string to invalid characters so that if this condition fails this is the string displayed
+						this.errorLabel.setText(R.string.bank_invalid_characters);
+					} 
+					
+					final Matcher m = pattern.matcher(text);
+					valid &= !m.find();
+				}
+			} else {
 				if( 0 == errorTextResId ) {
-					//Error string to invalid characters so that if this condition fails this is the string displayed
-					this.errorLabel.setText(R.string.bank_invalid_characters);
-				} 
-				
-				final Matcher m = pattern.matcher(text);
-				valid &= !m.find();
-			}
-		} else {
-			if( 0 == errorTextResId ) {
-				//Set error string to invalid number of characters 
-				this.errorLabel.setText(R.string.bank_invalid_num_characters);
+					//Set error string to invalid number of characters 
+					this.errorLabel.setText(R.string.bank_invalid_num_characters);
+				}
 			}
 		}
+		
 				
 		return valid;
 	}
@@ -155,5 +185,13 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 
 		}
 		return super.dispatchKeyEvent(event);
+	}
+	
+	@Override
+	public void clearErrors(){ 
+		super.clearErrors();
+		
+		/**Reset flag indicating whether an inline error is being shown*/
+		showingError = false;
 	}
 }
