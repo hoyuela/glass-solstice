@@ -49,6 +49,9 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	/**Imageview that when clicked will show the search bar*/
 	private final ImageView show;
 
+	/**Imageview that when clicked will show the search bar*/
+	private final ImageView searchDummy;
+
 	/**Search layout*/
 	private final RelativeLayout searchLayout;
 
@@ -82,6 +85,7 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 		filterLayout = (LinearLayout) view.findViewById(R.id.filter_bar);
 		searchBox = (EditText)view.findViewById(R.id.search_box);
 		filterToggle = (ImageView) view.findViewById(R.id.filter_enable);
+		searchDummy = (ImageView) view.findViewById(R.id.help_dummy);
 
 
 		setupToggles(context);
@@ -212,12 +216,24 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 					final InputMethodManager manager = 
 							(InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
 					manager.hideSoftInputFromWindow(searchBox.getWindowToken(), 0);
-					fragment.performSearch(searchBox.getText().toString());
+					if(null != fragment){
+						fragment.performSearch(searchBox.getText().toString());
+					}
 					return true;
 				}
 				return false;
 			}
 		});
+	}
+
+	public void showListView(){
+		searchDummy.setVisibility(View.GONE);
+		hide.setVisibility(View.GONE);
+	}
+
+	public void showMapView(){
+		searchDummy.setVisibility(View.INVISIBLE);
+		hide.setVisibility(View.VISIBLE);
 	}
 
 	/**
