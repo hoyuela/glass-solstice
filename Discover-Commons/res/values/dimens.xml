@@ -49,16 +49,16 @@
     
      <!-- Navigation Menu -->
     <dimen name="nav_menu_shadow_width">15dp</dimen>
-    <dimen name="nav_menu_offset">48dp</dimen>
+    <dimen name="nav_menu_offset">100dp</dimen>
     <dimen name="nav_menu_list_padding">10dp</dimen>
     <dimen name="nav_footer_padding">15dp</dimen>
      <dimen name="nav_footer_divider_height">15dp</dimen>
      <dimen name="nav_footer_divider_width">1dp</dimen>
      <dimen name="nav_divider_height">3dp</dimen>
-     <dimen name="nav_section_height">55dp</dimen>
+     <dimen name="nav_section_height">45dp</dimen>
      <dimen name="nav_section_pading">15dp</dimen>
      <dimen name="nav_sub_section_pading">30dp</dimen>
-     <dimen name="nav_section_size">20dp</dimen>
+     <dimen name="nav_section_size">16dp</dimen>
      <dimen name="nav_image_padding">10dp</dimen>
      <dimen name="nav_footer_height">1dp</dimen>
      
