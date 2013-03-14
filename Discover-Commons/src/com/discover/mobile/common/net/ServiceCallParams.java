@@ -18,8 +18,8 @@ public abstract class ServiceCallParams {
 	public Map<String,String> headers = null;
 	
 	// TODO consider other timeout defaults
-	public int connectTimeoutSeconds = 15;
-	public int readTimeoutSeconds = 15;
+	public int connectTimeoutSeconds = 30;
+	public int readTimeoutSeconds = 30;
 	
 	/**
 	 * Should never be {@code true} at the same time as {@link #requiresSessionForRequest}.
