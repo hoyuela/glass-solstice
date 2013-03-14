@@ -24,7 +24,7 @@
     <string name="pay_from_acct_ending_in">Pay From Account Ending in </string>
     <string name="status">Status</string>
     <string name="confirmation_number">Confirmation Number</string>
-    <string name="payment_detail">Payment Detail</string>
+    <string name="payment_detail">Payment Details</string>
     <string name="scheduled_payment">Scheduled Payment</string>
     <string name="completed_payment">Completed Payment</string>
     <string name="cancelled_payment">Canceled Payment</string>
