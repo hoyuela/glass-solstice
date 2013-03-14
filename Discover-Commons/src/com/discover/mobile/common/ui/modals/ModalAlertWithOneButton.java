@@ -41,16 +41,16 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	private final float NO_BOTTOM_WEIGHT = 10f;
 
 	/**Static weight for the top view in portrait mode*/
-	private final float PORTRAIT_TOP_WEIGHT = 7f;
+	private float PORTRAIT_TOP_WEIGHT = 7f;
 
 	/**Static weight for the bottom view in portrait mode*/
-	private final float PORTRAIT_BOTTOM_WEIGHT = 3f;
+	private float PORTRAIT_BOTTOM_WEIGHT = 3f;
 
 	/**Static weight for the top view in landscape mode*/
-	private final float LANDSCAPE_TOP_WEIGHT = 5f;
+	private float LANDSCAPE_TOP_WEIGHT = 5f;
 
 	/**Static weight for the bottom view in landscape mode*/
-	private final float LANDSCAPE_BOTTOM_WEIGHT = 5f;
+	private float LANDSCAPE_BOTTOM_WEIGHT = 5f;
 
 	/**An attached activity that will be closed if the dialog is dismissed with the back button*/
 	private Activity toClose;
@@ -344,4 +344,17 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		}
 	}
 
+	/**
+	 * Method used to hide the bottom view.
+	 */
+	public void hideBottomView() {
+		if( bottom != null && bottom instanceof ModalDefaultOneButtonBottomView ) {
+			((ModalDefaultOneButtonBottomView)bottom).setVisibility(View.GONE);
+			
+			PORTRAIT_TOP_WEIGHT = 10;
+			PORTRAIT_BOTTOM_WEIGHT = 0;
+			LANDSCAPE_TOP_WEIGHT = 10;
+			LANDSCAPE_BOTTOM_WEIGHT = 0;
+		}
+	}
 }
