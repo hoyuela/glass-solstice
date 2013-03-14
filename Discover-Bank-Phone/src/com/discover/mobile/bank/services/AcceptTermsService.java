@@ -15,6 +15,7 @@ import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 
+
 /**
  * The POST call made to Bank APIs to accept a terms and service agreement.
  * It does not need to map a response because the response is expected to be empty.
@@ -27,7 +28,12 @@ public class AcceptTermsService extends BankNetworkServiceCall<Object> implement
 
 	/**Reference handler to allow the call to be back on the UI*/
 	private final TypedReferenceHandler<Object> handler;
-	
+
+	/**
+	 * Holds Reference to Eligibility object used to construct the URL for sending a request to accept terms and conditions.
+	 */
+	private final Eligibility eligibility;
+
 	/**
 	 * 
 	 * @param context Reference to service or activity making the service call
@@ -35,14 +41,16 @@ public class AcceptTermsService extends BankNetworkServiceCall<Object> implement
 	 * @param eligibility Reference to an Eligibility object from where the URL for this service call will be fetched from.
 	 */
 	public AcceptTermsService(final Context context, final AsyncCallback<Object> callback, final Eligibility eligibility) {
-				
+
 		super(context, new PostCallParams(eligibility.getEnrollmentUrl()) {{
 			requiresSessionForRequest = true;
-			
+
 			errorResponseParser = BankErrorResponseParser.instance();
-			
+
 		}});
-		
+
+		this.eligibility = eligibility;
+
 		handler = new StrongReferenceHandler<Object>(callback);
 	}
 
@@ -50,12 +58,22 @@ public class AcceptTermsService extends BankNetworkServiceCall<Object> implement
 	protected TypedReferenceHandler<Object> getHandler() {
 		return handler;
 	}
-	
+
 	@Override
 	protected Object parseSuccessResponse(final int status, final Map<String,List<String>> headers, 
 			final InputStream body)throws IOException {
-		
+
+		eligibility.eligible = true;
+		eligibility.enrolled = true;
+
 		return null;
 	}
 
+	/**
+	 * 
+	 * @return Returns reference to Eligibility object used to construct URL for accepting terms and conditions.
+	 */
+	public Eligibility getEligibility() {
+		return this.eligibility;
+	}
 }
