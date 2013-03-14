@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/light_gray_bkgrd"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/forms_inner_padding"
+        android:paddingTop="@dimen/forms_inner_padding" >
+
+        <ImageView
+            android:id="@+id/expand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/directions"
+            android:layout_alignTop="@+id/distance"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:src="@drawable/atm_expand_icon" />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/atm_large_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/distance"
+            android:layout_toRightOf="@+id/expand"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/address"
+            style="@style/atm_sub_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/title"
+            android:layout_below="@+id/title" />
+
+        <TextView
+            android:id="@+id/address2"
+            style="@style/atm_sub_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/title"
+            android:layout_below="@+id/address" />
+
+        <TextView
+            android:id="@+id/distance"
+            style="@style/atm_large_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding" />
+
+        <ImageView
+            android:id="@+id/directions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/distance"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:src="@drawable/atm_directional_arrows" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom"
+        style="@style/balloon_sub_title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/field_stroke"
+        android:paddingTop="@dimen/forms_inner_padding"
+        android:visibility="visible" >
+
+        <TextView
+            android:id="@+id/hours_label"
+            style="@style/atm_sub_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:text="@string/atm_location_hours" />
+
+        <TextView
+            android:id="@+id/hours"
+            style="@style/atm_sub_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/hours_label"
+            android:layout_below="@+id/hours_label" />
+
+        <LinearLayout
+            android:id="@+id/services"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/hours"
+            android:layout_below="@+id/hours"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/services_label"
+                style="@style/atm_sub_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/atm_location_services" />
+
+            <TextView
+                android:id="@+id/service1"
+                style="@style/atm_sub_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/service2"
+                style="@style/atm_sub_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/service3"
+                style="@style/atm_sub_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/service4"
+                style="@style/atm_sub_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/service5"
+            style="@style/atm_sub_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/services"
+            android:layout_below="@+id/services"
+            android:paddingBottom="@dimen/forms_inner_padding"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/email"
+            style="@style/small_call_to_action_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/report"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:text="@string/atm_location_email" />
+
+        <TextView
+            android:id="@+id/report"
+            style="@style/blue_hyperlink_extra_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/service5"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:layout_marginRight="@dimen/call_to_actions_padding"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:paddingBottom="@dimen/forms_inner_padding"
+            android:textSize="@dimen/small_copy_mid"
+            android:text="@string/atm_location_report" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@drawable/table_solid_line" />
+
+</LinearLayout>
