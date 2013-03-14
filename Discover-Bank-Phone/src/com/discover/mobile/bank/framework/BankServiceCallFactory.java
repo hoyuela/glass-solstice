@@ -95,21 +95,26 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * 			the Bank Service
 	 */
 	public static CreateBankLoginCall createLoginCall(final BankLoginDetails credentials ) {
-		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-
-		//Build the handler for the response to the Bank authentication request
-		final AsyncCallback<BankLoginData> callback =
-				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
-				.build();
-
-		//Create the NetworkServieCall<> for authenticating with the Bank Authentication Server
-		final CreateBankLoginCall loginCall =  new CreateBankLoginCall(activity, callback, credentials);
-
-		return loginCall;
+		return createLoginCall(credentials, false);
+		
+//		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
+//
+//		//Build the handler for the response to the Bank authentication request
+//		final AsyncCallback<BankLoginData> callback =
+//				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
+//				.build();
+//
+//		//Create the NetworkServieCall<> for authenticating with the Bank Authentication Server
+//		final CreateBankLoginCall loginCall =  new CreateBankLoginCall(activity, callback, credentials);
+//
+//		return loginCall;
 	}
 	
 	/**
-	 *  TODO add skip header & fill out javadoc
+	 * Used to construct a CreateBankLoginCall object for invoking the Bank - Authentication Service API found at
+	 * ./api/auth/token. The callee will only have to call submit on the constructed object to trigger the
+	 * HTTP request.
+	 * 
 	 * @param credentials
 	 * @param skipSSO true if the Login call should inform the service to skip SSO, false if SSO should be checked.
 	 * @return
@@ -123,7 +128,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 				.build();
 
 		//Create the NetworkServieCall<> for authenticating with the Bank Authentication Server
-		final CreateBankLoginCall loginCall =  new CreateBankLoginCall(activity, callback, credentials);
+		final CreateBankLoginCall loginCall =  new CreateBankLoginCall(activity, callback, credentials, skipSSO);
 
 		return loginCall;
 	}
