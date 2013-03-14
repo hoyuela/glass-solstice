@@ -278,9 +278,16 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		if(null == header){return bundle;}
 		final int category = header.getCurrentCategory();
 		bundle.putInt(BankExtraKeys.CATEGORY_SELECTED, category);
-		bundle.putSerializable(BankExtraKeys.SCHEDULED_LIST, scheduled);
-		bundle.putSerializable(BankExtraKeys.COMPLETED_LIST, completed);
-		bundle.putSerializable(BankExtraKeys.CANCELED_LIST, canceled);
+		final String scheduleKey = 
+				(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.SCHEDULED_LIST;
+		final String completedKey =
+				(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.COMPLETED_LIST;
+		final String canceledKey =
+				(category == ReviewPaymentsHeader.CANCELED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.CANCELED_LIST;
+
+		bundle.putSerializable(scheduleKey, scheduled);
+		bundle.putSerializable(completedKey, completed);
+		bundle.putSerializable(canceledKey, canceled);
 		return bundle;
 	}
 

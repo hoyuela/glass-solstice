@@ -70,8 +70,10 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 
 		/**Need Help and feedback footer not required for this view**/
 		final LinearLayout footer = (LinearLayout)view.findViewById(R.id.footer_layout);
-		footer.setVisibility(View.GONE);
-
+		if( footer != null ) {
+			footer.setVisibility(View.GONE);
+		}
+		
 		return view;
 	}
 

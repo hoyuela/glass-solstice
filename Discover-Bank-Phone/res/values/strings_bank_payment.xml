@@ -59,8 +59,9 @@
  	<string name="schedule_pay_cancel_body">Are you sure you want to cancel this transaction? Tap Cancel This Transaction to end it, or tap Don\'t Cancel to return to the previous page.</string>
  	<string name="schedule_pay_cancel_button_confirm">Cancel This Transaction</string>
  	<string name="schedule_pay_cancel_button_cancel">Don\'t Cancel</string>
- 	<string name="schedule_pay_canceled">Transaction Cancelled</string>
+ 	<string name="schedule_pay_canceled">Transaction Canceled</string>
  	<string name="schedule_pay_date_picker_title">Enter Payment Date</string>
  	<string name="schedule_pay_duplicate_payment">Duplicate Payment</string>
  	<string name="schedule_pay_invalid_date">Invalid Date</string>
+ 	<string name="schedule_pay_amount_hint">0.00</string>
 </resources>
