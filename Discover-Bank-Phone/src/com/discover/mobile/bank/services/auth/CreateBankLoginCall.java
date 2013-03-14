@@ -2,6 +2,7 @@ package com.discover.mobile.bank.services.auth;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,13 +32,16 @@ public class CreateBankLoginCall extends
 	
 	private final String TAG = CreateBankLoginCall.class.getSimpleName();
 	private final TypedReferenceHandler<BankLoginData> handler;
-
+	
 	public CreateBankLoginCall(final Context context,
 			final AsyncCallback<BankLoginData> callback,
-			final BankLoginDetails login) {
- 
+			final BankLoginDetails login, final boolean skipSSO) {
 		super(context, new PostCallParams(BankUrlManager.getGetTokenUrl()) {
 			{
+				if(skipSSO) {
+					headers = new HashMap<String, String>();
+					headers.put("X-Skip-SSO", "true");
+				}
 
 				clearsSessionBeforeRequest = true;
 
@@ -55,6 +59,31 @@ public class CreateBankLoginCall extends
 
 		// TODO decide if this is the best type of handler
 		handler = new StrongReferenceHandler<BankLoginData>(callback);
+	}
+
+	public CreateBankLoginCall(final Context context,
+			final AsyncCallback<BankLoginData> callback,
+			final BankLoginDetails login) {
+		
+		this(context, callback, login, false);
+//		super(context, new PostCallParams(BankUrlManager.getGetTokenUrl()) {
+//			{
+//
+//				clearsSessionBeforeRequest = true;
+//
+//				requiresSessionForRequest = false;
+//
+//				sendDeviceIdentifiers = true;
+//						
+//				body = login;
+//				
+//				// Specify what error parser to use when receiving an error response
+//				errorResponseParser = BankErrorResponseParser.instance();
+//
+//			}
+//		}, BankLoginData.class);
+//
+//		handler = new StrongReferenceHandler<BankLoginData>(callback);
 	}
 
 	/*

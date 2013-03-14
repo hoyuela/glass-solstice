@@ -85,6 +85,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	}
 
 	/**
+	 * TODO call createLoginCall(creds, false); here instead 
 	 * Used to construct a CreateBankLoginCall object for invoking the Bank - Authentication Service API found at
 	 * ./api/auth/token. The callee will only have to call submit on the constructed object to trigger the
 	 * HTTP request.
@@ -106,6 +107,39 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		return loginCall;
 	}
+	
+	/**
+	 *  TODO add skip header & fill out javadoc
+	 * @param credentials
+	 * @param skipSSO true if the Login call should inform the service to skip SSO, false if SSO should be checked.
+	 * @return
+	 */
+	public static CreateBankLoginCall createLoginCall(final BankLoginDetails credentials, final boolean skipSSO) {
+		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
+		
+		//Build the handler for the response to the Bank authentication request
+		final AsyncCallback<BankLoginData> callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
+				.build();
+
+		//Create the NetworkServieCall<> for authenticating with the Bank Authentication Server
+		final CreateBankLoginCall loginCall =  new CreateBankLoginCall(activity, callback, credentials);
+
+		return loginCall;
+	}
+	
+	/**
+	 * Constructs a CreateSSOLoginCall for authenticating an SSO user against Bank. 
+	 * @param credentials
+	 * @return
+	 */
+//	public static CreateSSOLoginCall createSSOLoginCall(final BankSSOLoginDetail credentials) {
+//		// TODO Callback
+//		
+//		// TODO Call
+//		
+//		return loginCall;
+//	}
 
 	/**
 	 * Used to construct a CreatePaymentCall NetworkServiceCall for making a
@@ -125,7 +159,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		final CreatePaymentCall paymentCall = new CreatePaymentCall(activity, callback, paymentDetails);
 		return paymentCall;
 	}
-
+	
 	/**
 	 * Used to construct a CreateStrongAuthRequestCall NetworkServiceCall for invoking the Bank - Authentication
 	 * Service API found at ./api/auth/strongauth. The CreateStrongAuthRequestCall created by this method is used

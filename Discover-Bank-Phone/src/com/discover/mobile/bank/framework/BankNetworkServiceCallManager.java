@@ -224,7 +224,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		//Download Customer Information if a Login call is successful
 		else if( sender instanceof CreateBankLoginCall ) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-
+			
+//			 TODO if(SSOUser) {
+			// BankConductor.authWithCardPayload(payload);
+			// }
+			
+//			 TODO } else { //
 			//Set logged in to be able to save user name in persistent storage
 			Globals.setLoggedIn(true);
 
