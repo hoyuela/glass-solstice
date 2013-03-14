@@ -358,8 +358,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		/**Remove the Check Deposit Terms and Conditions View from fragment back stack*/
 		activity.getSupportFragmentManager().popBackStack();
 	
+		/** Add a boolean to the bundle when navigating so we can present the how it works modal*/
+		final Bundle termsBundle = new Bundle();
+		termsBundle.putBoolean(BankExtraKeys.ACCEPTED_TERMS, true);
+		
 		/**Navigates to Select Account Page for Check-Deposit*/
-		BankNavigator.navigateToCheckDepositWorkFlow(null);
+		BankNavigator.navigateToCheckDepositWorkFlow(termsBundle);
 		
 		/**close the progress dialog created for when service was started to download terms and conditions for deposits*/
 		activity.closeDialog();

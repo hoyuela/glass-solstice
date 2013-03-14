@@ -74,7 +74,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		view.findViewById(R.id.main_layout).setOnTouchListener(new OnTouchListener() {           
 	        @Override
 			public boolean onTouch(final View v, final MotionEvent event) {
-	         	amountItem.showKeyboard(false);
+	         	amountItem.getEditableField().showKeyboard(false);
 	            return false;
 	        }
 	    });
@@ -194,7 +194,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		
 		/**Check if onPause was called because of an orientation change*/
 		if( !isOrientationChanging ) {
-			this.amountItem.showKeyboard(false);
+			this.amountItem.getEditableField().showKeyboard(false);
 		}
 	}
 }

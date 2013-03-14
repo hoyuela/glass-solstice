@@ -449,6 +449,9 @@ public class BankErrorHandler implements ErrorHandler {
 		// Navigate back to login
 		modal.setOnDismissListener(new NavigateToLoginOnDismiss(activeActivity));
 
+		//Hide bottom view for locked out account
+		modal.hideBottomView();
+		
 		showCustomAlert(modal);
 
 		// Clear text and set focus to first field

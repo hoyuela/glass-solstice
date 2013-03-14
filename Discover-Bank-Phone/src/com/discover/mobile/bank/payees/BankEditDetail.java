@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.common.ui.widgets.ValidatedInputFieldListener;
 
 /**
  * This class is used to display the view in the layout res/bank_edit_deail_view. It provides methods
@@ -22,10 +23,11 @@ import com.discover.mobile.bank.R;
  * @author henryoyuela
  *
  */
-public class BankEditDetail extends RelativeLayout implements OnClickListener, OnFocusChangeListener, OnEditorActionListener{
+public class BankEditDetail extends RelativeLayout implements OnClickListener, OnFocusChangeListener, OnEditorActionListener, ValidatedInputFieldListener{
 	private TextView topLabel;
 	private TextView middleLabel;
 	private PayeeValidatedEditField editableField;
+	private BankEditDetail nextDetail;
 	private TextView errorLabel;
 	private View dividerLine;
 	private View caret;
@@ -64,7 +66,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		editableField.attachErrorLabel(errorLabel);
 		editableField.setOnFocusChangeListener(this);
 		editableField.setOnEditorActionListener(this);
-	
+		editableField.setListener(this);
 		
 		view.setOnClickListener(this);
 		
@@ -153,6 +155,8 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	public void setEditMode( final boolean value ) {
 		final InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		
+		editableField.clearErrors();
+		
 		if( value ) {
 			if( !editableField.hasFocus() ) {
 				editableField.setText(middleLabel.getText());
@@ -169,6 +173,25 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 			middleLabel.setVisibility(View.VISIBLE);
 			
 			imm.hideSoftInputFromWindow(editableField.getWindowToken(), 0);
+		}
+	}
+	
+	/**
+	 * Method used to toggle between showing an editable text field or showing a label without
+	 * applying focus and opening keyboard.
+	 * 
+	 * @param value Set to true if want to make editable, otherwise false.
+	 */
+	public void setEditModeNoFocus( final boolean value ) {
+	
+		if( value ) {		
+			editableField.setText(middleLabel.getText());
+			editableField.setVisibility(View.VISIBLE);
+			middleLabel.setVisibility(View.GONE);
+		} else {
+			middleLabel.setText(editableField.getText());
+			editableField.setVisibility(View.GONE);
+			middleLabel.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -209,9 +232,27 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
 		if (actionId == EditorInfo.IME_ACTION_DONE) {
 			setEditMode(false);
+        } else if( actionId == EditorInfo.IME_ACTION_NEXT ) {
+        	editableField.setOnFocusChangeListener(null);
+        	setEditModeNoFocus(false);
+        	editableField.setOnFocusChangeListener(this);
+        	
+        	/**Move focus to next BankEditDetail in page if there is one*/
+        	if( null != nextDetail) {
+        		nextDetail.setEditMode(true);
+        	}
         }
         return false;
 	}
-	
 
+	@Override
+	public void onValidationError() {
+		/**Set Edit mode to true if an error occurs without focus to avoid keyboard opening*/
+		this.setEditModeNoFocus(true);
+	}
+	
+	public void setNextBankEditDetail(final BankEditDetail next) {
+		nextDetail = next;
+	}
+	
 }

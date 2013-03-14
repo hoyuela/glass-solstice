@@ -15,10 +15,10 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.bank.util.BankNeedHelpFooter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.google.common.base.Strings;
 
 /**
@@ -60,7 +60,7 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	/**
 	 * Reference to a Progress indicator used to display a users progress in the current work-flow
 	 */
-	protected HeaderProgressIndicator progressIndicator;
+	protected BankHeaderProgressIndicator progressIndicator;
 	/**
 	 * Reference to a TextView which displays a title for the instructions or note provided to the user.
 	 * By default view is gone, sub-class to make it visible as required.
@@ -82,7 +82,11 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	/**
 	 * Helper class for enabling the user to dial the Need Help Number
 	 */
-	private BankNeedHelpFooter helpFooter;
+	protected BankNeedHelpFooter helpFooter;
+	/**
+	 * Reference to TextView that shows on top of content table used for showing general errors for the screen.
+	 */
+	protected TextView generalError = null;
 	
 	/**
 	 * Sets click listeners for the actionButton, actionLink, feedbackLink. Calls the method to populate
@@ -94,7 +98,7 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_one_button_layout, null);
 		
-		progressIndicator = (HeaderProgressIndicator)view.findViewById(R.id.header);
+		progressIndicator = (BankHeaderProgressIndicator)view.findViewById(R.id.header);
 		
 		
 		/**Fetch layout that will contain list of account groups*/
@@ -142,6 +146,9 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		
 		loadListElementsToLayoutFromList(contentTable, content);
 			
+		/**Label used to show general errors for the screen, it shows on top of the content table*/
+		generalError = (TextView)view.findViewById(R.id.general_error);
+		
 		return view;
 	}
 
@@ -223,6 +230,26 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 */
 	public boolean promptUserForNeedHelp(){
 		return false;
+	}
+	
+	/**
+	 * Method to show error string above content table
+	 * 
+	 * @param text Reference to error text to display
+	 */
+	public void showGeneralError(final String text) {
+		if( !Strings.isNullOrEmpty(text)) {
+			generalError.setText(text);
+			generalError.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	/**
+	 * Method used to hide any error being shown above the content table which 
+	 * had been previously shown wiht showGeneralError().
+	 */
+	public void clearGeneralError() {
+		generalError.setVisibility(View.GONE);
 	}
 
 }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/light_gray_bkgrd" >
+
+    <fragment
+        android:id="@+id/discover_map_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/map_navigation_panel"
+        android:layout_alignParentTop="true"
+        class="com.google.android.gms.maps.SupportMapFragment" />
+
+    <fragment
+        android:id="@+id/discover_list_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/map_navigation_panel"
+        android:layout_alignParentTop="true"
+        class="com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment" />
+
+    <com.discover.mobile.bank.atm.AtmLocatorMapSearchBar
+        android:id="@+id/full_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" />
+
+    <ImageButton
+        android:id="@+id/help"
+        style="@style/orange_help_button"
+        android:layout_width="@dimen/orange_help_button_size"
+        android:layout_height="@dimen/orange_help_button_size"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:id="@+id/map_navigation_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/forms_inner_padding"
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:paddingTop="@dimen/forms_inner_padding"
+        android:weightSum="2" >
+
+        <Button
+            android:id="@+id/list_nav"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:layout_weight="1"
+            android:background="@drawable/atm_list_view_button" />
+
+        <Button
+            android:id="@+id/map_nav"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/between_related_elements_padding"
+            android:layout_weight="1"
+            android:background="@drawable/atm_pinview_button_ds" />
+    </LinearLayout>
+
+</RelativeLayout>

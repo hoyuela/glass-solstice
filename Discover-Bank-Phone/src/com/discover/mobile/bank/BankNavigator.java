@@ -611,7 +611,6 @@ public final class BankNavigator {
 				//Check if user is in select accounts, navigate to second step in work-flow
 				if( navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount ) {
 					fragment = new BankDepositSelectAmount();
-					fragment.setArguments(bundle);
 				}
 				//Check if User has accounts, this is the first step in work-flow
 				else if( BankUser.instance().hasAccounts() ) {	
@@ -620,6 +619,7 @@ public final class BankNavigator {
 			}
 			
 			if( fragment != null ) {
+				fragment.setArguments(bundle);
 				navActivity.makeFragmentVisible(fragment);
 			}
 		} else {

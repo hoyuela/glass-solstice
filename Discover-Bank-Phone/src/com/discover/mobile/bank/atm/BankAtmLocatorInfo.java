@@ -8,8 +8,8 @@ public final class BankAtmLocatorInfo extends GroupComponentInfo {
 
 	public BankAtmLocatorInfo() {
 		super(R.string.section_title_atm_locator,
-				new FragmentComponentInfo(R.string.sub_section_title_find_nearby, AtmMapFragment.class),
-				new FragmentComponentInfo(R.string.sub_section_title_search_location, AtmMapFragment.class));
+				new FragmentComponentInfo(R.string.sub_section_title_find_nearby, SearchNearbyFragment.class),
+				new FragmentComponentInfo(R.string.sub_section_title_search_location, SearchByLocationFragment.class));
 	}
 
 }

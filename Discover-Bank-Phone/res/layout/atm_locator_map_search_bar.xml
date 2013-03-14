@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+
+    <ImageButton
+        android:id="@+id/search_expand"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/atm_search_icon_sm"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/atm_search_bar_background"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+        <ImageButton
+            android:id="@+id/search_show"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/search_bar_arrow_margin_top"
+            android:alpha=".5"
+            android:background="@drawable/drk_blue_arrow_left_square" />
+
+        <ImageButton
+            android:id="@+id/help_dummy"
+            style="@style/orange_help_button"
+            android:layout_width="@dimen/orange_help_button_size"
+            android:layout_height="@dimen/orange_help_button_size"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="0dp"
+            android:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/search_box"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:layout_toLeftOf="@+id/help_dummy"
+            android:layout_toRightOf="@+id/search_show"
+            android:background="@drawable/edit_text_default"
+            android:cursorVisible="true"
+            android:drawableLeft="@drawable/magnifying_glass"
+            android:drawablePadding="@dimen/between_related_elements_padding"
+            android:drawableRight="@drawable/atm_current_location_button"
+            android:ellipsize="end"
+            android:focusable="true"
+            android:hint="@string/atm_location_search_help"
+            android:inputType="textPostalAddress"
+            android:textColor="@color/body_copy"
+            android:textCursorDrawable="@null" />
+
+        <ImageView
+            android:id="@+id/drop_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/search_box"
+            android:background="@drawable/atm_search_dropshadow" />
+
+        <LinearLayout
+            android:id="@+id/filter_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/drop_shadow"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/forms_inner_padding"
+            android:visibility="gone" >
+
+            <ImageView
+                android:id="@+id/toggle_enable_push"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/between_related_elements_padding"
+                android:background="@drawable/atm_orange_pin_sm"
+                android:textColor="@color/title" />
+
+            <TextView
+                android:id="@+id/filter_text"
+                style="@style/filter_static_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/atm_location_surcharge_free" />
+
+            <ImageView
+                android:id="@+id/filter_enable"
+                android:layout_width="75dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/between_related_elements_padding"
+                android:background="@drawable/swipe_on"
+                android:textColor="@color/title" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/drop_shadow_2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/filter_bar"
+            android:background="@drawable/atm_search_dropshadow" />
+    </RelativeLayout>
+
+</RelativeLayout>

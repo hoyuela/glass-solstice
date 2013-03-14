@@ -23,7 +23,7 @@
 	    android:layout_marginRight="@dimen/forms_inner_padding"
 	    android:background="@drawable/gray_solid_line"
 	    />
-    	
+   	 
     <ScrollView
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
@@ -58,9 +58,20 @@
                 android:text="@string/note_title"
                 style="@style/field_copy"/>
              
+              <TextView
+		         android:id="@+id/general_error"
+		         android:layout_width="match_parent"
+		         android:layout_height="wrap_content"
+		         android:layout_below="@+id/top_note_text"
+		         android:layout_alignLeft="@+id/top_note_text"
+		         android:text="@string/status_text"
+		         android:textColor="@color/error_indicator"
+		         android:layout_marginBottom="@dimen/forms_inner_padding"
+		         android:visibility="gone" />
+              
             <LinearLayout
                 android:id="@+id/content_table"
-                android:layout_below="@+id/top_note_text"
+                android:layout_below="@+id/general_error"
                 android:layout_centerHorizontal="true"
                 android:orientation="vertical"
                 android:background="@drawable/rounded_table_corners_no_padding"
