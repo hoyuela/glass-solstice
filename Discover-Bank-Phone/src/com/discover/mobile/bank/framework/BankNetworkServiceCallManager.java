@@ -11,9 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankRotationHelper;
-import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
@@ -212,7 +210,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				!(sender instanceof GetCustomerAccountsServerCall) &&       //Account Download is only made when logging in
 				DiscoverActivityManager.getActiveActivity() instanceof EnhancedAccountSecurityActivity) {
 			//Bring Navigation Root Activity to the foreground, to allow to switch fragments on it
-			BankNavigator.navigateToHomePage();
+			BankConductor.navigateToHomePage();
 
 			//Handle success for a service call after Navigation root activity is in the foreground.
 			//Cannot swap fragments on the navigation root activity because it is not in the foreground
@@ -238,7 +236,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				BankServiceCallFactory.createGetCustomerAccountsServerCall().submit();
 			} else {
 				//Navigate to home page which will open the Open Accounts view page
-				BankNavigator.navigateToHomePage();
+				BankConductor.navigateToHomePage();
 			}
 		}
 		//If a GET request for terms and conditions succeeds, navigate to the terms and conditions page
@@ -246,7 +244,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if(sender instanceof GetPayBillsTermsAndConditionsCall){
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
-			BankNavigator.navigateToPayBillsTerms(bundle);
+			BankConductor.navigateToPayBillsTerms(bundle);
 		}
 		//If the user accepts the Bank terms and services for pay bills, navigate them to the originally
 		//chosen option. 
@@ -260,13 +258,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Navigate to Account Summary landing page once Account Summary is downloaded
 		else if( sender instanceof GetCustomerAccountsServerCall) {
-			BankNavigator.navigateToHomePage();
+			BankConductor.navigateToHomePage();
 		}
 		//Display StrongAuth Page if it is a response to a StrongAuth GET request with a question or retansmit previous NetworkServiceCall<>
 		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isGetCall()) {
 			final BankStrongAuthDetails value = (BankStrongAuthDetails)result;
 			if( !BankStrongAuthDetails.ALLOW_STATUS.equals(value.status ) ) {
-				BankNavigator.navigateToStrongAuth(activeActivity, value, null);
+				BankConductor.navigateToStrongAuth(activeActivity, value, null);
 			} else {
 				//Retransmit the previous NetworkServiceCall<>
 				prevCall.retransmit(activeActivity);
@@ -274,7 +272,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			// Navigate to Payment Confirmation upon a successful payment.
 		} else if( sender instanceof CreatePaymentCall) {
 			final PaymentDetail value = (PaymentDetail)result;
-			BankNavigator.navigateToPayConfirmFragment(value);
+			BankConductor.navigateToPayConfirmFragment(value);
 		}
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
 		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isPostCall() ) {
@@ -285,7 +283,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if( sender instanceof ManagePayeeServiceCall) {
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
-			BankNavigator.navigateToManagePayee(bundle);
+			BankConductor.navigateToManagePayee(bundle);
 		}
 		//Handle the payee success call
 		else if( sender instanceof GetPayeeServiceCall){
@@ -297,50 +295,50 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			}else{
 				final Bundle bundle = new Bundle();
 				bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
-				BankNavigator.navigateToSelectPayee(bundle);
+				BankConductor.navigateToSelectPayee(bundle);
 			}
 		}
 		//Handle the get activity service call
 		else if( sender instanceof GetActivityServerCall){
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
-			BankNavigator.navigateToAccountActivityPage(bundle);
+			BankConductor.navigateToAccountActivityPage(bundle);
 		}
 		//Delete Payment Successful, navigate to Review Payments Page
 		else if( sender instanceof DeletePaymentServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((DeletePaymentServiceCall)sender).getPaymentDetail());
-			BankNavigator.navigateToReviewPaymentsFromDelete(bundle);
+			BankConductor.navigateToReviewPaymentsFromDelete(bundle);
 		}
 		//Payee Search Success, navigate to Add Payee Workflow Step 4
 		else if( sender instanceof SearchPayeeServiceCall ) {
-			BankNavigator.navigateToSelectPayees((SearchPayeeResultList)result);
+			BankConductor.navigateToSelectPayees((SearchPayeeResultList)result);
 		}
 		//Get Payment Successful, navigate to the review payments table
 		else if( sender instanceof GetPaymentsServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
-			BankNavigator.navigateToReviewPaymentsTable(bundle);
+			BankConductor.navigateToReviewPaymentsTable(bundle);
 		}
 		//Payee Add Success, navigate to Add Payee Confirmation Pge in Workflow Step 5
 		else if( sender instanceof AddPayeeServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
-			BankNavigator.navigateToAddPayee(BankAddPayeeConfirmFragment.class, bundle);
+			BankConductor.navigateToAddPayee(BankAddPayeeConfirmFragment.class, bundle);
 		}
 		//ATM locator service call
 		else if(sender instanceof GetAtmDetailsCall){
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
-			BankNavigator.navigateToAtmLocatorFragment(bundle);
+			BankConductor.navigateToAtmLocatorFragment(bundle);
 		}
 		//Handler for GetAccountLimits service call
 		else if( sender instanceof GetAccountLimits) {
 			//Navigate to Check Deposit - Select Amount Page
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((GetAccountLimits)sender).getAccount());
-			BankNavigator.navigateToCheckDepositWorkFlow(bundle);
+			BankConductor.navigateToCheckDepositWorkFlow(bundle);
 		}
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
@@ -363,7 +361,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		termsBundle.putBoolean(BankExtraKeys.ACCEPTED_TERMS, true);
 		
 		/**Navigates to Select Account Page for Check-Deposit*/
-		BankNavigator.navigateToCheckDepositWorkFlow(termsBundle);
+		BankConductor.navigateToCheckDepositWorkFlow(termsBundle);
 		
 		/**close the progress dialog created for when service was started to download terms and conditions for deposits*/
 		activity.closeDialog();

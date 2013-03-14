@@ -1,4 +1,4 @@
-package com.discover.mobile.bank;
+package com.discover.mobile.bank.framework;
 
 import java.io.Serializable;
 
@@ -7,6 +7,7 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
+import com.discover.mobile.common.framework.CacheManager;
 
 /**
  * Class used to maintain session information for a user logged into a Bank
@@ -18,7 +19,7 @@ import com.discover.mobile.bank.services.payee.ListPayeeDetail;
  * @author henryoyuela
  * 
  */
-public final class BankUser implements Serializable {
+public final class BankUser extends CacheManager implements Serializable {
 	/**
 	 * Serialized!
 	 */
@@ -46,12 +47,7 @@ public final class BankUser implements Serializable {
 	/**List of payees*/
 	private ListPayeeDetail payees;
 
-	/**
-	 * Default constructor made private to allow a single instance
-	 */
-	private BankUser() {
-
-	}
+	
 
 	/**
 	 * 

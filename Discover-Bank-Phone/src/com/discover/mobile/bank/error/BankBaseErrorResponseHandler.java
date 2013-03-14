@@ -4,7 +4,7 @@ import java.net.HttpURLConnection;
 
 import android.app.Activity;
 
-import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
@@ -115,7 +115,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				
 				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
-				BankNavigator.navigateToStrongAuth(activeActivity, details, msgErrResponse.getErrorMessage());
+				BankConductor.navigateToStrongAuth(activeActivity, details, msgErrResponse.getErrorMessage());
 				
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOCKED_STRONG_AUTH)) {
 				mErrorHandler.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());

@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
@@ -44,10 +44,10 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 					/**Check if user is already in the Check Deposit work-flow*/
 					if( navActivity.getCurrentContentFragment().getGroupMenuLocation()  != BankMenuItemLocationIndex.DEPOSIT_CHECK_GROUP) {
 						/**Navigate the user back to the home fragment before navigating to the check deposit work-flow*/
-						BankNavigator.navigateToHomePage();
+						BankConductor.navigateToHomePage();
 						
 						/**Navigates to either to Check Deposit - Select Account Page or Check Deposit - Accept Terms page*/
-						BankNavigator.navigateToCheckDepositWorkFlow(null);
+						BankConductor.navigateToCheckDepositWorkFlow(null);
 					} else {
 						
 						if( Log.isLoggable(TAG, Log.WARN)) {

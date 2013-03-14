@@ -12,8 +12,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
@@ -116,7 +116,7 @@ public class BankAccountActivityTable extends BaseTable{
 	public void goToDetailsScreen(final int index){
 		final Bundle bundle = saveDataInBundle();
 		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, index);
-		BankNavigator.navigateToActivityDetailScreen(bundle);
+		BankConductor.navigateToActivityDetailScreen(bundle);
 	}
 
 	/**

@@ -34,6 +34,8 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 public abstract class Conductor   {
 	
 	public static final String TAG = Conductor.class.getSimpleName();
+	
+	protected CacheManager cacheMgr = CacheManager.instance();
 
 	/**
 	 * A map to manage the caller's requested destination and the network
@@ -117,7 +119,7 @@ public abstract class Conductor   {
 			// no data required, don't perform the service call; just navigate
 			navigateToFrament(fragmentClass, bundle);
 		} else {
-			Object o = CacheManager.instance().getObjectFromCache(cacheObjReq);
+			Object o = cacheMgr.getObjectFromCache(cacheObjReq);
 			if (o == null) {
 				// cache is null, let's make the call
 
@@ -151,7 +153,7 @@ public abstract class Conductor   {
 			// no data required, don't perform the service call; just navigate
 			navigateToActivity(activityClass, bundle);
 		} else {
-			Object o = CacheManager.instance().getObjectFromCache(cacheObjReq);
+			Object o = cacheMgr.getObjectFromCache(cacheObjReq);
 			if (o == null) {
 				// cache is null, let's make the call
 

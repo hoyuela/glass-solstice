@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
@@ -220,7 +220,7 @@ public class BankSelectPayee extends BaseFragment{
 			public void onClick(final View v) {
 				final Bundle bundle = new Bundle();
 				bundle.putSerializable(BankExtraKeys.SELECTED_PAYEE, details);
-				BankNavigator.navigateToPayBillStepTwo(bundle);
+				BankConductor.navigateToPayBillStepTwo(bundle);
 			}
 		};
 	}
@@ -234,7 +234,7 @@ public class BankSelectPayee extends BaseFragment{
 
 			@Override
 			public void onClick(final View v) {
-				BankNavigator.navigateToAddPayee(BankEnterPayeeFragment.class, null);
+				BankConductor.navigateToAddPayee(BankEnterPayeeFragment.class, null);
 			}
 		});
 	}
