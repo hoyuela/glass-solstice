@@ -28,7 +28,7 @@ public  class CacheManager {
 	/**
 	 * Default constructor made private to allow a single instance
 	 */
-	private CacheManager() {
+	protected CacheManager() {
 
 	}
 	

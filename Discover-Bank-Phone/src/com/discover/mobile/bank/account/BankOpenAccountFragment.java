@@ -9,9 +9,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
-import com.discover.mobile.bank.BankNavigator;
-import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.BaseFragment;
@@ -66,7 +66,7 @@ public class BankOpenAccountFragment extends BaseFragment implements OnClickList
 
 	@Override
 	public void onClick(final View arg0) {
-		BankNavigator.navigateToBrowser(BankUrlManager.getOpenAccountUrl());	
+		BankConductor.navigateToBrowser(BankUrlManager.getOpenAccountUrl());	
 	}
 
 	@Override

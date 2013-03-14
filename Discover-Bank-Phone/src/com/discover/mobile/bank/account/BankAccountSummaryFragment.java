@@ -17,9 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
-import com.discover.mobile.bank.BankNavigator;
-import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
@@ -166,7 +166,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	@Override
 	public void onClick(final View sender) {
 		if( sender == openAccount ) {
-			BankNavigator.navigateToBrowser(BankUrlManager.getOpenAccountUrl());
+			BankConductor.navigateToBrowser(BankUrlManager.getOpenAccountUrl());
 		}
 
 	}

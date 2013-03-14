@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.BaseFragment;
 
@@ -37,7 +37,7 @@ public class BankPayeeNotEligibleFragment extends BaseFragment{
 		button.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				BankNavigator.navigateToBrowser(BankUrlManager.getOpenAccountUrl());	
+				BankConductor.navigateToBrowser(BankUrlManager.getOpenAccountUrl());	
 			}
 		});
 

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSectionInfo;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
@@ -19,6 +18,7 @@ import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.atm.BankAtmLocatorInfo;
 import com.discover.mobile.bank.customerservice.BankCustomerServiceSectionInfo;
 import com.discover.mobile.bank.deposit.BankDepositChecksSectionInfo;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.BankPayBillsSectionInfo;
 import com.discover.mobile.bank.transfer.BankTransferMoneySectionInfo;
 import com.discover.mobile.common.nav.NavigationItem;

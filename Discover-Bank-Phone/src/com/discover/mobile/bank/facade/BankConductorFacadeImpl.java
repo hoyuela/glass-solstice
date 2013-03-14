@@ -23,7 +23,7 @@ public class BankConductorFacadeImpl implements BankConductorFacade{
 	 * @return
 	 */
 	public Conductor getBankConductor(){
-		return new BankConductor(new BankServiceCallFactory()); 
+		return BankConductor.getInstance();
 	}
 	
 }
