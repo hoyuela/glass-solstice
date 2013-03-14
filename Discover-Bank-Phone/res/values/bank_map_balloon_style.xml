@@ -3,7 +3,7 @@
     
     <!--  Base Balloon Style -->
     <style name="balloon_large_text">
-        <item name="android:textSize">@dimen/body_copy_max</item>
+        <item name="android:textSize">@dimen/body_copy_mid</item>
     </style>
     
     <style name="balloon_small_text">
