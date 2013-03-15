@@ -17,8 +17,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.common.DiscoverActivityManager;
 
@@ -150,7 +150,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		DiscoverActivityManager.setActiveActivity(getActivity());
 		if(requestCode == CAPTURE_ACTIVITY)
 			if(resultCode == Activity.RESULT_OK) {
-				BankNavigator.navigateToCheckDepositReview(getArguments());
+				BankConductor.navigateToCheckDepositReview(getArguments());
 			}
 	}
 
