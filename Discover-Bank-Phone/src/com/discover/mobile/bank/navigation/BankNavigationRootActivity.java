@@ -40,7 +40,7 @@ implements OnPaymentCanceledListener {
 	private InputMethodManager imm;
 	/** If a fragment error exists this will be set to true. */
 	private boolean fragmentErrorShown = false;
-	
+
 	private final String BANK_USER_KEY = "bankUser";
 	private final String BANK_SESSION_KEY = "session";
 
@@ -66,7 +66,7 @@ implements OnPaymentCanceledListener {
 	public void onCreate(final Bundle savedInstanceState) {
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		super.onCreate(savedInstanceState);
-		
+
 		// Application was previously destroyed; reloading the BankUser Singleton.
 		if(BankUser.instance().getCustomerInfo() == null) {
 			BankUser.instance().setBankUser((BankUser)savedInstanceState.getSerializable(BANK_USER_KEY));
@@ -74,9 +74,9 @@ implements OnPaymentCanceledListener {
 			SessionTokenManager.setToken(savedInstanceState.getString(BANK_SESSION_KEY));
 		}
 	}
-	
+
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
 		BankUser.instance().getCustomerInfo().links = BankUrlManager.getLinks();
 		outState.putSerializable(BANK_USER_KEY, BankUser.instance());
@@ -178,7 +178,7 @@ implements OnPaymentCanceledListener {
 	public boolean isBackPressFragment() {
 		return currentFragment instanceof FragmentOnBackPressed;
 	}
-	
+
 	/**
 	 * Facade for FragmentOnBackPressed.isBackPressDisabled method. Used to determine
 	 * if back press has been disbaled for the current fragment.
@@ -195,12 +195,12 @@ implements OnPaymentCanceledListener {
 	 */
 	@Override
 	public void onBackPressed() {
+		if( !isBackPressDisabled()) {
+			super.onBackPressed();
+		}
+
 		if(isBackPressFragment()){
 			((FragmentOnBackPressed)currentFragment).onBackPressed();
-		}
-		
-		if( !isBackPressDisabled() ) {
-			super.onBackPressed();
 		}
 	}
 

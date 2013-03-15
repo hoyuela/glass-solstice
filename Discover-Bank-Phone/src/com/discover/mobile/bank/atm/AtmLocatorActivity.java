@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.login.LoginActivity;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 
@@ -74,13 +75,42 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 	}
 
 	/**
+	 * Determines if the current fragment implements the FragmentOnBackPressed
+	 * interface.
+	 * 
+	 * @return if the current fragment implements the FragmentOnBackPressed
+	 *         interface.
+	 */
+	public boolean isBackPressFragment() {
+		return mapFragment instanceof FragmentOnBackPressed;
+	}
+
+
+	/**
+	 * Facade for FragmentOnBackPressed.isBackPressDisabled method. Used to determine
+	 * if back press has been disbaled for the current fragment.
+	 * 
+	 * @return True if fragment does not allow back press, false otherwise.
+	 */
+	public boolean isBackPressDisabled() {
+		return ( isBackPressFragment() && ((FragmentOnBackPressed)mapFragment).isBackPressDisabled());
+	}
+
+
+	/**
 	 * Handles the back press of the activity
 	 */
 	@Override 
 	public void onBackPressed(){
-		final Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);
-		this.finish();
+		if(!isBackPressDisabled()) {
+			final Intent intent = new Intent(this, LoginActivity.class);
+			startActivity(intent);
+			this.finish();
+		}
+
+		if(isBackPressFragment()){
+			((FragmentOnBackPressed)mapFragment).onBackPressed();
+		}
 	}
 
 	/**

@@ -83,6 +83,7 @@ public class DiscoverMapWrapper {
 	 * @param drawable - drawable to pin on the map
 	 */
 	public void setUsersCurrentLocation(final Location location, final int drawable, final Context context){
+		if(null == location){return;}
 		this.location = location;
 		if(null != currentMarker){
 			currentMarker.remove();
@@ -103,7 +104,12 @@ public class DiscoverMapWrapper {
 
 		final Geocoder coder = new Geocoder(context);
 		try {
-			final Address address = coder.getFromLocation(location.getLatitude(), location.getLongitude(), 1).get(0);
+			final List<Address> addresses = coder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+			if(null == addresses || addresses.isEmpty()){
+				addressString =  location.getLatitude() + " , " + location.getLongitude();
+				return;
+			}
+			final Address address = addresses.get(0);
 			adapter.setCurrentLocation(address);
 			addressString =  address.getFeatureName() + " " + address.getAddressLine(0) +", " 
 					+ address.getLocality() +", " + address.getAdminArea() + ", " + address.getCountryName();
