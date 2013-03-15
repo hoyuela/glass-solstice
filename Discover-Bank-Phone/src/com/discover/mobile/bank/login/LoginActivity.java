@@ -810,7 +810,7 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
-				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) this.getResources().getDimension(R.dimen.top_pad));
 
 		CommonUtils.setViewVisible(cardCheckMark);
 		CommonUtils.setViewInvisible(bankCheckMark);
@@ -822,7 +822,7 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
-				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) this.getResources().getDimension(R.dimen.top_pad));
 
 		registerOrAtmButton.setText(R.string.register_now);
 		privacySecOrTermButton.setText(R.string.privacy_and_security);
@@ -844,7 +844,7 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
-				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) this.getResources().getDimension(R.dimen.top_pad));
 		CommonUtils.setViewInvisible(cardCheckMark);
 		CommonUtils.setViewVisible(bankCheckMark);
 
@@ -855,7 +855,7 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
-				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) this.getResources().getDimension(R.dimen.top_pad));
 		registerOrAtmButton.setText(R.string.atm_locator);
 		privacySecOrTermButton.setText(R.string.privacy_and_terms);
 		CommonUtils.setViewInvisible(forgotUserIdOrPassText);
