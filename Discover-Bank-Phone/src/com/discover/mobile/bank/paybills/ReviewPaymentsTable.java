@@ -9,10 +9,10 @@ import android.widget.ArrayAdapter;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
@@ -265,7 +265,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		bundle.putSerializable(canceledKey, canceled);
 		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index);
 		BankRotationHelper.getHelper().setBundle(bundle);
-		BankNavigator.navigateToPaymentDetailScreen(bundle);
+		BankConductor.navigateToPaymentDetailScreen(bundle);
 	}
 
 	/**

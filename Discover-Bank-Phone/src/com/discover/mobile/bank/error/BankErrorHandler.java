@@ -14,10 +14,10 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.AcceptTermsService;
@@ -325,7 +325,7 @@ public class BankErrorHandler implements ErrorHandler {
 				
 				final Bundle bundle = new Bundle();
 				bundle.putString(BankDepositForbidden.KEY_ERROR_MESSAGE, msgErrResponse.getErrorMessage());
-				BankNavigator.navigateToDepositForbidden(bundle);
+				BankConductor.navigateToDepositForbidden(bundle);
 				handled = true;
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
@@ -418,7 +418,7 @@ public class BankErrorHandler implements ErrorHandler {
 	@Override
 	public void handleLoginAuthFailure(final ErrorHandlerUi errorHandlerUi, final String errorMessage) {
 		/** Navigate to login page if not already on this page*/
-		BankNavigator.navigateToLoginPage(DiscoverActivityManager.getActiveActivity(), IntentExtraKey.SHOW_ERROR_MESSAGE, errorMessage);
+		BankConductor.navigateToLoginPage(DiscoverActivityManager.getActiveActivity(), IntentExtraKey.SHOW_ERROR_MESSAGE, errorMessage);
 	}
 
 	/*
@@ -449,6 +449,9 @@ public class BankErrorHandler implements ErrorHandler {
 		// Navigate back to login
 		modal.setOnDismissListener(new NavigateToLoginOnDismiss(activeActivity));
 
+		//Hide bottom view for locked out account
+		modal.hideBottomView();
+		
 		showCustomAlert(modal);
 
 		// Clear text and set focus to first field
@@ -467,7 +470,7 @@ public class BankErrorHandler implements ErrorHandler {
 	public void handleSessionExpired() {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
-		BankNavigator.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
+		BankConductor.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
 	}
 
 }

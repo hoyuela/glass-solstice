@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.paybills.SimpleChooseListItem;
 import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
@@ -181,11 +181,11 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
 
-			BankNavigator.navigateToAddPayee(BankAddPayeeFragment.class, bundle);
+			BankConductor.navigateToAddPayee(BankAddPayeeFragment.class, bundle);
 		}
 		/**Enter Payee Details was clicked*/
 		else if( sender instanceof SimpleChooseListItem ) {
-			BankNavigator.navigateToAddPayee(BankAddPayeeFragment.class, null);
+			BankConductor.navigateToAddPayee(BankAddPayeeFragment.class, null);
 		}
 
 	}

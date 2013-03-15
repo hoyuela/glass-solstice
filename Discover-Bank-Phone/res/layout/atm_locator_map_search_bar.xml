@@ -69,6 +69,7 @@
             android:drawableRight="@drawable/atm_current_location_button"
             android:ellipsize="end"
             android:focusable="true"
+            android:imeOptions="actionDone|flagNoExtractUi"
             android:hint="@string/atm_location_search_help"
             android:inputType="textPostalAddress"
             android:textColor="@color/body_copy"

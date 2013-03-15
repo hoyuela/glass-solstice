@@ -5,11 +5,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankRotationHelper;
-import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
@@ -47,7 +47,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 			@Override
 			public void onClick(final View v) {
 				if(!isEligible()){
-					BankNavigator.navigateToPayBillsLanding();
+					BankConductor.navigateToPayBillsLanding();
 				} else if(isEligible() && !isEnrolled()){
 					sendToTermsScreen(R.string.section_title_pay_bills);
 				} else{					
@@ -56,7 +56,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 					} else{
 						final Bundle bundle = new Bundle();
 						bundle.putSerializable(BankExtraKeys.PAYEES_LIST, BankUser.instance().getPayees());
-						BankNavigator.navigateToSelectPayee(bundle);
+						BankConductor.navigateToSelectPayee(bundle);
 					}
 				}
 			}
@@ -73,7 +73,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 			@Override
 			public void onClick(final View v) {
 				if(!isEligible()) {
-					BankNavigator.navigateToPayBillsLanding();
+					BankConductor.navigateToPayBillsLanding();
 				} else if (isEligible() && !isEnrolled()) {
 					sendToTermsScreen(R.string.sub_section_title_manage_payees);
 				}else {
@@ -90,7 +90,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 	protected static void sendToTermsScreen(final int title){
 		final Bundle bundle = new Bundle();
 		bundle.putInt(BankExtraKeys.TITLE_TEXT, title);
-		BankNavigator.navigateToPayBillsTerms(bundle);
+		BankConductor.navigateToPayBillsTerms(bundle);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 			@Override
 			public void onClick(final View v) {
 				if(!isEligible()){
-					BankNavigator.navigateToPayBillsLanding();
+					BankConductor.navigateToPayBillsLanding();
 				} else if(isEligible() && !isEnrolled()){
 					sendToTermsScreen(R.string.review_payments_title);
 				} else{

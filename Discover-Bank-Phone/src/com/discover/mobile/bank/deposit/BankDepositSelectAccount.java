@@ -17,10 +17,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
-import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.modals.HowItWorksModalTop;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
@@ -170,7 +170,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 					/**Navigate to Check Deposit - Select Amount Page*/
 					final Bundle bundle = new Bundle();
 					bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
-					BankNavigator.navigateToCheckDepositWorkFlow(bundle);
+					BankConductor.navigateToCheckDepositWorkFlow(bundle);
 				} else {
 					/**
 					 * Send a request to download account limits for the selected account. If successful

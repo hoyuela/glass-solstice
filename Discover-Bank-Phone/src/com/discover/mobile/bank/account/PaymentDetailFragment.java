@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.DetailFragment;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
@@ -61,7 +61,7 @@ public class PaymentDetailFragment extends DetailFragment{
 
 				@Override
 				public void onClick(final View v) {
-					BankNavigator.navigateToDeleteConfirmation(item);
+					BankConductor.navigateToDeleteConfirmation(item);
 				}
 			});
 		}

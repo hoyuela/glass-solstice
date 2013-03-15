@@ -49,6 +49,18 @@
         <item name="android:textStyle">bold</item>
     </style>
     
+        <style name="small_call_to_action_theme">
+        <item name="android:textColor">@drawable/call_to_action_text_color</item>
+        <item name="android:textSize">@dimen/small_copy_max</item>
+        <item name="android:paddingLeft">@dimen/small_orange_button_left_right_padding</item>
+        <item name="android:paddingRight">@dimen/small_orange_button_left_right_padding</item>
+        <item name="android:background">@drawable/call_to_action_button</item>
+        <item name="android:paddingTop">@dimen/small_call_to_actions_padding</item>
+        <item name="android:paddingBottom">@dimen/small_call_to_actions_padding</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
     <!--  Blue Hyperlink styles -->
     <style name="blue_hyperlink">
         <item name="android:textColor">@color/blue_link</item>

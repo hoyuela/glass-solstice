@@ -5,9 +5,9 @@ package com.discover.mobile.bank.facade;
 
 import android.app.Activity;
 
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.BankPhoneAsyncCallbackBuilder;
-import com.discover.mobile.bank.BankUser;
+import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
@@ -37,7 +37,7 @@ public class BankLogoutFacadeImpl implements BankLogoutFacade{
 			//Clear the sesssion data for the bank user
 			BankUser.instance().clearSession();
 			//Navigate to the login screen
-			BankNavigator.navigateToLoginPage(fromActivity, IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, null);
+			BankConductor.navigateToLoginPage(fromActivity, IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, null);
 		}
 			
 	}

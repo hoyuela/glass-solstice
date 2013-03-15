@@ -8,7 +8,8 @@
         android:id="@+id/discover_map_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/map_navigation_panel"
+        android:layout_above="@+id/drop_shadow"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
@@ -16,9 +17,9 @@
         android:id="@+id/discover_list_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/map_navigation_panel"
-        android:layout_alignParentTop="true"
-        class="com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment" />
+        android:layout_above="@+id/drop_shadow"
+        android:layout_below="@+id/full_search_bar"
+        class="com.discover.mobile.bank.atm.AtmListFragment" />
 
     <com.discover.mobile.bank.atm.AtmLocatorMapSearchBar
         android:id="@+id/full_search_bar"
@@ -35,6 +36,13 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" />
 
+    <ImageView
+        android:id="@+id/drop_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_above="@+id/map_navigation_panel"
+        android:background="@drawable/atm_search_dropshadow" />
+
     <LinearLayout
         android:id="@+id/map_navigation_panel"
         android:layout_width="match_parent"
@@ -42,6 +50,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:background="@drawable/light_gray_bkgrd"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/forms_inner_padding"
         android:paddingLeft="@dimen/forms_inner_padding"

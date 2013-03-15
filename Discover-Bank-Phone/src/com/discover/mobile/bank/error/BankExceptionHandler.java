@@ -1,6 +1,6 @@
 package com.discover.mobile.bank.error;
 
-import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
@@ -48,7 +48,7 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 		}
 		// If exception occurred because of a logout service call just navigate to login page
 		else if ( sender instanceof BankLogOutCall ) {
-			BankNavigator.navigateToLoginPage(
+			BankConductor.navigateToLoginPage(
 					DiscoverActivityManager.getActiveActivity(),
 					IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE,
 					null);

@@ -3,8 +3,8 @@ package com.discover.mobile.bank.account;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.FragmentComponentInfo;
@@ -26,7 +26,7 @@ public final class BankAccountSectionInfo extends GroupComponentInfo {
 
 			@Override
 			public void onClick(final View v) {
-				BankNavigator.navigateToBrowser(url);
+				BankConductor.navigateToBrowser(url);
 			}
 		};
 	}

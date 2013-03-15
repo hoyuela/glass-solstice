@@ -7,7 +7,7 @@ import java.util.Map;
 
 import android.content.Context;
 
-import com.discover.mobile.bank.BankUser;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.common.callback.AsyncCallback;

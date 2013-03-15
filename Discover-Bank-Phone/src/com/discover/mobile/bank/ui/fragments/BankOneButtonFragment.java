@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.bank.util.BankNeedHelpFooter;
@@ -210,7 +210,7 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	@Override
 	public void onClick(final View sender) {
 		if( sender == feedbackLink) {
-			BankNavigator.navigateToFeedback();
+			BankConductor.navigateToFeedback();
 		}  else if( sender == actionButton ) {
 			this.onActionButtonClick();
 		} else if( sender == actionLink) {
