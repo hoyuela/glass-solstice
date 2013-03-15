@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="left_pad">7dp</dimen>
+    <dimen name="right_pad">7dp</dimen>
+    <dimen name="bottom_pad">14dp</dimen>
+    <dimen name="top_pad">7dp</dimen>
+    
+    <dimen name="element_side_padding">22dp</dimen>
+    <dimen name="element_top_padding">16dp</dimen>
+    
+</resources>
