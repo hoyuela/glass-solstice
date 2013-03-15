@@ -9,8 +9,8 @@ import java.util.Locale;
 import android.content.Context;
 import android.view.View;
 
-import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;

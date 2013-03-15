@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.discover.mobile.bank.BankNavigator;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.ui.help.NeedHelpFooter;
 import com.discover.mobile.common.utils.CommonUtils;
 
@@ -48,7 +48,7 @@ public class BankNeedHelpFooter extends NeedHelpFooter {
 			@Override
 			public void onClick(final View v) {
 				if( promptUser ) {
-					BankNavigator.navigateToCallModal(helpNumberTxtVw.getText().toString());
+					BankConductor.navigateToCallModal(helpNumberTxtVw.getText().toString());
 				} else {
 					CommonUtils.dialNumber(helpNumberTxtVw.getText().toString(), helpNumberTxtVw.getContext());
 				}

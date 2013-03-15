@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 
@@ -83,7 +83,7 @@ public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 				final Bundle bundle = new Bundle();
 				bundle.putSerializable(BankExtraKeys.PAYEES_LIST, getPayees());
 				bundle.putInt(BankExtraKeys.SELECTED_PAYEE, localIndex);
-				BankNavigator.navigateToPayeeDetailScreen(bundle);
+				BankConductor.navigateToPayeeDetailScreen(bundle);
 			}
 		};
 	}
@@ -106,7 +106,7 @@ public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 	@Override
 	public void onClick(final View sender) {
 		if(sender == addPayee) {
-			BankNavigator.navigateToAddPayee(BankEnterPayeeFragment.class, null);
+			BankConductor.navigateToAddPayee(BankEnterPayeeFragment.class, null);
 		}
 	}
 	

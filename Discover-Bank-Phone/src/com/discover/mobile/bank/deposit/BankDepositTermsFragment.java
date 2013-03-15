@@ -1,9 +1,9 @@
 package com.discover.mobile.bank.deposit;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
-import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.customer.Eligibility;
 import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
 

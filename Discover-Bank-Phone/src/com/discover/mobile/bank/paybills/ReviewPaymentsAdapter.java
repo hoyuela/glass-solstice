@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 

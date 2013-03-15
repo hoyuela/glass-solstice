@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
-import com.discover.mobile.bank.BankNavigator;
-import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandler;
+import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
@@ -134,7 +134,7 @@ implements OnPaymentCanceledListener {
 				Globals.setLoggedIn(false);
 				Globals.setCurrentUser("");
 				BankUser.instance().clearSession();
-				BankNavigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED, null);
+				BankConductor.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED, null);
 			}
 		}
 	}
