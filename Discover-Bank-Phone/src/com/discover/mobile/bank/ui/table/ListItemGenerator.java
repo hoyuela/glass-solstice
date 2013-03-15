@@ -57,13 +57,11 @@ public class ListItemGenerator {
 	}
 
 	public ViewPagerListItem getMemoItemCell(final String memo) {
-		String memoText;
+		String memoText = memo;
 		if(memo == null) {
 			memoText = "";
-		} else {
-			memoText = memo;
-		}
-
+		} 
+		
 		listItem = new ViewPagerListItem(context);
 		getTwoItemCell(R.string.memo, memoText);
 		listItem.getMiddleLabel().setTextAppearance(context, R.style.smallest_copy);

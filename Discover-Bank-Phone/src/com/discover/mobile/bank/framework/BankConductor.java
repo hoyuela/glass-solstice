@@ -24,6 +24,7 @@ import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.deposit.BankDepositSelectAmount;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
+import com.discover.mobile.bank.deposit.CaptureReviewFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -650,6 +651,32 @@ public final class BankConductor  extends Conductor {
 				Log.e(TAG, "Unable to navigate to check deposit work-flow");
 			}
 		}
+	}
+	
+	/**
+	 * Navigate to the check deposit review screen. This is the Fragment that 
+	 * shows the user the details of their check deposit before it is submitted
+	 * to the server for confirmation.
+	 * @param bundle
+	 */
+	public static void navigateToCheckDepositReview(final Bundle bundle) {
+		Fragment fragment = null;
+		
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+	
+			fragment = new CaptureReviewFragment();
+			
+			if( fragment != null ) {
+				if(bundle != null)
+					fragment.setArguments(bundle);
+				navActivity.makeFragmentVisible(fragment);
+			}
+		}else{
+			Log.e(TAG, "Unable to navigate to check deposit review.");
+		}
+			
 	}
 	
 	/**

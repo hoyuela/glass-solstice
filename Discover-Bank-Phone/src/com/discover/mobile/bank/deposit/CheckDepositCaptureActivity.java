@@ -1,6 +1,5 @@
-package com.discover.mobile.bank.checkdeposit;
+package com.discover.mobile.bank.deposit;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,6 +32,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
@@ -77,16 +77,19 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private CameraCountdownTask timerTask;
 	
 	//OTHER
-	private Drawable COUNT_3;
-	private Drawable COUNT_2;
-	private Drawable COUNT_1;
+	private Drawable countdownThree;
+	private Drawable countdownTwo;
+	private Drawable countdownOne;
 	
 	final int THREE = 3;
 	private int count = THREE;
 
 	private boolean inPreview = false;
 	private boolean cameraConfigured = false;
-	protected boolean isPaused = false;
+	private boolean isPaused = false;
+	
+	private Account account;
+	private int amount = 0;
 
 	
 	/**
@@ -111,8 +114,11 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		cameraPreview.setOnClickListener(autoFocusClickListener);
 		final Bundle extras = getIntent().getExtras();
 		
-		if(extras != null)
+		if(extras != null){
 			setupPictureRetake(extras.getInt(BankExtraKeys.RETAKE_PICTURE));
+			account = (Account)extras.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+			amount = extras.getInt(BankExtraKeys.AMOUNT);
+		}
 		
 	}
 	
@@ -128,7 +134,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 		setCameraDisplayOrientation(this, 0, camera);
 		setupCameraParameters();
-
 	}
 
 	/**
@@ -162,7 +167,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * Setup all local references to UI elements.
 	 */
 	private void loadViews() {
-		cameraPreview = (SurfaceView)findViewById(R.id.camera_preview);
+		cameraPreview = (SurfaceView)findViewById(R.id.camera_surface);
 		countdownLogo = (ImageView)findViewById(R.id.countdown_logo);
 		previewHolder = cameraPreview.getHolder();		
 		previewHolder.addCallback(this);
@@ -212,8 +217,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * @return if the image was deleted.
 	 */
 	private static boolean deleteImage(final String imageName, final Context context){
-		final File frontPic = context.getFileStreamPath(imageName);
-		return context.deleteFile(frontPic.getAbsolutePath());
+		return context.deleteFile(imageName);
 	}
 	
 	/**
@@ -230,9 +234,9 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	private void loadDrawables() {
 		final Resources res = getResources();
-		COUNT_3 = res.getDrawable(R.drawable.chckdep_3);
-		COUNT_2 = res.getDrawable(R.drawable.chckdep_2);
-		COUNT_1 = res.getDrawable(R.drawable.chckdep_1);
+		countdownThree = res.getDrawable(R.drawable.chckdep_3);
+		countdownTwo = res.getDrawable(R.drawable.chckdep_2);
+		countdownOne = res.getDrawable(R.drawable.chckdep_1);
 	}
 	
 	/**
@@ -346,6 +350,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		
 		@Override
 		public void onClick(final View v) {
+			saveLastConfirmedImage();
 			goToNextStep();
 			resetCamera();
 			setDefaultButtons();
@@ -386,6 +391,43 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		final boolean stepTwoChecked = stepTwoCheck.getVisibility() == View.VISIBLE;
 		if(stepTwoChecked){
 			Log.d(TAG, "FINISHED!");
+//			final Intent review = new Intent(this, PictureReview.class);
+//			startActivity(review);
+			this.setResult(Activity.RESULT_OK);
+			this.finish();
+//
+//			final AsyncCallback<DepositDetail> callback = BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(DepositDetail.class, this, this).build();
+//			final DepositDetail detail = new DepositDetail();
+//		
+//			final int jpegCompressionQuality = 30;
+//			
+//			detail.account = 1;
+//			
+//			detail.amount = 5555;
+//			final TelephonyManager telephonyManager =
+//					(TelephonyManager) DiscoverActivityManager.getActiveActivity().getSystemService(Context.TELEPHONY_SERVICE);
+//			
+//			detail.deviceUUID = telephonyManager.getDeviceId();
+//			detail.deviceType = "Android";
+//		
+//			final File frontPic = getFileStreamPath(CheckDepositCaptureActivity.FRONT_PICTURE);
+//			final File backPic = getFileStreamPath(CheckDepositCaptureActivity.BACK_PICTURE);
+//			
+//			final Bitmap pic = BitmapFactory.decodeFile(frontPic.getAbsolutePath());
+//			final Bitmap pic2 = BitmapFactory.decodeFile(backPic.getAbsolutePath());
+//			
+//			final ByteArrayOutputStream frontBitStream = new ByteArrayOutputStream();
+//			final ByteArrayOutputStream backBitStream = new ByteArrayOutputStream();
+//
+//			pic.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, frontBitStream);
+//			pic2.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, backBitStream);
+//			
+//			detail.frontImage = Base64.encodeToString(frontBitStream.toByteArray(), Base64.NO_WRAP);
+//			detail.backImage = Base64.encodeToString(backBitStream.toByteArray(), Base64.NO_WRAP);
+//			
+//			final SubmitCheckDepositCall call = new SubmitCheckDepositCall(this, callback, detail);
+//			call.submit();
+			
 		}else if(stepOneChecked){
 			frontLabel.setTextColor(getResources().getColor(R.color.field_copy));
 			backLabel.setTextColor(getResources().getColor(R.color.sub_copy));
@@ -435,7 +477,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	private void resetCountdown() {
 		countdownLogo.setVisibility(View.GONE);
-		countdownLogo.setImageDrawable(COUNT_3);
+		countdownLogo.setImageDrawable(countdownThree);
 	}
 	
 	/**
@@ -451,6 +493,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * hiding the check brackets, showing the confirmatoin buttons and setting
 	 * the next check mark to visible.
 	 */
+	private byte[] lastPicture = null;
 	private final PictureCallback mPicture = new PictureCallback() {
 
 	    @Override
@@ -460,20 +503,27 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	    	setPictureConfirmationButtons();
 	    	hideImageBrackets();
 	    	setNextCheckVisible();
-
-	    	//Write the image to disk.
-	        try {
-	        	final FileOutputStream fos = getFileOutputStream();
-	            fos.write(data);
-	            fos.close();
-	        } catch (final FileNotFoundException e) {
-	            Log.d(TAG, "File not found: " + e.getMessage());
-	        } catch (final IOException e) {
-	            Log.d(TAG, "Error accessing file: " + e.getMessage());
-	        }
-	        
+	    	lastPicture = data;
 	    }
 	};
+	
+	/**
+	 * Saves the image in the local lastPicture byte array to the device.
+	 */
+	private void saveLastConfirmedImage() {
+		//Write the image to disk.
+        try {
+        	if(lastPicture != null && lastPicture.length > 0) {
+	        	final FileOutputStream fos = getFileOutputStream();
+	            fos.write(lastPicture);
+	            fos.close();
+        	}
+        } catch (final FileNotFoundException e) {
+            Log.d(TAG, "File not found: " + e.getMessage());
+        } catch (final IOException e) {
+            Log.d(TAG, "Error accessing file: " + e.getMessage());
+        }
+	}
 	
 	/**
 	 * Setup the buttons on the screen to be confirmation buttons.
@@ -770,7 +820,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			try {
 				Thread.sleep(ONE_SECOND);
 			} catch (final InterruptedException e) {
-
+				Log.e(TAG, "Countdown Thread Interrupted: " + e);
 			}
 			
 			return null;
@@ -811,11 +861,11 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	private void updateCountImage() {
 		if(count == THREE)
-			countdownLogo.setImageDrawable(COUNT_3);
+			countdownLogo.setImageDrawable(countdownThree);
 		else if (count == 2)
-			countdownLogo.setImageDrawable(COUNT_2);
+			countdownLogo.setImageDrawable(countdownTwo);
 		else if(count == 1)
-			countdownLogo.setImageDrawable(COUNT_1);
+			countdownLogo.setImageDrawable(countdownOne);
 		else if (count < 1)
 			resetCountdown();
 	}

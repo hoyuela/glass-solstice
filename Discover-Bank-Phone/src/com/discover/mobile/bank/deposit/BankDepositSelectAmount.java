@@ -3,6 +3,7 @@ package com.discover.mobile.bank.deposit;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,9 +17,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.BankNavigator;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.checkdeposit.CheckDepositCaptureActivity;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.common.DiscoverActivityManager;
 
 /**
  * Fragment used to display the Check Deposit - Select Amount page. This is the second step in the
@@ -120,6 +122,8 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		return items;
 	}
 
+	final int CAPTURE_ACTIVITY = 1;
+	
 	@Override
 	protected void onActionButtonClick() {	
 		/**Clear focus to close keyboard*/
@@ -130,10 +134,24 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 			 * Launch the check deposit capture activity when Continue is clicked and all limits are not exceeded
 			 */
 			final Intent captureCheckActivity = new Intent(getActivity(), CheckDepositCaptureActivity.class);
-			startActivity(captureCheckActivity);
+			startActivityForResult(captureCheckActivity, CAPTURE_ACTIVITY);
+			
 		} else {
 			amountItem.getEditableField().updateAppearanceForInput();
 		}
+	}
+	
+	/**
+	 * When the check capture activity finishes, navigate to the next step
+	 * in the process of check deposit.
+	 */
+	@Override
+	public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+		DiscoverActivityManager.setActiveActivity(getActivity());
+		if(requestCode == CAPTURE_ACTIVITY)
+			if(resultCode == Activity.RESULT_OK) {
+				BankNavigator.navigateToCheckDepositReview(getArguments());
+			}
 	}
 
 	@Override
