@@ -205,16 +205,18 @@
                     android:id="@+id/login_horizontal_divider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@+id/privacy_and_security_button"
+                    android:layout_marginTop="19dp"
+                    android:layout_below="@id/privacy_and_security_button"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/login_horizontal_divider" />
 
                 <!-- Card/Bank Login Toggle Layout -->
 
                 <LinearLayout
+                    android:id="@+id/login_button_toggle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/login_horizontal_divider"
+                    android:layout_alignParentBottom="true"
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/bottom_pad"
                     android:paddingLeft="@dimen/left_pad"
