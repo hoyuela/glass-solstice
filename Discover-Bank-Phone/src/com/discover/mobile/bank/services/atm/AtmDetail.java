@@ -36,6 +36,27 @@ public class AtmDetail extends LocationObject implements Serializable{
 	/**Unique serialized object id*/
 	private static final long serialVersionUID = -3207359834100328198L;
 
+	/**Public identifier that indicated that an ATM has a feature*/
+	public static final String HAS_FEATURE = "Y";
+
+	/**String for always with the atm hours*/
+	public static final String ALWAYS = "ALWAYS";
+
+	/**String for Braille Service*/
+	public static final String BRAILLE = "Braille";
+
+	/**String for Restricted*/
+	public static final String RESTRICTED = "Restricted";
+
+	/**String for Walk Up*/
+	public static final String WALK_UP = "Walk-Up";
+
+	/**String for Drive-Up*/
+	public static final String DRIVE_UP = "Drive-Up";
+
+	/**String for 24 hours*/
+	public static final String ALL_HOURS = "24 hours";
+
 	/**ATM unique identifier*/
 	@JsonProperty("atmIdentifier")
 	public int id;
@@ -102,6 +123,9 @@ public class AtmDetail extends LocationObject implements Serializable{
 
 	/**Distance from the user*/
 	public double distanceFromUser;
+
+	/**Boolean for if the atm detail is expanded*/
+	public boolean isExpanded = false;
 
 	/**
 	 * @return if the atm is surcharge free

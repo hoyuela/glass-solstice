@@ -4,6 +4,7 @@
 package com.discover.mobile.bank.atm;
 
 import java.io.IOException;
+import java.util.List;
 
 import android.content.Intent;
 import android.location.Address;
@@ -23,7 +24,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
-import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
@@ -60,6 +60,9 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 	/**Amount of ATMs that can be shown at one time*/
 	private static final int INDEX_INCREMENT = 10;
 
+	/**Maximum Amount of loads that the app can do*/
+	private static final int MAX_LOADS = 30;
+
 	/**current index of the next atm that needs to be displayed*/
 	private int currentIndex = 0;
 
@@ -91,7 +94,7 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 	private SupportMapFragment fragment;
 
 	/**Support map fragment*/
-	private BankUnderDevelopmentFragment  listFragment;
+	private AtmListFragment  listFragment;
 
 	/**Help icon*/
 	private ImageView help;
@@ -109,17 +112,17 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 			final ViewGroup parent = (ViewGroup)(view.getParent());
 			parent.removeView(view);
 		}
+
+		final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
 		mapButton = (Button) view.findViewById(R.id.map_nav);
 		listButton = (Button) view .findViewById(R.id.list_nav);
 		help = (ImageView) view.findViewById(R.id.help);
-
-		fragment =  (SupportMapFragment) this.getActivity().getSupportFragmentManager().findFragmentById(getMapFragmentId());
-		listFragment = 
-				(BankUnderDevelopmentFragment) this.getActivity().getSupportFragmentManager().findFragmentById(getListFragmentId());
-
+		fragment =  (SupportMapFragment) activity.getSupportFragmentManager().findFragmentById(getMapFragmentId());
+		listFragment =  (AtmListFragment) activity.getSupportFragmentManager().findFragmentById(getListFragmentId());
+		listFragment.setObserver(this);
 
 
-		final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(this.getActivity());
+		final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(activity);
 		final DiscoverInfoWindowAdapter adapter = new DiscoverInfoWindowAdapter(balloon);
 		mapWrapper = new DiscoverMapWrapper(fragment.getMap(), adapter);
 		locationManagerWrapper = new DiscoverLocationMangerWrapper(this);
@@ -158,7 +161,11 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 	 */
 	@Override
 	public String getCurrentLocationAddress() {
-		return mapWrapper.getGetAddressString();
+		final String str = mapWrapper.getGetAddressString();
+		if(null == str || str.isEmpty()){
+			locationModal.show();
+		}
+		return str;
 	}
 
 	/**
@@ -169,6 +176,11 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 	public void performSearch(final String text) {
 		final Geocoder coder = new Geocoder(this.getActivity());
 		try {
+			final List<Address> addresses = coder.getFromLocationName(text, 1);
+			if(null == addresses || addresses.isEmpty()){
+				AtmModalFactory.getInvalidAddressModal(this.getActivity()).show();
+				return;
+			}
 			final Address address = coder.getFromLocationName(text, 1).get(0);
 			final Location location = new Location(LocationManager.GPS_PROVIDER);
 			location.setLatitude(address.getLatitude());
@@ -184,7 +196,7 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 			getAtms(location);
 			hasLoadedAtms = true;
 		} catch (final IOException e) {
-			//TODO: handle this
+			AtmModalFactory.getInvalidAddressModal(this.getActivity()).show();
 		}
 	}
 
@@ -251,6 +263,7 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 		isOnMap = !savedInstanceState.getBoolean(BUTTON_KEY, true);
 		searchBar.restoreState(savedInstanceState);
 		toggleButton();
+		listFragment.handleReceivedData(savedInstanceState);
 	}
 
 	/**
@@ -308,8 +321,22 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 	 */
 	public void handleRecievedAtms(final Bundle bundle){
 		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-		mapWrapper.addObjectsToMap(results.results.atms.subList(currentIndex, INDEX_INCREMENT));
-		currentIndex += INDEX_INCREMENT;
+		int endIndex = (currentIndex + INDEX_INCREMENT);
+		if(isListEmpty()){
+			AtmModalFactory.getNoResultsModal(getActivity());
+			endIndex = 0;
+		}else if(endIndex > results.results.atms.size()){
+			endIndex = results.results.atms.size();
+		}
+
+		mapWrapper.addObjectsToMap(results.results.atms.subList(currentIndex, endIndex));
+		currentIndex = endIndex;
+		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
+		listFragment.handleReceivedData(bundle);
+	}
+
+	private boolean isListEmpty(){
+		return (null == results || null == results.results || null == results.results.atms || results.results.atms.isEmpty());
 	}
 
 
@@ -438,7 +465,6 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 	public void handleTimeOut() {
 		locationManagerWrapper.stopGettingLocaiton();
 		if(null == mapWrapper.getCurrentLocation()){
-			//TODO: Show modal
 			showNoLocation();
 		}
 	}
@@ -457,7 +483,7 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 	public void showList(){
 		help.setVisibility(View.GONE);
 		searchBar.showListView();
-		searchBar.setFragment(null);
+		searchBar.setFragment(this);
 		this.getActivity().getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
 		this.getActivity().getSupportFragmentManager().beginTransaction().show(listFragment).commitAllowingStateLoss();
 	}
@@ -469,5 +495,25 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 		searchBar.setFragment(this);
 		this.getActivity().getSupportFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
 		this.getActivity().getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
+	}
+
+	public boolean canLoadMore(){
+		boolean loadMore = true;
+		if(isListEmpty()){
+			loadMore =  false;
+		}else if(currentIndex == (MAX_LOADS * INDEX_INCREMENT)){
+			loadMore = false;
+		}else if(results.results.atms.size() == currentIndex){
+			loadMore =  false;
+		}else{
+			loadMore = true;
+		}
+		return loadMore;
+	}
+
+	public void loadMoreData(){
+		final Bundle bundle = new Bundle();
+		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, results);
+		handleRecievedAtms(bundle);
 	}
 }

@@ -9,8 +9,10 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.modals.ModalTwoButtonWhiteBottom;
+import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalBottomTwoButtonView;
+import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 
@@ -98,6 +100,58 @@ public final class AtmModalFactory{
 				fragment.setLocationStatus(LocationFragment.NOT_USING_LOCATION);
 			}
 		});
+		return modal;
+	}
+
+	/**
+	 * Get the modal that informs the users that there were no results
+	 * @param context - activity context
+	 * @param fragment - fragment using the modal
+	 * @return the modal that will ask the user if they would like to allow
+	 * the app to use their current location
+	 */
+	public static ModalAlertWithOneButton getNoResultsModal(final Context context){
+		final ModalDefaultTopView top  = new ModalDefaultTopView(context, null);
+		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(context, null);
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(context, top, bottom);
+		top.setTitle(R.string.atm_no_results_title);
+		top.setContent(R.string.atm_no_results_content);
+		top.showErrorIcon(false);
+		top.hideNeedHelpFooter();
+		bottom.getButton().setText(R.string.atm_no_results_button);
+		bottom.getButton().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				modal.dismiss();
+			}
+		});
+
+		return modal;
+	}
+
+	/**
+	 * Get the modal that will inform the user that they have entered an invalid address
+	 * @param context - activity context
+	 * @param fragment - fragment using the modal
+	 * @return the modal that will ask the user if they would like to allow
+	 * the app to use their current location
+	 */
+	public static ModalAlertWithOneButton getInvalidAddressModal(final Context context){
+		final ModalDefaultTopView top  = new ModalDefaultTopView(context, null);
+		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(context, null);
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(context, top, bottom);
+		top.setTitle(R.string.atm_no_results_title);
+		top.setContent(R.string.atm_no_results_content);
+		top.showErrorIcon(false);
+		top.hideNeedHelpFooter();
+		bottom.getButton().setText(R.string.atm_no_results_button);
+		bottom.getButton().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				modal.dismiss();
+			}
+		});
+
 		return modal;
 	}
 }

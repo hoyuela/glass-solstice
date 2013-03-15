@@ -14,5 +14,13 @@
     <string name="atm_location_get_directions">Distance Away %s M</string>
     <string name="atm_location_search_help">Search ATM Locations</string>
     <string name="atm_location_surcharge_free">Only display surcharge-free ATMs</string>
+    <string name="atm_location_report">Report ATM Problem</string>
+    <string name="atm_location_email">Email Directions</string>
+    <string name="atm_location_hours">Hours</string>
+    <string name="atm_location_services">Services</string>
+    <string name="atm_location_no_results">There are no ATMs near the searched location.</string>
+    <string name="atm_no_results_title">We\'re Sorry!</string>
+    <string name="atm_no_results_content">There were no ATMs near the searched location.</string>
+    <string name="atm_no_results_button">OK</string>
     
 </resources>

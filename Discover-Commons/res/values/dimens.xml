@@ -21,7 +21,9 @@
     <dimen name="forms_inner_padding">12dp</dimen>
     <dimen name="content_padding">8dp</dimen>
     <dimen name="call_to_actions_padding">15dp</dimen>
+    <dimen name="small_call_to_actions_padding">5dp</dimen>
     <dimen name="orange_button_left_right_padding">30dp</dimen>
+    <dimen name="small_orange_button_left_right_padding">15dp</dimen>
     <dimen name="between_related_elements_padding">7dp</dimen>
     <dimen name="help_icon_right_padding">19dp</dimen>
     <dimen name="groups_of_elements_padding">20dp</dimen>

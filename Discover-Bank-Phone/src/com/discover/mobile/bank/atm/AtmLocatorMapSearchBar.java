@@ -173,7 +173,17 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 				if (isTouchRegionValid(event) && !searchBox.getText().toString().isEmpty()) {
 					searchBox.setText("");
 				}else if(isTouchRegionValid(event)){
-					searchBox.setText(fragment.getCurrentLocationAddress());
+					final String address = fragment.getCurrentLocationAddress();
+					if(null == address || address.isEmpty()){
+						searchBox.clearFocus();
+						filterLayout.setVisibility(View.GONE);
+						final InputMethodManager manager = 
+								(InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+						manager.hideSoftInputFromWindow(searchBox.getWindowToken(), 0);
+						return true;
+					}else{
+						searchBox.setText(address);
+					}
 				}
 
 				return false;
@@ -227,6 +237,8 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	}
 
 	public void showListView(){
+		show.setVisibility(View.GONE);
+		searchLayout.setVisibility(View.VISIBLE);
 		searchDummy.setVisibility(View.GONE);
 		hide.setVisibility(View.GONE);
 	}

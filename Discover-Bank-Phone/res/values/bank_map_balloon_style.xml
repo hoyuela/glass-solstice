@@ -1,35 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <!--  Base Balloon Style -->
+
+    <!-- Base Balloon Style -->
     <style name="balloon_large_text">
         <item name="android:textSize">@dimen/body_copy_mid</item>
     </style>
-    
+
     <style name="balloon_small_text">
         <item name="android:textSize">@dimen/small_copy_min</item>
     </style>
-    
+
     <!-- Displaying balloon styles -->
     <style name="balloon_large_title_text" parent="balloon_large_text">
         <item name="android:textColor">@color/title</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="balloon_large_blue_text" parent="balloon_large_text">
         <item name="android:textColor">@color/blue_link</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="balloon_sub_title_text" parent="balloon_small_text">
         <item name="android:textColor">@color/sub_copy</item>
     </style>
-    
+
     <style name="balloon_sub_text" parent="balloon_small_text">
         <item name="android:textColor">@color/field_copy</item>
     </style>
-    
-    
-        
-    
+
+    <!-- ATM locator styles -->
+    <style name="atm_large_title_text">
+        <item name="android:textColor">@color/title</item>
+        <item name="android:textSize">@dimen/small_copy_mid</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="atm_sub_title_text">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+    </style>
+
+    <style name="atm_sub_title_text">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="atm_sub_text">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+    </style>
+
 </resources>
