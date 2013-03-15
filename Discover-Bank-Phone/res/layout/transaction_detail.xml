@@ -134,19 +134,6 @@
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/provide_feedback_button"
-            style="@style/blue_hyperlink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/content_table"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/groups_of_elements_padding"
-            android:background="@null"
-            android:text="@string/feedback_text" >
-        </Button>
     </RelativeLayout>
 
 </ScrollView>
