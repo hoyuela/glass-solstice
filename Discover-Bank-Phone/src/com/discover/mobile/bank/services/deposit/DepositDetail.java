@@ -1,12 +1,8 @@
 package com.discover.mobile.bank.services.deposit;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.discover.mobile.common.net.json.bank.Date;
-import com.discover.mobile.common.net.json.bank.Money;
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -40,12 +36,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DepositDetail implements Serializable {
 	private static final long serialVersionUID = 4608587442886244788L;
-
-	@JsonProperty("id")
-	public int id;
 	
 	@JsonProperty("amount")
-	public Money amount;
+	public int amount;
 	
 	@JsonProperty("account")
 	public int account;
@@ -64,6 +57,10 @@ public class DepositDetail implements Serializable {
 	@JsonProperty("backImage")
 	public String backImage;
 	
-	/**List of links for for this object*/
-	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
+	@JsonProperty("deviceType")
+	public String deviceType;
+	
+	@JsonProperty("deviceUUID")
+	public String deviceUUID;
+	
 }

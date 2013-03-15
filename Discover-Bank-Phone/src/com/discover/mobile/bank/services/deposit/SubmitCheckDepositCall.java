@@ -8,8 +8,6 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.bank.services.BankUrlManager;
-import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
@@ -30,8 +28,8 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 		private final SimpleReferenceHandler<DepositDetail> handler;
 		
 		public SubmitCheckDepositCall(final Context context, final AsyncCallback<DepositDetail> callback,
-				final CreatePaymentDetail modelClass) {
-			super(context, new PostCallParams(BankUrlManager.getUrl(BankUrlManager.DEPOSITS_URL_KEY)) {{ //$NON-NLS-1$
+				final DepositDetail modelClass) {
+			super(context, new PostCallParams("/api/deposits/") {{
 				requiresSessionForRequest = true;
 				sendDeviceIdentifiers = true;
 
