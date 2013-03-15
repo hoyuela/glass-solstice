@@ -70,7 +70,7 @@
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:layout_below="@+id/content"
             android:layout_centerHorizontal="true"
-            android:text="@string/select_payee_add_new" />
+            android:text="@string/select_payee_add" />
 
     </RelativeLayout>
 

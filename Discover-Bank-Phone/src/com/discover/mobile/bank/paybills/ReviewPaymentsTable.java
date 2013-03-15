@@ -353,8 +353,10 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		adapter.setData(activities);
 		if(adapter.getCount() < 1){
 			footer.showEmpty(this.getEmptyStringText());
+			header.showTitle(false);
 		}else{
 			footer.showDone();
+			header.showTitle(true);
 		}
 		adapter.notifyDataSetChanged();
 	}
@@ -381,7 +383,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	@Override
 	public void showFooterMessage() {
 		footer.showEmpty(getEmptyStringText());
-
 	}
 
 	@Override
