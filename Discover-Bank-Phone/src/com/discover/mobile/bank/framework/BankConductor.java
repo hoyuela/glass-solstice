@@ -20,6 +20,7 @@ import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
+import com.discover.mobile.bank.deposit.BankDepositConfirmFragment;
 import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.deposit.BankDepositSelectAmount;
@@ -641,6 +642,8 @@ public final class BankConductor  extends Conductor {
 					fragment = new BankDepositSelectAccount();	
 				}
 			}
+			
+			fragment = new BankDepositConfirmFragment();
 			
 			if( fragment != null ) {
 				fragment.setArguments(bundle);
