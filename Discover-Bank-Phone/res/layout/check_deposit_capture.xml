@@ -4,11 +4,9 @@
     android:layout_height="fill_parent" >
 
     <SurfaceView
-        android:id="@+id/camera_preview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/button_bar" />
+        android:id="@+id/camera_surface"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -156,7 +154,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/field_stroke" >
+        android:background="@color/field_stroke"
+        android:clickable="true" >
 
         <ImageView
             android:id="@+id/help_button"
