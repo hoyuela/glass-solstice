@@ -25,10 +25,9 @@ import com.discover.mobile.common.net.json.JacksonObjectMapperHolder;
 public class BankErrorSSOResponseParser implements
 		ErrorResponseParser<BankErrorSSOResponse> {
 	/**
-	 * Used to print logs using Android logcat API
+	 * Used to print logs using Android logcat API - Class Simplename was too long to log.
 	 */
-	private static final String TAG = "bnkerssoresparser";//BankErrorSSOResponseParser.class
-			//.getSimpleName();
+	private static final String TAG = "BankErrorSSOParse";
 	/**
 	 * Singleton instance of parser so it can be reused in any Bank Network
 	 * Service Call object
@@ -94,9 +93,9 @@ public class BankErrorSSOResponseParser implements
 			ret = JacksonObjectMapperHolder.getMapper().readValue(in,
 					BankErrorSSOResponse.class);
 
-//			if (ret == null && Log.isLoggable(TAG, Log.ERROR)) {
-//				Log.e(TAG, "Unable to map error response to an object");
-//			}
+			if (ret == null && Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unable to map error response to an object");
+			}
 		} catch (Exception ex) {
 			Log.e(TAG, ex.toString());
 			if (Log.isLoggable(TAG, Log.ERROR)) {
