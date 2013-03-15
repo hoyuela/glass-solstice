@@ -108,7 +108,6 @@ public class LoginActivity extends BaseActivity implements
 	private TextView goToCardLabel;
 
 	// IMAGES
-
 	private ImageView cardCheckMark;
 	private ImageView bankCheckMark;
 	private ImageView toggleImage;
@@ -196,7 +195,7 @@ public class LoginActivity extends BaseActivity implements
 		goToBankButton = (RelativeLayout) findViewById(R.id.bank_login_toggle);
 		goToCardButton = (RelativeLayout) findViewById(R.id.card_login_toggle);
 
-		cardCheckMark = (ImageView) findViewById(R.id.card_check_mark); 
+		cardCheckMark = (ImageView) findViewById(R.id.card_check_mark);
 		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark); 
 		toggleImage = (ImageView) findViewById(R.id.remember_user_id_button); 
 		splashProgress = (ProgressBar) findViewById(R.id.splash_progress);
@@ -813,7 +812,7 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
-				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) this.getResources().getDimension(R.dimen.top_pad));
 
 		CommonUtils.setViewVisible(cardCheckMark);
 		CommonUtils.setViewInvisible(bankCheckMark);
@@ -825,12 +824,10 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
-				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) this.getResources().getDimension(R.dimen.top_pad));
 
 		registerOrAtmButton.setText(R.string.register_now);
 		privacySecOrTermButton.setText(R.string.privacy_and_security);
-
-//		CommonUtils.setViewVisible(forgotUserIdOrPassText);
 
 		// Load Card Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
@@ -847,7 +844,7 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
-				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) this.getResources().getDimension(R.dimen.top_pad));
 		CommonUtils.setViewInvisible(cardCheckMark);
 		CommonUtils.setViewVisible(bankCheckMark);
 
@@ -858,7 +855,7 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
-				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) this.getResources().getDimension(R.dimen.top_pad));
 		registerOrAtmButton.setText(R.string.atm_locator);
 		privacySecOrTermButton.setText(R.string.privacy_and_terms);
 		CommonUtils.setViewInvisible(forgotUserIdOrPassText);

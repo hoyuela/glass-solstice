@@ -65,10 +65,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/discoverLogo"
                     android:layout_marginTop="@dimen/groups_of_elements_padding"
+                    android:gravity="center_horizontal"
                     android:paddingLeft="@dimen/element_side_padding"
                     android:paddingRight="@dimen/element_side_padding"
-                    android:visibility="gone"
-                    android:gravity="center_horizontal" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/user_id_label"
@@ -140,12 +140,13 @@
                     android:layout_marginLeft="5dip"
                     android:layout_marginRight="@dimen/element_side_padding"
                     android:layout_marginTop="14dp"
-                    android:contentDescription="@string/remember_user_id"
                     android:clickable="true"
+                    android:contentDescription="@string/remember_user_id"
                     android:onClick="toggleCheckBoxFromXml"
                     android:padding="5dip" />
 
-                <!-- idk if this is coming back yet...
+                <!--
+                     idk if this is coming back yet...
                      <TextView
                     android:id="@+id/register_text"
                     android:layout_width="0dp"
@@ -170,8 +171,9 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="@dimen/orange_button_margin_top"
                     android:text="@string/login_button_text" />
-    
-               <!-- idk if present on card yet.. AC wasn't clear with comps -->
+
+                <!-- idk if present on card yet.. AC wasn't clear with comps -->
+
                 <TextView
                     android:id="@+id/forgot_uid_or_pass_text"
                     android:layout_width="wrap_content"
@@ -185,7 +187,6 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/blue"
                     android:visibility="gone" />
-                
 
                 <TextView
                     android:id="@+id/privacy_and_security_button"
@@ -199,99 +200,107 @@
                     android:textColor="@color/blue"
                     android:textSize="@dimen/body_copy_min" />
 
-                <!-- Divider -->
-
-                <View
-                    android:id="@+id/login_horizontal_divider"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/privacy_and_security_button"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/login_horizontal_divider" />
-
-                <!-- Card/Bank Login Toggle Layout -->
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <RelativeLayout
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/login_horizontal_divider"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/bottom_pad"
-                    android:paddingLeft="@dimen/left_pad"
-                    android:paddingRight="@dimen/right_pad"
-                    android:weightSum="2" >
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentBottom="true">
 
-                    <!-- Card -->
+                    <!-- Divider -->
 
-                    <RelativeLayout
-                        android:id="@+id/card_login_toggle"
-                        android:layout_width="0dp"
+                    <View
+                        android:id="@+id/login_horizontal_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/login_horizontal_divider" />
+
+                    <!-- Card/Bank Login Toggle Layout -->
+
+                    <LinearLayout
+                        android:id="@+id/login_button_toggle"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/card_login_background_off"
-                        android:bottom="@dimen/bottom_pad"
-                        android:clickable="true"
-                        android:onClick="toggleBankCardLogin"
-                        android:padding="16dp" >
+                        android:layout_below="@id/login_horizontal_divider"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/bottom_pad"
+                        android:paddingLeft="@dimen/left_pad"
+                        android:paddingRight="@dimen/right_pad"
+                        android:weightSum="2" >
 
-                        <ImageView
-                            android:id="@+id/card_check_mark"
-                            android:layout_width="wrap_content"
+                        <!-- Card -->
+
+                        <RelativeLayout
+                            android:id="@+id/card_login_toggle"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="3dp"
-                            android:src="@drawable/black_check_mark" />
+                            android:layout_weight="1"
+                            android:background="@drawable/card_login_background_off"
+                            android:bottom="@dimen/bottom_pad"
+                            android:clickable="true"
+                            android:onClick="toggleBankCardLogin"
+                            android:padding="16dp" >
 
-                        <TextView
-                            android:id="@+id/go_to_card_label"
-                            android:layout_width="wrap_content"
+                            <ImageView
+                                android:id="@+id/card_check_mark"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="3dp"
+                                android:src="@drawable/black_check_mark" />
+
+                            <TextView
+                                android:id="@+id/go_to_card_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_toRightOf="@id/card_check_mark"
+                                android:padding="8dp"
+                                android:singleLine="true"
+                                android:text="@string/card"
+                                android:textColor="@color/title"
+                                android:textSize="@dimen/body_copy_min" />
+                        </RelativeLayout>
+
+                        <!-- Bank -->
+
+                        <RelativeLayout
+                            android:id="@+id/bank_login_toggle"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_toRightOf="@id/card_check_mark"
-                            android:singleLine="true"
-                            android:text="@string/card"
-                            android:textColor="@color/title"
-                            android:textSize="@dimen/body_copy_min"
-                            android:padding="8dp" />
-                    </RelativeLayout>
+                            android:layout_weight="1"
+                            android:background="@drawable/bank_login_background_off"
+                            android:checkable="true"
+                            android:checked="true"
+                            android:clickable="true"
+                            android:onClick="toggleBankCardLogin"
+                            android:padding="16dp" >
 
-                    <!-- Bank -->
+                            <ImageView
+                                android:id="@+id/bank_check_mark"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="3dp"
+                                android:src="@drawable/black_check_mark" />
 
-                    <RelativeLayout
-                        android:id="@+id/bank_login_toggle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bank_login_background_off"
-                        android:checkable="true"
-                        android:checked="true"
-                        android:clickable="true"
-                        android:onClick="toggleBankCardLogin"
-                        android:padding="16dp" >
-
-                        <ImageView
-                            android:id="@+id/bank_check_mark"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="3dp"
-                            android:src="@drawable/black_check_mark" />
-
-                        <TextView
-                            android:id="@+id/go_to_bank_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_toRightOf="@id/bank_check_mark"
-                            android:singleLine="true"
-                            android:text="@string/bank"
-                            android:textColor="@color/title"
-                            android:textSize="@dimen/body_copy_min"
-                            android:padding="8dp" />
-                    </RelativeLayout>
-                </LinearLayout>
+                            <TextView
+                                android:id="@+id/go_to_bank_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_toRightOf="@id/bank_check_mark"
+                                android:padding="8dp"
+                                android:singleLine="true"
+                                android:text="@string/bank"
+                                android:textColor="@color/title"
+                                android:textSize="@dimen/body_copy_min" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </RelativeLayout>
             </RelativeLayout>
 
             <View
