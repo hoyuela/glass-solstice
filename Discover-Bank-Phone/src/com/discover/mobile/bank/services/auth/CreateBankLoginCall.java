@@ -18,7 +18,7 @@ import com.discover.mobile.common.net.SessionTokenManager;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.ExceptionLibrary;
-import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
+import com.discover.mobile.common.net.error.bank.BankErrorSSOResponseParser;
 
 /**
  * The Bank Login call for retrieving a valid token and any URL's that are
@@ -52,12 +52,12 @@ public class CreateBankLoginCall extends
 				body = login;
 				
 				// Specify what error parser to use when receiving an error response
-				errorResponseParser = BankErrorResponseParser.instance();
+//				errorResponseParser = BankErrorResponseParser.instance();
+				errorResponseParser = BankErrorSSOResponseParser.instance();
 
 			}
 		}, BankLoginData.class);
 
-		// TODO decide if this is the best type of handler
 		handler = new StrongReferenceHandler<BankLoginData>(callback);
 	}
 
@@ -66,6 +66,7 @@ public class CreateBankLoginCall extends
 			final BankLoginDetails login) {
 		
 		this(context, callback, login, false);
+// TODO(remove this all)
 //		super(context, new PostCallParams(BankUrlManager.getGetTokenUrl()) {
 //			{
 //
@@ -108,6 +109,11 @@ public class CreateBankLoginCall extends
 	protected BankLoginData parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 		final BankLoginData data = super.parseSuccessResponse(status, headers, body);
+		
+		// TODO This is going to happen _very_ differently
+		// Will handle two cases.
+		// 1. A normal, non-sso user will return the token, just as it is now.
+		// 2. An SSO user will return a payload for the card service.
 		
 		//Fetch token from JSON response
 		if( data.token != null && !Strings.isEmpty(data.token)  ) {

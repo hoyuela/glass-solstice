@@ -55,7 +55,7 @@ public class BankErrorResponseParser implements ErrorResponseParser<BankErrorRes
 	 * Default constructor which can only be used within this class as there can only
 	 * be one instance of this class.
 	 */
-	private BankErrorResponseParser() {
+	public BankErrorResponseParser() {
 		
 	}
 	/**

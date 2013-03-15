@@ -85,7 +85,6 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	}
 
 	/**
-	 * TODO call createLoginCall(creds, false); here instead 
 	 * Used to construct a CreateBankLoginCall object for invoking the Bank - Authentication Service API found at
 	 * ./api/auth/token. The callee will only have to call submit on the constructed object to trigger the
 	 * HTTP request.
@@ -96,7 +95,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 */
 	public static CreateBankLoginCall createLoginCall(final BankLoginDetails credentials ) {
 		return createLoginCall(credentials, false);
-		
+// TODO(remove this all)
 //		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
 //
 //		//Build the handler for the response to the Bank authentication request

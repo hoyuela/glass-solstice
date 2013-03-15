@@ -32,12 +32,14 @@ public class BankLoginServices extends Conductor {
 	 */
 	public static void authWithBankPayload(final Object bankSSOPayload) {
 		// TODO log user in against token/sso using this payload.
-//		BankServiceCallFactory.createSSOLoginCall(
+//		BankServiceCallFactory.createSSOLoginCall();
+		
+		loginDetails = null;
 	}
 
 	/**
 	 * Authorizes an SSO User against Card using a CardSSOPayload, which in some
-	 * cases is obtained from a call to {@code BankConductor.authorize()}.
+	 * cases is obtained from a call to {@code BankLoginServices.authorize()}.
 	 * 
 	 * @param cardSSOPayload
 	 *            payload with which the user is authorized.
@@ -58,7 +60,7 @@ public class BankLoginServices extends Conductor {
 		}
 		
 	}
-
+	
 	@Override
 	public Class lookupCacheRequiredForDestination(Class c) {
 		return null;

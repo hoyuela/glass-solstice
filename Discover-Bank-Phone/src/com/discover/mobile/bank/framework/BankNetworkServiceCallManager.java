@@ -152,6 +152,35 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		return ret;
 	}
+	
+	/**
+	 * Determines if the ErrorResponse was a signal to authenticate against card
+	 * (for SSO).
+	 * 
+	 * @param error
+	 *            Reference to an error provided via a response to a
+	 *            NetworkServiceCall<>
+	 * @return true if it was an SSO user, false otherwise.
+	 */
+	public boolean isSSOUser(final ErrorResponse<?> error) {
+		boolean isSSO = false;
+
+		final int httpErrorCode = error.getHttpStatusCode();
+		final HttpURLConnection conn = error.getConnection();
+
+		if( httpErrorCode ==  HttpURLConnection.HTTP_UNAUTHORIZED ) {
+			final String wwwAuthenticateValue = conn.getHeaderField(HttpHeaders.Authentication);
+
+			if( !Strings.isNullOrEmpty(wwwAuthenticateValue) ) {
+				//Check if SSO by having CardAuth
+				if( wwwAuthenticateValue.contains(BankSchema.CARDAUTH)) {
+					isSSO = true;
+				}
+			}
+
+		}
+		return isSSO;
+	}
 
 	/**
 	 * Method defines the implementation of the handleFailure callback defined by ErrorResponseHandler.
@@ -166,7 +195,14 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
 			//Send request to Strong Auth web-service API
 			BankServiceCallFactory.createStrongAuthRequest().submit();
-		}
+		} 
+		
+		// Check if the error is an SSO User
+		else if ( isSSOUser(error)) {
+//			TODO get payload... somehow.
+//			BankConductor.authWithCardPayload(payload);
+			
+		}	
 		//Dispatch response to BankBaseErrorHandler to determine how to handle the error
 		else {
 			errorHandler.handleFailure(sender, error);
@@ -225,10 +261,10 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if( sender instanceof CreateBankLoginCall ) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
 			
-//			 TODO if(SSOUser) {
-			// BankConductor.authWithCardPayload(payload);
-			// }
-			
+//			 TODO if(SSOUser) { //This will all likely be handled in the error cases, b/c that's how it's set up...
+//			 BankConductor.authWithCardPayload(payload);
+//			 }
+//			
 //			 TODO } else { //
 			//Set logged in to be able to save user name in persistent storage
 			Globals.setLoggedIn(true);
