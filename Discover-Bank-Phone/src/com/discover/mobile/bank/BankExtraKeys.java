@@ -51,10 +51,10 @@ public final class BankExtraKeys {
 
 	/**Used to let the check deposit capture screen know which image is being retaken */
 	public static final String RETAKE_PICTURE = "retake";
-	
+
 	/**Used to pass the amount of the check deposit around between fragments and activities*/
 	public static final String AMOUNT = "amount";
-	
+
 	/**
 	 * Used to let the first step of check deposit know if the user has just accepted 
 	 * the terms and should see the how it works modal
@@ -68,6 +68,12 @@ public final class BankExtraKeys {
 	public static final int SORT_DESCRIP_ASC = 3;
 	public static final int SORT_AMOUNT_DESC = 4;
 	public static final int SORT_AMOUNT_ASC = 5;
+
+	/**ATM bundle keys*/
+	public static final String LAT = "lat";
+	public static final String LON = "lon";
+	public static final String STREET_LAT = "slat";
+	public static final String STREET_LON = "slon";
 
 
 	/**

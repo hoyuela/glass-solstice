@@ -37,5 +37,4 @@ public class SearchNearbyFragment extends AtmMapFragment{
 	public int getListFragmentId() {
 		return R.id.discover_list_2;
 	}
-
 }

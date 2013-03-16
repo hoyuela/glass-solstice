@@ -16,14 +16,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
@@ -37,7 +41,8 @@ import com.slidingmenu.lib.SlidingMenu;
  * @author jthornton
  *
  */
-public abstract class AtmMapFragment extends BaseFragment implements LocationFragment, AtmMapSearchFragment{
+public abstract class AtmMapFragment extends BaseFragment 
+implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
@@ -47,6 +52,9 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 
 	/**Key to get the state of the buttons*/
 	private static final String BUTTON_KEY = "buttonState";
+
+	/**Private static key for the street view showing*/
+	private static final String STREET_VIEW_SHOWING = "svs";
 
 	/**Modal that asks the user if the app can use their current location*/
 	private ModalAlertWithTwoButtons locationModal;
@@ -99,6 +107,13 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 	/**Help icon*/
 	private ImageView help;
 
+	/**Street view framgent*/
+	private AtmStreetView streetView;
+
+	private boolean shouldGoBack = true;
+
+	private LinearLayout navigationPanel;
+
 
 	/**
 	 */
@@ -114,15 +129,21 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 		}
 
 		final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
+		final WebView web = (WebView) view.findViewById(R.id.web_view);
+		final ProgressBar bar = (ProgressBar) view.findViewById(R.id.progress_bar);
+		streetView = new AtmStreetView(web, bar);
 		mapButton = (Button) view.findViewById(R.id.map_nav);
 		listButton = (Button) view .findViewById(R.id.list_nav);
 		help = (ImageView) view.findViewById(R.id.help);
+		navigationPanel = (LinearLayout) view.findViewById(R.id.map_navigation_panel);
 		fragment =  (SupportMapFragment) activity.getSupportFragmentManager().findFragmentById(getMapFragmentId());
 		listFragment =  (AtmListFragment) activity.getSupportFragmentManager().findFragmentById(getListFragmentId());
 		listFragment.setObserver(this);
 
+		this.getActivity().getSupportFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
+		streetView.hide();
 
-		final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(activity);
+		final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(this);
 		final DiscoverInfoWindowAdapter adapter = new DiscoverInfoWindowAdapter(balloon);
 		mapWrapper = new DiscoverMapWrapper(fragment.getMap(), adapter);
 		locationManagerWrapper = new DiscoverLocationMangerWrapper(this);
@@ -247,7 +268,6 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 	private void resumeStateOfFragment(final Bundle savedInstanceState) {
 		locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
 		if(LOCKED_ON == locationStatus){
-
 			final Location location = new Location(LocationManager.GPS_PROVIDER);
 			location.setLatitude(savedInstanceState.getDouble(LAT_KEY));
 			location.setLongitude(savedInstanceState.getDouble(LONG_KEY));
@@ -264,6 +284,13 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 		searchBar.restoreState(savedInstanceState);
 		toggleButton();
 		listFragment.handleReceivedData(savedInstanceState);
+		streetView.hide();
+
+		shouldGoBack = savedInstanceState.getBoolean(STREET_VIEW_SHOWING, true);
+		if(shouldGoBack){
+			streetView.loadStreetView(savedInstanceState);
+			streetView.show();
+		}
 	}
 
 	/**
@@ -415,6 +442,10 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 		}
 		outState.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
 		outState.putBoolean(BUTTON_KEY, isOnMap);
+		outState.putBoolean(STREET_VIEW_SHOWING, shouldGoBack);
+		if(shouldGoBack){
+			streetView.bundleData(outState);
+		}
 		super.onSaveInstanceState(outState);
 	}
 
@@ -481,20 +512,35 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 
 	@Override
 	public void showList(){
+		streetView.hide();
+		searchBar.setVisibility(View.VISIBLE);
 		help.setVisibility(View.GONE);
 		searchBar.showListView();
 		searchBar.setFragment(this);
+		navigationPanel.setVisibility(View.VISIBLE);
+		isOnMap = false;
 		this.getActivity().getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
 		this.getActivity().getSupportFragmentManager().beginTransaction().show(listFragment).commitAllowingStateLoss();
 	}
 
 	@Override
 	public void showMap(){
+		streetView.hide();
+		searchBar.setVisibility(View.VISIBLE);
 		help.setVisibility(View.VISIBLE);
 		searchBar.showMapView();
 		searchBar.setFragment(this);
+		navigationPanel.setVisibility(View.VISIBLE);
+		isOnMap = true;
 		this.getActivity().getSupportFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
 		this.getActivity().getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
+	}
+
+	@Override
+	public void showStreetView(final Bundle bundle){
+		shouldGoBack = true;
+		streetView.show();
+		streetView.loadStreetView(bundle);
 	}
 
 	public boolean canLoadMore(){
@@ -515,5 +561,26 @@ public abstract class AtmMapFragment extends BaseFragment implements LocationFra
 		final Bundle bundle = new Bundle();
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, results);
 		handleRecievedAtms(bundle);
+	}
+
+	/**
+	 * The onBackPressed method that an Activity normally calls.
+	 */
+	@Override
+	public void onBackPressed(){
+		if(shouldGoBack){
+			streetView.hide();
+			shouldGoBack = false;
+		}else{
+			shouldGoBack = true;
+		}
+	}
+
+	/**
+	 * Interface used for disabling back press from a fragment
+	 */
+	@Override
+	public boolean isBackPressDisabled(){
+		return shouldGoBack;
 	}
 }
