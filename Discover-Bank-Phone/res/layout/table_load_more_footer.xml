@@ -23,9 +23,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/between_related_elements_padding"
-        android:layout_marginTop="@dimen/between_related_elements_padding"
-        android:layout_marginRight="@dimen/between_related_elements_padding"/>
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"/>
     
      <View
         android:id="@+id/line"
