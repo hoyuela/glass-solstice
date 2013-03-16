@@ -158,11 +158,11 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	/**
 	 * Hide the top three titles shown on the table
 	 */
-	public void showTitle(final boolean show) {
+	public void showTitles(final boolean show) {
 		if( show ) {
 			titles.setVisibility(View.VISIBLE);
 		} else {
-			titles.setVisibility(View.INVISIBLE);
+			titles.setVisibility(View.GONE);
 		}
 	}
 }
