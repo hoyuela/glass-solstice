@@ -108,8 +108,8 @@
                     android:paddingLeft="@dimen/element_side_padding"
                     android:paddingRight="@dimen/element_side_padding"
                     android:text="@string/password"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <com.discover.mobile.common.ui.widgets.NonEmptyEditText
                     android:id="@+id/password_field"
