@@ -154,4 +154,15 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	public ToggleButton getCanceled() {
 		return canceled;
 	}
+	
+	/**
+	 * Hide the top three titles shown on the table
+	 */
+	public void showTitles(final boolean show) {
+		if( show ) {
+			titles.setVisibility(View.VISIBLE);
+		} else {
+			titles.setVisibility(View.GONE);
+		}
+	}
 }

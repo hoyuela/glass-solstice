@@ -118,7 +118,7 @@ public class PayeeDetailViewPager extends DetailViewPager {
 
 	@Override
 	protected int getTitleForFragment(final int position) {
-		return R.string.payee;
+		return 0;
 	}
 
 	@Override

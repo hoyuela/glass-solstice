@@ -38,6 +38,9 @@ public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 		addPayee = (Button)view.findViewById(R.id.add_payee);
 		addPayee.setOnClickListener(this);
 		
+		/**Set Text to Add New */
+		addPayee.setText(R.string.select_payee_add_new);
+		
 		return view;
 	}
 	

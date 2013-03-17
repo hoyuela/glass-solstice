@@ -136,7 +136,11 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * @param titleTextResource a String resource to use as the title label for a transaction.
 	 */
 	public void updateTitleLabel(final int titleTextResource) {
-		titleLabel.setText(titleTextResource);
+		if( titleTextResource != 0 ) {
+			titleLabel.setText(titleTextResource);
+		} else {
+			titleLabel.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	/**
