@@ -174,32 +174,32 @@
                     android:layout_marginTop="@dimen/orange_button_margin_top"
                     android:text="@string/login_button_text" />
 
-                <!-- idk if present on card yet.. AC wasn't clear with comps -->
-
                 <TextView
                     android:id="@+id/forgot_uid_or_pass_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/element_side_padding"
                     android:layout_below="@+id/login_button"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="14dp"
+					android:layout_alignParentLeft="true"
                     android:clickable="true"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="@dimen/top_pad"
                     android:text="@string/forgot_id_or_pass_text"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/blue"
-                    android:visibility="gone" />
+                    android:textSize="@dimen/body_copy_min"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/privacy_and_security_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/element_side_padding"
                     android:layout_below="@id/login_button"
-                    android:layout_centerHorizontal="true"
                     android:clickable="true"
-                    android:paddingBottom="@dimen/element_top_padding"
+                    android:paddingBottom="@dimen/top_pad"
                     android:text="@string/privacy_and_terms"
                     android:textColor="@color/blue"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textSize="@dimen/body_copy_min" />
 
                 <RelativeLayout
