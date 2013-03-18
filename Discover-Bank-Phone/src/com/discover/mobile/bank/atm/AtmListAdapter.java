@@ -12,13 +12,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.atm.AtmDetail;
+import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 
+/**
+ * Adapter for the ATM list detail screen.
+ * @author jthornton
+ *
+ */
 public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 
 	/**Inflater used to inflate layouts*/
@@ -88,6 +96,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 				holder.service3 = (TextView) view.findViewById(R.id.service3);
 				holder.service4 = (TextView) view.findViewById(R.id.service4);
 				holder.service5 = (TextView) view.findViewById(R.id.service5);
+				holder.email = (Button) view.findViewById(R.id.email);
 			}
 			/**Else reuse the old one*/
 		}else{
@@ -109,6 +118,16 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		final String distance = String.format(Locale.US, "%.2f", detail.distanceFromUser);
 		holder.distance.setText(distance + " M");
 		holder.hours.setText(detail.atmHrs.replace("Sat", "\nSat"));
+
+		holder.email.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				final AtmServiceHelper helper = new AtmServiceHelper(
+						detail.address1 + " " + detail.city + " " + detail.state + " " + detail.postalCode, 
+						fragment.getCurrentAddress());
+				BankServiceCallFactory.createGetDirectionsCall(helper).submit(); 
+			}
+		});
 
 		//Expand the view if it was previously expanded
 		if(detail.isExpanded){
@@ -232,6 +251,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		public TextView service3;
 		public TextView service4;
 		public TextView service5;
+		public Button email;
 		public int numFeatures = 0;
 	}
 }
