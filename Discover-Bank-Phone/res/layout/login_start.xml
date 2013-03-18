@@ -81,6 +81,7 @@
                     android:paddingRight="@dimen/element_side_padding"
                     android:text="@string/user_id"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold"
                     android:typeface="sans" />
 
                 <com.discover.mobile.common.ui.widgets.NonEmptyEditText
@@ -107,6 +108,7 @@
                     android:paddingLeft="@dimen/element_side_padding"
                     android:paddingRight="@dimen/element_side_padding"
                     android:text="@string/password"
+                    android:textStyle="bold"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <com.discover.mobile.common.ui.widgets.NonEmptyEditText
