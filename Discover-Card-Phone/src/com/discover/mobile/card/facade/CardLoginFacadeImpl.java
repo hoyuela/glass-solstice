@@ -16,9 +16,9 @@ import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
+import com.discover.mobile.common.facade.CardLoginFacade;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.facade.LoginActivityInterface;
-import com.discover.mobile.common.facade.LoginServiceFacade;
 import com.discover.mobile.common.net.NetworkServiceCall;
 
 /**
@@ -26,7 +26,9 @@ import com.discover.mobile.common.net.NetworkServiceCall;
  * @author ekaram
  *
  */
-public class LoginServiceFacadeImpl implements LoginServiceFacade{
+public class CardLoginFacadeImpl implements CardLoginFacade{
+
+	
 
 	@Override
 	public void login(final LoginActivityInterface callingActivity, final String username, final String password) {
@@ -64,9 +66,6 @@ public class LoginServiceFacadeImpl implements LoginServiceFacade{
 		
 	}
 
-	
-
-	
 	
 
 
