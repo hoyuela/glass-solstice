@@ -198,7 +198,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		} 
 		
 		// Check if the error is an SSO User
-		else if ( isSSOUser(error)) {
+		else if (isSSOUser(error)) {
 //			TODO get payload... somehow.
 //			BankConductor.authWithCardPayload(payload);
 			
@@ -261,11 +261,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if( sender instanceof CreateBankLoginCall ) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
 			
-//			 TODO if(SSOUser) { //This will all likely be handled in the error cases, b/c that's how it's set up...
-//			 BankConductor.authWithCardPayload(payload);
-//			 }
-//			
-//			 TODO } else { //
+			// TODO verify this works going forward, SSO users are handled in handleFailure() due to 401 response.
+			
 			//Set logged in to be able to save user name in persistent storage
 			Globals.setLoggedIn(true);
 
