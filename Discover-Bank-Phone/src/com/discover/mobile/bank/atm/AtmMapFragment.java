@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -115,6 +116,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 
 	/**Panel containing the buttons*/
 	private LinearLayout navigationPanel;
+
+	/**Boolean set to true if the device is in landscape and the list is showing*/
+	private boolean isListLand = false;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
@@ -395,6 +399,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		}
 		locationStatus = LOCKED_ON;
 		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, this.getActivity());
+		if(null == location){return;}
 		if(LocationManager.GPS_PROVIDER == location.getProvider()){
 			mapWrapper.zoomToLocation(location, MAP_CURRENT_GPS_ZOOM);
 		}else{
@@ -515,9 +520,14 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		searchBar.setVisibility(View.VISIBLE);
 		help.setVisibility(View.GONE);
 		searchBar.showListView();
-		searchBar.setFragment(this);
-		navigationPanel.setVisibility(View.VISIBLE);
 		isOnMap = false;
+		if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+			navigationPanel.setVisibility(View.GONE);
+			isListLand = true;
+		}else{
+			navigationPanel.setVisibility(View.VISIBLE);
+			isListLand = false;
+		}
 		this.getActivity().getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
 		this.getActivity().getSupportFragmentManager().beginTransaction().show(listFragment).commitAllowingStateLoss();
 	}
@@ -528,9 +538,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		searchBar.setVisibility(View.VISIBLE);
 		help.setVisibility(View.VISIBLE);
 		searchBar.showMapView();
-		searchBar.setFragment(this);
 		navigationPanel.setVisibility(View.VISIBLE);
 		isOnMap = true;
+		isListLand = false;
 		this.getActivity().getSupportFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
 		this.getActivity().getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
 	}
@@ -573,7 +583,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		if(shouldGoBack){
 			streetView.hide();
 			shouldGoBack = false;
-		}else{
+		}else if(isListLand){
+			showMap();
+		}else{	
 			shouldGoBack = true;
 		}
 	}
@@ -583,6 +595,6 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	 */
 	@Override
 	public boolean isBackPressDisabled(){
-		return shouldGoBack;
+		return shouldGoBack || isListLand;
 	}
 }
