@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/forms_inner_padding"
+    android:paddingLeft="@dimen/forms_inner_padding" 
+	android:paddingBottom="@dimen/forms_inner_padding"
     android:background="@drawable/light_gray_bkgrd"  >
 
     <ImageButton
@@ -19,6 +20,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/help"
+        android:layout_marginTop="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
         android:layout_marginBottom="@dimen/table_inner_padding"
         android:text="@string/bank_deposit_forbidden_title" />
 
@@ -39,6 +42,7 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/top_note_text"
         android:layout_centerHorizontal="true"
+        android:layout_marginRight="@dimen/forms_inner_padding"
         android:layout_marginTop="@dimen/modal_footer_topmargin"
         android:focusable="true"
         android:focusableInTouchMode="true"

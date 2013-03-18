@@ -99,6 +99,28 @@ public final class BankUser extends CacheManager implements Serializable {
 	public boolean hasAccounts() {
 		return (accountList != null && !accountList.accounts.isEmpty());
 	}
+	
+	
+	/**
+	 * 
+	 * @return Returns True if user has a Checking, Money Market or Savings Account, false otherwise.
+	 */
+	public boolean hasDepositEligibleAccounts() {
+		boolean ret = false;
+		
+		if( hasAccounts() ) {
+			for( final Account account : accountList.accounts) {
+				if( account.type.equals(Account.ACCOUNT_CHECKING) ||
+				    account.type.equals(Account.ACCOUNT_SAVINGS) ||
+				    account.type.equals(Account.ACCOUNT_MMA)) {
+					ret = true;
+					break;
+				}
+			}
+		}
+		
+		return ret;
+	}
 
 	/**
 	 * 
@@ -124,6 +146,7 @@ public final class BankUser extends CacheManager implements Serializable {
 	 * Used to clear all cached data during the session of a user logged into
 	 * Bank
 	 */
+	@Override
 	public void clearSession() {
 		accountList = null;
 		customerInfo = null;
@@ -165,7 +188,7 @@ public final class BankUser extends CacheManager implements Serializable {
 		this.payees = payees;
 	}
 	
-	public void setBankUser(BankUser bu) {
+	public void setBankUser(final BankUser bu) {
 		currentBankUser = bu;
 	}
 }
