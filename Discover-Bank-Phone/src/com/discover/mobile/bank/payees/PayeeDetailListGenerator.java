@@ -110,8 +110,8 @@ final public class PayeeDetailListGenerator  {
 		final BankEditDetail reenterAccount = createBankEditDetail(context, R.string.bank_payee_reenter_account, text);
 		reenterAccount.getEditableField().setMinimum(1);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(30) };
+		reenterAccount.getEditableField().setError(R.string.bank_nonmatching_acct);
 		reenterAccount.getEditableField().setFilters(inputFilters);
-		reenterAccount.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		reenterAccount.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
 		
 		/**If it is last field then show done button in keyboard*/

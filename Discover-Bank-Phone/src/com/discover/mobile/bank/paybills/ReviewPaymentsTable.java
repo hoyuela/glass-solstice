@@ -303,7 +303,15 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		scheduled = (ListPaymentDetail)bundle.getSerializable(getScheduleKey(category));
 		completed = (ListPaymentDetail)bundle.getSerializable(getCompletedKey(category));
 		canceled = (ListPaymentDetail)bundle.getSerializable(getCanceledKey(category));
-		createDefaultLists();
+		createDefaultLists();	
+		
+		final boolean showStatus = bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE, false);
+		if(showStatus){
+			header.showStatusMessage();
+			bundle.putBoolean(BankExtraKeys.COMPLETED_LIST, false);
+			scheduled.payments.remove(bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM));
+		}
+		
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
 			this.updateAdapter(scheduled.payments);
 		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS){
@@ -311,12 +319,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		}else{
 			this.updateAdapter(canceled.payments);
 		}
-		final boolean showStatus = bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE, false);
-		if(showStatus){
-			header.showStatusMessage();
-			bundle.putBoolean(BankExtraKeys.COMPLETED_LIST, false);
-			scheduled.payments.remove(bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM));
-		}		
+		
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
 			showNothingToLoad();
@@ -349,6 +352,9 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 * @param activities - activities to update the adapter with
 	 */
 	public void updateAdapter(final List<PaymentDetail> activities){
+		/**Determine whether to show or hide column titles based on size of list*/
+		showHeaderTitles(!activities.isEmpty());
+		
 		adapter.clear();
 		adapter.setData(activities);
 		if(adapter.getCount() < 1){
@@ -381,7 +387,13 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	@Override
 	public void showFooterMessage() {
 		footer.showEmpty(getEmptyStringText());
-
+	}
+	
+	/**
+	 * Hides the titles show above the columns on the table.
+	 */
+	public void showHeaderTitles(final boolean show) {
+		header.showTitles(show);
 	}
 
 	@Override

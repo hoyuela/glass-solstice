@@ -6,6 +6,9 @@
     <string name="customer_service">
         Customer\nService
     </string>
+        <string name="contact_us_wrap">
+        Contact\nUs
+    </string>
     <string name="privacy_and_security">
         Privacy &amp; Terms
     </string>
@@ -13,7 +16,7 @@
         Register\nNow
     </string>
     <string name="forgot_id_or_pass_text">
-        Forgot User ID/Password?
+        Forgot Password?
     </string>
     <string name="card">
         Card Login

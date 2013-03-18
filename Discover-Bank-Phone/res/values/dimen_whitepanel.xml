@@ -8,4 +8,5 @@
     <dimen name="element_side_padding">22dp</dimen>
     <dimen name="element_top_padding">16dp</dimen>
     
+    <dimen name="toggle_padding">8dp</dimen>
 </resources>

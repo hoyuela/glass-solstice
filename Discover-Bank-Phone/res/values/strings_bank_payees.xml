@@ -4,8 +4,7 @@
     <string name="bank_payee_enter_name">Enter Payee Name</string>
     <string name="bank_payee_company">Payee / Company Name</string>
     <string name="bank_invalid_characters">Invalid characters</string>
-    <string name="bank_invalid_num_characters">Invalid number of characters</string>
-    <string name="bank_nonmatching_acct">Non-matching #</string>
+    <string name="bank_nonmatching_acct">Non-matching account #</string>
     <string name="bank_invalid_acct">Invalid account #</string>
     <string name="bank_invalid_zip">Invalid zip code</string>
     <string name="bank_manage_payees">Manage Payees</string>

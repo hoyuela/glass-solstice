@@ -24,7 +24,6 @@ public class PaymentDetailFragment extends DetailFragment{
 	private Button deleteButton;
 	@Override
 	protected int getFragmentLayout() {
-		// TODO Auto-generated method stub
 		return R.layout.payment_detail;
 	}
 	

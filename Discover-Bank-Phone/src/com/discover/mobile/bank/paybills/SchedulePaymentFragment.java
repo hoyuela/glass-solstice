@@ -855,7 +855,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 		super.onDestroy();
 		
 		/**Check if onPause was called because of an orientation change*/
-		if( !isOrientationChanging ) {
+		if( !isOrientationChanging && amountEdit != null ) {
 			amountEdit.showKeyboard(false);
 		}
 	}
