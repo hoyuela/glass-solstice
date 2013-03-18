@@ -12,9 +12,16 @@ import com.discover.mobile.common.facade.BankLoginFacade;
  */
 public class BankLoginFacadeImpl implements BankLoginFacade{
 
-	//TODO impl bank login methods
+	@Override
+	public void authorizeWithBankPayload(String payload) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
-	
+	@Override
+	public void authDueToALUStatus() {
+		// TODO this
+	}
 	
 }

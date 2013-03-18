@@ -56,10 +56,12 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFail
 import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.NetworkServiceCallManager;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.common.net.error.bank.BankErrorSSOResponse;
 import com.google.common.base.Strings;
 
 /**
@@ -199,10 +201,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		
 		// Check if the error is an SSO User
 		else if (isSSOUser(error)) {
-//			TODO get payload... somehow.
-//			BankConductor.authWithCardPayload(payload);
-			
-		}	
+			FacadeFactory.getCardLoginFacade().loginWithPayload(
+					(LoginActivity) activeActivity,
+					((BankErrorSSOResponse) error).token,
+					((BankErrorSSOResponse) error).hashedValue);
+		}
+		
 		//Dispatch response to BankBaseErrorHandler to determine how to handle the error
 		else {
 			errorHandler.handleFailure(sender, error);

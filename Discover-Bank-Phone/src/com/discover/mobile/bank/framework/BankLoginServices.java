@@ -58,7 +58,6 @@ public class BankLoginServices extends Conductor {
 			BankServiceCallFactory.createLoginCall(loginDetails, true).submit();
 			loginDetails = null;
 		}
-		
 	}
 	
 	@Override
