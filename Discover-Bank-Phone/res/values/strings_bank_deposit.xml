@@ -19,6 +19,7 @@
     <string name="back">Back</string>
     <string name="question_mark">\?</string>
     <string name="retake">Retake</string>
+    <string name="retake_capital">RETAKE</string>
 
     <string name="bank_deposit_capture_help_title">Auto Capture &amp; Review Help</string>
     <string name="bank_deposit_capture_help_content"><![CDATA[<b>Auto Capture Tips:</b><br/><b>•</b> Frame the check within the white box<br/><b>•</b> Tap the middle of the screen to focus the image<br/><b>•</b> Tap the Capture button and stay steady as it counts down 3, 2, 1<br/><b>•</b> Tap Retake if the image isn\'t clear<br/><b>•</b> Tap Confirm if you are satisfied with the image<br/><b>•</b> Repeat these steps for the back of the check<br/><br/><b>Review the Capture:</b><br/><b>•</b> Ensure the front and back are in focus<br/><b>•</b> Ensure the back is endorsed]]></string>
@@ -32,5 +33,6 @@
 	<string name="take_the_picture">3. Take the Picture</string>
 	<string name="take_the_picture_info">Use the camera on your\nphone to capture the front\nand back of the check.</string>
 	
+	<string name="deposit_now">Deposit Now</string>
 	
 </resources>

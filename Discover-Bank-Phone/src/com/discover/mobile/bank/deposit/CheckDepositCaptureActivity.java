@@ -1,6 +1,5 @@
-package com.discover.mobile.bank.checkdeposit;
+package com.discover.mobile.bank.deposit;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -77,17 +76,16 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private CameraCountdownTask timerTask;
 	
 	//OTHER
-	private Drawable COUNT_3;
-	private Drawable COUNT_2;
-	private Drawable COUNT_1;
+	private Drawable countdownThree;
+	private Drawable countdownTwo;
+	private Drawable countdownOne;
 	
 	final int THREE = 3;
 	private int count = THREE;
 
 	private boolean inPreview = false;
 	private boolean cameraConfigured = false;
-	protected boolean isPaused = false;
-
+	private boolean isPaused = false;
 	
 	/**
 	 * Setup the Activity. Loads all UI elements to local references and starts camera setup.
@@ -108,11 +106,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		
 		loadDrawables();
 		setupButtons();
+		setupCameraForRetake();
 		cameraPreview.setOnClickListener(autoFocusClickListener);
-		final Bundle extras = getIntent().getExtras();
-		
-		if(extras != null)
-			setupPictureRetake(extras.getInt(BankExtraKeys.RETAKE_PICTURE));
 		
 	}
 	
@@ -128,7 +123,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 		setCameraDisplayOrientation(this, 0, camera);
 		setupCameraParameters();
-
 	}
 
 	/**
@@ -162,7 +156,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * Setup all local references to UI elements.
 	 */
 	private void loadViews() {
-		cameraPreview = (SurfaceView)findViewById(R.id.camera_preview);
+		cameraPreview = (SurfaceView)findViewById(R.id.camera_surface);
 		countdownLogo = (ImageView)findViewById(R.id.countdown_logo);
 		previewHolder = cameraPreview.getHolder();		
 		previewHolder.addCallback(this);
@@ -188,6 +182,16 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	}
 	
 	/**
+	 * Setup the camera to retake a specified image.
+	 * This specified image comes from a provided integer passed as a Bundle extra.
+	 */
+	private void setupCameraForRetake() {
+		final Bundle extras = getIntent().getExtras();
+		if(extras != null){
+			setupPictureRetake(extras.getInt(BankExtraKeys.RETAKE_PICTURE));
+		}
+	}
+	/**
 	 * Deletes the front check image from storage.
 	 * @param context the calling context.
 	 * @return if the image was deleted.
@@ -212,8 +216,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * @return if the image was deleted.
 	 */
 	private static boolean deleteImage(final String imageName, final Context context){
-		final File frontPic = context.getFileStreamPath(imageName);
-		return context.deleteFile(frontPic.getAbsolutePath());
+		return context.deleteFile(imageName);
 	}
 	
 	/**
@@ -230,9 +233,9 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	private void loadDrawables() {
 		final Resources res = getResources();
-		COUNT_3 = res.getDrawable(R.drawable.chckdep_3);
-		COUNT_2 = res.getDrawable(R.drawable.chckdep_2);
-		COUNT_1 = res.getDrawable(R.drawable.chckdep_1);
+		countdownThree = res.getDrawable(R.drawable.chckdep_3);
+		countdownTwo = res.getDrawable(R.drawable.chckdep_2);
+		countdownOne = res.getDrawable(R.drawable.chckdep_1);
 	}
 	
 	/**
@@ -249,7 +252,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			}
 		});
 		
-		final String windowService = this.WINDOW_SERVICE;
 		helpButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -257,7 +259,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				final ModalAlertWithOneButton modal = getHelpModal();
 				modal.show();
 				
-				final Display display = ((WindowManager)getSystemService(windowService)).getDefaultDisplay();
+				final Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 				modal.getWindow().setLayout(display.getWidth(), display.getHeight());
 				
 			}
@@ -346,6 +348,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		
 		@Override
 		public void onClick(final View v) {
+			saveLastConfirmedImage();
 			goToNextStep();
 			resetCamera();
 			setDefaultButtons();
@@ -386,6 +389,43 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		final boolean stepTwoChecked = stepTwoCheck.getVisibility() == View.VISIBLE;
 		if(stepTwoChecked){
 			Log.d(TAG, "FINISHED!");
+//			final Intent review = new Intent(this, PictureReview.class);
+//			startActivity(review);
+			this.setResult(Activity.RESULT_OK);
+			this.finish();
+//
+//			final AsyncCallback<DepositDetail> callback = BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(DepositDetail.class, this, this).build();
+//			final DepositDetail detail = new DepositDetail();
+//		
+//			final int jpegCompressionQuality = 30;
+//			
+//			detail.account = 1;
+//			
+//			detail.amount = 5555;
+//			final TelephonyManager telephonyManager =
+//					(TelephonyManager) DiscoverActivityManager.getActiveActivity().getSystemService(Context.TELEPHONY_SERVICE);
+//			
+//			detail.deviceUUID = telephonyManager.getDeviceId();
+//			detail.deviceType = "Android";
+//		
+//			final File frontPic = getFileStreamPath(CheckDepositCaptureActivity.FRONT_PICTURE);
+//			final File backPic = getFileStreamPath(CheckDepositCaptureActivity.BACK_PICTURE);
+//			
+//			final Bitmap pic = BitmapFactory.decodeFile(frontPic.getAbsolutePath());
+//			final Bitmap pic2 = BitmapFactory.decodeFile(backPic.getAbsolutePath());
+//			
+//			final ByteArrayOutputStream frontBitStream = new ByteArrayOutputStream();
+//			final ByteArrayOutputStream backBitStream = new ByteArrayOutputStream();
+//
+//			pic.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, frontBitStream);
+//			pic2.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, backBitStream);
+//			
+//			detail.frontImage = Base64.encodeToString(frontBitStream.toByteArray(), Base64.NO_WRAP);
+//			detail.backImage = Base64.encodeToString(backBitStream.toByteArray(), Base64.NO_WRAP);
+//			
+//			final SubmitCheckDepositCall call = new SubmitCheckDepositCall(this, callback, detail);
+//			call.submit();
+			
 		}else if(stepOneChecked){
 			frontLabel.setTextColor(getResources().getColor(R.color.field_copy));
 			backLabel.setTextColor(getResources().getColor(R.color.sub_copy));
@@ -435,7 +475,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	private void resetCountdown() {
 		countdownLogo.setVisibility(View.GONE);
-		countdownLogo.setImageDrawable(COUNT_3);
+		countdownLogo.setImageDrawable(countdownThree);
 	}
 	
 	/**
@@ -451,6 +491,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * hiding the check brackets, showing the confirmatoin buttons and setting
 	 * the next check mark to visible.
 	 */
+	private byte[] lastPicture = null;
 	private final PictureCallback mPicture = new PictureCallback() {
 
 	    @Override
@@ -460,20 +501,27 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	    	setPictureConfirmationButtons();
 	    	hideImageBrackets();
 	    	setNextCheckVisible();
-
-	    	//Write the image to disk.
-	        try {
-	        	final FileOutputStream fos = getFileOutputStream();
-	            fos.write(data);
-	            fos.close();
-	        } catch (final FileNotFoundException e) {
-	            Log.d(TAG, "File not found: " + e.getMessage());
-	        } catch (final IOException e) {
-	            Log.d(TAG, "Error accessing file: " + e.getMessage());
-	        }
-	        
+	    	lastPicture = data;
 	    }
 	};
+	
+	/**
+	 * Saves the image in the local lastPicture byte array to the device.
+	 */
+	private void saveLastConfirmedImage() {
+		//Write the image to disk.
+        try {
+        	if(lastPicture != null && lastPicture.length > 0) {
+	        	final FileOutputStream fos = getFileOutputStream();
+	            fos.write(lastPicture);
+	            fos.close();
+        	}
+        } catch (final FileNotFoundException e) {
+            Log.d(TAG, "File not found: " + e.getMessage());
+        } catch (final IOException e) {
+            Log.d(TAG, "Error accessing file: " + e.getMessage());
+        }
+	}
 	
 	/**
 	 * Setup the buttons on the screen to be confirmation buttons.
@@ -505,12 +553,12 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		captureButton.setPressed(false);
 		captureButton.setClickable(true);
 		cameraPreview.setOnClickListener(autoFocusClickListener);
-		
 	}
 	
 	/** 
-	 * Create a File for saving the image 
-	 *	This method will possibly be removed once Andy gives his input on how best to save and resize images. 
+	 * Create a File for saving the image.
+	 * Determines what name to use when saving the file based on the visibility of the check marks next to the
+	 * front and back toggle so that the front or back image file stream is returned.
 	 */
 	private FileOutputStream getFileOutputStream() {
 		FileOutputStream fos = null;
@@ -571,9 +619,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private void setupCameraParameters() {
 		final Camera.Parameters parameters = camera.getParameters();
 		parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
-		parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_MACRO);
-		parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
-		parameters.setWhiteBalance(Camera.Parameters.WHITE_BALANCE_AUTO);
 		camera.setParameters(parameters);
 	}
 
@@ -663,24 +708,27 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * check capture feature.
 	 * @return a modal dialog with check capture help content.
 	 */
-	private ModalAlertWithOneButton getHelpModal() {
-		final Spanned helpContent = Html.fromHtml(
-				getResources().getString(R.string.bank_deposit_capture_help_content));
-
-		final ModalDefaultTopView top = new ModalDefaultTopView(this, null);
-		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this, null);
-		final CheckDepositModal modal = new CheckDepositModal(this, top, bottom);
-		top.setTitle(R.string.bank_deposit_capture_help_title);
-		top.getContentTextView().setText(helpContent, TextView.BufferType.SPANNABLE);
-		top.showErrorIcon(false);
-		top.hideNeedHelpFooter();
-		bottom.setButtonText(R.string.ok);
-		bottom.getButton().setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v){
-				modal.dismiss();
-			}
-		});
+	private CheckDepositModal modal = null;
+	private CheckDepositModal getHelpModal() {
+		if(modal == null){
+			final Spanned helpContent = Html.fromHtml(
+					getResources().getString(R.string.bank_deposit_capture_help_content));
+	
+			final ModalDefaultTopView top = new ModalDefaultTopView(this, null);
+			final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this, null);
+			modal = new CheckDepositModal(this, top, bottom);
+			top.setTitle(R.string.bank_deposit_capture_help_title);
+			top.getContentTextView().setText(helpContent, TextView.BufferType.SPANNABLE);
+			top.showErrorIcon(false);
+			top.hideNeedHelpFooter();
+			bottom.setButtonText(R.string.ok);
+			bottom.getButton().setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(final View v){
+					modal.dismiss();
+				}
+			});
+		}
 		
 		return modal;
 	}
@@ -770,7 +818,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			try {
 				Thread.sleep(ONE_SECOND);
 			} catch (final InterruptedException e) {
-
+				Log.e(TAG, "Countdown Thread Interrupted: " + e);
 			}
 			
 			return null;
@@ -804,20 +852,19 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			return isRunning;
 		}
 		
+		/**
+		 * Update the countdown image based on the count variable value.
+		 */
+		private void updateCountImage() {
+			if(count == THREE)
+				countdownLogo.setImageDrawable(countdownThree);
+			else if (count == 2)
+				countdownLogo.setImageDrawable(countdownTwo);
+			else if(count == 1)
+				countdownLogo.setImageDrawable(countdownOne);
+			else if (count < 1)
+				resetCountdown();
+		}
 	}
 	
-	/**
-	 * Update the countdown image based on the count variable value.
-	 */
-	private void updateCountImage() {
-		if(count == THREE)
-			countdownLogo.setImageDrawable(COUNT_3);
-		else if (count == 2)
-			countdownLogo.setImageDrawable(COUNT_2);
-		else if(count == 1)
-			countdownLogo.setImageDrawable(COUNT_1);
-		else if (count < 1)
-			resetCountdown();
-	}
-
 }

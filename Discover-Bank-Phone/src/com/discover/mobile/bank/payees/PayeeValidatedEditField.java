@@ -165,7 +165,7 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 			} else {
 				if( 0 == errorTextResId ) {
 					//Set error string to invalid number of characters 
-					this.errorLabel.setText(R.string.bank_invalid_num_characters);
+					this.errorLabel.setText(R.string.bank_invalid_characters);
 				}
 			}
 		}

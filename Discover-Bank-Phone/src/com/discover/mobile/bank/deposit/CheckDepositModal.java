@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.checkdeposit;
+package com.discover.mobile.bank.deposit;
 
 import android.content.Context;
 import android.view.View;

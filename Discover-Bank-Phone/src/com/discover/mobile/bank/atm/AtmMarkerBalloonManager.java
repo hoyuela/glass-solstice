@@ -3,18 +3,22 @@
  */
 package com.discover.mobile.bank.atm;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import android.content.Context;
 import android.location.Address;
+import android.location.Geocoder;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.atm.AtmDetail;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,12 +45,16 @@ public class AtmMarkerBalloonManager{
 	/**Current location address object*/
 	private Address address;
 
+	/**Fragment with the balloons*/
+	private final AtmMapFragment fragment;
+
 	/**
 	 * Constructor for the class
 	 * @param context - context used to render the layout
 	 */
-	public AtmMarkerBalloonManager(final Context context){
-		this.context = context;
+	public AtmMarkerBalloonManager(final AtmMapFragment fragment){
+		this.fragment = fragment;
+		context = fragment.getActivity();
 		markerMap = new HashMap<Marker, AtmDetail>();
 	}
 
@@ -120,7 +128,21 @@ public class AtmMarkerBalloonManager{
 
 				//Means it was the current location that was clicked.
 				if(null != atm){
-					Toast.makeText(context, "Street view is under construction", 3000).show();	
+
+					try {
+
+						final String addressString =  atm.address1 + " "  + atm.city +" " + atm.state;
+						final Geocoder coder = new Geocoder(context);
+						final List<Address> addresses = coder.getFromLocationName(addressString, 1);
+						final Bundle bundle = new Bundle();
+						bundle.putDouble(BankExtraKeys.STREET_LAT, addresses.get(0).getLatitude());
+						bundle.putDouble(BankExtraKeys.STREET_LON, addresses.get(0).getLongitude());
+						fragment.showStreetView(bundle);
+					} catch (final IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
 				}				
 			}
 		};

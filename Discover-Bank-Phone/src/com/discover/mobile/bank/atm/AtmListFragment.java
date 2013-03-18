@@ -44,11 +44,11 @@ public class AtmListFragment extends BaseTable{
 
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
-		results = (AtmResults)bundle.get(BankExtraKeys.DATA_LIST_ITEM);
-		index = (bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0));
-		super.refreshListener();
+		setIsLoadingMore(false);
 		super.refreshListener();
 		footer.showDone();
+		results = (AtmResults)bundle.get(BankExtraKeys.DATA_LIST_ITEM);
+		index = (bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0));
 
 		//If the results is empty or null
 		if(null == results || null == results.results || null == results.results.atms || results.results.atms.isEmpty()){

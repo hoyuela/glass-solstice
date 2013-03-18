@@ -79,7 +79,9 @@ public class LoginActivity extends BaseActivity implements
 	private final String PRE_AUTH_KEY = "e";
 	private final String ERROR_MESSAGE_KEY = "g";
 	private final String ERROR_MESSAGE_VISIBILITY = "h";
-
+	
+	/** ID that allows control over relative buttons' placement.*/
+	private static final int LOGIN_BUTTON_ID = 1;
 	/**
 	 * A state flag so that we don't run this twice.
 	 */
@@ -108,7 +110,6 @@ public class LoginActivity extends BaseActivity implements
 	private TextView goToCardLabel;
 
 	// IMAGES
-
 	private ImageView cardCheckMark;
 	private ImageView bankCheckMark;
 	private ImageView toggleImage;
@@ -185,6 +186,7 @@ public class LoginActivity extends BaseActivity implements
 
 		provideFeedbackButton = (Button) findViewById(R.id.provide_feedback_button);
 		loginButton = (Button) findViewById(R.id.login_button);
+		loginButton.setId(LOGIN_BUTTON_ID);
 		registerOrAtmButton = (Button) findViewById(R.id.register_now_or_atm_button);
 		privacySecOrTermButton = (TextView) findViewById(R.id.privacy_and_security_button);
 		customerServiceButton = (Button) findViewById(R.id.customer_service_button);
@@ -196,7 +198,7 @@ public class LoginActivity extends BaseActivity implements
 		goToBankButton = (RelativeLayout) findViewById(R.id.bank_login_toggle);
 		goToCardButton = (RelativeLayout) findViewById(R.id.card_login_toggle);
 
-		cardCheckMark = (ImageView) findViewById(R.id.card_check_mark); 
+		cardCheckMark = (ImageView) findViewById(R.id.card_check_mark);
 		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark); 
 		toggleImage = (ImageView) findViewById(R.id.remember_user_id_button); 
 		splashProgress = (ProgressBar) findViewById(R.id.splash_progress);
@@ -813,7 +815,7 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
-				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) this.getResources().getDimension(R.dimen.top_pad));
 
 		CommonUtils.setViewVisible(cardCheckMark);
 		CommonUtils.setViewInvisible(bankCheckMark);
@@ -825,12 +827,12 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
-				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) this.getResources().getDimension(R.dimen.top_pad));
 
 		registerOrAtmButton.setText(R.string.register_now);
 		privacySecOrTermButton.setText(R.string.privacy_and_security);
-
-//		CommonUtils.setViewVisible(forgotUserIdOrPassText);
+		setPrivacyAndTermsParamsForCard(true);
+		CommonUtils.setViewVisible(forgotUserIdOrPassText);
 
 		// Load Card Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
@@ -847,7 +849,7 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
-				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) this.getResources().getDimension(R.dimen.top_pad));
 		CommonUtils.setViewInvisible(cardCheckMark);
 		CommonUtils.setViewVisible(bankCheckMark);
 
@@ -858,9 +860,10 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
-				2 * (int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) this.getResources().getDimension(R.dimen.top_pad));
 		registerOrAtmButton.setText(R.string.atm_locator);
 		privacySecOrTermButton.setText(R.string.privacy_and_terms);
+		setPrivacyAndTermsParamsForCard(false);
 		CommonUtils.setViewInvisible(forgotUserIdOrPassText);
 
 		// Load Bank Account Preferences for refreshing UI only
@@ -1018,7 +1021,6 @@ public class LoginActivity extends BaseActivity implements
 		final ViewGroup loginPane = (ViewGroup) this.findViewById(R.id.login_pane);
 		final ViewGroup toolbar = (ViewGroup)this.findViewById(R.id.login_bottom_button_row);
 
-
 		//Verify loginStartLayout has a valid instance of ViewGroup
 		if( null != loginStartLayout && null != loginPane && null != toolbar ) {
 
@@ -1118,6 +1120,32 @@ public class LoginActivity extends BaseActivity implements
 			return FacadeFactory.getCardFacade().getCardErrorHandler();
 		} else {
 			return BankErrorHandler.getInstance();
+		}
+	}
+	
+	/**
+	 * Sets the layout for Privacy & Terms button depending on card or bank.
+	 * 
+	 * @param isCard
+	 *            if the layout should be for card, false otherwise.
+	 */
+	private void setPrivacyAndTermsParamsForCard(boolean isCard) {
+		RelativeLayout.LayoutParams lpTerms = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams lpForgot = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		
+		if(isCard) {
+			lpForgot.addRule(RelativeLayout.BELOW, loginButton.getId());
+			forgotUserIdOrPassText.setLayoutParams(lpForgot);
+			
+			lpTerms.addRule(RelativeLayout.BELOW, loginButton.getId());
+			
+			privacySecOrTermButton.setPadding(0, 0, (int)getResources().getDimension(R.dimen.element_side_padding), (int)getResources().getDimension(R.dimen.top_pad));lpTerms.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1);
+			privacySecOrTermButton.setLayoutParams(lpTerms);
+		} else {
+			lpTerms.addRule(RelativeLayout.CENTER_HORIZONTAL, -1);
+			lpTerms.addRule(RelativeLayout.BELOW, loginButton.getId());
+			privacySecOrTermButton.setPadding(0, 0, 0, (int)getResources().getDimension(R.dimen.top_pad));
+			privacySecOrTermButton.setLayoutParams(lpTerms);
 		}
 	}
 }

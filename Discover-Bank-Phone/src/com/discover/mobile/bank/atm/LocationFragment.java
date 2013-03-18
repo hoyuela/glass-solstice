@@ -4,6 +4,7 @@
 package com.discover.mobile.bank.atm;
 
 import android.location.Location;
+import android.os.Bundle;
 
 /**
  * Interface for any fragment that will be getting location
@@ -100,8 +101,20 @@ public interface LocationFragment {
 	 */
 	void setLocation(Location location);
 
+	/**
+	 * Show the list fragment
+	 */
 	void showList();
 
+	/**
+	 * Show the map fragment
+	 */
 	void showMap();
+
+	/**
+	 * Show the street view fragment
+	 * @param bundle - bundle to used to load the data
+	 */
+	void showStreetView(Bundle bundle);
 
 }
