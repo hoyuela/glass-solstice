@@ -38,8 +38,8 @@ public class BankErrorResponseParser implements ErrorResponseParser<BankErrorRes
 	 * calls parseErrorResponse an ErrorResponse object is returned. Otherwise, an IOException is thrown.
 	 */
 	static {
-		int size = DelegatingErrorResponseParser.DEFAULT_PARSER_DELEGATES.size() + 1;
-		List<ErrorResponseParser<?>> errorResponseParsers = new ArrayList<ErrorResponseParser<?>>(size);
+		final int size = DelegatingErrorResponseParser.DEFAULT_PARSER_DELEGATES.size() + 1;
+		final List<ErrorResponseParser<?>> errorResponseParsers = new ArrayList<ErrorResponseParser<?>>(size);
 		errorResponseParsers.add(new BankErrorResponseParser());
 		errorResponseParsers.addAll(DelegatingErrorResponseParser.DEFAULT_PARSER_DELEGATES);
 		BANK_ERROR_RESPONSE_PARSER = new DelegatingErrorResponseParser(errorResponseParsers);
@@ -70,7 +70,7 @@ public class BankErrorResponseParser implements ErrorResponseParser<BankErrorRes
 	 * @return Returns an instance of BankErrorResponse to be used by the application to handle the response accordingly
 	 */
 	@Override
-	public BankErrorResponse parseErrorResponse(int httpStatusCode, InputStream in, HttpURLConnection conn) throws IOException {
+	public BankErrorResponse parseErrorResponse(final int httpStatusCode, final InputStream in, final HttpURLConnection conn) throws IOException {
 		BankErrorResponse ret = null;
 		
 		try {
@@ -79,7 +79,7 @@ public class BankErrorResponseParser implements ErrorResponseParser<BankErrorRes
 			if( ret == null && Log.isLoggable(TAG, Log.ERROR) ) {
 				Log.e(TAG, "Unable to map error response to an object");
 			}
-		} catch(Exception ex) {
+		} catch(final Exception ex) {
 			if(Log.isLoggable(TAG, Log.ERROR) ) {
 				Log.e(TAG, "Exception occured trying to map error response to an object");
 			}
