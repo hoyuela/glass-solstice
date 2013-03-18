@@ -326,7 +326,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.33"
-            android:text="@string/customer_service" />
+            android:text="@string/contact_us_wrap" />
 
         <Button
             android:id="@+id/provide_feedback_button"
