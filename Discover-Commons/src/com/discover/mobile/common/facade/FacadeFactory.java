@@ -32,7 +32,7 @@ public class FacadeFactory {
 	}
 
 	/**
-	 * The logout facade
+	 * The BANK logout facade
 	 * @return
 	 */
 	public static BankLogoutFacade getBankLogoutFacade(){
@@ -40,7 +40,7 @@ public class FacadeFactory {
 	}
 
 	/**
-	 * The logout facade
+	 * The card logout facade
 	 * @return
 	 */
 	public static CardLogoutFacade getCardLogoutFacade(){
@@ -80,15 +80,27 @@ public class FacadeFactory {
 	}
 	
 	/**
-	 * Customer service resides in bank code, but is shared
+	 * Common card navigation 
 	 * @return
 	 */
-	public static LoginServiceFacade getLoginServiceFacade(){
-		return (LoginServiceFacade) getImplClass("com.discover.mobile.card.facade.LoginServiceFacadeImpl");
+	public static CardLoginFacade getCardLoginFacade(){
+		return (CardLoginFacade) getImplClass("com.discover.mobile.card.facade.CardLoginFacadeImpl");
+	}
+	
+	/**
+	 * Common card navigation 
+	 * @return
+	 */
+	public static BankLoginFacade getBankLoginFacade(){
+		return (BankLoginFacade) getImplClass("com.discover.mobile.bank.facade.BankLoginFacadeImpl");
 	}
 	
 	
-	
+	/**
+	 * Returns the conductor facade
+	 * @param accountType
+	 * @return
+	 */
 	public static Conductor getConductorFacade(AccountType accountType){ 
 		if ( accountType == AccountType.CARD_ACCOUNT ){ 
 			return (Conductor) getImplClass("com.discover.mobile.card.facade.CardConductorFacadeImpl");

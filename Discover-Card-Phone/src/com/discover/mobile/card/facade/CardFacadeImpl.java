@@ -15,12 +15,15 @@ import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.CardFacade;
 
+
 /**
- * The impl class for the card nav facade 
- * @author ekaram
+ * The impl class for the card login facade 
+ * @author ssmith
  *
  */
 public class CardFacadeImpl implements CardFacade{
+
+	
 
 	@Override
 	public void navToRegister(BaseActivity callingActivity) {
@@ -61,8 +64,6 @@ public class CardFacadeImpl implements CardFacade{
 		//TODO add phone gap initialization code here!
 		
 	}
-	
-	
 
 	
 

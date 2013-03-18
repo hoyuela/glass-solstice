@@ -5,17 +5,20 @@ package com.discover.mobile.common.facade;
 
 
 /**
- * A delegate for login to 
- * 
- * @author ekaram
+ * A facade to support common shared logout code 
+ * @author ssmith
  *
  */
-public interface LoginServiceFacade {
+public interface CardLoginFacade {
+
+	// TODO add interface methods
+	
 	
 	/**
 	 * Submits the login call 
 	 * @param callingActivity
 	 */
 	public void login(LoginActivityInterface callingActivity, String username, String password);
+	
 	
 }

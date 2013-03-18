@@ -654,7 +654,7 @@ public class LoginActivity extends BaseActivity implements
 	 * 
 	 */
 	private void cardLogin(final String username, final String password) {
-		FacadeFactory.getLoginServiceFacade().login(this, username, password);
+		FacadeFactory.getCardLoginFacade().login(this, username, password);
 	}
 
 	/**
