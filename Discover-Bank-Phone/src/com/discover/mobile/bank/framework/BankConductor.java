@@ -20,7 +20,6 @@ import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
-import com.discover.mobile.bank.deposit.BankDepositConfirmFragment;
 import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.deposit.BankDepositSelectAmount;
@@ -80,7 +79,7 @@ public final class BankConductor  extends Conductor {
 	 * 
 	 * @param pServiceCallFactory
 	 */
-	private BankConductor(ServiceCallFactory pServiceCallFactory) {
+	private BankConductor(final ServiceCallFactory pServiceCallFactory) {
 		super(pServiceCallFactory);
 		
 	}
@@ -640,10 +639,13 @@ public final class BankConductor  extends Conductor {
 				//Check if User has accounts, this is the first step in work-flow
 				else if( BankUser.instance().hasAccounts() ) {	
 					fragment = new BankDepositSelectAccount();	
+				} else {
+					//TODO: Need to read bundle and see if it has the data required for showing Check 
+					//      Deposit Confirmation Page
+					//fragment = new BankDepositConfirmFragment();
 				}
 			}
 			
-			fragment = new BankDepositConfirmFragment();
 			
 			if( fragment != null ) {
 				fragment.setArguments(bundle);
@@ -765,7 +767,7 @@ public final class BankConductor  extends Conductor {
 	 * supply json class required for given 
 	 */
 	@Override
-	public Class lookupCacheRequiredForDestination(Class destination) {
+	public Class lookupCacheRequiredForDestination(final Class destination) {
 		
 		return null;
 	}

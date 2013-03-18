@@ -13,6 +13,16 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 
+/**
+ * Fragment used to display the Check Deposit - Confirmation Page after submitting a check deposit
+ * successfully. The information displayed to the user is based on the user entered information in
+ * the check deposit review page and what is returned from the server after executing the Bank Web Service
+ * Create a Deposit. This class inherits from BankDepositBaseFragment which uses the layout defined 
+ * in res/layout/bank_one_button_layout.xml.
+ * 
+ * @author henryoyuela
+ *
+ */
 public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 
 	@Override
@@ -49,6 +59,9 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 		//this is not required for this screen
 	}
 
+	/**
+	 * Used to specify the step in the bread crumb displayed above this page.
+	 */
 	@Override
 	protected int getProgressIndicatorStep() {
 		return 3;

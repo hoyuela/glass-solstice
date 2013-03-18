@@ -10,12 +10,30 @@ import android.widget.RelativeLayout;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.widgets.SelectListItem;
 
+/**
+ * Utility class with static methods used to generate the table displayed in BankDepositConfirmFragment.
+ * This class is not instantiable.
+ * 
+ * @author henryoyuela
+ *
+ */
 public class BankDepositListGenerator {
 	
+	/**
+	 * Unused constructor, this class only has static methods.
+	 */
 	private BankDepositListGenerator() {
 		
 	}
 	
+	/**
+	 * Instantiates a SelectListItem object with a top and bottom label.
+	 * 
+	 * @param context Reference to the current Context of the application used to instantiate UI objects.
+	 * @param topText Text to be displayed in the top portion of the SelectListItem control.
+	 * @param bottomText Text to be displayed in the bottom portion of the SelectListItem control
+	 * @return Instance of a newly created SelectListItem object.
+	 */
 	public static RelativeLayout createSelectListItem(final Context context, final String topText, final String bottomText) {
 		final SelectListItem item = new SelectListItem(context);
 		item.showImage(false);
@@ -25,6 +43,14 @@ public class BankDepositListGenerator {
 		return item;
 	}
 	
+	/**
+	 * Instantiates a SelectListItem object with a top lable and no bottom label.
+	 * 
+	 * @param context Reference to the current Context of the application used to instantiate UI objects.
+	 * @param topText Text to be displayed in the top portion of the SelectListItem control.
+	 *
+	 * @return Instance of a newly created SelectListItem object.
+	 */
 	public static RelativeLayout createSelectListItem(final Context context, final String topText) {
 		final SelectListItem item = new SelectListItem(context);
 		item.showImage(false);
@@ -35,6 +61,15 @@ public class BankDepositListGenerator {
 		return item;
 	}
 	
+	/**
+	 * Creates a SelectListItem with the Account Information as required to be displayed for the
+	 * Check Deposit Confirmation Page.
+	 * 
+	 * @param context Reference to the current Context of the application used to instantiate UI objects.
+	 * @param topText Text to be displayed in the top portion of the SelectListItem control.
+	 * @param bottomText Text to be displayed in the bottom portion of the SelectListItem control
+	 * @return Reference to newly created SelectListItem object.
+	 */
 	public static RelativeLayout createAccountItem(final Context context, final String topText, final String bottomText) {
 		final SelectListItem item = (SelectListItem)createSelectListItem(context,topText,bottomText);
 		final int padding = (int) context.getResources().getDimension(R.dimen.forms_inner_padding);
@@ -43,12 +78,29 @@ public class BankDepositListGenerator {
 		return item;
 	}
 	
+	/**
+	 * Creates a SelectListItem with the Amount Information as required to be displayed for the Check
+	 * Deposit Confirmation Page.
+	 * 
+	 * @param context Reference to the current Context of the application used to instantiate UI objects.
+	 * @param topText Text to be displayed in the top portion of the SelectListItem control.
+	 * @param bottomText Text to be displayed in the bottom portion of the SelectListItem control
+	 * @return Reference to newly created SelectListItem object.
+	 */
 	public static RelativeLayout createAmountItem(final Context context, final String topText, final String bottomText) {
 		final SelectListItem item = (SelectListItem)createSelectListItem(context,topText,bottomText);
 		item.showDivider(false);	
 		return item;
 	}
 	
+	/**
+	 * Creates a SelectListItem with the Note Information as required to be displayed for the Check
+	 * Deposit Confirmation Page.
+	 * 
+	 * @param context Reference to the current Context of the application used to instantiate UI objects.
+	 * @param topText Text to be displayed in the top portion of the SelectListItem control.
+	 * @return Reference to newly created SelectListItem object.
+	 */
 	public static RelativeLayout createNoteItem(final Context context, final String topText) {
 		final SelectListItem item = new SelectListItem(context);
 		item.showImage(false);
@@ -64,6 +116,14 @@ public class BankDepositListGenerator {
 		return item;
 	}
 	
+	/**
+	 * Generates a list of RelativeLayouts to be displayed in the content table for the Bank Check Deposit
+	 * Confirmation Page.
+	 * 
+	 * @param context Reference to the current Context of the application used to instantiate UI objects.
+	 * @param item TO BE Defined
+	 * @return List of Relative Layouts
+	 */
 	public static List<RelativeLayout> getDepositConfirmationList(final Context context, final Object item) {
 		final List<RelativeLayout> list = new ArrayList<RelativeLayout>();
 		final String confirmation = context.getResources().getString(R.string.bank_deposit_received_confirmation);

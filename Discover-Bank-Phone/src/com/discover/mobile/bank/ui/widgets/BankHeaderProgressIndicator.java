@@ -57,7 +57,7 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 	 * Initiates the header and sets the current position for Change Password
 	 * @param position - Current position between 0-2
 	 */
-	public void initChangePasswordHeader(final int position) {
+	public void initialize(final int position) {
 		inflateHeader();
 		setTitle(R.string.enter_info, R.string.create_password,R.string.confirm);
 		setPosition(position);

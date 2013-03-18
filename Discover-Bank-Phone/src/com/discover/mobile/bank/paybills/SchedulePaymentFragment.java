@@ -346,7 +346,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			}
 		}
 		amountEdit.attachErrorLabel(amountError);
-		progressHeader.initChangePasswordHeader(0);
+		progressHeader.initialize(0);
 		progressHeader.hideStepTwo();
 		progressHeader.setTitle(R.string.bank_pmt_details,
 				R.string.bank_pmt_scheduled, R.string.bank_pmt_scheduled);

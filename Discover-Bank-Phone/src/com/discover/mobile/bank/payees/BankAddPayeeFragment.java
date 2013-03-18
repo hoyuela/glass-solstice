@@ -138,7 +138,7 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 		topNote.setVisibility(View.GONE);
 
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
-		progressIndicator.initChangePasswordHeader(0);
+		progressIndicator.initialize(0);
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_payee_details, R.string.bank_payee_added, R.string.bank_payee_added);
 
