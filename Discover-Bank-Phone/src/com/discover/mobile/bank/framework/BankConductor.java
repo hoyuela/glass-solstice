@@ -45,6 +45,7 @@ import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
+import com.discover.mobile.bank.util.BankEmailUtil;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
@@ -68,12 +69,12 @@ import com.google.common.base.Strings;
  *
  */
 public final class BankConductor  extends Conductor {
-	
+
 	protected static BankConductor instance;
-	
+
 	protected CacheManager cacheMgr = BankUser.instance();
-	
-	
+
+
 	/** 
 	 * To utilize the abstract navigate methods from the parent conductor class
 	 * 
@@ -81,7 +82,7 @@ public final class BankConductor  extends Conductor {
 	 */
 	private BankConductor(final ServiceCallFactory pServiceCallFactory) {
 		super(pServiceCallFactory);
-		
+
 	}
 
 	public static final String TAG = BankConductor.class.getSimpleName();
@@ -91,8 +92,9 @@ public final class BankConductor  extends Conductor {
 	 * @return
 	 */
 	public static BankConductor getInstance(){
-		if ( instance == null ) 
+		if ( instance == null ) {
 			instance = new BankConductor(new BankServiceCallFactory());
+		}
 		return instance; 
 	}
 
@@ -157,7 +159,7 @@ public final class BankConductor  extends Conductor {
 			if( Log.isLoggable(TAG, Log.DEBUG)) {
 				Log.d(TAG, "Application is already in Home Page view");
 			}
-			
+
 			((BankNavigationRootActivity)activity).popTillFragment(BankAccountSummaryFragment.class);
 		}
 	}
@@ -245,12 +247,12 @@ public final class BankConductor  extends Conductor {
 					activity.startActivity(i);
 				}
 			});
-			
+
 			/**Hide Need Help footer*/
 			((ModalDefaultTopView)modal.getTop()).hideNeedHelpFooter();
-			
+
 			((BankNavigationRootActivity)activity).showCustomAlert(modal);
-			
+
 		}
 	}
 
@@ -450,7 +452,7 @@ public final class BankConductor  extends Conductor {
 				R.string.bank_delete_transaction_title, 
 				R.string.bank_delete_transaction_text, 
 				R.string.bank_yes_delete);
-		
+
 		/**
 		 * Hide the need help footer for the delete modal.
 		 */
@@ -579,7 +581,7 @@ public final class BankConductor  extends Conductor {
 					false, 
 					R.string.bank_need_help_number_text, 
 					R.string.ok);
-			
+
 			activity.showCustomAlert(modal);
 		}
 		//Show Select Payee Page for Add a Payee work-flow
@@ -621,9 +623,9 @@ public final class BankConductor  extends Conductor {
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			navActivity.closeDialog();
-			
+
 			Fragment fragment = null;
-			
+
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligibility();
 			final boolean isEnrolled = BankUser.instance().getCustomerInfo().isDepositEnrolled();
 
@@ -645,8 +647,8 @@ public final class BankConductor  extends Conductor {
 					//fragment = new BankDepositConfirmFragment();
 				}
 			}
-			
-			
+
+
 			if( fragment != null ) {
 				fragment.setArguments(bundle);
 				navActivity.makeFragmentVisible(fragment);
@@ -657,7 +659,7 @@ public final class BankConductor  extends Conductor {
 			}
 		}
 	}
-	
+
 	/**
 	 * Navigate to the check deposit review screen. This is the Fragment that 
 	 * shows the user the details of their check deposit before it is submitted
@@ -666,24 +668,25 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToCheckDepositReview(final Bundle bundle) {
 		Fragment fragment = null;
-		
+
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
-	
+
 			fragment = new CaptureReviewFragment();
-			
+
 			if( fragment != null ) {
-				if(bundle != null)
+				if(bundle != null) {
 					fragment.setArguments(bundle);
+				}
 				navActivity.makeFragmentVisible(fragment);
 			}
 		}else{
 			Log.e(TAG, "Unable to navigate to check deposit review.");
 		}
-			
+
 	}
-	
+
 	/**
 	 * Navigation method used to navigate to Check Deposit Forbidden User screen. This screen
 	 * is shown if user does not have access to Check Deposit feature and receives a 403
@@ -696,10 +699,10 @@ public final class BankConductor  extends Conductor {
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			navActivity.closeDialog();
-			
+
 			final Fragment fragment = new BankDepositForbidden();
 			fragment.setArguments(bundle);
-			
+
 			/**Navigate user to forbidden user screen*/
 			navActivity.makeFragmentVisible(fragment);
 		} else {
@@ -739,7 +742,7 @@ public final class BankConductor  extends Conductor {
 			 */
 			final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
 			topView.hideNeedHelpFooter();
-			
+
 			((BankNavigationRootActivity) activity).showCustomAlert(modal);
 		}
 	}
@@ -763,12 +766,22 @@ public final class BankConductor  extends Conductor {
 	}
 
 	/**
+	 * Navigate to the email screen after getting the directions
+	 * @param bundle - bundle containing the results of the service call
+	 */
+	public static void navigateToEmailDirections(final Bundle bundle) {
+		final AtmLocatorActivity activity = (AtmLocatorActivity)DiscoverActivityManager.getActiveActivity();
+		activity.closeDialog();
+		BankEmailUtil.sendDirectionsEmail(bundle);
+	}
+
+	/**
 	 * For any navigation patterns using abstract pattern, 
 	 * supply json class required for given 
 	 */
 	@Override
 	public Class lookupCacheRequiredForDestination(final Class destination) {
-		
+
 		return null;
 	}
 }
