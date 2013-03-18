@@ -244,26 +244,26 @@
                             android:onClick="toggleBankCardLogin"
                             android:padding="16dp" >
 
-                            <ImageView
-                                android:id="@+id/card_check_mark"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginRight="3dp"
-                                android:src="@drawable/black_check_mark" />
+                     <TextView
+                            android:id="@+id/go_to_card_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:paddingTop="@dimen/toggle_padding"
+                            android:paddingBottom="@dimen/toggle_padding"
+                            android:singleLine="true"
+                            android:text="@string/card"
+                            android:textColor="@color/title"
+                            android:textSize="@dimen/small_copy_mid" />
 
-                            <TextView
-                                android:id="@+id/go_to_card_label"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_toRightOf="@id/card_check_mark"
-                                android:padding="8dp"
-                                android:singleLine="true"
-                                android:text="@string/card"
-                                android:textColor="@color/title"
-                                android:textSize="@dimen/small_copy_mid" />
+                        <ImageView
+                            android:id="@+id/card_check_mark"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="3dp"
+                            android:layout_toLeftOf="@id/go_to_card_label"
+                            android:src="@drawable/black_check_mark" />
                         </RelativeLayout>
 
                         <!-- Bank -->
@@ -280,26 +280,26 @@
                             android:onClick="toggleBankCardLogin"
                             android:padding="16dp" >
 
-                            <ImageView
-                                android:id="@+id/bank_check_mark"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginRight="3dp"
-                                android:src="@drawable/black_check_mark" />
+                        <TextView
+                            android:id="@+id/go_to_bank_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:paddingTop="@dimen/toggle_padding"
+                            android:paddingBottom="@dimen/toggle_padding"
+                            android:singleLine="true"
+                            android:text="@string/bank"
+                            android:textColor="@color/title"
+                            android:textSize="@dimen/small_copy_mid" />
 
-                            <TextView
-                                android:id="@+id/go_to_bank_label"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_toRightOf="@id/bank_check_mark"
-                                android:padding="8dp"
-                                android:singleLine="true"
-                                android:text="@string/bank"
-                                android:textColor="@color/title"
-                                android:textSize="@dimen/small_copy_mid" />
+                        <ImageView
+                            android:id="@+id/bank_check_mark"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="3dp"
+                            android:layout_toLeftOf="@id/go_to_bank_label"
+                            android:src="@drawable/black_check_mark" />
                         </RelativeLayout>
                     </LinearLayout>
                 </RelativeLayout>
