@@ -14,6 +14,8 @@ import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
+import com.discover.mobile.common.net.json.bank.ReceivedUrl;
+import com.google.common.base.Strings;
 
 public class PaymentDetailsViewPager extends DetailViewPager {
 	private ListPaymentDetail detailList = new ListPaymentDetail();
@@ -178,9 +180,20 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	 */
 	@Override
 	protected void loadMoreIfNeeded(final int position) {
+		
 		if((getViewCount() - 1) == position && null != detailList.links.get(ListActivityDetail.NEXT)){
-			loadMore(detailList.links.get(ListActivityDetail.NEXT).url);
+			final ReceivedUrl url = getLoadMoreUrl();
+			if(url != null && !Strings.isNullOrEmpty(url.url))
+				loadMore(detailList.links.get(ListActivityDetail.NEXT).url);
 		}
+	}
+	
+	/**
+	 * Get the load more URL
+	 * @return get the load more URL from the correct object
+	 */
+	private ReceivedUrl getLoadMoreUrl() {
+		return detailList.links.get(ListActivityDetail.NEXT);
 	}
 
 	/**
@@ -189,7 +202,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	@Override
 	protected void loadMore(final String url) {
 		setIsLoadingMore(true);
-		BankServiceCallFactory.createGetActivityServerCall(url).submit();		
+		BankServiceCallFactory.createGetPaymentsServerCall(url).submit();		
 	}
 
 	/**
@@ -199,12 +212,10 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	 */
 	@Override
 	protected boolean isFragmentEditable(final int position) {
-		boolean paymentIsEditable = false;
-		if(detailList.payments.size() > 0) {
-			paymentIsEditable = "SCHEDULED".equals(detailList.payments.get(position).status);
-		}
-
-		return paymentIsEditable;
+		return (detailList != null && 
+				detailList.payments != null && 
+				detailList.payments.size() > 0) &&
+				"SCHEDULED".equals(detailList.payments.get(position).status);
 	}
 
 
