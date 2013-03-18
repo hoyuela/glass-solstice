@@ -186,7 +186,7 @@
                     android:text="@string/forgot_id_or_pass_text"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/blue"
-                    android:textSize="@dimen/body_copy_min"
+                    android:textSize="@dimen/small_copy_mid"
                     android:textStyle="bold" />
 
                 <TextView
@@ -200,7 +200,7 @@
                     android:text="@string/privacy_and_terms"
                     android:textColor="@color/blue"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textSize="@dimen/body_copy_min" />
+                    android:textSize="@dimen/small_copy_mid" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -252,7 +252,7 @@
                                 android:singleLine="true"
                                 android:text="@string/card"
                                 android:textColor="@color/title"
-                                android:textSize="@dimen/body_copy_min" />
+                                android:textSize="@dimen/small_copy_mid" />
 
                             <ImageView
                                 android:id="@+id/card_check_mark"
@@ -288,7 +288,7 @@
                             android:singleLine="true"
                             android:text="@string/bank"
                             android:textColor="@color/title"
-                            android:textSize="@dimen/body_copy_min" />
+                            android:textSize="@dimen/small_copy_mid" />
 
                         <ImageView
                             android:id="@+id/bank_check_mark"
