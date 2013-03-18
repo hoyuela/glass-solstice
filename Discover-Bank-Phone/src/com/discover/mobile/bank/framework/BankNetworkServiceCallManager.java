@@ -56,7 +56,6 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFail
 import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
-import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.NetworkServiceCallManager;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -201,7 +200,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		
 		// Check if the error is an SSO User
 		else if (isSSOUser(error)) {
-			FacadeFactory.getCardLoginFacade().loginWithPayload(
+			BankLoginServices.authWithCardPayload(
 					(LoginActivity) activeActivity,
 					((BankErrorSSOResponse) error).token,
 					((BankErrorSSOResponse) error).hashedValue);
@@ -264,8 +263,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		//Download Customer Information if a Login call is successful
 		else if( sender instanceof CreateBankLoginCall ) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-			
-			// TODO verify this works going forward, SSO users are handled in handleFailure() due to 401 response.
 			
 			//Set logged in to be able to save user name in persistent storage
 			Globals.setLoggedIn(true);

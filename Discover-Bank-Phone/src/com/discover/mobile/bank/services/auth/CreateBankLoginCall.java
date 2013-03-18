@@ -52,7 +52,6 @@ public class CreateBankLoginCall extends
 				body = login;
 				
 				// Specify what error parser to use when receiving an error response
-//				errorResponseParser = BankErrorResponseParser.instance();
 				errorResponseParser = BankErrorSSOResponseParser.instance();
 
 			}
@@ -66,25 +65,6 @@ public class CreateBankLoginCall extends
 			final BankLoginDetails login) {
 		
 		this(context, callback, login, false);
-// TODO(remove this all)
-//		super(context, new PostCallParams(BankUrlManager.getGetTokenUrl()) {
-//			{
-//
-//				clearsSessionBeforeRequest = true;
-//
-//				requiresSessionForRequest = false;
-//
-//				sendDeviceIdentifiers = true;
-//						
-//				body = login;
-//				
-//				// Specify what error parser to use when receiving an error response
-//				errorResponseParser = BankErrorResponseParser.instance();
-//
-//			}
-//		}, BankLoginData.class);
-//
-//		handler = new StrongReferenceHandler<BankLoginData>(callback);
 	}
 
 	/*

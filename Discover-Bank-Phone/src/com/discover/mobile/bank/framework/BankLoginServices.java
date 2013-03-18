@@ -1,6 +1,8 @@
 package com.discover.mobile.bank.framework;
 
+import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.Conductor;
 import com.discover.mobile.common.framework.ServiceCallFactory;
 
@@ -30,23 +32,24 @@ public class BankLoginServices extends Conductor {
 	 * @param bankSSOPayload
 	 *            payload with which the user is authorized.
 	 */
-	public static void authWithBankPayload(final Object bankSSOPayload) {
+	public static void authWithBankPayload(final String bankSSOPayload) {
 		// TODO log user in against token/sso using this payload.
-//		BankServiceCallFactory.createSSOLoginCall();
+//		BankServiceCallFactory.createSSOLoginCall(bankSSOPayload).submit;
 		
 		loginDetails = null;
 	}
 
 	/**
 	 * Authorizes an SSO User against Card using a CardSSOPayload, which in some
-	 * cases is obtained from a call to {@code BankLoginServices.authorize()}.
-	 * 
-	 * @param cardSSOPayload
-	 *            payload with which the user is authorized.
+	 * cases is obtained from a call to {@code BankLoginServices.authorizeLogin()}.
+	 *
+	 * @param activity
+	 * @param tokenValue
+	 * @param hashedTokenValue
 	 */
-	public static void authWithCardPayload(final Object cardSSOPayload) {
-		// TODO log user in against token/sso using this payload.
-//		CardLoginFacade.ssoLogin(cardSSOPayload);
+	public static void authWithCardPayload(LoginActivity activity, String tokenValue, String hashedTokenValue) {
+		FacadeFactory.getCardLoginFacade().loginWithPayload(activity,
+				tokenValue, hashedTokenValue);
 	}
 
 	/**

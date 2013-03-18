@@ -21,6 +21,7 @@ import com.discover.mobile.bank.services.atm.GetDirectionsServiceCall;
 import com.discover.mobile.bank.services.auth.BankLoginData;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
+import com.discover.mobile.bank.services.auth.CreateBankSSOLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthAnswerDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
@@ -95,18 +96,6 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 */
 	public static CreateBankLoginCall createLoginCall(final BankLoginDetails credentials ) {
 		return createLoginCall(credentials, false);
-// TODO(remove this all)
-//		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-//
-//		//Build the handler for the response to the Bank authentication request
-//		final AsyncCallback<BankLoginData> callback =
-//				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
-//				.build();
-//
-//		//Create the NetworkServieCall<> for authenticating with the Bank Authentication Server
-//		final CreateBankLoginCall loginCall =  new CreateBankLoginCall(activity, callback, credentials);
-//
-//		return loginCall;
 	}
 	
 	/**
@@ -137,13 +126,13 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * @param credentials
 	 * @return
 	 */
-//	public static CreateSSOLoginCall createSSOLoginCall(final BankSSOLoginDetail credentials) {
-//		// TODO Callback
-//		
-//		// TODO Call
-//		
-//		return loginCall;
-//	}
+	public static CreateBankSSOLoginCall createSSOLoginCall(final String credentials) {
+		// TODO Callback
+		
+		// TODO Call
+		
+		return null;
+	}
 
 	/**
 	 * Used to construct a CreatePaymentCall NetworkServiceCall for making a
