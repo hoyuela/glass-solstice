@@ -110,13 +110,12 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	/**Street view framgent*/
 	private AtmStreetView streetView;
 
-	private boolean shouldGoBack = true;
+	/**Boolean that is false if the app should allow the back button press*/
+	private boolean shouldGoBack = false;
 
+	/**Panel containing the buttons*/
 	private LinearLayout navigationPanel;
 
-
-	/**
-	 */
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		//Check to see if the view has already been inflated
@@ -557,6 +556,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		return loadMore;
 	}
 
+	/**
+	 * Load more data
+	 */
 	public void loadMoreData(){
 		final Bundle bundle = new Bundle();
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, results);

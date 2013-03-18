@@ -15,6 +15,11 @@ import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
 
+/**
+ * Fragment contianing the list of details available for the ATMs
+ * @author jthornton
+ *
+ */
 public class AtmListFragment extends BaseTable{
 
 	/**Adapter used to display data*/
@@ -25,9 +30,6 @@ public class AtmListFragment extends BaseTable{
 
 	/**Current amount of results being shown*/
 	private int index;
-
-	/**Amount of ATMs that can be shown at one time*/
-	private static final int INDEX_INCREMENT = 10;
 
 	/**Footer to put in the bottom of the list view*/
 	private TableLoadMoreFooter footer;
@@ -64,6 +66,14 @@ public class AtmListFragment extends BaseTable{
 		if(!observer.canLoadMore()){
 			showNothingToLoad();
 		}
+	}
+
+	/**
+	 * Get the current address of the users or the search
+	 * @return the current address of the users or the search
+	 */
+	public String getCurrentAddress(){
+		return observer.getCurrentLocationAddress();
 	}
 
 	@Override
@@ -141,7 +151,6 @@ public class AtmListFragment extends BaseTable{
 		return R.string.atm_locator_title;
 	}
 
-	//TODO: make these correct
 	@Override
 	public int getGroupMenuLocation() {
 		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;

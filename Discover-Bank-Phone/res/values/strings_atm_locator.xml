@@ -22,5 +22,6 @@
     <string name="atm_no_results_title">We\'re Sorry!</string>
     <string name="atm_no_results_content">There were no ATMs near the searched location.</string>
     <string name="atm_no_results_button">OK</string>
+    <string name="atm_email_directions">Driving Directions from %1$s to %2$s</string>
     
 </resources>

@@ -42,6 +42,7 @@ public class BankUrlManager  {
 	private static final String TERMS_AND_CONDITIONS_URL = "/api/content/payments/terms.js";
 	private static final String ACCEPT_PAY_BILLS_TERMS_URL = "/api/payments/terms";
 	private static final String ATM_LOCATOR_URL = "https://api.discover.com/api/atmLocator/SearchGeocodedLocation.xml";
+	private static final String ATM_DIRECTIONS_BASE_URL = "http://maps.googleapis.com/maps/api/directions/json";
 
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
@@ -137,11 +138,11 @@ public class BankUrlManager  {
 	public static void clearLinks() {
 		links.clear();
 	}
-	
+
 	public static int getLinksCount() {
 		return links.size();
 	}
-	
+
 	public static Map<String, ReceivedUrl> getLinks() {
 		return links;
 	}
@@ -228,6 +229,13 @@ public class BankUrlManager  {
 	 */
 	public static String getAtmLocatorUrl() {
 		return ATM_LOCATOR_URL;
+	}
+
+	/**
+	 * @return the atmDirectionsBaseUrl
+	 */
+	public static String getAtmDirectionsBaseUrl() {
+		return ATM_DIRECTIONS_BASE_URL;
 	}
 
 }
