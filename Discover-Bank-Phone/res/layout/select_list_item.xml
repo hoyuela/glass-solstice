@@ -34,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/top_label"
             android:layout_below="@+id/top_label"
-            android:singleLine="true"
             android:text="@string/edit" />
 
         <ImageView

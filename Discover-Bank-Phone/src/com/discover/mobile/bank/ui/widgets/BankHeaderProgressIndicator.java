@@ -1,17 +1,11 @@
 package com.discover.mobile.bank.ui.widgets;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.hardware.SensorManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.OrientationEventListener;
-import android.view.Surface;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,16 +15,12 @@ import com.discover.mobile.common.DiscoverActivityManager;
 
 /**
  * Class defines a widget used to display the progress of a work-flow for a user. This widge
- * allows up to 3 steps to a work-flow. It is a sub-class of HeaderProgressIndicator with a
- * help icon that is clickable.
+ * allows up to 3 steps to a work-flow. 
  * 
  * @author henryoyuela
  *
  */
 public class BankHeaderProgressIndicator extends RelativeLayout implements OnClickListener {
-	protected TextView step1;
-	protected TextView step2;
-	protected TextView step3;
 	/**
 	 * Reference to help icon displayed which is meant to be clickable
 	 */
@@ -56,17 +46,11 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 	protected void inflateHeader() {
 		final LayoutInflater inflater = (LayoutInflater) getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-		inflater.inflate(R.layout.bank_header_progress, this);
-		step1 = (TextView) findViewById(R.id.step_1);	
-		step2 = (TextView) findViewById(R.id.step_2);
-		step3 = (TextView) findViewById(R.id.step_3);
 		
-
+		inflater.inflate(R.layout.bank_header_progress, this);
+		
 		helpView = (ImageView)findViewById(R.id.help_view);
 		helpView.setOnClickListener(this);
-		
-		createOrientationListener();
 	}
 
 	/**
@@ -84,6 +68,10 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 	 * Sets the titles for the header
 	 */
 	public void setTitle(final int title1, final int title2, final int title3) {
+		final TextView step1 = (TextView) findViewById(R.id.step1_text);	
+		final TextView step2 = (TextView) findViewById(R.id.step2_text);
+		final TextView step3 = (TextView) findViewById(R.id.step3_text);
+		
 		step1.setText(getResources().getString(title1));
 		step2.setText(getResources().getString(title2));
 		step3.setText(getResources().getString(title3));
@@ -94,34 +82,35 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 	 * @param position - number between 0-2
 	 */
 	public void setPosition(final int position){
-		final Drawable confirm = this.getContext().getResources().getDrawable(R.drawable.gray_check_mark);
-		final Drawable indicator = this.getContext().getResources().getDrawable(R.drawable.orange_down_arrow);
+		final ImageView step1Confirm = (ImageView)findViewById(R.id.step1_confirm);
+		final ImageView step2Confirm = (ImageView)findViewById(R.id.step2_confirm);
+		final ImageView step1Indicator = (ImageView)findViewById(R.id.step1_indicator);
+		final ImageView step2Indicator = (ImageView)findViewById(R.id.step2_indicator);
+		final ImageView step3Indicator =(ImageView)findViewById(R.id.step3_indicator);
+		final RelativeLayout step2 = (RelativeLayout)findViewById(R.id.step2);
 		
-		switch( position ) {
-		case 0:
-			step1.setCompoundDrawablesWithIntrinsicBounds(null, indicator, null, null);
-			step1.setPadding(0, 0, 0, 0);
-			step2.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-			step3.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-			break;
-		case 1:
-			step1.setCompoundDrawablesWithIntrinsicBounds(confirm, null, null, null);
-			step2.setCompoundDrawablesWithIntrinsicBounds(null, indicator, null, null);
-			step2.setPadding(0, 0, 0, 0);
-			step3.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-			break;
-		case 2:
-			step1.setCompoundDrawablesWithIntrinsicBounds(confirm, null, null, null);
-			step2.setCompoundDrawablesWithIntrinsicBounds(confirm, null, null, null);
-			step3.setCompoundDrawablesWithIntrinsicBounds(null, indicator, null, null);
-			step3.setPadding(0, 0, 0, 0);
-			break;
-		default:
-			step1.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-			step2.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-			step3.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-			break;
+		if (position > 1 ){
+			step1Confirm.setVisibility(View.VISIBLE);
+			step1Indicator.setVisibility(View.INVISIBLE);
+		} else if( position <= 1) {
+			step1Indicator.setVisibility(View.VISIBLE);
+			step1Confirm.setVisibility(View.INVISIBLE);
 		}
+		
+		if (position > 2 ){
+			step2Confirm.setVisibility(View.VISIBLE);
+			step2Indicator.setVisibility(View.INVISIBLE);
+		} else if( position == 2) {
+			step2Indicator.setVisibility(View.VISIBLE);
+			step2Confirm.setVisibility(View.INVISIBLE);
+		}
+		
+		if( position == 3 || step2.getVisibility() != View.VISIBLE ) {
+			step3Indicator.setVisibility(View.VISIBLE);
+		} else {
+			step3Indicator.setVisibility(View.INVISIBLE);
+		}
+		
 	}
 	
 	
@@ -129,7 +118,14 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 	 * Hides the second state in the bread crumb 
 	 */
 	public void hideStepTwo(){
+		final RelativeLayout step2 = (RelativeLayout)findViewById(R.id.step2);
+		final ImageView step2Indicator = (ImageView)findViewById(R.id.step2_indicator);
+		
 		step2.setVisibility(View.GONE);
+		
+		if( step2Indicator.getVisibility() == View.VISIBLE ) {
+			setPosition(3);
+		}
 	}
 	
 	/**
@@ -153,48 +149,4 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 	public ImageView getHelpView() {
 		return helpView;
 	}
-	
-	
-	/**
-	 * Create the orientation changed listener
-	 * @return the orientation changed listener
-	 */
-	public OrientationEventListener createOrientationListener() {
-		final OrientationEventListener ret = new OrientationEventListener(this.getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
-			@Override
-			public void onOrientationChanged(final int arg0) {
-				final LinearLayout.LayoutParams step2Params = (android.widget.LinearLayout.LayoutParams) step2.getLayoutParams();
-				final int rotation = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
-				
-				/**Check if there are three steps in breadcrumb*/
-				if( step2.getVisibility() != View.GONE) {
-			
-					if( rotation == Surface.ROTATION_90 ) {
-						final int dimen = (int) getContext().getResources().getDimension(R.dimen.breadcrumb_step2_landscape_padding);
-						step2Params.setMargins(dimen, 0, dimen, 0);
-						step2.setLayoutParams(step2Params);
-					} else {
-						final int dimen = (int) getContext().getResources().getDimension(R.dimen.breadcrumb_step2_portrait_padding);
-						step2Params.setMargins(dimen, 0, dimen, 0);
-						step2.setLayoutParams(step2Params);
-					}
-				}
-				/** Handle only two steps in breadcrumb*/
-				else {
-					if( rotation == Surface.ROTATION_180 ) {
-						//Set margins for step 2
-						
-					} else if( rotation == Surface.ROTATION_90) {
-						
-						
-						
-					}
-				}
-			}
-		};
-
-		ret.enable();
-		return ret;  
-	}
-
 }

@@ -1,65 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <!--   android:layout_marginLeft="@dimen/forms_inner_padding" -->
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/location_text"
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_progress_height"
-        android:layout_marginBottom="@dimen/forms_inner_padding"  
-        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/forms_inner_padding"
         android:background="@drawable/light_gray_bkgrd" >
 
-        <TextView
-            android:id="@+id/step_1"
+        <RelativeLayout
+            android:id="@+id/step1"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/gray_check_mark"
-            android:drawablePadding="@dimen/breadcrumb_drawable_padding"
-            android:paddingTop="@dimen/breadcrumb_step_toppadding"
-            android:drawableTop="@drawable/orange_down_arrow"
-            android:singleLine="true"
-            android:gravity="left|center_vertical"
-            android:text="@string/bank_deposit_enter_details" />
+            android:layout_alignParentLeft="true"
+            android:gravity="center_vertical" >
 
-         
-        <TextView
-            android:id="@+id/step_2"
+            <ImageView
+                android:id="@+id/step1_confirm"
+                style="@style/status_check_mark"
+                android:layout_alignParentLeft="true"
+                android:contentDescription="@null"
+                android:visibility="invisible"
+                android:paddingTop="@dimen/breadcrumb_confirm_toppadding" />
+
+            <ImageView
+                android:id="@+id/step1_indicator"
+                style="@style/status_indicator_image"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/step1_text"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/step1_indicator"
+                android:layout_toRightOf="@+id/step1_confirm"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/between_related_elements_padding"
+                android:singleLine="true"
+                android:text="@string/bank_deposit_enter_details" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/step2"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:drawableLeft="@drawable/gray_check_mark"
-            android:layout_marginLeft="@dimen/breadcrumb_step2_landscape_padding"
-            android:layout_marginRight="@dimen/breadcrumb_step2_landscape_padding"
-            android:drawablePadding="@dimen/breadcrumb_drawable_padding"
-            android:drawableTop="@drawable/orange_down_arrow"
-            android:gravity="center"
-            android:paddingTop="@dimen/breadcrumb_step_toppadding"
-            android:singleLine="true"
-            android:text="@string/bank_deposit_capture" />
+            android:layout_toLeftOf="@+id/step3"
+            android:layout_toRightOf="@+id/step1"
+            android:gravity="center" >
 
+            <ImageView
+                android:id="@+id/step2_confirm"
+                style="@style/status_check_mark"
+                android:layout_toLeftOf="@+id/step2_text"
+                android:contentDescription="@null"
+                android:visibility="invisible"
+                android:paddingTop="@dimen/breadcrumb_confirm_toppadding" />
 
-        <TextView
-            android:id="@+id/step_3"
+            <ImageView
+                android:id="@+id/step2_indicator"
+                style="@style/status_indicator_image"
+                android:layout_alignLeft="@+id/step2_text"
+                android:layout_marginLeft="25dp"
+                android:contentDescription="@null"/>
+
+            <TextView
+                android:id="@+id/step2_text"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/step2_indicator"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:paddingLeft="@dimen/between_related_elements_padding"
+                android:singleLine="true"
+                android:text="@string/bank_deposit_capture" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/step3"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:drawableTop="@drawable/orange_down_arrow"
-            android:paddingTop="@dimen/breadcrumb_step_toppadding"
-            android:drawablePadding="@dimen/breadcrumb_drawable_padding"
-            android:gravity="right|center_vertical"
-            android:singleLine="true"
+            android:layout_toLeftOf="@+id/help_layout"
+            android:gravity="right" >
+
+            <ImageView
+                android:id="@+id/step3_indicator"
+                style="@style/status_indicator_image"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@null"/>
+
+            <TextView
+                android:id="@+id/step3_text"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/step3_indicator"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="@string/bank_deposit_confirmation" />
+        </RelativeLayout>
+
+         <RelativeLayout
+            android:id="@+id/help_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/breadcrumb_help_left_margin"
             android:layout_marginRight="@dimen/forms_inner_padding"
-            android:text="@string/bank_deposit_confirmation" />
-
-        <ImageView
-            android:id="@+id/help_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.10"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@null"
-            android:paddingRight="@dimen/breadcrumb_help_rightpadding"
-            android:src="@drawable/question_mark_icon" />
-    </LinearLayout>
+            android:gravity="center_vertical|right">
+	        <ImageView
+	            android:id="@+id/help_view"
+	            android:layout_width="@dimen/orange_help_button_size"
+	            android:layout_height="@dimen/orange_help_button_size"
+	            android:layout_centerVertical="true"
+	            android:contentDescription="@null"
+	            android:src="@drawable/question_mark_icon" />
+        </RelativeLayout>
+    </RelativeLayout>
 
 </merge>

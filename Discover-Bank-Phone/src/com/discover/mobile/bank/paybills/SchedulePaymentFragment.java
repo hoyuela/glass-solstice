@@ -26,8 +26,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -67,7 +67,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 	private static final String MEMO = "f";
 	private static final String CONFLICT = "conflict";
 
-	private ScrollView parentView;
+	private LinearLayout parentView;
 
 	/** Pay From table item */
 	private RelativeLayout paymentAccountItem;
@@ -152,7 +152,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			final ViewGroup container, final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.schedule_payment, null);
 
-		parentView = (ScrollView) view;
+		parentView = (LinearLayout) view;
 		payeeText = (TextView) view.findViewById(R.id.payee_text);
 		payeeError = (TextView)view.findViewById(R.id.payee_error);
 		progressHeader = (BankHeaderProgressIndicator) view

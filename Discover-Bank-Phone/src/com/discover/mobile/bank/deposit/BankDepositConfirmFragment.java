@@ -51,7 +51,7 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 
 	@Override
 	protected int getProgressIndicatorStep() {
-		return 2;
+		return 3;
 	}
 
 	@Override

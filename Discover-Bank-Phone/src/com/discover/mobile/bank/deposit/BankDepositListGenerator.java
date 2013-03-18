@@ -59,6 +59,7 @@ public class BankDepositListGenerator {
 		item.getTopLabel().setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);	
 		item.setMiddleLabelText(bottom);
 		item.getMiddleLabel().setSingleLine(false);
+		item.getMiddleLabel().setMaxLines(10);
 		item.getMiddleLabel().setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);	
 		return item;
 	}

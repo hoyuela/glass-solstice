@@ -26,11 +26,6 @@
     <dimen name="header_progress_height">45dp</dimen>
     
     <!-- Padding for Help Icon in bank_header_progress layout-->
-    <dimen name="breadcrumb_help_right_padding">4dp</dimen>
-    <dimen name="breadcrumb_step_toppadding">8dp</dimen>
-    <dimen name="breadcrumb_drawable_padding">3dp</dimen>
-    <dimen name="breadcrumb_help_leftpadding">30dp</dimen>
-    <dimen name="breadcrumb_help_rightpadding">6dp</dimen>
-    <dimen name="breadcrumb_step2_portrait_padding">20dp</dimen>
-    <dimen name="breadcrumb_step2_landscape_padding">160dp</dimen>
+    <dimen name="breadcrumb_help_left_margin">15dp</dimen>
+    <dimen name="breadcrumb_confirm_toppadding">6dp</dimen>
 </resources>
