@@ -291,8 +291,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 
 		shouldGoBack = savedInstanceState.getBoolean(STREET_VIEW_SHOWING, true);
 		if(shouldGoBack){
-			streetView.loadStreetView(savedInstanceState);
-			streetView.show();
+			showStreetView(savedInstanceState);
 		}
 	}
 
@@ -437,7 +436,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 			settingsModal.dismiss();
 		}
 		outState.putInt(LOCATION_STATUS, locationStatus);
-		if(LOCKED_ON == locationStatus){
+		if(LOCKED_ON == locationStatus && null != mapWrapper.getCurrentLocation()){
 			outState.putDouble(LAT_KEY, mapWrapper.getCurrentLocation().getLatitude());
 			outState.putDouble(LONG_KEY, mapWrapper.getCurrentLocation().getLongitude());
 		}
