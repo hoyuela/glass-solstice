@@ -44,5 +44,15 @@
 	<string name="take_the_picture_info">Use the camera on your\nphone to capture the front\nand back of the check.</string>
 	
 	<string name="deposit_now">Deposit Now</string>
+	<string name="do_not_go_back">Do Not Go Back</string>
+	<string name="go_back_and_cancel">Go Back &amp; Cancel</string>
 	
+	<string name="cancel_deposit_title">Cancel Your Deposit?</string>
+	<string name="cancel_deposit_content">All information you entered for this deposit will be lost. You\'ll need to re-enter the information to complete the transaction.</string>
+
+	<string name="are_you_sure_title">Are You Sure You Want to Go Back?</string>
+	<string name="account_ending_in">Account Ending In</string>
+	
+	<string name="sending_deposit_title_text">Sending Deposit</string>
+	<string name="sending_deposit_detail_text">Your deposit is being sent securely to the bank. Please wait for the transaction to be completed.</string>
 </resources>
