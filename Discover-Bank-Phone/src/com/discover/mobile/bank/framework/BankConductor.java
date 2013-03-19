@@ -21,6 +21,7 @@ import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.deposit.BankDepositForbidden;
+import com.discover.mobile.bank.deposit.BankDepositNotEligibleFragment;
 import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.deposit.BankDepositSelectAmount;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
@@ -630,7 +631,7 @@ public final class BankConductor  extends Conductor {
 			final boolean isEnrolled = BankUser.instance().getCustomerInfo().isDepositEnrolled();
 
 			if(!isEligible){
-				//TODO: Need to figure out to see where to go if not eligible
+				fragment = new BankDepositNotEligibleFragment();
 			} else if(isEligible && !isEnrolled){
 				fragment = new BankDepositTermsFragment();
 			} else{
@@ -638,14 +639,18 @@ public final class BankConductor  extends Conductor {
 				if( navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount ) {
 					fragment = new BankDepositSelectAmount();
 				}
-				//Check if User has accounts, this is the first step in work-flow
-				else if( BankUser.instance().hasAccounts() ) {	
-					fragment = new BankDepositSelectAccount();	
-				} else {
-					//TODO: Need to read bundle and see if it has the data required for showing Check 
-					//      Deposit Confirmation Page
-					//fragment = new BankDepositConfirmFragment();
+				//Check if User has deposit eligible accounts otherwise navigate to not eligible screen
+				else if( !BankUser.instance().hasDepositEligibleAccounts() ) {
+					fragment = new BankDepositNotEligibleFragment();	
 				}
+				//If all other conditions failed then user is in the first step of the deposit work-flow
+				else {
+					fragment = new BankDepositSelectAccount();	
+				}
+				
+				//TODO: Need to read bundle and see if it has the data required for showing Check 
+				//      Deposit Confirmation Page
+				//fragment = new BankDepositConfirmFragment();
 			}
 
 
