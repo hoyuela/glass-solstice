@@ -44,7 +44,7 @@
 	<!-- Schedule Payments -->
 	<string name="payee">Payee</string>
 	<string name="accept">Accept</string>
-	<string name="acceptance_text">By tapping on Accept, I \nagree to the Terms of Use.</string>
+	<string name="acceptance_text">By tapping on Accept, I agree to the Terms of Use.</string>
  	<string name="schedule_pay_payee">Payee</string>
  	<string name="schedule_pay_from">Pay From</string>
  	<string name="schedule_pay_amount">Amount</string>

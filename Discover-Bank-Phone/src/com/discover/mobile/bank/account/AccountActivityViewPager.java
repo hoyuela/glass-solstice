@@ -130,8 +130,8 @@ public class AccountActivityViewPager extends DetailViewPager{
 	 * the AccountActivityPage so that if we loaded any new information, it will be shown in the AccountActivityPage.
 	 */
 	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
+	public void onPause() {
+		super.onPause();
 		BankRotationHelper.getHelper().setBundle(getCurrentFragmentBundle());
 	}
 
@@ -203,10 +203,5 @@ public class AccountActivityViewPager extends DetailViewPager{
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
 	}
-
-	@Override
-	public boolean isBackPressDisabled() {
-		return false;
-	}
-
+	
 }

@@ -393,44 +393,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		final boolean stepOneChecked = stepOneCheck.getVisibility() == View.VISIBLE;
 		final boolean stepTwoChecked = stepTwoCheck.getVisibility() == View.VISIBLE;
 		if(stepTwoChecked){
-			Log.d(TAG, "FINISHED!");
-//			final Intent review = new Intent(this, PictureReview.class);
-//			startActivity(review);
 			this.setResult(Activity.RESULT_OK);
 			this.finish();
-//
-//			final AsyncCallback<DepositDetail> callback = BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(DepositDetail.class, this, this).build();
-//			final DepositDetail detail = new DepositDetail();
-//		
-//			final int jpegCompressionQuality = 30;
-//			
-//			detail.account = 1;
-//			
-//			detail.amount = 5555;
-//			final TelephonyManager telephonyManager =
-//					(TelephonyManager) DiscoverActivityManager.getActiveActivity().getSystemService(Context.TELEPHONY_SERVICE);
-//			
-//			detail.deviceUUID = telephonyManager.getDeviceId();
-//			detail.deviceType = "Android";
-//		
-//			final File frontPic = getFileStreamPath(CheckDepositCaptureActivity.FRONT_PICTURE);
-//			final File backPic = getFileStreamPath(CheckDepositCaptureActivity.BACK_PICTURE);
-//			
-//			final Bitmap pic = BitmapFactory.decodeFile(frontPic.getAbsolutePath());
-//			final Bitmap pic2 = BitmapFactory.decodeFile(backPic.getAbsolutePath());
-//			
-//			final ByteArrayOutputStream frontBitStream = new ByteArrayOutputStream();
-//			final ByteArrayOutputStream backBitStream = new ByteArrayOutputStream();
-//
-//			pic.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, frontBitStream);
-//			pic2.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, backBitStream);
-//			
-//			detail.frontImage = Base64.encodeToString(frontBitStream.toByteArray(), Base64.NO_WRAP);
-//			detail.backImage = Base64.encodeToString(backBitStream.toByteArray(), Base64.NO_WRAP);
-//			
-//			final SubmitCheckDepositCall call = new SubmitCheckDepositCall(this, callback, detail);
-//			call.submit();
-			
 		}else if(stepOneChecked){
 			frontLabel.setTextColor(getResources().getColor(R.color.field_copy));
 			backLabel.setTextColor(getResources().getColor(R.color.sub_copy));
