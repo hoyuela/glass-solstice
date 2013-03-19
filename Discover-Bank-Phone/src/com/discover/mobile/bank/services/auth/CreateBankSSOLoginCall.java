@@ -42,7 +42,6 @@ public class CreateBankSSOLoginCall extends
 				errorResponseParser = BankErrorSSOResponseParser.instance();
 			}
 		}, BankLoginData.class);
-		// TODO Auto-generated constructor stub
 
 		handler = new StrongReferenceHandler<BankLoginData>(callback);
 	}

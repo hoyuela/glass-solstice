@@ -669,7 +669,7 @@ public class LoginActivity extends BaseActivity implements
 		login.password = password;
 		login.username = username;
 		
-		BankConductor.authorizeLogin(login);
+		BankConductor.authorizeWithCredentials(login);
 	}
 
 

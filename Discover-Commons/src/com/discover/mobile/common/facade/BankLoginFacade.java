@@ -11,8 +11,6 @@ package com.discover.mobile.common.facade;
  */
 public interface BankLoginFacade {
 
-	// TODO add interface methods
-
 	/**
 	 * Authorizes a bank login using the Bank Payload returned from Card's
 	 * Authentication flow.

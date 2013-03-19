@@ -789,7 +789,7 @@ public final class BankConductor  extends Conductor {
 	 * 
 	 * @param credentials
 	 */
-	public static void authorizeLogin(final BankLoginDetails credentials) {
+	public static void authorizeWithCredentials(final BankLoginDetails credentials) {
 		loginDetails = credentials;
 		BankServiceCallFactory.createLoginCall(credentials).submit();
 	}
