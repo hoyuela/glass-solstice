@@ -21,6 +21,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.modals.HowItWorksModalTop;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
@@ -165,13 +166,32 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 			
 			/**Verify account reference is not null*/
 			if( null != account ) {
+				final Bundle args = getArguments();
+				final int depositAmount = args.getInt(BankExtraKeys.AMOUNT);
+				final boolean reviewDepositOnFinish = args.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
+				if(reviewDepositOnFinish && account.limits != null){
+					//Reset the review deposit bundle boolean to prevent odd navigation issues later.
+					args.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, false);
+					args.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
+					BankConductor.navigateToCheckDepositReview(args);
+				}
 				/**See if the limits for the account have already been downloaded and cached*/
-				if( null != account.limits) {
+				else if( null != account.limits && !reviewDepositOnFinish) {
 					/**Navigate to Check Deposit - Select Amount Page*/
 					final Bundle bundle = new Bundle();
 					bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
 					BankConductor.navigateToCheckDepositWorkFlow(bundle);
 				} else {
+					if(reviewDepositOnFinish){
+						final BankNavigationRootActivity current = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+						Bundle bundle = current.getIntent().getExtras();
+						if(bundle == null)
+							bundle = new Bundle();
+						bundle.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, true);
+						bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
+						bundle.putInt(BankExtraKeys.AMOUNT, depositAmount);
+						current.getIntent().putExtras(bundle);
+					}
 					/**
 					 * Send a request to download account limits for the selected account. If successful
 					 * it will navigate to select account step 2 in check deposit work flow and send selected account

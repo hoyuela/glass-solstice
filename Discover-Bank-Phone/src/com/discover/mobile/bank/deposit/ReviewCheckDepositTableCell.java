@@ -7,14 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.ui.widgets.ScalableImage;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.google.common.base.Strings;
 /**
@@ -70,7 +72,6 @@ public class ReviewCheckDepositTableCell extends RelativeLayout {
 	public void loadImages(final Context context) {		
 		loadImageToView(context, R.id.check_front_image, CheckDepositCaptureActivity.FRONT_PICTURE);
 		loadImageToView(context, R.id.check_back_image, CheckDepositCaptureActivity.BACK_PICTURE);
-		
 	}
 	
 	/**
@@ -82,14 +83,18 @@ public class ReviewCheckDepositTableCell extends RelativeLayout {
 	private void loadImageToView(final Context context, final int imageViewResource, final String filename) {
 		if(context != null && imageViewResource != 0 && !Strings.isNullOrEmpty(filename)) {
 			Bitmap decodedImage = null;
-			final ImageView checkImageView = (ImageView)findViewById(imageViewResource);
+			final ScalableImage checkImageView = (ScalableImage)findViewById(imageViewResource);
 			final File savedImage = context.getFileStreamPath(filename);
+			
+			decodedImage = BitmapFactory.decodeFile(savedImage.getAbsolutePath());
 			
 			if(savedImage != null)
 				decodedImage = BitmapFactory.decodeFile(savedImage.getAbsolutePath());
-			
-			if(decodedImage != null && checkImageView != null)
-				checkImageView.setImageBitmap(decodedImage);
+
+			if(decodedImage != null && checkImageView != null){
+				final Drawable image = new BitmapDrawable(getResources(), decodedImage);
+				checkImageView.setBackgroundDrawable(image);
+			}
 		}
 	}
 	

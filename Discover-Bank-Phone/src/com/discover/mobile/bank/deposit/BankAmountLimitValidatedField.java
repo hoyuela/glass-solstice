@@ -134,4 +134,26 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 		}
 		return ret;
 	}
+	
+	/**
+	 * A static method that returns if the amount given is valid for the provided account limit.
+	 * @param amount an amount to check if it is within certain limits
+	 * @param limits the limits used to check against the amount.
+	 * @return if the amount is within the limits.
+	 */
+	public static boolean isAmountValidForAccountLimits(final double amount, final AccountLimits limits) {
+		
+			return !(limits == null && limits.monthlyDepositAmount == null || !limits.monthlyDepositAmount.isValidAmount(amount) ||
+			/** Verify Number of deposits allowed on this account per month has not been exceeded*/
+			limits.monthlyDepositCount == null || limits.monthlyDepositCount.remaining <= 0 ||
+			/**Verify Total amount allowed to be deposited in this account per day has not been exceeded*/
+			limits.dailyDepositAmount == null || !limits.dailyDepositAmount.isValidAmount(amount) ||					
+			
+			/**Verify Maximum amount allowed to be deposited in this account per transaction has not been exceeded.*/
+			limits.depositAmount == null || !limits.depositAmount.isValidAmount(amount) ||
+			
+			/**Verify Number of deposits allowed on this account per day has not been exceeded*/
+			limits.dailyDepositCount == null || limits.dailyDepositCount.remaining <= 0);				
+	}
+	
 }
