@@ -28,7 +28,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.error.BankExceptionHandler;
-import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
@@ -668,8 +668,8 @@ public class LoginActivity extends BaseActivity implements
 		final BankLoginDetails login = new BankLoginDetails();
 		login.password = password;
 		login.username = username;
-
-		BankServiceCallFactory.createLoginCall(login).submit();
+		
+		BankConductor.authorizeWithCredentials(login);
 	}
 
 

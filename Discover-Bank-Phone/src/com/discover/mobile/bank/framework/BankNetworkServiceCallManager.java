@@ -60,6 +60,7 @@ import com.discover.mobile.common.framework.NetworkServiceCallManager;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.common.net.error.bank.BankErrorSSOResponse;
 import com.google.common.base.Strings;
 
 /**
@@ -152,6 +153,35 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		return ret;
 	}
+	
+	/**
+	 * Determines if the ErrorResponse was a signal to authenticate against card
+	 * (for SSO).
+	 * 
+	 * @param error
+	 *            Reference to an error provided via a response to a
+	 *            NetworkServiceCall<>
+	 * @return true if it was an SSO user, false otherwise.
+	 */
+	public boolean isSSOUser(final ErrorResponse<?> error) {
+		boolean isSSO = false;
+
+		final int httpErrorCode = error.getHttpStatusCode();
+		final HttpURLConnection conn = error.getConnection();
+
+		if( httpErrorCode ==  HttpURLConnection.HTTP_UNAUTHORIZED ) {
+			final String wwwAuthenticateValue = conn.getHeaderField(HttpHeaders.Authentication);
+
+			if( !Strings.isNullOrEmpty(wwwAuthenticateValue) ) {
+				//Check if SSO by having CardAuth
+				if( wwwAuthenticateValue.contains(BankSchema.CARDAUTH)) {
+					isSSO = true;
+				}
+			}
+
+		}
+		return isSSO;
+	}
 
 	/**
 	 * Method defines the implementation of the handleFailure callback defined by ErrorResponseHandler.
@@ -166,7 +196,16 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
 			//Send request to Strong Auth web-service API
 			BankServiceCallFactory.createStrongAuthRequest().submit();
+		} 
+		
+		// Check if the error is an SSO User
+		else if (isSSOUser(error)) {
+			BankConductor.authWithCardPayload(
+					(LoginActivity) activeActivity,
+					((BankErrorSSOResponse) error).token,
+					((BankErrorSSOResponse) error).hashedValue);
 		}
+		
 		//Dispatch response to BankBaseErrorHandler to determine how to handle the error
 		else {
 			errorHandler.handleFailure(sender, error);
@@ -224,7 +263,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		//Download Customer Information if a Login call is successful
 		else if( sender instanceof CreateBankLoginCall ) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-
+			
 			//Set logged in to be able to save user name in persistent storage
 			Globals.setLoggedIn(true);
 

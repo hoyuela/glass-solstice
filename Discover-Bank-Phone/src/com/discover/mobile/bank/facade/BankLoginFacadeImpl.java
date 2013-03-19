@@ -3,18 +3,25 @@
  */
 package com.discover.mobile.bank.facade;
 
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.facade.BankLoginFacade;
 
-
 /**
- * @author ekaram
- *
+ * A facade for methods related to Bank Login.
+ * 
+ * @author ssmith
+ * 
  */
-public class BankLoginFacadeImpl implements BankLoginFacade{
+public class BankLoginFacadeImpl implements BankLoginFacade {
 
-	//TODO impl bank login methods
+	@Override
+	public void authorizeWithBankPayload(String payload) {
+		BankConductor.authWithBankPayload(payload);
+	}
 
-	
-	
-	
+	@Override
+	public void authDueToALUStatus() {
+		BankConductor.authDueToALUStatus();
+	}
+
 }

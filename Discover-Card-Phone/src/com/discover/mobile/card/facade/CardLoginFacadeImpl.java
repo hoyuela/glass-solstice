@@ -28,8 +28,6 @@ import com.discover.mobile.common.net.NetworkServiceCall;
  */
 public class CardLoginFacadeImpl implements CardLoginFacade{
 
-	
-
 	@Override
 	public void login(final LoginActivityInterface callingActivity, final String username, final String password) {
 		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback
@@ -66,8 +64,10 @@ public class CardLoginFacadeImpl implements CardLoginFacade{
 		
 	}
 
-	
-
-
+	@Override
+	public void loginWithPayload(LoginActivityInterface callingActivity, String tokenValue, String hashedTokenValue) {
+		// TODO Fill out fake data - just call ALU?
+		FacadeFactory.getBankLoginFacade().authDueToALUStatus();
+	}
 	
 }
