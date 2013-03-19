@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -108,13 +109,16 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	private ImageView help;
 
 	/**Street view framgent*/
-	private AtmStreetView streetView;
+	private AtmWebView streetView;
 
 	/**Boolean that is false if the app should allow the back button press*/
 	private boolean shouldGoBack = false;
 
 	/**Panel containing the buttons*/
 	private LinearLayout navigationPanel;
+
+	/**Boolean set to true if the device is in landscape and the list is showing*/
+	private boolean isListLand = false;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
@@ -130,7 +134,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
 		final WebView web = (WebView) view.findViewById(R.id.web_view);
 		final ProgressBar bar = (ProgressBar) view.findViewById(R.id.progress_bar);
-		streetView = new AtmStreetView(web, bar);
+		streetView = new AtmWebView(web, bar);
 		mapButton = (Button) view.findViewById(R.id.map_nav);
 		listButton = (Button) view .findViewById(R.id.list_nav);
 		help = (ImageView) view.findViewById(R.id.help);
@@ -287,8 +291,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 
 		shouldGoBack = savedInstanceState.getBoolean(STREET_VIEW_SHOWING, true);
 		if(shouldGoBack){
-			streetView.loadStreetView(savedInstanceState);
-			streetView.show();
+			showStreetView(savedInstanceState);
 		}
 	}
 
@@ -395,6 +398,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		}
 		locationStatus = LOCKED_ON;
 		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, this.getActivity());
+		if(null == location){return;}
 		if(LocationManager.GPS_PROVIDER == location.getProvider()){
 			mapWrapper.zoomToLocation(location, MAP_CURRENT_GPS_ZOOM);
 		}else{
@@ -432,7 +436,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 			settingsModal.dismiss();
 		}
 		outState.putInt(LOCATION_STATUS, locationStatus);
-		if(LOCKED_ON == locationStatus){
+		if(LOCKED_ON == locationStatus && null != mapWrapper.getCurrentLocation()){
 			outState.putDouble(LAT_KEY, mapWrapper.getCurrentLocation().getLatitude());
 			outState.putDouble(LONG_KEY, mapWrapper.getCurrentLocation().getLongitude());
 		}
@@ -515,9 +519,14 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		searchBar.setVisibility(View.VISIBLE);
 		help.setVisibility(View.GONE);
 		searchBar.showListView();
-		searchBar.setFragment(this);
-		navigationPanel.setVisibility(View.VISIBLE);
 		isOnMap = false;
+		if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+			navigationPanel.setVisibility(View.GONE);
+			isListLand = true;
+		}else{
+			navigationPanel.setVisibility(View.VISIBLE);
+			isListLand = false;
+		}
 		this.getActivity().getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
 		this.getActivity().getSupportFragmentManager().beginTransaction().show(listFragment).commitAllowingStateLoss();
 	}
@@ -528,9 +537,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		searchBar.setVisibility(View.VISIBLE);
 		help.setVisibility(View.VISIBLE);
 		searchBar.showMapView();
-		searchBar.setFragment(this);
 		navigationPanel.setVisibility(View.VISIBLE);
 		isOnMap = true;
+		isListLand = false;
 		this.getActivity().getSupportFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
 		this.getActivity().getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
 	}
@@ -566,23 +575,42 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	}
 
 	/**
+	 * Report an issue with an ATM
+	 */
+	public void reportAtm(){
+		shouldGoBack = true;
+		streetView.show();
+		streetView.reportAtm();
+	}
+
+	/**
 	 * The onBackPressed method that an Activity normally calls.
 	 */
 	@Override
 	public void onBackPressed(){
 		if(shouldGoBack){
+			streetView.clearWebview();
 			streetView.hide();
 			shouldGoBack = false;
-		}else{
+		}else if(isListLand){
+			toggleButton();
+		}else{	
 			shouldGoBack = true;
 		}
 	}
 
 	/**
-	 * Interface used for disabling back press from a fragment
+	 * Facade for FragmentOnBackPressed.isBackPressDisabled method. Used to determine
+	 * if back press has been disbaled for the current fragment.
+	 * 
+	 * @return True if fragment does not allow back press, false otherwise.
 	 */
 	@Override
 	public boolean isBackPressDisabled(){
-		return shouldGoBack;
+		if(isListLand){
+			return true;
+		}else{
+			return shouldGoBack;
+		}
 	}
 }
