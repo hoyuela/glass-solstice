@@ -90,11 +90,6 @@ public class CreateBankLoginCall extends
 			throws IOException {
 		final BankLoginData data = super.parseSuccessResponse(status, headers, body);
 		
-		// TODO This is going to happen _very_ differently
-		// Will handle two cases.
-		// 1. A normal, non-sso user will return the token, just as it is now.
-		// 2. An SSO user will return a payload for the card service.
-		
 		//Fetch token from JSON response
 		if( data.token != null && !Strings.isEmpty(data.token)  ) {
 			//When sending a request with a token as part of the request the format to follow is 
