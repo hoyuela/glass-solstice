@@ -20,7 +20,7 @@ public class BankUrlManager  {
 	private static String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
 	//private static String BASE_URL = "https://beta.discoverbank.com";
 	//private static String DISCOVER_STRIPPED_URL = "http://beta.discoverbank.com";
-	//	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
+//		private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
 	//  private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Erin/";
 	//	private static final String BASE_URL = "http://192.168.2.177:8008"; //Henry's Laptop
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
@@ -35,6 +35,7 @@ public class BankUrlManager  {
 	public static final String SLASH = "/";
 	private static final String AUTHENTICATE_CURRENT_CUSTOMER_URL = "/api/customers/current";
 	private static final String GET_TOKEN_URL = "/api/auth/token";
+	private static final String GET_SSO_TOKEN_URL = "/api/auth/token/sso";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
 	private static final String CUSTOMER_SERVICE_URL = "/api/customers/current";
 	private static final String STATEMENTS_URL = "https://www.discoverbank.com/bankac/loginreg/login ";
@@ -101,7 +102,14 @@ public class BankUrlManager  {
 	public static String getGetTokenUrl() {
 		return GET_TOKEN_URL;
 	}
-
+	
+	/**
+	 * @return the url for posting a token payload
+	 */
+	public static String getSSOTokenUrl() {
+		return GET_SSO_TOKEN_URL;
+	}
+	
 	/**
 	 * @return the strongAuthUrl
 	 */

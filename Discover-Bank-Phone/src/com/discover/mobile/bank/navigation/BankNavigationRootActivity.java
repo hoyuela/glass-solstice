@@ -198,8 +198,7 @@ implements OnPaymentCanceledListener {
 		if( !isBackPressDisabled()) {
 			super.onBackPressed();
 		}
-
-		if(isBackPressFragment()){
+		else if(isBackPressFragment()){
 			((FragmentOnBackPressed)currentFragment).onBackPressed();
 		}
 	}

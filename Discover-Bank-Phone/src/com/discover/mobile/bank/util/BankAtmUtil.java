@@ -4,12 +4,14 @@
 package com.discover.mobile.bank.util;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.atm.AtmLocatorActivity;
+import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.services.atm.Directions;
 import com.discover.mobile.bank.services.atm.LegDetail;
 import com.discover.mobile.bank.services.atm.StepDetail;
@@ -20,7 +22,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
  * @author jthornton
  *
  */
-public final class BankEmailUtil {
+public final class BankAtmUtil {
 
 	/**String used for entering an end of line and a new line*/
 	private static final String DOUBLE_ENTER = "\n\n";
@@ -40,7 +42,7 @@ public final class BankEmailUtil {
 	/**
 	 * Class constructor
 	 */
-	private BankEmailUtil(){}
+	private BankAtmUtil(){}
 
 	/**
 	 * Get the full list of directions
@@ -80,5 +82,19 @@ public final class BankEmailUtil {
 				String.format(activity.getString(R.string.atm_email_directions), leg.startAddress, leg.endAddress)); 
 		i.putExtra(Intent.EXTRA_TEXT, builder.toString()); 
 		activity.startActivity(i);
+	}
+
+	/**
+	 * Launch the navigation activity
+	 * @param helper - helper containing the address information
+	 */
+	public static void launchNavigation(final AtmServiceHelper helper){
+		final StringBuilder builder = new StringBuilder();
+		builder.append(MAP_URL+SOURCE_ADDRESS);
+		builder.append(helper.getTo().replace(" ", "+"));
+		builder.append(DEST_ADDRESS);
+		builder.append(helper.getFrom().replaceAll(" ", "+"));
+		final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(builder.toString()));
+		DiscoverActivityManager.getActiveActivity().startActivity(intent);
 	}
 }

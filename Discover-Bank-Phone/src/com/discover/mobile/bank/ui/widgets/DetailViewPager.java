@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -29,7 +28,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  * @author scottseward
  *
  */
-public abstract class DetailViewPager extends BaseFragment implements DynamicDataFragment, FragmentOnBackPressed{
+public abstract class DetailViewPager extends BaseFragment implements DynamicDataFragment{
 	private final String TAG = DetailViewPager.class.getSimpleName();
 
 	/** The View Pager*/
@@ -127,7 +126,8 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * If back is pressed we need to make sure that the sliding drawer is unlocked.
 	 */
 	@Override
-	public void onBackPressed() {
+	public void onPause() {
+		super.onPause();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 

@@ -54,7 +54,18 @@ public final class BankExtraKeys {
 
 	/**Used to pass the amount of the check deposit around between fragments and activities*/
 	public static final String AMOUNT = "amount";
-
+	
+	/**Used to pass a boolean to the check deposit workflow for when a user goes back to a previous
+	 * fragment to adjust the information they previously entered
+	 */
+	public static final String REENTER_AMOUNT = "newAmount";
+	
+	/**
+	 * Used to let the select account screen in check deposit know that an account is being reselected and should alter
+	 * its navigation.
+	 */
+	public static final String RESELECT_ACCOUNT = "newAccount";
+	
 	/**
 	 * Used to let the first step of check deposit know if the user has just accepted 
 	 * the terms and should see the how it works modal

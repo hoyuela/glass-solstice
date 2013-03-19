@@ -20,7 +20,9 @@ import com.discover.mobile.bank.services.atm.GetAtmDetailsCall;
 import com.discover.mobile.bank.services.atm.GetDirectionsServiceCall;
 import com.discover.mobile.bank.services.auth.BankLoginData;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
+import com.discover.mobile.bank.services.auth.BankSSOLoginDetails;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
+import com.discover.mobile.bank.services.auth.CreateBankSSOLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthAnswerDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
@@ -94,16 +96,46 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * 			the Bank Service
 	 */
 	public static CreateBankLoginCall createLoginCall(final BankLoginDetails credentials ) {
+		return createLoginCall(credentials, false);
+	}
+	
+	/**
+	 * Used to construct a CreateBankLoginCall object for invoking the Bank - Authentication Service API found at
+	 * ./api/auth/token. The callee will only have to call submit on the constructed object to trigger the
+	 * HTTP request.
+	 * 
+	 * @param credentials
+	 * @param skipSSO true if the Login call should inform the service to skip SSO, false if SSO should be checked.
+	 * @return
+	 */
+	public static CreateBankLoginCall createLoginCall(final BankLoginDetails credentials, final boolean skipSSO) {
 		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-
+		
 		//Build the handler for the response to the Bank authentication request
 		final AsyncCallback<BankLoginData> callback =
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
 				.build();
 
 		//Create the NetworkServieCall<> for authenticating with the Bank Authentication Server
-		final CreateBankLoginCall loginCall =  new CreateBankLoginCall(activity, callback, credentials);
+		final CreateBankLoginCall loginCall =  new CreateBankLoginCall(activity, callback, credentials, skipSSO);
 
+		return loginCall;
+	}
+	
+	/**
+	 * Constructs a CreateSSOLoginCall for authenticating an SSO user against Bank. 
+	 * @param credentials
+	 * @return
+	 */
+	public static CreateBankSSOLoginCall createSSOLoginCall(final BankSSOLoginDetails credentials) {
+		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
+		
+		final AsyncCallback<BankLoginData> callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
+				.build();
+		
+		final CreateBankSSOLoginCall loginCall =  new CreateBankSSOLoginCall(activity, callback, credentials);
+		
 		return loginCall;
 	}
 
@@ -125,7 +157,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		final CreatePaymentCall paymentCall = new CreatePaymentCall(activity, callback, paymentDetails);
 		return paymentCall;
 	}
-
+	
 	/**
 	 * Used to construct a CreateStrongAuthRequestCall NetworkServiceCall for invoking the Bank - Authentication
 	 * Service API found at ./api/auth/strongauth. The CreateStrongAuthRequestCall created by this method is used

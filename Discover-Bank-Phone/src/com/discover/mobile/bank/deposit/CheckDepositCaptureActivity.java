@@ -3,6 +3,7 @@ package com.discover.mobile.bank.deposit;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
+import android.hardware.Camera.Size;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -256,12 +258,13 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			
 			@Override
 			public void onClick(final View v) {
-				final ModalAlertWithOneButton modal = getHelpModal();
-				modal.show();
-				
-				final Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-				modal.getWindow().setLayout(display.getWidth(), display.getHeight());
-				
+				if(!timerTask.isRunning){
+					final ModalAlertWithOneButton modal = getHelpModal();
+					modal.show();
+					
+					final Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+					modal.getWindow().setLayout(display.getWidth(), display.getHeight());
+				}
 			}
 		});
 	}
@@ -325,15 +328,17 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private final OnTouchListener captureTouchListener = new OnTouchListener() {
 		@Override
 		public boolean onTouch(final View v, final MotionEvent event) {
-			if(event.getAction()==MotionEvent.ACTION_DOWN) return true;
-            if(event.getAction()!=MotionEvent.ACTION_UP) return false;
-            cameraPreview.setOnClickListener(null);
-            captureButton.setPressed(true);   
-            captureButton.setClickable(false);
-            captureButton.setOnTouchListener(null);
-			if(!timerTask.isRunning()){
-				timerTask = new CameraCountdownTask();
-				timerTask.execute();
+			if(stepOneCheck.getVisibility() == View.INVISIBLE || stepTwoCheck.getVisibility() == View.INVISIBLE) {
+				if(event.getAction()==MotionEvent.ACTION_DOWN) return true;
+	            if(event.getAction()!=MotionEvent.ACTION_UP) return false;
+	            cameraPreview.setOnClickListener(null);
+	            captureButton.setPressed(true);   
+	            captureButton.setClickable(false);
+	            captureButton.setOnTouchListener(null);
+				if(!timerTask.isRunning()){
+					timerTask = new CameraCountdownTask();
+					timerTask.execute();
+				}
 			}
             return true;		    
 		}
@@ -388,44 +393,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		final boolean stepOneChecked = stepOneCheck.getVisibility() == View.VISIBLE;
 		final boolean stepTwoChecked = stepTwoCheck.getVisibility() == View.VISIBLE;
 		if(stepTwoChecked){
-			Log.d(TAG, "FINISHED!");
-//			final Intent review = new Intent(this, PictureReview.class);
-//			startActivity(review);
 			this.setResult(Activity.RESULT_OK);
 			this.finish();
-//
-//			final AsyncCallback<DepositDetail> callback = BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(DepositDetail.class, this, this).build();
-//			final DepositDetail detail = new DepositDetail();
-//		
-//			final int jpegCompressionQuality = 30;
-//			
-//			detail.account = 1;
-//			
-//			detail.amount = 5555;
-//			final TelephonyManager telephonyManager =
-//					(TelephonyManager) DiscoverActivityManager.getActiveActivity().getSystemService(Context.TELEPHONY_SERVICE);
-//			
-//			detail.deviceUUID = telephonyManager.getDeviceId();
-//			detail.deviceType = "Android";
-//		
-//			final File frontPic = getFileStreamPath(CheckDepositCaptureActivity.FRONT_PICTURE);
-//			final File backPic = getFileStreamPath(CheckDepositCaptureActivity.BACK_PICTURE);
-//			
-//			final Bitmap pic = BitmapFactory.decodeFile(frontPic.getAbsolutePath());
-//			final Bitmap pic2 = BitmapFactory.decodeFile(backPic.getAbsolutePath());
-//			
-//			final ByteArrayOutputStream frontBitStream = new ByteArrayOutputStream();
-//			final ByteArrayOutputStream backBitStream = new ByteArrayOutputStream();
-//
-//			pic.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, frontBitStream);
-//			pic2.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, backBitStream);
-//			
-//			detail.frontImage = Base64.encodeToString(frontBitStream.toByteArray(), Base64.NO_WRAP);
-//			detail.backImage = Base64.encodeToString(backBitStream.toByteArray(), Base64.NO_WRAP);
-//			
-//			final SubmitCheckDepositCall call = new SubmitCheckDepositCall(this, callback, detail);
-//			call.submit();
-			
 		}else if(stepOneChecked){
 			frontLabel.setTextColor(getResources().getColor(R.color.field_copy));
 			backLabel.setTextColor(getResources().getColor(R.color.sub_copy));
@@ -618,6 +587,20 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	private void setupCameraParameters() {
 		final Camera.Parameters parameters = camera.getParameters();
+		
+		final List<Size> sizes = parameters.getSupportedPictureSizes();
+		
+		Size smallCaptureSize = null;
+		
+		for(final Size size : sizes) {
+			if(size.width < 800 && smallCaptureSize == null) {
+				smallCaptureSize = size;
+			}
+		}
+		
+		if(smallCaptureSize != null)
+			parameters.setPictureSize(smallCaptureSize.width, smallCaptureSize.height);
+		
 		parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
 		camera.setParameters(parameters);
 	}
@@ -659,6 +642,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		} else {  // back-facing
 			result = (info.orientation - degrees + (pi << 1)) % (pi << 1);
 		}
+
 		camera.stopPreview();
 		camera.setDisplayOrientation(result);
 		camera.startPreview();
@@ -741,7 +725,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * @return
 	 */
 	private Camera.Size getBestPreviewSize(final int width, final int height, final Camera.Parameters parameters) {
-		Camera.Size result=null;
+		Camera.Size result = null;
 
 		for (final Camera.Size size : parameters.getSupportedPreviewSizes()) {
 			if (size.width<=width && size.height<=height) {

@@ -13,13 +13,17 @@ public class BankSchema {
 	 */
 	public static final String BANKBASIC = "BankBasic";
 	/**
-	 * Denotes that a new token must be obtained from the authorization endpiont
+	 * Denotes that a new token must be obtained from the authorization endpoint
 	 */
 	public static final String BANKAUTH = "BankAuth";
 	/**
 	 * Denotes that a Stronger Authentication status of "ALLOW" is required.
 	 */
 	public static final String BANKSA = "BankSA";
+	/**
+	 * Denotes that a new bank payload must be obtained from a card endpoint.
+	 */
+	public static final String CARDAUTH = "CardAuth";
 	
 	/**
      * This constructor is not supported and throws an UnsupportedOperationException when called.

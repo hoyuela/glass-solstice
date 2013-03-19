@@ -41,17 +41,20 @@ import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
 import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.BankSearchSelectPayeeFragment;
 import com.discover.mobile.bank.payees.PayeeDetailViewPager;
+import com.discover.mobile.bank.services.auth.BankLoginDetails;
+import com.discover.mobile.bank.services.auth.BankSSOLoginDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
-import com.discover.mobile.bank.util.BankEmailUtil;
+import com.discover.mobile.bank.util.BankAtmUtil;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.CacheManager;
 import com.discover.mobile.common.framework.Conductor;
 import com.discover.mobile.common.framework.ServiceCallFactory;
@@ -74,8 +77,10 @@ public final class BankConductor  extends Conductor {
 	protected static BankConductor instance;
 
 	protected CacheManager cacheMgr = BankUser.instance();
-
-
+	
+	private static BankLoginDetails loginDetails;
+	
+	
 	/** 
 	 * To utilize the abstract navigate methods from the parent conductor class
 	 * 
@@ -635,8 +640,16 @@ public final class BankConductor  extends Conductor {
 			} else if(isEligible && !isEnrolled){
 				fragment = new BankDepositTermsFragment();
 			} else{
-				//Check if user is in select accounts, navigate to second step in work-flow
-				if( navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount ) {
+				boolean isReEnteringAmount = false;
+				boolean isReSelectingAccount = false;
+				if(bundle != null) {
+					isReEnteringAmount = bundle.getBoolean(BankExtraKeys.REENTER_AMOUNT);
+					isReSelectingAccount = bundle.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
+				}
+					
+				if( isReEnteringAmount || 
+						navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount 
+						&& !isReSelectingAccount) {
 					fragment = new BankDepositSelectAmount();
 				}
 				//Check if User has deposit eligible accounts otherwise navigate to not eligible screen
@@ -644,7 +657,9 @@ public final class BankConductor  extends Conductor {
 					fragment = new BankDepositNotEligibleFragment();	
 				}
 				//If all other conditions failed then user is in the first step of the deposit work-flow
-				else {
+				//Check if User has accounts, this is the first step in work-flow
+				else if(isReSelectingAccount || 
+						BankUser.instance().hasAccounts() ) {	
 					fragment = new BankDepositSelectAccount();	
 				}
 				
@@ -678,6 +693,8 @@ public final class BankConductor  extends Conductor {
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 
+			navActivity.closeDialog();
+			
 			fragment = new CaptureReviewFragment();
 
 			if( fragment != null ) {
@@ -769,6 +786,55 @@ public final class BankConductor  extends Conductor {
 			}
 		}
 	}
+	
+	/**
+	 * Authorizes a Bank user against the service. If successful, the user will
+	 * be logged-in and taken to the Bank landing page of the application.
+	 * 
+	 * @param credentials
+	 */
+	public static void authorizeWithCredentials(final BankLoginDetails credentials) {
+		loginDetails = credentials;
+		BankServiceCallFactory.createLoginCall(credentials).submit();
+	}
+
+	/**
+	 * Authorizes an SSO User against Bank using a BankSSOPayload, which is
+	 * obtained from a Card service.
+	 * 
+	 * @param bankSSOPayload
+	 *            payload with which the user is authorized.
+	 */
+	public static void authWithBankPayload(final String bankSSOPayload) {
+		BankSSOLoginDetails bankPayload = new BankSSOLoginDetails();
+		bankPayload.payload = bankSSOPayload;
+		BankServiceCallFactory.createSSOLoginCall(bankPayload).submit();
+		loginDetails = null;
+	}
+
+	/**
+	 * Authorizes an SSO User against Card using a CardSSOPayload, which in some
+	 * cases is obtained from a call to {@code BankLoginServices.authorizeLogin()}.
+	 *
+	 * @param activity
+	 * @param tokenValue
+	 * @param hashedTokenValue
+	 */
+	public static void authWithCardPayload(LoginActivity activity, String tokenValue, String hashedTokenValue) {
+		FacadeFactory.getCardLoginFacade().loginWithPayload(activity,
+				tokenValue, hashedTokenValue);
+	}
+
+	/**
+	 * Authorizes an SSO User against Bank when no BankSSOPayload is available.
+	 * This is due to an A/L/U error returned from a Card service.
+	 */
+	public static void authDueToALUStatus() {
+		if(loginDetails != null) {
+			BankServiceCallFactory.createLoginCall(loginDetails, true).submit();
+			loginDetails = null;
+		}
+	}
 
 	/**
 	 * Navigate to the email screen after getting the directions
@@ -777,7 +843,7 @@ public final class BankConductor  extends Conductor {
 	public static void navigateToEmailDirections(final Bundle bundle) {
 		final AtmLocatorActivity activity = (AtmLocatorActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
-		BankEmailUtil.sendDirectionsEmail(bundle);
+		BankAtmUtil.sendDirectionsEmail(bundle);
 	}
 
 	/**
@@ -790,5 +856,4 @@ public final class BankConductor  extends Conductor {
 		return null;
 	}
 }
-
 

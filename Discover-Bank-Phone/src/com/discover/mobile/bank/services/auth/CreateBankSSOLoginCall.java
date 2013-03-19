@@ -2,7 +2,6 @@ package com.discover.mobile.bank.services.auth;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,29 +19,17 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.ExceptionLibrary;
 import com.discover.mobile.common.net.error.bank.BankErrorSSOResponseParser;
 
-/**
- * The Bank Login call for retrieving a valid token and any URL's that are
- * returned.
- * 
- * @author ajleeds
- * 
- */
-public class CreateBankLoginCall extends
+public class CreateBankSSOLoginCall extends
 		BankJsonResponseMappingNetworkServiceCall<BankLoginData> {
-	
-	private final String TAG = CreateBankLoginCall.class.getSimpleName();
-	private final TypedReferenceHandler<BankLoginData> handler;
-	
-	public CreateBankLoginCall(final Context context,
-			final AsyncCallback<BankLoginData> callback,
-			final BankLoginDetails login, final boolean skipSSO) {
-		super(context, new PostCallParams(BankUrlManager.getGetTokenUrl()) {
-			{
-				if(skipSSO) {
-					headers = new HashMap<String, String>();
-					headers.put("X-Skip-SSO", "true");
-				}
 
+	private final String TAG = CreateBankSSOLoginCall.class.getSimpleName();
+	private final TypedReferenceHandler<BankLoginData> handler;
+
+	public CreateBankSSOLoginCall(Context context,
+			final AsyncCallback<BankLoginData> callback,
+			final BankSSOLoginDetails login) {
+		super(context, new PostCallParams(BankUrlManager.getSSOTokenUrl()) {
+			{
 				clearsSessionBeforeRequest = true;
 
 				requiresSessionForRequest = false;
@@ -53,24 +40,12 @@ public class CreateBankLoginCall extends
 				
 				// Specify what error parser to use when receiving an error response
 				errorResponseParser = BankErrorSSOResponseParser.instance();
-
 			}
 		}, BankLoginData.class);
 
 		handler = new StrongReferenceHandler<BankLoginData>(callback);
 	}
 
-	public CreateBankLoginCall(final Context context,
-			final AsyncCallback<BankLoginData> callback,
-			final BankLoginDetails login) {
-		
-		this(context, callback, login, false);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.discover.mobile.common.net.NetworkServiceCall#getHandler()
-	 */
 	@Override
 	protected TypedReferenceHandler<BankLoginData> getHandler() {
 		return handler;
@@ -108,4 +83,5 @@ public class CreateBankLoginCall extends
 		
 		return data;
 	}
+
 }

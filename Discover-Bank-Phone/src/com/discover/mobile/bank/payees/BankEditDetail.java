@@ -106,6 +106,13 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	}
 	
 	/**
+	 * @return the view
+	 */
+	public View getView() {
+		return view;
+	}
+
+	/**
 	 * Method used to set the text for the middle label and editable field at once.
 	 * 
 	 * @param text Reference to string to use to set the editable field and middle label

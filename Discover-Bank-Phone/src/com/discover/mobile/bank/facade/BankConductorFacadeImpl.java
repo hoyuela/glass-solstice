@@ -4,7 +4,6 @@
 package com.discover.mobile.bank.facade;
 
 import com.discover.mobile.bank.framework.BankConductor;
-import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.common.facade.BankConductorFacade;
 import com.discover.mobile.common.framework.Conductor;
 
@@ -22,6 +21,7 @@ public class BankConductorFacadeImpl implements BankConductorFacade{
 	 * 
 	 * @return
 	 */
+	@Override
 	public Conductor getBankConductor(){
 		return BankConductor.getInstance();
 	}
