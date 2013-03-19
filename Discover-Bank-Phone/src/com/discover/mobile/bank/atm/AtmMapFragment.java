@@ -109,7 +109,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	private ImageView help;
 
 	/**Street view framgent*/
-	private AtmStreetView streetView;
+	private AtmWebView streetView;
 
 	/**Boolean that is false if the app should allow the back button press*/
 	private boolean shouldGoBack = false;
@@ -134,7 +134,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
 		final WebView web = (WebView) view.findViewById(R.id.web_view);
 		final ProgressBar bar = (ProgressBar) view.findViewById(R.id.progress_bar);
-		streetView = new AtmStreetView(web, bar);
+		streetView = new AtmWebView(web, bar);
 		mapButton = (Button) view.findViewById(R.id.map_nav);
 		listButton = (Button) view .findViewById(R.id.list_nav);
 		help = (ImageView) view.findViewById(R.id.help);
@@ -576,11 +576,21 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	}
 
 	/**
+	 * Report an issue with an ATM
+	 */
+	public void reportAtm(){
+		shouldGoBack = true;
+		streetView.show();
+		streetView.reportAtm();
+	}
+
+	/**
 	 * The onBackPressed method that an Activity normally calls.
 	 */
 	@Override
 	public void onBackPressed(){
 		if(shouldGoBack){
+			streetView.clearWebview();
 			streetView.hide();
 			shouldGoBack = false;
 		}else if(isListLand){

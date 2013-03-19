@@ -16,7 +16,12 @@ import android.widget.ProgressBar;
 
 import com.discover.mobile.bank.BankExtraKeys;
 
-public class AtmStreetView{
+/**
+ * Class controlling the web view and anything that needs to be loaded into it.
+ * @author jthornton
+ *
+ */
+public class AtmWebView{
 
 	/**Lat string*/
 	private String lat;
@@ -31,14 +36,19 @@ public class AtmStreetView{
 	private final ProgressBar loadingSpinner;
 
 	/**Url to get the street view*/
-	private static final String URL = "https://asys.discoverbank.com/api/content/atm/streetview.html?lat=%s&lng=%s";
+	private static final String STREET_URL = "https://asys.discoverbank.com/api/content/atm/streetview.html?lat=%s&lng=%s";
+
+	/**Url to show the report atm*/
+	private static final String REPORT_URL = 
+			"https://secure.opinionlab.com/ccc01/o.asp?id=TsIyHYhm&referer="+
+					"https://www.discoverbank.com/m/accountcenter/atm-locator";
 
 	/**
 	 * 
 	 * @param web - web view for the layout
 	 * @param loadingSpinner - spinner for the layout
 	 */
-	public AtmStreetView(final WebView web, final ProgressBar loadingSpinner){
+	public AtmWebView(final WebView web, final ProgressBar loadingSpinner){
 		this.web = web;
 		this.loadingSpinner = loadingSpinner;
 	}
@@ -53,7 +63,6 @@ public class AtmStreetView{
 	@SuppressLint("NewApi")
 	private void setupWebView(final String url) {
 		web.loadUrl(url);
-		web.setBackgroundColor(Color.TRANSPARENT);
 		final WebSettings webSettings = web.getSettings();
 		webSettings.setJavaScriptEnabled(true);
 		webSettings.setRenderPriority(RenderPriority.HIGH);
@@ -69,13 +78,29 @@ public class AtmStreetView{
 	}
 
 	/**
+	 * Clear the web view
+	 */
+	public void clearWebview(){
+		web.loadUrl("javascript:document.open();document.close();");
+	}
+
+	/**
+	 * Load the report an ATM URL
+	 */
+	public void reportAtm(){
+		setupWebView(REPORT_URL);
+		web.setBackgroundColor(Color.WHITE);
+	}
+
+	/**
 	 * Load the data from the bundle and display the view
 	 * @param bundle - bundle containging the data
 	 */
 	public void loadStreetView(final Bundle bundle){
 		lat = Double.toString(bundle.getDouble(BankExtraKeys.STREET_LAT));
 		lon = Double.toString(bundle.getDouble(BankExtraKeys.STREET_LON));
-		setupWebView(String.format(URL, lat, lon));
+		web.setBackgroundColor(Color.TRANSPARENT);
+		setupWebView(String.format(STREET_URL, lat, lon));
 	}
 
 	public void bundleData(final Bundle outState){
