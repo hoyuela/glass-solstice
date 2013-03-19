@@ -9,11 +9,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
@@ -48,6 +50,22 @@ public abstract class BaseActivity extends RoboActivity implements ErrorHandlerU
 		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+	}
+	
+	/**
+	 * Used to handle user interaction across the application.
+	 * 
+	 * @param ev
+	 *            The MotionEvent that was recognized.
+	 * @return True if consumed, false otherwise.
+	 */
+	@Override
+	public boolean dispatchTouchEvent(final MotionEvent ev) {
+		super.dispatchTouchEvent(ev);
+		
+		KeepAlive.checkForRequiredSessionRefresh();
+		
+		return false;
 	}
 
 	/**

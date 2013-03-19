@@ -22,6 +22,7 @@ import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.SessionTokenManager;
@@ -121,51 +122,9 @@ implements OnPaymentCanceledListener {
 		final long currentTime = mCalendarInstance.getTimeInMillis();
 
 		if(!setIsUserTimedOut(previousTime, currentTime)) {
-			//User is not timed-out.
-			if(isBankRefreshRequired()) {
-				// TODO Send request
-			}
-			if(isCardRefreshRequired()) {
-				// TODO CardFacade >> Send request.
-			}
+			KeepAlive.checkForRequiredSessionRefresh();
 		}
 		Globals.setOldTouchTimeInMillis(currentTime);
-	}
-
-	/**
-	 * Checks to see if the last bank refresh call period is greater than the
-	 * minimum allowed.
-	 * 
-	 * @return true if time period is greater than
-	 *         {@code BankUrlManager.MIN_TIME_FOR_BANK_REFRESH}, false
-	 *         otherwise.
-	 */
-	private boolean isBankRefreshRequired() {
-		final long currentTime = Calendar.getInstance().getTimeInMillis();
-
-		if ((currentTime - Globals.getLastBankRefreshTimeInMillis()) 
-				> BankUrlManager.MIN_TIME_FOR_BANK_REFRESH) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Checks to see if the last card refresh call period is greater than the
-	 * minimum allowed.
-	 * 
-	 * @return true if time period is greater than
-	 *         {@code BankUrlManager.MIN_TIME_FOR_CARD_REFRESH}, false
-	 *         otherwise.
-	 */
-	private boolean isCardRefreshRequired() {
-		final long currentTime = Calendar.getInstance().getTimeInMillis();
-
-		if ((currentTime - Globals.getLastCardRefreshTimeInMillis()) 
-				> BankUrlManager.MIN_TIME_FOR_CARD_REFRESH) {
-			return true;
-		}
-		return false;
 	}
 
 	/**

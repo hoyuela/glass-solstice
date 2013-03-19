@@ -80,12 +80,6 @@ public final class Globals {
 	
 	private static long oldTouchTimeinMillis;
 	
-	/** Used to determine if a new refresh call will need to be made for a Card session */
-	private static long lastCardRefreshTimeInMillis;
-	
-	/** Used to determine if a new refresh call will need to be made for a Bank session */
-	private static long lastBankRefreshTimeInMillis;
-	
 	//Initialize static members at start-up of application
 	static {
 		setToDefaults();
@@ -407,24 +401,6 @@ public final class Globals {
 	
 	public static void setOldTouchTimeInMillis(final long touch){
 		oldTouchTimeinMillis = touch;
-	}
-
-	public static long getLastCardRefreshTimeInMillis() {
-		return lastCardRefreshTimeInMillis;
-	}
-
-	public static void setLastCardRefreshTimeInMillis(
-			long lastCardRefreshTimeInMillis) {
-		Globals.lastCardRefreshTimeInMillis = lastCardRefreshTimeInMillis;
-	}
-
-	public static long getLastBankRefreshTimeInMillis() {
-		return lastBankRefreshTimeInMillis;
-	}
-
-	public static void setLastBankRefreshTimeInMillis(
-			long lastBankRefreshTimeInMillis) {
-		Globals.lastBankRefreshTimeInMillis = lastBankRefreshTimeInMillis;
 	}
 
 	/**

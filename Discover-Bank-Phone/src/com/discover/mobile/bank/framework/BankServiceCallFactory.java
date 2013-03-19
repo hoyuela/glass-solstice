@@ -494,8 +494,8 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * @param o
 	 * @return
 	 */
-	public static RefreshBankSessionCall createRefreshSessionCall(final Object o) {
-		// TODO
+	public static RefreshBankSessionCall createRefreshSessionCall() {
+		// TODO this
 		return null;
 	}
 	

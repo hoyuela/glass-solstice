@@ -30,6 +30,7 @@ import com.discover.mobile.bank.services.atm.GetDirectionsServiceCall;
 import com.discover.mobile.bank.services.atm.GetLocationFromAddressServiceCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
+import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
@@ -413,6 +414,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putString(BankExtraKeys.TO_ADDRESS, helper.getTo());
 			BankConductor.navigateToEmailDirections(bundle);
 		}
+		// Handler for session updates
+		else if(sender instanceof RefreshBankSessionCall) {
+			// TODO handle any refresh success logic here.
+		}
+		
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "NetworkServiceCallManager ignored success of a NetworkServiceCall!");

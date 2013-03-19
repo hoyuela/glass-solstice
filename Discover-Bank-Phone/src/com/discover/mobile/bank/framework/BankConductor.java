@@ -841,6 +841,13 @@ public final class BankConductor  extends Conductor {
 		activity.closeDialog();
 		BankAtmUtil.sendDirectionsEmail(bundle);
 	}
+	
+	/**
+	 * Performs a call to update the user's bank session.
+	 */
+	public static void executeSessionRefreshCall() {
+		BankServiceCallFactory.createRefreshSessionCall().submit();
+	}
 
 	/**
 	 * Navigate to a specific FAQ page
