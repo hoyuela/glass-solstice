@@ -121,9 +121,51 @@ implements OnPaymentCanceledListener {
 		final long currentTime = mCalendarInstance.getTimeInMillis();
 
 		if(!setIsUserTimedOut(previousTime, currentTime)) {
-			// TODO US6990 - Make /ping call for Bank
+			//User is not timed-out.
+			if(isBankRefreshRequired()) {
+				// TODO Send request
+			}
+			if(isCardRefreshRequired()) {
+				// TODO CardFacade >> Send request.
+			}
 		}
 		Globals.setOldTouchTimeInMillis(currentTime);
+	}
+
+	/**
+	 * Checks to see if the last bank refresh call period is greater than the
+	 * minimum allowed.
+	 * 
+	 * @return true if time period is greater than
+	 *         {@code BankUrlManager.MIN_TIME_FOR_BANK_REFRESH}, false
+	 *         otherwise.
+	 */
+	private boolean isBankRefreshRequired() {
+		final long currentTime = Calendar.getInstance().getTimeInMillis();
+
+		if ((currentTime - Globals.getLastBankRefreshTimeInMillis()) 
+				> BankUrlManager.MIN_TIME_FOR_BANK_REFRESH) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Checks to see if the last card refresh call period is greater than the
+	 * minimum allowed.
+	 * 
+	 * @return true if time period is greater than
+	 *         {@code BankUrlManager.MIN_TIME_FOR_CARD_REFRESH}, false
+	 *         otherwise.
+	 */
+	private boolean isCardRefreshRequired() {
+		final long currentTime = Calendar.getInstance().getTimeInMillis();
+
+		if ((currentTime - Globals.getLastCardRefreshTimeInMillis()) 
+				> BankUrlManager.MIN_TIME_FOR_CARD_REFRESH) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -145,7 +187,7 @@ implements OnPaymentCanceledListener {
 				Globals.setLoggedIn(false);
 				Globals.setCurrentUser("");
 				BankUser.instance().clearSession();
-				BankNavigator.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED, null);
+				BankConductor.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED, null);
 				return true;
 			}
 		}
