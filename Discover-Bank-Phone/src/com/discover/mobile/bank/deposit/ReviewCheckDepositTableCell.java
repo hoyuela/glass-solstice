@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
@@ -108,5 +109,18 @@ public class ReviewCheckDepositTableCell extends RelativeLayout {
 		final Intent retakePic = new Intent(currentActivity, CheckDepositCaptureActivity.class);
 		retakePic.putExtra(BankExtraKeys.RETAKE_PICTURE, checkToRetake);
 		currentActivity.startActivity(retakePic);
+	}
+	
+	/**
+	 * Method show the error label with the text provided.
+	 * 
+	 * @param text - Reference to a string that holds the error to be displayed to the user
+	 */
+	public void showErrorLabel(final String text) {
+		final TextView errorLabel = (TextView)findViewById(R.id.error_label);
+		if( errorLabel != null ) {
+			errorLabel.setText(text);
+			errorLabel.setVisibility(View.VISIBLE);
+		}
 	}
 }

@@ -354,24 +354,31 @@ public class BankErrorHandler implements ErrorHandler {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		boolean handled = false;
 		
-		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {			
-			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
-			
-			if( navActivity.getCurrentContentFragment() != null &&
-				navActivity.getCurrentContentFragment() instanceof BankErrorHandlerDelegate ) {
-			
-				final BankErrorHandlerDelegate errorHandler = (BankErrorHandlerDelegate)navActivity.getCurrentContentFragment();
+		/**Verify an error message is provided*/
+		if( !Strings.isNullOrEmpty(msgErrResponse.getErrorMessage()) ) {
+			/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
+			if( activity != null && activity instanceof BankNavigationRootActivity ) {			
+				final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
 				
-				handled = errorHandler.handleError(msgErrResponse);
+				if( navActivity.getCurrentContentFragment() != null &&
+					navActivity.getCurrentContentFragment() instanceof BankErrorHandlerDelegate ) {
+				
+					final BankErrorHandlerDelegate errorHandler = (BankErrorHandlerDelegate)navActivity.getCurrentContentFragment();
+					
+					handled = errorHandler.handleError(msgErrResponse);
+				} else {
+					if( Log.isLoggable(TAG, Log.ERROR)) {
+						Log.e(TAG, "Unable to process 422 invalid fragment type");
+					}
+				}
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
-					Log.e(TAG, "Unable to process 422 invalid fragment type");
+					Log.e(TAG, "Unable to process 422 invalid activity type");
 				}
 			}
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
-				Log.e(TAG, "Unable to process 422 invalid activity type");
+				Log.e(TAG, "No Error message provided");
 			}
 		}
 		

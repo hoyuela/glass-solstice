@@ -18,6 +18,8 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.payees.BankEditDetail;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.util.BankStringFormatter;
@@ -25,6 +27,11 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
+import com.discover.mobile.bank.services.deposit.DepositDetail;
+import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
+import com.discover.mobile.common.net.error.bank.BankError;
+import com.discover.mobile.common.net.error.bank.BankErrorResponse;
+import com.google.common.base.Strings;
 
 /**
  * This is the fragment responsible for showing the user the details
@@ -36,8 +43,17 @@ import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
  * @author scottseward
  *
  */
-public class CaptureReviewFragment extends BankDepositBaseFragment {	
-	
+public class CaptureReviewFragment extends BankDepositBaseFragment implements BankErrorHandlerDelegate {	
+	/**
+	 * The cell in the table that has the account selected for check deposit in it 
+	 * we need a reference to it so we can set inline error.
+	 */
+	private BankEditDetail accountDetail;
+	/**
+	 * The cell in the table that has the amount for check deposit in it 
+	 * we need a reference to it so we can set inline error.
+	 */
+	private BankEditDetail amountDetail;	
 	/**
 	 * The cell in the table that has the check images in it 
 	 * we need a reference to it so we can refresh it on resume
@@ -309,4 +325,47 @@ public class CaptureReviewFragment extends BankDepositBaseFragment {
 		modal.show();
 	}
 
+	@Override
+	public boolean handleError(final BankErrorResponse msgErrResponse) {
+		/**flag to indicate whether the error has been handled*/
+		boolean handled = false;
+		
+		/**Set Inline Errors*/
+		for( final BankError error : msgErrResponse.errors ) {
+			if( !Strings.isNullOrEmpty(error.name) ) {
+				/**Notify user that they have an inline error at top of page*/
+				showGeneralError( getActivity().getResources().getString(R.string.bank_deposit_error_notify) );
+				
+				/**Show inline error under amount field*/
+				if( error.name.equals(DepositDetail.AMOUNT_FIELD) ) {		
+					amountDetail.getEditableField().showErrorLabel(msgErrResponse.getErrorMessage());
+				}
+				/**Show inline error under check image cell*/
+				else {
+					checkImageCell.showErrorLabel(msgErrResponse.getErrorMessage());
+				}
+				
+				/**Notify caller that error has been handled so no further error handling is required*/
+				handled = true;
+			} 
+		}
+		return handled;
+	}
+
+
+	/**
+	 * Method used to clear any inline errors on the page.
+	 */
+	public void clearErrors() {
+		clearGeneralError();
+		
+		for( final Object object : this.content) {
+			if( object instanceof BankEditDetail ) {
+				final BankEditDetail detail = (BankEditDetail) object;
+				detail.getEditableField().clearErrors();
+				detail.setEditMode(false);
+			}
+		}
+		
+	}
 }

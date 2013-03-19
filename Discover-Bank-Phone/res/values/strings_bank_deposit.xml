@@ -22,7 +22,12 @@
     <string name="bank_deposit_noteligible_title">Sign Up for Mobile\nCheck Deposit</string>
     <string name="bank_deposit_noteligible_body">Enjoy the ease and convenience of Mobile Check Deposit.\n\nTo start, simply open up a Money Market or Discover Savings account.</string>
     <string name="bank_deposit_noteligible_number">1&#8211;800&#8211;347&#8211;7000</string>
-   
+    <string name="bank_deposit_error_notify">Please correct the error(s) below.</string>
+    <string name="bank_deposit_duplicate_check_title">Check Deposit\nError</string>
+    <string name="bank_deposit_duplicate_check_body">We\'re sorry, there has been a problem depositing your check. The transaction was not completed. Please contact customer service for more information.</string>
+    <string name="bank_deposit_error_title">Duplicate Check\nError</string>
+    <string name="bank_deposit_another">Deposit Another Check</string>
+    <string name="bank_deposit_error_body">Oops! This check has already been deposited into your selected bank account.</string>
     <string name="capture">Capture</string>
     <string name="picture_confirm">Confirm</string>
     <string name="front">Front</string>

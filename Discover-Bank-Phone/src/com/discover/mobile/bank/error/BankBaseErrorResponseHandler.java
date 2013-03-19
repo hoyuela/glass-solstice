@@ -125,17 +125,10 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				mErrorHandler.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_MAINTENANCE_UNPLANNED )) {
 				mErrorHandler.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
-			// TODO temporary until Bank updates the error response in their API doc...
-			} else if(errCode.equals("customer.firstname.NotBlank")) { // TODO Will be Duplicate Payment error (409)
-				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
-				final BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
-				if(f instanceof SchedulePaymentFragment) {
-					((SchedulePaymentFragment)f).setDuplicatePaymentError(true);
-				}
-			} 
 			//Error Handling for 422 Unprocessable Entity
-			else if( msgErrResponse.getHttpStatusCode() == BankHttpStatusCodes.HTTP_UNPROCESSABLE_ENTITY.getValue() ) {
-				//Check if 422 is meant for Schedule Payments functionality otherwise send to generic handler
+			} else if( msgErrResponse.getHttpStatusCode() == BankHttpStatusCodes.HTTP_UNPROCESSABLE_ENTITY.getValue() &&
+					   msgErrResponse.getHttpStatusCode() == HttpURLConnection.HTTP_BAD_REQUEST ) {
+				//Check if 422 and 400 could be meant for inline error handling, if it fails to handle them then send to generic handler
 				final BankErrorHandler errorHandler = (BankErrorHandler)BankErrorHandler.getInstance();
 				if( !errorHandler.handleUnprocessableEntity(msgErrResponse) ) {
 					mErrorHandler.handleGenericError(msgErrResponse.getHttpStatusCode());

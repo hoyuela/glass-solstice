@@ -37,6 +37,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class DepositDetail implements Serializable {
 	private static final long serialVersionUID = 4608587442886244788L;
 	
+	/**
+	 * Holds the name of the amount field in a JSON request.
+	 */
+	public static final String AMOUNT_FIELD = "amount";
+	/**
+	 * Holds the name of the account field in a JSON request.
+	 */
+	public static final String ACCOUNT_FIELD = "account";
+	
 	@JsonProperty("amount")
 	public int amount;
 	

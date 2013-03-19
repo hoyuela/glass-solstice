@@ -1,8 +1,14 @@
 package com.discover.mobile.bank.error;
 
+import java.net.SocketTimeoutException;
+
+import android.os.Bundle;
+
+import com.discover.mobile.bank.deposit.CheckDepositErrorFragment;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
+import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
@@ -52,6 +58,12 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 					DiscoverActivityManager.getActiveActivity(),
 					IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE,
 					null);
+		}
+		// If exception because of a check deposit
+		else if( sender instanceof SubmitCheckDepositCall && arg0 instanceof SocketTimeoutException ) {
+			final Bundle bundle = new Bundle();
+			bundle.putBoolean(CheckDepositErrorFragment.class.getSimpleName(), true);
+			BankConductor.navigateToCheckDepositWorkFlow(bundle);
 		}
 		//Catch-all exception handler
 		else {

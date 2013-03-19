@@ -251,5 +251,17 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	public void clearGeneralError() {
 		generalError.setVisibility(View.GONE);
 	}
-
+	
+	/**
+	 * Method used to set the error string for an inline error label and make it visible.
+	 * 
+	 * @param view TextView that represents an inline error whose text will be set using the param text.
+	 * @param text String to show to the user as an inline error
+	 */
+	public void setErrorString(final TextView view, final String text ) {
+		if( view != null && !Strings.isNullOrEmpty(text)  ) {
+			view.setText(text);
+			view.setVisibility(View.VISIBLE);
+		}
+	}
 }
