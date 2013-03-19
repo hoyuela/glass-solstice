@@ -584,17 +584,24 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 			streetView.hide();
 			shouldGoBack = false;
 		}else if(isListLand){
-			showMap();
+			toggleButton();
 		}else{	
 			shouldGoBack = true;
 		}
 	}
 
 	/**
-	 * Interface used for disabling back press from a fragment
+	 * Facade for FragmentOnBackPressed.isBackPressDisabled method. Used to determine
+	 * if back press has been disbaled for the current fragment.
+	 * 
+	 * @return True if fragment does not allow back press, false otherwise.
 	 */
 	@Override
 	public boolean isBackPressDisabled(){
-		return shouldGoBack || isListLand;
+		if(isListLand){
+			return true;
+		}else{
+			return shouldGoBack;
+		}
 	}
 }
