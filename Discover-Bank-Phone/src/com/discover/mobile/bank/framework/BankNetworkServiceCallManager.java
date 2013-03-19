@@ -14,12 +14,14 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
+import com.discover.mobile.bank.deposit.BankAmountLimitValidatedField;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
 import com.discover.mobile.bank.services.AcceptTermsService;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
@@ -337,10 +339,26 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Handler for GetAccountLimits service call
 		else if( sender instanceof GetAccountLimits) {
-			//Navigate to Check Deposit - Select Amount Page
-			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((GetAccountLimits)sender).getAccount());
-			BankConductor.navigateToCheckDepositWorkFlow(bundle);
+			Bundle bundle = activeActivity.getIntent().getExtras();
+			boolean navToReview = false;
+			if(bundle == null)
+				bundle = new Bundle();
+			else{
+				navToReview = bundle.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
+			}
+			final Account account = ((GetAccountLimits)sender).getAccount();
+			
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
+			final double amount = bundle.getInt(BankExtraKeys.AMOUNT)/100;
+			
+			if(navToReview && depositAmountIsWithinLimitsFor(amount, account)){
+				BankConductor.navigateToCheckDepositReview(bundle);
+			}else{
+				//Navigate to Check Deposit - Select Amount Page
+				bundle.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, false);
+				bundle.putBoolean(BankExtraKeys.REENTER_AMOUNT, navToReview);
+				BankConductor.navigateToCheckDepositWorkFlow(bundle);
+			}
 		}
 		//Handler for getting email directions
 		else if( sender instanceof GetDirectionsServiceCall){
@@ -356,6 +374,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				Log.w(TAG, "NetworkServiceCallManager ignored success of a NetworkServiceCall!");
 			}
 		}
+	}
+	private boolean depositAmountIsWithinLimitsFor(final double amount, final Account account) {
+		return BankAmountLimitValidatedField.isAmountValidForAccountLimits(amount, account.limits);
 	}
 
 	/**

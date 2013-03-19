@@ -635,8 +635,12 @@ public final class BankConductor  extends Conductor {
 			} else if(isEligible && !isEnrolled){
 				fragment = new BankDepositTermsFragment();
 			} else{
-				//Check if user is in select accounts, navigate to second step in work-flow
-				if( navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount ) {
+				final boolean isReEnteringAmount = bundle.getBoolean(BankExtraKeys.REENTER_AMOUNT);
+				final boolean isReSelectingAccount = bundle.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
+				
+				if( isReEnteringAmount || 
+						navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount 
+						&& !isReSelectingAccount) {
 					fragment = new BankDepositSelectAmount();
 				}
 				//Check if User has deposit eligible accounts otherwise navigate to not eligible screen
@@ -644,7 +648,9 @@ public final class BankConductor  extends Conductor {
 					fragment = new BankDepositNotEligibleFragment();	
 				}
 				//If all other conditions failed then user is in the first step of the deposit work-flow
-				else {
+				//Check if User has accounts, this is the first step in work-flow
+				else if(isReSelectingAccount || 
+						BankUser.instance().hasAccounts() ) {	
 					fragment = new BankDepositSelectAccount();	
 				}
 				
@@ -678,6 +684,8 @@ public final class BankConductor  extends Conductor {
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 
+			navActivity.closeDialog();
+			
 			fragment = new CaptureReviewFragment();
 
 			if( fragment != null ) {

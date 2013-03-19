@@ -55,7 +55,6 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		}
 		
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-		
 		/**Hide controls that are not needed*/
 		noteTitle.setVisibility(View.GONE);
 		noteTextMsg.setVisibility(View.GONE);
@@ -133,9 +132,21 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 			/**
 			 * Launch the check deposit capture activity when Continue is clicked and all limits are not exceeded
 			 */
-			final Intent captureCheckActivity = new Intent(getActivity(), CheckDepositCaptureActivity.class);
-			startActivityForResult(captureCheckActivity, CAPTURE_ACTIVITY);
+			final Bundle args = getArguments();
+			boolean reviewDepositOnFinish = false;
 			
+			if(args != null)
+				reviewDepositOnFinish = args.getBoolean(BankExtraKeys.REENTER_AMOUNT);
+			
+			if(reviewDepositOnFinish) {
+				//Reset the review deposit bundle boolean to prevent odd navigation issues later.
+				args.putBoolean(BankExtraKeys.REENTER_AMOUNT, false);
+				navigateToReviewDeposit();
+			}
+			else {
+				final Intent captureCheckActivity = new Intent(getActivity(), CheckDepositCaptureActivity.class);
+				startActivityForResult(captureCheckActivity, CAPTURE_ACTIVITY);
+			}
 		} else {
 			amountItem.getEditableField().updateAppearanceForInput();
 		}
@@ -150,10 +161,35 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		DiscoverActivityManager.setActiveActivity(getActivity());
 		if(requestCode == CAPTURE_ACTIVITY)
 			if(resultCode == Activity.RESULT_OK) {
-				BankConductor.navigateToCheckDepositReview(getArguments());
+				navigateToReviewDeposit();
 			}
 	}
 
+	/**
+	 * Navigates to the review deposit Fragment using the BankConductor and passes
+	 * the entered amount as a cent value as an integer to that Fragment.
+	 */
+	private void navigateToReviewDeposit() {
+		/**Remove everything but numbers so we have the value in cents.*/
+		final String amount = amountItem.getEditableField().getText().toString().replaceAll("[^0-9]", "");
+		final Bundle arguments = getArguments();
+		arguments.putInt(BankExtraKeys.AMOUNT, Integer.parseInt(amount));
+		BankConductor.navigateToCheckDepositReview(arguments);
+	}
+	
+	/**
+	 * Restore the amount field to a previous amount from the argument bundle.
+	 * This is needed if a user has come back to this Fragment from 
+	 */
+	private void setupAmountFieldValue() {
+		final Bundle args = getArguments();
+		if(args != null) {
+			final int amount = args.getInt(BankExtraKeys.AMOUNT);	
+			final double doubleAmount = amount/100;
+			amountItem.getEditableField().setText(String.valueOf(doubleAmount));
+		}
+	}
+	
 	@Override
 	protected void onActionLinkClick() {
 		//this is not used for this screen
@@ -187,7 +223,8 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 				}
 			}
 		}, 1000);
-		
+		setupAmountFieldValue();
+
 	}
 	
 	@Override
@@ -212,7 +249,8 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		
 		/**Check if onPause was called because of an orientation change*/
 		if( !isOrientationChanging ) {
-			this.amountItem.getEditableField().showKeyboard(false);
+			if(amountItem != null && amountItem.getEditableField() != null)
+				this.amountItem.getEditableField().showKeyboard(false);
 		}
 	}
 }

@@ -84,8 +84,11 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	 * Then set the web view's WebViewClient to hide the loading spinner
 	 * upon completing loading of the terms content.
 	 */
+	boolean pageLoadSuccess = true;
+
 	@SuppressLint("NewApi")
 	private void setupWebView() {
+		pageLoadSuccess = true;
 		termsWebView.loadUrl(this.getTermsUrl());
 		termsWebView.setBackgroundColor(Color.TRANSPARENT);
 		termsWebView.setWebViewClient(new WebViewClient() {
@@ -95,6 +98,14 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 				loadingSpinner.setVisibility(View.GONE);
 				termsWebView.setVisibility(View.VISIBLE);
 				loadingSpinner.clearAnimation();
+				if(pageLoadSuccess)
+					acceptButton.setEnabled(true);
+			}
+			
+			@Override
+			public void onReceivedError(final WebView view, final int errorCode, final String description, final String failingUrl) {
+				super.onReceivedError(view, errorCode, description, failingUrl);
+				pageLoadSuccess = false;
 			}
 		});
 
