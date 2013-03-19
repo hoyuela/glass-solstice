@@ -21,6 +21,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.atm.AtmDetail;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
+import com.discover.mobile.bank.util.BankAtmUtil;
 
 /**
  * Adapter for the ATM list detail screen.
@@ -97,6 +98,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 				holder.service4 = (TextView) view.findViewById(R.id.service4);
 				holder.service5 = (TextView) view.findViewById(R.id.service5);
 				holder.email = (Button) view.findViewById(R.id.email);
+				holder.directions = (ImageView) view.findViewById(R.id.directions);
 			}
 			/**Else reuse the old one*/
 		}else{
@@ -118,6 +120,16 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		final String distance = String.format(Locale.US, "%.2f", detail.distanceFromUser);
 		holder.distance.setText(distance + " M");
 		holder.hours.setText(detail.atmHrs.replace("Sat", "\nSat"));
+
+		holder.directions.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				final AtmServiceHelper helper = new AtmServiceHelper(
+						detail.address1 + " " + detail.city + " " + detail.state + " " + detail.postalCode, 
+						fragment.getCurrentAddress());
+				BankAtmUtil.launchNavigation(helper);
+			}
+		});
 
 		holder.email.setOnClickListener(new OnClickListener(){
 			@Override
@@ -252,6 +264,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		public TextView service4;
 		public TextView service5;
 		public Button email;
+		public ImageView directions;
 		public int numFeatures = 0;
 	}
 }

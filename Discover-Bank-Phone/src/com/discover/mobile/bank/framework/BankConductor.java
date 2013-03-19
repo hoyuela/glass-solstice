@@ -46,7 +46,7 @@ import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
-import com.discover.mobile.bank.util.BankEmailUtil;
+import com.discover.mobile.bank.util.BankAtmUtil;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
@@ -785,7 +785,7 @@ public final class BankConductor  extends Conductor {
 	public static void navigateToEmailDirections(final Bundle bundle) {
 		final AtmLocatorActivity activity = (AtmLocatorActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
-		BankEmailUtil.sendDirectionsEmail(bundle);
+		BankAtmUtil.sendDirectionsEmail(bundle);
 	}
 
 	/**
