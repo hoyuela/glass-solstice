@@ -26,10 +26,6 @@ public class GetAtmDetailsCall extends BankJsonResponseMappingNetworkServiceCall
 
 	private final TypedReferenceHandler<AtmResults> handler;
 
-	static{
-
-	}
-
 	/**
 	 * 
 	 * @param context Reference to the context invoking the API

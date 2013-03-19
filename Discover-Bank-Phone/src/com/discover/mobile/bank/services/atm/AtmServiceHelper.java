@@ -26,6 +26,13 @@ public class AtmServiceHelper {
 	private static final String DISTANCE = "distance=";
 	private static final String SURCHARGE = "surchargeFree=";
 	private static final String SURCHARGE_FREE = "Y";
+	private static final String ORIGIN = "origin=";
+	private static final String DESTINATION = "destination=";
+	private static final String SENSOR = "sensor=false";
+	private static final String SPACE = " ";
+	private static final String PLUS = "+";
+	private static final String COMMA = ",";
+	private static final String EMPTY = "";
 
 	/**Maximum number of results the service should return*/
 	private int maxResults = DEFAULT_RESULT_NUMBER;
@@ -45,12 +52,32 @@ public class AtmServiceHelper {
 	/**Default number of atms to return*/
 	private static final int DEFAULT_RESULT_NUMBER = 30;
 
+	/**String of the to address*/
+	private final String to;
+
+	/**String of the from address*/
+	private final String from;
+
 	/**
 	 * Constructor for the helper
 	 * @param location - Location to search for atms around
 	 */
 	public AtmServiceHelper(final Location location){
 		this.location = location;
+		to = null;
+		from = null;
+	}
+
+
+	/**
+	 * Constructor for the helper
+	 * @param to - String for the address that the user is going to
+	 * @param from - String for the address that the users is coming from
+	 */
+	public AtmServiceHelper(final String to, final String from){
+		this.to = to;
+		this.from = from;
+		location = null;
 	}
 
 	/**
@@ -68,6 +95,20 @@ public class AtmServiceHelper {
 		if(isSurchargeFree){
 			builder.append(SURCHARGE_FREE);
 		}
+		return builder.toString();
+	}
+
+	/**
+	 * Build the directions query string
+	 * @return the directions query string
+	 */
+	public String getDirectionsQueryString(){
+		final StringBuilder builder = new StringBuilder();
+		builder.append(QUERY_START + ORIGIN);
+		builder.append(from.replaceAll(SPACE, PLUS).replaceAll(COMMA, EMPTY));
+		builder.append(DIVIDER+DESTINATION);
+		builder.append(to.replaceAll(SPACE, PLUS).replaceAll(COMMA, EMPTY));
+		builder.append(DIVIDER+SENSOR);
 		return builder.toString();
 	}
 
@@ -111,6 +152,22 @@ public class AtmServiceHelper {
 	 */
 	public void setSurchargeFree(final boolean isSurchargeFree) {
 		this.isSurchargeFree = isSurchargeFree;
+	}
+
+
+	/**
+	 * @return the to
+	 */
+	public String getTo() {
+		return to;
+	}
+
+
+	/**
+	 * @return the from
+	 */
+	public String getFrom() {
+		return from;
 	}
 
 }

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -55,6 +56,7 @@ public class AtmStreetView{
 		web.setBackgroundColor(Color.TRANSPARENT);
 		final WebSettings webSettings = web.getSettings();
 		webSettings.setJavaScriptEnabled(true);
+		webSettings.setRenderPriority(RenderPriority.HIGH);
 		web.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageFinished(final WebView view, final String url) {

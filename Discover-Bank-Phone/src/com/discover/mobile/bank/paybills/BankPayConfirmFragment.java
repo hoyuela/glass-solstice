@@ -64,7 +64,7 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		actionLink.setText(R.string.bank_pmt_review);
 
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
-		progressIndicator.initChangePasswordHeader(2);
+		progressIndicator.initialize(2);
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_pmt_details, R.string.bank_pmt_scheduled, R.string.bank_pmt_scheduled);
 

@@ -15,7 +15,9 @@ import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
+import com.discover.mobile.bank.services.atm.Directions;
 import com.discover.mobile.bank.services.atm.GetAtmDetailsCall;
+import com.discover.mobile.bank.services.atm.GetDirectionsServiceCall;
 import com.discover.mobile.bank.services.auth.BankLoginData;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
@@ -374,7 +376,26 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		return new GetAtmDetailsCall(activity, callback, helper);
 	}
-	
+
+	/**
+	 * Creates a GetAtmDetailsCall object used to get the information about atms close to a user
+	 * via an HTTP GET.  API is /api/atmLocator/SearchGeocodedLocation.xml
+	 * 
+	 * @param value - Holds information about the query string for the search of the call
+	 * 
+	 * @return Reference to the GetAtmDetailsCall object created.
+	 */
+	public static GetDirectionsServiceCall createGetDirectionsCall(final AtmServiceHelper helper){
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<Directions>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Directions.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new GetDirectionsServiceCall(activity, callback, helper);
+	}
+
 	/**
 	 * Creates a GetAccountLimits object used to fetch deposit limits for an Acoount via
 	 * an HTTP GET request to the Bank Web-service API "Get Account Limits" using the url 

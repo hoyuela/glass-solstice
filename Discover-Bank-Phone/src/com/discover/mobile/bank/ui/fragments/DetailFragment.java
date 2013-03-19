@@ -101,8 +101,10 @@ public abstract class DetailFragment extends Fragment {
 		 */
 		@Override
 		protected void onPostExecute(final Void result) {
-			mainViewRelativeLayout.removeAllViews();
-			mainViewRelativeLayout.addView(subView);
+			if(mainViewRelativeLayout != null){
+				mainViewRelativeLayout.removeAllViews();
+				mainViewRelativeLayout.addView(subView);
+			}
 			isTaskRunning = false;
 		}
 		

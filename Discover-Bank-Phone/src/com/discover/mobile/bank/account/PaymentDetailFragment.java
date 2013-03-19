@@ -38,8 +38,10 @@ public class PaymentDetailFragment extends DetailFragment{
 		final List<ViewPagerListItem>elementList = generator.getScheduledPaymentDetailList(item);
 		final LinearLayout contentTable = (LinearLayout)fragmentView.findViewById(R.id.content_table);
 		
-		for(final ViewPagerListItem element : elementList)
-			contentTable.addView(element);
+		for(final ViewPagerListItem element : elementList) {
+			if(element != null)
+				contentTable.addView(element);
+		}
 		
 		customSetup(fragmentView);
 	}

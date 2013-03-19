@@ -22,7 +22,9 @@ import com.discover.mobile.bank.services.AcceptTermsService;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
+import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.services.atm.GetAtmDetailsCall;
+import com.discover.mobile.bank.services.atm.GetDirectionsServiceCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
@@ -340,6 +342,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((GetAccountLimits)sender).getAccount());
 			BankConductor.navigateToCheckDepositWorkFlow(bundle);
 		}
+		//Handler for getting email directions
+		else if( sender instanceof GetDirectionsServiceCall){
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
+			final AtmServiceHelper helper = ((GetDirectionsServiceCall)sender).getHelper();
+			bundle.putString(BankExtraKeys.FROM_ADDRESS, helper.getFrom());
+			bundle.putString(BankExtraKeys.TO_ADDRESS, helper.getTo());
+			BankConductor.navigateToEmailDirections(bundle);
+		}
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "NetworkServiceCallManager ignored success of a NetworkServiceCall!");
@@ -355,14 +366,14 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		/**Remove the Check Deposit Terms and Conditions View from fragment back stack*/
 		activity.getSupportFragmentManager().popBackStack();
-	
+
 		/** Add a boolean to the bundle when navigating so we can present the how it works modal*/
 		final Bundle termsBundle = new Bundle();
 		termsBundle.putBoolean(BankExtraKeys.ACCEPTED_TERMS, true);
-		
+
 		/**Navigates to Select Account Page for Check-Deposit*/
 		BankConductor.navigateToCheckDepositWorkFlow(termsBundle);
-		
+
 		/**close the progress dialog created for when service was started to download terms and conditions for deposits*/
 		activity.closeDialog();
 	}
@@ -399,7 +410,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	public void start(final NetworkServiceCall<?> sender) {
 		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 		activeActivity.startProgressDialog();
-		
+
 		/**
 		 * Update prevCall only if it is a different service request from current call
 		 * or if current call is null
@@ -411,7 +422,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				Log.w(TAG, "Previous NetworkServiceCall was not updated!");
 			}
 		}
-		
+
 		/**Update current call*/
 		curCall = sender;
 	}

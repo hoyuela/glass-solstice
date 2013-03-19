@@ -6,22 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
 
 /**
  * Class defines a widget used to display the progress of a work-flow for a user. This widge
- * allows up to 3 steps to a work-flow. It is a sub-class of HeaderProgressIndicator with a
- * help icon that is clickable.
+ * allows up to 3 steps to a work-flow. 
  * 
  * @author henryoyuela
  *
  */
-public class BankHeaderProgressIndicator extends HeaderProgressIndicator implements OnClickListener {
+public class BankHeaderProgressIndicator extends RelativeLayout implements OnClickListener {
 	/**
 	 * Reference to help icon displayed which is meant to be clickable
 	 */
@@ -44,27 +43,91 @@ public class BankHeaderProgressIndicator extends HeaderProgressIndicator impleme
 	 * Method used to provide layout during creation of widget. In addition it setup
 	 * any event listeners for controls in the view.
 	 */
-	@Override
 	protected void inflateHeader() {
 		final LayoutInflater inflater = (LayoutInflater) getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+		
 		inflater.inflate(R.layout.bank_header_progress, this);
-		step1 = (TextView) findViewById(R.id.step1_title);
-		step1Confirm = (ImageView) findViewById(R.id.step1_confirm);
-		indicator1 = (ImageView) findViewById(R.id.first_indicator);
 		
-		step2 = (TextView) findViewById(R.id.step2_title);
-		step2Confirm = (ImageView) findViewById(R.id.step2_confirm);
-		indicator2 = (ImageView) findViewById(R.id.middle_indicator);
-		
-		step3 = (TextView) findViewById(R.id.step3_title);
-		indicator3 = (ImageView) findViewById(R.id.last_indicator);
-
 		helpView = (ImageView)findViewById(R.id.help_view);
 		helpView.setOnClickListener(this);
 	}
 
+	/**
+	 * Initiates the header and sets the current position for Change Password
+	 * @param position - Current position between 0-2
+	 */
+	public void initialize(final int position) {
+		inflateHeader();
+		setTitle(R.string.enter_info, R.string.create_password,R.string.confirm);
+		setPosition(position);
+	}
+
+
+	/**
+	 * Sets the titles for the header
+	 */
+	public void setTitle(final int title1, final int title2, final int title3) {
+		final TextView step1 = (TextView) findViewById(R.id.step1_text);	
+		final TextView step2 = (TextView) findViewById(R.id.step2_text);
+		final TextView step3 = (TextView) findViewById(R.id.step3_text);
+		
+		step1.setText(getResources().getString(title1));
+		step2.setText(getResources().getString(title2));
+		step3.setText(getResources().getString(title3));
+	}
+	
+	/**
+	 * Sets up the current position of the header
+	 * @param position - number between 0-2
+	 */
+	public void setPosition(final int position){
+		final ImageView step1Confirm = (ImageView)findViewById(R.id.step1_confirm);
+		final ImageView step2Confirm = (ImageView)findViewById(R.id.step2_confirm);
+		final ImageView step1Indicator = (ImageView)findViewById(R.id.step1_indicator);
+		final ImageView step2Indicator = (ImageView)findViewById(R.id.step2_indicator);
+		final ImageView step3Indicator =(ImageView)findViewById(R.id.step3_indicator);
+		final RelativeLayout step2 = (RelativeLayout)findViewById(R.id.step2);
+		
+		if (position > 1 ){
+			step1Confirm.setVisibility(View.VISIBLE);
+			step1Indicator.setVisibility(View.INVISIBLE);
+		} else if( position <= 1) {
+			step1Indicator.setVisibility(View.VISIBLE);
+			step1Confirm.setVisibility(View.INVISIBLE);
+		}
+		
+		if (position > 2 ){
+			step2Confirm.setVisibility(View.VISIBLE);
+			step2Indicator.setVisibility(View.INVISIBLE);
+		} else if( position == 2) {
+			step2Indicator.setVisibility(View.VISIBLE);
+			step2Confirm.setVisibility(View.INVISIBLE);
+		}
+		
+		if( position == 3 || step2.getVisibility() != View.VISIBLE ) {
+			step3Indicator.setVisibility(View.VISIBLE);
+		} else {
+			step3Indicator.setVisibility(View.INVISIBLE);
+		}
+		
+	}
+	
+	
+	/**
+	 * Hides the second state in the bread crumb 
+	 */
+	public void hideStepTwo(){
+		final RelativeLayout step2 = (RelativeLayout)findViewById(R.id.step2);
+		final ImageView step2Indicator = (ImageView)findViewById(R.id.step2_indicator);
+		
+		step2.setVisibility(View.GONE);
+		
+		if( step2Indicator.getVisibility() == View.VISIBLE ) {
+			setPosition(3);
+		}
+	}
+	
 	/**
 	 * Click listener for any views within this widget
 	 */

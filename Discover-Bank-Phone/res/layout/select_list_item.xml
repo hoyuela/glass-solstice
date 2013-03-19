@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/default_background"
-    android:background="@drawable/home_list_item_no_bottom_dash"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
+     <View
+        android:id="@+id/divider_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/table_solid_line" />
+     
     <RelativeLayout
         android:id="@+id/list_item"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/forms_inner_padding"
-        android:layout_marginRight="@dimen/forms_inner_padding"
-        android:paddingBottom="@dimen/forms_inner_padding"
-        android:paddingTop="@dimen/forms_inner_padding" >
+        android:padding="@dimen/forms_inner_padding" >
 
         <TextView
             android:id="@+id/top_label"
             style="@style/light_static_text"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:singleLine="true"
+            android:bufferType="spannable"
             android:text="@string/edit" />
 
         <TextView
             android:id="@+id/middle_label"
             style="@style/page_title"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/top_label"
             android:layout_below="@+id/top_label"
-            android:layout_marginRight="@dimen/between_related_elements_padding"
-            android:singleLine="true"
             android:text="@string/edit" />
 
         <ImageView
@@ -41,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/between_related_elements_padding"
             android:contentDescription="@string/caret_description"
             android:src="@drawable/blue_arrow_right" />
     </RelativeLayout>

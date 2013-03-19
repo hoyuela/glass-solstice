@@ -74,6 +74,8 @@ public final class BankExtraKeys {
 	public static final String LON = "lon";
 	public static final String STREET_LAT = "slat";
 	public static final String STREET_LON = "slon";
+	public static final String FROM_ADDRESS = "from";
+	public static final String TO_ADDRESS = "to";
 
 
 	/**
