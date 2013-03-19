@@ -5,6 +5,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import android.app.Activity;
+import android.util.Log;
+
+import com.discover.mobile.bank.R;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.google.common.base.Strings;
 
 public class BankStringFormatter {
@@ -105,7 +110,30 @@ public class BankStringFormatter {
 		
 		formattedCurrency.append(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
 		return formattedCurrency.toString();
-		
+	}
+	
+	/**
+	 * Returns a String of the format "Account Ending In n" where n is the provided account number.
+	 * @param accountNumber an account number, expected to be the last 4 digits of an account number.
+	 * @return a formatted string in the form "Account Ending In n"
+	 */
+	public static String getAccountEndingInString(final String accountNumber) {
+		final String tag = BankStringFormatter.class.getSimpleName();
+		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+		final StringBuilder accountEndingInBuilder = new StringBuilder("");
+		if(R.string.account_ending_in != 0){
+			final String endingIn = currentActivity.getResources().getString(R.string.account_ending_in);
+			accountEndingInBuilder.append(endingIn);
+			accountEndingInBuilder.append(" ");
+			if(!Strings.isNullOrEmpty(accountNumber))
+				accountEndingInBuilder.append(accountNumber);
+			else {
+				accountEndingInBuilder.append("VOID");
+				Log.e(tag, "Error formatting 'account ending in' String. No account number provided to method.");
+			}
+		}
+		return accountEndingInBuilder.toString();
+
 	}
 
 	/**

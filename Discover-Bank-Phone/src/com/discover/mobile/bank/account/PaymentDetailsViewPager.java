@@ -169,8 +169,8 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	 */
 	// FIXME need to have a navigator method defined that allows navigating back to the view payments Fragment.
 	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
+	public void onPause() {
+		super.onPause();
 		BankRotationHelper.getHelper().setBundle(getCurrentFragmentBundle());
 	}
 
@@ -218,7 +218,6 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 				"SCHEDULED".equals(detailList.payments.get(position).status);
 	}
 
-
 	@Override
 	public int getGroupMenuLocation() {
 		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
@@ -227,11 +226,6 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.REVIEW_PAYEMENTS_SECTION;
-	}
-
-	@Override
-	public boolean isBackPressDisabled() {
-		return false;
 	}
 
 }

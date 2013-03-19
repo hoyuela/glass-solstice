@@ -167,8 +167,13 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 			/**Verify account reference is not null*/
 			if( null != account ) {
 				final Bundle args = getArguments();
-				final int depositAmount = args.getInt(BankExtraKeys.AMOUNT);
-				final boolean reviewDepositOnFinish = args.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
+				int depositAmount = 0;
+				boolean reviewDepositOnFinish = false;
+				if(args != null) {
+					depositAmount = args.getInt(BankExtraKeys.AMOUNT);
+					reviewDepositOnFinish = args.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
+				}
+				
 				if(reviewDepositOnFinish && account.limits != null){
 					//Reset the review deposit bundle boolean to prevent odd navigation issues later.
 					args.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, false);

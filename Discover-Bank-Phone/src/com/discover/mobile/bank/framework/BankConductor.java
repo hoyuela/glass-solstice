@@ -640,9 +640,13 @@ public final class BankConductor  extends Conductor {
 			} else if(isEligible && !isEnrolled){
 				fragment = new BankDepositTermsFragment();
 			} else{
-				final boolean isReEnteringAmount = bundle.getBoolean(BankExtraKeys.REENTER_AMOUNT);
-				final boolean isReSelectingAccount = bundle.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
-				
+				boolean isReEnteringAmount = false;
+				boolean isReSelectingAccount = false;
+				if(bundle != null) {
+					isReEnteringAmount = bundle.getBoolean(BankExtraKeys.REENTER_AMOUNT);
+					isReSelectingAccount = bundle.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
+				}
+					
 				if( isReEnteringAmount || 
 						navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount 
 						&& !isReSelectingAccount) {

@@ -17,9 +17,11 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankEditDetail;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.util.BankStringFormatter;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
@@ -79,7 +81,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment {
 		footer.setVisibility(View.GONE);
 
 		setupSubmitLink();
-		setupCancelLink();
+		actionLink.setOnClickListener(cancelLinkClickListener);
 		setupRetakeLinks(view);
 		return view;
 	}
@@ -107,7 +109,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment {
 			@Override
 			public void onClick(final View v) {
 				final Intent depositSubmission = new Intent(getThisActivity(), DepositSubmissionActivity.class);
-				final Bundle extras = getThisActivity().getIntent().getExtras();
+				final Bundle extras = getArguments();
 				if(extras != null)
 					depositSubmission.putExtras(extras);
 				startActivityForResult(depositSubmission, depositSubmitActivity);
@@ -115,67 +117,104 @@ public class CaptureReviewFragment extends BankDepositBaseFragment {
 		});
 	}
 	
-	private void setupCancelLink() {
-		actionLink.setOnClickListener(new OnClickListener() {
+	private final OnClickListener cancelLinkClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(final View v) {
+			final Activity currentActivity = getActivity();
+			final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
+
+			final ModalDefaultTwoButtonBottomView bottom = new ModalDefaultTwoButtonBottomView(currentActivity, null);
+			bottom.setOkButtonText(R.string.do_not_go_back);
+			bottom.setCancelButtonText(R.string.go_back_and_cancel);
 			
-			@Override
-			public void onClick(final View v) {
-				final Activity currentActivity = getActivity();
-				final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
-
-				final ModalDefaultTwoButtonBottomView bottom = new ModalDefaultTwoButtonBottomView(currentActivity, null);
-				bottom.setOkButtonText(R.string.do_not_go_back);
-				bottom.setCancelButtonText(R.string.go_back_and_cancel);
-				
-				modalTopView.setTitle(R.string.cancel_deposit_title);
-				modalTopView.setContent(R.string.cancel_deposit_content);
-				
-				modalTopView.getHelpFooter().show(false);
-				
-				final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(currentActivity, modalTopView, bottom);
-				bottom.getOkButton().setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(final View v) {
-						modal.dismiss();
-						onBackPressed();
-					}
-				});
-
-				modal.show();
-			}
-		});
-	}
-		
-	@Override
-	public void onBackPressed() {
-		final Activity currentActivity = getActivity();
-		final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
-		final ModalDefaultTwoButtonBottomView bottom = new ModalDefaultTwoButtonBottomView(currentActivity, null);
-		
-		bottom.setOkButtonText(R.string.continue_text);
-		bottom.setCancelButtonText(R.string.cancel_text);
-		
-		modalTopView.setTitle(R.string.are_you_sure_title);
-		modalTopView.setContent(R.string.cancel_deposit_content);
-		
-		modalTopView.getHelpFooter().show(false);
-		
-		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(currentActivity, modalTopView, bottom);
-		bottom.getOkButton().setOnClickListener(new OnClickListener() {
+			modalTopView.setTitle(R.string.cancel_deposit_title);
+			modalTopView.setContent(R.string.cancel_deposit_content);
+			
+			modalTopView.getHelpFooter().show(false);
+			
+			final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(currentActivity, modalTopView, bottom);
+			bottom.getOkButton().setOnClickListener(dismissModalOnClickListener(modal));
+			bottom.getCancelButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
+			modal.show();
+		}
+	};
+	
+	private OnClickListener dismissModalOnClickListener(final ModalAlertWithTwoButtons modal) {
+		return new OnClickListener() {
 			
 			@Override
 			public void onClick(final View v) {
 				modal.dismiss();
 			}
-		});
-
-		modal.show();
+		};
+	}
+	
+	private OnClickListener getCancelDepositWorkflowClickListener(final ModalAlertWithTwoButtons modal) {
+		return new OnClickListener() {
+			 
+			@Override
+			public void onClick(final View v) {
+				cancelCheckDepositWorkflow();
+			    modal.dismiss();
+			}
+		};	
+	}
+	
+	/**
+	 * Show a modal warning upon back press to alert the user that if they go back, they will be losing all
+	 * of their information.
+	 */
+	@Override
+	public void onBackPressed() {
+		BankNavigationRootActivity currentActivity = null;
+		if(DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity) {
+			currentActivity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		}
+		
+		if(currentActivity != null) {
+			final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
+			final ModalDefaultTwoButtonBottomView bottom = new ModalDefaultTwoButtonBottomView(currentActivity, null);
+			
+			bottom.setOkButtonText(R.string.continue_text);
+			bottom.setCancelButtonText(R.string.cancel_text);
+			
+			modalTopView.setTitle(R.string.are_you_sure_title);
+			modalTopView.setContent(R.string.cancel_deposit_content);
+			
+			modalTopView.getHelpFooter().show(false);
+			
+			final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(currentActivity, modalTopView, bottom);
+			bottom.getOkButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
+			
+			bottom.getCancelButton().setOnClickListener(dismissModalOnClickListener(modal));
+		
+			modal.show();
+		}
+	}
+	
+	/**
+	 * Navigates back to step 1 of the check deposit work flow and deletes any cached images.
+	 */
+	private void cancelCheckDepositWorkflow() {
+		final BankNavigationRootActivity activity = 
+				(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+	    activity.popTillFragment(BankDepositSelectAccount.class);
+	    CheckDepositCaptureActivity.deleteBothImages(activity);
+	}
+	
+	/**
+	 * Disable the default back press from the activity and use only the method implemented in this class
+	 * for onBackPressed.
+	 */
+	@Override
+	public boolean isBackPressDisabled() {
+		return true;
 	}
 
 	@Override
 	protected int getProgressIndicatorStep() {
-		return 1;
+		return 2;
 	}
 
 	/**
@@ -193,9 +232,8 @@ public class CaptureReviewFragment extends BankDepositBaseFragment {
 		BankEditDetail detailObject = new BankEditDetail(currentActivity);
 		
 		detailObject.getDividerLine().setVisibility(View.GONE);
-		final String endingIn = getResources().getString(R.string.account_ending_in);
-		
-		detailObject.getTopLabel().setText(endingIn + " " + account.accountNumber.ending);
+
+		detailObject.getTopLabel().setText(BankStringFormatter.getAccountEndingInString(account.accountNumber.ending));
 		detailObject.getMiddleLabel().setText(account.nickname);
 		detailObject.getMiddleLabel().setSingleLine(false);
 		detailObject.getMiddleLabel().setMaxLines(2);
@@ -233,8 +271,9 @@ public class CaptureReviewFragment extends BankDepositBaseFragment {
 			}
 		});
 		
+		final String amount = getResources().getString(R.string.amount);
 		detailObject.setOnFocusChangeListener(null);
-		detailObject.getTopLabel().setText("Amount");
+		detailObject.getTopLabel().setText(amount);
 		detailObject.getMiddleLabel().setText(BankStringFormatter.convertCentsToDollars(depositAmount));
 		content.add(detailObject);
 		
