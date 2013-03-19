@@ -16,7 +16,7 @@ public class CreateBankSSOLoginCall extends
 	private final String TAG = CreateBankSSOLoginCall.class.getSimpleName();
 	private final TypedReferenceHandler<BankLoginData> handler;
 
-	protected CreateBankSSOLoginCall(Context context,
+	public CreateBankSSOLoginCall(Context context,
 			final AsyncCallback<BankLoginData> callback,
 			final BankSSOLoginDetails login) {
 		super(context, new PostCallParams(BankUrlManager.getSSOTokenUrl()) {

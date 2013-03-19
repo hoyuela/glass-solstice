@@ -200,7 +200,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		
 		// Check if the error is an SSO User
 		else if (isSSOUser(error)) {
-			BankLoginServices.authWithCardPayload(
+			BankConductor.authWithCardPayload(
 					(LoginActivity) activeActivity,
 					((BankErrorSSOResponse) error).token,
 					((BankErrorSSOResponse) error).hashedValue);

@@ -41,6 +41,8 @@ import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
 import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.BankSearchSelectPayeeFragment;
 import com.discover.mobile.bank.payees.PayeeDetailViewPager;
+import com.discover.mobile.bank.services.auth.BankLoginDetails;
+import com.discover.mobile.bank.services.auth.BankSSOLoginDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
@@ -52,6 +54,7 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.CacheManager;
 import com.discover.mobile.common.framework.Conductor;
 import com.discover.mobile.common.framework.ServiceCallFactory;
@@ -74,8 +77,10 @@ public final class BankConductor  extends Conductor {
 	protected static BankConductor instance;
 
 	protected CacheManager cacheMgr = BankUser.instance();
-
-
+	
+	private static BankLoginDetails loginDetails;
+	
+	
 	/** 
 	 * To utilize the abstract navigate methods from the parent conductor class
 	 * 
@@ -775,6 +780,55 @@ public final class BankConductor  extends Conductor {
 				activity.closeDialog();
 				((AtmMapFragment)activity.getCurrentContentFragment()).handleRecievedAtms(bundle);
 			}
+		}
+	}
+	
+	/**
+	 * Authorizes a Bank user against the service. If successful, the user will
+	 * be logged-in and taken to the Bank landing page of the application.
+	 * 
+	 * @param credentials
+	 */
+	public static void authorizeLogin(final BankLoginDetails credentials) {
+		loginDetails = credentials;
+		BankServiceCallFactory.createLoginCall(credentials).submit();
+	}
+
+	/**
+	 * Authorizes an SSO User against Bank using a BankSSOPayload, which is
+	 * obtained from a Card service.
+	 * 
+	 * @param bankSSOPayload
+	 *            payload with which the user is authorized.
+	 */
+	public static void authWithBankPayload(final String bankSSOPayload) {
+		BankSSOLoginDetails bankPayload = new BankSSOLoginDetails();
+		bankPayload.payload = bankSSOPayload;
+		BankServiceCallFactory.createSSOLoginCall(bankPayload).submit();
+		loginDetails = null;
+	}
+
+	/**
+	 * Authorizes an SSO User against Card using a CardSSOPayload, which in some
+	 * cases is obtained from a call to {@code BankLoginServices.authorizeLogin()}.
+	 *
+	 * @param activity
+	 * @param tokenValue
+	 * @param hashedTokenValue
+	 */
+	public static void authWithCardPayload(LoginActivity activity, String tokenValue, String hashedTokenValue) {
+		FacadeFactory.getCardLoginFacade().loginWithPayload(activity,
+				tokenValue, hashedTokenValue);
+	}
+
+	/**
+	 * Authorizes an SSO User against Bank when no BankSSOPayload is available.
+	 * This is due to an A/L/U error returned from a Card service.
+	 */
+	public static void authDueToALUStatus() {
+		if(loginDetails != null) {
+			BankServiceCallFactory.createLoginCall(loginDetails, true).submit();
+			loginDetails = null;
 		}
 	}
 

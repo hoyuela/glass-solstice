@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class BankSSOLoginDetails implements Serializable{
 	/**
 	 * Auto-generated serial UID which is used to serialize and de-serialize
-	 * BankLoginDetails objects
+	 * BankSSOLoginDetails objects
 	 */
 	private static final long serialVersionUID = 3482967958647273037L;
 

@@ -20,6 +20,7 @@ import com.discover.mobile.bank.services.atm.GetAtmDetailsCall;
 import com.discover.mobile.bank.services.atm.GetDirectionsServiceCall;
 import com.discover.mobile.bank.services.auth.BankLoginData;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
+import com.discover.mobile.bank.services.auth.BankSSOLoginDetails;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
 import com.discover.mobile.bank.services.auth.CreateBankSSOLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthAnswerDetails;
@@ -126,12 +127,16 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * @param credentials
 	 * @return
 	 */
-	public static CreateBankSSOLoginCall createSSOLoginCall(final String credentials) {
-		// TODO Callback
+	public static CreateBankSSOLoginCall createSSOLoginCall(final BankSSOLoginDetails credentials) {
+		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
 		
-		// TODO Call
+		final AsyncCallback<BankLoginData> callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
+				.build();
 		
-		return null;
+		final CreateBankSSOLoginCall loginCall =  new CreateBankSSOLoginCall(activity, callback, credentials);
+		
+		return loginCall;
 	}
 
 	/**
