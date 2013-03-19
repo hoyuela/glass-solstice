@@ -30,7 +30,9 @@ import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.customer.Eligibility;
 import com.discover.mobile.bank.services.deposit.AccountLimits;
+import com.discover.mobile.bank.services.deposit.DepositDetail;
 import com.discover.mobile.bank.services.deposit.GetAccountLimits;
+import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
@@ -49,6 +51,7 @@ import com.discover.mobile.bank.services.payment.PayBillsTermsAndConditionsDetai
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.framework.ServiceCallFactory;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -179,6 +182,20 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						.build();
 
 		return new CreateStrongAuthRequestCall(activity, callback, details);
+	}
+	
+	/**
+	 * Used to create a service call to submit a check deposit.
+	 * 
+	 */
+	public static SubmitCheckDepositCall createSubmitCheckDepositCall(final DepositDetail checkDetails, final CompletionListener completionListener) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<DepositDetail> callback = 
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(DepositDetail.class, activity, 
+						(ErrorHandlerUi)activity).withCompletionListener(completionListener).build();
+		return new SubmitCheckDepositCall(activity, callback, checkDetails);
+		
 	}
 
 	/**

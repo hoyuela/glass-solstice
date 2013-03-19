@@ -3,6 +3,7 @@ package com.discover.mobile.bank.deposit;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,15 +17,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankPhoneAsyncCallbackBuilder;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.deposit.DepositDetail;
-import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
 import com.discover.mobile.common.BaseActivity;
-import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.google.common.base.Strings;
+
 
 /**
  * This activity handles the submission of checks to be deposited into a users account.
@@ -32,18 +35,23 @@ import com.google.common.base.Strings;
  * @author scottseward
  *
  */
-public class DepositSubmissionActivity extends BaseActivity {
+public class DepositSubmissionActivity extends BaseActivity implements CompletionListener {
 	/**The Debug TAG for this activity*/
 	final String TAG = DepositSubmissionActivity.class.getSimpleName();
 	
 	/**An AsyncTask that handles changing the loading image every second.*/
 	private SecondTimer timerAnimator = new SecondTimer();
+	
+	/**A reference to the Activity that launched this Activity */
+	private Activity callingActivity = null;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.deposit_submission);
+		callingActivity = DiscoverActivityManager.getActiveActivity();
+		DiscoverActivityManager.setActiveActivity(this);
 		submit();
 	}
 	
@@ -53,32 +61,42 @@ public class DepositSubmissionActivity extends BaseActivity {
 		super.onBackPressed();
 		finish();
 	}
-		
+	
 	/**
 	 * Submit the check images and the information about the checks and what account to deposit to.
 	 */
 	private void submit() {
-		final AsyncCallback<DepositDetail> callback = 
-				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(DepositDetail.class, this, this).build();
-		final Bundle extras = this.getIntent().getExtras();
-		if(extras != null){
-			final Account account = (Account)extras.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-			final DepositDetail detail = new DepositDetail();
-		
-			detail.amount = extras.getInt(BankExtraKeys.AMOUNT);
-			detail.account = Integer.parseInt(account.id);
+		BankServiceCallFactory.createSubmitCheckDepositCall(getDepositDetails(), this).submit();
+	}
 
-			final TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+	private DepositDetail getDepositDetails() {
+		final Bundle extras = this.getIntent().getExtras();
+		Account account = null;
+		DepositDetail detail = null;
+
+		if(extras != null){
+			account = (Account)extras.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 			
-			detail.deviceUUID = telephonyManager.getDeviceId();
-			detail.deviceType = "Android";
-		
-			detail.frontImage = getCompressedImageFromPath(CheckDepositCaptureActivity.FRONT_PICTURE);
-			detail.backImage = getCompressedImageFromPath(CheckDepositCaptureActivity.BACK_PICTURE);
+			if(account != null){
+				final TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+
+				detail = new DepositDetail();
 			
-			final SubmitCheckDepositCall call = new SubmitCheckDepositCall(this, callback, detail);
-			call.submit();
+				detail.amount = extras.getInt(BankExtraKeys.AMOUNT);
+				detail.account = Integer.parseInt(account.id);		
+				
+				detail.deviceUUID = telephonyManager.getDeviceId();
+				detail.deviceType = "Android";
+			
+				detail.frontImage = getCompressedImageFromPath(CheckDepositCaptureActivity.FRONT_PICTURE);
+				detail.backImage = getCompressedImageFromPath(CheckDepositCaptureActivity.BACK_PICTURE);
+			}else {
+				Log.e(TAG, "Cannot create check deposit server call, Account is missing!");
+			}
+		}else {
+			Log.e(TAG, "Cannot create check deposit server call, Bundle was null!");
 		}
+		return detail;
 	}
 	
 	/**
@@ -167,6 +185,22 @@ public class DepositSubmissionActivity extends BaseActivity {
 			timerAnimator.execute();
 		}
 		
+	}
+
+	@Override
+	public CallbackPriority getCallbackPriority() {
+		return CallbackPriority.FIRST;
+	}
+
+	@Override
+	public void complete(final NetworkServiceCall<?> sender, final Object result) {
+		DiscoverActivityManager.setActiveActivity(callingActivity);
+		finish();
+	}
+	
+	@Override
+	public void startProgressDialog() {		
+		//do nothing
 	}
 
 }
