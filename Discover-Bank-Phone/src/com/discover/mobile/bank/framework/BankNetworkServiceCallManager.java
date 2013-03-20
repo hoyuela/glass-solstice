@@ -52,6 +52,7 @@ import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
@@ -186,6 +187,32 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		return isSSO;
 	}
+	
+	/**
+	 * Determines if the error was from a bank session refresh. If so, it means that the user's session is no longer alive.
+	 * 
+	 * @param error
+	 *            Reference to an error provided via a response to a
+	 *            NetworkServiceCall<>
+	 * @return true if it was a refresh call and it's now dead, false otherwise.
+	 */
+	public boolean isSessionDead(final ErrorResponse<?> error) {
+		boolean isDead = false;
+
+		final int httpErrorCode = error.getHttpStatusCode();
+		final HttpURLConnection conn = error.getConnection();
+
+		if( httpErrorCode ==  HttpURLConnection.HTTP_UNAUTHORIZED ) {
+			final String url = conn.getURL().toString();
+
+			if(!Strings.isNullOrEmpty(url)) {
+				if( url.contains(BankUrlManager.getRefreshSessionUrl())) {
+					isDead = true;
+				}
+			}
+		}
+		return isDead;
+	}
 
 	/**
 	 * Method defines the implementation of the handleFailure callback defined by ErrorResponseHandler.
@@ -209,7 +236,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 					((BankErrorSSOResponse) error).token,
 					((BankErrorSSOResponse) error).hashedValue);
 		}
-
+		
+		// Check if the error was a Ping. if so, then session died.
+		else if (isSessionDead(error)) {
+			Globals.setLoggedIn(false);
+			Globals.setCurrentUser("");
+			KeepAlive.setBankAuthenticated(false);
+			BankUser.instance().clearSession();
+			BankConductor.navigateToLoginPage(DiscoverActivityManager.getActiveActivity(), IntentExtraKey.SESSION_EXPIRED, null);
+		}
 		//Dispatch response to BankBaseErrorHandler to determine how to handle the error
 		else {
 			errorHandler.handleFailure(sender, error);

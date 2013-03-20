@@ -7,10 +7,10 @@ import com.discover.mobile.common.facade.FacadeFactory;
 public class KeepAlive {
 
 	/** Minimum amount of time (ms) required before making bank refresh call. */
-	public static final long MIN_TIME_FOR_BANK_REFRESH = 10000;// 480000;
+	public static final long MIN_TIME_FOR_BANK_REFRESH = 480000; //8 mins
 
 	/** Minimum amount of time (ms) required before making card refresh call. */
-	public static final long MIN_TIME_FOR_CARD_REFRESH = 30000;
+	public static final long MIN_TIME_FOR_CARD_REFRESH = 30000; //30 secs
 
 	/** Tracks the last time a Card refresh request was made. */
 	private static long lastCardRefreshTimeInMillis = 0;
