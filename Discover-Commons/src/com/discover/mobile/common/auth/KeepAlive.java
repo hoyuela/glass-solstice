@@ -77,4 +77,11 @@ public class KeepAlive {
 		}
 	}
 
+	public static void setCardAuthenticated(boolean isCardAuthenticated) {
+		KeepAlive.isCardAuthenticated = isCardAuthenticated;
+	}
+
+	public static void setBankAuthenticated(boolean isBankAuthenticated) {
+		KeepAlive.isBankAuthenticated = isBankAuthenticated;
+	}
 }
