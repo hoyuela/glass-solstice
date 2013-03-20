@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,6 +83,16 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				toast.show();
 			}			
 		});
+		
+		final ImageView accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
+		accountToggleIcon.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getActivity(), "Toggle is not yet implemented.", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
 		return view;
 	}
 
