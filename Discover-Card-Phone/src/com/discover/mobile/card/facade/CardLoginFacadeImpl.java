@@ -5,10 +5,13 @@ package com.discover.mobile.card.facade;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.card.services.auth.AuthenticateCall;
+import com.discover.mobile.card.services.auth.BankPayload;
+import com.discover.mobile.card.services.auth.SSOAuthenticateCall;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
@@ -65,9 +68,39 @@ public class CardLoginFacadeImpl implements CardLoginFacade{
 	}
 
 	@Override
-	public void loginWithPayload(LoginActivityInterface callingActivity,
-			String tokenValue, String hashedTokenValue) {
+	public void loginWithPayload(final LoginActivityInterface callingActivity, final String tokenValue, final String hashedTokenValue) {
+		// TODO Fill out fake data - just call ALU?
+//		FacadeFactory.getBankLoginFacade().authDueToALUStatus();
 		
+		final AsyncCallback<BankPayload> callback = GenericAsyncCallback
+				.<BankPayload> builder((Activity) callingActivity)
+				.showProgressDialog("Discover", "Loading...", true)
+				.withSuccessListener(new SuccessListener<BankPayload>() {
+
+					@Override
+					public CallbackPriority getCallbackPriority() {
+						return CallbackPriority.MIDDLE;
+					}
+
+					@Override
+					public void success(final NetworkServiceCall<?> sender, final BankPayload value) {
+						// Set logged in to be able to save user name in
+						// persistent storage
+//						Globals.setLoggedIn(true);
+						
+//						callingActivity.updateAccountInformation(AccountType.CARD_ACCOUNT);
+						Log.e("BANK PAYLOAD", value.payload);
+						FacadeFactory.getBankLoginFacade().authorizeWithBankPayload(value.payload);
+
+//						FacadeFactory.getPushFacade().getXtifyRegistrationStatus((BaseActivity) callingActivity);
+
+					}
+				})
+				.withErrorResponseHandler(new com.discover.mobile.card.error.CardBaseErrorResponseHandler(callingActivity))
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.build();
+
+		new SSOAuthenticateCall((Context) callingActivity, callback, tokenValue, hashedTokenValue).submit();
 	}
 
 	@Override
