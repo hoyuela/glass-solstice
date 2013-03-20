@@ -491,12 +491,17 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * Creates a call that that will attempt to refresh the Bank session. Sends
 	 * a GET request to {@code BankUrlManager.REFRESH_URL}.
 	 * 
-	 * @param o
-	 * @return
+	 * @return RefreshBankSessionCall
 	 */
 	public static RefreshBankSessionCall createRefreshSessionCall() {
-		// TODO this
-		return null;
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<Object>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Object.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new RefreshBankSessionCall(activity, callback);
 	}
 	
 	@Override

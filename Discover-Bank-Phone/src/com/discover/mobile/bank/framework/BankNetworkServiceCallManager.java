@@ -52,6 +52,7 @@ import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
@@ -265,7 +266,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		//Download Customer Information if a Login call is successful
 		else if( sender instanceof CreateBankLoginCall ) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-
+			
+			KeepAlive.setBankAuthenticated(true);
+			
 			//Set logged in to be able to save user name in persistent storage
 			Globals.setLoggedIn(true);
 

@@ -15,7 +15,7 @@ public class RefreshBankSessionCall extends BankJsonResponseMappingNetworkServic
 	/**Reference handler for returning to the UI*/
 	final TypedReferenceHandler<Object> handler;
 	
-	protected RefreshBankSessionCall(final Context context, final AsyncCallback<Object> callback, String url) {
+	public RefreshBankSessionCall(final Context context, final AsyncCallback<Object> callback) {
 		super(context, new GetCallParams(BankUrlManager.getRefreshSessionUrl()) {
 			{
 				//This service call is made after authenticating and receiving a token,
