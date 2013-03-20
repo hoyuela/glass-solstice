@@ -70,7 +70,7 @@ public class BankPhoneAsyncCallbackBuilder {
 		Builder<T> builder = null;
 		
 		builder = GenericAsyncCallback.<T>builder(activity)
-				.withExceptionFailureHandler(new BankExceptionHandler())
+				.withExceptionFailureHandler(BankExceptionHandler.getInstance())
 				.withExceptionFailureHandler(BankNetworkServiceCallManager.getInstance())
 				.withErrorResponseHandler(BankNetworkServiceCallManager.getInstance())
 				.withStartListener(BankNetworkServiceCallManager.getInstance())
@@ -89,7 +89,7 @@ public class BankPhoneAsyncCallbackBuilder {
 		Builder<T> builder = null;
 		
 		builder = GenericAsyncCallback.<T>builder(activity)
-				.withExceptionFailureHandler(new BankExceptionHandler())
+				.withExceptionFailureHandler(BankExceptionHandler.getInstance())
 				.withExceptionFailureHandler(BankNetworkServiceCallManager.getInstance())
 				.withErrorResponseHandler(BankNetworkServiceCallManager.getInstance())
 				.withStartListener(BankNetworkServiceCallManager.getInstance())

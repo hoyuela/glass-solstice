@@ -58,13 +58,12 @@
 
         <TextView
             android:id="@+id/error_label"
-            style="@style/error_label"
+            style="@style/inline_error_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/top_label"
             android:layout_alignParentBottom="true"
             android:layout_below="@+id/editable_field"
-            android:singleLine="true"
             android:text="@string/bank_invalid_characters" />
 
         <ImageView

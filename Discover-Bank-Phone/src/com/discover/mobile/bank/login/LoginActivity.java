@@ -512,7 +512,7 @@ public class LoginActivity extends BaseActivity implements
 		provideFeedbackButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				// TODO Fill-Out, later Sprint
 				
 			}
@@ -972,7 +972,7 @@ public class LoginActivity extends BaseActivity implements
 		final AsyncCallback<PreAuthResult> callback = GenericAsyncCallback.<PreAuthResult> builder(this)
 				.withSuccessListener(new PreAuthSuccessResponseHandler(this))
 				.withErrorResponseHandler(new PreAuthErrorResponseHandler(this))
-				.withExceptionFailureHandler(new BankExceptionHandler() ).build();
+				.withExceptionFailureHandler(BankExceptionHandler.getInstance()).build();
 
 		new PreAuthCheckCall(this, callback).submit();
 	}
@@ -1129,9 +1129,9 @@ public class LoginActivity extends BaseActivity implements
 	 * @param isCard
 	 *            if the layout should be for card, false otherwise.
 	 */
-	private void setPrivacyAndTermsParamsForCard(boolean isCard) {
-		RelativeLayout.LayoutParams lpTerms = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		RelativeLayout.LayoutParams lpForgot = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+	private void setPrivacyAndTermsParamsForCard(final boolean isCard) {
+		final RelativeLayout.LayoutParams lpTerms = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		final RelativeLayout.LayoutParams lpForgot = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		
 		if(isCard) {
 			lpForgot.addRule(RelativeLayout.BELOW, loginButton.getId());

@@ -87,11 +87,7 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 	 * Key used for storing the payeeSearchResult data member in a bundle when onSaveInstanceState() is called.
 	 */
 	final private static String KEY_SEARCH_RESULT = "search-result";
-	/**
-	 * String appended to a string to determine whether a field has an error on rotation
-	 */
-	final private static String KEY_ERROR_EXT = ".hasError";
-	
+		
 	private enum ManagedPayeeFields {
 		PayeeName,
 		PayeeNickName,

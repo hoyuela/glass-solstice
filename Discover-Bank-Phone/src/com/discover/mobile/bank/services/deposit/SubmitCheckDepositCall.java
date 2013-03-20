@@ -29,7 +29,7 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 		
 		public SubmitCheckDepositCall(final Context context, final AsyncCallback<DepositDetail> callback,
 				final DepositDetail modelClass) {
-			super(context, new PostCallParams("/api/deposits/") {{
+			super(context, new PostCallParams("/api/deposits") {{
 				requiresSessionForRequest = true;
 				sendDeviceIdentifiers = true;
 

@@ -26,6 +26,8 @@ import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.deposit.BankDepositSelectAmount;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
 import com.discover.mobile.bank.deposit.CaptureReviewFragment;
+import com.discover.mobile.bank.deposit.CheckDepositErrorFragment;
+import com.discover.mobile.bank.deposit.DuplicateCheckErrorFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -642,13 +644,25 @@ public final class BankConductor  extends Conductor {
 			} else{
 				boolean isReEnteringAmount = false;
 				boolean isReSelectingAccount = false;
+				boolean isDepositError = false;
+				boolean isDuplicateError = false;
 				if(bundle != null) {
 					isReEnteringAmount = bundle.getBoolean(BankExtraKeys.REENTER_AMOUNT);
 					isReSelectingAccount = bundle.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
+					isDepositError = bundle.getBoolean(CheckDepositErrorFragment.class.getSimpleName());
+					isDuplicateError = bundle.getBoolean(DuplicateCheckErrorFragment.class.getSimpleName());
 				}
-					
-				if( isReEnteringAmount || 
-						navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount 
+				
+				//Navigate to timeout error if check deposit error fragment flag is found in bundle
+				if( isDepositError ) {
+					fragment = new CheckDepositErrorFragment();
+				}
+				//Navigate to duplicate error fragment if boolean flag is found in bundle
+				else if( isDuplicateError ) {
+					fragment = new DuplicateCheckErrorFragment();
+				}
+				//Check if user is in select accounts, navigate to second step in work-flow
+				else if( isReEnteringAmount || navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount 
 						&& !isReSelectingAccount) {
 					fragment = new BankDepositSelectAmount();
 				}
@@ -658,8 +672,7 @@ public final class BankConductor  extends Conductor {
 				}
 				//If all other conditions failed then user is in the first step of the deposit work-flow
 				//Check if User has accounts, this is the first step in work-flow
-				else if(isReSelectingAccount || 
-						BankUser.instance().hasAccounts() ) {	
+				else if(isReSelectingAccount || BankUser.instance().hasAccounts() ) {	
 					fragment = new BankDepositSelectAccount();	
 				}
 				
@@ -806,7 +819,7 @@ public final class BankConductor  extends Conductor {
 	 *            payload with which the user is authorized.
 	 */
 	public static void authWithBankPayload(final String bankSSOPayload) {
-		BankSSOLoginDetails bankPayload = new BankSSOLoginDetails();
+		final BankSSOLoginDetails bankPayload = new BankSSOLoginDetails();
 		bankPayload.payload = bankSSOPayload;
 		BankServiceCallFactory.createSSOLoginCall(bankPayload).submit();
 		loginDetails = null;
@@ -820,7 +833,7 @@ public final class BankConductor  extends Conductor {
 	 * @param tokenValue
 	 * @param hashedTokenValue
 	 */
-	public static void authWithCardPayload(LoginActivity activity, String tokenValue, String hashedTokenValue) {
+	public static void authWithCardPayload(final LoginActivity activity, final String tokenValue, final String hashedTokenValue) {
 		FacadeFactory.getCardLoginFacade().loginWithPayload(activity,
 				tokenValue, hashedTokenValue);
 	}
