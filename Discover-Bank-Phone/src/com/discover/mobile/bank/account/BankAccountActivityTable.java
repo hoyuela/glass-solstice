@@ -15,10 +15,12 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
+import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 
 /**
@@ -125,7 +127,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	public OnCheckedChangeListener getPostedListener(){
 		return new OnCheckedChangeListener(){
-			
+
 			@Override
 			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
 				if(isChecked){
@@ -252,7 +254,7 @@ public class BankAccountActivityTable extends BaseTable{
 		header.setHeaderExpanded(bundle.getBoolean(BankExtraKeys.TITLE_EXPANDED, false));
 		createDefaultLists();
 		this.updateAdapter(current.activities);
-		
+
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
 			showNothingToLoad();
@@ -274,6 +276,15 @@ public class BankAccountActivityTable extends BaseTable{
 		header = new AccountActivityHeader(this.getActivity(), null);
 		header.getPostedButton().setOnCheckedChangeListener(this.getPostedListener());
 		header.getScheduledButton().setOnCheckedChangeListener(this.getScheduledListener());
+		setUpMenu();
+	}
+
+	/**
+	 * Create the help list item that will be shown in the menu
+	 */
+	public void setUpMenu(){
+		final HelpWidget help = header.getHelp();
+		help.showHelpItems(HelpMenuListFactory.instance().getAccountActivityHelpItems());
 	}
 
 	/**

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -19,6 +18,7 @@ import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.bank.ui.table.TableTitles;
+import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Header displayed at the top of the activity table view screen
@@ -35,7 +35,7 @@ public class AccountActivityHeader extends RelativeLayout{
 
 	/**Value holding the available balance*/
 	private final TextView availableBalance;
-	
+
 	/**VAlue holding the type of account in header*/
 	private final TextView type;
 
@@ -75,6 +75,9 @@ public class AccountActivityHeader extends RelativeLayout{
 	/**Current Account*/
 	private final Account account;
 
+	/**Help Widget*/
+	private final HelpWidget help;
+
 	/**
 	 * Constructor of the class
 	 * @param context - activity context
@@ -93,6 +96,7 @@ public class AccountActivityHeader extends RelativeLayout{
 		labels = (RelativeLayout) view.findViewById(R.id.header_labels);
 		type = (TextView)view.findViewById(R.id.lable1);
 		titles = (TableTitles) view.findViewById(R.id.table_titles);
+		help = (HelpWidget) view.findViewById(R.id.help);
 
 		titles.setLabel1(this.getResources().getString(R.string.recent_activity_date));
 		titles.setLabel2(this.getResources().getString(R.string.recent_activity_description));
@@ -203,8 +207,8 @@ public class AccountActivityHeader extends RelativeLayout{
 	 * Get the help button in the header
 	 * @return the help button in the header
 	 */
-	public ImageButton getHelp(){
-		return (ImageButton) view.findViewById(R.id.help);
+	public HelpWidget getHelp(){
+		return help;
 	}
 
 	/**

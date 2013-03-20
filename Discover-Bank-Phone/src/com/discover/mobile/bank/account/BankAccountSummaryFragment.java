@@ -20,11 +20,13 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankUser;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.help.NeedHelpFooter;
 
 /**
@@ -56,6 +58,10 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		/**Button used to open a new account*/
 		openAccount = (Button)view.findViewById(R.id.openAccount);
 		openAccount.setOnClickListener(this);
+
+		/**Help icon setup*/
+		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
+		help.showHelpItems(HelpMenuListFactory.instance().getAccountSummaryHelpItems());
 
 		/**Create footer that will listen when user taps on Need Help Number to dial*/
 		helpFooter = new NeedHelpFooter((ViewGroup)view);
@@ -109,10 +115,10 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 			//Iterate through list of accounts, group them together and add to the summary list view
 			for(final Account account : accountList.accounts) {
 				final String groupKey = account.getGroupCategory();
-				
+
 				//Fetch group from hashmap if it already exists
 				BankAccountGroupView group = groupsMap.get(groupKey);	
-				
+
 				//if group type does not exist add new group to hashmap
 				if( null == group ) {
 					// Ensures that previous group has last element drawn correctly.
@@ -152,7 +158,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		}
 
 	}
-	
+
 
 	/*
 	 * (non-Javadoc)
@@ -168,7 +174,6 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		if( sender == openAccount ) {
 			BankConductor.navigateToBrowser(BankUrlManager.getOpenAccountUrl());
 		}
-
 	}
 
 

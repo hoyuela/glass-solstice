@@ -79,10 +79,10 @@ public final class BankConductor  extends Conductor {
 	protected static BankConductor instance;
 
 	protected CacheManager cacheMgr = BankUser.instance();
-	
+
 	private static BankLoginDetails loginDetails;
-	
-	
+
+
 	/** 
 	 * To utilize the abstract navigate methods from the parent conductor class
 	 * 
@@ -652,7 +652,7 @@ public final class BankConductor  extends Conductor {
 					isDepositError = bundle.getBoolean(CheckDepositErrorFragment.class.getSimpleName());
 					isDuplicateError = bundle.getBoolean(DuplicateCheckErrorFragment.class.getSimpleName());
 				}
-				
+
 				//Navigate to timeout error if check deposit error fragment flag is found in bundle
 				if( isDepositError ) {
 					fragment = new CheckDepositErrorFragment();
@@ -675,7 +675,7 @@ public final class BankConductor  extends Conductor {
 				else if(isReSelectingAccount || BankUser.instance().hasAccounts() ) {	
 					fragment = new BankDepositSelectAccount();	
 				}
-				
+
 				//TODO: Need to read bundle and see if it has the data required for showing Check 
 				//      Deposit Confirmation Page
 				//fragment = new BankDepositConfirmFragment();
@@ -707,7 +707,7 @@ public final class BankConductor  extends Conductor {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 
 			navActivity.closeDialog();
-			
+
 			fragment = new CaptureReviewFragment();
 
 			if( fragment != null ) {
@@ -799,7 +799,7 @@ public final class BankConductor  extends Conductor {
 			}
 		}
 	}
-	
+
 	/**
 	 * Authorizes a Bank user against the service. If successful, the user will
 	 * be logged-in and taken to the Bank landing page of the application.
@@ -857,6 +857,20 @@ public final class BankConductor  extends Conductor {
 		final AtmLocatorActivity activity = (AtmLocatorActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
 		BankAtmUtil.sendDirectionsEmail(bundle);
+	}
+
+	/**
+	 * Navigate to a specific FAQ page
+	 */
+	public static void navigateToSpecificFaq() {
+		// TODO Implement this for FAQ	
+	}
+
+	/**
+	 * Navigate to the all FAQ landing page
+	 */
+	public static void navigateToAllFaq() {
+		// TODO Implement this for FAQ		
 	}
 
 	/**
