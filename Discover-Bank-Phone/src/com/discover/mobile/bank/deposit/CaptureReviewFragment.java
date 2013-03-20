@@ -43,7 +43,8 @@ public class CaptureReviewFragment extends BankDepositBaseFragment {
 	 * we need a reference to it so we can refresh it on resume
 	 */
 	private ReviewCheckDepositTableCell checkImageCell;
-	
+	private final int depositSubmitActivityId = 1;
+
 	int depositAmount = 0;
 	Account account = null;
 	
@@ -80,8 +81,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment {
 		final LinearLayout footer = (LinearLayout)view.findViewById(R.id.footer_layout);
 		footer.setVisibility(View.GONE);
 
-		setupSubmitLink();
-		actionLink.setOnClickListener(cancelLinkClickListener);
 		setupRetakeLinks(view);
 		return view;
 	}
@@ -101,44 +100,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment {
 	private Activity getThisActivity() {
 		return getActivity();
 	}
-	
-	private final int depositSubmitActivity = 1;
-	private void setupSubmitLink() {
-		actionButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(final View v) {
-				final Intent depositSubmission = new Intent(getThisActivity(), DepositSubmissionActivity.class);
-				final Bundle extras = getArguments();
-				if(extras != null)
-					depositSubmission.putExtras(extras);
-				startActivityForResult(depositSubmission, depositSubmitActivity);
-			}
-		});
-	}
-	
-	private final OnClickListener cancelLinkClickListener = new OnClickListener() {
-		
-		@Override
-		public void onClick(final View v) {
-			final Activity currentActivity = getActivity();
-			final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
-
-			final ModalDefaultTwoButtonBottomView bottom = new ModalDefaultTwoButtonBottomView(currentActivity, null);
-			bottom.setOkButtonText(R.string.do_not_go_back);
-			bottom.setCancelButtonText(R.string.go_back_and_cancel);
-			
-			modalTopView.setTitle(R.string.cancel_deposit_title);
-			modalTopView.setContent(R.string.cancel_deposit_content);
-			
-			modalTopView.getHelpFooter().show(false);
-			
-			final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(currentActivity, modalTopView, bottom);
-			bottom.getOkButton().setOnClickListener(dismissModalOnClickListener(modal));
-			bottom.getCancelButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
-			modal.show();
-		}
-	};
 	
 	private OnClickListener dismissModalOnClickListener(final ModalAlertWithTwoButtons modal) {
 		return new OnClickListener() {
@@ -320,14 +281,32 @@ public class CaptureReviewFragment extends BankDepositBaseFragment {
 	
 	@Override
 	protected void onActionButtonClick() {
-		// TODO Auto-generated method stub
-
+		final Intent depositSubmission = new Intent(getThisActivity(), DepositSubmissionActivity.class);
+		final Bundle extras = getArguments();
+		if(extras != null)
+			depositSubmission.putExtras(extras);
+		
+		startActivityForResult(depositSubmission, depositSubmitActivityId);
 	}
 
 	@Override
 	protected void onActionLinkClick() {
-		// TODO Auto-generated method stub
+		final Activity currentActivity = getActivity();
+		final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
 
+		final ModalDefaultTwoButtonBottomView bottom = new ModalDefaultTwoButtonBottomView(currentActivity, null);
+		bottom.setOkButtonText(R.string.do_not_go_back);
+		bottom.setCancelButtonText(R.string.go_back_and_cancel);
+		
+		modalTopView.setTitle(R.string.cancel_deposit_title);
+		modalTopView.setContent(R.string.cancel_deposit_content);
+		
+		modalTopView.getHelpFooter().show(false);
+		
+		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(currentActivity, modalTopView, bottom);
+		bottom.getOkButton().setOnClickListener(dismissModalOnClickListener(modal));
+		bottom.getCancelButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
+		modal.show();
 	}
 
 }
