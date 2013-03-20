@@ -26,6 +26,7 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.modals.HowItWorksModalTop;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 
 /**
@@ -292,5 +293,11 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	private void loadTermsBoolean(final Bundle bundle) {
 		if(bundle != null)
 			acceptedTerms = bundle.getBoolean(BankExtraKeys.ACCEPTED_TERMS);
+	}
+
+	@Override
+	protected void helpMenuOnClick(final HelpWidget help) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,7 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" 
+    android:layout_height="fill_parent" 
+    android:id="@+id/main_payment_content"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:background="@drawable/light_gray_bkgrd" >
@@ -15,6 +15,7 @@
 	        
 	 <View
 		 android:id="@+id/divider"
+		 android:layout_below="@+id/schedule_pay_header"
 		 android:layout_width="wrap_content"
 		 android:layout_height="@dimen/divider_height"
 		 android:layout_marginLeft="@dimen/forms_inner_padding"
@@ -25,6 +26,7 @@
 	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
+	    android:layout_below="@+id/divider"
 	    android:background="@drawable/light_gray_bkgrd" >
 	
 	    <RelativeLayout
@@ -334,4 +336,8 @@
 	        
 	    </RelativeLayout>	
 	</ScrollView>
-</LinearLayout>
+	<com.discover.mobile.common.help.HelpWidget
+            android:id="@+id/help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+</RelativeLayout>

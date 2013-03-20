@@ -27,6 +27,7 @@ import com.discover.mobile.bank.services.deposit.DepositDetail;
 import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.error.bank.BankError;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
@@ -453,5 +454,11 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 				}
 			}, 1000);
 		}
+	}
+
+	@Override
+	protected void helpMenuOnClick(final HelpWidget help) {
+		// TODO Auto-generated method stub
+		
 	}
 }

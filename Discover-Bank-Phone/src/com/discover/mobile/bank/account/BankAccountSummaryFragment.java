@@ -61,7 +61,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getAccountSummaryHelpItems());
+		help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
 
 		/**Create footer that will listen when user taps on Need Help Number to dial*/
 		helpFooter = new NeedHelpFooter((ViewGroup)view);

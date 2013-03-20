@@ -10,10 +10,12 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
+import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.google.common.base.Strings;
 
@@ -226,6 +228,11 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.REVIEW_PAYEMENTS_SECTION;
+	}
+
+	@Override
+	protected void helpMenuOnClick(final HelpWidget help) {
+		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
 	}
 
 }

@@ -284,7 +284,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	public void setUpMenu(){
 		final HelpWidget help = header.getHelp();
-		help.showHelpItems(HelpMenuListFactory.instance().getAccountActivityHelpItems());
+		help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
 	}
 
 	/**

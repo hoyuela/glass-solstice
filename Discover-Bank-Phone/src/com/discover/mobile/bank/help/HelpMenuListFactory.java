@@ -28,6 +28,9 @@ public final class HelpMenuListFactory {
 
 	/**Default menu item representing the "1-800-290-9885" item*/
 	private final HelpItemGenerator number;
+	
+	/**Pay Bills Mnenu item*/
+	private final HelpItemGenerator paybills;
 
 	/**Instance of the factory*/
 	private static HelpMenuListFactory factory;
@@ -38,6 +41,7 @@ public final class HelpMenuListFactory {
 	private HelpMenuListFactory(){
 		allFaq = new HelpItemGenerator(R.string.help_all_faq, R.color.blue, false, getAllFaqListener());
 		number = new HelpItemGenerator(R.string.help_menu_number, R.color.blue, false, getNumberListener());
+		paybills = new HelpItemGenerator(R.string.pay_bills_help, R.color.blue, false, getNumberListener());
 	}
 
 	/**
@@ -51,27 +55,24 @@ public final class HelpMenuListFactory {
 		return factory;
 	}
 
-	/**
-	 * Get the menu items that are associated with the account activity pages
-	 * @return - the list of help menu items associated with the account activity pages
-	 */
-	public List<HelpItemGenerator> getAccountActivityHelpItems(){
-		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
-		final HelpItemGenerator item = new HelpItemGenerator(
-				R.string.help_menu_account_activity, R.color.blue, false, getDefaultClickListener());
-		items.add(item);
-		items.add(number);
-		items.add(allFaq);
-		return items;
-	}
 
 	/**
 	 * Get the menu items that are associated with the account summary pages
 	 * @return - the list of help menu items associated with the account summary pages
 	 */
-	public List<HelpItemGenerator> getAccountSummaryHelpItems(){
+	public List<HelpItemGenerator> getAccountHelpItems(){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
-		items.add(number);
+		items.add(allFaq);
+		return items;
+	}
+	
+	/**
+	 * Get the menu items that are associated with the pay bills pages
+	 * @return - the list of help mneu items associated with the pay bills pages
+	 */
+	public List<HelpItemGenerator> getPayBillsHelpItems(){
+		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
+		items.add(paybills);
 		items.add(allFaq);
 		return items;
 	}

@@ -113,6 +113,7 @@
 	            android:layout_height="@dimen/orange_help_button_size"
 	            android:layout_centerVertical="true"
 	            android:contentDescription="@null"
+	            android:visibility="invisible"
 	            android:src="@drawable/question_mark_icon" />
         </RelativeLayout>
     </RelativeLayout>
