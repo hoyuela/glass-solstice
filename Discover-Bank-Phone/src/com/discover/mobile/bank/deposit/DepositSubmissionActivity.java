@@ -117,10 +117,20 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 
 			if(pictureFile != null)
 				decodedImage = BitmapFactory.decodeFile(pictureFile.getAbsolutePath());
+			else
+				Log.e(TAG, "Error : Could Not Decode image from file path!");
 			
-			decodedImage.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, imageBitStream);
-			base64Image.append(Base64.encodeToString(imageBitStream.toByteArray(), Base64.NO_WRAP));
+			if(decodedImage != null)
+				decodedImage.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, imageBitStream);
+			else
+				Log.e(TAG, "Error : Could not compress decoded image!");
+			
+			if(!Strings.isNullOrEmpty(base64Image.toString()))
+				base64Image.append(Base64.encodeToString(imageBitStream.toByteArray(), Base64.NO_WRAP));
+			else
+				Log.e(TAG, "Error : Compressed image was empty!");
 		}
+		
 		return base64Image.toString();
 	}
 	

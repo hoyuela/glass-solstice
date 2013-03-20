@@ -2,11 +2,13 @@ package com.discover.mobile.bank.framework;
 
 import java.io.Serializable;
 
+import com.discover.mobile.bank.deposit.CheckDepositCaptureActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.framework.CacheManager;
 
 /**
@@ -153,6 +155,8 @@ public final class BankUser extends CacheManager implements Serializable {
 		BankUrlManager.clearLinks();
 		currentAccount = null;
 		payees = null;
+		//Ensure that any cached check images are deleted upon logout or timeout.
+		CheckDepositCaptureActivity.deleteBothImages(DiscoverActivityManager.getActiveActivity());
 	}
 
 	/**
