@@ -45,8 +45,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	
 	public static final int RETAKE_FRONT = 1;
 	public static final int RETAKE_BACK  = 2;
-	public static final String FRONT_PICTURE = "pic1";
-	public static final String BACK_PICTURE = "pic2";
+	public static final String FRONT_PICTURE = "frontCheckImage";
+	public static final String BACK_PICTURE = "backCheckImage";
 	
 	//BUTTONS
 	private Button captureButton;
@@ -193,6 +193,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			setupPictureRetake(extras.getInt(BankExtraKeys.RETAKE_PICTURE));
 		}
 	}
+	
 	/**
 	 * Deletes the front check image from storage.
 	 * @param context the calling context.
@@ -250,7 +251,10 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			
 			@Override
 			public void onClick(final View v) {
-				finish();
+				if(stepOneCheck.getVisibility() != View.VISIBLE || stepTwoCheck.getVisibility() != View.VISIBLE) {
+					clearImageCacheIfNotRetaking();
+					finish();
+				}
 			}
 		});
 		
@@ -267,6 +271,23 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				}
 			}
 		});
+	}
+	
+	/**
+	 * Clears the image cache if the user is not re-taking an image
+	 */
+	private void clearImageCacheIfNotRetaking() {
+		final Bundle extras = getIntent().getExtras();
+		int retakeValue = 0;
+		if(extras != null)
+			retakeValue = extras.getInt(BankExtraKeys.RETAKE_PICTURE);
+		
+		/**
+		 * If the user was not re-taking an image we can delete the cache.
+		 */
+		if(retakeValue < 1) {
+			deleteBothImages(this);
+		}
 	}
 	
 	/**
@@ -361,6 +382,12 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		}
 	};
 	
+	
+	@Override
+	public void onBackPressed() {
+		clearImageCacheIfNotRetaking();
+		super.onBackPressed();
+	}
 	/**
 	 * This is the click listener for the retake button. It resets the camera preview and sets up the 
 	 * buttons on the screen to their default state.

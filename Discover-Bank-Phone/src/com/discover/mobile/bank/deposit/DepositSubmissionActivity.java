@@ -14,7 +14,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
@@ -57,9 +56,9 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	
 	@Override
 	public void onBackPressed() {
-		Toast.makeText(this, "Be Sure to Disable the Back Button!", Toast.LENGTH_LONG).show();  
-		super.onBackPressed();
-		finish();
+		/**
+		 * Do nothing because we want the back button to be disabled for this activity.
+		 */
 	}
 	
 	/**
@@ -117,10 +116,20 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 
 			if(pictureFile != null)
 				decodedImage = BitmapFactory.decodeFile(pictureFile.getAbsolutePath());
+			else
+				Log.e(TAG, "Error : Could Not Decode image from file path!");
 			
-			decodedImage.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, imageBitStream);
-			base64Image.append(Base64.encodeToString(imageBitStream.toByteArray(), Base64.NO_WRAP));
+			if(decodedImage != null)
+				decodedImage.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, imageBitStream);
+			else
+				Log.e(TAG, "Error : Could not compress decoded image!");
+			
+			if(!Strings.isNullOrEmpty(base64Image.toString()))
+				base64Image.append(Base64.encodeToString(imageBitStream.toByteArray(), Base64.NO_WRAP));
+			else
+				Log.e(TAG, "Error : Compressed image was empty!");
 		}
+		
 		return base64Image.toString();
 	}
 	

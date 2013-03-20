@@ -36,8 +36,14 @@ public class ScalableImage extends View {
   	 */
   	@Override protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
   		logo = this.getBackground();
-	    final int width = MeasureSpec.getSize(widthMeasureSpec);
-	    final int height = width * logo.getIntrinsicHeight() / logo.getIntrinsicWidth();
+  		int width = 0;
+  		int height = 0;
+  		
+  		if(logo != null) {
+  			width = MeasureSpec.getSize(widthMeasureSpec);
+  			height = width * logo.getIntrinsicHeight() / logo.getIntrinsicWidth();
+  		}
+  		
 	    setMeasuredDimension(width, height);
   	}
 }
