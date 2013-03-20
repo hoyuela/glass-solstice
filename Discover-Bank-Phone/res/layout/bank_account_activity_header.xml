@@ -4,27 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageButton
-        android:id="@+id/help"
-        style="@style/orange_help_button"
-        android:layout_width="@dimen/orange_help_button_size"
-        android:layout_height="@dimen/orange_help_button_size"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" />
-
     <TextView
         android:id="@+id/title_text"
         style="@style/page_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_marginBottom="@dimen/table_inner_padding"
         android:layout_marginLeft="@dimen/forms_inner_padding"
         android:layout_marginRight="@dimen/forms_inner_padding"
         android:layout_marginTop="@dimen/groups_of_elements_padding"
         android:layout_toLeftOf="@+id/help"
-        android:layout_alignParentLeft="true"
         android:gravity="left"
-        android:text="@string/activity_title"/>
+        android:text="@string/activity_title" />
 
     <RelativeLayout
         android:id="@+id/header_labels"
@@ -100,7 +92,6 @@
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_toRightOf="@+id/lable3"
             android:gravity="right" />
-        
     </RelativeLayout>
 
     <LinearLayout
@@ -122,12 +113,12 @@
             android:layout_weight="1"
             android:background="@drawable/toggle_left_on"
             android:checked="true"
+            android:paddingBottom="@dimen/between_related_elements_padding"
+            android:paddingTop="@dimen/between_related_elements_padding"
             android:textColor="@color/white"
             android:textOff="@string/activity_posted_button"
             android:textOn="@string/activity_posted_button"
             android:textSize="@dimen/small_copy_min"
-            android:paddingTop="@dimen/between_related_elements_padding"
-            android:paddingBottom="@dimen/between_related_elements_padding"
             android:textStyle="bold" />
 
         <ToggleButton
@@ -137,12 +128,12 @@
             android:layout_weight="1"
             android:background="@drawable/toggle_right_off"
             android:checked="false"
+            android:paddingBottom="@dimen/between_related_elements_padding"
+            android:paddingTop="@dimen/between_related_elements_padding"
             android:textColor="@color/body_copy"
             android:textOff="@string/activity_scheduled_button"
             android:textOn="@string/activity_scheduled_button"
             android:textSize="@dimen/small_copy_min"
-            android:paddingTop="@dimen/between_related_elements_padding"
-            android:paddingBottom="@dimen/between_related_elements_padding"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -168,5 +159,10 @@
         android:layout_below="@+id/table_title"
         android:layout_marginBottom="@dimen/between_related_elements_padding"
         android:layout_marginTop="@dimen/between_related_elements_padding" />
+
+    <com.discover.mobile.common.help.HelpWidget
+        android:id="@+id/help"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

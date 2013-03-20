@@ -19,16 +19,6 @@
         android:textStyle="bold"
         android:text="@string/hi_text"/>
 
-    <ImageButton
-        android:id="@+id/help"
-        android:layout_width="@dimen/orange_help_button_size"
-        android:layout_height="@dimen/orange_help_button_size"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/between_related_elements_padding"
-        android:layout_marginBottom="@dimen/between_related_elements_padding"
-        android:background="@drawable/question_mark_icon" />
-
     <ImageView
         android:id="@+id/cardBankIcon"
         android:layout_width="wrap_content"
@@ -51,7 +41,7 @@
         android:id="@+id/bottom_line"
         android:layout_width="fill_parent"
         android:layout_height="3dp"
-        android:layout_below="@+id/help"
+        android:layout_alignParentBottom="true"
         android:src="@drawable/table_solid_line" />
 
 </RelativeLayout>

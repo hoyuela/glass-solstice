@@ -4,21 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageButton
-        android:id="@+id/help"
-        style="@style/orange_help_button"
-        android:layout_width="@dimen/orange_help_button_size"
-        android:layout_height="@dimen/orange_help_button_size"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" />
-
     <LinearLayout
         android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/help"
         android:layout_marginLeft="@dimen/forms_inner_padding"
         android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginTop="40dp"
         android:weightSum="3" >
 
         <ToggleButton
@@ -81,5 +73,10 @@
         android:layout_below="@+id/status"
         android:layout_marginBottom="@dimen/between_related_elements_padding"
         android:layout_marginTop="@dimen/groups_of_elements_padding" />
+    
+    <com.discover.mobile.common.help.HelpWidget
+        android:id="@+id/help"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

@@ -316,4 +316,13 @@
         <item name="android:textSize">12sp</item>
         <item name="android:paddingTop">@dimen/between_related_elements_padding</item>
     </style>
+    
+    <style name="orange_help_button">
+        <item name="android:layout_marginLeft">@dimen/groups_of_elements_padding</item>
+        <item name="android:layout_marginRight">@dimen/help_icon_right_padding</item>
+        <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item>
+        <item name="android:background">@drawable/question_mark_icon</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>
