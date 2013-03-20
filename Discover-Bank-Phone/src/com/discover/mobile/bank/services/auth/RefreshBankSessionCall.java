@@ -1,8 +1,13 @@
 package com.discover.mobile.bank.services.auth;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 
-import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.bank.services.BankNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
@@ -10,7 +15,7 @@ import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 
-public class RefreshBankSessionCall extends BankJsonResponseMappingNetworkServiceCall<Object> {
+public class RefreshBankSessionCall extends BankNetworkServiceCall<Object> {
 
 	/**Reference handler for returning to the UI*/
 	final TypedReferenceHandler<Object> handler;
@@ -18,20 +23,12 @@ public class RefreshBankSessionCall extends BankJsonResponseMappingNetworkServic
 	public RefreshBankSessionCall(final Context context, final AsyncCallback<Object> callback) {
 		super(context, new GetCallParams(BankUrlManager.getRefreshSessionUrl()) {
 			{
-				//This service call is made after authenticating and receiving a token,
-				//therefore the session should not be cleared otherwise the token will be wiped out
 				clearsSessionBeforeRequest = false;
-
-				//This ensures the token is added to the HTTP Authorization Header of the HTTP request
 				requiresSessionForRequest = true;
-
-				//This ensure the required device information is supplied in the Headers of the HTTP request
 				sendDeviceIdentifiers = true;
-
-				// Specify what error parser to use when receiving an error response is received
 				errorResponseParser = BankErrorResponseParser.instance();
 			}
-		}, null);
+		});
 		
 		handler = new StrongReferenceHandler<Object>(callback);
 		
@@ -40,6 +37,13 @@ public class RefreshBankSessionCall extends BankJsonResponseMappingNetworkServic
 	@Override
 	protected TypedReferenceHandler<Object> getHandler() {
 		return handler;
+	}
+
+	@Override
+	protected Object parseSuccessResponse(int status,
+			Map<String, List<String>> headers, InputStream body)
+			throws IOException {
+		return null;
 	}
 	
 }

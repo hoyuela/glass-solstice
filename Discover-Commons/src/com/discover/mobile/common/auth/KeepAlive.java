@@ -7,7 +7,7 @@ import com.discover.mobile.common.facade.FacadeFactory;
 public class KeepAlive {
 
 	/** Minimum amount of time required before making new bank refresh call. */
-	public static final long MIN_TIME_FOR_BANK_REFRESH = 480;
+	public static final long MIN_TIME_FOR_BANK_REFRESH = 10;//480;
 
 	/** Minimum amount of time required before making new card refresh call. */
 	public static final long MIN_TIME_FOR_CARD_REFRESH = 30;
@@ -36,6 +36,7 @@ public class KeepAlive {
 		final long currentTime = Calendar.getInstance().getTimeInMillis();
 
 		if ((currentTime - lastBankRefreshTimeInMillis) > MIN_TIME_FOR_BANK_REFRESH) {
+			lastBankRefreshTimeInMillis = currentTime;
 			return true;
 		}
 		return false;
@@ -53,6 +54,7 @@ public class KeepAlive {
 		final long currentTime = Calendar.getInstance().getTimeInMillis();
 
 		if ((currentTime - lastCardRefreshTimeInMillis) > MIN_TIME_FOR_CARD_REFRESH) {
+			lastCardRefreshTimeInMillis = currentTime;
 			return true;
 		}
 		return false;
@@ -67,12 +69,10 @@ public class KeepAlive {
 		Calendar calendar = Calendar.getInstance();
 
 		if (isBankAuthenticated && isBankRefreshRequired()) {
-			lastBankRefreshTimeInMillis = calendar.getTimeInMillis();
 			FacadeFactory.getBankKeepAliveFacade().refreshBankSession();
 		}
 
 		if (isCardAuthenticated && isCardRefreshRequired()) {
-			lastCardRefreshTimeInMillis = calendar.getTimeInMillis();
 			FacadeFactory.getCardKeepAliveFacade().refreshCardSession();
 		}
 	}

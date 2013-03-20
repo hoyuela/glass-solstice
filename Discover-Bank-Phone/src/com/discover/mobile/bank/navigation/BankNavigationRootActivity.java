@@ -144,6 +144,7 @@ implements OnPaymentCanceledListener {
 			// User has become inactive and will be set to timed-out.
 			if ( secs > BankUrlManager.MAX_IDLE_TIME) {
 				Globals.setLoggedIn(false);
+				KeepAlive.setBankAuthenticated(false);
 				Globals.setCurrentUser("");
 				BankUser.instance().clearSession();
 				BankConductor.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED, null);

@@ -60,6 +60,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.StartListener
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.framework.NetworkServiceCallManager;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -263,6 +264,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			//during a strong auth or after. Have to wait for navigation root to come to foreground first.
 			this.handleSuccessLater(sender, result);
 		}
+		
+		
 		//Download Customer Information if a Login call is successful
 		else if( sender instanceof CreateBankLoginCall ) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
@@ -419,7 +422,10 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		// Handler for session updates
 		else if(sender instanceof RefreshBankSessionCall) {
-			// TODO handle any refresh success logic here.
+			// TODO I'm curious as to how this logic will work in BaseActivity (Scott's deposit check).
+			final NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+			activity.closeDialog();
+			Log.e("","SUCCESS");
 		}
 		
 		else {

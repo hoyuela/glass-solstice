@@ -498,7 +498,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		final AsyncCallback<Object>  callback =
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Object.class,
-						activity, (ErrorHandlerUi) activity)
+						activity, null)
 						.build();
 
 		return new RefreshBankSessionCall(activity, callback);

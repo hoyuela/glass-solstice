@@ -31,8 +31,6 @@ public class BankUrlManager  {
 	//	private static String BASE_URL = "http://192.168.2.173:8008";
 
 	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
-	public static final long MIN_TIME_FOR_BANK_REFRESH = 480;
-	public static final long MIN_TIME_FOR_CARD_REFRESH = 30;
 	
 	public static final String EMPTY = "";
 	public static final String SLASH = "/";
