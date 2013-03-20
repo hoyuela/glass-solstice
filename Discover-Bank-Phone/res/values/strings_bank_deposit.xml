@@ -28,6 +28,7 @@
     <string name="bank_deposit_duplicate_check_title">Duplicate Check\nError</string>
     <string name="bank_deposit_another">Deposit Another Check</string>
     <string name="bank_deposit_duplicate_check_body">Oops! This check has already been deposited into your selected bank account.</string>
+    <string name="bank_deposit_amount">Amount</string>
     <string name="capture">Capture</string>
     <string name="picture_confirm">Confirm</string>
     <string name="front">Front</string>
@@ -56,7 +57,7 @@
 	<string name="cancel_deposit_content">All information you entered for this deposit will be lost. You\'ll need to re-enter the information to complete the transaction.</string>
 
 	<string name="are_you_sure_title">Are You Sure You Want to Go Back?</string>
-	<string name="account_ending_in">Account Ending In</string>
+	<string name="account_ending_in">Account ending in</string>
 	
 	<string name="sending_deposit_title_text">Sending Deposit</string>
 	<string name="sending_deposit_detail_text">Your deposit is being sent securely to the bank. Please wait for the transaction to be completed.</string>

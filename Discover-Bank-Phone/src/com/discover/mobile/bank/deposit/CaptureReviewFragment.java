@@ -20,6 +20,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankEditDetail;
 import com.discover.mobile.bank.services.account.Account;
@@ -28,6 +29,7 @@ import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.bank.BankError;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
@@ -125,8 +127,11 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		
 		restoreState();
 		
-		/*Check if an exception occurred  that needs to be handled*/
+		/**Check if an exception occurred  that needs to be handled*/
 		handlePendingSocketException();
+		
+		/**Check if a successful response was received*/
+		handlePendingConfirmation();
 	}
 	
 	/**
@@ -145,9 +150,28 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			/**Clear the last exception occurred to avoid the back press not working*/
 			exceptionHandler.clearLastException();
 			
+			BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.DepositError);		
+		}
+	}
+	
+	/**
+	 * Method checks if a successful response was recevied for SubmitCheckDepositCall if so
+	 * navigate to confirmation page.
+	 */
+	private void handlePendingConfirmation() {
+		final NetworkServiceCall<?> networkServiceCall = BankNetworkServiceCallManager.getInstance().getLastServiceCall();
+	
+		//Pop this fragment from the back stack;
+		this.getActivity().getSupportFragmentManager().popBackStackImmediate();
+		
+		//Verify that network service callis not null
+		if (networkServiceCall != null && networkServiceCall instanceof SubmitCheckDepositCall) {	
+			final SubmitCheckDepositCall submitDepositCall = (SubmitCheckDepositCall)networkServiceCall;
+			
+			//Navigate to Check Deposit Confirmation Page
 			final Bundle bundle = new Bundle();
-			bundle.putBoolean(CheckDepositErrorFragment.class.getSimpleName(), true);
-			BankConductor.navigateToCheckDepositWorkFlow(bundle);		
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, submitDepositCall.getResult());
+			BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.Confirmation);		
 		}
 	}
 	
@@ -262,9 +286,8 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			@Override
 			public void onClick(final View v) {
 				final Bundle args = getArguments();
-				args.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, true);
 				args.putInt(BankExtraKeys.AMOUNT, depositAmount);
-				BankConductor.navigateToCheckDepositWorkFlow(args);
+				BankConductor.navigateToCheckDepositWorkFlow(args, BankDepositWorkFlowStep.SelectAccount);
 			}
 		});
 		content.add(accountDetail);
@@ -279,9 +302,8 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			@Override
 			public void onClick(final View v) {
 				final Bundle adjustAmountBundle = getArguments();
-				adjustAmountBundle.putBoolean(BankExtraKeys.REENTER_AMOUNT, true);
 
-				BankConductor.navigateToCheckDepositWorkFlow(adjustAmountBundle);
+				BankConductor.navigateToCheckDepositWorkFlow(adjustAmountBundle, BankDepositWorkFlowStep.SelectAmount);
 			}
 		});
 		
@@ -413,13 +435,13 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		outState.putInt(BankExtraKeys.AMOUNT, depositAmount);
 		
 		/**Store error shown at bottom of amount field*/
-		if( amountDetail.getEditableField().isInErrorState ) {
+		if( amountDetail != null && amountDetail.getEditableField().isInErrorState ) {
 			final String key = amountDetail.getTopLabel().getText().toString();
 			outState.putString(key +KEY_ERROR_EXT, amountDetail.getEditableField().getErrorLabel().getText().toString());
 		}
 		
 		/**Store error shown at bottom of captured image field*/
-		if( checkImageCell.getErrorLabel().getVisibility() == View.VISIBLE ) {
+		if(checkImageCell != null && checkImageCell.getErrorLabel().getVisibility() == View.VISIBLE ) {
 			outState.putString(IMAGE_CELL_ERROR_KEY, checkImageCell.getErrorLabel().getText().toString());
 		}
 	}

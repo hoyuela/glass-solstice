@@ -26,6 +26,8 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 
 		/**Reference handler to allow the call to be back on the UI*/
 		private final SimpleReferenceHandler<DepositDetail> handler;
+		/**Holds the result from the response from the server*/
+		DepositDetail result;
 		
 		public SubmitCheckDepositCall(final Context context, final AsyncCallback<DepositDetail> callback,
 				final DepositDetail modelClass) {
@@ -52,10 +54,16 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 		@Override
 		protected DepositDetail parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 				throws IOException {
-			final DepositDetail data = super.parseSuccessResponse(status, headers, body);
+			result = super.parseSuccessResponse(status, headers, body);	
 			
-			
-			return data;
+			return result;
+		}
+		
+		/**
+		 * @return Returns the result from the response from the server.
+		 */
+		public DepositDetail getResult() {
+			return result;
 		}
 
 	}

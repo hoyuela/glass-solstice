@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
+import com.discover.mobile.bank.deposit.BankDepositWorkFlowStep;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -325,7 +326,7 @@ public class BankErrorHandler implements ErrorHandler {
 				
 				final Bundle bundle = new Bundle();
 				bundle.putString(BankDepositForbidden.KEY_ERROR_MESSAGE, msgErrResponse.getErrorMessage());
-				BankConductor.navigateToDepositForbidden(bundle);
+				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAccount);
 				handled = true;
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {

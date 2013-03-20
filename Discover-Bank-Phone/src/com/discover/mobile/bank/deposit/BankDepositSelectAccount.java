@@ -179,14 +179,14 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 					//Reset the review deposit bundle boolean to prevent odd navigation issues later.
 					args.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, false);
 					args.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
-					BankConductor.navigateToCheckDepositReview(args);
+					BankConductor.navigateToCheckDepositWorkFlow(args, BankDepositWorkFlowStep.ReviewDeposit);
 				}
 				/**See if the limits for the account have already been downloaded and cached*/
 				else if( null != account.limits && !reviewDepositOnFinish) {
 					/**Navigate to Check Deposit - Select Amount Page*/
 					final Bundle bundle = new Bundle();
 					bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
-					BankConductor.navigateToCheckDepositWorkFlow(bundle);
+					BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAmount);
 				} else {
 					if(reviewDepositOnFinish){
 						final BankNavigationRootActivity current = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();

@@ -47,7 +47,7 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 						BankConductor.navigateToHomePage();
 						
 						/**Navigates to either to Check Deposit - Select Account Page or Check Deposit - Accept Terms page*/
-						BankConductor.navigateToCheckDepositWorkFlow(null);
+						BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.SelectAccount);
 					} else {
 						
 						if( Log.isLoggable(TAG, Log.WARN)) {

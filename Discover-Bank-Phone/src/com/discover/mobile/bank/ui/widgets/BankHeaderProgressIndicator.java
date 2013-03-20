@@ -100,7 +100,7 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 			step2Indicator.setVisibility(View.INVISIBLE);
 		} else if( position == 2) {
 			step2Indicator.setVisibility(View.VISIBLE);
-			step2Confirm.setVisibility(View.INVISIBLE);
+			step2Confirm.setVisibility(View.GONE);
 		}
 		
 		if( position == 3 || step2.getVisibility() != View.VISIBLE ) {
