@@ -14,7 +14,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
@@ -57,9 +56,9 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	
 	@Override
 	public void onBackPressed() {
-		Toast.makeText(this, "Be Sure to Disable the Back Button!", Toast.LENGTH_LONG).show();  
-		super.onBackPressed();
-		finish();
+		/**
+		 * Do nothing because we want the back button to be disabled for this activity.
+		 */
 	}
 	
 	/**
