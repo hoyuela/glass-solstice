@@ -122,6 +122,20 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	}
 	
 	/**
+	 * Method used to set the error string for an inline error label and make it visible.
+	 * 
+	 * @param view TextView that represents an inline error whose text will be set using the param text.
+	 * @param text String to show to the user as an inline error
+	 */
+	public void showErrorLabelNoFocus(final String text ) {
+		if( errorLabel != null && !Strings.isNullOrEmpty(text)  ) {
+			errorLabel.setText(text);
+			errorLabel.setVisibility(View.VISIBLE);
+			this.isInErrorState = true;
+		}
+	}
+	
+	/**
 	 * Method used to set pattern for characters which are considered invalid for this text field.
 	 * 
 	 * @param pattern Reference to a pattern object which is to be used to generate a Matcher to validate the text

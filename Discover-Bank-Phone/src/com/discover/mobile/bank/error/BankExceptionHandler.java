@@ -1,14 +1,8 @@
 package com.discover.mobile.bank.error;
 
-import java.net.SocketTimeoutException;
-
-import android.os.Bundle;
-
-import com.discover.mobile.bank.deposit.CheckDepositErrorFragment;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
-import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
@@ -27,10 +21,20 @@ import com.discover.mobile.common.net.NetworkServiceCall;
  * @author henryoyuela
  * 
  */
-public class BankExceptionHandler extends BaseExceptionFailureHandler {
+public class BankExceptionHandler extends BaseExceptionFailureHandler {	
+	private Throwable lastThrowable;
+	private NetworkServiceCall<?> lastSender;
+	private static final BankExceptionHandler instance = new BankExceptionHandler();
+	
+	private BankExceptionHandler() {
 
-	public BankExceptionHandler() {
-
+	}
+	
+	/**
+	 * @return Returns reference to the singleton instance of this class
+	 */
+	public static BankExceptionHandler getInstance() {
+		return instance;
 	}
 
 	@Override
@@ -46,6 +50,10 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 	public boolean handleFailure(final NetworkServiceCall<?> sender,
 			final Throwable arg0) {
 
+		/**Store the last exception and the last network service call that caused the exception*/
+		lastThrowable = arg0;
+		lastSender = sender;
+		
 		// If exception occurred because of a pre-auth call just continue to the login page
 		if ( sender instanceof PreAuthCheckCall ) {
 			final LoginActivity loginActivity = (LoginActivity) DiscoverActivityManager
@@ -59,12 +67,6 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 					IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE,
 					null);
 		}
-		// If exception because of a check deposit
-		else if( sender instanceof SubmitCheckDepositCall && arg0 instanceof SocketTimeoutException ) {
-			final Bundle bundle = new Bundle();
-			bundle.putBoolean(CheckDepositErrorFragment.class.getSimpleName(), true);
-			BankConductor.navigateToCheckDepositWorkFlow(bundle);
-		}
 		//Catch-all exception handler
 		else {
 			BankErrorHandler.getInstance().handleGenericError(0);
@@ -72,5 +74,27 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 
 		//Must return true to let GenericAsyncCallback to stop calling any further listeners
 		return true;
+	}
+	
+	/**
+	 * @return Reference to last exception that was raised by a network service call sent by the application
+	 */
+	public Throwable getLastException() {
+		return lastThrowable;
+	}
+	
+	/**
+	 * @return Reference to the service call that caused the last exception that occurred in the application.
+	 */
+	public NetworkServiceCall<?> getLastSender() {
+		return lastSender;
+	}
+	
+	/**
+	 * Clears the last exception that occured in the application because of a network service call.
+	 */
+	public void clearLastException() {
+		lastThrowable = null;
+		lastSender = null;
 	}
 }

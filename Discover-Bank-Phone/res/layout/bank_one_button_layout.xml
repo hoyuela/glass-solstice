@@ -65,9 +65,8 @@
 		         android:layout_below="@+id/top_note_text"
 		         android:layout_alignLeft="@+id/top_note_text"
 		         android:text="@string/status_text"
-		         android:textColor="@color/error_indicator"
 		         android:layout_marginBottom="@dimen/forms_inner_padding"
-		         android:visibility="gone" />
+		         style="@style/inline_error_label" />
               
             <LinearLayout
                 android:id="@+id/content_table"

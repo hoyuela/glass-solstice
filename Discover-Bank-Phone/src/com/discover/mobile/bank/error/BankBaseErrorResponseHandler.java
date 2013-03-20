@@ -126,9 +126,8 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			} else if( errCode.equals(BankErrorCodes.ERROR_MAINTENANCE_UNPLANNED )) {
 				mErrorHandler.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
 			//Error Handling for 422 Unprocessable Entity
-			} else if( msgErrResponse.getHttpStatusCode() == BankHttpStatusCodes.HTTP_UNPROCESSABLE_ENTITY.getValue() &&
-					   msgErrResponse.getHttpStatusCode() == HttpURLConnection.HTTP_BAD_REQUEST ) {
-				//Check if 422 and 400 could be meant for inline error handling, if it fails to handle them then send to generic handler
+			} else if( msgErrResponse.getHttpStatusCode() == BankHttpStatusCodes.HTTP_UNPROCESSABLE_ENTITY.getValue()  ) {
+				//Check if 422 could be meant for inline error handling, if it fails to handle them then send to generic handler
 				final BankErrorHandler errorHandler = (BankErrorHandler)BankErrorHandler.getInstance();
 				if( !errorHandler.handleUnprocessableEntity(msgErrResponse) ) {
 					mErrorHandler.handleGenericError(msgErrResponse.getHttpStatusCode());

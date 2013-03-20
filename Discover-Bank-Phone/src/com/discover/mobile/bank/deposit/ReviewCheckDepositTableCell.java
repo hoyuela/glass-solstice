@@ -123,4 +123,22 @@ public class ReviewCheckDepositTableCell extends RelativeLayout {
 			errorLabel.setVisibility(View.VISIBLE);
 		}
 	}
+	
+	/**
+	 * 
+	 * @return Returns reference to TextView that shows inline error in widget.
+	 * 
+	 */
+	public TextView getErrorLabel() {
+		final TextView errorLabel = (TextView)findViewById(R.id.error_label);
+		return errorLabel;
+	}
+	
+	/**
+	 * Method used to clear in-line error shown under widget
+	 */
+	public void clearError() {
+		final TextView errorLabel = (TextView)findViewById(R.id.error_label);
+		errorLabel.setVisibility(View.GONE);
+	}
 }

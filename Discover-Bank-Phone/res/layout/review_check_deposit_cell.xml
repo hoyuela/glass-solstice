@@ -90,13 +90,16 @@
 
      <TextView
             android:id="@+id/error_label"
-            style="@style/error_label"
-            android:layout_width="wrap_content"
+            style="@style/inline_error_label"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/text_row"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:paddingLeft="@dimen/forms_inner_padding"
+       		android:layout_alignLeft="@+id/check_image_row"
+       		android:layout_alignRight="@+id/check_image_row"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/text_row"
-            android:singleLine="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/check_image_row"
             android:text="@string/bank_invalid_characters" />
     
 </RelativeLayout>

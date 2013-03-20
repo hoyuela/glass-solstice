@@ -87,7 +87,11 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 * Reference to TextView that shows on top of content table used for showing general errors for the screen.
 	 */
 	protected TextView generalError = null;
-	
+	/**
+	 * String appended to a string to determine whether a field has an error on rotation
+	 */
+	final protected static String KEY_ERROR_EXT = ".hasError";
+
 	/**
 	 * Sets click listeners for the actionButton, actionLink, feedbackLink. Calls the method to populate
 	 * content on the contentTable and loads a reference to view for progressIndicator. Finally,
