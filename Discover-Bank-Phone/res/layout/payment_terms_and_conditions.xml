@@ -21,14 +21,7 @@
             android:layout_toLeftOf="@+id/help"
             android:text="@string/welcome_to_pay_bills" />
 
-        <ImageButton
-            android:id="@+id/help"
-            style="@style/orange_help_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/empty" />
+         
     </RelativeLayout>
 
     <WebView
@@ -85,5 +78,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
+    <com.discover.mobile.common.help.HelpWidget
+            android:id="@+id/help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 </RelativeLayout>

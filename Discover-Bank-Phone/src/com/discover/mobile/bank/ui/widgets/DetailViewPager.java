@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.help.HelpWidget;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
@@ -62,6 +63,11 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * @return a Fragment ready to be displayed in the ViewPager.
 	 */
 	protected abstract Fragment getDetailItem(final int position);
+	
+	/**
+	 * Abstract Method to be implemented for the help menu
+	 */
+	protected abstract void helpMenuOnClick(HelpWidget help);
 
 	/**
 	 * Returns the number of views that can be presented by the ViewPager
@@ -106,6 +112,10 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		final View mainView = inflater.inflate(R.layout.account_item_detail_view, null);
+		
+		/**Help icon setup*/
+		final HelpWidget help = (HelpWidget) mainView.findViewById(R.id.help);
+		helpMenuOnClick(help);
 
 		loadAllViewsFrom(mainView);		
 		setupClickListeners();

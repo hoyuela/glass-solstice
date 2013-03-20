@@ -21,6 +21,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment used to display the Check Deposit - Select Amount page. This is the second step in the
@@ -252,5 +253,11 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 			if(amountItem != null && amountItem.getEditableField() != null)
 				this.amountItem.getEditableField().showKeyboard(false);
 		}
+	}
+
+	@Override
+	protected void helpMenuOnClick(final HelpWidget help) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment used to display the Check Deposit - Confirmation Page after submitting a check deposit
@@ -89,6 +90,12 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 	@Override
 	protected String getPageTitle() {		
 		return this.getActivity().getResources().getString(R.string.bank_deposit_received_title);
+	}
+
+	@Override
+	protected void helpMenuOnClick(final HelpWidget help) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

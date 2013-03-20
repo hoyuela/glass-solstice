@@ -17,11 +17,13 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.error.bank.BankError;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
@@ -559,6 +561,12 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 		
 		
 		return ret;
+	}
+
+	@Override
+	protected void helpMenuOnClick(final HelpWidget help) {
+		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
+		
 	}
 
 }

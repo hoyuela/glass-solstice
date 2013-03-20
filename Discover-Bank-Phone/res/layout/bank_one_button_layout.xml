@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:background="@drawable/light_gray_bkgrd" >
@@ -17,6 +16,7 @@
 
    	<View
 	    android:id="@+id/divider"
+	    android:layout_below="@+id/header"
 	    android:layout_width="wrap_content"
 	    android:layout_height="@dimen/divider_height"
 	    android:layout_marginLeft="@dimen/forms_inner_padding"
@@ -26,6 +26,7 @@
    	 
     <ScrollView
         android:id="@+id/main_layout"
+        android:layout_below="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
@@ -153,4 +154,8 @@
         	</LinearLayout> 
         </RelativeLayout>
     </ScrollView>
-</LinearLayout>
+    <com.discover.mobile.common.help.HelpWidget
+            android:id="@+id/help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+</RelativeLayout>

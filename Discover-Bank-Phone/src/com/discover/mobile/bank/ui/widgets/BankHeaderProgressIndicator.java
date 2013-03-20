@@ -49,8 +49,6 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 		
 		inflater.inflate(R.layout.bank_header_progress, this);
 		
-		helpView = (ImageView)findViewById(R.id.help_view);
-		helpView.setOnClickListener(this);
 	}
 
 	/**

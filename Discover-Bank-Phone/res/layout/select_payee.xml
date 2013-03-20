@@ -11,11 +11,7 @@
         android:paddingBottom="@dimen/forms_inner_padding"
         android:paddingLeft="@dimen/forms_inner_padding" >
 
-        <ImageButton
-            android:id="@+id/help"
-            style="@style/orange_help_button"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true" />
+        
         
         <TextView
             android:id="@+id/select_payee_title"
@@ -71,6 +67,11 @@
             android:layout_below="@+id/content"
             android:layout_centerHorizontal="true"
             android:text="@string/select_payee_add" />
+        
+         <com.discover.mobile.common.help.HelpWidget
+            android:id="@+id/help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 
