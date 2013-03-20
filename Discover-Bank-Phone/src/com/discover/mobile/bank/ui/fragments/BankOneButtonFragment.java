@@ -74,11 +74,6 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	protected TextView noteTextMsg;
 	
 	/**
-	 * Reference to the help menu widget. 
-	 */
-	protected HelpWidget help;
-	
-	/**
 	 * Reference to a TextView which displays page title for the layout.
 	 */
 	protected TextView pageTitle;
