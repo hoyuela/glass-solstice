@@ -486,6 +486,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	@Override
 	public void start(final NetworkServiceCall<?> sender) {
 		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
+		
+		/* Service calls that do not show dialog must override functionality here */
+		if(sender instanceof RefreshBankSessionCall) {
+			// Show Nothing
+		} else {
+			activeActivity.startProgressDialog();
+		}
 		activeActivity.startProgressDialog();
 
 		/**Clear the current last error stored in the error handler*/
@@ -494,7 +501,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		/**
 		 * Update prevCall only if it is a different service request from current call
 		 * or if current call is null
-		 * */
+		 */
 		if( curCall == null || curCall.getClass() != sender.getClass() ) {
 			prevCall = curCall;			
 		} else {
