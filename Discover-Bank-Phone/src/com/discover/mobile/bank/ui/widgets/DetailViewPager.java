@@ -86,9 +86,10 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * If the user is not the primary account holder they will not be able to edit scheduled
 	 * payments. They will see the detail item but not the edit/delete buttons and will be shown
 	 * a message.
+	 * @param position Refers to the index of the data item in the list
 	 * @return if the user is the primary account holder.
 	 */
-	protected abstract boolean isUserPrimaryHolder();
+	protected abstract boolean isUserPrimaryHolder(int position);
 
 	/**
 	 * Initiate a server call to load more data.
@@ -203,8 +204,8 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * @param position
 	 */
 	private void updateScheduledPaymentWarning(final int position) {
-
-		if(isUserPrimaryHolder() || !isFragmentEditable(position)){
+		/*TODO: Need to know why this is required, this is not in the comps nor is it in the acceptance criteria
+		if(isUserPrimaryHolder(position) || !isFragmentEditable(position)){
 			jointAccountWarning.setVisibility(View.GONE);
 		}else if(isFragmentEditable(position)){
 			final String accountWarningText = this.getActivity().getString(R.string.non_primary_joint_account_warning);
@@ -214,6 +215,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 			jointAccountWarning.setText(formattedWarningText);
 			jointAccountWarning.setVisibility(View.VISIBLE);
 		}
+		*/
 	}
 
 	/**

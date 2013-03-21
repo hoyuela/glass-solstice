@@ -102,6 +102,7 @@ public class BankPayTerms extends BaseFragment{
 				loadingSpinner.setVisibility(View.GONE);
 				termsWebView.setVisibility(View.VISIBLE);
 				loadingSpinner.clearAnimation();
+				acceptButton.setEnabled(true);
 			}
 		});
 

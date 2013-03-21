@@ -1,6 +1,7 @@
 package com.discover.mobile.bank;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
@@ -70,6 +71,23 @@ public final class BankUser implements Serializable {
 		return accountList;
 	}
 
+	/**
+	 * @return Returns reference to list of accounts that are capable of scheduled payments
+	 */
+	public AccountList getPaymentCapableAccounts() {
+		final AccountList newList = new AccountList();
+		newList.accounts = new ArrayList<Account>();
+		
+		if( this.hasAccounts() ) {
+			for(final Account account : accountList.accounts) {
+				if( account.canSchedulePayment() ) {
+					newList.accounts.add(account);
+				}
+			}
+		}
+		return newList;
+	}
+	
 	/**
 	 * Returns the {@code Account} for a given Account id.
 	 * 
