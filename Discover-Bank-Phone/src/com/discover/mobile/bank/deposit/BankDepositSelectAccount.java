@@ -21,6 +21,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.modals.HowItWorksModalTop;
@@ -297,7 +298,6 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 
 	@Override
 	protected void helpMenuOnClick(final HelpWidget help) {
-		// TODO Auto-generated method stub
-		
+		help.showHelpItems(HelpMenuListFactory.instance().getCheckDepositHelpItems());
 	}
 }

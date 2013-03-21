@@ -21,6 +21,7 @@ import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankEditDetail;
 import com.discover.mobile.bank.services.account.Account;
@@ -489,7 +490,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 
 	@Override
 	protected void helpMenuOnClick(final HelpWidget help) {
-		// TODO Auto-generated method stub
-		
+		help.showHelpItems(HelpMenuListFactory.instance().getCheckDepositHelpItems());
 	}
 }

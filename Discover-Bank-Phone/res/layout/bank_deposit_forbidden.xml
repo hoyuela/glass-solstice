@@ -2,16 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/forms_inner_padding" 
-	android:paddingBottom="@dimen/forms_inner_padding"
-    android:background="@drawable/light_gray_bkgrd"  >
+    android:background="@drawable/light_gray_bkgrd"
+    android:paddingBottom="@dimen/forms_inner_padding"
+    android:paddingLeft="@dimen/forms_inner_padding" >
 
-    <ImageButton
-         android:id="@+id/help"
-         style="@style/orange_help_button"
-         android:layout_alignParentRight="true"
-         android:layout_alignParentTop="true" />
-   
     <TextView
         android:id="@+id/page_title"
         style="@style/page_title"
@@ -19,10 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/help"
-        android:layout_marginTop="@dimen/forms_inner_padding"
-        android:layout_marginRight="@dimen/forms_inner_padding"
         android:layout_marginBottom="@dimen/table_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/forms_inner_padding"
         android:text="@string/bank_deposit_forbidden_title" />
 
     <TextView
@@ -33,7 +26,6 @@
         android:layout_below="@+id/page_title"
         android:layout_marginBottom="@dimen/groups_of_elements_padding"
         android:text="@string/bank_deposit_forbidden_message" />
-
 
     <LinearLayout
         android:id="@+id/footer_layout"
@@ -52,7 +44,11 @@
         <include
             android:id="@+id/need_help_footer"
             layout="@layout/old_general_need_help_footer" />
-
     </LinearLayout>
+
+    <com.discover.mobile.common.help.HelpWidget
+        android:id="@+id/help"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
