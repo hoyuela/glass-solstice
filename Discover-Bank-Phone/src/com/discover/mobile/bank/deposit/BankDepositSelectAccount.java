@@ -68,7 +68,6 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
-		setupHelpClickListener();
 
 		return view;
 	}
@@ -255,13 +254,6 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 			modal.show();
 			modal.getWindow().setLayout(display.getWidth(), display.getHeight());
 		}
-	}
-
-	/**
-	 * Add a click listener to the help button so that when it is clicked, it will open the help modal.
-	 */
-	private void setupHelpClickListener() {
-		progressIndicator.getHelpView().setOnClickListener(showHelpModal);
 	}
 	
 	/**
