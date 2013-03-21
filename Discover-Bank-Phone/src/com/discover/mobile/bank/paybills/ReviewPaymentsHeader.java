@@ -50,6 +50,9 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	/**Status message*/
 	private final StatusMessageView status;
 
+	/**Help icon setup*/
+	private final HelpWidget help;
+
 	/**
 	 * Constructor for the layout
 	 * @param context - activity context
@@ -59,11 +62,11 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 		super(context, attrs);
 
 		final View view = LayoutInflater.from(context).inflate(R.layout.review_payments_header, null);
-		
+
 		/**Help icon setup*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
+		help = (HelpWidget) view.findViewById(R.id.help);
 		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
-		
+
 		scheduled = (ToggleButton) view.findViewById(R.id.toggle_left);
 		completed = (ToggleButton) view.findViewById(R.id.toggle_middle);
 		canceled  = (ToggleButton) view.findViewById(R.id.toggle_right);
@@ -161,7 +164,7 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	public ToggleButton getCanceled() {
 		return canceled;
 	}
-	
+
 	/**
 	 * Hide the top three titles shown on the table
 	 */
@@ -171,5 +174,12 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 		} else {
 			titles.setVisibility(View.GONE);
 		}
+	}
+
+	/**
+	 * @return the help
+	 */
+	public HelpWidget getHelp() {
+		return help;
 	}
 }
