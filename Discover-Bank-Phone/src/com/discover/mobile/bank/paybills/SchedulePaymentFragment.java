@@ -342,13 +342,12 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			payeeText.setText(payee.nickName);
 			paymentAccountText.setText(defaultPaymentAccount());
 
-			if (bankUser.getAccounts().accounts.size() > 1) {
+			if (bankUser.getPaymentCapableAccounts().accounts.size() > 1) {
 				final AccountAdapter accountAdapter = new AccountAdapter(
 						getActivity(), R.layout.push_simple_spinner_view,
-						bankUser.getAccounts().accounts);
+						bankUser.getPaymentCapableAccounts().accounts);
 
-				accountAdapter
-				.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
+				accountAdapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
 				paymentAccountSpinner.setAdapter(accountAdapter);
 			}
 		}

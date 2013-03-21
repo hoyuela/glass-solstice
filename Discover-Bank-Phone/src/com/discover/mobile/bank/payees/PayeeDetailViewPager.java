@@ -89,7 +89,7 @@ public class PayeeDetailViewPager extends DetailViewPager {
 
 	// FIXME need to have services to determine if the current user is the primary account holder
 	@Override
-	protected boolean isUserPrimaryHolder() {
+	protected boolean isUserPrimaryHolder(final int position) {
 		return true;
 	}
 

@@ -36,4 +36,5 @@
 	<string name="bank_add_another">Add Payee</string>
 	<string name="bank_dollar_sign">$</string>
 	<string name="bank_deposit_amount">Deposit Amount</string>
+	<string name="bank_payee_empty">You currently have no payees set up.</string>
 </resources>
