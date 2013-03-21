@@ -13,14 +13,18 @@
         <!-- Title & Cancel(X) -->
 
         <RelativeLayout
+            android:id="@+id/acct_toggle_title_section"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_alignParentTop="true" >
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/between_related_elements_padding" >
 
             <TextView
+                style="@style/plain_body_copy_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SELECT ACCOUNT" />
+                android:layout_centerVertical="true"
+                android:text="@string/toggle_select_account" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -28,22 +32,23 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="3dp"
-                android:src="@drawable/black_check_mark" />
+                android:src="@drawable/x_gray" />
         </RelativeLayout>
 
         <View
             android:id="@+id/acct_toggle_divider"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/divider_height"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_below="@id/acct_toggle_title_section"
             android:background="@drawable/gray_solid_line" />
 
         <!-- Card -->
 
         <RelativeLayout
+            android:id="@+id/acct_toggle_card_section"
             android:layout_width="wrap_content"
-            android:layout_height="50dp" >
+            android:layout_height="50dp"
+            android:layout_below="@id/acct_toggle_divider" >
 
             <ImageView
                 android:id="@+id/acct_toggle_card_check"
@@ -51,39 +56,47 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="3dp"
-                android:src="@drawable/black_check_mark" />
+                android:padding="@dimen/between_related_elements_padding"
+                android:src="@drawable/black_check_mark"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/acct_toggle_card_text"
+                style="@style/body_copy_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@id/acct_toggle_card_check"
-                android:text="it Card"
-                android:textStyle="bold" />
+                android:paddingBottom="@dimen/between_related_elements_padding"
+                android:paddingTop="@dimen/between_related_elements_padding"
+                android:text="it Card" />
 
             <TextView
                 android:id="@+id/acct_toggle_card_subtext"
+                style="@style/light_static_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_toRightOf="@id/acct_toggle_card_check"
+                android:paddingBottom="@dimen/between_related_elements_padding"
+                android:paddingTop="@dimen/between_related_elements_padding"
                 android:text="acct ending in 1234" />
         </RelativeLayout>
 
         <View
-            android:id="@+id/divider"
-            android:layout_width="wrap_content"
+            android:id="@+id/acct_toggle_dash_divider"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/divider_height"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_below="@id/acct_toggle_card_section"
             android:background="@drawable/gray_dash_line" />
 
         <!-- Bank -->
 
         <RelativeLayout
+            android:id="@+id/acct_toggle_bank_section"
             android:layout_width="wrap_content"
-            android:layout_height="50dp" >
+            android:layout_height="50dp"
+            android:layout_below="@id/acct_toggle_dash_divider" >
 
             <ImageView
                 android:id="@+id/acct_toggle_bank_check"
@@ -91,12 +104,19 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="3dp"
+                android:padding="@dimen/between_related_elements_padding"
                 android:src="@drawable/black_check_mark" />
 
             <TextView
                 android:id="@+id/acct_toggle_bank_text"
+                style="@style/body_copy_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/acct_toggle_bank_check"
+                android:paddingBottom="@dimen/between_related_elements_padding"
+                android:paddingTop="@dimen/between_related_elements_padding"
+                android:text="Discover Bank"
                 android:textStyle="bold" />
         </RelativeLayout>
     </RelativeLayout>
