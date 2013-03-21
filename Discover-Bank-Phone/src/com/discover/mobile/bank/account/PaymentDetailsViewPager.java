@@ -172,7 +172,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	@Override
 	public void onPause() {
 		super.onPause();
-		BankRotationHelper.getHelper().setBundle(getCurrentFragmentBundle());
+		BankRotationHelper.getHelper().getBundle().putAll(getCurrentFragmentBundle());
 	}
 
 	/**
