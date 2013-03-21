@@ -61,7 +61,6 @@ import com.discover.mobile.common.callback.GenericCallbackListener.StartListener
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.framework.NetworkServiceCallManager;
-import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -455,14 +454,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putString(BankExtraKeys.TO_ADDRESS, helper.getTo());
 			BankConductor.navigateToEmailDirections(bundle);
 		}
-		// Handler for session updates
-		else if(sender instanceof RefreshBankSessionCall) {
-			// TODO I'm curious as to how this logic will work in BaseActivity (Scott's deposit check).
-			final NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-			activity.closeDialog();
-			Log.e("","SUCCESS");
-		}
-		
+		// Ignore success		
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "NetworkServiceCallManager ignored success of a NetworkServiceCall!");

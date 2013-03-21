@@ -17,14 +17,14 @@ public class LogoutFacadeImpl implements LogoutFacade{
 
 	@Override
 	public void logout(Activity fromActivity, ErrorHandlerUi errorUi, AccountType accountType){
+		KeepAlive.setBankAuthenticated(false);		
+		KeepAlive.setCardAuthenticated(false);
 		
 		switch (accountType) {
 		case CARD_ACCOUNT:
-			KeepAlive.setCardAuthenticated(false);
 			FacadeFactory.getCardLogoutFacade().logout(fromActivity, errorUi);
 			break;
 		case BANK_ACCOUNT:
-			KeepAlive.setBankAuthenticated(false);
 			FacadeFactory.getBankLogoutFacade().logout(fromActivity, errorUi);
 			break;
 		}
