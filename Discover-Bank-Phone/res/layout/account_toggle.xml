@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/acct_toggle_triangle"
+        android:layout_below="@+id/acct_toggle_indicator"
         android:background="@color/white"
         android:orientation="vertical" >
 
@@ -124,7 +124,7 @@
     <!-- Triangle in the widget must be here to be drawn last, on top, in the z-axis -->
 
     <ImageView
-        android:id="@+id/acct_toggle_triangle"
+        android:id="@+id/acct_toggle_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/bank_icon_grey" />
