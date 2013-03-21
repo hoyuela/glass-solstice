@@ -28,13 +28,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true" />
 
-    <ImageButton
+    <com.discover.mobile.common.help.HelpWidget
         android:id="@+id/help"
-        style="@style/orange_help_button"
-        android:layout_width="@dimen/orange_help_button_size"
-        android:layout_height="@dimen/orange_help_button_size"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/map_navigation_panel"

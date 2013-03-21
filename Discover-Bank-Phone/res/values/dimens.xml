@@ -28,4 +28,10 @@
     <!-- Padding for Help Icon in bank_header_progress layout-->
     <dimen name="breadcrumb_help_left_margin">15dp</dimen>
     <dimen name="breadcrumb_confirm_toppadding">6dp</dimen>
+    
+    <!-- Atm modal dimens -->
+    <dimen name="atm_modal_icon_width">25dp</dimen>
+    <dimen name="atm_modal_icon_height">30dp</dimen>
+    <dimen name="atm_modal_icon_padding">3dp</dimen>
+    
 </resources>

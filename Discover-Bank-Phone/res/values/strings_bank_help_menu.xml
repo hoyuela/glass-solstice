@@ -2,5 +2,7 @@
 <resources>
     
     <string name="help_menu_account_activity">Account Activity FAQs</string>
+    <string name="help_menu_atm_help">ATM Locator Help</string>
+    <string name="help_menu_atm_faq">ATM Locator FAQs</string>
     
 </resources>
