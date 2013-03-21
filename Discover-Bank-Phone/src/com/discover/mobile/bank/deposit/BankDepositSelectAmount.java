@@ -175,7 +175,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		final String amount = amountItem.getEditableField().getText().toString().replaceAll("[^0-9]", "");
 		final Bundle arguments = getArguments();
 		arguments.putInt(BankExtraKeys.AMOUNT, Integer.parseInt(amount));
-		BankConductor.navigateToCheckDepositReview(arguments);
+		BankConductor.navigateToCheckDepositWorkFlow(arguments, BankDepositWorkFlowStep.ReviewDeposit);
 	}
 	
 	/**

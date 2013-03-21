@@ -105,4 +105,26 @@ public class AccountLimits implements Serializable {
 	 */
 	@JsonProperty("links")
 	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
+	
+	/**
+	 * A static method that returns if the amount given is valid for the provided account limit.
+	 * @param amount an amount to check if it is within certain limits
+	 * @param limits the limits used to check against the amount.
+	 * @return if the amount is within the limits.
+	 */
+	public boolean isAmountValid(final double amount) {
+		
+			return !(monthlyDepositAmount == null || !monthlyDepositAmount.isValidAmount(amount) ||
+			/** Verify Number of deposits allowed on this account per month has not been exceeded*/
+			monthlyDepositCount == null || monthlyDepositCount.remaining <= 0 ||
+			/**Verify Total amount allowed to be deposited in this account per day has not been exceeded*/
+			dailyDepositAmount == null || !dailyDepositAmount.isValidAmount(amount) ||					
+			
+			/**Verify Maximum amount allowed to be deposited in this account per transaction has not been exceeded.*/
+			depositAmount == null || !depositAmount.isValidAmount(amount) ||
+			
+			/**Verify Number of deposits allowed on this account per day has not been exceeded*/
+			dailyDepositCount == null || dailyDepositCount.remaining <= 0);				
+	}
 }
+

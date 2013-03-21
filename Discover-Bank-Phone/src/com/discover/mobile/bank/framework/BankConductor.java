@@ -20,11 +20,13 @@ import com.discover.mobile.bank.account.PaymentDetailsViewPager;
 import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
+import com.discover.mobile.bank.deposit.BankDepositConfirmFragment;
 import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositNotEligibleFragment;
 import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.deposit.BankDepositSelectAmount;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
+import com.discover.mobile.bank.deposit.BankDepositWorkFlowStep;
 import com.discover.mobile.bank.deposit.CaptureReviewFragment;
 import com.discover.mobile.bank.deposit.CheckDepositErrorFragment;
 import com.discover.mobile.bank.deposit.DuplicateCheckErrorFragment;
@@ -624,7 +626,7 @@ public final class BankConductor  extends Conductor {
 	 * and Conditions if user is eligible and not enrolled. If it is the start of the work flow, then navigates
 	 * user to Select Account Page.
 	 */
-	public static void navigateToCheckDepositWorkFlow(final Bundle bundle) {
+	public static void navigateToCheckDepositWorkFlow(final Bundle bundle, final BankDepositWorkFlowStep step) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
@@ -636,51 +638,47 @@ public final class BankConductor  extends Conductor {
 
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligibility();
 			final boolean isEnrolled = BankUser.instance().getCustomerInfo().isDepositEnrolled();
+			final boolean isForbidden = false;
 
-			if(!isEligible){
+			//Check if user is forbidden to use check deposit
+			if( isForbidden ) {
+				fragment = new BankDepositForbidden();
+			//Check if user is eligible and has eligible accounts
+			} else if(!isEligible || !BankUser.instance().hasDepositEligibleAccounts()){
 				fragment = new BankDepositNotEligibleFragment();
-			} else if(isEligible && !isEnrolled){
-				fragment = new BankDepositTermsFragment();
-			} else{
-				boolean isReEnteringAmount = false;
-				boolean isReSelectingAccount = false;
-				boolean isDepositError = false;
-				boolean isDuplicateError = false;
-				if(bundle != null) {
-					isReEnteringAmount = bundle.getBoolean(BankExtraKeys.REENTER_AMOUNT);
-					isReSelectingAccount = bundle.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
-					isDepositError = bundle.getBoolean(CheckDepositErrorFragment.class.getSimpleName());
-					isDuplicateError = bundle.getBoolean(DuplicateCheckErrorFragment.class.getSimpleName());
-				}
-
-				//Navigate to timeout error if check deposit error fragment flag is found in bundle
-				if( isDepositError ) {
-					fragment = new CheckDepositErrorFragment();
-				}
-				//Navigate to duplicate error fragment if boolean flag is found in bundle
-				else if( isDuplicateError ) {
-					fragment = new DuplicateCheckErrorFragment();
-				}
-				//Check if user is in select accounts, navigate to second step in work-flow
-				else if( isReEnteringAmount || navActivity.getCurrentContentFragment() instanceof BankDepositSelectAccount 
-						&& !isReSelectingAccount) {
-					fragment = new BankDepositSelectAmount();
-				}
-				//Check if User has deposit eligible accounts otherwise navigate to not eligible screen
-				else if( !BankUser.instance().hasDepositEligibleAccounts() ) {
-					fragment = new BankDepositNotEligibleFragment();	
-				}
-				//If all other conditions failed then user is in the first step of the deposit work-flow
-				//Check if User has accounts, this is the first step in work-flow
-				else if(isReSelectingAccount || BankUser.instance().hasAccounts() ) {	
-					fragment = new BankDepositSelectAccount();	
-				}
-
-				//TODO: Need to read bundle and see if it has the data required for showing Check 
-				//      Deposit Confirmation Page
-				//fragment = new BankDepositConfirmFragment();
 			}
-
+			//Check if user is enrolled
+			else if(isEligible && !isEnrolled){
+				fragment = new BankDepositTermsFragment();
+			} 
+			else{
+				switch( step ) {
+				//Navigate user to second step in check deposit work-flow
+				case SelectAmount:
+					fragment = new BankDepositSelectAmount();
+					break;
+				//Navigate user to first step in check deposit work-flow
+				case SelectAccount:
+					fragment = new BankDepositSelectAccount();	
+					break;
+				//Navigate user to page where they can review their deposit 
+				case ReviewDeposit:
+					fragment = new CaptureReviewFragment();
+					break;
+				//Navigate user to final step in Check deposit work-flow
+				case Confirmation:
+					fragment = new BankDepositConfirmFragment();
+					break;
+				//Navigate to timeout error if check deposit error fragment flag is found in bundle
+				case DepositError:
+					fragment = new CheckDepositErrorFragment();
+					break;
+				//Navigate to duplicate error fragment if boolean flag is found in bundle
+				case DuplicateError:
+					fragment = new DuplicateCheckErrorFragment();
+					break;
+				}
+			}
 
 			if( fragment != null ) {
 				fragment.setArguments(bundle);
@@ -693,59 +691,6 @@ public final class BankConductor  extends Conductor {
 		}
 	}
 
-	/**
-	 * Navigate to the check deposit review screen. This is the Fragment that 
-	 * shows the user the details of their check deposit before it is submitted
-	 * to the server for confirmation.
-	 * @param bundle
-	 */
-	public static void navigateToCheckDepositReview(final Bundle bundle) {
-		Fragment fragment = null;
-
-		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
-			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
-
-			navActivity.closeDialog();
-
-			fragment = new CaptureReviewFragment();
-
-			if( fragment != null ) {
-				if(bundle != null) {
-					fragment.setArguments(bundle);
-				}
-				navActivity.makeFragmentVisible(fragment);
-			}
-		}else{
-			Log.e(TAG, "Unable to navigate to check deposit review.");
-		}
-
-	}
-
-	/**
-	 * Navigation method used to navigate to Check Deposit Forbidden User screen. This screen
-	 * is shown if user does not have access to Check Deposit feature and receives a 403
-	 * in an attempt to access a Check Deposit Service.
-	 */
-	public static void navigateToDepositForbidden(final Bundle bundle) {
-		final Activity activity = DiscoverActivityManager.getActiveActivity();
-
-		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
-			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
-			navActivity.closeDialog();
-
-			final Fragment fragment = new BankDepositForbidden();
-			fragment.setArguments(bundle);
-
-			/**Navigate user to forbidden user screen*/
-			navActivity.makeFragmentVisible(fragment);
-		} else {
-			if( Log.isLoggable(TAG, Log.ERROR)) {
-				Log.e(TAG, "Unable to navigate to check deposit forbidden screen");
-			}
-		}
-	}
 
 	/**
 	 * Navigation method used to display the Call modal for when tapping on a phone number link

@@ -14,7 +14,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
-import com.discover.mobile.bank.deposit.BankAmountLimitValidatedField;
+import com.discover.mobile.bank.deposit.BankDepositWorkFlowStep;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -390,13 +390,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
 			final double amount = bundle.getInt(BankExtraKeys.AMOUNT)/100;
 			
-			if(navToReview && depositAmountIsWithinLimitsFor(amount, account)){
-				BankConductor.navigateToCheckDepositReview(bundle);
+			if(navToReview && account.limits.isAmountValid(amount)){
+				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.ReviewDeposit);
 			}else{
 				//Navigate to Check Deposit - Select Amount Page
-				bundle.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, false);
-				bundle.putBoolean(BankExtraKeys.REENTER_AMOUNT, navToReview);
-				BankConductor.navigateToCheckDepositWorkFlow(bundle);
+				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAmount);
 			}
 		}
 		//Handler for getting email directions
@@ -414,9 +412,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			}
 		}
 	}
-	private boolean depositAmountIsWithinLimitsFor(final double amount, final Account account) {
-		return BankAmountLimitValidatedField.isAmountValidForAccountLimits(amount, account.limits);
-	}
 
 	/**
 	 * Method to handle a successful Accept Deposits Terms and Conditions
@@ -432,7 +427,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		termsBundle.putBoolean(BankExtraKeys.ACCEPTED_TERMS, true);
 
 		/**Navigates to Select Account Page for Check-Deposit*/
-		BankConductor.navigateToCheckDepositWorkFlow(termsBundle);
+		BankConductor.navigateToCheckDepositWorkFlow(termsBundle, BankDepositWorkFlowStep.SelectAccount);
 
 		/**close the progress dialog created for when service was started to download terms and conditions for deposits*/
 		activity.closeDialog();
