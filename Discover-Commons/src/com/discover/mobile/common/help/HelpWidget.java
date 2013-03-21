@@ -60,7 +60,7 @@ public class HelpWidget extends RelativeLayout{
 
 		help = (ImageButton) view.findViewById(R.id.help);
 		expandableView = (RelativeLayout) view.findViewById(R.id.help_list);
-		list = (ListView) view.findViewById(R.id.content);
+		list = (ListView) view.findViewById(R.id.help_list_view);
 
 		adapter = new HelpAdapter(context, R.layout.help_list_item, new ArrayList<HelpItemGenerator>());
 		list.setAdapter(adapter);
@@ -70,8 +70,10 @@ public class HelpWidget extends RelativeLayout{
 			public void onClick(final View v) {
 				if(expandableView.getVisibility() == View.INVISIBLE){
 					expandableView.setVisibility(View.VISIBLE);
+					help.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.help_icon_gray_no_glow));
 				}else{
 					expandableView.setVisibility(View.INVISIBLE);
+					help.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.question_mark_icon));
 				}
 			}
 		});

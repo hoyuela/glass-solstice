@@ -3,12 +3,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-    
-    <TextView 
+
+    <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="dnfa"/>
-    
+        android:padding="@dimen/between_related_elements_padding"
+        android:text="temp"
+        android:textColor="@color/white"
+        android:paddingLeft="@dimen/between_related_elements_padding"
+        android:textSize="@dimen/small_copy_min" />
 
 </LinearLayout>

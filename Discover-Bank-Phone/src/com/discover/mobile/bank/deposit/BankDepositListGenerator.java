@@ -104,7 +104,7 @@ public class BankDepositListGenerator {
 		final String topText = context.getString(R.string.bank_deposit_amount);
 		
 		/**bottom text shows the actual amount deposited*/
-		final String bottomText = BankStringFormatter.convertToDollars(Integer.toString(amount));
+		final String bottomText = BankStringFormatter.convertCentsToDollars(amount);
 		
 		final SelectListItem item = (SelectListItem)createSelectListItem(context,topText,bottomText);
 		item.showDivider(false);	
@@ -162,7 +162,7 @@ public class BankDepositListGenerator {
 		final List<RelativeLayout> list = new ArrayList<RelativeLayout>();
 		
 		list.add(createAccountItem(context, depositDetail.account));
-		list.add(createAmountItem(context,  depositDetail.amount));
+		list.add(createAmountItem(context,  depositDetail.amount.value));
 		list.add(createConfirmationItem(context, depositDetail.confirmation));
 		list.add(createNoteItem(context, "XX:XX PM" ));
 		

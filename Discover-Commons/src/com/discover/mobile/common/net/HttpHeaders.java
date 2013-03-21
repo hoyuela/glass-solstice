@@ -13,7 +13,7 @@ public class HttpHeaders {
 	public static final String XHttpMethodOveride = "X-HTTP-Method-Override";
 	
 	
-	private HttpHeaders(){
+	protected HttpHeaders(){
 		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$
 	}
 }

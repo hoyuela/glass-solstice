@@ -14,6 +14,7 @@ import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
@@ -213,6 +214,13 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		});
 	}
 
+	@Override
+	public void onResume(){
+		super.onResume();
+		header.getHelp().showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
+		header.requestLayout();
+	}
+
 	/**
 	 * Set up the footer
 	 */
@@ -304,14 +312,14 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		completed = (ListPaymentDetail)bundle.getSerializable(getCompletedKey(category));
 		canceled = (ListPaymentDetail)bundle.getSerializable(getCanceledKey(category));
 		createDefaultLists();	
-		
+
 		final boolean showStatus = bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE, false);
 		if(showStatus){
 			header.showStatusMessage();
 			bundle.putBoolean(BankExtraKeys.COMPLETED_LIST, false);
 			scheduled.payments.remove(bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM));
 		}
-		
+
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
 			this.updateAdapter(scheduled.payments);
 		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS){
@@ -319,7 +327,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		}else{
 			this.updateAdapter(canceled.payments);
 		}
-		
+
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
 			showNothingToLoad();
@@ -354,7 +362,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	public void updateAdapter(final List<PaymentDetail> activities){
 		/**Determine whether to show or hide column titles based on size of list*/
 		showHeaderTitles(!activities.isEmpty());
-		
+
 		adapter.clear();
 		adapter.setData(activities);
 		if(adapter.getCount() < 1){
@@ -388,7 +396,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	public void showFooterMessage() {
 		footer.showEmpty(getEmptyStringText());
 	}
-	
+
 	/**
 	 * Hides the titles show above the columns on the table.
 	 */

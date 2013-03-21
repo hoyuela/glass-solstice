@@ -6,13 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.telephony.TelephonyManager;
 
+import com.discover.mobile.bank.services.BankHttpHeaders;
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * Service call to submit a check deposit.
@@ -38,6 +41,15 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 				sendDeviceIdentifiers = true;
 
 				body = modelClass;
+				
+				
+				final TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+				
+				//Custom headers for Deposit Check
+				headers = ImmutableMap.<String,String>builder()
+						.put(BankHttpHeaders.XDeviceType, "Android")
+						.put(BankHttpHeaders.XDeviceUuid, telephonyManager.getDeviceId())
+						.build();
 				
 				errorResponseParser = BankErrorResponseParser.instance();
 			}},

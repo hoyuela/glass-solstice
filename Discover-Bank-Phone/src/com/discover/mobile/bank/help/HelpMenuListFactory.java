@@ -1,5 +1,5 @@
 /*
- * © Copyright Solstice Mobile 2013
+ * ï¿½ Copyright Solstice Mobile 2013
  */
 package com.discover.mobile.bank.help;
 
@@ -10,7 +10,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.atm.AtmModalFactory;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.common.BaseFragmentActivity;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpItemGenerator;
 
 /**
@@ -26,11 +29,11 @@ public final class HelpMenuListFactory {
 	/**Default menu item representing the "All FAQ" item*/
 	private final HelpItemGenerator allFaq;
 
-	/**Default menu item representing the "1-800-290-9885" item*/
-	private final HelpItemGenerator number;
-	
-	/**Pay Bills Mnenu item*/
+	/**Pay Bills Menu item*/
 	private final HelpItemGenerator paybills;
+
+	/**Check Deposit Menu Item*/
+	private final HelpItemGenerator checkDeposit;
 
 	/**Instance of the factory*/
 	private static HelpMenuListFactory factory;
@@ -39,9 +42,9 @@ public final class HelpMenuListFactory {
 	 * Private constructor, creates the default help menu items.
 	 */
 	private HelpMenuListFactory(){
-		allFaq = new HelpItemGenerator(R.string.help_all_faq, R.color.blue, false, getAllFaqListener());
-		number = new HelpItemGenerator(R.string.help_menu_number, R.color.blue, false, getNumberListener());
-		paybills = new HelpItemGenerator(R.string.pay_bills_help, R.color.blue, false, getNumberListener());
+		allFaq = new HelpItemGenerator(R.string.help_all_faq, true, false, getAllFaqListener());
+		paybills = new HelpItemGenerator(R.string.pay_bills_help, false, false, getPayBillsFaqListener());
+		checkDeposit = new HelpItemGenerator(R.string.check_deposit_help, false, false, getCheckDepositFaqListener());
 	}
 
 	/**
@@ -65,16 +68,57 @@ public final class HelpMenuListFactory {
 		items.add(allFaq);
 		return items;
 	}
-	
+
 	/**
 	 * Get the menu items that are associated with the pay bills pages
-	 * @return - the list of help mneu items associated with the pay bills pages
+	 * @return - the list of help menu items associated with the pay bills pages
 	 */
 	public List<HelpItemGenerator> getPayBillsHelpItems(){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
 		items.add(paybills);
 		items.add(allFaq);
 		return items;
+	}
+
+	/**
+	 * Get the menu items that are associated with the check deposit pages
+	 * @return - the list of help menu items associated with the check deposit pages
+	 */
+	public List<HelpItemGenerator> getCheckDepositHelpItems(){
+		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
+		items.add(checkDeposit);
+		items.add(allFaq);
+		return items;
+	}
+
+	/**
+	 * Get the menu items that need to be added to the help menu when on ATM Locator
+	 * @return the menu items for ATM locator
+	 */
+	public List<HelpItemGenerator> getAtmHelpItems(){
+		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
+		final HelpItemGenerator atmHelp = 
+				new HelpItemGenerator(R.string.help_menu_atm_help, false, true, getAtmHelpListener());
+		final HelpItemGenerator atmFaq = 
+				new HelpItemGenerator(R.string.help_menu_atm_faq, false, true, getDefaultClickListener());
+		items.add(atmHelp);
+		items.add(atmFaq);
+		items.add(allFaq);
+		return items;
+	}
+
+	/**
+	 * Return the click listener for the atm help menu item
+	 * @return the click listener for the atm help menu item
+	 */
+	private OnClickListener getAtmHelpListener() {
+		return new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				final BaseFragmentActivity activity = (BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();
+				activity.showCustomAlert(AtmModalFactory.getAtmLocatorHelpModal(activity));
+			}	
+		};
 	}
 
 	/**
@@ -101,6 +145,32 @@ public final class HelpMenuListFactory {
 			@Override
 			public void onClick(final View v) {
 				BankConductor.navigateToAllFaq();
+			}
+		};
+	}
+
+	/**
+	 * Click listener for the Pay Bills FAQ item.  On click the user will be directed to the Pay Bills FAQ page
+	 * @return Click listener for the Pay Bills FAQ item.  On click the user will be directed to the Pay Bills FAQ page
+	 */
+	private OnClickListener getPayBillsFaqListener(){
+		return new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				//TODO go to pay bills FAQ
+			}
+		};
+	}
+
+	/**
+	 * Click listener for the Check Deposit FAQ item.  On click the user will be directed to the Check Deposit FAQ page
+	 * @return Click listener for the Check Deposit FAQ item.  On click the user will be directed to the Check Deposit FAQ page
+	 */
+	private OnClickListener getCheckDepositFaqListener(){
+		return new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				//TODO go to pay bills FAQ
 			}
 		};
 	}

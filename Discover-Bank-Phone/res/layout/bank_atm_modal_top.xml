@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="@dimen/forms_inner_padding"
+    android:paddingRight="@dimen/forms_inner_padding" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/modal_alert_title"
+            style="@style/modal_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/modal_alert_title"
+            android:text="@string/atm_modal_title" />
+
+        <ImageView
+            android:id="@+id/map_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/modal_alert_title"
+            android:paddingTop="@dimen/atm_modal_icon_padding"
+            android:src="@drawable/atm_map_icon_sm" />
+
+        <TextView
+            android:id="@+id/map_title"
+            style="@style/atm_normal_static_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/modal_alert_title"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@+id/map_icon"
+            android:text="@string/atm_help_map_icon_title" />
+
+        <TextView
+            android:id="@+id/map_text"
+            style="@style/atm_normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/map_title"
+            android:layout_toRightOf="@+id/map_icon"
+            android:text="@string/atm_help_map_icon_text" />
+
+        <ImageView
+            android:id="@+id/line1"
+            style="@style/atm_line"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/map_text"
+            android:background="@drawable/table_solid_line" />
+
+        <ImageView
+            android:id="@+id/list_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line1"
+            android:paddingTop="7dp"
+            android:src="@drawable/atm_list_icon_sm" />
+
+        <TextView
+            android:id="@+id/list_title"
+            style="@style/atm_normal_static_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/line1"
+            android:layout_toRightOf="@+id/list_icon"
+            android:text="@string/atm_help_list_icon_title" />
+
+        <TextView
+            android:id="@+id/list_text"
+            style="@style/atm_normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/list_title"
+            android:layout_toRightOf="@+id/list_icon"
+            android:text="@string/atm_help_list_icon_text" />
+
+        <ImageView
+            android:id="@+id/line2"
+            style="@style/atm_line"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/list_text"
+            android:src="@drawable/table_solid_line" />
+
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line2"
+            android:paddingTop="@dimen/between_related_elements_padding"
+            android:src="@drawable/atm_search_icon_sm" />
+
+        <TextView
+            android:id="@+id/search_title"
+            style="@style/atm_normal_static_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/line2"
+            android:layout_toRightOf="@+id/search_icon"
+            android:text="@string/atm_help_search_icon_title" />
+
+        <TextView
+            android:id="@+id/search_text"
+            style="@style/atm_normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/search_title"
+            android:layout_toRightOf="@+id/search_icon"
+            android:text="@string/atm_help_search_icon_text" />
+
+        <ImageView
+            android:id="@+id/line3"
+            style="@style/atm_line"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/search_text"
+            android:src="@drawable/table_solid_line" />
+
+        <ImageView
+            android:id="@+id/surcharge_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line3"
+            android:paddingTop="@dimen/atm_modal_icon_padding"
+            android:src="@drawable/atm_surcharge_free_pin_sm" />
+
+        <TextView
+            android:id="@+id/surcharge_title"
+            style="@style/atm_normal_static_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/line3"
+            android:layout_toRightOf="@+id/surcharge_icon"
+            android:text="@string/atm_help_surcharge_free_title" />
+
+        <TextView
+            android:id="@+id/surcharge_text"
+            style="@style/atm_normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/surcharge_title"
+            android:layout_toRightOf="@+id/surcharge_icon"
+            android:text="@string/atm_help_surcharge_free_text" />
+
+        <ImageView
+            android:id="@+id/line4"
+            style="@style/atm_line"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/surcharge_text"
+            android:src="@drawable/table_solid_line" />
+
+        <ImageView
+            android:id="@+id/non_surcharge_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line4"
+            android:paddingTop="@dimen/atm_modal_icon_padding"
+            android:src="@drawable/atm_non_surcharge_free_icon_sm" />
+
+        <TextView
+            android:id="@+id/non_surcharge_title"
+            style="@style/atm_normal_static_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/line4"
+            android:layout_toRightOf="@+id/non_surcharge_icon"
+            android:text="@string/atm_help_non_surcharge_free_title" />
+
+        <TextView
+            android:id="@+id/non_surcharge_text"
+            style="@style/atm_normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/non_surcharge_title"
+            android:layout_toRightOf="@+id/non_surcharge_icon"
+            android:text="@string/atm_help_non_surcharge_free_text" />
+
+        <ImageView
+            android:id="@+id/line5"
+            style="@style/atm_line"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/non_surcharge_text"
+            android:src="@drawable/table_solid_line" />
+
+        <ImageView
+            android:id="@+id/start_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line5"
+            android:paddingTop="@dimen/atm_modal_icon_padding"
+            android:src="@drawable/atm_starting_point_pin_sm" />
+
+        <TextView
+            android:id="@+id/start_title"
+            style="@style/atm_normal_static_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/line5"
+            android:layout_toRightOf="@+id/start_icon"
+            android:text="@string/atm_help_start_icon_title" />
+
+        <TextView
+            android:id="@+id/start_text"
+            style="@style/atm_normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/start_title"
+            android:layout_toRightOf="@+id/start_icon"
+            android:text="@string/atm_help_start_icon_text" />
+
+        <ImageView
+            android:id="@+id/line6"
+            style="@style/atm_line"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/start_text"
+            android:src="@drawable/table_solid_line" />
+
+        <ImageView
+            android:id="@+id/current_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line6"
+            android:background="@drawable/atm_current_location_pin_sm" />
+
+        <TextView
+            android:id="@+id/current_title"
+            style="@style/atm_normal_static_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/line6"
+            android:layout_toRightOf="@+id/current_icon"
+            android:text="@string/atm_help_current_icon_title" />
+
+        <TextView
+            android:id="@+id/current_text"
+            style="@style/atm_normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/current_title"
+            android:layout_toRightOf="@+id/current_icon"
+            android:text="@string/atm_help_current_icon_text" />
+
+        <ImageView
+            android:id="@+id/line7"
+            style="@style/atm_line"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/current_text"
+            android:src="@drawable/table_solid_line" />
+
+        <ImageView
+            android:id="@+id/current_loc_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line7"
+            android:paddingTop="6dp"
+            android:src="@drawable/atm_current_location_button" />
+
+        <TextView
+            android:id="@+id/current_loc_title"
+            style="@style/atm_normal_static_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/line7"
+            android:layout_toRightOf="@+id/current_loc_icon"
+            android:text="@string/atm_help_current_button_title" />
+
+        <TextView
+            android:id="@+id/current_loc_text"
+            style="@style/atm_normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/current_loc_title"
+            android:layout_toRightOf="@+id/current_loc_icon"
+            android:text="@string/atm_help_current_button_text" />
+
+        <ImageView
+            android:id="@+id/line8"
+            style="@style/atm_line"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/current_loc_text"
+            android:src="@drawable/table_solid_line" />
+
+        <ImageView
+            android:id="@+id/street_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line8"
+            android:paddingTop="@dimen/between_related_elements_padding"
+            android:src="@drawable/atm_street_view_icon_sm" />
+
+        <TextView
+            android:id="@+id/street_title"
+            style="@style/atm_normal_static_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/line8"
+            android:layout_toRightOf="@+id/street_icon"
+            android:text="@string/atm_help_street_icon_title" />
+
+        <TextView
+            android:id="@+id/street_text"
+            style="@style/atm_normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/street_title"
+            android:layout_toRightOf="@+id/street_icon"
+            android:text="@string/atm_help_street_icon_text" />
+
+        <ImageView
+            android:id="@+id/line9"
+            style="@style/atm_line"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/street_text"
+            android:src="@drawable/table_solid_line" />
+
+        <ImageView
+            android:id="@+id/directions_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line9"
+            android:paddingTop="@dimen/atm_modal_icon_padding"
+            android:src="@drawable/atm_directional_arrows" />
+
+        <TextView
+            android:id="@+id/directions_title"
+            style="@style/atm_normal_static_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/line9"
+            android:layout_toRightOf="@+id/directions_icon"
+            android:text="@string/atm_help_direction_icon_title" />
+
+        <TextView
+            android:id="@+id/directions_text"
+            style="@style/atm_normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/directions_title"
+            android:layout_toRightOf="@+id/directions_icon"
+            android:text="@string/atm_help_direction_icon_text" />
+    </RelativeLayout>
+
+</ScrollView>

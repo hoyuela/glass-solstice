@@ -21,10 +21,9 @@ import com.discover.mobile.common.DiscoverActivityManager;
  *
  */
 public class BankHeaderProgressIndicator extends RelativeLayout implements OnClickListener {
-	/**
-	 * Reference to help icon displayed which is meant to be clickable
-	 */
-	protected ImageView helpView;
+	private TextView step1;	
+	private TextView step2;
+	private TextView step3;
 	
 	public BankHeaderProgressIndicator(final Context context) {
 		super(context);
@@ -59,7 +58,6 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 		inflateHeader();
 		setTitle(R.string.enter_info, R.string.create_password,R.string.confirm);
 		setPosition(position);
-		helpView = (ImageView)this.findViewById(R.id.help_view);
 	}
 
 
@@ -67,9 +65,9 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 	 * Sets the titles for the header
 	 */
 	public void setTitle(final int title1, final int title2, final int title3) {
-		final TextView step1 = (TextView) findViewById(R.id.step1_text);	
-		final TextView step2 = (TextView) findViewById(R.id.step2_text);
-		final TextView step3 = (TextView) findViewById(R.id.step3_text);
+		step1 = (TextView) findViewById(R.id.step1_text);	
+		step2 = (TextView) findViewById(R.id.step2_text);
+		step3 = (TextView) findViewById(R.id.step3_text);
 		
 		step1.setText(getResources().getString(title1));
 		step2.setText(getResources().getString(title2));
@@ -86,12 +84,13 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 		final ImageView step1Indicator = (ImageView)findViewById(R.id.step1_indicator);
 		final ImageView step2Indicator = (ImageView)findViewById(R.id.step2_indicator);
 		final ImageView step3Indicator =(ImageView)findViewById(R.id.step3_indicator);
-		final RelativeLayout step2 = (RelativeLayout)findViewById(R.id.step2);
+		final RelativeLayout step2Layout = (RelativeLayout)findViewById(R.id.step2);
 		
 		if (position > 1 ){
 			step1Confirm.setVisibility(View.VISIBLE);
 			step1Indicator.setVisibility(View.INVISIBLE);
 		} else if( position <= 1) {
+			step1.setTextAppearance(getContext(), R.style.selected_status_indicator_text);
 			step1Indicator.setVisibility(View.VISIBLE);
 			step1Confirm.setVisibility(View.INVISIBLE);
 		}
@@ -100,11 +99,13 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 			step2Confirm.setVisibility(View.VISIBLE);
 			step2Indicator.setVisibility(View.INVISIBLE);
 		} else if( position == 2) {
+			step2.setTextAppearance(getContext(), R.style.selected_status_indicator_text);
 			step2Indicator.setVisibility(View.VISIBLE);
 			step2Confirm.setVisibility(View.GONE);
 		}
 		
-		if( position == 3 || step2.getVisibility() != View.VISIBLE ) {
+		if( position == 3 || step2Layout.getVisibility() != View.VISIBLE ) {
+			step1.setTextAppearance(getContext(), R.style.selected_status_indicator_text);
 			step3Indicator.setVisibility(View.VISIBLE);
 		} else {
 			step3Indicator.setVisibility(View.INVISIBLE);
@@ -140,12 +141,5 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 		final Toast toast = Toast.makeText(DiscoverActivityManager.getActiveActivity(), text, duration);
 		toast.show();
 		
-	}
-
-	/**
-	 * @return the helpView
-	 */
-	public ImageView getHelpView() {
-		return helpView;
 	}
 }

@@ -21,6 +21,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.modals.HowItWorksModalTop;
@@ -67,7 +68,6 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
-		setupHelpClickListener();
 
 		return view;
 	}
@@ -255,13 +255,6 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 			modal.getWindow().setLayout(display.getWidth(), display.getHeight());
 		}
 	}
-
-	/**
-	 * Add a click listener to the help button so that when it is clicked, it will open the help modal.
-	 */
-	private void setupHelpClickListener() {
-		progressIndicator.getHelpView().setOnClickListener(showHelpModal);
-	}
 	
 	/**
 	 * A click listener that will launch the how it works modal when the thing it is attached to gets clicked.
@@ -297,7 +290,6 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 
 	@Override
 	protected void helpMenuOnClick(final HelpWidget help) {
-		// TODO Auto-generated method stub
-		
+		help.showHelpItems(HelpMenuListFactory.instance().getCheckDepositHelpItems());
 	}
 }

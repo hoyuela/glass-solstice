@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
@@ -257,7 +258,6 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 
 	@Override
 	protected void helpMenuOnClick(final HelpWidget help) {
-		// TODO Auto-generated method stub
-		
+		help.showHelpItems(HelpMenuListFactory.instance().getCheckDepositHelpItems());
 	}
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.ui.modals.AtmLocatorHelpModalTop;
 import com.discover.mobile.bank.ui.modals.ModalTwoButtonWhiteBottom;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
@@ -151,6 +152,20 @@ public final class AtmModalFactory{
 				modal.dismiss();
 			}
 		});
+
+		return modal;
+	}
+
+	/**
+	 * Get the modal that will inform the user that they have entered an invalid address
+	 * @param context - activity context
+	 * @param fragment - fragment using the modal
+	 * @return the modal that will ask the user if they would like to allow
+	 * the app to use their current location
+	 */
+	public static ModalAlertWithOneButton getAtmLocatorHelpModal(final Context context){
+		final AtmLocatorHelpModalTop top  = new AtmLocatorHelpModalTop(context, null);
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(context, top, null);
 
 		return modal;
 	}
