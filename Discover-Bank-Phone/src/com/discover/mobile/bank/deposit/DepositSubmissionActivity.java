@@ -124,10 +124,10 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 			else
 				Log.e(TAG, "Error : Could not compress decoded image!");
 			
-			if(!Strings.isNullOrEmpty(base64Image.toString()))
-				base64Image.append(Base64.encodeToString(imageBitStream.toByteArray(), Base64.NO_WRAP));
-			else
-				Log.e(TAG, "Error : Compressed image was empty!");
+			base64Image.append(Base64.encodeToString(imageBitStream.toByteArray(), Base64.NO_WRAP));
+			
+			if(Strings.isNullOrEmpty(base64Image.toString()))
+				Log.e(TAG, "Error : Compressed Image is Empty!");
 		}
 		
 		return base64Image.toString();
