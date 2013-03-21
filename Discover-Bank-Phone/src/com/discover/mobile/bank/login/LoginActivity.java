@@ -44,6 +44,7 @@ import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.error.ErrorHandler;
@@ -157,7 +158,9 @@ public class LoginActivity extends BaseActivity implements
 		if (!preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
 			startPreAuthCheck();
 		} 
-
+		
+		KeepAlive.setBankAuthenticated(false);
+		KeepAlive.setCardAuthenticated(false);
 	}
 
 	/**
