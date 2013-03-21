@@ -11,6 +11,9 @@ import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.google.common.collect.ImmutableMap;
 
+/**
+ * Card authenticate call for SSO users using the token and hashed token
+ */
 public class SSOAuthenticateCall extends CardJsonResponseMappingNetworkServiceCall<BankPayload> {
 
 	@SuppressWarnings("unused")

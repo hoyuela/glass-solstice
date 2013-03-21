@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Payload received from Card endpoint used to authenticate an SSO user on Bank.
+ * @author sam
+ *
+ */
 public class BankPayload implements Serializable {
 
 	/** generated serial id */

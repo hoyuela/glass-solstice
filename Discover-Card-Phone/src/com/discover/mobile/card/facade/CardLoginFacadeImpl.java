@@ -69,8 +69,6 @@ public class CardLoginFacadeImpl implements CardLoginFacade{
 
 	@Override
 	public void loginWithPayload(final LoginActivityInterface callingActivity, final String tokenValue, final String hashedTokenValue) {
-		// TODO Fill out fake data - just call ALU?
-//		FacadeFactory.getBankLoginFacade().authDueToALUStatus();
 		
 		final AsyncCallback<BankPayload> callback = GenericAsyncCallback
 				.<BankPayload> builder((Activity) callingActivity)
