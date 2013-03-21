@@ -1,6 +1,5 @@
 package com.discover.mobile.bank.ui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -15,38 +14,38 @@ import com.discover.mobile.bank.services.account.Account;
 
 public class AccountAdapter extends ArrayAdapter<Account> {
 
-	private Activity context;
+	private final Activity context;
 	List<Account> data = null;
 
-	public AccountAdapter(Activity context, int textViewResourceId,
-			List<Account> accounts) {
+	public AccountAdapter(final Activity context, final int textViewResourceId,
+			final List<Account> accounts) {
 		super(context, textViewResourceId, accounts);
 		this.context = context;
 		this.data = accounts;
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, final View convertView, final ViewGroup parent) {
 		return super.getView(position, convertView, parent);
 	}
 
 	@Override
-	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+	public View getDropDownView(final int position, final View convertView, final ViewGroup parent) {
 		View row = convertView;
 		if (row == null) {
-			LayoutInflater inflater = context.getLayoutInflater();
+			final LayoutInflater inflater = context.getLayoutInflater();
 			row = inflater
 					.inflate(R.layout.spinner_account_view, parent, false);
 		}
 
-		Account item = data.get(position);
+		final Account item = data.get(position);
 
-		if (item != null) {
-			TextView accountNumber = (TextView) row
+		if (item != null ) {
+			final TextView accountNumber = (TextView) row
 					.findViewById(R.id.account_number_list);
-			TextView accountName = (TextView) row
+			final TextView accountName = (TextView) row
 					.findViewById(R.id.account_name_list);
-			String accountNumberPrefix = context
+			final String accountNumberPrefix = context
 					.getString(R.string.schedule_pay_spinner_body);
 
 			if (accountNumber != null && item.accountNumber != null

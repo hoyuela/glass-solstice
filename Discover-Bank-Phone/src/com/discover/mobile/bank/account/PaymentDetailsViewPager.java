@@ -141,10 +141,9 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		}
 	}
 
-	// FIXME need to have services to determine if the current user is the primary account holder
 	@Override
-	protected boolean isUserPrimaryHolder() {
-		return true;
+	protected boolean isUserPrimaryHolder(final int position) {
+		return !detailList.payments.get(position).isJointPayment;
 	}
 
 	/**
@@ -215,7 +214,8 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		return (detailList != null && 
 				detailList.payments != null && 
 				detailList.payments.size() > 0) &&
-				"SCHEDULED".equals(detailList.payments.get(position).status);
+				isUserPrimaryHolder(position) &&
+				"SCHEDULED".equals(detailList.payments.get(position).status );
 	}
 
 
