@@ -329,23 +329,27 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 * @param view the view that contains the retake labels.
 	 */
 	private void setupRetakeLinks(final View view) {
-		final TextView retakeFrontLabel = (TextView)view.findViewById(R.id.retake_front_label);
-		final TextView retakeBackLabel = (TextView)view.findViewById(R.id.retake_back_label);
-		
-		retakeFrontLabel.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View view) {
-				retake(CheckDepositCaptureActivity.RETAKE_FRONT);
-			}
-		});
-		
-		retakeBackLabel.setOnClickListener(new OnClickListener() {
+		if( null != view ) {
+			final TextView retakeFrontLabel = (TextView)view.findViewById(R.id.retake_front_label);
+			final TextView retakeBackLabel = (TextView)view.findViewById(R.id.retake_back_label);
 			
-			@Override
-			public void onClick(final View v) {
-				retake(CheckDepositCaptureActivity.RETAKE_BACK);
+			if( retakeFrontLabel != null && retakeBackLabel != null) {
+				retakeFrontLabel.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(final View view) {
+						retake(CheckDepositCaptureActivity.RETAKE_FRONT);
+					}
+				});
+				
+				retakeBackLabel.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(final View v) {
+						retake(CheckDepositCaptureActivity.RETAKE_BACK);
+					}
+				});
 			}
-		});
+		}
 	}
 
 	/**
@@ -459,7 +463,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 */
 	public void restoreState() {
 		if( bundle != null  ) {			
-			final String key = amountDetail.getTopLabel().getText().toString();
+			final String key = (amountDetail != null) ? amountDetail.getTopLabel().getText().toString() : "";
 			final String amountError = bundle.getString(key +KEY_ERROR_EXT);
 			final String imageError = bundle.getString(IMAGE_CELL_ERROR_KEY);
 			
