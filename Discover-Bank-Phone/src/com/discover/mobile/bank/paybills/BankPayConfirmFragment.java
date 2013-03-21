@@ -14,6 +14,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
@@ -22,6 +23,7 @@ import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * This class is used to show confirmation of a Payment scheduled by a user. It consists
@@ -151,5 +153,11 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	@Override
 	public void onBackPressed() {
 		//Nothing todo here
+	}
+
+
+	@Override
+	protected void helpMenuOnClick(final HelpWidget help) {
+		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
 	}
 }

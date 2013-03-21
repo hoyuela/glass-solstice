@@ -26,7 +26,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,6 +37,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
@@ -47,6 +47,7 @@ import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.error.bank.BankError;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
@@ -67,7 +68,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 	private static final String MEMO = "f";
 	private static final String CONFLICT = "conflict";
 
-	private LinearLayout parentView;
+	private RelativeLayout parentView;
 
 	/** Pay From table item */
 	private RelativeLayout paymentAccountItem;
@@ -152,7 +153,13 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			final ViewGroup container, final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.schedule_payment, null);
 
-		parentView = (LinearLayout) view;
+		parentView = (RelativeLayout) view;
+		
+		/**Help icon setup*/
+		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
+		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
+		
+		
 		payeeText = (TextView) view.findViewById(R.id.payee_text);
 		payeeError = (TextView)view.findViewById(R.id.payee_error);
 		progressHeader = (BankHeaderProgressIndicator) view
@@ -335,13 +342,12 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			payeeText.setText(payee.nickName);
 			paymentAccountText.setText(defaultPaymentAccount());
 
-			if (bankUser.getAccounts().accounts.size() > 1) {
+			if (bankUser.getPaymentCapableAccounts().accounts.size() > 1) {
 				final AccountAdapter accountAdapter = new AccountAdapter(
 						getActivity(), R.layout.push_simple_spinner_view,
-						bankUser.getAccounts().accounts);
+						bankUser.getPaymentCapableAccounts().accounts);
 
-				accountAdapter
-				.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
+				accountAdapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
 				paymentAccountSpinner.setAdapter(accountAdapter);
 			}
 		}

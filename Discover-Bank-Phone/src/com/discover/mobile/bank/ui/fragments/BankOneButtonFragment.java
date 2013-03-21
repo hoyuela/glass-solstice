@@ -19,6 +19,7 @@ import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.bank.util.BankNeedHelpFooter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.help.HelpWidget;
 import com.google.common.base.Strings;
 
 /**
@@ -71,6 +72,7 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 * sub-class to make it visible as required.
 	 */
 	protected TextView noteTextMsg;
+	
 	/**
 	 * Reference to a TextView which displays page title for the layout.
 	 */
@@ -87,7 +89,11 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 * Reference to TextView that shows on top of content table used for showing general errors for the screen.
 	 */
 	protected TextView generalError = null;
-	
+	/**
+	 * String appended to a string to determine whether a field has an error on rotation
+	 */
+	final protected static String KEY_ERROR_EXT = ".hasError";
+
 	/**
 	 * Sets click listeners for the actionButton, actionLink, feedbackLink. Calls the method to populate
 	 * content on the contentTable and loads a reference to view for progressIndicator. Finally,
@@ -97,6 +103,10 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_one_button_layout, null);
+		
+		/**Help icon setup*/
+		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
+		helpMenuOnClick(help);
 		
 		progressIndicator = (BankHeaderProgressIndicator)view.findViewById(R.id.header);
 		
@@ -202,7 +212,12 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 * Abstract Method to be implmented by sub-class to handle when the action link is clicked
 	 */
 	protected abstract void onActionLinkClick();
-
+	
+	/**
+	 * Abstract Method to be implemented for the help menu
+	 */
+	protected abstract void helpMenuOnClick(HelpWidget help);
+	
 	/**
 	 * Method implementation of OnClickListener to specifiy to the sub-class
 	 * which button has been clicked via abstract methods.
@@ -251,5 +266,17 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	public void clearGeneralError() {
 		generalError.setVisibility(View.GONE);
 	}
-
+	
+	/**
+	 * Method used to set the error string for an inline error label and make it visible.
+	 * 
+	 * @param view TextView that represents an inline error whose text will be set using the param text.
+	 * @param text String to show to the user as an inline error
+	 */
+	public void setErrorString(final TextView view, final String text ) {
+		if( view != null && !Strings.isNullOrEmpty(text)  ) {
+			view.setText(text);
+			view.setVisibility(View.VISIBLE);
+		}
+	}
 }

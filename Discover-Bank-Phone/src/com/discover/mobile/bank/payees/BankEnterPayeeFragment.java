@@ -8,15 +8,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment class used to display the Enter Payee Page Step 1 of the Add Payee workflow. 
@@ -45,10 +45,7 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 	 * Executes the Bank API Web Service GET /api/payees/search using the text in searchField
 	 */
 	private Button continueButton;
-	/**
-	 * Button used to open a help guide when clicked on
-	 */
-	private ImageButton helpButton;
+	
 	/**
 	 * Used to determine if text should be cleared onResume. Uses bundle saveInstanceState in onCreateView to determine this.
 	 */
@@ -70,10 +67,10 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		searchField.setMinimum(2);
 		searchField.attachErrorLabel(errorLabel);
 
-		/**Button for help**/
-		helpButton = (ImageButton)view.findViewById(R.id.help);
-		helpButton.setOnClickListener(this);
-
+		/**Help icon setup*/
+		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
+		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
+		
 		/**Text View which displays a message to the user on why they are shown this screen, by visibility is gone*/
 		msgText = (TextView)view.findViewById(R.id.msg_text);
 
@@ -109,13 +106,7 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
 
-		if( sender == helpButton ) {
-			final CharSequence text = "Help Under Development";
-			final int duration = Toast.LENGTH_SHORT;
-
-			final Toast toast = Toast.makeText(this.getActivity(), text, duration);
-			toast.show();
-		} else if( sender == continueButton ) {
+		if( sender == continueButton ) {
 			if( searchField.isValid() ) {
 				final String search = searchField.getText().toString().trim();
 				BankServiceCallFactory.createPayeeSearchRequest(search).submit();

@@ -49,8 +49,6 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 		
 		inflater.inflate(R.layout.bank_header_progress, this);
 		
-		helpView = (ImageView)findViewById(R.id.help_view);
-		helpView.setOnClickListener(this);
 	}
 
 	/**
@@ -61,6 +59,7 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 		inflateHeader();
 		setTitle(R.string.enter_info, R.string.create_password,R.string.confirm);
 		setPosition(position);
+		helpView = (ImageView)this.findViewById(R.id.help_view);
 	}
 
 
@@ -102,7 +101,7 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 			step2Indicator.setVisibility(View.INVISIBLE);
 		} else if( position == 2) {
 			step2Indicator.setVisibility(View.VISIBLE);
-			step2Confirm.setVisibility(View.INVISIBLE);
+			step2Confirm.setVisibility(View.GONE);
 		}
 		
 		if( position == 3 || step2.getVisibility() != View.VISIBLE ) {

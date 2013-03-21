@@ -26,6 +26,7 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.modals.HowItWorksModalTop;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 
 /**
@@ -178,14 +179,14 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 					//Reset the review deposit bundle boolean to prevent odd navigation issues later.
 					args.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, false);
 					args.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
-					BankConductor.navigateToCheckDepositReview(args);
+					BankConductor.navigateToCheckDepositWorkFlow(args, BankDepositWorkFlowStep.ReviewDeposit);
 				}
 				/**See if the limits for the account have already been downloaded and cached*/
 				else if( null != account.limits && !reviewDepositOnFinish) {
 					/**Navigate to Check Deposit - Select Amount Page*/
 					final Bundle bundle = new Bundle();
 					bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
-					BankConductor.navigateToCheckDepositWorkFlow(bundle);
+					BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAmount);
 				} else {
 					if(reviewDepositOnFinish){
 						final BankNavigationRootActivity current = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
@@ -292,5 +293,11 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	private void loadTermsBoolean(final Bundle bundle) {
 		if(bundle != null)
 			acceptedTerms = bundle.getBoolean(BankExtraKeys.ACCEPTED_TERMS);
+	}
+
+	@Override
+	protected void helpMenuOnClick(final HelpWidget help) {
+		// TODO Auto-generated method stub
+		
 	}
 }

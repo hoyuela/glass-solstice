@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.help.HelpWidget;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
@@ -62,6 +63,11 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * @return a Fragment ready to be displayed in the ViewPager.
 	 */
 	protected abstract Fragment getDetailItem(final int position);
+	
+	/**
+	 * Abstract Method to be implemented for the help menu
+	 */
+	protected abstract void helpMenuOnClick(HelpWidget help);
 
 	/**
 	 * Returns the number of views that can be presented by the ViewPager
@@ -85,9 +91,10 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * If the user is not the primary account holder they will not be able to edit scheduled
 	 * payments. They will see the detail item but not the edit/delete buttons and will be shown
 	 * a message.
+	 * @param position Refers to the index of the data item in the list
 	 * @return if the user is the primary account holder.
 	 */
-	protected abstract boolean isUserPrimaryHolder();
+	protected abstract boolean isUserPrimaryHolder(int position);
 
 	/**
 	 * Initiate a server call to load more data.
@@ -106,6 +113,10 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		final View mainView = inflater.inflate(R.layout.account_item_detail_view, null);
+		
+		/**Help icon setup*/
+		final HelpWidget help = (HelpWidget) mainView.findViewById(R.id.help);
+		helpMenuOnClick(help);
 
 		loadAllViewsFrom(mainView);		
 		setupClickListeners();
@@ -203,8 +214,8 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * @param position
 	 */
 	private void updateScheduledPaymentWarning(final int position) {
-
-		if(isUserPrimaryHolder() || !isFragmentEditable(position)){
+		/*TODO: Need to know why this is required, this is not in the comps nor is it in the acceptance criteria
+		if(isUserPrimaryHolder(position) || !isFragmentEditable(position)){
 			jointAccountWarning.setVisibility(View.GONE);
 		}else if(isFragmentEditable(position)){
 			final String accountWarningText = this.getActivity().getString(R.string.non_primary_joint_account_warning);
@@ -214,6 +225,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 			jointAccountWarning.setText(formattedWarningText);
 			jointAccountWarning.setVisibility(View.VISIBLE);
 		}
+		*/
 	}
 
 	/**

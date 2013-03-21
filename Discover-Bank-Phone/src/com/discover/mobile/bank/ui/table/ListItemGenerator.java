@@ -16,6 +16,7 @@ import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.util.BankStringFormatter;
+import com.google.common.base.Strings;
 
 /**
  * this detail item class is able to return the individual table cells to present
@@ -209,7 +210,12 @@ public class ListItemGenerator {
 
 		final Account account = BankUser.instance().getAccount(item.paymentAccount.id);
 
-		items.add(getPayeeCell(BankUser.instance().getPayees().getNameFromId(item.payee.id)));
+		String payeeName = BankUser.instance().getPayees().getNameFromId(item.payee.id);	
+		if( Strings.isNullOrEmpty(payeeName)) {
+			payeeName = item.payee.nickName;
+		}
+		
+		items.add(getPayeeCell(payeeName));
 		items.get(0).getDividerLine().setVisibility(View.GONE);
 		items.add(getPayFromAccountCell(account.accountNumber.ending, account.nickname));
 		items.add(getAmountCell(item.amount.value));

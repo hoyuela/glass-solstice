@@ -10,8 +10,10 @@ import android.widget.Button;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * ScrollView that will hold the not eligible for payments view.
@@ -32,6 +34,10 @@ public class BankPayeeNotEligibleFragment extends BaseFragment{
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		final View view = inflater.inflate(R.layout.payee_no_eligible, null);
 
+		/**Help icon setup*/
+		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
+		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
+		
 		final Button button = (Button) view.findViewById(R.id.openAccount);
 
 		button.setOnClickListener(new OnClickListener(){

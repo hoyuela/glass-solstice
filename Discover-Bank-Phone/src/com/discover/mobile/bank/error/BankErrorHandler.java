@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
+import com.discover.mobile.bank.deposit.BankDepositWorkFlowStep;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -325,7 +326,7 @@ public class BankErrorHandler implements ErrorHandler {
 				
 				final Bundle bundle = new Bundle();
 				bundle.putString(BankDepositForbidden.KEY_ERROR_MESSAGE, msgErrResponse.getErrorMessage());
-				BankConductor.navigateToDepositForbidden(bundle);
+				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAccount);
 				handled = true;
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
@@ -354,24 +355,31 @@ public class BankErrorHandler implements ErrorHandler {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		boolean handled = false;
 		
-		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {			
-			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
-			
-			if( navActivity.getCurrentContentFragment() != null &&
-				navActivity.getCurrentContentFragment() instanceof BankErrorHandlerDelegate ) {
-			
-				final BankErrorHandlerDelegate errorHandler = (BankErrorHandlerDelegate)navActivity.getCurrentContentFragment();
+		/**Verify an error message is provided*/
+		if( !Strings.isNullOrEmpty(msgErrResponse.getErrorMessage()) ) {
+			/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
+			if( activity != null && activity instanceof BankNavigationRootActivity ) {			
+				final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
 				
-				handled = errorHandler.handleError(msgErrResponse);
+				if( navActivity.getCurrentContentFragment() != null &&
+					navActivity.getCurrentContentFragment() instanceof BankErrorHandlerDelegate ) {
+				
+					final BankErrorHandlerDelegate errorHandler = (BankErrorHandlerDelegate)navActivity.getCurrentContentFragment();
+					
+					handled = errorHandler.handleError(msgErrResponse);
+				} else {
+					if( Log.isLoggable(TAG, Log.ERROR)) {
+						Log.e(TAG, "Unable to process 422 invalid fragment type");
+					}
+				}
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
-					Log.e(TAG, "Unable to process 422 invalid fragment type");
+					Log.e(TAG, "Unable to process 422 invalid activity type");
 				}
 			}
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
-				Log.e(TAG, "Unable to process 422 invalid activity type");
+				Log.e(TAG, "No Error message provided");
 			}
 		}
 		

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageButton
+        android:id="@+id/help"
+        style="@style/orange_help_button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+    <RelativeLayout
+        android:id="@+id/help_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/help"
+        android:visibility="invisible" >
+
+        <ImageView
+            android:id="@+id/triangle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="28dp"
+            android:layout_below="@+id/help"
+            android:background="@drawable/orange_arrow_up" />
+
+        <ListView
+            android:id="@+id/content"
+            android:layout_width="200dp"
+            android:layout_height="75dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/triangle"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:background="@color/white"
+            android:orientation="vertical" />
+    </RelativeLayout>
+
+</RelativeLayout>

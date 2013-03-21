@@ -1,12 +1,15 @@
 package com.discover.mobile.bank.framework;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
+import com.discover.mobile.bank.deposit.CheckDepositCaptureActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.framework.CacheManager;
 
 /**
@@ -66,6 +69,23 @@ public final class BankUser extends CacheManager implements Serializable {
 		return accountList;
 	}
 
+	/**
+	 * @return Returns reference to list of accounts that are capable of scheduled payments
+	 */
+	public AccountList getPaymentCapableAccounts() {
+		final AccountList newList = new AccountList();
+		newList.accounts = new ArrayList<Account>();
+		
+		if( this.hasAccounts() ) {
+			for(final Account account : accountList.accounts) {
+				if( account.canSchedulePayment() ) {
+					newList.accounts.add(account);
+				}
+			}
+		}
+		return newList;
+	}
+	
 	/**
 	 * Returns the {@code Account} for a given Account id.
 	 * 
@@ -153,6 +173,8 @@ public final class BankUser extends CacheManager implements Serializable {
 		BankUrlManager.clearLinks();
 		currentAccount = null;
 		payees = null;
+		//Ensure that any cached check images are deleted upon logout or timeout.
+		CheckDepositCaptureActivity.deleteBothImages(DiscoverActivityManager.getActiveActivity());
 	}
 
 	/**

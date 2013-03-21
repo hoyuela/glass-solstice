@@ -35,12 +35,6 @@
 	        android:visibility="gone"
 	        style="@style/sub_copy_medium"/>
 	    
-	     <ImageButton
-            android:id="@+id/help"
-            style="@style/orange_help_button"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true" />
-	     
 	     <com.discover.mobile.bank.payees.PayeeValidatedEditField
 	         android:id="@+id/search_field"
 	         android:layout_width="fill_parent"
@@ -78,6 +72,11 @@
 	         android:layout_marginTop="@dimen/modal_top_margin"
 	         android:drawablePadding="@dimen/between_related_elements_padding"
 	         android:text="@string/continue_text" />
+	    
+	    <com.discover.mobile.common.help.HelpWidget
+            android:id="@+id/help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 	
 	</RelativeLayout>
 </ScrollView>

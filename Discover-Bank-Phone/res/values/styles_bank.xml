@@ -1,15 +1,5 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <style name="orange_help_button">
-        <item name="android:layout_marginBottom">@dimen/between_related_elements_padding</item>
-        <item name="android:layout_marginLeft">@dimen/groups_of_elements_padding</item>
-        <item name="android:layout_marginRight">@dimen/help_icon_right_padding</item>
-        <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item>
-        <item name="android:background">@drawable/question_mark_icon</item>
-        <item name="android:layout_width">@dimen/orange_help_button_size</item>
-        <item name="android:layout_height">@dimen/orange_help_button_size</item>
-    </style>
-    
     <style name="page_title">
         <item name="android:textColor">@color/title</item>
         <item name="android:textSize">@dimen/title_min</item>
@@ -119,6 +109,11 @@
         <item name="android:ems">10</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:padding">7dp</item>
-    </style>
+   </style>
    
+   <style name="inline_error_label" parent="discover_text">
+        <item name="android:textColor">@color/error_indicator</item>
+        <item name="android:visibility">gone</item>     
+		<item name="android:textSize">@dimen/small_copy_min</item>
+    </style>
 </resources>

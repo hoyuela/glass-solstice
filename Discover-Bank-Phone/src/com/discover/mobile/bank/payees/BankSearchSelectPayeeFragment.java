@@ -14,10 +14,12 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.paybills.SimpleChooseListItem;
 import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment that will be used in the fourth step of the Add Payee Work-flow.
@@ -76,9 +78,9 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		final View view = inflater.inflate(R.layout.bank_select_search_payee, null);
 		final Bundle bundle = this.getArguments();
 
-		/**Button for help**/
-		helpButton = (ImageButton)view.findViewById(R.id.help);
-		helpButton.setOnClickListener(this);
+		/**Help icon setup*/
+		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
+		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
 
 		/**Linear Layout which holds the results for the Payees Search**/
 		payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
