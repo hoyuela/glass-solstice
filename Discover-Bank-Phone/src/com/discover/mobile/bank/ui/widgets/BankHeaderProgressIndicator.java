@@ -59,6 +59,7 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 		inflateHeader();
 		setTitle(R.string.enter_info, R.string.create_password,R.string.confirm);
 		setPosition(position);
+		helpView = (ImageView)this.findViewById(R.id.help_view);
 	}
 
 

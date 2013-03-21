@@ -72,7 +72,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 */
 	private final static String IMAGE_CELL_ERROR_KEY = "image" +KEY_ERROR_EXT;
 	
-	
 	private final int depositSubmitActivityId = 1;
 
 	int depositAmount = 0;
@@ -160,18 +159,22 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 */
 	private void handlePendingConfirmation() {
 		final NetworkServiceCall<?> networkServiceCall = BankNetworkServiceCallManager.getInstance().getLastServiceCall();
-	
-		//Pop this fragment from the back stack;
-		this.getActivity().getSupportFragmentManager().popBackStackImmediate();
 		
-		//Verify that network service callis not null
-		if (networkServiceCall != null && networkServiceCall instanceof SubmitCheckDepositCall) {	
+		/**Verify that network service call is not null, was a check deposit submit, and this transaction is not complete*/
+		if (networkServiceCall != null && 
+			networkServiceCall instanceof SubmitCheckDepositCall ) {	
+			
 			final SubmitCheckDepositCall submitDepositCall = (SubmitCheckDepositCall)networkServiceCall;
 			
-			//Navigate to Check Deposit Confirmation Page
-			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, submitDepositCall.getResult());
-			BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.Confirmation);		
+			/**check if this service call has already been handled if so then ignore*/
+			if( !submitDepositCall.isHandled() ) {
+				submitDepositCall.setHandled(true);
+				
+				//Navigate to Check Deposit Confirmation Page
+				final Bundle bundle = new Bundle();
+				bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, submitDepositCall.getResult());
+				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.Confirmation);	
+			}	
 		}
 	}
 	
@@ -266,56 +269,57 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		final Activity currentActivity = getActivity();
 		final List<RelativeLayout> content = new ArrayList<RelativeLayout>();
 		
-		/**These BankEditDetail objects override the onClick
-		 * focusChange listeners of its super class.*/
-		final BankEditDetail accountDetail = new BankEditDetail(currentActivity);
-		
-		accountDetail.getDividerLine().setVisibility(View.GONE);
-		accountDetail.getTopLabel().setText(BankStringFormatter.getAccountEndingInString(account.accountNumber.ending));
-		accountDetail.getMiddleLabel().setText(account.nickname);
-		accountDetail.getMiddleLabel().setSingleLine(false);
-		accountDetail.getMiddleLabel().setMaxLines(2);
-		accountDetail.getView().setOnFocusChangeListener(null);
-		accountDetail.getView().setOnClickListener(new OnClickListener() {
-			/**
-			 * On click of this list item, go back to select an account.
-			 * There is no need to change the Bundle because select account is the first
-			 * step of the checkDepositWorkflow and that Fragment will handle coming
-			 * back here when an account is selected.
-			 */
-			@Override
-			public void onClick(final View v) {
-				final Bundle args = getArguments();
-				args.putInt(BankExtraKeys.AMOUNT, depositAmount);
-				BankConductor.navigateToCheckDepositWorkFlow(args, BankDepositWorkFlowStep.SelectAccount);
-			}
-		});
-		content.add(accountDetail);
-		
-		/**These BankEditDetail objects override the onClick
-		 * focusChange listeners of its super class.*/
-		amountDetail = new BankEditDetail(currentActivity);
-		
-		amountDetail.getView().setOnClickListener(new OnClickListener() {
+		if( account != null ) {
+			/**These BankEditDetail objects override the onClick
+			 * focusChange listeners of its super class.*/
+			accountDetail = new BankEditDetail(currentActivity);
 			
-			/** On click we need to go back to the enter amount Fragment.*/
-			@Override
-			public void onClick(final View v) {
-				final Bundle adjustAmountBundle = getArguments();
-
-				BankConductor.navigateToCheckDepositWorkFlow(adjustAmountBundle, BankDepositWorkFlowStep.SelectAmount);
-			}
-		});
-		
-		final String amount = getResources().getString(R.string.amount);
-		amountDetail.setOnFocusChangeListener(null);
-		amountDetail.getTopLabel().setText(amount);
-		amountDetail.getMiddleLabel().setText(BankStringFormatter.convertCentsToDollars(depositAmount));
-		content.add(amountDetail);
-		
-		checkImageCell = new ReviewCheckDepositTableCell(currentActivity);
-		content.add(checkImageCell);
-		
+			accountDetail.getDividerLine().setVisibility(View.GONE);
+			accountDetail.getTopLabel().setText(BankStringFormatter.getAccountEndingInString(account.accountNumber.ending));
+			accountDetail.getMiddleLabel().setText(account.nickname);
+			accountDetail.getMiddleLabel().setSingleLine(false);
+			accountDetail.getMiddleLabel().setMaxLines(2);
+			accountDetail.getView().setOnFocusChangeListener(null);
+			accountDetail.getView().setOnClickListener(new OnClickListener() {
+				/**
+				 * On click of this list item, go back to select an account.
+				 * There is no need to change the Bundle because select account is the first
+				 * step of the checkDepositWorkflow and that Fragment will handle coming
+				 * back here when an account is selected.
+				 */
+				@Override
+				public void onClick(final View v) {
+					final Bundle args = getArguments();
+					args.putInt(BankExtraKeys.AMOUNT, depositAmount);
+					BankConductor.navigateToCheckDepositWorkFlow(args, BankDepositWorkFlowStep.SelectAccount);
+				}
+			});
+			content.add(accountDetail);
+			
+			/**These BankEditDetail objects override the onClick
+			 * focusChange listeners of its super class.*/
+			amountDetail = new BankEditDetail(currentActivity);
+			
+			amountDetail.getView().setOnClickListener(new OnClickListener() {
+				
+				/** On click we need to go back to the enter amount Fragment.*/
+				@Override
+				public void onClick(final View v) {
+					final Bundle adjustAmountBundle = getArguments();
+	
+					BankConductor.navigateToCheckDepositWorkFlow(adjustAmountBundle, BankDepositWorkFlowStep.SelectAmount);
+				}
+			});
+			
+			final String amount = getResources().getString(R.string.amount);
+			amountDetail.setOnFocusChangeListener(null);
+			amountDetail.getTopLabel().setText(amount);
+			amountDetail.getMiddleLabel().setText(BankStringFormatter.convertCentsToDollars(depositAmount));
+			content.add(amountDetail);
+			
+			checkImageCell = new ReviewCheckDepositTableCell(currentActivity);
+			content.add(checkImageCell);
+		}
 		return content;
 	}
 	
@@ -433,6 +437,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		/**Store values stored in each field*/
 		outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
 		outState.putInt(BankExtraKeys.AMOUNT, depositAmount);
+
 		
 		/**Store error shown at bottom of amount field*/
 		if( amountDetail != null && amountDetail.getEditableField().isInErrorState ) {

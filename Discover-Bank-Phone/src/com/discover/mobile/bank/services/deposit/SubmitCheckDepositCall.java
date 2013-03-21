@@ -27,7 +27,9 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 		/**Reference handler to allow the call to be back on the UI*/
 		private final SimpleReferenceHandler<DepositDetail> handler;
 		/**Holds the result from the response from the server*/
-		DepositDetail result;
+		private DepositDetail result;
+		/**Flag set to true if the response to this service call has been handled or not*/
+		private boolean handled;
 		
 		public SubmitCheckDepositCall(final Context context, final AsyncCallback<DepositDetail> callback,
 				final DepositDetail modelClass) {
@@ -64,6 +66,23 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 		 */
 		public DepositDetail getResult() {
 			return result;
+		}
+		
+		/**
+		 * Method used to set whether this service call has been handled or not.
+		 * 
+		 * @param value True if handled, false otherwise.
+		 */
+		public void setHandled(final boolean value) {
+			handled = value;
+		}
+		
+		/**
+		 * 
+		 * @return True if the response to this network service call has been handled, false otherwise
+		 */
+		public boolean isHandled() {
+			return handled;
 		}
 
 	}
