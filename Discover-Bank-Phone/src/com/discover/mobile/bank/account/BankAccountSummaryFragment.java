@@ -43,6 +43,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	private LinearLayout accountSummary; 
 	private Button openAccount;
 	private NeedHelpFooter helpFooter;
+	private AccountToggleView toggleView;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -84,11 +85,14 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 			}			
 		});
 		
+		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
 		final ImageView accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
 		accountToggleIcon.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				toggleView.positionIndicatorBelowIcon(accountToggleIcon);
+				toggleView.setVisibility(View.VISIBLE);
 				Toast.makeText(getActivity(), "Toggle is not yet implemented.", Toast.LENGTH_SHORT).show();
 			}
 		});

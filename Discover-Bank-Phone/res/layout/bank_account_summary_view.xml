@@ -74,6 +74,12 @@
             android:id="@+id/help"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        
+        <com.discover.mobile.bank.account.AccountToggleView
+            android:id="@+id/acct_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cardBankIcon"/>
     </RelativeLayout>
 
 </ScrollView>
