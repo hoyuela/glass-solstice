@@ -168,7 +168,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			final SubmitCheckDepositCall submitDepositCall = (SubmitCheckDepositCall)networkServiceCall;
 			
 			/**check if this service call has already been handled if so then ignore*/
-			if( !submitDepositCall.isHandled() ) {
+			if( !submitDepositCall.isHandled() && null != submitDepositCall.getResult()) {
 				submitDepositCall.setHandled(true);
 				
 				//Navigate to Check Deposit Confirmation Page

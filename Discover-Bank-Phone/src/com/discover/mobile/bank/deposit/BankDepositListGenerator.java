@@ -104,7 +104,7 @@ public class BankDepositListGenerator {
 		final String topText = context.getString(R.string.bank_deposit_amount);
 		
 		/**bottom text shows the actual amount deposited*/
-		final String bottomText = BankStringFormatter.convertToDollars(Integer.toString(amount));
+		final String bottomText = BankStringFormatter.convertCentsToDollars(amount);
 		
 		final SelectListItem item = (SelectListItem)createSelectListItem(context,topText,bottomText);
 		item.showDivider(false);	
