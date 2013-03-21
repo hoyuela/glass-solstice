@@ -253,15 +253,20 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	 * Toggle Between the buttons
 	 */
 	private void toggleButton(){
+		final boolean isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 		if(isOnMap){
 			showList();
-			mapButton.setBackgroundResource(R.drawable.atm_pinview_button);
-			listButton.setBackgroundResource(R.drawable.atm_listview_button_ds);
+			mapButton.setBackgroundResource((isLandscape) ? 
+					R.drawable.atm_pinview_button_landscape : R.drawable.atm_pinview_button);
+			listButton.setBackgroundResource((isLandscape) ? 
+					R.drawable.atm_listview_button_ds_landscape : R.drawable.atm_listview_button_ds);
 			isOnMap = false;
 		}else{
 			showMap();
-			mapButton.setBackgroundResource(R.drawable.atm_pinview_button_ds);
-			listButton.setBackgroundResource(R.drawable.atm_list_view_button);
+			mapButton.setBackgroundResource((isLandscape) ? 
+					R.drawable.atm_pinview_button_ds_landscape : R.drawable.atm_pinview_button_ds);
+			listButton.setBackgroundResource((isLandscape) ? 
+					R.drawable.atm_listview_button_landscape : R.drawable.atm_list_view_button);
 			isOnMap = true;
 		}
 	}

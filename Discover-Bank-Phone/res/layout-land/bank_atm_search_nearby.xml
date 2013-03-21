@@ -35,11 +35,11 @@
 
     <LinearLayout
         android:id="@+id/map_navigation_panel"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:background="@drawable/light_gray_bkgrd"
+        android:background="@drawable/atm_search_bar_background"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/forms_inner_padding"
         android:paddingLeft="@dimen/forms_inner_padding"
@@ -50,18 +50,18 @@
         <Button
             android:id="@+id/list_nav"
             android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginRight="@dimen/between_related_elements_padding"
             android:layout_weight="1"
-            android:background="@drawable/atm_list_view_button" />
+            android:background="@drawable/atm_listview_button_landscape" />
 
         <Button
             android:id="@+id/map_nav"
             android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginLeft="@dimen/between_related_elements_padding"
             android:layout_weight="1"
-            android:background="@drawable/atm_pinview_button_ds" />
+            android:background="@drawable/atm_pinview_button_ds_landscape" />
     </LinearLayout>
 
     <WebView
