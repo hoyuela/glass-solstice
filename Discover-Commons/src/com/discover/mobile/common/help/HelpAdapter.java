@@ -6,6 +6,8 @@ package com.discover.mobile.common.help;
 import java.util.List;
 
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,9 +69,35 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>>{
 			holder = (HelpViewHolder) view.getTag();
 		}
 
-		holder.text.setText(detail.getText());
+		if(detail.isShowArrow()){
+			final ImageSpan imagespan = 
+					new ImageSpan(this.getContext(), R.drawable.detail_disclosure_white_arrow, ImageSpan.ALIGN_BASELINE); 
+			final SpannableString text = new SpannableString(this.getContext().getString(detail.getText()) + "  ");
+			text.setSpan(imagespan, text.length()-1, text.length(), SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
+			holder.text.setText(text);
+		}else{
+			holder.text.setText(detail.getText());
+		}
+		view.setBackgroundDrawable(this.getContext().getResources().getDrawable(getDrawable(detail.isDark(), position)));
 		view.setOnClickListener(detail.getListener());
 		return view;
+	}
+
+	/**
+	 * Get the background resource
+	 * @param isDark - if the resource should be dark
+	 * @param position - position of the view
+	 */
+	public int getDrawable(final boolean isDark, final int position){
+		if(data.size() == 1){
+			return (isDark) ? R.drawable.help_dark_single : R.drawable.help_light_single;
+		}else if(position == 0){
+			return (isDark) ? R.drawable.help_dark_top : R.drawable.help_light_top;
+		}else if(position == (data.size()-1)){
+			return (isDark) ? R.drawable.help_dark_bottom : R.drawable.help_light_bottom;
+		}else{
+			return (isDark) ? R.drawable.help_dark_middle : R.drawable.help_light_middle;
+		}
 	}
 
 	/**

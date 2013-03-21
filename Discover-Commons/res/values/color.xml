@@ -65,5 +65,8 @@
 	<color name="menu_light_gray">#617277</color>
 	<color name="menu_dark_gray">#516064</color>
 	<color name="none">#00000000</color>
-    
+	
+	<!-- Help menu colors -->
+    <color name="help_menu_light_blue">#F03D484D</color>
+    <color name="help_menu_dark_blue">#F0293033</color>
 </resources>

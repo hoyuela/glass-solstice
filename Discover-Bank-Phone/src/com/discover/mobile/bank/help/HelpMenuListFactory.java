@@ -29,12 +29,9 @@ public final class HelpMenuListFactory {
 	/**Default menu item representing the "All FAQ" item*/
 	private final HelpItemGenerator allFaq;
 
-	/**Default menu item representing the "1-800-290-9885" item*/
-	private final HelpItemGenerator number;
-	
 	/**Pay Bills Menu item*/
 	private final HelpItemGenerator paybills;
-	
+
 	/**Check Deposit Menu Item*/
 	private final HelpItemGenerator checkDeposit;
 
@@ -45,10 +42,9 @@ public final class HelpMenuListFactory {
 	 * Private constructor, creates the default help menu items.
 	 */
 	private HelpMenuListFactory(){
-		allFaq = new HelpItemGenerator(R.string.help_all_faq, R.color.blue, false, getAllFaqListener());
-		number = new HelpItemGenerator(R.string.help_menu_number, R.color.blue, false, getNumberListener());
-		paybills = new HelpItemGenerator(R.string.pay_bills_help, R.color.blue, false, getPayBillsFaqListener());
-		checkDeposit = new HelpItemGenerator(R.string.check_deposit_help, R.color.blue, false, getCheckDepositFaqListener());
+		allFaq = new HelpItemGenerator(R.string.help_all_faq, true, false, getAllFaqListener());
+		paybills = new HelpItemGenerator(R.string.pay_bills_help, false, false, getPayBillsFaqListener());
+		checkDeposit = new HelpItemGenerator(R.string.check_deposit_help, false, false, getCheckDepositFaqListener());
 	}
 
 	/**
@@ -83,7 +79,7 @@ public final class HelpMenuListFactory {
 		items.add(allFaq);
 		return items;
 	}
-	
+
 	/**
 	 * Get the menu items that are associated with the check deposit pages
 	 * @return - the list of help menu items associated with the check deposit pages
@@ -102,9 +98,9 @@ public final class HelpMenuListFactory {
 	public List<HelpItemGenerator> getAtmHelpItems(){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
 		final HelpItemGenerator atmHelp = 
-				new HelpItemGenerator(R.string.help_menu_atm_help, R.color.blue, true, getAtmHelpListener());
+				new HelpItemGenerator(R.string.help_menu_atm_help, false, true, getAtmHelpListener());
 		final HelpItemGenerator atmFaq = 
-				new HelpItemGenerator(R.string.help_menu_atm_faq, R.color.blue, true, getDefaultClickListener());
+				new HelpItemGenerator(R.string.help_menu_atm_faq, false, true, getDefaultClickListener());
 		items.add(atmHelp);
 		items.add(atmFaq);
 		items.add(allFaq);
@@ -152,7 +148,7 @@ public final class HelpMenuListFactory {
 			}
 		};
 	}
-	
+
 	/**
 	 * Click listener for the Pay Bills FAQ item.  On click the user will be directed to the Pay Bills FAQ page
 	 * @return Click listener for the Pay Bills FAQ item.  On click the user will be directed to the Pay Bills FAQ page
@@ -165,7 +161,7 @@ public final class HelpMenuListFactory {
 			}
 		};
 	}
-	
+
 	/**
 	 * Click listener for the Check Deposit FAQ item.  On click the user will be directed to the Check Deposit FAQ page
 	 * @return Click listener for the Check Deposit FAQ item.  On click the user will be directed to the Check Deposit FAQ page
