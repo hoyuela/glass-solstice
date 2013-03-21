@@ -19,17 +19,18 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -105,9 +106,6 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	/**Support map fragment*/
 	private AtmListFragment  listFragment;
 
-	/**Help icon*/
-	private ImageView help;
-
 	/**Street view framgent*/
 	private AtmWebView streetView;
 
@@ -119,6 +117,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 
 	/**Boolean set to true if the device is in landscape and the list is showing*/
 	private boolean isListLand = false;
+
+	/**Help Widget*/
+	private HelpWidget help;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
@@ -137,18 +138,12 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		streetView = new AtmWebView(web, bar);
 		mapButton = (Button) view.findViewById(R.id.map_nav);
 		listButton = (Button) view .findViewById(R.id.list_nav);
-		help = (ImageView) view.findViewById(R.id.help);
+		help = (HelpWidget) view.findViewById(R.id.help);
+		help.showHelpItems(HelpMenuListFactory.instance().getAtmHelpItems());
 		navigationPanel = (LinearLayout) view.findViewById(R.id.map_navigation_panel);
 		fragment =  (SupportMapFragment) activity.getSupportFragmentManager().findFragmentById(getMapFragmentId());
 		listFragment =  (AtmListFragment) activity.getSupportFragmentManager().findFragmentById(getListFragmentId());
 		listFragment.setObserver(this);
-
-		help.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				AtmModalFactory.getAtmLocatorHelpModal(activity).show();				
-			}
-		});
 
 		this.getActivity().getSupportFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
 		streetView.hide();

@@ -10,7 +10,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.atm.AtmModalFactory;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.common.BaseFragmentActivity;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpItemGenerator;
 
 /**
@@ -28,7 +31,7 @@ public final class HelpMenuListFactory {
 
 	/**Default menu item representing the "1-800-290-9885" item*/
 	private final HelpItemGenerator number;
-	
+
 	/**Pay Bills Mnenu item*/
 	private final HelpItemGenerator paybills;
 
@@ -65,7 +68,7 @@ public final class HelpMenuListFactory {
 		items.add(allFaq);
 		return items;
 	}
-	
+
 	/**
 	 * Get the menu items that are associated with the pay bills pages
 	 * @return - the list of help mneu items associated with the pay bills pages
@@ -75,6 +78,36 @@ public final class HelpMenuListFactory {
 		items.add(paybills);
 		items.add(allFaq);
 		return items;
+	}
+
+	/**
+	 * Get the menu items that need to be added to the help menu when on ATM Locator
+	 * @return the menu items for ATM locator
+	 */
+	public List<HelpItemGenerator> getAtmHelpItems(){
+		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
+		final HelpItemGenerator atmHelp = 
+				new HelpItemGenerator(R.string.help_menu_atm_help, R.color.blue, true, getAtmHelpListener());
+		final HelpItemGenerator atmFaq = 
+				new HelpItemGenerator(R.string.help_menu_atm_faq, R.color.blue, true, getDefaultClickListener());
+		items.add(atmHelp);
+		items.add(atmFaq);
+		items.add(allFaq);
+		return items;
+	}
+
+	/**
+	 * Return the click listener for the atm help menu item
+	 * @return the click listener for the atm help menu item
+	 */
+	private OnClickListener getAtmHelpListener() {
+		return new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				final BaseFragmentActivity activity = (BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();
+				activity.showCustomAlert(AtmModalFactory.getAtmLocatorHelpModal(activity));
+			}	
+		};
 	}
 
 	/**
