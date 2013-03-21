@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
@@ -105,6 +106,9 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	protected void onActionLinkClick() {
+		BankRotationHelper.getHelper().setBundle(null);
+		
+		
 		/**
 		 * Remove this fragment from the transactions list, this seems to be required since 
 		 * makeVisible(fragment, boolean) was used.

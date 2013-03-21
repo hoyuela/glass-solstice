@@ -168,9 +168,9 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	 */
 	// FIXME need to have a navigator method defined that allows navigating back to the view payments Fragment.
 	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-		BankRotationHelper.getHelper().setBundle(getCurrentFragmentBundle());
+	public void onPause() {
+		super.onPause();
+		BankRotationHelper.getHelper().getBundle().putAll(getCurrentFragmentBundle());
 	}
 
 	/**
