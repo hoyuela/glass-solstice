@@ -180,7 +180,7 @@ public class AccountActivityViewPager extends DetailViewPager{
 	 * Returns if the current use is the primary account holder.
 	 */
 	@Override
-	protected boolean isUserPrimaryHolder() {
+	protected boolean isUserPrimaryHolder(final int position) {
 		// FIXME Need to know how to map object details to this value.
 		return true;
 	}

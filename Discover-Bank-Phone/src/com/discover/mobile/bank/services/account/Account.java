@@ -2,9 +2,11 @@ package com.discover.mobile.bank.services.account;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.common.net.json.bank.Money;
 import com.discover.mobile.common.net.json.bank.Percentage;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
@@ -44,6 +46,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 	},
  * 	"openDate": "2012-10-17T05:00:00.000+0000",
  * 	"status": "Open",
+ *  "jointOwners": [
+ *       {
+ *           "id": "0001655227",
+ *            "name": {
+ *               "givenName": "CLINTON CRAFORD",
+ *                "formatted": "CLINTON CRAFORD null"
+ *            },
+ *            "phoneNumbers": [],
+ *            "addresses": []
+ *        },
+ *        {
+ *            "id": "0001656216",
+ *            "name": {
+ *                "givenName": "ROBERT DUFFY",
+ *                "formatted": "ROBERT DUFFY null"
+ *            },
+ *            "phoneNumbers": [],
+ *            "addresses": []
+ *        }
+ *    ]
+ *
  * 	"links": {
  * 		"postedActivity": {
  * 			"ref": "/api/accounts/2/activity?status=posted",
@@ -215,7 +238,13 @@ public class Account implements Serializable {
 	 * */
 	@JsonProperty("matureDate")
 	public String matureDatae;
-
+	
+	/**
+	 * Holds list of joint owners for this account
+	 */
+	@JsonProperty("jointOwners")
+	public List<Customer> jointOwners;
+	
 	/**
 	 * Contains Bank web-service API Resource links for postedActivity and scheduledActivity
 	 */
@@ -264,6 +293,24 @@ public class Account implements Serializable {
 		}
 		
 		return ret;
+	}
+	
+	/**
+	 * @return Returns true if account is eligible for check deposit, false otherwise.
+	 */
+	public boolean isDepositEligible() {
+		return ( type.equals(ACCOUNT_CHECKING) || type.equals(ACCOUNT_SAVINGS) || type.equals(ACCOUNT_MMA));
+	}
+	
+	public String getDottedFormattedAccountNumber() {
+		return this.nickname +" (..." +this.accountNumber.ending +")";
+	}
+	
+	/**
+	 * @return Returns true if account is eligible for scheduling payment, false otherwise.
+	 */
+	public boolean canSchedulePayment() {
+		return (type.equals(ACCOUNT_CHECKING) || type.equals(ACCOUNT_MMA));
 	}
 
 }

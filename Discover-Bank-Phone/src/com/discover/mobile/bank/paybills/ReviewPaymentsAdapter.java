@@ -19,6 +19,7 @@ import com.discover.mobile.bank.BankUser;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.google.common.base.Strings;
 
 /**
  * Adapter for the review payments table.  Used to display each item as it comes on the screen.
@@ -102,7 +103,15 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 
 		/**Update the display values*/
 		holder.date.setText(convertDate(detail));
-		holder.payee.setText(payees.getNameFromId(detail.payee.id));
+		
+		/**Get Name from payee list*/
+		String nickName = payees.getNameFromId(detail.payee.id);
+		
+		/**Use nickname from payee if name does not exist in name*/
+		if( Strings.isNullOrEmpty(nickName) ) {
+			nickName = detail.payee.nickName;
+		}
+		holder.payee.setText(nickName);
 		final double amount = ((double)detail.amount.value)/DOLLAR_CONVERSION;
 		if(amount < 0){
 			holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
