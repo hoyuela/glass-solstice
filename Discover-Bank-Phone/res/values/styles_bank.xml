@@ -116,4 +116,19 @@
         <item name="android:visibility">gone</item>     
 		<item name="android:textSize">@dimen/small_copy_min</item>
     </style>
+    
+    <style name="atm_normal_static_title">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+    
+    <style name="atm_normal_static_text">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+    </style>
+    
+    <style name="atm_line">
+        <item name="android:layout_marginTop">@dimen/forms_inner_padding</item>
+        <item name="android:layout_marginBottom">@dimen/forms_inner_padding</item>
+    </style>
 </resources>

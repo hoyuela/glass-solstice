@@ -143,6 +143,13 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		listFragment =  (AtmListFragment) activity.getSupportFragmentManager().findFragmentById(getListFragmentId());
 		listFragment.setObserver(this);
 
+		help.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				AtmModalFactory.getAtmLocatorHelpModal(activity).show();				
+			}
+		});
+
 		this.getActivity().getSupportFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
 		streetView.hide();
 

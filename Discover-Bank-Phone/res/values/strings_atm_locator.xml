@@ -24,4 +24,26 @@
     <string name="atm_no_results_button">OK</string>
     <string name="atm_email_directions">Driving Directions from %1$s to %2$s</string>
     
+    <string name="atm_modal_title">ATM Locator Help</string>
+    <string name="atm_help_map_icon_title">Map Icon</string>
+    <string name="atm_help_map_icon_text">Tap icon to return to map view.</string>
+    <string name="atm_help_list_icon_title">List Icon</string>
+    <string name="atm_help_list_icon_text">List of ATMs based on search.</string>
+    <string name="atm_help_search_icon_title">Search Icon</string>
+    <string name="atm_help_search_icon_text">Expands and collapses search bar.</string>
+    <string name="atm_help_surcharge_free_title">Surcharge-free Pin</string>
+    <string name="atm_help_surcharge_free_text">Displays surcharge-free ATMs.</string>
+    <string name="atm_help_non_surcharge_free_title">Non Surcharge-free Pin</string>
+    <string name="atm_help_non_surcharge_free_text">Displays non surcharge-free ATMs.</string>
+    <string name="atm_help_start_icon_title">Starting Point Pin</string>
+    <string name="atm_help_start_icon_text">Displays the address you searched.</string>
+    <string name="atm_help_current_icon_title">Current Location Pin</string>
+    <string name="atm_help_current_icon_text">Displays your current location.</string>
+    <string name="atm_help_current_button_title">Current Location Button</string>
+    <string name="atm_help_current_button_text">Uses current location for search.</string>
+    <string name="atm_help_street_icon_title">Street View Icon</string>
+    <string name="atm_help_street_icon_text">Shows street view of location.</string>
+    <string name="atm_help_direction_icon_title">Directions Icon</string>
+    <string name="atm_help_direction_icon_text">Displays step-by-step directions.</string>
+    
 </resources>
