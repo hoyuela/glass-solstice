@@ -111,7 +111,7 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 		
 		//Navigate to Scheduled Transactions Activity Page
 		if( account != null ) {
-			final String link = account.getLink(Account.LINKS_SCHEDULED_ACTIVITY);
+			final String link = account.getLink(Account.LINKS_POSTED_ACTIVITY);
 	
 			//Set Current Account to be accessed by other objects in the application
 			BankUser.instance().setCurrentAccount(account);

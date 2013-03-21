@@ -4,12 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Window;
@@ -25,6 +23,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.net.json.bank.Money;
 import com.google.common.base.Strings;
 
 
@@ -77,15 +76,10 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 			account = (Account)extras.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 			
 			if(account != null){
-				final TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-
 				detail = new DepositDetail();
-			
-				detail.amount = extras.getInt(BankExtraKeys.AMOUNT);
+				detail.amount = new Money();
+				detail.amount.value = extras.getInt(BankExtraKeys.AMOUNT);
 				detail.account = Integer.parseInt(account.id);		
-				
-				detail.deviceUUID = telephonyManager.getDeviceId();
-				detail.deviceType = "Android";
 			
 				detail.frontImage = getCompressedImageFromPath(CheckDepositCaptureActivity.FRONT_PICTURE);
 				detail.backImage = getCompressedImageFromPath(CheckDepositCaptureActivity.BACK_PICTURE);
