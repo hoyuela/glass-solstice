@@ -71,7 +71,9 @@ public class HelpWidget extends RelativeLayout{
 				if(expandableView.getVisibility() == View.INVISIBLE){
 					expandableView.setVisibility(View.VISIBLE);
 				}else{
+
 					expandableView.setVisibility(View.INVISIBLE);
+
 				}
 			}
 		});

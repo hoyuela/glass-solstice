@@ -73,5 +73,7 @@
 
     <!-- View Pager Nav Margin -->
     <dimen name="next_button_margin">60dp</dimen>
+    
+    <dimen name="help_rounded_corner">6dp</dimen>
 
 </resources>

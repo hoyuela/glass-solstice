@@ -34,7 +34,6 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/triangle"
             android:layout_marginRight="@dimen/between_related_elements_padding"
-            android:background="@drawable/help_menu_background"
             android:divider="@drawable/help_table_divider"
             android:dividerHeight="2dp"/>
     </RelativeLayout>

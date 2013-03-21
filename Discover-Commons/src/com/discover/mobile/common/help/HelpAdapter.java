@@ -78,9 +78,26 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>>{
 		}else{
 			holder.text.setText(detail.getText());
 		}
-		//view.setBackgroundColor(detail.getBackground());
+		view.setBackgroundDrawable(this.getContext().getResources().getDrawable(getDrawable(detail.isDark(), position)));
 		view.setOnClickListener(detail.getListener());
 		return view;
+	}
+
+	/**
+	 * Get the background resource
+	 * @param isDark - if the resource should be dark
+	 * @param position - position of the view
+	 */
+	public int getDrawable(final boolean isDark, final int position){
+		if(data.size() == 1){
+			return (isDark) ? R.drawable.help_dark_single : R.drawable.help_light_single;
+		}else if(position == 0){
+			return (isDark) ? R.drawable.help_dark_top : R.drawable.help_light_top;
+		}else if(position == (data.size()-1)){
+			return (isDark) ? R.drawable.help_dark_bottom : R.drawable.help_light_bottom;
+		}else{
+			return (isDark) ? R.drawable.help_dark_middle : R.drawable.help_light_middle;
+		}
 	}
 
 	/**

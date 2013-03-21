@@ -16,27 +16,27 @@ import android.view.View.OnClickListener;
 public class HelpItemGenerator {
 
 	/**Resource integer value of the string that should be shown in the layout*/
-	final int text;
+	private final int text;
 
-	/**Resource id of the background that should be shown for the item in the list view*/
-	final int background;
+	/**Boolean true if the background should be dark*/
+	private final boolean isDark;
 
 	/**Boolean set to true when the arrow should be shown next to the text*/
-	final boolean showArrow;
+	private final boolean showArrow;
 
 	/**Click listener that will be attached to the view while it is visible in the search widget*/
-	final OnClickListener listener;
+	private final OnClickListener listener;
 
 	/**
 	 * Constructor for the help item
 	 * @param text - resource integer value of the string that should be shown in the layout
 	 * @param background - resource id of the background that should be shown for the item in the list view
-	 * @param showArrow - boolean set to true when the arrow should be shown next to the text
+	 * @param showArrow - boolean true if the background should be dark
 	 * @param listener - click listener that will be attached to the view while it is visible in the search widget
 	 */
-	public HelpItemGenerator(final int text, final int background, final boolean showArrow, final OnClickListener listener){
+	public HelpItemGenerator(final int text, final boolean isDark, final boolean showArrow, final OnClickListener listener){
 		this.text = text;
-		this.background = background;
+		this.isDark = isDark;
 		this.showArrow = showArrow;
 		this.listener = listener;
 	}
@@ -46,13 +46,6 @@ public class HelpItemGenerator {
 	 */
 	public int getText() {
 		return text;
-	}
-
-	/**
-	 * @return the background
-	 */
-	public int getBackground() {
-		return background;
 	}
 
 	/**
@@ -67,6 +60,13 @@ public class HelpItemGenerator {
 	 */
 	public OnClickListener getListener() {
 		return listener;
+	}
+
+	/**
+	 * @return the isDark
+	 */
+	public boolean isDark() {
+		return isDark;
 	}
 
 }
