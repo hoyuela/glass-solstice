@@ -28,7 +28,7 @@
             android:background="@drawable/anchor_triangle_blue" />
 
         <ListView
-            android:id="@+id/content"
+            android:id="@+id/help_list_view"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
