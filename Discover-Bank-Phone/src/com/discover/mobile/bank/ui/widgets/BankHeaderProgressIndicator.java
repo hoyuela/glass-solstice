@@ -21,10 +21,6 @@ import com.discover.mobile.common.DiscoverActivityManager;
  *
  */
 public class BankHeaderProgressIndicator extends RelativeLayout implements OnClickListener {
-	/**
-	 * Reference to help icon displayed which is meant to be clickable
-	 */
-	protected ImageView helpView;
 	
 	public BankHeaderProgressIndicator(final Context context) {
 		super(context);
@@ -59,7 +55,6 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 		inflateHeader();
 		setTitle(R.string.enter_info, R.string.create_password,R.string.confirm);
 		setPosition(position);
-		helpView = (ImageView)this.findViewById(R.id.help_view);
 	}
 
 
@@ -140,12 +135,5 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 		final Toast toast = Toast.makeText(DiscoverActivityManager.getActiveActivity(), text, duration);
 		toast.show();
 		
-	}
-
-	/**
-	 * @return the helpView
-	 */
-	public ImageView getHelpView() {
-		return helpView;
 	}
 }
