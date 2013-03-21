@@ -3,6 +3,7 @@ package com.discover.mobile.bank.services.deposit;
 import java.io.Serializable;
 
 import com.discover.mobile.common.net.json.bank.Date;
+import com.discover.mobile.common.net.json.bank.Money;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -18,17 +19,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 	
  * 	A successful response will be in the following form with a 201 Created http response. 
 	{
-		id: 1552,
-		account: 2,
-		amount: { value: 25000 },
-		confirmation: 2e90edd0384,
-		scheduledDate: "2013-01-28T00:00:00Z",
-		links: {
-			"self" : {
-				"ref" : "https://www.discoverbank.com/api/deposits/1552",
-				"allowed" : [ "GET" ]
-			}
-		}
+	    "account": 2,
+	    "amount": {
+	        "value": 5555,
+	        "formatted": "$55.55"
+	    },
+	    "id": "3200000000220",
+	    "creationDate": "2013-03-21T16:23:56.541+0000",
+	    "confirmation": "2e90edd00dc"
 	}
 	
  * @author scottseward
@@ -47,7 +45,7 @@ public class DepositDetail implements Serializable {
 	public static final String ACCOUNT_FIELD = "account";
 	
 	@JsonProperty("amount")
-	public int amount;
+	public Money amount;
 	
 	@JsonProperty("account")
 	public int account;
@@ -64,12 +62,5 @@ public class DepositDetail implements Serializable {
 	
 	/** A Base64 encoded image*/
 	@JsonProperty("backImage")
-	public String backImage;
-	
-	@JsonProperty("deviceType")
-	public String deviceType;
-	
-	@JsonProperty("deviceUUID")
-	public String deviceUUID;
-	
+	public String backImage;	
 }

@@ -162,7 +162,7 @@ public class BankDepositListGenerator {
 		final List<RelativeLayout> list = new ArrayList<RelativeLayout>();
 		
 		list.add(createAccountItem(context, depositDetail.account));
-		list.add(createAmountItem(context,  depositDetail.amount));
+		list.add(createAmountItem(context,  depositDetail.amount.value));
 		list.add(createConfirmationItem(context, depositDetail.confirmation));
 		list.add(createNoteItem(context, "XX:XX PM" ));
 		

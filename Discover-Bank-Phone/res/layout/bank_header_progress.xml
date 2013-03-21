@@ -36,7 +36,6 @@
                 android:layout_toRightOf="@+id/step1_confirm"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/between_related_elements_padding"
-                android:singleLine="true"
                 android:text="@string/bank_deposit_enter_details" />
         </RelativeLayout>
 
@@ -71,7 +70,6 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:paddingLeft="@dimen/between_related_elements_padding"
-                android:singleLine="true"
                 android:text="@string/bank_deposit_capture" />
         </RelativeLayout>
 
@@ -95,7 +93,6 @@
                 android:layout_below="@+id/step3_indicator"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical|right"
-                android:singleLine="true"
                 android:text="@string/bank_deposit_confirmation" />
         </RelativeLayout>
 
