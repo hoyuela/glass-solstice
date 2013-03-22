@@ -30,15 +30,16 @@
 
         <ImageButton
             android:id="@+id/search_show"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="@dimen/between_related_elements_padding"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
             android:layout_marginTop="@dimen/search_bar_arrow_margin_top"
             android:alpha=".5"
-            android:background="@drawable/drk_blue_arrow_left_square" />
+            android:background="@drawable/transparent_square"
+            android:src="@drawable/drk_blue_arrow_left_square" />
 
         <ImageButton
             android:id="@+id/help_dummy"
@@ -57,7 +58,6 @@
             android:layout_alignParentTop="true"
             android:layout_centerVertical="true"
             android:layout_marginBottom="@dimen/between_related_elements_padding"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:layout_toLeftOf="@+id/help_dummy"

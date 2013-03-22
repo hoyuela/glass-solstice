@@ -105,7 +105,6 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 					show.setVisibility(View.VISIBLE);
 					searchLayout.startAnimation(Animator.createSlideToLeftAnimation(context, searchLayout));
 					isSearchExpanded = false;
-					hide.setBackgroundDrawable(getResources().getDrawable(R.drawable.drk_blue_arrow_left_square));
 				}
 			}
 
