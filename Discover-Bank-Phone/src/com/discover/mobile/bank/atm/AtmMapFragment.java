@@ -584,10 +584,10 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	/**
 	 * Report an issue with an ATM
 	 */
-	public void reportAtm(){
+	public void reportAtm(final String id){
 		shouldGoBack = true;
 		streetView.show();
-		streetView.reportAtm();
+		streetView.reportAtm(id);
 	}
 
 	/**

@@ -160,7 +160,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		holder.report.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				fragment.reportAtm();
+				fragment.reportAtm(Integer.toString(detail.id));
 			}
 		});
 	}
