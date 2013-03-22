@@ -6,10 +6,7 @@ package com.discover.mobile.common.facade;
 import android.content.Context;
 
 /**
- * A facade to support common shared logout code
- * 
- * @author ssmith
- * 
+ * A facade to support common shared login code
  */
 public interface CardLoginFacade {
 

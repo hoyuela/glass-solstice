@@ -11,6 +11,7 @@ import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.R;
 import com.discover.mobile.common.facade.FacadeFactory;
+import com.discover.mobile.common.ui.CardInfoForToggle;
 
 /**
  * Widget that allows the user to toggle between accounts.
@@ -66,11 +67,13 @@ public class AccountToggleView extends RelativeLayout {
 		this.isShown = false;
 
 		this.setVisibility(View.INVISIBLE);
+		
+		CardInfoForToggle cardInfo = FacadeFactory.getCardFacade().getCardInfoForToggle();
 
-		cardName.setText("Discover Card");
+		cardName.setText(cardInfo.getCardAccountName());
 		cardEnding.setText(context.getResources().getString(
 				R.string.account_ending_in)
-				+ " ####");
+				+ " " +cardInfo.getCardEndingDigits());
 
 		setAccountType();
 		setupListeners();

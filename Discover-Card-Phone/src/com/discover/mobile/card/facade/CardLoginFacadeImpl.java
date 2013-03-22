@@ -14,7 +14,6 @@ import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.GenericCallbackListener.CallbackPriority;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.facade.CardLoginFacade;
@@ -68,7 +67,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade{
 	@Override
 	public void loginWithPayload(LoginActivityInterface callingActivity,
 			String tokenValue, String hashedTokenValue) {
-		FacadeFactory.getBankLoginFacade().authDueToALUStatus();
+		
 	}
 
 	@Override

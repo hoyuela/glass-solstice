@@ -7,6 +7,7 @@ import android.app.Activity;
 
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.ui.CardInfoForToggle;
 
 
 /**
@@ -50,4 +51,10 @@ public interface CardFacade {
 	 * Initializes the PhoneGap framework code
 	 */
 	public void initPhoneGap();
+	
+	/**
+	 * Returns the card information used to populate the Account Toggle widget.
+	 */
+	public CardInfoForToggle getCardInfoForToggle();
+	
 }
