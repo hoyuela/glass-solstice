@@ -277,14 +277,18 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	 */
 	private void resumeStateOfFragment(final Bundle savedInstanceState) {
 		locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
-		if(LOCKED_ON == locationStatus){
-			final Location location = new Location(LocationManager.GPS_PROVIDER);
-			location.setLatitude(savedInstanceState.getDouble(LAT_KEY));
-			location.setLongitude(savedInstanceState.getDouble(LONG_KEY));
-			mapWrapper.setCurrentLocation(location);
-			mapWrapper.focusCameraOnLocation(location.getLatitude(), location.getLongitude(), MAP_CURRENT_GPS_ZOOM);
-		}
+		final Double lat = savedInstanceState.getDouble(LAT_KEY);
+		final Double lon = savedInstanceState.getDouble(LONG_KEY);
 		results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+		if(null != results){
+			hasLoadedAtms = true;
+		}
+		if(0.0 != lat && 0.0 != lon){
+			final Location location = new Location(LocationManager.GPS_PROVIDER);
+			location.setLatitude(lat);
+			location.setLongitude(lon);
+			setUserLocation(location);
+		}
 		currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
 		if(null != results){
 			mapWrapper.addObjectsToMap(results.results.atms.subList(0, currentIndex));
@@ -443,7 +447,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 			settingsModal.dismiss();
 		}
 		outState.putInt(LOCATION_STATUS, locationStatus);
-		if(LOCKED_ON == locationStatus && null != mapWrapper.getCurrentLocation()){
+		if(null != mapWrapper.getCurrentLocation()){
 			outState.putDouble(LAT_KEY, mapWrapper.getCurrentLocation().getLatitude());
 			outState.putDouble(LONG_KEY, mapWrapper.getCurrentLocation().getLongitude());
 		}
