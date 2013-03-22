@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+<!-- FAQ Section Titles Array -->
+    <string-array name="faq_sections">
+        <item>@string/general</item>
+        <item>@string/online_bill_pay</item>
+        <item>@string/deposit_a_check</item>
+        <item>@string/atm_locator_single_line</item>
+    </string-array>
+    
+<!-- FAQ Section Titles -->
+    <string name="faq_title">Frequently Asked Questions</string>
+    <string name="general">General</string>
+	<string name="atm_locator_single_line">ATM Locator</string>
+	<string name="online_bill_pay">Online Bill Pay</string>
+
+	<string name="deposit_a_check">Deposit a Check</string>
+</resources>

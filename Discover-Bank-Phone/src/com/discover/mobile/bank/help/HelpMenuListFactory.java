@@ -9,6 +9,7 @@ import java.util.List;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.atm.AtmModalFactory;
 import com.discover.mobile.bank.framework.BankConductor;
@@ -43,8 +44,10 @@ public final class HelpMenuListFactory {
 	 */
 	private HelpMenuListFactory(){
 		allFaq = new HelpItemGenerator(R.string.help_all_faq, true, false, getAllFaqListener());
-		paybills = new HelpItemGenerator(R.string.pay_bills_help, false, false, getPayBillsFaqListener());
-		checkDeposit = new HelpItemGenerator(R.string.check_deposit_help, false, false, getCheckDepositFaqListener());
+		paybills = new HelpItemGenerator(R.string.pay_bills_help, false, false, 
+													getDefaultClickListener(BankExtraKeys.BILL_PAY_FAQ));
+		checkDeposit = new HelpItemGenerator(R.string.check_deposit_help, false, false, 
+													getDefaultClickListener(BankExtraKeys.CHECK_DEPOSIT_FAQ));
 	}
 
 	/**
@@ -100,7 +103,8 @@ public final class HelpMenuListFactory {
 		final HelpItemGenerator atmHelp = 
 				new HelpItemGenerator(R.string.help_menu_atm_help, false, true, getAtmHelpListener());
 		final HelpItemGenerator atmFaq = 
-				new HelpItemGenerator(R.string.help_menu_atm_faq, false, true, getDefaultClickListener());
+				new HelpItemGenerator(R.string.help_menu_atm_faq, false, true, 
+												getDefaultClickListener(BankExtraKeys.ATM_LOCATOR_FAQ));
 		items.add(atmHelp);
 		items.add(atmFaq);
 		items.add(allFaq);
@@ -126,11 +130,11 @@ public final class HelpMenuListFactory {
 	 * a sub section of all the FAQs
 	 * @return the click listener for menu items
 	 */
-	private OnClickListener getDefaultClickListener(){
+	private OnClickListener getDefaultClickListener(final String faqType){
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToSpecificFaq();
+				BankConductor.navigateToSpecificFaq(faqType);
 
 			}
 		};
@@ -144,47 +148,9 @@ public final class HelpMenuListFactory {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToAllFaq();
+				BankConductor.navigateToFAQLandingPage();
 			}
 		};
 	}
 
-	/**
-	 * Click listener for the Pay Bills FAQ item.  On click the user will be directed to the Pay Bills FAQ page
-	 * @return Click listener for the Pay Bills FAQ item.  On click the user will be directed to the Pay Bills FAQ page
-	 */
-	private OnClickListener getPayBillsFaqListener(){
-		return new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				//TODO go to pay bills FAQ
-			}
-		};
-	}
-
-	/**
-	 * Click listener for the Check Deposit FAQ item.  On click the user will be directed to the Check Deposit FAQ page
-	 * @return Click listener for the Check Deposit FAQ item.  On click the user will be directed to the Check Deposit FAQ page
-	 */
-	private OnClickListener getCheckDepositFaqListener(){
-		return new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				//TODO go to pay bills FAQ
-			}
-		};
-	}
-
-	/**
-	 * Click listener for the all number item.  On click the user will be directed to the dialer
-	 * @return Click listener for the all number item.  On click the user will be directed to the dialer
-	 */
-	private OnClickListener getNumberListener(){
-		return new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				// TODO go to dialer
-			}
-		};
-	}
 }
