@@ -71,8 +71,8 @@ public class AtmListFragment extends BaseTable{
 	/**
 	 * Report an issue with an atm
 	 */
-	public void reportAtm(){
-		observer.reportAtm();
+	public void reportAtm(final String id){
+		observer.reportAtm(id);
 	}
 
 	/**

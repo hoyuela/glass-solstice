@@ -31,6 +31,9 @@ import com.discover.mobile.bank.deposit.CaptureReviewFragment;
 import com.discover.mobile.bank.deposit.CheckDepositErrorFragment;
 import com.discover.mobile.bank.deposit.DuplicateCheckErrorFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
+import com.discover.mobile.bank.help.FAQDetailFragment;
+import com.discover.mobile.bank.help.FAQLandingPageFragment;
+import com.discover.mobile.bank.help.LoggedOutFAQActivity;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.BankPayConfirmFragment;
@@ -174,6 +177,17 @@ public final class BankConductor  extends Conductor {
 		}
 	}
 
+	public static void navigateToFAQLandingPage() {
+		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+		if(currentActivity instanceof BankNavigationRootActivity) {
+			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+			activity.makeFragmentVisible(new FAQLandingPageFragment());
+		}else{
+			final Intent loggedOutFAQ = new Intent(currentActivity, LoggedOutFAQActivity.class);
+			currentActivity.startActivity(loggedOutFAQ);
+		}
+	}
+	
 	/**
 	 * Navigates application to EnhancedAccountSecurityActivity which is used for strong authentication
 	 * for both CARD and BANK accounts. If EnhancedAccountSecurityActivity is already open, then it will
@@ -318,6 +332,14 @@ public final class BankConductor  extends Conductor {
 		fragment.setArguments(bundle);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
+	
+	public static void navigateToFAQDetail(final String extraKey) {
+		final Bundle extras = new Bundle();
+		extras.putString(BankExtraKeys.FAQ_TYPE, extraKey);
+		final FAQDetailFragment faqDetail = new FAQDetailFragment();
+		faqDetail.setArguments(extras);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(faqDetail);
+	}
 
 	/**
 	 * Navigate to the activity detail table screen
@@ -419,11 +441,11 @@ public final class BankConductor  extends Conductor {
 			final NavigationRootActivity fragActivity = (NavigationRootActivity)activity;
 
 			fragActivity.closeDialog();
-			
+
 			final Bundle helperBundle = BankRotationHelper.getHelper().getBundle();
-			
+
 			helperBundle.putAll(bundle);
-			
+
 			fragActivity.getSupportFragmentManager().popBackStackImmediate();
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
@@ -645,7 +667,7 @@ public final class BankConductor  extends Conductor {
 			//Check if user is forbidden to use check deposit
 			if( isForbidden ) {
 				fragment = new BankDepositForbidden();
-			//Check if user is eligible and has eligible accounts
+				//Check if user is eligible and has eligible accounts
 			} else if(!isEligible || !BankUser.instance().hasDepositEligibleAccounts()){
 				fragment = new BankDepositNotEligibleFragment();
 			}
@@ -659,23 +681,23 @@ public final class BankConductor  extends Conductor {
 				case SelectAmount:
 					fragment = new BankDepositSelectAmount();
 					break;
-				//Navigate user to first step in check deposit work-flow
+					//Navigate user to first step in check deposit work-flow
 				case SelectAccount:
 					fragment = new BankDepositSelectAccount();	
 					break;
-				//Navigate user to page where they can review their deposit 
+					//Navigate user to page where they can review their deposit 
 				case ReviewDeposit:
 					fragment = new CaptureReviewFragment();
 					break;
-				//Navigate user to final step in Check deposit work-flow
+					//Navigate user to final step in Check deposit work-flow
 				case Confirmation:
 					fragment = new BankDepositConfirmFragment();
 					break;
-				//Navigate to timeout error if check deposit error fragment flag is found in bundle
+					//Navigate to timeout error if check deposit error fragment flag is found in bundle
 				case DepositError:
 					fragment = new CheckDepositErrorFragment();
 					break;
-				//Navigate to duplicate error fragment if boolean flag is found in bundle
+					//Navigate to duplicate error fragment if boolean flag is found in bundle
 				case DuplicateError:
 					fragment = new DuplicateCheckErrorFragment();
 					break;
@@ -737,12 +759,12 @@ public final class BankConductor  extends Conductor {
 		if(DiscoverActivityManager.getActiveActivity() instanceof AtmLocatorActivity){
 			final AtmLocatorActivity activity = (AtmLocatorActivity)DiscoverActivityManager.getActiveActivity();
 			activity.closeDialog();
-			activity.getMapFragment().handleRecievedAtms(bundle);
+			activity.getMapFragment().handleReceivedData(bundle);
 		}else if(DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity){
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 			if(activity.getCurrentContentFragment() instanceof AtmMapFragment){
 				activity.closeDialog();
-				((AtmMapFragment)activity.getCurrentContentFragment()).handleRecievedAtms(bundle);
+				((AtmMapFragment)activity.getCurrentContentFragment()).handleReceivedData(bundle);
 			}
 		}
 	}
@@ -809,15 +831,21 @@ public final class BankConductor  extends Conductor {
 	/**
 	 * Navigate to a specific FAQ page
 	 */
-	public static void navigateToSpecificFaq() {
-		// TODO Implement this for FAQ	
-	}
-
-	/**
-	 * Navigate to the all FAQ landing page
-	 */
-	public static void navigateToAllFaq() {
-		// TODO Implement this for FAQ		
+	public static void navigateToSpecificFaq(final String faqType) {
+		final Bundle extras = new Bundle();
+		extras.putString(BankExtraKeys.FAQ_TYPE, faqType);
+		
+		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+		if(currentActivity instanceof BankNavigationRootActivity) {
+			final FAQDetailFragment faqSection = new FAQDetailFragment();
+			faqSection.setArguments(extras);
+			final NavigationRootActivity navRoot = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+			navRoot.makeFragmentVisible(faqSection);
+		}else{
+			final Intent loggedOutFAQ = new Intent(currentActivity, LoggedOutFAQActivity.class);
+			loggedOutFAQ.putExtras(extras);
+			currentActivity.startActivity(loggedOutFAQ);
+		}
 	}
 
 	/**

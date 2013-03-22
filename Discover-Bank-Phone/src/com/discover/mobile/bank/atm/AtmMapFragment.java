@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
@@ -44,7 +45,7 @@ import com.slidingmenu.lib.SlidingMenu;
  *
  */
 public abstract class AtmMapFragment extends BaseFragment 
-implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
+implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, DynamicDataFragment{
 
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
@@ -117,6 +118,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 
 	/**Boolean set to true if the device is in landscape and the list is showing*/
 	private boolean isListLand = false;
+
+	/**Boolean true when the fragment is loading*/
+	private boolean isLoading = false;
 
 	/**Help Widget*/
 	private HelpWidget help;
@@ -253,15 +257,20 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	 * Toggle Between the buttons
 	 */
 	private void toggleButton(){
+		final boolean isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 		if(isOnMap){
 			showList();
-			mapButton.setBackgroundResource(R.drawable.atm_pinview_button);
-			listButton.setBackgroundResource(R.drawable.atm_listview_button_ds);
+			mapButton.setBackgroundResource((isLandscape) ? 
+					R.drawable.atm_pinview_button_landscape : R.drawable.atm_pinview_button);
+			listButton.setBackgroundResource((isLandscape) ? 
+					R.drawable.atm_listview_button_ds_landscape : R.drawable.atm_listview_button_ds);
 			isOnMap = false;
 		}else{
 			showMap();
-			mapButton.setBackgroundResource(R.drawable.atm_pinview_button_ds);
-			listButton.setBackgroundResource(R.drawable.atm_list_view_button);
+			mapButton.setBackgroundResource((isLandscape) ? 
+					R.drawable.atm_pinview_button_ds_landscape : R.drawable.atm_pinview_button_ds);
+			listButton.setBackgroundResource((isLandscape) ? 
+					R.drawable.atm_listview_button_landscape : R.drawable.atm_list_view_button);
 			isOnMap = true;
 		}
 	}
@@ -272,14 +281,18 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	 */
 	private void resumeStateOfFragment(final Bundle savedInstanceState) {
 		locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
-		if(LOCKED_ON == locationStatus){
-			final Location location = new Location(LocationManager.GPS_PROVIDER);
-			location.setLatitude(savedInstanceState.getDouble(LAT_KEY));
-			location.setLongitude(savedInstanceState.getDouble(LONG_KEY));
-			mapWrapper.setCurrentLocation(location);
-			mapWrapper.focusCameraOnLocation(location.getLatitude(), location.getLongitude(), MAP_CURRENT_GPS_ZOOM);
-		}
+		final Double lat = savedInstanceState.getDouble(LAT_KEY);
+		final Double lon = savedInstanceState.getDouble(LONG_KEY);
 		results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+		if(null != results){
+			hasLoadedAtms = true;
+		}
+		if(0.0 != lat && 0.0 != lon){
+			final Location location = new Location(LocationManager.GPS_PROVIDER);
+			location.setLatitude(lat);
+			location.setLongitude(lon);
+			setUserLocation(location);
+		}
 		currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
 		if(null != results){
 			mapWrapper.addObjectsToMap(results.results.atms.subList(0, currentIndex));
@@ -325,7 +338,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 			showList();
 		}
 
-		((NavigationRootActivity)this.getActivity()).setCurrentFragment(this);
+		final NavigationRootActivity activity = ((NavigationRootActivity)this.getActivity());
+		activity.setCurrentFragment(this);
 
 		if(NOT_ENABLED == locationStatus){
 			locationStatus = (locationManagerWrapper.areProvidersenabled()) ? ENABLED : NOT_ENABLED;
@@ -350,7 +364,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	 * Handle the ATMs that are received from the services and display them on the map.
 	 * @param bundle - bundle
 	 */
-	public void handleRecievedAtms(final Bundle bundle){
+	@Override
+	public void handleReceivedData(final Bundle bundle){
+		isLoading = true;
 		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		int endIndex = (currentIndex + INDEX_INCREMENT);
 		if(isListEmpty()){
@@ -364,6 +380,24 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 		currentIndex = endIndex;
 		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
 		listFragment.handleReceivedData(bundle);
+	}
+
+	/**
+	 * Set if the fragment is loading more
+	 * @param isLoadingMore - if the fragment is loading more
+	 */
+	@Override
+	public void setIsLoadingMore(final boolean isLoadingMore){
+
+	}
+
+	/**
+	 * Get if the fragment is loading more
+	 * @return isLoadingMore - if the fragment is loading more
+	 */
+	@Override
+	public boolean getIsLoadingMore(){
+		return isLoading;
 	}
 
 	private boolean isListEmpty(){
@@ -387,6 +421,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 
 	@Override
 	public void getLocation(){
+		isLoading = false;
+		((NavigationRootActivity)this.getActivity()).startProgressDialog();
 		locationManagerWrapper.getLocation();
 	}
 
@@ -438,7 +474,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 			settingsModal.dismiss();
 		}
 		outState.putInt(LOCATION_STATUS, locationStatus);
-		if(LOCKED_ON == locationStatus && null != mapWrapper.getCurrentLocation()){
+		if(null != mapWrapper.getCurrentLocation()){
 			outState.putDouble(LAT_KEY, mapWrapper.getCurrentLocation().getLatitude());
 			outState.putDouble(LONG_KEY, mapWrapper.getCurrentLocation().getLongitude());
 		}
@@ -573,16 +609,16 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed{
 	public void loadMoreData(){
 		final Bundle bundle = new Bundle();
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, results);
-		handleRecievedAtms(bundle);
+		handleReceivedData(bundle);
 	}
 
 	/**
 	 * Report an issue with an ATM
 	 */
-	public void reportAtm(){
+	public void reportAtm(final String id){
 		shouldGoBack = true;
 		streetView.show();
-		streetView.reportAtm();
+		streetView.reportAtm(id);
 	}
 
 	/**

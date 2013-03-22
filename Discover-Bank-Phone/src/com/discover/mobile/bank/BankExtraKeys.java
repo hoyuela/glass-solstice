@@ -71,6 +71,16 @@ public final class BankExtraKeys {
 	 * the terms and should see the how it works modal
 	 */
 	public static final String ACCEPTED_TERMS = "accepted";
+	
+	public static final String FAQ_TYPE = "faq type";
+	
+	public static final String GENERAL_FAQ = "general faq";
+	
+	public static final String BILL_PAY_FAQ = "pay bills faq";
+	
+	public static final String CHECK_DEPOSIT_FAQ = "deposit faq";
+	
+	public static final String ATM_LOCATOR_FAQ = "atm faq";
 
 	/**Used to signify sort set up*/
 	public static final int SORT_DATE_DESC = 0;
@@ -85,6 +95,7 @@ public final class BankExtraKeys {
 	public static final String LON = "lon";
 	public static final String STREET_LAT = "slat";
 	public static final String STREET_LON = "slon";
+	public static final String ATM_ID = "atmId";
 	public static final String FROM_ADDRESS = "from";
 	public static final String TO_ADDRESS = "to";
 

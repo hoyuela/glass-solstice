@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" 
+    android:padding="@dimen/between_related_elements_padding">
+    
+	<View
+	    android:id="@+id/divider"
+        android:layout_width="fill_parent"
+		android:layout_height="2dp"
+        android:background="@drawable/table_dotted_line" 
+        android:layout_marginBottom="@dimen/between_related_elements_padding"/>
+	
+    <TextView
+        android:id="@+id/expand_indicator"
+        android:layout_below="@+id/divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/blue_hyperlink"
+        android:text="@string/plus" />
+
+    <TextView
+        android:id="@+id/faq_section_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/between_related_elements_padding"
+        android:layout_toRightOf="@+id/expand_indicator"
+        android:layout_alignTop="@+id/expand_indicator"
+        style="@style/body_copy"
+        android:textStyle="bold"
+        android:text="@string/edit" />
+
+    <TextView
+        android:id="@+id/faq_section_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/sub_copy_medium"
+        android:layout_alignLeft="@+id/faq_section_title"
+        android:layout_marginTop="@dimen/between_related_elements_padding"
+        android:layout_below="@+id/faq_section_title"
+        android:text="@string/edit" 
+        android:visibility="gone"/>
+
+</RelativeLayout>

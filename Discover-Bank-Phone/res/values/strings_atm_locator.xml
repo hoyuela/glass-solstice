@@ -4,7 +4,7 @@
     <!--  ATM locator strings -->
     <string name="atm_locator_title">ATM Locator</string>
     <string name="atm_location_modal_title">Use Current Location</string>
-    <string name="atm_location_modal_content">By clicking the \"Allow\" button, you hearby agree that Discover may access and use your current location information to show you the nearest ATM.</string>
+    <string name="atm_location_modal_content">By clicking the \"Allow\" button, you hereby agree that Discover may access and use your current location information to show you the nearest ATM.</string>
     <string name="atm_location_modal_allow">Allow</string>
     <string name="atm_location_modal_decline">Don\'t Allow</string>
     <string name="atm_location_modal_service_title">Turn On Location Services To Allow \"Discover\" To Determine Your Location</string>
