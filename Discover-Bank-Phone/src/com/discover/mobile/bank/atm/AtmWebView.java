@@ -44,10 +44,13 @@ public class AtmWebView{
 	/**Url to show the report atm*/
 	private static final String REPORT_URL = 
 			"https://secure.opinionlab.com/ccc01/o.asp?id=TsIyHYhm&referer="+
-					"https://www.discoverbank.com/m/accountcenter/atm-locator";
+					"https://www.discoverbank.com/m/accountcenter/atm-locator&atmIdentifier=";
 
 	/**Boolean used to indicate if the webview has street view or report atm*/
 	private boolean isReportingAtm;
+	
+	/**ATM ID String */
+	private String atm_id;
 
 	/**
 	 * 
@@ -93,9 +96,10 @@ public class AtmWebView{
 	/**
 	 * Load the report an ATM URL
 	 */
-	public void reportAtm(){
+	public void reportAtm(final String id){
 		isReportingAtm = true;
-		setupWebView(REPORT_URL);
+		atm_id = id;
+		setupWebView(REPORT_URL + atm_id);
 		web.setBackgroundColor(Color.WHITE);
 	}
 
@@ -106,7 +110,7 @@ public class AtmWebView{
 	public void loadStreetView(final Bundle bundle){
 		isReportingAtm = bundle.getBoolean(REPORTING, false);
 		if(isReportingAtm){
-			reportAtm();
+			reportAtm(bundle.getString(BankExtraKeys.ATM_ID));
 			return;
 		}
 		lat = Double.toString(bundle.getDouble(BankExtraKeys.STREET_LAT));
@@ -120,6 +124,8 @@ public class AtmWebView{
 		if(!isReportingAtm){
 			outState.putDouble(BankExtraKeys.STREET_LAT, Double.parseDouble(lat));
 			outState.putDouble(BankExtraKeys.STREET_LON, Double.parseDouble(lon));
+		}else {
+			outState.putString(BankExtraKeys.ATM_ID, atm_id);
 		}
 	}
 
