@@ -4,7 +4,9 @@ import java.util.Calendar;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -49,7 +51,23 @@ implements OnPaymentCanceledListener {
 	@Override
 	public void onResume() {
 		super.onResume();
+
 		getLastTouchTime();
+	}
+
+	/**
+	 * Start the activity
+	 */
+	@Override
+	public void onStart(){
+		super.onStart();
+
+		/** Status bar should always be hidden for bank. It's possbile it will also go away card.
+		 * This is a temp solution. If it goes away for card this code will be removed.  */
+		final Fragment statusBar = this.getSupportFragmentManager().findFragmentById(R.id.status_bar);
+		final FragmentTransaction ft = this.getSupportFragmentManager().beginTransaction();
+		ft.hide(statusBar);
+		ft.commit();
 	}
 
 	@Override
