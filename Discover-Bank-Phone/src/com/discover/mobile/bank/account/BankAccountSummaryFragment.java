@@ -88,13 +88,6 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				toast.show();
 			}			
 		});
-		
-//		// Forced Login to skip SSO due to bad Card status.
-//		if(BankUser.instance().getALUStatus()) {
-//			showALUStatusModal();
-//			BankUser.instance().setALUStatus(false);
-//		}
-		
 		return view;
 	}
 
