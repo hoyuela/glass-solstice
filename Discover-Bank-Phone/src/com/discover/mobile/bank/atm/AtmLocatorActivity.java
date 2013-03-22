@@ -126,4 +126,24 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 	private void setMapFragment(final AtmMapFragment fragment) {
 		mapFragment = fragment;
 	}
+
+	/**
+	 * Determines if the current fragment is attempting to load more
+	 * 
+	 * @return if the current fragment is attempting to load more
+	 */
+	public boolean isFragmentLoadingMore(){
+		return mapFragment.getIsLoadingMore();
+	}
+
+	/**
+	 * Starts a Progress dialog using this activity as the context. The ProgressDialog created
+	 * will be set at the active dialog.
+	 */
+	@Override
+	public void startProgressDialog() {		
+		if(!isFragmentLoadingMore()){
+			super.startProgressDialog();
+		}
+	}
 }

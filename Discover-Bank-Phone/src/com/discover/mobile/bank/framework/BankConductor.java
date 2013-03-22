@@ -419,11 +419,11 @@ public final class BankConductor  extends Conductor {
 			final NavigationRootActivity fragActivity = (NavigationRootActivity)activity;
 
 			fragActivity.closeDialog();
-			
+
 			final Bundle helperBundle = BankRotationHelper.getHelper().getBundle();
-			
+
 			helperBundle.putAll(bundle);
-			
+
 			fragActivity.getSupportFragmentManager().popBackStackImmediate();
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
@@ -645,7 +645,7 @@ public final class BankConductor  extends Conductor {
 			//Check if user is forbidden to use check deposit
 			if( isForbidden ) {
 				fragment = new BankDepositForbidden();
-			//Check if user is eligible and has eligible accounts
+				//Check if user is eligible and has eligible accounts
 			} else if(!isEligible || !BankUser.instance().hasDepositEligibleAccounts()){
 				fragment = new BankDepositNotEligibleFragment();
 			}
@@ -659,23 +659,23 @@ public final class BankConductor  extends Conductor {
 				case SelectAmount:
 					fragment = new BankDepositSelectAmount();
 					break;
-				//Navigate user to first step in check deposit work-flow
+					//Navigate user to first step in check deposit work-flow
 				case SelectAccount:
 					fragment = new BankDepositSelectAccount();	
 					break;
-				//Navigate user to page where they can review their deposit 
+					//Navigate user to page where they can review their deposit 
 				case ReviewDeposit:
 					fragment = new CaptureReviewFragment();
 					break;
-				//Navigate user to final step in Check deposit work-flow
+					//Navigate user to final step in Check deposit work-flow
 				case Confirmation:
 					fragment = new BankDepositConfirmFragment();
 					break;
-				//Navigate to timeout error if check deposit error fragment flag is found in bundle
+					//Navigate to timeout error if check deposit error fragment flag is found in bundle
 				case DepositError:
 					fragment = new CheckDepositErrorFragment();
 					break;
-				//Navigate to duplicate error fragment if boolean flag is found in bundle
+					//Navigate to duplicate error fragment if boolean flag is found in bundle
 				case DuplicateError:
 					fragment = new DuplicateCheckErrorFragment();
 					break;
@@ -737,12 +737,12 @@ public final class BankConductor  extends Conductor {
 		if(DiscoverActivityManager.getActiveActivity() instanceof AtmLocatorActivity){
 			final AtmLocatorActivity activity = (AtmLocatorActivity)DiscoverActivityManager.getActiveActivity();
 			activity.closeDialog();
-			activity.getMapFragment().handleRecievedAtms(bundle);
+			activity.getMapFragment().handleReceivedData(bundle);
 		}else if(DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity){
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 			if(activity.getCurrentContentFragment() instanceof AtmMapFragment){
 				activity.closeDialog();
-				((AtmMapFragment)activity.getCurrentContentFragment()).handleRecievedAtms(bundle);
+				((AtmMapFragment)activity.getCurrentContentFragment()).handleReceivedData(bundle);
 			}
 		}
 	}
