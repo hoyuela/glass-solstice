@@ -31,6 +31,9 @@ import com.discover.mobile.bank.deposit.CaptureReviewFragment;
 import com.discover.mobile.bank.deposit.CheckDepositErrorFragment;
 import com.discover.mobile.bank.deposit.DuplicateCheckErrorFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
+import com.discover.mobile.bank.help.FAQDetailFragment;
+import com.discover.mobile.bank.help.FAQLandingPageFragment;
+import com.discover.mobile.bank.help.LoggedOutFAQActivity;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.BankPayConfirmFragment;
@@ -174,6 +177,17 @@ public final class BankConductor  extends Conductor {
 		}
 	}
 
+	public static void navigateToFAQLandingPage() {
+		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+		if(currentActivity instanceof BankNavigationRootActivity) {
+			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+			activity.makeFragmentVisible(new FAQLandingPageFragment());
+		}else{
+			final Intent loggedOutFAQ = new Intent(currentActivity, LoggedOutFAQActivity.class);
+			currentActivity.startActivity(loggedOutFAQ);
+		}
+	}
+	
 	/**
 	 * Navigates application to EnhancedAccountSecurityActivity which is used for strong authentication
 	 * for both CARD and BANK accounts. If EnhancedAccountSecurityActivity is already open, then it will
@@ -317,6 +331,14 @@ public final class BankConductor  extends Conductor {
 		final PayeeDetailViewPager fragment = new PayeeDetailViewPager();
 		fragment.setArguments(bundle);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
+	
+	public static void navigateToFAQDetail(final String extraKey) {
+		final Bundle extras = new Bundle();
+		extras.putString(BankExtraKeys.FAQ_TYPE, extraKey);
+		final FAQDetailFragment faqDetail = new FAQDetailFragment();
+		faqDetail.setArguments(extras);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(faqDetail);
 	}
 
 	/**
@@ -809,15 +831,21 @@ public final class BankConductor  extends Conductor {
 	/**
 	 * Navigate to a specific FAQ page
 	 */
-	public static void navigateToSpecificFaq() {
-		// TODO Implement this for FAQ	
-	}
-
-	/**
-	 * Navigate to the all FAQ landing page
-	 */
-	public static void navigateToAllFaq() {
-		// TODO Implement this for FAQ		
+	public static void navigateToSpecificFaq(final String faqType) {
+		final Bundle extras = new Bundle();
+		extras.putString(BankExtraKeys.FAQ_TYPE, faqType);
+		
+		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+		if(currentActivity instanceof BankNavigationRootActivity) {
+			final FAQDetailFragment faqSection = new FAQDetailFragment();
+			faqSection.setArguments(extras);
+			final NavigationRootActivity navRoot = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+			navRoot.makeFragmentVisible(faqSection);
+		}else{
+			final Intent loggedOutFAQ = new Intent(currentActivity, LoggedOutFAQActivity.class);
+			loggedOutFAQ.putExtras(extras);
+			currentActivity.startActivity(loggedOutFAQ);
+		}
 	}
 
 	/**

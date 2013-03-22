@@ -114,6 +114,12 @@
             android:screenOrientation="landscape">
         </activity>
         
+         <activity
+            android:name="com.discover.mobile.bank.help.LoggedOutFAQActivity"
+            android:label="@string/app_name"
+            android:launchMode="standard" >
+        </activity>
+        
  		 <activity
             android:name="com.discover.mobile.bank.deposit.DepositSubmissionActivity"
             android:label="@string/app_name"
