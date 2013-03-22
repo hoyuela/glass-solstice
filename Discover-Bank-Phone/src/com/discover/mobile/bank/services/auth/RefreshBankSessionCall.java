@@ -15,6 +15,9 @@ import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 
+/**
+ * Call to refresh the Bank session. Sends no body and receives no content. 
+ */
 public class RefreshBankSessionCall extends BankNetworkServiceCall<Object> {
 
 	/**Reference handler for returning to the UI*/

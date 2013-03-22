@@ -4,6 +4,11 @@ import java.util.Calendar;
 
 import com.discover.mobile.common.facade.FacadeFactory;
 
+/**
+ * This class contains contains logic to handle the keep alive services for both
+ * Card and Bank. Users are expected to update whether or not Bank and Card are
+ * authenticated or unauthenticated.
+ */
 public class KeepAlive {
 
 	/** Minimum amount of time (ms) required before making bank refresh call. */
