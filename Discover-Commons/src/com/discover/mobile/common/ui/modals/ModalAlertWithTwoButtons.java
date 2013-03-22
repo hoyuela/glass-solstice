@@ -36,16 +36,16 @@ public class ModalAlertWithTwoButtons extends AlertDialog{
 	private static final int VIEW_HEIGHTS = 0;
 
 	/**Static weight for the top view in portrait mode*/
-	private static final float PORTRAIT_TOP_WEIGHT = 7f;
+	private static final float PORTRAIT_TOP_WEIGHT = 6f;
 
 	/**Static weight for the bottom view in portrait mode*/
-	private static final float PORTRAIT_BOTTOM_WEIGHT = 3f;
+	private static final float PORTRAIT_BOTTOM_WEIGHT = 4f;
 
 	/**Static weight for the top view in landscape mode*/
-	private static final float LANDSCAPE_TOP_WEIGHT = 4f;
+	private static final float LANDSCAPE_TOP_WEIGHT = 3f;
 
 	/**Static weight for the bottom view in landscape mode*/
-	private static final float LANDSCAPE_BOTTOM_WEIGHT = 6f;	
+	private static final float LANDSCAPE_BOTTOM_WEIGHT = 7f;	
 
 	/**Static variable for the orientation*/
 	static int orientation = 0;
