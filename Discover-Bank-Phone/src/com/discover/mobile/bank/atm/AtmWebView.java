@@ -7,7 +7,6 @@ package com.discover.mobile.bank.atm;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.RenderPriority;
@@ -100,7 +99,6 @@ public class AtmWebView{
 	public void reportAtm(final String id){
 		isReportingAtm = true;
 		atm_id = id;
-		Log.d("URL", REPORT_URL + String.valueOf(atm_id));
 		setupWebView(REPORT_URL + atm_id);
 		web.setBackgroundColor(Color.WHITE);
 	}
