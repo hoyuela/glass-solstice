@@ -632,17 +632,4 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 	}
 	
-	/**
-	 * Checks the type of login call that was made to see if adjustments need to be
-	 * made to BankUser user upon a successful Bank login.
-	 * 
-	 * @param sender
-	 */
-	private void updateUserForLoginSuccessType(final NetworkServiceCall<?> sender) {
-		String key = "X-Skip-SSO";
-		if(sender.getHeaders().containsKey(key) && sender.getHeaders().get(key).equals("true")) {
-			BankUser.instance().setALUStatus(true);
-		}
-	}
-
 }

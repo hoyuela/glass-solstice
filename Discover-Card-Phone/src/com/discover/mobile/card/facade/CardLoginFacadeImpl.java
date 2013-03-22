@@ -5,7 +5,6 @@ package com.discover.mobile.card.facade;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.services.auth.AccountDetails;
@@ -69,7 +68,6 @@ public class CardLoginFacadeImpl implements CardLoginFacade{
 
 	@Override
 	public void loginWithPayload(final LoginActivityInterface callingActivity, final String tokenValue, final String hashedTokenValue) {
-		
 		final AsyncCallback<BankPayload> callback = GenericAsyncCallback
 				.<BankPayload> builder((Activity) callingActivity)
 				.showProgressDialog("Discover", "Loading...", true)
@@ -87,7 +85,6 @@ public class CardLoginFacadeImpl implements CardLoginFacade{
 //						Globals.setLoggedIn(true);
 						
 //						callingActivity.updateAccountInformation(AccountType.CARD_ACCOUNT);
-						Log.e("BANK PAYLOAD", value.payload);
 						FacadeFactory.getBankLoginFacade().authorizeWithBankPayload(value.payload);
 
 //						FacadeFactory.getPushFacade().getXtifyRegistrationStatus((BaseActivity) callingActivity);

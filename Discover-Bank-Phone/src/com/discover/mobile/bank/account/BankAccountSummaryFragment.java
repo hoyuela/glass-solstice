@@ -24,7 +24,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
-import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
@@ -32,10 +31,6 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.help.NeedHelpFooter;
-import com.discover.mobile.common.ui.widgets.AccountToggleView;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 
 /**
  * Fragment used to display all of a user's account information in a single view using BankGroupView and BankAccountView
@@ -94,11 +89,11 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 			}			
 		});
 		
-		// Forced Login to skip SSO due to bad Card status.
-		if(BankUser.instance().getALUStatus()) {
-			showALUStatusModal();
-			BankUser.instance().setALUStatus(false);
-		}
+//		// Forced Login to skip SSO due to bad Card status.
+//		if(BankUser.instance().getALUStatus()) {
+//			showALUStatusModal();
+//			BankUser.instance().setALUStatus(false);
+//		}
 		
 		return view;
 	}

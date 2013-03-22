@@ -50,9 +50,6 @@ public final class BankUser extends CacheManager implements Serializable {
 	/**List of payees*/
 	private ListPayeeDetail payees;
 	
-	/** Flag describing the user had a bad Card status, A/L/U. */
-	private boolean aluStatus = false;
-
 	/**
 	 * 
 	 * @return Returns reference to single instance of BankUser
@@ -213,19 +210,5 @@ public final class BankUser extends CacheManager implements Serializable {
 	
 	public void setBankUser(final BankUser bu) {
 		currentBankUser = bu;
-	}
-
-	/** 
-	 * @return true if user was logged-in by skipping SSO check.
-	 */
-	public boolean getALUStatus() {
-		return aluStatus;
-	}
-	
-	/**
-	 * @param skippedSSO sets the aluStatus of this BankUser.
-	 */
-	public void setALUStatus(boolean skippedSSO) {
-		aluStatus = skippedSSO;
 	}
 }

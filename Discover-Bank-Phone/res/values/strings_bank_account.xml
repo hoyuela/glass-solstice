@@ -25,8 +25,8 @@
     <string name="activity_go_to_top">Back to Top</string>
 
     <!-- Account - Skipped SSO Signin -->
-    <string name="skipsso_modal_title">Modal Title</string>
-    <string name="skipsso_modal_body">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
-    <string name="skipsso_modal_button">Okay</string>
+    <string name="skipsso_modal_title">We\'re Sorry</string>
+    <string name="skipsso_modal_body">Due to special conditions related to your credit card account, we can\'t provide you with access to your credit card account information at this time. To login to Discover Bank only please select Continue Below.</string>
+    <string name="skipsso_modal_button">Continue</string>
 
 </resources>
