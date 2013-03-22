@@ -807,7 +807,7 @@ public final class BankConductor  extends Conductor {
 		BankServiceCallFactory.createSSOLoginCall(bankPayload).submit();
 		loginDetails = null;
 	}
-
+	
 	/**
 	 * Authorizes an SSO User against Card using a CardSSOPayload, which in some
 	 * cases is obtained from a call to {@code BankLoginServices.authorizeLogin()}.

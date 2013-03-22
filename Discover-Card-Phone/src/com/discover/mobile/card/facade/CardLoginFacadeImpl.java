@@ -14,6 +14,7 @@ import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.GenericCallbackListener.CallbackPriority;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.facade.CardLoginFacade;
@@ -65,9 +66,26 @@ public class CardLoginFacadeImpl implements CardLoginFacade{
 	}
 
 	@Override
-	public void loginWithPayload(LoginActivityInterface callingActivity, String tokenValue, String hashedTokenValue) {
-		// TODO Fill out fake data - just call ALU?
+	public void loginWithPayload(LoginActivityInterface callingActivity,
+			String tokenValue, String hashedTokenValue) {
 		FacadeFactory.getBankLoginFacade().authDueToALUStatus();
+	}
+
+	@Override
+	public void toggleLoginToBank() {
+		// TODO Card needs to contact their end-point to get a Bank payload.
+
+		// TODO This returned payload is sent to the following place which
+		// should handle the rest.
+		FacadeFactory.getBankLoginFacade().authorizeWithBankPayload(
+				"The payload string here");
+	}
+
+	@Override
+	public void toggleToCard(Context arg0) {
+		// TODO The Card side was already authenticated during Bank Login and
+		// kept alive via refresh calls.
+
 	}
 	
 }

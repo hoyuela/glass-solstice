@@ -24,7 +24,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:paddingLeft="21dp"
-                android:paddingTop="10dp"
                 android:text="@string/toggle_select_account" />
 
             <ImageView
@@ -34,7 +33,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="25dp"
-                android:paddingTop="8dp"
                 android:src="@drawable/x_gray" />
         </RelativeLayout>
 

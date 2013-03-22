@@ -31,6 +31,7 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.help.NeedHelpFooter;
+import com.discover.mobile.common.ui.widgets.AccountToggleView;
 
 /**
  * Fragment used to display all of a user's account information in a single view using BankGroupView and BankAccountView
