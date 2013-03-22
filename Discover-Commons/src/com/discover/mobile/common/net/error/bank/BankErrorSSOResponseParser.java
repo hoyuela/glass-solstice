@@ -43,8 +43,8 @@ public class BankErrorSSOResponseParser implements
 	 * IOException is thrown.
 	 */
 	static {
-		int size = DelegatingErrorResponseParser.DEFAULT_PARSER_DELEGATES.size() + 1;
-		List<ErrorResponseParser<?>> errorResponseParsers = new ArrayList<ErrorResponseParser<?>>(size);
+		final int size = DelegatingErrorResponseParser.DEFAULT_PARSER_DELEGATES.size() + 1;
+		final List<ErrorResponseParser<?>> errorResponseParsers = new ArrayList<ErrorResponseParser<?>>(size);
 		errorResponseParsers.add(new BankErrorSSOResponseParser());
 		errorResponseParsers.add(new BankErrorResponseParser());
 		errorResponseParsers.addAll(DelegatingErrorResponseParser.DEFAULT_PARSER_DELEGATES);
@@ -85,8 +85,8 @@ public class BankErrorSSOResponseParser implements
 	 *         application to handle the response accordingly
 	 */
 	@Override
-	public BankErrorSSOResponse parseErrorResponse(int httpStatusCode,
-			InputStream in, HttpURLConnection conn) throws IOException {
+	public BankErrorSSOResponse parseErrorResponse(final int httpStatusCode,
+			final InputStream in, final HttpURLConnection conn) throws IOException {
 		BankErrorSSOResponse ret = null;
 
 		try {
@@ -95,8 +95,8 @@ public class BankErrorSSOResponseParser implements
 
 			if (ret == null && Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Unable to map error response to an object");
-			}
-		} catch (Exception ex) {
+			} 
+		} catch (final Exception ex) {
 			Log.e(TAG, ex.toString());
 			if (Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG,

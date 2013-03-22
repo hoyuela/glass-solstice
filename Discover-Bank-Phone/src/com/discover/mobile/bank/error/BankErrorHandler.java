@@ -32,8 +32,10 @@ import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.error.NavigateToLoginOnDismiss;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.widgets.ValidatedInputField;
 import com.google.common.base.Strings;
 
@@ -171,8 +173,11 @@ public class BankErrorHandler implements ErrorHandler {
 		final int helpResId = com.discover.mobile.bank.R.string.bank_need_help_number_text;
 
 		// Create a one button modal with text as per parameters provided
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, errorText, true, helpResId,
-				R.string.ok);
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, 
+				titleText, errorText, true, helpResId,R.string.ok);
+		
+		/**Set modal Title and phone number if provided from server*/
+		updateModalInfo(modal);
 
 		modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
 			@Override
@@ -205,9 +210,12 @@ public class BankErrorHandler implements ErrorHandler {
 
 
 		// Create a one button modal with text as per parameters provided
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, errorText, true, helpResId,
-				R.string.ok);
-
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, 
+				titleText, errorText, true, helpResId, R.string.ok);
+		
+		/**Set modal Title and phone number if provided from server*/
+		updateModalInfo(modal);
+		
 		modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -218,6 +226,33 @@ public class BankErrorHandler implements ErrorHandler {
 
 		// Show one button error dialog
 		return modal;
+	}
+	
+	/**
+	 * Method used to update the title and phone number in modal if provided in the last error
+	 * response which is provided via the BankNetworkServiceCallManager;
+	 * 
+	 * @param modal Reference to a modal that has not been shown.
+	 */
+	public void updateModalInfo(final ModalAlertWithOneButton modal) {
+		/**Update footer in modal to use phone number provided in error response*/
+		final ErrorResponse<?> errorResponse = BankNetworkServiceCallManager.getInstance().getLastError();
+		if( errorResponse != null &&  errorResponse instanceof BankErrorResponse ) {
+			final BankErrorResponse bankErrorResponse = (BankErrorResponse) errorResponse;
+			final String phoneNumber = bankErrorResponse.getPhoneNumber();
+			final String title = bankErrorResponse.getTitle();
+			
+			final ModalDefaultTopView modalTopView = (ModalDefaultTopView)modal.getTop();
+			
+			/**Set modal title with title sent from server*/
+			if( !Strings.isNullOrEmpty(title) )
+				modalTopView.setTitle(title);
+			
+			/**Set modal phonenumber with number sent from server*/
+			if( !Strings.isNullOrEmpty(phoneNumber) && modalTopView.getHelpFooter() != null) 
+				modalTopView.getHelpFooter().setToDialNumberOnClick(phoneNumber);
+		}
+
 	}
 
 	/*

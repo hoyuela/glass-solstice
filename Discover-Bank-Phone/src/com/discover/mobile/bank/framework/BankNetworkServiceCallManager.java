@@ -466,6 +466,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 		activeActivity.startProgressDialog();
 
+		/**Clear the current last error stored in the error handler*/
+		errorHandler.clearLastError();
+		
 		/**
 		 * Update prevCall only if it is a different service request from current call
 		 * or if current call is null
@@ -545,6 +548,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		return curCall;
 	}
 
+	/**
+	 * @return Returns reference to the last error response received for a service call execution.
+	 */
+	public ErrorResponse<?> getLastError() {
+		return errorHandler.getLastError();
+	}
 
 	@Override
 	protected AccountType getAccountType() {
