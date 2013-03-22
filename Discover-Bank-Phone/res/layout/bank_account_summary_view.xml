@@ -25,7 +25,8 @@
                 android:layout_weight="0.0625"
                 android:orientation="vertical" >
 
-                <include layout="@layout/status_bar" />
+                <include layout="@layout/status_bar"
+                    android:id="@+id/status_bar" />
             </LinearLayout>
 
             <LinearLayout
@@ -74,12 +75,16 @@
             android:id="@+id/help"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        
+
         <com.discover.mobile.bank.account.AccountToggleView
             android:id="@+id/acct_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cardBankIcon"/>
+            android:layout_below="@id/status_bar"/>
+      
+        <!-- <include
+            android:id="@+id/acct_toggle"
+            layout="@layout/account_toggle" /> -->
     </RelativeLayout>
 
 </ScrollView>
