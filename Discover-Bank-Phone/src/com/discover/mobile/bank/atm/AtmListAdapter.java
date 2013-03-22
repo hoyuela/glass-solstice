@@ -135,7 +135,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 	 * @param detail - atm detail
 	 */
 	public void setUpClickableItems(final ItemViewHolder holder, final AtmDetail detail){
-		holder.expand.setOnClickListener(getExpandClickListener(holder.expand, holder.bottom, detail));
+		holder.top.setOnClickListener(getExpandClickListener(holder.expand, holder.bottom, detail));
 
 		holder.directions.setOnClickListener(new OnClickListener(){
 			@Override
@@ -212,6 +212,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		holder.email = (Button) view.findViewById(R.id.email);
 		holder.directions = (ImageView) view.findViewById(R.id.directions);
 		holder.report = (TextView) view.findViewById(R.id.report);
+		holder.top = (RelativeLayout) view.findViewById(R.id.top);
 		return holder;
 	}
 
@@ -294,6 +295,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 	 *
 	 */
 	private class ItemViewHolder {
+		public RelativeLayout top;
 		public ImageView expand;
 		public TextView title;
 		public TextView address;

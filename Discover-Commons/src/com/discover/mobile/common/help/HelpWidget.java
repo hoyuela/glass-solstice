@@ -70,10 +70,10 @@ public class HelpWidget extends RelativeLayout{
 			public void onClick(final View v) {
 				if(expandableView.getVisibility() == View.INVISIBLE){
 					expandableView.setVisibility(View.VISIBLE);
-					help.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.help_icon_gray_no_glow));
+					help.setImageDrawable(context.getResources().getDrawable(R.drawable.help_icon_gray_no_glow));
 				}else{
 					expandableView.setVisibility(View.INVISIBLE);
-					help.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.question_mark_icon));
+					help.setImageDrawable(context.getResources().getDrawable(R.drawable.question_mark_icon));
 				}
 			}
 		});

@@ -24,12 +24,12 @@
     <dimen name="orange_button_left_right_padding">30dp</dimen>
     <dimen name="small_orange_button_left_right_padding">15dp</dimen>
     <dimen name="between_related_elements_padding">7dp</dimen>
-    <dimen name="help_icon_right_padding">19dp</dimen>
+    <dimen name="help_icon_right_padding">12dp</dimen>
     <dimen name="groups_of_elements_padding">20dp</dimen>
     <dimen name="orange_button_margin_top">40dp</dimen>
     <dimen name="orange_help_button_size">30dp</dimen>
     <dimen name="toggle_button_height">35dp</dimen>
-    <dimen name="search_bar_arrow_margin_top">16dp</dimen>
+    <dimen name="search_bar_arrow_margin_top">8dp</dimen>
 
     <!-- Discover Font Sizes -->
     <dimen name="title_max">27sp</dimen>
