@@ -292,22 +292,15 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 	protected void onActionLinkClick() {
 		// Create a one button modal to notify the user that they are cancelling the Add Payee transaction
 		final ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(getActivity(), null);
-
 		cancelModalTopView.setTitle(R.string.bank_cancel_title);
 		cancelModalTopView.setContent(R.string.bank_cancel_msg);
 
-		final ModalDefaultTwoButtonBottomView cancelModalButtons = new ModalDefaultTwoButtonBottomView(
-				getActivity(), null);
-		cancelModalButtons
-		.setCancelButtonText(R.string.bank_cancel_noaction);
-		cancelModalButtons
-		.setOkButtonText(R.string.bank_cancel_yesaction);
+		final ModalDefaultTwoButtonBottomView cancelModalButtons = new ModalDefaultTwoButtonBottomView(getActivity(), null);
+		cancelModalButtons.setCancelButtonText(R.string.bank_cancel_noaction);
+		cancelModalButtons.setOkButtonText(R.string.bank_cancel_yesaction);
 
 		final ModalAlertWithTwoButtons cancelModal = new ModalAlertWithTwoButtons(
 				getActivity(), cancelModalTopView, cancelModalButtons);
-		((BankNavigationRootActivity) getActivity())
-		.showCustomAlert(cancelModal);
-
 		/**
 		 * Hide the need help footer for the modal.
 		 */
@@ -336,7 +329,11 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 						cancelModal.dismiss();
 					}
 				});
+		
+		/**Show modal*/
+		((BankNavigationRootActivity) getActivity()).showCustomAlert(cancelModal);
 	}
+
 
 	/**
 	 * Method Not Used
