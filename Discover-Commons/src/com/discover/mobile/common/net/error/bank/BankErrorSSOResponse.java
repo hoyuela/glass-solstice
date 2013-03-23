@@ -3,7 +3,6 @@ package com.discover.mobile.common.net.error.bank;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.discover.mobile.common.net.error.AbstractErrorResponse;
 import com.discover.mobile.common.net.error.ErrorMessageMapper;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author sam
  *
  */
-public class BankErrorSSOResponse extends AbstractErrorResponse<BankErrorSSOResponse> {
+public class BankErrorSSOResponse extends BankErrorResponse {
 	/**
 	 * Auto-generated serial UID which is used to serialize and de-serialize BankErrorResponse objects
 	 */
@@ -56,7 +55,7 @@ public class BankErrorSSOResponse extends AbstractErrorResponse<BankErrorSSOResp
 	 * Not Used in this class
 	 */
 	@Override
-	public ErrorMessageMapper<BankErrorSSOResponse> getMessageMapper() {
+	public ErrorMessageMapper<BankErrorResponse> getMessageMapper() {
 		return null;
 	}
 }

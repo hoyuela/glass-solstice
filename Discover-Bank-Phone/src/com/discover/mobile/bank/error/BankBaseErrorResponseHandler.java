@@ -39,6 +39,11 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	protected ErrorHandler mErrorHandler= null;
 	protected ErrorHandlerUi mErrorHandlerUi = null;
 	/**
+	 * Holds reference to the last error response received from the server.
+	 */
+	protected ErrorResponse<?> lastErrorResponse;
+	
+	/**
 	 * Default constructor should not be used
 	 */
 	@SuppressWarnings("unused")
@@ -66,6 +71,9 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	@Override
 	public final boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 		boolean handled = false;
+		
+		/**Set the last error that occurred*/
+		lastErrorResponse = errorResponse;
 		
 		if (errorResponse instanceof BankErrorResponse) {
 			//Use JSON Error Response Handler if error response has a JSON body in it
@@ -236,5 +244,20 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	@Override
 	public CallbackPriority getCallbackPriority() {
 		return CallbackPriority.MIDDLE;
+	}
+
+
+	/**
+	 * @return Returns reference to the last error response received for a service call execution.
+	 */
+	public ErrorResponse<?> getLastError() {
+		return lastErrorResponse;
+	}
+	
+	/**
+	 * Clear the last error received from the server for a network service call.
+	 */
+	public void clearLastError() {
+		lastErrorResponse = null;
 	}
 }

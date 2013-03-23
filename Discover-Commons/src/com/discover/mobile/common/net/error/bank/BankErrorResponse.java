@@ -107,6 +107,38 @@ public class BankErrorResponse extends AbstractErrorResponse<BankErrorResponse> 
 		
 		return errorMessage;
 	}
+	/**
+	 * @return Returns the Phone Number found in the JSON error response for the first error object in the list
+	 */
+	public String getPhoneNumber() {
+		String phone = null;
+		
+		if( errors != null && !errors.isEmpty() ) {
+			phone = errors.get(0).phone;	
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unkown Bank Response Error");
+			}
+		}
+		
+		return phone;
+	}
+	/**
+	 * @return Returns the Title found in the JSON error response for the first error object in the list
+	 */
+	public String getTitle() {
+		String title = null;
+		
+		if( errors != null && !errors.isEmpty() ) {
+			title = errors.get(0).title;	
+		} else {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unkown Bank Response Error");
+			}
+		}
+		
+		return title;
+	}
 	
 	/**
 	 * 
