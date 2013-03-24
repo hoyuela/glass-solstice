@@ -21,8 +21,10 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
+import com.google.common.base.Strings;
 
 /**
  * Fragment used to display the Check Deposit - Select Amount page. This is the second step in the
@@ -46,12 +48,19 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	 * Boolean flag to detect if fragment's orientation is changing
 	 */
 	private boolean isOrientationChanging = false;
+	/**
+	 * Reference to bundle provided in onCreateView or via getArguments() depending on what created the fragment.
+	 */
+	private Bundle bundle = null;
+	
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		
-		final Bundle bundle = this.getArguments();
+		/**Set bundle to data set via getArguments if saveInstanceState is null*/
+		bundle = (savedInstanceState == null)? this.getArguments() : savedInstanceState;
+		
 		if( null != bundle &&  null != bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM)) {
 			account = (Account)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		}
@@ -90,7 +99,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	 */
 	@Override
 	protected String getPageTitle() {
-		return account.getDottedFormattedAccountNumber();
+		return (account != null) ? account.getDottedFormattedAccountNumber() : "";
 	}
 
 	/**
@@ -115,8 +124,10 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		amountItem = new BankAmountItem(getActivity());
 		
 		/**Set the limits to use to verify if what the user has entered is valid*/
-		amountItem.getEditableField().setAccountLimits(account.limits);
-		
+		if( account != null  ) {
+			amountItem.getEditableField().setAccountLimits(account.limits);
+		}
+			
 		/**Add item to the content list table*/
 		items.add( amountItem  );
 		
@@ -184,11 +195,28 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	 * This is needed if a user has come back to this Fragment from 
 	 */
 	private void setupAmountFieldValue() {
-		final Bundle args = getArguments();
-		if(args != null) {
-			final int amount = args.getInt(BankExtraKeys.AMOUNT);	
-			final double doubleAmount = amount/100;
-			amountItem.getEditableField().setText(String.valueOf(doubleAmount));
+		if(bundle != null ) {
+			/**Value is an int if read from getArguments*/
+			final double amount = bundle.getInt(BankExtraKeys.AMOUNT);	
+			/**Value is a string if read from savedInstanceState in onCreateView*/
+			final String amountString = bundle.getString(BankExtraKeys.AMOUNT);
+			
+			/**Set Text for editable field, this has to be called after super class onCreateView has been called*/
+			if(amountItem != null && !Strings.isNullOrEmpty(amountString)) {
+				amountItem.getEditableField().enableBankAmountTextWatcher(false);
+				amountItem.getEditableField().setText(amountString);
+				amountItem.getEditableField().enableBankAmountTextWatcher(true);
+			}
+			
+			/**Check if value is greater than 0*/
+			else if( amount > 0 ) {
+				final double doubleAmount = amount/100;
+				
+				String valueText = BankStringFormatter.convertToDollars(Double.toString(doubleAmount));
+				valueText = valueText.replace("$", "");
+				
+				amountItem.getEditableField().setText(valueText);
+			}		
 		}
 	}
 	
@@ -206,6 +234,9 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		
+		/**Restore amount value stored when paused*/
+		setupAmountFieldValue();
 		
 		/**Reset flag*/
 		isOrientationChanging = false;
@@ -225,8 +256,6 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 				}
 			}
 		}, 1000);
-		setupAmountFieldValue();
-
 	}
 	
 	@Override
@@ -235,6 +264,12 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		
 		/**Set to true so that keyboard is not closed in onPause*/
 		isOrientationChanging = true;
+			
+		/**Saved data required for orientation change*/
+		if( amountItem != null ) {
+			outState.putString(BankExtraKeys.AMOUNT, amountItem.getEditableField().getText().toString());
+			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
+		} 
 	}
 	
 	@Override
