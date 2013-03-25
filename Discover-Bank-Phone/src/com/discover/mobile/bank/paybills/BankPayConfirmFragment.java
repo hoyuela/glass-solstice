@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
@@ -70,10 +69,6 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		progressIndicator.initialize(2);
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_pmt_details, R.string.bank_pmt_scheduled, R.string.bank_pmt_scheduled);
-
-		/**Need Help and feedback footer not required for this view**/
-		final LinearLayout footer = (LinearLayout)view.findViewById(R.id.footer_layout);
-		footer.setVisibility(View.GONE);
 
 		return view;
 	}

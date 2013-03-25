@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -126,6 +127,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		/**Set the limits to use to verify if what the user has entered is valid*/
 		if( account != null  ) {
 			amountItem.getEditableField().setAccountLimits(account.limits);
+			amountItem.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		}
 			
 		/**Add item to the content list table*/

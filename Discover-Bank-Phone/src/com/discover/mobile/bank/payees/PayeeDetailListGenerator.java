@@ -153,17 +153,39 @@ final public class PayeeDetailListGenerator  {
 	public static List<RelativeLayout> getPayeeDetailList(final Context context, final AddPayeeDetail item) {
 		final List<RelativeLayout> items = new ArrayList<RelativeLayout>();
 
+		final BankEditDetail name = createName(context, item.name, item.verified, true);
+		final BankEditDetail nickName = createNickName(context, item.nickName, true);
+		final BankEditDetail account = createAccount(context, item.accountNumber, true);
+		
+		/**Set what field should get focus after next is tapped*/
+		name.setNextBankEditDetail(nickName);
+		nickName.setNextBankEditDetail(account);
+		
 		/**Add Payee Name*/
-		items.add(createName(context, item.name, item.verified, true));
-		items.add(createNickName(context, item.nickName, true));
-		items.add(createAccount(context, item.accountNumber, true));
+		items.add(name);
+		items.add(nickName);
+		items.add(account);
 		
 		/**Only add an editable field to enter zip code if required*/
 		if( item.isZipRequired) {
-			items.add(createReenterAccount(context, item.accountNumberConfirmed, false));
-			items.add(createZipCode(context, item.zip, true));
+			final BankEditDetail reenterAcct = createReenterAccount(context, item.accountNumberConfirmed, false);
+			final BankEditDetail zipCode = createZipCode(context, item.zip, true);
+			
+			/**Set what field should get focus after next is tapped*/
+			account.setNextBankEditDetail(reenterAcct);
+			reenterAcct.setNextBankEditDetail(zipCode);
+			
+			/**Add items to content list*/
+			items.add(reenterAcct);
+			items.add(zipCode);
 		} else {
-			items.add(createReenterAccount(context, item.accountNumberConfirmed, true));
+			final BankEditDetail reenterAcct = createReenterAccount(context, item.accountNumberConfirmed, true);
+			
+			/**Set what field should get focus after next is tapped*/
+			account.setNextBankEditDetail(reenterAcct);
+			
+			/**Add item to content list*/
+			items.add(reenterAcct);
 		}
 	
 		return items;

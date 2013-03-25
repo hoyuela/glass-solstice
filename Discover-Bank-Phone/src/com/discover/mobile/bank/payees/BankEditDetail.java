@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.payees;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -246,7 +247,12 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
         	
         	/**Move focus to next BankEditDetail in page if there is one*/
         	if( null != nextDetail) {
-        		nextDetail.setEditMode(true);
+        		new Handler().postDelayed(new Runnable() {
+        			@Override
+        			public void run() {
+        				nextDetail.setEditMode(true);
+        			}
+        		}, 500);
         	}
         }
         return false;

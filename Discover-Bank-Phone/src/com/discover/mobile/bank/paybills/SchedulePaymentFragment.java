@@ -669,7 +669,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 				amountEdit.clearFocus();
 				
 				paymentAccountError.setVisibility(View.GONE);
-				if(bankUser.getAccounts().accounts.size() > 1)
+				if(bankUser.getPaymentCapableAccounts().accounts.size() > 1)
 					paymentAccountSpinner.performClick();
 			}
 		});
