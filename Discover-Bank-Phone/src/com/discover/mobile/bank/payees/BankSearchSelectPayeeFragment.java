@@ -64,7 +64,11 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 * TextView which displays what search criteria was used to run the Payees Search
 	 */
 	private TextView searchName;
-
+	/**
+	 * 
+	 */
+	private Bundle bundle = null;
+			
 	/**
 	 * Create the view
 	 * @param inflater - inflater to inflate the layout
@@ -76,7 +80,7 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 			final Bundle savedInstanceState) {
 
 		final View view = inflater.inflate(R.layout.bank_select_search_payee, null);
-		final Bundle bundle = this.getArguments();
+		bundle = (savedInstanceState != null) ? savedInstanceState : this.getArguments();
 
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
@@ -91,17 +95,13 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		/**TextView which shows the user what the search criteria was used to generate the list of Payees*/
 		searchName = (TextView)view.findViewById(R.id.search_name);
 
-		/**Check whether to use values from arguments passed into fragment or from savedInstanceState bundle*/
-		if(null == savedInstanceState) {
+		/**Check whether bundle is empty*/
+		if( bundle != null) {
 			searchCriteria = bundle.getString(SEARCH_ITEM);
 
 			/**Generate list of payees found using the search criteria read from bundle*/
 			loadListFromBundle(bundle);
-		} else{
-			searchCriteria = savedInstanceState.getString(SEARCH_ITEM);
-
-			loadListFromBundle(savedInstanceState);
-		}
+		} 
 
 		/**Set text to show what the criteria was used to generate the list of payees found*/
 		searchName.setText(" \"" +searchCriteria +"\"");
@@ -117,8 +117,15 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	public void onSaveInstanceState(final Bundle outState){
 		super.onSaveInstanceState(outState);
 
-		outState.putSerializable(BankExtraKeys.PAYEES_LIST, search);
-		outState.putString(SEARCH_ITEM, searchCriteria);
+		/**If bundle is empty then load values fetched values from get arguments*/
+		if( bundle == null ) {
+			bundle = this.getArguments();
+		}
+		
+		/**Store everything stored in bundle when fragment was created*/
+		if( bundle != null ) {
+			outState.putAll(bundle);
+		} 
 	}
 
 	/**

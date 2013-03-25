@@ -4,7 +4,6 @@
     <!-- Section titles -->
     <string name="pay_a_bill_title">Pay Bills</string>
     <string name="welcome_to_pay_bills">Welcome to Pay Bills</string>
-   	<string name="manage_payees_welcome">Welcome to Manage Payees</string>
 	<string name="manage_payees">Manage Payees</string>
        
     <!-- Payee Not Eligible Strings -->
@@ -18,11 +17,12 @@
  	<string name="pay_bills_delivery_text">Your payments are guaranteed to reach your payee by the \"Deliver By\" date.</string>   
 
 	<!-- Select a payee strings -->
-	<string name="select_payee_title">Select Payee</string>
+	<string name="select_payee_title">Select a Payee</string>
 	<string name="select_payee_empty">You have no payees set up. You must set up payees in order to pay bills.</string>
 	<string name="select_payee_add">Add Payee</string>
 	<string name="select_payee_add_new">Add New Payee</string>
-	<string name="select_payee_no_payees">Add Payee</string>
+	<string name="select_payee_no_payees">Add a Payee</string>
+	<string name="select_payee_another_payee">Add Another Payee</string>
 	
 	<!-- Review payments -->
 	<string name="review_payments_title">Review Payments</string>
@@ -39,7 +39,7 @@
 	
 	<!-- Manage Payees Strings  -->
 	<string name="payee">Payee</string>
-	<string name="manage_payees_welcome">Welcome to Manage Payees</string>
+	<string name="manage_payees_welcome">Welcome to\nManage Payees</string>
 	
 	<!-- Schedule Payments -->
 	<string name="payee">Payee</string>
