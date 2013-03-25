@@ -80,6 +80,7 @@ public class LoginActivity extends BaseActivity implements
 	private final String PRE_AUTH_KEY = "e";
 	private final String ERROR_MESSAGE_KEY = "g";
 	private final String ERROR_MESSAGE_VISIBILITY = "h";
+	private final String ERROR_MESSAGE_COLOR = "i";
 	
 	/** ID that allows control over relative buttons' placement.*/
 	private static final int LOGIN_BUTTON_ID = 1;
@@ -253,8 +254,7 @@ public class LoginActivity extends BaseActivity implements
 			if( !Strings.isNullOrEmpty(errorMessage) ){
 				showErrorMessage(errorMessage);
 				this.getIntent().putExtra(IntentExtraKey.SHOW_ERROR_MESSAGE, "");
-				final int red = getResources().getColor(R.color.red);
-				errorTextView.setTextColor(red);
+				errorTextView.setTextColor(extras.getInt(ERROR_MESSAGE_COLOR));
 			}
 		}
 	}
@@ -397,6 +397,7 @@ public class LoginActivity extends BaseActivity implements
 		outState.putBoolean(PRE_AUTH_KEY, preAuthHasRun);
 		outState.putString(ERROR_MESSAGE_KEY, errorTextView.getText().toString());
 		outState.putInt(ERROR_MESSAGE_VISIBILITY, errorTextView.getVisibility());
+		outState.putInt(ERROR_MESSAGE_COLOR, errorTextView.getCurrentTextColor());
 
 		super.onSaveInstanceState(outState);
 	}
@@ -430,6 +431,7 @@ public class LoginActivity extends BaseActivity implements
 	private void restoreErrorTextView(final Bundle savedInstanceState) {
 		errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
 		errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
+		errorTextView.setTextColor(savedInstanceState.getInt(ERROR_MESSAGE_COLOR));
 		if(!errorIsVisible() && errorTextView.length() > 0) {
 			errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 		}
