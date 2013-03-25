@@ -78,13 +78,9 @@ public class AtmMarkerBalloonManager{
 
 	private View getCurrentLocationView() {
 		final View view = LayoutInflater.from(context).inflate(R.layout.bank_atm_current_locaiton, null);
-		final TextView name = (TextView) view.findViewById(R.id.name);
 		final TextView addressBox = (TextView) view.findViewById(R.id.address);
 		final TextView city = (TextView) view.findViewById(R.id.city);
 
-		if(null != address.getFeatureName() && !address.getFeatureName().isEmpty()){
-			name.setText(address.getFeatureName());
-		}
 		addressBox.setText(address.getAddressLine(0));
 		city.setText(address.getLocality() +", " + address.getAdminArea());
 		return view;
