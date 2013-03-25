@@ -9,8 +9,6 @@ import android.content.Context;
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.card.services.auth.AuthenticateCall;
-import com.discover.mobile.card.services.auth.BankPayload;
-import com.discover.mobile.card.services.auth.SSOAuthenticateCall;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
@@ -80,14 +78,8 @@ public class CardLoginFacadeImpl implements CardLoginFacade{
 
 					@Override
 					public void success(final NetworkServiceCall<?> sender, final BankPayload value) {
-						// Set logged in to be able to save user name in
-						// persistent storage
-//						Globals.setLoggedIn(true);
-						
-//						callingActivity.updateAccountInformation(AccountType.CARD_ACCOUNT);
+						// Continues the SSO daisy chain by returning control back to Bank.
 						FacadeFactory.getBankLoginFacade().authorizeWithBankPayload(value.payload);
-
-//						FacadeFactory.getPushFacade().getXtifyRegistrationStatus((BaseActivity) callingActivity);
 
 					}
 				})
