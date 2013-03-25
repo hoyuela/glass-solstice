@@ -136,6 +136,7 @@ public class AccountActivityViewPager extends DetailViewPager{
 	public void onPause() {
 		super.onPause();
 		BankRotationHelper.getHelper().setBundle(getCurrentFragmentBundle());
+		initialViewPosition = getViewPager().getCurrentItem();
 	}
 
 	/**

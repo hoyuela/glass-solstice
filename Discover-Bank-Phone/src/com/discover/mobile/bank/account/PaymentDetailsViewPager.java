@@ -58,6 +58,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		outState.putAll(getCurrentFragmentBundle());
+		super.onSaveInstanceState(outState);
 	}
 
 	/**
@@ -174,6 +175,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	public void onPause() {
 		super.onPause();
 		BankRotationHelper.getHelper().getBundle().putAll(getCurrentFragmentBundle());
+		initialViewPosition = getViewPager().getCurrentItem();
 	}
 
 	/**

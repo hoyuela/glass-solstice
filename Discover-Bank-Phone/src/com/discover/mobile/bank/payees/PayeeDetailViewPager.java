@@ -51,6 +51,12 @@ public class PayeeDetailViewPager extends DetailViewPager {
 		outState.putAll(getCurrentFragmentBundle());
 		super.onSaveInstanceState(outState);
 	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		initialViewPosition = getViewPager().getCurrentItem();
+	}
 
 	/**
 	 * Gets the list of ActivityDetail objects from a bundle along with the current selected position in that list
