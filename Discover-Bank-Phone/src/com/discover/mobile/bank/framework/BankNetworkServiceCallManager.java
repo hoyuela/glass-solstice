@@ -523,7 +523,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		} else {
 			activeActivity.startProgressDialog();
 		}
-		activeActivity.startProgressDialog();
 
 		/**Clear the current last error stored in the error handler*/
 		errorHandler.clearLastError();

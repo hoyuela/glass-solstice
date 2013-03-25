@@ -53,7 +53,7 @@ implements OnPaymentCanceledListener {
 	public void onResume() {
 		super.onResume();
 
-		getLastTouchTime();
+		compareLastTouchTimeAndUpdateSession();
 	}
 
 	/**
