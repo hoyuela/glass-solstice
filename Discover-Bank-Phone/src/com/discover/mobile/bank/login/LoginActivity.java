@@ -638,6 +638,12 @@ public class LoginActivity extends BaseActivity implements
 	 * 
 	 */
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
+		// Prevent data from restoring after a crash.
+		passField.setText("");
+		if(!saveUserId) {
+			idField.setText("");
+		}
+		
 		//Check if card account has been selected
 		if( View.VISIBLE == cardCheckMark.getVisibility() ) {
 			cardLogin(username, password) ;
