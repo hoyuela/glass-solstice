@@ -13,11 +13,13 @@ import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
+import com.discover.mobile.bank.services.atm.AddressToLocationDetail;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.services.atm.Directions;
 import com.discover.mobile.bank.services.atm.GetAtmDetailsCall;
 import com.discover.mobile.bank.services.atm.GetDirectionsServiceCall;
+import com.discover.mobile.bank.services.atm.GetLocationFromAddressServiceCall;
 import com.discover.mobile.bank.services.auth.BankLoginData;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.BankSSOLoginDetails;
@@ -101,7 +103,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	public static CreateBankLoginCall createLoginCall(final BankLoginDetails credentials ) {
 		return createLoginCall(credentials, false);
 	}
-	
+
 	/**
 	 * Used to construct a CreateBankLoginCall object for invoking the Bank - Authentication Service API found at
 	 * ./api/auth/token. The callee will only have to call submit on the constructed object to trigger the
@@ -113,7 +115,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 */
 	public static CreateBankLoginCall createLoginCall(final BankLoginDetails credentials, final boolean skipSSO) {
 		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-		
+
 		//Build the handler for the response to the Bank authentication request
 		final AsyncCallback<BankLoginData> callback =
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
@@ -124,7 +126,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		return loginCall;
 	}
-	
+
 	/**
 	 * Constructs a CreateSSOLoginCall for authenticating an SSO user against Bank. 
 	 * @param credentials
@@ -132,13 +134,13 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 */
 	public static CreateBankSSOLoginCall createSSOLoginCall(final BankSSOLoginDetails credentials) {
 		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-		
+
 		final AsyncCallback<BankLoginData> callback =
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
 				.build();
-		
+
 		final CreateBankSSOLoginCall loginCall =  new CreateBankSSOLoginCall(activity, callback, credentials);
-		
+
 		return loginCall;
 	}
 
@@ -160,7 +162,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		final CreatePaymentCall paymentCall = new CreatePaymentCall(activity, callback, paymentDetails);
 		return paymentCall;
 	}
-	
+
 	/**
 	 * Used to construct a CreateStrongAuthRequestCall NetworkServiceCall for invoking the Bank - Authentication
 	 * Service API found at ./api/auth/strongauth. The CreateStrongAuthRequestCall created by this method is used
@@ -183,7 +185,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		return new CreateStrongAuthRequestCall(activity, callback, details);
 	}
-	
+
 	/**
 	 * Used to create a service call to submit a check deposit.
 	 * 
@@ -195,7 +197,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(DepositDetail.class, activity, 
 						(ErrorHandlerUi)activity).withCompletionListener(completionListener).build();
 		return new SubmitCheckDepositCall(activity, callback, checkDetails);
-		
+
 	}
 
 	/**
@@ -443,6 +445,25 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						.build();
 
 		return new GetDirectionsServiceCall(activity, callback, helper);
+	}
+
+	/**
+	 * Creates a Get location service call which is the used to send a call to Googles API which will
+	 * reverse geocode an address. 
+	 * 
+	 * @param value - Holds information about the query string for the search of the call
+	 * 
+	 * @return Reference to the GetLocationFromAddressServiceCall object created.
+	 */
+	public static GetLocationFromAddressServiceCall getLocationFromAddressCall(final AtmServiceHelper helper){
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<AddressToLocationDetail>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(AddressToLocationDetail.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new GetLocationFromAddressServiceCall(activity, callback, helper);
 	}
 
 	/**

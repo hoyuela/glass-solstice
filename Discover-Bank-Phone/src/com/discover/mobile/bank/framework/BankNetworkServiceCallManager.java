@@ -27,6 +27,7 @@ import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.services.atm.GetAtmDetailsCall;
 import com.discover.mobile.bank.services.atm.GetDirectionsServiceCall;
+import com.discover.mobile.bank.services.atm.GetLocationFromAddressServiceCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
@@ -153,7 +154,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		return ret;
 	}
-	
+
 	/**
 	 * Determines if the ErrorResponse was a signal to authenticate against card
 	 * (for SSO).
@@ -197,7 +198,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			//Send request to Strong Auth web-service API
 			BankServiceCallFactory.createStrongAuthRequest().submit();
 		} 
-		
+
 		// Check if the error is an SSO User
 		else if (isSSOUser(error)) {
 			BankConductor.authWithCardPayload(
@@ -205,7 +206,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 					((BankErrorSSOResponse) error).token,
 					((BankErrorSSOResponse) error).hashedValue);
 		}
-		
+
 		//Dispatch response to BankBaseErrorHandler to determine how to handle the error
 		else {
 			errorHandler.handleFailure(sender, error);
@@ -263,7 +264,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		//Download Customer Information if a Login call is successful
 		else if( sender instanceof CreateBankLoginCall ) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-			
+
 			//Set logged in to be able to save user name in persistent storage
 			Globals.setLoggedIn(true);
 
@@ -376,20 +377,26 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
 			BankConductor.navigateToAtmLocatorFragment(bundle);
 		}
+		//Handle reverse geocode call
+		else if(sender instanceof GetLocationFromAddressServiceCall){
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
+			BankConductor.navigateToSearchAtmLocatorFragment(bundle);
+		}
 		//Handler for GetAccountLimits service call
 		else if( sender instanceof GetAccountLimits) {
 			Bundle bundle = activeActivity.getIntent().getExtras();
 			boolean navToReview = false;
-			if(bundle == null)
+			if(bundle == null) {
 				bundle = new Bundle();
-			else{
+			} else{
 				navToReview = bundle.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
 			}
 			final Account account = ((GetAccountLimits)sender).getAccount();
-			
+
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
 			final double amount = bundle.getInt(BankExtraKeys.AMOUNT)/100;
-			
+
 			if(navToReview && account.limits.isAmountValid(amount)){
 				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.ReviewDeposit);
 			}else{
@@ -468,7 +475,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		/**Clear the current last error stored in the error handler*/
 		errorHandler.clearLastError();
-		
+
 		/**
 		 * Update prevCall only if it is a different service request from current call
 		 * or if current call is null
