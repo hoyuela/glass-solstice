@@ -160,7 +160,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		setIsLoadingMore(false);
 		final ListPaymentDetail newDetails = (ListPaymentDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		detailList.payments.addAll(newDetails.payments);
-		updateNavigationButtons(getViewPager().getCurrentItem());
+		updateNavigationButtons();
 		detailList.links.putAll(newDetails.links);
 		BankRotationHelper.getHelper().getBundle().putSerializable(BankExtraKeys.PRIMARY_LIST, detailList);
 	}

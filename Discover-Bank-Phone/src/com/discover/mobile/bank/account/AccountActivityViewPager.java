@@ -145,7 +145,7 @@ public class AccountActivityViewPager extends DetailViewPager{
 		setIsLoadingMore(false);
 		final ListActivityDetail list = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		activityItems.activities.addAll( list.activities);
-		updateNavigationButtons(getViewPager().getCurrentItem());
+		updateNavigationButtons();
 
 	}
 
