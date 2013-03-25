@@ -12,13 +12,13 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
+import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -26,8 +26,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,7 +40,7 @@ import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 
-public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
+public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback, PreviewCallback {
 	private final String TAG = CheckDepositCaptureActivity.class.getSimpleName();
 	
 	public static final int RETAKE_FRONT = 1;
@@ -85,7 +85,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	final int THREE = 3;
 	private int count = THREE;
 
-	private boolean inPreview = false;
 	private boolean cameraConfigured = false;
 	private boolean isPaused = false;
 	
@@ -104,7 +103,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		timerTask = new CameraCountdownTask();
 		
 		getWindow().setFormat(PixelFormat.UNKNOWN);
-		previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		
 		loadDrawables();
 		setupButtons();
@@ -118,13 +116,16 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	@Override
 	public void onResume() {
-		super.onResume();
 		isPaused = false;
-		camera = Camera.open();
+		
+		if(camera == null)
+			camera = Camera.open();
+		
 		startPreview();
 
 		setCameraDisplayOrientation(this, 0, camera);
 		setupCameraParameters();
+		super.onResume();
 	}
 
 	/**
@@ -132,14 +133,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	@Override
 	public void onPause() {
+		isPaused = true;		
 		super.onPause();
-		isPaused = true;
-		if(inPreview) {
-			camera.stopPreview();
-		}
-		
-		camera.release();
-		inPreview = false;
 	}
 	
 	/**
@@ -251,7 +246,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			
 			@Override
 			public void onClick(final View v) {
-				if(stepOneCheck.getVisibility() != View.VISIBLE || stepTwoCheck.getVisibility() != View.VISIBLE) {
+				if(!isStepOneChecked() || !isStepTwoChecked()) {
 					clearImageCacheIfNotRetaking();
 					finish();
 				}
@@ -266,8 +261,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 					final ModalAlertWithOneButton modal = getHelpModal();
 					modal.show();
 					
-					final Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-					modal.getWindow().setLayout(display.getWidth(), display.getHeight());
+					modal.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 				}
 			}
 		});
@@ -349,22 +343,43 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private final OnTouchListener captureTouchListener = new OnTouchListener() {
 		@Override
 		public boolean onTouch(final View v, final MotionEvent event) {
-			if(stepOneCheck.getVisibility() == View.INVISIBLE || stepTwoCheck.getVisibility() == View.INVISIBLE) {
-				if(event.getAction()==MotionEvent.ACTION_DOWN) return true;
-	            if(event.getAction()!=MotionEvent.ACTION_UP) return false;
-	            cameraPreview.setOnClickListener(null);
+			if( !(isStepOneChecked() && isStepTwoChecked()) ) {
+				if(event.getAction() == MotionEvent.ACTION_DOWN) return true;
+	            if(event.getAction() != MotionEvent.ACTION_UP) return false;
 	            captureButton.setPressed(true);   
-	            captureButton.setClickable(false);
-	            captureButton.setOnTouchListener(null);
-				if(!timerTask.isRunning()){
-					timerTask = new CameraCountdownTask();
-					timerTask.execute();
-				}
+	            disableClickListeners();
+				startCountdownTimer();
 			}
             return true;		    
 		}
 	};
 	
+	/**
+	 * Disable the  click listeners for the touch to auto focus and capture button.
+	 */
+	private void disableClickListeners() {
+        captureButton.setOnTouchListener(null);
+        captureButton.setClickable(false);
+        cameraPreview.setOnClickListener(null);
+	}	            
+
+	/**
+	 * Starts the count down timer.
+	 */
+	private void startCountdownTimer() {
+		if(!timerTask.isRunning()){
+			timerTask = new CameraCountdownTask();
+			timerTask.execute();
+		}
+	}
+	
+	private boolean isStepOneChecked() {
+		return stepOneCheck.getVisibility() == View.VISIBLE;
+	}
+	
+	private boolean isStepTwoChecked() {
+		return stepTwoCheck.getVisibility() == View.VISIBLE;
+	}
 	/**
 	 * This is the click listener for the confirm button that is shown directly after an image is taken.
 	 * This listener will advance the breadcrumb element to the next position and reset the camera
@@ -376,9 +391,12 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		public void onClick(final View v) {
 			saveLastConfirmedImage();
 			goToNextStep();
-			resetCamera();
-			setDefaultButtons();
-			showImageBrackets();
+			//If we are not yet done with capturing images, setup the camera for another picture.
+			if(!isStepTwoChecked()){
+				resetCamera();
+				setDefaultButtons();
+				showImageBrackets();
+			}
 		}
 	};
 	
@@ -417,12 +435,10 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * Advances the breadcrumb to the next selection, like from Front to Back.
 	 */
 	private void goToNextStep() {
-		final boolean stepOneChecked = stepOneCheck.getVisibility() == View.VISIBLE;
-		final boolean stepTwoChecked = stepTwoCheck.getVisibility() == View.VISIBLE;
-		if(stepTwoChecked){
+		if(isStepTwoChecked()){
 			this.setResult(Activity.RESULT_OK);
 			this.finish();
-		}else if(stepOneChecked){
+		}else if(isStepOneChecked()){
 			frontLabel.setTextColor(getResources().getColor(R.color.field_copy));
 			backLabel.setTextColor(getResources().getColor(R.color.sub_copy));
 			setDefaultButtons();
@@ -433,12 +449,10 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * Sets the next check mark to be visible, starting from left to right.
 	 */
 	private void setNextCheckVisible() {
-		final boolean stepOneChecked = stepOneCheck.getVisibility() == View.VISIBLE;
-		final boolean stepTwoChecked = stepTwoCheck.getVisibility() == View.VISIBLE;
 		
-		if(!stepOneChecked){
+		if(!isStepOneChecked()){
 			stepOneCheck.setVisibility(View.VISIBLE);
-		}else if(!stepTwoChecked) {
+		}else if(!isStepTwoChecked()) {
 			stepTwoCheck.setVisibility(View.VISIBLE);
 		}
 	}
@@ -447,8 +461,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * The reverse of setNextCheckVisible. This removes one check from right to left.
 	 */
 	private void resetCurrentCheckMark() {
-		final boolean stepOneChecked = stepOneCheck.getVisibility() == View.VISIBLE;
-		final boolean stepTwoChecked = stepTwoCheck.getVisibility() == View.VISIBLE;
 		final Bundle extras = getIntent().getExtras();
 		int retakeValue = 0;
 		
@@ -458,9 +470,9 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		if(retakeValue == RETAKE_FRONT){
 			stepOneCheck.setVisibility(View.INVISIBLE);
 		}
-		else if(stepTwoChecked)
+		else if(isStepTwoChecked())
 			stepTwoCheck.setVisibility(View.INVISIBLE);
-		else if(stepOneChecked)
+		else if(isStepOneChecked())
 			stepOneCheck.setVisibility(View.INVISIBLE);
 		
 	}
@@ -568,7 +580,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			if(retakePicture == RETAKE_FRONT) { 
 				fos = openFileOutput(FRONT_PICTURE, Context.MODE_PRIVATE);
 			}
-			else if (stepOneCheck.getVisibility() == View.VISIBLE && stepTwoCheck.getVisibility() == View.VISIBLE){
+			else if (isStepOneChecked() && isStepTwoChecked()){
 				fos = openFileOutput(BACK_PICTURE, Context.MODE_PRIVATE);
 			}else
 				fos = openFileOutput(FRONT_PICTURE, Context.MODE_PRIVATE);
@@ -578,21 +590,24 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		
 		return fos;	
 	}
+	
+	private final Camera.AutoFocusCallback autoFocusCallback = new Camera.AutoFocusCallback() {
+		
+		@Override
+		public void onAutoFocus(final boolean success, final Camera camera) {
+			//Cancel auto focus is called because if not, the flash may stay on.
+			camera.cancelAutoFocus();
+			takePicture();
+		}
+	};
+	
 
 	/**
 	 * Call the camera's auto focus method then take a picture once it is done.
 	 */
 	private void focusThenTakePicture() {
-		 
-		camera.autoFocus(new Camera.AutoFocusCallback() {
-			
-			@Override
-			public void onAutoFocus(final boolean success, final Camera camera) {
-				//Cancel auto focus is called because if not, the flash may stay on.
-				camera.cancelAutoFocus();
-				takePicture();
-			}
-		});
+		if(camera != null)
+			camera.autoFocus(autoFocusCallback);
 	}
 	
 	/**
@@ -614,13 +629,13 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	private void setupCameraParameters() {
 		final Camera.Parameters parameters = camera.getParameters();
-		
+		final int eightHundredPixels = 800;
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
 		
 		Size smallCaptureSize = null;
 		
 		for(final Size size : sizes) {
-			if(size.width < 800 && smallCaptureSize == null) {
+			if(size.width < eightHundredPixels && smallCaptureSize == null) {
 				smallCaptureSize = size;
 			}
 		}
@@ -681,7 +696,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private void startPreview() {
 		if(camera != null && cameraConfigured) {			
 			camera.startPreview();
-			inPreview = true;
 		}
 	}
 
@@ -787,12 +801,32 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 	@Override
 	public void surfaceCreated(final SurfaceHolder holder) {
-
+		if(camera == null) {
+			camera = Camera.open();
+			try {
+				camera.setPreviewDisplay(previewHolder);
+				camera.setPreviewCallback(this);
+			} catch (final IOException e) {			
+				Log.e(TAG, "Error during camera setup : " + e);
+				camera.release();
+				camera = null;
+			}
+			
+		}
 	}
 
 	@Override
 	public void surfaceDestroyed(final SurfaceHolder holder) {
-
+		if(camera != null) {
+			camera.stopPreview();
+			camera.setPreviewCallback(null);
+			camera.cancelAutoFocus();
+			camera.release();
+	
+			//This is set to null so that we can check in the autofocus callback to see if the camera has been released
+			//so that we do not try to focus a unavailable camera and cause a crash.
+			camera = null;
+		}
 	}
 
 	@Override
@@ -876,6 +910,11 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			else if (count < 1)
 				resetCountdown();
 		}
+	}
+
+	@Override
+	public void onPreviewFrame(final byte[] data, final Camera camera) {
+		
 	}
 	
 }
