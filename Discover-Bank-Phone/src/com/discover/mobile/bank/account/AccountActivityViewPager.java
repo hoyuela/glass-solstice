@@ -34,6 +34,7 @@ public class AccountActivityViewPager extends DetailViewPager{
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		outState.putAll(getCurrentFragmentBundle());
+		super.onSaveInstanceState(outState);
 	}
 
 	/**
@@ -47,7 +48,7 @@ public class AccountActivityViewPager extends DetailViewPager{
 			currentBundle = new Bundle();
 		}
 
-		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, initialViewPosition);
+		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, getViewPager().getCurrentItem());
 		currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, activityItems);
 		return currentBundle;
 	}
@@ -135,6 +136,7 @@ public class AccountActivityViewPager extends DetailViewPager{
 	public void onPause() {
 		super.onPause();
 		BankRotationHelper.getHelper().setBundle(getCurrentFragmentBundle());
+		initialViewPosition = getViewPager().getCurrentItem();
 	}
 
 	/**
@@ -145,7 +147,7 @@ public class AccountActivityViewPager extends DetailViewPager{
 		setIsLoadingMore(false);
 		final ListActivityDetail list = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		activityItems.activities.addAll( list.activities);
-		updateNavigationButtons(getViewPager().getCurrentItem());
+		updateNavigationButtons();
 
 	}
 

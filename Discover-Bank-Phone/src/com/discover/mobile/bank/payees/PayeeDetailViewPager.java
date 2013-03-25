@@ -1,5 +1,7 @@
 package com.discover.mobile.bank.payees;
 
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -13,7 +15,8 @@ import com.discover.mobile.bank.ui.widgets.DetailViewPager;
 import com.discover.mobile.common.help.HelpWidget;
 
 public class PayeeDetailViewPager extends DetailViewPager {
-	private ListPayeeDetail detailList = new ListPayeeDetail();
+	private ListPayeeDetail detailList;
+	private PayeeDetail[] detailArray;
 	private int initialViewPosition = 0;
 
 	@Override
@@ -46,7 +49,13 @@ public class PayeeDetailViewPager extends DetailViewPager {
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		outState.putAll(getCurrentFragmentBundle());
-
+		super.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		initialViewPosition = getViewPager().getCurrentItem();
 	}
 
 	/**
@@ -58,10 +67,30 @@ public class PayeeDetailViewPager extends DetailViewPager {
 	public void loadBundleArgs(final Bundle bundle) {
 		if(bundle != null){
 			detailList = (ListPayeeDetail)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
+			detailArray = getArrayFromList(detailList.payees);
 			initialViewPosition = bundle.getInt(BankExtraKeys.SELECTED_PAYEE);
 		}
 	}
 
+	/**
+	 * Returns an array of PayeeDetail objects that map directly to the provided List of PayeeDetail objects.
+	 * 
+	 * @param payeeList
+	 * @return
+	 */
+	private PayeeDetail[] getArrayFromList(final List<PayeeDetail> payeeList) {
+		PayeeDetail[] payeeArray = {};
+		
+		if(payeeList != null) {
+			payeeArray = new PayeeDetail[payeeList.size()];
+			
+			for(int i = 0; i < payeeList.size(); ++i) {
+				payeeArray[i] = payeeList.get(i);
+			}
+		}
+		
+		return payeeArray;
+	}
 	/**
 	 * Get the current Bundle for this Fragment, then update the data list and index fields on it
 	 * and return the updated Bundle
@@ -73,7 +102,7 @@ public class PayeeDetailViewPager extends DetailViewPager {
 			currentBundle = new Bundle();
 		}
 
-		currentBundle.putInt(BankExtraKeys.SELECTED_PAYEE, initialViewPosition);
+		currentBundle.putInt(BankExtraKeys.SELECTED_PAYEE, getViewPager().getCurrentItem());
 		currentBundle.putSerializable(BankExtraKeys.PAYEES_LIST, detailList);
 		return currentBundle;
 	}
@@ -104,10 +133,9 @@ public class PayeeDetailViewPager extends DetailViewPager {
 	@Override
 	protected Fragment getDetailItem(final int position) {
 		final PayeeDetailFragment payeeDetail = new PayeeDetailFragment();
-		final PayeeDetail detailObject = detailList.payees.get(position);
 
 		final Bundle bundle = new Bundle();
-		bundle.putSerializable(BankExtraKeys.SELECTED_PAYEE, detailObject);
+		bundle.putSerializable(BankExtraKeys.SELECTED_PAYEE, detailArray[position]);
 		payeeDetail.setArguments(bundle);
 
 		return payeeDetail;
@@ -115,7 +143,7 @@ public class PayeeDetailViewPager extends DetailViewPager {
 
 	@Override
 	protected int getViewCount() {
-		return detailList.payees.size();
+		return detailArray.length;
 	}
 
 	@Override
