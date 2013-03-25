@@ -34,6 +34,7 @@ public class AccountActivityViewPager extends DetailViewPager{
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		outState.putAll(getCurrentFragmentBundle());
+		super.onSaveInstanceState(outState);
 	}
 
 	/**
@@ -47,7 +48,7 @@ public class AccountActivityViewPager extends DetailViewPager{
 			currentBundle = new Bundle();
 		}
 
-		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, initialViewPosition);
+		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, getViewPager().getCurrentItem());
 		currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, activityItems);
 		return currentBundle;
 	}

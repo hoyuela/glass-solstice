@@ -49,6 +49,7 @@ public class PayeeDetailViewPager extends DetailViewPager {
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		outState.putAll(getCurrentFragmentBundle());
+		super.onSaveInstanceState(outState);
 	}
 
 	/**
@@ -65,14 +66,23 @@ public class PayeeDetailViewPager extends DetailViewPager {
 		}
 	}
 
+	/**
+	 * Returns an array of PayeeDetail objects that map directly to the provided List of PayeeDetail objects.
+	 * 
+	 * @param payeeList
+	 * @return
+	 */
 	private PayeeDetail[] getArrayFromList(final List<PayeeDetail> payeeList) {
 		PayeeDetail[] payeeArray = {};
-		payeeArray = new PayeeDetail[payeeList.size()];
 		
-		for(int i = 0; i < payeeList.size(); ++i) {
-			payeeArray[i] = payeeList.get(i);
+		if(payeeList != null) {
+			payeeArray = new PayeeDetail[payeeList.size()];
+			
+			for(int i = 0; i < payeeList.size(); ++i) {
+				payeeArray[i] = payeeList.get(i);
+			}
 		}
-
+		
 		return payeeArray;
 	}
 	/**
@@ -86,7 +96,7 @@ public class PayeeDetailViewPager extends DetailViewPager {
 			currentBundle = new Bundle();
 		}
 
-		currentBundle.putInt(BankExtraKeys.SELECTED_PAYEE, initialViewPosition);
+		currentBundle.putInt(BankExtraKeys.SELECTED_PAYEE, getViewPager().getCurrentItem());
 		currentBundle.putSerializable(BankExtraKeys.PAYEES_LIST, detailList);
 		return currentBundle;
 	}

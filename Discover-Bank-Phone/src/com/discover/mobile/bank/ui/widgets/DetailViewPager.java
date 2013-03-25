@@ -169,6 +169,10 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 		jointAccountWarning = (TextView)mainBar.findViewById(R.id.joint_account_warning_label);
 
 	}
+	
+	protected ViewPager getViewPager() {
+		return viewPager;
+	}
 
 	/**
 	 * Setup the ViewPager to accept a collection of fragments to show.
