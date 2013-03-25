@@ -187,7 +187,7 @@ public final class BankConductor  extends Conductor {
 			currentActivity.startActivity(loggedOutFAQ);
 		}
 	}
-	
+
 	/**
 	 * Navigates application to EnhancedAccountSecurityActivity which is used for strong authentication
 	 * for both CARD and BANK accounts. If EnhancedAccountSecurityActivity is already open, then it will
@@ -332,7 +332,7 @@ public final class BankConductor  extends Conductor {
 		fragment.setArguments(bundle);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
-	
+
 	public static void navigateToFAQDetail(final String extraKey) {
 		final Bundle extras = new Bundle();
 		extras.putString(BankExtraKeys.FAQ_TYPE, extraKey);
@@ -770,6 +770,20 @@ public final class BankConductor  extends Conductor {
 	}
 
 	/**
+	 * Get the list of address results to the map fragment being displayed.  Eat the call if the fragment is no
+	 * longer on the screen
+	 * @param bundle - bundle of data to give the fragment
+	 */
+	public static void navigateToSearchAtmLocatorFragment(final Bundle bundle){
+		final NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		if(activity instanceof AtmLocatorActivity){
+			((AtmLocatorActivity)activity).getMapFragment().handleAddressToLocationResponse(bundle);
+		}else if(activity.getCurrentContentFragment() instanceof AtmMapFragment){
+			((AtmMapFragment)activity.getCurrentContentFragment()).handleAddressToLocationResponse(bundle);
+		}
+	}
+
+	/**
 	 * Authorizes a Bank user against the service. If successful, the user will
 	 * be logged-in and taken to the Bank landing page of the application.
 	 * 
@@ -834,7 +848,7 @@ public final class BankConductor  extends Conductor {
 	public static void navigateToSpecificFaq(final String faqType) {
 		final Bundle extras = new Bundle();
 		extras.putString(BankExtraKeys.FAQ_TYPE, faqType);
-		
+
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 		if(currentActivity instanceof BankNavigationRootActivity) {
 			final FAQDetailFragment faqSection = new FAQDetailFragment();
