@@ -291,6 +291,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 				@Override
 				public void onClick(final View v) {
 					final Bundle args = getArguments();
+	                args.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, true);
 					args.putInt(BankExtraKeys.AMOUNT, depositAmount);
 					BankConductor.navigateToCheckDepositWorkFlow(args, BankDepositWorkFlowStep.SelectAccount);
 				}
@@ -307,7 +308,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 				@Override
 				public void onClick(final View v) {
 					final Bundle adjustAmountBundle = getArguments();
-	
+					adjustAmountBundle.putBoolean(BankExtraKeys.REENTER_AMOUNT, true);
 					BankConductor.navigateToCheckDepositWorkFlow(adjustAmountBundle, BankDepositWorkFlowStep.SelectAmount);
 				}
 			});

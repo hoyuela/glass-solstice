@@ -105,7 +105,7 @@ public class BankHeaderProgressIndicator extends RelativeLayout implements OnCli
 		}
 		
 		if( position == 3 || step2Layout.getVisibility() != View.VISIBLE ) {
-			step1.setTextAppearance(getContext(), R.style.selected_status_indicator_text);
+			step3.setTextAppearance(getContext(), R.style.selected_status_indicator_text);
 			step3Indicator.setVisibility(View.VISIBLE);
 		} else {
 			step3Indicator.setVisibility(View.INVISIBLE);

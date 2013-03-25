@@ -89,11 +89,19 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 	public boolean isValid() {
 		boolean ret = false;
 		
-		final String amountText = this.getText().toString().replaceAll("[,.]+","");
+		final String amountText = this.getText().toString().replace(",","");
 		
 		/**Verify the user has entered an non-empty value*/
 		if( !Strings.isNullOrEmpty(amountText) ) {
-			final double amount = Double.parseDouble(amountText);
+			double amount = 0.00;
+			
+			/**Catch exception if it fails to format text entered by user into a double*/
+			try {
+				amount = Double.parseDouble(amountText);
+			}catch( final Exception ex) {
+				Log.e(TAG, "Unable to convert text to currency");
+			}
+		
 			
 			/**Verify a AccountLimits object has been associated with this object otherwise mark input as invalid*/
 			if( limits != null ) {

@@ -25,5 +25,10 @@ public class BankError implements Serializable{
 	
 	@JsonProperty("message")
 	public String message;
-
+	
+	@JsonProperty("phone")
+	public String phone;
+	
+	@JsonProperty("title")
+	public String title;
 }

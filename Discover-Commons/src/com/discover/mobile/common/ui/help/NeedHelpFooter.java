@@ -54,6 +54,24 @@ public class NeedHelpFooter
 			}
 		});
 	}
+	
+	/**
+	 * Used to set the help number displayed in the footer
+	 * 
+	 * @param helpNumber String with the help number 
+	 */
+	public void setToDialNumberOnClick(final String helpNumber) {
+		
+		helpNumberTxtVw.setText(helpNumber);
+		
+		helpNumberTxtVw.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				CommonUtils.dialNumber(helpNumber, helpNumberTxtVw.getContext());
+			}
+		});
+	}
+
 
 	/**
 	 * Used to show or hide the view on the page or modal it is displayed on.
