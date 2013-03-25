@@ -254,7 +254,7 @@ public final class BankConductor  extends Conductor {
 	public static void navigateToBrowser(final String url) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		if(activity != null && activity instanceof BankNavigationRootActivity ) {
+		if(activity != null && activity instanceof NavigationRootActivity ) {
 			// Create a one button modal to notify the user that they are leaving the application
 			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
 					R.string.bank_open_browser_title, 
@@ -275,7 +275,7 @@ public final class BankConductor  extends Conductor {
 			/**Hide Need Help footer*/
 			((ModalDefaultTopView)modal.getTop()).hideNeedHelpFooter();
 
-			((BankNavigationRootActivity)activity).showCustomAlert(modal);
+			((NavigationRootActivity)activity).showCustomAlert(modal);
 
 		}
 	}

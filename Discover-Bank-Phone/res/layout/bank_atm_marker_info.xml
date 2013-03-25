@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:maxWidth="250dp"
-    android:minWidth="250dp" >
+    android:maxWidth="200dp"
+    android:minWidth="200dp" >
 
     <LinearLayout
         android:id="@+id/top_layout"
@@ -16,8 +16,8 @@
             android:id="@+id/top_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="200dp"
-            android:minWidth="200dp"
+            android:maxWidth="150dp"
+            android:minWidth="150dp"
             android:orientation="vertical" >
 
             <TextView
@@ -26,6 +26,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/between_related_elements_padding"
+                android:maxLength="30"
+                android:ellipsize="end"
                 android:text="ATM Merchant Name" />
 
             <TextView
@@ -39,8 +41,8 @@
 
         <ImageView
             android:id="@+id/street_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/forms_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
