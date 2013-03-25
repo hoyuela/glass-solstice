@@ -121,11 +121,17 @@ public class BankSelectPayee extends BaseFragment{
 	 * the list on the screen with the data.
 	 */
 	private void initViewWithBundleData() {
+		final Button addPayee = (Button)view.findViewById(R.id.add_payee);
+		
+		/**Set Button Text to specific text when there are no payees in list*/
 		if(null == payees || payees.payees.isEmpty()){
-			empty.setVisibility(View.VISIBLE);
-			final Button addPayee = (Button)view.findViewById(R.id.add_payee);
+			empty.setVisibility(View.VISIBLE);			
 			addPayee.setText(getResources().getString(R.string.select_payee_no_payees));
-		}else{
+		}
+		/**Set Button Text  to specific text when there are payees in the list, 
+		 * in addition populate list of payees*/
+		else{
+			addPayee.setText(getResources().getString(R.string.select_payee_another_payee));
 			payeesList.removeAllViews();
 			int i = 0;
 			final int size = payees.payees.size();

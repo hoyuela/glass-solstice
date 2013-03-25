@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
+import com.discover.mobile.bank.navigation.BankNavigationHelper;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
@@ -46,18 +48,23 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				if(!isEligible()){
-					BankConductor.navigateToPayBillsLanding();
-				} else if(isEligible() && !isEnrolled()){
-					sendToTermsScreen(R.string.section_title_pay_bills);
-				} else{					
-					if(null == BankUser.instance().getPayees()) {
-						BankServiceCallFactory.createGetPayeeServiceRequest().submit();
-					} else{
-						final Bundle bundle = new Bundle();
-						bundle.putSerializable(BankExtraKeys.PAYEES_LIST, BankUser.instance().getPayees());
-						BankConductor.navigateToSelectPayee(bundle);
+				/**Check if user is already in this workflow*/
+				if( !BankPayBillsSectionInfo.isViewingMenuSection(BankMenuItemLocationIndex.PAY_BILLS_SECTION)) {
+					if(!isEligible()){
+						BankConductor.navigateToPayBillsLanding();
+					} else if(isEligible() && !isEnrolled()){
+						sendToTermsScreen(R.string.section_title_pay_bills);
+					} else{					
+						if(null == BankUser.instance().getPayees()) {
+							BankServiceCallFactory.createGetPayeeServiceRequest().submit();
+						} else{
+							final Bundle bundle = new Bundle();
+							bundle.putSerializable(BankExtraKeys.PAYEES_LIST, BankUser.instance().getPayees());
+							BankConductor.navigateToSelectPayee(bundle);
+						}
 					}
+				} else {
+					BankNavigationHelper.hideSlidingMenu();
 				}
 			}
 		};
@@ -72,12 +79,17 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 		return new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				if(!isEligible()) {
-					BankConductor.navigateToPayBillsLanding();
-				} else if (isEligible() && !isEnrolled()) {
-					sendToTermsScreen(R.string.sub_section_title_manage_payees);
-				}else {
-					BankServiceCallFactory.createManagePayeeServiceRequest().submit();
+				/**Check if user is already in this workflow*/
+				if( !BankPayBillsSectionInfo.isViewingMenuSection(BankMenuItemLocationIndex.MANAGE_PAYEES_SECTION)) {
+					if(!isEligible()) {
+						BankConductor.navigateToPayBillsLanding();
+					} else if (isEligible() && !isEnrolled()) {
+						sendToTermsScreen(R.string.sub_section_title_manage_payees);
+					}else {
+						BankServiceCallFactory.createManagePayeeServiceRequest().submit();
+					}
+				} else {
+					BankNavigationHelper.hideSlidingMenu();
 				}
 			}
 		};
@@ -102,18 +114,23 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				if(!isEligible()){
-					BankConductor.navigateToPayBillsLanding();
-				} else if(isEligible() && !isEnrolled()){
-					sendToTermsScreen(R.string.review_payments_title);
-				} else{
-					if(null == BankUser.instance().getPayees()) {
-						BankServiceCallFactory.createGetPayeeServiceRequest(true).submit();
+				/**Check if user is already in this workflow*/
+				if( !BankPayBillsSectionInfo.isViewingMenuSection(BankMenuItemLocationIndex.REVIEW_PAYEMENTS_SECTION)) {
+					if(!isEligible()){
+						BankConductor.navigateToPayBillsLanding();
+					} else if(isEligible() && !isEnrolled()){
+						sendToTermsScreen(R.string.review_payments_title);
 					} else{
-						BankRotationHelper.getHelper().setBundle(null);
-						final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
-						BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+						if(null == BankUser.instance().getPayees()) {
+							BankServiceCallFactory.createGetPayeeServiceRequest(true).submit();
+						} else{
+							BankRotationHelper.getHelper().setBundle(null);
+							final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+							BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+						}
 					}
+				} else {
+					BankNavigationHelper.hideSlidingMenu();
 				}
 			}
 		};
@@ -134,4 +151,19 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 	protected static boolean isEnrolled(){
 		return BankUser.instance().getCustomerInfo().isPaymentsEnrolled();
 	}
+	
+	/**
+	 * Method used to determine if user is already viewing a screen that the user can navigate to
+	 * via the menu section specified.
+	 * 
+	 * @param section Menu section used to check if the current fragment displayed is part of that work-flow.
+	 * @return True if current fragment is reachable via the menu section specified, otherwise false.
+	 */
+	public static boolean isViewingMenuSection(final int section) {
+		return BankNavigationHelper.isViewingMenuSection(
+				BankMenuItemLocationIndex.PAY_BILLS_GROUP,
+				section);
+	}
+	
+	
 }

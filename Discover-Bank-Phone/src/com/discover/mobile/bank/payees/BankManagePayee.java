@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
@@ -66,7 +67,12 @@ public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 		if(getPayees().payees == null || getPayees().payees.size() < 1){
 			title.setText(R.string.manage_payees_welcome);
 		}else{
+			/**Adjust height so there is not a large gap between list and help icon*/
 			title.setText(R.string.empty);
+			final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)title.getLayoutParams();
+			params.width = 0;
+			params.bottomMargin = 0;
+			title.setLayoutParams(params);
 		}
 		//Reset the index so that if this screen gets re-created or re-used
 		//the index is not in the wrong position.

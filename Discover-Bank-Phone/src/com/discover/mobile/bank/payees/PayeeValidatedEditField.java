@@ -208,4 +208,13 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 		/**Reset flag indicating whether an inline error is being shown*/
 		showingError = false;
 	}
+	
+	/**
+	 * Set the visibility of the attached error label to GONE.
+	 */
+	@Override
+	protected void hideErrorLabel() {
+		if(errorLabel != null)
+			this.errorLabel.setVisibility(View.INVISIBLE);
+	}
 }
