@@ -60,6 +60,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFail
 import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.NetworkServiceCallManager;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -242,7 +243,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			Globals.setCurrentUser("");
 			KeepAlive.setBankAuthenticated(false);
 			BankUser.instance().clearSession();
-			BankConductor.navigateToLoginPage(DiscoverActivityManager.getActiveActivity(), IntentExtraKey.SESSION_EXPIRED, null);
+			final ErrorHandlerUi uiHandler = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
+			FacadeFactory.getCardLogoutFacade().logout(activeActivity, uiHandler);
+			BankConductor.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
 		}
 		//Dispatch response to BankBaseErrorHandler to determine how to handle the error
 		else {
