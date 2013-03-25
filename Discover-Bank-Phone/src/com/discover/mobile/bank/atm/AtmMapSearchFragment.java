@@ -20,5 +20,5 @@ public interface AtmMapSearchFragment {
 	 * 
 	 * @return a string representing the current address
 	 */
-	String getCurrentLocationAddress();
+	void startCurrentLocationSearch();
 }

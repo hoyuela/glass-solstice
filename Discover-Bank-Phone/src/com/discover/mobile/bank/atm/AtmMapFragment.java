@@ -187,12 +187,12 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 * @return the current location address string
 	 */
 	@Override
-	public String getCurrentLocationAddress() {
-		final String str = mapWrapper.getGetAddressString();
-		if(null == str || str.isEmpty()){
+	public void startCurrentLocationSearch() {
+		if(LOCKED_ON == locationStatus){
+			getLocation();
+		}else{
 			locationModal.show();
 		}
-		return str;
 	}
 
 	/**
@@ -425,6 +425,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void getLocation(){
 		isLoading = false;
+		hasLoadedAtms = false;
+		mapWrapper.clear();
+		currentIndex = 0;
 		((NavigationRootActivity)this.getActivity()).startProgressDialog();
 		locationManagerWrapper.getLocation();
 	}
@@ -653,5 +656,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		}else{
 			return shouldGoBack;
 		}
+	}
+
+	public String getCurrentLocationAddress() {
+		return mapWrapper.getGetAddressString();
 	}
 }
