@@ -61,4 +61,6 @@
 	
 	<string name="sending_deposit_title_text">Sending Deposit</string>
 	<string name="sending_deposit_detail_text">Your deposit is being sent securely to the bank. Please wait for the transaction to be completed.</string>
+	
+	<string name="shutter_sound_file">file:///system/media/audio/ui/camera_click.ogg</string>
 </resources>
