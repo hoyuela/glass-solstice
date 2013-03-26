@@ -46,6 +46,7 @@ import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.error.bank.BankError;
@@ -57,7 +58,7 @@ import com.discover.mobile.common.ui.widgets.CustomTitleDatePickerDialog;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
-public class SchedulePaymentFragment extends BaseFragment implements BankErrorHandlerDelegate, OnEditorActionListener {
+public class SchedulePaymentFragment extends BaseFragment implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPressed {
 
 	/** Keys used to save/load values possibly lost during rotation. */
 	private static final String PAY_FROM_ACCOUNT_ID = "a";
@@ -884,5 +885,16 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			}
         }
         return false;
+	}
+	
+	/** Cancel modal presentation should override default Back button behavior */
+	@Override
+	public void onBackPressed() {
+		setupCancelButton();
+	}
+
+	@Override
+	public boolean isBackPressDisabled() {
+		return true;
 	}
 }
