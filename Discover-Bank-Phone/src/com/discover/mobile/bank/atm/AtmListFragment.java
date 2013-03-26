@@ -50,9 +50,6 @@ public class AtmListFragment extends BaseTable{
 
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
-		setIsLoadingMore(false);
-		super.refreshListener();
-		footer.showDone();
 		results = (AtmResults)bundle.get(BankExtraKeys.DATA_LIST_ITEM);
 		index = (bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0));
 
@@ -66,6 +63,10 @@ public class AtmListFragment extends BaseTable{
 		adapter.clear();
 		adapter.setData(results.results.atms.subList(0, index));
 		adapter.notifyDataSetChanged();
+
+		setIsLoadingMore(false);
+		super.refreshListener();
+		footer.showDone();
 
 		if(!observer.canLoadMore()){
 			showNothingToLoad();
