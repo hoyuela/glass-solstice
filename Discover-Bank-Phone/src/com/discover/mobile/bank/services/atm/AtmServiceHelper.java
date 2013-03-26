@@ -29,10 +29,12 @@ public class AtmServiceHelper {
 	private static final String ORIGIN = "origin=";
 	private static final String DESTINATION = "destination=";
 	private static final String SENSOR = "sensor=false";
+	private static final String ADDRESS = "address=";
 	private static final String SPACE = " ";
 	private static final String PLUS = "+";
 	private static final String COMMA = ",";
 	private static final String EMPTY = "";
+	private static final String ADDRESS_TO_LOCATION_END = "&ka=&sensor=false";
 
 	/**Maximum number of results the service should return*/
 	private int maxResults = DEFAULT_RESULT_NUMBER;
@@ -58,6 +60,9 @@ public class AtmServiceHelper {
 	/**String of the from address*/
 	private final String from;
 
+	/**Address to get the location of*/
+	private final String address;
+
 	/**
 	 * Constructor for the helper
 	 * @param location - Location to search for atms around
@@ -66,6 +71,7 @@ public class AtmServiceHelper {
 		this.location = location;
 		to = null;
 		from = null;
+		address = null;
 	}
 
 
@@ -78,6 +84,18 @@ public class AtmServiceHelper {
 		this.to = to;
 		this.from = from;
 		location = null;
+		address = null;
+	}
+
+	/**
+	 * Constructor for the helper
+	 * @param address - String for the address to get the location of.=
+	 */
+	public AtmServiceHelper(final String address){
+		to = null;
+		from = null;
+		location = null;
+		this.address = address;
 	}
 
 	/**
@@ -109,6 +127,14 @@ public class AtmServiceHelper {
 		builder.append(DIVIDER+DESTINATION);
 		builder.append(to.replaceAll(SPACE, PLUS).replaceAll(COMMA, EMPTY));
 		builder.append(DIVIDER+SENSOR);
+		return builder.toString();
+	}
+
+	public String getAddressToLocationString(){
+		final StringBuilder builder = new StringBuilder();
+		builder.append(QUERY_START + ADDRESS);
+		builder.append(address.replaceAll(" ","%20"));
+		builder.append(ADDRESS_TO_LOCATION_END);
 		return builder.toString();
 	}
 

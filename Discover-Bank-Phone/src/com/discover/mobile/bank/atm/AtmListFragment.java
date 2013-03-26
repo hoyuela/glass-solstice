@@ -4,6 +4,7 @@
 package com.discover.mobile.bank.atm;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -36,6 +37,9 @@ public class AtmListFragment extends BaseTable{
 
 	/**Fragment holding this fragment*/
 	private AtmMapFragment observer;
+
+	/**Delay amount for the load more thread*/
+	private static final int DELAY = 100;
 
 	/**
 	 * @param observer the observer to set
@@ -102,7 +106,14 @@ public class AtmListFragment extends BaseTable{
 	public void maybeLoadMore() {
 		if(observer.canLoadMore()){
 			footer.showLoading();
-			observer.loadMoreData(); 
+			//Delay the loading of the load more so that the listener has time to refresh.
+			final Handler handler = new Handler(); 
+			handler.postDelayed(new Runnable() { 
+				@Override
+				public void run() { 
+					observer.loadMoreData(); 
+				} 
+			}, DELAY); 
 		}
 	}
 

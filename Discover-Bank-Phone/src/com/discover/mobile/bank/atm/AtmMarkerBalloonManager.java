@@ -135,8 +135,13 @@ public class AtmMarkerBalloonManager{
 						final Geocoder coder = new Geocoder(context);
 						final List<Address> addresses = coder.getFromLocationName(addressString, 1);
 						final Bundle bundle = new Bundle();
-						bundle.putDouble(BankExtraKeys.STREET_LAT, addresses.get(0).getLatitude());
-						bundle.putDouble(BankExtraKeys.STREET_LON, addresses.get(0).getLongitude());
+						if(null != addresses || addresses.isEmpty()){
+							bundle.putDouble(BankExtraKeys.STREET_LAT, atm.getLatitude());
+							bundle.putDouble(BankExtraKeys.STREET_LON, atm.getLongitude());							
+						}else{
+							bundle.putDouble(BankExtraKeys.STREET_LAT, addresses.get(0).getLatitude());
+							bundle.putDouble(BankExtraKeys.STREET_LON, addresses.get(0).getLongitude());
+						}
 						bundle.putInt(BankExtraKeys.ATM_ID, atm.id);
 						fragment.showStreetView(bundle);
 					} catch (final IOException e) {

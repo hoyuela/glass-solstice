@@ -15,6 +15,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.framework.BankConductor;
 
 /**
  * Class controlling the web view and anything that needs to be loaded into it.
@@ -46,9 +47,15 @@ public class AtmWebView{
 			"https://secure.opinionlab.com/ccc01/o.asp?id=TsIyHYhm&referer="+
 					"https://www.discoverbank.com/m/accountcenter/atm-locator&atmIdentifier=";
 
+	/**Url used for Google's terms*/
+	private static final String GOOGLE_PRIVACY = "http://www.google.com/intl/en-US_US/help/terms_maps.html";
+
+	/**Url used for reporting to google*/
+	private static final String GOOGLE_REPORT = "https://cbks0.googleapis.com/cbk?output=report";
+
 	/**Boolean used to indicate if the webview has street view or report atm*/
 	private boolean isReportingAtm;
-	
+
 	/**ATM ID String */
 	private String atm_id;
 
@@ -82,6 +89,15 @@ public class AtmWebView{
 				loadingSpinner.setVisibility(View.GONE);
 				web.setVisibility(View.VISIBLE);
 				loadingSpinner.clearAnimation();
+			}
+
+			@Override
+			public boolean shouldOverrideUrlLoading(final WebView  view, final String  url){
+				if(url.contains(GOOGLE_PRIVACY) || url.contains(GOOGLE_REPORT)) {
+					BankConductor.navigateToBrowser(url);
+					return true;
+				}
+				return false;
 			}
 		});
 	}

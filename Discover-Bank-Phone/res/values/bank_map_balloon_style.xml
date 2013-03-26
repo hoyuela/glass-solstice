@@ -3,11 +3,11 @@
 
     <!-- Base Balloon Style -->
     <style name="balloon_large_text">
-        <item name="android:textSize">@dimen/body_copy_mid</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
     </style>
 
     <style name="balloon_small_text">
-        <item name="android:textSize">@dimen/small_copy_min</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <!-- Displaying balloon styles -->

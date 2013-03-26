@@ -42,6 +42,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 
 		if(savedInstanceState != null) {
 			detailList = (ListPaymentDetail)savedInstanceState.getSerializable(BankExtraKeys.PRIMARY_LIST);
+			initialViewPosition = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX);
 		}
 
 		//Make sure the list is not null so that the Fragment will not crash upon getting no data.
@@ -57,6 +58,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		outState.putAll(getCurrentFragmentBundle());
+		super.onSaveInstanceState(outState);
 	}
 
 	/**
@@ -83,7 +85,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 			currentBundle = new Bundle();
 		}
 
-		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, initialViewPosition);
+		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, getViewPager().getCurrentItem());
 		currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, detailList);
 		return currentBundle;
 	}
@@ -160,7 +162,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		setIsLoadingMore(false);
 		final ListPaymentDetail newDetails = (ListPaymentDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		detailList.payments.addAll(newDetails.payments);
-		updateNavigationButtons(getViewPager().getCurrentItem());
+		updateNavigationButtons();
 		detailList.links.putAll(newDetails.links);
 		BankRotationHelper.getHelper().getBundle().putSerializable(BankExtraKeys.PRIMARY_LIST, detailList);
 	}
@@ -173,6 +175,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	public void onPause() {
 		super.onPause();
 		BankRotationHelper.getHelper().getBundle().putAll(getCurrentFragmentBundle());
+		initialViewPosition = getViewPager().getCurrentItem();
 	}
 
 	/**

@@ -3,6 +3,11 @@
  */
 package com.discover.mobile.bank.atm;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 
@@ -12,6 +17,13 @@ import com.discover.mobile.bank.R;
  *
  */
 public class SearchByLocationFragment extends AtmMapFragment{
+
+	@Override
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
+		final View v = super.onCreateView(inflater, container, savedInstanceState);
+		super.setLocationStatus(NOT_USING_LOCATION);
+		return v;
+	}
 
 	@Override
 	public int getLayout() {

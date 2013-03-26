@@ -20,7 +20,7 @@ public class BankUrlManager  {
 	private static String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
 	//private static String BASE_URL = "https://beta.discoverbank.com";
 	//private static String DISCOVER_STRIPPED_URL = "http://beta.discoverbank.com";
-//		private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
+	//		private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
 	//  private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Erin/";
 	//	private static final String BASE_URL = "http://192.168.2.177:8008"; //Henry's Laptop
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
@@ -44,6 +44,7 @@ public class BankUrlManager  {
 	private static final String ACCEPT_PAY_BILLS_TERMS_URL = "/api/payments/terms";
 	private static final String ATM_LOCATOR_URL = "https://api.discover.com/api/atmLocator/SearchGeocodedLocation.xml";
 	private static final String ATM_DIRECTIONS_BASE_URL = "http://maps.googleapis.com/maps/api/directions/json";
+	private static final String ATM_ADDRESS_TO_LOCATION_BASE_URL = "http://maps.google.com/maps/api/geocode/json";
 
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
@@ -102,14 +103,14 @@ public class BankUrlManager  {
 	public static String getGetTokenUrl() {
 		return GET_TOKEN_URL;
 	}
-	
+
 	/**
 	 * @return the url for posting a token payload
 	 */
 	public static String getSSOTokenUrl() {
 		return GET_SSO_TOKEN_URL;
 	}
-	
+
 	/**
 	 * @return the strongAuthUrl
 	 */
@@ -244,6 +245,13 @@ public class BankUrlManager  {
 	 */
 	public static String getAtmDirectionsBaseUrl() {
 		return ATM_DIRECTIONS_BASE_URL;
+	}
+
+	/**
+	 * @return the atmAddressToLocationBaseUrl
+	 */
+	public static String getAtmAddressToLocationBaseUrl() {
+		return ATM_ADDRESS_TO_LOCATION_BASE_URL;
 	}
 
 }

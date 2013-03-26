@@ -3,13 +3,8 @@
  */
 package com.discover.mobile.bank.atm;
 
-import java.io.IOException;
-import java.util.List;
-
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -27,6 +22,8 @@ import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
+import com.discover.mobile.bank.services.atm.AddressToLocationDetail;
+import com.discover.mobile.bank.services.atm.AddressToLocationResultDetail;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
@@ -190,12 +187,12 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 * @return the current location address string
 	 */
 	@Override
-	public String getCurrentLocationAddress() {
-		final String str = mapWrapper.getGetAddressString();
-		if(null == str || str.isEmpty()){
+	public void startCurrentLocationSearch() {
+		if(LOCKED_ON == locationStatus){
+			getLocation();
+		}else{
 			locationModal.show();
 		}
-		return str;
 	}
 
 	/**
@@ -204,17 +201,24 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 */
 	@Override
 	public void performSearch(final String text) {
-		final Geocoder coder = new Geocoder(this.getActivity());
-		try {
-			final List<Address> addresses = coder.getFromLocationName(text, 1);
-			if(null == addresses || addresses.isEmpty()){
-				AtmModalFactory.getInvalidAddressModal(this.getActivity()).show();
-				return;
-			}
-			final Address address = coder.getFromLocationName(text, 1).get(0);
+		final AtmServiceHelper helper = new AtmServiceHelper(text);
+		BankServiceCallFactory.getLocationFromAddressCall(helper).submit();
+	}
+
+	/**
+	 * Handle a successful address to location response
+	 * @param bundle - bundle of data retrieved from the service call
+	 */
+	public void handleAddressToLocationResponse(final Bundle bundle){
+		final AddressToLocationDetail addressResults = (AddressToLocationDetail) bundle.get(BankExtraKeys.DATA_LIST_ITEM);
+		if(null == addressResults || null == addressResults.results || addressResults.results.isEmpty()){
+			((NavigationRootActivity)this.getActivity()).closeDialog();
+			AtmModalFactory.getInvalidAddressModal(this.getActivity()).show();
+		}else{
+			final AddressToLocationResultDetail address = addressResults.results.get(0);
 			final Location location = new Location(LocationManager.GPS_PROVIDER);
-			location.setLatitude(address.getLatitude());
-			location.setLongitude(address.getLongitude());
+			location.setLatitude(address.geometry.endLocation.lat);
+			location.setLongitude(address.geometry.endLocation.lon);
 			mapWrapper.clear();
 			currentIndex = 0;
 			mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, this.getActivity());
@@ -225,10 +229,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			}
 			getAtms(location);
 			hasLoadedAtms = true;
-		} catch (final IOException e) {
-			AtmModalFactory.getInvalidAddressModal(this.getActivity()).show();
 		}
 	}
+
 
 	/**
 	 * Set up the click listeners
@@ -422,6 +425,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void getLocation(){
 		isLoading = false;
+		hasLoadedAtms = false;
+		mapWrapper.clear();
+		currentIndex = 0;
 		((NavigationRootActivity)this.getActivity()).startProgressDialog();
 		locationManagerWrapper.getLocation();
 	}
@@ -650,5 +656,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		}else{
 			return shouldGoBack;
 		}
+	}
+
+	public String getCurrentLocationAddress() {
+		return mapWrapper.getGetAddressString();
 	}
 }

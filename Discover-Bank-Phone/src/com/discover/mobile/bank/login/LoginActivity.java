@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -79,6 +80,7 @@ public class LoginActivity extends BaseActivity implements
 	private final String PRE_AUTH_KEY = "e";
 	private final String ERROR_MESSAGE_KEY = "g";
 	private final String ERROR_MESSAGE_VISIBILITY = "h";
+	private final String ERROR_MESSAGE_COLOR = "i";
 	
 	/** ID that allows control over relative buttons' placement.*/
 	private static final int LOGIN_BUTTON_ID = 1;
@@ -101,9 +103,11 @@ public class LoginActivity extends BaseActivity implements
 
 	private RelativeLayout goToBankButton;
 	private RelativeLayout goToCardButton;
-
+	
 	// TEXT LABELS
-	private TextView privacySecOrTermButton;
+	private LinearLayout cardForgotAndPrivacySection;
+	private TextView privacySecOrTermButtonCard;
+	private TextView privacySecOrTermButtonBank;
 	private TextView errorTextView;
 	private TextView forgotUserIdOrPassText;
 	private TextView goToBankLabel;
@@ -186,9 +190,10 @@ public class LoginActivity extends BaseActivity implements
 
 		provideFeedbackButton = (Button) findViewById(R.id.provide_feedback_button);
 		loginButton = (Button) findViewById(R.id.login_button);
-		loginButton.setId(LOGIN_BUTTON_ID);
 		registerOrAtmButton = (Button) findViewById(R.id.register_now_or_atm_button);
-		privacySecOrTermButton = (TextView) findViewById(R.id.privacy_and_security_button);
+		privacySecOrTermButtonCard = (TextView) findViewById(R.id.privacy_and_security_button_card);
+		privacySecOrTermButtonBank = (TextView) findViewById(R.id.privacy_and_security_button_bank);
+		cardForgotAndPrivacySection = (LinearLayout) findViewById(R.id.card_forgot_and_privacy_section);
 		customerServiceButton = (Button) findViewById(R.id.customer_service_button);
 		errorTextView = (TextView) findViewById(R.id.error_text_view);
 		forgotUserIdOrPassText = (TextView) findViewById(R.id.forgot_uid_or_pass_text);
@@ -249,8 +254,7 @@ public class LoginActivity extends BaseActivity implements
 			if( !Strings.isNullOrEmpty(errorMessage) ){
 				showErrorMessage(errorMessage);
 				this.getIntent().putExtra(IntentExtraKey.SHOW_ERROR_MESSAGE, "");
-				final int red = getResources().getColor(R.color.red);
-				errorTextView.setTextColor(red);
+				errorTextView.setTextColor(extras.getInt(ERROR_MESSAGE_COLOR));
 			}
 		}
 	}
@@ -393,6 +397,7 @@ public class LoginActivity extends BaseActivity implements
 		outState.putBoolean(PRE_AUTH_KEY, preAuthHasRun);
 		outState.putString(ERROR_MESSAGE_KEY, errorTextView.getText().toString());
 		outState.putInt(ERROR_MESSAGE_VISIBILITY, errorTextView.getVisibility());
+		outState.putInt(ERROR_MESSAGE_COLOR, errorTextView.getCurrentTextColor());
 
 		super.onSaveInstanceState(outState);
 	}
@@ -426,6 +431,7 @@ public class LoginActivity extends BaseActivity implements
 	private void restoreErrorTextView(final Bundle savedInstanceState) {
 		errorTextView.setText(savedInstanceState.getString(ERROR_MESSAGE_KEY));
 		errorTextView.setVisibility(savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY));
+		errorTextView.setTextColor(savedInstanceState.getInt(ERROR_MESSAGE_COLOR));
 		if(!errorIsVisible() && errorTextView.length() > 0) {
 			errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 		}
@@ -534,21 +540,18 @@ public class LoginActivity extends BaseActivity implements
 
 			}
 		});
+		
+		privacySecOrTermButtonBank.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openPrivacyAndTerms();
+			}
+		});
 
-		privacySecOrTermButton.setOnClickListener(new View.OnClickListener() {
+		privacySecOrTermButtonCard.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-
-				final String curText = privacySecOrTermButton.getText().toString();
-				final String privSecText = getResources().getString(R.string.privacy_and_security);
-
-				//Check if privacySecOrTermButton button is displaying text for Card or Bank
-				if( curText.equals(privSecText) ) {
-					openPrivacyAndSecurity();
-				} else {
-					openPrivacyAndTerms();
-				}
-
+				openPrivacyAndSecurity();
 			}
 		});
 
@@ -638,6 +641,12 @@ public class LoginActivity extends BaseActivity implements
 	 * 
 	 */
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
+		// Prevent data from restoring after a crash.
+		passField.setText("");
+		if(!saveUserId) {
+			idField.setText("");
+		}
+		
 		//Check if card account has been selected
 		if( View.VISIBLE == cardCheckMark.getVisibility() ) {
 			cardLogin(username, password) ;
@@ -830,10 +839,10 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad));
 
 		registerOrAtmButton.setText(R.string.register_now);
-		privacySecOrTermButton.setText(R.string.privacy_and_security);
-		setPrivacyAndTermsParamsForCard(true);
-		CommonUtils.setViewVisible(forgotUserIdOrPassText);
-
+		
+		CommonUtils.setViewInvisible(privacySecOrTermButtonBank);
+		CommonUtils.setViewVisible(cardForgotAndPrivacySection);
+		
 		// Load Card Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
 	}
@@ -862,9 +871,9 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad));
 		registerOrAtmButton.setText(R.string.atm_locator);
-		privacySecOrTermButton.setText(R.string.privacy_and_terms);
-		setPrivacyAndTermsParamsForCard(false);
-		CommonUtils.setViewInvisible(forgotUserIdOrPassText);
+
+		CommonUtils.setViewVisible(privacySecOrTermButtonBank);
+		CommonUtils.setViewInvisible(cardForgotAndPrivacySection);
 
 		// Load Bank Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.BANK_ACCOUNT);
@@ -1120,32 +1129,6 @@ public class LoginActivity extends BaseActivity implements
 			return FacadeFactory.getCardFacade().getCardErrorHandler();
 		} else {
 			return BankErrorHandler.getInstance();
-		}
-	}
-	
-	/**
-	 * Sets the layout for Privacy & Terms button depending on card or bank.
-	 * 
-	 * @param isCard
-	 *            if the layout should be for card, false otherwise.
-	 */
-	private void setPrivacyAndTermsParamsForCard(final boolean isCard) {
-		final RelativeLayout.LayoutParams lpTerms = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		final RelativeLayout.LayoutParams lpForgot = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		
-		if(isCard) {
-			lpForgot.addRule(RelativeLayout.BELOW, loginButton.getId());
-			forgotUserIdOrPassText.setLayoutParams(lpForgot);
-			
-			lpTerms.addRule(RelativeLayout.BELOW, loginButton.getId());
-			
-			privacySecOrTermButton.setPadding(0, 0, (int)getResources().getDimension(R.dimen.element_side_padding), (int)getResources().getDimension(R.dimen.top_pad));lpTerms.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1);
-			privacySecOrTermButton.setLayoutParams(lpTerms);
-		} else {
-			lpTerms.addRule(RelativeLayout.CENTER_HORIZONTAL, -1);
-			lpTerms.addRule(RelativeLayout.BELOW, loginButton.getId());
-			privacySecOrTermButton.setPadding(0, 0, 0, (int)getResources().getDimension(R.dimen.top_pad));
-			privacySecOrTermButton.setLayoutParams(lpTerms);
 		}
 	}
 }
