@@ -76,6 +76,8 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
+		
+		setupAccountToggle();
 
 		/**Hyperlink used to provide feedback*/
 		final TextView feedback = (TextView)view.findViewById(R.id.provide_feedback_button);
@@ -89,11 +91,6 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				toast.show();
 			}			
 		});
-
-		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
-		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
-		setupAccountToggle();
-		
 		return view;
 	}
 

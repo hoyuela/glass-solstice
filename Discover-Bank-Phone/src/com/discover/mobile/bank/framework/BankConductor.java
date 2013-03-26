@@ -825,9 +825,19 @@ public final class BankConductor  extends Conductor {
 
 	/**
 	 * Authorizes an SSO User against Bank when no BankSSOPayload is available.
-	 * This is due to an A/L/U error returned from a Card service.
+	 * This is due to an A/L/U error returned from a Card service. This will
+	 * prompt the user about the issue and continue if they accept.
 	 */
 	public static void authDueToALUStatus() {
+		final LoginActivity activity = (LoginActivity) DiscoverActivityManager
+				.getActiveActivity();
+		activity.showALUStatusModal();
+	}
+	
+	/**
+	 * Continues with the Skip SSO login call if credentials are available.
+	 */
+	public static void continueAuthDueToALU() {
 		if(loginDetails != null) {
 			KeepAlive.setCardAuthenticated(false);
 			BankServiceCallFactory.createLoginCall(loginDetails, true).submit();

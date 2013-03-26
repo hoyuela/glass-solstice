@@ -516,6 +516,10 @@ public abstract class NetworkServiceCall<R> {
 		conn.setRequestProperty("X-Client-Platform", X_CLIENT_PLATFORM);
 		conn.setRequestProperty("X-Application-Version", X_APP_VERSION);
 	}
+	
+	public Map<String, String> getHeaders() {
+		return params.headers;
+	}
 
 	private void setSessionHeaders() throws IOException {
 		final boolean foundToken = ServiceCallSessionManager.prepareWithSecurityToken(conn);

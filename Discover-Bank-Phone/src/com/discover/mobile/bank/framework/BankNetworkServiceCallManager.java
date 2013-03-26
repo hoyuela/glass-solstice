@@ -31,6 +31,7 @@ import com.discover.mobile.bank.services.atm.GetLocationFromAddressServiceCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
 import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
+import com.discover.mobile.bank.services.auth.CreateBankSSOLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
@@ -307,7 +308,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		
 		
 		//Download Customer Information if a Login call is successful
-		else if( sender instanceof CreateBankLoginCall ) {
+		else if( sender instanceof CreateBankLoginCall || sender instanceof CreateBankSSOLoginCall) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
 			
 			KeepAlive.setBankAuthenticated(true);
@@ -319,7 +320,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			activity.updateAccountInformation(AccountType.BANK_ACCOUNT);
 
 			BankServiceCallFactory.createCustomerDownloadCall().submit();
-		}
+		} 
 		//Download Account Summary Information if a Customer Download is successful
 		else if( sender instanceof CustomerServiceCall ) {
 			//Verify user has bank accounts otherwise navigate to no accounts page
@@ -630,5 +631,5 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			instance.notifyAll();
 		}
 	}
-
+	
 }

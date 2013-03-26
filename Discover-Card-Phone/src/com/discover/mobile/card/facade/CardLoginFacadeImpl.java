@@ -9,6 +9,8 @@ import android.content.Context;
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.card.services.auth.AuthenticateCall;
+import com.discover.mobile.card.services.auth.BankPayload;
+import com.discover.mobile.card.services.auth.SSOAuthenticateCall;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
@@ -65,9 +67,29 @@ public class CardLoginFacadeImpl implements CardLoginFacade{
 	}
 
 	@Override
-	public void loginWithPayload(LoginActivityInterface callingActivity,
-			String tokenValue, String hashedTokenValue) {
-		
+	public void loginWithPayload(final LoginActivityInterface callingActivity, final String tokenValue, final String hashedTokenValue) {
+		final AsyncCallback<BankPayload> callback = GenericAsyncCallback
+				.<BankPayload> builder((Activity) callingActivity)
+				.showProgressDialog("Discover", "Loading...", true)
+				.withSuccessListener(new SuccessListener<BankPayload>() {
+
+					@Override
+					public CallbackPriority getCallbackPriority() {
+						return CallbackPriority.MIDDLE;
+					}
+
+					@Override
+					public void success(final NetworkServiceCall<?> sender, final BankPayload value) {
+						// Continues the SSO daisy chain by returning control back to Bank.
+						FacadeFactory.getBankLoginFacade().authorizeWithBankPayload(value.payload);
+
+					}
+				})
+				.withErrorResponseHandler(new com.discover.mobile.card.error.CardBaseErrorResponseHandler(callingActivity))
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.build();
+
+		new SSOAuthenticateCall((Context) callingActivity, callback, tokenValue, hashedTokenValue).submit();
 	}
 
 	@Override
