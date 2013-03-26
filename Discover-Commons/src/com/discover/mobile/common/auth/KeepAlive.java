@@ -20,6 +20,12 @@ public class KeepAlive {
 	/** Tracks the last time a Card refresh request was made. */
 	private static long lastCardRefreshTimeInMillis = 0;
 
+	/** Tracks the previous call time, Bank -- used to override a failed call */
+	private static long prevBankSuccessRefresh = 0;
+
+	/** Tracks the previous call time, Card -- used to override a failed call */
+	private static long prevCardSuccessRefresh = 0;
+
 	/** Tracks the last time a Bank refresh request was made. */
 	private static long lastBankRefreshTimeInMillis = 0;
 
@@ -84,26 +90,62 @@ public class KeepAlive {
 
 	/**
 	 * Resets the timer for making session refresh calls. This should be called
-	 * any time a network call is made that utilizes the Bank session.
+	 * any time a successful network call (excluding
+	 * {@code checkForRequiredSessionRefresh()}) is made that utilizes the Bank
+	 * session.
 	 */
 	public static void updateLastBankRefreshTime() {
 		final long currentTime = Calendar.getInstance().getTimeInMillis();
-		lastCardRefreshTimeInMillis = currentTime;
+		lastBankRefreshTimeInMillis = currentTime;
+		prevBankSuccessRefresh = currentTime;
 	}
 
 	/**
 	 * Resets the timer for making session refresh calls. This should be called
-	 * any time a network call is made that utilizes the Card session.
+	 * any time a successful network call (excluding
+	 * {@code checkForRequiredSessionRefresh()}) is made that utilizes the Card
+	 * session.
 	 */
 	public static void updateLastCardRefreshTime() {
 		final long currentTime = Calendar.getInstance().getTimeInMillis();
 		lastCardRefreshTimeInMillis = currentTime;
+		prevCardSuccessRefresh = currentTime;
 	}
-	
+
+	/**
+	 * Used to reset the last refresh time in an instance where a call
+	 * {@code checkForRequiredSessionRefresh()()} has failed for Bank.
+	 */
+	public static void resetLastBankRefreshTime() {
+		lastBankRefreshTimeInMillis = prevBankSuccessRefresh;
+	}
+
+	/**
+	 * Used to reset the last refresh time in an instance where a call
+	 * {@code checkForRequiredSessionRefresh()()} has failed for Bank.
+	 */
+	public static void resetLastCardRefreshTime() {
+		lastCardRefreshTimeInMillis = prevCardSuccessRefresh;
+	}
+
+	/**
+	 * Tells KeepAlive whether or not refresh calls should be made for this
+	 * session. Be sure to set to {@code false} during Card logout or a dead
+	 * session.
+	 * 
+	 * @param isCardAuthenticated
+	 */
 	public static void setCardAuthenticated(boolean isCardAuthenticated) {
 		KeepAlive.isCardAuthenticated = isCardAuthenticated;
 	}
 
+	/**
+	 * Tells KeepAlive whether or not refresh calls should be made for this
+	 * session. Be sure to set to {@code false} during Bank logout or a dead
+	 * session.
+	 * 
+	 * @param isBankAuthenticated
+	 */
 	public static void setBankAuthenticated(boolean isBankAuthenticated) {
 		KeepAlive.isBankAuthenticated = isBankAuthenticated;
 	}

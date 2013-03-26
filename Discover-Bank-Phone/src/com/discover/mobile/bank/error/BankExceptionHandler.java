@@ -3,9 +3,11 @@ package com.discover.mobile.bank.error;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
+import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
 
@@ -66,6 +68,10 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 					DiscoverActivityManager.getActiveActivity(),
 					IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE,
 					null);
+		}
+		// Need to inform KeepAlive to keep attempting refresh calls upon a failure.
+		else if (sender instanceof RefreshBankSessionCall) {
+			KeepAlive.resetLastBankRefreshTime();
 		}
 		//Catch-all exception handler
 		else {
