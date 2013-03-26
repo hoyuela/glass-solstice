@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -146,6 +147,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		listFragment =  (AtmListFragment) activity.getSupportFragmentManager().findFragmentById(getListFragmentId());
 		listFragment.setObserver(this);
 
+		setMapTransparent((ViewGroup) fragment.getView());
+
 		this.getActivity().getSupportFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
 		streetView.hide();
 
@@ -164,6 +167,23 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			resumeStateOfFragment(savedInstanceState);
 		}
 		return view;
+	}
+
+	/**
+	 * Method to set the map surface view background to transparent.  This comes from an issue with
+	 * the integration of the sliding menu and the google maps.
+	 * @param group - view group containing the surface view
+	 */
+	private void setMapTransparent(final ViewGroup group) {
+		final int childCount = group.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			final View child = group.getChildAt(i);
+			if (child instanceof ViewGroup) {
+				setMapTransparent((ViewGroup) child);
+			} else if (child instanceof SurfaceView) {
+				child.setBackgroundColor(0x00000000);
+			}
+		}
 	}
 
 	/*
