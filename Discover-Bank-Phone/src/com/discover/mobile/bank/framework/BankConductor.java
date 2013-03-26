@@ -61,6 +61,7 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.CacheManager;
 import com.discover.mobile.common.framework.Conductor;
@@ -804,6 +805,7 @@ public final class BankConductor  extends Conductor {
 	public static void authWithBankPayload(final String bankSSOPayload) {
 		final BankSSOLoginDetails bankPayload = new BankSSOLoginDetails();
 		bankPayload.payload = bankSSOPayload;
+		KeepAlive.setCardAuthenticated(true);
 		BankServiceCallFactory.createSSOLoginCall(bankPayload).submit();
 		loginDetails = null;
 	}
@@ -827,6 +829,7 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void authDueToALUStatus() {
 		if(loginDetails != null) {
+			KeepAlive.setCardAuthenticated(false);
 			BankServiceCallFactory.createLoginCall(loginDetails, true).submit();
 			loginDetails = null;
 		}
@@ -840,6 +843,13 @@ public final class BankConductor  extends Conductor {
 		final AtmLocatorActivity activity = (AtmLocatorActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
 		BankAtmUtil.sendDirectionsEmail(bundle);
+	}
+	
+	/**
+	 * Performs a call to update the user's bank session.
+	 */
+	public static void executeSessionRefreshCall() {
+		BankServiceCallFactory.createRefreshSessionCall().submit();
 	}
 
 	/**

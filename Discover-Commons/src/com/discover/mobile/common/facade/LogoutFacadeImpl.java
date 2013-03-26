@@ -6,6 +6,7 @@ package com.discover.mobile.common.facade;
 import android.app.Activity;
 
 import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 
 /**
@@ -14,7 +15,10 @@ import com.discover.mobile.common.error.ErrorHandlerUi;
  */
 public class LogoutFacadeImpl implements LogoutFacade{
 
+	@Override
 	public void logout(Activity fromActivity, ErrorHandlerUi errorUi, AccountType accountType){
+		KeepAlive.setBankAuthenticated(false);		
+		KeepAlive.setCardAuthenticated(false);
 		
 		switch (accountType) {
 		case CARD_ACCOUNT:
