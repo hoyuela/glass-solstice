@@ -200,7 +200,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 * @param text - search text
 	 */
 	@Override
-	public void performSearch(final String text) {
+	public void performSearch(final String text) {		
+		isLoading = false;
+		((NavigationRootActivity)this.getActivity()).startProgressDialog();
 		final AtmServiceHelper helper = new AtmServiceHelper(text);
 		BankServiceCallFactory.getLocationFromAddressCall(helper).submit();
 	}

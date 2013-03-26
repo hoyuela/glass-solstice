@@ -15,6 +15,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
 /**
  * Fragment contianing the list of details available for the ATMs
@@ -65,11 +66,13 @@ public class AtmListFragment extends BaseTable{
 		adapter.notifyDataSetChanged();
 
 		setIsLoadingMore(false);
-		super.refreshListener();
 		footer.showDone();
+		super.refreshListener();
 
 		if(!observer.canLoadMore()){
 			showNothingToLoad();
+		}else{
+			table.setMode(Mode.PULL_FROM_END);
 		}
 	}
 

@@ -68,6 +68,10 @@ public class GetAtmDetailsCall extends BankJsonResponseMappingNetworkServiceCall
 				str = str.replace("}}}",  "}]}}");
 			}
 
+			while(str.contains(":0")){
+				str = str.replaceAll(":0", ":");
+			}
+
 			//Create a new input stream for parsing
 			stream = new ByteArrayInputStream(str.getBytes());
 		} catch (final Exception e) {
