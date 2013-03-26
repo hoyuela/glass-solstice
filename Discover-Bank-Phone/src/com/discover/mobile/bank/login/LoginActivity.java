@@ -1139,32 +1139,6 @@ public class LoginActivity extends BaseActivity implements
 	}
 	
 	/**
-	 * Sets the layout for Privacy & Terms button depending on card or bank.
-	 * 
-	 * @param isCard
-	 *            if the layout should be for card, false otherwise.
-	 */
-	private void setPrivacyAndTermsParamsForCard(final boolean isCard) {
-		final RelativeLayout.LayoutParams lpTerms = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		final RelativeLayout.LayoutParams lpForgot = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-		
-		if(isCard) {
-			lpForgot.addRule(RelativeLayout.BELOW, loginButton.getId());
-			forgotUserIdOrPassText.setLayoutParams(lpForgot);
-			
-			lpTerms.addRule(RelativeLayout.BELOW, loginButton.getId());
-			
-			privacySecOrTermButton.setPadding(0, 0, (int)getResources().getDimension(R.dimen.element_side_padding), (int)getResources().getDimension(R.dimen.top_pad));lpTerms.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1);
-			privacySecOrTermButton.setLayoutParams(lpTerms);
-		} else {
-			lpTerms.addRule(RelativeLayout.CENTER_HORIZONTAL, -1);
-			lpTerms.addRule(RelativeLayout.BELOW, loginButton.getId());
-			privacySecOrTermButton.setPadding(0, 0, 0, (int)getResources().getDimension(R.dimen.top_pad));
-			privacySecOrTermButton.setLayoutParams(lpTerms);
-		}
-	}
-	
-	/**
 	 * Creates and shows a modal to inform the user that their account skipped
 	 * SSO sign-on because of a Card BadStatus.
 	 */
