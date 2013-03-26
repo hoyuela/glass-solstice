@@ -287,6 +287,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	@Override
 	public void success(final NetworkServiceCall<?> sender, final Serializable result) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
+		
+		//A successful call refreshes the session -- update KeepAlive service with information.
+		KeepAlive.updateLastBankRefreshTime();
 
 		//If Strong Auth Activity is open close it only in the case when the user is NOT logging in
 		if( !(sender instanceof CreateStrongAuthRequestCall) && 		//Shouldn't close strong auth page on a strong auth success

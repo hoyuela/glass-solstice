@@ -82,6 +82,24 @@ public class KeepAlive {
 		}
 	}
 
+	/**
+	 * Resets the timer for making session refresh calls. This should be called
+	 * any time a network call is made that utilizes the Bank session.
+	 */
+	public static void updateLastBankRefreshTime() {
+		final long currentTime = Calendar.getInstance().getTimeInMillis();
+		lastCardRefreshTimeInMillis = currentTime;
+	}
+
+	/**
+	 * Resets the timer for making session refresh calls. This should be called
+	 * any time a network call is made that utilizes the Card session.
+	 */
+	public static void updateLastCardRefreshTime() {
+		final long currentTime = Calendar.getInstance().getTimeInMillis();
+		lastCardRefreshTimeInMillis = currentTime;
+	}
+	
 	public static void setCardAuthenticated(boolean isCardAuthenticated) {
 		KeepAlive.isCardAuthenticated = isCardAuthenticated;
 	}
