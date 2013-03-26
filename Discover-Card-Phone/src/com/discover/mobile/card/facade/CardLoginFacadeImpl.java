@@ -65,9 +65,26 @@ public class CardLoginFacadeImpl implements CardLoginFacade{
 	}
 
 	@Override
-	public void loginWithPayload(LoginActivityInterface callingActivity, String tokenValue, String hashedTokenValue) {
-		// TODO Fill out fake data - just call ALU?
-		FacadeFactory.getBankLoginFacade().authDueToALUStatus();
+	public void loginWithPayload(LoginActivityInterface callingActivity,
+			String tokenValue, String hashedTokenValue) {
+		
+	}
+
+	@Override
+	public void toggleLoginToBank() {
+		// TODO Card needs to contact their end-point to get a Bank payload.
+
+		// TODO This returned payload is sent to the following place which
+		// should handle the rest.
+		FacadeFactory.getBankLoginFacade().authorizeWithBankPayload(
+				"The payload string here");
+	}
+
+	@Override
+	public void toggleToCard(Context arg0) {
+		// TODO The Card side was already authenticated during Bank Login and
+		// kept alive via refresh calls.
+
 	}
 	
 }

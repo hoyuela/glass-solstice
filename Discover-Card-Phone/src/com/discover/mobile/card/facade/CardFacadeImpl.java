@@ -14,6 +14,7 @@ import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.CardFacade;
+import com.discover.mobile.common.ui.CardInfoForToggle;
 
 
 /**
@@ -65,8 +66,10 @@ public class CardFacadeImpl implements CardFacade{
 		
 	}
 
-	
-
-
+	@Override
+	public CardInfoForToggle getCardInfoForToggle() {
+		// TODO Implement (Do not return default constructor)
+		return new CardInfoForToggle();
+	}
 	
 }

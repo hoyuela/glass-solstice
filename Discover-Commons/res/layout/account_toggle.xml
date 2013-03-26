@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:id="@+id/acct_toggle_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/acct_toggle_indicator"
+        android:background="@drawable/account_widget_body" >
+
+        <!-- Title & Cancel(X) -->
+
+        <RelativeLayout
+            android:id="@+id/acct_toggle_title_section"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true" >
+
+            <TextView
+                style="@style/plain_body_copy_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingLeft="21dp"
+                android:text="@string/toggle_select_account" />
+
+            <ImageView
+                android:id="@+id/acct_toggle_x"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingRight="25dp"
+                android:src="@drawable/x_gray" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/acct_toggle_divider"
+            android:layout_width="match_parent"
+            android:layout_marginRight="9dp"
+            android:layout_marginLeft="9dp"
+            android:layout_height="@dimen/divider_height"
+            android:layout_below="@id/acct_toggle_title_section"
+            android:background="@drawable/gray_solid_line" />
+
+        <!-- Card -->
+
+        <RelativeLayout
+            android:id="@+id/acct_toggle_card_section"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@id/acct_toggle_divider" >
+
+            <ImageView
+                android:id="@+id/acct_toggle_card_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="3dp"
+                android:paddingLeft="21dp"
+                android:visibility="invisible"
+                android:src="@drawable/black_check_mark" />
+
+            <TextView
+                android:id="@+id/acct_toggle_card_text"
+                style="@style/body_copy_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/acct_toggle_card_check"
+                android:paddingBottom="@dimen/between_related_elements_padding"
+                android:paddingLeft="7dp"
+                android:paddingTop="@dimen/between_related_elements_padding"
+                android:text="it Card" />
+
+            <TextView
+                android:id="@+id/acct_toggle_card_subtext"
+                style="@style/light_static_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/acct_toggle_card_check"
+                android:paddingBottom="@dimen/between_related_elements_padding"
+                android:paddingLeft="7dp"
+                android:paddingTop="@dimen/between_related_elements_padding"
+                android:text="acct ending in 1234" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/acct_toggle_dash_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:layout_marginRight="9dp"
+            android:layout_marginLeft="9dp"
+            android:layout_below="@id/acct_toggle_card_section"
+            android:background="@drawable/gray_dash_line" />
+
+        <!-- Bank -->
+
+        <RelativeLayout
+            android:id="@+id/acct_toggle_bank_section"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@id/acct_toggle_dash_divider" >
+
+            <ImageView
+                android:id="@+id/acct_toggle_bank_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="3dp"
+                android:paddingBottom="9dp"
+                android:paddingLeft="21dp"
+                android:src="@drawable/black_check_mark" />
+
+            <TextView
+                android:id="@+id/acct_toggle_bank_text"
+                style="@style/body_copy_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/acct_toggle_bank_check"
+                android:paddingBottom="@dimen/account_toggle_outside_padding"
+                android:paddingLeft="7dp"
+                android:paddingTop="9dp"
+                android:text="Discover Bank"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- Triangle in the widget must be here to be drawn last, on top, in the z-axis -->
+
+    <ImageView
+        android:id="@+id/acct_toggle_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/account_widget_triangle" />
+
+</RelativeLayout>

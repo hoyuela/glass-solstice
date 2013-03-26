@@ -50,8 +50,6 @@ public final class BankUser extends CacheManager implements Serializable {
 	/**List of payees*/
 	private ListPayeeDetail payees;
 
-	
-
 	/**
 	 * 
 	 * @return Returns reference to single instance of BankUser
