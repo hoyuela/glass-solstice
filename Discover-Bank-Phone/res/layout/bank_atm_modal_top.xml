@@ -129,11 +129,11 @@
 
         <ImageView
             android:id="@+id/surcharge_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/atm_modal_pin_width"
+            android:layout_height="@dimen/atm_modal_pin_height"
             android:layout_below="@+id/line3"
             android:paddingTop="@dimen/atm_modal_icon_padding"
-            android:src="@drawable/atm_surcharge_free_pin_sm" />
+            android:src="@drawable/atm_orange_pin" />
 
         <TextView
             android:id="@+id/surcharge_title"
@@ -165,11 +165,11 @@
 
         <ImageView
             android:id="@+id/non_surcharge_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/atm_modal_pin_width"
+            android:layout_height="@dimen/atm_modal_pin_height"
             android:layout_below="@+id/line4"
             android:paddingTop="@dimen/atm_modal_icon_padding"
-            android:src="@drawable/atm_non_surcharge_free_icon_sm" />
+            android:src="@drawable/atm_gray_pin" />
 
         <TextView
             android:id="@+id/non_surcharge_title"
@@ -236,45 +236,10 @@
             android:src="@drawable/table_solid_line" />
 
         <ImageView
-            android:id="@+id/current_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/line6"
-            android:background="@drawable/atm_current_location_pin_sm" />
-
-        <TextView
-            android:id="@+id/current_title"
-            style="@style/atm_normal_static_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/map_title"
-            android:layout_below="@+id/line6"
-            android:layout_toRightOf="@+id/current_icon"
-            android:text="@string/atm_help_current_icon_title" />
-
-        <TextView
-            android:id="@+id/current_text"
-            style="@style/atm_normal_static_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/map_title"
-            android:layout_below="@+id/current_title"
-            android:layout_toRightOf="@+id/current_icon"
-            android:text="@string/atm_help_current_icon_text" />
-
-        <ImageView
-            android:id="@+id/line7"
-            style="@style/atm_line"
-            android:layout_width="fill_parent"
-            android:layout_height="3dp"
-            android:layout_below="@+id/current_text"
-            android:src="@drawable/table_solid_line" />
-
-        <ImageView
             android:id="@+id/current_loc_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/line7"
+            android:layout_below="@+id/line6"
             android:paddingTop="6dp"
             android:src="@drawable/atm_current_location_button" />
 
@@ -284,7 +249,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/map_title"
-            android:layout_below="@+id/line7"
+            android:layout_below="@+id/line6"
             android:layout_toRightOf="@+id/current_loc_icon"
             android:text="@string/atm_help_current_button_title" />
 
