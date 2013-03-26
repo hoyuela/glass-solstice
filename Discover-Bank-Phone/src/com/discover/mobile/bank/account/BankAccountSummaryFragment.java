@@ -31,6 +31,7 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.help.NeedHelpFooter;
+import com.discover.mobile.common.ui.widgets.AccountToggleView;
 
 /**
  * Fragment used to display all of a user's account information in a single view using BankGroupView and BankAccountView
@@ -75,6 +76,8 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
+		
+		setupAccountToggle();
 
 		/**Hyperlink used to provide feedback*/
 		final TextView feedback = (TextView)view.findViewById(R.id.provide_feedback_button);

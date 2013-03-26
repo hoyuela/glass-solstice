@@ -9,6 +9,8 @@ import android.content.Context;
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.card.services.auth.AuthenticateCall;
+import com.discover.mobile.card.services.auth.BankPayload;
+import com.discover.mobile.card.services.auth.SSOAuthenticateCall;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
