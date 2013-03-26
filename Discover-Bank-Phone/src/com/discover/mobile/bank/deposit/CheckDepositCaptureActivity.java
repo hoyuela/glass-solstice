@@ -12,8 +12,10 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
-import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -40,7 +42,7 @@ import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 
-public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback, PreviewCallback {
+public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
 	private final String TAG = CheckDepositCaptureActivity.class.getSimpleName();
 	
 	public static final int RETAKE_FRONT = 1;
@@ -103,12 +105,12 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		timerTask = new CameraCountdownTask();
 		
 		getWindow().setFormat(PixelFormat.UNKNOWN);
-		
+		previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
 		loadDrawables();
 		setupButtons();
 		setupCameraForRetake();
 		cameraPreview.setOnClickListener(autoFocusClickListener);
-		
 	}
 	
 	/**
@@ -117,14 +119,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	@Override
 	public void onResume() {
 		isPaused = false;
-		
-		if(camera == null)
-			camera = Camera.open();
-		
-		startPreview();
-
-		setCameraDisplayOrientation(this, 0, camera);
-		setupCameraParameters();
 		super.onResume();
 	}
 
@@ -428,7 +422,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private void resetCamera() {
 		camera.stopPreview();
 		camera.startPreview();
-		setupCameraParameters();
 	}
 	
 	/**
@@ -485,13 +478,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		countdownLogo.setVisibility(View.GONE);
 		countdownLogo.setImageDrawable(countdownThree);
 	}
-	
-	/**
-	 * Tell the camera to take a picture.
-	 */
-	private void takePicture() {
-		camera.takePicture(null, null, mPicture);
-	}
 
 	/**
 	 * This PictureCallback is used by the camera to store the resulting picture
@@ -504,6 +490,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 	    @Override
 	    public void onPictureTaken(final byte[] data, final Camera camera) {
+	    	playShutterSound();
 	    	cameraPreview.setOnClickListener(null);
 	    	
 	    	setPictureConfirmationButtons();
@@ -549,6 +536,24 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	}
 	
 	/**
+	 * Plays a default shutter sound provided by the android operating system.
+	 */
+	private void playShutterSound() {
+	    final AudioManager meng = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+	    final int volume = meng.getStreamVolume( AudioManager.STREAM_NOTIFICATION);
+	    final Uri soundResource = Uri.parse(getResources().getString(R.string.shutter_sound_file));
+	    MediaPlayer shutterPlayer = null;
+	    
+	    if (volume > 0) {
+	        if (shutterPlayer == null)
+	        	shutterPlayer = MediaPlayer.create(getContext(), soundResource);
+	        
+	        if (shutterPlayer != null)
+	        	shutterPlayer.start();
+	    }
+	}
+	
+	/**
 	 * Setup the buttons on the screen to be in their default state.
 	 * Reset the click listeners, text, and drawables. Hide the retake button.
 	 */
@@ -591,38 +596,39 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		return fos;	
 	}
 	
-	private final Camera.AutoFocusCallback autoFocusCallback = new Camera.AutoFocusCallback() {
+	private final Camera.AutoFocusCallback focusAndCaptureCallback = new Camera.AutoFocusCallback() {
 		
 		@Override
 		public void onAutoFocus(final boolean success, final Camera camera) {
 			//Cancel auto focus is called because if not, the flash may stay on.
 			camera.cancelAutoFocus();
-			takePicture();
+			camera.takePicture(null, null, mPicture);
 		}
 	};
-	
 
 	/**
 	 * Call the camera's auto focus method then take a picture once it is done.
 	 */
 	private void focusThenTakePicture() {
 		if(camera != null)
-			camera.autoFocus(autoFocusCallback);
+			camera.autoFocus(focusAndCaptureCallback);
 	}
 	
 	/**
 	 * Call the camera's auto focus method.
 	 */
 	private void focusCamera() {
-		camera.autoFocus(new Camera.AutoFocusCallback() {
-			
-			@Override
-			public void onAutoFocus(final boolean success, final Camera camera) {
-				//Cancel auto focus is called because if not, the flash may stay on.
-				camera.cancelAutoFocus();
-			}
-		});
+		camera.autoFocus(autoFocusCallback);
 	}
+	
+	private final Camera.AutoFocusCallback autoFocusCallback = new Camera.AutoFocusCallback() {
+		
+		@Override
+		public void onAutoFocus(final boolean success, final Camera camera) {
+			//Cancel auto focus is called because if not, the flash may stay on.
+			camera.cancelAutoFocus();
+		}
+	};
 	
 	/**
 	 * Setup the parameters for the camera that might be useful.
@@ -661,28 +667,31 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		final int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
 		int degrees = 0;
 		final int pi = 180;
-		
+		final int twoPi = pi << 1;
+		final int piHalf = pi >> 1;
+
 		switch (rotation) {
 			case Surface.ROTATION_0: 
 				degrees = 0; 
 				break;
 			case Surface.ROTATION_90: 
-				degrees = pi >> 1; 
+				degrees = piHalf; 
 				break;
 			case Surface.ROTATION_180: 
 				degrees = pi; 
 				break;
 			case Surface.ROTATION_270: 
-				degrees = (pi << 1) - (pi >> 1); 
+				degrees = twoPi - piHalf; 
 				break;
 		}
 
 		int result;
+
 		if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-			result = (info.orientation + degrees) % (pi << 1);
-			result = ((pi << 1) - result) % (pi << 1);  // compensate the mirror
+			result = (info.orientation + degrees) % twoPi;
+			result = (twoPi - result) % twoPi;  // compensate the mirror
 		} else {  // back-facing
-			result = (info.orientation - degrees + (pi << 1)) % (pi << 1);
+			result = (info.orientation - degrees + twoPi) % twoPi;
 		}
 
 		camera.stopPreview();
@@ -694,6 +703,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * Start the camera preview.
 	 */
 	private void startPreview() {
+
 		if(camera != null && cameraConfigured) {			
 			camera.startPreview();
 		}
@@ -705,14 +715,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * @param height
 	 */
 	private void initPreview(final int width, final int height) {
-		if (camera!=null && previewHolder.getSurface()!=null) {
-			try {
-				camera.setPreviewDisplay(previewHolder);
-			}
-			catch (final Throwable t) {
-				Log.e("PreviewDemo-surfaceCallback",
-						"Exception in setPreviewDisplay()", t);
-			}
+		if (camera != null && previewHolder.getSurface() != null) {
 
 			if (!cameraConfigured) {
 				final Camera.Parameters parameters = camera.getParameters();
@@ -791,11 +794,12 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * A callback for if the preview surface changes.
 	 */
 	@Override
-	public void surfaceChanged(final SurfaceHolder holder, final int format, final int width,
-			final int height) {
+	public void surfaceChanged(final SurfaceHolder holder, final int format, final int width, final int height) {
 		if(!isPaused) {
-			initPreview(width, height);
-			startPreview();
+			if(camera != null) {
+				initPreview(width, height);
+				startPreview();
+			}
 		}
 	}
 
@@ -803,15 +807,15 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	public void surfaceCreated(final SurfaceHolder holder) {
 		if(camera == null) {
 			camera = Camera.open();
+			setupCameraParameters();
+			
 			try {
 				camera.setPreviewDisplay(previewHolder);
-				camera.setPreviewCallback(this);
 			} catch (final IOException e) {			
 				Log.e(TAG, "Error during camera setup : " + e);
 				camera.release();
 				camera = null;
-			}
-			
+			}	
 		}
 	}
 
@@ -819,7 +823,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	public void surfaceDestroyed(final SurfaceHolder holder) {
 		if(camera != null) {
 			camera.stopPreview();
-			camera.setPreviewCallback(null);
 			camera.cancelAutoFocus();
 			camera.release();
 	
@@ -910,11 +913,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			else if (count < 1)
 				resetCountdown();
 		}
-	}
-
-	@Override
-	public void onPreviewFrame(final byte[] data, final Camera camera) {
-		
 	}
 	
 }
