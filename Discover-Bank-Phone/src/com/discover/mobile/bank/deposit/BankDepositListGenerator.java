@@ -135,12 +135,12 @@ public class BankDepositListGenerator {
 	 * @param topText Text to be displayed in the top portion of the SelectListItem control.
 	 * @return Reference to newly created SelectListItem object.
 	 */
-	public static RelativeLayout createNoteItem(final Context context, final String topText) {
+	public static RelativeLayout createNoteItem(final Context context) {
 		final SelectListItem item = new SelectListItem(context);
 		item.showImage(false);
 		final String top = context.getResources().getString(R.string.bank_deposit_received_note);
-	    String bottom = context.getResources().getString(R.string.bank_deposit_received_notetext);
-		bottom = bottom.replace("{0}", topText);
+	    final String bottom = context.getResources().getString(R.string.bank_deposit_received_notetext);
+		
 		item.setTopLabelText(top);
 		item.getTopLabel().setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);	
 		item.setMiddleLabelText(bottom);
@@ -164,7 +164,7 @@ public class BankDepositListGenerator {
 		list.add(createAccountItem(context, depositDetail.account));
 		list.add(createAmountItem(context,  depositDetail.amount.value));
 		list.add(createConfirmationItem(context, depositDetail.confirmation));
-		list.add(createNoteItem(context, "XX:XX PM" ));
+		list.add(createNoteItem(context));
 		
 		return list;
 	}

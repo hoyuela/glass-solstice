@@ -52,6 +52,11 @@ public class Eligibility implements Serializable {
 	@JsonProperty("enrolled")
 	public boolean enrolled;
 	/**
+	 * The reason why the customer is not eligible. Only present if 'eligible' is false
+	 */
+	@JsonProperty("reasonCode")
+	public String reasonCode;
+	/**
 	 * Contains Bank web-service API Resource links
 	 */
 	@JsonProperty("links")
@@ -69,6 +74,14 @@ public class Eligibility implements Serializable {
 	 * Key used to read terms url link from the links map.
 	 */
 	public final static String TERMS_KEY = "terms";
+	/**
+	 * The customer does not have any accounts eligible for this service.
+	 */
+	public final static String NOT_ELIGIBLE_REASON = "NoEligibleAccounts";
+	/**
+	 * The customer has been blocked from this service.
+	 */
+	public final static String CUSTOMER_BLOCKED_REASON = "CustomerBlocked";
 	
 	/**
 	 * 
@@ -131,5 +144,12 @@ public class Eligibility implements Serializable {
 		return ( !Strings.isNullOrEmpty(this.service) && service.equals("payments"));
 	}
 	
+	/**
+	 * @return Returns true if reasonCode is equal to CUSTOMER_BLOCKED_REASON which means customer is forbidden
+	 *         to use the service specified in service field, false otherwise.
+	 */
+	public boolean isUserBlocked() {
+		return !eligible && (!Strings.isNullOrEmpty(reasonCode) && reasonCode.equals(CUSTOMER_BLOCKED_REASON));
+	}
 
 }

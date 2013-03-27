@@ -12,14 +12,6 @@
 		    android:layout_height="match_parent"
 		    android:paddingLeft="@dimen/forms_inner_padding" 
 		    android:paddingBottom="@dimen/forms_inner_padding" >
-		
-		    <ImageButton
-		         android:id="@+id/help"
-		         style="@style/orange_help_button"	
-		         android:layout_marginLeft="0dp"
-		         android:layout_alignParentRight="true"
-		         android:layout_alignParentTop="true"
-		         android:contentDescription="@null" />
 		    
 		    <ImageView
 		        android:id="@+id/icon"
@@ -37,7 +29,6 @@
 		        style="@style/page_title"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
-		        android:layout_toLeftOf="@+id/help"
 		        android:layout_toRightOf="@+id/icon"
 		      	android:layout_alignTop="@+id/icon"
 		        android:layout_marginBottom="@dimen/table_inner_padding"
@@ -50,7 +41,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_below="@+id/page_title"
 		        android:layout_alignLeft="@+id/page_title"
-		        android:layout_alignRight="@+id/page_title"
+		        android:layout_marginRight="@dimen/deposit_error_message_padding"
 		        android:layout_marginBottom="@dimen/groups_of_elements_padding"
 		        android:text="@string/bank_deposit_error_body" />
 		
@@ -86,5 +77,10 @@
 		            layout="@layout/old_general_need_help_footer" />
 		
 		    </LinearLayout>	
+		    
+		     <com.discover.mobile.common.help.HelpWidget
+		        android:id="@+id/help"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" />
 		</RelativeLayout>
 </ScrollView>

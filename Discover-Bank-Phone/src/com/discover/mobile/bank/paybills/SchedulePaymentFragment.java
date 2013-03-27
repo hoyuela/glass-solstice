@@ -26,6 +26,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -114,6 +115,8 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 	private Button cancelButton;
 	/** Payment button */
 	private Button payNowButton;
+	/** Caret in Payment From Cell*/
+	private ImageView paymentCaret ;
 
 	/** Payee object (typically passed here via bundle) */
 	private PayeeDetail payee;
@@ -186,6 +189,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 		memoError = (TextView) view.findViewById(R.id.memo_error);
 		payNowButton = (Button) view.findViewById(R.id.pay_now);
 		cancelButton = (Button) view.findViewById(R.id.cancel_button);
+		paymentCaret = (ImageView)view.findViewById(R.id.payment_caret);
 		bankUser = BankUser.instance();
 
 		loadDataFromBundle();
@@ -350,6 +354,9 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 
 				accountAdapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
 				paymentAccountSpinner.setAdapter(accountAdapter);
+			} else {
+				/**Hide Caret when only a single account is selectable for scheduling payment*/
+				paymentCaret.setVisibility(View.INVISIBLE);
 			}
 		}
 		amountEdit.attachErrorLabel(amountError);

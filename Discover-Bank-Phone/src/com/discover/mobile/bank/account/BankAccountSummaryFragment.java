@@ -77,7 +77,8 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
 		
-		setupAccountToggle();
+		//TODO: Commented this out as it is causing a crash
+		//setupAccountToggle();
 
 		/**Hyperlink used to provide feedback*/
 		final TextView feedback = (TextView)view.findViewById(R.id.provide_feedback_button);
@@ -202,7 +203,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	 * listeners for the AccountToggle.
 	 */
 	private void setupAccountToggle() {
-		ViewTreeObserver vto = accountToggleIcon.getViewTreeObserver();
+		final ViewTreeObserver vto = accountToggleIcon.getViewTreeObserver();
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
@@ -213,7 +214,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 			}
 		});
 
-		ImageView accountToggleArrow = (ImageView) view
+		final ImageView accountToggleArrow = (ImageView) view
 				.findViewById(R.id.downArrow);
 		accountToggleArrow.setOnClickListener(new AccountToggleListener());
 		accountToggleIcon.setOnClickListener(new AccountToggleListener());
@@ -225,7 +226,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	private class AccountToggleListener implements OnClickListener {
 
 		@Override
-		public void onClick(View v) {
+		public void onClick(final View v) {
 			toggleView.toggleVisibility();
 		}
 		

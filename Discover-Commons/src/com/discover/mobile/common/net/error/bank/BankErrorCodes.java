@@ -52,6 +52,10 @@ public class BankErrorCodes {
 	public static final String ERROR_NO_ACCOUNTS_FOUND = "Auth.Login.NoAccountsFound";
 	
 	/**
+	 * Error Code used to describe a Check Duplicate error with HTTP Status code 422.
+	 */
+	public static final String ERROR_CHECK_DUPLICATE = "Deposits.Deposit.DuplicateDeposit";
+	/**
 	 * Default constructor is not to be used
 	 */
 	private BankErrorCodes() {
