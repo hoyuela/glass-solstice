@@ -227,6 +227,14 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		BankServiceCallFactory.getLocationFromAddressCall(helper).submit();
 	}
 
+	@Override
+	public void onStart(){
+		super.onStart();
+
+		final NavigationRootActivity activity = (NavigationRootActivity) this.getActivity();
+		activity.highlightMenuItems(getGroupMenuLocation(), getSectionMenuLocation());
+	}
+
 	/**
 	 * Handle a successful address to location response
 	 * @param bundle - bundle of data retrieved from the service call

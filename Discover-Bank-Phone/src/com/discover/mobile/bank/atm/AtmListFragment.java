@@ -175,11 +175,12 @@ public class AtmListFragment extends BaseTable{
 
 	@Override
 	public int getGroupMenuLocation() {
-		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+		return BankMenuItemLocationIndex.ATM_LOCATOR_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return BankMenuItemLocationIndex.REVIEW_PAYEMENTS_SECTION;
+		return (observer instanceof SearchNearbyFragment) 
+				? BankMenuItemLocationIndex.FIND_NEARBY_SECTION: BankMenuItemLocationIndex.SEARCH_BY_LOCATION;
 	}
 }
