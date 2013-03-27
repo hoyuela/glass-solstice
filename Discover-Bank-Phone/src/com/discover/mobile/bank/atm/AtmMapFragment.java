@@ -169,7 +169,6 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void onResume(){
 		super.onResume();
-
 		final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(this);
 		final DiscoverInfoWindowAdapter adapter = new DiscoverInfoWindowAdapter(balloon);
 		mapWrapper = new DiscoverMapWrapper(fragment.getMap(), adapter);
@@ -177,6 +176,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		this.disableMenu();
 		if(null != location){
 			mapWrapper.setCurrentLocation(location);
+			setUserLocation(mapWrapper.getCurrentLocation());
 		}
 
 		if(isOnMap){
