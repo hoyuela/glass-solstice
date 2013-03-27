@@ -208,10 +208,12 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
+				if(!toggleView.hasIndicatorBeenDrawn()) {
 				toggleView.setIndicatorPosition(accountToggleIcon.getLeft(),
 						accountToggleIcon.getTop(),
 						accountToggleIcon.getWidth(),
 						accountToggleIcon.getHeight());
+				}
 			}
 		});
 
