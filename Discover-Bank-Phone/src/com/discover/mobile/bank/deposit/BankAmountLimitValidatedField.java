@@ -69,7 +69,7 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 	private String getErrorTextWithDollarAmount(final Limit limit) {
 		final String strLimit = BankStringFormatter.convertCentsToDollars(limit.limit);
 		
-		return limit.error.message.replace("{0}", strLimit);
+		return limit.error.message.replace("{0}", strLimit.replace("$", ""));
 		
 	}
 	
