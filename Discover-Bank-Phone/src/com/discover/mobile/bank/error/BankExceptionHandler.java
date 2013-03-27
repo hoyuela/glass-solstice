@@ -7,6 +7,7 @@ import android.util.Log;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
+import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
 import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.common.DiscoverActivityManager;
