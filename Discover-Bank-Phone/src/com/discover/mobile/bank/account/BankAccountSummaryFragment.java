@@ -77,6 +77,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
 		
+		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
 		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
 		setupAccountToggle();
 
