@@ -255,9 +255,11 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 			public void run() {
 				if( amountItem != null ) {
 					amountItem.getEditableField().requestFocus();
+					/**Set cursor to the end of the end of the text*/
+					amountItem.getEditableField().setSelection(amountItem.getEditableField().getText().length());
 				}
 			}
-		}, 1000);
+		}, 1000);	
 	}
 	
 	@Override
