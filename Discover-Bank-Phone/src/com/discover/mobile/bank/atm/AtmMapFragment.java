@@ -126,6 +126,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	/**Help Widget*/
 	private HelpWidget help;
 
+	private Location location;
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -173,9 +175,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		mapWrapper = new DiscoverMapWrapper(fragment.getMap(), adapter);
 		setMapTransparent((ViewGroup)fragment.getView());
 		this.disableMenu();
-
-		if(null != savedState){
-			resumeStateOfFragment(savedState);
+		if(null != location){
+			mapWrapper.setCurrentLocation(location);
 		}
 
 		if(isOnMap){
@@ -189,6 +190,11 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 		if(NOT_ENABLED == locationStatus){
 			locationStatus = (locationManagerWrapper.areProvidersenabled()) ? ENABLED : NOT_ENABLED;
+		}
+
+		if(null != savedState){
+			resumeStateOfFragment(savedState);
+			return;
 		}
 
 		if(NOT_ENABLED == locationStatus){
@@ -341,16 +347,17 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
 		final Double lat = savedInstanceState.getDouble(LAT_KEY);
 		final Double lon = savedInstanceState.getDouble(LONG_KEY);
+
+		if(0.0 == lat && 0.0 == lon){return;}
 		results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		if(null != results){
 			hasLoadedAtms = true;
 		}
-		if(0.0 != lat && 0.0 != lon){
-			final Location location = new Location(LocationManager.GPS_PROVIDER);
-			location.setLatitude(lat);
-			location.setLongitude(lon);
-			setUserLocation(location);
-		}
+		final Location location = new Location(LocationManager.GPS_PROVIDER);
+		location.setLatitude(lat);
+		location.setLongitude(lon);
+		mapWrapper.setCurrentLocation(location);
+		setUserLocation(location);
 		currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
 		if(null != results){
 			mapWrapper.addObjectsToMap(results.results.atms.subList(0, currentIndex));
@@ -518,7 +525,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void onPause(){
 		super.onPause();
-
+		location = mapWrapper.getCurrentLocation();
 		enableMenu();
 	}
 
