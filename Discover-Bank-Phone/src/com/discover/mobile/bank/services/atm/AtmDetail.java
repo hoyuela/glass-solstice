@@ -79,7 +79,7 @@ public class AtmDetail extends LocationObject implements Serializable{
 
 	/**Postal code of the at,*/
 	@JsonProperty("postalCode")
-	public int postalCode;
+	public String postalCode;
 
 	/**Location name of the atm*/
 	@JsonProperty("locationName")

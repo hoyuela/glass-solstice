@@ -26,7 +26,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 public abstract class BaseTable extends BaseFragment  implements DynamicDataFragment{
 
 	/**List View holding the data*/
-	private PullToRefreshListView table;
+	protected PullToRefreshListView table;
 
 	/**Bundle to load data from*/
 	private Bundle loadBundle;
