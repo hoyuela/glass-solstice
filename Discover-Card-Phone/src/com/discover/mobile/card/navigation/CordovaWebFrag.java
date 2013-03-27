@@ -69,7 +69,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface {
      * Called when fragment gets attached to activity
      */
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(final Activity activity) {
         super.onAttach(activity);
         Log.v(TAG, "onAttach");
     }
@@ -78,13 +78,13 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface {
      * called when View is to created,inflation of fragment layout happens here
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState) {
 
         Log.v(TAG, "inside onCreateView....");
 
         if (mView != null) {
-            ViewParent oldParent = mView.getParent();
+            final ViewParent oldParent = mView.getParent();
             if (oldParent != container) {
                 ((ViewGroup) oldParent).removeView(mView);
             }
@@ -104,7 +104,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface {
      * Create the fragment
      */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         Log.v(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         passCookieToWebview();
@@ -172,19 +172,19 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface {
      * WebView Cookie Manager
      */
     private void passCookieToWebview() {
-        android.webkit.CookieSyncManager webCookieSync = CookieSyncManager
+        final android.webkit.CookieSyncManager webCookieSync = CookieSyncManager
                 .createInstance(getActivity());
-        android.webkit.CookieManager webCookieManager = CookieManager
+        final android.webkit.CookieManager webCookieManager = CookieManager
                 .getInstance();
         webCookieManager.setAcceptCookie(true);
-        CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+        final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                 .getInstance(getActivity());
-        SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
+        final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
                 .getCookieManagerInstance();
-        List<HttpCookie> cookies = sessionCookieManagerObj.getHttpCookie();
-        String url = sessionCookieManagerObj.getBaseUri().toString();
-        for (HttpCookie cookie : cookies) {
-            String setCookie = new StringBuilder(cookie.toString())
+        final List<HttpCookie> cookies = sessionCookieManagerObj.getHttpCookie();
+        final String url = sessionCookieManagerObj.getBaseUri().toString();
+        for (final HttpCookie cookie : cookies) {
+            final String setCookie = new StringBuilder(cookie.toString())
                     .append("; domain=").append(cookie.getDomain())
                     .append("; path=").append(cookie.getPath()).toString();
             webCookieManager.setCookie(url, setCookie);
@@ -207,8 +207,20 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface {
      * @param title
      *            to set.
      */
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         Log.d(TAG, "inside setTitle n title is " + title);
         m_title = title;
     }
+
+	@Override
+	public int getGroupMenuLocation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

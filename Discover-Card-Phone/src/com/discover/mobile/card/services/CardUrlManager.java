@@ -35,6 +35,7 @@ public class CardUrlManager {
 	private static final String ACCOUNT_INFO_URL = "/cardsvcs/acs/reg/v1/user/reg/auth";
 	private static final String AUTHENTICATE_CALL = "/cardsvcs/acs/acct/v1/account";
 	private static final String SESSION_URL = "/cardsvcs/acs/session/v1/update";
+	private static final String SSO_AUTHENTICATE_CALL = "/cardsvcs/acs/acct/v1/tokensignin";
 	
 	/**URL to get the late payment information*/
 	private static final String LATE_PAYMENT_WARNING_URL = "/cardsvcs/acs/stmt/v1/paymentwarning";
@@ -243,5 +244,12 @@ public class CardUrlManager {
 	 */
 	public static String getSearchTransCategoryUrl() {
 		return SEARCH_TRANS_CATEGORY_URL;
+	}
+	
+	/**
+	 * @return the ssoAuthenticateCall
+	 */
+	public static String getSSOAuthenticateCall() {
+		return SSO_AUTHENTICATE_CALL;
 	}
 }

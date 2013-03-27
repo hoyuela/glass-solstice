@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.services.account.recent.RecentActivityPeriodDetail;
@@ -119,7 +120,7 @@ public class ChooseDateRangeFragment extends BaseFragment{
 	 * Display the periods 
 	 */
 	public void displayDateRanges(){
-		for(RecentActivityPeriodDetail detail : periods.dates){
+		for(final RecentActivityPeriodDetail detail : periods.dates){
 			final ChoosePeriodItem item = new ChoosePeriodItem(context, null, detail);
 			item.setOnClickListener(getClickListener());
 			dates.addView(item);
@@ -147,5 +148,15 @@ public class ChooseDateRangeFragment extends BaseFragment{
 	 */
 	public void setPeriods(final RecentActivityPeriodsDetail periods){
 		this.periods = periods;
+	}
+	
+	@Override
+	public int getGroupMenuLocation() {
+		return CardMenuItemLocationIndex.ACCOUNT_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return CardMenuItemLocationIndex.RECENT_ACTIVITY_SECTION;
 	}
 }

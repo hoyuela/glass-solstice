@@ -14,6 +14,7 @@ import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.CardFacade;
+import com.discover.mobile.common.ui.CardInfoForToggle;
 
 /**
  * The impl class for the card nav facade 
@@ -23,14 +24,14 @@ import com.discover.mobile.common.facade.CardFacade;
 public class CardFacadeImpl implements CardFacade{
 
 	@Override
-	public void navToRegister(BaseActivity callingActivity) {
+	public void navToRegister(final BaseActivity callingActivity) {
 		final Intent newVisibleIntent = new Intent(callingActivity, RegistrationAccountInformationActivity.class);
 		callingActivity.startActivity(newVisibleIntent);
 		callingActivity.finish();
 	}
 
 	@Override
-	public void navToForgot(BaseActivity callingActivity) {
+	public void navToForgot(final BaseActivity callingActivity) {
 		final Intent newVisibleIntent = new Intent(callingActivity, ForgotCredentialsActivity.class);
 		callingActivity.startActivity(newVisibleIntent);
 		callingActivity.finish();
@@ -39,7 +40,7 @@ public class CardFacadeImpl implements CardFacade{
 	}
 
 	@Override
-	public void navToHomeFragment(Activity callingActivity) {
+	public void navToHomeFragment(final Activity callingActivity) {
 		final Intent strongAuth = new Intent(callingActivity, CardNavigationRootActivity.class);
 
 		callingActivity.startActivityForResult(strongAuth, 0);
@@ -60,6 +61,12 @@ public class CardFacadeImpl implements CardFacade{
 	public void initPhoneGap() {
 		//TODO add phone gap initialization code here!
 		
+	}
+
+	@Override
+	public CardInfoForToggle getCardInfoForToggle() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

@@ -15,4 +15,16 @@ public class CardBaseFragement extends BaseFragment {
 		return 0;
 	}
 
+	@Override
+	public int getGroupMenuLocation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

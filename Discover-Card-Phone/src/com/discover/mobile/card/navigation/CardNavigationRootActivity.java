@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
@@ -60,7 +61,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     public StatusBarFragment statusBarFragment;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         statusBarFragment = (StatusBarFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.status_bar);
@@ -68,7 +69,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         // Add CordovaWebFrag to initialization, if it is not already there
         CordovaWebFrag frag = (CordovaWebFrag) this.getSupportFragmentManager()
                 .findFragmentByTag("CordovaWebFrag");
-        FragmentTransaction fragmentTransaction = this
+        final FragmentTransaction fragmentTransaction = this
                 .getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(statusBarFragment);
         // fragmentTransaction.commit();
@@ -81,7 +82,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         }
 
         // Check intent for logout action and call logout function.
-        String action = getIntent().getAction();
+        final String action = getIntent().getAction();
 
         if (null != action) {
             if (action.equals(getString(R.string.logout_broadcast_action))) {
@@ -191,7 +192,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     }
 
     @Override
-    public void sendNavigationTextToPhoneGapInterface(String text) {
+    public void sendNavigationTextToPhoneGapInterface(final String text) {
    
         if (!(text.equals("Account") || text.equals("Payments")
                 || text.equals("Earn Cashback Bonus")
@@ -234,18 +235,18 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     }
 
     @Override
-    public Object onMessage(String message, Object value) {
+    public Object onMessage(final String message, final Object value) {
         return null;
     }
 
     @Override
-    public void setActivityResultCallback(CordovaPlugin arg0) {
+    public void setActivityResultCallback(final CordovaPlugin arg0) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
+    public void startActivityForResult(final CordovaPlugin arg0, final Intent arg1, final int arg2) {
         // TODO Auto-generated method stub
 
     }
@@ -255,11 +256,11 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         Log.d("CardNavigationRootActivity", "inside logout...");
         // super.logout();
 
-        WSRequest request = new WSRequest();
-        String url = NetworkUtility.getWebServiceUrl(this, R.string.logOut_url);
+        final WSRequest request = new WSRequest();
+        final String url = NetworkUtility.getWebServiceUrl(this, R.string.logOut_url);
         request.setUrl(url);
         request.setMethodtype("POST");
-        WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, null,
+        final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, null,
                 "Discover", "Signing Out...", this);
         serviceCall.execute(request);
 
@@ -268,7 +269,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     }
 
     @Override
-    public void OnError(Object data) {
+    public void OnError(final Object data) {
         // CardErrorResponseHandler cardErrorResHandler = new
         // CardErrorResponseHandler(
         // this);
@@ -281,7 +282,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     }
 
     @Override
-    public void onSuccess(Object data) {
+    public void onSuccess(final Object data) {
         final Bundle bundle = new Bundle();
         bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
         bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
@@ -292,7 +293,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
      * This funciton will clear native global cache.
      */
     private void clearNativeCache() {
-        CardShareDataStore cardShareDataStore = CardShareDataStore
+        final CardShareDataStore cardShareDataStore = CardShareDataStore
                 .getInstance(getActivity());
         cardShareDataStore.clearCache(); // Call this method to clear native
                                          // cache
@@ -310,7 +311,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
                 .findFragmentByTag("CordovaWebFrag");
         if (cordovaWebFrag != null) {
-            CacheManagerUtil cacheMgmt = new CacheManagerUtil(
+            final CacheManagerUtil cacheMgmt = new CacheManagerUtil(
                     cordovaWebFrag.getCordovaWebviewInstance());
             cacheMgmt.clearJQMGlobalCache();
             cacheMgmt.clearJQMHistory();
@@ -337,7 +338,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
      * .lang.String)
      */
     @Override
-    public void setActionBarTitle(String title) {
+    public void setActionBarTitle(final String title) {
         super.setActionBarTitle(title);
         if (null != title) {
             Log.d("CardNavigationRootActivity",
@@ -347,4 +348,10 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             cordovaWebFrag.setTitle(title);
         }
     }
+
+	public void updateActionBarTitle() {
+		final TextView titleView= (TextView)findViewById(R.id.title_view);
+		titleView.invalidate();
+		titleView.postInvalidate();
+	}
 }

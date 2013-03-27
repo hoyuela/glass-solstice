@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 
@@ -42,12 +43,14 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 		final TextView accountHome = (TextView) view.findViewById(R.id.account_home_view);
 		
 		manageAlerts.setOnClickListener(new OnClickListener(){
+			@Override
 			public void onClick(final View v){
 				registerWithDiscover(DECLINE, true);
 			}
 		});
 		
 		accountHome.setOnClickListener(new OnClickListener(){
+			@Override
 			public void onClick(final View v){
 				registerWithDiscover(DECLINE, false);
 				changeToDeclineScreen();
@@ -79,5 +82,15 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 	@Override
 	public int getActionBarTitle() {
 		return R.string.manage_push_fragment_title;
+	}
+	
+	@Override
+	public int getGroupMenuLocation() {
+		return CardMenuItemLocationIndex.HOME_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return CardMenuItemLocationIndex.HOME_SECTION;
 	}
 }

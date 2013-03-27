@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.services.push.manage.GetNotificationPreferences;
@@ -607,5 +608,15 @@ public class PushManageFragment extends BaseFragment{
 	 */
 	public void hideSuccessSave() {
 		hiddenField.setVisibility(View.GONE);
+	}
+	
+	@Override
+	public int getGroupMenuLocation() {
+		return CardMenuItemLocationIndex.PROFILE_AND_SETTINGS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return CardMenuItemLocationIndex.MANAGE_ALERTS_SECTION;
 	}
 }

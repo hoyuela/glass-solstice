@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.discover.mobile.card.CardAsyncCallbackBuilder;
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.services.account.CategoriesDetail;
 import com.discover.mobile.card.services.account.CategoryDetail;
@@ -277,6 +278,16 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public int getGroupMenuLocation() {
+		return CardMenuItemLocationIndex.ACCOUNT_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return CardMenuItemLocationIndex.SEARCH_TRANSACTION_SECTION;
 	}
 
 }

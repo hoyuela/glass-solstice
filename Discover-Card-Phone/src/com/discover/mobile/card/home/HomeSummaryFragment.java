@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.CommonMethods;
 import com.discover.mobile.card.R;
@@ -246,5 +247,15 @@ public class HomeSummaryFragment extends BaseFragment {
 	@Override
 	public int getActionBarTitle() {
 		return -1;
+	}
+	
+	@Override
+	public int getGroupMenuLocation() {
+		return CardMenuItemLocationIndex.HOME_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return CardMenuItemLocationIndex.HOME_SECTION;
 	}
 }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.push.manage.PushManageFragment;
@@ -227,5 +228,15 @@ public class PushHistoryFragment extends BaseFragment{
 	@Override
 	public int getActionBarTitle() {
 		return R.string.push_alert_history_title;
+	}
+	
+	@Override
+	public int getGroupMenuLocation() {
+		return CardMenuItemLocationIndex.PROFILE_AND_SETTINGS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return CardMenuItemLocationIndex.ALERTS_HISTORY_SECTION;
 	}
 }

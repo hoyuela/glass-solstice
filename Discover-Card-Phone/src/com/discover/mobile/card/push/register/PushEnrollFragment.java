@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 
 /**
@@ -41,12 +42,14 @@ public class PushEnrollFragment extends BasePushRegistrationUI{
 		final TextView cancel = (TextView) view.findViewById(R.id.enroll_decline);
 		
 		enroll.setOnClickListener(new OnClickListener(){
+			@Override
 			public void onClick(final View v){
 				registerWithDiscover(ACCEPT, true);
 			}
 		});
 		
 		cancel.setOnClickListener(new OnClickListener(){
+			@Override
 			public void onClick(final View v){
 				changeToDeclineScreen();
 			}
@@ -76,5 +79,15 @@ public class PushEnrollFragment extends BasePushRegistrationUI{
 	@Override
 	public int getActionBarTitle() {
 		return R.string.enroll_fragment_title;
+	}
+	
+	@Override
+	public int getGroupMenuLocation() {
+		return CardMenuItemLocationIndex.PROFILE_AND_SETTINGS_GROUP;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		return CardMenuItemLocationIndex.ENROLL_REMINDERS_SECTION;
 	}
 }
