@@ -82,9 +82,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/status_bar"/>
       
-        <!-- <include
-            android:id="@+id/acct_toggle"
-            layout="@layout/account_toggle" /> -->
     </RelativeLayout>
 
 </ScrollView>

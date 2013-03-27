@@ -77,8 +77,9 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
 		
-		//TODO: Commented this out as it is causing a crash
-		//setupAccountToggle();
+		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
+		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
+		setupAccountToggle();
 
 		/**Hyperlink used to provide feedback*/
 		final TextView feedback = (TextView)view.findViewById(R.id.provide_feedback_button);
