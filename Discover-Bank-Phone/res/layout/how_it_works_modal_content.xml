@@ -31,23 +31,16 @@
             android:textColor="@color/sub_copy"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/select_account_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/select_account_title"
-            android:layout_marginTop="@dimen/between_related_elements_padding"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/how_it_works_1" />
-
         <TextView
             android:id="@+id/select_account_title_info"
             style="@style/sub_copy_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/select_account_image"
-            android:layout_marginLeft="@dimen/between_related_elements_padding"
-            android:layout_toRightOf="@+id/select_account_image"
+            android:layout_below="@+id/select_account_title"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:drawableLeft="@drawable/how_it_works_1"
+            android:drawablePadding="@dimen/between_related_elements_padding"
+            android:gravity="center_vertical"
             android:text="@string/select_bank_account_info"
             android:textColor="@color/sub_copy" />
 
@@ -57,29 +50,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/select_account_image"
+            android:layout_below="@+id/select_account_title_info"
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:text="@string/enter_amount"
             android:textColor="@color/sub_copy"
             android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/enter_amount_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/enter_amount_title"
-            android:layout_marginTop="@dimen/between_related_elements_padding"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/how_it_works_2" />
 
         <TextView
             android:id="@+id/enter_amount_info"
             style="@style/sub_copy_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/enter_amount_image"
-            android:layout_marginLeft="@dimen/between_related_elements_padding"
-            android:layout_toRightOf="@+id/enter_amount_image"
+            android:layout_below="@+id/enter_amount_title"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:drawableLeft="@drawable/how_it_works_2"
+            android:drawablePadding="@dimen/between_related_elements_padding"
+            android:gravity="center_vertical"
             android:text="@string/enter_amount_info"
             android:textColor="@color/sub_copy" />
 
@@ -89,29 +75,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/enter_amount_image"
+            android:layout_below="@+id/enter_amount_info"
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:text="@string/take_the_picture"
             android:textColor="@color/sub_copy"
             android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/take_picture_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/take_picture_title"
-            android:layout_marginTop="@dimen/between_related_elements_padding"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/how_it_works_3" />
 
         <TextView
             android:id="@+id/take_picture_info"
             style="@style/sub_copy_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/take_picture_image"
-            android:layout_marginLeft="@dimen/between_related_elements_padding"
-            android:layout_toRightOf="@+id/take_picture_image"
+            android:layout_below="@+id/take_picture_title"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:drawableLeft="@drawable/how_it_works_3"
+            android:drawablePadding="@dimen/between_related_elements_padding"
+            android:gravity="center_vertical"
             android:text="@string/take_the_picture_info"
             android:textColor="@color/sub_copy" />
     </RelativeLayout>
