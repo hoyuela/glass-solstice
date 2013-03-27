@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
@@ -84,10 +85,14 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		if(currentBundle == null) {
 			currentBundle = new Bundle();
 		}
-
-		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, getViewPager().getCurrentItem());
-		currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, detailList);
+		
+		final ViewPager viewPager = getViewPager();
+		if(viewPager != null)
+			currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, viewPager.getCurrentItem());
+		if(detailList != null)
+			currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, detailList);
 		return currentBundle;
+		
 	}
 
 	/**
