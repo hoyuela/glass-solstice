@@ -120,21 +120,27 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	/**Boolean true when the fragment is loading*/
 	private boolean isLoading = false;
 
+	/**Saved state of the fragment*/
+	private Bundle savedState;
+
 	/**Help Widget*/
 	private HelpWidget help;
 
+	private Location location;
+
+	@Override
+	public void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		fragment = SupportMapFragment.newInstance();
+		listFragment = new AtmListFragment();
+		listFragment.setObserver(this);
+	}
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
-		//Check to see if the view has already been inflated
-		if(null == view){
-			view = inflater.inflate(getLayout(), null);
-		}else{
-			//Remove the view from its current parent so that it can be attached to the new parent
-			final ViewGroup parent = (ViewGroup)(view.getParent());
-			parent.removeView(view);
-		}
-
-		final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
+		view = inflater.inflate(getLayout(), null);
+		this.getChildFragmentManager().beginTransaction().replace(R.id.discover_map, fragment).commitAllowingStateLoss();
+		this.getChildFragmentManager().beginTransaction().replace(R.id.discover_list, listFragment).commitAllowingStateLoss();
 		final WebView web = (WebView) view.findViewById(R.id.web_view);
 		final ProgressBar bar = (ProgressBar) view.findViewById(R.id.progress_bar);
 		streetView = new AtmWebView(web, bar);
@@ -143,18 +149,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		help = (HelpWidget) view.findViewById(R.id.help);
 		help.showHelpItems(HelpMenuListFactory.instance().getAtmHelpItems());
 		navigationPanel = (LinearLayout) view.findViewById(R.id.map_navigation_panel);
-		fragment =  (SupportMapFragment) activity.getSupportFragmentManager().findFragmentById(getMapFragmentId());
-		listFragment =  (AtmListFragment) activity.getSupportFragmentManager().findFragmentById(getListFragmentId());
-		listFragment.setObserver(this);
-
-		setMapTransparent((ViewGroup) fragment.getView());
-
-		this.getActivity().getSupportFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
 		streetView.hide();
-
-		final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(this);
-		final DiscoverInfoWindowAdapter adapter = new DiscoverInfoWindowAdapter(balloon);
-		mapWrapper = new DiscoverMapWrapper(fragment.getMap(), adapter);
 		locationManagerWrapper = new DiscoverLocationMangerWrapper(this);
 		searchBar = (AtmLocatorMapSearchBar) view.findViewById(R.id.full_search_bar);
 		searchBar.setFragment(this);
@@ -163,10 +158,58 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		disableMenu();
 		createSettingsModal();
 		createLocationModal();
-		if(null != savedInstanceState){
-			resumeStateOfFragment(savedInstanceState);
-		}
+		savedState = savedInstanceState;
 		return view;
+	}
+
+
+	/**
+	 * Resume the fragment
+	 */
+	@Override
+	public void onResume(){
+		super.onResume();
+		final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(this);
+		final DiscoverInfoWindowAdapter adapter = new DiscoverInfoWindowAdapter(balloon);
+		mapWrapper = new DiscoverMapWrapper(fragment.getMap(), adapter);
+		setMapTransparent((ViewGroup)fragment.getView());
+		this.disableMenu();
+		if(null != location){
+			mapWrapper.setCurrentLocation(location);
+			setUserLocation(mapWrapper.getCurrentLocation());
+		}
+
+		if(isOnMap){
+			showMap();
+		}else{
+			showList();
+		}
+
+		final NavigationRootActivity activity = ((NavigationRootActivity)this.getActivity());
+		activity.setCurrentFragment(this);
+
+		if(NOT_ENABLED == locationStatus){
+			locationStatus = (locationManagerWrapper.areProvidersenabled()) ? ENABLED : NOT_ENABLED;
+		}
+
+		if(null != savedState){
+			resumeStateOfFragment(savedState);
+			return;
+		}
+
+		if(NOT_ENABLED == locationStatus){
+			settingsModal.show();
+		}else if(ENABLED == locationStatus){
+			locationModal.show();
+		}else if(SEARCHING == locationStatus){
+			getLocation();
+		}else if(LOCKED_ON == locationStatus){
+			setUserLocation(mapWrapper.getCurrentLocation());
+		}
+
+		if(LOCKED_ON != locationStatus){
+			mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
+		}
 	}
 
 	/**
@@ -190,18 +233,6 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 * Get the layout for the file
 	 */
 	public abstract int getLayout();
-
-	/**
-	 * Gets the map fragment id
-	 * @return the map fragment id
-	 */
-	public abstract int getMapFragmentId();
-
-	/**
-	 * Gets the list fragment id
-	 * @return the list fragment id
-	 */
-	public abstract int getListFragmentId();
 
 	/**
 	 * @return the current location address string
@@ -316,16 +347,17 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
 		final Double lat = savedInstanceState.getDouble(LAT_KEY);
 		final Double lon = savedInstanceState.getDouble(LONG_KEY);
+
+		if(0.0 == lat && 0.0 == lon){return;}
 		results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		if(null != results){
 			hasLoadedAtms = true;
 		}
-		if(0.0 != lat && 0.0 != lon){
-			final Location location = new Location(LocationManager.GPS_PROVIDER);
-			location.setLatitude(lat);
-			location.setLongitude(lon);
-			setUserLocation(location);
-		}
+		final Location location = new Location(LocationManager.GPS_PROVIDER);
+		location.setLatitude(lat);
+		location.setLongitude(lon);
+		mapWrapper.setCurrentLocation(location);
+		setUserLocation(location);
 		currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
 		if(null != results){
 			mapWrapper.addObjectsToMap(results.results.atms.subList(0, currentIndex));
@@ -355,42 +387,6 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 */
 	private void enableMenu(){
 		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-	}
-
-	/**
-	 * Resume the fragment
-	 */
-	@Override
-	public void onResume(){
-		super.onResume();
-		this.disableMenu();
-
-		if(isOnMap){
-			showMap();
-		}else{
-			showList();
-		}
-
-		final NavigationRootActivity activity = ((NavigationRootActivity)this.getActivity());
-		activity.setCurrentFragment(this);
-
-		if(NOT_ENABLED == locationStatus){
-			locationStatus = (locationManagerWrapper.areProvidersenabled()) ? ENABLED : NOT_ENABLED;
-		}
-
-		if(NOT_ENABLED == locationStatus){
-			settingsModal.show();
-		}else if(ENABLED == locationStatus){
-			locationModal.show();
-		}else if(SEARCHING == locationStatus){
-			getLocation();
-		}else if(LOCKED_ON == locationStatus){
-			setUserLocation(mapWrapper.getCurrentLocation());
-		}
-
-		if(LOCKED_ON != locationStatus){
-			mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
-		}
 	}
 
 	/**
@@ -529,7 +525,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void onPause(){
 		super.onPause();
-
+		location = mapWrapper.getCurrentLocation();
 		enableMenu();
 	}
 
@@ -601,8 +597,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			navigationPanel.setVisibility(View.VISIBLE);
 			isListLand = false;
 		}
-		this.getActivity().getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
-		this.getActivity().getSupportFragmentManager().beginTransaction().show(listFragment).commitAllowingStateLoss();
+		this.getChildFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
+		this.getChildFragmentManager().beginTransaction().show(listFragment).commitAllowingStateLoss();
 	}
 
 	@Override
@@ -614,8 +610,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		navigationPanel.setVisibility(View.VISIBLE);
 		isOnMap = true;
 		isListLand = false;
-		this.getActivity().getSupportFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
-		this.getActivity().getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
+		this.getChildFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
+		this.getChildFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
 	}
 
 	@Override

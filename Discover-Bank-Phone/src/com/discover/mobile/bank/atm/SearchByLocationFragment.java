@@ -38,15 +38,5 @@ public class SearchByLocationFragment extends AtmMapFragment{
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.SEARCH_BY_LOCATION;
-	}
-
-	@Override
-	public int getMapFragmentId() {
-		return R.id.discover_map;
-	}
-
-	@Override
-	public int getListFragmentId() {
-		return R.id.discover_list;
-	}
+	}	
 }
