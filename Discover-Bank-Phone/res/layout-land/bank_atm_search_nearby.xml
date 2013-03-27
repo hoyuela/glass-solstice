@@ -4,22 +4,20 @@
     android:layout_height="match_parent"
     android:background="@drawable/light_gray_bkgrd" >
 
-    <fragment
-        android:id="@+id/discover_map_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/drop_shadow"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
-        class="com.google.android.gms.maps.SupportMapFragment" />
+    
 
-    <fragment
-        android:id="@+id/discover_list_2"
+    <FrameLayout
+        android:id="@+id/discover_map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/drop_shadow"
-        android:layout_below="@+id/full_search_bar"
-        class="com.discover.mobile.bank.atm.AtmListFragment" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true" />
+
+    <FrameLayout
+        android:id="@+id/discover_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/full_search_bar"/>
 
     <com.discover.mobile.bank.atm.AtmLocatorMapSearchBar
         android:id="@+id/full_search_bar"
