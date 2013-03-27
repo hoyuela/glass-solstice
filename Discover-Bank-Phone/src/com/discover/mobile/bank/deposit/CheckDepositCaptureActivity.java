@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.PixelFormat;
@@ -28,7 +29,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,7 +38,6 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.error.ErrorHandler;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 
@@ -94,6 +93,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * Setup the Activity. Loads all UI elements to local references and starts camera setup.
 	 * @param savedInstanceState
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -105,6 +105,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		timerTask = new CameraCountdownTask();
 		
 		getWindow().setFormat(PixelFormat.UNKNOWN);
+		
+		//This deprecated call is needed to support API 10 devices.
 		previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
 		loadDrawables();
@@ -247,18 +249,21 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			}
 		});
 		
+		
 		helpButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(final View v) {
 				if(!timerTask.isRunning){
-					final ModalAlertWithOneButton modal = getHelpModal();
-					modal.show();
-					
-					modal.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+					showModal(getHelpModal());
 				}
 			}
 		});
+	}
+	
+	private void showModal(final AlertDialog modal) {
+		if(modal != null)
+			this.showCustomAlert(modal);
 	}
 	
 	/**
@@ -736,27 +741,27 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * check capture feature.
 	 * @return a modal dialog with check capture help content.
 	 */
-	private CheckDepositModal modal = null;
 	private CheckDepositModal getHelpModal() {
-		if(modal == null){
-			final Spanned helpContent = Html.fromHtml(
-					getResources().getString(R.string.bank_deposit_capture_help_content));
-	
-			final ModalDefaultTopView top = new ModalDefaultTopView(this, null);
-			final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this, null);
-			modal = new CheckDepositModal(this, top, bottom);
-			top.setTitle(R.string.bank_deposit_capture_help_title);
-			top.getContentTextView().setText(helpContent, TextView.BufferType.SPANNABLE);
-			top.showErrorIcon(false);
-			top.hideNeedHelpFooter();
-			bottom.setButtonText(R.string.ok);
-			bottom.getButton().setOnClickListener(new OnClickListener(){
-				@Override
-				public void onClick(final View v){
-					modal.dismiss();
-				}
-			});
-		}
+		final Spanned helpContent = Html.fromHtml(
+				getResources().getString(R.string.bank_deposit_capture_help_content));
+
+		final ModalDefaultTopView top = new ModalDefaultTopView(this, null);
+		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this, null);
+
+		top.setTitle(R.string.bank_deposit_capture_help_title);
+		top.getContentTextView().setText(helpContent, TextView.BufferType.SPANNABLE);
+		top.showErrorIcon(false);
+		top.hideNeedHelpFooter();
+		bottom.setButtonText(R.string.ok);
+		
+		final CheckDepositModal modal = new CheckDepositModal(this, top, bottom);
+		bottom.getButton().setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(final View v) {
+				modal.dismiss();
+			}
+		});
 		
 		return modal;
 	}
