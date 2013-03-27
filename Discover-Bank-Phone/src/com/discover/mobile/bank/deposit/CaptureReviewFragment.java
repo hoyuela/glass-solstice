@@ -73,18 +73,10 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 * Key used to store in-line error for the image cell which shows the captured images for checks
 	 */
 	private final static String IMAGE_CELL_ERROR_KEY = "image" +KEY_ERROR_EXT;
-	
-	/** Key used for redisplaying modal upon rotation */
-	private final static String CANCEL_SHOWN_KEY = "isCancelShown";
 	/**
 	 * Boolean flag used to determine if user received a duplicate check error
 	 */
 	private static boolean hasDuplicateError = false;
-	
-	/**
-	 * Flag to determine if the Cancel modal should be shown on rotation.
-	 */
-	private static boolean isCancelShown = false;
 	
 	private final int depositSubmitActivityId = 1;
 
@@ -148,10 +140,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		
 		/**Check if there is a pending duplicate error*/
 		handlePendingDuplicateCheckError();
-		
-		if(isCancelShown) {
-			actionLink.performClick();
-		}
 	}
 	
 	/**
@@ -219,7 +207,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			
 			@Override
 			public void onClick(final View v) {
-				isCancelShown = false;
 				modal.dismiss();
 			}
 		};
@@ -230,7 +217,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			 
 			@Override
 			public void onClick(final View v) {
-				isCancelShown = false;
 				cancelCheckDepositWorkflow();
 			    modal.dismiss();
 			}
@@ -411,7 +397,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 
 	@Override
 	protected void onActionLinkClick() {
-		isCancelShown = true;
 		final Activity currentActivity = getActivity();
 		final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
 
@@ -427,7 +412,8 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(currentActivity, modalTopView, bottom);
 		bottom.getOkButton().setOnClickListener(dismissModalOnClickListener(modal));
 		bottom.getCancelButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
-		modal.show();
+		
+		this.showCustomAlertDialog(modal);
 	}
 
 	@Override
@@ -485,7 +471,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			/**Store values stored in each field*/
 			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
 			outState.putInt(BankExtraKeys.AMOUNT, depositAmount);
-			outState.putBoolean(CANCEL_SHOWN_KEY, isCancelShown);
 			
 			/**Store error shown at bottom of amount field*/
 			if( amountDetail != null && amountDetail.getEditableField().isInErrorState ) {
@@ -513,7 +498,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			final String key = (amountDetail != null) ? amountDetail.getTopLabel().getText().toString() : "";
 			final String amountError = bundle.getString(key +KEY_ERROR_EXT);
 			final String imageError = bundle.getString(IMAGE_CELL_ERROR_KEY);
-			isCancelShown = bundle.getBoolean(CANCEL_SHOWN_KEY);
 			
 			/**Handle display of inline error asyncronously*/
 			new Handler().postDelayed(new Runnable() {
