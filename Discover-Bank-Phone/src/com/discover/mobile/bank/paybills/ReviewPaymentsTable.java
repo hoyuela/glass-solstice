@@ -268,6 +268,19 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		final String canceledKey =
 				(category == ReviewPaymentsHeader.CANCELED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.CANCELED_LIST;
 
+		/**Set the resource identifier that should be displayed in the details screen*/
+		switch( category ) {
+		case ReviewPaymentsHeader.SCHEDULED_PAYMENTS:
+			 bundle.putInt(BankExtraKeys.TITLE_TEXT, R.string.scheduled_payment);
+			 break;
+		case ReviewPaymentsHeader.COMPLETED_PAYMENTS:
+			 bundle.putInt(BankExtraKeys.TITLE_TEXT,R.string.completed_payment);
+			 break;
+		case ReviewPaymentsHeader.CANCELED_PAYMENTS:
+			 bundle.putInt(BankExtraKeys.TITLE_TEXT,R.string.cancelled_payment);
+			 break;
+		}
+		
 		bundle.putSerializable(scheduleKey, scheduled);
 		bundle.putSerializable(completedKey, completed);
 		bundle.putSerializable(canceledKey, canceled);
