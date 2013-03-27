@@ -3,16 +3,13 @@ package com.discover.mobile.bank.deposit;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -41,9 +38,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	/**
 	 * Used to log into Android logcat
 	 */
-	private final String TAG = "SelectAccount";
-
-	private HowItWorksModal modal = null;
+	private final String TAG = BankDepositSelectAccount.class.getSimpleName();
 
 	/**
 	 * Boolean flag to detect if the user just accepted the terms and conditions,
@@ -62,35 +57,17 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		noteTitle.setVisibility(View.GONE);
 		noteTextMsg.setVisibility(View.GONE);
 
-		//Load the terms boolean from the arguments bundle
-		loadTermsBoolean(getArguments());		
+		//Load the terms boolean from the arguments bundle, then clear it
+		clearTermsBoolean(loadTermsBoolean(getArguments()));
+		
+		if(acceptedTerms)
+			showHowItWorksModal();
 		
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
 
 		return view;
-	}
-
-	/**
-	 * Show the modal if it needs to be shown.
-	 */
-	@Override
-	public void onResume() {
-		super.onResume();
-		showHowItWorksModal();
-	}
-	
-	/**
-	 * Always close the modal on pause. This solves the problem of having more than one modal
-	 * show up when the activity is paused but not destroyed. Such as when the app is put into the
-	 * background and not rotated.
-	 */
-	@Override
-	public void onPause() {
-		super.onPause();
-		if(modal != null)
-			modal.dismiss();
 	}
 	
 	@Override
@@ -159,7 +136,6 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	@Override
 	public void onClick(final View sender) {
 		super.onClick(sender);
-		
 		/**Verify that a BankSelectAccountItem generated the click event*/
 		if( sender instanceof BankSelectAccountItem) {
 			/**Fetch reference to account object associated with the BankSelectAccountItem that generated the click event*/
@@ -231,61 +207,43 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	 * Show the how it works modal if the acceptedTerms boolean is true. It will be true if the have just accepted 
 	 * the terms and have not closed the modal before.
 	 */
-	private void showHowItWorksModal() {
-		if(acceptedTerms){
-			final HowItWorksModalTop top = new HowItWorksModalTop(this.getActivity(), null);
-			final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this.getActivity(), null);
-			modal = new HowItWorksModal(this.getActivity(), top, bottom);
+	public static void showHowItWorksModal() {
+			final BankNavigationRootActivity currentActivity = 
+					(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+			final HowItWorksModalTop top = new HowItWorksModalTop(currentActivity, null);
+			final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(currentActivity, null);
+			final HowItWorksModal modal = new HowItWorksModal(currentActivity, top, bottom);
 			
 			bottom.setButtonText(R.string.ok);
 			bottom.getButton().setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(final View v) {
 					modal.dismiss();
-					acceptedTerms = false;
-					updateArgumentBoolean();
 				}
 			});
-			final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
-			final String windowService = activeActivity.WINDOW_SERVICE;
-			final Display display = ((WindowManager)activeActivity.getSystemService(windowService)).getDefaultDisplay();
-		
-			modal.show();
-			modal.getWindow().setLayout(display.getWidth(), display.getHeight());
-		}
-	}
-	
-	/**
-	 * A click listener that will launch the how it works modal when the thing it is attached to gets clicked.
-	 */
-	private final OnClickListener showHelpModal = new OnClickListener() {
-		
-		@Override
-		public void onClick(final View v) {
-			acceptedTerms = true;
-			updateArgumentBoolean();
-			showHowItWorksModal();
-		}
-	};
-	
-	/**
-	 * Update the boolean value that is in the argument bundle to be the current value of acceptedTerms.
-	 */
-	private void updateArgumentBoolean() {
-		//Update the argument bundle.
-		final Bundle args = getArguments();
-		if(args != null)
-			args.putBoolean(BankExtraKeys.ACCEPTED_TERMS, acceptedTerms);
+			currentActivity.showCustomAlert(modal);
+
 	}
 	
 	/**
 	 * Loads the terms boolean value from a Bundle.
 	 * @param arguments a Bundle that was supplied from this fragment.
 	 */
-	private void loadTermsBoolean(final Bundle bundle) {
+	private Bundle loadTermsBoolean(final Bundle bundle) {
 		if(bundle != null)
 			acceptedTerms = bundle.getBoolean(BankExtraKeys.ACCEPTED_TERMS);
+		return bundle;
+	}
+	
+	/**
+	 * Clears the boolean flag that is used to show the modal dialog on create if the user has just accepted the terms.
+	 * This is used so that on rotation change, when onCreate is called again, that the modal does not get shonw again.
+	 * @param bundle
+	 */
+	private void clearTermsBoolean(final Bundle bundle) {
+		if(bundle != null) 
+			bundle.putBoolean(BankExtraKeys.ACCEPTED_TERMS, false);
 	}
 
 	@Override

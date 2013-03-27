@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.atm.AtmModalFactory;
+import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -89,6 +90,9 @@ public final class HelpMenuListFactory {
 	 */
 	public List<HelpItemGenerator> getCheckDepositHelpItems(){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
+		final HelpItemGenerator howItWorksModal = new HelpItemGenerator(R.string.how_it_works, false, false, 
+																				getHowItWorksModalListener());
+		items.add(howItWorksModal);
 		items.add(checkDeposit);
 		items.add(allFaq);
 		return items;
@@ -149,6 +153,20 @@ public final class HelpMenuListFactory {
 			@Override
 			public void onClick(final View v) {
 				BankConductor.navigateToFAQLandingPage();
+			}
+		};
+	}
+	
+	/**
+	 * Returns a click listener that will show the how it works modal onClick.
+	 * @return a click listener that will show the how it works modal onClick.
+	 */
+	private OnClickListener getHowItWorksModalListener() {
+		return new OnClickListener() {
+			
+			@Override
+			public void onClick(final View v) {
+				BankDepositSelectAccount.showHowItWorksModal();
 			}
 		};
 	}

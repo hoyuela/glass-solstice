@@ -14,6 +14,8 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.slidingmenu.lib.SlidingMenu;
+import com.slidingmenu.lib.app.SlidingFragmentActivity;
 /**
  * This activity allows the showing of the FAQ content while logged out.
  * It is an activity of its own that conatins the FAQ fragments.
@@ -31,6 +33,8 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.faq_logged_out);
 		showActionBar();
+		final SlidingMenu slidingMenu = ((SlidingFragmentActivity)this).getSlidingMenu();
+		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 	}
 	
 	@Override
