@@ -2,6 +2,7 @@ package com.discover.mobile.bank.account;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
@@ -48,8 +49,11 @@ public class AccountActivityViewPager extends DetailViewPager{
 			currentBundle = new Bundle();
 		}
 
-		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, getViewPager().getCurrentItem());
-		currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, activityItems);
+		final ViewPager viewPager = getViewPager();
+		if(viewPager != null)
+			currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, viewPager.getCurrentItem());
+		if(activityItems != null)
+			currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, activityItems);
 		return currentBundle;
 	}
 
