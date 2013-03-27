@@ -8,8 +8,10 @@ import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.util.BankNeedHelpFooter;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.help.HelpWidget;
 import com.google.common.base.Strings;
 
 /**
@@ -46,6 +48,10 @@ public class BankDepositForbidden extends BaseFragment {
 		
 		/**Fetch text view that will display error message to the user*/
 		errorText = (TextView)view.findViewById(R.id.top_note_text);
+		
+		/**Help widget setup to show faq*/
+		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
+		help.showHelpItems(HelpMenuListFactory.instance().getCheckDepositHelpItems());
 		
 		/**Fetch error text that was provided from server*/
 		final Bundle bundle = this.getArguments();

@@ -663,7 +663,7 @@ public final class BankConductor  extends Conductor {
 
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligibility();
 			final boolean isEnrolled = BankUser.instance().getCustomerInfo().isDepositEnrolled();
-			final boolean isForbidden = false;
+			final boolean isForbidden = BankUser.instance().getCustomerInfo().getDepositsEligibility().isUserBlocked();
 
 			//Check if user is forbidden to use check deposit
 			if( isForbidden ) {
@@ -682,25 +682,29 @@ public final class BankConductor  extends Conductor {
 				case SelectAmount:
 					fragment = new BankDepositSelectAmount();
 					break;
-					//Navigate user to first step in check deposit work-flow
+				//Navigate user to first step in check deposit work-flow
 				case SelectAccount:
 					fragment = new BankDepositSelectAccount();	
 					break;
-					//Navigate user to page where they can review their deposit 
+				//Navigate user to page where they can review their deposit 
 				case ReviewDeposit:
 					fragment = new CaptureReviewFragment();
 					break;
-					//Navigate user to final step in Check deposit work-flow
+				//Navigate user to final step in Check deposit work-flow
 				case Confirmation:
 					fragment = new BankDepositConfirmFragment();
 					break;
-					//Navigate to timeout error if check deposit error fragment flag is found in bundle
+				//Navigate to timeout error if check deposit error fragment flag is found in bundle
 				case DepositError:
 					fragment = new CheckDepositErrorFragment();
 					break;
-					//Navigate to duplicate error fragment if boolean flag is found in bundle
+				//Navigate to duplicate error fragment if boolean flag is found in bundle
 				case DuplicateError:
 					fragment = new DuplicateCheckErrorFragment();
+					break;
+				//Navigate to forbidden error fragment if user receives a 403 error code
+				case ForbiddenError:
+					fragment = new BankDepositForbidden();
 					break;
 				}
 			}

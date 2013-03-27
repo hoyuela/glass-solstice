@@ -15,5 +15,6 @@ public enum BankDepositWorkFlowStep implements Serializable {
 	ReviewDeposit,
 	Confirmation,
 	DepositError,
-	DuplicateError
+	DuplicateError,
+	ForbiddenError
 }

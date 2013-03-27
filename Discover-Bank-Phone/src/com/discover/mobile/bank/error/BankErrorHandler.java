@@ -361,7 +361,7 @@ public class BankErrorHandler implements ErrorHandler {
 				
 				final Bundle bundle = new Bundle();
 				bundle.putString(BankDepositForbidden.KEY_ERROR_MESSAGE, msgErrResponse.getErrorMessage());
-				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAccount);
+				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.ForbiddenError);
 				handled = true;
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
