@@ -22,6 +22,7 @@ import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.SessionTokenManager;
@@ -52,7 +53,7 @@ implements OnPaymentCanceledListener {
 	public void onResume() {
 		super.onResume();
 
-		getLastTouchTime();
+		compareLastTouchTimeAndUpdateSession();
 	}
 
 	/**
@@ -103,7 +104,7 @@ implements OnPaymentCanceledListener {
 		super.dispatchTouchEvent(ev);
 
 		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-			getLastTouchTime();
+			compareLastTouchTimeAndUpdateSession();
 		}
 
 		// Don't consume event.
@@ -114,13 +115,15 @@ implements OnPaymentCanceledListener {
 	 * Determines the current time and gets the time stored in globals. Then
 	 * updates globals with the current time.
 	 */
-	private void getLastTouchTime() {
+	private void compareLastTouchTimeAndUpdateSession() {
 		final Calendar mCalendarInstance = Calendar.getInstance();
 
 		final long previousTime = Globals.getOldTouchTimeInMillis();
 		final long currentTime = mCalendarInstance.getTimeInMillis();
 
-		setIsUserTimedOut(previousTime, currentTime);
+		if(!setIsUserTimedOut(previousTime, currentTime)) {
+			KeepAlive.checkForRequiredSessionRefresh();
+		}
 		Globals.setOldTouchTimeInMillis(currentTime);
 	}
 
@@ -129,8 +132,9 @@ implements OnPaymentCanceledListener {
 	 * 
 	 * @param previousTime
 	 * @param currentTime
+	 * @return true if the user is timed-out, false otherwise.
 	 */
-	private void setIsUserTimedOut(final long previousTime,
+	private boolean setIsUserTimedOut(final long previousTime,
 			final long currentTime) {
 		// Previous value exists
 		if (previousTime != 0) {
@@ -140,11 +144,14 @@ implements OnPaymentCanceledListener {
 			// User has become inactive and will be set to timed-out.
 			if ( secs > BankUrlManager.MAX_IDLE_TIME) {
 				Globals.setLoggedIn(false);
+				KeepAlive.setBankAuthenticated(false);
 				Globals.setCurrentUser("");
 				BankUser.instance().clearSession();
 				BankConductor.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED, null);
+				return true;
 			}
 		}
+		return false;
 	}
 
 	@Override

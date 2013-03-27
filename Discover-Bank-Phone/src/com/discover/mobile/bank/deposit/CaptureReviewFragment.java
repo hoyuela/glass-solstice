@@ -32,6 +32,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.bank.BankError;
+import com.discover.mobile.common.net.error.bank.BankErrorCodes;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
@@ -72,6 +73,10 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 * Key used to store in-line error for the image cell which shows the captured images for checks
 	 */
 	private final static String IMAGE_CELL_ERROR_KEY = "image" +KEY_ERROR_EXT;
+	/**
+	 * Boolean flag used to determine if user received a duplicate check error
+	 */
+	private static boolean hasDuplicateError = false;
 	
 	private final int depositSubmitActivityId = 1;
 
@@ -132,6 +137,20 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		
 		/**Check if a successful response was received*/
 		handlePendingConfirmation();
+		
+		/**Check if there is a pending duplicate error*/
+		handlePendingDuplicateCheckError();
+	}
+	
+	/**
+	 * Method checks if a duplicate check error occurred, if so navigates the user to 
+	 * DuplicateCheckErrorFragment.
+	 */
+	private void handlePendingDuplicateCheckError() {
+		if( hasDuplicateError ) {
+			hasDuplicateError = false;
+			BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.DuplicateError);
+		}
 	}
 	
 	/**
@@ -403,12 +422,18 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		
 		/**Set Inline Errors*/
 		for( final BankError error : msgErrResponse.errors ) {
-			if( !Strings.isNullOrEmpty(error.name) ) {
+			/**Check if error was because of a duplicate check*/
+			if( !Strings.isNullOrEmpty(error.code) && error.code.equals(BankErrorCodes.ERROR_CHECK_DUPLICATE) ) {
+				handled = hasDuplicateError = true;
+			}
+			/**Check if it is an inline error*/
+			else if( !Strings.isNullOrEmpty(error.message) ) {
 				/**Notify user that they have an inline error at top of page*/
 				showGeneralError( getActivity().getResources().getString(R.string.bank_deposit_error_notify) );
 				
 				/**Show inline error under amount field*/
-				if( error.name.equals(DepositDetail.AMOUNT_FIELD) ) {		
+				if( !Strings.isNullOrEmpty(error.name) &&
+					error.name.equals(DepositDetail.AMOUNT_FIELD) ) {		
 					amountDetail.getEditableField().showErrorLabelNoFocus(error.message);
 				}
 				/**Show inline error under check image cell*/
@@ -440,20 +465,25 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
-		/**Store values stored in each field*/
-		outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
-		outState.putInt(BankExtraKeys.AMOUNT, depositAmount);
-
-		
-		/**Store error shown at bottom of amount field*/
-		if( amountDetail != null && amountDetail.getEditableField().isInErrorState ) {
-			final String key = amountDetail.getTopLabel().getText().toString();
-			outState.putString(key +KEY_ERROR_EXT, amountDetail.getEditableField().getErrorLabel().getText().toString());
-		}
-		
-		/**Store error shown at bottom of captured image field*/
-		if(checkImageCell != null && checkImageCell.getErrorLabel().getVisibility() == View.VISIBLE ) {
-			outState.putString(IMAGE_CELL_ERROR_KEY, checkImageCell.getErrorLabel().getText().toString());
+		/**Check that onCreateView was called otherwise rotation data will get wiped out*/
+		if( bundle != null ) {
+			/**Store values stored in each field*/
+			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
+			outState.putInt(BankExtraKeys.AMOUNT, depositAmount);
+	
+			
+			/**Store error shown at bottom of amount field*/
+			if( amountDetail != null && amountDetail.getEditableField().isInErrorState ) {
+				final String key = amountDetail.getTopLabel().getText().toString();
+				outState.putString(key +KEY_ERROR_EXT, amountDetail.getEditableField().getErrorLabel().getText().toString());
+			}
+			
+			/**Store error shown at bottom of captured image field*/
+			if(checkImageCell != null && checkImageCell.getErrorLabel().getVisibility() == View.VISIBLE ) {
+				outState.putString(IMAGE_CELL_ERROR_KEY, checkImageCell.getErrorLabel().getText().toString());
+			}
+		} else {
+			outState.putAll(getArguments());
 		}
 	}
 	

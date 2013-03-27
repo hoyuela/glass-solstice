@@ -11,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +31,7 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.help.NeedHelpFooter;
+import com.discover.mobile.common.ui.widgets.AccountToggleView;
 
 /**
  * Fragment used to display all of a user's account information in a single view using BankGroupView and BankAccountView
@@ -42,11 +46,14 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	private LinearLayout accountSummary; 
 	private Button openAccount;
 	private NeedHelpFooter helpFooter;
+	private AccountToggleView toggleView;
+	private View view;
+	private ImageView accountToggleIcon;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.bank_account_summary_view, null);
+		this.view = inflater.inflate(R.layout.bank_account_summary_view, null);
 
 
 		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
@@ -69,6 +76,9 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
+		
+		//TODO: Commented this out as it is causing a crash
+		//setupAccountToggle();
 
 		/**Hyperlink used to provide feedback*/
 		final TextView feedback = (TextView)view.findViewById(R.id.provide_feedback_button);
@@ -185,6 +195,41 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
+	}
+	
+	/**
+	 * Determines the placement of the icon upon its layout. It's then used to
+	 * measure the postion of the indicator. Additionally, this implements the
+	 * listeners for the AccountToggle.
+	 */
+	private void setupAccountToggle() {
+		final ViewTreeObserver vto = accountToggleIcon.getViewTreeObserver();
+		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				toggleView.setIndicatorPosition(accountToggleIcon.getLeft(),
+						accountToggleIcon.getTop(),
+						accountToggleIcon.getWidth(),
+						accountToggleIcon.getHeight());
+			}
+		});
+
+		final ImageView accountToggleArrow = (ImageView) view
+				.findViewById(R.id.downArrow);
+		accountToggleArrow.setOnClickListener(new AccountToggleListener());
+		accountToggleIcon.setOnClickListener(new AccountToggleListener());
+	}
+	
+	/**
+	 * Listener associated with items that hide/show the Account Toggle Widget. 
+	 */
+	private class AccountToggleListener implements OnClickListener {
+
+		@Override
+		public void onClick(final View v) {
+			toggleView.toggleVisibility();
+		}
+		
 	}
 
 }

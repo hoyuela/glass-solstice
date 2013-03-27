@@ -5,16 +5,8 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/name"
-        style="@style/balloon_large_title_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/between_related_elements_padding"
-        android:text="Unkown" />
-
-    <TextView
         android:id="@+id/address"
-        style="@style/balloon_sub_text"
+        style="@style/balloon_large_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="109 W North Ave" />

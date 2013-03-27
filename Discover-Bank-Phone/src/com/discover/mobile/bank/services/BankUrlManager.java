@@ -31,6 +31,7 @@ public class BankUrlManager  {
 	//	private static String BASE_URL = "http://192.168.2.173:8008";
 
 	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
+	
 	public static final String EMPTY = "";
 	public static final String SLASH = "/";
 	private static final String AUTHENTICATE_CURRENT_CUSTOMER_URL = "/api/customers/current";
@@ -45,6 +46,7 @@ public class BankUrlManager  {
 	private static final String ATM_LOCATOR_URL = "https://api.discover.com/api/atmLocator/SearchGeocodedLocation.xml";
 	private static final String ATM_DIRECTIONS_BASE_URL = "http://maps.googleapis.com/maps/api/directions/json";
 	private static final String ATM_ADDRESS_TO_LOCATION_BASE_URL = "http://maps.google.com/maps/api/geocode/json";
+	private static final String REFRESH_URL = "/api/auth/ping";
 
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
@@ -245,6 +247,13 @@ public class BankUrlManager  {
 	 */
 	public static String getAtmDirectionsBaseUrl() {
 		return ATM_DIRECTIONS_BASE_URL;
+	}
+	
+	/**
+	 * @return the url to refresh a bank session.
+	 */
+	public static String getRefreshSessionUrl() {
+		return REFRESH_URL;
 	}
 
 	/**

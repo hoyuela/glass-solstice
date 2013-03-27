@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.help;
 
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -30,7 +31,14 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.faq_logged_out);
 		showActionBar();
-		showFAQDetailIfNeeded();
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if(this.getCurrentContentFragment() == null)
+			showFAQDetailIfNeeded();
 	}
 	
 	private void showFAQDetailIfNeeded() {
@@ -40,7 +48,7 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 			BankConductor.navigateToFAQDetail(faqType);
 		}else {
 			final FAQLandingPageFragment landingPage = new FAQLandingPageFragment();
-			makeFragmentVisible(landingPage, false);
+			makeFragmentVisible(landingPage);
 		}
 	}
 	
@@ -63,7 +71,7 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 		//Otherwise ignore the back press as we do not want to close the application via
 		//Navigation root activity, it should only be closed from the logged in page
 		if( backStackCount > 1 ) {
-			super.onBackPressed();
+			fragmentManager.popBackStack();
 		}else
 			finish();
 		

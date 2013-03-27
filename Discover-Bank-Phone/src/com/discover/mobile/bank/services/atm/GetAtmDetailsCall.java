@@ -60,7 +60,18 @@ public class GetAtmDetailsCall extends BankJsonResponseMappingNetworkServiceCall
 		try {
 			final String input = convertStreamToString(body);
 			//Parse out the undefined, otherwise the parser cannot parse the data correctly
-			final String str = input.replaceAll(":undefined", ":\"undefined\"");
+			String str = input.replaceAll(":undefined", ":\"undefined\"");
+
+			//If the the atm list is not a list make it one
+			if(str.contains("\"Atm\":{")){
+				str = str.replace("\"Atm\":{", "\"Atm\":[{");
+				str = str.replace("}}}",  "}]}}");
+			}
+
+			while(str.contains(":0")){
+				str = str.replaceAll(":0", ":");
+			}
+
 			//Create a new input stream for parsing
 			stream = new ByteArrayInputStream(str.getBytes());
 		} catch (final Exception e) {

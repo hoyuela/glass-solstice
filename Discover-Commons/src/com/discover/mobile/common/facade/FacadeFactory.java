@@ -95,6 +95,21 @@ public class FacadeFactory {
 		return (BankLoginFacade) getImplClass("com.discover.mobile.bank.facade.BankLoginFacadeImpl");
 	}
 	
+	/**
+	 * Keep Alive facade for Bank
+	 * @return
+	 */
+	public static BankKeepAliveFacade getBankKeepAliveFacade() {
+		return (BankKeepAliveFacade) getImplClass("com.discover.mobile.bank.facade.BankKeepAliveFacadeImpl");
+	}
+	
+	/**
+	 * Keep Alive facade for Card
+	 * @return
+	 */
+	public static CardKeepAliveFacade getCardKeepAliveFacade() {
+		return (CardKeepAliveFacade) getImplClass("com.discover.mobile.card.facade.CardKeepAliveFacadeImpl");
+	}	
 	
 	/**
 	 * Returns the conductor facade

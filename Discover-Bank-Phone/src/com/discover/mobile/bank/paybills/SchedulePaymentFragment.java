@@ -26,6 +26,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -46,6 +47,7 @@ import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.error.bank.BankError;
@@ -57,7 +59,7 @@ import com.discover.mobile.common.ui.widgets.CustomTitleDatePickerDialog;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
-public class SchedulePaymentFragment extends BaseFragment implements BankErrorHandlerDelegate, OnEditorActionListener {
+public class SchedulePaymentFragment extends BaseFragment implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPressed {
 
 	/** Keys used to save/load values possibly lost during rotation. */
 	private static final String PAY_FROM_ACCOUNT_ID = "a";
@@ -113,6 +115,8 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 	private Button cancelButton;
 	/** Payment button */
 	private Button payNowButton;
+	/** Caret in Payment From Cell*/
+	private ImageView paymentCaret ;
 
 	/** Payee object (typically passed here via bundle) */
 	private PayeeDetail payee;
@@ -185,6 +189,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 		memoError = (TextView) view.findViewById(R.id.memo_error);
 		payNowButton = (Button) view.findViewById(R.id.pay_now);
 		cancelButton = (Button) view.findViewById(R.id.cancel_button);
+		paymentCaret = (ImageView)view.findViewById(R.id.payment_caret);
 		bankUser = BankUser.instance();
 
 		loadDataFromBundle();
@@ -349,6 +354,9 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 
 				accountAdapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
 				paymentAccountSpinner.setAdapter(accountAdapter);
+			} else {
+				/**Hide Caret when only a single account is selectable for scheduling payment*/
+				paymentCaret.setVisibility(View.INVISIBLE);
 			}
 		}
 		amountEdit.attachErrorLabel(amountError);
@@ -884,5 +892,16 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			}
         }
         return false;
+	}
+	
+	/** Cancel modal presentation should override default Back button behavior */
+	@Override
+	public void onBackPressed() {
+		setupCancelButton();
+	}
+
+	@Override
+	public boolean isBackPressDisabled() {
+		return true;
 	}
 }

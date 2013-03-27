@@ -56,5 +56,5 @@
         
         <item name="android:background">@drawable/login_white_panel</item> <!-- bkgrnd -->
     </style>
-   
+    
 </resources>

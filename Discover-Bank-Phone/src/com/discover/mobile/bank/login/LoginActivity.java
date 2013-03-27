@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -44,12 +45,16 @@ import com.discover.mobile.common.StandardErrorCodes;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.InputValidator;
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.net.error.RegistrationErrorCodes;
+import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
+import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
@@ -124,7 +129,6 @@ public class LoginActivity extends BaseActivity implements
 	 */
 	private boolean preAuthHasRun = false;
 
-
 	private boolean saveUserId = false;
 
 	private InputMethodManager imm;
@@ -157,7 +161,9 @@ public class LoginActivity extends BaseActivity implements
 		if (!preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
 			startPreAuthCheck();
 		} 
-
+		
+		KeepAlive.setBankAuthenticated(false);
+		KeepAlive.setCardAuthenticated(false);
 	}
 
 	/**
@@ -1131,4 +1137,36 @@ public class LoginActivity extends BaseActivity implements
 			return BankErrorHandler.getInstance();
 		}
 	}
+	
+	/**
+	 * Creates and shows a modal to inform the user that their account skipped
+	 * SSO sign-on because of a Card BadStatus.
+	 */
+	public void showALUStatusModal() {
+		final ModalDefaultTopView aluModalTopView = new ModalDefaultTopView(
+				this, null);
+		aluModalTopView.setTitle(R.string.skipsso_modal_title);
+		aluModalTopView.setContent(R.string.skipsso_modal_body);
+		aluModalTopView.hideNeedHelpFooter();
+		aluModalTopView.showErrorIcon(true);
+
+		final ModalDefaultOneButtonBottomView confirmModalButton = new ModalDefaultOneButtonBottomView(
+				this, null);
+		confirmModalButton.setButtonText(R.string.skipsso_modal_button);
+
+		final ModalAlertWithOneButton aluModal = new ModalAlertWithOneButton(
+				this, aluModalTopView, confirmModalButton);
+		 this.showCustomAlert(aluModal);
+		 closeDialog();
+		 
+		confirmModalButton.getButton().setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(final View v) {
+						BankConductor.continueAuthDueToALU();
+						aluModal.dismiss();
+					}
+				});
+	}
+	
 }

@@ -326,4 +326,20 @@
         <item name="android:layout_width">40dp</item>
         <item name="android:layout_height">40dp</item>
     </style>
+    
+        <style name="plain_body_copy_title">
+        <item name="android:textColor">@color/body_copy</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+    </style>
+    
+        <style name="light_static_text">
+        <item name="android:textColor">@color/field_copy</item>
+        <item name="android:textSize">@dimen/small_copy_min</item>
+    </style>
+    
+      <style name="body_copy_title">
+        <item name="android:textColor">@color/body_copy</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

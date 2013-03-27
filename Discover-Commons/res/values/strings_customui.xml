@@ -8,4 +8,5 @@
 	</string>
 	<string name="account_info_dob_text">Primary Cardmember\'s Birthday</string>
     <string name="card_expiration_date_text">Card Expiration Date</string>
+    <string name="toggle_select_account">SELECT ACCOUNT</string>
 </resources>

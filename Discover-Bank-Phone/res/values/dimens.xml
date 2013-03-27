@@ -33,5 +33,10 @@
     <dimen name="atm_modal_icon_width">25dp</dimen>
     <dimen name="atm_modal_icon_height">30dp</dimen>
     <dimen name="atm_modal_icon_padding">3dp</dimen>
+    <dimen name="atm_modal_pin_height">35dp</dimen>
+    <dimen name="atm_modal_pin_width">20dp</dimen>
+    
+    <!-- Deposit Error Message Dimens -->
+    <dimen name="deposit_error_message_padding">52dp</dimen>
     
 </resources>

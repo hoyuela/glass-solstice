@@ -25,6 +25,7 @@ import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.BankSSOLoginDetails;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
 import com.discover.mobile.bank.services.auth.CreateBankSSOLoginCall;
+import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthAnswerDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
@@ -486,6 +487,23 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		return new GetAccountLimits(activity, callback, account);
 	}
 
+	/**
+	 * Creates a call that that will attempt to refresh the Bank session. Sends
+	 * a GET request to {@code BankUrlManager.REFRESH_URL}.
+	 * 
+	 * @return RefreshBankSessionCall
+	 */
+	public static RefreshBankSessionCall createRefreshSessionCall() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<Object>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Object.class,
+						activity, null)
+						.build();
+
+		return new RefreshBankSessionCall(activity, callback);
+	}
+	
 	@Override
 	public NetworkServiceCall<?> createServiceCall(@SuppressWarnings("rawtypes") final Class cacheObject,
 			final Serializable payload) {
@@ -505,6 +523,4 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		// FIXME : Add the rest in here!!! 
 		return null;
 	}
-
-
 }

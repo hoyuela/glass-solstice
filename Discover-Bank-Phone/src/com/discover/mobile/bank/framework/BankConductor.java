@@ -61,6 +61,7 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.CacheManager;
 import com.discover.mobile.common.framework.Conductor;
@@ -662,7 +663,7 @@ public final class BankConductor  extends Conductor {
 
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligibility();
 			final boolean isEnrolled = BankUser.instance().getCustomerInfo().isDepositEnrolled();
-			final boolean isForbidden = false;
+			final boolean isForbidden = BankUser.instance().getCustomerInfo().getDepositsEligibility().isUserBlocked();
 
 			//Check if user is forbidden to use check deposit
 			if( isForbidden ) {
@@ -681,25 +682,29 @@ public final class BankConductor  extends Conductor {
 				case SelectAmount:
 					fragment = new BankDepositSelectAmount();
 					break;
-					//Navigate user to first step in check deposit work-flow
+				//Navigate user to first step in check deposit work-flow
 				case SelectAccount:
 					fragment = new BankDepositSelectAccount();	
 					break;
-					//Navigate user to page where they can review their deposit 
+				//Navigate user to page where they can review their deposit 
 				case ReviewDeposit:
 					fragment = new CaptureReviewFragment();
 					break;
-					//Navigate user to final step in Check deposit work-flow
+				//Navigate user to final step in Check deposit work-flow
 				case Confirmation:
 					fragment = new BankDepositConfirmFragment();
 					break;
-					//Navigate to timeout error if check deposit error fragment flag is found in bundle
+				//Navigate to timeout error if check deposit error fragment flag is found in bundle
 				case DepositError:
 					fragment = new CheckDepositErrorFragment();
 					break;
-					//Navigate to duplicate error fragment if boolean flag is found in bundle
+				//Navigate to duplicate error fragment if boolean flag is found in bundle
 				case DuplicateError:
 					fragment = new DuplicateCheckErrorFragment();
+					break;
+				//Navigate to forbidden error fragment if user receives a 403 error code
+				case ForbiddenError:
+					fragment = new BankDepositForbidden();
 					break;
 				}
 			}
@@ -804,10 +809,11 @@ public final class BankConductor  extends Conductor {
 	public static void authWithBankPayload(final String bankSSOPayload) {
 		final BankSSOLoginDetails bankPayload = new BankSSOLoginDetails();
 		bankPayload.payload = bankSSOPayload;
+		KeepAlive.setCardAuthenticated(true);
 		BankServiceCallFactory.createSSOLoginCall(bankPayload).submit();
 		loginDetails = null;
 	}
-
+	
 	/**
 	 * Authorizes an SSO User against Card using a CardSSOPayload, which in some
 	 * cases is obtained from a call to {@code BankLoginServices.authorizeLogin()}.
@@ -823,10 +829,21 @@ public final class BankConductor  extends Conductor {
 
 	/**
 	 * Authorizes an SSO User against Bank when no BankSSOPayload is available.
-	 * This is due to an A/L/U error returned from a Card service.
+	 * This is due to an A/L/U error returned from a Card service. This will
+	 * prompt the user about the issue and continue if they accept.
 	 */
 	public static void authDueToALUStatus() {
+		final LoginActivity activity = (LoginActivity) DiscoverActivityManager
+				.getActiveActivity();
+		activity.showALUStatusModal();
+	}
+	
+	/**
+	 * Continues with the Skip SSO login call if credentials are available.
+	 */
+	public static void continueAuthDueToALU() {
 		if(loginDetails != null) {
+			KeepAlive.setCardAuthenticated(false);
 			BankServiceCallFactory.createLoginCall(loginDetails, true).submit();
 			loginDetails = null;
 		}
@@ -840,6 +857,13 @@ public final class BankConductor  extends Conductor {
 		final AtmLocatorActivity activity = (AtmLocatorActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
 		BankAtmUtil.sendDirectionsEmail(bundle);
+	}
+	
+	/**
+	 * Performs a call to update the user's bank session.
+	 */
+	public static void executeSessionRefreshCall() {
+		BankServiceCallFactory.createRefreshSessionCall().submit();
 	}
 
 	/**

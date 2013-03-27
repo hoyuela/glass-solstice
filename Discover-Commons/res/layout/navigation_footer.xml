@@ -15,6 +15,7 @@
             android:id="@+id/navigation_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/nav_footer_font_size"
             android:paddingRight="@dimen/nav_footer_padding"/>
 
         <View
@@ -28,6 +29,7 @@
             android:id="@+id/navigation_privacy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/nav_footer_font_size"
             android:layout_toRightOf="@+id/navigation_divider"
             android:paddingLeft="@dimen/nav_footer_padding"
             android:text="@string/privacy_terms" />
@@ -37,6 +39,7 @@
         android:id="@+id/navigation_copyright"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/nav_footer_font_size"
         android:layout_below="@+id/navigation_footer_top"
         android:layout_centerHorizontal="true" />
 

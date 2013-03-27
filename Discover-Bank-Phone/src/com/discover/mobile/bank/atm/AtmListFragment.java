@@ -15,6 +15,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
 /**
  * Fragment contianing the list of details available for the ATMs
@@ -50,9 +51,6 @@ public class AtmListFragment extends BaseTable{
 
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
-		setIsLoadingMore(false);
-		super.refreshListener();
-		footer.showDone();
 		results = (AtmResults)bundle.get(BankExtraKeys.DATA_LIST_ITEM);
 		index = (bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0));
 
@@ -67,8 +65,14 @@ public class AtmListFragment extends BaseTable{
 		adapter.setData(results.results.atms.subList(0, index));
 		adapter.notifyDataSetChanged();
 
+		setIsLoadingMore(false);
+		footer.showDone();
+		super.refreshListener();
+
 		if(!observer.canLoadMore()){
 			showNothingToLoad();
+		}else{
+			table.setMode(Mode.PULL_FROM_END);
 		}
 	}
 
@@ -171,11 +175,12 @@ public class AtmListFragment extends BaseTable{
 
 	@Override
 	public int getGroupMenuLocation() {
-		return BankMenuItemLocationIndex.PAY_BILLS_GROUP;
+		return BankMenuItemLocationIndex.ATM_LOCATOR_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return BankMenuItemLocationIndex.REVIEW_PAYEMENTS_SECTION;
+		return (observer instanceof SearchNearbyFragment) 
+				? BankMenuItemLocationIndex.FIND_NEARBY_SECTION: BankMenuItemLocationIndex.SEARCH_BY_LOCATION;
 	}
 }

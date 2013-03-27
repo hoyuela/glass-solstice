@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,8 +120,8 @@ public class ReviewCheckDepositTableCell extends RelativeLayout {
 	public void showErrorLabel(final String text) {
 		final TextView errorLabel = (TextView)findViewById(R.id.error_label);
 		if( errorLabel != null ) {
-			errorLabel.setText(text);
-			errorLabel.setVisibility(View.VISIBLE);
+			errorLabel.setText(Html.fromHtml(text).toString());
+			errorLabel.setVisibility(View.VISIBLE);	    
 		}
 	}
 	

@@ -1,11 +1,18 @@
 package com.discover.mobile.bank.error;
 
+import java.net.SocketTimeoutException;
+
+import android.util.Log;
+
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
+import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
+import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
 
@@ -25,6 +32,7 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 	private Throwable lastThrowable;
 	private NetworkServiceCall<?> lastSender;
 	private static final BankExceptionHandler instance = new BankExceptionHandler();
+	private static final String TAG = BankExceptionHandler.class.getSimpleName();
 	
 	private BankExceptionHandler() {
 
@@ -66,6 +74,16 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 					DiscoverActivityManager.getActiveActivity(),
 					IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE,
 					null);
+		}
+		// Need to inform KeepAlive to keep attempting refresh calls upon a failure.
+		else if (sender instanceof RefreshBankSessionCall) {
+			KeepAlive.resetLastBankRefreshTime();
+		}
+		// If exception because of a check deposit socket timeout then just ignore, it is handled elsewhere
+		else if( sender instanceof SubmitCheckDepositCall && arg0 instanceof SocketTimeoutException ) {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Check Deposit Timed-out!");
+			}
 		}
 		//Catch-all exception handler
 		else {

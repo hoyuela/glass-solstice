@@ -30,6 +30,7 @@
     <dimen name="orange_help_button_size">30dp</dimen>
     <dimen name="toggle_button_height">35dp</dimen>
     <dimen name="search_bar_arrow_margin_top">8dp</dimen>
+    <dimen name="account_toggle_outside_padding">18dp</dimen>
 
     <!-- Discover Font Sizes -->
     <dimen name="title_max">27sp</dimen>
@@ -44,6 +45,7 @@
     <dimen name="table_inner_padding">15dp</dimen>
     <dimen name="white_button_left_right_padding">15dp</dimen>
     <dimen name="white_button_margin_top">15dp</dimen>
+     <dimen name="nav_footer_font_size">12sp</dimen>
 
     <!-- Navigation Menu -->
     <dimen name="nav_menu_shadow_width">15dp</dimen>
@@ -59,6 +61,7 @@
     <dimen name="nav_section_size">16dp</dimen>
     <dimen name="nav_image_padding">10dp</dimen>
     <dimen name="nav_footer_height">1dp</dimen>
+   
 
     <!-- Logout Button -->
     <dimen name="logout_padding">6dp</dimen>

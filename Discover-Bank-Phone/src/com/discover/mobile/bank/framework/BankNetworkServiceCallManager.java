@@ -30,6 +30,8 @@ import com.discover.mobile.bank.services.atm.GetDirectionsServiceCall;
 import com.discover.mobile.bank.services.atm.GetLocationFromAddressServiceCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
+import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
+import com.discover.mobile.bank.services.auth.CreateBankSSOLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
@@ -51,12 +53,15 @@ import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFailureHandler;
 import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.NetworkServiceCallManager;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -183,6 +188,32 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		return isSSO;
 	}
+	
+	/**
+	 * Determines if the error was from a bank session refresh. If so, it means that the user's session is no longer alive.
+	 * 
+	 * @param error
+	 *            Reference to an error provided via a response to a
+	 *            NetworkServiceCall<>
+	 * @return true if it was a refresh call and it's now dead, false otherwise.
+	 */
+	public boolean isSessionDead(final ErrorResponse<?> error) {
+		boolean isDead = false;
+
+		final int httpErrorCode = error.getHttpStatusCode();
+		final HttpURLConnection conn = error.getConnection();
+
+		if( httpErrorCode ==  HttpURLConnection.HTTP_UNAUTHORIZED ) {
+			final String url = conn.getURL().toString();
+
+			if(!Strings.isNullOrEmpty(url)) {
+				if( url.contains(BankUrlManager.getRefreshSessionUrl())) {
+					isDead = true;
+				}
+			}
+		}
+		return isDead;
+	}
 
 	/**
 	 * Method defines the implementation of the handleFailure callback defined by ErrorResponseHandler.
@@ -206,7 +237,17 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 					((BankErrorSSOResponse) error).token,
 					((BankErrorSSOResponse) error).hashedValue);
 		}
-
+		
+		// Check if the error was a Ping. if so, then session died.
+		else if (isSessionDead(error)) {
+			Globals.setLoggedIn(false);
+			Globals.setCurrentUser("");
+			KeepAlive.setBankAuthenticated(false);
+			BankUser.instance().clearSession();
+			final ErrorHandlerUi uiHandler = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
+			FacadeFactory.getCardLogoutFacade().logout(activeActivity, uiHandler);
+			BankConductor.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
+		}
 		//Dispatch response to BankBaseErrorHandler to determine how to handle the error
 		else {
 			errorHandler.handleFailure(sender, error);
@@ -247,6 +288,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	@Override
 	public void success(final NetworkServiceCall<?> sender, final Serializable result) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
+		
+		//A successful call refreshes the session -- update KeepAlive service with information.
+		KeepAlive.updateLastBankRefreshTime();
 
 		//If Strong Auth Activity is open close it only in the case when the user is NOT logging in
 		if( !(sender instanceof CreateStrongAuthRequestCall) && 		//Shouldn't close strong auth page on a strong auth success
@@ -261,10 +305,14 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			//during a strong auth or after. Have to wait for navigation root to come to foreground first.
 			this.handleSuccessLater(sender, result);
 		}
+		
+		
 		//Download Customer Information if a Login call is successful
-		else if( sender instanceof CreateBankLoginCall ) {
+		else if( sender instanceof CreateBankLoginCall || sender instanceof CreateBankSSOLoginCall) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-
+			
+			KeepAlive.setBankAuthenticated(true);
+			
 			//Set logged in to be able to save user name in persistent storage
 			Globals.setLoggedIn(true);
 
@@ -272,7 +320,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			activity.updateAccountInformation(AccountType.BANK_ACCOUNT);
 
 			BankServiceCallFactory.createCustomerDownloadCall().submit();
-		}
+		} 
 		//Download Account Summary Information if a Customer Download is successful
 		else if( sender instanceof CustomerServiceCall ) {
 			//Verify user has bank accounts otherwise navigate to no accounts page
@@ -413,6 +461,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putString(BankExtraKeys.TO_ADDRESS, helper.getTo());
 			BankConductor.navigateToEmailDirections(bundle);
 		}
+		// Ignore success		
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "NetworkServiceCallManager ignored success of a NetworkServiceCall!");
@@ -471,7 +520,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	@Override
 	public void start(final NetworkServiceCall<?> sender) {
 		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
-		activeActivity.startProgressDialog();
+		
+		/* Service calls that do not show dialog must override functionality here */
+		if(sender instanceof RefreshBankSessionCall) {
+			// Show Nothing
+		} else {
+			activeActivity.startProgressDialog();
+		}
 
 		/**Clear the current last error stored in the error handler*/
 		errorHandler.clearLastError();
@@ -479,7 +534,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		/**
 		 * Update prevCall only if it is a different service request from current call
 		 * or if current call is null
-		 * */
+		 */
 		if( curCall == null || curCall.getClass() != sender.getClass() ) {
 			prevCall = curCall;			
 		} else {
@@ -576,5 +631,5 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			instance.notifyAll();
 		}
 	}
-
+	
 }
