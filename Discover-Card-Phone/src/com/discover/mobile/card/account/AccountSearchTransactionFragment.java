@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.discover.mobile.card.CardAsyncCallbackBuilder;
-import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.services.account.CategoriesDetail;
 import com.discover.mobile.card.services.account.CategoryDetail;
@@ -52,7 +51,7 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 	 * Get the categories for the spinner
 	 */
 	private void getCategories() {
-
+		
 		final Builder<CategoriesDetail> callback =CardAsyncCallbackBuilder
 				.createDefaultCallbackBuilder(CategoriesDetail.class,
 						getActivity(), (ErrorHandlerUi) this.getActivity(),
@@ -69,33 +68,33 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 			public void success(final NetworkServiceCall<?> sender, final CategoriesDetail cat) {
 
 				final List<CategoryDetail> cd = cat.categories;
-				//				cd.add(new CategoryDetail("-","-"));
+//				cd.add(new CategoryDetail("-","-"));
 				cd.addAll(cat.otherCategories);
 
 				final ArrayAdapter<CategoryDetail> spinnerAdapter = new ArrayAdapter<CategoryDetail>(
 						getActivity(), R.layout.push_simple_spinner,
 						R.id.amount, cd);
 				spinnerAdapter
-				.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
+						.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
 				categorySpinner.setAdapter(spinnerAdapter);
 
 				categorySpinner
-				.setOnItemSelectedListener(new OnItemSelectedListener() {
+						.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-					@Override
-					public void onItemSelected(final AdapterView<?> arg0,
-							final View arg1, final int arg2, final long arg3) {
-						final CategoryDetail cdo = (CategoryDetail) categorySpinner
-								.getSelectedItem();
-						Log.e("", cdo.categoryDesc);
-					}
+							@Override
+							public void onItemSelected(final AdapterView<?> arg0,
+									final View arg1, final int arg2, final long arg3) {
+								final CategoryDetail cdo = (CategoryDetail) categorySpinner
+										.getSelectedItem();
+								Log.e("", cdo.categoryDesc);
+							}
 
-					@Override
-					public void onNothingSelected(final AdapterView<?> arg0) {
-						// TODO Auto-generated method stub
-						Log.e("", "How did I even???");
-					}
-				});
+							@Override
+							public void onNothingSelected(final AdapterView<?> arg0) {
+								// TODO Auto-generated method stub
+								Log.e("", "How did I even???");
+							}
+						});
 			}
 		});
 
@@ -182,29 +181,29 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 				toggleById(group, toggleButton.getId());
 
 				if (toggleButton.getId() == R.id.toggle_left) {
-
+				
 					fromField.setVisibility(View.GONE);
 					toField.setVisibility(View.GONE);
-
+					
 				} else if ( toggleButton.getId() == R.id.toggle_middle) { 
 					fromField.setVisibility(View.VISIBLE);
 					((TextView) fromField.findViewById(R.id.date_input_title))
-					.setText(getResources().getString(
-							R.string.chooser_date_title));
+							.setText(getResources().getString(
+									R.string.chooser_date_title));
 					toField.setVisibility(View.INVISIBLE);
-
+					
 				}else if ( toggleButton.getId() == R.id.toggle_right){
 					fromField.setVisibility(View.VISIBLE);
 					((TextView) fromField.findViewById(R.id.date_input_title))
-					.setText(getResources().getString(
-							R.string.chooser_from_title));
+							.setText(getResources().getString(
+									R.string.chooser_from_title));
 					toField.setVisibility(View.VISIBLE);
 					((TextView) toField.findViewById(R.id.date_input_title))
-					.setText(getResources().getString(
-							R.string.chooser_to_title));
-
+							.setText(getResources().getString(
+									R.string.chooser_to_title));
+					
 				}
-
+				
 			}
 
 		});
@@ -230,25 +229,25 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 				toggleById(group, toggleButton.getId());
 
 				if (toggleButton.getId() == R.id.toggle_left) {
-
+					
 					fromField.setVisibility(View.GONE);
 					toField.setVisibility(View.GONE);
 				}else if (toggleButton.getId() == R.id.toggle_middle ) {
 					fromField.setVisibility(View.VISIBLE);
 					((TextView) fromField.findViewById(R.id.amount_input_title))
-					.setText(getResources().getString(
+							.setText(getResources().getString(
 
 							R.string.chooser_amount_title));
 					toField.setVisibility(View.INVISIBLE);
 				}else if (toggleButton.getId() == R.id.toggle_right ){
 					fromField.setVisibility(View.VISIBLE);
 					((TextView) fromField.findViewById(R.id.amount_input_title))
-					.setText(getResources().getString(
-							R.string.chooser_from_title));
+							.setText(getResources().getString(
+									R.string.chooser_from_title));
 					toField.setVisibility(View.VISIBLE);
 					((TextView) toField.findViewById(R.id.amount_input_title))
-					.setText(getResources().getString(
-							R.string.chooser_to_title));
+							.setText(getResources().getString(
+									R.string.chooser_to_title));
 				}
 			}
 
@@ -278,16 +277,6 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 				}
 			}
 		}
-	}
-
-	@Override
-	public int getGroupMenuLocation() {
-		return CardMenuItemLocationIndex.ACCOUNT_GROUP;
-	}
-
-	@Override
-	public int getSectionMenuLocation() {
-		return CardMenuItemLocationIndex.SEARCH_TRANSACTION_SECTION;
 	}
 
 }

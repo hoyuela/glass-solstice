@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.account.AccountSearchTransactionFragment;
 import com.discover.mobile.card.account.summary.LatePaymentModalTop;
@@ -26,7 +25,7 @@ import com.discover.mobile.common.callback.GenericAsyncCallback;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.widgets.ExtendingScrollView;
+import com.discover.mobile.card.common.uiwidget.ExtendingScrollView;
 
 /**
  * Recent account activity fragment. Allows the user to see details related to
@@ -147,11 +146,11 @@ public class AccountRecentActivityFragment extends BaseFragment {
 	private void resumeFragment() {
 		final RecentActivityRotationHelper helper = RecentActivityRotationHelper
 				.getHelper();
-		currentRange = helper.getCurrentRange();
-		pending.showTransactions(helper.getPending());
-		posted.showTransactions(helper.getPosted());
-		periods = helper.getPeriods();
-		transactions = helper.getTransactions();
+		this.currentRange = helper.getCurrentRange();
+		this.pending.showTransactions(helper.getPending());
+		this.posted.showTransactions(helper.getPosted());
+		this.periods = helper.getPeriods();
+		this.transactions = helper.getTransactions();
 		helper.clearHelper();
 		showTransactions();
 	}
@@ -411,15 +410,5 @@ public class AccountRecentActivityFragment extends BaseFragment {
 		if (null != transactions && null != transactions.loadMoreLink) {
 			loadMoreTransactions(transactions.loadMoreLink);
 		}
-	}
-
-	@Override
-	public int getGroupMenuLocation() {
-		return CardMenuItemLocationIndex.ACCOUNT_GROUP;
-	}
-
-	@Override
-	public int getSectionMenuLocation() {
-		return CardMenuItemLocationIndex.RECENT_ACTIVITY_SECTION;
 	}
 }

@@ -14,17 +14,13 @@ import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.CardFacade;
-import com.discover.mobile.common.ui.CardInfoForToggle;
-
 
 /**
- * The impl class for the card login facade 
- * @author ssmith
+ * The impl class for the card nav facade 
+ * @author ekaram
  *
  */
 public class CardFacadeImpl implements CardFacade{
-
-	
 
 	@Override
 	public void navToRegister(BaseActivity callingActivity) {
@@ -65,11 +61,11 @@ public class CardFacadeImpl implements CardFacade{
 		//TODO add phone gap initialization code here!
 		
 	}
+	
+	
 
-	@Override
-	public CardInfoForToggle getCardInfoForToggle() {
-		// TODO Implement (Do not return default constructor)
-		return new CardInfoForToggle();
-	}
+	
+
+
 	
 }

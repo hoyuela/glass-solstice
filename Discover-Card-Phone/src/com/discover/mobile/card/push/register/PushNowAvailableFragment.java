@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 
@@ -22,10 +21,10 @@ import com.discover.mobile.card.home.HomeSummaryFragment;
  *
  */
 public class PushNowAvailableFragment extends BasePushRegistrationUI{
-
+	
 	/**String representing this class to enter into the back stack*/
 	private static final String TAG = PushNowAvailableFragment.class.getSimpleName();
-
+	
 	/**
 	 * Creates the fragment, inflates the view and defines the button functionality.
 	 * @param inflater - inflater that will inflate the layout
@@ -37,22 +36,21 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		final View view = inflater.inflate(R.layout.push_now_available, null);
 		final Button manageAlerts = (Button) view.findViewById(R.id.manage_alerts_button);
 		final TextView accountHome = (TextView) view.findViewById(R.id.account_home_view);
-
+		
 		manageAlerts.setOnClickListener(new OnClickListener(){
-			@Override
 			public void onClick(final View v){
 				registerWithDiscover(DECLINE, true);
 			}
 		});
-
+		
 		accountHome.setOnClickListener(new OnClickListener(){
-			@Override
 			public void onClick(final View v){
 				registerWithDiscover(DECLINE, false);
+				changeToDeclineScreen();
 			}
 		});
 
@@ -74,22 +72,12 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 	public void changeToDeclineScreen() {
 		this.makeFragmentVisible(new HomeSummaryFragment());
 	}
-
+	
 	/**
 	 * Return the integer value of the string that needs to be displayed in the title
 	 */
 	@Override
 	public int getActionBarTitle() {
 		return R.string.manage_push_fragment_title;
-	}
-
-	@Override
-	public int getGroupMenuLocation() {
-		return CardMenuItemLocationIndex.HOME_GROUP;
-	}
-
-	@Override
-	public int getSectionMenuLocation() {
-		return CardMenuItemLocationIndex.HOME_SECTION;
 	}
 }

@@ -1,0 +1,12 @@
+<resources>
+    <string name="base_url_dev">https://asys.m.discovercard.com</string>
+    <string name="url_in_use">https://asys.m.discovercard.com</string>
+    <string name="discover_url">/cardsvcs/acs/</string>
+    
+    <string name="forgotUserID_url">reg/v1/user/id</string>
+    <string name="logOut_url">session/v1/delete</string>
+    <string name="resettimer_url">session/v1/update</string>
+    
+    <string name="login_url">acct/v1/account</string>
+    
+</resources>

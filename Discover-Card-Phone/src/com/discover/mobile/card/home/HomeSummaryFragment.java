@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.CommonMethods;
 import com.discover.mobile.card.R;
@@ -61,9 +60,9 @@ public class HomeSummaryFragment extends BaseFragment {
 				.getCurrentSessionDetails().getAccountDetails();
 
 		setupCurrentBalanceElement(accountDetails);
-		setupLastStatementElement(accountDetails);
-		setupBonusBalance(accountDetails);
-		setupBonusOffer(accountDetails);
+		//setupLastStatementElement(accountDetails);
+		//setupBonusBalance(accountDetails);
+		//setupBonusOffer(accountDetails);
 	}
 
 	/**
@@ -246,16 +245,6 @@ public class HomeSummaryFragment extends BaseFragment {
 	 */
 	@Override
 	public int getActionBarTitle() {
-		return R.string.account_summary_title;
-	}
-
-	@Override
-	public int getGroupMenuLocation() {
-		return CardMenuItemLocationIndex.HOME_GROUP;
-	}
-
-	@Override
-	public int getSectionMenuLocation() {
-		return CardMenuItemLocationIndex.HOME_SECTION;
+		return -1;
 	}
 }
