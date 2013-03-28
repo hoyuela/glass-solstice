@@ -13,9 +13,11 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
@@ -72,8 +74,6 @@ public class AtmMarkerBalloonManager{
 		}else{
 			return getMarkerView(atm);
 		}
-
-
 	}
 
 	private View getCurrentLocationView() {
@@ -81,8 +81,10 @@ public class AtmMarkerBalloonManager{
 		final TextView addressBox = (TextView) view.findViewById(R.id.address);
 		final TextView city = (TextView) view.findViewById(R.id.city);
 
-		addressBox.setText(address.getAddressLine(0));
-		city.setText(address.getLocality() +", " + address.getAdminArea());
+		if(null != address){
+			addressBox.setText(address.getAddressLine(0));
+			city.setText(address.getLocality() +", " + address.getAdminArea());
+		} 
 		return view;
 	}
 
@@ -90,13 +92,29 @@ public class AtmMarkerBalloonManager{
 		final View view = LayoutInflater.from(context).inflate(R.layout.bank_atm_marker_info, null);
 		final TextView name = (TextView) view.findViewById(R.id.name);
 		final TextView address = (TextView) view.findViewById(R.id.address);
+		final TextView hoursLabel = (TextView) view.findViewById(R.id.hours_label);
+		final ImageView hoursDivider = (ImageView) view.findViewById(R.id.divider1);
+		final ImageView directionsDivider = (ImageView) view.findViewById(R.id.divider3);
 		streetView = (ImageView) view.findViewById(R.id.street_view);
 		final TextView hours = (TextView) view.findViewById(R.id.hours);
 		final TextView directionsLabel = (TextView) view.findViewById(R.id.directions_label);
 
-		name.setText(atm.locationName);
+		if(atm.locationName.length() > 15){
+			name.setText(atm.locationName.substring(0, 15) + "...");
+		}else{
+			name.setText(atm.locationName);
+		}
 		address.setText(atm.address1);
-		hours.setText(atm.atmHrs.replace("Sat", "\nSat"));
+		if(atm.atmHrs.equalsIgnoreCase(AtmDetail.UNKNOWN)){
+			hours.setVisibility(View.GONE);
+			hoursLabel.setVisibility(View.GONE);
+			hoursDivider.setVisibility(View.GONE);
+			final RelativeLayout.LayoutParams layoutParams = 	(RelativeLayout.LayoutParams)directionsDivider.getLayoutParams();
+			layoutParams.addRule(RelativeLayout.BELOW, R.id.top_layout);
+			directionsDivider.setLayoutParams(layoutParams);
+		}else{
+			hours.setText(atm.atmHrs.replace("Sat", "\nSat"));
+		}
 		final String distance = String.format(Locale.US, "%.2f", atm.distanceFromUser);
 		directionsLabel.setText(String.format(context.getString(R.string.atm_location_get_directions), distance));
 		return view;
@@ -121,28 +139,26 @@ public class AtmMarkerBalloonManager{
 			@Override
 			public void onInfoWindowClick(final Marker marker) {
 				final AtmDetail atm = markerMap.get(marker); 
-
 				//Means it was the current location that was clicked.
 				if(null != atm){
-
 					try {
-
 						final String addressString =  atm.address1 + " "  + atm.city +" " + atm.state;
 						final Geocoder coder = new Geocoder(context);
 						final List<Address> addresses = coder.getFromLocationName(addressString, 1);
 						final Bundle bundle = new Bundle();
-						if(null != addresses || addresses.isEmpty()){
-							bundle.putDouble(BankExtraKeys.STREET_LAT, atm.getLatitude());
-							bundle.putDouble(BankExtraKeys.STREET_LON, atm.getLongitude());							
-						}else{
+						if(null == addresses || addresses.isEmpty()){
 							bundle.putDouble(BankExtraKeys.STREET_LAT, addresses.get(0).getLatitude());
-							bundle.putDouble(BankExtraKeys.STREET_LON, addresses.get(0).getLongitude());
+							bundle.putDouble(BankExtraKeys.STREET_LON, addresses.get(0).getLongitude());						
+						}else{
+							bundle.putDouble(BankExtraKeys.STREET_LAT, atm.getLatitude());
+							bundle.putDouble(BankExtraKeys.STREET_LON, atm.getLongitude());	
 						}
 						bundle.putInt(BankExtraKeys.ATM_ID, atm.id);
 						fragment.showStreetView(bundle);
 					} catch (final IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						if(Log.isLoggable(AtmMarkerBalloonManager.class.getSimpleName(), Log.ERROR)){
+							Log.e(AtmMarkerBalloonManager.class.getSimpleName(), "Error Getting Street View:" + e);
+						}
 					}
 
 				}				

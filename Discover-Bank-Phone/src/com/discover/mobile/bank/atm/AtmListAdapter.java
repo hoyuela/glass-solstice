@@ -117,7 +117,13 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		holder.address2.setText(detail.city + ", " + detail.state + " " + detail.postalCode);
 		final String distance = String.format(Locale.US, "%.2f", detail.distanceFromUser);
 		holder.distance.setText(distance + " M");
-		holder.hours.setText(detail.atmHrs.replace("Sat", "\nSat"));
+
+		if(detail.atmHrs.equalsIgnoreCase(AtmDetail.UNKNOWN)){
+			holder.hours.setVisibility(View.INVISIBLE);
+			holder.hoursLabel.setVisibility(View.INVISIBLE);
+		}else{
+			holder.hours.setText(detail.atmHrs.replace("Sat", "\nSat"));
+		}
 
 		//Expand the view if it was previously expanded
 		if(detail.isExpanded){
@@ -126,6 +132,10 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		}else{
 			holder.expand.setImageDrawable(context.getResources().getDrawable(R.drawable.atm_expand_icon));
 			holder.bottom.setVisibility(View.GONE);
+		}
+		showServices(holder, detail);
+		if(holder.numFeatures == 0){
+			holder.serviceLabel.setVisibility(View.INVISIBLE);	
 		}
 	}
 
@@ -170,7 +180,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 	 * @param holder - view holder
 	 * @param detail - atm detail
 	 */
-	public void showServices(final ItemViewHolder holder, final AtmDetail detail){
+	private void showServices(final ItemViewHolder holder, final AtmDetail detail){
 		//Set up the service features
 		if(detail.braille.equalsIgnoreCase(AtmDetail.HAS_FEATURE)){
 			getServiceView(holder, AtmDetail.BRAILLE);
@@ -204,6 +214,8 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		holder.distance = (TextView) view.findViewById(R.id.distance);
 		holder.bottom = (RelativeLayout) view.findViewById(R.id.bottom);
 		holder.hours = (TextView) view.findViewById(R.id.hours);
+		holder.hoursLabel = (TextView) view.findViewById(R.id.hours_label);
+		holder.serviceLabel = (TextView) view.findViewById(R.id.services_label);
 		holder.service1 = (TextView) view.findViewById(R.id.service1);
 		holder.service2 = (TextView) view.findViewById(R.id.service2);
 		holder.service3 = (TextView) view.findViewById(R.id.service3);
@@ -303,6 +315,8 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		public TextView distance;
 		public RelativeLayout bottom;
 		public TextView hours;
+		public TextView hoursLabel;
+		public TextView serviceLabel;;
 		public TextView service1;
 		public TextView service2;
 		public TextView service3;

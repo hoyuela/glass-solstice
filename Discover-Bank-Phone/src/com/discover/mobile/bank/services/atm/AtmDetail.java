@@ -57,6 +57,9 @@ public class AtmDetail extends LocationObject implements Serializable{
 	/**String for 24 hours*/
 	public static final String ALL_HOURS = "24 hours";
 
+	/**String used when something is UNKNOWN*/
+	public static final String UNKNOWN = "UNKNOWN";
+
 	/**ATM unique identifier*/
 	@JsonProperty("atmIdentifier")
 	public int id;
