@@ -1,13 +1,12 @@
 package com.discover.mobile.bank.ui.widgets;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,7 +32,6 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  */
 public abstract class DetailViewPager extends BaseFragment implements DynamicDataFragment{
 	private final String TAG = DetailViewPager.class.getSimpleName();
-	private final DetailViewPager me = this;
 
 	/** The View Pager*/
 	private ViewPager viewPager;
@@ -49,10 +47,6 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * the primary account holder.
 	 */
 	private TextView jointAccountWarning;
-
-	/** The next and previous buttons that can change the visible Fragment*/
-	private ImageView previousViewButton;
-	private ImageView nextViewButton;
 
 	/** Requires any subclass to define what title label to use for the ViewPager action bar*/
 	@Override
@@ -119,7 +113,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 		helpMenuOnClick(help);
 
 		loadAllViewsFrom(mainView);		
-		setupClickListeners();
+		setupNavButtons(mainView);
 		
 		return mainView;
 	}
@@ -131,15 +125,21 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	public void onPause() {
 		final SlidingMenu slidingMenu = ((SlidingFragmentActivity)this.getActivity()).getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-
+		
+		if(viewPager != null){
+			viewPager.removeAllViews();
+			viewPager.setAdapter(null);
+		}
+		
 		super.onPause();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		final TransactionWaiter waiter = new TransactionWaiter();
-		waiter.execute();
+		setupViewPager();
+		updateViewPagerState(viewPager.getCurrentItem());
+		updateSlidingDrawerLock();
 	}
 	
 	/**
@@ -163,8 +163,6 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 
 		//Access the views that are inside of the nav_buttons layout inside of our layout.
 		final RelativeLayout mainBar = (RelativeLayout)mainView.findViewById(R.id.nav_buttons);
-		previousViewButton = (ImageView)mainBar.findViewById(R.id.previous_button);
-		nextViewButton = (ImageView)mainBar.findViewById(R.id.next_button);
 		titleLabel = (TextView)mainBar.findViewById(R.id.title);
 		jointAccountWarning = (TextView)mainBar.findViewById(R.id.joint_account_warning_label);
 
@@ -174,12 +172,27 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 		return viewPager;
 	}
 
+	private void setupNavButtons(final View mainView) {
+		((ImageView)mainView.findViewById(R.id.next_button)).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				showNextFragment(v);
+			}
+		});
+		
+		((ImageView)mainView.findViewById(R.id.previous_button)).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				showPreviousFragment(v);
+			}
+		});
+	}
+
 	/**
 	 * Setup the ViewPager to accept a collection of fragments to show.
 	 */
 	private void setupViewPager() {
-		viewPager.setAdapter(new ViewPagerFragmentAdapter(getFragmentManager()));
-		viewPager.setOffscreenPageLimit(2);
+		viewPager.setAdapter(new ViewPagerFragmentAdapter(getChildFragmentManager()));
 		viewPager.setCurrentItem(getInitialViewPosition());
 		updateTitleLabel(getTitleForFragment(getInitialViewPosition()));
 
@@ -203,7 +216,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * drawer menu, loading more data if needed, and enableing or disabling the next and previous buttons.
 	 * @param position
 	 */
-	private void updateViewPagerState(final int position) {
+	private void updateViewPagerState(final int position) {		
 		updateTitleLabel(getTitleForFragment(position));
 		updateSlidingDrawerLock();
 		loadMoreIfNeeded(position);
@@ -236,11 +249,15 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * @param position
 	 */
 	private void updateSlidingDrawerLock() {
-		final SlidingMenu slidingMenu = ((SlidingFragmentActivity)this.getActivity()).getSlidingMenu();
-		if(isCurrentPositionAtStart()){
-			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		}else{
-			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+		final SlidingFragmentActivity currentActivity = (SlidingFragmentActivity)getActivity();
+		if(currentActivity != null) {
+			final SlidingMenu slidingMenu = currentActivity.getSlidingMenu();
+			if(slidingMenu != null) {
+				if(isCurrentPositionAtStart())
+					slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+				else
+					slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+			}
 		}
 	}
 
@@ -251,22 +268,22 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * @param position
 	 */
 	protected void updateNavigationButtons() {
-
+		final View mainView = this.getView();
 		if(isCurrentPositionAtStart()) {
-			previousViewButton.setEnabled(false);
+			mainView.findViewById(R.id.previous_button).setEnabled(false);
 		}else{
-			previousViewButton.setEnabled(true);
+			mainView.findViewById(R.id.previous_button).setEnabled(true);
 		}
 
 		if(isCurrentPositionAtEnd()) {
-			nextViewButton.setEnabled(false);
+			mainView.findViewById(R.id.next_button).setEnabled(false);
 		} else {
-			nextViewButton.setEnabled(true);
+			mainView.findViewById(R.id.next_button).setEnabled(true);
 		}
 
 		if(getViewCount() < 2){
-			nextViewButton.setVisibility(View.INVISIBLE);
-			previousViewButton.setVisibility(View.INVISIBLE);
+			mainView.findViewById(R.id.next_button).setVisibility(View.INVISIBLE);
+			mainView.findViewById(R.id.previous_button).setVisibility(View.INVISIBLE);
 		}
 	}
 
@@ -291,43 +308,15 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * @param position
 	 */
 	protected abstract void loadMoreIfNeeded(final int position);
-
-	/**
-	 * Does the setup for the next and previous buttons so that when they are clicked, they will increment
-	 * or decrement the index of the view pager to show a different fragment.
-	 */
-	private void setupClickListeners() {
-		final int minusOne = -1;
-		final int plusOne = 1;
-
-		previousViewButton.setOnClickListener(getOnClickListenerToAdjustPageIndexBy(minusOne));
-		nextViewButton.setOnClickListener(getOnClickListenerToAdjustPageIndexBy(plusOne));
+	
+	public void showNextFragment(final View view) {
+		if(viewPager != null)
+			viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
 	}
-
-	/**
-	 * Returns an OnClickListener that will change the view of the view pager by the provided index.
-	 * @param adjustIndexBy the value that will be used to adjust the index of the view pager upon clicking.
-	 * @return a new OnClickListener that will adjust the index of the view pager.
-	 */
-	private OnClickListener getOnClickListenerToAdjustPageIndexBy(final int adjustIndexBy) {
-		OnClickListener listener = null;
-
-		if(viewPager != null){
-			listener = new OnClickListener() {
-				@Override
-				public void onClick(final View v) {
-					viewPager.setCurrentItem(viewPager.getCurrentItem() + adjustIndexBy);
-				}
-			};
-		}else{
-			listener = new OnClickListener() {
-				@Override
-				public void onClick(final View v) {
-					Log.e(TAG, "ERROR: Click listener was initialized with no ViewPager");
-				}
-			};
-		}
-		return listener;
+	
+	public void showPreviousFragment(final View view) {
+		if(viewPager != null)
+			viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
 	}
 
 	/**
@@ -355,7 +344,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 */
 	public class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
 		
-		public ViewPagerFragmentAdapter(final android.support.v4.app.FragmentManager fragmentManager) {
+		public ViewPagerFragmentAdapter(final FragmentManager fragmentManager) {
 			super(fragmentManager);
 		}
 
@@ -379,33 +368,4 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 		}
 	}
 	
-	/**
-	 * This AsyncTask waits for the parent fragment to finish its transaction before it starts to populate
-	 * the view pager content. This prevents recursive entry errors with Fragment transactions.
-	 * 
-	 * @author scottseward
-	 *
-	 */
-	protected class TransactionWaiter extends AsyncTask<Void, Void, Void> {
-
-		/**
-		 * While the main Fragment is executing its transaction, wait.
-		 */
-		@Override
-		protected Void doInBackground(final Void... params) {
-			while(!me.isResumed()) {/*DO NOTHING*/}
-			return null;
-		}
-		
-		/**
-		 * Setup the ViewPager
-		 */
-		@Override
-		protected void onPostExecute(final Void result) {
-			setupViewPager();
-			updateViewPagerState(viewPager.getCurrentItem());
-			updateSlidingDrawerLock();
-		}
-		
-	}
 }
