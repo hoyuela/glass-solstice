@@ -159,6 +159,12 @@ public class AtmWebView{
 	public void show(){
 		web.setVisibility(View.VISIBLE);
 		loadingSpinner.setVisibility(View.VISIBLE);
+	}
 
+	/**
+	 * Show the web view
+	 */
+	public void showWebView(){
+		web.setVisibility(View.VISIBLE);
 	}
 }
