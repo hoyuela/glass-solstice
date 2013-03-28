@@ -16,16 +16,24 @@
         android:singleLine="true"
         android:textStyle="bold"
         android:text="@string/bank_deposit_amount" />
-
-    <TextView
-        android:id="@+id/dollar_sign"
-        android:layout_below="@+id/top_label"
-        android:layout_above="@+id/error_label"
- 		style="@style/dollar_sign_style"/>
     
-    <com.discover.mobile.bank.deposit.BankAmountLimitValidatedField
-        android:id="@+id/editable_field"
-        style="@style/amount_style"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/error_label"
+        android:layout_below="@+id/top_label"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/dollar_sign"
+            style="@style/dollar_sign_style"
+            android:layout_gravity="center_vertical" />
+
+        <com.discover.mobile.bank.deposit.BankAmountLimitValidatedField
+            android:id="@+id/editable_field"
+            style="@style/amount_style"
+            android:layout_gravity="center_vertical" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/error_label"
@@ -33,7 +41,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editable_field"
-        android:visibility="gone"
-        android:text="@string/bank_invalid_characters" />
-
+        android:text="@string/bank_invalid_characters"
+        android:visibility="gone" />
 </RelativeLayout>

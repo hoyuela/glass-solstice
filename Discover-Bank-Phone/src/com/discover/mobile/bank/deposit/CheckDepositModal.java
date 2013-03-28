@@ -41,8 +41,8 @@ public class CheckDepositModal extends ModalAlertWithOneButton {
 		
 		linearLayout.removeAllViews();
 		
-		final float topWeight = 6.5f;
-		final float bottomWeight = 3.5f;
+		final float topWeight = 6f;
+		final float bottomWeight = 4f;
 		final ModalTopView top = getTop();
 		final ModalBottomOneButtonView bottom = getBottom();
 

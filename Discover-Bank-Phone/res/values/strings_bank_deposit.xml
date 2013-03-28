@@ -43,11 +43,11 @@
 	<string name="how_it_works">How It Works</string>
 	
 	<string name="select_bank_account">1. Select Bank Account</string>
-	<string name="select_bank_account_info">Choose where you\'ll\ndeposit your check.</string>
+	<string name="select_bank_account_info">Choose where you\'ll deposit your check.</string>
 	<string name="enter_amount">2. Enter Amount</string>
-	<string name="enter_amount_info">You must deposit the\nwhole value of the check.</string>
+	<string name="enter_amount_info">You must deposit the whole value of the check.</string>
 	<string name="take_the_picture">3. Take the Picture</string>
-	<string name="take_the_picture_info">Use the camera on your\nphone to capture the front\nand back of the check.</string>
+	<string name="take_the_picture_info">Use the camera on your phone to capture the front and back of the check.</string>
 	
 	<string name="deposit_now">Deposit Now</string>
 	<string name="do_not_go_back">Do Not Go Back</string>

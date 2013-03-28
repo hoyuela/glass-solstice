@@ -19,6 +19,7 @@ import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
@@ -317,8 +318,15 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 						 * Checking if the Activity is null due to a crash occuring when the modal is open
 						 * and you tap yes quickly the activity is null and the app will crash. 
 						 */
-						if ((BankNavigationRootActivity) getActivity() != null)
-							((BankNavigationRootActivity) getActivity()).popTillFragment(BankManagePayee.class);
+						if ((BankNavigationRootActivity) getActivity() != null) {
+							/**Check if user navigated to this screen from Manage Payees*/
+							final boolean handled = ((BankNavigationRootActivity) getActivity()).popTillFragment(BankManagePayee.class);
+							
+							/**If was unable to navigate to Manage Payees then navigate to BankSelect Payee*/
+							if( !handled ) {
+								((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
+							}
+						}
 					}
 				});
 

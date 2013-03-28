@@ -41,6 +41,9 @@ public class AccountToggleView extends RelativeLayout {
 
 	/** true if widget is shown, false otherwise. */
 	private boolean isShown;
+	
+	/** Used to prevent redrawing of the indicator */
+	private boolean isIndicatorDrawn = false;
 
 	public AccountToggleView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -119,6 +122,8 @@ public class AccountToggleView extends RelativeLayout {
 		lp.addRule(RelativeLayout.BELOW, indicator.getId());
 		lp.setMargins(0, -3, 0, 0);
 		bubble.setLayoutParams(lp);
+		
+		isIndicatorDrawn = true;
 	}
 
 	/**
@@ -157,6 +162,14 @@ public class AccountToggleView extends RelativeLayout {
 			bankCheck.setVisibility(View.INVISIBLE);
 			cardCheck.setVisibility(View.VISIBLE);
 		}
+	}
+	
+	/**
+	 * Once the indicator is placed and drawn, there is no need to redraw it.
+	 * @return true if indicator is drawn, false otherwise.
+	 */
+	public boolean hasIndicatorBeenDrawn() {
+		return isIndicatorDrawn;
 	}
 
 	/**

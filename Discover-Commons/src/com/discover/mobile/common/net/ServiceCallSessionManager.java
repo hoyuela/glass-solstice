@@ -21,9 +21,15 @@ import com.discover.mobile.common.Globals;
  * @author henryoyuela
  *
  */
-final class ServiceCallSessionManager {
+public final class ServiceCallSessionManager {
 	
 	private static final CookieManager cookieManager = createAndSetupCookieManager();
+	
+	/**
+	 * Constant to hold the key value for the eds cookie
+	 * The eds cookie holds a 6 digit number alternative to a user id
+	 */
+	private static final String EDS_COOKIE = "dfsedskey";
 	
 	/**
 	 * Initializes an instance of the  Android CookieManager
@@ -85,6 +91,28 @@ final class ServiceCallSessionManager {
 		return token;
 	}
 	
+	
+	
+	/**
+	 * EDS Key - unique alternative for the user id
+	 * 
+	 * @return  Returns null if not available
+	 */
+	public static String getEDSKey() {
+		
+		String edsKey = null;
+		
+		// CookieManager is assumed to bring its own thread safety
+		for(final HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {	
+			if(EDS_COOKIE.equalsIgnoreCase(cookie.getName())){
+				edsKey = cookie.getValue();
+				break;
+			}
+		}
+		
+		
+		return edsKey;
+	}
 	/**
 	 * Used to include the currently cached token in the HTTP header of an HttpURLConnection. 
 	 * For Card web-service request the token is stored in the X-Sec-Token HTTP Header and for Bank 

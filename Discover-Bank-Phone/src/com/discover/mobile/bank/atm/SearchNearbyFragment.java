@@ -27,14 +27,4 @@ public class SearchNearbyFragment extends AtmMapFragment{
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.FIND_NEARBY_SECTION;
 	}
-
-	@Override
-	public int getMapFragmentId() {
-		return R.id.discover_map_2;
-	}
-
-	@Override
-	public int getListFragmentId() {
-		return R.id.discover_list_2;
-	}
 }

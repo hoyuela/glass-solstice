@@ -310,8 +310,10 @@ implements OnPaymentCanceledListener {
 	 * @param fragmentClassType
 	 *            Class type of the fragment to look for in the back stack.
 	 */
-	public void popTillFragment(final Class<?> fragmentClassType) {
+	public boolean popTillFragment(final Class<?> fragmentClassType) {
 		final FragmentManager fragManager = this.getSupportFragmentManager();
+		boolean ret = false;
+		
 		/**
 		 * Search for the fragment with the class type specified in the
 		 * backstack
@@ -324,7 +326,11 @@ implements OnPaymentCanceledListener {
 			for( int i = 0; i < callsToPop; i++ ) {
 				fragManager.popBackStackImmediate();
 			}
-		}
+			
+			ret = true;
+		} 
+		
+		return ret;
 	}
 
 	/**

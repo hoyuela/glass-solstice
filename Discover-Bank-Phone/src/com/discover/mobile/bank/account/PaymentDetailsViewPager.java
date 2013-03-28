@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
@@ -22,6 +23,7 @@ import com.google.common.base.Strings;
 public class PaymentDetailsViewPager extends DetailViewPager {
 	private ListPaymentDetail detailList = new ListPaymentDetail();
 	private int initialViewPosition = 0;
+	private int fragmentTitle;
 
 	@Override
 	public int getActionBarTitle() {
@@ -71,6 +73,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		if(bundle != null){
 			detailList = (ListPaymentDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 			initialViewPosition = bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX);
+			fragmentTitle = bundle.getInt(BankExtraKeys.TITLE_TEXT);
 		}
 	}
 
@@ -84,10 +87,14 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		if(currentBundle == null) {
 			currentBundle = new Bundle();
 		}
-
-		currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, getViewPager().getCurrentItem());
-		currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, detailList);
+		
+		final ViewPager viewPager = getViewPager();
+		if(viewPager != null)
+			currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, viewPager.getCurrentItem());
+		if(detailList != null)
+			currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, detailList);
 		return currentBundle;
+		
 	}
 
 	/**
@@ -128,18 +135,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	@Override
 	protected int getTitleForFragment(final int position) {
 		if(detailList.payments.size() > 0){
-			//Scheduled Payment or Completed Payment
-			final String paymentStatus = detailList.payments.get(position).status;
-			if(null == paymentStatus){return R.string.no_data_found;}
-			if("SCHEDULED".equals(paymentStatus)) {
-				return R.string.scheduled_payment;
-			} else if ("PAID".equals(paymentStatus)) {
-				return R.string.completed_payment;
-			} else if ("CANCELLED".equals(paymentStatus)) {
-				return R.string.cancelled_payment;
-			} else {
-				return R.string.payment_detail;
-			}
+			return fragmentTitle;
 		} else {
 			return R.string.no_data_found;
 		}

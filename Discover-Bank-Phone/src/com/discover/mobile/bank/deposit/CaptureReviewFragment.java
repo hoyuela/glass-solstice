@@ -412,7 +412,8 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(currentActivity, modalTopView, bottom);
 		bottom.getOkButton().setOnClickListener(dismissModalOnClickListener(modal));
 		bottom.getCancelButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
-		modal.show();
+		
+		this.showCustomAlertDialog(modal);
 	}
 
 	@Override
@@ -470,7 +471,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			/**Store values stored in each field*/
 			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
 			outState.putInt(BankExtraKeys.AMOUNT, depositAmount);
-	
 			
 			/**Store error shown at bottom of amount field*/
 			if( amountDetail != null && amountDetail.getEditableField().isInErrorState ) {
