@@ -287,10 +287,13 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			paymentAccountSpinner.setSelection(savedInstanceState
 					.getInt(PAY_FROM_ACCOUNT_ID));
 			amountEdit.setText(savedInstanceState.getString(AMOUNT));
-			dateText.setText(formatPaymentDate(
-					savedInstanceState.getString(DATE_YEAR),
-					savedInstanceState.getString(DATE_MONTH),
-					savedInstanceState.getString(DATE_DAY)));
+			String year = savedInstanceState.getString(DATE_YEAR);
+			if(year != null) {
+				dateText.setText(formatPaymentDate(
+						year,
+						savedInstanceState.getString(DATE_MONTH),
+						savedInstanceState.getString(DATE_DAY)));
+			}
 			memoEdit.setText(savedInstanceState.getString(MEMO));
 			memoText.setText(savedInstanceState.getString(MEMO));
 			
