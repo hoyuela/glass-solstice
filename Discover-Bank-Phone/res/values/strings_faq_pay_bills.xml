@@ -31,7 +31,7 @@
 		<string name="who_can_use_bill_pay_title">Who can use Online Bill Pay?</string>
 		<string name="who_can_use_bill_pay_body">
 		    Online Bill Pay can be used by any Discover Bank customer who has a Money Market Account,
-		    with the exceptio of individuals acting in the following capacities: Agent, Attorney-In-Fact
+		    with the exception of individuals acting in the following capacities: Agent, Attorney-In-Fact
 		    and Guardian.
 		</string>
 		
@@ -78,7 +78,7 @@
 			Canceled – Bill payment has been canceled. Deleting a scheduled bill payment will result in a canceled status.
 		</string>
 		
-		<string name="delete_payment_title">Why can\’t I edit or delete a bill payment?</string>
+		<string name="delete_payment_title">Why can’t I edit or delete a bill payment?</string>
 		<string name="delete_payment_body">
 		    If the bill payment has already been processed and sent to the payee, you cannot edit or delete it. 
 		    Additionally, bill payments that have been scheduled by a Joint Account holder can only be 
@@ -90,4 +90,5 @@
 		    To set up a repeating bill payment, visit the full site at DiscoverBank.com and click on the Make a 
 		    Payment tab or use the browser on your mobile phone and then click the Full Site link at the bottom.
 		</string>
+		
 </resources>

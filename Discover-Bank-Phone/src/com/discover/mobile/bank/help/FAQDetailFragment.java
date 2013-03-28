@@ -178,7 +178,7 @@ public class FAQDetailFragment extends BaseFragment {
 	
 	@Override
 	public int getActionBarTitle() {
-		return getTitleForFragment();
+		return R.string.faq_title;
 	}
 
 	@Override
