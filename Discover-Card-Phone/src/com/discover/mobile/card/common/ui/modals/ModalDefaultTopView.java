@@ -2,6 +2,8 @@ package com.discover.mobile.card.common.ui.modals;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.text.Html;
+import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,7 +93,8 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	 * @param content - String with text to be displayed as the message
 	 */
 	public void setContent(final String content) {
-		text.setText(content);
+		text.setText(Html.fromHtml(content));
+		Linkify.addLinks(text, Linkify.ALL);
 	}
 	
 	/**

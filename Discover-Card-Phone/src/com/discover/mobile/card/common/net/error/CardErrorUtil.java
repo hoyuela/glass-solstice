@@ -247,7 +247,7 @@ final public class CardErrorUtil {
             else if(responseBean.data.get(0).userid!=null)
             {
             	 errCode.append("_WITHUSERID");
-            	 userIdToken="<br/>Your User id is:"+responseBean.data.get(0).userid;
+            	 userIdToken="<br><br><b>Your User ID is:</b>"+responseBean.data.get(0).userid;
             }
         
         }

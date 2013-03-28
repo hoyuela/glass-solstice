@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.Button;

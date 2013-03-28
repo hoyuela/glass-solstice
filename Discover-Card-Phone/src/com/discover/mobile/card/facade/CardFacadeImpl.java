@@ -16,22 +16,25 @@ import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.CardFacade;
 import com.discover.mobile.common.ui.CardInfoForToggle;
 
+
 /**
- * The impl class for the card nav facade 
- * @author ekaram
+ * The impl class for the card login facade 
+ * @author ssmith
  *
  */
 public class CardFacadeImpl implements CardFacade{
 
+	
+
 	@Override
-	public void navToRegister(final BaseActivity callingActivity) {
+	public void navToRegister(BaseActivity callingActivity) {
 		final Intent newVisibleIntent = new Intent(callingActivity, RegistrationAccountInformationActivity.class);
 		callingActivity.startActivity(newVisibleIntent);
 		callingActivity.finish();
 	}
 
 	@Override
-	public void navToForgot(final BaseActivity callingActivity) {
+	public void navToForgot(BaseActivity callingActivity) {
 		final Intent newVisibleIntent = new Intent(callingActivity, ForgotCredentialsActivity.class);
 		callingActivity.startActivity(newVisibleIntent);
 		callingActivity.finish();
@@ -40,7 +43,7 @@ public class CardFacadeImpl implements CardFacade{
 	}
 
 	@Override
-	public void navToHomeFragment(final Activity callingActivity) {
+	public void navToHomeFragment(Activity callingActivity) {
 		final Intent strongAuth = new Intent(callingActivity, CardNavigationRootActivity.class);
 
 		callingActivity.startActivityForResult(strongAuth, 0);
@@ -65,14 +68,8 @@ public class CardFacadeImpl implements CardFacade{
 
 	@Override
 	public CardInfoForToggle getCardInfoForToggle() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO Implement (Do not return default constructor)
+		return new CardInfoForToggle();
 	}
-	
-	
-
-	
-
-
 	
 }
