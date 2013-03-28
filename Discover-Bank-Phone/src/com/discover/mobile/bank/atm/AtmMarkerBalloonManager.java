@@ -50,6 +50,12 @@ public class AtmMarkerBalloonManager{
 	/**Fragment with the balloons*/
 	private final AtmMapFragment fragment;
 
+	/**Number of characters allowed in a title*/
+	private final int MAX_LENGTH = 15;
+
+	/**String representing ellipses*/
+	private static final String DOTS = "...";
+
 	/**
 	 * Constructor for the class
 	 * @param context - context used to render the layout
@@ -76,6 +82,10 @@ public class AtmMarkerBalloonManager{
 		}
 	}
 
+	/**
+	 * Get the view that will be associated with the current location
+	 * @return the view that will be associated with the current location
+	 */
 	private View getCurrentLocationView() {
 		final View view = LayoutInflater.from(context).inflate(R.layout.bank_atm_current_locaiton, null);
 		final TextView addressBox = (TextView) view.findViewById(R.id.address);
@@ -88,6 +98,11 @@ public class AtmMarkerBalloonManager{
 		return view;
 	}
 
+	/**
+	 * Get the view that will be shown to represent an ATM on the map.
+	 * @param atm - ATM that was clicked on
+	 * @return the view that will be shown to represent an ATM on the map.
+	 */
 	private View getMarkerView(final AtmDetail atm) {
 		final View view = LayoutInflater.from(context).inflate(R.layout.bank_atm_marker_info, null);
 		final TextView name = (TextView) view.findViewById(R.id.name);
@@ -99,8 +114,8 @@ public class AtmMarkerBalloonManager{
 		final TextView hours = (TextView) view.findViewById(R.id.hours);
 		final TextView directionsLabel = (TextView) view.findViewById(R.id.directions_label);
 
-		if(atm.locationName.length() > 15){
-			name.setText(atm.locationName.substring(0, 15) + "...");
+		if(atm.locationName.length() > MAX_LENGTH){
+			name.setText(atm.locationName.substring(0, MAX_LENGTH) + DOTS);
 		}else{
 			name.setText(atm.locationName);
 		}
@@ -109,7 +124,7 @@ public class AtmMarkerBalloonManager{
 			hours.setVisibility(View.GONE);
 			hoursLabel.setVisibility(View.GONE);
 			hoursDivider.setVisibility(View.GONE);
-			final RelativeLayout.LayoutParams layoutParams = 	(RelativeLayout.LayoutParams)directionsDivider.getLayoutParams();
+			final RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)directionsDivider.getLayoutParams();
 			layoutParams.addRule(RelativeLayout.BELOW, R.id.top_layout);
 			directionsDivider.setLayoutParams(layoutParams);
 		}else{
@@ -160,7 +175,6 @@ public class AtmMarkerBalloonManager{
 							Log.e(AtmMarkerBalloonManager.class.getSimpleName(), "Error Getting Street View:" + e);
 						}
 					}
-
 				}				
 			}
 		};
