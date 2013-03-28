@@ -43,31 +43,31 @@ import com.xtify.sdk.api.XtifySDK;
  *
  */
 public class PushManageFragment extends BaseFragment{
-
+	
 	/**Static string representing a - */
 	private static final String HYPEN = "-";
-
+	
 	/**Push prefs retrieved from the server*/
 	private PushNotificationPrefsDetail prefs;
-
+	
 	/**Boolean holding the state of the master text toggle switch*/
 	private boolean isMasterTextEnabled = false;
 
 	/**Boolean holding the state of the master push toggle switch*/
 	private boolean isMasterPushEnabled = false;
-
+	
 	/**ImageView representing the state of the master text toggle switch*/
 	private ImageView enableText;
 
 	/**ImageView representing the state of the master push toggle switch*/
 	private ImageView enablePush;
-
+	
 	/**TextView holding the phone number*/
 	private TextView phoneNumber;
-
+	
 	/**Header holding the manage you account list*/
 	private PushManageHeaderItem manageHeader;
-
+	
 	/**Linear layout holding a list of toggle items for the manage account*/
 	private LinearLayout manageList;
 
@@ -82,25 +82,25 @@ public class PushManageFragment extends BaseFragment{
 
 	/**Linear layout holding a list of toggle items for the rewards*/
 	private LinearLayout maximizeList;
-
+	
 	/**Application resources*/
 	private Resources res;
-
+	
 	/**Activity context*/
 	private Context context;
-
+	
 	/**List of all the categories being displayed*/
 	private List<PushManageCategoryItem> categoriesList;
-
+	
 	/**Relative layout representing the save item*/
 	private PushManageSaveView saveItem;
-
+	
 	/**Factory for creating the push manage items*/
 	private PushManageItemFactory factory;
-
+	
 	/**Hidden field used to show messages*/
 	private TextView hiddenField;
-
+	
 	/**
 	 * Create the view
 	 * @param inflater - inflater that will inflate the layout
@@ -118,7 +118,7 @@ public class PushManageFragment extends BaseFragment{
 		setListsInHeader();
 		return mainView;
 	}
-
+	
 	/**
 	 * Set the click handlers on the items that need them
 	 * @param mainView - view holding the items that need the click handlers
@@ -132,21 +132,21 @@ public class PushManageFragment extends BaseFragment{
 				savePreferences();
 			}
 		});
-
+		
 		enablePush.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
 				togglePushSwitch();
 			}
 		});
-
+		
 		enableText.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
 				toggleTextSwitch();
 			}	
 		});
-
+		
 		termsLaunch.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
@@ -182,7 +182,7 @@ public class PushManageFragment extends BaseFragment{
 		isMasterTextEnabled = true;
 		toggleSwitch(enableText, isMasterTextEnabled);
 	}
-
+	
 	/**
 	 * Set the master push switch active
 	 */
@@ -190,7 +190,7 @@ public class PushManageFragment extends BaseFragment{
 		isMasterPushEnabled = true;
 		toggleSwitch(enablePush, isMasterPushEnabled);
 	}
-
+	
 	/**
 	 * Toggle the master push enable switch of and on
 	 */
@@ -198,16 +198,16 @@ public class PushManageFragment extends BaseFragment{
 		isMasterPushEnabled = (isMasterPushEnabled) ? false : true;
 		toggleSwitch(enablePush, isMasterPushEnabled);
 	}
-
+	
 	/**
 	 * Toggle the master text enable switch of and on
 	 */
 	protected void toggleTextSwitch() {
 		isMasterTextEnabled = (isMasterTextEnabled) ? false : true;
 		toggleSwitch(enableText, isMasterTextEnabled);
-
+		
 	}
-
+	
 	/**
 	 * Toggle a switch according to its current state
 	 * @param image - imageview of the state to switch
@@ -220,7 +220,7 @@ public class PushManageFragment extends BaseFragment{
 			image.setBackgroundDrawable(res.getDrawable(R.drawable.swipe_off));
 		}
 	}
-
+	
 	/**
 	 * On resume of the page make sure the fragment gets an updated version of the prefs
 	 */
@@ -228,20 +228,20 @@ public class PushManageFragment extends BaseFragment{
 	public void onResume(){
 		super.onResume();
 		categoriesList = new ArrayList<PushManageCategoryItem>();
-
+		
 		final AsyncCallback<PushNotificationPrefsDetail> callback = 
 				GenericAsyncCallback.<PushNotificationPrefsDetail>builder(this.getActivity())
 				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
-						getResources().getString(R.string.push_progress_registration_loading), 
-						true)
-						.withSuccessListener(new GetPushPrefsSuccessListener(this))
-						.withErrorResponseHandler(new GetPushPrefsErrorResponseHandler())
-						.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-						.build();
-
-		new GetNotificationPreferences(context, callback).submit();
+									getResources().getString(R.string.push_progress_registration_loading), 
+									true)
+				.withSuccessListener(new GetPushPrefsSuccessListener(this))
+				.withErrorResponseHandler(new GetPushPrefsErrorResponseHandler())
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.build();
+		
+		new GetNotificationPreferences(this.context, callback).submit();
 	}
-
+	
 	/**
 	 * Associate the correct linear layout with it's header
 	 */
@@ -250,7 +250,7 @@ public class PushManageFragment extends BaseFragment{
 		monitorHeader.setList(monitorList);
 		maximizeHeader.setList(maximizeList);	
 	}
-
+	
 	/**
 	 * Create a list from the information
 	 * @param list - list to put the items in
@@ -262,7 +262,7 @@ public class PushManageFragment extends BaseFragment{
 			final String[] categories, 
 			final String[] headers, 
 			final String[] texts){
-
+		
 		final int lengthOfHeaders = headers.length;
 
 		for(int i = 0; i < lengthOfHeaders; i++) {
@@ -275,15 +275,15 @@ public class PushManageFragment extends BaseFragment{
 			categoriesList.add(item);
 		}
 	}
-
+	
 	/**
 	 * Create the list for the monitor your spending
 	 */
 	private void createMonitorList() {
-
+		
 		final int tamtDefined = getAmountFromPrefsToPlaceInEditText(res.getString(R.string.purchase_amount_category),
 				prefs.remindersEnrollResults.tamtDefAmt);
-
+		
 		final PushManageCategoryItem purchase = factory.createItem(
 				res.getString(R.string.purchase_amount_category), 
 				res.getString(R.string.purchase_amount_header),
@@ -291,10 +291,10 @@ public class PushManageFragment extends BaseFragment{
 				prefs.remindersEnrollResults.tamtMinAmt,
 				prefs.remindersEnrollResults.tamtMaxAmt,
 				this);		
-
+		
 		final int balanceDefined = getAmountFromPrefsToPlaceInEditText(res.getString(R.string.balance_amount_category),
 				prefs.remindersEnrollResults.balanceDefAmt);
-
+		
 		final PushManageCategoryItem balance = factory.createItem(
 				res.getString(R.string.balance_amount_category), 
 				res.getString(R.string.balance_amount_header),
@@ -302,13 +302,13 @@ public class PushManageFragment extends BaseFragment{
 				prefs.remindersEnrollResults.balanaceMinAmt,
 				prefs.remindersEnrollResults.balanaceMaxAmt,
 				this);
-
+		
 		final int creditLineAmount = getAmountFromPrefsToPlaceInEditText(res.getString(R.string.credit_line_ammount_category),
 				prefs.remindersEnrollResults.crltDefAmt);
-
+		
 		final int creditLineIndex = getDropdownIndexFromAmount(creditLineAmount, 
 				prefs.remindersEnrollResults.crltAmtOptions);
-
+		
 		final PushManageCategoryItem creditLine = factory.createItem(
 				res.getString(R.string.credit_line_ammount_category), 
 				res.getString(R.string.credit_line_ammount_header),
@@ -316,7 +316,7 @@ public class PushManageFragment extends BaseFragment{
 				prefs.remindersEnrollResults.crltAmtOptions,
 				creditLineIndex,
 				this);
-
+		
 		if(showCategory(purchase.getCategory())){
 			monitorList.addView((RelativeLayout)purchase);
 			monitorHeader.setVisibility(View.VISIBLE);
@@ -333,7 +333,7 @@ public class PushManageFragment extends BaseFragment{
 		}
 		categoriesList.add(creditLine);
 	}
-
+	
 	/**
 	 * Get the index of the amount from the list so that it can be displayed in a dropdown correctly
 	 * @param amount - ammount to get from list
@@ -361,8 +361,8 @@ public class PushManageFragment extends BaseFragment{
 		if(null == prefs.remindersEnrollResults || 
 				null == prefs.remindersEnrollResults.preferences || 
 				prefs.remindersEnrollResults.preferences.isEmpty()){return defaultValue;}
-
-
+		
+		
 		for(final PreferencesDetail item: prefs.remindersEnrollResults.preferences){
 			if(null != item.params && !item.params.isEmpty() && item.prefTypeCode.equals(category)){
 				for(final PushManageCategoryParamDetail param : item.params){
@@ -372,9 +372,9 @@ public class PushManageFragment extends BaseFragment{
 				}
 			}
 		}
-
+		
 		return defaultValue;
-
+		
 	}
 
 	/**
@@ -385,10 +385,10 @@ public class PushManageFragment extends BaseFragment{
 				res.getString(R.string.rewards_reminder_category),
 				res.getString(R.string.rewards_reminder_header),
 				res.getString(R.string.rewards_reminder_text));
-
+		
 		final int mrrwDefAmount = getAmountFromPrefsToPlaceInEditText(res.getString(R.string.cashback_bonus_category),
 				prefs.remindersEnrollResults.mrrwDefAmt);
-
+		
 		final PushManageCategoryItem cashBackBonus = factory.createItem(
 				res.getString(R.string.cashback_bonus_category),
 				res.getString(R.string.cashback_bonus_header),
@@ -407,9 +407,9 @@ public class PushManageFragment extends BaseFragment{
 			maximizeHeader.setVisibility(View.VISIBLE);
 		}
 		categoriesList.add(cashBackBonus);
-
+		
 	}
-
+	
 	/**
 	 * Determine if the category should be shown
 	 * @param category - category in question
@@ -427,14 +427,14 @@ public class PushManageFragment extends BaseFragment{
 		monitorHeader.setHeader(res.getString(R.string.monitor_your_spending_title));
 		maximizeHeader.setHeader(res.getString(R.string.maximize_your_rewards_title));	
 	}
-
+	
 	/**
 	 * Clear all the lists so that they can be repopulated
 	 */
 	private void clearLists() {
-		manageList.removeAllViews();
-		maximizeList.removeAllViews();
-		monitorList.removeAllViews();
+		this.manageList.removeAllViews();
+		this.maximizeList.removeAllViews();
+		this.monitorList.removeAllViews();
 	}
 
 	/**
@@ -443,7 +443,7 @@ public class PushManageFragment extends BaseFragment{
 	public void showTermsAndConditions(){
 		makeFragmentVisible(new PushTermsAndConditionsFragment());
 	}
-
+	
 	/**
 	 * Return the integer value of the string that needs to be displayed in the title
 	 */
@@ -451,20 +451,20 @@ public class PushManageFragment extends BaseFragment{
 	public int getActionBarTitle() {
 		return R.string.manage_push_fragment_title;
 	}
-
+	
 	/**
 	 * Set the preferences
 	 * @param detail - preferences to set 
 	 */
 	public void setPrefs(final PushNotificationPrefsDetail detail){
-		prefs = detail;
+		this.prefs = detail;
 	}
-
+	
 	/**
 	 * Display the preferences in their lists so that they can be modified
 	 */
 	public void displayPrefs(){
-		if(null == prefs){return;}
+		if(null == this.prefs){return;}
 		factory = new PushManageItemFactory(context, prefs, this);
 		clearLists();
 		categoriesList.clear();
@@ -501,16 +501,16 @@ public class PushManageFragment extends BaseFragment{
 		final AsyncCallback<PostPreferencesDetail> callback = 
 				GenericAsyncCallback.<PostPreferencesDetail>builder(this.getActivity())
 				.showProgressDialog(getResources().getString(R.string.push_progress_get_title), 
-						getResources().getString(R.string.push_progress_registration_loading), 
-						true)
-						.withSuccessListener(new PostPrefsSuccessListener(this))
-						.withErrorResponseHandler(new PushPrefsErrorHandler((CardNavigationRootActivity)this.getActivity()))
-						.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-						.build();
-
-		new PostNotificationPreferences(context, callback, getPreferences()).submit();
+									getResources().getString(R.string.push_progress_registration_loading), 
+									true)
+				.withSuccessListener(new PostPrefsSuccessListener(this))
+				.withErrorResponseHandler(new PushPrefsErrorHandler((CardNavigationRootActivity)this.getActivity()))
+				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+				.build();
+		
+		new PostNotificationPreferences(this.context, callback, getPreferences()).submit();
 	}
-
+	
 	/**
 	 * Get the preferences so that they can be posted to the server
 	 * @return - the preferences so that they can be posted to the server
@@ -521,10 +521,10 @@ public class PushManageFragment extends BaseFragment{
 		final PostPreferencesDetail post = new PostPreferencesDetail();
 		final String version = Build.VERSION.RELEASE;
 		final String phone = phoneNumber.getText().toString().replaceAll(HYPEN, "");
-
+		
 		post.vid = XtifySDK.getXidKey(context);
 		post.os = PostPreferencesDetail.DEFAULT_OS;
-
+		
 		if(null != version){
 			post.osVersion = version;
 		} else{
@@ -545,7 +545,7 @@ public class PushManageFragment extends BaseFragment{
 	 */
 	private List<PostPrefDetail> getPrefs() {
 		final List<PostPrefDetail> newPrefs = new ArrayList<PostPrefDetail>();
-		final boolean textIsEnabled = (isMasterTextEnabled && (null != prefs.remindersEnrollResults.phoneNumber));
+		final boolean textIsEnabled = (this.isMasterTextEnabled && (null != prefs.remindersEnrollResults.phoneNumber));
 		for(final PushManageCategoryItem item : categoriesList){
 			newPrefs.add(item.getTextPreferencesDetail(textIsEnabled));
 			newPrefs.add(item.getPushPreferencesDetail(isMasterPushEnabled));
@@ -560,29 +560,29 @@ public class PushManageFragment extends BaseFragment{
 	private String getCarrier() {
 		// TODO: Solve this values are below:
 		//<option value="message.alltel.com">Alltel</option>
-		//<option value="txt.att.net">AT&T</option>
-		//<option value="myboostmobile.com">Boost Mobile</option>
-		//<option value="messaging.nextel.com">Nextel</option>
-		//<option value="messaging.sprintpcs.com">Sprint</option>
-		//<option value="tmomail.net">T-Mobile</option>
-		//<option value="email.uscc.net">U.S. Cellular</option>
-		//<option value="vtext.com">Verizon/Amp'd</option>
-		//<option value="vmobl.com">Virgin Mobile</option>
+        //<option value="txt.att.net">AT&T</option>
+        //<option value="myboostmobile.com">Boost Mobile</option>
+        //<option value="messaging.nextel.com">Nextel</option>
+        //<option value="messaging.sprintpcs.com">Sprint</option>
+        //<option value="tmomail.net">T-Mobile</option>
+        //<option value="email.uscc.net">U.S. Cellular</option>
+        //<option value="vtext.com">Verizon/Amp'd</option>
+        //<option value="vmobl.com">Virgin Mobile</option>
 		return null;
 	}
-
+	
 	/**
 	 * Show the save bar
 	 */
 	public void showSaveBar(){
 		boolean isValid = true;
-
+		
 		for(final PushManageCategoryItem item : categoriesList){
 			if(!item.isValid()){
 				isValid = false;
 			}
 		}
-
+		
 		if(isValid){
 			saveItem.setVisibility(View.VISIBLE);
 			hideSuccessSave();
@@ -602,14 +602,14 @@ public class PushManageFragment extends BaseFragment{
 	public void showSuccessSave() {
 		hiddenField.setVisibility(View.VISIBLE);
 	}
-
+	
 	/**
 	 * Hide the successful save
 	 */
 	public void hideSuccessSave() {
 		hiddenField.setVisibility(View.GONE);
 	}
-
+	
 	@Override
 	public int getGroupMenuLocation() {
 		return CardMenuItemLocationIndex.PROFILE_AND_SETTINGS_GROUP;

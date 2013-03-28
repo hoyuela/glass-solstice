@@ -1,0 +1,6 @@
+<resources>
+	<error>
+	    <id>401</id>
+	    <msg>Sorry. The User ID and/or Password does not match our records, or you are not registered. Please try again.</msg>
+	</error>
+</resources>

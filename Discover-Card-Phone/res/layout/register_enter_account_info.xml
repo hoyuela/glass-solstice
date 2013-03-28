@@ -28,7 +28,7 @@
                 android:layout_below="@+id/account_info_error_label"
                 android:text="@string/account_info_label_one" />
 
-            <com.discover.mobile.common.ui.widgets.UsernameOrAccountNumberEditText
+            <com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText
                 android:id="@+id/account_info_main_input_field"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/input_field_height"
@@ -69,7 +69,7 @@
                 android:layout_marginTop="@dimen/table_inner_padding"
                 android:text="@string/account_info_ssn_info_text" />
 
-            <com.discover.mobile.common.ui.widgets.SsnEditText
+            <com.discover.mobile.card.common.uiwidget.SsnEditText
                 android:id="@+id/account_info_ssn_input_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
                 android:onClick="goBack"
                 android:text="@string/cancel_text" />
 
-            <com.discover.mobile.common.ui.widgets.CardExpirationDateEditText
+            <com.discover.mobile.card.common.uiwidget.CardExpirationDateEditText
                 android:id="@+id/account_info_card_exp_date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                 android:layout_below="@+id/account_info_card_exp_date_picker"
                 android:text="@string/invalid_input" />
 
-            <com.discover.mobile.common.ui.widgets.DatePickerEditText
+            <com.discover.mobile.card.common.uiwidget.DatePickerEditText
                 android:id="@+id/account_info_birth_date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

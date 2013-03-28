@@ -1,0 +1,98 @@
+package com.discover.mobile.card.common.net.service;
+
+import java.util.HashMap;
+
+/**
+ * This class is web service request model class.
+ * 
+ * @author Anuja Deshpande
+ */
+
+public final class WSRequest {
+    private String strURL;
+    private String strMethodType;
+    private byte[] btInput;
+    private HashMap<String, String> hmHeaderValues;
+    
+    private int connectionTimeOut=10000;
+
+    public WSRequest() {
+        hmHeaderValues = new HashMap<String, String>();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        // TODO Auto-generated method stub
+        super.finalize();
+        hmHeaderValues.clear();
+        hmHeaderValues = null;
+    }
+
+    /**
+     * @return the url
+     */
+    public String getUrl() {
+        return strURL;
+    }
+
+    /**
+     * @param url
+     *            the url to set
+     */
+    public void setUrl(final String url) {
+        strURL = url;
+    }
+
+    /**
+     * @return the methodtype
+     */
+    public String getMethodtype() {
+        return strMethodType;
+    }
+
+    /**
+     * @param methodtype
+     *            the methodtype to set
+     */
+    public void setMethodtype(final String methodtype) {
+        strMethodType = methodtype;
+    }
+
+    /**
+     * @return the headerValues
+     */
+    public HashMap<String, String> getHeaderValues() {
+        return hmHeaderValues;
+    }
+
+    /**
+     * @param headerValues
+     *            the headerValues to set
+     */
+    public void setHeaderValues(final HashMap<String, String> headerValues) {
+        hmHeaderValues = headerValues;
+    }
+
+    /**
+     * @return the input
+     */
+    public byte[] getInput() {
+        return btInput;
+    }
+
+    /**
+     * @param input
+     *            the input to set
+     */
+    public void setInput(final byte[] input) {
+        btInput = input;
+    }
+
+	public int getConnectionTimeOut() {
+		return connectionTimeOut;
+	}
+
+	public void setConnectionTimeOut(int connectionTimeOut) {
+		this.connectionTimeOut = connectionTimeOut;
+	}
+}

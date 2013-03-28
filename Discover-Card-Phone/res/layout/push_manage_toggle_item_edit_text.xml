@@ -49,7 +49,7 @@
 		android:layout_alignTop="@+id/text_toggle_view"
 		android:layout_marginLeft="@dimen/push_header_margin_left"/>
 	
-	<com.discover.mobile.common.ui.widgets.PushManageEditText
+	<com.discover.mobile.card.common.uiwidget.PushManageEditText
 	    android:id="@+id/amount_box"
 	    android:layout_width="wrap_content"
     	android:layout_height="wrap_content"

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Value part should be number  -->
+    <string name="account_details">1</string>
+    
+</resources>

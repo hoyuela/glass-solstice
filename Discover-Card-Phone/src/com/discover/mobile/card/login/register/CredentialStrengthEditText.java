@@ -16,10 +16,10 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.InputValidator;
+import com.discover.mobile.card.common.uiwidget.ValidatedInputField;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.ui.widgets.ValidatedInputField;
 
 /**
  * Editable View which validates the text entered with a password or user id strength algorithm.
@@ -45,7 +45,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 	/**
 	 * Special value used to indicate to the class to use the Password rules for
 	 * evaluating strength of entered text
-	 **/
+	 **/;
 	public static final int PASSWORD = 0;
 	/**
 	 * Special value used to indicate to the class to use the User ID rules for
@@ -596,9 +596,9 @@ public class CredentialStrengthEditText extends ValidatedInputField {
 		boolean isValid = false;
 
 		if(mCredentialType == PASSWORD)
-			isValid = InputValidator.isPasswordValid(currentInput);
+			isValid = InputValidator.validatePassword(currentInput);
 		else
-			isValid = InputValidator.isUserIdValid(currentInput);
+			isValid = InputValidator.validateUserId(currentInput);
 
 		return isValid;
 

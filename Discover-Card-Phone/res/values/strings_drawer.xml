@@ -1,8 +1,33 @@
 <resources>
     <string name="section_title_home">Home</string>
+    
     <string name="section_title_account">Account</string>
     <string name="sub_section_title_recent_activity">Recent Activity</string>
     <string name="sub_section_title_search_transaction">Search Transaction</string>
     <string name="sub_section_title_account_summary">Account Summary</string>
     <string name="sub_section_title_statements">Statements</string>
+    
+    
+    <string name="section_title_payments">Payments</string>
+    <string name="sub_section_title_make_a_payment">Make a Payment</string>
+    <string name="sub_section_title_manage_payments">Manage Payments</string>
+    <string name="sub_section_title_manage_bank_information">Manage Bank Information</string>
+    <string name="sub_section_title_send_money">Send Money</string>
+    <string name="sub_section_title_send_money_history">Send Money History</string>
+    
+    
+    <string name="section_title_earn_cashback_bonus">Earn Cashback Bonus</string> 
+    <string name="sub_section_title_signup_for_5">Sign up for Cashback</string>
+    <string name="sub_section_title_extras">Extras</string>
+    <string name="sub_section_title_refer_a_friend">Refer A Friend</string>
+    
+    <string name="section_title_redeem_cashback_bonus">Redeem Cashback Bonus</string>  
+    <string name="sub_section_title_partner_gift_cards">Partner Gift Cards n eCerts</string>
+    <string name="sub_section_title_discover_gift_cards">Discover Gift Cards</string>
+    <string name="sub_section_title_statement_credit">Statement Credit</string>
+    <string name="sub_section_title_direct_deposit">Direct Deposit</string>
+    <string name="sub_section_title_pay_with_cashback_bonus">Pay with Cashback Bonus</string>
+    <string name="sub_section_title_redemption_history">Redemption History</string> 
+    
+    
 </resources>

@@ -1,71 +1,68 @@
 package com.discover.mobile.card.login.register;
 
-import static com.discover.mobile.common.StandardErrorCodes.AUTH_BAD_ACCOUNT_STATUS;
-import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
-import static com.discover.mobile.common.StandardErrorCodes.FAILED_SECURITY;
-import static com.discover.mobile.common.StandardErrorCodes.INVALID_EXTERNAL_STATUS;
-import static com.discover.mobile.common.StandardErrorCodes.INVALID_ONLINE_STATUS;
-import static com.discover.mobile.common.StandardErrorCodes.LAST_ATTEMPT_WARNING;
-import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
-import static com.discover.mobile.common.StandardErrorCodes.ONLINE_STATUS_PROHIBITED;
-import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
-import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
-
-import java.net.HttpURLConnection;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.common.base.Strings;
+
+import com.discover.mobile.common.DiscoverApplication;
+import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
+import com.discover.mobile.common.error.BaseExceptionFailureHandler;
+import com.discover.mobile.common.error.ErrorHandler;
+
+import com.discover.mobile.card.error.CardErrHandler;
+import com.discover.mobile.card.error.CardErrorHandlerUi;
+
+import com.discover.mobile.common.facade.FacadeFactory;
+import com.discover.mobile.common.nav.HeaderProgressIndicator;
+import com.discover.mobile.common.net.NetworkServiceCall;
+
+import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.net.error.CardErrorBean;
+import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
+import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
+import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
+import com.discover.mobile.card.common.net.service.WSRequest;
+import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
+import com.discover.mobile.card.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.card.common.uiwidget.NonEmptyEditText;
+import com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText;
+import com.discover.mobile.card.common.utils.Utils;
+
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
-import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.card.push.register.PushRegistrationStatusSuccessListener;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.card.services.auth.AuthenticateCall;
-import com.discover.mobile.card.services.auth.forgot.ForgotUserIdCall;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.card.services.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail;
-import com.discover.mobile.common.DiscoverModalManager;
-import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.NotLoggedInRoboActivity;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
-import com.discover.mobile.common.error.BaseExceptionFailureHandler;
-import com.discover.mobile.common.error.ErrorHandler;
-import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
-import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
-import com.discover.mobile.common.ui.widgets.UsernameOrAccountNumberEditText;
-import com.discover.mobile.common.utils.CommonUtils;
-import com.google.common.base.Strings;
+
 import com.xtify.sdk.api.XtifySDK;
+
 
 /**
  * This class handles the forgot user ID flow.
@@ -74,7 +71,7 @@ import com.xtify.sdk.api.XtifySDK;
  * @author scottseward
  *
  */
-public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
+public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity implements CardEventListener  {
 
 	private static final String TAG = ForgotUserIdActivity.class.getSimpleName();
 
@@ -111,9 +108,12 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	//INPUT FIELDS
 	private UsernameOrAccountNumberEditText cardNumField;
 	private NonEmptyEditText passField;
+	private DiscoverApplication globalCache;
 
 	//SCROLL VIEW
 	private ScrollView mainScrollView;
+	
+	private int errorCode = 0x0;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
@@ -126,6 +126,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 
 		loadAllViews();
 		setupInputFields();
+		globalCache=(DiscoverApplication)getApplicationContext();
 
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
 
@@ -242,7 +243,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 
 			@Override
 			public void onClick(final View v) {
-				CommonUtils.dialNumber(helpNumberString, currentContext);
+				Utils.dialNumber(helpNumberString, currentContext);
 			}
 		});
 
@@ -276,7 +277,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	private void checkInputsAndSubmit() {
 		cardNumField.updateAppearanceForInput();
 		passField.updateAppearanceForInput();
-		CommonUtils.setViewGone(mainErrLabel);
+		Utils.setViewGone(mainErrLabel);
 
 		if(cardNumField.isValid() && passField.isValid())
 			doForgotUserIdCall();
@@ -290,126 +291,64 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 	 * Submit the form info to the server and handle success or error.
 	 */
 	private void doForgotUserIdCall() {
-		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
+	//	final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 
-		//Used to prevent application from crashing during orientation
-		DiscoverModalManager.setActiveModal(progress);
-		DiscoverModalManager.setAlertShowing(true);
-
-		final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
-			@Override
-			public void success(final NetworkServiceCall<?> sender, final RegistrationConfirmationDetails value) {
-				if( progress != null && progress.isShowing())
-					progress.dismiss();
-				
-				confirmationDetails = value;
-				getAccountDetails();
-			}
-
-			@Override
-			public void complete(final NetworkServiceCall<?> sender, final Object result) {
-				
-			}
-
-			@Override
-			public void failure(final NetworkServiceCall<?> sender, final Throwable error) {
-				if( progress != null && progress.isShowing())
-					progress.dismiss();
-				
-				Log.e(TAG, "Error: " + error.getMessage());
-				showOkAlertDialog("Error", error.getMessage());
-
-				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-				exceptionHandler.handleFailure(sender, error);
-			}
-
-			@Override
-			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
-				if( progress != null && progress.isShowing())
-					progress.dismiss();
-				
-				resetScrollPosition();
-
-				switch (errorResponse.getHttpStatusCode()) {
-				case HttpURLConnection.HTTP_UNAUTHORIZED:
-					displayOnMainErrorLabel(getString(R.string.login_error));
-					return true;
-
-				default:
-					Log.e(TAG, "UNHANDLED ERROR: " + errorResponse.toString());
-					displayOnMainErrorLabel(getString(R.string.unkown_error_text));
-					return true;
-
+		//Lock orientation while request is being processed
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+		//if(Utils.checkNetworkConnection(this))
+		{
+			
+			//new ForgotUserIdPassword().execute();
+			String [] data = new String[2];
+			data[0] = cardNumField.getText().toString().replace(" ", "");
+			data[1] = passField.getText().toString();
+			
+			//  Cts:Commented code was to check global cache functionality. 
+			/*
+			if(globalCache.getData() != null)
+			{
+				RegistrationConfirmationDetails cachedData=(RegistrationConfirmationDetails)globalCache.getData().get(data[0]);
+				if(cachedData!=null)
+				{
+					getDataFromAsync(cachedData);
 				}
-
-			}
-
-
-			@Override
-			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse messageErrorResponse) {
-				if( progress != null && progress.isShowing())
-					progress.dismiss();
-				
-				resetScrollPosition();
-
-				idErrLabel.setText(messageErrorResponse.getMessage());
-
-				switch (messageErrorResponse.getMessageStatusCode()){
-
-				case STRONG_AUTH_NOT_ENROLLED:
-					displayModal(R.string.account_security_title_text, R.string.account_security_not_enrolled, true);
-					return true;
-
-				case LOCKED_OUT_ACCOUNT:
-				case MAX_LOGIN_ATTEMPTS:
-					displayModal(R.string.lockout_title, R.string.locked_account, true);
-					return true;
-
-				case LAST_ATTEMPT_WARNING:
-					displayOnMainErrorLabel(getString(R.string.login_attempt_warning));
-					return true;
-
-				case SAMS_CLUB_MEMBER: 
-					displayModal(R.string.we_are_sorry, R.string.account_info_sams_club_card_error_text, false);
-					return true;
-
-				case REG_AUTHENTICATION_PROBLEM: 
-					displayOnMainErrorLabel(getString(R.string.account_info_bad_input_error_text));					
-					return true;
-
-				case FINAL_LOGIN_ATTEMPT:
-					displayOnMainErrorLabel(getString(R.string.login_attempt_warning));
-					return true;
-
-				case INVALID_EXTERNAL_STATUS:
-				case ONLINE_STATUS_PROHIBITED:
-				case INVALID_ONLINE_STATUS:
-				case BAD_ACCOUNT_STATUS:
-				case AUTH_BAD_ACCOUNT_STATUS:
-					displayModal(R.string.could_not_complete_request, R.string.zluba_error, true);
-					return true;
-
-				case PLANNED_OUTAGE:
-					displayModal(R.string.could_not_complete_request, R.string.planned_outage_one, false);
-					return true;
-
-				case FAILED_SECURITY:	
-					displayOnMainErrorLabel(getString(R.string.account_info_bad_input_error_text));
-					return true;
-
-				default:
-					return false;
-
-				}				
-			}
-		};
-
-		new ForgotUserIdCall(this, callback, CommonUtils.getSpacelessString(cardNumField.getText().toString()), passField.getText().toString()).submit();
+				else
+				*/
+				{
+					//new ForgotUserIDAsyncTask(this).execute(data);
+					callForgotUserID(data);
+				}
+			//}
+			
+		}
 	}
 
+	/**
+	 * This method calls the genralised AsyncTask class WsAsyncTask passing in the DataHolder seralizable class which will be used byJackson to convert Json into PoJO objects
+	 * @param data username and password passed as a string array.
+	 */
+	private void callForgotUserID(String[] data)
+	{
+		WSRequest request = new WSRequest();
+		final String authString = NetworkUtility.getAuthorizationString(data[0],data[1]);
+		
+		// Setting the headers available for the service
+		HashMap<String,String> headers = request.getHeaderValues();
+		headers.put("Authorization", authString);
+		headers.put("X-Override-UID", "true");
+
+		String url = NetworkUtility.getWebServiceUrl(this, R.string.forgotUserID_url) ;
+		
+		request.setUrl(url);
+		request.setHeaderValues(headers);
+	    
+		WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, new RegistrationConfirmationDetails(), "Discover", "Authenticating...",this);
+		serviceCall.execute(request);
+	}
+	
 	private void displayOnMainErrorLabel(final String text){
 		mainErrLabel.setText(text);
-		CommonUtils.setViewVisible(mainErrLabel);
+		Utils.setViewVisible(mainErrLabel);
 	}
 
 	private void resetScrollPosition(){
@@ -443,6 +382,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 				.showProgressDialog("Discover", "Loading...", true)
 				.withErrorResponseHandler(new CardBaseErrorResponseHandler(this))
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+			
 				.withSuccessListener(new SuccessListener<AccountDetails>() {
 
 					@Override
@@ -486,6 +426,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 							.withSuccessListener(new PushConfirmationSuccessListener())
 							.withErrorResponseHandler(new PushRegistrationStatusErrorHandler(FacadeFactory.getLoginFacade().getLoginActivity()))
 							.withExceptionFailureHandler(new BaseExceptionFailureHandler())
+							
 							.finishCurrentActivityOnSuccess(this)
 							.build();
 
@@ -564,7 +505,7 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 
 	@Override
 	public TextView getErrorLabel() {
-		return null;
+		return mainErrLabel;
 	}
 
 	@Override
@@ -572,12 +513,49 @@ public class ForgotUserIdActivity extends NotLoggedInRoboActivity {
 		return null;
 	}
 
+	@Override
+	public Context getContext() {
+	    // TODO Auto-generated method stub
+	    return this;
+	}
 	/* (non-Javadoc)
 	 * @see com.discover.mobile.common.NotLoggedInRoboActivity#getErrorHandler()
 	 */
-	@Override
-	public ErrorHandler getErrorHandler() {
-		return CardErrorHandler.getInstance();
+
+	
+	
+
+	public void getDataFromAsync(final RegistrationConfirmationDetails user)
+	{
+		CardShareDataStore.getInstance(this).addToAppCache(cardNumField.getText().toString().replace(" ", ""), user);
+		confirmationDetails = user;
+        getAccountDetails();
+        
+//		CardSessionContext.getCurrentSessionDetails().setAccountDetails(new AccountDetails());
+//		navigateToConfirmationScreenWithResponseData(user);
 	}
 
+	@Override
+	public void onSuccess(Object data) 
+	{
+			getDataFromAsync((RegistrationConfirmationDetails)data);
+	}
+
+	@Override
+	public void OnError(Object data) {
+		CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(this);
+		cardErrorResHandler.handleCardError((CardErrorBean) data);
+		
+	}
+
+   
+
+    @Override
+    public CardErrHandler getCardErrorHandler() {
+        return CardErrorUIWrapper.getInstance();
+    }
+	
+   
 }
+
+

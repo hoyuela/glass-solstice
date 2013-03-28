@@ -23,22 +23,22 @@ import com.discover.mobile.common.BaseFragment;
  *
  */
 public class ChooseDateRangeFragment extends BaseFragment{
-
+	
 	/**Account activity fragment that needs to get the new date range*/
 	private AccountRecentActivityFragment fragment;
-
+	
 	/**Linear layout to hold all the dates*/
 	private LinearLayout dates;
-
+	
 	/**Activity context*/
 	private Context context;
-
+	
 	/**Key to get the account activity fragment in and out of the bundle*/
 	private static final String FRAGMENT = "fragment";
-
+	
 	/**List of periods to be shown*/
 	private RecentActivityPeriodsDetail periods;
-
+	
 	/**
 	 * Create the view
 	 * @param inflater - used to inflate the layout
@@ -49,12 +49,12 @@ public class ChooseDateRangeFragment extends BaseFragment{
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
-
+		
 		final View view = inflater.inflate(R.layout.choose_period, null);
-
+		
 		dates = (LinearLayout) view.findViewById(R.id.dates);
 		context = this.getActivity();
-
+		
 		resumeFragment(savedInstanceState);
 		displayDateRanges();
 		return view;
@@ -68,7 +68,7 @@ public class ChooseDateRangeFragment extends BaseFragment{
 	public int getActionBarTitle() {
 		return R.string.recent_activity_title;
 	}
-
+	
 	/**
 	 * Save the current state of the fragment
 	 * @param outState - bundle to put the state in
@@ -82,7 +82,7 @@ public class ChooseDateRangeFragment extends BaseFragment{
 			CardSessionContext.getCurrentSessionDetails().setPeriods(periods);
 		}
 	}
-
+	
 	/**
 	 * Resume the fragment
 	 * @param savedInstanceState - bundle holding the state
@@ -91,11 +91,11 @@ public class ChooseDateRangeFragment extends BaseFragment{
 		if(null == savedInstanceState){return;}
 		final FragmentManager manager = this.getFragmentManager();
 		if(null != manager){
-			fragment = (AccountRecentActivityFragment)manager.getFragment(savedInstanceState, FRAGMENT);
-			periods = CardSessionContext.getCurrentSessionDetails().getPeriods();
+			this.fragment = (AccountRecentActivityFragment)manager.getFragment(savedInstanceState, FRAGMENT);
+			this.periods = CardSessionContext.getCurrentSessionDetails().getPeriods();
 		}
 	}
-
+	
 	/**
 	 * Set the fragment that needs to have the selected period returned to it
 	 * @param fragment- the fragment that needs to have the selected period returned to it
@@ -103,19 +103,19 @@ public class ChooseDateRangeFragment extends BaseFragment{
 	public void setReturnFragment(final AccountRecentActivityFragment fragment){
 		this.fragment = fragment;
 	}
-
+	
 	/**
 	 * Set the range in the return fragment and show the return fragment
 	 * @param recentActivityPeriodDetail - period to be selected in the return fragment
 	 */
 	protected void setRangeInReturnFragment(final RecentActivityPeriodDetail recentActivityPeriodDetail){
-		if(null == fragment){
-			fragment = new AccountRecentActivityFragment();
+		if(null == this.fragment){
+			this.fragment = new AccountRecentActivityFragment();
 		}
-		fragment.setDateRange(recentActivityPeriodDetail);
+		this.fragment.setDateRange(recentActivityPeriodDetail);
 		super.makeFragmentVisible(fragment);
 	}
-
+	
 	/**
 	 * Display the periods 
 	 */
@@ -124,7 +124,7 @@ public class ChooseDateRangeFragment extends BaseFragment{
 			final ChoosePeriodItem item = new ChoosePeriodItem(context, null, detail);
 			item.setOnClickListener(getClickListener());
 			dates.addView(item);
-
+			
 		}
 	}
 
@@ -149,7 +149,7 @@ public class ChooseDateRangeFragment extends BaseFragment{
 	public void setPeriods(final RecentActivityPeriodsDetail periods){
 		this.periods = periods;
 	}
-
+	
 	@Override
 	public int getGroupMenuLocation() {
 		return CardMenuItemLocationIndex.ACCOUNT_GROUP;
