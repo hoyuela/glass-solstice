@@ -50,8 +50,7 @@
 	<string name="take_the_picture_info">Use the camera on your phone to capture the front and back of the check.</string>
 	
 	<string name="deposit_now">Deposit Now</string>
-	<string name="do_not_go_back">Do Not Go Back</string>
-	<string name="go_back_and_cancel">Go Back &amp; Cancel</string>
+	<string name="do_not_go_back">Cancel This Deposit</string>
 	
 	<string name="cancel_deposit_title">Cancel Your Deposit?</string>
 	<string name="cancel_deposit_content">All information you entered for this deposit will be lost. You\'ll need to re-enter the information to complete the transaction.</string>
