@@ -18,10 +18,9 @@ public class NavigationIndex {
 	private static int PREVIOUS_SUB_INDEX = 1;
 	private static int SUB_INDEX = 1;
 	
-	public static void setSubIndex(int index){
+	public static void setSubIndex(final int index){
 		if (index == -1 && SUB_INDEX != -1){
 			PREVIOUS_SUB_INDEX = SUB_INDEX;
-			PREVIOUS_MAIN_INDEX = MAIN_INDEX;
 		}
 		SUB_INDEX = index;
 	}
@@ -30,10 +29,11 @@ public class NavigationIndex {
 		return MAIN_INDEX;
 	}
 
-	public static void setIndex(int index){
+	public static void setIndex(final int index){
 		if (index == PREVIOUS_MAIN_INDEX){
 			SUB_INDEX = PREVIOUS_SUB_INDEX;
 		}else {
+			PREVIOUS_MAIN_INDEX = MAIN_INDEX;
 			//Set - 1 so that no sub menu is highlighted when a main is expanded. 
 			setSubIndex(-1);
 		}
