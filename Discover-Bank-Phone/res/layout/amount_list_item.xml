@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/default_background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/light_gray_bkgrd" >
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/top_label"
@@ -18,9 +16,9 @@
         android:text="@string/bank_deposit_amount" />
     
     <LinearLayout
+        android:id="@+id/amount_row"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/error_label"
         android:layout_below="@+id/top_label"
         android:orientation="horizontal" >
 
@@ -40,7 +38,7 @@
         style="@style/error_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editable_field"
+        android:layout_below="@+id/amount_row"
         android:text="@string/bank_invalid_characters"
         android:visibility="gone" />
 </RelativeLayout>

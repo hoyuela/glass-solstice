@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -80,8 +79,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		/**Show "Continue" text in single button on screen*/
 		actionButton.setText(R.string.continue_text);
 
-		final Drawable d = getActivity().getResources().getDrawable(R.drawable.light_gray_bkgrd);
-		contentTable.setBackgroundDrawable(d);
+		contentTable.setBackgroundDrawable(null);
 		
 		/**Listen when user taps on the layout to close the keyboard*/
 		view.findViewById(R.id.main_layout).setOnTouchListener(new OnTouchListener() {           
