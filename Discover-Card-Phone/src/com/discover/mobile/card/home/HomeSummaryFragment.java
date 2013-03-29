@@ -61,9 +61,9 @@ public class HomeSummaryFragment extends BaseFragment {
 				.getCurrentSessionDetails().getAccountDetails();
 
 		setupCurrentBalanceElement(accountDetails);
-		setupLastStatementElement(accountDetails);
-		setupBonusBalance(accountDetails);
-		setupBonusOffer(accountDetails);
+		//setupLastStatementElement(accountDetails);
+		//setupBonusBalance(accountDetails);
+		//setupBonusOffer(accountDetails);
 	}
 
 	/**
@@ -246,9 +246,9 @@ public class HomeSummaryFragment extends BaseFragment {
 	 */
 	@Override
 	public int getActionBarTitle() {
-		return R.string.account_summary_title;
+		return -1;
 	}
-
+	
 	@Override
 	public int getGroupMenuLocation() {
 		return CardMenuItemLocationIndex.HOME_GROUP;

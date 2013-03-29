@@ -1,8 +1,5 @@
 package com.discover.mobile.card;
 
-import android.app.Activity;
-import android.widget.TextView;
-
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.common.AccountCodes;
 import com.google.common.base.Strings;

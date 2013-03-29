@@ -26,6 +26,8 @@ public class CreateLoginCall extends CardJsonResponseMappingNetworkServiceCall<R
 					.put("X-Override-UID", "true")
 					.build();
 			
+			clearsSessionBeforeRequest = true;
+
 			requiresSessionForRequest = true;
 			
 			sendDeviceIdentifiers = true;

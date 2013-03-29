@@ -45,7 +45,7 @@
             android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:text="@string/account_info_label_one" />
 
-        <com.discover.mobile.common.ui.widgets.UsernameOrAccountNumberEditText
+        <com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText
             android:id="@+id/forgot_id_id_field"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
             android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:text="@string/forgot_id_password_text" />
 
-        <com.discover.mobile.common.ui.widgets.NonEmptyEditText
+        <com.discover.mobile.card.common.uiwidget.NonEmptyEditText
             android:id="@+id/forgot_id_password_field"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

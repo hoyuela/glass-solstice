@@ -169,15 +169,10 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void onResume(){
 		super.onResume();
-		final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(this);
-		final DiscoverInfoWindowAdapter adapter = new DiscoverInfoWindowAdapter(balloon);
-		mapWrapper = new DiscoverMapWrapper(fragment.getMap(), adapter);
-		setMapTransparent((ViewGroup)fragment.getView());
-		this.disableMenu();
-		if(null != location){
-			mapWrapper.setCurrentLocation(location);
-			setUserLocation(mapWrapper.getCurrentLocation());
-		}
+		final NavigationRootActivity activity = ((NavigationRootActivity)this.getActivity());
+		activity.setCurrentFragment(this);
+		setUpMap();
+		disableMenu();
 
 		if(isOnMap){
 			showMap();
@@ -185,11 +180,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			showList();
 		}
 
-		final NavigationRootActivity activity = ((NavigationRootActivity)this.getActivity());
-		activity.setCurrentFragment(this);
-
-		if(NOT_ENABLED == locationStatus){
-			locationStatus = (locationManagerWrapper.areProvidersenabled()) ? ENABLED : NOT_ENABLED;
+		if(shouldGoBack){
+			streetView.showWebView();
 		}
 
 		if(null != savedState){
@@ -197,18 +189,47 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			return;
 		}
 
+		determineNavigationStatus();
+	}
+
+	/**
+	 * Determine the location status and navigate based on that.
+	 */
+	private void determineNavigationStatus() {
+		mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
 		if(NOT_ENABLED == locationStatus){
-			settingsModal.show();
-		}else if(ENABLED == locationStatus){
-			locationModal.show();
-		}else if(SEARCHING == locationStatus){
-			getLocation();
-		}else if(LOCKED_ON == locationStatus){
-			setUserLocation(mapWrapper.getCurrentLocation());
+			locationStatus = (locationManagerWrapper.areProvidersenabled()) ? ENABLED : NOT_ENABLED;
 		}
 
-		if(LOCKED_ON != locationStatus){
-			mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
+		switch(locationStatus){
+		case NOT_ENABLED:
+			settingsModal.show();
+			break;
+		case ENABLED:
+			locationModal.show();
+			break;
+		case SEARCHING:
+			getLocation();
+			break;
+		case LOCKED_ON:
+			setUserLocation(mapWrapper.getCurrentLocation());
+			break;
+		}
+	}
+
+	/**
+	 * Set up the map wrapper if it needs to be setup
+	 */
+	private void setUpMap(){
+		if (null == mapWrapper){
+			final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(this);
+			final DiscoverInfoWindowAdapter adapter = new DiscoverInfoWindowAdapter(balloon);
+			mapWrapper = new DiscoverMapWrapper(fragment.getMap(), adapter);
+			setMapTransparent((ViewGroup)fragment.getView());
+		}
+		if(null != location){
+			mapWrapper.setCurrentLocation(location);
+			setUserLocation(mapWrapper.getCurrentLocation());
 		}
 	}
 

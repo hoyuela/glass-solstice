@@ -21,7 +21,7 @@ import com.discover.mobile.card.services.push.manage.PostPrefDetail;
 import com.discover.mobile.card.services.push.manage.PostPrefParam;
 import com.discover.mobile.card.services.push.manage.PostPreferencesDetail;
 import com.discover.mobile.card.services.push.manage.PreferencesDetail;
-import com.discover.mobile.common.ui.widgets.PushManageEditText;
+import com.discover.mobile.card.common.uiwidget.PushManageEditText;
 import com.google.common.base.Strings;
 
 /**

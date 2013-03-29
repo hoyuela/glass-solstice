@@ -1,3 +1,6 @@
+/*
+ * © Copyright Solstice Mobile 2013
+ */
 package com.discover.mobile.card.services.auth;
 
 import android.content.Context;

@@ -26,8 +26,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/between_related_elements_padding"
-                android:maxLength="30"
+                android:maxLength="18"
                 android:ellipsize="end"
+                android:lines="1"
                 android:text="ATM Merchant Name" />
 
             <TextView

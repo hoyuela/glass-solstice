@@ -214,13 +214,6 @@ public class CardUrlManager {
 	public static String getAuthenticateCall() {
 		return AUTHENTICATE_CALL;
 	}
-	
-	/**
-	 * @return the ssoAuthenticateCall
-	 */
-	public static String getSSOAuthenticateCall() {
-		return SSO_AUTHENTICATE_CALL;
-	}
 
 	public static String getStatementIdentifiers() {
 		return STATEMENT_IDENTIFIERS;
@@ -251,5 +244,12 @@ public class CardUrlManager {
 	 */
 	public static String getSearchTransCategoryUrl() {
 		return SEARCH_TRANS_CATEGORY_URL;
+	}
+	
+	/**
+	 * @return the ssoAuthenticateCall
+	 */
+	public static String getSSOAuthenticateCall() {
+		return SSO_AUTHENTICATE_CALL;
 	}
 }
