@@ -1,20 +1,50 @@
 package com.discover.mobile.card.account;
 
+import android.view.View;
+import android.view.View.OnClickListener;
+
 import com.discover.mobile.card.R;
-import com.discover.mobile.card.account.recent.AccountRecentActivityFragment;
-import com.discover.mobile.card.account.summary.AccountSummaryFragment;
-import com.discover.mobile.common.nav.section.FragmentComponentInfo;
+import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 
 public final class AccountSectionInfo extends GroupComponentInfo {
 
 	public AccountSectionInfo() {
 		super(R.string.section_title_account,
-				new FragmentComponentInfo(R.string.sub_section_title_account_summary, AccountSummaryFragment.class),
-				new FragmentComponentInfo(R.string.sub_section_title_recent_activity, AccountRecentActivityFragment.class),
-				new FragmentComponentInfo(R.string.sub_section_title_search_transaction,
-						AccountSearchTransactionFragment.class),
-						new FragmentComponentInfo(R.string.sub_section_title_statements, AccountStatementsFragment.class));
+				
+				new ClickComponentInfo(R.string.sub_section_title_account_summary, false, new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						
+					}
+				}),
+				new ClickComponentInfo(R.string.sub_section_title_recent_activity,false, new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						
+					}
+				}),
+				new ClickComponentInfo(R.string.sub_section_title_search_transaction, false, new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						
+					}
+				}),
+				new ClickComponentInfo(R.string.sub_section_title_statements, false, new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						
+					}
+				}));
 	}
 
+	class AccountComponentInfo extends ClickComponentInfo {
+
+		public AccountComponentInfo(int titleResource,
+				OnClickListener listener) {
+			super(titleResource, false, listener);
+		}
+		
+	}
+	
 }

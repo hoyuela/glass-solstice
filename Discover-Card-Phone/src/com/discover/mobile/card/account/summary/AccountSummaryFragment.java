@@ -331,7 +331,7 @@ public class AccountSummaryFragment extends BaseFragment {
 	 * @param detail- the populate detail object
 	 */
 	public void prepLatePaymentModalInfo(final LatePaymentWarningDetail detail){
-		details = detail;
+		this.details = detail;
 	}
 
 	/**
@@ -383,9 +383,9 @@ public class AccountSummaryFragment extends BaseFragment {
 	 * @param detail - populated text detail
 	 */
 	public void storeInfoStrings(final LatePaymentWarningTextDetail detail) {
-		text = detail;	
+		this.text = detail;	
 	}
-
+	
 	@Override
 	public int getGroupMenuLocation() {
 		return CardMenuItemLocationIndex.ACCOUNT_GROUP;
