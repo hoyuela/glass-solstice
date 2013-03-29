@@ -38,7 +38,6 @@ public class NavigationIndex {
 			setSubIndex(-1);
 		}
 		MAIN_INDEX = index;
-		
 	}
 	
 	public static int getSubIndex() {
