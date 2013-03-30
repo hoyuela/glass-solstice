@@ -48,7 +48,8 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  * @author jthornton
  *
  */
-public abstract class BaseFragmentActivity extends SlidingFragmentActivity implements RoboContext, ErrorHandlerUi, AlertDialogParent{
+public abstract class BaseFragmentActivity extends SlidingFragmentActivity 
+	implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 
 	private static final String TAG = BaseFragmentActivity.class.getSimpleName();
 	/**
@@ -62,6 +63,15 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 
 	protected EventManager eventManager;
 	protected HashMap<Key<?>,Object> scopedObjects = new HashMap<Key<?>, Object>();
+	/**
+	 * Flag used to determine if the activity is in resumed state
+	 */
+	private boolean resumed = false;
+	/**
+	 * lock used to synchronize with threads attempting to update activity
+	 */
+	private static final Object lock = new Object();
+	
 	/**
 	 * Reference to the dialog currently being displayed on top of this activity. Is set using setDialog();
 	 */
@@ -114,10 +124,20 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 			DiscoverModalManager.getActiveModal().show();
 			DiscoverModalManager.setAlertShowing(true);
 		}
+		
+		/**
+		 * Unlocks any thread blocking on waitForResume() 
+		 */
+		notifyResumed();
+		
+		
 	}
 
 	@Override
 	protected void onPause() {
+		/**Reset flag to detect if activity is in it's resumed state*/
+		resumed = false;
+		
 		super.onPause();
 
 		//Save all application and user preferences into persistent storage
@@ -451,6 +471,51 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity imple
 			for (int i = 0; i < fragCount; i++) {
 				Log.v(TAG, fragManager.getBackStackEntryAt(i).getName());
 			}
+		}
+	}
+
+	@Override
+	public boolean isReady() {
+		return resumed;
+	}
+
+	@Override
+	public boolean waitForResume(final int millis) {
+		synchronized (lock) {
+			/**
+			 * If activity is not resumed then wait for it to resume, this wait can be unlocked
+			 * via notifyResumed() which is called in the onResume of this activity.
+			 */
+			if( !isReady() ) {	
+				try {
+					if( millis >= 0 ) {
+						lock.wait(millis);
+					} else {
+						lock.wait();
+					}
+				} catch (final InterruptedException e) {
+					if( Log.isLoggable(TAG, Log.ERROR)) {
+						Log.e(TAG,"An error occurred while waiting for activity to resume");
+					}
+				}
+			} else {
+				if( Log.isLoggable(TAG, Log.WARN)) {
+					Log.v(TAG,"Activity is Ready!");
+				}
+			}
+		} 
+		
+		return isReady();
+	}
+	
+	/**
+	 * Method utilize to unblock any thread blocking on waitForResume
+	 */
+	private void notifyResumed() {	
+		synchronized (lock) {
+			resumed = true;
+			
+			lock.notifyAll();
 		}
 	}
 }

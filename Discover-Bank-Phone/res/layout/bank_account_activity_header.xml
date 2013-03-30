@@ -12,9 +12,9 @@
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="@dimen/table_inner_padding"
         android:layout_marginLeft="@dimen/forms_inner_padding"
-        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/help_widget_width"
+        android:paddingRight="@dimen/help_widget_width"
         android:layout_marginTop="@dimen/groups_of_elements_padding"
-        android:layout_toLeftOf="@+id/help"
         android:gravity="left"
         android:text="@string/activity_title" />
 

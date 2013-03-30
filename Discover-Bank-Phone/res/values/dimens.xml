@@ -42,4 +42,7 @@
     <!-- Help menu dimentions -->
     <dimen name="help_bar_height_two_items">120dp</dimen>
     
+    <!-- Help Widget Width  -->
+    <dimen name="help_widget_width">40dp</dimen>
+    
 </resources>

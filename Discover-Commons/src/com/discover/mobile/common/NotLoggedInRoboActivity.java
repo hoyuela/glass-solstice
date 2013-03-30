@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -30,12 +31,24 @@ import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
  * @author jthornton
  * 
  */
-public abstract class NotLoggedInRoboActivity extends SherlockActivity implements ErrorHandlerUi, AlertDialogParent {
+public abstract class NotLoggedInRoboActivity extends SherlockActivity 
+	implements ErrorHandlerUi, AlertDialogParent, SyncedActivity {
+	
+	private static final String TAG = NotLoggedInRoboActivity.class.getSimpleName();
+	
 	protected boolean modalIsPresent = false;
 	/**
 	 * Reference to the dialog currently being displayed on top of this activity. Is set using setDialog();
 	 */
 	private AlertDialog mActiveDialog;
+	/**
+	 * Flag used to determine if the activity is in resumed state
+	 */
+	private boolean resumed = false;
+	/**
+	 * lock used to synchronize with threads attempting to update activity
+	 */
+	private static final Object lock = new Object();
 
 	/**
 	 * Create the activity and show the action bar
@@ -64,10 +77,18 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 			DiscoverModalManager.getActiveModal().show();
 			DiscoverModalManager.setAlertShowing(true);
 		}
+		
+		/**
+		 * Unlocks any thread blocking on waitForResume() 
+		 */
+		notifyResumed();
 	}
 
 	@Override
 	public void onPause() {
+		/**Reset flag to detect if activity is in it's resumed state*/
+		resumed = false;
+		
 		super.onPause();
 		closeDialog();
 		
@@ -347,4 +368,48 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity implement
 		}
 	}
 
+	@Override
+	public boolean isReady() {
+		return resumed;
+	}
+
+	@Override
+	public boolean waitForResume(final int millis) {
+		synchronized (lock) {
+			/**
+			 * If activity is not resumed then wait for it to resume, this wait can be unlocked
+			 * via notifyResumed() which is called in the onResume of this activity.
+			 */
+			if( !isReady() ) {	
+				try {
+					if( millis >= 0 ) {
+						lock.wait(millis);
+					} else {
+						lock.wait();
+					}
+				} catch (final InterruptedException e) {
+					if( Log.isLoggable(TAG, Log.ERROR)) {
+						Log.e(TAG,"An error occurred while waiting for activity to resume");
+					}
+				}
+			} else {
+				if( Log.isLoggable(TAG, Log.WARN)) {
+					Log.v(TAG,"Activity is Ready!");
+				}
+			}
+		} 
+		
+		return isReady();
+	}
+	
+	/**
+	 * Method utilize to unblock any thread blocking on waitForResume
+	 */
+	private void notifyResumed() {	
+		synchronized (lock) {
+			resumed = true;
+			
+			lock.notifyAll();
+		}
+	}
 }

@@ -1,6 +1,5 @@
 package com.discover.mobile.bank.deposit;
 
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,22 +140,9 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 
 		/**Check if a successful response was received*/
 		handlePendingConfirmation();
-
-		/**Check if there is a pending duplicate error*/
-		handlePendingDuplicateCheckError();
 	}
-
-	/**
-	 * Method checks if a duplicate check error occurred, if so navigates the user to 
-	 * DuplicateCheckErrorFragment.
-	 */
-	private void handlePendingDuplicateCheckError() {
-		if( hasDuplicateError ) {
-			hasDuplicateError = false;
-			BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.DuplicateError);
-		}
-	}
-
+	
+	
 	/**
 	 * Method checks if a socket timeout occurred, if so navigates the user to 
 	 * CheckDepositErrorFragment.
@@ -165,11 +151,10 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		final BankExceptionHandler exceptionHandler = BankExceptionHandler.getInstance();
 
 		/**Check if a socket timeout exception occurred*/
-		if( exceptionHandler.getLastException() != null && 
-				exceptionHandler.getLastException() instanceof SocketTimeoutException &&
-				exceptionHandler.getLastSender() != null &&
-				exceptionHandler.getLastSender() instanceof SubmitCheckDepositCall ) {
-
+		if( exceptionHandler.getLastException() != null &&
+			exceptionHandler.getLastSender() != null &&
+			exceptionHandler.getLastSender() instanceof SubmitCheckDepositCall ) {
+			
 			/**Clear the last exception occurred to avoid the back press not working*/
 			exceptionHandler.clearLastException();
 
@@ -427,8 +412,11 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		/**Set Inline Errors*/
 		for( final BankError error : msgErrResponse.errors ) {
 			/**Check if error was because of a duplicate check*/
-			if( !Strings.isNullOrEmpty(error.code) && error.code.equals(BankErrorCodes.ERROR_CHECK_DUPLICATE) ) {
-				handled = hasDuplicateError = true;
+			if( !Strings.isNullOrEmpty(error.code) && 
+				(error.code.equals(BankErrorCodes.ERROR_CHECK_DUPLICATE)  ||
+				 error.code.equals(BankErrorCodes.ERROR_CHECK_DUPLICATE_EX ))) {
+				BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.DuplicateError);
+				handled = true;
 			}
 			/**Check if it is an inline error*/
 			else if( !Strings.isNullOrEmpty(error.message) ) {
