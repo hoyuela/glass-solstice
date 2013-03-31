@@ -39,4 +39,7 @@
     <!-- Deposit Error Message Dimens -->
     <dimen name="deposit_error_message_padding">52dp</dimen>
     
+    <!-- Help menu dimentions -->
+    <dimen name="help_bar_height_two_items">120dp</dimen>
+    
 </resources>

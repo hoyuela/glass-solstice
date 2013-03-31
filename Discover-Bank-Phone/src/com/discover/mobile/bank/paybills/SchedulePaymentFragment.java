@@ -52,9 +52,9 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.error.bank.BankError;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
-import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
+import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.discover.mobile.common.ui.widgets.CustomTitleDatePickerDialog;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
@@ -158,12 +158,12 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 		final View view = inflater.inflate(R.layout.schedule_payment, null);
 
 		parentView = (RelativeLayout) view;
-		
+
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
 		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
-		
-		
+
+
 		payeeText = (TextView) view.findViewById(R.id.payee_text);
 		payeeError = (TextView)view.findViewById(R.id.payee_error);
 		progressHeader = (BankHeaderProgressIndicator) view
@@ -252,24 +252,30 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 		outState.putString(DATE_MONTH, datesToSave[0]);
 		outState.putString(DATE_YEAR, datesToSave[2]);
 		outState.putString(MEMO, memoText.getText().toString());
-		
+
 		/**Set to true so that keyboard is not closed in onPause*/
 		isOrientationChanging = true;
-		
+
 		/**Store current error state*/
-		if( payeeError.getVisibility() == View.VISIBLE )
+		if( payeeError.getVisibility() == View.VISIBLE ) {
 			outState.putString(CreatePaymentDetail.PAYEE_FIELD, payeeError.getText().toString());
-		if( paymentAccountError.getVisibility() == View.VISIBLE )
+		}
+		if( paymentAccountError.getVisibility() == View.VISIBLE ) {
 			outState.putString(CreatePaymentDetail.PAYMENT_METHOD_FIELD, paymentAccountError.getText().toString());
-		if( amountError.getVisibility() == View.VISIBLE )
+		}
+		if( amountError.getVisibility() == View.VISIBLE ) {
 			outState.putString(CreatePaymentDetail.AMOUNT_FIELD, amountError.getText().toString());
-		if( dateError.getVisibility() == View.VISIBLE )
+		}
+		if( dateError.getVisibility() == View.VISIBLE ) {
 			outState.putString(CreatePaymentDetail.DELIVERBY_FIELD, dateError.getText().toString());
-		if( memoError.getVisibility() == View.VISIBLE )
+		}
+		if( memoError.getVisibility() == View.VISIBLE ) {
 			outState.putString(CreatePaymentDetail.MEMO_FIELD, memoError.getText().toString());
-		if( conflictError.getVisibility() == View.VISIBLE )
+		}
+		if( conflictError.getVisibility() == View.VISIBLE ) {
 			outState.putString(CONFLICT, conflictError.getText().toString());
-		
+		}
+
 	}
 
 	/**
@@ -287,7 +293,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			paymentAccountSpinner.setSelection(savedInstanceState
 					.getInt(PAY_FROM_ACCOUNT_ID));
 			amountEdit.setText(savedInstanceState.getString(AMOUNT));
-			String year = savedInstanceState.getString(DATE_YEAR);
+			final String year = savedInstanceState.getString(DATE_YEAR);
 			if(year != null) {
 				dateText.setText(formatPaymentDate(
 						year,
@@ -296,7 +302,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			}
 			memoEdit.setText(savedInstanceState.getString(MEMO));
 			memoText.setText(savedInstanceState.getString(MEMO));
-			
+
 			/**Restore error state*/
 			final Bundle data = savedInstanceState;
 			new Handler().postDelayed(new Runnable() {
@@ -310,7 +316,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 					setErrorString(conflictError,data.getString(CONFLICT));
 				}
 			}, 1000);
-			
+
 		}
 	}
 
@@ -326,7 +332,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			view.setVisibility(View.VISIBLE);
 		}
 	}
-	
+
 	@Override
 	public int getActionBarTitle() {
 		return R.string.pay_a_bill_title;
@@ -412,42 +418,29 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 		cancelModalTopView.setContent(R.string.schedule_pay_cancel_body);
 		cancelModalTopView.hideNeedHelpFooter();
 
-		final ModalDefaultTwoButtonBottomView cancelModalButtons = new ModalDefaultTwoButtonBottomView(
+		final ModalDefaultOneButtonBottomView cancelModalButtons = new ModalDefaultOneButtonBottomView(
 				getActivity(), null);
-		cancelModalButtons
-		.setCancelButtonText(R.string.schedule_pay_cancel_button_cancel);
-		cancelModalButtons
-		.setOkButtonText(R.string.schedule_pay_cancel_button_confirm);
+		cancelModalButtons.setButtonText(R.string.schedule_pay_cancel_button_confirm);
 
-		final ModalAlertWithTwoButtons cancelModal = new ModalAlertWithTwoButtons(
-				getActivity(), cancelModalTopView, cancelModalButtons);
-		((BankNavigationRootActivity) getActivity())
-		.showCustomAlert(cancelModal);
+		final ModalAlertWithOneButton cancelModal = 
+				new ModalAlertWithOneButton(getActivity(), cancelModalTopView, cancelModalButtons);
+		((BankNavigationRootActivity) getActivity()).showCustomAlert(cancelModal);
 
-		cancelModalButtons.getOkButton().setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(final View v) {
-						canceledListener.onPaymentCanceled();
-						cancelModal.dismiss();
-						
-						/**
-						 * Checking if the activity is null before navigating. If it is null 
-						 * the app would crash. 
-						 */
-						if ((BankNavigationRootActivity) getActivity() != null){
-							((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
-						}
-					}
-				});
+		cancelModalButtons.getButton().setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				canceledListener.onPaymentCanceled();
+				cancelModal.dismiss();
 
-		cancelModalButtons.getCancelButton().setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(final View v) {
-						cancelModal.dismiss();
-					}
-				});
+				/**
+				 * Checking if the activity is null before navigating. If it is null 
+				 * the app would crash. 
+				 */
+				if ((BankNavigationRootActivity) getActivity() != null){
+					((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
+				}
+			}
+		});
 	}
 
 	/**
@@ -461,12 +454,12 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 	 */
 	private void setChosenPaymentDate(final Integer year, final Integer month,
 			final Integer day) {
-		
+
 		dateText.setText(formatPaymentDate(year.toString(),
 				formateDayMonth(month), formateDayMonth(day)));
 		chosenPaymentDate.set(year, month - 1, day);
 	}
-	
+
 	private String formateDayMonth(final Integer value){
 		String valueString = value.toString();
 		if (value < 10){
@@ -524,12 +517,12 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 	private void flipMemoElements(final boolean showEditable) {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
 		InputMethodManager imm = activity.getInputMethodManager();
-	
+
 		// EditText will be shown.
 		if (showEditable) {
 			/**Hide memo error code*/
 			memoError.setVisibility(View.GONE);
-		
+
 			memoText.setVisibility(View.INVISIBLE);
 			memoEdit.setVisibility(View.VISIBLE);
 			memoEdit.setText(memoText.getText().toString());
@@ -638,7 +631,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 	 * Initializes the view's miscellaneous listeners.
 	 */
 	private void createItemListeners() {
-		
+
 		// Listens for a focus change so that we can handle special view
 		// behavior
 		parentView.setOnTouchListener(new OnTouchListener() {
@@ -669,7 +662,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 				}
 			}
 		});
-		
+
 		/**Set listener to flip memo edit field from editable to non-editable when user taps done on keyboard*/
 		memoEdit.setOnEditorActionListener(this);
 
@@ -678,10 +671,11 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			public void onClick(final View v) {
 				memoEdit.clearFocus();
 				amountEdit.clearFocus();
-				
+
 				paymentAccountError.setVisibility(View.GONE);
-				if(bankUser.getPaymentCapableAccounts().accounts.size() > 1)
+				if(bankUser.getPaymentCapableAccounts().accounts.size() > 1) {
 					paymentAccountSpinner.performClick();
+				}
 			}
 		});
 
@@ -729,18 +723,18 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 				setupCancelButton();
 			}
 		});
-		
+
 		amountEdit.setOnEditorActionListener(new OnEditorActionListener() {        
-		    @Override
-		    public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
-		        if(actionId==EditorInfo.IME_ACTION_DONE){
-		        	amountEdit.clearFocus();
-		        	final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
+			@Override
+			public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
+				if(actionId==EditorInfo.IME_ACTION_DONE){
+					amountEdit.clearFocus();
+					final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
 					final InputMethodManager imm = activity.getInputMethodManager();
 					imm.hideSoftInputFromWindow(memoEdit.getWindowToken(), 0);
-		        }
-		        return true;
-		    }
+				}
+				return true;
+			}
 		});
 
 		payNowButton.setOnClickListener(new OnClickListener() {
@@ -751,12 +745,12 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 				if(!amountEdit.isValid()) {
 					amountEdit.setErrors();
 				}
-				
+
 				if (amountEdit.isValid() && !isDateError) {
 					amountEdit.clearFocus();
-					
+
 					clearErrors();
-					
+
 					final String memo = memoEdit.getText().toString();
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
 					payment.payee.id = payee.id;
@@ -821,7 +815,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Clear any inline errors shown
 	 */
@@ -837,13 +831,13 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 	@Override 
 	public void onResume() {
 		super.onResume();
-		
+
 		/**Reset flag*/
 		isOrientationChanging = false;
-		
+
 		/**Enable text watcher which will format text in text field*/
-		this.amountEdit.enableBankAmountTextWatcher(true);
-		
+		amountEdit.enableBankAmountTextWatcher(true);
+
 		/**
 		 * Have to execute the setting of the editable field to edit mode asyncronously otherwise
 		 * the keyboard doesn't open.
@@ -856,21 +850,21 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 				}
 			}
 		}, 1000);
-		
+
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
-		
+
 		/**Disable Text Watcher to support rotation*/
 		amountEdit.enableBankAmountTextWatcher(false);
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		
+
 		/**Check if onPause was called because of an orientation change*/
 		if( !isOrientationChanging && amountEdit != null ) {
 			amountEdit.showKeyboard(false);
@@ -890,13 +884,13 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 	@Override
 	public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
 		if (actionId == EditorInfo.IME_ACTION_DONE) {
-			if( v == this.memoEdit ) {
+			if( v == memoEdit ) {
 				flipMemoElements(false);
 			}
-        }
-        return false;
+		}
+		return false;
 	}
-	
+
 	/** Cancel modal presentation should override default Back button behavior */
 	@Override
 	public void onBackPressed() {
