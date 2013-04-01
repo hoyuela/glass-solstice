@@ -1,10 +1,10 @@
 package com.discover.mobile.bank.deposit;
 
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,7 +34,9 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.bank.BankError;
 import com.discover.mobile.common.net.error.bank.BankErrorCodes;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
+import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
+import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.google.common.base.Strings;
@@ -77,12 +79,12 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 * Boolean flag used to determine if user received a duplicate check error
 	 */
 	private static boolean hasDuplicateError = false;
-	
+
 	private final int depositSubmitActivityId = 1;
 
 	int depositAmount = 0;
 	Account account = null;
-	
+
 	/**
 	 * Inflate and setup the UI for this fragment.
 	 */
@@ -91,33 +93,33 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			final Bundle savedInstanceState){
 
 		bundle = ( null != savedInstanceState ) ? savedInstanceState : getArguments();
-	
+
 		/**Store bundle provided to restore state of fragment onResume*/
 		if( null != bundle ) {
 			account = (Account)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 			depositAmount = bundle.getInt(BankExtraKeys.AMOUNT);
 		}
-		
+
 		final View view = super.onCreateView(inflater, container, savedInstanceState);	
-		
+
 		//Set button text labels.
 		actionButton.setText(R.string.deposit_now);
 		actionLink.setText(R.string.cancel_text);
-		
+
 		/**Hide controls that are not needed*/
 		noteTitle.setVisibility(View.GONE);
 		noteTextMsg.setVisibility(View.GONE);
 		feedbackLink.setVisibility(View.GONE);
 		pageTitle.setVisibility(View.GONE);
-		
+
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
-		
+
 		setupRetakeLinks(view);
 		return view;
 	}
-	
+
 	/**
 	 * Refresh the check image cell.
 	 * This is required for when a user retakes an image to ensure that
@@ -126,32 +128,20 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	@Override
 	public void onResume() {
 		super.onResume();
-		
-		if(checkImageCell != null)
+
+		if(checkImageCell != null) {
 			checkImageCell.loadImages(getActivity());
-		
+		}
+
 		restoreState();
-		
+
 		/**Check if an exception occurred  that needs to be handled*/
 		handlePendingSocketException();
-		
+
 		/**Check if a successful response was received*/
 		handlePendingConfirmation();
-		
-		/**Check if there is a pending duplicate error*/
-		handlePendingDuplicateCheckError();
 	}
 	
-	/**
-	 * Method checks if a duplicate check error occurred, if so navigates the user to 
-	 * DuplicateCheckErrorFragment.
-	 */
-	private void handlePendingDuplicateCheckError() {
-		if( hasDuplicateError ) {
-			hasDuplicateError = false;
-			BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.DuplicateError);
-		}
-	}
 	
 	/**
 	 * Method checks if a socket timeout occurred, if so navigates the user to 
@@ -159,37 +149,36 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 */
 	private void handlePendingSocketException() {
 		final BankExceptionHandler exceptionHandler = BankExceptionHandler.getInstance();
-		
+
 		/**Check if a socket timeout exception occurred*/
-		if( exceptionHandler.getLastException() != null && 
-			exceptionHandler.getLastException() instanceof SocketTimeoutException &&
+		if( exceptionHandler.getLastException() != null &&
 			exceptionHandler.getLastSender() != null &&
 			exceptionHandler.getLastSender() instanceof SubmitCheckDepositCall ) {
 			
 			/**Clear the last exception occurred to avoid the back press not working*/
 			exceptionHandler.clearLastException();
-			
+
 			BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.DepositError);		
 		}
 	}
-	
+
 	/**
 	 * Method checks if a successful response was recevied for SubmitCheckDepositCall if so
 	 * navigate to confirmation page.
 	 */
 	private void handlePendingConfirmation() {
 		final NetworkServiceCall<?> networkServiceCall = BankNetworkServiceCallManager.getInstance().getLastServiceCall();
-		
+
 		/**Verify that network service call is not null, was a check deposit submit, and this transaction is not complete*/
 		if (networkServiceCall != null && 
-			networkServiceCall instanceof SubmitCheckDepositCall ) {	
-			
+				networkServiceCall instanceof SubmitCheckDepositCall ) {	
+
 			final SubmitCheckDepositCall submitDepositCall = (SubmitCheckDepositCall)networkServiceCall;
-			
+
 			/**check if this service call has already been handled if so then ignore*/
 			if( !submitDepositCall.isHandled() && null != submitDepositCall.getResult()) {
 				submitDepositCall.setHandled(true);
-				
+
 				//Navigate to Check Deposit Confirmation Page
 				final Bundle bundle = new Bundle();
 				bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, submitDepositCall.getResult());
@@ -197,32 +186,32 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			}	
 		}
 	}
-	
+
 	private Activity getThisActivity() {
 		return getActivity();
 	}
-	
+
 	private OnClickListener dismissModalOnClickListener(final ModalAlertWithTwoButtons modal) {
 		return new OnClickListener() {
-			
+
 			@Override
 			public void onClick(final View v) {
 				modal.dismiss();
 			}
 		};
 	}
-	
-	private OnClickListener getCancelDepositWorkflowClickListener(final ModalAlertWithTwoButtons modal) {
+
+	private OnClickListener getCancelDepositWorkflowClickListener(final AlertDialog modal) {
 		return new OnClickListener() {
-			 
+
 			@Override
 			public void onClick(final View v) {
 				cancelCheckDepositWorkflow();
-			    modal.dismiss();
+				modal.dismiss();
 			}
 		};	
 	}
-	
+
 	/**
 	 * Show a modal warning upon back press to alert the user that if they go back, they will be losing all
 	 * of their information.
@@ -233,38 +222,38 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		if(DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity) {
 			currentActivity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		}
-		
+
 		if(currentActivity != null) {
 			final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
 			final ModalDefaultTwoButtonBottomView bottom = new ModalDefaultTwoButtonBottomView(currentActivity, null);
-			
+
 			bottom.setOkButtonText(R.string.continue_text);
 			bottom.setCancelButtonText(R.string.cancel_text);
-			
+
 			modalTopView.setTitle(R.string.are_you_sure_title);
 			modalTopView.setContent(R.string.cancel_deposit_content);
-			
+
 			modalTopView.getHelpFooter().show(false);
-			
+
 			final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(currentActivity, modalTopView, bottom);
 			bottom.getOkButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
-			
+
 			bottom.getCancelButton().setOnClickListener(dismissModalOnClickListener(modal));
-		
-			modal.show();
+
+			currentActivity.showCustomAlert(modal);
 		}
 	}
-	
+
 	/**
 	 * Navigates back to step 1 of the check deposit work flow and deletes any cached images.
 	 */
 	private void cancelCheckDepositWorkflow() {
 		final BankNavigationRootActivity activity = 
 				(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-	    activity.popTillFragment(BankDepositSelectAccount.class);
-	    CheckDepositCaptureActivity.deleteBothImages(activity);
+		activity.popTillFragment(BankDepositSelectAccount.class);
+		CheckDepositCaptureActivity.deleteBothImages(activity);
 	}
-	
+
 	/**
 	 * Disable the default back press from the activity and use only the method implemented in this class
 	 * for onBackPressed.
@@ -288,12 +277,12 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
 		final Activity currentActivity = getActivity();
 		final List<RelativeLayout> content = new ArrayList<RelativeLayout>();
-		
+
 		if( account != null ) {
 			/**These BankEditDetail objects override the onClick
 			 * focusChange listeners of its super class.*/
 			accountDetail = new BankEditDetail(currentActivity);
-			
+
 			accountDetail.getDividerLine().setVisibility(View.GONE);
 			accountDetail.getTopLabel().setText(BankStringFormatter.getAccountEndingInString(account.accountNumber.ending));
 			accountDetail.getMiddleLabel().setText(account.nickname);
@@ -310,19 +299,19 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 				@Override
 				public void onClick(final View v) {
 					final Bundle args = getArguments();
-	                args.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, true);
+					args.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, true);
 					args.putInt(BankExtraKeys.AMOUNT, depositAmount);
 					BankConductor.navigateToCheckDepositWorkFlow(args, BankDepositWorkFlowStep.SelectAccount);
 				}
 			});
 			content.add(accountDetail);
-			
+
 			/**These BankEditDetail objects override the onClick
 			 * focusChange listeners of its super class.*/
 			amountDetail = new BankEditDetail(currentActivity);
-			
+
 			amountDetail.getView().setOnClickListener(new OnClickListener() {
-				
+
 				/** On click we need to go back to the enter amount Fragment.*/
 				@Override
 				public void onClick(final View v) {
@@ -331,19 +320,19 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 					BankConductor.navigateToCheckDepositWorkFlow(adjustAmountBundle, BankDepositWorkFlowStep.SelectAmount);
 				}
 			});
-			
+
 			final String amount = getResources().getString(R.string.amount);
 			amountDetail.setOnFocusChangeListener(null);
 			amountDetail.getTopLabel().setText(amount);
 			amountDetail.getMiddleLabel().setText(BankStringFormatter.convertCentsToDollars(depositAmount));
 			content.add(amountDetail);
-			
+
 			checkImageCell = new ReviewCheckDepositTableCell(currentActivity);
 			content.add(checkImageCell);
 		}
 		return content;
 	}
-	
+
 	/**
 	 * Set click listeners on the retake labels so that when they are clicked the check deposit capture
 	 * activity is started with the retake parameter set.
@@ -353,7 +342,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		if( null != view ) {
 			final TextView retakeFrontLabel = (TextView)view.findViewById(R.id.retake_front_label);
 			final TextView retakeBackLabel = (TextView)view.findViewById(R.id.retake_back_label);
-			
+
 			if( retakeFrontLabel != null && retakeBackLabel != null) {
 				retakeFrontLabel.setOnClickListener(new OnClickListener() {
 					@Override
@@ -361,9 +350,9 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 						retake(CheckDepositCaptureActivity.RETAKE_FRONT);
 					}
 				});
-				
+
 				retakeBackLabel.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(final View v) {
 						retake(CheckDepositCaptureActivity.RETAKE_BACK);
@@ -382,16 +371,17 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		retakePic.putExtra(BankExtraKeys.RETAKE_PICTURE, type);
 		startActivity(retakePic);
 	}
-	
+
 	@Override
 	protected void onActionButtonClick() {
 		clearErrors();
-		
+
 		final Intent depositSubmission = new Intent(getThisActivity(), DepositSubmissionActivity.class);
 		final Bundle extras = getArguments();
-		if(extras != null)
+		if(extras != null) {
 			depositSubmission.putExtras(extras);
-		
+		}
+
 		startActivityForResult(depositSubmission, depositSubmitActivityId);
 	}
 
@@ -400,19 +390,17 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		final Activity currentActivity = getActivity();
 		final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
 
-		final ModalDefaultTwoButtonBottomView bottom = new ModalDefaultTwoButtonBottomView(currentActivity, null);
-		bottom.setOkButtonText(R.string.do_not_go_back);
-		bottom.setCancelButtonText(R.string.go_back_and_cancel);
-		
+		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(currentActivity, null);
+		bottom.setButtonText(R.string.do_not_go_back);
+
 		modalTopView.setTitle(R.string.cancel_deposit_title);
 		modalTopView.setContent(R.string.cancel_deposit_content);
-		
+
 		modalTopView.getHelpFooter().show(false);
-		
-		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(currentActivity, modalTopView, bottom);
-		bottom.getOkButton().setOnClickListener(dismissModalOnClickListener(modal));
-		bottom.getCancelButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
-		
+
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(currentActivity, modalTopView, bottom);
+		bottom.getButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
+
 		this.showCustomAlertDialog(modal);
 	}
 
@@ -420,28 +408,31 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	public boolean handleError(final BankErrorResponse msgErrResponse) {
 		/**flag to indicate whether the error has been handled*/
 		boolean handled = false;
-		
+
 		/**Set Inline Errors*/
 		for( final BankError error : msgErrResponse.errors ) {
 			/**Check if error was because of a duplicate check*/
-			if( !Strings.isNullOrEmpty(error.code) && error.code.equals(BankErrorCodes.ERROR_CHECK_DUPLICATE) ) {
-				handled = hasDuplicateError = true;
+			if( !Strings.isNullOrEmpty(error.code) && 
+				(error.code.equals(BankErrorCodes.ERROR_CHECK_DUPLICATE)  ||
+				 error.code.equals(BankErrorCodes.ERROR_CHECK_DUPLICATE_EX ))) {
+				BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.DuplicateError);
+				handled = true;
 			}
 			/**Check if it is an inline error*/
 			else if( !Strings.isNullOrEmpty(error.message) ) {
 				/**Notify user that they have an inline error at top of page*/
 				showGeneralError( getActivity().getResources().getString(R.string.bank_deposit_error_notify) );
-				
+
 				/**Show inline error under amount field*/
 				if( !Strings.isNullOrEmpty(error.name) &&
-					error.name.equals(DepositDetail.AMOUNT_FIELD) ) {		
+						error.name.equals(DepositDetail.AMOUNT_FIELD) ) {		
 					amountDetail.getEditableField().showErrorLabelNoFocus(error.message);
 				}
 				/**Show inline error under check image cell*/
 				else {
 					checkImageCell.showErrorLabel(error.message);
 				}
-				
+
 				/**Notify caller that error has been handled so no further error handling is required*/
 				handled = true;
 			} 
@@ -465,19 +456,19 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-		
+
 		/**Check that onCreateView was called otherwise rotation data will get wiped out*/
 		if( bundle != null ) {
 			/**Store values stored in each field*/
 			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
 			outState.putInt(BankExtraKeys.AMOUNT, depositAmount);
-			
+
 			/**Store error shown at bottom of amount field*/
 			if( amountDetail != null && amountDetail.getEditableField().isInErrorState ) {
 				final String key = amountDetail.getTopLabel().getText().toString();
 				outState.putString(key +KEY_ERROR_EXT, amountDetail.getEditableField().getErrorLabel().getText().toString());
 			}
-			
+
 			/**Store error shown at bottom of captured image field*/
 			if(checkImageCell != null && checkImageCell.getErrorLabel().getVisibility() == View.VISIBLE ) {
 				outState.putString(IMAGE_CELL_ERROR_KEY, checkImageCell.getErrorLabel().getText().toString());
@@ -486,7 +477,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			outState.putAll(getArguments());
 		}
 	}
-	
+
 	/**
 	 * Restores the widget's states from before rotation.
 	 * 
@@ -498,7 +489,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			final String key = (amountDetail != null) ? amountDetail.getTopLabel().getText().toString() : "";
 			final String amountError = bundle.getString(key +KEY_ERROR_EXT);
 			final String imageError = bundle.getString(IMAGE_CELL_ERROR_KEY);
-			
+
 			/**Handle display of inline error asyncronously*/
 			new Handler().postDelayed(new Runnable() {
 				@Override
@@ -508,7 +499,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 						showGeneralError( getActivity().getResources().getString(R.string.bank_deposit_error_notify) );
 						amountDetail.getEditableField().showErrorLabelNoFocus(amountError);
 					}
-					
+
 					/**If has an image cell in-line error then show it on rotation*/
 					if(!Strings.isNullOrEmpty(imageError) ) {
 						showGeneralError( getActivity().getResources().getString(R.string.bank_deposit_error_notify) );

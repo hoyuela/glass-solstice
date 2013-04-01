@@ -19,9 +19,9 @@ public class BankAccountComparable implements Comparator<Account> {
 				
 		/**If names are equal then compare nick names to sort by nickname secondly*/
 		if( ret == 0) {
-			ret = arg0.nickname.compareTo(arg1.nickname);
+			ret = arg0.nickname.compareToIgnoreCase(arg1.nickname);
 		}
-		
+	
 		return ret;
 		 
 		

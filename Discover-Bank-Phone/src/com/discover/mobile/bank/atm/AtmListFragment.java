@@ -15,14 +15,15 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
 /**
- * Fragment contianing the list of details available for the ATMs
+ * Fragment containing the list of details available for the ATMs
  * @author jthornton
  *
  */
-public class AtmListFragment extends BaseTable{
+public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
 	/**Adapter used to display data*/
 	private AtmListAdapter adapter;
@@ -182,5 +183,15 @@ public class AtmListFragment extends BaseTable{
 	public int getSectionMenuLocation() {
 		return (observer instanceof SearchNearbyFragment) 
 				? BankMenuItemLocationIndex.FIND_NEARBY_SECTION: BankMenuItemLocationIndex.SEARCH_BY_LOCATION;
+	}
+
+	@Override
+	public void onBackPressed() {
+		observer.onBackPressed();		
+	}
+
+	@Override
+	public boolean isBackPressDisabled() {
+		return observer.isBackPressDisabled();
 	}
 }

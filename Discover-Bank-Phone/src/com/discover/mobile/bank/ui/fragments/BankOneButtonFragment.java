@@ -20,6 +20,7 @@ import com.discover.mobile.bank.util.BankNeedHelpFooter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
 /**
@@ -158,6 +159,8 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 			
 		/**Label used to show general errors for the screen, it shows on top of the content table*/
 		generalError = (TextView)view.findViewById(R.id.general_error);
+		
+		CommonUtils.fixBackgroundRepeat(view);
 		
 		return view;
 	}

@@ -1,7 +1,5 @@
 package com.discover.mobile.bank.error;
 
-import java.net.SocketTimeoutException;
-
 import android.util.Log;
 
 import com.discover.mobile.bank.framework.BankConductor;
@@ -80,7 +78,7 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 			KeepAlive.resetLastBankRefreshTime();
 		}
 		// If exception because of a check deposit socket timeout then just ignore, it is handled elsewhere
-		else if( sender instanceof SubmitCheckDepositCall && arg0 instanceof SocketTimeoutException ) {
+		else if( sender instanceof SubmitCheckDepositCall ) {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "Check Deposit Timed-out!");
 			}
