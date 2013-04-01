@@ -62,4 +62,10 @@
 	<string name="sending_deposit_detail_text">Your deposit is being sent securely to the bank. Please wait for the transaction to be completed.</string>
 	
 	<string name="shutter_sound_file">file:///system/media/audio/ui/camera_click.ogg</string>
+	
+	<string name="no_device_camera_title">No Device Camera</string>
+	<string name="no_device_camera_body">
+	    We\'re sorry. 
+	    In order to use Mobile Check Deposit please use a device with a camera.
+	</string>
 </resources>
