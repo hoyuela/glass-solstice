@@ -30,8 +30,8 @@ import com.discover.mobile.bank.services.atm.GetDirectionsServiceCall;
 import com.discover.mobile.bank.services.atm.GetLocationFromAddressServiceCall;
 import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.services.auth.CreateBankLoginCall;
-import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
 import com.discover.mobile.bank.services.auth.CreateBankSSOLoginCall;
+import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
@@ -54,6 +54,7 @@ import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.SyncedActivity;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
@@ -224,35 +225,43 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> error) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
-		//Check if the error is a Strong Auth Challenge
-		if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
-			//Send request to Strong Auth web-service API
-			BankServiceCallFactory.createStrongAuthRequest().submit();
-		} 
-
-		// Check if the error is an SSO User
-		else if (isSSOUser(error)) {
-			BankConductor.authWithCardPayload(
-					(LoginActivity) activeActivity,
-					((BankErrorSSOResponse) error).token,
-					((BankErrorSSOResponse) error).hashedValue);
-		}
-		
-		// Check if the error was a Ping. if so, then session died.
-		else if (isSessionDead(error)) {
-			Globals.setLoggedIn(false);
-			Globals.setCurrentUser("");
-			KeepAlive.setBankAuthenticated(false);
-			BankUser.instance().clearSession();
-			final ErrorHandlerUi uiHandler = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
-			FacadeFactory.getCardLogoutFacade().logout(activeActivity, uiHandler);
-			BankConductor.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
-		}
-		//Dispatch response to BankBaseErrorHandler to determine how to handle the error
-		else {
-			errorHandler.handleFailure(sender, error);
-
-			((AlertDialogParent)activeActivity).closeDialog();
+		if( isGuiReady() ) {
+			//Check if the error is a Strong Auth Challenge
+			if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
+				//Send request to Strong Auth web-service API
+				BankServiceCallFactory.createStrongAuthRequest().submit();
+			} 
+	
+			// Check if the error is an SSO User
+			else if (isSSOUser(error)) {
+				BankConductor.authWithCardPayload(
+						(LoginActivity) activeActivity,
+						((BankErrorSSOResponse) error).token,
+						((BankErrorSSOResponse) error).hashedValue);
+			}
+			
+			// Check if the error was a Ping. if so, then session died.
+			else if (isSessionDead(error)) {
+				Globals.setLoggedIn(false);
+				Globals.setCurrentUser("");
+				KeepAlive.setBankAuthenticated(false);
+				BankUser.instance().clearSession();
+				final ErrorHandlerUi uiHandler = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
+				FacadeFactory.getCardLogoutFacade().logout(activeActivity, uiHandler);
+				BankConductor.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
+			}
+			//Dispatch response to BankBaseErrorHandler to determine how to handle the error
+			else {
+				errorHandler.handleFailure(sender, error);
+	
+				((AlertDialogParent)activeActivity).closeDialog();
+			}
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "GUI is not ready, process response async");
+			}
+			
+			handleResponseAsync( new NetworkServiceCallAsyncArgs(sender, error));
 		}
 
 		return true;
@@ -263,9 +272,17 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 * Used to close any progress dialog being displayed on the active activity because of a NetworkServiceCall<>.
 	 */
 	@Override
-	public boolean handleFailure(final NetworkServiceCall<?> arg0, final Throwable arg1) {
-		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
-		activeActivity.closeDialog();
+	public boolean handleFailure(final NetworkServiceCall<?> sender, final Throwable arg1) {
+		if( isGuiReady() ) {
+			final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
+			activeActivity.closeDialog();
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "GUI is not ready, process response async");
+			}
+			
+			handleResponseAsync( new NetworkServiceCallAsyncArgs(sender, arg1));
+		}
 
 		return false;
 	}
@@ -287,6 +304,22 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 */
 	@Override
 	public void success(final NetworkServiceCall<?> sender, final Serializable result) {
+		/**Check if UI is ready to process the incoming response*/
+		if( isGuiReady() ) {
+			handleSuccessSync(sender, result);
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "GUI is not ready, process response async");
+			}
+			
+			handleResponseAsync( new NetworkServiceCallAsyncArgs(sender, result));
+		}
+	}
+	
+	/**
+	 * Method for handling a successful NetworkServiceCall<?> response.
+	 */
+	public void handleSuccessSync(final NetworkServiceCall<?> sender, final Serializable result) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 		
 		//A successful call refreshes the session -- update KeepAlive service with information.
@@ -304,9 +337,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			//Cannot swap fragments on the navigation root activity because it is not in the foreground
 			//during a strong auth or after. Have to wait for navigation root to come to foreground first.
 			this.handleSuccessLater(sender, result);
-		}
-		
-		
+		}	
 		//Download Customer Information if a Login call is successful
 		else if( sender instanceof CreateBankLoginCall || sender instanceof CreateBankSSOLoginCall) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
@@ -632,4 +663,133 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 	}
 	
+	/**
+	 * Method used to see if GUI is ready to process an incoming NetworkServiceCall<?> response.
+	 * 
+	 * @return True if Active Activity is in Resume State, false otherwise.
+	 */
+	private boolean isGuiReady() {
+		boolean ret = false;
+		
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		if( activity != null && activity instanceof SyncedActivity) {
+			ret = ((SyncedActivity)activity).isReady();
+		}
+		
+		return ret;	
+	}
+	
+	/**
+	 * Method used to defer the handling of an incoming success response should the GUI not be
+	 * ready to process it.
+	 * 
+	 * @param sender NetworkServiceCall whose successful response is to be handled.
+	 * @param arguments Object represent the result read from the successful response body.
+	 */
+	private void handleResponseAsync(final NetworkServiceCallAsyncArgs args) {	
+		final AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+			/**
+			 * Thid method does not execute in a UI Thread
+			 */
+			@Override
+			protected Void doInBackground(final Void... params) {
+				boolean isReady = false;
+				
+				while( !isReady ) {
+					final Activity activity = DiscoverActivityManager.getActiveActivity();
+					if( activity != null && activity instanceof SyncedActivity) {
+						Log.v("Discover", "Waiting...");
+						isReady = ((SyncedActivity)activity).waitForResume(5000);
+					}
+				}
+				return null;
+			}
+
+			/**
+			 * This method is executed in a UI thread after doInBackground has completed.
+			 */
+			@Override
+			protected void onPostExecute(final Void arg) {
+				switch( args.result) {
+				case Exception:
+					handleFailure(args.sender, args.exception);
+					break;
+				case Failure:
+					handleFailure(args.sender, args.error);
+					break;
+				case Success:
+					handleSuccessSync(args.sender, args.arguments); 
+					break;
+				}
+			}
+		};
+
+		task.execute();
+	}
+	
+	/**
+	 * Enum used to specify whether a NetworkServiceCallAsyncArgs is for a successful, error or exception
+	 * response to a network service call.
+	 * @author henryoyuela
+	 *
+	 */
+	public enum Result { Success, Failure, Exception };
+	
+	/**
+	 * Class used to hold information provided via a callback called by a NetworkServiceCall<?>
+	 * 
+	 * @author henryoyuela
+	 *
+	 */
+	public class NetworkServiceCallAsyncArgs {		 
+		public final NetworkServiceCall<?> sender;
+		public final Serializable arguments;
+		public final Throwable exception;
+		public final ErrorResponse<?> error;
+		public final Result result;
+	
+		/**
+		 * Constructor used for a creating an object representing a successful NetworkServiceCall<?>
+		 * 
+		 * @param s NetworkServiceCall that succeeded
+		 * @param r Result sent in body of a response to an HTTP request sent via NetworkServiceCall
+		 */
+		public NetworkServiceCallAsyncArgs(final NetworkServiceCall<?> s, final Serializable r  ) {
+			sender = s;
+			arguments = r;		
+			exception = null;
+			error = null;
+			result = Result.Success;
+		}
+		
+		/**
+		 * Constructor used for a creating an object representing a failed NetworkServiceCall<?> because
+		 * of an exception.
+		 *  
+		 * @param s NetworkServiceCall that failed
+		 * @param ex Exception cause of the failure
+		 */
+		public NetworkServiceCallAsyncArgs(final NetworkServiceCall<?> s, final Throwable ex  ) {
+			sender = s;
+			arguments = null;		
+			exception = ex;
+			error = null;
+			result = Result.Exception;
+		}
+		
+		/**
+		 * Constructor used for a creating an object representing a failed NetworkServiceCall<?> because
+		 * of an error.
+		 * 
+		 * @param s NetworkServiceCall that succeeded
+		 * @param e Error cause of the failure
+		 */
+		public NetworkServiceCallAsyncArgs(final NetworkServiceCall<?> s, final ErrorResponse<?> e ) {
+			sender = s;
+			arguments = null;		
+			exception = null;
+			error = e;
+			result = Result.Failure;
+		}
+	}
 }

@@ -56,6 +56,10 @@ public class BankErrorCodes {
 	 */
 	public static final String ERROR_CHECK_DUPLICATE = "Deposits.Deposit.DuplicateDeposit";
 	/**
+	 * Error Code used to describe a Check Duplicate error with HTTP Status code 422.
+	 */
+	public static final String ERROR_CHECK_DUPLICATE_EX = "Deposits.Deposit.ErrorDuplicate";
+	/**
 	 * Default constructor is not to be used
 	 */
 	private BankErrorCodes() {
