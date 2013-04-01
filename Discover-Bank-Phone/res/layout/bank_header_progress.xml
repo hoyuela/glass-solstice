@@ -4,8 +4,7 @@
         android:id="@+id/location_text"
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_progress_height"
-        android:layout_marginBottom="@dimen/forms_inner_padding"
-        android:background="@drawable/light_gray_bkgrd" >
+        android:layout_marginBottom="@dimen/forms_inner_padding" >
 
         <RelativeLayout
             android:id="@+id/step1"

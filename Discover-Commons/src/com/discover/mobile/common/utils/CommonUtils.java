@@ -8,6 +8,9 @@ import java.util.Locale;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Shader.TileMode;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
 import android.widget.EditText;
@@ -48,7 +51,7 @@ public class CommonUtils {
 	 * @return a string representation of the formatted month day and year as mm/dd/yy
 	 */
 	public static String getFormattedDate(final int month, final int day, final int year) {
-		Calendar calendarValue = Calendar.getInstance();
+		final Calendar calendarValue = Calendar.getInstance();
 		calendarValue.set(Calendar.YEAR, year);
 		calendarValue.set(Calendar.MONTH, month);
 		calendarValue.set(Calendar.DAY_OF_MONTH, day);
@@ -67,12 +70,12 @@ public class CommonUtils {
 	 */
 	public static String getServiceFormattedISO8601Date(final int month,
 			final int day, final int year) {
-		Calendar calendarValue = Calendar.getInstance();
+		final Calendar calendarValue = Calendar.getInstance();
 		calendarValue.set(Calendar.YEAR, year);
 		calendarValue.set(Calendar.MONTH, month);
 		calendarValue.set(Calendar.DAY_OF_MONTH, day);
 
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		sb.append(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendarValue.getTime()));
 		sb.append("T00:00:00Z");
 		
@@ -87,7 +90,7 @@ public class CommonUtils {
 	 * @return a string representation of the formatted month day and year as mm/yy
 	 */
 	public static String getFormattedDate(final int month, final int year) {
-		Calendar calendarValue = Calendar.getInstance();
+		final Calendar calendarValue = Calendar.getInstance();
 		calendarValue.set(Calendar.YEAR, year);
 		calendarValue.set(Calendar.MONTH, month);
 		
@@ -158,7 +161,7 @@ public class CommonUtils {
 	public final static void dialNumber(final String number,
 			final Context callingContext) {
 		if (number != null && callingContext != null) {
-			Intent dialNumber = new Intent(Intent.ACTION_DIAL);
+			final Intent dialNumber = new Intent(Intent.ACTION_DIAL);
 
 			dialNumber.setData(Uri.parse("tel:" + number));
 
@@ -167,12 +170,12 @@ public class CommonUtils {
 
 	}
 
-	public final static void setViewGone(View v) {
+	public final static void setViewGone(final View v) {
 		if(v != null)
 			v.setVisibility(View.GONE);
 	}
 
-	public final static void setViewVisible(View v) {
+	public final static void setViewVisible(final View v) {
 		if(v != null)
 			v.setVisibility(View.VISIBLE);
 	}
@@ -225,7 +228,7 @@ public class CommonUtils {
 		
 		amount = formatCurrencyAsStringWithoutSign(amount);
 		amount = amount.replaceAll(",", "");
-		double d = Double.parseDouble(amount);
+		final double d = Double.parseDouble(amount);
 		
 		return (int)(d * CENTS_IN_DOLLAR);
 	}
@@ -245,7 +248,7 @@ public class CommonUtils {
 		double d;
 		try {
 			d = Double.parseDouble(amount);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			d = 0.0f;
 		}
 		String outAmount = NumberFormat.getCurrencyInstance(Locale.US).format(d);
@@ -253,5 +256,20 @@ public class CommonUtils {
 		//
 		
 		return outAmount;
+	}
+	
+	/**
+	 * This method can be used to reset the tiling of a background image if it is not getting tiled correctly.
+	 * @param view a view which contains a tiled background image.
+	 */
+	public final static void fixBackgroundRepeat(final View view) {
+	    final Drawable bg = view.getBackground();
+	    if (bg != null) {
+	        if (bg instanceof BitmapDrawable) {
+	            final BitmapDrawable bmp = (BitmapDrawable) bg;
+	            bmp.mutate(); // make sure that we aren't sharing state anymore
+	            bmp.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
+	        }
+	    }
 	}
 }
