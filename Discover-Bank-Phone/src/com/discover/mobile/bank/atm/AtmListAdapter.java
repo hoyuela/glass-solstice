@@ -119,8 +119,8 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		holder.distance.setText(distance + " M");
 
 		if(detail.atmHrs.equalsIgnoreCase(AtmDetail.UNKNOWN)){
-			holder.hours.setVisibility(View.INVISIBLE);
-			holder.hoursLabel.setVisibility(View.INVISIBLE);
+			holder.hours.setVisibility(View.GONE);
+			holder.hoursLabel.setVisibility(View.GONE);
 		}else{
 			holder.hours.setText(detail.atmHrs.replace("Sat", "\nSat"));
 		}
@@ -135,7 +135,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		}
 		showServices(holder, detail);
 		if(holder.numFeatures == 0){
-			holder.serviceLabel.setVisibility(View.INVISIBLE);	
+			holder.serviceLabel.setVisibility(View.GONE);	
 		}
 	}
 

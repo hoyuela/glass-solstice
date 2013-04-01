@@ -100,8 +100,8 @@
             android:id="@+id/services"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/hours"
             android:layout_below="@+id/hours"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:orientation="vertical" >
 
@@ -159,7 +159,8 @@
             android:layout_above="@+id/report"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/forms_inner_padding"
-            android:text="@string/atm_location_email" />
+            android:text="@string/atm_location_email"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/report"
