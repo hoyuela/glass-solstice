@@ -99,7 +99,10 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		holder.date.setText(convertDate(detail.dates.get(ActivityDetail.POSTED).split(ActivityDetail.DATE_DIVIDER)[0]));
 		holder.desc.setText(detail.description);
 		final double amount = ((double)detail.amount.value)/DOLLAR_CONVERSION;
-		if(amount < 0){
+		if(amount == 0.00){
+			holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
+		}
+		else if(amount < 0){
 			holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
 		}else{
 			holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
