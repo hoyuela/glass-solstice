@@ -235,15 +235,16 @@ public class BankErrorHandler implements ErrorHandler {
 	 * @param modal Reference to a modal that has not been shown.
 	 */
 	public void updateModalInfo(final ModalAlertWithOneButton modal) {
+		
+		final ModalDefaultTopView modalTopView = (ModalDefaultTopView)modal.getTop();
+		
 		/**Update footer in modal to use phone number provided in error response*/
 		final ErrorResponse<?> errorResponse = BankNetworkServiceCallManager.getInstance().getLastError();
 		if( errorResponse != null &&  errorResponse instanceof BankErrorResponse ) {
 			final BankErrorResponse bankErrorResponse = (BankErrorResponse) errorResponse;
 			final String phoneNumber = bankErrorResponse.getPhoneNumber();
 			final String title = bankErrorResponse.getTitle();
-			
-			final ModalDefaultTopView modalTopView = (ModalDefaultTopView)modal.getTop();
-			
+				
 			/**Set modal title with title sent from server*/
 			if( !Strings.isNullOrEmpty(title) )
 				modalTopView.setTitle(title);
@@ -251,7 +252,10 @@ public class BankErrorHandler implements ErrorHandler {
 			/**Set modal phonenumber with number sent from server*/
 			if( !Strings.isNullOrEmpty(phoneNumber) && modalTopView.getHelpFooter() != null) 
 				modalTopView.getHelpFooter().setToDialNumberOnClick(phoneNumber);
+		
 		}
+		
+		modalTopView.hideNeedHelpFooter();
 
 	}
 
@@ -315,7 +319,7 @@ public class BankErrorHandler implements ErrorHandler {
 		} else {
 			modal = createErrorModal(title, errorText);
 		} 
-
+		
 		showCustomAlert(modal);
 
 		return modal;

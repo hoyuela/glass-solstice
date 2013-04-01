@@ -14,9 +14,9 @@ import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.util.BankNeedHelpFooter;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.ui.help.NeedHelpFooter;
 
 /**
  * Fragment class used to display the Open Account page to the user when they do not have any accounts.
@@ -28,7 +28,7 @@ import com.discover.mobile.common.ui.help.NeedHelpFooter;
  *
  */
 public class BankOpenAccountFragment extends BaseFragment implements OnClickListener {
-	private NeedHelpFooter helpFooter;
+	private BankNeedHelpFooter helpFooter;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -43,7 +43,7 @@ public class BankOpenAccountFragment extends BaseFragment implements OnClickList
 		openAccountBtn.setOnClickListener(this);
 
 		/**Create footer that will listen when user taps on Need Help Number to dial*/
-		helpFooter = new NeedHelpFooter((ViewGroup)view);
+		helpFooter = new BankNeedHelpFooter((ViewGroup)view);
 		helpFooter.setToDialNumberOnClick(com.discover.mobile.bank.R.string.bank_need_help_number_text);
 
 		return view;

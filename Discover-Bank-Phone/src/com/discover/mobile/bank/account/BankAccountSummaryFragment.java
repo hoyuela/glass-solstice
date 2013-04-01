@@ -27,10 +27,10 @@ import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
+import com.discover.mobile.bank.util.BankNeedHelpFooter;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
-import com.discover.mobile.common.ui.help.NeedHelpFooter;
 import com.discover.mobile.common.ui.widgets.AccountToggleView;
 
 /**
@@ -45,7 +45,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	private static final String TAG = "AccountSummary";
 	private LinearLayout accountSummary; 
 	private Button openAccount;
-	private NeedHelpFooter helpFooter;
+	private BankNeedHelpFooter helpFooter;
 	private AccountToggleView toggleView;
 	private View view;
 	private ImageView accountToggleIcon;
@@ -71,7 +71,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
 
 		/**Create footer that will listen when user taps on Need Help Number to dial*/
-		helpFooter = new NeedHelpFooter((ViewGroup)view);
+		helpFooter = new BankNeedHelpFooter((ViewGroup)view);
 		helpFooter.setToDialNumberOnClick(com.discover.mobile.bank.R.string.bank_need_help_number_text);
 
 		/**Setup list of account groups using the list of Accounts downloaded at login*/

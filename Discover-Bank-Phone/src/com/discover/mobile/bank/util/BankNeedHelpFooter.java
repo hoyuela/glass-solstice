@@ -26,12 +26,13 @@ public class BankNeedHelpFooter extends NeedHelpFooter {
 	
 	public BankNeedHelpFooter(final ViewGroup rootView) {
 		super(rootView);
+		show(false);
 		promptUser = false;
 	}
 
 	public BankNeedHelpFooter(final ViewGroup rootView, final boolean promptUser) {
 		super(rootView);
-		
+		show(false);
 		this.promptUser = promptUser;
 	}
 	
