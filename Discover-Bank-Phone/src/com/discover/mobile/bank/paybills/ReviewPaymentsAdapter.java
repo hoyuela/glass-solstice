@@ -71,19 +71,6 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	public View getView(final int position, View view, final ViewGroup parent){
 		ViewHolder holder = null;
 
-		/**If the details is empty show the message*/
-		if(details.isEmpty()){
-			fragment.showFooterMessage();
-			view = fragment.getFooter();
-			return view;
-		}
-
-		/**At the end of the list try loading more*/
-		if(position == details.size()){
-			view = fragment.getFooter();
-			return view;
-		}
-
 		final PaymentDetail detail = details.get(position);
 
 		/**If the view is null, create a new one*/
@@ -103,10 +90,10 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 
 		/**Update the display values*/
 		holder.date.setText(convertDate(detail));
-		
+
 		/**Get Name from payee list*/
 		String nickName = payees.getNameFromId(detail.payee.id);
-		
+
 		/**Use nickname from payee if name does not exist in name*/
 		if( Strings.isNullOrEmpty(nickName) ) {
 			nickName = detail.payee.nickName;
@@ -129,7 +116,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	 */
 	@Override
 	public int getCount(){
-		return details.size() + 1;
+		return details.size();
 	}
 
 	/**

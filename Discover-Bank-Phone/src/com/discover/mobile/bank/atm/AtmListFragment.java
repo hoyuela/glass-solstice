@@ -14,7 +14,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.ui.table.BaseTable;
-import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
+import com.discover.mobile.bank.ui.table.TableTitles;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
@@ -34,14 +34,14 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 	/**Current amount of results being shown*/
 	private int index;
 
-	/**Footer to put in the bottom of the list view*/
-	private TableLoadMoreFooter footer;
-
 	/**Fragment holding this fragment*/
 	private AtmMapFragment observer;
 
+	/**Table title header*/
+	private TableTitles header;
+
 	/**Delay amount for the load more thread*/
-	private static final int DELAY = 100;
+	private static final int DELAY = 200;
 
 	/**
 	 * @param observer the observer to set
@@ -57,9 +57,14 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
 		//If the results is empty or null
 		if(null == results || null == results.results || null == results.results.atms || results.results.atms.isEmpty()){
-			showFooterMessage();
 			showNothingToLoad();
+			header.setMessage(this.getString(R.string.atm_location_no_results));
+			footer.hideAll();
 			return;
+		}else{
+			header.hideMessage();
+			header.hideFilters();
+			footer.showDone();
 		}
 
 		adapter.clear();
@@ -124,24 +129,26 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
 	@Override
 	public void setupHeader() {
-		// No header for this layout
+		header = new TableTitles(this.getActivity(), null);
+		header.setMessage(this.getString(R.string.atm_location_no_results));
+		header.hideFilters();
+		showNothingToLoad();
 	}
 
 	@Override
 	public void setupFooter() {
-		footer = new TableLoadMoreFooter(this.getActivity(), null);
 		footer.getGo().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
 				scrollToTop();
 			}
 		});
-		footer.showDone();
+		footer.hideAll();
 	}
 
 	@Override
 	public View getHeader() {
-		return null;
+		return header;
 	}
 
 	@Override
@@ -166,7 +173,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
 	@Override
 	public void showFooterMessage() {
-		footer.showEmpty(this.getString(R.string.atm_location_no_results));
+		//footer.showEmpty(this.getString(R.string.atm_location_no_results));
 	}
 
 	@Override

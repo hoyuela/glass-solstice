@@ -618,6 +618,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			navigationPanel.setVisibility(View.VISIBLE);
 			isListLand = false;
 		}
+
 		this.getChildFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
 		this.getChildFragmentManager().beginTransaction().show(listFragment).commitAllowingStateLoss();
 	}

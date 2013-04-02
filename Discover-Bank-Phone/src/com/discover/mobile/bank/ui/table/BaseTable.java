@@ -28,6 +28,9 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	/**List View holding the data*/
 	protected PullToRefreshListView table;
 
+	/**Footer of the table*/
+	protected TableLoadMoreFooter footer;
+
 	/**Bundle to load data from*/
 	private Bundle loadBundle;
 
@@ -44,6 +47,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_list, null);
 		table = (PullToRefreshListView) view.findViewById(R.id.bank_table);
+		footer = (TableLoadMoreFooter) view.findViewById(R.id.footer);
 
 		createDefaultLists();
 		setupHeader();
@@ -61,17 +65,19 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		if(null != getHeader()){
 			table.getRefreshableView().addHeaderView(getHeader(), null, false);
 		}
+		table.getLoadingLayoutProxy().setPullLabel(getString(R.string.table_pull_load_more));
+		table.getLoadingLayoutProxy().setReleaseLabel(getString(R.string.table_release_to_update));
 		table.getRefreshableView().setDivider(getResources().getDrawable(R.drawable.table_dotted_line));
-		table.getLoadingLayoutProxy().setLoadingDrawable(null);
-		table.getLoadingLayoutProxy().setPullLabel("");
+		table.getLoadingLayoutProxy().setLoadingDrawable(this.getResources().getDrawable(R.drawable.load_more_arrow_release));
+		table.setShowViewWhileRefreshing(true);
+		table.setShowIndicator(false);
 		table.getLoadingLayoutProxy().setRefreshingLabel("");
-		table.getLoadingLayoutProxy().setReleaseLabel("");
 		table.setOnRefreshListener(new OnRefreshListener<ListView>() {
 			@Override
 			public void onRefresh(final PullToRefreshBase<ListView> refreshView) {
+				table.getLoadingLayoutProxy().setLoadingDrawable(null);
 				table.setShowViewWhileRefreshing(false);
 				maybeLoadMore();
-
 			}
 		});
 	}
@@ -197,8 +203,10 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	 * Refresh the pull to reset listener so that it can load more
 	 */
 	public void refreshListener(){
+		table.setMode(Mode.PULL_FROM_END);
 		table.onRefreshComplete();
 		table.setShowViewWhileRefreshing(true);
+		table.getLoadingLayoutProxy().setLoadingDrawable(this.getResources().getDrawable(R.drawable.load_more_arrow_release));
 	}
 
 	/**

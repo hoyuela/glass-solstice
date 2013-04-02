@@ -19,9 +19,9 @@ import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.ui.table.BaseTable;
-import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
 /**
  * View that allows the user to view posted and scheduled activities for an account
@@ -41,9 +41,6 @@ public class BankAccountActivityTable extends BaseTable{
 
 	/**Title view of the page*/
 	private AccountActivityHeader header;
-
-	/**Footer to put in the bottom of the list view*/
-	private TableLoadMoreFooter footer;
 
 	/**
 	 * Handle the received data from the service call
@@ -86,8 +83,12 @@ public class BankAccountActivityTable extends BaseTable{
 	public void updateAdapter(final List<ActivityDetail> activities){
 		adapter.setData(activities);
 		if(adapter.getCount() < 1){
-			footer.showEmpty(this.getEmptyStringText());
+			header.setMessage(this.getEmptyStringText());
+			showNothingToLoad();
+			footer.hideAll();
 		} else {
+			table.setMode(Mode.PULL_FROM_END);
+			header.clearMessage();
 			footer.showDone();
 		}
 		adapter.notifyDataSetChanged();
@@ -292,7 +293,6 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	@Override
 	public void setupFooter() {
-		footer = new TableLoadMoreFooter(this.getActivity(), null);
 		footer.getGo().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
@@ -332,7 +332,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	@Override
 	public void showFooterMessage() {
-		footer.showEmpty(getEmptyStringText());
+		header.setMessage(getEmptyStringText());
 
 	}
 
