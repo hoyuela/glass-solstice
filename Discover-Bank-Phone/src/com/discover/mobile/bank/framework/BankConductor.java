@@ -61,8 +61,10 @@ import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.KeepAlive;
+import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.CacheManager;
 import com.discover.mobile.common.framework.Conductor;
@@ -932,6 +934,19 @@ public final class BankConductor  extends Conductor {
 			loggedOutFAQ.putExtras(extras);
 			currentActivity.startActivity(loggedOutFAQ);
 		}
+	}
+	
+	/**
+	 * Logs the user out of Bank and requests Card to do the same.
+	 */
+	public static void logoutUser(Activity activeActivity) {
+		Globals.setLoggedIn(false);
+		KeepAlive.setBankAuthenticated(false);
+		Globals.setCurrentUser("");
+		BankUser.instance().clearSession();
+		BankConductor.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
+		final ErrorHandlerUi uiHandler = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
+		FacadeFactory.getCardLogoutFacade().logout(activeActivity, uiHandler);
 	}
 
 	/**
