@@ -93,7 +93,11 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 
 	@Override
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
-		return BankDepositListGenerator.getDepositConfirmationList(getActivity(), depositDetail);
+		List<RelativeLayout> list = null;
+		if( depositDetail != null ) {
+			list = BankDepositListGenerator.getDepositConfirmationList(getActivity(), depositDetail);
+		} 
+		return list;
 	}
 
 	@Override
@@ -145,7 +149,12 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 		super.onSaveInstanceState(outState);
 		
 		/**Store values stored in each field*/
-		outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, depositDetail);
+		if(depositDetail != null) {
+			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, depositDetail);
+		} else if( getArguments().getSerializable(BankExtraKeys.DATA_LIST_ITEM) != null ) {
+			outState.putAll(getArguments());
+		}
+		
 	}
 	
 }
