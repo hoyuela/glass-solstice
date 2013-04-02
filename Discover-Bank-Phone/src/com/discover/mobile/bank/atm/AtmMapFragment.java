@@ -29,6 +29,7 @@ import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
@@ -154,6 +155,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		searchBar = (AtmLocatorMapSearchBar) view.findViewById(R.id.full_search_bar);
 		searchBar.setFragment(this);
 
+		DiscoverModalManager.clearActiveModal();
+
 		setUpListeners();
 		disableMenu();
 		createSettingsModal();
@@ -178,18 +181,17 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			showMap();
 		}else{
 			showList();
+		}	
+
+		if(null != savedState){
+			resumeStateOfFragment(savedState);
 		}
+
+		determineNavigationStatus();
 
 		if(shouldGoBack){
 			streetView.showWebView();
 		}
-
-		if(null != savedState){
-			resumeStateOfFragment(savedState);
-			return;
-		}
-
-		determineNavigationStatus();
 	}
 
 	/**
@@ -203,10 +205,10 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 		switch(locationStatus){
 		case NOT_ENABLED:
-			settingsModal.show();
+			((NavigationRootActivity) getActivity()).showCustomAlert(settingsModal);
 			break;
 		case ENABLED:
-			locationModal.show();
+			((NavigationRootActivity) getActivity()).showCustomAlert(locationModal);
 			break;
 		case SEARCHING:
 			getLocation();
@@ -369,30 +371,34 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		final Double lat = savedInstanceState.getDouble(LAT_KEY);
 		final Double lon = savedInstanceState.getDouble(LONG_KEY);
 
-		if(0.0 == lat && 0.0 == lon){return;}
-		results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-		if(null != results){
-			hasLoadedAtms = true;
-		}
-		final Location location = new Location(LocationManager.GPS_PROVIDER);
-		location.setLatitude(lat);
-		location.setLongitude(lon);
-		mapWrapper.setCurrentLocation(location);
-		setUserLocation(location);
-		currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
-		if(null != results){
-			mapWrapper.addObjectsToMap(results.results.atms.subList(0, currentIndex));
-			hasLoadedAtms = true;
-		}
 		isOnMap = !savedInstanceState.getBoolean(BUTTON_KEY, true);
-		searchBar.restoreState(savedInstanceState);
 		toggleButton();
-		listFragment.handleReceivedData(savedInstanceState);
-		streetView.hide();
 
-		shouldGoBack = savedInstanceState.getBoolean(STREET_VIEW_SHOWING, true);
-		if(shouldGoBack){
-			showStreetView(savedInstanceState);
+		if(0.0 == lat && 0.0 == lon){
+			mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
+		}else{
+			results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+			if(null != results){
+				hasLoadedAtms = true;
+			}
+			final Location location = new Location(LocationManager.GPS_PROVIDER);
+			location.setLatitude(lat);
+			location.setLongitude(lon);
+			mapWrapper.setCurrentLocation(location);
+			setUserLocation(location);
+			currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
+			if(null != results){
+				mapWrapper.addObjectsToMap(results.results.atms.subList(0, currentIndex));
+				hasLoadedAtms = true;
+			}
+			searchBar.restoreState(savedInstanceState);
+			listFragment.handleReceivedData(savedInstanceState);
+			streetView.hide();
+
+			shouldGoBack = savedInstanceState.getBoolean(STREET_VIEW_SHOWING, true);
+			if(shouldGoBack){
+				showStreetView(savedInstanceState);
+			}
 		}
 	}
 
