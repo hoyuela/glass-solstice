@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
+import com.discover.mobile.bank.ui.widgets.StatusMessageView;
 
 /**
  * BankManagePayee
@@ -25,11 +27,17 @@ import com.discover.mobile.bank.services.payee.PayeeDetail;
  *
  */
 public class BankManagePayee extends BankSelectPayee implements OnClickListener{
+	private static final int DURATION = 5000;
 	private int index = 0;
 	/**
 	 * Reference to button that will open the step 2 in the Add Payee work flow
 	 */
 	private Button addPayee;
+	/**
+	 * Reference to widget displayed when a payee is deleted from list
+	 */
+	private StatusMessageView statusView;
+	
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
@@ -45,9 +53,11 @@ public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 		/**Set Text to Add New */
 		addPayee.setText(R.string.select_payee_add_new);
 		
+		/**Set status message used for delete payee confirmation*/
+		statusView = (StatusMessageView) view.findViewById(R.id.status);
+		
 		return view;
 	}
-	
 	
 	/**
 	 * Set the title in the action bar.
@@ -69,10 +79,11 @@ public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 		}else{
 			/**Adjust height so there is not a large gap between list and help icon*/
 			title.setText(R.string.empty);
-			final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)title.getLayoutParams();
-			params.width = 0;
+			
+			final LinearLayout layoutParams = (LinearLayout)this.getView().findViewById(R.id.page_header);
+			final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)layoutParams.getLayoutParams();
 			params.bottomMargin = 0;
-			title.setLayoutParams(params);
+			layoutParams.setLayoutParams(params);
 		}
 		//Reset the index so that if this screen gets re-created or re-used
 		//the index is not in the wrong position.
@@ -133,5 +144,28 @@ public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 		return BankMenuItemLocationIndex.MANAGE_PAYEES_SECTION;
 	}
 
-	
+	/**
+	 * Method used to display a temporary status message that notifies user that a payee from 
+	 * the list has been deleted.
+	 */
+	public void showDeleteConfirmation() {
+		if( statusView != null ) {
+			statusView.setText(R.string.bank_payee_delete_confirm);
+			statusView.showAndHide(DURATION);
+		}
+	}
+
+	/**
+	 * Method used to refresh the screen with new date downloaded.
+	 * 
+	 * @param extras Reference to bundle with payee list data.
+	 */
+	@Override
+	public void refreshScreen(final Bundle extras) {
+		super.refreshScreen(extras);
+		
+		if( extras.getBoolean(BankExtraKeys.CONFIRM_DELETE)  ) {
+			this.showDeleteConfirmation();			
+		}
+	}		
 }

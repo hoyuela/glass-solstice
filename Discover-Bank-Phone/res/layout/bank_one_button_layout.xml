@@ -103,11 +103,12 @@
                 style="@style/call_to_action_theme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minWidth="@dimen/action_button_min_width"
                 android:layout_below="@+id/note_text_msg"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/between_related_elements_padding"
-                android:layout_marginTop="@dimen/groups_of_elements_padding"
+                android:layout_marginTop="@dimen/orange_button_margin_top"
                 android:drawablePadding="@dimen/between_related_elements_padding"
                 android:text="@string/action_button" />
 
