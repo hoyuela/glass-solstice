@@ -303,7 +303,6 @@ public class BankErrorHandler implements ErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#handleHttpFraudNotFoundUserErrorModal
 	 * (com.discover.mobile.error.ErrorHandlerUi, java.lang.String)
 	 */
-	@Override
 	public ModalAlertWithOneButton handleInvalidSSOPayloadErrorModal(final ErrorHandlerUi mErrorHandlerUi) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 		final Resources resources = activeActivity.getResources();

@@ -9,6 +9,7 @@ import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.services.auth.BankSchema;
+import com.discover.mobile.bank.services.auth.CreateBankSSOLoginCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.common.BaseFragment;
@@ -77,7 +78,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 		
 		if (errorResponse instanceof BankErrorResponse) {
 			//Use JSON Error Response Handler if error response has a JSON body in it
-			handled = handleJsonErrorCode((BankErrorResponse)errorResponse);
+			handled = handleJsonErrorCode(sender, (BankErrorResponse)errorResponse);
 		} else {
 			//Use HTTP Error Response Handler if error response has no JSON body in it
 			handled = handleHTTPErrorCode(errorResponse.getHttpStatusCode(), errorResponse.getConnection());
@@ -101,7 +102,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	 * @param messageErrorResponse
 	 * @return
 	 */
-	protected boolean handleJsonErrorCode(final BankErrorResponse msgErrResponse) {	
+	protected boolean handleJsonErrorCode(final NetworkServiceCall<?> sender, final BankErrorResponse msgErrResponse) {	
 		boolean handled = false;
 	
 		final String errCode = msgErrResponse.getErrorCode();
@@ -114,10 +115,12 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				mErrorHandler.handleLoginAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOGIN_LOCKED)) {
 				mErrorHandler.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
-			}else if (errCode.equals(BankErrorCodes.ERROR_FRAUD_USER) || errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
+			} else if(sender instanceof CreateBankSSOLoginCall && 
+					(errCode.equals(BankErrorCodes.ERROR_INVALID_SSO_PAYLOAD) || 
+							errCode.equals(BankErrorCodes.ERROR_FRAUD_USER))) {
+				((BankErrorHandler) mErrorHandler).handleInvalidSSOPayloadErrorModal(mErrorHandlerUi);
+			} else if (errCode.equals(BankErrorCodes.ERROR_FRAUD_USER) || errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
 				mErrorHandler.handleHttpFraudNotFoundUserErrorModal(mErrorHandlerUi, msgErrResponse.getErrorMessage());
-			} else if(errCode.equals(BankErrorCodes.ERROR_INVALID_SSO_PAYLOAD)) {
-				mErrorHandler.handleInvalidSSOPayloadErrorModal(mErrorHandlerUi);
 			}
 			//Strong Auth Errors
 			else if( errCode.equals(BankErrorCodes.ERROR_INVALID_STRONG_AUTH) || errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH) ) {

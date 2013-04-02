@@ -94,14 +94,6 @@ public interface ErrorHandler {
 	public abstract ModalAlertWithOneButton handleHttpFraudNotFoundUserErrorModal(ErrorHandlerUi mErrorHandlerUi, String message);
 	
 	/**
-	 * Handler for a 400 response from /token/sso for an invalid payload coming from Card service.
-	 * @param mErrorHandlerUi
-	 * @param message
-	 * @return
-	 */
-	public abstract ModalAlertWithOneButton handleInvalidSSOPayloadErrorModal(ErrorHandlerUi mErrorHandlerUi);
-
-	/**
 	 * Handler for an HTTP 503 Service Unavailable error response. Creates a one
 	 * button modal with the default error title, and help number. The help
 	 * number is determined based on whether the user is logged in there bank or
