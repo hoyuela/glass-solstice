@@ -65,21 +65,8 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	@Override
 	public View getView(final int position, View view, final ViewGroup parent){
 		ItemViewHolder holder = null;
-
-		/**If the details is empty show the message*/
-		if(details.isEmpty()){
-			fragment.showFooterMessage();
-			view = fragment.getFooter();
-			return view;
-		}
-
-		/**At the end of the list try loading more*/
-		if(position == details.size()){
-			view = fragment.getFooter();
-			return view;
-		}
-
 		final ActivityDetail detail = details.get(position);
+
 		/**If the view is null, create a new one*/
 		if(null == view || !(view.getTag() instanceof ItemViewHolder)){
 			holder = new ItemViewHolder();
@@ -101,8 +88,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		final double amount = ((double)detail.amount.value)/DOLLAR_CONVERSION;
 		if(amount == 0.00){
 			holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
-		}
-		else if(amount < 0){
+		} else if(amount < 0){
 			holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
 		}else{
 			holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
@@ -119,7 +105,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	 */
 	@Override
 	public int getCount(){
-		return details.size() + 1;
+		return details.size();
 	}
 
 	/**

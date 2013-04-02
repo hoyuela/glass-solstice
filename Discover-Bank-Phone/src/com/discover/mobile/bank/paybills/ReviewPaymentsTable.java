@@ -21,8 +21,8 @@ import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.ui.table.BaseTable;
-import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
 /**
  * Table holding payments that the user can review.  It has the possible 
@@ -45,9 +45,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 
 	/**Header for the list*/
 	private ReviewPaymentsHeader header;
-
-	/**Footer to put in the bottom of the list view*/
-	private TableLoadMoreFooter footer;
 
 	/**Adapter to show data*/
 	private ReviewPaymentsAdapter adapter;
@@ -226,7 +223,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 */
 	@Override
 	public void setupFooter() {
-		footer = new TableLoadMoreFooter(this.getActivity(), null);
 		footer.getGo().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
@@ -271,16 +267,16 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		/**Set the resource identifier that should be displayed in the details screen*/
 		switch( category ) {
 		case ReviewPaymentsHeader.SCHEDULED_PAYMENTS:
-			 bundle.putInt(BankExtraKeys.TITLE_TEXT, R.string.scheduled_payment);
-			 break;
+			bundle.putInt(BankExtraKeys.TITLE_TEXT, R.string.scheduled_payment);
+			break;
 		case ReviewPaymentsHeader.COMPLETED_PAYMENTS:
-			 bundle.putInt(BankExtraKeys.TITLE_TEXT,R.string.completed_payment);
-			 break;
+			bundle.putInt(BankExtraKeys.TITLE_TEXT,R.string.completed_payment);
+			break;
 		case ReviewPaymentsHeader.CANCELED_PAYMENTS:
-			 bundle.putInt(BankExtraKeys.TITLE_TEXT,R.string.cancelled_payment);
-			 break;
+			bundle.putInt(BankExtraKeys.TITLE_TEXT,R.string.cancelled_payment);
+			break;
 		}
-		
+
 		bundle.putSerializable(scheduleKey, scheduled);
 		bundle.putSerializable(completedKey, completed);
 		bundle.putSerializable(canceledKey, canceled);
@@ -373,14 +369,16 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 * @param activities - activities to update the adapter with
 	 */
 	public void updateAdapter(final List<PaymentDetail> activities){
-		/**Determine whether to show or hide column titles based on size of list*/
-		showHeaderTitles(!activities.isEmpty());
 
 		adapter.clear();
 		adapter.setData(activities);
 		if(adapter.getCount() < 1){
-			footer.showEmpty(this.getEmptyStringText());
+			header.setMessage(this.getEmptyStringText());
+			showNothingToLoad();
+			footer.hideAll();
 		}else{
+			table.setMode(Mode.PULL_FROM_END);
+			header.clearMessage();
 			footer.showDone();
 		}
 		adapter.notifyDataSetChanged();
@@ -407,14 +405,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 */
 	@Override
 	public void showFooterMessage() {
-		footer.showEmpty(getEmptyStringText());
-	}
-
-	/**
-	 * Hides the titles show above the columns on the table.
-	 */
-	public void showHeaderTitles(final boolean show) {
-		header.showTitles(show);
+		header.setMessage(getEmptyStringText());
 	}
 
 	@Override

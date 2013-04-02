@@ -305,6 +305,21 @@ public class AccountActivityHeader extends RelativeLayout{
 	}
 
 	/**
+	 * Set the message in the table titles
+	 * @param - message to set in the titles
+	 */
+	public void setMessage(final String message){
+		titles.setMessage(message);
+	}
+
+	/**
+	 * Clear the message in the titles
+	 */
+	public void clearMessage(){
+		titles.hideMessage();
+	}
+
+	/**
 	 * Set the selected category
 	 * @param the selected category
 	 */
