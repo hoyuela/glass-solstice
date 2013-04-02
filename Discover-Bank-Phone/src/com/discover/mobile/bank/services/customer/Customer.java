@@ -195,7 +195,7 @@ public class Customer implements Serializable {
 	 * 
 	 * @return Returns boolean that specifies a Customer's eligibility status for Payments
 	 */
-	public boolean isPaymentsEligibility() {
+	public boolean isPaymentsEligible() {
 		return ( this.eligibilities != null )? getEligibilityValues(BankUrlManager.PAYMENTS_URL_KEY).isEligible() : false;
 	}
 
@@ -211,8 +211,24 @@ public class Customer implements Serializable {
 	 * 
 	 * @return Returns boolean that specifies a Customer's eligibility status for Deposit
 	 */
-	public boolean isDepositEligibility() {
+	public boolean isDepositEligible() {
 		return ( this.eligibilities != null )? getEligibilityValues(BankUrlManager.DEPOSITS_URL_KEY).isEligible() : false;
+	}
+	
+	/**
+	 * 
+	 * @return if a customer is eligible for transfer funds.
+	 */
+	public boolean isTransferEligible() {
+		return ( this.eligibilities != null)? getEligibilityValues(BankUrlManager.TRANSFER_URL_KEY).isEligible() : false;
+	}
+	
+	/**
+	 * 
+	 * @return if a customer is enrolled in transfer funds.
+	 */
+	public boolean isTransferEnrolled() {
+		return ( this.eligibilities != null)? getEligibilityValues(BankUrlManager.TRANSFER_URL_KEY).isEnrolled() : false;
 	}
 
 	/**

@@ -55,6 +55,8 @@ import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.transfer.BankTransferNotEligibleFragment;
+import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.bank.util.BankAtmUtil;
 import com.discover.mobile.common.AlertDialogParent;
@@ -693,6 +695,34 @@ public final class BankConductor  extends Conductor {
 			}
 		}
 	}
+	
+	/**
+	 * Navigation method used to navigate to the first step of Transfer Money.
+	 * If a customer is not eligible for Transfer Money, they will be directed to a page that 
+	 * allows them to sign up for the service with an external browser.
+	 */
+	public static void navigateToTransferMoneyLandingPage() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+
+			final boolean isEligible = BankUser.instance().getCustomerInfo().isTransferEligible();
+			
+
+			Fragment nextVisibleFragment = null;
+
+			if(isEligible)
+				nextVisibleFragment = new BankTransferStepOneFragment();
+			else
+				nextVisibleFragment = new BankTransferNotEligibleFragment();
+			
+			if(nextVisibleFragment != null)
+				navActivity.makeFragmentVisible(nextVisibleFragment);
+		}
+		
+	}
 
 	/**
 	 * Navigation method used to navigate to Check Deposit work-flow. Navigates to Check Deposit - Terms 
@@ -709,7 +739,7 @@ public final class BankConductor  extends Conductor {
 
 			Fragment fragment = null;
 
-			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligibility();
+			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligible();
 			final boolean isEnrolled = BankUser.instance().getCustomerInfo().isDepositEnrolled();
 			final boolean isForbidden = BankUser.instance().getCustomerInfo().getDepositsEligibility().isUserBlocked();
 

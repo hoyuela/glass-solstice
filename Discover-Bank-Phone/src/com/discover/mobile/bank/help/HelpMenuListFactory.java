@@ -72,6 +72,17 @@ public final class HelpMenuListFactory {
 		items.add(allFaq);
 		return items;
 	}
+	
+	
+	/**
+	 * Returns a list of items to be shown in the help dropdown menu during bank transfers.
+	 * @return a list of items to be shown in the help dropdown menu during bank transfers.
+	 */
+	public List<HelpItemGenerator> getBankTransferHelpItems() {
+		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
+		items.add(allFaq);
+		return items;
+	}
 
 	/**
 	 * Get the menu items that are associated with the pay bills pages
