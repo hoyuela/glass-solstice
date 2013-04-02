@@ -136,14 +136,20 @@ public class BankSelectPayee extends BaseFragment{
 			int i = 0;
 			final int size = payees.payees.size();
 			for(final PayeeDetail payee : payees.payees){
+				SimpleChooseListItem item = null;
+				
 				if(size == 1) {
-					payeesList.addView(createSingleListItem(payee));
+					item = createSingleListItem(payee);
+					payeesList.addView(item);
 				} else if (i == 0) {
-					payeesList.addView(createFirstListItem(payee));
+					item = createFirstListItem(payee);
+					payeesList.addView(item);
 				} else if (i == size - 1) {
-					payeesList.addView(createLastListItem(payee));
+					item = createLastListItem(payee);
+					payeesList.addView(item);
 				} else {
-					payeesList.addView(createListItem(payee));
+					item = createListItem(payee);
+					payeesList.addView(item);
 				}
 				i++;
 			}
@@ -296,6 +302,17 @@ public class BankSelectPayee extends BaseFragment{
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.PAY_BILLS_SECTION;
+	}
+	
+	/**
+	 * Method used to refresh the screen with new date downloaded.
+	 * 
+	 * @param extras Reference to bundle with payee list data.
+	 */
+	public void refreshScreen(final Bundle extras) {
+		loadListFromBundle(extras);
+		initViewWithBundleData();
+		customSetup();
 	}
 
 }

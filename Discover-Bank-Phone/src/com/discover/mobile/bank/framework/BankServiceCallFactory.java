@@ -38,6 +38,7 @@ import com.discover.mobile.bank.services.deposit.GetAccountLimits;
 import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
+import com.discover.mobile.bank.services.payee.DeletePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
@@ -522,5 +523,24 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		}
 		// FIXME : Add the rest in here!!! 
 		return null;
+	}
+	
+	/**
+	 * Creates a DeletePayeeServiceCall object used to delete a Payee (Managed or Unmanaged) from
+	 * a users Bank Account using the service DELETE /api/payments/payees/{id}.
+	 * 
+	 * @param payee Reference to a PayeeDetail with information about the Payee being deleted.
+	 * 
+	 * @return Reference to the DeletePayeeServiceCall object created.
+	 */
+	public static DeletePayeeServiceCall createDeletePayeeServiceCall(final PayeeDetail payee) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<PayeeDetail>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PayeeDetail.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new DeletePayeeServiceCall(activity, callback, payee);
 	}
 }

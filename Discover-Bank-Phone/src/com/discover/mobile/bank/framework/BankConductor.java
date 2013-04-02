@@ -44,6 +44,7 @@ import com.discover.mobile.bank.paybills.ReviewPaymentsTable;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
 import com.discover.mobile.bank.payees.BankAddPayeeFragment;
+import com.discover.mobile.bank.payees.BankDeletePayeeModal;
 import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
 import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.BankSearchSelectPayeeFragment;
@@ -371,7 +372,18 @@ public final class BankConductor  extends Conductor {
 		((AlertDialogParent)activity).closeDialog();
 		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(extras);
-		}else{
+		} else if( extras != null && extras.getBoolean(BankExtraKeys.CONFIRM_DELETE)) {
+			/**Navigate user back to Manage Payee screen if they were in the middle of a delete*/
+			activity.popTillFragment(BankManagePayee.class);
+			
+			if( activity.getCurrentContentFragment() instanceof BankManagePayee) {
+				final BankManagePayee managePayees = (BankManagePayee) activity.getCurrentContentFragment();
+				
+				/**Refresh screen with new data */
+				managePayees.refreshScreen(extras);
+			}
+		}
+		else {
 			final BankManagePayee fragment = new BankManagePayee();
 			fragment.setArguments(extras);
 			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
@@ -549,6 +561,21 @@ public final class BankConductor  extends Conductor {
 		}
 	}
 
+	/**
+	 * Method used to display the Delete Payee Modal Page when a user attempts to delete a payee.
+	 * 
+	 * @param bundle Reference to a bundle which holds a reference to a PayeeDetail object that has the information about the
+	 *               the payee being deleted. Use the key DATA_LIST_ITEM to populate with PayeeDetail object.
+	 */
+	public static void navigateToDeletePayeeModal(final Bundle bundle) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+			final BankDeletePayeeModal modal = new BankDeletePayeeModal();
+			modal.setArguments(bundle);
+			((BankNavigationRootActivity)activity).makeFragmentVisible(modal);			
+		}
+	}
 
 	/**
 	 * Navigate to the Review payments detail table screen

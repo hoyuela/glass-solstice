@@ -15,6 +15,30 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
         </LinearLayout>
+        
+        <Button
+            android:id="@+id/edit_payee_button"
+            style="@style/call_to_action_theme"
+            android:layout_width="wrap_content"
+            android:minWidth="@dimen/action_button_min_width"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/content_table"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:text="@string/bank_payee_action_edit" >
+        </Button>
+
+        <Button
+            android:id="@+id/delete_payee_button"
+            style="@style/blue_hyperlink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_payee_button" 
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@null"
+            android:text="@string/bank_payee_action_delete" >
+        </Button>
     </RelativeLayout>
 
 </ScrollView>

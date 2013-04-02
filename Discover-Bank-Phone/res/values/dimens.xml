@@ -45,4 +45,6 @@
     <!-- Help Widget Width  -->
     <dimen name="help_widget_width">40dp</dimen>
     
+    <!-- Action Button Minimum Width -->
+    <dimen name="action_button_min_width">150dp</dimen>
 </resources>
