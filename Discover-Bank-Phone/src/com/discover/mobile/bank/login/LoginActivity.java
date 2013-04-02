@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
@@ -156,12 +157,6 @@ public class LoginActivity extends BaseActivity implements
 		restoreState(savedInstanceState);
 		setupButtons();
 
-		//Check to see if pre-auth request is required. Should only 
-		//be done at application start-up
-		if (!preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
-			startPreAuthCheck();
-		} 
-		
 		KeepAlive.setBankAuthenticated(false);
 		KeepAlive.setCardAuthenticated(false);
 	}
@@ -181,6 +176,20 @@ public class LoginActivity extends BaseActivity implements
 				deleteAndSaveCurrentUserPrefs();
 			}
 		}
+	}
+
+	/**
+	 * This method is being called to prevent onResume calls for rotation
+	 * change. When not implemented (also from the manifest) then onResume is
+	 * called for rotation changed.
+	 */
+	@Override
+	public void onConfigurationChanged(final Configuration config) {
+		super.onConfigurationChanged(config);
+		if (config.orientation == Configuration.ORIENTATION_LANDSCAPE
+				|| config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+			Log.e(TAG, "rotate");
+		} 
 	}
 
 	/**
@@ -310,7 +319,7 @@ public class LoginActivity extends BaseActivity implements
 	@Override
 	public void onResume(){
 		super.onResume();
-
+		
 		//Check if the login activity was launched because of a logout
 		maybeShowUserLoggedOut();
 
@@ -352,6 +361,14 @@ public class LoginActivity extends BaseActivity implements
 		//Default to the last path user chose for login Card or Bank
 		this.setApplicationAccount();
 
+		/*
+		 * Check to see if pre-auth request is required; should be done at
+		 * application resumption, but not rotation change.
+		 */
+		if (this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
+			startPreAuthCheck();
+		}
+		Log.e(TAG, "preauth");
 		//Show splash screen while completing pre-auth, if pre-auth has not been done and
 		//application is be launched for the first time
 		if( !preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) ) {
