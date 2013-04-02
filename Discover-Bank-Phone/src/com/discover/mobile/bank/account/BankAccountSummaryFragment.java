@@ -28,6 +28,7 @@ import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.util.BankNeedHelpFooter;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
@@ -41,7 +42,7 @@ import com.discover.mobile.common.ui.widgets.AccountToggleView;
  * @author henryoyuela
  *
  */
-public class BankAccountSummaryFragment extends BaseFragment implements OnClickListener {
+public class BankAccountSummaryFragment extends BaseFragment implements OnClickListener, FragmentOnBackPressed {
 	private static final String TAG = "AccountSummary";
 	private LinearLayout accountSummary; 
 	private Button openAccount;
@@ -233,6 +234,23 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 			toggleView.toggleVisibility();
 		}
 		
+	}
+
+	@Override
+	public void onBackPressed() {
+		if(toggleView.getVisibility() == View.VISIBLE) {
+			toggleView.setVisibility(View.INVISIBLE);
+		}
+		
+	}
+
+	@Override
+	public boolean isBackPressDisabled() {
+		if(toggleView.getVisibility() == View.VISIBLE) {
+			return true;
+		}
+		
+		return false;
 	}
 
 }
