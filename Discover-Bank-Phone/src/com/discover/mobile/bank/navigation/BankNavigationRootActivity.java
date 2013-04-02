@@ -20,6 +20,7 @@ import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
+import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.KeepAlive;
@@ -27,6 +28,7 @@ import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.SessionTokenManager;
 import com.slidingmenu.lib.SlidingMenu;
+import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
 
 /**
  * Root activity for the application after login. This will transition fragment
@@ -53,7 +55,26 @@ implements OnPaymentCanceledListener {
 	public void onResume() {
 		super.onResume();
 
+		updateMenuOnClose();
+		
 		compareLastTouchTimeAndUpdateSession();
+	}
+
+	/**
+	 * 
+	 */
+	private void updateMenuOnClose() {
+		final SlidingMenu slidingMenu = getSlidingMenu();
+		final BaseFragment currentFragment = getCurrentContentFragment();
+		slidingMenu.setOnClosedListener(new OnClosedListener() {
+
+			@Override
+			public void onClosed() {
+				// TODO Auto-generated method stub
+				highlightMenuItems(currentFragment.getGroupMenuLocation(), currentFragment.getSectionMenuLocation());
+
+			}
+		});
 	}
 
 	/**
@@ -76,11 +97,16 @@ implements OnPaymentCanceledListener {
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		super.onCreate(savedInstanceState);
 
-		// Application was previously destroyed; reloading the BankUser Singleton.
-		if(BankUser.instance().getCustomerInfo() == null) {
-			BankUser.instance().setBankUser((BankUser)savedInstanceState.getSerializable(BANK_USER_KEY));
-			BankUrlManager.setNewLinks(BankUser.instance().getCustomerInfo().links);
-			SessionTokenManager.setToken(savedInstanceState.getString(BANK_SESSION_KEY));
+		// Application was previously destroyed; reloading the BankUser
+		// Singleton.
+		if (BankUser.instance().getCustomerInfo() == null) {
+			BankUser.instance().setBankUser(
+					(BankUser) savedInstanceState
+							.getSerializable(BANK_USER_KEY));
+			BankUrlManager
+					.setNewLinks(BankUser.instance().getCustomerInfo().links);
+			SessionTokenManager.setToken(savedInstanceState
+					.getString(BANK_SESSION_KEY));
 		}
 	}
 
@@ -143,11 +169,7 @@ implements OnPaymentCanceledListener {
 
 			// User has become inactive and will be set to timed-out.
 			if ( secs > BankUrlManager.MAX_IDLE_TIME) {
-				Globals.setLoggedIn(false);
-				KeepAlive.setBankAuthenticated(false);
-				Globals.setCurrentUser("");
-				BankUser.instance().clearSession();
-				BankConductor.navigateToLoginPage(this, IntentExtraKey.SESSION_EXPIRED, null);
+				BankConductor.logoutUser(this);
 				return true;
 			}
 		}

@@ -23,11 +23,11 @@ public class TableLoadMoreFooter extends RelativeLayout{
 	/**View that shows the go to top*/
 	private final TextView go;
 
-	/**Empty view for the message*/
-	private final TextView empty;
-
 	/**Divider line*/
 	private final View line;
+
+	/**Privacy and terms text*/
+	private final TextView privacy;
 
 	/**Constructor for the class
 	 * @param context - activity context
@@ -40,8 +40,9 @@ public class TableLoadMoreFooter extends RelativeLayout{
 
 		load = view.findViewById(R.id.load_more);
 		go = (TextView) view.findViewById(R.id.go_to_top);
-		empty = (TextView) view.findViewById(R.id.message);
 		line = view.findViewById(R.id.line);
+		privacy =  (TextView) view.findViewById(R.id.privacy_footer);
+
 		hideAll();
 		addView(view);
 	}
@@ -53,7 +54,6 @@ public class TableLoadMoreFooter extends RelativeLayout{
 		load.setVisibility(View.VISIBLE);
 		load.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.rotate_full_circle));
 		go.setVisibility(View.VISIBLE);
-		empty.setVisibility(View.GONE);
 		line.setVisibility(View.VISIBLE);
 	}
 
@@ -64,21 +64,20 @@ public class TableLoadMoreFooter extends RelativeLayout{
 		load.setVisibility(View.GONE);
 		load.clearAnimation();
 		go.setVisibility(View.VISIBLE);
-		empty.setVisibility(View.GONE);
 		line.setVisibility(View.VISIBLE);
+		privacy.setVisibility(View.VISIBLE);
 	}
 
 	/**
 	 * Show the list is empty view
 	 * @param message
 	 */
-	public void showEmpty(final String message){
+	public void showEmpty(){
 		load.setVisibility(View.GONE);
 		load.clearAnimation();
 		go.setVisibility(View.GONE);
-		empty.setVisibility(View.VISIBLE);
 		line.setVisibility(View.GONE);
-		empty.setText(message);
+		privacy.setVisibility(View.GONE);
 	}
 
 	/**
@@ -88,8 +87,8 @@ public class TableLoadMoreFooter extends RelativeLayout{
 		load.setVisibility(View.GONE);
 		load.clearAnimation();
 		go.setVisibility(View.GONE);
-		empty.setVisibility(View.GONE);
 		line.setVisibility(View.GONE);
+		privacy.setVisibility(View.GONE);
 	}
 
 	/**

@@ -78,8 +78,8 @@
     </string>
     <string name="deposit_limits_body">
         You may deposit up to 5 checks per day and 25 checks per month.  For saving and money market accounts, 
-        there is a limit of $5,000 per check, $25,000 per day and $125,000 per month.\n\n
-		For checking accounts, there is a limit of $1,000 per check, $5,000 per day and $25,000 per month 
+        there is a limit of $5,000 per check, $25,000 per day and $125,000 per month.
+		\n\nFor checking accounts, there is a limit of $1,000 per check, $5,000 per day and $25,000 per month 
     </string>
     
     <string name="when_deposit_posted_title">
@@ -96,8 +96,7 @@
     </string>
     <string name="when_deposit_withdrawal_available_body">
         For savings and money market accounts the funds will be available the 5th business day after the day of deposit.
-        \n\n
-		For checking accounts, $200 will be available the next business day, 
+        \n\nFor checking accounts, $200 will be available the next business day, 
 		the remainder the 2nd business day after the day of deposit.
     </string>
     
@@ -122,8 +121,7 @@
     <string name="check_rejected_body">
         If your check is rejected, you will receive a notification via email. 
         You may log into the Account Center for a secure message that will provide the reason the check was rejected.
-        \n\n
-        If you have any questions about a rejected deposit, you can call Discover at 866-245-7419.
+        \n\nIf you have any questions about a rejected deposit, you can call Discover at 866-245-7419.
     </string>
     
     <string name="check_exceeds_limit_title">
@@ -132,10 +130,9 @@
     <string name="check_exceeds_limit_body">
         Mail the endorsed check made payable to you or Discover Bank to the address below.  
         Include your account number on the check or include deposit instructions on a separate sheet of paper.
-		\n\n
-		Discover Bank\n
-		P.O. Box 30417\n
-		Salt Lake City, UT 84130
+		\n\nDiscover Bank
+		\nP.O. Box 30417
+		\nSalt Lake City, UT 84130
     </string>
     
 </resources>

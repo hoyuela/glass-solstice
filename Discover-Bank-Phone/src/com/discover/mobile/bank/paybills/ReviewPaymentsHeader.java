@@ -166,14 +166,18 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	}
 
 	/**
-	 * Hide the top three titles shown on the table
+	 * Set the message in the table titles
+	 * @param - message to set in the titles
 	 */
-	public void showTitles(final boolean show) {
-		if( show ) {
-			titles.setVisibility(View.VISIBLE);
-		} else {
-			titles.setVisibility(View.GONE);
-		}
+	public void setMessage(final String message){
+		titles.setMessage(message);
+	}
+
+	/**
+	 * Clear the message in the titles
+	 */
+	public void clearMessage(){
+		titles.hideMessage();
 	}
 
 	/**

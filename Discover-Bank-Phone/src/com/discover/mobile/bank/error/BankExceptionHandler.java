@@ -73,7 +73,7 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 					IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE,
 					null);
 		}
-		// Need to inform KeepAlive to keep attempting refresh calls upon a failure.
+		// Need to inform KeepAlive to keep attempting refresh calls upon a failure, but not immediately.
 		else if (sender instanceof RefreshBankSessionCall) {
 			KeepAlive.resetLastBankRefreshTime();
 		}

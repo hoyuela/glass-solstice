@@ -21,6 +21,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.atm.AtmDetail;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
+import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
 import com.discover.mobile.bank.util.BankAtmUtil;
 
 /**
@@ -65,19 +66,6 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 	@Override
 	public View getView(final int position, View view, final ViewGroup parent){
 		ItemViewHolder holder = null;
-
-		/**If the details is empty show the message*/
-		if(null == results || results.isEmpty()){
-			fragment.showFooterMessage();
-			view = fragment.getFooter();
-			return view;
-		}
-
-		/**At the end of the list try loading more*/
-		if(position == results.size()){
-			view = fragment.getFooter();
-			return view;
-		}
 
 		final AtmDetail detail = results.get(position);
 		if(detail == null){return view;}
@@ -274,9 +262,12 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 	@Override
 	public int getCount(){
 		if(null == results){
-			return 1;
+			final TableLoadMoreFooter footer = (TableLoadMoreFooter) fragment.getFooter();
+			footer.hideAll();
+			fragment.showNothingToLoad();
+			return 0;
 		}else{
-			return results.size() + 1;
+			return results.size();
 		}
 	}
 

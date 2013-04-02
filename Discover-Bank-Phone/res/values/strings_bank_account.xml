@@ -23,6 +23,8 @@
     <string name="activity_no_posted">You have no account activity.</string>
     <string name="activity_table_name">Transactions</string>
     <string name="activity_go_to_top">Back to Top</string>
+    <string name="table_pull_load_more">Pull to load more&#8230;</string>
+    <string name="table_release_to_update">Release to update&#8230;</string>
 
     <!-- Account - Skipped SSO Signin -->
     <string name="skipsso_modal_title">We\'re Sorry</string>

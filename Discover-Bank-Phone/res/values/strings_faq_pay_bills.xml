@@ -68,14 +68,14 @@
 		<string name="status_question_title">What does the Status next to my bill payment mean?</string>
 		<string name="status_question_body">
 		    Scheduled – Bill payment has been scheduled but not yet initiated. 
-		    Bill payments in a Scheduled status can be edited or deleted. \n\n
-			Processing – Bill payment has been initiated and is in the process of being paid. 
-			These bill payments cannot be edited or deleted.\n\n
-			Sent – Bill payment has been sent to the payee.\n\n
-			Paid – Electronic bill payments are marked at Paid when the
+		    Bill payments in a Scheduled status can be edited or deleted.
+		    \n\nProcessing – Bill payment has been initiated and is in the process of being paid. 
+			These bill payments cannot be edited or deleted.
+			\n\nSent – Bill payment has been sent to the payee.
+			\n\nPaid – Electronic bill payments are marked at Paid when the
 			payment has been sent. In the case of a paper check being mailed, 
-			bill payments are marked as Paid 3 business days thereafter.\n\n
-			Canceled – Bill payment has been canceled. Deleting a scheduled bill payment will result in a canceled status.
+			bill payments are marked as Paid 3 business days thereafter.
+			\n\nCanceled – Bill payment has been canceled. Deleting a scheduled bill payment will result in a canceled status.
 		</string>
 		
 		<string name="delete_payment_title">Why can’t I edit or delete a bill payment?</string>

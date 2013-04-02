@@ -3,52 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:paddingBottom="@dimen/groups_of_elements_padding">
+    android:paddingBottom="@dimen/groups_of_elements_padding" >
 
     <View
         android:id="@+id/load_more"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/large_loading_icon"
+        android:layout_marginBottom="@dimen/groups_of_elements_padding"
         android:layout_marginTop="@dimen/groups_of_elements_padding"
-        android:layout_marginBottom="@dimen/groups_of_elements_padding"/>
+        android:background="@drawable/large_loading_icon" />
 
-
-    <TextView
-        android:id="@+id/message"
-        style="@style/plain_body_copy_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/forms_inner_padding"
-        android:layout_marginRight="@dimen/forms_inner_padding"/>
-    
-     <View
+    <View
         android:id="@+id/line"
         android:layout_width="wrap_content"
         android:layout_height="3dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:background="@color/field_stroke"
-        android:layout_below="@+id/load_more" />
-        
-        
+        android:layout_below="@+id/load_more"
+        android:background="@color/field_stroke" />
+
     <TextView
         android:id="@+id/go_to_top"
         style="@style/bank_blue_hyperlink_small"
-        android:textSize="@dimen/small_copy_min"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/groups_of_elements_padding"
+        android:layout_below="@+id/line"
         android:layout_marginBottom="@dimen/groups_of_elements_padding"
-        android:gravity="center"
-        android:text="@string/activity_go_to_top" 
-        android:layout_below="@+id/line"/>
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/groups_of_elements_padding"
+        android:text="@string/activity_go_to_top"
+        android:textSize="@dimen/small_copy_min" />
+
+    <TextView
+        android:id="@+id/privacy_footer"
+        style="@style/bank_blue_hyperlink_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/line"
+        android:layout_marginBottom="@dimen/groups_of_elements_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/groups_of_elements_padding"
+        android:lines="1"
+        android:text="@string/privacy_and_terms"
+        android:textSize="@dimen/small_copy_min" />
 
 </RelativeLayout>

@@ -141,7 +141,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 	 * @return if a user is eligible for payments
 	 */
 	protected static boolean isEligible(){
-		return BankUser.instance().getCustomerInfo().isPaymentsEligibility();
+		return BankUser.instance().getCustomerInfo().isPaymentsEligible();
 	}
 
 	/**

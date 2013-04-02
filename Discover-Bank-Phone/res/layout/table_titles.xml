@@ -99,5 +99,17 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/fitlers"
         android:background="@drawable/table_solid_line" />
-
+    
+    <TextView
+        android:id="@+id/message"
+        style="@style/plain_body_copy_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/top_line"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding" />
+ 
 </RelativeLayout>

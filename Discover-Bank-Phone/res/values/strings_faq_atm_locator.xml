@@ -119,11 +119,11 @@
 	<string name="deposit_to_atm_body">
 	    Currently, Discover Bank does not accept deposits at ATM locations 
 	    (other than at its branch in Greenwood, DE), If you need to deposit a check, please use the mobile 
-	    check deposit feature on Discover’s mobile app or mail it to us at \n
-		Discover Bank\n
-		P.O. Box 30417\n
-		Salt Lake City, UT\n
-		84130
+	    check deposit feature on Discover’s mobile app or mail it to us at 
+		\nDiscover Bank
+		\nP.O. Box 30417
+		\nSalt Lake City, UT
+		\n84130
 	</string>
 	
 	<string name="wrongfully_charged_title">

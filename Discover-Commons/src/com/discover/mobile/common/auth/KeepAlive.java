@@ -16,15 +16,15 @@ public class KeepAlive {
 
 	/** Minimum amount of time (ms) required before making card refresh call. */
 	public static final long MIN_TIME_FOR_CARD_REFRESH = 30000; // 30 secs
+	
+	/** This is used to set the last call time back if a request fails due to network service. */
+	private static final long BANK_REFRESH_TIMEOUT_RESET = 15000; // 15 secs
+	
+	/** This is used to set the last call time back if a request fails due to network service. */
+	private static final long CARD_REFRESH_TIMEOUT_RESET = 5000; // 5 secs
 
 	/** Tracks the last time a Card refresh request was made. */
 	private static long lastCardRefreshTimeInMillis = 0;
-
-	/** Tracks the previous call time, Bank -- used to override a failed call */
-	private static long prevBankSuccessRefresh = 0;
-
-	/** Tracks the previous call time, Card -- used to override a failed call */
-	private static long prevCardSuccessRefresh = 0;
 
 	/** Tracks the last time a Bank refresh request was made. */
 	private static long lastBankRefreshTimeInMillis = 0;
@@ -47,7 +47,6 @@ public class KeepAlive {
 		final long currentTime = Calendar.getInstance().getTimeInMillis();
 
 		if ((currentTime - lastBankRefreshTimeInMillis) > MIN_TIME_FOR_BANK_REFRESH) {
-			lastBankRefreshTimeInMillis = currentTime;
 			return true;
 		}
 		return false;
@@ -65,7 +64,6 @@ public class KeepAlive {
 		final long currentTime = Calendar.getInstance().getTimeInMillis();
 
 		if ((currentTime - lastCardRefreshTimeInMillis) > MIN_TIME_FOR_CARD_REFRESH) {
-			lastCardRefreshTimeInMillis = currentTime;
 			return true;
 		}
 		return false;
@@ -90,42 +88,42 @@ public class KeepAlive {
 
 	/**
 	 * Resets the timer for making session refresh calls. This should be called
-	 * any time a successful network call (excluding
-	 * {@code checkForRequiredSessionRefresh()}) is made that utilizes the Bank
+	 * any time a successful network call is made that utilizes the Bank
 	 * session.
 	 */
 	public static void updateLastBankRefreshTime() {
 		final long currentTime = Calendar.getInstance().getTimeInMillis();
 		lastBankRefreshTimeInMillis = currentTime;
-		prevBankSuccessRefresh = currentTime;
 	}
 
 	/**
 	 * Resets the timer for making session refresh calls. This should be called
-	 * any time a successful network call (excluding
-	 * {@code checkForRequiredSessionRefresh()}) is made that utilizes the Card
+	 * any time a successful network call is made that utilizes the Card
 	 * session.
 	 */
 	public static void updateLastCardRefreshTime() {
 		final long currentTime = Calendar.getInstance().getTimeInMillis();
 		lastCardRefreshTimeInMillis = currentTime;
-		prevCardSuccessRefresh = currentTime;
 	}
 
 	/**
 	 * Used to reset the last refresh time in an instance where a call
-	 * {@code checkForRequiredSessionRefresh()()} has failed for Bank.
+	 * {@code checkForRequiredSessionRefresh()} has failed for Bank. Sets the
+	 * last call time back by {@code BANK_REFRESH_TIMEOUT_RESET} to prevent too
+	 * many calls to refresh session.
 	 */
 	public static void resetLastBankRefreshTime() {
-		lastBankRefreshTimeInMillis = prevBankSuccessRefresh;
+		lastBankRefreshTimeInMillis = lastBankRefreshTimeInMillis + BANK_REFRESH_TIMEOUT_RESET;
 	}
 
 	/**
 	 * Used to reset the last refresh time in an instance where a call
-	 * {@code checkForRequiredSessionRefresh()()} has failed for Bank.
+	 * {@code checkForRequiredSessionRefresh()} has failed for Card. Sets the
+	 * last call time back by {@code CARD_REFRESH_TIMEOUT_RESET} to prevent too
+	 * many calls to refresh session.
 	 */
 	public static void resetLastCardRefreshTime() {
-		lastCardRefreshTimeInMillis = prevCardSuccessRefresh;
+		lastCardRefreshTimeInMillis = lastCardRefreshTimeInMillis + CARD_REFRESH_TIMEOUT_RESET;
 	}
 
 	/**

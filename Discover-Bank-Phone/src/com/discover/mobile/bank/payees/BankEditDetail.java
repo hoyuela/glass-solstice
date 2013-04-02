@@ -267,5 +267,12 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	public void setNextBankEditDetail(final BankEditDetail next) {
 		nextDetail = next;
 	}
+
+	/**
+	 * @return the errorLabel
+	 */
+	public TextView getErrorLabel() {
+		return errorLabel;
+	}
 	
 }
