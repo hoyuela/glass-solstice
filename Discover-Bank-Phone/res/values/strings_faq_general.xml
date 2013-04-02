@@ -10,7 +10,7 @@
 	</string-array>
 
 <!-- General FAQ Items -->
-	<string name="is_banking_safe_title">DiscoverBank.com Mobile Secure?</string>
+	<string name="is_banking_safe_title">Is DiscoverBank.com Mobile Secure?</string>
 	<string name="is_banking_safe_body">Yes! The mobile account center was designed with security in mind. 
 	    This means that your information is encrypted and we will not reveal your full account number 
 	    on the mobile site. Each time you log in we will authenticate you with your user ID and password and your 
