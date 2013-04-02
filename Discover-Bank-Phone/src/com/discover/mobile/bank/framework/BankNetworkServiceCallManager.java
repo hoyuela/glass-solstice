@@ -54,7 +54,6 @@ import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.SyncedActivity;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
@@ -63,7 +62,6 @@ import com.discover.mobile.common.callback.GenericCallbackListener.ExceptionFail
 import com.discover.mobile.common.callback.GenericCallbackListener.StartListener;
 import com.discover.mobile.common.callback.GenericCallbackListener.SuccessListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
-import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.NetworkServiceCallManager;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -243,13 +241,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			
 			// Check if the error was a Ping. if so, then session died.
 			else if (isSessionDead(error)) {
-				Globals.setLoggedIn(false);
-				Globals.setCurrentUser("");
-				KeepAlive.setBankAuthenticated(false);
-				BankUser.instance().clearSession();
-				final ErrorHandlerUi uiHandler = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
-				FacadeFactory.getCardLogoutFacade().logout(activeActivity, uiHandler);
-				BankConductor.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
+				BankConductor.logoutUser(activeActivity);
 			}
 			//Dispatch response to BankBaseErrorHandler to determine how to handle the error
 			else {
