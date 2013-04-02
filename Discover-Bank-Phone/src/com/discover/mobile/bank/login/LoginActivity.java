@@ -186,10 +186,6 @@ public class LoginActivity extends BaseActivity implements
 	@Override
 	public void onConfigurationChanged(final Configuration config) {
 		super.onConfigurationChanged(config);
-		if (config.orientation == Configuration.ORIENTATION_LANDSCAPE
-				|| config.orientation == Configuration.ORIENTATION_PORTRAIT) {
-			Log.e(TAG, "rotate");
-		} 
 	}
 
 	/**
@@ -368,7 +364,7 @@ public class LoginActivity extends BaseActivity implements
 		if (this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
 			startPreAuthCheck();
 		}
-		Log.e(TAG, "preauth");
+
 		//Show splash screen while completing pre-auth, if pre-auth has not been done and
 		//application is be launched for the first time
 		if( !preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) ) {
