@@ -4,17 +4,20 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.ui.fragments.DetailFragment;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.DiscoverActivityManager;
 
-public class PayeeDetailFragment extends DetailFragment {
+public class PayeeDetailFragment extends DetailFragment implements OnClickListener {
 	private PayeeDetail item;
 
 	/**
@@ -36,7 +39,25 @@ public class PayeeDetailFragment extends DetailFragment {
 		for(final ViewPagerListItem element: listElements)
 			content.addView(element);
 		
+		final Button editButton = (Button)fragmentView.findViewById(R.id.edit_payee_button);
+		editButton.setOnClickListener(this);
 		
+		final Button deleteButton = (Button)fragmentView.findViewById(R.id.delete_payee_button);
+		deleteButton.setOnClickListener(this);
+		
+	}
+
+	@Override
+	public void onClick(final View sender) {
+		final int senderId = sender.getId(); 
+		
+		if( senderId == R.id.edit_payee_button ) {
+			
+		} else if( senderId == R.id.delete_payee_button) {
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, item);
+			BankConductor.navigateToDeletePayeeModal(bundle);
+		}
 	}
 
 }

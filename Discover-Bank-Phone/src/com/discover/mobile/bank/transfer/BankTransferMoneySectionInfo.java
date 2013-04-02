@@ -14,15 +14,13 @@ import com.discover.mobile.common.nav.section.GroupComponentInfo;
 public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 
 	public BankTransferMoneySectionInfo() {
-		super(R.string.section_title_transfer_money, new FragmentComponentInfo(
-				R.string.section_title_transfer_money,
-				BankAccountSummaryFragment.class), new FragmentComponentInfo(
-				R.string.sub_section_title_scheduled_transfers,
-				BankAccountSummaryFragment.class), new FragmentComponentInfo(
-				R.string.sub_section_title_transfer_history,
-				BankAccountSummaryFragment.class), new ClickComponentInfo(
-				R.string.sub_section_title_manage_external_accounts,true,
-				externalLink(BankUrlManager.getOpenAccountUrl())));
+		super(R.string.section_title_transfer_money, 
+				new FragmentComponentInfo(R.string.section_title_transfer_money,BankAccountSummaryFragment.class), 
+				new FragmentComponentInfo(R.string.sub_section_title_scheduled_transfers,BankAccountSummaryFragment.class), 
+				new ClickComponentInfo(R.string.sub_section_title_transfer_history,true,
+						externalLink(BankUrlManager.getOpenAccountUrl())), 
+				new ClickComponentInfo(R.string.sub_section_title_manage_external_accounts,true,
+						externalLink(BankUrlManager.getOpenAccountUrl())));
 	}
 	
 	private static OnClickListener externalLink(final String url){

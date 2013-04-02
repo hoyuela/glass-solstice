@@ -38,6 +38,7 @@ import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.deposit.GetAccountLimits;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
+import com.discover.mobile.bank.services.payee.DeletePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
@@ -405,6 +406,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		//Handle the manage payee service call (which is a get payee service call).
 		else if( sender instanceof ManagePayeeServiceCall) {
 			final Bundle bundle = new Bundle();
+			
+			/**Check to see if the payees were downloaded because of a delete payee call*/
+			if( prevCall instanceof DeletePayeeServiceCall ) {	
+				/**Clear Prev Call to avoid incorrect behavior*/
+				prevCall = null;
+				
+				bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
+			} 
+			
 			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
 			BankConductor.navigateToManagePayee(bundle);
 		}
@@ -415,7 +425,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				BankRotationHelper.getHelper().setBundle(null);
 				final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 				BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
-			}else{
+			} else {
 				final Bundle bundle = new Bundle();
 				bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
 				BankConductor.navigateToSelectPayee(bundle);
@@ -491,6 +501,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putString(BankExtraKeys.FROM_ADDRESS, helper.getFrom());
 			bundle.putString(BankExtraKeys.TO_ADDRESS, helper.getTo());
 			BankConductor.navigateToEmailDirections(bundle);
+		}
+		//Handler for Bank Delete Payee Service Call
+		else if( sender instanceof DeletePayeeServiceCall ) {
+			//Update list of payees
+			BankServiceCallFactory.createManagePayeeServiceRequest().submit();
 		}
 		// Ignore success		
 		else {
