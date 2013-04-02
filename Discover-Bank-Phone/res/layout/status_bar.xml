@@ -26,6 +26,8 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/account_name"
         android:paddingLeft="@dimen/nav_section_pading"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         android:src="@drawable/bank_gray_icon" />
 
     <ImageView
