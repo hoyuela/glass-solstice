@@ -68,7 +68,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		table.getLoadingLayoutProxy().setPullLabel(getString(R.string.table_pull_load_more));
 		table.getLoadingLayoutProxy().setReleaseLabel(getString(R.string.table_release_to_update));
 		table.getRefreshableView().setDivider(getResources().getDrawable(R.drawable.table_dotted_line));
-		table.getLoadingLayoutProxy().setLoadingDrawable(this.getResources().getDrawable(R.drawable.indicator_arrow));
+		table.getLoadingLayoutProxy().setLoadingDrawable(this.getResources().getDrawable(R.drawable.load_more_arrow_release));
 		table.setShowViewWhileRefreshing(true);
 		table.setShowIndicator(false);
 		table.getLoadingLayoutProxy().setRefreshingLabel("");
@@ -206,7 +206,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		table.setMode(Mode.PULL_FROM_END);
 		table.onRefreshComplete();
 		table.setShowViewWhileRefreshing(true);
-		table.getLoadingLayoutProxy().setLoadingDrawable(this.getResources().getDrawable(R.drawable.indicator_arrow));
+		table.getLoadingLayoutProxy().setLoadingDrawable(this.getResources().getDrawable(R.drawable.load_more_arrow_release));
 	}
 
 	/**
