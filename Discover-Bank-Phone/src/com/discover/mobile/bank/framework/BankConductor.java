@@ -55,8 +55,6 @@ import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
-import com.discover.mobile.bank.transfer.BankTransferNotEligibleFragment;
-import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.bank.util.BankAtmUtil;
 import com.discover.mobile.common.AlertDialogParent;
@@ -916,6 +914,18 @@ public final class BankConductor  extends Conductor {
 		final LoginActivity activity = (LoginActivity) DiscoverActivityManager
 				.getActiveActivity();
 		activity.showALUStatusModal();
+	}
+	
+	/**
+	 * Authorizes an SSO User against Bank when no BankSSOPayload is available.
+	 * This is due to an A/L/U error returned from a Card service.
+	 */
+	public static void authDueToALUStatus(String username, String password) {
+		KeepAlive.setCardAuthenticated(false);
+		BankLoginDetails credentials = new BankLoginDetails();
+		credentials.username = username;
+		credentials.password = password;
+		BankServiceCallFactory.createLoginCall(credentials, true).submit();
 	}
 	
 	/**
