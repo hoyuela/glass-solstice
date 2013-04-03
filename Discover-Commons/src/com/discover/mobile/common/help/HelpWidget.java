@@ -10,6 +10,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -35,7 +37,7 @@ import com.discover.mobile.common.R;
  * @author jthornton
  *
  */
-public class HelpWidget extends RelativeLayout{
+public class HelpWidget extends RelativeLayout {
 
 	/**Image of the help button*/
 	private final ImageButton help;
@@ -68,10 +70,16 @@ public class HelpWidget extends RelativeLayout{
 		help.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
+				Animation fadeAnimation = null;
 				if(expandableView.getVisibility() == View.INVISIBLE){
+					fadeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in_animation);
+					
 					expandableView.setVisibility(View.VISIBLE);
 					help.setImageDrawable(context.getResources().getDrawable(R.drawable.help_icon_gray_no_glow));
+					expandableView.startAnimation(fadeAnimation);
 				}else{
+					fadeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out_animation);
+					expandableView.startAnimation(fadeAnimation);
 					expandableView.setVisibility(View.INVISIBLE);
 					help.setImageDrawable(context.getResources().getDrawable(R.drawable.question_mark_icon));
 				}
@@ -92,4 +100,5 @@ public class HelpWidget extends RelativeLayout{
 		adapter.setData(items);
 		adapter.notifyDataSetChanged();
 	}
+
 }
