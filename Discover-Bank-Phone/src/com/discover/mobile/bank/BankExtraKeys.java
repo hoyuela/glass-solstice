@@ -71,16 +71,24 @@ public final class BankExtraKeys {
 	 * the terms and should see the how it works modal
 	 */
 	public static final String ACCEPTED_TERMS = "accepted";
-
+	
+	/** The key used when navigating to a specific FAQ section */
 	public static final String FAQ_TYPE = "faq type";
-
+	
+	/** The key used when navigating to the gernal FAQs */
 	public static final String GENERAL_FAQ = "general faq";
-
+	
+	/** The key used when navigating to bill pay FAQs */
 	public static final String BILL_PAY_FAQ = "pay bills faq";
-
+	
+	/** The key used for navigating to check deposit FAQs*/
 	public static final String CHECK_DEPOSIT_FAQ = "deposit faq";
-
+	
+	/** The key used for navigating to ATM Locator FAQs */
 	public static final String ATM_LOCATOR_FAQ = "atm faq";
+	
+	/** A key used for when something is loading more content and needs so save this state to a bundle */
+	public static final String IS_LOADING_MORE = "loading";
 
 	/**
 	 * String used to send data back from the frequency widget
