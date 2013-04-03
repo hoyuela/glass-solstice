@@ -55,6 +55,7 @@ import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.transfer.BankTransferFrequencyWidget;
 import com.discover.mobile.bank.transfer.BankTransferNotEligibleFragment;
 import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
@@ -379,10 +380,10 @@ public final class BankConductor  extends Conductor {
 		} else if( extras != null && extras.getBoolean(BankExtraKeys.CONFIRM_DELETE)) {
 			/**Navigate user back to Manage Payee screen if they were in the middle of a delete*/
 			activity.popTillFragment(BankManagePayee.class);
-			
+
 			if( activity.getCurrentContentFragment() instanceof BankManagePayee) {
 				final BankManagePayee managePayees = (BankManagePayee) activity.getCurrentContentFragment();
-				
+
 				/**Refresh screen with new data */
 				managePayees.refreshScreen(extras);
 			}
@@ -591,7 +592,7 @@ public final class BankConductor  extends Conductor {
 			@Override
 			public void onClick(final View v) {
 				modal.dismiss();
-				
+
 				if( bundle != null ) {
 					final PayeeDetail payee = (PayeeDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 					BankServiceCallFactory.createDeletePayeeServiceCall(payee).submit();
@@ -697,7 +698,7 @@ public final class BankConductor  extends Conductor {
 			}
 		}
 	}
-	
+
 	/**
 	 * Navigation method used to navigate to the first step of Transfer Money.
 	 * If a customer is not eligible for Transfer Money, they will be directed to a page that 
@@ -711,19 +712,21 @@ public final class BankConductor  extends Conductor {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isTransferEligible();
-			
+
 
 			Fragment nextVisibleFragment = null;
 
-			if(isEligible)
+			if(isEligible) {
 				nextVisibleFragment = new BankTransferStepOneFragment();
-			else
+			} else {
 				nextVisibleFragment = new BankTransferNotEligibleFragment();
-			
-			if(nextVisibleFragment != null)
+			}
+
+			if(nextVisibleFragment != null) {
 				navActivity.makeFragmentVisible(nextVisibleFragment);
+			}
 		}
-		
+
 	}
 
 	/**
@@ -762,27 +765,27 @@ public final class BankConductor  extends Conductor {
 				case SelectAmount:
 					fragment = new BankDepositSelectAmount();
 					break;
-				//Navigate user to first step in check deposit work-flow
+					//Navigate user to first step in check deposit work-flow
 				case SelectAccount:
 					fragment = new BankDepositSelectAccount();	
 					break;
-				//Navigate user to page where they can review their deposit 
+					//Navigate user to page where they can review their deposit 
 				case ReviewDeposit:
 					fragment = new CaptureReviewFragment();
 					break;
-				//Navigate user to final step in Check deposit work-flow
+					//Navigate user to final step in Check deposit work-flow
 				case Confirmation:
 					fragment = new BankDepositConfirmFragment();
 					break;
-				//Navigate to timeout error if check deposit error fragment flag is found in bundle
+					//Navigate to timeout error if check deposit error fragment flag is found in bundle
 				case DepositError:
 					fragment = new CheckDepositErrorFragment();
 					break;
-				//Navigate to duplicate error fragment if boolean flag is found in bundle
+					//Navigate to duplicate error fragment if boolean flag is found in bundle
 				case DuplicateError:
 					fragment = new DuplicateCheckErrorFragment();
 					break;
-				//Navigate to forbidden error fragment if user receives a 403 error code
+					//Navigate to forbidden error fragment if user receives a 403 error code
 				case ForbiddenError:
 					fragment = new BankDepositForbidden();
 					break;
@@ -893,7 +896,7 @@ public final class BankConductor  extends Conductor {
 		BankServiceCallFactory.createSSOLoginCall(bankPayload).submit();
 		loginDetails = null;
 	}
-	
+
 	/**
 	 * Authorizes an SSO User against Card using a CardSSOPayload, which in some
 	 * cases is obtained from a call to {@code BankLoginServices.authorizeLogin()}.
@@ -917,7 +920,7 @@ public final class BankConductor  extends Conductor {
 				.getActiveActivity();
 		activity.showALUStatusModal();
 	}
-	
+
 	/**
 	 * Continues with the Skip SSO login call if credentials are available.
 	 */
@@ -938,7 +941,7 @@ public final class BankConductor  extends Conductor {
 		activity.closeDialog();
 		BankAtmUtil.sendDirectionsEmail(bundle);
 	}
-	
+
 	/**
 	 * Performs a call to update the user's bank session.
 	 */
@@ -965,11 +968,11 @@ public final class BankConductor  extends Conductor {
 			currentActivity.startActivity(loggedOutFAQ);
 		}
 	}
-	
+
 	/**
 	 * Logs the user out of Bank and requests Card to do the same.
 	 */
-	public static void logoutUser(Activity activeActivity) {
+	public static void logoutUser(final Activity activeActivity) {
 		Globals.setLoggedIn(false);
 		KeepAlive.setBankAuthenticated(false);
 		Globals.setCurrentUser("");
@@ -987,6 +990,26 @@ public final class BankConductor  extends Conductor {
 	public Class lookupCacheRequiredForDestination(final Class destination) {
 
 		return null;
+	}
+
+	/**
+	 * Navigate to the frequency widget so that the user can chose a frequency for the
+	 * funds transfer.
+	 */
+	public static void navigateToFrequencyWidget() {
+		final BankTransferFrequencyWidget widget = new BankTransferFrequencyWidget();
+		((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(widget);
+
+	}
+
+	/**
+	 * Navigate back to the funds transfer step one with the data the the user chose
+	 * @param bundle - bundle containing the data the the user chose
+	 */
+	public static void navigateBackFromTransferWidget(final Bundle bundle) {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		activity.popTillFragment(BankTransferStepOneFragment.class);
+		((BankTransferStepOneFragment) activity.getCurrentContentFragment()).handleChosenFrequency(bundle);
 	}
 }
 

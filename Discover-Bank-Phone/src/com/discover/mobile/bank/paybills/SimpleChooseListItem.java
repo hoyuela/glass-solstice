@@ -28,13 +28,13 @@ public class SimpleChooseListItem extends RelativeLayout{
 
 	/**View of the item*/
 	private final RelativeLayout mainView;
-	
+
 	private ImageView caret;
 
 	public SimpleChooseListItem(final Context context, final AttributeSet attrs){
 		super(context, attrs);
-		this.mainView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.simple_choose_item, null);
-		addView(this.mainView);
+		mainView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.simple_choose_item, null);
+		addView(mainView);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class SimpleChooseListItem extends RelativeLayout{
 			final Serializable item, final String text) {
 		this(context, attrs, item, text, R.layout.simple_choose_item);
 	}
-	
+
 	/**
 	 * Constructor - creates a background based on the layout id sent.
 	 * @param context - activity context
@@ -61,13 +61,13 @@ public class SimpleChooseListItem extends RelativeLayout{
 			final Serializable item, final String text, final int layoutResourceId) {
 		super(context, attrs);
 
-		this.mainView = (RelativeLayout) LayoutInflater.from(context).inflate(layoutResourceId, null);
-		
-		final TextView title = (TextView) this.mainView.findViewById(R.id.text);
+		mainView = (RelativeLayout) LayoutInflater.from(context).inflate(layoutResourceId, null);
+
+		final TextView title = (TextView) mainView.findViewById(R.id.text);
 		title.setText(text);
 		this.setItem(item);
 
-		addView(this.mainView);
+		addView(mainView);
 	}
 
 	/**
@@ -82,19 +82,19 @@ public class SimpleChooseListItem extends RelativeLayout{
 			final Serializable item, final String text, final boolean showCaret) {
 		super(context, attrs);
 
-		this.mainView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.simple_choose_item, null);
-		
+		mainView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.simple_choose_item, null);
+
 		/**Check whether caret in the layout should be shown or hidden*/
-		this.caret = (ImageView)mainView.findViewById(R.id.carrot);		
-		this.caret.setVisibility((showCaret)?View.VISIBLE:View.GONE);
-		
-		final TextView title = (TextView) this.mainView.findViewById(R.id.text);
+		caret = (ImageView)mainView.findViewById(R.id.carrot);		
+		caret.setVisibility((showCaret)?View.VISIBLE:View.GONE);
+
+		final TextView title = (TextView) mainView.findViewById(R.id.text);
 		title.setText(text);
 		this.setItem(item);
 
-		addView(this.mainView);
+		addView(mainView);
 	}
-	
+
 	/**
 	 * Sets the background resource to a solid stroke on all sides except for
 	 * the top. The top is a dashed line.
@@ -102,19 +102,19 @@ public class SimpleChooseListItem extends RelativeLayout{
 	 * @param context
 	 */
 	public void setBackgroundAsBottomItem(final Context context) {
-		RelativeLayout view = (RelativeLayout) this
+		final RelativeLayout view = (RelativeLayout) this
 				.getChildAt(0);
 		view.setBackgroundDrawable(context.getResources().getDrawable(
 				R.drawable.home_list_item_dash));
 		view.setPadding(
 				(int) context.getResources().getDimension(
 						R.dimen.forms_inner_padding),
-				(int) context.getResources().getDimension(
-						R.dimen.table_inner_padding),
-				(int) context.getResources().getDimension(
-						R.dimen.forms_inner_padding),
-				(int) context.getResources().getDimension(
-						R.dimen.table_inner_padding));
+						(int) context.getResources().getDimension(
+								R.dimen.table_inner_padding),
+								(int) context.getResources().getDimension(
+										R.dimen.forms_inner_padding),
+										(int) context.getResources().getDimension(
+												R.dimen.table_inner_padding));
 	}
 
 	/**
@@ -124,21 +124,32 @@ public class SimpleChooseListItem extends RelativeLayout{
 	 * @param context
 	 */
 	public void setBackgroundAsTopItem(final Context context) {
-		RelativeLayout view = (RelativeLayout) this
+		final RelativeLayout view = (RelativeLayout) this
 				.getChildAt(0);
 		view.setBackgroundDrawable(context.getResources().getDrawable(
 				R.drawable.home_list_item_no_bottom_stroke));
 		view.setPadding(
 				(int) context.getResources().getDimension(
 						R.dimen.forms_inner_padding),
-				(int) context.getResources().getDimension(
-						R.dimen.table_inner_padding),
-				(int) context.getResources().getDimension(
-						R.dimen.forms_inner_padding),
-				(int) context.getResources().getDimension(
-						R.dimen.table_inner_padding));
+						(int) context.getResources().getDimension(
+								R.dimen.table_inner_padding),
+								(int) context.getResources().getDimension(
+										R.dimen.forms_inner_padding),
+										(int) context.getResources().getDimension(
+												R.dimen.table_inner_padding));
 	}
-	
+
+	/**
+	 * Sets the background resource to a solid stroke on all sides except for
+	 * the bottom. The bottom is a blank.
+	 * 
+	 * @param context
+	 */
+	public void setTextBlue(final Context context) {
+		final TextView title = (TextView) mainView.findViewById(R.id.text);
+		title.setTextColor(context.getResources().getColor(R.color.blue_link));
+	}
+
 	/**
 	 * Set the on click listener of the item
 	 * 
@@ -146,14 +157,14 @@ public class SimpleChooseListItem extends RelativeLayout{
 	 *            - listener to attach to the view
 	 */
 	public void setClickListener(final OnClickListener listener){
-		this.mainView.setOnClickListener(listener);
+		mainView.setOnClickListener(listener);
 	}
 
 	/**
 	 * @return the item
 	 */
 	public Serializable getItem() {
-		return this.item;
+		return item;
 	}
 
 	/**
@@ -162,14 +173,14 @@ public class SimpleChooseListItem extends RelativeLayout{
 	public void setItem(final Serializable item) {
 		this.item = item;
 	}
-	
+
 	/**
 	 * Method used to set the text for the title TextView in the layout
 	 * 
 	 * @param id Resource identifier for the string in res/string
 	 */
 	public void setTitleText(final int id) {
-		final TextView title = (TextView) this.mainView.findViewById(R.id.text);
+		final TextView title = (TextView) mainView.findViewById(R.id.text);
 		title.setText(id);
 	}
 }
