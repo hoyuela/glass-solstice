@@ -1155,7 +1155,7 @@ public class LoginActivity extends BaseActivity implements
 	 * Creates and shows a modal to inform the user that their account skipped
 	 * SSO sign-on because of a Card BadStatus.
 	 */
-	public void showALUStatusModal() {
+	public void showALUStatusModal(final BankLoginDetails credentials) {
 		final ModalDefaultTopView aluModalTopView = new ModalDefaultTopView(
 				this, null);
 		aluModalTopView.setTitle(R.string.skipsso_modal_title);
@@ -1176,7 +1176,11 @@ public class LoginActivity extends BaseActivity implements
 				new OnClickListener() {
 					@Override
 					public void onClick(final View v) {
-						BankConductor.continueAuthDueToALU();
+						if (credentials == null) {
+							BankConductor.continueAuthDueToALU();
+						} else {
+							BankConductor.continueAuthDueToALU(credentials);
+						}
 						aluModal.dismiss();
 					}
 				});

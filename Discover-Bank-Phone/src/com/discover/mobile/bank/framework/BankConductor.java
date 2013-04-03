@@ -915,11 +915,34 @@ public final class BankConductor  extends Conductor {
 	public static void authDueToALUStatus() {
 		final LoginActivity activity = (LoginActivity) DiscoverActivityManager
 				.getActiveActivity();
-		activity.showALUStatusModal();
+		activity.showALUStatusModal(null);
+	}
+	
+	/**
+	 * Authorizes an SSO User against Bank when no BankSSOPayload is available.
+	 * This is due to an A/L/U error returned from a Card service.
+	 */
+	public static void authDueToALUStatus(String username, String password) {
+		BankLoginDetails credentials = new BankLoginDetails();
+		credentials.username = username;
+		credentials.password = password;
+		final LoginActivity activity = (LoginActivity) DiscoverActivityManager
+				.getActiveActivity();
+		activity.showALUStatusModal(credentials);
+	}
+	
+	/**
+	 * Continues with the Skip SSO login call using provided credentials.
+	 * Typicall used when a login call originates from Card.
+	 */
+	public static void continueAuthDueToALU(final BankLoginDetails credentials) {
+		KeepAlive.setCardAuthenticated(false);
+		BankServiceCallFactory.createLoginCall(credentials, true).submit();
 	}
 	
 	/**
 	 * Continues with the Skip SSO login call if credentials are available.
+	 * Typically used when a login call originates from Bank.
 	 */
 	public static void continueAuthDueToALU() {
 		if(loginDetails != null) {

@@ -24,4 +24,8 @@ public class BankLoginFacadeImpl implements BankLoginFacade {
 		BankConductor.authDueToALUStatus();
 	}
 
+	@Override
+	public void authDueToALUStatus(String username, String password) {
+		BankConductor.authDueToALUStatus();
+	}
 }
