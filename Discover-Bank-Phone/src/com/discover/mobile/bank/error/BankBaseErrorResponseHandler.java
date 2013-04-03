@@ -115,11 +115,16 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				mErrorHandler.handleLoginAuthFailure(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOGIN_LOCKED)) {
 				mErrorHandler.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
-			} else if(sender instanceof CreateBankSSOLoginCall && 
+			} 
+			//SSO Fraud users must be handled here, because they are taken to Card home instead of doing nothing.
+			else if(sender instanceof CreateBankSSOLoginCall && 
 					(errCode.equals(BankErrorCodes.ERROR_INVALID_SSO_PAYLOAD) || 
 							errCode.equals(BankErrorCodes.ERROR_FRAUD_USER))) {
+				
 				((BankErrorHandler) mErrorHandler).handleInvalidSSOPayloadErrorModal(mErrorHandlerUi);
-			} else if (errCode.equals(BankErrorCodes.ERROR_FRAUD_USER) || errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
+			} 
+			//Non-SSO Fraud users, and SSO (Card ALU) Fraud users are handled here, they stay at login page.
+			else if (errCode.equals(BankErrorCodes.ERROR_FRAUD_USER) || errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
 				mErrorHandler.handleHttpFraudNotFoundUserErrorModal(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			}
 			//Strong Auth Errors
