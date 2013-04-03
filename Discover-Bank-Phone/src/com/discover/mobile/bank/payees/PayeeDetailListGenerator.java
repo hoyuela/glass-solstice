@@ -206,8 +206,8 @@ final public class PayeeDetailListGenerator  {
 		items.add(createAccount(context, item.account.formatted, false));
 		
 		/**Only add an item for zip code if required*/
-		if( !item.address.postalCode.isEmpty()) {
-			items.add(createZipCode(context, item.address.postalCode, false));
+		if (!item.zip.isEmpty()){
+			items.add(createZipCode(context, item.zip, false));
 		}
 		
 		return items;
