@@ -28,7 +28,7 @@
             style="@style/blue_table_text"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
+            android:layout_weight="1.4"
             android:paddingRight="@dimen/between_related_elements_padding" />
 
         <TextView
@@ -36,7 +36,7 @@
             style="@style/table_text"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
+            android:layout_weight="1.6"
             android:gravity="right" 
             android:lines="1"/>
     </LinearLayout>
