@@ -10,8 +10,7 @@
     <!-- &#8211; is a dash character so that lint will not complain of using a dash in strings -->
     
     <string name="bank_need_help_number_text">1&#8211;800&#8211;290&#8211;9885</string>
-    
-    
+    <string name="bank_need_help_number_to_card">1&#8211;800&#8211;347&#8211;2683</string>
     
     <string name="year_hint">YYYY</string>
     <string name="secure_login">Secure Credit Card Log In</string>

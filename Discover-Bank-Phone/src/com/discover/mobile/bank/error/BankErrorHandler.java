@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.error.NavigateToLoginOnDismiss;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
@@ -290,6 +292,42 @@ public class BankErrorHandler implements ErrorHandler {
 
 		final ModalAlertWithOneButton modal = createErrorModal(
 				activeActivity.getResources().getString(R.string.error_403_title_request), message);
+		showCustomAlert(modal);
+		return modal;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.discover.mobile.error.ErrorHandler#handleHttpFraudNotFoundUserErrorModal
+	 * (com.discover.mobile.error.ErrorHandlerUi, java.lang.String)
+	 */
+	public ModalAlertWithOneButton handleInvalidSSOPayloadErrorModal(final ErrorHandlerUi mErrorHandlerUi) {
+		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
+		final Resources resources = activeActivity.getResources();
+		// Keep track of times an error page is shown for login
+		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
+
+		// Decide on what help number to show
+		final int helpResId = com.discover.mobile.bank.R.string.bank_need_help_number_to_card;
+
+		// Create a one button modal with text as per parameters provided
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, 
+				resources.getString(R.string.error_403_title_request), 
+				resources.getString(R.string.invalid_bank_take_to_card), true, helpResId, R.string.ok);
+		
+		/**Set modal Title and phone number if provided from server*/
+		updateModalInfo(modal);
+		
+		modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				modal.dismiss();
+				FacadeFactory.getCardLoginFacade().toggleToCard(activeActivity);
+			}
+		});
+		
 		showCustomAlert(modal);
 		return modal;
 	}

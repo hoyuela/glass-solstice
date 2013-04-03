@@ -82,6 +82,7 @@
 	<string name="internal_server_error_503">
 	    We\'re sorry. Our services are unavailable at this time. <br/>We apologize for any inconvenience.
 	</string>
+	<string name="invalid_bank_take_to_card">We\'re sorry. We can\'t complete your request to log into your Discover Bank Account at this time. You will be directed to your Discover Card Home Screen.</string>
 	<!--General HTTP Error Strings  -->
     <string name="error_500_title">We\'re Currently Performing System Maintenance</string>
     <string name="error_503_title">We\'re Currently Performing System Maintenance</string>
