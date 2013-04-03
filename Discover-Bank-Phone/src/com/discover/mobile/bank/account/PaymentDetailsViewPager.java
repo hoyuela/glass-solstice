@@ -15,6 +15,7 @@ import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.ui.SpinnerFragment;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.json.bank.ReceivedUrl;
@@ -54,6 +55,16 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 
 	}
 
+	
+	/**
+	 * 
+	 * @return if the currently displayed data set has more data that can be retrieved from the server.
+	 */
+	private boolean canLoadMore() {
+		return detailList != null && detailList.links != null &&
+				detailList.links.get(ListActivityDetail.NEXT) != null;
+	}
+	
 	/**
 	 * Save the current Bundle state so that we can restore it on rotation change.
 	 */
@@ -103,13 +114,18 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	 */
 	@Override
 	protected Fragment getDetailItem(final int position) {
-		final PaymentDetailFragment paymentFragment = new PaymentDetailFragment();
-		final PaymentDetail payment = detailList.payments.get(position);
-		final Bundle bundle = new Bundle();
-		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, payment);
-		paymentFragment.setArguments(bundle);
-
-		return paymentFragment;
+		Fragment pageFragment = null;
+		if(position < detailList.payments.size()) {
+			pageFragment = new PaymentDetailFragment();
+			final PaymentDetail payment = detailList.payments.get(position);
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, payment);
+			pageFragment.setArguments(bundle);
+		}else {
+			pageFragment = new SpinnerFragment();
+		}
+		
+		return pageFragment;	
 	}
 
 	/**
@@ -161,6 +177,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		updateNavigationButtons();
 		detailList.links.putAll(newDetails.links);
 		BankRotationHelper.getHelper().getBundle().putSerializable(BankExtraKeys.PRIMARY_LIST, detailList);
+		resetViewPagerAdapter();
 	}
 
 	/**
@@ -180,8 +197,9 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	 */
 	@Override
 	protected void loadMoreIfNeeded(final int position) {
+		final int loadMorePosition = getViewCount() - 2;
 		
-		if((getViewCount() - 1) == position && null != detailList.links.get(ListActivityDetail.NEXT)){
+		if(loadMorePosition <= position && null != detailList.links.get(ListActivityDetail.NEXT)){
 			final ReceivedUrl url = getLoadMoreUrl();
 			if(url != null && !Strings.isNullOrEmpty(url.url))
 				loadMore(detailList.links.get(ListActivityDetail.NEXT).url);

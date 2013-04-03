@@ -12,6 +12,7 @@ import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
+import com.discover.mobile.bank.ui.SpinnerFragment;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
 import com.discover.mobile.common.help.HelpWidget;
 
@@ -111,6 +112,8 @@ public class AccountActivityViewPager extends DetailViewPager{
 
 		if(activityItems.activities != null) {
 			viewCount = activityItems.activities.size();
+			if (canLoadMore())
+				viewCount++;
 		}
 
 		return viewCount;
@@ -122,14 +125,20 @@ public class AccountActivityViewPager extends DetailViewPager{
 	 */
 	@Override
 	protected Fragment getDetailItem(final int position) {
-		final ActivityDetailFragment temp = new ActivityDetailFragment();
-		final ActivityDetail detailObject = activityItems.activities.get(position);
-
-		final Bundle bundle = new Bundle();
-		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, detailObject);
-		temp.setArguments(bundle);
-
-		return temp;
+		Fragment pageFragment = null;
+		
+		if(position < activityItems.activities.size()) {
+			pageFragment = new ActivityDetailFragment();
+			final ActivityDetail detailObject = activityItems.activities.get(position);
+	
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, detailObject);
+			pageFragment.setArguments(bundle);
+		}else {
+			pageFragment = new SpinnerFragment();
+		}
+		
+		return pageFragment;
 	}
 
 	/**
@@ -152,7 +161,7 @@ public class AccountActivityViewPager extends DetailViewPager{
 		final ListActivityDetail list = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		activityItems.activities.addAll( list.activities);
 		updateNavigationButtons();
-
+		resetViewPagerAdapter();
 	}
 
 	/**
@@ -166,13 +175,24 @@ public class AccountActivityViewPager extends DetailViewPager{
 
 	/**
 	 * If we reach the end of the list of elements, load more if possible.
-	 * @param position
+	 * @param currentPosition
 	 */
 	@Override
-	protected void loadMoreIfNeeded(final int position) {
-		if((getViewCount() - 1) == position && null != activityItems.links.get(ListActivityDetail.NEXT)){
+	protected void loadMoreIfNeeded(final int currentPosition) {
+		final int loadMorePosition = getViewCount() - 2;
+		
+		if(loadMorePosition <= currentPosition && canLoadMore()){
 			loadMore(activityItems.links.get(ListActivityDetail.NEXT).url);
 		}
+	}
+	
+	/**
+	 * 
+	 * @return if the currently displayed data set has more data that can be retrieved from the server.
+	 */
+	private boolean canLoadMore() {
+		return activityItems != null && activityItems.links != null &&
+				activityItems.links.get(ListActivityDetail.NEXT) != null;
 	}
 
 	/**
@@ -180,8 +200,10 @@ public class AccountActivityViewPager extends DetailViewPager{
 	 */
 	@Override
 	protected void loadMore(final String url) {
-		setIsLoadingMore(true);
-		BankServiceCallFactory.createGetActivityServerCall(url).submit();		
+		if(!getIsLoadingMore()) {
+			setIsLoadingMore(true);
+			BankServiceCallFactory.createGetActivityServerCall(url).submit();		
+		}
 	}
 
 	/**

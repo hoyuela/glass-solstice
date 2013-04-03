@@ -14,7 +14,6 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
@@ -66,15 +65,8 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		}
 		
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-		/**Hide controls that are not needed*/
-		noteTitle.setVisibility(View.GONE);
-		noteTextMsg.setVisibility(View.GONE);
-		actionLink.setVisibility(View.GONE);
-		feedbackLink.setVisibility(View.GONE);
 		
-		/**Hide top note as it is not needed for this view**/
-		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
-		topNote.setVisibility(View.GONE);
+		hideUnusedLabels(view);
 		
 		/**Show "Continue" text in single button on screen*/
 		actionButton.setText(R.string.continue_text);
@@ -93,12 +85,21 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		return view;
 	}
 	
+	/**Hide controls that are not needed*/
+	private void hideUnusedLabels(final View view) {
+		noteTitle.setVisibility(View.GONE);
+		noteTextMsg.setVisibility(View.GONE);
+		actionLink.setVisibility(View.GONE);
+		feedbackLink.setVisibility(View.GONE);
+		(view.findViewById(R.id.top_note_text)).setVisibility(View.GONE);
+	}
+	
 	/**
 	 * Method called by base class in onCreateView to determine what the title of the page should be.
 	 */
 	@Override
 	protected String getPageTitle() {
-		return (account != null) ? account.getDottedFormattedAccountNumber() : "";
+		return (account != null) ? account.nickname : "";
 	}
 
 	/**
