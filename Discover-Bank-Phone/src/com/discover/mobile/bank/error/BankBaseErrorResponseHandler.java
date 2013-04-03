@@ -118,6 +118,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			} else if(sender instanceof CreateBankSSOLoginCall && 
 					(errCode.equals(BankErrorCodes.ERROR_INVALID_SSO_PAYLOAD) || 
 							errCode.equals(BankErrorCodes.ERROR_FRAUD_USER))) {
+				//SSO Fraud users must be handled here, because they are taken to Card home instead of doing nothing.
 				((BankErrorHandler) mErrorHandler).handleInvalidSSOPayloadErrorModal(mErrorHandlerUi);
 			} else if (errCode.equals(BankErrorCodes.ERROR_FRAUD_USER) || errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
 				mErrorHandler.handleHttpFraudNotFoundUserErrorModal(mErrorHandlerUi, msgErrResponse.getErrorMessage());
