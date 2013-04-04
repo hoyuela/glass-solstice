@@ -33,7 +33,14 @@ public class NavigationIndex {
 		if (index == PREVIOUS_MAIN_INDEX){
 			SUB_INDEX = PREVIOUS_SUB_INDEX;
 		}else {
-			PREVIOUS_MAIN_INDEX = MAIN_INDEX;
+			/**
+			 * Only set the previous main index if sub is valid. Otherwise don't set it. 
+			 * This is needed so that when flipping around in the menu and coming back 
+			 * to the original option, the sub gets highlighting correctly.
+			 */
+			if (SUB_INDEX != -1){
+				PREVIOUS_MAIN_INDEX = MAIN_INDEX;
+			}
 			//Set - 1 so that no sub menu is highlighted when a main is expanded. 
 			setSubIndex(-1);
 		}

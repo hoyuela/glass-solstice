@@ -61,16 +61,15 @@ implements OnPaymentCanceledListener {
 	}
 
 	/**
-	 * 
+	 * Refreshes the sliding menu when its closed. This ensures that the highlighting on the menu is accurate
 	 */
 	private void updateMenuOnClose() {
 		final SlidingMenu slidingMenu = getSlidingMenu();
-		final BaseFragment currentFragment = getCurrentContentFragment();
 		slidingMenu.setOnClosedListener(new OnClosedListener() {
 
 			@Override
 			public void onClosed() {
-				// TODO Auto-generated method stub
+				final BaseFragment currentFragment = getCurrentContentFragment();
 				highlightMenuItems(currentFragment.getGroupMenuLocation(), currentFragment.getSectionMenuLocation());
 
 			}
