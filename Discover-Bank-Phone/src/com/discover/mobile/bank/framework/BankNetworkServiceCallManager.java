@@ -20,6 +20,8 @@ import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
 import com.discover.mobile.bank.services.AcceptTermsService;
+import com.discover.mobile.bank.services.BankApiServiceCall;
+import com.discover.mobile.bank.services.BankHolidayServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
@@ -237,14 +239,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 						(LoginActivity) activeActivity,
 						((BankErrorSSOResponse) error).token,
 						((BankErrorSSOResponse) error).hashedValue);
-			}
-			
+			}	
 			// Check if the error was a Ping. if so, then session died.
 			else if (isSessionDead(error)) {
 				BankConductor.logoutUser(activeActivity);
 			}
 			//Dispatch response to BankBaseErrorHandler to determine how to handle the error
-			else {
+			else if( !(sender instanceof BankApiServiceCall || 
+					   sender instanceof BankHolidayServiceCall ||
+					   sender instanceof RefreshBankSessionCall) )  {
 				errorHandler.handleFailure(sender, error);
 	
 				((AlertDialogParent)activeActivity).closeDialog();
@@ -267,8 +270,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final Throwable arg1) {
 		if( isGuiReady() ) {
-			final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
-			activeActivity.closeDialog();
+			if( !(sender instanceof BankApiServiceCall || 
+				  sender instanceof BankHolidayServiceCall ||
+				  sender instanceof RefreshBankSessionCall)) {
+				final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
+				activeActivity.closeDialog();
+			}
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "GUI is not ready, process response async");
@@ -342,11 +349,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 			//Update current account based on user logged in and account type
 			activity.updateAccountInformation(AccountType.BANK_ACCOUNT);
-
+			
 			BankServiceCallFactory.createCustomerDownloadCall().submit();
 		} 
 		//Download Account Summary Information if a Customer Download is successful
-		else if( sender instanceof CustomerServiceCall ) {
+	    else if( sender instanceof CustomerServiceCall ) {
 			//Verify user has bank accounts otherwise navigate to no accounts page
 			if( BankUser.instance().getCustomerInfo().hasAccounts() ) {
 				BankServiceCallFactory.createGetCustomerAccountsServerCall().submit();
@@ -560,9 +567,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 		
 		/* Service calls that do not show dialog must override functionality here */
-		if(sender instanceof RefreshBankSessionCall) {
-			// Show Nothing
-		} else {
+		if( !(sender instanceof RefreshBankSessionCall || 
+			  sender instanceof BankApiServiceCall || 
+			  sender instanceof BankHolidayServiceCall) ) {
 			activeActivity.startProgressDialog();
 		}
 

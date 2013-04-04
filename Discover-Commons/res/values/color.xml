@@ -69,4 +69,20 @@
 	<!-- Help menu colors -->
     <color name="help_menu_light_blue">#F03D484D</color>
     <color name="help_menu_dark_blue">#F0293033</color>
+    
+    
+    <!-- Calendar Colors  -->
+      <color name="caldroid_white">#FFFFFF</color>
+    <color name="caldroid_black">#000000</color>
+    <color name="caldroid_transparent">#00000000</color>
+    <!-- For settings framework -->
+    <color name="caldroid_lighter_gray">#ddd</color>
+    <color name="caldroid_gray">#CCC</color>
+    <color name="caldroid_darker_gray">#aaa</color>
+    <!-- A light Holo shade of blue -->
+    <color name="caldroid_holo_blue_light">#FD6C04</color>
+    <!-- A dark Holo shade of blue -->
+    <color name="caldroid_holo_blue_dark">#FD6C04</color>
+    <!-- A really bright Holo shade of blue -->
+    <color name="caldroid_sky_blue">#FD6C04</color>
 </resources>

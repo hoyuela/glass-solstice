@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/input_field_height"
             android:layout_alignLeft="@+id/top_label"
-            android:layout_below="@+id/middle_label"
+            android:layout_below="@+id/top_label"
             android:layout_marginRight="@dimen/between_related_elements_padding"
             android:layout_toLeftOf="@+id/caret"
             android:imeOptions="flagNoExtractUi|actionDone"
