@@ -107,7 +107,7 @@ public class BankUrlManager  {
 		String url = getUrl(CUSTOMER_URL_KEY);
 		
 		/**Use Default hard coded URL if not found*/
-		if( Strings.isNullOrEmpty(url)) {
+		if( Strings.isNullOrEmpty(url) || SLASH.equals(url)) {
 			url = CUSTOMER_SERVICE_URL;
 		}
 		

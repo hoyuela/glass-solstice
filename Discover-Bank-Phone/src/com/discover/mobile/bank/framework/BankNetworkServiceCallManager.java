@@ -21,6 +21,7 @@ import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
 import com.discover.mobile.bank.services.AcceptTermsService;
 import com.discover.mobile.bank.services.BankApiServiceCall;
+import com.discover.mobile.bank.services.BankHolidayServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
@@ -244,7 +245,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				BankConductor.logoutUser(activeActivity);
 			}
 			//Dispatch response to BankBaseErrorHandler to determine how to handle the error
-			else if( !(sender instanceof BankApiServiceCall) )  {
+			else if( !(sender instanceof BankApiServiceCall || 
+					   sender instanceof BankHolidayServiceCall ||
+					   sender instanceof RefreshBankSessionCall) )  {
 				errorHandler.handleFailure(sender, error);
 	
 				((AlertDialogParent)activeActivity).closeDialog();
@@ -267,7 +270,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final Throwable arg1) {
 		if( isGuiReady() ) {
-			if( !(sender instanceof BankApiServiceCall) ) {
+			if( !(sender instanceof BankApiServiceCall || 
+				  sender instanceof BankHolidayServiceCall ||
+				  sender instanceof RefreshBankSessionCall)) {
 				final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 				activeActivity.closeDialog();
 			}
@@ -562,7 +567,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 		
 		/* Service calls that do not show dialog must override functionality here */
-		if( !(sender instanceof RefreshBankSessionCall || sender instanceof BankApiServiceCall) ) {
+		if( !(sender instanceof RefreshBankSessionCall || 
+			  sender instanceof BankApiServiceCall || 
+			  sender instanceof BankHolidayServiceCall) ) {
 			activeActivity.startProgressDialog();
 		}
 

@@ -46,9 +46,9 @@ public class CalendarAdapter extends CaldroidGridAdapter {
 		}
 
 		final int topPadding = cellView.getPaddingTop();
-		int leftPadding = cellView.getPaddingLeft();
+		final int leftPadding = cellView.getPaddingLeft();
 		final int bottomPadding = cellView.getPaddingBottom();
-		int rightPadding = cellView.getPaddingRight();
+		final int rightPadding = cellView.getPaddingRight();
 
 		final TextView tv1 = (TextView) cellView.findViewById(R.id.tv1);
 		final TextView tv2 = (TextView) cellView.findViewById(R.id.tv2);
@@ -59,17 +59,10 @@ public class CalendarAdapter extends CaldroidGridAdapter {
 
 		// Set color of the dates in previous / next month
 		if (dateTime.getMonthOfYear() != month) {
-			tv1.setTextColor(resources
-					.getColor(R.color.caldroid_darker_gray));
+			tv1.setTextColor(resources.getColor(R.color.caldroid_darker_gray));
 		}
 
-		// Customize for today
-		if (dateTime.equals(getToday())) {
-			cellView.setBackgroundResource(R.drawable.red_border);
-		}
 
-		boolean isDue = false;
-		
 		// Customize for disabled dates and date outside min/max dates
 		if ((minDateTime != null && dateTime.isBefore(minDateTime))
 				|| (maxDateTime != null && dateTime.isAfter(maxDateTime))
@@ -81,44 +74,12 @@ public class CalendarAdapter extends CaldroidGridAdapter {
 			} else {
 				cellView.setBackgroundResource(CaldroidFragment.disabledBackgroundDrawable);
 			}
-
-			if (dateTime.equals(getToday())) {
-				cellView.setBackgroundResource(R.drawable.red_border_gray_bg);
-			}
-
 		}
-		
-		if (dateTime.equals(getToday())) {
-			cellView.setBackgroundResource(R.drawable.red_border_gray_bg);
-			isDue = true;
-		}
-
-		// Customize for selected dates
-		if (selectedDates != null && selectedDates.indexOf(dateTime) != -1) {
-			if (CaldroidFragment.selectedBackgroundDrawable != -1) {
-				cellView.setBackgroundResource(CaldroidFragment.selectedBackgroundDrawable);
-			} else {
-				cellView.setBackgroundColor(resources
-						.getColor(R.color.caldroid_sky_blue));
-			}
-
-			tv1.setTextColor(CaldroidFragment.selectedTextColor);
-
-		}
-
+	
 		tv1.setText( " " +dateTime.getDayOfMonth());
-		if( isDue ) {
-			tv2.setText("Due");
-			
-			leftPadding = leftPadding - 2;
-			rightPadding = rightPadding - 2;
 
-		}
-
-		// Somehow after setBackgroundResource, the padding collapse.
-		// This is to recover the padding
-		cellView.setPadding(leftPadding, topPadding, rightPadding,
-				bottomPadding);
+		// Somehow after setBackgroundResource, the padding collapse. This is to recover the padding
+		cellView.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
 
 		return cellView;
 	}

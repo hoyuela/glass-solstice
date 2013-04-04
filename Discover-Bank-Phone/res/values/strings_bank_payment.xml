@@ -60,7 +60,7 @@
  	<string name="schedule_pay_cancel_body">Are you sure you want to cancel? All information you have entered will be lost.</string>
  	<string name="schedule_pay_cancel_button_confirm">Cancel This Action</string>
  	<string name="schedule_pay_canceled">Transaction Cancelled</string>
- 	<string name="schedule_pay_date_picker_title">Enter Payment Date</string>
+ 	<string name="schedule_pay_date_picker_title">Deliver by Date</string>
  	<string name="schedule_pay_duplicate_payment">Duplicate Payment</string>
  	<string name="schedule_pay_invalid_date">Invalid Date</string>
 </resources>
