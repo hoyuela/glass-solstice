@@ -219,6 +219,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity
 		currentFragment = fragment;
 		getSupportFragmentManager()
 		.beginTransaction()
+		.setCustomAnimations(R.anim.fragment_slide_in_right , R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right)
 		.replace(R.id.navigation_content, fragment)
 		//Adds the class name and fragment to the back stack
 		.addToBackStack(fragment.getClass().getSimpleName())
@@ -235,6 +236,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity
 		currentFragment = fragment;
 		getSupportFragmentManager()
 		.beginTransaction()
+		.setCustomAnimations(R.anim.fragment_slide_in_right , R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right)
 		.replace(R.id.navigation_content, fragment)
 		.commit();
 
