@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.widget.RelativeLayout;
 
@@ -144,6 +145,7 @@ public class BankDepositListGenerator {
 		item.setTopLabelText(top);
 		item.getTopLabel().setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);	
 		item.setMiddleLabelText(bottom);
+		item.getMiddleLabel().setTypeface(null,Typeface.NORMAL);
 		item.getMiddleLabel().setSingleLine(false);
 		item.getMiddleLabel().setMaxLines(10);
 		item.getMiddleLabel().setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);	

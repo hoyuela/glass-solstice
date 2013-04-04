@@ -754,8 +754,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 					final String memo = memoEdit.getText().toString();
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
 					payment.payee.id = payee.id;
-					payment.amount = CommonUtils
-							.formatCurrencyStringAsBankInt(amountEdit.getText()
+					payment.amount = formatAmount(amountEdit.getText()
 									.toString());
 					payment.paymentMethod.id = Integer.toString(accountId);
 					payment.deliverBy = CommonUtils
@@ -771,6 +770,18 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 				}
 			}
 		});
+	}
+	
+	/**
+	 * Formats the amount from 1.13 to 113 and converts to a int
+	 * @param amount
+	 * @return
+	 */
+	private int formatAmount(String amount){
+		amount = amount.replaceAll(",", "");
+		amount = amount.replace(".", "");
+		
+		return Integer.parseInt(amount);
 	}
 
 	@Override
