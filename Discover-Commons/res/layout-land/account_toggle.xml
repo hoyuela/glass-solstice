@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:paddingLeft="@dimen/toggle_title_left_pad_p"
+                android:paddingLeft="@dimen/toggle_title_left_pad_l"
                 android:text="@string/toggle_select_account" />
             
             <!-- Padding assists with click area (X) -->
@@ -36,7 +36,7 @@
                 android:layout_centerVertical="true"
                 android:paddingBottom="@dimen/toggle_x_bottom_pad"
                 android:paddingLeft="@dimen/toggle_x_left_pad"
-                android:paddingRight="@dimen/toggle_x_right_pad_p"
+                android:paddingRight="@dimen/toggle_x_right_pad_l"
                 android:paddingTop="@dimen/toggle_x_top_pad"
                 android:src="@drawable/x_gray" />
         </RelativeLayout>
@@ -46,8 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/divider_height"
             android:layout_below="@id/acct_toggle_title_section"
-            android:layout_marginLeft="@dimen/toggle_divider_side_pad_p"
-            android:layout_marginRight="@dimen/toggle_divider_side_pad_p"
+            android:layout_marginLeft="@dimen/toggle_divider_side_pad_l"
+            android:layout_marginRight="@dimen/toggle_divider_side_pad_l"
             android:background="@drawable/gray_solid_line" />
 
         <!-- Card -->
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/toggle_check_right_pad"
-                android:paddingLeft="@dimen/toggle_title_left_pad_p"
+                android:paddingLeft="@dimen/toggle_title_left_pad_l"
                 android:src="@drawable/black_check_mark"
                 android:visibility="invisible" />
 
@@ -98,8 +98,8 @@
             android:layout_width="match_parent"
             android:layout_height="1.5dp"
             android:layout_below="@id/acct_toggle_card_section"
-            android:layout_marginLeft="@dimen/toggle_divider_side_pad_p"
-            android:layout_marginRight="@dimen/toggle_divider_side_pad_p"
+            android:layout_marginLeft="@dimen/toggle_divider_side_pad_l"
+            android:layout_marginRight="@dimen/toggle_divider_side_pad_l"
             android:background="@drawable/gray_dash_line" />
 
         <!-- Bank -->
@@ -117,7 +117,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/toggle_check_right_pad"
                 android:paddingBottom="@dimen/toggle_bottext_bottom_pad"
-                android:paddingLeft="@dimen/toggle_title_left_pad_p"
+                android:paddingLeft="@dimen/toggle_title_left_pad_l"
                 android:src="@drawable/black_check_mark" />
 
             <TextView
