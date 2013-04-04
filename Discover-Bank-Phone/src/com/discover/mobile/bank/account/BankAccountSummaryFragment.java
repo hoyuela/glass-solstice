@@ -43,7 +43,11 @@ import com.discover.mobile.common.ui.widgets.AccountToggleView;
  *
  */
 public class BankAccountSummaryFragment extends BaseFragment implements OnClickListener, FragmentOnBackPressed {
+	
 	private static final String TAG = "AccountSummary";
+	
+	private static final String SHOW_TOGGLE_KEY = "showToggle";
+	
 	private LinearLayout accountSummary; 
 	private Button openAccount;
 	private BankNeedHelpFooter helpFooter;
@@ -94,7 +98,21 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				toast.show();
 			}			
 		});
+
+		if (savedInstanceState != null
+				&& savedInstanceState.getBoolean(SHOW_TOGGLE_KEY, false)) {
+			toggleView.toggleVisibility();
+		}
+
 		return view;
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		if(toggleView.getVisibility() == View.VISIBLE) {
+			outState.putBoolean(SHOW_TOGGLE_KEY, true);
+		}
+		super.onSaveInstanceState(outState);
 	}
 
 	/** Set the first name in the status bar. The first name can sometimes be 
