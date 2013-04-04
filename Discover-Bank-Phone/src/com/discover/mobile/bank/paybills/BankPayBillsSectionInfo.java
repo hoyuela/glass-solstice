@@ -48,14 +48,19 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
+				/**Start download for bank holiday concurrently with payees download*/
+				if( BankUser.instance().getHolidays().isEmpty() ) {
+					BankServiceCallFactory.createBankHolidayDownloadServiceCall().submit();
+				}
+				
 				/**Check if user is already in this workflow*/
 				if( !BankPayBillsSectionInfo.isViewingMenuSection(BankMenuItemLocationIndex.PAY_BILLS_SECTION)) {
 					if(!isEligible()){
 						BankConductor.navigateToPayBillsLanding();
 					} else if(isEligible() && !isEnrolled()){
 						sendToTermsScreen(R.string.section_title_pay_bills);
-					} else{					
-						if(null == BankUser.instance().getPayees()) {
+					} else{								
+						if(null == BankUser.instance().getPayees()) {							
 							BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 						} else{
 							final Bundle bundle = new Bundle();

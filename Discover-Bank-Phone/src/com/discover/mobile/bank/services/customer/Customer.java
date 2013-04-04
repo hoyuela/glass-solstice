@@ -148,7 +148,7 @@ public class Customer implements Serializable {
 	 */
 	@JsonProperty("eligibility")
 	public List<Eligibility> eligibilities;
-//	public Map<String, Eligibility> eligibilities;
+
 
 	/**
 	 * 

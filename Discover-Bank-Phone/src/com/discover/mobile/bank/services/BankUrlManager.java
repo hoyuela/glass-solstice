@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.services;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
@@ -47,6 +48,7 @@ public class BankUrlManager  {
 	private static final String ATM_DIRECTIONS_BASE_URL = "http://maps.googleapis.com/maps/api/directions/json";
 	private static final String ATM_ADDRESS_TO_LOCATION_BASE_URL = "http://maps.google.com/maps/api/geocode/json";
 	private static final String REFRESH_URL = "/api/auth/ping";
+	private static final String API_URL = "/api/";
 
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
@@ -60,6 +62,10 @@ public class BankUrlManager  {
 	public static final String PAYMENTS_URL_KEY = "payments";
 	public static final String DEPOSITS_URL_KEY = "deposits";
 	public static final String ACCEPT_PAY_BILLS_TERMS_KEY = "billpayterms";
+	public static final String BANK_HOLIDAYS_URL_KEY = "bank-holidays";
+	public static final String CUSTOMER_URL_KEY = "customer";
+	public static final String PRIVACY_POLICY_KEY = "privacy-policy";
+	public static final String TERMS_OF_USE = "terms-of-use";
 
 	/**
 	 * String used to construct a URL used for deleting. Example /api/auth/token?_method=DELETE
@@ -97,8 +103,38 @@ public class BankUrlManager  {
 	 * @return the customerServiceUrl
 	 */
 	public static String getCustomerServiceUrl() {
-		return CUSTOMER_SERVICE_URL;
+		/** Attempt to fetch URL from hash table*/
+		String url = getUrl(CUSTOMER_URL_KEY);
+		
+		/**Use Default hard coded URL if not found*/
+		if( Strings.isNullOrEmpty(url) || SLASH.equals(url)) {
+			url = CUSTOMER_SERVICE_URL;
+		}
+		
+		return url;
 	}
+	
+	/**
+	 * @return The URL link to be used for getting bank holidays from the server
+	 */
+	public static String getBankHolidaysUrl() {		
+		return getUrl(BANK_HOLIDAYS_URL_KEY);
+	}
+	
+	/**
+	 * @return The URL link to be used for getting Privacy & Terms from the server
+	 */
+	public static String getPrivacyTermsUrl() {		
+		return getUrl(PRIVACY_POLICY_KEY);
+	}
+	
+	/**
+	 * @return The URL link to be used for getting Terms of Use from the server
+	 */
+	public static String getTermsOfUse() {		
+		return getUrl(TERMS_OF_USE);
+	}
+	
 	/**
 	 * @return the getTokenUrl
 	 */
@@ -118,6 +154,13 @@ public class BankUrlManager  {
 	 */
 	public static String getStrongAuthUrl() {
 		return STRONG_AUTH_URL;
+	}
+	
+	/**
+	 * @return Returns the the string for downloading API URLs from the Bank Server
+	 */
+	public static String getApiUrl() {
+		return API_URL;
 	}
 
 	/**
@@ -147,7 +190,25 @@ public class BankUrlManager  {
 	 * Method used to clear links cached after a Customer Download.
 	 */
 	public static void clearLinks() {
+		final Map<String, ReceivedUrl> persistentLinks = new HashMap<String, ReceivedUrl>();
+		
+		final Iterator<Map.Entry<String, ReceivedUrl>> it = links.entrySet().iterator();
+	    while (it.hasNext()) {
+	        final Map.Entry<String, ReceivedUrl> pairs = it.next();
+	        
+	    	if( pairs.getKey().equals(BANK_HOLIDAYS_URL_KEY) ||
+	    		pairs.getKey().equals(CUSTOMER_URL_KEY) ||
+	    		pairs.getKey().equals(PRIVACY_POLICY_KEY) ||
+	    		pairs.getKey().equals(TERMS_OF_USE)) {
+	    		
+	    		persistentLinks.put(pairs.getKey(), pairs.getValue());
+	    		
+	    	}	       
+	    }
+
 		links.clear();
+		
+		links.putAll(persistentLinks);
 	}
 
 	public static int getLinksCount() {

@@ -54,33 +54,47 @@ public final class BankExtraKeys {
 
 	/**Used to pass the amount of the check deposit around between fragments and activities*/
 	public static final String AMOUNT = "amount";
-	
+
 	/**Used to pass a boolean to the check deposit workflow for when a user goes back to a previous
 	 * fragment to adjust the information they previously entered
 	 */
 	public static final String REENTER_AMOUNT = "newAmount";
-	
+
 	/**
 	 * Used to let the select account screen in check deposit know that an account is being reselected and should alter
 	 * its navigation.
 	 */
 	public static final String RESELECT_ACCOUNT = "newAccount";
-	
+
 	/**
 	 * Used to let the first step of check deposit know if the user has just accepted 
 	 * the terms and should see the how it works modal
 	 */
 	public static final String ACCEPTED_TERMS = "accepted";
 	
+	/** The key used when navigating to a specific FAQ section */
 	public static final String FAQ_TYPE = "faq type";
 	
+	/** The key used when navigating to the gernal FAQs */
 	public static final String GENERAL_FAQ = "general faq";
 	
+	/** The key used when navigating to bill pay FAQs */
 	public static final String BILL_PAY_FAQ = "pay bills faq";
 	
+	/** The key used for navigating to check deposit FAQs*/
 	public static final String CHECK_DEPOSIT_FAQ = "deposit faq";
 	
+	/** The key used for navigating to ATM Locator FAQs */
 	public static final String ATM_LOCATOR_FAQ = "atm faq";
+	
+	/** A key used for when something is loading more content and needs so save this state to a bundle */
+	public static final String IS_LOADING_MORE = "loading";
+
+	/**
+	 * String used to send data back from the frequency widget
+	 */
+	public static final String FREQUENCY_CODE = "code";
+	public static final String FREQUENCY_TEXT = "text";
 
 	/**Used to signify sort set up*/
 	public static final int SORT_DATE_DESC = 0;

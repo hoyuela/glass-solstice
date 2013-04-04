@@ -15,7 +15,7 @@
         <RelativeLayout
             android:id="@+id/acct_toggle_title_section"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/toggle_cell_height"
             android:layout_alignParentTop="true" >
 
             <TextView
@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:paddingLeft="21dp"
+                android:paddingLeft="@dimen/toggle_title_left_pad_p"
                 android:text="@string/toggle_select_account" />
             
             <!-- Padding assists with click area (X) -->
@@ -34,10 +34,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="25dp"
-                android:paddingTop="10dp"
+                android:paddingBottom="@dimen/toggle_x_bottom_pad"
+                android:paddingLeft="@dimen/toggle_x_left_pad"
+                android:paddingRight="@dimen/toggle_x_right_pad_p"
+                android:paddingTop="@dimen/toggle_x_top_pad"
                 android:src="@drawable/x_gray" />
         </RelativeLayout>
 
@@ -46,8 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/divider_height"
             android:layout_below="@id/acct_toggle_title_section"
-            android:layout_marginLeft="9dp"
-            android:layout_marginRight="9dp"
+            android:layout_marginLeft="@dimen/toggle_divider_side_pad_p"
+            android:layout_marginRight="@dimen/toggle_divider_side_pad_p"
             android:background="@drawable/gray_solid_line" />
 
         <!-- Card -->
@@ -55,7 +55,7 @@
         <RelativeLayout
             android:id="@+id/acct_toggle_card_section"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/toggle_cell_height"
             android:layout_below="@id/acct_toggle_divider" >
 
             <ImageView
@@ -63,8 +63,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="3dp"
-                android:paddingLeft="21dp"
+                android:layout_marginRight="@dimen/toggle_check_right_pad"
+                android:paddingLeft="@dimen/toggle_title_left_pad_p"
                 android:src="@drawable/black_check_mark"
                 android:visibility="invisible" />
 
@@ -76,7 +76,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@id/acct_toggle_card_check"
                 android:paddingBottom="@dimen/between_related_elements_padding"
-                android:paddingLeft="7dp"
+                android:paddingLeft="@dimen/toggle_text_left_pad"
                 android:paddingTop="@dimen/between_related_elements_padding"
                 android:text="it Card" />
 
@@ -88,7 +88,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_toRightOf="@id/acct_toggle_card_check"
                 android:paddingBottom="@dimen/between_related_elements_padding"
-                android:paddingLeft="7dp"
+                android:paddingLeft="@dimen/toggle_text_left_pad"
                 android:paddingTop="@dimen/between_related_elements_padding"
                 android:text="acct ending in 1234" />
         </RelativeLayout>
@@ -98,8 +98,8 @@
             android:layout_width="match_parent"
             android:layout_height="1.5dp"
             android:layout_below="@id/acct_toggle_card_section"
-            android:layout_marginLeft="9dp"
-            android:layout_marginRight="9dp"
+            android:layout_marginLeft="@dimen/toggle_divider_side_pad_p"
+            android:layout_marginRight="@dimen/toggle_divider_side_pad_p"
             android:background="@drawable/gray_dash_line" />
 
         <!-- Bank -->
@@ -107,7 +107,7 @@
         <RelativeLayout
             android:id="@+id/acct_toggle_bank_section"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/toggle_cell_height"
             android:layout_below="@id/acct_toggle_dash_divider" >
 
             <ImageView
@@ -115,9 +115,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="3dp"
-                android:paddingBottom="9dp"
-                android:paddingLeft="21dp"
+                android:layout_marginRight="@dimen/toggle_check_right_pad"
+                android:paddingBottom="@dimen/toggle_bottext_bottom_pad"
+                android:paddingLeft="@dimen/toggle_title_left_pad_p"
                 android:src="@drawable/black_check_mark" />
 
             <TextView
@@ -128,8 +128,8 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/acct_toggle_bank_check"
                 android:paddingBottom="@dimen/account_toggle_outside_padding"
-                android:paddingLeft="7dp"
-                android:paddingTop="9dp"
+                android:paddingLeft="@dimen/toggle_text_left_pad"
+                android:paddingTop="@dimen/toggle_bottext_bottom_pad"
                 android:text="Discover Bank"
                 android:textStyle="bold" />
         </RelativeLayout>

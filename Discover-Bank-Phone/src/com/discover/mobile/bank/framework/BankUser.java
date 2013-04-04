@@ -2,8 +2,10 @@ package com.discover.mobile.bank.framework;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.discover.mobile.bank.deposit.CheckDepositCaptureActivity;
+import com.discover.mobile.bank.services.BankHolidays;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
@@ -49,6 +51,10 @@ public final class BankUser extends CacheManager implements Serializable {
 
 	/**List of payees*/
 	private ListPayeeDetail payees;
+	
+	/**List of bank holidays where user cannot schedule certain bank transactions*/
+	private BankHolidays holidays = new BankHolidays();
+	
 	
 	/**
 	 * 
@@ -211,4 +217,22 @@ public final class BankUser extends CacheManager implements Serializable {
 	public void setBankUser(final BankUser bu) {
 		currentBankUser = bu;
 	}
+	
+	/**
+	 * @return Returns a list of dates that are considered Bank Holidays
+	 */
+	public ArrayList<Date> getHolidays() {
+		return holidays.getDates();
+	}
+
+	/**
+	 * Method used to set the Bank Holidays
+	 * 
+	 * @param value Reference to a BankHolidays object generated from a response to a BankHolidayServiceCall.
+	 */
+	public void setHolidays(final BankHolidays value) {
+		if( value != null )
+			holidays = value;
+	}
+
 }

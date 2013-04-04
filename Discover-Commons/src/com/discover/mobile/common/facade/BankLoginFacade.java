@@ -23,5 +23,10 @@ public interface BankLoginFacade {
 	 * Authorizes a bank login for users that receive a Bad Card Status, A/L/U.
 	 */
 	public void authDueToALUStatus();
+	
+	/**
+	 * Authorizes a bank login with credentials for users that receive a Bad Card Status, A/L/U.
+	 */
+	public void authDueToALUStatus(String username, String password);
 
 }

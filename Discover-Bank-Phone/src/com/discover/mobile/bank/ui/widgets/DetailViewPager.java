@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
@@ -112,6 +114,9 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 		final HelpWidget help = (HelpWidget) mainView.findViewById(R.id.help);
 		helpMenuOnClick(help);
 
+		final Bundle args = getArguments();
+		isLoadingMore = args.getBoolean(BankExtraKeys.IS_LOADING_MORE);
+		
 		loadAllViewsFrom(mainView);		
 		setupNavButtons(mainView);
 		
@@ -126,12 +131,19 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 		final SlidingMenu slidingMenu = ((SlidingFragmentActivity)this.getActivity()).getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
+		final Bundle args = getArguments();
+		args.putBoolean(BankExtraKeys.IS_LOADING_MORE, isLoadingMore);
+		
+		super.onPause();
+	}
+	
+	@Override
+	public void onStop() {
 		if(viewPager != null){
 			viewPager.removeAllViews();
 			viewPager.setAdapter(null);
 		}
-		
-		super.onPause();
+		super.onStop();
 	}
 
 	@Override
@@ -326,6 +338,14 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	@Override
 	public void setIsLoadingMore(final boolean isLoadingMore){
 		this.isLoadingMore = isLoadingMore;
+	}
+	
+	protected void resetViewPagerAdapter() {
+		final PagerAdapter temp = getViewPager().getAdapter();
+		final int position = getViewPager().getCurrentItem();
+		getViewPager().setAdapter(null);
+		getViewPager().setAdapter(temp);
+		getViewPager().setCurrentItem(position);
 	}
 
 	/**

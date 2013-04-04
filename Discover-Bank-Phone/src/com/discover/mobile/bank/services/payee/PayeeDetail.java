@@ -89,6 +89,10 @@ public class PayeeDetail implements Serializable{
 	/**Payee address for Unmanaged payees*/
 	@JsonProperty("address")
 	public Address address;
+	
+	/**Payee Postal Code for Managed Payees*/
+	@JsonProperty("billingPostalCode")
+	public String zip;
 
 	/**Payee memo, for Unmanaged payees*/
 	@JsonProperty("memo")

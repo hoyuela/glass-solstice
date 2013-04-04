@@ -92,7 +92,7 @@ public interface ErrorHandler {
 	 * @return
 	 */
 	public abstract ModalAlertWithOneButton handleHttpFraudNotFoundUserErrorModal(ErrorHandlerUi mErrorHandlerUi, String message);
-
+	
 	/**
 	 * Handler for an HTTP 503 Service Unavailable error response. Creates a one
 	 * button modal with the default error title, and help number. The help

@@ -60,6 +60,10 @@ public class BankErrorCodes {
 	 */
 	public static final String ERROR_CHECK_DUPLICATE_EX = "Deposits.Deposit.ErrorDuplicate";
 	/**
+	 * Error Code used to describe an expired or invalid BankPayload (from Card Service)
+	 */
+	public static final String ERROR_INVALID_SSO_PAYLOAD = "Auth.SSO.InvalidPayload";
+	/**
 	 * Default constructor is not to be used
 	 */
 	private BankErrorCodes() {

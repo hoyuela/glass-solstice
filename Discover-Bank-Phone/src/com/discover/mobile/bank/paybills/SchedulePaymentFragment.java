@@ -1,13 +1,14 @@
 package com.discover.mobile.bank.paybills;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
@@ -24,7 +25,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -55,11 +55,13 @@ import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
-import com.discover.mobile.common.ui.widgets.CustomTitleDatePickerDialog;
+import com.discover.mobile.common.ui.widgets.CalendarFragment;
+import com.discover.mobile.common.ui.widgets.CalendarListener;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
-public class SchedulePaymentFragment extends BaseFragment implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPressed {
+public class SchedulePaymentFragment extends BaseFragment 
+	implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPressed {
 
 	/** Keys used to save/load values possibly lost during rotation. */
 	private static final String PAY_FROM_ACCOUNT_ID = "a";
@@ -83,8 +85,6 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 
 	/** Progress header - breadcrumb */
 	private BankHeaderProgressIndicator progressHeader;
-	/** Date picker for selecint a Deliver By date */
-	private CustomTitleDatePickerDialog deliverByDatePicker;
 	/** Spinner used to display all the user bank accounts */
 	private Spinner paymentAccountSpinner;
 	/** Error view for improper amount */
@@ -131,7 +131,9 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 	private Calendar earliestPaymentDate;
 	/** Chosen payment date */
 	private Calendar chosenPaymentDate;
-
+	/** Fragment used to select a payment date*/
+	private CalendarFragment calendarFragment;
+	
 	/** saved bundle data */
 	private Bundle savedBundle;
 
@@ -274,7 +276,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 		}
 		if( conflictError.getVisibility() == View.VISIBLE ) {
 			outState.putString(CONFLICT, conflictError.getText().toString());
-		}
+		}		
 
 	}
 
@@ -700,22 +702,10 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			@Override
 			public void onClick(final View v) {
 				setDateError(false);
-				deliverByDatePicker.show();
+				
+				showCalendar();
 			}
 		});
-
-		deliverByDatePicker = new CustomTitleDatePickerDialog(getActivity(),
-				new OnDateSetListener() {
-
-			@Override
-			public void onDateSet(final DatePicker v, final int year,
-					final int month, final int day) {
-				setChosenPaymentDate(year, month + 1, day);
-			}
-		}, earliestPaymentDate.get(Calendar.YEAR),
-		earliestPaymentDate.get(Calendar.MONTH),
-		earliestPaymentDate.get(Calendar.DAY_OF_MONTH),
-		getString(R.string.schedule_pay_date_picker_title));
 
 		cancelButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -754,8 +744,7 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 					final String memo = memoEdit.getText().toString();
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
 					payment.payee.id = payee.id;
-					payment.amount = CommonUtils
-							.formatCurrencyStringAsBankInt(amountEdit.getText()
+					payment.amount = formatAmount(amountEdit.getText()
 									.toString());
 					payment.paymentMethod.id = Integer.toString(accountId);
 					payment.deliverBy = CommonUtils
@@ -771,6 +760,18 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 				}
 			}
 		});
+	}
+	
+	/**
+	 * Formats the amount from 1.13 to 113 and converts to a int
+	 * @param amount
+	 * @return
+	 */
+	private int formatAmount(String amount){
+		amount = amount.replaceAll(",", "");
+		amount = amount.replace(".", "");
+		
+		return Integer.parseInt(amount);
 	}
 
 	@Override
@@ -851,6 +852,11 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 			}
 		}, 1000);
 
+		final Fragment fragment = getFragmentManager().findFragmentByTag(CalendarFragment.TAG);
+		if( fragment != null && fragment instanceof CalendarFragment) {
+			calendarFragment = (CalendarFragment) fragment;
+			calendarFragment.setCaldroidListener(createCalendarListener());
+		}
 	}
 
 	@Override
@@ -901,4 +907,36 @@ public class SchedulePaymentFragment extends BaseFragment implements BankErrorHa
 	public boolean isBackPressDisabled() {
 		return true;
 	}
+
+	private CalendarListener createCalendarListener() {
+		// Setup listener
+		final CalendarListener calendarListener = new CalendarListener(calendarFragment) {
+			private static final long serialVersionUID = -5277452816704679940L;
+
+			@Override
+			public void onSelectDate(final Date date, final View view) {
+				super.onSelectDate(date, view);
+				
+				final Calendar cal=Calendar.getInstance();
+				cal.setTime(date);
+				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
+				
+				calendarFragment.dismiss();
+			}
+		};
+		
+		return calendarListener;
+	}
+
+	public void showCalendar() {
+		calendarFragment = new CalendarFragment();
+		
+		calendarFragment.show(getFragmentManager(),
+						      getString(R.string.schedule_pay_date_picker_title),
+							  earliestPaymentDate, 
+							  BankUser.instance().getHolidays(),
+							  createCalendarListener());
+	}
+
+
 }

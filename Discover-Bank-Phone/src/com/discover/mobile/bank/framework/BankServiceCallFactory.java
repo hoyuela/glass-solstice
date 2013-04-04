@@ -8,6 +8,10 @@ import com.discover.mobile.bank.BankPhoneAsyncCallbackBuilder;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.AcceptTermsService;
+import com.discover.mobile.bank.services.BankApiLinks;
+import com.discover.mobile.bank.services.BankApiServiceCall;
+import com.discover.mobile.bank.services.BankHolidayServiceCall;
+import com.discover.mobile.bank.services.BankHolidays;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
@@ -542,5 +546,39 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						.build();
 
 		return new DeletePayeeServiceCall(activity, callback, payee);
+	}
+	
+	/**
+	 * Creates a BankApiServiceCall used to download API links needed for login and other services
+	 * at start-up.
+	 * 
+	 * @return Reference to the BankApiServiceCall object created.
+	 */
+	public static BankApiServiceCall createBankApiServiceCall() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<BankApiLinks>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankApiLinks.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new BankApiServiceCall(activity, callback);
+	}
+	
+	/**
+	 * Creates a BankHolidayServiceCall used to download the Bank Holidays to display on a calendar
+	 * as disabled dates for features like Schedule Payment.
+	 * 
+	 * @return Reference to the BankHolidayServiceCall object created.
+	 */
+	public static BankHolidayServiceCall createBankHolidayDownloadServiceCall() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<BankHolidays>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankHolidays.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new BankHolidayServiceCall(activity, callback);
 	}
 }

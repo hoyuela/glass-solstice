@@ -32,6 +32,7 @@ import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
@@ -369,6 +370,10 @@ public class LoginActivity extends BaseActivity implements
 		//application is be launched for the first time
 		if( !preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) ) {
 			showSplashScreen(!preAuthHasRun);
+			
+			/**Download links for Bank Application*/
+			BankServiceCallFactory.createBankApiServiceCall().submit();
+			
 			preAuthHasRun = true;
 		} else {
 			this.showLoginPane();
@@ -562,7 +567,7 @@ public class LoginActivity extends BaseActivity implements
 		
 		privacySecOrTermButtonBank.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				openPrivacyAndTerms();
 			}
 		});
@@ -1155,7 +1160,7 @@ public class LoginActivity extends BaseActivity implements
 	 * Creates and shows a modal to inform the user that their account skipped
 	 * SSO sign-on because of a Card BadStatus.
 	 */
-	public void showALUStatusModal() {
+	public void showALUStatusModal(final BankLoginDetails credentials) {
 		final ModalDefaultTopView aluModalTopView = new ModalDefaultTopView(
 				this, null);
 		aluModalTopView.setTitle(R.string.skipsso_modal_title);
@@ -1176,7 +1181,11 @@ public class LoginActivity extends BaseActivity implements
 				new OnClickListener() {
 					@Override
 					public void onClick(final View v) {
-						BankConductor.continueAuthDueToALU();
+						if (credentials == null) {
+							BankConductor.continueAuthDueToALU();
+						} else {
+							BankConductor.continueAuthDueToALU(credentials);
+						}
 						aluModal.dismiss();
 					}
 				});
