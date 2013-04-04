@@ -22,6 +22,7 @@ import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
