@@ -8,7 +8,7 @@
         android:id="@+id/modal_alert_divider"
         android:layout_width="fill_parent"
         android:layout_height="5dp"
-        android:background="@drawable/modal_divider_line"
+        android:background="@drawable/shadow_gradient"
         android:layout_above="@+id/modal_ok_button"
         android:visibility="visible"/>
     
