@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.login.LoginActivity;
+import com.discover.mobile.bank.services.BankApiServiceCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
 import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
@@ -60,36 +61,48 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 		lastThrowable = arg0;
 		lastSender = sender;
 		
-		// If exception occurred because of a pre-auth call just continue to the login page
-		if ( sender instanceof PreAuthCheckCall ) {
-			final LoginActivity loginActivity = (LoginActivity) DiscoverActivityManager
-					.getActiveActivity();
-			loginActivity.showSplashScreen(false);
-		}
-		// If exception occurred because of a logout service call just navigate to login page
-		else if ( sender instanceof BankLogOutCall ) {
-			BankConductor.navigateToLoginPage(
-					DiscoverActivityManager.getActiveActivity(),
-					IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE,
-					null);
-		}
-		// Need to inform KeepAlive to keep attempting refresh calls upon a failure, but not immediately.
-		else if (sender instanceof RefreshBankSessionCall) {
-			KeepAlive.resetLastBankRefreshTime();
-		}
-		// If exception because of a check deposit socket timeout then just ignore, it is handled elsewhere
-		else if( sender instanceof SubmitCheckDepositCall ) {
-			if( Log.isLoggable(TAG, Log.WARN)) {
-				Log.w(TAG, "Check Deposit Timed-out!");
+		//Check if exception should be handled
+		if( isConsiderable(sender) ) {
+			// If exception occurred because of a pre-auth call just continue to the login page
+			if ( sender instanceof PreAuthCheckCall ) {
+				final LoginActivity loginActivity = (LoginActivity) DiscoverActivityManager
+						.getActiveActivity();
+				loginActivity.showSplashScreen(false);
 			}
-		}
-		//Catch-all exception handler
-		else {
-			BankErrorHandler.getInstance().handleGenericError(0);
+			// If exception occurred because of a logout service call just navigate to login page
+			else if ( sender instanceof BankLogOutCall ) {
+				BankConductor.navigateToLoginPage(
+						DiscoverActivityManager.getActiveActivity(),
+						IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE,
+						null);
+			}
+			// Need to inform KeepAlive to keep attempting refresh calls upon a failure.
+			else if (sender instanceof RefreshBankSessionCall) {
+				KeepAlive.resetLastBankRefreshTime();
+			}
+			//Catch-all exception handler
+			else  {
+				BankErrorHandler.getInstance().handleGenericError(0);
+			}
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Error has been ignored");
+			}
 		}
 
 		//Must return true to let GenericAsyncCallback to stop calling any further listeners
 		return true;
+	}
+	
+	/**
+	 * Method used to check to see if the network service call should be handled for an exception
+	 * 
+	 * @param service Service to be check to see whether it should be handled or not
+	 * 
+	 * @return True to handle exception, false otherwise
+	 */
+	public boolean isConsiderable( final NetworkServiceCall<?> service ) {
+		return !(service instanceof SubmitCheckDepositCall || service instanceof BankApiServiceCall);
 	}
 	
 	/**

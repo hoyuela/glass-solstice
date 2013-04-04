@@ -32,6 +32,7 @@ import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
@@ -369,6 +370,10 @@ public class LoginActivity extends BaseActivity implements
 		//application is be launched for the first time
 		if( !preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) ) {
 			showSplashScreen(!preAuthHasRun);
+			
+			/**Download links for Bank Application*/
+			BankServiceCallFactory.createBankApiServiceCall().submit();
+			
 			preAuthHasRun = true;
 		} else {
 			this.showLoginPane();
@@ -562,7 +567,7 @@ public class LoginActivity extends BaseActivity implements
 		
 		privacySecOrTermButtonBank.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				openPrivacyAndTerms();
 			}
 		});

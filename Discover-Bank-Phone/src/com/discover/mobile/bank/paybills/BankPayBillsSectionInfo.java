@@ -54,8 +54,13 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 						BankConductor.navigateToPayBillsLanding();
 					} else if(isEligible() && !isEnrolled()){
 						sendToTermsScreen(R.string.section_title_pay_bills);
-					} else{					
-						if(null == BankUser.instance().getPayees()) {
+					} else{		
+						/**Start download for bank holiday concurrently with payees download*/
+						if( BankUser.instance().getHolidays().isEmpty() ) {
+							BankServiceCallFactory.createBankHolidayDownloadServiceCall().submit();
+						}
+						
+						if(null == BankUser.instance().getPayees()) {							
 							BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 						} else{
 							final Bundle bundle = new Bundle();
