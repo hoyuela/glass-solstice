@@ -77,7 +77,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/field_stroke"
-        android:paddingTop="@dimen/forms_inner_padding"
         android:visibility="visible" >
 
         <TextView
@@ -85,6 +84,7 @@
             style="@style/atm_sub_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/forms_inner_padding"
             android:layout_marginLeft="@dimen/forms_inner_padding"
             android:text="@string/atm_location_hours" />
 
@@ -150,15 +150,6 @@
             android:layout_below="@+id/services"
             android:paddingBottom="@dimen/forms_inner_padding"
             android:visibility="invisible" />
-        
-        <ImageView
-            android:id="@+id/street_view"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:layout_above="@+id/report"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:background="@drawable/atm_street_view_icon_sm" />
 
         <Button
             android:id="@+id/email"
@@ -170,16 +161,26 @@
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:text="@string/atm_location_email"
             android:visibility="gone" />
+        
+         <ImageView
+            android:id="@+id/street_view"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/report"
+            android:background="@drawable/atm_street_view_icon_sm" />
 
         <TextView
             android:id="@+id/report"
             style="@style/blue_hyperlink_extra_small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/service5"
-            android:layout_alignParentRight="true"
+            android:layout_below="@+id/service5"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:layout_marginRight="@dimen/call_to_actions_padding"
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:paddingBottom="@dimen/forms_inner_padding"
             android:textSize="@dimen/small_copy_mid"

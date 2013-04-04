@@ -46,25 +46,25 @@
             style="@style/atm_sub_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/address"
+            android:layout_below="@+id/title"
             android:layout_marginLeft="1dp"
-            android:layout_below="@+id/title" />
+            android:layout_toRightOf="@+id/address" />
 
         <TextView
             android:id="@+id/distance"
             style="@style/atm_large_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/directions"
             android:layout_marginBottom="@dimen/between_related_elements_padding"
             android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:layout_marginRight="@dimen/forms_inner_padding" />
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_toLeftOf="@+id/directions" />
 
         <ImageView
             android:id="@+id/directions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"        
+            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/forms_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
@@ -151,6 +151,15 @@
             android:paddingBottom="@dimen/forms_inner_padding"
             android:visibility="invisible" />
 
+        <ImageView
+            android:id="@+id/street_view"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_above="@+id/report"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:background="@drawable/atm_street_view_icon_sm" />
+
         <Button
             android:id="@+id/email"
             style="@style/small_call_to_action_theme"
@@ -173,8 +182,8 @@
             android:layout_marginRight="@dimen/call_to_actions_padding"
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:paddingBottom="@dimen/forms_inner_padding"
-            android:textSize="@dimen/small_copy_mid"
-            android:text="@string/atm_location_report" />
+            android:text="@string/atm_location_report"
+            android:textSize="@dimen/small_copy_mid" />
     </RelativeLayout>
 
     <ImageView

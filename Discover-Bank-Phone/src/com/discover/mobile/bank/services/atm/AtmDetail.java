@@ -4,6 +4,8 @@
 package com.discover.mobile.bank.services.atm;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.atm.LocationObject;
@@ -137,6 +139,37 @@ public class AtmDetail extends LocationObject implements Serializable{
 		return SURCHARGE_FREE.equals(surchargeFee);
 	}
 
+	/**
+	 * Get the services that are available as a list
+	 * @return the list of services available for the ATM
+	 */
+	public List<String> getAvailableServices(){
+		final List<String> services = new ArrayList<String>();
+		if(braille.equalsIgnoreCase(AtmDetail.HAS_FEATURE)){
+			services.add(AtmDetail.BRAILLE);
+		}
+		if(restricted.equalsIgnoreCase(AtmDetail.HAS_FEATURE)){
+			services.add(AtmDetail.RESTRICTED);
+		}
+		if(walkUp.equalsIgnoreCase(AtmDetail.HAS_FEATURE)){
+			services.add(AtmDetail.HAS_FEATURE);
+		}
+		if(driveUp.equalsIgnoreCase(AtmDetail.HAS_FEATURE)){
+			services.add(AtmDetail.WALK_UP);
+		}
+		if(atmHrs.equalsIgnoreCase(AtmDetail.ALWAYS)){
+			services.add(AtmDetail.ALL_HOURS);
+		}
+		return services;
+	}
+
+	/**
+	 * @return if the ATM has hours for the user to see
+	 */
+	public boolean hasHours(){
+		return !atmHrs.equalsIgnoreCase(AtmDetail.UNKNOWN);
+	}
+
 	@Override
 	public double getLongitude() {
 		return Double.parseDouble(longitude);
@@ -149,7 +182,7 @@ public class AtmDetail extends LocationObject implements Serializable{
 
 	@Override
 	public int getPinDrawable() {
-		return (isAtmSearchargeFree()) ? R.drawable.atm_orange_pin : R.drawable.atm_gray_pin;	
+		return (isAtmSearchargeFree()) ? R.drawable.atm_orange_pin_sm : R.drawable.atm_drk_pin_sm;	
 	}
 
 	@Override
