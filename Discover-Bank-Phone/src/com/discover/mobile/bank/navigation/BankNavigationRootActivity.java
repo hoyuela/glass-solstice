@@ -20,9 +20,7 @@ import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
-import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
@@ -61,17 +59,15 @@ implements OnPaymentCanceledListener {
 	}
 
 	/**
-	 * 
+	 * Refreshes the sliding menu when its closed. This ensures that the highlighting on the menu is accurate
 	 */
 	private void updateMenuOnClose() {
 		final SlidingMenu slidingMenu = getSlidingMenu();
-		final BaseFragment currentFragment = getCurrentContentFragment();
 		slidingMenu.setOnClosedListener(new OnClosedListener() {
 
 			@Override
 			public void onClosed() {
-				// TODO Auto-generated method stub
-				highlightMenuItems(currentFragment.getGroupMenuLocation(), currentFragment.getSectionMenuLocation());
+				highlightMenuItems(getCurrentContentFragment().getGroupMenuLocation(), getCurrentContentFragment().getSectionMenuLocation());
 
 			}
 		});
