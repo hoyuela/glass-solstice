@@ -20,6 +20,7 @@ import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
+import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.ErrorHandler;
@@ -67,7 +68,8 @@ implements OnPaymentCanceledListener {
 
 			@Override
 			public void onClosed() {
-				highlightMenuItems(getCurrentContentFragment().getGroupMenuLocation(), getCurrentContentFragment().getSectionMenuLocation());
+				final BaseFragment currentFragment = getCurrentContentFragment();
+				highlightMenuItems(currentFragment.getGroupMenuLocation(), currentFragment.getSectionMenuLocation());
 
 			}
 		});
