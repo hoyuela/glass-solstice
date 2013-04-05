@@ -632,7 +632,7 @@ public class SchedulePaymentFragment extends BaseFragment
 			// Month - 1 is because Calendar starts Months at 0.
 			earliestPaymentDate.set(Integer.parseInt(m.group(1)),
 					Integer.parseInt(m.group(2)) - 1,
-					Integer.parseInt(m.group(3))-1);
+					Integer.parseInt(m.group(3)));
 			chosenPaymentDate = Calendar.getInstance();
 			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
 					earliestPaymentDate.get(Calendar.MONTH),
