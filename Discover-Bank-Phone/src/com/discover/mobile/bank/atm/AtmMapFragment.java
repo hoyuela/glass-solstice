@@ -265,7 +265,10 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		if(LOCKED_ON == locationStatus){
 			getLocation();
 		}else{
-			locationModal.show();
+			if(null == locationModal || !locationModal.isShowing()){
+				locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
+				((NavigationRootActivity)this.getActivity()).showCustomAlert(locationModal);
+			}
 		}
 	}
 
