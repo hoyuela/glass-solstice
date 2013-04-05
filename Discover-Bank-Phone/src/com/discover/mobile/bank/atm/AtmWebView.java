@@ -3,7 +3,6 @@
  */
 package com.discover.mobile.bank.atm;
 
-
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 
 /**
@@ -88,6 +88,7 @@ public class AtmWebView{
 				super.onPageFinished(view, url);
 				loadingSpinner.setVisibility(View.GONE);
 				web.setVisibility(View.VISIBLE);
+				web.setBackgroundResource(R.color.transparentGray);
 				loadingSpinner.clearAnimation();
 			}
 
@@ -116,6 +117,7 @@ public class AtmWebView{
 		isReportingAtm = true;
 		atm_id = id;
 		setupWebView(REPORT_URL + atm_id);
+		web.setVisibility(View.VISIBLE);
 		web.setBackgroundColor(Color.WHITE);
 	}
 
@@ -131,7 +133,8 @@ public class AtmWebView{
 		}
 		lat = Double.toString(bundle.getDouble(BankExtraKeys.STREET_LAT));
 		lon = Double.toString(bundle.getDouble(BankExtraKeys.STREET_LON));
-		web.setBackgroundColor(Color.TRANSPARENT);
+		web.setBackgroundResource(R.drawable.light_gray_bkgrd);
+		web.setVisibility(View.VISIBLE);
 		setupWebView(String.format(STREET_URL, lat, lon));
 	}
 
