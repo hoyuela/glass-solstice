@@ -72,7 +72,7 @@ import com.google.common.base.Strings;
  */
 
 public class LoginActivity extends BaseActivity implements
-		LoginActivityInterface {
+LoginActivityInterface {
 	/* TAG used to print logs for the LoginActivity into logcat */
 	private final String TAG = LoginActivity.class.getSimpleName();
 
@@ -88,7 +88,7 @@ public class LoginActivity extends BaseActivity implements
 	private final String ERROR_MESSAGE_KEY = "g";
 	private final String ERROR_MESSAGE_VISIBILITY = "h";
 	private final String ERROR_MESSAGE_COLOR = "i";
-	
+
 	/** ID that allows control over relative buttons' placement.*/
 	private static final int LOGIN_BUTTON_ID = 1;
 	/**
@@ -110,7 +110,7 @@ public class LoginActivity extends BaseActivity implements
 
 	private RelativeLayout goToBankButton;
 	private RelativeLayout goToCardButton;
-	
+
 	// TEXT LABELS
 	private LinearLayout cardForgotAndPrivacySection;
 	private TextView privacySecOrTermButtonCard;
@@ -198,7 +198,7 @@ public class LoginActivity extends BaseActivity implements
 		idField = (NonEmptyEditText) findViewById(R.id.username_field);
 		idField.setFilters(filters);
 		idField.setFilters(new InputFilter[] {new InputFilter.LengthFilter(16)});
-		
+
 		passField = (NonEmptyEditText) findViewById(R.id.password_field);
 		passField.setFilters(filters);
 		passField.setFilters(new InputFilter[] {new InputFilter.LengthFilter(32)});
@@ -214,7 +214,7 @@ public class LoginActivity extends BaseActivity implements
 		forgotUserIdOrPassText = (TextView) findViewById(R.id.forgot_uid_or_pass_text);
 		goToBankLabel = (TextView) findViewById(R.id.go_to_bank_label);
 		goToCardLabel = (TextView) findViewById(R.id.go_to_card_label);
-		
+
 		goToBankButton = (RelativeLayout) findViewById(R.id.bank_login_toggle);
 		goToCardButton = (RelativeLayout) findViewById(R.id.card_login_toggle);
 
@@ -328,7 +328,7 @@ public class LoginActivity extends BaseActivity implements
 
 		//Check if the login activity was launched because of an invalid token
 		maybeShowErrorMessage();
-				
+
 		final int lastError = getLastError();
 		final boolean saveIdWasChecked = saveUserId;
 
@@ -352,7 +352,7 @@ public class LoginActivity extends BaseActivity implements
 		if(!saveUserId && saveIdWasChecked){
 			setCheckMark(saveIdWasChecked, false);
 		}
-		
+
 		// User Loggedout without Remember User ID Checked
 		if(!(saveUserId || saveIdWasChecked)) {
 			clearInputs();
@@ -384,11 +384,11 @@ public class LoginActivity extends BaseActivity implements
 
 		final IntentFilter intentFilter = new IntentFilter("android.intent.action.SCREEN_OFF");
 		registerReceiver(screenOffService, intentFilter);
-		
+
 		//If previous screen was Strong Auth Page then clear text fields and show text fields in red
 		//because that means the user did not login successfully
 		if( null != DiscoverActivityManager.getPreviousActiveActivity() && 
-			DiscoverActivityManager.getPreviousActiveActivity().getSimpleName().equals("EnhancedAccountSecurityActivity")) {
+				DiscoverActivityManager.getPreviousActiveActivity().getSimpleName().equals("EnhancedAccountSecurityActivity")) {
 			this.getErrorHandler().showErrorsOnScreen(this, null);
 			DiscoverActivityManager.clearPreviousActiveActivity();
 		}
@@ -543,14 +543,14 @@ public class LoginActivity extends BaseActivity implements
 		});
 
 		provideFeedbackButton.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(final View v) {
 				// TODO Fill-Out, later Sprint
-				
+
 			}
 		});
-		
+
 		registerOrAtmButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -567,7 +567,7 @@ public class LoginActivity extends BaseActivity implements
 
 			}
 		});
-		
+
 		privacySecOrTermButtonBank.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -610,6 +610,7 @@ public class LoginActivity extends BaseActivity implements
 		inputManager.hideSoftInputFromInputMethod(passField.getWindowToken(), 0);
 
 		Globals.setOldTouchTimeInMillis(0);
+		setIdFieldFocused();
 		setInputFieldsDrawablesToDefault();
 		if (!showErrorIfAnyFieldsAreEmpty() && !showErrorWhenAttemptingToSaveAccountNumber()) {
 			runAuthWithUsernameAndPassword(idField.getText().toString(),
@@ -673,7 +674,7 @@ public class LoginActivity extends BaseActivity implements
 		if(!saveUserId) {
 			idField.setText("");
 		}
-		
+
 		//Check if card account has been selected
 		if( View.VISIBLE == cardCheckMark.getVisibility() ) {
 			cardLogin(username, password) ;
@@ -704,7 +705,7 @@ public class LoginActivity extends BaseActivity implements
 		final BankLoginDetails login = new BankLoginDetails();
 		login.password = password;
 		login.username = username;
-		
+
 		BankConductor.authorizeWithCredentials(login);
 	}
 
@@ -782,6 +783,8 @@ public class LoginActivity extends BaseActivity implements
 
 		//Do Common setup between Bank and Card toggling
 		if(isTogglingCardOrBank){
+			idField.clearFocus();
+			passField.clearFocus();
 			clearInputs();
 			Globals.setCurrentUser("");
 			errorTextView.setText("");
@@ -802,13 +805,6 @@ public class LoginActivity extends BaseActivity implements
 
 			//Refresh Screen based on Selected Account Preferences
 			loadSavedCredentials();
-
-			if(Strings.isNullOrEmpty(idField.getText().toString())){
-				setIdFieldFocused();
-			}
-			else{
-				setPassFieldFocused();
-			}	
 		}
 	}
 
@@ -846,7 +842,7 @@ public class LoginActivity extends BaseActivity implements
 	private void setLoginTypeToCard() {
 		goToCardLabel.setTextColor(getResources().getColor(R.color.black));
 		goToCardButton
-				.setBackgroundResource(R.drawable.card_login_background_on);
+		.setBackgroundResource(R.drawable.card_login_background_on);
 		goToCardButton.setPadding(
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
@@ -858,7 +854,7 @@ public class LoginActivity extends BaseActivity implements
 
 		goToBankLabel.setTextColor(getResources().getColor(R.color.blue_link));
 		goToBankButton
-				.setBackgroundResource(R.drawable.bank_login_background_off);
+		.setBackgroundResource(R.drawable.bank_login_background_off);
 		goToBankButton.setPadding(
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
@@ -866,10 +862,10 @@ public class LoginActivity extends BaseActivity implements
 				(int) this.getResources().getDimension(R.dimen.top_pad));
 
 		registerOrAtmButton.setText(R.string.register_now);
-		
+
 		CommonUtils.setViewInvisible(privacySecOrTermButtonBank);
 		CommonUtils.setViewVisible(cardForgotAndPrivacySection);
-		
+
 		// Load Card Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
 	}
@@ -880,7 +876,7 @@ public class LoginActivity extends BaseActivity implements
 	private void setLoginTypeToBank() {
 		goToCardLabel.setTextColor(getResources().getColor(R.color.blue_link));
 		goToCardButton
-				.setBackgroundResource(R.drawable.card_login_background_off);
+		.setBackgroundResource(R.drawable.card_login_background_off);
 		goToCardButton.setPadding(
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
@@ -891,7 +887,7 @@ public class LoginActivity extends BaseActivity implements
 
 		goToBankLabel.setTextColor(getResources().getColor(R.color.black));
 		goToBankButton
-				.setBackgroundResource(R.drawable.bank_login_background_on);
+		.setBackgroundResource(R.drawable.bank_login_background_on);
 		goToBankButton.setPadding(
 				(int) this.getResources().getDimension(R.dimen.top_pad),
 				(int) this.getResources().getDimension(R.dimen.top_pad),
@@ -1158,7 +1154,7 @@ public class LoginActivity extends BaseActivity implements
 			return BankErrorHandler.getInstance();
 		}
 	}
-	
+
 	/**
 	 * Creates and shows a modal to inform the user that their account skipped
 	 * SSO sign-on because of a Card BadStatus.
@@ -1177,9 +1173,9 @@ public class LoginActivity extends BaseActivity implements
 
 		final ModalAlertWithOneButton aluModal = new ModalAlertWithOneButton(
 				this, aluModalTopView, confirmModalButton);
-		 this.showCustomAlert(aluModal);
-		 closeDialog();
-		 
+		this.showCustomAlert(aluModal);
+		closeDialog();
+
 		confirmModalButton.getButton().setOnClickListener(
 				new OnClickListener() {
 					@Override
@@ -1193,5 +1189,5 @@ public class LoginActivity extends BaseActivity implements
 					}
 				});
 	}
-	
+
 }
