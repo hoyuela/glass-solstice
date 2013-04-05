@@ -48,7 +48,7 @@ public class UpdatePaymentCall extends BankJsonResponseMappingNetworkServiceCall
 	}
 	
 	private static String getUrl(final String paymentId) {
-		return BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY) +"/" +paymentId +BankUrlManager.PUT_METHOD;
+		return BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY) +paymentId +BankUrlManager.PUT_METHOD;
 	}
 
 	@Override
