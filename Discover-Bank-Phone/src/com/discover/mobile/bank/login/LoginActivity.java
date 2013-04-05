@@ -191,8 +191,11 @@ public class LoginActivity extends BaseActivity implements
 		filters[0] = new InvalidCharacterFilter();
 		idField = (NonEmptyEditText) findViewById(R.id.username_field);
 		idField.setFilters(filters);
+		idField.setFilters(new InputFilter[] {new InputFilter.LengthFilter(16)});
+		
 		passField = (NonEmptyEditText) findViewById(R.id.password_field);
 		passField.setFilters(filters);
+		passField.setFilters(new InputFilter[] {new InputFilter.LengthFilter(32)});
 
 		provideFeedbackButton = (Button) findViewById(R.id.provide_feedback_button);
 		loginButton = (Button) findViewById(R.id.login_button);
