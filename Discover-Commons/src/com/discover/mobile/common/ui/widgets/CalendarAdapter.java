@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,12 @@ public class CalendarAdapter extends CaldroidGridAdapter {
 			}
 		}
 	
+		// Customize for selected dates
+		if (selectedDates != null && selectedDates.indexOf(dateTime) != -1) {
+			cellView.setBackgroundColor(resources.getColor(R.color.caldroid_sky_blue));
+			tv1.setTextColor(Color.WHITE);
+		}
+				
 		tv1.setText( " " +dateTime.getDayOfMonth());
 
 		// Somehow after setBackgroundResource, the padding collapse. This is to recover the padding

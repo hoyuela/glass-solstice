@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.account;
+package com.discover.mobile.bank.paybills;
 
 import java.util.ArrayList;
 

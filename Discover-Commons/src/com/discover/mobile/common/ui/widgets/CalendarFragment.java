@@ -67,7 +67,7 @@ public class CalendarFragment extends CaldroidFragment {
 	/**
 	 * Key for holding the current date selected on the calendar fragment used for rotation handling
 	 */
-	public static final String EARLIEST_DATE = "earliest-date";
+	public static final String SELECTED_DATE = "selected-date";
 	/**
 	 * Key for holding list of non-selectable dates on the calendar used for rotation handling
 	 */
@@ -78,9 +78,13 @@ public class CalendarFragment extends CaldroidFragment {
 	public static final String TAG = "CALDROID_DIALOG_FRAGMENT";
 	
 	/**
+	 * Reference to the current chosen date on the calendar at start-up
+	 */
+	protected Calendar selectedDate;
+	/**
 	 * Reference to first selectable date on the calendar
 	 */
-	protected Calendar earliestDate;
+	protected Calendar minDate;
 	/**
 	 * Reference to the list of non-selectable dates on the calendar
 	 */
@@ -119,15 +123,19 @@ public class CalendarFragment extends CaldroidFragment {
 	 * @param disabledDates The list of dates to be considered non-selectable on the calendar.
 	 * @param listener Reference to listern to receive selected date and change month notifications
 	 */
-	public void show(final FragmentManager manager, final String title, final Calendar date, final ArrayList<Date> disabledDates, final CalendarListener listener) {		
+	public void show(final FragmentManager manager, final String title, 
+					 final Calendar selectedDate,
+					 final Calendar minDate, 
+					 final ArrayList<Date> disabledDates, 
+					 final CalendarListener listener) {		
 	
 		/**Set title, month and year of calendar using bundle*/
 		final Bundle args = new Bundle();
 		args.putString(CalendarFragment.DIALOG_TITLE, title);
-		args.putInt(MONTH, date.get(Calendar.MONTH) + 1);
-		args.putInt(YEAR, date.get(Calendar.YEAR));
-		args.putSerializable(EARLIEST_DATE, date);
-		args.putSerializable(MIN_DATE, date.getTime());
+		args.putInt(MONTH, selectedDate.get(Calendar.MONTH) + 1);
+		args.putInt(YEAR, selectedDate.get(Calendar.YEAR));
+		args.putSerializable(SELECTED_DATE, selectedDate);
+		args.putSerializable(MIN_DATE, minDate);
 		args.putSerializable(DISABLED_DATES, disabledDates);
 		setArguments(args);
 		
@@ -161,9 +169,7 @@ public class CalendarFragment extends CaldroidFragment {
 		final ArrayList<Date> dates = (holidays == null) ? new ArrayList<Date>() : holidays;
 		
 		while( activeDate.compareTo(endDate) <= 0 ) {
-			printDate(activeDate);
-			
-			if( activeDate.compareTo(earliestDate) >= 0 ) {
+			if( activeDate.compareTo(minDate) >= 0 ) {
 				if( isWeekend(activeDate) ) {
 					dates.add(activeDate.getTime());
 	
@@ -198,14 +204,19 @@ public class CalendarFragment extends CaldroidFragment {
 	 */
 	@SuppressWarnings("unchecked")
 	private void updateData(final Bundle bundle) {
-		earliestDate = (Calendar) bundle.get(EARLIEST_DATE);
+		selectedDate = (Calendar) bundle.get(SELECTED_DATE);
 		holidays = (ArrayList<Date>) bundle.getSerializable(DISABLED_DATES);
 		
+		/**Android Calendar Object starts month with an index of 0 therefore must subtract 1*/
 		final int month = bundle.getInt(MONTH) - 1;
 		final int year = bundle.getInt(YEAR);
 		
-		final Date minDate = (Date) bundle.get(MIN_DATE);
-		setMinDate(minDate);
+		/**Dates earlier than this will appear grayed out and unselectable*/
+		minDate = (Calendar) bundle.get(MIN_DATE);
+		setMinDate(minDate.getTime());
+		
+		/**Specify which dates should appear selected on calendar*/
+		this.setSelectedDates(selectedDate.getTime(), selectedDate.getTime());
 				
 		/**Disable weekend dates starting from earliest date provided*/
 		updateDisableDates(month, year);

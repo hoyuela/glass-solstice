@@ -63,4 +63,7 @@
  	<string name="schedule_pay_date_picker_title">Deliver by Date</string>
  	<string name="schedule_pay_duplicate_payment">Duplicate Payment</string>
  	<string name="schedule_pay_invalid_date">Invalid Date</string>
+ 	
+ 	<!-- Edit Payments -->
+ 	<string name="schedule_pay_save_payment">Save Payment</string>
 </resources>
