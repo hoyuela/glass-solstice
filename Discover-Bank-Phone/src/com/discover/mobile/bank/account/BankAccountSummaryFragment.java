@@ -108,8 +108,8 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	}
 	
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		if(toggleView.getVisibility() == View.VISIBLE) {
+	public void onSaveInstanceState(final Bundle outState) {
+		if(toggleView != null && toggleView.getVisibility() == View.VISIBLE) {
 			outState.putBoolean(SHOW_TOGGLE_KEY, true);
 		}
 		super.onSaveInstanceState(outState);
