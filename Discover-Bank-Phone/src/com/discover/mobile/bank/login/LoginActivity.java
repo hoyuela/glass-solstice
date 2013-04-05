@@ -162,7 +162,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		KeepAlive.setCardAuthenticated(false);
 	}
 
-	
 	/**
 	 * This method is being called to prevent onResume calls for rotation
 	 * change. When not implemented (also from the manifest) then onResume is
@@ -340,6 +339,11 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			setCheckMark(saveIdWasChecked, false);
 		}
 
+		// User Loggedout without Remember User ID Checked
+		if(!(saveUserId || saveIdWasChecked)) {
+			clearInputs();
+		}
+
 		//Default to the last path user chose for login Card or Bank
 		this.setApplicationAccount();
 
@@ -411,13 +415,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		super.onSaveInstanceState(outState);
 	}
 
-	@Override
-	public void onRestoreInstanceState(final Bundle bundle) {
-		super.onRestoreInstanceState(bundle);
-		
-		this.restoreState(bundle);
-	}
-	
 	/**
 	 * Restore the state of the screen on orientation change.
 	 *
@@ -666,7 +663,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		if(!saveUserId) {
 			idField.getText().clear();
 		}
-
+		passField.clearFocus();
+		idField.clearFocus();
+		setInputFieldsDrawablesToDefault();
 		//Check if card account has been selected
 		if( View.VISIBLE == cardCheckMark.getVisibility() ) {
 			cardLogin(username, password) ;
@@ -798,11 +797,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			passField.clearFocus();
 
 			setInputFieldsDrawablesToDefault();
-			final ScrollView temp = (ScrollView)findViewById(R.id.login_pane);
-			temp.smoothScrollTo(0, 0);
-
-			temp.requestFocus();
-
+			((ScrollView)findViewById(R.id.login_pane)).smoothScrollTo(0, 0);
 		}
 	}
 
@@ -966,6 +961,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		if(wasIdEmpty || wasPassEmpty) {
 			final String errorText = this.getResources().getString(R.string.login_error);
 			this.getErrorHandler().showErrorsOnScreen(this, errorText);
+			idField.clearFocus();
+			passField.clearFocus();
 			return true;
 		}
 		// All fields were populated.
