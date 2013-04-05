@@ -162,6 +162,7 @@ LoginActivityInterface {
 		KeepAlive.setCardAuthenticated(false);
 	}
 
+	
 	/**
 	 * A broadcast receiver that will clear the password field if the screen is shut off.
 	 * and the ID field if the check mark is not checked when the screen is turned off.
@@ -320,6 +321,7 @@ LoginActivityInterface {
 	public void onResume(){
 		super.onResume();
 		
+		
 		//Check if the login activity was launched because of a logout
 		maybeShowUserLoggedOut();
 
@@ -351,11 +353,6 @@ LoginActivityInterface {
 		//but should be checked from a rotation change.
 		if(!saveUserId && saveIdWasChecked){
 			setCheckMark(saveIdWasChecked, false);
-		}
-
-		// User Loggedout without Remember User ID Checked
-		if(!(saveUserId || saveIdWasChecked)) {
-			clearInputs();
 		}
 
 		//Default to the last path user chose for login Card or Bank
@@ -429,6 +426,13 @@ LoginActivityInterface {
 		super.onSaveInstanceState(outState);
 	}
 
+	@Override
+	public void onRestoreInstanceState(final Bundle bundle) {
+		super.onRestoreInstanceState(bundle);
+		
+		this.restoreState(bundle);
+	}
+	
 	/**
 	 * Restore the state of the screen on orientation change.
 	 * 
