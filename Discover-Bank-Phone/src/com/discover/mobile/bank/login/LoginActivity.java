@@ -765,6 +765,8 @@ LoginActivityInterface {
 
 		//Do Common setup between Bank and Card toggling
 		if(isTogglingCardOrBank){
+			idField.clearFocus();
+			passField.clearFocus();
 			clearInputs();
 			Globals.setCurrentUser("");
 			errorTextView.setText("");
@@ -785,13 +787,6 @@ LoginActivityInterface {
 
 			//Refresh Screen based on Selected Account Preferences
 			loadSavedCredentials();
-
-			if(Strings.isNullOrEmpty(idField.getText().toString())){
-				setIdFieldFocused();
-			}
-			else{
-				setPassFieldFocused();
-			}	
 		}
 	}
 
