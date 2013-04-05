@@ -166,6 +166,7 @@ LoginActivityInterface {
 		KeepAlive.setCardAuthenticated(false);
 	}
 
+	
 	/**
 	 * A broadcast receiver that will clear the password field if the screen is shut off.
 	 * and the ID field if the check mark is not checked when the screen is turned off.
@@ -411,6 +412,13 @@ LoginActivityInterface {
 		super.onSaveInstanceState(outState);
 	}
 
+	@Override
+	public void onRestoreInstanceState(final Bundle bundle) {
+		super.onRestoreInstanceState(bundle);
+		
+		this.restoreState(bundle);
+	}
+	
 	/**
 	 * Restore the state of the screen on orientation change.
 	 * 
