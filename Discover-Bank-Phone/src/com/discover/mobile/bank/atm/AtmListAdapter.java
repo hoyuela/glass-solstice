@@ -68,12 +68,11 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		ItemViewHolder holder = null;
 
 		final AtmDetail detail = results.get(position);
-		if(detail == null){return view;}
 
 		/**If the view is null, create a new one*/
 		if(null == view || !(view.getTag() instanceof ItemViewHolder)){
 			holder = new ItemViewHolder();
-			view = inflater.inflate(R.layout.bank_atm_detail_item, null);
+			view = inflater.inflate(getLayout(detail), null);
 			holder = updateViewHolder(holder, view);
 			/**Else reuse the old one*/
 		}else{
@@ -83,6 +82,20 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		setUpClickableItems(holder, detail);
 		displayItems(holder, detail, position);
 		return view;
+	}
+
+	/**
+	 * Get the layout that should be inflated for the ATM
+	 *	@return the layout the should be inflated
+	 */
+	public int getLayout(final AtmDetail detail){
+		int layout;
+		if(detail.hasHours() || !detail.getAvailableServices().isEmpty()){
+			layout =  R.layout.bank_atm_detail_item;
+		}else{
+			layout =  R.layout.bank_atm_detail_simple_item;
+		}
+		return layout;
 	}
 
 	/**
@@ -106,11 +119,11 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		final String distance = String.format(Locale.US, "%.2f", detail.distanceFromUser);
 		holder.distance.setText(distance + " M");
 
-		if(detail.atmHrs.equalsIgnoreCase(AtmDetail.UNKNOWN)){
+		if(detail.hasHours()){
+			holder.hours.setText(detail.atmHrs.replace("Sat", "\nSat"));
+		}else{
 			holder.hours.setVisibility(View.GONE);
 			holder.hoursLabel.setVisibility(View.GONE);
-		}else{
-			holder.hours.setText(detail.atmHrs.replace("Sat", "\nSat"));
 		}
 
 		//Expand the view if it was previously expanded
@@ -124,6 +137,10 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		showServices(holder, detail);
 		if(holder.numFeatures == 0){
 			holder.serviceLabel.setVisibility(View.GONE);	
+			holder.service5.setText("");
+		}
+		if(!detail.hasHours() && holder.numFeatures == 0){
+			holder.service5.setVisibility(View.GONE);  
 		}
 	}
 
@@ -161,6 +178,13 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 				fragment.reportAtm(Integer.toString(detail.id));
 			}
 		});
+
+		holder.streetview.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				fragment.showStreetView(detail);
+			}			
+		});
 	}
 
 	/**
@@ -170,22 +194,8 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 	 */
 	private void showServices(final ItemViewHolder holder, final AtmDetail detail){
 		//Set up the service features
-		if(detail.braille.equalsIgnoreCase(AtmDetail.HAS_FEATURE)){
-			getServiceView(holder, AtmDetail.BRAILLE);
-		}
-		if(detail.restricted.equalsIgnoreCase(AtmDetail.HAS_FEATURE)){
-			getServiceView(holder, AtmDetail.RESTRICTED);
-		}
-		if(detail.walkUp.equalsIgnoreCase(AtmDetail.HAS_FEATURE)){
-			getServiceView(holder, AtmDetail.DRIVE_UP);
-		}
-
-		if(detail.driveUp.equalsIgnoreCase(AtmDetail.HAS_FEATURE)){
-			getServiceView(holder, AtmDetail.WALK_UP);
-		}
-
-		if(detail.atmHrs.equalsIgnoreCase(AtmDetail.ALWAYS)){
-			getServiceView(holder, AtmDetail.ALL_HOURS);
+		for(final String feature : detail.getAvailableServices()){
+			getServiceView(holder, feature);
 		}
 	}
 
@@ -213,6 +223,8 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		holder.directions = (ImageView) view.findViewById(R.id.directions);
 		holder.report = (TextView) view.findViewById(R.id.report);
 		holder.top = (RelativeLayout) view.findViewById(R.id.top);
+		holder.streetview = (ImageView) view.findViewById(R.id.street_view);
+
 		return holder;
 	}
 
@@ -316,6 +328,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		public Button email;
 		public ImageView directions;
 		public TextView report;
+		public ImageView streetview;
 		public int numFeatures = 0;
 	}
 }
