@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,13 +65,12 @@ import com.google.common.base.Strings;
  * service calls - The first call is pre auth Second is starting xtify services
  * for push notifications And the third is the login call when a user tries to
  * login.
- * 
+ *
  * @author scottseward, ekaram
- * 
+ *
  */
 
-public class LoginActivity extends BaseActivity implements
-LoginActivityInterface {
+public class LoginActivity extends BaseActivity implements LoginActivityInterface {
 	/* TAG used to print logs for the LoginActivity into logcat */
 	private final String TAG = LoginActivity.class.getSimpleName();
 
@@ -124,7 +124,7 @@ LoginActivityInterface {
 	private ImageView toggleImage;
 	private ProgressBar splashProgress;
 
-	/*Used to specify whether the pre-authenciation call has been made for the application. 
+	/*Used to specify whether the pre-authenciation call has been made for the application.
 	 * Should only be done at application start-up.
 	 */
 	private boolean preAuthHasRun = false;
@@ -168,20 +168,13 @@ LoginActivityInterface {
 
 	
 	/**
-	 * A broadcast receiver that will clear the password field if the screen is shut off.
-	 * and the ID field if the check mark is not checked when the screen is turned off.
-	 * @author scottseward
-	 *
+	 * This method is being called to prevent onResume calls for rotation
+	 * change. When not implemented (also from the manifest) then onResume is
+	 * called for rotation changed.
 	 */
-	public class ScreenOffService extends BroadcastReceiver {
-		@Override
-		public void onReceive(final Context context, final Intent intent) {
-			passField.setText("");
-			if(!saveUserId){
-				idField.setText("");
-				deleteAndSaveCurrentUserPrefs();
-			}
-		}
+	@Override
+	public void onConfigurationChanged(final Configuration config) {
+		super.onConfigurationChanged(config);
 	}
 
 	/**
@@ -214,8 +207,8 @@ LoginActivityInterface {
 		goToCardButton = (RelativeLayout) findViewById(R.id.card_login_toggle);
 
 		cardCheckMark = (ImageView) findViewById(R.id.card_check_mark);
-		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark); 
-		toggleImage = (ImageView) findViewById(R.id.remember_user_id_button); 
+		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark);
+		toggleImage = (ImageView) findViewById(R.id.remember_user_id_button);
 		splashProgress = (ProgressBar) findViewById(R.id.splash_progress);
 
 	}
@@ -271,11 +264,13 @@ LoginActivityInterface {
 
 	/**
 	 * Display the error message provided in the argument list in red text.
-	 * 
+	 *
 	 * @param errorMessage Reference to error message that is to be displayed.
 	 */
 	public void showErrorMessage(final String errorMessage) {
 		BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);
+		idField.clearFocus();
+		passField.clearFocus();
 	}
 
 	/**
@@ -298,11 +293,11 @@ LoginActivityInterface {
 	}
 
 	/**
-	 * Called as a result of the activity's being brought to the front when 
+	 * Called as a result of the activity's being brought to the front when
 	 * using the Intent flag FLAG_ACTIVITY_REORDER_TO_FRONT.
 	 */
 	@Override
-	protected void onNewIntent(final Intent intent) { 
+	protected void onNewIntent(final Intent intent) {
 		super.onNewIntent(intent);
 
 		this.setIntent(intent);
@@ -327,7 +322,7 @@ LoginActivityInterface {
 		final int lastError = getLastError();
 		final boolean saveIdWasChecked = saveUserId;
 
-		//Do not load saved credentials if there was a previous login attempt 
+		//Do not load saved credentials if there was a previous login attempt
 		//which failed because of a lock out
 		if( StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS != lastError &&
 				RegistrationErrorCodes.LOCKED_OUT_ACCOUNT != lastError) {
@@ -365,7 +360,7 @@ LoginActivityInterface {
 
 		//If previous screen was Strong Auth Page then clear text fields and show text fields in red
 		//because that means the user did not login successfully
-		if( null != DiscoverActivityManager.getPreviousActiveActivity() && 
+		if( null != DiscoverActivityManager.getPreviousActiveActivity() &&
 				DiscoverActivityManager.getPreviousActiveActivity().getSimpleName().equals("EnhancedAccountSecurityActivity")) {
 			this.getErrorHandler().showErrorsOnScreen(this, null);
 			DiscoverActivityManager.clearPreviousActiveActivity();
@@ -416,7 +411,7 @@ LoginActivityInterface {
 	
 	/**
 	 * Restore the state of the screen on orientation change.
-	 * 
+	 *
 	 * @param savedInstanceState A bundle of state information to be restored to the screen.
 	 */
 	public void restoreState(final Bundle savedInstanceState) {
@@ -453,7 +448,7 @@ LoginActivityInterface {
 	/**
 	 * Set the input fields to red if an error is being displayed.
 	 */
-	private void resetInputFieldColors() {		
+	private void resetInputFieldColors() {
 		if(errorIsVisible()) {
 			setInputFieldsDrawableToRed();
 		}
@@ -461,15 +456,15 @@ LoginActivityInterface {
 
 	/**
 	 * Checks to see if an error message is displayed.
-	 * 
+	 *
 	 * @return returns true if an error is being displayed in the errorTextView
 	 */
 	private boolean errorIsVisible() {
 		final boolean errorTextViewIsVisible = errorTextView.getVisibility() == View.VISIBLE;
-		final boolean errorTextIsNotLogoutMessage = 
+		final boolean errorTextIsNotLogoutMessage =
 				!getResources().getString(R.string.logout_sucess).equals(errorTextView.getText().toString());
 
-		return errorTextViewIsVisible && errorTextIsNotLogoutMessage;		
+		return errorTextViewIsVisible && errorTextIsNotLogoutMessage;
 	}
 
 	/**
@@ -485,6 +480,8 @@ LoginActivityInterface {
 		final String savedId = Globals.getCurrentUser();
 		if(rememberIdCheckState) {
 			idField.setText(savedId );
+			idField.clearFocus();
+			idField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 		} else {
 			clearInputs();
 		}
@@ -507,10 +504,10 @@ LoginActivityInterface {
 			public void onClick(final View v) {
 				CommonUtils.setViewGone(errorTextView);
 
-				//Checking if imm is null before trying to hide the keyboard. This was causing a 
+				//Checking if imm is null before trying to hide the keyboard. This was causing a
 				//null pointer exception in landscape.
 				if (imm != null){
-					imm.hideSoftInputFromWindow(v.getWindowToken(), 0); 
+					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 				}
 				//Clear the last error that occurred
 				setLastError(0);
@@ -595,7 +592,8 @@ LoginActivityInterface {
 		inputManager.hideSoftInputFromInputMethod(passField.getWindowToken(), 0);
 
 		Globals.setOldTouchTimeInMillis(0);
-		setIdFieldFocused();
+		idField.clearFocus();
+		passField.clearFocus();
 		setInputFieldsDrawablesToDefault();
 		if (!showErrorIfAnyFieldsAreEmpty() && !showErrorWhenAttemptingToSaveAccountNumber()) {
 			runAuthWithUsernameAndPassword(idField.getText().toString(),
@@ -624,7 +622,7 @@ LoginActivityInterface {
 	/**
 	 * If a user tries to save their login ID but provides an account number, we need to show an error
 	 * clear the input fields and un-check the save-user-id box.
-	 * 
+	 *
 	 * @return a boolean that represents if an error was displayed or not.
 	 */
 	private boolean showErrorWhenAttemptingToSaveAccountNumber() {
@@ -635,7 +633,7 @@ LoginActivityInterface {
 			errorTextView.setText(getString(R.string.cannot_save_account_number));
 			errorTextView.setVisibility(View.VISIBLE);
 			clearInputs();
-			toggleCheckBox(idField, true);
+			toggleSaveUserIdSwitch(idField, true);
 			idField.updateAppearanceForInput();
 			passField.updateAppearanceForInput();
 			return true;
@@ -648,16 +646,16 @@ LoginActivityInterface {
 	/**
 	 * This method submits the users information to the Card or Bank server for
 	 * verification depending on what is selected in login page.
-	 * 
+	 *
 	 * The AsyncCallback handles the success and failure of the call and is
 	 * responsible for handling and presenting error messages to the user.
-	 * 
+	 *
 	 */
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
 		// Prevent data from restoring after a crash.
-		passField.setText("");
+		passField.getText().clear();
 		if(!saveUserId) {
-			idField.setText("");
+			idField.getText().clear();
 		}
 
 		//Check if card account has been selected
@@ -670,10 +668,10 @@ LoginActivityInterface {
 
 	/**
 	 * This method submits the users information to the Card server for verification.
-	 * 
+	 *
 	 * The AsyncCallback handles the success and failure of the call and is
 	 * responsible for handling and presenting error messages to the user.
-	 * 
+	 *
 	 */
 	private void cardLogin(final String username, final String password) {
 		FacadeFactory.getCardLoginFacade().login(this, username, password);
@@ -681,10 +679,10 @@ LoginActivityInterface {
 
 	/**
 	 * This method submits the users information to the Bank server for verification.
-	 * 
+	 *
 	 * The AsyncCallback handles the success and failure of the call and is
 	 * responsible for handling and presenting error messages to the user.
-	 * 
+	 *
 	 */
 	private void bankLogin(final String username, final String password) {
 		final BankLoginDetails login = new BankLoginDetails();
@@ -696,15 +694,14 @@ LoginActivityInterface {
 
 
 	/**
-	 * toggleCheckBox(final View v) This method handles the state of the check
-	 * box on the login screen.
-	 * 
+	 * toggleSaveUserIdSwitch - This method handles the state of the save user id switch on the login screen.
+	 *
 	 * It changes its image and the state of the saveUserId value.
-	 * 
+	 *
 	 * @param v Reference to view which contains the remember user id check
 	 * @param cache Specifies whether to remember the state change
 	 */
-	public void toggleCheckBox(final View v, final boolean cache) {
+	public void toggleSaveUserIdSwitch(final View view, final boolean cache) {
 
 		if (saveUserId) {
 			toggleImage.setBackgroundResource(R.drawable.swipe_off);
@@ -724,11 +721,11 @@ LoginActivityInterface {
 	 * Calls toggleCheckBox(v, true)
 	 * This method allows us to call toggleCheckBox from XML, we always want to save the state of the button
 	 * so we always pass true as the second argument.
-	 * 
+	 *
 	 * @param v the calling view.
 	 */
 	public void toggleCheckBoxFromXml(final View v) {
-		toggleCheckBox(v, true);
+		toggleSaveUserIdSwitch(v, true);
 	}
 
 	/**
@@ -746,12 +743,12 @@ LoginActivityInterface {
 	/**
 	 * toggleBankCardLogin(final View v) This method handles the login choices
 	 * for logging in as a bank user or a card user.
-	 * 
+	 *
 	 * It changes the visible position of a check mark and the color of
 	 * the labels next to it. In addition, it updates the text for the bottom
 	 * row buttons.
 	 */
-	public void toggleBankCardLogin(final View v) { 
+	public void toggleBankCardLogin(final View v) {
 		final AccountType initialAccountType = Globals.getCurrentAccount();
 		boolean isTogglingCardOrBank = false;
 
@@ -768,8 +765,6 @@ LoginActivityInterface {
 
 		//Do Common setup between Bank and Card toggling
 		if(isTogglingCardOrBank){
-			idField.clearFocus();
-			passField.clearFocus();
 			clearInputs();
 			Globals.setCurrentUser("");
 			errorTextView.setText("");
@@ -790,6 +785,15 @@ LoginActivityInterface {
 
 			//Refresh Screen based on Selected Account Preferences
 			loadSavedCredentials();
+			idField.clearFocus();
+			passField.clearFocus();
+
+			setInputFieldsDrawablesToDefault();
+			final ScrollView temp = (ScrollView)findViewById(R.id.login_pane);
+			temp.smoothScrollTo(0, 0);
+
+			temp.requestFocus();
+
 		}
 	}
 
@@ -797,28 +801,6 @@ LoginActivityInterface {
 		Globals.setRememberId(false);
 		Globals.setCurrentUser("");
 		Globals.savePreferences(this);
-	}
-
-	/**
-	 * Set the focus to the password field and make sure the ID field looks default.
-	 */
-	private void setPassFieldFocused() {
-		idField.requestFocus();
-		passField.requestFocus();
-
-		idField.setupDefaultAppearance();
-		idField.setCompoundDrawables(null, null, null, null);
-	}
-
-	/**
-	 * Set the focus to the ID field and make sure the password field looks default.
-	 */
-	private void setIdFieldFocused() {
-		passField.requestFocus();
-		idField.requestFocus();
-
-		passField.setupDefaultAppearance();
-		passField.setCompoundDrawables(null, null, null, null);
 	}
 
 	/**
@@ -891,22 +873,23 @@ LoginActivityInterface {
 	 * clearInputs() Removes any text in the login input fields.
 	 */
 	private void clearInputs() {
-		final String emptyString = "";
 
-		idField.setText(emptyString);
-		passField.setText(emptyString);
+		idField.getText().clear();
+		passField.getText().clear();
+		idField.clearFocus();
+		passField.clearFocus();
 		setInputFieldsDrawablesToDefault();
 	}
 
 	/**
 	 * Sets the check mark on the login screen to the given boolean (checked/unchecked) state.
-	 * 
+	 *
 	 * @param shouldBeChecked Sets the check mark to checked or unchecked for true or false respectively.
 	 * @param cached Sets whether the state change should be remembered
 	 */
 	private void setCheckMark(final boolean shouldBeChecked, final boolean cached) {
 		saveUserId = !shouldBeChecked;
-		toggleCheckBox(toggleImage, cached);
+		toggleSaveUserIdSwitch(toggleImage, cached);
 	}
 
 	/**
@@ -919,7 +902,7 @@ LoginActivityInterface {
 	}
 
 	/**
-	 * Opens ATM Locator screen when user taps the ATM Locator button while 
+	 * Opens ATM Locator screen when user taps the ATM Locator button while
 	 * in the BANK Login Screen
 	 */
 	public void openAtmLocator() {
@@ -927,7 +910,7 @@ LoginActivityInterface {
 	}
 
 	/**
-	 * Opens Privacy and Security screen when user taps the Privacy and Security button while 
+	 * Opens Privacy and Security screen when user taps the Privacy and Security button while
 	 * in the Card Login Screen
 	 */
 	public void openPrivacyAndSecurity() {
@@ -940,7 +923,7 @@ LoginActivityInterface {
 	}
 
 	/**
-	 * Opens Privacy and Terms screen when user taps the Privacy and Terms button while 
+	 * Opens Privacy and Terms screen when user taps the Privacy and Terms button while
 	 * in the Bank Login Screen
 	 */
 	public void openPrivacyAndTerms() {
@@ -963,7 +946,7 @@ LoginActivityInterface {
 	/**
 	 * showErrorIfAnyFieldsAreEmpty() Sets error tags for input fields if a
 	 * field is empty.
-	 * 
+	 *
 	 * @return boolean value to show if any errors should be shown.
 	 */
 	private boolean showErrorIfAnyFieldsAreEmpty() {
@@ -971,7 +954,7 @@ LoginActivityInterface {
 		final boolean wasIdEmpty = Strings.isNullOrEmpty(idField.getText().toString());
 		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 
-		if(wasIdEmpty || wasPassEmpty) {	
+		if(wasIdEmpty || wasPassEmpty) {
 			final String errorText = this.getResources().getString(R.string.login_error);
 			this.getErrorHandler().showErrorsOnScreen(this, errorText);
 			return true;
@@ -1016,9 +999,9 @@ LoginActivityInterface {
 	/**
 	 * Used to update the globals data stored at login for CARD or BANK and retrieves
 	 * user information. Should only be called if logged in otherwise will return false.
-	 * 
+	 *
 	 * @param account Specify either Globals.CARD_ACCOUNT or Globals.BANK_ACCOUNT
-	 * 
+	 *
 	 * @return Returns true if successful, false otherwise.
 	 */
 	@Override
@@ -1028,9 +1011,9 @@ LoginActivityInterface {
 
 	/**
 	 * Used to display splash screen at start-up of the application prior to pre-authentication. If show is
-	 * set to true shows splash screen back ground and a progress bar with animation. If show is set to false, 
+	 * set to true shows splash screen back ground and a progress bar with animation. If show is set to false,
 	 * then login and toolbar views are shown. The login view use an aninmation to fade in.
-	 * 
+	 *
 	 * @param show True hides all login views and toolbar, false hides progress bar and fades in login views.
 	 */
 	public void showSplashScreen(final boolean show) {
@@ -1052,7 +1035,7 @@ LoginActivityInterface {
 			else {
 				//If login views already visible nothing more needs to be done
 				if( loginPane.getVisibility() != View.VISIBLE ) {
-					splashProgress.setVisibility(View.GONE);	
+					splashProgress.setVisibility(View.GONE);
 
 					loginPane.setVisibility(View.VISIBLE);
 
@@ -1072,7 +1055,7 @@ LoginActivityInterface {
 							toolbar.setVisibility(View.VISIBLE);
 						};
 					});
-					loginPane.startAnimation(animationFadeIn);    
+					loginPane.startAnimation(animationFadeIn);
 				} else {
 					if( Log.isLoggable(TAG, Log.WARN)) {
 						Log.w(TAG,"login views already visible");
@@ -1101,13 +1084,13 @@ LoginActivityInterface {
 	/**
 	 * Sets a flag which is used to determine whether Pre-Authentication has been performed
 	 * by the application already. This flag helps avoid Pre-Authentication being performed
-	 * more than once by the application. In addition, it hides the splash screen and shows 
+	 * more than once by the application. In addition, it hides the splash screen and shows
 	 * login views in the case the splash screen is being displayed.
-	 * 
+	 *
 	 * @param result True if Pre-Authentication has been completed, false otherwise.
 	 */
 	public void preAuthComplete(final boolean result) {
-		//Set flag to detect if pre-authentication needs to be performed 
+		//Set flag to detect if pre-authentication needs to be performed
 		//the next time login activity is launched
 		preAuthHasRun = true;
 
@@ -1171,4 +1154,23 @@ LoginActivityInterface {
 				});
 	}
 
+	/**
+	 * A broadcast receiver that will clear the password field if the screen is shut off.
+	 * and the ID field if the check mark is not checked when the screen is turned off.
+	 * @author scottseward
+	 *
+	 */
+	private class ScreenOffService extends BroadcastReceiver {
+		@Override
+		public void onReceive(final Context context, final Intent intent) {
+			passField.getText().clear();
+			if(!saveUserId){
+				idField.getText().clear();
+				deleteAndSaveCurrentUserPrefs();
+			}
+			idField.clearFocus();
+			passField.clearFocus();
+			setInputFieldsDrawablesToDefault();
+		}
+	}
 }
