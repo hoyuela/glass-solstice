@@ -137,6 +137,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		showServices(holder, detail);
 		if(holder.numFeatures == 0){
 			holder.serviceLabel.setVisibility(View.GONE);	
+			holder.service5.setText("");
 		}
 		if(!detail.hasHours() && holder.numFeatures == 0){
 			holder.service5.setVisibility(View.GONE);  

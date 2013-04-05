@@ -77,7 +77,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/field_stroke"
-        android:paddingTop="@dimen/forms_inner_padding"
         android:visibility="visible" >
 
         <TextView
@@ -181,7 +180,6 @@
             android:layout_below="@+id/service5"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:layout_marginTop="@dimen/between_related_elements_padding"
             android:paddingBottom="@dimen/forms_inner_padding"
             android:textSize="@dimen/small_copy_mid"
             android:text="@string/atm_location_report" />

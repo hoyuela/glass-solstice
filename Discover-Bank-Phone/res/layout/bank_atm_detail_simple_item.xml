@@ -84,7 +84,6 @@
             style="@style/atm_sub_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/forms_inner_padding"
             android:layout_marginLeft="@dimen/forms_inner_padding"
             android:text="@string/atm_location_hours" />
 
@@ -181,7 +180,6 @@
             android:layout_below="@+id/service5"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:layout_marginTop="@dimen/between_related_elements_padding"
             android:paddingBottom="@dimen/forms_inner_padding"
             android:textSize="@dimen/small_copy_mid"
             android:text="@string/atm_location_report" />
