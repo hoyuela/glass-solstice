@@ -15,13 +15,13 @@
 
     <ProgressBar
         android:id="@+id/splash_progress"
-        style="@android:style/Widget.ProgressBar.Small.Inverse"
+        style="?android:attr/progressBarStyleSmallInverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:paddingTop="@dimen/splash_progress_toppadding" />
 
-    <ScrollView
+    <com.discover.mobile.common.ui.widgets.NonFocusingScrollView
         android:id="@+id/login_pane"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -341,7 +341,7 @@
                 android:layout_below="@+id/login_table"
                 android:visibility="invisible" />
         </RelativeLayout>
-    </ScrollView>
+    </com.discover.mobile.common.ui.widgets.NonFocusingScrollView>
 
     <LinearLayout
         android:id="@+id/login_bottom_button_row"
