@@ -553,7 +553,7 @@ public final class BankConductor  extends Conductor {
 			else if( step == BankAddPayeeConfirmFragment.class) {
 				fragment = new BankAddPayeeConfirmFragment();
 				fragment.setArguments(bundle);
-				activity.makeFragmentVisible(fragment, false);
+				activity.makeFragmentVisible(fragment);
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
 					Log.e(TAG, "Invalid Class Type provided");
@@ -925,8 +925,8 @@ public final class BankConductor  extends Conductor {
 	 * Authorizes an SSO User against Bank when no BankSSOPayload is available.
 	 * This is due to an A/L/U error returned from a Card service.
 	 */
-	public static void authDueToALUStatus(String username, String password) {
-		BankLoginDetails credentials = new BankLoginDetails();
+	public static void authDueToALUStatus(final String username, final String password) {
+		final BankLoginDetails credentials = new BankLoginDetails();
 		credentials.username = username;
 		credentials.password = password;
 		final LoginActivity activity = (LoginActivity) DiscoverActivityManager
