@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
+import com.google.common.base.Strings;
 
 /**
  * Utility class used to generate a list of BankEditDetail objects that are to be displayed in a view.
@@ -206,7 +207,7 @@ final public class PayeeDetailListGenerator  {
 		items.add(createAccount(context, item.account.formatted, false));
 		
 		/**Only add an item for zip code if required*/
-		if (!item.zip.isEmpty()){
+		if ( item.isZipRequired && !Strings.isNullOrEmpty(item.zip)){
 			items.add(createZipCode(context, item.zip, false));
 		}
 		
