@@ -95,15 +95,15 @@ public class Account implements Serializable {
 	/**
 	 * Holds a String sued to represent a Checking Account
 	 */
-	public static final String ACCOUNT_CHECKING = "Checking";
+	public static final String ACCOUNT_CHECKING = "CHECKING";
 	/**
 	 * Holds a String used to represent an Online Savings type of account
 	 */
-	public static final String ACCOUNT_SAVINGS = "Savings";
+	public static final String ACCOUNT_SAVINGS = "SAVINGS";
 	/**
 	 * Holds a String used to represent an Money Market type of account
 	 */
-	public static final String ACCOUNT_MMA = "Money Market";
+	public static final String ACCOUNT_MMA = "MONEY_MARKET";
 	/**
 	 * Holds a String used to represent an CDs type of account
 	 */
@@ -115,7 +115,7 @@ public class Account implements Serializable {
 	/**
 	 * Holds a String used to represent an Loan type of account
 	 */
-	public static final String ACCOUNT_LOAN = "Loan";
+	public static final String ACCOUNT_LOAN = "LOAN";
 	/**
 	 * Holds a String used to fetch the URL used to downloaded posted activity
 	 */

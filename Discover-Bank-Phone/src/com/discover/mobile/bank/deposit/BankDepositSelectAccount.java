@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.deposit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
@@ -91,6 +92,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		final Context context = getActivity();
 		BankSelectAccountItem item = null;
 		
+		Collections.sort(accounts, new BankSelectAccountComparable());
 		for( int i = 0; i < accounts.size(); i++) {
 			final Account account = accounts.get(i);
 			
