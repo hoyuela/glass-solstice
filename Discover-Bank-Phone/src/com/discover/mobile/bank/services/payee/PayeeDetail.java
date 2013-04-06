@@ -94,6 +94,10 @@ public class PayeeDetail implements Serializable{
 	@JsonProperty("billingPostalCode")
 	public String zip;
 
+	/**Flag used to determine wheter zip is required or not*/
+	@JsonProperty("zipRequired")
+	public boolean isZipRequired;
+	
 	/**Payee memo, for Unmanaged payees*/
 	@JsonProperty("memo")
 	public String memo;

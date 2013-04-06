@@ -106,9 +106,8 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 		/**Check if an Unverified Managed Payee was passed from Add Payee - Step 3 BankSearchSelectPayeeFragment*/
 		bundle = this.getArguments();
 		if( null != savedInstanceState ) {
-			bundle = savedInstanceState;
-			detail = (AddPayeeDetail)savedInstanceState.getSerializable(KEY_PAYEE_DETAIL);
-			payeeSearchResult = (SearchPayeeResult)savedInstanceState.getSerializable(KEY_SEARCH_RESULT);
+			detail = (AddPayeeDetail)bundle.getSerializable(KEY_PAYEE_DETAIL);
+			payeeSearchResult = (SearchPayeeResult)bundle.getSerializable(KEY_SEARCH_RESULT);
 		} else if( null != bundle &&  null != bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM)) {
 			payeeSearchResult =  (SearchPayeeResult)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);	
 			detail.name = payeeSearchResult.name;
@@ -359,6 +358,13 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
 		return PayeeDetailListGenerator.getPayeeDetailList(getActivity(), detail);
 	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		onSaveInstanceState(getArguments());
+	}
 
 	/**
 	 * Method used to store the state of the fragment and support orientation change
@@ -367,31 +373,44 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
 
+		/**
+		 * Use arguments for handling pause because the values are not cleared when fragment is rotated
+		 * and it is not in the foreground. onSaveInstanceState gets called even if fragment is not in foreground.
+		 */
+		Bundle arguments = this.getArguments();
+		if( arguments == null ) {
+			arguments = outState;
+		}
+		
+		/**Check if bundle is set to a value, if it is then fragment was paused while page was is in foreground*/
 		final AddPayeeDetail curPayeeDetail = getPayeeDetail();
-		if( null != curPayeeDetail ) {
-			outState.putSerializable(KEY_PAYEE_DETAIL, curPayeeDetail);
+		if( bundle != null && null != curPayeeDetail ) {
+			arguments.putSerializable(KEY_PAYEE_DETAIL, curPayeeDetail);
 		}
 
-		if( null != payeeSearchResult) {
-			outState.putSerializable(KEY_SEARCH_RESULT, payeeSearchResult);
+		/**Check if bundle is set to a value, if it is then fragment was paused while page was is in foreground*/
+		if( bundle != null && null != payeeSearchResult) {
+			arguments.putSerializable(KEY_SEARCH_RESULT, payeeSearchResult);
 		}
 		
 		/**Store the state of the editable fields, to re-open keyboard on orientation change if necessary*/
-		for( final Object object : this.content) {
-			if( object instanceof BankEditDetail ) {
-				final BankEditDetail item = (BankEditDetail)object;
-				
-				final boolean hasFocus = item.getEditableField().hasFocus();
-				final String key = item.getTopLabel().getText().toString();
-				outState.putBoolean(key, hasFocus );
-				
-				/**If has an error then show it on rotation */
-				if( item.getEditableField().isInErrorState ) {
-					outState.putString(key +KEY_ERROR_EXT, item.getEditableField().getErrorLabel().getText().toString());
-				}
-				
-				if( generalError.getVisibility() == View.VISIBLE ) {
-					outState.putString(KEY_ERROR_EXT, generalError.getText().toString());
+		if( this.content != null ) {
+			for( final Object object : this.content) {
+				if( object instanceof BankEditDetail ) {
+					final BankEditDetail item = (BankEditDetail)object;
+					
+					final boolean hasFocus = item.getEditableField().hasFocus();
+					final String key = item.getTopLabel().getText().toString();
+					arguments.putBoolean(key, hasFocus );
+					
+					/**If has an error then show it on rotation */
+					if( item.getEditableField().isInErrorState ) {
+						arguments.putString(key +KEY_ERROR_EXT, item.getEditableField().getErrorLabel().getText().toString());
+					}
+					
+					if( generalError.getVisibility() == View.VISIBLE ) {
+						arguments.putString(KEY_ERROR_EXT, generalError.getText().toString());
+					}
 				}
 			}
 		}
@@ -463,8 +482,6 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 			}
 			
 		} 
-		
-		bundle = null;
 	}
 
 	@Override
