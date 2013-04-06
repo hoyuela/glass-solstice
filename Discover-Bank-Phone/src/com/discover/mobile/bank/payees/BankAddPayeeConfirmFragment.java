@@ -105,19 +105,22 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	protected void onActionLinkClick() {
 		if( getActivity() instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
-			/**
-			 * Remove this fragment from the transactions list, this seems to be required since 
-			 * makeVisible(fragment, boolean) was used.
-			 */
-			getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+			activity.onBackPressed();
+		}
+	}
 
+	/**
+	 * Method used to return to Bank Enter Payee page.
+	 */
+	private void navigateBack() {
+		if( getActivity() instanceof BankNavigationRootActivity ) {
+			final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
+			
 			//Pop all fragments in stack till you get the user to BankEnterPayeeFragment where they can run as search for a verified Payee again
 			activity.popTillFragment(BankEnterPayeeFragment.class);
 		}
-
-
 	}
-
+	
 	/**
 	 * Returns list of elements created to be displayed in the body of the view. Called by super class.
 	 */
@@ -155,7 +158,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 
 	@Override
 	public boolean isBackPressDisabled() {
-		return false;
+		return true;
 	}
 
 	/**
@@ -163,11 +166,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	public void onBackPressed() {
-		/**
-		 * Remove this fragment from the transactions list, this seems to be required since 
-		 * makeVisible(fragment, boolean) was used.
-		 */
-		getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+		navigateBack();
 	}
 
 	@Override

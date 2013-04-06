@@ -536,7 +536,7 @@ public final class BankConductor  extends Conductor {
 			else if( step == BankAddPayeeConfirmFragment.class) {
 				fragment = new BankAddPayeeConfirmFragment();
 				fragment.setArguments(bundle);
-				activity.makeFragmentVisible(fragment, false);
+				activity.makeFragmentVisible(fragment);
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
 					Log.e(TAG, "Invalid Class Type provided");
