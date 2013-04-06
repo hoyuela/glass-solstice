@@ -182,7 +182,7 @@ public class AtmDetail extends LocationObject implements Serializable{
 
 	@Override
 	public int getPinDrawable() {
-		return (isAtmSearchargeFree()) ? R.drawable.atm_orange_pin_sm : R.drawable.atm_drk_pin_sm;	
+		return (isAtmSearchargeFree()) ? R.drawable.atm_locator_orange_pin : R.drawable.atm_locator_gray_pin;	
 	}
 
 	@Override
