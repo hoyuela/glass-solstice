@@ -10,9 +10,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 
 import com.caldroid.CaldroidFragment;
 import com.caldroid.CaldroidGridAdapter;
+import com.discover.mobile.common.R;
 
 /**
  * Class used to display a Calendar on top of an existing Fragment Activity. This class
@@ -89,6 +96,10 @@ public class CalendarFragment extends CaldroidFragment {
 	 * Reference to the list of non-selectable dates on the calendar
 	 */
 	protected ArrayList<Date> holidays;
+	/**
+	 * Reference to text view that displays at the top of the fragment as the title
+	 */
+	protected TextView titleTxtVw;
 	
 	@Override
 	public CaldroidGridAdapter getNewDatesGridAdapter() {
@@ -105,7 +116,50 @@ public class CalendarFragment extends CaldroidFragment {
 			updateData(getArguments());
 		}
 		
+		/**Create Calendar Header*/
+		createHeader(view, container, inflater);
+		
 		return view;
+	}
+	
+	/**
+	 * Method used to apply a custom header and replace the dialog header
+	 * @param view
+	 * @param container
+	 * @param inflater
+	 */
+	public void createHeader(final View view, final ViewGroup container, final LayoutInflater inflater) {
+		/** Hide Dialog Header */
+		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+
+		/**Add Custom Header to the top of the Calendar*/
+		final RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.calendar_title_view);
+		final TextView monthTitle = (TextView) layout.findViewById(R.id.calendar_month_year_textview);
+		final LinearLayout titleHeader = (LinearLayout) inflater.inflate(R.layout.calendar_title_header, container, false);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 
+																					RelativeLayout.LayoutParams.WRAP_CONTENT);
+		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		titleHeader.setLayoutParams(params);
+		layout.addView(titleHeader);
+		
+		params =  (LayoutParams) monthTitle.getLayoutParams();
+		params.addRule(RelativeLayout.BELOW, titleHeader.getId());
+		monthTitle.setLayoutParams(params);
+		
+		final Button leftArrow = (Button)view.findViewById(R.id.calendar_left_arrow);
+		params =  (LayoutParams)leftArrow.getLayoutParams();
+		params.addRule(RelativeLayout.BELOW, titleHeader.getId());
+		leftArrow.setLayoutParams(params);
+		
+		final Button rightArrow = (Button)view.findViewById(R.id.calendar_right_arrow);
+		params =  (LayoutParams)rightArrow.getLayoutParams();
+		params.addRule(RelativeLayout.BELOW, titleHeader.getId());
+		rightArrow.setLayoutParams(params);
+		
+		/**Set Text for the Header*/
+		titleTxtVw = (TextView)titleHeader.findViewById(R.id.title);
+		titleTxtVw.setText(this.getArguments().getString(CalendarFragment.DIALOG_TITLE));
 	}
 	
 	@Override
@@ -138,11 +192,12 @@ public class CalendarFragment extends CaldroidFragment {
 		args.putSerializable(MIN_DATE, minDate);
 		args.putSerializable(DISABLED_DATES, disabledDates);
 		setArguments(args);
+
 		
 		updateData(args);
 		
 		setCaldroidListener(listener);
-		
+	
 		show(manager,TAG);
 	}
 	
