@@ -57,6 +57,7 @@ import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PayBillsTermsAndConditionsDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
@@ -580,5 +581,23 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						.build();
 
 		return new BankHolidayServiceCall(activity, callback);
+	}
+
+	/**
+	 * Creates a UpdatePaymentCall used to update an existing Scheduled Payment.
+	 * 
+	 * @param payment - Holds the information for the Scheduled Payment that is to be updated.
+	 * @param paymendId - Holds the Id of the payment that is to be updated.
+	 * @return Reference to the UpdatePaymentCall object created.
+	 */
+	public static UpdatePaymentCall updatePaymentCall(final CreatePaymentDetail payment, final String paymentId) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<PaymentDetail>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PaymentDetail.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new UpdatePaymentCall(activity, callback, payment, paymentId);
 	}
 }

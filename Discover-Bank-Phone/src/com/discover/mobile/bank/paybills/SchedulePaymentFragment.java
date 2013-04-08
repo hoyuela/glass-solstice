@@ -43,6 +43,7 @@ import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
+import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
@@ -120,6 +121,8 @@ public class SchedulePaymentFragment extends BaseFragment
 
 	/** Payee object (typically passed here via bundle) */
 	private PayeeDetail payee;
+	/** Payment object passed via bundle */
+	private PaymentDetail paymentDetail;
 	/** BankUser singleton */
 	private BankUser bankUser;
 
@@ -145,6 +148,8 @@ public class SchedulePaymentFragment extends BaseFragment
 	private boolean isOrientationChanging = false;
 	/** Reference to the Activity's canceled listener */
 	OnPaymentCanceledListener canceledListener;
+	/**Flag used to control whether back press should show cancel modal*/
+	private boolean isBackPressedDisabled = true;
 
 	/**
 	 * Pattern to match the ISO8601 date & time returned by payee service -
@@ -353,23 +358,42 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * fragment or loaded from elsewhere.
 	 */
 	private void setInitialViewData() {
+		/**Populate Spinner with eligible bank accounts for Bill Pay*/
+		if (bankUser.getPaymentCapableAccounts().accounts.size() > 1) {
+			final AccountAdapter accountAdapter = new AccountAdapter(
+					getActivity(), R.layout.push_simple_spinner_view,
+					bankUser.getPaymentCapableAccounts().accounts);
+
+			accountAdapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
+			paymentAccountSpinner.setAdapter(accountAdapter);
+		} else {
+			/**Hide Caret when only a single account is selectable for scheduling payment*/
+			paymentCaret.setVisibility(View.INVISIBLE);
+		}
+		
+		/**Check if page is displayed to add a payment*/
 		if (payee != null) {
 			dateText.setText(getPaymentDate(payee.paymentDate));
 			payeeText.setText(payee.nickName);
 			paymentAccountText.setText(defaultPaymentAccount());
-
-			if (bankUser.getPaymentCapableAccounts().accounts.size() > 1) {
-				final AccountAdapter accountAdapter = new AccountAdapter(
-						getActivity(), R.layout.push_simple_spinner_view,
-						bankUser.getPaymentCapableAccounts().accounts);
-
-				accountAdapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
-				paymentAccountSpinner.setAdapter(accountAdapter);
-			} else {
-				/**Hide Caret when only a single account is selectable for scheduling payment*/
-				paymentCaret.setVisibility(View.INVISIBLE);
+		}
+		/**Check if page is displayed to edit a payment*/
+		else if( paymentDetail != null ) {
+			dateText.setText(getPaymentDate(paymentDetail.deliverBy));
+			payeeText.setText(paymentDetail.payee.nickName);
+			paymentAccountText.setText(paymentDetail.paymentAccount.nickname);
+			amountEdit.setText(paymentDetail.amount.formatted.replace("$", ""));
+			memoEdit.setText(paymentDetail.memo);
+			
+			/**Update Pay Now Button Text*/
+			payNowButton.setText(R.string.schedule_pay_save_payment);
+			
+			final PayeeDetail payee = BankUser.instance().getPayees().getPayeeFromId(paymentDetail.payee.id);
+			if( payee != null ) {
+				updateEarliestPaymentDate(payee.paymentDate);
 			}
 		}
+
 		amountEdit.attachErrorLabel(amountError);
 		progressHeader.initialize(0);
 		progressHeader.hideStepTwo();
@@ -405,8 +429,12 @@ public class SchedulePaymentFragment extends BaseFragment
 	private void loadDataFromBundle() {
 		final Bundle b = getArguments();
 		if (b != null) {
-			payee = (PayeeDetail) b
-					.getSerializable(BankExtraKeys.SELECTED_PAYEE);
+			payee = (PayeeDetail) b.getSerializable(BankExtraKeys.SELECTED_PAYEE);
+
+			//If payee is null user can be attempting to edit payment instead 
+			if( payee == null ) {
+				paymentDetail = (PaymentDetail)b.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+			}
 		}
 	}
 
@@ -439,7 +467,13 @@ public class SchedulePaymentFragment extends BaseFragment
 				 * the app would crash. 
 				 */
 				if ((BankNavigationRootActivity) getActivity() != null){
-					((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
+					isBackPressedDisabled = false;
+					
+					if( paymentDetail != null ) {
+						((BankNavigationRootActivity) getActivity()).onBackPressed();
+					} else {
+						((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
+					}
 				}
 			}
 		});
@@ -608,7 +642,25 @@ public class SchedulePaymentFragment extends BaseFragment
 		}
 		return "";
 	}
-
+	
+	/**
+	 * Takes an ISO8601 formatted date of format 2013-01-30T05:00:00.000+0000
+	 * and sets the earliestPaymentDate date member.
+	 * 
+	 * @param date
+	 * @return
+	 */
+	private void updateEarliestPaymentDate(final String date) {
+		final Matcher m = r8601.matcher(date);
+		if (m.lookingAt()) {
+			earliestPaymentDate = Calendar.getInstance();
+			// Month - 1 is because Calendar starts Months at 0.
+			earliestPaymentDate.set(Integer.parseInt(m.group(1)),
+					Integer.parseInt(m.group(2)) - 1,
+					Integer.parseInt(m.group(3)));	
+		}
+	}
+	
 	/**
 	 * Formats date as MM/dd/YYYY.
 	 * 
@@ -676,25 +728,25 @@ public class SchedulePaymentFragment extends BaseFragment
 
 				paymentAccountError.setVisibility(View.GONE);
 				if(bankUser.getPaymentCapableAccounts().accounts.size() > 1) {
+					paymentAccountSpinner
+					.setOnItemSelectedListener(new OnItemSelectedListener() {
+						@Override
+						public void onItemSelected(final AdapterView<?> parent,
+								final View v, final int position, final long id) {
+							final Account a = (Account) paymentAccountSpinner
+									.getSelectedItem();
+							accountId = Integer.valueOf(a.id);
+							accountIndex = position;
+							paymentAccountText.setText(a.nickname);
+						}
+
+						@Override
+						public void onNothingSelected(final AdapterView<?> arg0) {
+						}
+					});
+					
 					paymentAccountSpinner.performClick();
 				}
-			}
-		});
-
-		paymentAccountSpinner
-		.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(final AdapterView<?> parent,
-					final View v, final int position, final long id) {
-				final Account a = (Account) paymentAccountSpinner
-						.getSelectedItem();
-				accountId = Integer.valueOf(a.id);
-				accountIndex = position;
-				paymentAccountText.setText(a.nickname);
-			}
-
-			@Override
-			public void onNothingSelected(final AdapterView<?> arg0) {
 			}
 		});
 
@@ -742,8 +794,9 @@ public class SchedulePaymentFragment extends BaseFragment
 					clearErrors();
 
 					final String memo = memoEdit.getText().toString();
+					
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
-					payment.payee.id = payee.id;
+					payment.payee.id = (payee != null ) ? payee.id : paymentDetail.payee.id;
 					payment.amount = formatAmount(amountEdit.getText()
 									.toString());
 					payment.paymentMethod.id = Integer.toString(accountId);
@@ -752,11 +805,18 @@ public class SchedulePaymentFragment extends BaseFragment
 									.get(Calendar.MONTH), chosenPaymentDate
 									.get(Calendar.DAY_OF_MONTH),
 									chosenPaymentDate.get(Calendar.YEAR));
-					if (!memo.equals("")) {
+					if ( !Strings.isNullOrEmpty(memo)) {
 						payment.memo = memo;
 					}
-					BankServiceCallFactory.createMakePaymentCall(payment)
-					.submit();
+					
+					//Check if user is adding payment
+					if( payee != null ) {		
+						BankServiceCallFactory.createMakePaymentCall(payment).submit();
+					}
+					//Check if user is editing a payment
+					else if( paymentDetail != null ){
+						BankServiceCallFactory.updatePaymentCall(payment, paymentDetail.id).submit();
+					}
 				}
 			}
 		});
@@ -856,6 +916,7 @@ public class SchedulePaymentFragment extends BaseFragment
 			}
 		}, 1000);
 
+		/**Reset Calendar Event Listener*/
 		final Fragment fragment = getFragmentManager().findFragmentByTag(CalendarFragment.TAG);
 		if( fragment != null && fragment instanceof CalendarFragment) {
 			calendarFragment = (CalendarFragment) fragment;
@@ -904,12 +965,15 @@ public class SchedulePaymentFragment extends BaseFragment
 	/** Cancel modal presentation should override default Back button behavior */
 	@Override
 	public void onBackPressed() {
-		setupCancelButton();
+		/**Show Cancel Modal only if back press has been disabled*/
+		if( isBackPressedDisabled ) {
+			setupCancelButton();
+		}
 	}
 
 	@Override
 	public boolean isBackPressDisabled() {
-		return true;
+		return isBackPressedDisabled;
 	}
 
 	private CalendarListener createCalendarListener() {
@@ -924,7 +988,7 @@ public class SchedulePaymentFragment extends BaseFragment
 				final Calendar cal=Calendar.getInstance();
 				cal.setTime(date);
 				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
-				
+			
 				calendarFragment.dismiss();
 			}
 		};
@@ -932,12 +996,29 @@ public class SchedulePaymentFragment extends BaseFragment
 		return calendarListener;
 	}
 
+	/**
+	 * Method displays a calendar in a dialog form with the chosen date selected.
+	 */
 	public void showCalendar() {
 		calendarFragment = new CalendarFragment();
 		
+		/**Convert stored in text field into chosen date, this will avoid issue on rotation*/
+		try{
+			final String[] date = dateText.getText().toString().split("[\\/]+");
+			chosenPaymentDate.set( Integer.parseInt(date[2]),
+								   Integer.parseInt(date[0]) - 1,
+								   Integer.parseInt(date[1]));
+		}catch(final Exception ex){
+			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
+					earliestPaymentDate.get(Calendar.MONTH),
+					earliestPaymentDate.get(Calendar.DAY_OF_MONTH));
+		}
+		
+		/**Show calendar as a dialog*/
 		calendarFragment.show(getFragmentManager(),
 						      getString(R.string.schedule_pay_date_picker_title),
-							  earliestPaymentDate, 
+						      chosenPaymentDate, 
+						      earliestPaymentDate,
 							  BankUser.instance().getHolidays(),
 							  createCalendarListener());
 	}

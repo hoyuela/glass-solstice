@@ -10,9 +10,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.TextView;
 
 import com.caldroid.CaldroidFragment;
 import com.caldroid.CaldroidGridAdapter;
+import com.discover.mobile.common.R;
 
 /**
  * Class used to display a Calendar on top of an existing Fragment Activity. This class
@@ -67,7 +74,7 @@ public class CalendarFragment extends CaldroidFragment {
 	/**
 	 * Key for holding the current date selected on the calendar fragment used for rotation handling
 	 */
-	public static final String EARLIEST_DATE = "earliest-date";
+	public static final String SELECTED_DATE = "selected-date";
 	/**
 	 * Key for holding list of non-selectable dates on the calendar used for rotation handling
 	 */
@@ -78,13 +85,21 @@ public class CalendarFragment extends CaldroidFragment {
 	public static final String TAG = "CALDROID_DIALOG_FRAGMENT";
 	
 	/**
+	 * Reference to the current chosen date on the calendar at start-up
+	 */
+	protected Calendar selectedDate;
+	/**
 	 * Reference to first selectable date on the calendar
 	 */
-	protected Calendar earliestDate;
+	protected Calendar minDate;
 	/**
 	 * Reference to the list of non-selectable dates on the calendar
 	 */
 	protected ArrayList<Date> holidays;
+	/**
+	 * Reference to text view that displays at the top of the fragment as the title
+	 */
+	protected TextView titleTxtVw;
 	
 	@Override
 	public CaldroidGridAdapter getNewDatesGridAdapter() {
@@ -101,7 +116,50 @@ public class CalendarFragment extends CaldroidFragment {
 			updateData(getArguments());
 		}
 		
+		/**Create Calendar Header*/
+		createHeader(view, container, inflater);
+		
 		return view;
+	}
+	
+	/**
+	 * Method used to apply a custom header and replace the dialog header
+	 * @param view
+	 * @param container
+	 * @param inflater
+	 */
+	public void createHeader(final View view, final ViewGroup container, final LayoutInflater inflater) {
+		/** Hide Dialog Header */
+		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+
+		/**Add Custom Header to the top of the Calendar*/
+		final RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.calendar_title_view);
+		final TextView monthTitle = (TextView) layout.findViewById(R.id.calendar_month_year_textview);
+		final LinearLayout titleHeader = (LinearLayout) inflater.inflate(R.layout.calendar_title_header, container, false);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 
+																					RelativeLayout.LayoutParams.WRAP_CONTENT);
+		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		titleHeader.setLayoutParams(params);
+		layout.addView(titleHeader);
+		
+		params =  (LayoutParams) monthTitle.getLayoutParams();
+		params.addRule(RelativeLayout.BELOW, titleHeader.getId());
+		monthTitle.setLayoutParams(params);
+		
+		final Button leftArrow = (Button)view.findViewById(R.id.calendar_left_arrow);
+		params =  (LayoutParams)leftArrow.getLayoutParams();
+		params.addRule(RelativeLayout.BELOW, titleHeader.getId());
+		leftArrow.setLayoutParams(params);
+		
+		final Button rightArrow = (Button)view.findViewById(R.id.calendar_right_arrow);
+		params =  (LayoutParams)rightArrow.getLayoutParams();
+		params.addRule(RelativeLayout.BELOW, titleHeader.getId());
+		rightArrow.setLayoutParams(params);
+		
+		/**Set Text for the Header*/
+		titleTxtVw = (TextView)titleHeader.findViewById(R.id.title);
+		titleTxtVw.setText(this.getArguments().getString(CalendarFragment.DIALOG_TITLE));
 	}
 	
 	@Override
@@ -119,22 +177,27 @@ public class CalendarFragment extends CaldroidFragment {
 	 * @param disabledDates The list of dates to be considered non-selectable on the calendar.
 	 * @param listener Reference to listern to receive selected date and change month notifications
 	 */
-	public void show(final FragmentManager manager, final String title, final Calendar date, final ArrayList<Date> disabledDates, final CalendarListener listener) {		
+	public void show(final FragmentManager manager, final String title, 
+					 final Calendar selectedDate,
+					 final Calendar minDate, 
+					 final ArrayList<Date> disabledDates, 
+					 final CalendarListener listener) {		
 	
 		/**Set title, month and year of calendar using bundle*/
 		final Bundle args = new Bundle();
 		args.putString(CalendarFragment.DIALOG_TITLE, title);
-		args.putInt(MONTH, date.get(Calendar.MONTH) + 1);
-		args.putInt(YEAR, date.get(Calendar.YEAR));
-		args.putSerializable(EARLIEST_DATE, date);
-		args.putSerializable(MIN_DATE, date.getTime());
+		args.putInt(MONTH, selectedDate.get(Calendar.MONTH) + 1);
+		args.putInt(YEAR, selectedDate.get(Calendar.YEAR));
+		args.putSerializable(SELECTED_DATE, selectedDate);
+		args.putSerializable(MIN_DATE, minDate);
 		args.putSerializable(DISABLED_DATES, disabledDates);
 		setArguments(args);
+
 		
 		updateData(args);
 		
 		setCaldroidListener(listener);
-		
+	
 		show(manager,TAG);
 	}
 	
@@ -161,9 +224,7 @@ public class CalendarFragment extends CaldroidFragment {
 		final ArrayList<Date> dates = (holidays == null) ? new ArrayList<Date>() : holidays;
 		
 		while( activeDate.compareTo(endDate) <= 0 ) {
-			printDate(activeDate);
-			
-			if( activeDate.compareTo(earliestDate) >= 0 ) {
+			if( activeDate.compareTo(minDate) >= 0 ) {
 				if( isWeekend(activeDate) ) {
 					dates.add(activeDate.getTime());
 	
@@ -198,14 +259,19 @@ public class CalendarFragment extends CaldroidFragment {
 	 */
 	@SuppressWarnings("unchecked")
 	private void updateData(final Bundle bundle) {
-		earliestDate = (Calendar) bundle.get(EARLIEST_DATE);
+		selectedDate = (Calendar) bundle.get(SELECTED_DATE);
 		holidays = (ArrayList<Date>) bundle.getSerializable(DISABLED_DATES);
 		
+		/**Android Calendar Object starts month with an index of 0 therefore must subtract 1*/
 		final int month = bundle.getInt(MONTH) - 1;
 		final int year = bundle.getInt(YEAR);
 		
-		final Date minDate = (Date) bundle.get(MIN_DATE);
-		setMinDate(minDate);
+		/**Dates earlier than this will appear grayed out and unselectable*/
+		minDate = (Calendar) bundle.get(MIN_DATE);
+		setMinDate(minDate.getTime());
+		
+		/**Specify which dates should appear selected on calendar*/
+		this.setSelectedDates(selectedDate.getTime(), selectedDate.getTime());
 				
 		/**Disable weekend dates starting from earliest date provided*/
 		updateDisableDates(month, year);

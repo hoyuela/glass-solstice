@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="calendar_title_style" parent="title_copy">
+        <item name="android:layout_marginTop">@dimen/forms_inner_padding</item>
+        <item name="android:layout_marginBottom">@dimen/forms_inner_padding</item>
+        <item name="android:textSize">@dimen/title_min</item>
+        <item name="android:paddingLeft">16dip</item>
+        <item name="android:paddingRight">16dip</item>
+        <item name="android:gravity">center_vertical|left</item>
+    </style>
+</resources>
