@@ -129,6 +129,9 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	 */
 	@Override
 	public int getCount(){
+		if (details == null){
+			return 1;
+		}
 		return details.size() + 1;
 	}
 
