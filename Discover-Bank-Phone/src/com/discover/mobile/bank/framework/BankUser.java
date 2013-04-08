@@ -134,9 +134,9 @@ public final class BankUser extends CacheManager implements Serializable {
 		
 		if( hasAccounts() ) {
 			for( final Account account : accountList.accounts) {
-				if( account.type.equals(Account.ACCOUNT_CHECKING) ||
-				    account.type.equals(Account.ACCOUNT_SAVINGS) ||
-				    account.type.equals(Account.ACCOUNT_MMA)) {
+				if( account.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING) ||
+				    account.type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) ||
+				    account.type.equalsIgnoreCase(Account.ACCOUNT_MMA)) {
 					ret = true;
 					break;
 				}
