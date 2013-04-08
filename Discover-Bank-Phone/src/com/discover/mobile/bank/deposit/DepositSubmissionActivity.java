@@ -199,6 +199,10 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	public void complete(final NetworkServiceCall<?> sender, final Object result) {
 		DiscoverActivityManager.setActiveActivity(callingActivity);
 		finish();
+		
+		final Bundle extras = this.getIntent().getExtras();
+		final Account account = (Account)extras.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+		BankServiceCallFactory.createGetAccountLimits(account, true).submit();
 	}
 	
 	@Override

@@ -20,6 +20,7 @@ import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
 import com.discover.mobile.bank.services.AcceptTermsService;
+import com.discover.mobile.bank.services.BackgroundServiceCall;
 import com.discover.mobile.bank.services.BankApiServiceCall;
 import com.discover.mobile.bank.services.BankHolidayServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
@@ -245,9 +246,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				BankConductor.logoutUser(activeActivity);
 			}
 			//Dispatch response to BankBaseErrorHandler to determine how to handle the error
-			else if( !(sender instanceof BankApiServiceCall || 
-					   sender instanceof BankHolidayServiceCall ||
-					   sender instanceof RefreshBankSessionCall) )  {
+			else if( !isBackgroundServiceCall(sender) )  {
 				errorHandler.handleFailure(sender, error);
 	
 				((AlertDialogParent)activeActivity).closeDialog();
@@ -270,9 +269,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final Throwable arg1) {
 		if( isGuiReady() ) {
-			if( !(sender instanceof BankApiServiceCall || 
-				  sender instanceof BankHolidayServiceCall ||
-				  sender instanceof RefreshBankSessionCall)) {
+			if( !isBackgroundServiceCall(sender) ) {
 				final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 				activeActivity.closeDialog();
 			}
@@ -738,6 +735,30 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		};
 
 		task.execute();
+	}
+	
+	/**
+	 * Method used to check to see if the service call should occur in the background without a progress dialog
+	 * 
+	 * @param sender NetworkServiceCall that is being check to see if it should happen silently.
+	 * 
+	 * @return True if it is a back ground call, false otherwise
+	 */
+	public boolean isBackgroundServiceCall(final NetworkServiceCall<?> sender) {
+		
+		boolean ret = false;
+		
+		if( sender != null ) {
+	 		if( sender instanceof BackgroundServiceCall ) {
+				ret = ((BackgroundServiceCall)sender).isBackgroundCall();
+	 		}
+						
+			ret |=  sender instanceof RefreshBankSessionCall || 
+					sender instanceof BankApiServiceCall || 
+					sender instanceof BankHolidayServiceCall;		
+ 		}
+		
+		return ret;		
 	}
 	
 	/**
