@@ -53,8 +53,10 @@ public class DiscoverMapWrapper {
 	public DiscoverMapWrapper(final GoogleMap map, final DiscoverInfoWindowAdapter adapter){
 		this.map = map;
 		this.adapter = adapter;
-		map.setInfoWindowAdapter(adapter);
-		map.setOnInfoWindowClickListener(adapter.getInfoWindowClickListener());
+		if(null != map){
+			map.setInfoWindowAdapter(adapter);
+			map.setOnInfoWindowClickListener(adapter.getInfoWindowClickListener());
+		}
 		setupMap();
 	}
 
@@ -62,19 +64,23 @@ public class DiscoverMapWrapper {
 	 * Set up the map
 	 */
 	private void setupMap(){
-		map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-		final UiSettings settings = map.getUiSettings();
-		settings.setCompassEnabled(false);
-		settings.setRotateGesturesEnabled(false);
-		settings.setTiltGesturesEnabled(false);
-		settings.setZoomControlsEnabled(false);
+		if(null != map){
+			map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+			final UiSettings settings = map.getUiSettings();
+			settings.setCompassEnabled(false);
+			settings.setRotateGesturesEnabled(false);
+			settings.setTiltGesturesEnabled(false);
+			settings.setZoomControlsEnabled(false);
+		}
 	}
 
 	/**
 	 * Clear the map of all markers
 	 */
 	public void clear(){
-		map.clear();
+		if(null != map){
+			map.clear();
+		}
 	}
 
 	/**
@@ -83,16 +89,17 @@ public class DiscoverMapWrapper {
 	 * @param drawable - drawable to pin on the map
 	 */
 	public void setUsersCurrentLocation(final Location location, final int drawable, final Context context){
-		if(null == location){return;}
-		this.location = location;
-		if(null != currentMarker){
-			currentMarker.remove();
+		if(null != map){
+			if(null == location){return;}
+			this.location = location;
+			if(null != currentMarker){
+				currentMarker.remove();
+			}
+			final LatLng item = new LatLng(location.getLatitude(), location.getLongitude());
+			currentMarker = map.addMarker(new MarkerOptions().position(item)
+					.icon(BitmapDescriptorFactory.fromResource(drawable)));
+			createAddressString(context);
 		}
-		final LatLng item = new LatLng(location.getLatitude(), location.getLongitude());
-		currentMarker = map.addMarker(new MarkerOptions().position(item)
-				.icon(BitmapDescriptorFactory.fromResource(drawable)));
-		createAddressString(context);
-
 	}
 
 	/**
@@ -123,9 +130,11 @@ public class DiscoverMapWrapper {
 	 * @param objects - location object to the map
 	 */
 	public void addObjectsToMap(final List<? extends LocationObject> objects){
-		for(final LocationObject object : objects){
-			object.setDistanceFromUser(getDistanceFromUser(object));
-			adapter.addMarkerAndAtm(map.addMarker(createMapMarker(object)), object);
+		if(null != map){
+			for(final LocationObject object : objects){
+				object.setDistanceFromUser(getDistanceFromUser(object));
+				adapter.addMarkerAndAtm(map.addMarker(createMapMarker(object)), object);
+			}
 		}
 	}
 
@@ -162,9 +171,11 @@ public class DiscoverMapWrapper {
 	 * @param zoomLevel - level to zoom to
 	 */
 	public void zoomToLocation(final Location location, final float zoomLevel){
-		final LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-		map.animateCamera(CameraUpdateFactory.newLatLng(currentLatLng));
-		map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, zoomLevel));
+		if(null != map){
+			final LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+			map.animateCamera(CameraUpdateFactory.newLatLng(currentLatLng));
+			map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, zoomLevel));
+		}
 	}
 
 	/**
@@ -173,7 +184,9 @@ public class DiscoverMapWrapper {
 	 * @param longitude
 	 */
 	public void focusCameraOnLocation(final Double latitude, final Double longitude){
-		map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
+		if(null != map){
+			map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
+		}
 	}
 
 	/**
@@ -183,8 +196,10 @@ public class DiscoverMapWrapper {
 	 * @param zoomLevel
 	 */
 	public void focusCameraOnLocation(final Double latitude, final Double longitude, final float zoomLevel){
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-				new LatLng(location.getLatitude(), location.getLongitude()), zoomLevel));
+		if(null != map){
+			map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+					new LatLng(location.getLatitude(), location.getLongitude()), zoomLevel));
+		}
 	}
 
 	/**

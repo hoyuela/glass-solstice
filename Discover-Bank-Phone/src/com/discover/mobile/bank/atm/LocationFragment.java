@@ -42,6 +42,12 @@ public interface LocationFragment {
 	 */ 
 	int NOT_USING_LOCATION = 4;
 
+	/**
+	 * State of the fragment meaning that the getting of the users current location
+	 * failed.
+	 */
+	int LOCATION_FAILED = 5;
+
 	/**Key to get the location status out of a bundle*/
 	String LOCATION_STATUS = "status";
 

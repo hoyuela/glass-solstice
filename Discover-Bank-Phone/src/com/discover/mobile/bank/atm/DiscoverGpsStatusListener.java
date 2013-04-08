@@ -5,7 +5,6 @@ package com.discover.mobile.bank.atm;
 
 import android.location.GpsStatus;
 import android.location.GpsStatus.Listener;
-import android.util.Log;
 
 /**
  * Lister for the GPS status. This will help control the timeout
@@ -19,7 +18,7 @@ public class DiscoverGpsStatusListener implements Listener{
 	private long time;
 
 	/**Time that the app will search for a location*/
-	private static final long STAY_ALIVE_TIME = 10000; //10 seconds
+	private static final long STAY_ALIVE_TIME = 25000; //10 seconds
 
 	/**Fragment that is waiting for the received locaiton*/
 	private final LocationFragment fragment;
@@ -61,8 +60,6 @@ public class DiscoverGpsStatusListener implements Listener{
 		final long endTime = time + STAY_ALIVE_TIME;
 		if(endTime <= System.currentTimeMillis()){
 			fragment.handleTimeOut();
-		}else{
-			Log.i("TimeOut",Long.toString(System.currentTimeMillis() - endTime));
 		}
 	}
 }
