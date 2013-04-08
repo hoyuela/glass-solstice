@@ -3,6 +3,8 @@ package com.discover.mobile.common.ui.widgets;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -114,7 +116,7 @@ public class AccountToggleView extends RelativeLayout {
 			int iconHeight) {
 
 		indicator.setPadding(left + (iconWidth / 3),
-				top + (iconHeight / 3) + 5, 0, 0);
+				top + (iconHeight / 2), 0, 0);
 
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -130,11 +132,17 @@ public class AccountToggleView extends RelativeLayout {
 	 * Toggles the visibility of this view.
 	 */
 	public void toggleVisibility() {
+		Animation fade = null;
+		
 		if (!isShown) {
+			fade = AnimationUtils.loadAnimation(context, R.anim.fade_in_animation_large);
 			this.setVisibility(View.VISIBLE);
+			this.startAnimation(fade);
 			isShown = true;
 		} else {
+			fade = AnimationUtils.loadAnimation(context, R.anim.fade_out_animation_large);
 			this.setVisibility(View.INVISIBLE);
+			this.startAnimation(fade);
 			isShown = false;
 		}
 	}
@@ -215,8 +223,7 @@ public class AccountToggleView extends RelativeLayout {
 
 		@Override
 		public void onClick(View arg0) {
-			view.setVisibility(View.INVISIBLE);
-			isShown = false;
+			toggleVisibility();
 		}
 
 	}

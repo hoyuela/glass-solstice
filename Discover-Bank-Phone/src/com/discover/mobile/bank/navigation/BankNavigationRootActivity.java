@@ -56,7 +56,7 @@ implements OnPaymentCanceledListener {
 		super.onResume();
 
 		updateMenuOnClose();
-		
+
 		compareLastTouchTimeAndUpdateSession();
 	}
 
@@ -101,9 +101,9 @@ implements OnPaymentCanceledListener {
 		if (BankUser.instance().getCustomerInfo() == null) {
 			BankUser.instance().setBankUser(
 					(BankUser) savedInstanceState
-							.getSerializable(BANK_USER_KEY));
+					.getSerializable(BANK_USER_KEY));
 			BankUrlManager
-					.setNewLinks(BankUser.instance().getCustomerInfo().links);
+			.setNewLinks(BankUser.instance().getCustomerInfo().links);
 			SessionTokenManager.setToken(savedInstanceState
 					.getString(BANK_SESSION_KEY));
 		}
@@ -338,7 +338,7 @@ implements OnPaymentCanceledListener {
 	public boolean popTillFragment(final Class<?> fragmentClassType) {
 		final FragmentManager fragManager = this.getSupportFragmentManager();
 		boolean ret = false;
-		
+
 		/**
 		 * Search for the fragment with the class type specified in the
 		 * backstack
@@ -351,11 +351,24 @@ implements OnPaymentCanceledListener {
 			for( int i = 0; i < callsToPop; i++ ) {
 				fragManager.popBackStackImmediate();
 			}
-			
+
 			ret = true;
 		} 
-		
+
 		return ret;
+	}
+
+	/**
+	 * Toggle the sliding menu open or closed
+	 */
+	@Override
+	public void toggle(){
+		//Hide the keyboard
+		this.getInputMethodManager().hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+		//Clear the focus from the view
+		this.getCurrentFocus().clearFocus();
+		//Toggle the menu
+		super.toggle();
 	}
 
 	/**

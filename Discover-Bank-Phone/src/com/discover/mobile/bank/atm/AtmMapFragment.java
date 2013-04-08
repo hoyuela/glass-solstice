@@ -159,8 +159,6 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 		setUpListeners();
 		disableMenu();
-		createSettingsModal();
-		createLocationModal();
 		savedState = savedInstanceState;
 		return view;
 	}
@@ -205,9 +203,11 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 		switch(locationStatus){
 		case NOT_ENABLED:
+			settingsModal = AtmModalFactory.getSettingsModal(getActivity(), this);
 			((NavigationRootActivity) getActivity()).showCustomAlert(settingsModal);
 			break;
 		case ENABLED:
+			locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
 			((NavigationRootActivity) getActivity()).showCustomAlert(locationModal);
 			break;
 		case SEARCHING:
@@ -265,7 +265,10 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		if(LOCKED_ON == locationStatus){
 			getLocation();
 		}else{
-			locationModal.show();
+			if(null == locationModal || !locationModal.isShowing()){
+				locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
+				((NavigationRootActivity)this.getActivity()).showCustomAlert(locationModal);
+			}
 		}
 	}
 
@@ -460,21 +463,6 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		return (null == results || null == results.results || null == results.results.atms || results.results.atms.isEmpty());
 	}
 
-
-	/**
-	 * Create the would you like to enable the current location modal
-	 */
-	private void createSettingsModal(){
-		settingsModal = AtmModalFactory.getSettingsModal(getActivity(), this);
-	}
-
-	/**
-	 * Create the would you like to use the current location modal
-	 */
-	private void createLocationModal(){
-		locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
-	}
-
 	@Override
 	public void getLocation(){
 		isLoading = false;
@@ -527,9 +515,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		locationManagerWrapper.stopGettingLocaiton();
 
 		searchBar.saveState(outState);
-		if(locationModal.isShowing()){
+		if(null != locationModal && locationModal.isShowing()){
 			locationModal.dismiss();
-		} else if(settingsModal.isShowing()){
+		} else if(null != settingsModal && settingsModal.isShowing()){
 			settingsModal.dismiss();
 		}
 		outState.putInt(LOCATION_STATUS, locationStatus);
@@ -552,6 +540,12 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void onPause(){
 		super.onPause();
+		if(null != settingsModal && settingsModal.isShowing()){
+			settingsModal.hide();
+		}
+		if(null != locationModal && locationModal.isShowing()){
+			locationModal.hide();
+		}
 		location = mapWrapper.getCurrentLocation();
 		enableMenu();
 	}

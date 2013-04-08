@@ -41,9 +41,9 @@ import com.google.common.base.Strings;
 
 /**
  * Used to handle error responses to a NetworkServiceCall<>.
- * 
+ *
  * @author henryoyuela
- * 
+ *
  */
 
 public class BankErrorHandler implements ErrorHandler {
@@ -58,7 +58,7 @@ public class BankErrorHandler implements ErrorHandler {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return Returns the singleton instance of ErrorHandlerFactory
 	 */
 	public static ErrorHandler getInstance() {
@@ -67,7 +67,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.discover.mobile.error.ErrorHandler#showErrorsOnScreen(com.discover
 	 * .mobile.error.ErrorHandlerUi, java.lang.String)
@@ -77,29 +77,28 @@ public class BankErrorHandler implements ErrorHandler {
 		//Make sure the error handler UI interface has input fields
 		if( errorHandlerUi.getInputFields() != null ) {
 			// Set Focus to first field in screen
-			errorHandlerUi.getInputFields().get(0).requestFocus();
-	
+
 			// Show error label and display error text
 			if (errorHandlerUi != null && !Strings.isNullOrEmpty(errorText)) {
 				final TextView errorLabel = errorHandlerUi.getErrorLabel();
 				final int red = DiscoverActivityManager.getActiveActivity().getResources().getColor(R.color.red);
-	
+
 				errorLabel.setText(errorText);
 				errorLabel.setVisibility(View.VISIBLE);
 				errorLabel.setTextColor(red);
 			}
-	
+
 			// Set the input fields to be highlighted in red and clears text
 			if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
 				final List<EditText> inputFields = errorHandlerUi.getInputFields();
 				final int numberOfFields = inputFields.size();
 				Object genericField = null;
-	
+
 				//Loop through the input fields, determine what kind of field they are, set their error state
 				//and clear the text in them.
 				for(int i = 0; i < numberOfFields; ++i){
 					genericField = inputFields.get(i);
-	
+
 					//If the current field is a ValidatedInputField we should use its method for setting errors.
 					if(genericField instanceof ValidatedInputField){
 						((ValidatedInputField)genericField).setErrors();
@@ -108,15 +107,16 @@ public class BankErrorHandler implements ErrorHandler {
 					}
 					//Clear the text in the field.
 					((EditText)genericField).getEditableText().clear();
+					((EditText)genericField).clearFocus();
 				}
-	
+
 			}
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.discover.mobile.error.ErrorHandler#clearTextOnScreen(com.discover
 	 * .mobile.error.ErrorHandlerUi)
@@ -131,19 +131,20 @@ public class BankErrorHandler implements ErrorHandler {
 		// Set the input fields to be highlighted in red and clears text
 		if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
 			// Set Focus to first field in screen
-			errorHandlerUi.getInputFields().get(0).requestFocus();
 
 			for (int i = (errorHandlerUi.getInputFields().size() - 1); i >= 0; i--) {
 				final EditText text = errorHandlerUi.getInputFields().get(i);
-				text.setText("");
+				text.getText().clear();
 				text.setBackgroundResource(R.drawable.edit_text_default);
+				text.clearFocus();
+				text.setCompoundDrawables(null, null, null, null);
 			}
 		}
 	}
 
 	/**
 	 * Show a custom modal alert dialog for the activity
-	 * 
+	 *
 	 * @param alert
 	 *            - the modal alert to be shown
 	 */
@@ -158,7 +159,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.discover.mobile.error.ErrorHandler#createErrorModal(int, int,
 	 * int)
 	 */
@@ -173,9 +174,9 @@ public class BankErrorHandler implements ErrorHandler {
 		final int helpResId = com.discover.mobile.bank.R.string.bank_need_help_number_text;
 
 		// Create a one button modal with text as per parameters provided
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, 
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity,
 				titleText, errorText, true, helpResId,R.string.ok);
-		
+
 		/**Set modal Title and phone number if provided from server*/
 		updateModalInfo(modal);
 
@@ -186,14 +187,14 @@ public class BankErrorHandler implements ErrorHandler {
 
 			}
 		});
-		
+
 		// Show one button error dialog
 		return modal;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.discover.mobile.error.ErrorHandler#createErrorModal(java.lang.String,
 	 * java.lang.String)
@@ -210,12 +211,12 @@ public class BankErrorHandler implements ErrorHandler {
 
 
 		// Create a one button modal with text as per parameters provided
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, 
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity,
 				titleText, errorText, true, helpResId, R.string.ok);
-		
+
 		/**Set modal Title and phone number if provided from server*/
 		updateModalInfo(modal);
-		
+
 		modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -227,37 +228,41 @@ public class BankErrorHandler implements ErrorHandler {
 		// Show one button error dialog
 		return modal;
 	}
-	
+
 	/**
 	 * Method used to update the title and phone number in modal if provided in the last error
 	 * response which is provided via the BankNetworkServiceCallManager;
-	 * 
+	 *
 	 * @param modal Reference to a modal that has not been shown.
 	 */
 	public void updateModalInfo(final ModalAlertWithOneButton modal) {
+
+		final ModalDefaultTopView modalTopView = (ModalDefaultTopView)modal.getTop();
+
 		/**Update footer in modal to use phone number provided in error response*/
 		final ErrorResponse<?> errorResponse = BankNetworkServiceCallManager.getInstance().getLastError();
 		if( errorResponse != null &&  errorResponse instanceof BankErrorResponse ) {
 			final BankErrorResponse bankErrorResponse = (BankErrorResponse) errorResponse;
 			final String phoneNumber = bankErrorResponse.getPhoneNumber();
 			final String title = bankErrorResponse.getTitle();
-			
-			final ModalDefaultTopView modalTopView = (ModalDefaultTopView)modal.getTop();
-			
+
 			/**Set modal title with title sent from server*/
 			if( !Strings.isNullOrEmpty(title) )
 				modalTopView.setTitle(title);
-			
+
 			/**Set modal phonenumber with number sent from server*/
-			if( !Strings.isNullOrEmpty(phoneNumber) && modalTopView.getHelpFooter() != null) 
+			if( !Strings.isNullOrEmpty(phoneNumber) && modalTopView.getHelpFooter() != null)
 				modalTopView.getHelpFooter().setToDialNumberOnClick(phoneNumber);
+
 		}
+
+		modalTopView.hideNeedHelpFooter();
 
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.discover.mobile.error.ErrorHandler#handleHttpInternalServerErrorModal
 	 * ()
@@ -274,7 +279,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.discover.mobile.error.ErrorHandler#handleHttpFraudNotFoundUserErrorModal
 	 * (com.discover.mobile.error.ErrorHandlerUi, java.lang.String)
@@ -292,7 +297,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.discover.mobile.error.ErrorHandler#handleHttpServiceUnavailableModal
 	 * (java.lang.String)
@@ -314,7 +319,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 		} else {
 			modal = createErrorModal(title, errorText);
-		} 
+		}
 
 		showCustomAlert(modal);
 
@@ -323,7 +328,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.discover.mobile.error.ErrorHandler#handleHttpForbiddenError()
 	 */
 	@Override
@@ -331,34 +336,34 @@ public class BankErrorHandler implements ErrorHandler {
 		// TODO: Will complete this in the Handle Technical Difficulties User
 		// Story
 	}
-	
+
 	/**
 	 * Handler for 403 Forbidden for Check Deposit work-flow. Error message is expected to be provided from server.
-	 * 
+	 *
 	 * @param msgErrResponse Reference to object that represents the response from the Server with error message to display.
-	 * 
+	 *
 	 * @return True if handled, false otherwise
 	 */
 	public boolean handleHttpForbidden(final BankErrorResponse msgErrResponse) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		boolean handled = false;
-		
+
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {			
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final NetworkServiceCall<?> lastCall = BankNetworkServiceCallManager.getInstance().getLastServiceCall();
-			
+
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
-			
+
 			/**Remove the Check Deposit Terms and Conditions View from fragment back stack*/
-			if( navActivity.getCurrentContentFragment() instanceof BankDepositTermsFragment) {			
+			if( navActivity.getCurrentContentFragment() instanceof BankDepositTermsFragment) {
 				navActivity.getSupportFragmentManager().popBackStack();
 			}
-			
+
 			/**Verify the user is currently in the check deposit work-flow*/
 			if ( lastCall instanceof GetAccountLimits ||
 				 (lastCall instanceof AcceptTermsService &&
 			     ((AcceptTermsService)lastCall).getEligibility().isDepositsEligibility())) {
-				
+
 				final Bundle bundle = new Bundle();
 				bundle.putString(BankDepositForbidden.KEY_ERROR_MESSAGE, msgErrResponse.getErrorMessage());
 				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.ForbiddenError);
@@ -373,34 +378,34 @@ public class BankErrorHandler implements ErrorHandler {
 				Log.e(TAG, "Unable to process 403 invalid activity type");
 			}
 		}
-		
+
 		return handled;
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Handler for 422 UnprocessableEntiry from execution of a Bank service call. Error message is expected to be provided from server.
-	 * 
+	 *
 	 * @param msgErrResponse Reference to object that represents the response from the Server with error message to display.
-	 * 
+	 *
 	 * @return True if handled, false otherwise
 	 */
 	public boolean handleUnprocessableEntity(final BankErrorResponse msgErrResponse) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		boolean handled = false;
-		
+
 		/**Verify an error message is provided*/
 		if( !Strings.isNullOrEmpty(msgErrResponse.getErrorMessage()) ) {
 			/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-			if( activity != null && activity instanceof BankNavigationRootActivity ) {			
+			if( activity != null && activity instanceof BankNavigationRootActivity ) {
 				final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
-				
+
 				if( navActivity.getCurrentContentFragment() != null &&
 					navActivity.getCurrentContentFragment() instanceof BankErrorHandlerDelegate ) {
-				
+
 					final BankErrorHandlerDelegate errorHandler = (BankErrorHandlerDelegate)navActivity.getCurrentContentFragment();
-					
+
 					handled = errorHandler.handleError(msgErrResponse);
 				} else {
 					if( Log.isLoggable(TAG, Log.ERROR)) {
@@ -417,14 +422,14 @@ public class BankErrorHandler implements ErrorHandler {
 				Log.e(TAG, "No Error message provided");
 			}
 		}
-		
+
 		return handled;
-		
+
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.discover.mobile.error.ErrorHandler#handleGenericError(int)
 	 */
 	@Override
@@ -433,7 +438,7 @@ public class BankErrorHandler implements ErrorHandler {
 				R.string.error_request_not_completed_msg);
 
 		showCustomAlert(modal);
-		
+
 		//If it is a screen with inline errors then clear the text fields on an error
 		if( DiscoverActivityManager.getActiveActivity() instanceof ErrorHandlerUi ) {
 			final ErrorHandlerUi currentUi = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
@@ -443,7 +448,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.discover.mobile.error.ErrorHandler#handleHttpUnauthorizedError()
 	 */
 	@Override
@@ -453,7 +458,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.discover.mobile.error.ErrorHandler#handleLoginAuthFailure(com.discover
 	 * .mobile.error.ErrorHandlerUi, java.lang.String)
@@ -466,7 +471,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * com.discover.mobile.error.ErrorHandler#handleLockedOut(com.discover.mobile
 	 * .error.ErrorHandlerUi, java.lang.String)
@@ -494,7 +499,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 		//Hide bottom view for locked out account
 		modal.hideBottomView();
-		
+
 		showCustomAlert(modal);
 
 		// Clear text and set focus to first field
@@ -506,7 +511,7 @@ public class BankErrorHandler implements ErrorHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.discover.mobile.error.ErrorHandler#handleSessionExpired()
 	 */
 	@Override
