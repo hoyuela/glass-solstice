@@ -180,7 +180,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 					 * Send a request to download account limits for the selected account. If successful
 					 * it will navigate to select account step 2 in check deposit work flow and send selected account
 					 * */
-					BankServiceCallFactory.createGetAccountLimits(account).submit();
+					BankServiceCallFactory.createGetAccountLimits(account, false).submit();
 				}
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {

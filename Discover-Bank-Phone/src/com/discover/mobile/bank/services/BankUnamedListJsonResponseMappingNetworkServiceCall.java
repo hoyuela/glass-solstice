@@ -21,8 +21,14 @@ import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkS
  *            The <u>I</u>nner type for the JSON result
  */
 public abstract class BankUnamedListJsonResponseMappingNetworkServiceCall<M, I>
-extends UnamedListJsonResponseMappingNetworkServiceCall<M, I> {
+	extends UnamedListJsonResponseMappingNetworkServiceCall<M, I> 
+	implements BackgroundServiceCall{
 
+	/**
+	 * Flag used to determine whether service call is to run silently in background.
+	 */
+	boolean isBackgroundCall = false;
+	
 	/**
 	 * 
 	 * @param context
@@ -66,6 +72,16 @@ extends UnamedListJsonResponseMappingNetworkServiceCall<M, I> {
 			//Return an empty link object if any exception occurs
 			return urls;
 		}
+	}
+	
+	@Override
+	public void setIsBackgroundCall(final boolean value) {
+		isBackgroundCall = value;	
+	}
+
+	@Override
+	public boolean isBackgroundCall() {
+		return isBackgroundCall;
 	}
 
 }
