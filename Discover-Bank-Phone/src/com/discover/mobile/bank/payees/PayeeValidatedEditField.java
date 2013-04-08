@@ -35,6 +35,8 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 * by the user. It is used by the isValid() method
 	 */
 	public static Pattern INVALID_CHARACTERS = Pattern.compile("[<>\\(\\)&;\'\"\\[\\]{}]");
+	public static Pattern NON_ALPHANUMERIC = Pattern.compile("^[\\W]*$");
+	public static Pattern NON_ALPHANUMERIC_OR_WHITESPACE = Pattern.compile("^[(?!\\w|\\s)]*$");
 	/**
 	 * Holds the minimum amount of characters allowed for this text field.
 	 */

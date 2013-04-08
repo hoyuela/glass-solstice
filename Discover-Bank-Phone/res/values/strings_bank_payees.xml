@@ -47,4 +47,16 @@
 	<string name="bank_payee_action_edit">Edit</string>
 	<string name="bank_payee_action_delete">Delete</string>
 
+	<!-- Add Unmanaged Payee Details Strings -->
+	<string name="bank_payee_phone_number">Phone #</string>
+	<string name="bank_payee_address_line1">Address Line 1</string>
+	<string name="bank_payee_address_line2">Address Line 2 (Optional)</string>
+	<string name="bank_payee_city">City</string>
+	<string name="bank_payee_state">State</string>
+	<string name="bank_payee_memo">Account # / Memo (Optional)</string>
+	
+	<!-- Add Unmanaged Payee Error Strings -->
+	<string name="bank_invalid_phone_number">Invalid phone numbers</string>
+	
+	
 </resources>

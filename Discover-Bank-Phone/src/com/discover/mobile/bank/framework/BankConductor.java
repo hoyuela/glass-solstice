@@ -42,8 +42,9 @@ import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.paybills.PaymentDetailsViewPager;
 import com.discover.mobile.bank.paybills.ReviewPaymentsTable;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
+import com.discover.mobile.bank.payees.BankAddManagedPayeeFragment;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
-import com.discover.mobile.bank.payees.BankAddPayeeFragment;
+import com.discover.mobile.bank.payees.BankAddUnmanagedPayeeFragment;
 import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
 import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.BankSearchSelectPayeeFragment;
@@ -552,9 +553,15 @@ public final class BankConductor  extends Conductor {
 				fragment = new BankEnterPayeeFragment();
 				activity.makeFragmentVisible(fragment);
 			}
-			//If class type is BankAddPayeeFragment then open the Add Payee Fragment Step 4 of work-flow
-			else if( step == BankAddPayeeFragment.class ) {
-				fragment = new BankAddPayeeFragment();
+			//If class type is BankAddManagedPayeeFragment then open the Add Managed Payee Fragment Step 4 of work-flow
+			else if( step == BankAddManagedPayeeFragment.class ) {
+				fragment = new BankAddManagedPayeeFragment();
+				fragment.setArguments(bundle);
+				activity.makeFragmentVisible(fragment);
+			}
+			//If class type is BankAddUnmanagedPayeeFragment then open the Add Unmanaged Payee Step 4 of work-flow
+			else if( step == BankAddUnmanagedPayeeFragment.class) {
+				fragment = new BankAddUnmanagedPayeeFragment();
 				fragment.setArguments(bundle);
 				activity.makeFragmentVisible(fragment);
 			}

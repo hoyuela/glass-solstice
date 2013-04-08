@@ -68,6 +68,10 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 * 
 	 */
 	private Bundle bundle = null;
+	/**
+	 * Control used to navigate the user to add an unmanaged payee
+	 */
+	private SimpleChooseListItem enterPayeeDetails;
 			
 	/**
 	 * Create the view
@@ -95,6 +99,11 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		/**TextView which shows the user what the search criteria was used to generate the list of Payees*/
 		searchName = (TextView)view.findViewById(R.id.search_name);
 
+		/**Custom Widget used to navigate to the Add Payees fragment*/
+		enterPayeeDetails = (SimpleChooseListItem)view.findViewById(R.id.enter_payee_details);
+		enterPayeeDetails.setTitleText(R.string.bank_enter_payee_details);
+		enterPayeeDetails.setOnClickListener(this);
+		
 		/**Check whether bundle is empty*/
 		if( bundle != null) {
 			searchCriteria = bundle.getString(SEARCH_ITEM);
@@ -194,7 +203,7 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		}
 		/**Enter Payee Details was clicked*/
 		else if( sender instanceof SimpleChooseListItem ) {
-			BankConductor.navigateToAddPayee(BankAddPayeeFragment.class, null);
+			BankConductor.navigateToAddPayee(BankAddUnmanagedPayeeFragment.class, null);
 		}
 
 	}

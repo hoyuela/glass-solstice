@@ -25,14 +25,14 @@ import com.discover.mobile.common.ui.widgets.ValidatedInputFieldListener;
  *
  */
 public class BankEditDetail extends RelativeLayout implements OnClickListener, OnFocusChangeListener, OnEditorActionListener, ValidatedInputFieldListener{
-	private TextView topLabel;
-	private TextView middleLabel;
-	private PayeeValidatedEditField editableField;
-	private BankEditDetail nextDetail;
-	private TextView errorLabel;
-	private View dividerLine;
-	private View caret;
-	private View view;
+	protected TextView topLabel;
+	protected TextView middleLabel;
+	protected PayeeValidatedEditField editableField;
+	protected BankEditDetail nextDetail;
+	protected TextView errorLabel;
+	protected View dividerLine;
+	protected View caret;
+	protected View view;
 	
 	public BankEditDetail(final Context context) {
 		super(context);
@@ -48,7 +48,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		doSetup(context);
 	}
 
-	private void doSetup(final Context context) {
+	protected void doSetup(final Context context) {
 		addView(getInflatedLayout(context));
 		loadViews();
 	}
