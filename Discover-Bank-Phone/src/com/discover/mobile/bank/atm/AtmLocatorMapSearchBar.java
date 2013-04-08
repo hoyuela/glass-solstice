@@ -169,16 +169,18 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 		searchBox.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(final View v, final MotionEvent event) {
-				if (isTouchRegionValid(event) && !searchBox.getText().toString().isEmpty()) {
-					searchBox.setText("");
-				}else if(isTouchRegionValid(event)){
-					searchBox.clearFocus();
-					filterLayout.setVisibility(View.GONE);
-					final InputMethodManager manager = 
-							(InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-					manager.hideSoftInputFromWindow(searchBox.getWindowToken(), 0);
-					fragment.startCurrentLocationSearch();
-					return true;
+				if(event.getAction() == MotionEvent.ACTION_UP){
+					if (isTouchRegionValid(event) && !searchBox.getText().toString().isEmpty()) {
+						searchBox.setText("");
+					}else if(isTouchRegionValid(event)){
+						searchBox.clearFocus();
+						filterLayout.setVisibility(View.GONE);
+						final InputMethodManager manager = 
+								(InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+						manager.hideSoftInputFromWindow(searchBox.getWindowToken(), 0);
+						fragment.startCurrentLocationSearch();
+						return true;
+					}
 				}
 
 				return false;
@@ -207,6 +209,11 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 					filterLayout.startAnimation(Animator.expand(filterLayout));
 				}else{
 					filterLayout.startAnimation(Animator.collapseAndHide(filterLayout));
+				}
+				if(searchBox.getText().toString().isEmpty() && !hasFocus){
+					searchBox.setHint(R.string.atm_location_search_help);
+				}else{
+					searchBox.setHint(null);
 				}
 			}
 

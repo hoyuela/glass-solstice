@@ -735,8 +735,8 @@ public class SchedulePaymentFragment extends BaseFragment
 				if(!amountEdit.isValid()) {
 					amountEdit.setErrors();
 				}
-
-				if (amountEdit.isValid() && !isDateError) {
+				
+				if( amountEdit.isValid() && !isDateError) {
 					amountEdit.clearFocus();
 
 					clearErrors();
@@ -768,10 +768,14 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * @return
 	 */
 	private int formatAmount(String amount){
-		amount = amount.replaceAll(",", "");
-		amount = amount.replace(".", "");
+		int ret = 0;
+		if( !Strings.isNullOrEmpty(amount) ) {
+			amount = amount.replaceAll(",", "");
+			amount = amount.replace(".", "");
+			ret = Integer.parseInt(amount);
+		}
 		
-		return Integer.parseInt(amount);
+		return ret;
 	}
 
 	@Override

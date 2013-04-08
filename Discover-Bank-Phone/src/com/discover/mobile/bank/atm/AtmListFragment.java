@@ -3,8 +3,14 @@
  */
 package com.discover.mobile.bank.atm;
 
+import java.io.IOException;
+import java.util.List;
+
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -12,6 +18,7 @@ import android.widget.ArrayAdapter;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.atm.AtmDetail;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.bank.ui.table.TableTitles;
@@ -144,6 +151,31 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 			}
 		});
 		footer.hideAll();
+	}
+
+	/**
+	 * Show the street view
+	 */
+	public void showStreetView(final AtmDetail atm){
+		try {
+			final String addressString =  atm.address1 + " "  + atm.city +" " + atm.state;
+			final Geocoder coder = new Geocoder(this.getActivity());
+			final List<Address> addresses = coder.getFromLocationName(addressString, 1);
+			final Bundle bundle = new Bundle();
+			if(null == addresses || addresses.isEmpty()){
+				bundle.putDouble(BankExtraKeys.STREET_LAT, addresses.get(0).getLatitude());
+				bundle.putDouble(BankExtraKeys.STREET_LON, addresses.get(0).getLongitude());						
+			}else{
+				bundle.putDouble(BankExtraKeys.STREET_LAT, atm.getLatitude());
+				bundle.putDouble(BankExtraKeys.STREET_LON, atm.getLongitude());	
+			}
+			bundle.putInt(BankExtraKeys.ATM_ID, atm.id);
+			observer.showStreetView(bundle);
+		} catch (final IOException e) {
+			if(Log.isLoggable(AtmMarkerBalloonManager.class.getSimpleName(), Log.ERROR)){
+				Log.e(AtmMarkerBalloonManager.class.getSimpleName(), "Error Getting Street View:" + e);
+			}
+		}
 	}
 
 	@Override
