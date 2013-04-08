@@ -505,7 +505,8 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * /api/deposits/limits/{id}.
 	 *
 	 * @param value - Holds information about the Account whose deposit's limits are being retrieved.
-	 *
+	 * @param isBackground - used to specify whether a progress dialog should shown or not.
+	 * 
 	 * @return Reference to the GetAccountLimits object created.
 	 */
 	public static GetAccountLimits createGetAccountLimits(final Account account, final boolean isBackground) {

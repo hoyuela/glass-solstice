@@ -778,6 +778,30 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	}
 
 	/**
+	 * Method used to check to see if the service call should occur in the background without a progress dialog
+	 * 
+	 * @param sender NetworkServiceCall that is being check to see if it should happen silently.
+	 * 
+	 * @return True if it is a back ground call, false otherwise
+	 */
+	public boolean isBackgroundServiceCall(final NetworkServiceCall<?> sender) {
+		
+		boolean ret = false;
+		
+		if( sender != null ) {
+	 		if( sender instanceof BackgroundServiceCall ) {
+				ret = ((BackgroundServiceCall)sender).isBackgroundCall();
+	 		}
+						
+			ret |=  sender instanceof RefreshBankSessionCall || 
+					sender instanceof BankApiServiceCall || 
+					sender instanceof BankHolidayServiceCall;		
+ 		}
+		
+		return ret;		
+	}
+	
+	/**
 	 * Enum used to specify whether a NetworkServiceCallAsyncArgs is for a successful, error or exception
 	 * response to a network service call.
 	 * @author henryoyuela
