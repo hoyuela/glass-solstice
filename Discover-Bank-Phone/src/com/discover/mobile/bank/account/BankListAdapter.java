@@ -47,10 +47,8 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	 * @param items - items to set in the adapter
 	 * @param fragment - fragment using the adapter
 	 */
-	public BankListAdapter(final Context context, final int textViewResourceId, final List<ActivityDetail> items, 
-			final BankAccountActivityTable fragment) {
+	public BankListAdapter(final Context context, final int textViewResourceId, final BankAccountActivityTable fragment) {
 		super(context, textViewResourceId);
-		details = items;
 		inflater = LayoutInflater.from(context);
 		res = context.getResources();
 		this.fragment =fragment;
@@ -83,7 +81,11 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		}
 
 		/**Update the display values*/
-		holder.date.setText(convertDate(detail.dates.get(ActivityDetail.POSTED).split(ActivityDetail.DATE_DIVIDER)[0]));
+		String date = detail.getTableDisplayDate();
+		if(date.contains(ActivityDetail.DATE_DIVIDER)){
+			date = date.split(ActivityDetail.DATE_DIVIDER)[0];
+		}
+		holder.date.setText(convertDate(date));
 		holder.desc.setText(detail.description);
 		final double amount = ((double)detail.amount.value)/DOLLAR_CONVERSION;
 		if(amount == 0.00){
@@ -105,7 +107,11 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	 */
 	@Override
 	public int getCount(){
-		return details.size();
+		int count = 0;
+		if(null != details){
+			count = details.size();
+		}
+		return count;
 	}
 
 	/**

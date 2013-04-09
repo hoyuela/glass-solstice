@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.account;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.os.Bundle;
@@ -15,7 +16,9 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
+import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.ui.table.BaseTable;
@@ -53,8 +56,18 @@ public class BankAccountActivityTable extends BaseTable{
 		footer.showDone();
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		if(header.isPosted()){
+			if(null == posted){
+				posted = new ListActivityDetail();
+				posted.activities  = new ArrayList<ActivityDetail>();
+				posted.links = new HashMap<String, ReceivedUrl>();
+			}
 			handleReceivedData(posted, list);
 		}else{
+			if(null == scheduled){
+				scheduled = new ListActivityDetail();
+				scheduled.activities  = new ArrayList<ActivityDetail>();
+				scheduled.links = new HashMap<String, ReceivedUrl>();
+			}
 			handleReceivedData(scheduled, list);
 		}
 		final ReceivedUrl url = getLoadMoreUrl();
@@ -134,7 +147,12 @@ public class BankAccountActivityTable extends BaseTable{
 			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
 				if(isChecked){
 					header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);		
-					updateAdapter(posted.activities);
+					if(null == posted){
+						BankServiceCallFactory.createGetActivityServerCall(
+								BankUser.instance().getCurrentAccount().getLink(Account.LINKS_POSTED_ACTIVITY)).submit();
+					}else{
+						updateAdapter(posted.activities);	
+					}
 				}
 			}
 		};
@@ -151,7 +169,12 @@ public class BankAccountActivityTable extends BaseTable{
 			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
 				if(isChecked){
 					header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);	
-					updateAdapter(scheduled.activities);
+					if(null == scheduled){
+						BankServiceCallFactory.createGetActivityServerCall(
+								BankUser.instance().getCurrentAccount().getLink(Account.LINKS_SCHEDULED_ACTIVITY)).submit();
+					}else{
+						updateAdapter(scheduled.activities);	
+					}			
 				}
 			}
 		};
@@ -164,7 +187,7 @@ public class BankAccountActivityTable extends BaseTable{
 	@Override
 	public void maybeLoadMore() {
 		final ReceivedUrl url = getLoadMoreUrl();
-		if(null == url){
+		if(null == url || null == url.url || url.url.isEmpty()){
 			showNothingToLoad();
 			footer.showDone();
 		}else{
@@ -308,7 +331,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	@Override
 	public void setupAdapter() {
-		adapter = new BankListAdapter(this.getActivity(), R.layout.bank_table_item, posted.activities, this);
+		adapter = new BankListAdapter(this.getActivity(), R.layout.bank_table_item, this);
 
 	}
 
@@ -317,14 +340,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	@Override
 	public void createDefaultLists() {
-		if(null == posted || null == posted.activities){
-			posted = new ListActivityDetail();
-			posted.activities = new ArrayList<ActivityDetail>();
-		}
-		if(null == scheduled || null == scheduled.activities){
-			scheduled = new ListActivityDetail();
-			scheduled.activities = new ArrayList<ActivityDetail>();
-		}
+		//This does not need to be done
 	}
 
 	/**
