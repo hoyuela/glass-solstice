@@ -102,7 +102,7 @@ public class CalendarFragment extends CaldroidFragment {
 	protected TextView titleTxtVw;
 	
 	@Override
-	public CaldroidGridAdapter getNewDatesGridAdapter() {
+	public CaldroidGridAdapter getNewDatesGridAdapter(final int month, final int year) {
 		return new CalendarAdapter(getActivity(), month, year, disableDates, selectedDates, minDateTime, maxDateTime);
 	}
 	
@@ -191,6 +191,7 @@ public class CalendarFragment extends CaldroidFragment {
 		args.putSerializable(SELECTED_DATE, selectedDate);
 		args.putSerializable(MIN_DATE, minDate);
 		args.putSerializable(DISABLED_DATES, disabledDates);
+		args.putBoolean("fitAllMonths", false);
 		setArguments(args);
 
 		
