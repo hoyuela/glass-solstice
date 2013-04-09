@@ -340,14 +340,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	@Override
 	public void createDefaultLists() {
-		//		if(null == posted || null == posted.activities){
-		//			posted = new ListActivityDetail();
-		//			posted.activities = new ArrayList<ActivityDetail>();
-		//		}
-		//		if(null == scheduled || null == scheduled.activities){
-		//			scheduled = new ListActivityDetail();
-		//			scheduled.activities = new ArrayList<ActivityDetail>();
-		//		}
+		//This does not need to be done
 	}
 
 	/**
