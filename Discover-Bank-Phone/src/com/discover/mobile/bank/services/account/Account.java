@@ -95,27 +95,27 @@ public class Account implements Serializable {
 	/**
 	 * Holds a String sued to represent a Checking Account
 	 */
-	public static final String ACCOUNT_CHECKING = "CHECKING";
+	public static final String ACCOUNT_CHECKING = "checking";
 	/**
 	 * Holds a String used to represent an Online Savings type of account
 	 */
-	public static final String ACCOUNT_SAVINGS = "SAVINGS";
+	public static final String ACCOUNT_SAVINGS = "savings";
 	/**
 	 * Holds a String used to represent an Money Market type of account
 	 */
-	public static final String ACCOUNT_MMA = "MONEY_MARKET";
+	public static final String ACCOUNT_MMA = "money_market";
 	/**
 	 * Holds a String used to represent an CDs type of account
 	 */
-	public static final String ACCOUNT_CD = "CD";
+	public static final String ACCOUNT_CD = "cd";
 	/**
 	 * Holds a String used to represent an IRA type of account
 	 */
-	public static final String ACCOUNT_IRA= "IRA";
+	public static final String ACCOUNT_IRA= "ira";
 	/**
 	 * Holds a String used to represent an Loan type of account
 	 */
-	public static final String ACCOUNT_LOAN = "LOAN";
+	public static final String ACCOUNT_LOAN = "loan";
 	/**
 	 * Holds a String used to fetch the URL used to downloaded posted activity
 	 */
@@ -277,22 +277,22 @@ public class Account implements Serializable {
 		String ret = "";
 		
 		//Group for Checking: Holds only Checking Types
-		if( this.type.equals(Account.ACCOUNT_CHECKING)) {		
+		if( this.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {		
 			ret = Account.ACCOUNT_CHECKING;	
 		}
 		//Group for Savings: Holds Online Savings, MMA, CDs
-		else if( this.type.equals(Account.ACCOUNT_SAVINGS) || 
-				 this.type.equals(Account.ACCOUNT_MMA) ||
-				 this.type.equals(Account.ACCOUNT_CD)) {
+		else if( this.type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) || 
+				 this.type.equalsIgnoreCase(Account.ACCOUNT_MMA) ||
+				 this.type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
 			ret = Account.ACCOUNT_SAVINGS;
 			
 		}
 		//Group for Retirement Plans: Holds IRA, IRA CDs
-		else if( this.type.equals(Account.ACCOUNT_IRA)) {
+		else if( this.type.equalsIgnoreCase(Account.ACCOUNT_IRA)) {
 			ret = Account.ACCOUNT_IRA;
 		}
 		//Group Personal Loans: Personal Loans
-		else if( this.type.equals(Account.ACCOUNT_LOAN)) {
+		else if( this.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
 			ret = Account.ACCOUNT_LOAN;
 		} else {
 			ret = this.type;
@@ -305,7 +305,7 @@ public class Account implements Serializable {
 	 * @return Returns true if account is eligible for check deposit, false otherwise.
 	 */
 	public boolean isDepositEligible() {
-		return ( type.equals(ACCOUNT_CHECKING) || type.equals(ACCOUNT_SAVINGS) || type.equals(ACCOUNT_MMA));
+		return ( type.equalsIgnoreCase(ACCOUNT_CHECKING) || type.equalsIgnoreCase(ACCOUNT_SAVINGS) || type.equalsIgnoreCase(ACCOUNT_MMA));
 	}
 	
 	public String getDottedFormattedAccountNumber() {
@@ -316,7 +316,7 @@ public class Account implements Serializable {
 	 * @return Returns true if account is eligible for scheduling payment, false otherwise.
 	 */
 	public boolean canSchedulePayment() {
-		return (type.equals(ACCOUNT_CHECKING) || type.equals(ACCOUNT_MMA));
+		return (type.equalsIgnoreCase(ACCOUNT_CHECKING) || type.equalsIgnoreCase(ACCOUNT_MMA));
 	}
 
 }
