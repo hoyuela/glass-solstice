@@ -339,11 +339,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			setCheckMark(saveIdWasChecked, false);
 		}
 
-		// User Loggedout without Remember User ID Checked
-		if(!(saveUserId || saveIdWasChecked)) {
-			clearInputs();
-		}
-
 		//Default to the last path user chose for login Card or Bank
 		this.setApplicationAccount();
 
@@ -395,6 +390,13 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	public void onStart() {
 		super.onStart();
 		FacadeFactory.getPushFacade().startXtifySDK(this);
+	}
+	
+	@Override
+	public void onRestoreInstanceState(final Bundle bundle) {
+		super.onRestoreInstanceState(bundle);
+
+		this.restoreState(bundle);
 	}
 
 	/**
