@@ -37,16 +37,16 @@ public class BankAccountComparable implements Comparator<Account> {
 	public int getOrdinalValue(final Account account) {
 		int ret = 0;
 		
-		if( account.type.equals(Account.ACCOUNT_CHECKING)) {		
+		if( account.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {		
 			ret = 1;	
-		} else if( account.type.equals(Account.ACCOUNT_SAVINGS) || 
-				 account.type.equals(Account.ACCOUNT_MMA) ||
-				 account.type.equals(Account.ACCOUNT_CD)) {
+		} else if( account.type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) || 
+				 account.type.equalsIgnoreCase(Account.ACCOUNT_MMA) ||
+				 account.type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
 			ret = 2;
 			
-		} else if( account.type.equals(Account.ACCOUNT_IRA)) {
+		} else if( account.type.equalsIgnoreCase(Account.ACCOUNT_IRA)) {
 			ret = 3;
-		} else if( account.type.equals(Account.ACCOUNT_LOAN)) {
+		} else if( account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
 			ret = 4;
 		} else {
 			ret = 5;
