@@ -133,7 +133,7 @@
             android:layout_height="@dimen/atm_modal_pin_height"
             android:layout_below="@+id/line3"
             android:paddingTop="@dimen/atm_modal_icon_padding"
-            android:src="@drawable/atm_locator_orange_pin" />
+            android:src="@drawable/atm_pin_orange_help_modal" />
 
         <TextView
             android:id="@+id/surcharge_title"
@@ -169,7 +169,7 @@
             android:layout_height="@dimen/atm_modal_pin_height"
             android:layout_below="@+id/line4"
             android:paddingTop="@dimen/atm_modal_icon_padding"
-            android:src="@drawable/atm_locator_gray_pin" />
+            android:src="@drawable/atm_pin_gray_help_modal" />
 
         <TextView
             android:id="@+id/non_surcharge_title"
