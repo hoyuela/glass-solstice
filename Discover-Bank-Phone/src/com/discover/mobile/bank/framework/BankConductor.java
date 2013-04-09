@@ -356,9 +356,18 @@ public final class BankConductor  extends Conductor {
 		final BankNavigationRootActivity activity =
 				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 		((AlertDialogParent)activity).closeDialog();
+
+		//Handle the case where loading more data
 		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(bundle);
-		}else{
+		} 
+		//Handle the case where switch between different types of activity posted and scheduled
+		else if( activity.getCurrentContentFragment() instanceof BankAccountActivityTable ) {
+			final BankAccountActivityTable revPmtFrag = (BankAccountActivityTable)activity.getCurrentContentFragment();
+			revPmtFrag.handleReceivedData(bundle);
+		} 
+		//Handle the first time user opens Account Activity page
+		else {
 			final BankAccountActivityTable fragment =  new BankAccountActivityTable();
 			fragment.setArguments(bundle);
 			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
@@ -920,7 +929,7 @@ public final class BankConductor  extends Conductor {
 				.getActiveActivity();
 		activity.showALUStatusModal(null);
 	}
-	
+
 	/**
 	 * Authorizes an SSO User against Bank when no BankSSOPayload is available.
 	 * This is due to an A/L/U error returned from a Card service.
@@ -933,7 +942,7 @@ public final class BankConductor  extends Conductor {
 				.getActiveActivity();
 		activity.showALUStatusModal(credentials);
 	}
-	
+
 	/**
 	 * Continues with the Skip SSO login call using provided credentials.
 	 * Typicall used when a login call originates from Card.
