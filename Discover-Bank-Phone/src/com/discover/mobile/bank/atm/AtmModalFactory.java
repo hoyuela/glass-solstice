@@ -105,6 +105,42 @@ public final class AtmModalFactory{
 	}
 
 	/**
+	 * Get the modal that will alert the user to failing getting the users current location and ask them to retry.
+	 * @param context - activity context
+	 * @param fragment - fragment using the modal
+	 * @return the modal that will alert the user to failing getting the users current location and ask them to retry.
+	 */
+	public static ModalAlertWithTwoButtons getCurrentLocationFailModal(final Context context, final LocationFragment fragment){
+		final ModalDefaultTopView top = new ModalDefaultTopView(context, null);
+		final ModalTwoButtonWhiteBottom bottom = new ModalTwoButtonWhiteBottom(context, null);
+		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(context, top, bottom);
+		top.setTitle(R.string.atm_location_timeout_title);
+		top.setContent(R.string.atm_location_timeout_text);
+		top.showErrorIcon(false);
+		top.hideNeedHelpFooter();
+		bottom.setOkButtonText(R.string.atm_location_modal_allow);
+		bottom.setCancelButtonText(R.string.atm_location_modal_decline);
+		bottom.getCancelButton().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.white_button));
+		bottom.getOkButton().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				fragment.setLocationStatus(LocationFragment.SEARCHING);
+				fragment.getLocation();
+				modal.dismiss();
+			}
+		});
+		bottom.getCancelButton().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				modal.dismiss();
+				fragment.setLocationStatus(LocationFragment.NOT_USING_LOCATION);
+			}
+		});
+		return modal;
+	}
+
+
+	/**
 	 * Get the modal that informs the users that there were no results
 	 * @param context - activity context
 	 * @param fragment - fragment using the modal

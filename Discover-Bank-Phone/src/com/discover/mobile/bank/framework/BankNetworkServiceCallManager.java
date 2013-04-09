@@ -52,6 +52,7 @@ import com.discover.mobile.bank.services.payment.GetPayBillsTermsAndConditionsCa
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
+import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -393,7 +394,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				prevCall.retransmit(activeActivity);
 			}
 			// Navigate to Payment Confirmation upon a successful payment.
-		} else if( sender instanceof CreatePaymentCall) {
+		} else if( sender instanceof CreatePaymentCall || sender instanceof UpdatePaymentCall) {
 			final PaymentDetail value = (PaymentDetail)result;
 			BankConductor.navigateToPayConfirmFragment(value);
 		}

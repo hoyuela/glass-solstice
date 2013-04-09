@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.account;
+package com.discover.mobile.bank.paybills;
 
 import java.util.List;
 
@@ -22,6 +22,11 @@ public class PaymentDetailFragment extends DetailFragment{
 	 * Reference to button used to delete a scheduled payment
 	 */
 	private Button deleteButton;
+	/**
+	 * Reference to button used to edit a scheduled payment
+	 */
+	private Button editButton;
+	
 	@Override
 	protected int getFragmentLayout() {
 		return R.layout.payment_detail;
@@ -54,15 +59,24 @@ public class PaymentDetailFragment extends DetailFragment{
 	protected void customSetup(final View mainView) {
 		//If the payment is not a scheduled payment, hide the delete and edit button.
 		deleteButton = (Button)mainView.findViewById(R.id.delete_payment_button);
+		editButton = (Button)mainView.findViewById(R.id.edit_payment_button);
 		if(!"SCHEDULED".equals(item.status) || item.isJointPayment ){
 			deleteButton.setVisibility(View.GONE);
-			((Button)mainView.findViewById(R.id.edit_payment_button)).setVisibility(View.GONE);
+			editButton.setVisibility(View.GONE);
 		}else{
 			deleteButton.setOnClickListener(new OnClickListener(){
 
 				@Override
 				public void onClick(final View v) {
 					BankConductor.navigateToDeleteConfirmation(item);
+				}
+			});
+			
+			editButton.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(final View v) {
+					BankConductor.navigateToPayBillStepTwo(getArguments());
 				}
 			});
 		}

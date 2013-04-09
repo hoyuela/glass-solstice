@@ -74,7 +74,7 @@ public class BankUrlManager  {
 	/**
 	 * String used to construct a URL used for updating an item. Example /api/auth/token?_method=PUT
 	 */
-	public static final String PUT_METHOD = "?method=PUT";
+	public static final String PUT_METHOD = "?_method=PUT";
 
 	/**
 	 * Sets the base URL used for all NetworkServiceCall<> objects used for Bank Service API

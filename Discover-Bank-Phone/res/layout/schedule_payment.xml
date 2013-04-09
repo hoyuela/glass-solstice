@@ -23,7 +23,7 @@
 		 android:background="@drawable/gray_solid_line"
 		 />
 	 
-	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	<ScrollView
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:layout_below="@+id/divider"
@@ -200,45 +200,48 @@
 	                android:id="@+id/date_item"
 	                style="@style/schedule_pay_list_element"
 	                android:gravity="center_vertical" >
-	
-	                <TextView
+	                
+	                 <TextView
 	                    android:id="@+id/date_title"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
-	                    android:layout_alignParentTop="true"
 	                    android:layout_alignParentLeft="true"
-	                    android:layout_toLeftOf="@+id/date_caret"
 	                    android:text="@string/schedule_pay_date" />
-	
-	                <TextView
-	                    android:id="@+id/date_text"
-	                    style="@style/title_copy"
-	                    android:layout_alignLeft="@+id/date_title"
-	                    android:layout_toLeftOf="@+id/date_caret"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:layout_below="@+id/date_title" />
-	
-	                <ImageView
-	                    android:id="@+id/date_caret"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:layout_alignParentRight="true"
-	                    android:layout_centerVertical="true"
-	                    android:contentDescription="@string/caret_description"
-	                    android:src="@drawable/blue_arrow_right" />
-	
-	                <TextView
-	                    android:id="@+id/date_error"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:layout_below="@+id/date_text"
-	                    android:layout_alignLeft="@+id/date_text"
-	                    android:paddingRight="@dimen/between_related_elements_padding"
-	                    android:text="@string/schedule_pay_invalid_date"
-	                    android:layout_toLeftOf="@+id/date_caret"
-	                    android:textColor="@color/error_indicator"
-	                    android:visibility="gone" />
+	                  
+	                  <LinearLayout  
+	                      android:id="@+id/date_layout"
+	                      android:layout_width="wrap_content"
+	                      android:layout_height="wrap_content"
+	                      android:layout_alignTop="@+id/date_title"
+	                      android:orientation="horizontal"
+	                      android:layout_alignParentRight="true">
+	                        <TextView
+			                    android:id="@+id/date_text"
+			                    style="@style/title_copy"
+			                    android:layout_marginRight="@dimen/between_related_elements_padding"
+			                    android:layout_width="wrap_content"
+			                    android:layout_height="wrap_content" />
+	                        
+	                          <ImageView
+			                    android:id="@+id/date_caret"
+			                    android:layout_width="wrap_content"
+			                    android:layout_height="wrap_content"      
+			                    android:layout_gravity="center_vertical" 
+			                    android:contentDescription="@string/caret_description"
+			                    android:src="@drawable/calendar_icon" />         
+	                  </LinearLayout>
+	                  
+	                   <TextView
+		                    android:id="@+id/date_error"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:layout_below="@+id/date_layout"
+		                    android:layout_alignLeft="@+id/date_title"
+		                    android:paddingRight="@dimen/between_related_elements_padding"
+		                    android:text="@string/schedule_pay_invalid_date"
+		                    android:layout_toLeftOf="@+id/date_caret"
+		                    android:textColor="@color/error_indicator"
+		                    android:visibility="gone" />
 	            </RelativeLayout>
 	
 	            <include layout="@layout/divider_horizontal" />

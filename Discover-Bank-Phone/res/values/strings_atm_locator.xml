@@ -45,5 +45,7 @@
     <string name="atm_help_street_icon_text">Shows street view of location.</string>
     <string name="atm_help_direction_icon_title">Directions Icon</string>
     <string name="atm_help_direction_icon_text">Displays step-by-step directions.</string>
+    <string name="atm_location_timeout_title">Cannot Retrieve Current Location</string>
+    <string name="atm_location_timeout_text">We\'re sorry, we are unable to find your location at this time. Please allow us to search for your location again.</string>
     
 </resources>

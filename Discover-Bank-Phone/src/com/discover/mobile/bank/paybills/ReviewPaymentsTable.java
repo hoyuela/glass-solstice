@@ -1,5 +1,7 @@
 package com.discover.mobile.bank.paybills;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.os.Bundle;
@@ -59,7 +61,12 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		super.refreshListener();
 		footer.showDone();
 		final int category = header.getCurrentCategory();
-		final ListPaymentDetail list = (ListPaymentDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
+		ListPaymentDetail list = (ListPaymentDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
+		if (list == null) {
+			list = new ListPaymentDetail();
+			list.payments = new ArrayList<PaymentDetail>();
+			list.links = new HashMap<String, ReceivedUrl>();
+		}
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
 			scheduled = (null == scheduled) ? list : handleReceivedData(scheduled, list);
 			updateAdapter(scheduled.payments);
@@ -144,13 +151,14 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 */
 	private ReceivedUrl getLoadMoreUrl(){
 		final int category = header.getCurrentCategory();
-		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
+		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS && scheduled != null){
 			return scheduled.links.get(ListActivityDetail.NEXT);
-		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS){
+		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS  && completed != null){
 			return completed.links.get(ListActivityDetail.NEXT);
-		}else{
+		}else if (canceled != null){
 			return canceled.links.get(ListActivityDetail.NEXT);
 		}
+		return null;
 	}
 
 	/**
@@ -330,11 +338,11 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			scheduled.payments.remove(bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM));
 		}
 
-		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
+		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS && scheduled != null){
 			this.updateAdapter(scheduled.payments);
-		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS){
+		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS && completed != null){
 			this.updateAdapter(completed.payments);
-		}else{
+		}else if (canceled != null){
 			this.updateAdapter(canceled.payments);
 		}
 

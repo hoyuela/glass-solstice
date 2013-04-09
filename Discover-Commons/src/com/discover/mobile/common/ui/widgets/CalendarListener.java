@@ -31,7 +31,10 @@ public abstract class CalendarListener extends CaldroidListener implements Seria
 	
 	@Override
 	public void onSelectDate(final Date date, final View view) {
-		//Nothing to do here
+		/**Toggle the selected date from the current selected to the newly selected*/
+		calFrag.setSelectedDates(date, date);
+		
+		calFrag.refreshView();
 	}
 	
 	@Override

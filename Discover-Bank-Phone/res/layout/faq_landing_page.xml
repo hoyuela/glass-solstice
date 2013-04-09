@@ -5,18 +5,10 @@
     android:padding="@dimen/forms_inner_padding" 
     android:background="@drawable/light_gray_bkgrd">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/title_copy"
-        android:text="@string/empty" />
-
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
         android:padding="1dp"
         android:layout_marginTop="@dimen/between_related_elements_padding" 
         android:background="@drawable/rounded_table_corners_no_padding"

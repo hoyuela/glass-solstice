@@ -83,4 +83,20 @@ public class ListPayeeDetail implements Serializable{
 		}
 		return name;
 	}
+	
+	/**
+	 * Method used to lookup payee in list using the payee's id.
+	 * @param id ID of the payee being looked-up
+	 * @return null if not found, otherwise reference to the Payee with the id specified.
+	 */
+	public PayeeDetail getPayeeFromId(final String id){
+		PayeeDetail payee = null;
+		for(final PayeeDetail detail : payees){
+			if(detail.id.equals(id)){
+				payee = detail;
+				break;
+			}
+		}
+		return payee;
+	}
 }
