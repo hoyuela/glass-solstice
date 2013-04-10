@@ -43,7 +43,6 @@ import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.DeletePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
-import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
@@ -420,7 +419,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Handle the payee success call
 		else if( sender instanceof GetPayeeServiceCall){
-			BankUser.instance().setPayees((ListPayeeDetail)result);
 			if(((GetPayeeServiceCall)sender).isChainCall()){
 				BankRotationHelper.getHelper().setBundle(null);
 				final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
