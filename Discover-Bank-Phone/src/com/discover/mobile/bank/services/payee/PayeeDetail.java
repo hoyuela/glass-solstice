@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.discover.mobile.bank.services.account.AccountNumber;
-import com.discover.mobile.common.net.json.bank.PhoneNumber;
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
+import com.discover.mobile.bank.services.json.PhoneNumber;
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

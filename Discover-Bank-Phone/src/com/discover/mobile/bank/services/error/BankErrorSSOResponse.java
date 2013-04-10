@@ -1,10 +1,10 @@
-package com.discover.mobile.common.net.error.bank;
+package com.discover.mobile.bank.services.error;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.common.net.error.ErrorMessageMapper;
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

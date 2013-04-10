@@ -18,12 +18,12 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.deposit.DepositDetail;
+import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.json.bank.Money;
 import com.google.common.base.Strings;
 
 

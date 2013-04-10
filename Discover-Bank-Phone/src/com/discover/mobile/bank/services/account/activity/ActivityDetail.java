@@ -3,7 +3,7 @@ package com.discover.mobile.bank.services.account.activity;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import com.discover.mobile.common.net.json.bank.Money;
+import com.discover.mobile.bank.services.json.Money;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

@@ -10,6 +10,8 @@ import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
+import com.discover.mobile.bank.services.error.BankErrorCodes;
+import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -19,8 +21,6 @@ import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.net.error.bank.BankErrorCodes;
-import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.google.common.base.Strings;
 
 /**
