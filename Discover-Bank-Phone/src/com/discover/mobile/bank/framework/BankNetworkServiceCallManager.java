@@ -469,23 +469,25 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Handler for GetAccountLimits service call
 		else if( sender instanceof GetAccountLimits) {
-			Bundle bundle = activeActivity.getIntent().getExtras();
-			boolean navToReview = false;
-			if(bundle == null) {
-				bundle = new Bundle();
-			} else{
-				navToReview = bundle.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
-			}
-			final Account account = ((GetAccountLimits)sender).getAccount();
-
-			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
-			final double amount = bundle.getInt(BankExtraKeys.AMOUNT)/100;
-
-			if(navToReview && account.limits.isAmountValid(amount)){
-				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.ReviewDeposit);
-			}else{
-				//Navigate to Check Deposit - Select Amount Page
-				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAmount);
+			if( !((GetAccountLimits)sender).isBackgroundCall() ) {
+				Bundle bundle = activeActivity.getIntent().getExtras();
+				boolean navToReview = false;
+				if(bundle == null) {
+					bundle = new Bundle();
+				} else{
+					navToReview = bundle.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
+				}
+				final Account account = ((GetAccountLimits)sender).getAccount();
+	
+				bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
+				final double amount = bundle.getInt(BankExtraKeys.AMOUNT)/100;
+	
+				if(navToReview && account.limits.isAmountValid(amount)){
+					BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.ReviewDeposit);
+				}else{
+					//Navigate to Check Deposit - Select Amount Page
+					BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAmount);
+				}
 			}
 		}
 		//Handler for getting email directions
@@ -563,29 +565,28 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 		
 		/* Service calls that do not show dialog must override functionality here */
-		if( !(sender instanceof RefreshBankSessionCall || 
-			  sender instanceof BankApiServiceCall || 
-			  sender instanceof BankHolidayServiceCall) ) {
+		if( !isBackgroundServiceCall(sender) ) {
 			activeActivity.startProgressDialog();
-		}
+		
 
-		/**Clear the current last error stored in the error handler*/
-		errorHandler.clearLastError();
-
-		/**
-		 * Update prevCall only if it is a different service request from current call
-		 * or if current call is null
-		 */
-		if( curCall == null || curCall.getClass() != sender.getClass() ) {
-			prevCall = curCall;			
-		} else {
-			if( Log.isLoggable(TAG, Log.WARN)) {
-				Log.w(TAG, "Previous NetworkServiceCall was not updated!");
+			/**Clear the current last error stored in the error handler*/
+			errorHandler.clearLastError();
+	
+			/**
+			 * Update prevCall only if it is a different service request from current call
+			 * or if current call is null
+			 */
+			if( curCall == null || curCall.getClass() != sender.getClass() ) {
+				prevCall = curCall;			
+			} else {
+				if( Log.isLoggable(TAG, Log.WARN)) {
+					Log.w(TAG, "Previous NetworkServiceCall was not updated!");
+				}
 			}
+	
+			/**Update current call*/
+			curCall = sender;
 		}
-
-		/**Update current call*/
-		curCall = sender;
 	}
 
 	/**
