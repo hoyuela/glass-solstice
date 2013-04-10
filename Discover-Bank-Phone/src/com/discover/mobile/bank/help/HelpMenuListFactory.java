@@ -101,7 +101,7 @@ public final class HelpMenuListFactory {
 	 */
 	public List<HelpItemGenerator> getCheckDepositHelpItems(){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
-		final HelpItemGenerator howItWorksModal = new HelpItemGenerator(R.string.how_it_works, false, false, 
+		final HelpItemGenerator howItWorksModal = new HelpItemGenerator(R.string.check_deposit_help, false, false, 
 																				getHowItWorksModalListener());
 		items.add(howItWorksModal);
 		items.add(checkDeposit);
