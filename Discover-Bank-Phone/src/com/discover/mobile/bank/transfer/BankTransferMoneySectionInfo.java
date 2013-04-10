@@ -7,13 +7,11 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
-import com.discover.mobile.common.nav.section.FragmentComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 /**
  * This is the class which holds the information related to the entry in the sliding menu for Transfer Money.
@@ -23,13 +21,10 @@ import com.discover.mobile.common.nav.section.GroupComponentInfo;
 public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 
 	public BankTransferMoneySectionInfo() {
-		super(R.string.section_title_transfer_money,
-				new ClickComponentInfo(R.string.section_title_transfer_money, getTransferFundsLandingClickListener()),
-				new FragmentComponentInfo(R.string.sub_section_title_scheduled_transfers, BankAccountSummaryFragment.class),
-				new FragmentComponentInfo(R.string.sub_section_title_transfer_history, BankAccountSummaryFragment.class),
-				new ClickComponentInfo(
-				R.string.sub_section_title_manage_external_accounts,true,
-				externalLink(BankUrlManager.getOpenAccountUrl())));
+		super(R.string.section_title_transfer_money, 
+				new ClickComponentInfo(R.string.section_title_transfer_money, getTransferFundsLandingClickListener()),  
+				new ClickComponentInfo(R.string.sub_section_title_transfer_history,true, externalLink(BankUrlManager.getOpenAccountUrl())), 
+				new ClickComponentInfo(R.string.sub_section_title_manage_external_accounts,true,externalLink(BankUrlManager.getOpenAccountUrl())));
 	}
 
 	private static OnClickListener externalLink(final String url){
