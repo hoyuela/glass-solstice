@@ -2,7 +2,7 @@ package com.discover.mobile.bank.services.auth.strong;
 
 import java.io.Serializable;
 
-import com.discover.mobile.common.net.error.bank.BankErrorResponse;
+import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

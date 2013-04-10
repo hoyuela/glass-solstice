@@ -21,9 +21,9 @@ import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.common.help.HelpWidget;
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
 /**

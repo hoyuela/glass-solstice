@@ -3,7 +3,7 @@ package com.discover.mobile.bank.services.payee;
 import java.io.Serializable;
 import java.util.List;
 
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 
