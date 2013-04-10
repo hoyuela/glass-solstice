@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.discover.mobile.bank.services.json.ReceivedUrl;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 
@@ -49,10 +50,7 @@ public class AddPayeeDetail implements Serializable {
 	 * Holds the name of the billing postal code field field in a JSON request.
 	 */
 	public static final String BILLING_POSTAL_CODE_FIELD = "billingPostalCode";
-	/**
-	 * Holds the name of the phone field in a JSON request.
-	 */
-	public static final String NAME_PHONE = "phone";
+	
 	
 	@JsonProperty("name")
 	public String name;
@@ -68,14 +66,12 @@ public class AddPayeeDetail implements Serializable {
 	@JsonProperty("billingPostalCode")
 	public String zip;
 	
+	@JsonIgnore
 	@JsonProperty("verified")
 	public boolean verified;
 	
 	@JsonProperty("merchantNumber")
 	public String merchantNumber;
-	
-	@JsonProperty("phone")
-	public String phone;
 
 	/**
 	 * Contains Bank web-service API Resource links
@@ -83,6 +79,7 @@ public class AddPayeeDetail implements Serializable {
 	@JsonProperty("links")
 	public List<ReceivedUrl> links;
 	
+	@JsonIgnore
 	public boolean isZipRequired;
 	
 	public AddPayeeDetail() {
@@ -92,7 +89,6 @@ public class AddPayeeDetail implements Serializable {
 		zip = "";
 		verified = false;
 		merchantNumber = "";
-		phone = "";
 		accountNumberConfirmed = "";
 	}
 	

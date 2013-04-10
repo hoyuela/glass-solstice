@@ -65,6 +65,10 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 */
 	private TextView searchName;
 	/**
+	 * Text View which shows none above the control used to add an unmanaged payee
+	 */
+	private TextView noneOfAbove;
+	/**
 	 * 
 	 */
 	private Bundle bundle = null;
@@ -104,6 +108,8 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		enterPayeeDetails.setTitleText(R.string.bank_enter_payee_details);
 		enterPayeeDetails.setOnClickListener(this);
 		
+		noneOfAbove = (TextView)view.findViewById(R.id.none_above);
+		
 		/**Check whether bundle is empty*/
 		if( bundle != null) {
 			searchCriteria = bundle.getString(SEARCH_ITEM);
@@ -114,7 +120,7 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 
 		/**Set text to show what the criteria was used to generate the list of payees found*/
 		searchName.setText(" \"" +searchCriteria +"\"");
-
+		
 		return view;
 	}
 
@@ -145,11 +151,13 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		search = (SearchPayeeResultList)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
 		if(null == search || null == search.results || search.results.isEmpty()) {
 			matches.setText(R.string.bank_no_matches_for);
-			payeesList.setVisibility(View.GONE);
+			payeesList.setVisibility(View.GONE);		
+			noneOfAbove.setVisibility(View.GONE);
 		}else{
 			matches.setText(R.string.bank_matches_for);
 			payeesList.setVisibility(View.VISIBLE);
-
+			noneOfAbove.setVisibility(View.VISIBLE);
+			
 			payeesList.removeAllViews();
 			for(final SearchPayeeResult result : search.results){
 				payeesList.addView(createListItem(result));
