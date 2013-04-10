@@ -275,4 +275,13 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		return errorLabel;
 	}
 	
+	/**
+	 * Method used to enable or disable validation.
+	 * 
+	 * @param value True to enable, false to disable.
+	 */
+	public void enableValidation(final boolean value) {
+		this.editableField.enableValidation(value);
+	}
+	
 }

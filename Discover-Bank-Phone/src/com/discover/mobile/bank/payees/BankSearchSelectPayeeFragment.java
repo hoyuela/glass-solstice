@@ -191,21 +191,22 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 			final Toast toast = Toast.makeText(this.getActivity(), text, duration);
 			toast.show();
 		}
-		/**A list item with a Managed Verified Payee Name was clicked*/
 		else if( sender instanceof SimpleChooseListItem ) {
-			final SimpleChooseListItem item = (SimpleChooseListItem)sender;
-			final SearchPayeeResult result = (SearchPayeeResult)item.getItem();
-
-			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
-
-			BankConductor.navigateToAddPayee(BankAddPayeeFragment.class, bundle);
+			/**Enter Payee Details was clicked to add Unmanaged Payee*/
+			if( sender.getId() ==  enterPayeeDetails.getId()) {
+				BankConductor.navigateToAddPayee(BankAddUnmanagedPayeeFragment.class, new Bundle());
+			}
+			/**A list item with a Managed Verified Payee Name was clicked*/
+			else {
+				final SimpleChooseListItem item = (SimpleChooseListItem)sender;
+				final SearchPayeeResult result = (SearchPayeeResult)item.getItem();
+	
+				final Bundle bundle = new Bundle();
+				bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
+	
+				BankConductor.navigateToAddPayee(BankAddManagedPayeeFragment.class, bundle);
+			}
 		}
-		/**Enter Payee Details was clicked*/
-		else if( sender instanceof SimpleChooseListItem ) {
-			BankConductor.navigateToAddPayee(BankAddUnmanagedPayeeFragment.class, null);
-		}
-
 	}
 
 	@Override

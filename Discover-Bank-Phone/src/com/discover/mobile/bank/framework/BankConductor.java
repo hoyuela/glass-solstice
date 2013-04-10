@@ -676,43 +676,27 @@ public final class BankConductor  extends Conductor {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
 
-		//Show No Matches Modal if no results found
-		if( search.results.size() <= 0 ) {
-			// Create a one button modal to notify the user that they are leaving the application
-			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
-					R.string.bank_no_payees_modal_title, 
-					R.string.bank_no_payees_modal_msg, 
-					false, 
-					R.string.bank_need_help_number_text, 
-					R.string.ok);
+		if( BankNetworkServiceCallManager.getInstance().getLastServiceCall() instanceof SearchPayeeServiceCall ) {
+			final BankSearchSelectPayeeFragment fragment = new BankSearchSelectPayeeFragment();
+			final SearchPayeeServiceCall searchCall = (SearchPayeeServiceCall)BankNetworkServiceCallManager.getInstance().getLastServiceCall();
 
-			activity.showCustomAlert(modal);
-		}
-		//Show Select Payee Page for Add a Payee work-flow
-		else {
+			final Bundle bundle = new Bundle();
 
-			if( BankNetworkServiceCallManager.getInstance().getLastServiceCall() instanceof SearchPayeeServiceCall ) {
-				final BankSearchSelectPayeeFragment fragment = new BankSearchSelectPayeeFragment();
-				final SearchPayeeServiceCall searchCall = (SearchPayeeServiceCall)BankNetworkServiceCallManager.getInstance().getLastServiceCall();
+			//Provide the text used for running a search
+			bundle.putSerializable(BankSearchSelectPayeeFragment.SEARCH_ITEM, searchCall.getSearchText());
+			//Provide list of results sent from the server
+			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, search);
+			fragment.setArguments(bundle);
 
-				final Bundle bundle = new Bundle();
+			activity.makeFragmentVisible(fragment);
+		} else {
+			//Show catch all error to the user, this should never happen
+			BankErrorHandler.getInstance().handleGenericError(0);
 
-				//Provide the text used for running a search
-				bundle.putSerializable(BankSearchSelectPayeeFragment.SEARCH_ITEM, searchCall.getSearchText());
-				//Provide list of results sent from the server
-				bundle.putSerializable(BankExtraKeys.PAYEES_LIST, search);
-				fragment.setArguments(bundle);
-
-				activity.makeFragmentVisible(fragment);
-			} else {
-				//Show catch all error to the user, this should never happen
-				BankErrorHandler.getInstance().handleGenericError(0);
-
-				if(Log.isLoggable(TAG, Log.ERROR)) {
-					Log.e(TAG, "Unexpected Service Call Found!");
-				}
+			if(Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unexpected Service Call Found!");
 			}
-		}
+		}		
 	}
 
 	/**

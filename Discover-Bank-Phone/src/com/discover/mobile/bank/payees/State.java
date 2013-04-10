@@ -1,5 +1,11 @@
 package com.discover.mobile.bank.payees;
 
+/**
+ * Class used to create objects that represent U.S. states with it's abbreviation.
+ * 
+ * @author henryoyuela
+ *
+ */
 public class State {
 	public static State[] STATES = new State[] {
 		new State("Alabama", "AL"),
@@ -61,17 +67,22 @@ public class State {
 	public String name = "";
 	public String abbrev = "";
 
-	// A simple constructor for populating our member variables for this tutorial.
+	/***
+	 * Constructo used to populate name and abbreviation at instantiation.
+	 * 
+	 * @param _name Name of the state represented by the instance of this class.
+	 * @param _abbrev Abbreviation of the state represent by the instance of this class.
+	 */
 	private State( final String _name, final String _abbrev )
 	{
 	    name = _name;
 	    abbrev = _abbrev;
 	}
 
-	// The toString method is extremely important to making this class work with a Spinner
-	// (or ListView) object because this is the method called when it is trying to represent
-	// this object within the control.  If you do not have a toString() method, you WILL
-	// get an exception.
+	/**
+	 * This method is used by the StateArrayAdapter to populate the TextView shown
+	 * in the spinner.
+	 */
 	@Override
 	public String toString()
 	{

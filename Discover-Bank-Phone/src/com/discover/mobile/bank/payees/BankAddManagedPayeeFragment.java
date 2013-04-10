@@ -3,13 +3,14 @@ package com.discover.mobile.bank.payees;
 import java.util.List;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.discover.mobile.common.net.error.bank.BankError;
@@ -34,18 +35,6 @@ import com.google.common.base.Strings;
  * 		Re-Enter Account#
  * 		Zip Code
  * 
- * If the user selected to Enter Payee Details then they have chosen to enter a potentially unverified Payee.
- * In this case the fields are:
- * 
- * 		Payee Name
- * 		Nickname
- * 		Phone Number
- * 		Address Line 1
- * 		Address Line 2 
- * 		City
- * 		State
- * 		Zip Code
- * 		Account# / Memo
  * 
  * The user will have the option to click on a help button, feedback button, an Add Payee Button, 
  * and a cancel button.
@@ -55,6 +44,7 @@ import com.google.common.base.Strings;
  */
 public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 	
+	/**Enum used to fetch BankEditDetail objects from the layout hosted by this fragment*/
 	private enum ManagedPayeeFields {
 		PayeeName,
 		PayeeNickName,
@@ -64,6 +54,31 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 		Last
 	}
 
+	@Override
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+			final Bundle savedInstanceState) {
+		final View view = super.onCreateView(inflater, container, savedInstanceState);
+		
+		/**Check if this is the first time this fragment is launched*/
+		if( null == savedInstanceState ) {
+			/**Set the first field to have focus at start-up, this flag is checked at onResume*/
+			final BankEditDetail name = getFieldDetail(ManagedPayeeFields.PayeeNickName.ordinal());
+			if( name != null) {
+				final String key = name.getTopLabel().getText().toString();
+				final Bundle bundle = getArguments();
+				if( bundle != null ) {
+					bundle.putBoolean(key, true);
+				}
+			}
+		}
+		
+		return view;
+	}
+	
+	/**
+	 * This method is called by the onCreateView of the base class only when the fragment is created for the 
+	 * first time for the instance of the object.
+	 */
 	@Override
 	protected void initializeData( final Bundle bundle ) {
 		if( null != bundle &&  null != bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM)) {
@@ -75,7 +90,9 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 		} 
 	}
 	
-	
+	/**
+	 * This method is called by the onCreateView of the base class every time it is called.
+	 */
 	@Override
 	protected void initializeUi(final View mainView) {
 		super.initializeUi(mainView);
@@ -125,9 +142,13 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 		} 
 	}
 	
-	
+	/**
+	 * Callback method for displaying inline errors.
+	 */
 	@Override
 	public boolean handleError(final BankErrorResponse msgErrResponse) {
+		super.handleError(msgErrResponse);
+		
 		for( final BankError error : msgErrResponse.errors ) {
 			if( !Strings.isNullOrEmpty(error.name) ) {
 				/**Check if error is for Payee field*/
@@ -156,10 +177,6 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 		return true;
 	}
 	
-	@Override
-	protected void executeServiceCall() {
-		BankServiceCallFactory.createAddPayeeRequest(getPayeeDetail()).submit();
-	}
 	
 	/**
 	 * Generates an AddPayeeDetail object using the text values stored in each BankEditDetail that is

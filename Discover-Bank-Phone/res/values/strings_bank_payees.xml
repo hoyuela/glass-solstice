@@ -49,6 +49,7 @@
 
 	<!-- Add Unmanaged Payee Details Strings -->
 	<string name="bank_payee_phone_number">Phone #</string>
+	<string name="bank_payee_address">Address</string>
 	<string name="bank_payee_address_line1">Address Line 1</string>
 	<string name="bank_payee_address_line2">Address Line 2 (Optional)</string>
 	<string name="bank_payee_city">City</string>

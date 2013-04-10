@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
@@ -91,9 +92,14 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 */
 	protected TextView generalError = null;
 	/**
+	 * Reference to scroll view
+	 */
+	protected ScrollView scrollView;
+	/**
 	 * String appended to a string to determine whether a field has an error on rotation
 	 */
 	final protected static String KEY_ERROR_EXT = ".hasError";
+	
 
 	/**
 	 * Sets click listeners for the actionButton, actionLink, feedbackLink. Calls the method to populate
@@ -145,6 +151,8 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		} else {
 			pageTitle.setVisibility(View.GONE);
 		}
+		
+		scrollView =(ScrollView)view.findViewById(R.id.main_layout);
 		
 		/**If there aren't any ViewPagerListItems then see if any RelativeLayout list items are provided*/
 		if( null == content) { 
@@ -280,6 +288,16 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		if( view != null && !Strings.isNullOrEmpty(text)  ) {
 			view.setText(text);
 			view.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	/**
+	 * Method used to scroll to the top of the page.
+	 */
+	public void scrollToTop() {
+		if(scrollView != null ) {
+			scrollView.fullScroll(ScrollView.FOCUS_UP);
+			scrollView.smoothScrollTo(0, 0);
 		}
 	}
 }

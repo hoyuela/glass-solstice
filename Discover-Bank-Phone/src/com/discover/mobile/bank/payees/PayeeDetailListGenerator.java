@@ -60,6 +60,10 @@ final public class PayeeDetailListGenerator  {
 		name.enableEditing(!isVerified && isEditable);
 		name.getDividerLine().setVisibility(View.GONE);
 		name.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT);
+		name.getEditableField().setMinimum(2);
+		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(32) };
+		name.getEditableField().setFilters(inputFilters);
+		name.getEditableField().setInvalidPattern(PayeeValidatedEditField.NON_ALPHANUMERIC);
 		return name;
 	}
 	
@@ -91,7 +95,7 @@ final public class PayeeDetailListGenerator  {
 		/**Add Account #, Account# Validation 1 char min./32 char max and Invalid characters <>;"[]{} */
 		final BankEditDetail account = createBankEditDetail(context, R.string.bank_payee_account, text);
 		account.getEditableField().setMinimum(1);
-		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(30) };
+		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(32) };
 		account.getEditableField().setFilters(inputFilters);
 		account.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		account.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -131,17 +135,22 @@ final public class PayeeDetailListGenerator  {
 	 * @param text
 	 * @return
 	 */
-	public static BankEditDetail createZipCode(final Context context, final String text, final boolean isEditable) {
+	public static BankEditDetail createZipCode(final Context context, final String text, final boolean isEditable, final boolean isLastField) {
 		/**Add Zip Code,  5 digit numeric - validation after you leave the field*/
-		final BankEditDetail zipCode = createBankEditDetail(context, R.string.bank_payee_zip, text);
+		final BankEditDetail zipCode = createBankEditDetail(context, R.string.bank_payee_zip, (Strings.isNullOrEmpty(text) ? "" : text));
 		zipCode.getEditableField().setMinimum(5);
-		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(5) };
+		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(9) };
 		zipCode.getEditableField().setFilters(inputFilters);
 		zipCode.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		zipCode.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
 		zipCode.getEditableField().setError(R.string.bank_invalid_zip);
 		zipCode.enableEditing(isEditable);
-		zipCode.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+		
+		if( isLastField ) {
+			zipCode.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+		} else {
+			zipCode.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+		}
 		return zipCode;
 	}
 	
@@ -149,14 +158,17 @@ final public class PayeeDetailListGenerator  {
 			final String phone, final boolean isEditable) {
 	
 		/**Add Phone Number, Validation Must be a 10 digit #  and Invalid characters for a payee nickname: <>;"[]{} */
-		final BankEditDetail phoneNumber = createBankEditDetail(context, R.string.bank_invalid_phone_number, phone);
+		final BankPhoneDetail phoneNumber =  new BankPhoneDetail(context);
+		
+		if(phone != null) {	phoneNumber.setText(phone);}
+		phoneNumber.getTopLabel().setText(R.string.bank_payee_phone_number);
 		phoneNumber.getEditableField().setMinimum(10);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(10) };
 		phoneNumber.getEditableField().setFilters(inputFilters);
 		phoneNumber.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
-		phoneNumber.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		phoneNumber.enableEditing(isEditable);
 		phoneNumber.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+		phoneNumber.getEditableField().setError(R.string.bank_invalid_phone_number);
 		return phoneNumber;
 	}
 	
@@ -175,13 +187,21 @@ final public class PayeeDetailListGenerator  {
 		/**Add City, Validation min=?, max=? and Invalid characters for a payee nickname: <>;"[]{} */
 		final BankEditDetail city = createBankEditDetail(context, R.string.bank_payee_city, text);
 		city.getEditableField().setMinimum(2);
-		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(30) };
+		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(25) };
 		city.getEditableField().setFilters(inputFilters);
 		city.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		city.enableEditing(isEditable);
 		city.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		return city;
 	}
+	
+	private static BankEditDetail createAddress(final Context context, final String text) {
+		final BankEditDetail address = createBankEditDetail(context, R.string.bank_payee_address, text);
+		address.enableEditing(false);
+		address.getMiddleLabel().setSingleLine(false);
+		return address;
+	}
+	
 
 	private static BankEditDetail createAddressLine1(final Context context,
 			final String text, final boolean isEditable) {
@@ -190,7 +210,7 @@ final public class PayeeDetailListGenerator  {
 		address.getEditableField().setMinimum(2);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(30) };
 		address.getEditableField().setFilters(inputFilters);
-		address.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
+		address.getEditableField().setInvalidPattern(PayeeValidatedEditField.NON_ALPHANUMERIC);
 		address.enableEditing(isEditable);
 		address.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		return address;
@@ -200,13 +220,27 @@ final public class PayeeDetailListGenerator  {
 			final String text, final boolean isEditable) {
 		/**Add City, Validation min=?, max=? and Invalid characters for a payee nickname: <>;"[]{} */
 		final BankEditDetail address = createBankEditDetail(context, R.string.bank_payee_address_line2, text);
-		address.getEditableField().setMinimum(2);
+		address.getEditableField().setMinimum(0);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(30) };
 		address.getEditableField().setFilters(inputFilters);
 		address.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		address.enableEditing(isEditable);
+		address.enableValidation(false);
 		address.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		return address;
+	}
+	
+	private static BankEditDetail createMemo(final Context context,
+			final String text, final boolean isEditable) {
+		/**Add City, Validation min=?, max=? and Invalid characters for a payee nickname: <>;"[]{} */
+		final BankEditDetail memo = createBankEditDetail(context, R.string.bank_payee_memo, text);
+		memo.getEditableField().setMinimum(0);
+		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(34) };
+		memo.enableEditing(isEditable);
+		memo.enableValidation(false);
+		memo.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+		memo.getMiddleLabel().setTextAppearance(context, R.style.sub_copy_big);
+		return memo;
 	}
 	
 	/**
@@ -234,7 +268,7 @@ final public class PayeeDetailListGenerator  {
 		/**Only add an editable field to enter zip code if required*/
 		if( item.isZipRequired) {
 			final BankEditDetail reenterAcct = createReenterAccount(context, item.accountNumberConfirmed, false);
-			final BankEditDetail zipCode = createZipCode(context, item.zip, true);
+			final BankEditDetail zipCode = createZipCode(context, item.zip, true, true);
 			
 			/**Set what field should get focus after next is tapped*/
 			account.setNextBankEditDetail(reenterAcct);
@@ -265,14 +299,23 @@ final public class PayeeDetailListGenerator  {
 	public static List<RelativeLayout> getConfirmedPayeeDetailList(final Context context, final PayeeDetail item) {
 		final List<RelativeLayout> items = new ArrayList<RelativeLayout>();
 
-		/**Add Payee Name*/
-		items.add(createName(context, item.name, item.verified,false));
-		items.add(createNickName(context, item.nickName, false));
-		items.add(createAccount(context, item.account.formatted, false));
-		
-		/**Only add an item for zip code if required*/
-		if ( item.isZipRequired && !Strings.isNullOrEmpty(item.zip)){
-			items.add(createZipCode(context, item.zip, false));
+		if( item.verified ) {
+			/**Add Payee Name*/
+			items.add(createName(context, item.name, item.verified,false));
+			items.add(createNickName(context, item.nickName, false));
+			items.add(createAccount(context, item.account.formatted, false));
+			
+			/**Only add an item for zip code if required*/
+			if ( item.isZipRequired && !Strings.isNullOrEmpty(item.zip)){
+				items.add(createZipCode(context, item.zip, false, true));
+			}
+		} else {
+			/**Create Add Unmanaged Payee List*/
+			items.add(createName(context, item.name, item.verified, false));
+			items.add(createNickName(context, item.nickName, false));
+			items.add(createPhoneNumber(context, item.phone.formatted, false));
+			items.add(createAddress(context, item.address.formattedAddress));
+			items.add(createMemo(context, item.nickName, false));
 		}
 		
 		return items;
@@ -294,8 +337,8 @@ final public class PayeeDetailListGenerator  {
 		final BankEditDetail addressLine2 =  createAddressLine2(context, item.addressLine2, true);
 		final BankEditDetail city = createCity(context, item.addressCity, true);
 		final BankEditDetail state =  createState(context, item.addressState, true);		
-		final BankEditDetail zipCode =  createZipCode(context, item.nickName, true);
-		final BankEditDetail memo =  createNickName(context, item.nickName, true);
+		final BankEditDetail zipCode =  createZipCode(context, item.zip, true, false);
+		final BankEditDetail memo =  createMemo(context, item.accountNumber, true);
 		
 			
 		/**Set what field should get focus after next is tapped*/

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
@@ -22,12 +23,19 @@ import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.help.HelpWidget;
+import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.google.common.base.Strings;
 
-
+/**
+ * Base class with functionality that is common for rendering a UI Layout and binding with the data model
+ * used for the Add Payee application feature.
+ * 
+ * @author henryoyuela
+ *
+ */
 abstract class BankAddPayeeFragment extends BankOneButtonFragment implements BankErrorHandlerDelegate {
 	/**
 	 * Reference to a PayeeSearchResult passed in via a bundle from BankSearchSelectPayeeFragment.
@@ -158,7 +166,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		if( canProceed() ) {
 			clearErrors();
 			
-			executeServiceCall();
+			BankServiceCallFactory.createAddPayeeRequest(getPayeeDetail()).submit();
 		} else {
 			updateFieldsAppearance();
 		}
@@ -262,24 +270,26 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		if( bundle != null && null != payeeSearchResult) {
 			arguments.putSerializable(KEY_SEARCH_RESULT, payeeSearchResult);
 		}
-		
-		/**Store the state of the editable fields, to re-open keyboard on orientation change if necessary*/
-		if( this.content != null ) {
-			for( final Object object : this.content) {
-				if( object instanceof BankEditDetail ) {
-					final BankEditDetail item = (BankEditDetail)object;
-					
-					final boolean hasFocus = item.getEditableField().hasFocus();
-					final String key = item.getTopLabel().getText().toString();
-					arguments.putBoolean(key, hasFocus );
-					
-					/**If has an error then show it on rotation */
-					if( item.getEditableField().isInErrorState ) {
-						arguments.putString(key +KEY_ERROR_EXT, item.getEditableField().getErrorLabel().getText().toString());
-					}
-					
-					if( generalError.getVisibility() == View.VISIBLE ) {
-						arguments.putString(KEY_ERROR_EXT, generalError.getText().toString());
+
+		if( arguments != null ) {
+			/**Store the state of the editable fields, to re-open keyboard on orientation change if necessary*/
+			if( this.content != null ) {
+				for( final Object object : this.content) {
+					if( object instanceof BankEditDetail ) {
+						final BankEditDetail item = (BankEditDetail)object;
+						
+						final boolean hasFocus = item.getEditableField().hasFocus();
+						final String key = item.getTopLabel().getText().toString();
+						arguments.putBoolean(key, hasFocus );
+						
+						/**If has an error then show it on rotation */
+						if( item.getEditableField().isInErrorState ) {
+							arguments.putString(key +KEY_ERROR_EXT, item.getEditableField().getErrorLabel().getText().toString());
+						}
+						
+						if( generalError.getVisibility() == View.VISIBLE ) {
+							arguments.putString(KEY_ERROR_EXT, generalError.getText().toString());
+						}
 					}
 				}
 			}
@@ -412,7 +422,45 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
 		
 	}
+	
+	/**
+	 * Method used to set the text for a field.
+	 * 
+	 * @param index Index to the field in the content layout whose text is to be changed
+	 * @param text Reference to a string used to set the field found with the index specified.
+	 */
+	public void setFieldText( final int index, final String text ) {
+		final BankEditDetail field = getFieldDetail(index);
+		
+		if( null != text && field != null) {
+			field.setText(text);
+		}
+	}
 
+	/**
+	 * Method used to get the text for a field.
+	 * 
+	 * @param index Index to the field in the content layout whose text is to be retrieved
+	 */
+	public String getFieldText( final int index ) {
+		String ret = "";
+		
+		final BankEditDetail field = getFieldDetail(index);
+		
+		if(  field != null) {
+			ret = field.getText().toString();
+		}
+		
+		return ret;
+	}
+	
+	@Override
+	public boolean handleError(final BankErrorResponse msgErrResponse) {
+		this.scrollToTop();
+		
+		return false;
+	}
+	
 	/**
 	 * Method called in onCreateView to initialize the data model.
 	 * 
@@ -427,11 +475,6 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 * @return Reference to an AddPayeeDetail object with information of the Payee that is to be added.
 	 */
 	protected abstract AddPayeeDetail getPayeeDetail();
-
-	/**
-	 * Method used to execute the service call to add the Payee to the user's list of Payees.
-	 */
-	protected abstract void executeServiceCall();
 	
 	/**
 	 * Restores the widget's states from before rotation.

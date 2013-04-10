@@ -79,6 +79,12 @@ public class AddUnmanagedPayee extends AddPayeeDetail {
 	public AddUnmanagedPayee() {
 		super();
 		
+		/**Managed Payee fields that are not required, set to null so are not are part 
+		 * of the request sent to the server via a NetworkServiceCall<?>*/
+		merchantNumber = null;
+		accountNumberConfirmed = null;
+		zip = null;
+		
 		addressLine1 = "";
 		addressLine2 = "";
 		addressCity = "";
