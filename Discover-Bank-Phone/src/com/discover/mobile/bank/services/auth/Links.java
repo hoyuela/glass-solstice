@@ -2,7 +2,7 @@ package com.discover.mobile.bank.services.auth;
 
 import java.io.Serializable;
 
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

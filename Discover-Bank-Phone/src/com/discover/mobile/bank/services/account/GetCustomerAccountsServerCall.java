@@ -10,11 +10,11 @@ import android.content.Context;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 
 /**
  * This is used downloading the Accounts information for a Bank user that is provided in a JSON response to a 

@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.util.BankStringFormatter;
-import com.discover.mobile.common.net.json.bank.Money;
 
 /**
  * Widget used to display a user's Account information in a Grouped format. This view will display each account in the group within a BankAccountView.

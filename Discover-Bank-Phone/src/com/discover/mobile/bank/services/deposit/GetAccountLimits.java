@@ -10,11 +10,11 @@ import android.content.Context;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 
 /**
  * Used for invoking the Bank - Get Account Limits Service API invoked via GET /api/deposits/limits/{id}. 

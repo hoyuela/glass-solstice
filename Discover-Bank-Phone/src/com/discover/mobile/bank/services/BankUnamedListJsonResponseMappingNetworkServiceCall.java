@@ -6,10 +6,10 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 
 /**
  * A {@link NetworkServiceCall} that handles mapping of unnamed list JSON

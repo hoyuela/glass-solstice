@@ -29,6 +29,5 @@ public abstract class NavigationMenuFragment extends RoboSherlockListFragment {
 		}
 		NavigationIndex.setIndex(group);
 		NavigationIndex.setSubIndex(subSection+group);
-		navigationItemAdapter.notifyDataSetChanged();
 	}
 }
