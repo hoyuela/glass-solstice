@@ -6,9 +6,9 @@ import android.util.Log;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.deposit.AccountLimits;
+import com.discover.mobile.bank.services.json.Limit;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
 import com.discover.mobile.bank.util.BankStringFormatter;
-import com.discover.mobile.common.net.json.bank.Limit;
 import com.google.common.base.Strings;
 
 /**

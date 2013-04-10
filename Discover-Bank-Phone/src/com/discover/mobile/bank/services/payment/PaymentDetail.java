@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.services.json.Date;
+import com.discover.mobile.bank.services.json.Money;
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
-import com.discover.mobile.common.net.json.bank.Date;
-import com.discover.mobile.common.net.json.bank.Money;
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
