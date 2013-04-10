@@ -91,7 +91,7 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 				else if( error.name.equals(AddUnmanagedPayee.NICKNAME_FIELD)) {
 					setErrorString(UnmanagedPayeeFields.PayeeNickName.ordinal(), error.message);
 				}
-				/**Check if error is for address line 1 field*/
+				/**Check if error is for phone number field*/
 				else if( error.name.equals(AddUnmanagedPayee.NAME_PHONE)) {
 					setErrorString(UnmanagedPayeeFields.PayeeNickName.ordinal(), error.message);
 				}
@@ -99,23 +99,23 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 				else if( error.name.equals(AddUnmanagedPayee.NAME_ADDRESS_LINE1)) {
 					setErrorString(UnmanagedPayeeFields.AddressLine1.ordinal(), error.message);
 				}
-				/**Check if error is for address line 1 field*/
+				/**Check if error is for address line 2 field*/
 				else if( error.name.equals(AddUnmanagedPayee.NAME_ADDRESS_LINE2)) {
 					setErrorString(UnmanagedPayeeFields.AddressLine2.ordinal(), error.message);
 				}
-				/**Check if error is for address line 1 field*/
+				/**Check if error is for address city field*/
 				else if( error.name.equals(AddUnmanagedPayee.NAME_ADDRESS_CITY)) {
 					setErrorString(UnmanagedPayeeFields.City.ordinal(), error.message);
 				}
-				/**Check if error is for address line 1 field*/
+				/**Check if error is for address state field*/
 				else if( error.name.equals(AddUnmanagedPayee.NAME_ADDRESS_STATE)) {
 					setErrorString(UnmanagedPayeeFields.State.ordinal(), error.message);
 				}
-				/**Check if error is for address line 1 field*/
+				/**Check if error is for address zip field*/
 				else if( error.name.equals(AddUnmanagedPayee.NAME_ADDRESS_ZIP)) {
 					setErrorString(UnmanagedPayeeFields.ZipCode.ordinal(), error.message);
 				}
-				/**Check if error is for address line 1 field*/
+				/**Check if error is for address memo field*/
 				else if( error.name.equals(AddUnmanagedPayee.NAME_MEMO)) {
 					setErrorString(UnmanagedPayeeFields.Memo.ordinal(), error.message);
 				}
@@ -156,12 +156,12 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 			
 			payee.name = getFieldText(UnmanagedPayeeFields.PayeeName.ordinal());
 			payee.nickName = getFieldText(UnmanagedPayeeFields.PayeeNickName.ordinal());
-			payee.phone = getFieldText(UnmanagedPayeeFields.PhoneNumber.ordinal()); 
-			payee.addressLine1 = getFieldText(UnmanagedPayeeFields.AddressLine1.ordinal());
-			payee.addressLine2 = getFieldText(UnmanagedPayeeFields.AddressLine2.ordinal());
-			payee.addressCity = getFieldText(UnmanagedPayeeFields.City.ordinal());
-			payee.addressState = getFieldText(UnmanagedPayeeFields.State.ordinal());
-			payee.addressZip = getFieldText(UnmanagedPayeeFields.ZipCode.ordinal());
+			payee.phone.number = getFieldText(UnmanagedPayeeFields.PhoneNumber.ordinal()); 
+			payee.address.streetAddress = getFieldText(UnmanagedPayeeFields.AddressLine1.ordinal());
+			payee.address.extendedAddress = getFieldText(UnmanagedPayeeFields.AddressLine2.ordinal());
+			payee.address.locality = getFieldText(UnmanagedPayeeFields.City.ordinal());
+			payee.address.region = getFieldText(UnmanagedPayeeFields.State.ordinal());
+			payee.address.postalCode = getFieldText(UnmanagedPayeeFields.ZipCode.ordinal());
 			payee.accountNumber = getFieldText(UnmanagedPayeeFields.Memo.ordinal());
 		}
 
@@ -179,12 +179,12 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 			
 			setFieldText(UnmanagedPayeeFields.PayeeName.ordinal(), detail.name);
 			setFieldText(UnmanagedPayeeFields.PayeeNickName.ordinal(), detail.nickName);
-			setFieldText(UnmanagedPayeeFields.PhoneNumber.ordinal(), payee.phone);
-			setFieldText(UnmanagedPayeeFields.AddressLine1.ordinal(), payee.addressLine1);
-			setFieldText(UnmanagedPayeeFields.AddressLine2.ordinal(), payee.addressLine2);
-			setFieldText(UnmanagedPayeeFields.City.ordinal(), payee.addressCity);
-			setFieldText(UnmanagedPayeeFields.State.ordinal(), payee.addressState);
-			setFieldText(UnmanagedPayeeFields.ZipCode.ordinal(), payee.addressZip);	
+			setFieldText(UnmanagedPayeeFields.PhoneNumber.ordinal(), payee.phone.number);
+			setFieldText(UnmanagedPayeeFields.AddressLine1.ordinal(), payee.address.streetAddress);
+			setFieldText(UnmanagedPayeeFields.AddressLine2.ordinal(), payee.address.extendedAddress);
+			setFieldText(UnmanagedPayeeFields.City.ordinal(), payee.address.locality);
+			setFieldText(UnmanagedPayeeFields.State.ordinal(), payee.address.region);
+			setFieldText(UnmanagedPayeeFields.ZipCode.ordinal(), payee.address.postalCode);	
 			setFieldText(UnmanagedPayeeFields.Memo.ordinal(), payee.accountNumber);
 		} 	
 	}

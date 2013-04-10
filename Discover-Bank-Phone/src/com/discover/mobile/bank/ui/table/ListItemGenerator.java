@@ -172,7 +172,15 @@ public class ListItemGenerator {
 	}
 
 	public ViewPagerListItem getAddressCell(final String address){
-		return (address == null) ? getTwoItemCell(R.string.address, "") : getTwoItemCell(R.string.address, address);
+		ViewPagerListItem item;
+		if (address == null) {
+			item = getTwoItemCell(R.string.address, "");
+		} else {
+			item = getTwoItemCell(R.string.address, address);
+		}
+		/**Need Multi-line for Address field*/
+		item.getMiddleLabel().setSingleLine(false);
+		return item;
 	}
 
 	public ViewPagerListItem getUnmanagedPayeeMemoCell(final String memo) {

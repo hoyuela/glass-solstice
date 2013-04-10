@@ -58,7 +58,7 @@ final public class PayeeDetailListGenerator  {
 		
 		final BankEditDetail name = createBankEditDetail(context,  R.string.bank_payee_name, text);
 		name.enableEditing(!isVerified && isEditable);
-		name.getDividerLine().setVisibility(View.GONE);
+		name.getDividerLine().setVisibility(View.INVISIBLE);
 		name.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT);
 		name.getEditableField().setMinimum(2);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(32) };
@@ -315,7 +315,7 @@ final public class PayeeDetailListGenerator  {
 			items.add(createNickName(context, item.nickName, false));
 			items.add(createPhoneNumber(context, item.phone.formatted, false));
 			items.add(createAddress(context, item.address.formattedAddress));
-			items.add(createMemo(context, item.nickName, false));
+			items.add(createMemo(context, item.memo, false));
 		}
 		
 		return items;
@@ -332,13 +332,13 @@ final public class PayeeDetailListGenerator  {
 
 		final BankEditDetail name = createName(context, item.name, item.verified, true);
 		final BankEditDetail nickName = createNickName(context, item.nickName, true);
-		final BankEditDetail phoneNumber =  createPhoneNumber(context, item.phone, true);
-		final BankEditDetail addressLine1 =  createAddressLine1(context, item.addressLine1, true);
-		final BankEditDetail addressLine2 =  createAddressLine2(context, item.addressLine2, true);
-		final BankEditDetail city = createCity(context, item.addressCity, true);
-		final BankEditDetail state =  createState(context, item.addressState, true);		
-		final BankEditDetail zipCode =  createZipCode(context, item.zip, true, false);
-		final BankEditDetail memo =  createMemo(context, item.accountNumber, true);
+		final BankEditDetail phoneNumber =  createPhoneNumber(context, item.phone.formatted, true);
+		final BankEditDetail addressLine1 =  createAddressLine1(context, item.address.streetAddress, true);
+		final BankEditDetail addressLine2 =  createAddressLine2(context, item.address.extendedAddress, true);
+		final BankEditDetail city = createCity(context, item.address.locality, true);
+		final BankEditDetail state =  createState(context, item.address.region, true);		
+		final BankEditDetail zipCode =  createZipCode(context, item.address.postalCode, true, false);
+		final BankEditDetail memo =  createMemo(context, item.memo, true);
 		
 			
 		/**Set what field should get focus after next is tapped*/
