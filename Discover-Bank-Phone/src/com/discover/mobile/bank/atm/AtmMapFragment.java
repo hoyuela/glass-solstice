@@ -13,10 +13,12 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.DynamicDataFragment;
@@ -642,6 +644,13 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		navigationPanel.setVisibility(View.VISIBLE);
 		isOnMap = true;
 		isListLand = false;
+		if(null == fragment.getMap()){
+			final View frame = this.getView().findViewById(R.id.discover_map);
+			final RelativeLayout.LayoutParams params = 
+					new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+			params.addRule(RelativeLayout.BELOW, R.id.full_search_bar);
+			frame.setLayoutParams(params);
+		}
 		this.getChildFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
 		this.getChildFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
 	}
