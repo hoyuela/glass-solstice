@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/forms_inner_padding" >
+
+    <View
+        android:id="@+id/divider_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/table_solid_line" />
+
+    <TextView
+        android:id="@+id/continue_until_label"
+        style="@style/field_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/forms_inner_padding"
+        android:singleLine="true"
+        android:text="@string/transfer_continue_until" />
+
+    <View
+        android:id="@+id/divider_line2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/continue_until_label"
+        android:background="@drawable/table_solid_line" />
+
+    <RadioButton
+        android:id="@+id/cancelled_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider_line2" />
+
+    <TextView
+        android:id="@+id/canceled_label"
+        style="@style/field_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/cancelled_button"
+        android:layout_alignTop="@+id/cancelled_button"
+        android:layout_below="@+id/divider_line2"
+        android:layout_toRightOf="@+id/cancelled_button"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/transfer_cancelled" />
+
+    <View
+        android:id="@+id/divider_line3"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/canceled_label"
+        android:background="@drawable/table_solid_line" />
+
+    <RadioButton
+        android:id="@+id/date_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider_line3" />
+
+    <TextView
+        android:id="@+id/date_label"
+        style="@style/field_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider_line3"
+        android:layout_toRightOf="@+id/date_button"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/transfer_date" />
+
+    <TextView
+        android:id="@+id/date_value"
+        style="@style/field_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/date_label"
+        android:layout_toRightOf="@+id/date_button"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/transfer_selected_date" />
+
+    <ImageView
+        android:id="@+id/caret"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_alignTop="@+id/date_label"
+        android:layout_alignBottom="@+id/date_value"
+        android:contentDescription="@string/caret_description"
+        android:paddingRight="@dimen/between_related_elements_padding"
+        android:src="@drawable/blue_arrow_right" />
+
+    <View
+        android:id="@+id/divider_line4"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/date_value"
+        android:background="@drawable/table_solid_line" />
+
+    <RadioButton
+        android:id="@+id/transactions_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider_line4" />
+
+    <TextView
+        android:id="@+id/transactions_label"
+        style="@style/field_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/transactions_button"
+        android:layout_alignTop="@+id/transactions_button"
+        android:layout_below="@+id/divider_line2"
+        android:layout_toRightOf="@+id/transactions_button"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/transfer_transactions" />
+
+    <View
+        android:id="@+id/divider_line5"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/transactions_label"
+        android:background="@drawable/table_solid_line" />
+
+    <RadioButton
+        android:id="@+id/dollar_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider_line5" />
+
+    <TextView
+        android:id="@+id/dollar_label"
+        style="@style/field_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/dollar_button"
+        android:layout_alignTop="@+id/dollar_button"
+        android:layout_below="@+id/divider_line5"
+        android:layout_toRightOf="@+id/dollar_button"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/transfer_dollar_amount" />
+
+</RelativeLayout>

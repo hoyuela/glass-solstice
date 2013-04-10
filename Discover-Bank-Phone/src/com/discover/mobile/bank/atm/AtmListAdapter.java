@@ -108,10 +108,10 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		/**Update the display values*/
 		if(!detail.isAtmSearchargeFree()){
 			holder.title.setCompoundDrawablesWithIntrinsicBounds(
-					context.getResources().getDrawable(R.drawable.atm_locator_gray_pin_sm), null, null, null);
+					context.getResources().getDrawable(R.drawable.atm_pin_gray_help_modal), null, null, null);
 		}else{
 			holder.title.setCompoundDrawablesWithIntrinsicBounds(
-					context.getResources().getDrawable(R.drawable.atm_locator_orange_pin_sm), null, null, null);
+					context.getResources().getDrawable(R.drawable.atm_pin_orange_help_modal), null, null, null);
 		}
 		holder.title.setText("  " + (position+1) + ". " + detail.locationName);
 		holder.address.setText(detail.address1);
