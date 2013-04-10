@@ -177,6 +177,14 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 */
 	@Override
 	protected void onActionLinkClick() {
+		cancel();
+	}
+	
+	/**
+	 * Method used to cancel the Add payee workflow. Displays a modal to receive confirmation
+	 * from user to canel or not.
+	 */
+	public void cancel() {
 		// Create a one button modal to notify the user that they are cancelling the Add Payee transaction
 		final ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(getActivity(), null);
 		cancelModalTopView.setTitle(R.string.bank_cancel_title);
@@ -361,9 +369,13 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 
 	@Override
 	public void onBackPressed() {
-		//Nothing To Do Here
+		cancel();
 	}
 
+	@Override
+	public boolean isBackPressDisabled() {
+		return true;
+	}
 	
 	/**
 	 * Method used to clear any inline errors on the page.
