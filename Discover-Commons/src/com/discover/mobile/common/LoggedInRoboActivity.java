@@ -87,6 +87,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		logout.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
+				Globals.setLoggedIn(false);
 				logout();
 			}
 		});
