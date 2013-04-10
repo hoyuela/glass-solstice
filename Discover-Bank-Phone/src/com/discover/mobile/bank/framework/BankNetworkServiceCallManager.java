@@ -582,23 +582,19 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		if( !isBackgroundServiceCall(sender) ) {
 			activeActivity.startProgressDialog();
 
-
 			/**Clear the current last error stored in the error handler*/
 			errorHandler.clearLastError();
-
+	
 			/**
 			 * Update prevCall only if it is a different service request from current call
 			 * or if current call is null
 			 */
 			if( curCall == null || curCall.getClass() != sender.getClass() ) {
-				prevCall = curCall;
+				prevCall = curCall;			
 			} else {
 				if( Log.isLoggable(TAG, Log.WARN)) {
 					Log.w(TAG, "Previous NetworkServiceCall was not updated!");
 				}
-
-				/**Update current call*/
-				curCall = sender;
 			}
 
 		}
