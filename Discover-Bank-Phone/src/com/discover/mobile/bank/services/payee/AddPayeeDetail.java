@@ -49,7 +49,10 @@ public class AddPayeeDetail implements Serializable {
 	 * Holds the name of the billing postal code field field in a JSON request.
 	 */
 	public static final String BILLING_POSTAL_CODE_FIELD = "billingPostalCode";
-	
+	/**
+	 * Holds the name of the phone field in a JSON request.
+	 */
+	public static final String NAME_PHONE = "phone";
 	
 	@JsonProperty("name")
 	public String name;

@@ -9,11 +9,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
-import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
@@ -25,7 +23,6 @@ import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.help.HelpWidget;
-import com.discover.mobile.common.net.error.bank.BankError;
 import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
@@ -33,55 +30,25 @@ import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.google.common.base.Strings;
 
 /**
- * Fragment class used to display the Add Payee - Payee Details Page Step 4 of the Add Payee workflow. 
- * Details Page Step 4 of the Add Payee workflow. 
- * 
- * The layout of this fragment will change depending on whether the user selected to add a 
- * Verfied Managed Payee or an Un-verified Managed Payee. 
- *
- * If the user select a verified payee, then a SearchPayeeResult is passed to this fragment via a bundle.
- * The fragment can read the SearchPayeeResult using BankExtraKey.DATA_LIST_ITEM. The fragment will also
- * display a message to the user indicating that they have selected a verified payee. The layout for this 
- * case will consists of the following input fields:
- * 
- * 		Payee Name
- * 		Nickname
- * 		Account#
- * 		Re-Enter Account#
- * 		Zip Code
- * 
- * If the user selected to Enter Payee Details then they have chosen to enter a potentially unverified Payee.
- * In this case the fields are:
- * 
- * 		Payee Name
- * 		Nickname
- * 		Phone Number
- * 		Address Line 1
- * 		Address Line 2 
- * 		City
- * 		State
- * 		Zip Code
- * 		Account# / Memo
- * 
- * The user will have the option to click on a help button, feedback button, an Add Payee Button, 
- * and a cancel button.
+ * Base class with functionality that is common for rendering a UI Layout and binding with the data model
+ * used for the Add Payee application feature.
  * 
  * @author henryoyuela
  *
  */
-public class BankAddPayeeFragment extends BankOneButtonFragment implements BankErrorHandlerDelegate {
+abstract class BankAddPayeeFragment extends BankOneButtonFragment implements BankErrorHandlerDelegate {
 	/**
 	 * Reference to a PayeeSearchResult passed in via a bundle from BankSearchSelectPayeeFragment.
 	 */
-	private SearchPayeeResult payeeSearchResult;
+	protected SearchPayeeResult payeeSearchResult;
 	/**
 	 * Reference to a AddPayeeDetail object used to hold the information of the Payee that will be added.
 	 */
-	private AddPayeeDetail detail = new AddPayeeDetail();
+	protected AddPayeeDetail detail = new AddPayeeDetail();
 	/**
 	 * Reference to bundle provided in onCreateView or via getArguments() depending on what created the fragment.
 	 */
-	private Bundle bundle = null;
+	protected Bundle bundle = null;
 	/**
 	 * Key used for storing the detail data member in a bundle when onSaveInstanceState() is called.
 	 */
@@ -91,65 +58,46 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 	 */
 	final private static String KEY_SEARCH_RESULT = "search-result";
 		
-	private enum ManagedPayeeFields {
-		PayeeName,
-		PayeeNickName,
-		PayeeAccountNumber,
-		PayeeAccountNumberConfirmed,
-		PayeeZipCode
-	}
-
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 
 		/**Check if an Unverified Managed Payee was passed from Add Payee - Step 3 BankSearchSelectPayeeFragment*/
 		bundle = this.getArguments();
+			
 		if( null != savedInstanceState ) {
 			detail = (AddPayeeDetail)bundle.getSerializable(KEY_PAYEE_DETAIL);
 			payeeSearchResult = (SearchPayeeResult)bundle.getSerializable(KEY_SEARCH_RESULT);
-		} else if( null != bundle &&  null != bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM)) {
-			payeeSearchResult =  (SearchPayeeResult)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);	
-			detail.name = payeeSearchResult.name;
-			detail.verified = true;
-			detail.merchantNumber = payeeSearchResult.merchantNumber;
-			detail.isZipRequired = payeeSearchResult.isZipRequired();
-		} 
-
+		} else {
+			initializeData( bundle );
+		}
+		
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 
 		/**initialize content to be displayed on fragment*/
-		initialize(view);
+		initializeUi(view);
 
 
 		return view;
 	}
-
+	
 	/**
 	 * Method used to initialize the views in the layout used for this fragment.
 	 * 
 	 * @param mainView Reference to the parent view provided in onCreateView
 	 */
-	protected void initialize(final View mainView) {
-		/**Hide top note as it is not needed for this view**/
+	protected void initializeUi(final View mainView) {
+		/**Hide top note by default**/
 		final TextView topNote = (TextView)mainView.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
+		noteTitle.setVisibility(View.GONE);
+		noteTextMsg.setVisibility(View.GONE);
 
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
 		progressIndicator.initialize(0);
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_payee_details, R.string.bank_payee_added, R.string.bank_payee_added);
-
-		/**Make the note title/text visible to the user if Verified Payee*/
-		if( null != payeeSearchResult) {
-			noteTitle.setText(R.string.bank_verified_payees_address);
-			noteTitle.setVisibility(View.VISIBLE);
-			noteTextMsg.setText(R.string.bank_verified_payees_address_msg);
-			noteTextMsg.setVisibility(View.VISIBLE);
-		} else {
-			noteTitle.setVisibility(View.GONE);
-			noteTextMsg.setVisibility(View.GONE);
-		}
 
 		actionButton.setText(R.string.bank_add_payee);
 
@@ -173,7 +121,7 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 	 * 
 	 * @return True if all fields validate correctly, false otherwise.
 	 */
-	private boolean canProceed() {
+	protected boolean canProceed() {
 		boolean ret = true;
 
 		/**Iterate through each BankEditDetail object and make sure their editable field validates correctly*/
@@ -188,34 +136,14 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 				}
 			}
 		}
-
-		/**Make sure account number matches re-enter account number*/
-		if( ret ) {
-			ret = doAcctNumbersMatch();
-		}
-
+		
 		return ret;
-	}
-
-	/**
-	 * Method used to check if values entered by the user in account # and re-entered account #  match.
-	 * 
-	 * @return Returns true account numbers match, false otherwise.
-	 */
-	private boolean doAcctNumbersMatch() {
-		final BankEditDetail acctNum = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumber.ordinal()));
-		final BankEditDetail acctConfirm = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal()));
-
-		final String accountNum =  acctNum.getEditableField().getText().toString();;
-		final String accountMatch =  acctConfirm.getEditableField().getText().toString();
-
-		return accountNum.equals(accountMatch); 
 	}
 
 	/**
 	 * Shows inline errors for all BankEditDetail objects if fields do not validate correctly.
 	 */
-	private void updateFieldsAppearance() {
+	protected void updateFieldsAppearance() {
 		/**Iterate through each BankEditDetail and ensure it validates correctly otherwise show inline errors*/
 		if( content != null){
 			for(final Object element : content) {
@@ -225,47 +153,6 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 				}
 			}
 		}
-
-		/**Verify if account numbers entered by the user's match otherwise show inline error*/
-		if( !doAcctNumbersMatch() ) {
-			final BankEditDetail acctConfirm = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal()));
-
-			/**Show non-matching acct# error inline*/
-			acctConfirm.showErrorLabel(R.string.bank_nonmatching_acct);
-		}
-
-	}
-
-	/**
-	 * Generates an AddPayeeDetail object using the text values stored in each BankEditDetail that is
-	 * part of the content list.
-	 * 
-	 * @return Reference to an AddPayeeDetail object with information of the Payee that is to be added.
-	 */
-	private AddPayeeDetail getPayeeDetail() {
-		if( content != null ) {
-			final BankEditDetail nickName =  ((BankEditDetail)content.get(ManagedPayeeFields.PayeeNickName.ordinal())); 
-			final BankEditDetail acctNum = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumber.ordinal()));
-			final BankEditDetail name = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeName.ordinal()));
-			final BankEditDetail acctConfirm = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal()));
-
-			detail.name = name.getText();
-			detail.nickName = nickName.getText();
-			detail.accountNumber =  acctNum.getText();
-			detail.accountNumberConfirmed = acctConfirm.getText();
-
-			/**If Zip is required then set zip for the payee being added*/
-			if(payeeSearchResult != null && payeeSearchResult.isZipRequired() ) {
-				final BankEditDetail zip = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeZipCode.ordinal()));
-
-				detail.zip =  zip.getText();
-				detail.isZipRequired = true;
-			} else {
-				detail.isZipRequired = false;
-			}
-		}
-
-		return detail;
 	}
 
 	/**
@@ -284,12 +171,20 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 			updateFieldsAppearance();
 		}
 	}
-
+	
 	/**
 	 * Method used to handle when the user clicks on cancel at the bottom of the screen.
 	 */
 	@Override
 	protected void onActionLinkClick() {
+		cancel();
+	}
+	
+	/**
+	 * Method used to cancel the Add payee workflow. Displays a modal to receive confirmation
+	 * from user to canel or not.
+	 */
+	public void cancel() {
 		// Create a one button modal to notify the user that they are cancelling the Add Payee transaction
 		final ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(getActivity(), null);
 		cancelModalTopView.setTitle(R.string.bank_cancel_title);
@@ -349,15 +244,6 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 	protected List<ViewPagerListItem> getViewPagerListContent() {
 		return null;
 	}
-
-	/**
-	 * Method used to generate a list of RelativeLayouts that display the information
-	 * stored in the detail data member on the layout hosted by this fragment.
-	 */
-	@Override
-	protected List<RelativeLayout> getRelativeLayoutListContent() {
-		return PayeeDetailListGenerator.getPayeeDetailList(getActivity(), detail);
-	}
 	
 	@Override
 	public void onPause() {
@@ -392,102 +278,83 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 		if( bundle != null && null != payeeSearchResult) {
 			arguments.putSerializable(KEY_SEARCH_RESULT, payeeSearchResult);
 		}
-		
-		/**Store the state of the editable fields, to re-open keyboard on orientation change if necessary*/
-		if( this.content != null ) {
-			for( final Object object : this.content) {
-				if( object instanceof BankEditDetail ) {
-					final BankEditDetail item = (BankEditDetail)object;
-					
-					final boolean hasFocus = item.getEditableField().hasFocus();
-					final String key = item.getTopLabel().getText().toString();
-					arguments.putBoolean(key, hasFocus );
-					
-					/**If has an error then show it on rotation */
-					if( item.getEditableField().isInErrorState ) {
-						arguments.putString(key +KEY_ERROR_EXT, item.getEditableField().getErrorLabel().getText().toString());
-					}
-					
-					if( generalError.getVisibility() == View.VISIBLE ) {
-						arguments.putString(KEY_ERROR_EXT, generalError.getText().toString());
+
+		if( arguments != null ) {
+			/**Store the state of the editable fields, to re-open keyboard on orientation change if necessary*/
+			if( this.content != null ) {
+				for( final Object object : this.content) {
+					if( object instanceof BankEditDetail ) {
+						final BankEditDetail item = (BankEditDetail)object;
+						
+						final boolean hasFocus = item.getEditableField().hasFocus();
+						final String key = item.getTopLabel().getText().toString();
+						arguments.putBoolean(key, hasFocus );
+						
+						/**If has an error then show it on rotation */
+						if( item.getEditableField().isInErrorState ) {
+							arguments.putString(key +KEY_ERROR_EXT, item.getEditableField().getErrorLabel().getText().toString());
+						}
+						
+						if( generalError.getVisibility() == View.VISIBLE ) {
+							arguments.putString(KEY_ERROR_EXT, generalError.getText().toString());
+						}
 					}
 				}
 			}
 		}
 	}
 
-	/**
-	 * Restores the widget's states from before rotation.
-	 * 
-	 * @param savedInstanceState
-	 *            the Bundle from which the data is loaded.
-	 */
-	public void restoreState() {
-		if( detail != null ) {
-			final BankEditDetail name = getFieldDetail(ManagedPayeeFields.PayeeName);
-			final BankEditDetail nickName =  getFieldDetail(ManagedPayeeFields.PayeeNickName); 
-			final BankEditDetail acctNum = getFieldDetail(ManagedPayeeFields.PayeeAccountNumber);
-			final BankEditDetail acctConfirm = getFieldDetail(ManagedPayeeFields.PayeeAccountNumberConfirmed);
-
-			name.setText(detail.name);
-			nickName.setText(detail.nickName);
-			acctNum.setText(detail.accountNumber);
-			acctConfirm.setText(detail.accountNumberConfirmed);
-
-			if(detail.isZipRequired){
-				final BankEditDetail zip = getFieldDetail(ManagedPayeeFields.PayeeZipCode);
-				zip.setText(detail.zip);
-			}	
-			
-			/**Restore the state of the editable fields and re-open keyboard if either of them had focus*/
-			if( bundle != null  ) {
-				for( final Object object : this.content) {
-					if( object instanceof BankEditDetail ) {
-						
-						final BankEditDetail item = (BankEditDetail)object;
-						final String key = item.getTopLabel().getText().toString();
-						final boolean hasFocus  = bundle.getBoolean(key, false);
-						final String errorString = bundle.getString(key +KEY_ERROR_EXT);
-						final String genError = bundle.getString(KEY_ERROR_EXT);
-						
-						
-						if( hasFocus || !Strings.isNullOrEmpty(errorString) || 
-							(!Strings.isNullOrEmpty(genError) && generalError.getVisibility() == View.VISIBLE) ) {
-							/** 
-							 * Have to execute the setting of the editable field to edit mode asyncronously otherwise
-							 * the keyboard doesn't open.
-							 */
-							new Handler().postDelayed(new Runnable() {
-								@Override
-								public void run() {
-									if( hasFocus ) {
-										/**Setting edit mode to true makes editable field visible and opens keyboard*/
-										item.setEditMode(hasFocus);
-									}
-									
-									/**If has an error then show it on rotation */
-									if( !Strings.isNullOrEmpty(errorString) ) {
-										
-										item.setEditModeNoFocus(true);
-										
-										item.getEditableField().showErrorLabel(errorString);
-									}
-									
-									showGeneralError(genError);
+	protected void updateUi() {
+		/**Restore the state of the editable fields and re-open keyboard if either of them had focus*/
+		if( bundle != null  ) {
+			for( final Object object : this.content) {
+				if( object instanceof BankEditDetail ) {
+					
+					final BankEditDetail item = (BankEditDetail)object;
+					final String key = item.getTopLabel().getText().toString();
+					final boolean hasFocus  = bundle.getBoolean(key, false);
+					final String errorString = bundle.getString(key +KEY_ERROR_EXT);
+					final String genError = bundle.getString(KEY_ERROR_EXT);
+					
+					
+					if( hasFocus || !Strings.isNullOrEmpty(errorString) || 
+						(!Strings.isNullOrEmpty(genError) && generalError.getVisibility() == View.VISIBLE) ) {
+						/** 
+						 * Have to execute the setting of the editable field to edit mode asyncronously otherwise
+						 * the keyboard doesn't open.
+						 */
+						new Handler().postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								if( hasFocus ) {
+									/**Setting edit mode to true makes editable field visible and opens keyboard*/
+									item.setEditMode(hasFocus);
 								}
-							}, 1000);
-						}
+								
+								/**If has an error then show it on rotation */
+								if( !Strings.isNullOrEmpty(errorString) ) {
+									
+									item.setEditModeNoFocus(true);
+									
+									item.getEditableField().showErrorLabel(errorString);
+								}
+								
+								showGeneralError(genError);
+							}
+						}, 1000);
 					}
 				}
 			}
-			
-		} 
+		}
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		restoreState();
+		
+		restoreState(bundle);
+		
+		updateUi();
 	}
 
 	@Override
@@ -502,36 +369,11 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 
 	@Override
 	public void onBackPressed() {
-		//Nothing To Do Here
+		cancel();
 	}
 
 	@Override
-	public boolean handleError(final BankErrorResponse msgErrResponse) {
-		for( final BankError error : msgErrResponse.errors ) {
-			if( !Strings.isNullOrEmpty(error.name) ) {
-				/**Check if error is for Payee field*/
-				if( error.name.equals(AddPayeeDetail.NAME_FIELD) ) {
-					setErrorString(ManagedPayeeFields.PayeeName,error.message);
-				}
-				/**Check if error is for amount field*/
-				else if( error.name.equals(AddPayeeDetail.NICKNAME_FIELD)) {
-					setErrorString(ManagedPayeeFields.PayeeNickName, error.message);
-				}
-				/**Check if error is for Payment method field*/
-				else if( error.name.equals(AddPayeeDetail.ACCOUNT_NUMBER_FIELD)) {
-					setErrorString(ManagedPayeeFields.PayeeAccountNumber,error.message);
-					setErrorString(ManagedPayeeFields.PayeeAccountNumberConfirmed, error.message);
-				}
-				/**Check if error is for Deliver by field*/
-				else if( error.name.equals(AddPayeeDetail.BILLING_POSTAL_CODE_FIELD) ) {
-					setErrorString(ManagedPayeeFields.PayeeZipCode,error.message);
-				}
-				/**Show error at the top of the screen */
-				else {
-					showGeneralError(error.message);
-				}
-			}
-		}
+	public boolean isBackPressDisabled() {
 		return true;
 	}
 	
@@ -557,13 +399,15 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 	 * @param field An identifier that specifies what field is required from the list.
 	 * @param text The inline error text is to be applied to the field
 	 */
-	public void setErrorString(final ManagedPayeeFields field, final String text) {
-		final BankEditDetail detail = getFieldDetail(field);
-		
-		if( detail != null ) {
-			detail.setEditModeNoFocus(true);
+	public void setErrorString(final int field, final String text) {
+		if( content != null && field < content.size() ) {
+			final BankEditDetail detail = getFieldDetail(field);
 			
-			detail.getEditableField().showErrorLabel(text);
+			if( detail != null ) {
+				detail.setEditModeNoFocus(true);
+				
+				detail.getEditableField().showErrorLabel(text);
+			}
 		}
 	}
 	
@@ -574,11 +418,11 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 	 * 
 	 * @return Returns the widget from the content table on the page specified by the field identifier.
 	 */
-	public BankEditDetail getFieldDetail(final ManagedPayeeFields field)  {
+	public BankEditDetail getFieldDetail(final int field)  {
 		BankEditDetail ret = null;
 		
-		if( content != null ) {
-			ret =  ((BankEditDetail)content.get(field.ordinal())); 
+		if( content != null && field < content.size() ) {
+			ret =  ((BankEditDetail)content.get(field)); 
 		}
 		
 		
@@ -590,5 +434,64 @@ public class BankAddPayeeFragment extends BankOneButtonFragment implements BankE
 		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
 		
 	}
+	
+	/**
+	 * Method used to set the text for a field.
+	 * 
+	 * @param index Index to the field in the content layout whose text is to be changed
+	 * @param text Reference to a string used to set the field found with the index specified.
+	 */
+	public void setFieldText( final int index, final String text ) {
+		final BankEditDetail field = getFieldDetail(index);
+		
+		if( null != text && field != null) {
+			field.setText(text);
+		}
+	}
 
+	/**
+	 * Method used to get the text for a field.
+	 * 
+	 * @param index Index to the field in the content layout whose text is to be retrieved
+	 */
+	public String getFieldText( final int index ) {
+		String ret = "";
+		
+		final BankEditDetail field = getFieldDetail(index);
+		
+		if(  field != null) {
+			ret = field.getText().toString();
+		}
+		
+		return ret;
+	}
+	
+	@Override
+	public boolean handleError(final BankErrorResponse msgErrResponse) {
+		this.scrollToTop();
+		
+		return false;
+	}
+	
+	/**
+	 * Method called in onCreateView to initialize the data model.
+	 * 
+	 * @param bundle Reference to the bundle retrieved via getArguments();
+	 */
+	protected abstract void initializeData( Bundle bundle );
+	
+	/**
+	 * Generates an AddPayeeDetail object using the text values stored in each BankEditDetail that is
+	 * part of the content list.
+	 * 
+	 * @return Reference to an AddPayeeDetail object with information of the Payee that is to be added.
+	 */
+	protected abstract AddPayeeDetail getPayeeDetail();
+	
+	/**
+	 * Restores the widget's states from before rotation.
+	 * 
+	 * @param savedInstanceState the Bundle from which the data is loaded.
+	 */
+	protected abstract void restoreState(final Bundle bundle);
 }

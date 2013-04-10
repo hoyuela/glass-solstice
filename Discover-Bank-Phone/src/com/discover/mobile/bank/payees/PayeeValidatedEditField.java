@@ -35,6 +35,8 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 * by the user. It is used by the isValid() method
 	 */
 	public static Pattern INVALID_CHARACTERS = Pattern.compile("[<>\\(\\)&;\'\"\\[\\]{}]");
+	public static Pattern NON_ALPHANUMERIC = Pattern.compile("^[\\W]*$");
+	public static Pattern NON_ALPHANUMERIC_OR_WHITESPACE = Pattern.compile("^[(?!\\w|\\s)]*$");
 	/**
 	 * Holds the minimum amount of characters allowed for this text field.
 	 */
@@ -51,6 +53,10 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 * Flag used to specify whether an inline error is being shown. If set to true isValid() returns false.
 	 */
 	private boolean showingError = false;
+	/**
+	 * Flag used to specify whether to validate text and show inline error.
+	 */
+	private boolean isValidationEnabled = true;
 	
 	/**
 	 * Default constructor 
@@ -152,7 +158,7 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 */
 	@Override
 	public boolean isValid() {
-		boolean valid = !showingError;
+		boolean valid = !showingError && isValidationEnabled;
 		
 		if( valid ) {
 			final String text = this.getText().toString();
@@ -185,7 +191,7 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 		}
 		
 				
-		return valid;
+		return (valid || !isValidationEnabled);
 	}
 	
 	/**
@@ -216,5 +222,21 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	protected void hideErrorLabel() {
 		if(errorLabel != null)
 			this.errorLabel.setVisibility(View.INVISIBLE);
+	}
+	
+	/**
+	 * Method used to enable or disable validation.
+	 * 
+	 * @param value True to enable, false to disable.
+	 */
+	public void enableValidation(final boolean value) {
+		isValidationEnabled = value;
+	}
+	
+	@Override
+	public void updateAppearanceForInput() {
+		if( isValidationEnabled ) {
+			super.updateAppearanceForInput();
+		}
 	}
 }
