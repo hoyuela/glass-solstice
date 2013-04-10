@@ -59,9 +59,10 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	 * @param mainView Reference to view created in onCreateView()
 	 */
 	protected void initialize(final View mainView) {
-		/**Hide top note as it is not needed for this view**/
+		/**Show top note to show confirmation message to user**/
 		final TextView topNote = (TextView)mainView.findViewById(R.id.top_note_text);
-		topNote.setVisibility(View.GONE);
+		topNote.setText(R.string.bank_add_confirm);
+		topNote.setVisibility(View.VISIBLE);
 
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
 		progressIndicator.initialize(2);

@@ -1,7 +1,9 @@
 package com.discover.mobile.bank.payees;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -137,6 +139,20 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		if( clearText ) {
 			searchField.getText().clear();
 		}
+		
+		/**Open Keyboard*/
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				final Activity activity = getActivity();
+				if( null != searchField && activity != null) {
+					final InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+					searchField.requestFocus();
+					
+					imm.showSoftInput(searchField, InputMethodManager.SHOW_FORCED);
+				}
+			}
+		}, 1000);
 	}
 
 	@Override

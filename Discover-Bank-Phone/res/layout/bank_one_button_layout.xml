@@ -132,8 +132,7 @@
                 android:layout_alignParentBottom="true"
 	            android:layout_centerHorizontal="true"
 	            android:focusable="true"
-   				android:focusableInTouchMode="true"
-	            android:layout_marginTop="@dimen/modal_footer_topmargin"            
+   				android:focusableInTouchMode="true"        
    				android:paddingBottom="@dimen/between_related_elements_padding"
                 android:orientation="vertical">
                 

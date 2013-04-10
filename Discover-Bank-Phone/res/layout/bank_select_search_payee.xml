@@ -49,6 +49,13 @@
             android:layout_marginBottom="@dimen/groups_of_elements_padding"
             android:orientation="vertical" />
 
+        <com.discover.mobile.bank.paybills.SimpleChooseListItem
+            android:id="@+id/enter_payee_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/payee_list"
+        />
+        
         <com.discover.mobile.common.help.HelpWidget
             android:id="@+id/help"
             android:layout_width="match_parent"

@@ -18,7 +18,7 @@
 	<string name="bank_verified_payees_address">Verified Payee Address</string>
 	<string name="bank_verified_payees_address_msg">This Payee is recognized by Discover. You do not need to enter the Payee address.</string>
 	<string name="bank_payee_details">Payee Details</string>
-	<string name="bank_payee_added">Confirmation</string>
+	<string name="bank_payee_added">Confirm</string>
 	<string name="bank_payee_edit">EDIT</string>
 	<string name="bank_payee_name">Payee Name</string>
 	<string name="bank_payee_nickname">Nickname</string>
@@ -47,4 +47,17 @@
 	<string name="bank_payee_action_edit">Edit</string>
 	<string name="bank_payee_action_delete">Delete</string>
 
+	<!-- Add Unmanaged Payee Details Strings -->
+	<string name="bank_payee_phone_number">Phone #</string>
+	<string name="bank_payee_address">Address</string>
+	<string name="bank_payee_address_line1">Address Line 1</string>
+	<string name="bank_payee_address_line2">Address Line 2 (Optional)</string>
+	<string name="bank_payee_city">City</string>
+	<string name="bank_payee_state">State</string>
+	<string name="bank_payee_memo">Account # / Memo (Optional)</string>
+	
+	<!-- Add Unmanaged Payee Error Strings -->
+	<string name="bank_invalid_phone_number">Invalid phone numbers</string>
+	
+	
 </resources>

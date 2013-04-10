@@ -42,8 +42,9 @@ import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.paybills.PaymentDetailsViewPager;
 import com.discover.mobile.bank.paybills.ReviewPaymentsTable;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
+import com.discover.mobile.bank.payees.BankAddManagedPayeeFragment;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
-import com.discover.mobile.bank.payees.BankAddPayeeFragment;
+import com.discover.mobile.bank.payees.BankAddUnmanagedPayeeFragment;
 import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
 import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.BankSearchSelectPayeeFragment;
@@ -356,9 +357,18 @@ public final class BankConductor  extends Conductor {
 		final BankNavigationRootActivity activity =
 				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 		((AlertDialogParent)activity).closeDialog();
+
+		//Handle the case where loading more data
 		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(bundle);
-		}else{
+		} 
+		//Handle the case where switch between different types of activity posted and scheduled
+		else if( activity.getCurrentContentFragment() instanceof BankAccountActivityTable ) {
+			final BankAccountActivityTable revPmtFrag = (BankAccountActivityTable)activity.getCurrentContentFragment();
+			revPmtFrag.handleReceivedData(bundle);
+		} 
+		//Handle the first time user opens Account Activity page
+		else {
 			final BankAccountActivityTable fragment =  new BankAccountActivityTable();
 			fragment.setArguments(bundle);
 			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
@@ -543,9 +553,15 @@ public final class BankConductor  extends Conductor {
 				fragment = new BankEnterPayeeFragment();
 				activity.makeFragmentVisible(fragment);
 			}
-			//If class type is BankAddPayeeFragment then open the Add Payee Fragment Step 4 of work-flow
-			else if( step == BankAddPayeeFragment.class ) {
-				fragment = new BankAddPayeeFragment();
+			//If class type is BankAddManagedPayeeFragment then open the Add Managed Payee Fragment Step 4 of work-flow
+			else if( step == BankAddManagedPayeeFragment.class ) {
+				fragment = new BankAddManagedPayeeFragment();
+				fragment.setArguments(bundle);
+				activity.makeFragmentVisible(fragment);
+			}
+			//If class type is BankAddUnmanagedPayeeFragment then open the Add Unmanaged Payee Step 4 of work-flow
+			else if( step == BankAddUnmanagedPayeeFragment.class) {
+				fragment = new BankAddUnmanagedPayeeFragment();
 				fragment.setArguments(bundle);
 				activity.makeFragmentVisible(fragment);
 			}
@@ -660,43 +676,27 @@ public final class BankConductor  extends Conductor {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
 
-		//Show No Matches Modal if no results found
-		if( search.results.size() <= 0 ) {
-			// Create a one button modal to notify the user that they are leaving the application
-			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
-					R.string.bank_no_payees_modal_title, 
-					R.string.bank_no_payees_modal_msg, 
-					false, 
-					R.string.bank_need_help_number_text, 
-					R.string.ok);
+		if( BankNetworkServiceCallManager.getInstance().getLastServiceCall() instanceof SearchPayeeServiceCall ) {
+			final BankSearchSelectPayeeFragment fragment = new BankSearchSelectPayeeFragment();
+			final SearchPayeeServiceCall searchCall = (SearchPayeeServiceCall)BankNetworkServiceCallManager.getInstance().getLastServiceCall();
 
-			activity.showCustomAlert(modal);
-		}
-		//Show Select Payee Page for Add a Payee work-flow
-		else {
+			final Bundle bundle = new Bundle();
 
-			if( BankNetworkServiceCallManager.getInstance().getLastServiceCall() instanceof SearchPayeeServiceCall ) {
-				final BankSearchSelectPayeeFragment fragment = new BankSearchSelectPayeeFragment();
-				final SearchPayeeServiceCall searchCall = (SearchPayeeServiceCall)BankNetworkServiceCallManager.getInstance().getLastServiceCall();
+			//Provide the text used for running a search
+			bundle.putSerializable(BankSearchSelectPayeeFragment.SEARCH_ITEM, searchCall.getSearchText());
+			//Provide list of results sent from the server
+			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, search);
+			fragment.setArguments(bundle);
 
-				final Bundle bundle = new Bundle();
+			activity.makeFragmentVisible(fragment);
+		} else {
+			//Show catch all error to the user, this should never happen
+			BankErrorHandler.getInstance().handleGenericError(0);
 
-				//Provide the text used for running a search
-				bundle.putSerializable(BankSearchSelectPayeeFragment.SEARCH_ITEM, searchCall.getSearchText());
-				//Provide list of results sent from the server
-				bundle.putSerializable(BankExtraKeys.PAYEES_LIST, search);
-				fragment.setArguments(bundle);
-
-				activity.makeFragmentVisible(fragment);
-			} else {
-				//Show catch all error to the user, this should never happen
-				BankErrorHandler.getInstance().handleGenericError(0);
-
-				if(Log.isLoggable(TAG, Log.ERROR)) {
-					Log.e(TAG, "Unexpected Service Call Found!");
-				}
+			if(Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unexpected Service Call Found!");
 			}
-		}
+		}		
 	}
 
 	/**
@@ -920,7 +920,7 @@ public final class BankConductor  extends Conductor {
 				.getActiveActivity();
 		activity.showALUStatusModal(null);
 	}
-	
+
 	/**
 	 * Authorizes an SSO User against Bank when no BankSSOPayload is available.
 	 * This is due to an A/L/U error returned from a Card service.
@@ -933,7 +933,7 @@ public final class BankConductor  extends Conductor {
 				.getActiveActivity();
 		activity.showALUStatusModal(credentials);
 	}
-	
+
 	/**
 	 * Continues with the Skip SSO login call using provided credentials.
 	 * Typicall used when a login call originates from Card.
