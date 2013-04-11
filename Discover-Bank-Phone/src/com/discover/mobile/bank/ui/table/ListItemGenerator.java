@@ -62,7 +62,7 @@ public class ListItemGenerator {
 		if(memo == null) {
 			memoText = "";
 		} 
-		
+
 		listItem = new ViewPagerListItem(context);
 		getTwoItemCell(R.string.memo, memoText);
 		listItem.getMiddleLabel().setTextAppearance(context, R.style.smallest_copy);
@@ -193,7 +193,7 @@ public class ListItemGenerator {
 		items.add(getAmountCell(item.amount.value));
 		items.get(0).getDividerLine().setVisibility(View.GONE);
 		items.add(getDescriptionCell(item.description, item.id));
-		items.add(getDateCell(item.dates.get(ActivityDetail.POSTED)));
+		items.add(getDateCell(item.dates));
 		items.add(getBalanceCell(item.balance.value));
 
 		return items;
@@ -214,7 +214,7 @@ public class ListItemGenerator {
 		if( Strings.isNullOrEmpty(payeeName)) {
 			payeeName = item.payee.nickName;
 		}
-		
+
 		items.add(getPayeeCell(payeeName));
 		items.get(0).getDividerLine().setVisibility(View.GONE);
 		items.add(getPayFromAccountCell(account.accountNumber.ending, account.nickname));

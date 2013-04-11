@@ -39,7 +39,7 @@ public class ActivityDetailFragment extends DetailFragment {
 		((TextView)contentTable.findViewById(R.id.transaction_id)).setText(item.id);
 		((TextView)contentTable.findViewById(R.id.date_cell)).setText(
 				BankStringFormatter.convertDate(
-						item.dates.get(ActivityDetail.POSTED).split(ActivityDetail.DATE_DIVIDER)[0]));
+						item.dates.split(ActivityDetail.DATE_DIVIDER)[0]));
 		((TextView)contentTable.findViewById(R.id.balance_cell))
 		.setText(BankStringFormatter.convertCentsToDollars(item.balance.value));		
 	}
