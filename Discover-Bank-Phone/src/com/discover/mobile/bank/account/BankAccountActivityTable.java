@@ -18,10 +18,10 @@ import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
 import com.discover.mobile.common.help.HelpWidget;
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 
 /**
  * View that allows the user to view posted and scheduled activities for an account

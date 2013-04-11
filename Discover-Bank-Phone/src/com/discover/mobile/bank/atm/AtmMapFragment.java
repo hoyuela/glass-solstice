@@ -13,10 +13,12 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.DynamicDataFragment;
@@ -33,6 +35,7 @@ import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -63,6 +66,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 	/**Modal that lets the user know that their location services are disabled*/
 	private ModalAlertWithTwoButtons settingsModal;
+
+	/**Modal that lets the user know that getting of their location failed*/
+	private ModalAlertWithTwoButtons locationFailureModal;
 
 	/**Boolean set to true when the app has loaded the atms to that the app does not trigger the call more than one time*/
 	private boolean hasLoadedAtms = false;
@@ -127,6 +133,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	/**Help Widget*/
 	private HelpWidget help;
 
+	/**Location of the user*/
 	private Location location;
 
 	@Override
@@ -135,6 +142,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		fragment = SupportMapFragment.newInstance();
 		listFragment = new AtmListFragment();
 		listFragment.setObserver(this);
+		GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(getActivity());
 	}
 
 	@Override
@@ -210,6 +218,10 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
 			((NavigationRootActivity) getActivity()).showCustomAlert(locationModal);
 			break;
+		case LOCATION_FAILED:
+			locationFailureModal = AtmModalFactory.getCurrentLocationFailModal(getActivity(), this);
+			((NavigationRootActivity) getActivity()).showCustomAlert(locationFailureModal);
+			break;
 		case SEARCHING:
 			getLocation();
 			break;
@@ -223,9 +235,12 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 * Set up the map wrapper if it needs to be setup
 	 */
 	private void setUpMap(){
+		final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(this);
+		final DiscoverInfoWindowAdapter adapter = new DiscoverInfoWindowAdapter(balloon);
+		if(null == mapWrapper){
+			mapWrapper = new DiscoverMapWrapper(fragment.getMap(), adapter);
+		}
 		if (null == mapWrapper){
-			final AtmMarkerBalloonManager balloon = new AtmMarkerBalloonManager(this);
-			final DiscoverInfoWindowAdapter adapter = new DiscoverInfoWindowAdapter(balloon);
 			mapWrapper = new DiscoverMapWrapper(fragment.getMap(), adapter);
 			setMapTransparent((ViewGroup)fragment.getView());
 		}
@@ -262,6 +277,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 */
 	@Override
 	public void startCurrentLocationSearch() {
+		locationStatus = ENABLED;
 		if(LOCKED_ON == locationStatus){
 			getLocation();
 		}else{
@@ -376,11 +392,12 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 		isOnMap = !savedInstanceState.getBoolean(BUTTON_KEY, true);
 		toggleButton();
-
+		listFragment.handleReceivedData(savedInstanceState);
+		results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+		currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
 		if(0.0 == lat && 0.0 == lon){
 			mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
 		}else{
-			results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 			if(null != results){
 				hasLoadedAtms = true;
 			}
@@ -389,13 +406,11 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			location.setLongitude(lon);
 			mapWrapper.setCurrentLocation(location);
 			setUserLocation(location);
-			currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
 			if(null != results){
 				mapWrapper.addObjectsToMap(results.results.atms.subList(0, currentIndex));
 				hasLoadedAtms = true;
 			}
 			searchBar.restoreState(savedInstanceState);
-			listFragment.handleReceivedData(savedInstanceState);
 			streetView.hide();
 
 			shouldGoBack = savedInstanceState.getBoolean(STREET_VIEW_SHOWING, true);
@@ -519,6 +534,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			locationModal.dismiss();
 		} else if(null != settingsModal && settingsModal.isShowing()){
 			settingsModal.dismiss();
+		} else if(null != locationFailureModal && locationFailureModal.isShowing()){
+			locationFailureModal.dismiss();
 		}
 		outState.putInt(LOCATION_STATUS, locationStatus);
 		if(null != mapWrapper.getCurrentLocation()){
@@ -540,12 +557,6 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void onPause(){
 		super.onPause();
-		if(null != settingsModal && settingsModal.isShowing()){
-			settingsModal.hide();
-		}
-		if(null != locationModal && locationModal.isShowing()){
-			locationModal.hide();
-		}
 		location = mapWrapper.getCurrentLocation();
 		enableMenu();
 	}
@@ -588,10 +599,12 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 */
 	@Override
 	public void handleTimeOut() {
+		final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
+		activity.closeDialog();
 		locationManagerWrapper.stopGettingLocaiton();
-		if(null == mapWrapper.getCurrentLocation()){
-			showNoLocation();
-		}
+		locationFailureModal = AtmModalFactory.getCurrentLocationFailModal(activity, this);
+		activity.showCustomAlert(locationFailureModal);
+		locationStatus = LOCATION_FAILED;
 	}
 
 	@Override
@@ -631,10 +644,21 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		navigationPanel.setVisibility(View.VISIBLE);
 		isOnMap = true;
 		isListLand = false;
+		if(null == fragment.getMap()){
+			final View frame = this.getView().findViewById(R.id.discover_map);
+			final RelativeLayout.LayoutParams params = 
+					new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+			params.addRule(RelativeLayout.BELOW, R.id.full_search_bar);
+			frame.setLayoutParams(params);
+		}
 		this.getChildFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
 		this.getChildFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
 	}
 
+	/**
+	 * Show the street view for an ATM
+	 * @param bundle - bundle of data to be shown
+	 */
 	@Override
 	public void showStreetView(final Bundle bundle){
 		shouldGoBack = true;
@@ -642,6 +666,10 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		streetView.loadStreetView(bundle);
 	}
 
+	/**
+	 * Determine if the fragment can load more data or if it has loaded all the data available
+	 * @return true if the fragment can load more data
+	 */
 	public boolean canLoadMore(){
 		boolean loadMore = true;
 		if(isListEmpty()){
@@ -705,6 +733,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		}
 	}
 
+	/**
+	 * @return the current location address string
+	 */
 	public String getCurrentLocationAddress() {
 		return mapWrapper.getGetAddressString();
 	}

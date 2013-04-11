@@ -42,17 +42,17 @@ public class BankSelectAccountComparable implements Comparator<Account> {
 	public int getOrdinalValue(final Account account) {
 		int ret = 0;
 		
-		if( account.type.equals(Account.ACCOUNT_CHECKING)) {		
+		if( account.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {		
 			ret = 1;			
-		} else if( account.type.equals(Account.ACCOUNT_MMA) ) {
+		} else if( account.type.equalsIgnoreCase(Account.ACCOUNT_MMA) ) {
 			ret = 2;
-		} else if( account.type.equals(Account.ACCOUNT_SAVINGS) ) {
+		} else if( account.type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) ) {
 			ret = 3;
-		} else if(account.type.equals(Account.ACCOUNT_CD)) {
+		} else if(account.type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
 			ret = 4;
-		} else if( account.type.equals(Account.ACCOUNT_IRA)) {
+		} else if( account.type.equalsIgnoreCase(Account.ACCOUNT_IRA)) {
 			ret = 5;
-		} else if( account.type.equals(Account.ACCOUNT_LOAN)) {
+		} else if( account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
 			ret = 6;
 		} else {
 			ret = 7;

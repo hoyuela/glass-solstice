@@ -1,4 +1,4 @@
-package com.discover.mobile.common.net.error.bank;
+package com.discover.mobile.bank.services.error;
 
 import java.util.HashMap;
 import java.util.List;

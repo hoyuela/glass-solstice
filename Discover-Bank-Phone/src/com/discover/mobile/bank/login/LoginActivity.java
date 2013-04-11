@@ -343,11 +343,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			setCheckMark(saveIdWasChecked, false);
 		}
 
-		// User Loggedout without Remember User ID Checked
-		if(!(saveUserId || saveIdWasChecked)) {
-			clearInputs();
-		}
-
 		//Default to the last path user chose for login Card or Bank
 		this.setApplicationAccount();
 
@@ -387,6 +382,13 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	public void onStart() {
 		super.onStart();
 		FacadeFactory.getPushFacade().startXtifySDK(this);
+	}
+	
+	@Override
+	public void onRestoreInstanceState(final Bundle bundle) {
+		super.onRestoreInstanceState(bundle);
+
+		this.restoreState(bundle);
 	}
 
 	/**
@@ -509,8 +511,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				}
 				//Clear the last error that occurred
 				setLastError(0);
-
-				login();
+				if (idField.getText().length() > 0 || passField.getText().length() > 0){
+					login();
+				}
 			}
 		});
 
@@ -950,7 +953,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final boolean wasIdEmpty = Strings.isNullOrEmpty(idField.getText().toString());
 		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 
-		if(wasIdEmpty || wasPassEmpty) {
+		if (wasIdEmpty && wasPassEmpty){
+			return false;
+		}else if(wasIdEmpty || wasPassEmpty) {
 			final String errorText = this.getResources().getString(R.string.login_error);
 			this.getErrorHandler().showErrorsOnScreen(this, errorText);
 			idField.clearFocus();

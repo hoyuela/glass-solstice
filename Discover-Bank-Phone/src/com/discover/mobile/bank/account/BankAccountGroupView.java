@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.util.BankStringFormatter;
-import com.discover.mobile.common.net.json.bank.Money;
 
 /**
  * Widget used to display a user's Account information in a Grouped format. This view will display each account in the group within a BankAccountView.
@@ -165,22 +165,22 @@ public class BankAccountGroupView extends LinearLayout  {
 		int ret = 0;
 		
 		//Group for Checking: Holds only Checking Types
-		if( account.type.equals(Account.ACCOUNT_CHECKING)) {		
+		if( account.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {		
 			ret = R.string.bank_checking_account;	
 		}
 		//Group for Savings: Holds Online Savings, MMA, CDs
-		else if( account.type.equals(Account.ACCOUNT_SAVINGS) || 
-				 account.type.equals(Account.ACCOUNT_MMA) ||
-				 account.type.equals(Account.ACCOUNT_CD)) {
+		else if( account.type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) || 
+				 account.type.equalsIgnoreCase(Account.ACCOUNT_MMA) ||
+				 account.type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
 			ret = R.string.bank_savings_account;
 			
 		}
 		//Group for Retirement Plans: Holds IRA, IRA CDs
-		else if( account.type.equals(Account.ACCOUNT_IRA)) {
+		else if( account.type.equalsIgnoreCase(Account.ACCOUNT_IRA)) {
 			ret = R.string.bank_ira_account;
 		}
 		//Group Personal Loans: Personal Loans
-		else if( account.type.equals(Account.ACCOUNT_LOAN)) {
+		else if( account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
 			ret = R.string.bank_loan_account;
 		} else {
 			ret = R.string.bank_unknown_account;

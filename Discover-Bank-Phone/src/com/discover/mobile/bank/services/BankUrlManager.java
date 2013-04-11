@@ -3,8 +3,8 @@ package com.discover.mobile.bank.services;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.google.common.base.Strings;
 
 /**

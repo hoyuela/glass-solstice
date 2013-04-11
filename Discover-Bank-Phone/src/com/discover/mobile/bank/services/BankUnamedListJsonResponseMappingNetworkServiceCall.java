@@ -6,10 +6,10 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkServiceCall;
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 
 /**
  * A {@link NetworkServiceCall} that handles mapping of unnamed list JSON
@@ -21,8 +21,14 @@ import com.discover.mobile.common.net.json.bank.ReceivedUrl;
  *            The <u>I</u>nner type for the JSON result
  */
 public abstract class BankUnamedListJsonResponseMappingNetworkServiceCall<M, I>
-extends UnamedListJsonResponseMappingNetworkServiceCall<M, I> {
+	extends UnamedListJsonResponseMappingNetworkServiceCall<M, I> 
+	implements BackgroundServiceCall{
 
+	/**
+	 * Flag used to determine whether service call is to run silently in background.
+	 */
+	boolean isBackgroundCall = false;
+	
 	/**
 	 * 
 	 * @param context
@@ -66,6 +72,16 @@ extends UnamedListJsonResponseMappingNetworkServiceCall<M, I> {
 			//Return an empty link object if any exception occurs
 			return urls;
 		}
+	}
+	
+	@Override
+	public void setIsBackgroundCall(final boolean value) {
+		isBackgroundCall = value;	
+	}
+
+	@Override
+	public boolean isBackgroundCall() {
+		return isBackgroundCall;
 	}
 
 }

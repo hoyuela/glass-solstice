@@ -2,8 +2,8 @@ package com.discover.mobile.bank.services.deposit;
 
 import java.io.Serializable;
 
-import com.discover.mobile.common.net.json.bank.Date;
-import com.discover.mobile.common.net.json.bank.Money;
+import com.discover.mobile.bank.services.json.Date;
+import com.discover.mobile.bank.services.json.Money;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

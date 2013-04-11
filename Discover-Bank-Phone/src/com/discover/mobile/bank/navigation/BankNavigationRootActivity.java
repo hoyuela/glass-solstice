@@ -25,10 +25,11 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.nav.NavigationIndex;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.SessionTokenManager;
 import com.slidingmenu.lib.SlidingMenu;
-import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
+import com.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 /**
  * Root activity for the application after login. This will transition fragment
@@ -65,13 +66,19 @@ implements OnPaymentCanceledListener {
 	 */
 	private void updateMenuOnClose() {
 		final SlidingMenu slidingMenu = getSlidingMenu();
-		slidingMenu.setOnClosedListener(new OnClosedListener() {
-
+		slidingMenu.setOnOpenListener(new OnOpenListener() {
+			
 			@Override
-			public void onClosed() {
+			public void onOpen() {
+				/**
+				 * This is needed because sometimes the index for the menu will get set to -1. If
+				 * that happens, we just need to reset the main index back to 0.
+				 */
+				if (NavigationIndex.getMainIndex() == -1){
+					NavigationIndex.setIndex(0);
+				}
 				final BaseFragment currentFragment = getCurrentContentFragment();
 				highlightMenuItems(currentFragment.getGroupMenuLocation(), currentFragment.getSectionMenuLocation());
-
 			}
 		});
 	}

@@ -11,8 +11,15 @@ import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall
  * 
  * @param <M> The <u>m</u>odel type for the JSON result
  */
-public abstract class BankJsonResponseMappingNetworkServiceCall<M> extends JsonResponseMappingNetworkServiceCall<M> {
+public abstract class BankJsonResponseMappingNetworkServiceCall<M> 
+	extends JsonResponseMappingNetworkServiceCall<M>
+	implements BackgroundServiceCall{
 
+	/**
+	 * Flag used to determine whether service call is to run silently in background.
+	 */
+	boolean isBackgroundCall = false;
+	
 	/**
 	 * 
 	 * @param context
@@ -42,6 +49,13 @@ public abstract class BankJsonResponseMappingNetworkServiceCall<M> extends JsonR
 		return BankUrlManager.getBaseUrl();
 	}
 
+	@Override
+	public void setIsBackgroundCall(final boolean value) {
+		isBackgroundCall = value;	
+	}
 
-
+	@Override
+	public boolean isBackgroundCall() {
+		return isBackgroundCall;
+	}
 }

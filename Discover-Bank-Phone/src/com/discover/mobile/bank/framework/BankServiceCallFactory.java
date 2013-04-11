@@ -473,10 +473,11 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * /api/deposits/limits/{id}.
 	 * 
 	 * @param value - Holds information about the Account whose deposit's limits are being retrieved.
+	 * @param isBackground - used to specify whether a progress dialog should shown or not.
 	 * 
 	 * @return Reference to the GetAccountLimits object created.
 	 */
-	public static GetAccountLimits createGetAccountLimits(final Account account) {
+	public static GetAccountLimits createGetAccountLimits(final Account account, final boolean isBackground) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<AccountLimits>  callback =
@@ -484,7 +485,11 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						activity, (ErrorHandlerUi) activity)
 						.build();
 
-		return new GetAccountLimits(activity, callback, account);
+		final GetAccountLimits serviceCall =  new GetAccountLimits(activity, callback, account);
+		serviceCall.setIsBackgroundCall(isBackground);
+		
+		return serviceCall;
+		
 	}
 
 	/**
