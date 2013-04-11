@@ -685,20 +685,10 @@ public final class BankConductor  extends Conductor {
 		final BankNavigationRootActivity activity =
 				(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
-		final BankSearchSelectPayeeFragment fragment = new BankSearchSelectPayeeFragment();
-		final SearchPayeeServiceCall searchCall =
-				(SearchPayeeServiceCall)BankNetworkServiceCallManager.getInstance().getLastServiceCall();
 
-		//Show No Matches Modal if no results found
-		if( search.results.size() <= 0 ) {
-			// Create a one button modal to notify the user that they are leaving the application
-			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
-					R.string.bank_no_payees_modal_title,
-					R.string.bank_no_payees_modal_msg,
-					false,
-					R.string.bank_need_help_number_text,
-					R.string.ok);
-
+		if( BankNetworkServiceCallManager.getInstance().getLastServiceCall() instanceof SearchPayeeServiceCall ) {
+			final BankSearchSelectPayeeFragment fragment = new BankSearchSelectPayeeFragment();
+			final SearchPayeeServiceCall searchCall = (SearchPayeeServiceCall)BankNetworkServiceCallManager.getInstance().getLastServiceCall();
 			final Bundle bundle = new Bundle();
 
 			//Provide the text used for running a search
