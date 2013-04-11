@@ -249,9 +249,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				BankConductor.logoutUser(activeActivity);
 			}
 			//Dispatch response to BankBaseErrorHandler to determine how to handle the error
-			else if( !(sender instanceof BankApiServiceCall ||
-					   sender instanceof BankHolidayServiceCall ||
-					   sender instanceof RefreshBankSessionCall) )  {
+			else if( !isBackgroundServiceCall(sender) )  {
 				errorHandler.handleFailure(sender, error);
 
 				((AlertDialogParent)activeActivity).closeDialog();
@@ -274,9 +272,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final Throwable arg1) {
 		if( isGuiReady() ) {
-			if( !(sender instanceof BankApiServiceCall ||
-				  sender instanceof BankHolidayServiceCall ||
-				  sender instanceof RefreshBankSessionCall)) {
+			if( !isBackgroundServiceCall(sender) ) {
 				final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 				activeActivity.closeDialog();
 			}
@@ -583,29 +579,28 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 
 		/* Service calls that do not show dialog must override functionality here */
-		if( !(sender instanceof RefreshBankSessionCall ||
-			  sender instanceof BankApiServiceCall ||
-			  sender instanceof BankHolidayServiceCall) ) {
+		if( !isBackgroundServiceCall(sender) ) {
 			activeActivity.startProgressDialog();
 
 
-		/**Clear the current last error stored in the error handler*/
-		errorHandler.clearLastError();
+			/**Clear the current last error stored in the error handler*/
+			errorHandler.clearLastError();
 
-		/**
-		 * Update prevCall only if it is a different service request from current call
-		 * or if current call is null
-		 */
-		if( curCall == null || curCall.getClass() != sender.getClass() ) {
-			prevCall = curCall;
-		} else {
-			if( Log.isLoggable(TAG, Log.WARN)) {
-				Log.w(TAG, "Previous NetworkServiceCall was not updated!");
+			/**
+			 * Update prevCall only if it is a different service request from current call
+			 * or if current call is null
+			 */
+			if( curCall == null || curCall.getClass() != sender.getClass() ) {
+				prevCall = curCall;
+			} else {
+				if( Log.isLoggable(TAG, Log.WARN)) {
+					Log.w(TAG, "Previous NetworkServiceCall was not updated!");
+				}
+
+				/**Update current call*/
+				curCall = sender;
 			}
 
-			/**Update current call*/
-			curCall = sender;
-			}
 		}
 	}
 
