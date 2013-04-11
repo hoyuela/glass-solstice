@@ -5,7 +5,6 @@ import android.util.Log;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.BackgroundServiceCall;
-import com.discover.mobile.bank.services.BankApiServiceCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
 import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
@@ -103,10 +102,10 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 	 * @return True to handle exception, false otherwise
 	 */
 	public boolean isConsiderable( final NetworkServiceCall<?> service ) {
-		boolean ret =  !( service instanceof SubmitCheckDepositCall || service instanceof BankApiServiceCall);
+		boolean ret =  !( service instanceof SubmitCheckDepositCall);
 		
 		if( service instanceof BackgroundServiceCall ) {
-			ret |= !(((BackgroundServiceCall)service).isBackgroundCall());
+			ret &= !(((BackgroundServiceCall)service).isBackgroundCall());
  		}
 		
 		return ret;

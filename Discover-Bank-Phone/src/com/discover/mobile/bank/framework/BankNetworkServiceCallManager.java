@@ -21,8 +21,6 @@ import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
 import com.discover.mobile.bank.services.AcceptTermsService;
 import com.discover.mobile.bank.services.BackgroundServiceCall;
-import com.discover.mobile.bank.services.BankApiServiceCall;
-import com.discover.mobile.bank.services.BankHolidayServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
@@ -749,9 +747,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				ret = ((BackgroundServiceCall)sender).isBackgroundCall();
 	 		}
 						
-			ret |=  sender instanceof RefreshBankSessionCall || 
-					sender instanceof BankApiServiceCall || 
-					sender instanceof BankHolidayServiceCall;		
+			ret |=  sender instanceof RefreshBankSessionCall;		
  		}
 		
 		return ret;		
