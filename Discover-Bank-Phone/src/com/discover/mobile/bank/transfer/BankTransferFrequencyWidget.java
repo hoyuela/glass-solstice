@@ -75,7 +75,6 @@ public class BankTransferFrequencyWidget extends BaseFragment{
 				item = createListItem(text[i], codes[i]);
 				list.addView(item);
 			}
-			item.setTextBlue(getActivity());
 		}
 	}
 
@@ -149,8 +148,9 @@ public class BankTransferFrequencyWidget extends BaseFragment{
 			public void onClick(final View v) {
 				Bundle bundle = getArguments();
 
-				if(bundle == null)
+				if(bundle == null) {
 					bundle = new Bundle();
+				}
 
 				bundle.putString(BankExtraKeys.FREQUENCY_CODE, code);
 				bundle.putString(BankExtraKeys.FREQUENCY_TEXT, string);
