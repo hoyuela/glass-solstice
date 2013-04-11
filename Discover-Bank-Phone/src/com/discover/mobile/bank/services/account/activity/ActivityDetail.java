@@ -74,7 +74,7 @@ public class ActivityDetail implements Serializable{
 	public String postedDate;
 
 	/**Balance of activity*/
-	@JsonProperty("balance")
+	@JsonProperty("accountBalance")
 	public Money balance;
 
 	/**Type of activity*/
