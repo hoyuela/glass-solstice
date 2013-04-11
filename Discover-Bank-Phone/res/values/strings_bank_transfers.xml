@@ -36,4 +36,13 @@
         <item>annually</item>
     </string-array>
     
+    <string name="external_accounts">External Accounts</string>
+    <string name="internal_accounts">Internal Accounts</string>
+    
+    <string name="change_transfer_to_account">You can not transfer between two External Accounts. <![CDATA[<font color="#0267b1">Edit To Transfer Account</font>]]></string>
+    <string name="change_transfer_from_account">You can not transfer between two External Accounts. <![CDATA[<font color="#0267b1">Edit From Transfer Account</font>]]></string>
+    
+    <string name="cancel_this_action">Cancel This Action</string>
+	<string name="cancel_this_action_content">Are you sure you wants to cancel? All information you have entered will be lost.</string>
+    
 </resources>
