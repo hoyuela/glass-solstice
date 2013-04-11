@@ -11,15 +11,21 @@ import com.discover.mobile.common.net.ServiceCallParams;
  * 
  * @param <M> The <u>m</u>odel type for the JSON result
  */
-public abstract class BankNetworkServiceCall<M> extends NetworkServiceCall<M> {
+public abstract class BankNetworkServiceCall<M> 
+	extends NetworkServiceCall<M> 
+	implements BackgroundServiceCall {
 
+	/**
+	 * Flag used to determine whether service call is to run silently in background.
+	 */
+	boolean isBackgroundCall = false;
 	
 	/**
 	 * 
 	 * @param context
 	 * @param params
 	 */
-	protected BankNetworkServiceCall(Context context, ServiceCallParams params) {
+	protected BankNetworkServiceCall(final Context context, final ServiceCallParams params) {
 		super(context, params);
 		
 	}
@@ -29,6 +35,14 @@ public abstract class BankNetworkServiceCall<M> extends NetworkServiceCall<M> {
 		return BankUrlManager.getBaseUrl();
 	}
 
-	
+	@Override
+	public void setIsBackgroundCall(final boolean value) {
+		isBackgroundCall = value;	
+	}
+
+	@Override
+	public boolean isBackgroundCall() {
+		return isBackgroundCall;
+	}
 
 }

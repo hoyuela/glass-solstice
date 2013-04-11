@@ -283,7 +283,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			 * focusChange listeners of its super class.*/
 			accountDetail = new BankEditDetail(currentActivity);
 
-			accountDetail.getDividerLine().setVisibility(View.GONE);
+			accountDetail.getDividerLine().setVisibility(View.INVISIBLE);
 			accountDetail.getTopLabel().setText(BankStringFormatter.getAccountEndingInString(account.accountNumber.ending));
 			accountDetail.getMiddleLabel().setText(account.nickname);
 			accountDetail.getMiddleLabel().setSingleLine(false);
