@@ -98,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/between_related_elements_padding"
-                android:background="@drawable/atm_orange_pin_sm"
+                android:background="@drawable/atm_pin_orange_search_bar"
                 android:textColor="@color/title" />
 
             <TextView
