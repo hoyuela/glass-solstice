@@ -597,6 +597,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				}
 			}
 
+			/**Update current call*/
+			curCall = sender;
 		}
 	}
 

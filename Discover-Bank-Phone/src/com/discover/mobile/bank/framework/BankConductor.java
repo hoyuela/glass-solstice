@@ -685,9 +685,6 @@ public final class BankConductor  extends Conductor {
 		final BankNavigationRootActivity activity =
 				(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
-		final BankSearchSelectPayeeFragment fragment = new BankSearchSelectPayeeFragment();
-		final SearchPayeeServiceCall searchCall =
-				(SearchPayeeServiceCall)BankNetworkServiceCallManager.getInstance().getLastServiceCall();
 
 		if( BankNetworkServiceCallManager.getInstance().getLastServiceCall() instanceof SearchPayeeServiceCall ) {
 			final BankSearchSelectPayeeFragment fragment = new BankSearchSelectPayeeFragment();
