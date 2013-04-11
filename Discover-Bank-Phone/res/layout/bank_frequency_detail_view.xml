@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/forms_inner_padding" >
+    android:paddingBottom="@dimen/forms_inner_padding" >
 
     <View
         android:id="@+id/divider_line"
@@ -17,6 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/forms_inner_padding"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
         android:layout_marginTop="@dimen/forms_inner_padding"
         android:singleLine="true"
         android:text="@string/transfer_continue_until" />
@@ -26,124 +28,217 @@
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/continue_until_label"
+        android:layout_marginLeft="@dimen/orange_button_margin_top"
         android:background="@drawable/table_solid_line" />
 
-    <RadioButton
-        android:id="@+id/cancelled_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/divider_line2" />
+    <!-- Cancelled Layout items -->
 
-    <TextView
-        android:id="@+id/canceled_label"
-        style="@style/field_copy"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/cancelled_layout"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/cancelled_button"
-        android:layout_alignTop="@+id/cancelled_button"
         android:layout_below="@+id/divider_line2"
-        android:layout_toRightOf="@+id/cancelled_button"
-        android:gravity="center"
-        android:singleLine="true"
-        android:text="@string/transfer_cancelled" />
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/between_related_elements_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:weightSum="5" >
+
+        <RadioButton
+            android:id="@+id/cancelled_button"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_weight=".65"
+            android:checked="true" />
+
+        <TextView
+            android:id="@+id/canceled_label"
+            style="@style/field_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="4"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@color/body_copy"
+            android:text="@string/transfer_cancelled" />
+    </LinearLayout>
+
+    <!-- End of cancelled layout items -->
 
     <View
         android:id="@+id/divider_line3"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/canceled_label"
+        android:layout_below="@+id/cancelled_layout"
+        android:layout_marginBottom="@dimen/forms_inner_padding"
+        android:layout_marginLeft="@dimen/orange_button_margin_top"
         android:background="@drawable/table_solid_line" />
 
-    <RadioButton
-        android:id="@+id/date_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/divider_line3" />
+    <!-- Date layout items -->
 
-    <TextView
-        android:id="@+id/date_label"
-        style="@style/field_copy"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/date_layout"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider_line3"
-        android:layout_toRightOf="@+id/date_button"
-        android:gravity="center"
-        android:singleLine="true"
-        android:text="@string/transfer_date" />
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/between_related_elements_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:weightSum="5" >
 
-    <TextView
-        android:id="@+id/date_value"
-        style="@style/field_copy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/date_label"
-        android:layout_toRightOf="@+id/date_button"
-        android:gravity="center"
-        android:singleLine="true"
-        android:text="@string/transfer_selected_date" />
+        <RadioButton
+            android:id="@+id/date_button"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_weight=".5" />
 
-    <ImageView
-        android:id="@+id/caret"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_alignTop="@+id/date_label"
-        android:layout_alignBottom="@+id/date_value"
-        android:contentDescription="@string/caret_description"
-        android:paddingRight="@dimen/between_related_elements_padding"
-        android:src="@drawable/blue_arrow_right" />
+        <LinearLayout
+            android:id="@+id/inner_date_layout"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="4"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/date_label"
+                style="@style/field_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/transfer_date" />
+
+            <TextView
+                android:id="@+id/date_value"
+                style="@style/body_copy_title_max"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/forms_inner_padding"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/transfer_selected_date"
+                android:textColor="@color/field_copy" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/caret"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight=".5"
+            android:contentDescription="@string/caret_description"
+            android:paddingRight="@dimen/between_related_elements_padding"
+            android:scaleType="center"
+            android:src="@drawable/blue_arrow_right" />
+    </LinearLayout>
+    <!-- End date layout items -->
 
     <View
         android:id="@+id/divider_line4"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/date_value"
+        android:layout_below="@+id/date_layout"
+        android:layout_marginBottom="@dimen/forms_inner_padding"
+        android:layout_marginLeft="@dimen/orange_button_margin_top"
         android:background="@drawable/table_solid_line" />
 
-    <RadioButton
-        android:id="@+id/transactions_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/divider_line4" />
+    <!-- Transaction count items -->
 
-    <TextView
-        android:id="@+id/transactions_label"
-        style="@style/field_copy"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/transaction_layout"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/transactions_button"
-        android:layout_alignTop="@+id/transactions_button"
-        android:layout_below="@+id/divider_line2"
-        android:layout_toRightOf="@+id/transactions_button"
-        android:gravity="center"
-        android:singleLine="true"
-        android:text="@string/transfer_transactions" />
+        android:layout_below="@+id/divider_line4"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/between_related_elements_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:weightSum="5" >
+
+        <RadioButton
+            android:id="@+id/transactions_button"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_weight=".5" />
+
+        <TextView
+            android:id="@+id/transactions_label"
+            style="@style/field_copy"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2.75"
+            android:gravity="center_vertical"
+            android:text="@string/transfer_transactions"
+            android:textColor="@color/field_copy" />
+
+        <com.discover.mobile.card.common.uiwidget.SsnEditText
+            android:id="@+id/transaction_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/forms_inner_padding"
+            android:layout_weight="1.75"
+            android:imeOptions="actionDone"
+            android:textCursorDrawable="@null" />
+    </LinearLayout>
+    <!-- End count items -->
 
     <View
         android:id="@+id/divider_line5"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/transactions_label"
+        android:layout_below="@+id/transaction_layout"
+        android:layout_marginBottom="@dimen/forms_inner_padding"
+        android:layout_marginLeft="@dimen/orange_button_margin_top"
         android:background="@drawable/table_solid_line" />
 
-    <RadioButton
-        android:id="@+id/dollar_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/divider_line5" />
+    <!-- Dollar Amount item -->
 
-    <TextView
-        android:id="@+id/dollar_label"
-        style="@style/field_copy"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/dollar_layout"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/dollar_button"
-        android:layout_alignTop="@+id/dollar_button"
         android:layout_below="@+id/divider_line5"
-        android:layout_toRightOf="@+id/dollar_button"
-        android:gravity="center"
-        android:singleLine="true"
-        android:text="@string/transfer_dollar_amount" />
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/between_related_elements_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:weightSum="5" >
+
+        <RadioButton
+            android:id="@+id/dollar_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_weight=".5" />
+
+        <TextView
+            android:id="@+id/dollar_label"
+            style="@style/field_copy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.25"
+            android:gravity="center_vertical"
+            android:text="@string/transfer_dollar_amount" />
+
+        <TextView
+            android:id="@+id/dollar"
+            style="@style/field_copy_big"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:gravity="center_vertical|right"
+            android:paddingRight="3dp"
+            android:text="@string/bank_dollar_sign"
+            android:textColor="@color/field_copy" />
+
+        <com.discover.mobile.bank.ui.widgets.AmountValidatedEditField
+            android:id="@+id/amount_edit"
+            style="@style/pmt_amount_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.75" >
+        </com.discover.mobile.bank.ui.widgets.AmountValidatedEditField>
+    </LinearLayout>
+
+    <!-- End dollar amount item -->
 
 </RelativeLayout>

@@ -187,6 +187,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		temp.getMiddleLabel().setText(frequencyText);
 		content.add(getFrequencyListItem(currentActivity));
 		content.add(getSendOnListItem(currentActivity));
+		content.add(new BankFrequencyDetailView(currentActivity, null));
 
 		return content;
 	}
