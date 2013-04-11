@@ -19,6 +19,9 @@ public class TransferDetail implements Serializable {
 	/**Variable sent to the server if the transfer is to continue until a dollar amount*/
 	public static final String UNTIL_AMOUNT = "continue_until_a_set_dollar_amount_has_been_transferred";
 
+	/**Variable used to signify a one time transfer*/
+	public static final String ONE_TIME_TRANSFER = "one_time_transfer";
+
 	private static final long serialVersionUID = 3220773738601798470L;
 
 	@JsonProperty("id")

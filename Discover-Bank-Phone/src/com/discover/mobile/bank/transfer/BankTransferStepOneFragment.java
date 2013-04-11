@@ -39,7 +39,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	private BankEditDetail frequencyListItem;
 
 	/**Code of the frequency*/
-	private String frequencyCode = "one_time";
+	private String frequencyCode = TransferDetail.ONE_TIME_TRANSFER;
 	private String frequencyText = "One Time";
 
 	private AmountValidatedEditField amountField;
@@ -71,7 +71,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
 		amountField.enableBankAmountTextWatcher(false);
-
 		restoreStateFromBundle(getArguments());
 		restoreStateFromBundle(savedInstanceState);
 
@@ -169,6 +168,12 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 
 		frequencyListItem.getMiddleLabel().setText(frequencyText);
 		frequencyListItem.getErrorLabel().setVisibility(View.GONE);
+
+		if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
+			reoccuring.setVisibility(View.GONE);
+		}else{
+			reoccuring.setVisibility(View.VISIBLE);
+		}
 	}
 
 	public void handleChosenAccount(final Bundle bundle) {
@@ -187,6 +192,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		final FragmentActivity currentActivity = this.getActivity();
 		final int expectedSize = 5;
 		final List<RelativeLayout>content = new ArrayList<RelativeLayout>(expectedSize);
+		reoccuring = new BankFrequencyDetailView(currentActivity, null);
 
 		content.add(getFromListItem(currentActivity));
 		content.add(getToListItem(currentActivity));
@@ -195,15 +201,18 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		temp.getMiddleLabel().setText(frequencyText);
 		content.add(getFrequencyListItem(currentActivity));
 		content.add(getSendOnListItem(currentActivity));
-		content.add(getReocurringWidget());
+		content.add(reoccuring);
+
+		if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
+			reoccuring.setVisibility(View.GONE);
+		}else{
+			reoccuring.setVisibility(View.VISIBLE);
+		}
 
 		return content;
 	}
 
 	private BankFrequencyDetailView getReocurringWidget(){
-		if(null == reoccuring){
-			reoccuring = new BankFrequencyDetailView(this.getActivity(), null);
-		}
 		return reoccuring;
 	}
 
