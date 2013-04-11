@@ -19,11 +19,11 @@ import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.ui.table.BaseTable;
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
 /**

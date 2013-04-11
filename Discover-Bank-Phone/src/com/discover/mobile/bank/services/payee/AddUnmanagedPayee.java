@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.services.payee;
 
+import com.discover.mobile.bank.services.json.PhoneNumber;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -18,13 +19,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * {
  *		"name" : "Young America Realty",
  *		"nickName" : "Rent Bill",
- *		"phone" : "309-123-4567",
- *		"addressLine1" : "101 S Main Street",
- *		"addressLine2" : "Suite 18",
- *		"addressCity" : "Normal",
- *		"addressState" : "IL",
- *		"addressZip" : "61761",
- *		"isVerified" : false
+ *      "memo" : "this is a payee memo",
+ *		"phoneNumber" : {
+ *			"number" : "3091234567"
+ *		},
+ *		"address" : {
+ *			"streetAddress" : "101 S Main Street",
+ *			"extendedAddress" : "Suite 18",
+ *			"locality" : "Normal",
+ *			"region" : "IL",
+ *			"postalCode" : "61761"
+ *		}
  * }
  * @author henryoyuela
  *
@@ -39,42 +44,40 @@ public class AddUnmanagedPayee extends AddPayeeDetail {
 	/**
 	 * Holds the name of the Address Line 1 field in a JSON request.
 	 */
-	public static final String NAME_ADDRESS_LINE1 = "addressLine1";
+	public static final String NAME_ADDRESS_LINE1 = "streetAddress";
 	/**
 	 * Holds the name of the Address Line 2 field in a JSON request.
 	 */
-	public static final String NAME_ADDRESS_LINE2 = "addressLine2";
+	public static final String NAME_ADDRESS_LINE2 = "extendedAddress";
 	/**
 	 * Holds the name of the City field in a JSON request.
 	 */
-	public static final String NAME_ADDRESS_CITY = "addressCity";
+	public static final String NAME_ADDRESS_CITY = "locality";
 	/**
 	 * Holds the name of the State field in a JSON request.
 	 */
-	public static final String NAME_ADDRESS_STATE = "addressState";
+	public static final String NAME_ADDRESS_STATE = "region";
 	/**
 	 * Holds the name of the Zip field in a JSON request.
 	 */
-	public static final String NAME_ADDRESS_ZIP = "addressZip";
+	public static final String NAME_ADDRESS_ZIP = "postalCode";
 	/**
 	 * Holds the name of the Memo field in a JSON request.
 	 */
 	public static final String NAME_MEMO = "memo";
+	/**
+	 * Holds the name of the phone field in a JSON request.
+	 */
+	public static final String NAME_PHONE = "phoneNumber";
+
+	@JsonProperty("phoneNumber")
+	public PhoneNumber phone;
 	
-	@JsonProperty("addressLine1")
-	public String addressLine1;
+	@JsonProperty("address")
+	public Address address;
 	
-	@JsonProperty("addressLine2")
-	public String addressLine2;
-	
-	@JsonProperty("addressCity")
-	public String addressCity;
-	
-	@JsonProperty("addressState")
-	public String addressState;
-	
-	@JsonProperty("addressZip")
-	public String addressZip;
+	@JsonProperty("memo")
+	public String memo;
 	
 	public AddUnmanagedPayee() {
 		super();
@@ -85,11 +88,20 @@ public class AddUnmanagedPayee extends AddPayeeDetail {
 		accountNumberConfirmed = null;
 		zip = null;
 		
-		addressLine1 = "";
-		addressLine2 = "";
-		addressCity = "";
-		addressState = "";
-		addressZip = "";
+		address = new Address();
+		address.type = null;
+		address.region = "";
+		address.postalCode = "";
+		address.locality = "";
+		address.formattedAddress = null;
+		address.streetAddress = "";
+		address.extendedAddress = "";
 		
+		phone = new PhoneNumber();	
+		phone.number = "";
+		phone.formatted = null;
+		phone.type = null;
+		
+		memo = "";	
 	}
 }

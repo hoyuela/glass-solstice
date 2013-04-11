@@ -11,13 +11,13 @@ import android.util.Log;
 
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.error.BankErrorSSOResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.SessionTokenManager;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.ExceptionLibrary;
-import com.discover.mobile.common.net.error.bank.BankErrorSSOResponseParser;
 
 public class CreateBankSSOLoginCall extends
 		BankJsonResponseMappingNetworkServiceCall<BankLoginData> {

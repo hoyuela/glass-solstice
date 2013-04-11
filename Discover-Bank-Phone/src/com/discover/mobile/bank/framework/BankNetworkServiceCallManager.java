@@ -20,6 +20,7 @@ import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
 import com.discover.mobile.bank.services.AcceptTermsService;
+import com.discover.mobile.bank.services.BackgroundServiceCall;
 import com.discover.mobile.bank.services.BankApiServiceCall;
 import com.discover.mobile.bank.services.BankHolidayServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
@@ -38,11 +39,11 @@ import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.deposit.GetAccountLimits;
+import com.discover.mobile.bank.services.error.BankErrorSSOResponse;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.DeletePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
-import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.ManagePayeeServiceCall;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
@@ -69,7 +70,6 @@ import com.discover.mobile.common.framework.NetworkServiceCallManager;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.net.error.bank.BankErrorSSOResponse;
 import com.google.common.base.Strings;
 
 /**
@@ -246,9 +246,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				BankConductor.logoutUser(activeActivity);
 			}
 			//Dispatch response to BankBaseErrorHandler to determine how to handle the error
-			else if( !(sender instanceof BankApiServiceCall || 
-					   sender instanceof BankHolidayServiceCall ||
-					   sender instanceof RefreshBankSessionCall) )  {
+			else if( !isBackgroundServiceCall(sender) )  {
 				errorHandler.handleFailure(sender, error);
 	
 				((AlertDialogParent)activeActivity).closeDialog();
@@ -271,9 +269,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final Throwable arg1) {
 		if( isGuiReady() ) {
-			if( !(sender instanceof BankApiServiceCall || 
-				  sender instanceof BankHolidayServiceCall ||
-				  sender instanceof RefreshBankSessionCall)) {
+			if( !isBackgroundServiceCall(sender) ) {
 				final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 				activeActivity.closeDialog();
 			}
@@ -420,7 +416,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Handle the payee success call
 		else if( sender instanceof GetPayeeServiceCall){
-			BankUser.instance().setPayees((ListPayeeDetail)result);
 			if(((GetPayeeServiceCall)sender).isChainCall()){
 				BankRotationHelper.getHelper().setBundle(null);
 				final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
@@ -474,23 +469,25 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Handler for GetAccountLimits service call
 		else if( sender instanceof GetAccountLimits) {
-			Bundle bundle = activeActivity.getIntent().getExtras();
-			boolean navToReview = false;
-			if(bundle == null) {
-				bundle = new Bundle();
-			} else{
-				navToReview = bundle.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
-			}
-			final Account account = ((GetAccountLimits)sender).getAccount();
-
-			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
-			final double amount = bundle.getInt(BankExtraKeys.AMOUNT)/100;
-
-			if(navToReview && account.limits.isAmountValid(amount)){
-				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.ReviewDeposit);
-			}else{
-				//Navigate to Check Deposit - Select Amount Page
-				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAmount);
+			if( !((GetAccountLimits)sender).isBackgroundCall() ) {
+				Bundle bundle = activeActivity.getIntent().getExtras();
+				boolean navToReview = false;
+				if(bundle == null) {
+					bundle = new Bundle();
+				} else{
+					navToReview = bundle.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
+				}
+				final Account account = ((GetAccountLimits)sender).getAccount();
+	
+				bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
+				final double amount = bundle.getInt(BankExtraKeys.AMOUNT)/100;
+	
+				if(navToReview && account.limits.isAmountValid(amount)){
+					BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.ReviewDeposit);
+				}else{
+					//Navigate to Check Deposit - Select Amount Page
+					BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAmount);
+				}
 			}
 		}
 		//Handler for getting email directions
@@ -568,29 +565,28 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 		
 		/* Service calls that do not show dialog must override functionality here */
-		if( !(sender instanceof RefreshBankSessionCall || 
-			  sender instanceof BankApiServiceCall || 
-			  sender instanceof BankHolidayServiceCall) ) {
+		if( !isBackgroundServiceCall(sender) ) {
 			activeActivity.startProgressDialog();
-		}
+		
 
-		/**Clear the current last error stored in the error handler*/
-		errorHandler.clearLastError();
-
-		/**
-		 * Update prevCall only if it is a different service request from current call
-		 * or if current call is null
-		 */
-		if( curCall == null || curCall.getClass() != sender.getClass() ) {
-			prevCall = curCall;			
-		} else {
-			if( Log.isLoggable(TAG, Log.WARN)) {
-				Log.w(TAG, "Previous NetworkServiceCall was not updated!");
+			/**Clear the current last error stored in the error handler*/
+			errorHandler.clearLastError();
+	
+			/**
+			 * Update prevCall only if it is a different service request from current call
+			 * or if current call is null
+			 */
+			if( curCall == null || curCall.getClass() != sender.getClass() ) {
+				prevCall = curCall;			
+			} else {
+				if( Log.isLoggable(TAG, Log.WARN)) {
+					Log.w(TAG, "Previous NetworkServiceCall was not updated!");
+				}
 			}
+	
+			/**Update current call*/
+			curCall = sender;
 		}
-
-		/**Update current call*/
-		curCall = sender;
 	}
 
 	/**
@@ -740,6 +736,30 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		};
 
 		task.execute();
+	}
+	
+	/**
+	 * Method used to check to see if the service call should occur in the background without a progress dialog
+	 * 
+	 * @param sender NetworkServiceCall that is being check to see if it should happen silently.
+	 * 
+	 * @return True if it is a back ground call, false otherwise
+	 */
+	public boolean isBackgroundServiceCall(final NetworkServiceCall<?> sender) {
+		
+		boolean ret = false;
+		
+		if( sender != null ) {
+	 		if( sender instanceof BackgroundServiceCall ) {
+				ret = ((BackgroundServiceCall)sender).isBackgroundCall();
+	 		}
+						
+			ret |=  sender instanceof RefreshBankSessionCall || 
+					sender instanceof BankApiServiceCall || 
+					sender instanceof BankHolidayServiceCall;		
+ 		}
+		
+		return ret;		
 	}
 	
 	/**

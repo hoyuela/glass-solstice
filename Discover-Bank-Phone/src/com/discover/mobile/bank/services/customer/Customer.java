@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.discover.mobile.bank.services.BankUrlManager;
-import com.discover.mobile.common.net.json.bank.Address;
-import com.discover.mobile.common.net.json.bank.Name;
-import com.discover.mobile.common.net.json.bank.PhoneNumber;
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
+import com.discover.mobile.bank.services.json.Address;
+import com.discover.mobile.bank.services.json.Name;
+import com.discover.mobile.bank.services.json.PhoneNumber;
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

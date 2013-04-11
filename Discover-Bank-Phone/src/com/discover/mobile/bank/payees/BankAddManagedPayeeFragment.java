@@ -11,10 +11,10 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.error.BankError;
+import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResult;
-import com.discover.mobile.common.net.error.bank.BankError;
-import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.google.common.base.Strings;
 
 /**

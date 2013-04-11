@@ -7,11 +7,11 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 
 /**
  * Class used to download links from the Bank API Service using a GET /api HTTP request. The JSON response

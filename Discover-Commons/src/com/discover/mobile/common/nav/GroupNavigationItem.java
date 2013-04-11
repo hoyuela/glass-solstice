@@ -56,6 +56,7 @@ final class GroupNavigationItem extends NavigationItem {
 		}
 
 		adapter.setSelectedItem(null);
+		NavigationIndex.setIndex(-1);
 		expanded = false;
 	}
 

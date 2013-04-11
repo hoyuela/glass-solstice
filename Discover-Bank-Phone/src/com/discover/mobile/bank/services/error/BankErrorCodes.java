@@ -1,4 +1,4 @@
-package com.discover.mobile.common.net.error.bank;
+package com.discover.mobile.bank.services.error;
 
 /**
  * Class contains the error codes that can be found in an error response to a Bank NetworkServiceCall<>

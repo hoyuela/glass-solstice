@@ -1,7 +1,6 @@
 package com.discover.mobile.bank.paybills;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +13,7 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
@@ -57,11 +57,6 @@ public class BankSelectPayee extends BaseFragment{
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(null == savedInstanceState){
-			loadListFromBundle(this.getArguments());
-		} else{
-			loadListFromBundle(savedInstanceState);
-		}
 	}
 
 	/**
@@ -106,22 +101,15 @@ public class BankSelectPayee extends BaseFragment{
 	}
 
 
-
-	/**
-	 * Save the state of the current fragment
-	 * @param outState - bundle to save the state in.
-	 */
-	@Override
-	public void onSaveInstanceState(final Bundle outState){
-		outState.putSerializable(BankExtraKeys.PAYEES_LIST, payees);
-	}
-
 	/**
 	 * This method will take the loaded list of payees and fill 
 	 * the list on the screen with the data.
 	 */
 	private void initViewWithBundleData() {
 		final Button addPayee = (Button)view.findViewById(R.id.add_payee);
+		
+		/**Used Cache list of Payees*/
+		payees = BankUser.instance().getPayees();
 		
 		/**Set Button Text to specific text when there are no payees in list*/
 		if(null == payees || payees.payees.isEmpty()){
@@ -153,18 +141,6 @@ public class BankSelectPayee extends BaseFragment{
 				}
 				i++;
 			}
-		}
-	}
-
-	/**
-	 * Extract the data from the bundles and then display it.
-	 * @param bundle - bundle containing the data to be displayed.
-	 */
-	public void loadListFromBundle(final Bundle bundle){
-		if(bundle != null){
-			payees = (ListPayeeDetail)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
-		}else{
-			Log.e(TAG, "NO BUNDLE DATA FOUND");
 		}
 	}
 
@@ -310,7 +286,6 @@ public class BankSelectPayee extends BaseFragment{
 	 * @param extras Reference to bundle with payee list data.
 	 */
 	public void refreshScreen(final Bundle extras) {
-		loadListFromBundle(extras);
 		initViewWithBundleData();
 		customSetup();
 	}

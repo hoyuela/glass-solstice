@@ -9,11 +9,11 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.bank.services.customer.Eligibility;
+import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
-import com.discover.mobile.common.net.error.bank.BankErrorResponseParser;
 
 /**
  * The POST call made to Bank APIs to accept a terms and service agreement.

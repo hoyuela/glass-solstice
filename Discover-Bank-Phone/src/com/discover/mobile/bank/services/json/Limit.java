@@ -1,8 +1,8 @@
-package com.discover.mobile.common.net.json.bank;
+package com.discover.mobile.bank.services.json;
 
 import java.io.Serializable;
 
-import com.discover.mobile.common.net.error.bank.BankError;
+import com.discover.mobile.bank.services.error.BankError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

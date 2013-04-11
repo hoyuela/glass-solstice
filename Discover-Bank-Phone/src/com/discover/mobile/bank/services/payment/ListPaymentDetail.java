@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.discover.mobile.common.net.json.bank.ReceivedUrl;
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 
 /**
  * Json object that that holds a list of payment details that the user can review.

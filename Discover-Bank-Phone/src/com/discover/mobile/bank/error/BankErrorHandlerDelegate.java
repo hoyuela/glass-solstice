@@ -1,6 +1,6 @@
 package com.discover.mobile.bank.error;
 
-import com.discover.mobile.common.net.error.bank.BankErrorResponse;
+import com.discover.mobile.bank.services.error.BankErrorResponse;
 
 /**
  * Interface for handling incoming errors from Bank API Web Services. Used by 

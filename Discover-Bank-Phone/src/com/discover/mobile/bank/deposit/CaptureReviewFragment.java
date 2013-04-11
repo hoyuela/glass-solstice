@@ -27,13 +27,13 @@ import com.discover.mobile.bank.payees.BankEditDetail;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.deposit.DepositDetail;
 import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
+import com.discover.mobile.bank.services.error.BankError;
+import com.discover.mobile.bank.services.error.BankErrorCodes;
+import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.error.bank.BankError;
-import com.discover.mobile.common.net.error.bank.BankErrorCodes;
-import com.discover.mobile.common.net.error.bank.BankErrorResponse;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
@@ -283,7 +283,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			 * focusChange listeners of its super class.*/
 			accountDetail = new BankEditDetail(currentActivity);
 
-			accountDetail.getDividerLine().setVisibility(View.GONE);
+			accountDetail.getDividerLine().setVisibility(View.INVISIBLE);
 			accountDetail.getTopLabel().setText(BankStringFormatter.getAccountEndingInString(account.accountNumber.ending));
 			accountDetail.getMiddleLabel().setText(account.nickname);
 			accountDetail.getMiddleLabel().setSingleLine(false);
