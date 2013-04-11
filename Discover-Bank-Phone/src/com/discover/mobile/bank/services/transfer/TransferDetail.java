@@ -2,7 +2,7 @@ package com.discover.mobile.bank.services.transfer;
 
 import java.io.Serializable;
 
-import com.discover.mobile.common.net.json.bank.Money;
+import com.discover.mobile.bank.services.json.Money;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TransferDetail implements Serializable {
