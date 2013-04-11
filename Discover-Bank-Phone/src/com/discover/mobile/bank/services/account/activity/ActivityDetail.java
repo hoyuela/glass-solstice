@@ -1,7 +1,6 @@
 package com.discover.mobile.bank.services.account.activity;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 import com.discover.mobile.bank.services.json.Money;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -57,11 +56,11 @@ public class ActivityDetail implements Serializable{
 	public Money amount;
 
 	/**Date associated with the activity*/
-	@JsonProperty("dates")
-	public HashMap<String, String> dates;
+	@JsonProperty("postedDate")
+	public String dates;
 
 	/**Balance of activity*/
-	@JsonProperty("balance")
+	@JsonProperty("accountBalance")
 	public Money balance;
 
 	/**Type of activity*/
