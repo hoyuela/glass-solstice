@@ -2,8 +2,9 @@
 <resources>
     
     <string name="help_menu_account_activity">Account Activity FAQs</string>
-    <string name="pay_bills_help">Pay Bills</string>
-    <string name="check_deposit_help">Check Deposit</string>
+    <string name="pay_bills_help">Pay Bills FAQ</string>
+    <string name = "check_deposit_help">Check Deposit Help</string>
+    <string name="check_deposit_faq">Check Deposit FAQ</string>
     <string name="help_menu_atm_help">ATM Locator Help</string>
     <string name="help_menu_atm_faq">ATM Locator FAQs</string>
     
