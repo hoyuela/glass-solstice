@@ -33,15 +33,28 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	 * Reference to a AddPayeeDetail object used to hold the information of the Payee that will be added.
 	 */
 	PayeeDetail detail = new PayeeDetail();
-
+	/**
+	 * Key used to read flag from bundle, obtained via getArguments(), to determine if confirmation page is for a update or addition.
+	 */
+	public static final String KEY_PAYEE_UPDATE = "update";
+	/**
+	 * Flag used to determine whether payee was updated or added.
+	 */
+	public boolean isUpdate;
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 
 		/**Fetch payee detail passed in from Step 4 in Add Payee Fragment*/
 		final Bundle bundle = this.getArguments();
-		if( null != bundle &&  null != bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM)) {
-			detail =  (PayeeDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);				
+		if( null != bundle ) {
+			if( null != bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM)) {
+				detail = (PayeeDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);	
+			}
+			
+			/**read whether this confirmation is shown for an payee update or addition*/
+			isUpdate = bundle.getBoolean(KEY_PAYEE_UPDATE);
 		} 
 
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
@@ -61,7 +74,6 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	protected void initialize(final View mainView) {
 		/**Show top note to show confirmation message to user**/
 		final TextView topNote = (TextView)mainView.findViewById(R.id.top_note_text);
-		topNote.setText(R.string.bank_add_confirm);
 		topNote.setVisibility(View.VISIBLE);
 
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
@@ -74,8 +86,17 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 		noteTextMsg.setVisibility(View.GONE);
 
 		actionButton.setText(R.string.bank_sch_payment);
-
-		actionLink.setText(R.string.bank_add_another);
+		
+		/**Check if confirmation page is for a payee update or addition*/
+		if( isUpdate ) {
+			topNote.setText(R.string.bank_updated_confirm);
+			
+			actionLink.setText(R.string.bank_manage_payees);
+		} else {
+			topNote.setText(R.string.bank_add_confirm);
+			
+			actionLink.setText(R.string.bank_add_another);
+		}
 	}
 
 	/**
@@ -85,12 +106,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	protected void onActionButtonClick()  {
 		if( getActivity() instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
-			/**
-			 * Remove this fragment from the transactions list, this seems to be required since 
-			 * makeVisible(fragment, boolean) was used.
-			 */
-			getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-
+			
 			//Pop everything out of the stack till we get to AccountSummary
 			activity.popTillFragment(BankAccountSummaryFragment.class);
 
@@ -117,8 +133,19 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 		if( getActivity() instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
 			
-			//Pop all fragments in stack till you get the user to BankEnterPayeeFragment where they can run as search for a verified Payee again
-			activity.popTillFragment(BankEnterPayeeFragment.class);
+			/**Check if confirmation page is for a payee update or addition*/
+			if( isUpdate ) {
+				/**
+				 * Pop all fragments in stack till you get the user to BankManagePayee
+				 */
+				activity.popTillFragment(BankManagePayee.class);
+			} else {
+				/**
+				 * Pop all fragments in stack till you get the user to BankEnterPayeeFragment 
+				 * where they can run as search for a verified Payee again
+				 */
+				activity.popTillFragment(BankEnterPayeeFragment.class);
+			}
 		}
 	}
 	
