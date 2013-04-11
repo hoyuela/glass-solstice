@@ -9,11 +9,14 @@
 
     <ImageButton
         android:id="@+id/search_expand"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/atm_search_icon_sm"
+        android:paddingRight="@dimen/between_related_elements_padding"
+        android:paddingBottom="@dimen/between_related_elements_padding"
+        android:src="@drawable/magnifying_glass_icon_white"
+        android:background="@drawable/magnifying_glass_bkgrd"
         android:visibility="gone" />
 
     <RelativeLayout
