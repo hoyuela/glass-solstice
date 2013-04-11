@@ -16,9 +16,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
 import com.discover.mobile.common.ui.widgets.SsnEditText;
 
+/**
+ * View for the reocurring transfer widget
+ * @author jthornton
+ *
+ */
 public class BankFrequencyDetailView extends RelativeLayout{
 
 	/**Rotation Key Values*/
@@ -61,14 +67,23 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	/**Application Resources*/
 	private final Resources res;
 
+	/**
+	 * Constructor for the view
+	 * @param context - activity context
+	 * @param attrs - attributes to apply to the layout
+	 */
 	public BankFrequencyDetailView(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		view = LayoutInflater.from(context).inflate(R.layout.bank_frequency_detail_view, null);
 		res = context.getResources();
 		cancelled = (RadioButton) view.findViewById(R.id.cancelled_button);
+		cancelled.setEnabled(false);
 		date = (RadioButton) view.findViewById(R.id.date_button);
+		date.setEnabled(false);
 		transaction = (RadioButton) view.findViewById(R.id.transactions_button);
+		transaction.setEnabled(false);
 		dollar = (RadioButton) view.findViewById(R.id.dollar_button);
+		dollar.setEnabled(false);
 		dollarAmount = (AmountValidatedEditField) view.findViewById(R.id.amount_edit);
 		transactionAmount = (SsnEditText) view.findViewById(R.id.transaction_amount);
 		dateValue = (TextView) view.findViewById(R.id.date_value);
@@ -84,6 +99,11 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		addView(view);
 	}
 
+	/**
+	 * Get the listener for when layouts are clicked
+	 * @param index
+	 * @return
+	 */
 	private OnClickListener getLayoutListener(final int index) {
 		return new OnClickListener(){
 			@Override
@@ -93,7 +113,12 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		};
 	}
 
-	public Bundle savedDate(final Bundle outState){
+	/**
+	 * Save the state of the view
+	 * @param outState - the bundle to put the data in
+	 * @return the bundle of data
+	 */
+	public Bundle saveState(final Bundle outState){
 		outState.putInt(RADIO, index);
 		outState.putString(DATE_VALUE, dateValue.getText().toString());
 		outState.putString(TRANS_VALUE, transactionAmount.getText().toString());
@@ -102,6 +127,10 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		return outState;
 	}
 
+	/**
+	 * Resume the sate of the view
+	 * @param bundle - bundle containing the data
+	 */
 	public void resumeState(final Bundle bundle){
 		index = bundle.getInt(RADIO, CANCELLED);
 		final String date = bundle.getString(DATE_VALUE);
@@ -115,6 +144,59 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		enableCell(index);
 	}
 
+	/**
+	 * Get the duration type for the service call
+	 * @return the duration type for the service call
+	 */
+	public String getDurationType(){
+		String duration;
+		switch(index){
+		case CANCELLED:
+			duration = TransferDetail.UNTIL_CANCELLED;
+			break;
+		case DATE:
+			duration = TransferDetail.UNTIL_DATE;
+			break;
+		case TRANSACTION:
+			duration = TransferDetail.UNTIL_COUNT;
+			break;
+		case AMOUNT:
+			duration = TransferDetail.UNTIL_AMOUNT;
+			break;
+		default:
+			duration = TransferDetail.UNTIL_CANCELLED;
+			break;
+		}
+		return duration;
+	}
+
+	/**
+	 * Get the duration value for the service call
+	 * @return the duration value for the service call
+	 */
+	public String getDurationValue(){
+		final String value;
+		switch(index){
+		case DATE:
+			value = dateValue.getText().toString();
+			break;
+		case TRANSACTION:
+			value = transactionAmount.getText().toString();
+			break;
+		case AMOUNT:
+			value = dollarAmount.getText().toString().replaceAll("[^0-9]", "");
+			break;
+		default:
+			value = "";
+			break;
+		}
+		return value;
+	}
+
+	/**
+	 * Enable the correct cells based on the radio button selected
+	 * @param selected - radio button selected
+	 */
 	private void enableCell(final int selected) {
 		switch(selected){
 		case CANCELLED:
@@ -122,92 +204,122 @@ public class BankFrequencyDetailView extends RelativeLayout{
 			disableDate();
 			disableTransaction();
 			disableAmount();
+			hideKeyboard();
 			break;
 		case DATE:
 			disableCancelled();
 			enableDate();
 			disableTransaction();
 			disableAmount();
+			hideKeyboard();
 			break;
 		case TRANSACTION:
 			disableCancelled();
 			disableDate();
 			enableTransaction();
 			disableAmount();
+			showKeyboard();
 			break;
 		case AMOUNT:
 			disableCancelled();
 			disableDate();
 			disableTransaction();
 			enableAmount();
+			showKeyboard();
 			break;
 		}
 
 	}
 
+	/**
+	 * Disable the cancelled cell
+	 */
 	private void disableCancelled(){
 		cancelled.setChecked(false);
 		((TextView)view.findViewById(R.id.canceled_label)).setTextColor(res.getColor(R.color.field_copy));
 	}
 
+	/**
+	 * Disable the date cell
+	 */
 	private void disableDate(){
 		date.setChecked(false);
 		((TextView)view.findViewById(R.id.date_label)).setTextColor(res.getColor(R.color.field_copy));
 		((TextView)view.findViewById(R.id.date_value)).setTextColor(res.getColor(R.color.field_copy));
 	}
 
+	/**
+	 * Disable the transaction cell
+	 */
 	private void disableTransaction(){
+		transactionAmount.clearFocus();
 		transaction.setChecked(false);
 		((TextView)view.findViewById(R.id.transactions_label)).setTextColor(res.getColor(R.color.field_copy));
-		transactionAmount.clearFocus();
 		transactionAmount.clearErrors();
+		transactionAmount.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 		transactionAmount.setEnabled(false);
 	}
 
+	/**
+	 * Disable the amount cell
+	 */
 	private void disableAmount(){
 		dollar.setChecked(false);
 		((TextView)view.findViewById(R.id.dollar_label)).setTextColor(res.getColor(R.color.field_copy));
 		((TextView)view.findViewById(R.id.dollar)).setTextColor(res.getColor(R.color.field_copy));
-		dollarAmount.clearFocus();
-		dollarAmount.clearErrors();
 		dollarAmount.setEnabled(false);
+		dollarAmount.clearFocus();
+		dollarAmount.setupDefaultAppearance();
+		dollarAmount.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 	}
 
+	/**
+	 * Enable the cancelled cell
+	 */
 	private void enableCancelled(){
 		cancelled.setChecked(true);
 		((TextView)view.findViewById(R.id.canceled_label)).setTextColor(res.getColor(R.color.body_copy));
-		hideKeyboard();
 	}
 
+	/**
+	 * Enable the date cell
+	 */
 	private void enableDate(){
 		date.setChecked(true);
 		((TextView)view.findViewById(R.id.date_value)).setTextColor(res.getColor(R.color.body_copy));
-		hideKeyboard();
 	}
 
+	/**
+	 * Enable the transaction cell
+	 */
 	private void enableTransaction(){
 		transaction.setChecked(true);
 		((TextView)view.findViewById(R.id.transactions_label)).setTextColor(res.getColor(R.color.body_copy));
 		transactionAmount.setEnabled(true);
 		transactionAmount.requestFocus();
-		hideKeyboard();
-		showKeyboard();
 	}
 
+	/**
+	 * Enable the amount cell
+	 */
 	private void enableAmount(){
 		dollar.setChecked(true);
 		((TextView)view.findViewById(R.id.dollar)).setTextColor(res.getColor(R.color.body_copy));
 		dollarAmount.setEnabled(true);
 		dollarAmount.requestFocus();
-		hideKeyboard();
-		showKeyboard();
 	}
 
+	/**
+	 * Show the keyboard
+	 */
 	private void showKeyboard(){
 		final InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
 	}
 
+	/**
+	 * Hide the keyboard
+	 */
 	private void hideKeyboard(){
 		final InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(view.getWindowToken(),0); 

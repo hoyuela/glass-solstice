@@ -50,6 +50,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	private TextView toAccountTextView;
 	private TextView fromAccountTextView;
 	private TextView dateTextView;
+	private BankFrequencyDetailView reoccuring;
 
 	private final List<Account>externalAccounts = new ArrayList<Account>();
 
@@ -90,7 +91,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-
+		reoccuring.saveState(outState);
 		outState.putAll(getCurrentFragmentBundle());
 	}
 
@@ -98,14 +99,17 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		final Bundle args = getArguments();
 		final Bundle outState = new Bundle();
 
-		if(args != null)
+		if(args != null) {
 			outState.putAll(args);
+		}
 
-		if(amountField != null)
+		if(amountField != null) {
 			outState.putString(BankExtraKeys.AMOUNT, amountField.getText().toString());
+		}
 
-		if(frequencyCode != null)
+		if(frequencyCode != null) {
 			outState.putString(BankExtraKeys.FREQUENCY_CODE, frequencyCode);
+		}
 
 		frequencyText = frequencyListItem.getMiddleLabel().getText().toString();
 		outState.putString(BankExtraKeys.FREQUENCY_TEXT, frequencyText);
@@ -126,14 +130,18 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 			this.setSelectedAccounts(selectedAccounts);
 			this.updateSelectedAccountLabels();
 
-			if(Strings.isNullOrEmpty(frequencyCode))
+			if(Strings.isNullOrEmpty(frequencyCode)) {
 				frequencyCode = bundle.getString(BankExtraKeys.FREQUENCY_CODE);
-			if(Strings.isNullOrEmpty(frequencyText))
+			}
+			if(Strings.isNullOrEmpty(frequencyText)) {
 				frequencyText = bundle.getString(BankExtraKeys.FREQUENCY_TEXT);
+			}
 
 			dateTextView.setText(bundle.getString("date"));
 
 			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
+
+			getReocurringWidget().resumeState(bundle);
 		}
 	}
 
@@ -187,9 +195,16 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		temp.getMiddleLabel().setText(frequencyText);
 		content.add(getFrequencyListItem(currentActivity));
 		content.add(getSendOnListItem(currentActivity));
-		content.add(new BankFrequencyDetailView(currentActivity, null));
+		content.add(getReocurringWidget());
 
 		return content;
+	}
+
+	private BankFrequencyDetailView getReocurringWidget(){
+		if(null == reoccuring){
+			reoccuring = new BankFrequencyDetailView(this.getActivity(), null);
+		}
+		return reoccuring;
 	}
 
 	private Account[] getSelectedAccounts() {
@@ -317,22 +332,26 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		transferObject.toAccount = new TransferEntity();
 		transferObject.amount = new Money();
 
-		if(fromAccount != null)
+		if(fromAccount != null) {
 			transferObject.fromAccount.id = fromAccount.id;
-		if(toAccount != null)
+		}
+		if(toAccount != null) {
 			transferObject.toAccount.id = toAccount.id;
-		if(!Strings.isNullOrEmpty(frequencyCode))
+		}
+		if(!Strings.isNullOrEmpty(frequencyCode)) {
 			transferObject.frequency = frequencyCode;
+		}
 
 		transferObject.sendDate = "2013-04-10T00:00:00Z";
 
 		final String inputAmount = amountField.getText().toString();
 		final String cents = inputAmount.replaceAll("[^0-9]", "");
 
-		if(!Strings.isNullOrEmpty(cents))
+		if(!Strings.isNullOrEmpty(cents)) {
 			transferObject.amount.value = Integer.parseInt(cents);
-		else
+		} else {
 			transferObject.amount.value = 0;
+		}
 
 		BankServiceCallFactory.createScheduleTransferCall(transferObject).submit();
 	}
