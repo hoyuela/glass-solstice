@@ -362,12 +362,12 @@ public final class BankConductor  extends Conductor {
 		//Handle the case where loading more data
 		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(bundle);
-		} 
+		}
 		//Handle the case where switch between different types of activity posted and scheduled
 		else if( activity.getCurrentContentFragment() instanceof BankAccountActivityTable ) {
 			final BankAccountActivityTable revPmtFrag = (BankAccountActivityTable)activity.getCurrentContentFragment();
 			revPmtFrag.handleReceivedData(bundle);
-		} 
+		}
 		//Handle the first time user opens Account Activity page
 		else {
 			final BankAccountActivityTable fragment =  new BankAccountActivityTable();
@@ -682,8 +682,12 @@ public final class BankConductor  extends Conductor {
 	 * @param search Reference to a SearchPayeeResultList object generated from a response to a Payee Search request.
 	 */
 	public static void navigateToSelectPayees(final SearchPayeeResultList search) {
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		final BankNavigationRootActivity activity =
+				(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
+		final BankSearchSelectPayeeFragment fragment = new BankSearchSelectPayeeFragment();
+		final SearchPayeeServiceCall searchCall =
+				(SearchPayeeServiceCall)BankNetworkServiceCallManager.getInstance().getLastServiceCall();
 
 		//Show No Matches Modal if no results found
 		if( search.results.size() <= 0 ) {
@@ -711,7 +715,7 @@ public final class BankConductor  extends Conductor {
 			if(Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Unexpected Service Call Found!");
 			}
-		}		
+		}
 	}
 
 	/**
