@@ -4,19 +4,20 @@
 package com.discover.mobile.bank.transfer;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
+import com.discover.mobile.common.ui.widgets.SsnEditText;
 
 public class BankFrequencyDetailView extends RelativeLayout{
 
@@ -49,7 +50,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	private final AmountValidatedEditField dollarAmount;
 
 	/**Transaction Amount field*/
-	private final EditText transactionAmount;
+	private final SsnEditText transactionAmount;
 
 	/**Text view holding the date*/
 	private final TextView dateValue;
@@ -57,27 +58,39 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	/**View of the layout*/
 	private final View view;
 
+	/**Application Resources*/
+	private final Resources res;
+
 	public BankFrequencyDetailView(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		view = LayoutInflater.from(context).inflate(R.layout.bank_frequency_detail_view, null);
-
+		res = context.getResources();
 		cancelled = (RadioButton) view.findViewById(R.id.cancelled_button);
 		date = (RadioButton) view.findViewById(R.id.date_button);
 		transaction = (RadioButton) view.findViewById(R.id.transactions_button);
 		dollar = (RadioButton) view.findViewById(R.id.dollar_button);
 		dollarAmount = (AmountValidatedEditField) view.findViewById(R.id.amount_edit);
-		transactionAmount = (EditText) view.findViewById(R.id.transaction_amount);
+		transactionAmount = (SsnEditText) view.findViewById(R.id.transaction_amount);
 		dateValue = (TextView) view.findViewById(R.id.date_value);
 
-		cancelled.setOnCheckedChangeListener(getCheckedListener());
-		date.setOnCheckedChangeListener(getCheckedListener());
-		transaction.setOnCheckedChangeListener(getCheckedListener());
-		dollar.setOnCheckedChangeListener(getCheckedListener());
+		((LinearLayout) view.findViewById(R.id.cancelled_layout)).setOnClickListener(getLayoutListener(CANCELLED));
+		((LinearLayout) view.findViewById(R.id.date_layout)).setOnClickListener(getLayoutListener(DATE));
+		((LinearLayout) view.findViewById(R.id.transaction_layout)).setOnClickListener(getLayoutListener(TRANSACTION));
+		((LinearLayout) view.findViewById(R.id.dollar_layout)).setOnClickListener(getLayoutListener(AMOUNT));
 
 		dollarAmount.setEnabled(false);
 		transactionAmount.setEnabled(false);
 
 		addView(view);
+	}
+
+	private OnClickListener getLayoutListener(final int index) {
+		return new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				enableCell(index);				
+			}
+		};
 	}
 
 	public Bundle savedDate(final Bundle outState){
@@ -105,7 +118,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	private void enableCell(final int selected) {
 		switch(selected){
 		case CANCELLED:
-			enableAmount();
+			enableCancelled();
 			disableDate();
 			disableTransaction();
 			disableAmount();
@@ -134,65 +147,69 @@ public class BankFrequencyDetailView extends RelativeLayout{
 
 	private void disableCancelled(){
 		cancelled.setChecked(false);
-
+		((TextView)view.findViewById(R.id.canceled_label)).setTextColor(res.getColor(R.color.field_copy));
 	}
 
 	private void disableDate(){
-
+		date.setChecked(false);
+		((TextView)view.findViewById(R.id.date_label)).setTextColor(res.getColor(R.color.field_copy));
+		((TextView)view.findViewById(R.id.date_value)).setTextColor(res.getColor(R.color.field_copy));
 	}
 
 	private void disableTransaction(){
-
+		transaction.setChecked(false);
+		((TextView)view.findViewById(R.id.transactions_label)).setTextColor(res.getColor(R.color.field_copy));
+		transactionAmount.clearFocus();
+		transactionAmount.clearErrors();
+		transactionAmount.setEnabled(false);
 	}
 
 	private void disableAmount(){
-
+		dollar.setChecked(false);
+		((TextView)view.findViewById(R.id.dollar_label)).setTextColor(res.getColor(R.color.field_copy));
+		((TextView)view.findViewById(R.id.dollar)).setTextColor(res.getColor(R.color.field_copy));
+		dollarAmount.clearFocus();
+		dollarAmount.clearErrors();
+		dollarAmount.setEnabled(false);
 	}
 
 	private void enableCancelled(){
-
+		cancelled.setChecked(true);
+		((TextView)view.findViewById(R.id.canceled_label)).setTextColor(res.getColor(R.color.body_copy));
+		hideKeyboard();
 	}
 
 	private void enableDate(){
-
+		date.setChecked(true);
+		((TextView)view.findViewById(R.id.date_value)).setTextColor(res.getColor(R.color.body_copy));
+		hideKeyboard();
 	}
 
 	private void enableTransaction(){
-
+		transaction.setChecked(true);
+		((TextView)view.findViewById(R.id.transactions_label)).setTextColor(res.getColor(R.color.body_copy));
+		transactionAmount.setEnabled(true);
+		transactionAmount.requestFocus();
+		hideKeyboard();
+		showKeyboard();
 	}
 
 	private void enableAmount(){
-
+		dollar.setChecked(true);
+		((TextView)view.findViewById(R.id.dollar)).setTextColor(res.getColor(R.color.body_copy));
+		dollarAmount.setEnabled(true);
+		dollarAmount.requestFocus();
+		hideKeyboard();
+		showKeyboard();
 	}
 
-	private OnCheckedChangeListener getCheckedListener(){
-		return new OnCheckedChangeListener(){
-			@Override
-			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
-				if(isChecked){
-					if(cancelled.getId() != buttonView.getId()){
-						cancelled.setChecked(false);
-					}else{
-						index = CANCELLED;
-					}
-					if(date.getId() != buttonView.getId()){
-						date.setChecked(false);
-					}else{
-						index = DATE;
-					}
-					if(transaction.getId() != buttonView.getId()){
-						transaction.setChecked(false);
-					}else{
-						index = TRANSACTION;
-					}
-					if(dollar.getId() != buttonView.getId()){
-						dollar.setChecked(false);
-					}else{
-						index = AMOUNT;
-					}
-				}
-			}
-		};	
+	private void showKeyboard(){
+		final InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
 	}
 
+	private void hideKeyboard(){
+		final InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(view.getWindowToken(),0); 
+	}
 }

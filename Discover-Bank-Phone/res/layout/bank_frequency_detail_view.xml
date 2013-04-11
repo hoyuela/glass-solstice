@@ -128,7 +128,9 @@
             android:layout_weight=".5"
             android:contentDescription="@string/caret_description"
             android:paddingRight="@dimen/between_related_elements_padding"
+            android:paddingBottom="@dimen/between_related_elements_padding"
             android:scaleType="center"
+            android:alpha=".3"
             android:src="@drawable/blue_arrow_right" />
     </LinearLayout>
     <!-- End date layout items -->
@@ -165,13 +167,13 @@
             android:id="@+id/transactions_label"
             style="@style/field_copy"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="2.75"
             android:gravity="center_vertical"
             android:text="@string/transfer_transactions"
             android:textColor="@color/field_copy" />
 
-        <com.discover.mobile.card.common.uiwidget.SsnEditText
+        <com.discover.mobile.common.ui.widgets.SsnEditText
             android:id="@+id/transaction_amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
