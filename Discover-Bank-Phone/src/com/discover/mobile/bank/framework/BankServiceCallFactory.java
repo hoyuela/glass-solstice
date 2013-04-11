@@ -58,6 +58,9 @@ import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PayBillsTermsAndConditionsDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
+import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
+import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
+import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
@@ -67,7 +70,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 
 /**
  * Utility class used to construct NetworkServiceCall<> objects used for invoking Bank related web-service API.
- * 
+ *
  * @author henryoyuela
  *
  */
@@ -82,7 +85,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * Bank - Customer Service API found at ./api/customers/current. The callee
 	 * will only have to call submit on the constructed object to trigger the
 	 * HTTP request.
-	 * 
+	 *
 	 * @return Returns the constructed CustomerServiceCall
 	 */
 	public static CustomerServiceCall createCustomerDownloadCall() {
@@ -102,7 +105,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * Used to construct a CreateBankLoginCall object for invoking the Bank - Authentication Service API found at
 	 * ./api/auth/token. The callee will only have to call submit on the constructed object to trigger the
 	 * HTTP request.
-	 * 
+	 *
 	 * @param credentials Holds User-name and Password for authenticating with the Bank Authentication Server
 	 * @return A NetworkServiceCallQueue populated with the NetworkServiceCall<> required to successfully login to
 	 * 			the Bank Service
@@ -115,7 +118,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * Used to construct a CreateBankLoginCall object for invoking the Bank - Authentication Service API found at
 	 * ./api/auth/token. The callee will only have to call submit on the constructed object to trigger the
 	 * HTTP request.
-	 * 
+	 *
 	 * @param credentials
 	 * @param skipSSO true if the Login call should inform the service to skip SSO, false if SSO should be checked.
 	 * @return
@@ -135,7 +138,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	}
 
 	/**
-	 * Constructs a CreateSSOLoginCall for authenticating an SSO user against Bank. 
+	 * Constructs a CreateSSOLoginCall for authenticating an SSO user against Bank.
 	 * @param credentials
 	 * @return
 	 */
@@ -155,7 +158,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * Used to construct a CreatePaymentCall NetworkServiceCall for making a
 	 * payment to a payee. API found at ./api/payments/. The CreatePaymentCall
 	 * created here is used to POST the details needed to make a payment.
-	 * 
+	 *
 	 * @param payment
 	 * @return
 	 */
@@ -173,9 +176,9 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	/**
 	 * Used to construct a CreateStrongAuthRequestCall NetworkServiceCall for invoking the Bank - Authentication
 	 * Service API found at ./api/auth/strongauth. The CreateStrongAuthRequestCall created by this method is used
-	 * to POST an answer to a question downloaded prior. The callee will only have to call submit on the constructed 
+	 * to POST an answer to a question downloaded prior. The callee will only have to call submit on the constructed
 	 * object to trigger the HTTP request.
-	 * 
+	 *
 	 * @param details Contains the answer and the question ID the answer is for to be sent in the body of the request
 	 * @return Reference to the created CreateStrongAuthRequestCall.
 	 */
@@ -195,16 +198,28 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 	/**
 	 * Used to create a service call to submit a check deposit.
-	 * 
+	 *
 	 */
 	public static SubmitCheckDepositCall createSubmitCheckDepositCall(final DepositDetail checkDetails, final CompletionListener completionListener) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		final AsyncCallback<DepositDetail> callback = 
-				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(DepositDetail.class, activity, 
+		final AsyncCallback<DepositDetail> callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(DepositDetail.class, activity,
 						(ErrorHandlerUi)activity).withCompletionListener(completionListener).build();
 		return new SubmitCheckDepositCall(activity, callback, checkDetails);
 
+	}
+
+	public static ScheduleTransferCall createScheduleTransferCall(final TransferDetail transferDetails) {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<TransferDetail> callback = BankPhoneAsyncCallbackBuilder
+				.createDefaultCallbackBuilder(TransferDetail.class, activity,
+						activity).build();
+
+		final ScheduleTransferCall transferCall = new ScheduleTransferCall(activity, callback, transferDetails);
+
+		return transferCall;
 	}
 
 	/**
@@ -212,7 +227,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * Service API found at ./api/auth/strongauth. The CreateStrongAuthRequestCall created by this method is used
 	 * to download a question and its id. The callee will only have to call submit on the constructed object to trigger the
 	 * HTTP request.
-	 * 
+	 *
 	 * @return Reference to the created CreateStrongAuthRequestCall.
 	 */
 	public static CreateStrongAuthRequestCall createStrongAuthRequest() {
@@ -245,6 +260,17 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		return new GetPayeeServiceCall(activity, callback);
 	}
 
+	public static GetExternalTransferAccountsCall createGetExternalTransferAccountsCall() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<AccountList>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(AccountList.class,
+						activity, (ErrorHandlerUi) activity)
+						.build();
+
+		return new GetExternalTransferAccountsCall(activity, callback);
+	}
+
 	/**
 	 * Create the service call to get the payees for a user
 	 * @return the service call to get the payees for a user
@@ -262,16 +288,16 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	}
 
 	/**
-	 * Create a POST request to tell the Bank APIs that the user has accepted a terms and conditions 
+	 * Create a POST request to tell the Bank APIs that the user has accepted a terms and conditions
 	 * that was presented to them.
 	 * @param Eligibility object with the link to use to enroll for a specific service.
-	 * 
+	 *
 	 * @return a POST request to accept bill pay terms and conditions.
 	 */
 	public static AcceptTermsService createAcceptTermsRequest(final Eligibility eligibility) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		final AsyncCallback<Object> callback = 
+		final AsyncCallback<Object> callback =
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Object.class, activity, null).build();
 
 		return new AcceptTermsService(activity, callback, eligibility);
@@ -300,7 +326,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	public static GetPayBillsTermsAndConditionsCall createGetPayBillsTermsAndConditionsCall() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		final AsyncCallback<PayBillsTermsAndConditionsDetail> callback = 
+		final AsyncCallback<PayBillsTermsAndConditionsDetail> callback =
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PayBillsTermsAndConditionsDetail.class,
 						activity, (ErrorHandlerUi) activity)
 						.build();
@@ -324,9 +350,9 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	}
 
 	/**
-	 * Creates a GetCustomerAccountsServerCall<> object used to download the Account Summary 
+	 * Creates a GetCustomerAccountsServerCall<> object used to download the Account Summary
 	 * using the Bank Accounts Service API.
-	 * 
+	 *
 	 * @return Reference to the GetCustomerAccountsServerCall object created.
 	 */
 	public static GetCustomerAccountsServerCall createGetCustomerAccountsServerCall() {
@@ -341,9 +367,9 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	}
 
 	/**
-	 * Creates a GetCustomerAccountsServerCall<> object used to download the Account Summary 
+	 * Creates a GetCustomerAccountsServerCall<> object used to download the Account Summary
 	 * using the Bank Accounts Service API.
-	 * 
+	 *
 	 * @param Specify url to use for GetPaymentsServiceCall. Refer to the class definition for the supported queries.
 	 * @return Reference to the GetCustomerAccountsServerCall object created.
 	 */
@@ -361,9 +387,9 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	/**
 	 * Creates a DeletePaymentServiceCall object used to delete a Scheduled Payment from
 	 * a users Bank Account using the service API DELETE /api/payments/{id}.
-	 * 
+	 *
 	 * @param pmt Reference to a PaymentDetail with information about the Scheduled Payment being deleted.
-	 * 
+	 *
 	 * @return Reference to the DeletePaymentServiceCall object created.
 	 */
 	public static DeletePaymentServiceCall createDeletePaymentServiceCall(final PaymentDetail pmt) {
@@ -378,12 +404,12 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	}
 
 	/**
-	 * Creates a SearchPayeeServiceCall object used to send a request to download a list of Verified Managed Payees 
+	 * Creates a SearchPayeeServiceCall object used to send a request to download a list of Verified Managed Payees
 	 * which contain the string found in the name parameter. An HTTP GET Request is sent
 	 * to /api/payees/search upon calling submit() on the SearchPayeeServiceCall created.
-	 * 
+	 *
 	 * @param name Holds a string with the name of payees to be matched against at the server.
-	 * 
+	 *
 	 * @return Reference to the SearchPayeeServiceCall object created.
 	 */
 	public static SearchPayeeServiceCall createPayeeSearchRequest(final String name) {
@@ -400,9 +426,9 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	/**
 	 * Creates a AddPayeeServiceCall object used to add a payee to the session user's account via
 	 * an HTTP POST request to the Bank Web-service API "Add a Payee" using the url /api/payees.
-	 * 
+	 *
 	 * @param value - Holds information about the Payee being added to the session user's account
-	 * 
+	 *
 	 * @return Reference to the AddPayeeServiceCall object created.
 	 */
 	public static AddPayeeServiceCall createAddPayeeRequest(final AddPayeeDetail value) {
@@ -419,9 +445,9 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	/**
 	 * Creates a GetAtmDetailsCall object used to get the information about atms close to a user
 	 * via an HTTP GET.  API is /api/atmLocator/SearchGeocodedLocation.xml
-	 * 
+	 *
 	 * @param value - Holds information about the query string for the search of the call
-	 * 
+	 *
 	 * @return Reference to the GetAtmDetailsCall object created.
 	 */
 	public static GetAtmDetailsCall createGetAtmServiceCall(final AtmServiceHelper helper){
@@ -438,9 +464,9 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	/**
 	 * Creates a GetAtmDetailsCall object used to get the information about atms close to a user
 	 * via an HTTP GET.  API is /api/atmLocator/SearchGeocodedLocation.xml
-	 * 
+	 *
 	 * @param value - Holds information about the query string for the search of the call
-	 * 
+	 *
 	 * @return Reference to the GetAtmDetailsCall object created.
 	 */
 	public static GetDirectionsServiceCall createGetDirectionsCall(final AtmServiceHelper helper){
@@ -456,10 +482,10 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 	/**
 	 * Creates a Get location service call which is the used to send a call to Googles API which will
-	 * reverse geocode an address. 
-	 * 
+	 * reverse geocode an address.
+	 *
 	 * @param value - Holds information about the query string for the search of the call
-	 * 
+	 *
 	 * @return Reference to the GetLocationFromAddressServiceCall object created.
 	 */
 	public static GetLocationFromAddressServiceCall getLocationFromAddressCall(final AtmServiceHelper helper){
@@ -475,12 +501,11 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 	/**
 	 * Creates a GetAccountLimits object used to fetch deposit limits for an Acoount via
-	 * an HTTP GET request to the Bank Web-service API "Get Account Limits" using the url 
+	 * an HTTP GET request to the Bank Web-service API "Get Account Limits" using the url
 	 * /api/deposits/limits/{id}.
-	 * 
+	 *
 	 * @param value - Holds information about the Account whose deposit's limits are being retrieved.
-	 * @param isBackground - used to specify whether a progress dialog should shown or not.
-	 * 
+	 *
 	 * @return Reference to the GetAccountLimits object created.
 	 */
 	public static GetAccountLimits createGetAccountLimits(final Account account, final boolean isBackground) {
@@ -501,7 +526,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	/**
 	 * Creates a call that that will attempt to refresh the Bank session. Sends
 	 * a GET request to {@code BankUrlManager.REFRESH_URL}.
-	 * 
+	 *
 	 * @return RefreshBankSessionCall
 	 */
 	public static RefreshBankSessionCall createRefreshSessionCall() {
@@ -514,14 +539,14 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		return new RefreshBankSessionCall(activity, callback);
 	}
-	
+
 	@Override
 	public NetworkServiceCall<?> createServiceCall(@SuppressWarnings("rawtypes") final Class cacheObject,
 			final Serializable payload) {
 
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		if ( cacheObject == PayeeDetail.class ) { 
+		if ( cacheObject == PayeeDetail.class ) {
 
 			final AsyncCallback<PayeeDetail>  callback =
 					BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PayeeDetail.class,
@@ -531,16 +556,16 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 			return new AddPayeeServiceCall(activity, callback, (AddPayeeDetail) payload);
 
 		}
-		// FIXME : Add the rest in here!!! 
+		// FIXME : Add the rest in here!!!
 		return null;
 	}
-	
+
 	/**
 	 * Creates a DeletePayeeServiceCall object used to delete a Payee (Managed or Unmanaged) from
 	 * a users Bank Account using the service DELETE /api/payments/payees/{id}.
-	 * 
+	 *
 	 * @param payee Reference to a PayeeDetail with information about the Payee being deleted.
-	 * 
+	 *
 	 * @return Reference to the DeletePayeeServiceCall object created.
 	 */
 	public static DeletePayeeServiceCall createDeletePayeeServiceCall(final PayeeDetail payee) {
@@ -553,11 +578,11 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		return new DeletePayeeServiceCall(activity, callback, payee);
 	}
-	
+
 	/**
 	 * Creates a BankApiServiceCall used to download API links needed for login and other services
 	 * at start-up.
-	 * 
+	 *
 	 * @return Reference to the BankApiServiceCall object created.
 	 */
 	public static BankApiServiceCall createBankApiServiceCall() {
@@ -570,11 +595,11 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		return new BankApiServiceCall(activity, callback);
 	}
-	
+
 	/**
 	 * Creates a BankHolidayServiceCall used to download the Bank Holidays to display on a calendar
 	 * as disabled dates for features like Schedule Payment.
-	 * 
+	 *
 	 * @return Reference to the BankHolidayServiceCall object created.
 	 */
 	public static BankHolidayServiceCall createBankHolidayDownloadServiceCall() {

@@ -58,6 +58,7 @@ import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.transfer.BankTransferFrequencyWidget;
 import com.discover.mobile.bank.transfer.BankTransferNotEligibleFragment;
+import com.discover.mobile.bank.transfer.BankTransferSelectAccount;
 import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.bank.util.BankAtmUtil;
@@ -81,9 +82,9 @@ import com.google.common.base.Strings;
 
 /**
  * Utility class to centralize the navigation to and from screens in the application.
- * 
+ *
  * Extends the Conductor to allow for access to the abstract navigation / cache pattern
- * 
+ *
  * @author henryoyuela
  *
  */
@@ -96,9 +97,9 @@ public final class BankConductor  extends Conductor {
 	private static BankLoginDetails loginDetails;
 
 
-	/** 
+	/**
 	 * To utilize the abstract navigate methods from the parent conductor class
-	 * 
+	 *
 	 * @param pServiceCallFactory
 	 */
 	private BankConductor(final ServiceCallFactory pServiceCallFactory) {
@@ -109,21 +110,21 @@ public final class BankConductor  extends Conductor {
 	public static final String TAG = BankConductor.class.getSimpleName();
 
 	/**
-	 * A singleton instance 
+	 * A singleton instance
 	 * @return
 	 */
 	public static BankConductor getInstance(){
 		if ( instance == null ) {
 			instance = new BankConductor(new BankServiceCallFactory());
 		}
-		return instance; 
+		return instance;
 	}
 
 
 	/**
 	 * Navigates the application to the LoginActivity which is the login page and
 	 * closes the referenced activity in the parameter list.
-	 * 
+	 *
 	 * @param activity Reference to Activity from where the application will navigate to Login
 	 * @param cause Current supported values are IntentExtras SHOW_SUCESSFUL_LOGOUT_MESSAGE, SHOW_ERROR_MESSAGE and SESSION_EXPIRED
 	 * @param message Used to pass in a message to the LoginActivity and display to the user. Used only if cause is SHOW_ERROR_MESSAGE.
@@ -163,7 +164,7 @@ public final class BankConductor  extends Conductor {
 	/**
 	 * Navigates the application to the NavigationRootActivity which is the home page and
 	 * closes the referenced activity in the parameter list.
-	 * 
+	 *
 	 * @param activity Reference to Activity from where it will navigate to home page
 	 */
 	public static void navigateToHomePage() {
@@ -200,15 +201,15 @@ public final class BankConductor  extends Conductor {
 	 * Navigates application to EnhancedAccountSecurityActivity which is used for strong authentication
 	 * for both CARD and BANK accounts. If EnhancedAccountSecurityActivity is already open, then it will
 	 * just update the question displayed to the user.
-	 * 
+	 *
 	 * @param activity Reference to Activity from where the application will navigate to Strong Auth Page
 	 * @param question Question to ask the user for Strong Authentication
 	 * @param id Question ID, which will be sent to the server with answer to the question
 	 * @param errorMessage Set to null if no error message needs to be displayed, otherwise set to the error
 	 * 						message to display on the StrongAuthPage.
-	 * 
+	 *
 	 */
-	public static void navigateToStrongAuth(final Activity activity, 
+	public static void navigateToStrongAuth(final Activity activity,
 			final BankStrongAuthDetails details, final String errorMessage) {
 		if( activity.getClass() != EnhancedAccountSecurityActivity.class ) {
 			final Intent strongAuth = new Intent(activity, EnhancedAccountSecurityActivity.class);
@@ -239,7 +240,7 @@ public final class BankConductor  extends Conductor {
 
 	/**
 	 * Navigates the application to the Open Accounts Page, which is displayed when a Bank user does not have any accounts.
-	 * 
+	 *
 	 */
 	public static void navigateToOpenAccount() {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
@@ -254,9 +255,9 @@ public final class BankConductor  extends Conductor {
 	}
 
 	/**
-	 * Navigates a user to the browser using the URL specified. Prior to moving the user to the 
+	 * Navigates a user to the browser using the URL specified. Prior to moving the user to the
 	 * browser, a modal will be displayed to warn the user that they are navigating away from the application.
-	 * 
+	 *
 	 * @param url String that holds the url to be used when opening the browser.
 	 */
 	public static void navigateToBrowser(final String url) {
@@ -265,11 +266,11 @@ public final class BankConductor  extends Conductor {
 		if(activity != null && activity instanceof NavigationRootActivity ) {
 			// Create a one button modal to notify the user that they are leaving the application
 			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
-					R.string.bank_open_browser_title, 
-					R.string.bank_open_browser_text, 
+					R.string.bank_open_browser_title,
+					R.string.bank_open_browser_text,
 					R.string.continue_text);
 
-			//Set the dismiss listener that will navigate the user to the browser	
+			//Set the dismiss listener that will navigate the user to the browser
 			modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(final View v) {
@@ -375,6 +376,14 @@ public final class BankConductor  extends Conductor {
 		}
 	}
 
+	public static void navigateToSelectTransferAccount(final Bundle argumentBundle) {
+		final Fragment nextVisibleFragment = new BankTransferSelectAccount();
+		final BankNavigationRootActivity activity =
+				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
+		nextVisibleFragment.setArguments(argumentBundle);
+		activity.makeFragmentVisible(nextVisibleFragment);
+	}
+
 	/**
 	 * Navigate to the manage payee Fragment with a bundle of extras to display.
 	 * @param extras
@@ -426,10 +435,10 @@ public final class BankConductor  extends Conductor {
 	}
 
 	/**
-	 * Navigation method used to display the BankPayConfirmFragment using the BankNavigationRootActivity. 
+	 * Navigation method used to display the BankPayConfirmFragment using the BankNavigationRootActivity.
 	 * This Fragment will not be added to the back stack as the user should not be able to navigate
-	 * back to this screen from the application. 
-	 * 
+	 * back to this screen from the application.
+	 *
 	 * @param value Reference to PaymentDetail information used to schedule a Payment
 	 */
 	public static void navigateToPayConfirmFragment(final PaymentDetail value) {
@@ -449,7 +458,7 @@ public final class BankConductor  extends Conductor {
 	public static void navigateToReviewPayments(final Bundle bundle,final Boolean value) {
 		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
 
-		//View Pager seems to require the bundle and value parameters, need to discuss with 
+		//View Pager seems to require the bundle and value parameters, need to discuss with
 		//Jon and Scott what it is meant for
 
 		//Also needed for after confirmation of a scheduled payment
@@ -503,7 +512,7 @@ public final class BankConductor  extends Conductor {
 	/**
 	 * Navigation method used to display the Delete Transaction modal for when deleting a
 	 * Scheduled Payment Transaction
-	 * 
+	 *
 	 * @param pmtDetail Reference to PaymentDetail object which contains information about the transaction being deleted.
 	 */
 	public static void navigateToDeleteConfirmation(final PaymentDetail pmtDetail) {
@@ -511,8 +520,8 @@ public final class BankConductor  extends Conductor {
 
 		// Create a one button modal to notify the user that they are leaving the application
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
-				R.string.bank_delete_transaction_title, 
-				R.string.bank_delete_transaction_text, 
+				R.string.bank_delete_transaction_title,
+				R.string.bank_delete_transaction_text,
 				R.string.bank_yes_delete);
 
 		/**
@@ -536,16 +545,16 @@ public final class BankConductor  extends Conductor {
 	/**
 	 * Navigation method used to display the Add Payee a Step in the Add Payee Work-Flow. Instantiates an EnterPayeeFragment and makes it visible to user
 	 * via the NavigationRootActivity. This method should only be called if the application is in the BankNavigationRootActivity.
-	 * 
+	 *
 	 * @param step - Class type of a fragment that is to be displayed. Can be BankEnterPaymentFragment or BankSearchSelectPaymentFragment
 	 * @param bundle - Contains the arguments that is to be provided to the fragment that will be displayed
 	 */
-	public static void navigateToAddPayee(final Class<?>  step, final Bundle bundle) {		
+	public static void navigateToAddPayee(final Class<?>  step, final Bundle bundle) {
 		BaseFragment fragment = null;
 
 		//Verify the current activity is the BankNavigationRootActivity
 		if(  DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity ) {
-			final BaseFragmentActivity activity = (BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();		
+			final BaseFragmentActivity activity = (BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();
 			activity.closeDialog();
 
 			//If class type is BankEnterPayeeFragment then open the Search Payee Fragment Step 2 of work-flow
@@ -574,7 +583,7 @@ public final class BankConductor  extends Conductor {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
 					Log.e(TAG, "Invalid Class Type provided");
 				}
-			}	
+			}
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Appication is currently not in the right activity");
@@ -584,7 +593,7 @@ public final class BankConductor  extends Conductor {
 
 	/**
 	 * Method used to display the Delete Payee Modal Page when a user attempts to delete a payee.
-	 * 
+	 *
 	 * @param bundle Reference to a bundle which holds a reference to a PayeeDetail object that has the information about the
 	 *               the payee being deleted. Use the key DATA_LIST_ITEM to populate with PayeeDetail object.
 	 */
@@ -593,8 +602,8 @@ public final class BankConductor  extends Conductor {
 
 		// Create a one button modal to notify the user that they are leaving the application
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
-				R.string.bank_payee_delete_title, 
-				R.string.bank_payee_delete_body, 
+				R.string.bank_payee_delete_title,
+				R.string.bank_payee_delete_body,
 				R.string.bank_payee_delete_action);
 
 		/**
@@ -631,12 +640,12 @@ public final class BankConductor  extends Conductor {
 		//Handle the case where loading more data
 		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(bundle);
-		} 
+		}
 		//Handle the case where switch between different types of payments scheduled, cancelled, payment
 		else if( activity.getCurrentContentFragment() instanceof ReviewPaymentsTable ) {
 			final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable)activity.getCurrentContentFragment();
 			revPmtFrag.handleReceivedData(bundle);
-		} 
+		}
 		//Handle the first time user opens Review Payments page
 		else {
 			final ReviewPaymentsTable fragment =  new ReviewPaymentsTable();
@@ -669,16 +678,22 @@ public final class BankConductor  extends Conductor {
 	/**
 	 * Navigation method used to show the Select Payee Page displayed after searching for a Payee in the Add Payee work-flow.
 	 * If the search argument has no results, then a modal is displayed to the user indicating that there were no matches found.
-	 * 
+	 *
 	 * @param search Reference to a SearchPayeeResultList object generated from a response to a Payee Search request.
 	 */
 	public static void navigateToSelectPayees(final SearchPayeeResultList search) {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		activity.closeDialog();
 
-		if( BankNetworkServiceCallManager.getInstance().getLastServiceCall() instanceof SearchPayeeServiceCall ) {
-			final BankSearchSelectPayeeFragment fragment = new BankSearchSelectPayeeFragment();
-			final SearchPayeeServiceCall searchCall = (SearchPayeeServiceCall)BankNetworkServiceCallManager.getInstance().getLastServiceCall();
+		//Show No Matches Modal if no results found
+		if( search.results.size() <= 0 ) {
+			// Create a one button modal to notify the user that they are leaving the application
+			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+					R.string.bank_no_payees_modal_title,
+					R.string.bank_no_payees_modal_msg,
+					false,
+					R.string.bank_need_help_number_text,
+					R.string.ok);
 
 			final Bundle bundle = new Bundle();
 
@@ -701,23 +716,23 @@ public final class BankConductor  extends Conductor {
 
 	/**
 	 * Navigation method used to navigate to the first step of Transfer Money.
-	 * If a customer is not eligible for Transfer Money, they will be directed to a page that 
+	 * If a customer is not eligible for Transfer Money, they will be directed to a page that
 	 * allows them to sign up for the service with an external browser.
 	 */
-	public static void navigateToTransferMoneyLandingPage() {
+	public static void navigateToTransferMoneyLandingPage(final Bundle args) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
-
+			navActivity.closeDialog();
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isTransferEligible();
-
 
 			Fragment nextVisibleFragment = null;
 
 			if(isEligible) {
 				nextVisibleFragment = new BankTransferStepOneFragment();
+				nextVisibleFragment.setArguments(args);
 			} else {
 				nextVisibleFragment = new BankTransferNotEligibleFragment();
 			}
@@ -730,7 +745,7 @@ public final class BankConductor  extends Conductor {
 	}
 
 	/**
-	 * Navigation method used to navigate to Check Deposit work-flow. Navigates to Check Deposit - Terms 
+	 * Navigation method used to navigate to Check Deposit work-flow. Navigates to Check Deposit - Terms
 	 * and Conditions if user is eligible and not enrolled. If it is the start of the work flow, then navigates
 	 * user to Select Account Page.
 	 */
@@ -758,7 +773,7 @@ public final class BankConductor  extends Conductor {
 			//Check if user is enrolled
 			else if(isEligible && !isEnrolled){
 				fragment = new BankDepositTermsFragment();
-			} 
+			}
 			else{
 				switch( step ) {
 				//Navigate user to second step in check deposit work-flow
@@ -767,9 +782,9 @@ public final class BankConductor  extends Conductor {
 					break;
 					//Navigate user to first step in check deposit work-flow
 				case SelectAccount:
-					fragment = new BankDepositSelectAccount();	
+					fragment = new BankDepositSelectAccount();
 					break;
-					//Navigate user to page where they can review their deposit 
+					//Navigate user to page where they can review their deposit
 				case ReviewDeposit:
 					fragment = new CaptureReviewFragment();
 					break;
@@ -806,7 +821,7 @@ public final class BankConductor  extends Conductor {
 
 	/**
 	 * Navigation method used to display the Call modal for when tapping on a phone number link
-	 * 
+	 *
 	 * @param number Number to send to dialer if user acknowledges the modal.
 	 */
 	public static void navigateToCallModal(final String number) {
@@ -816,7 +831,7 @@ public final class BankConductor  extends Conductor {
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			// Create a one button modal to notify the user that they are leaving the application
 			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
-					R.string.bank_callmodal_title, 
+					R.string.bank_callmodal_title,
 					R.string.bank_callmodal_msg,
 					R.string.bank_callmodal_action);
 
@@ -874,7 +889,7 @@ public final class BankConductor  extends Conductor {
 	/**
 	 * Authorizes a Bank user against the service. If successful, the user will
 	 * be logged-in and taken to the Bank landing page of the application.
-	 * 
+	 *
 	 * @param credentials
 	 */
 	public static void authorizeWithCredentials(final BankLoginDetails credentials) {
@@ -885,7 +900,7 @@ public final class BankConductor  extends Conductor {
 	/**
 	 * Authorizes an SSO User against Bank using a BankSSOPayload, which is
 	 * obtained from a Card service.
-	 * 
+	 *
 	 * @param bankSSOPayload
 	 *            payload with which the user is authorized.
 	 */
@@ -1006,8 +1021,8 @@ public final class BankConductor  extends Conductor {
 	}
 
 	/**
-	 * For any navigation patterns using abstract pattern, 
-	 * supply json class required for given 
+	 * For any navigation patterns using abstract pattern,
+	 * supply json class required for given
 	 */
 	@Override
 	public Class lookupCacheRequiredForDestination(final Class destination) {
@@ -1019,8 +1034,9 @@ public final class BankConductor  extends Conductor {
 	 * Navigate to the frequency widget so that the user can chose a frequency for the
 	 * funds transfer.
 	 */
-	public static void navigateToFrequencyWidget() {
+	public static void navigateToFrequencyWidget(final Bundle args) {
 		final BankTransferFrequencyWidget widget = new BankTransferFrequencyWidget();
+		widget.setArguments(args);
 		((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(widget);
 
 	}
@@ -1033,6 +1049,12 @@ public final class BankConductor  extends Conductor {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		activity.popTillFragment(BankTransferStepOneFragment.class);
 		((BankTransferStepOneFragment) activity.getCurrentContentFragment()).handleChosenFrequency(bundle);
+	}
+
+	public static void navigateBackFromTransferSelectAccount(final Bundle bundle) {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		activity.popTillFragment(BankTransferStepOneFragment.class);
+		((BankTransferStepOneFragment) activity.getCurrentContentFragment()).handleChosenAccount(bundle);
 	}
 }
 

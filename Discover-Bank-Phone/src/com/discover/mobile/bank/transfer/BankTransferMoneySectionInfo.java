@@ -21,17 +21,17 @@ import com.discover.mobile.common.nav.section.GroupComponentInfo;
  *
  */
 public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
-	
+
 	public BankTransferMoneySectionInfo() {
-		super(R.string.section_title_transfer_money, 
-				new ClickComponentInfo(R.string.section_title_transfer_money, getTransferFundsLandingClickListener()), 
-				new FragmentComponentInfo(R.string.sub_section_title_scheduled_transfers, BankAccountSummaryFragment.class), 
-				new FragmentComponentInfo(R.string.sub_section_title_transfer_history, BankAccountSummaryFragment.class), 
+		super(R.string.section_title_transfer_money,
+				new ClickComponentInfo(R.string.section_title_transfer_money, getTransferFundsLandingClickListener()),
+				new FragmentComponentInfo(R.string.sub_section_title_scheduled_transfers, BankAccountSummaryFragment.class),
+				new FragmentComponentInfo(R.string.sub_section_title_transfer_history, BankAccountSummaryFragment.class),
 				new ClickComponentInfo(
 				R.string.sub_section_title_manage_external_accounts,true,
 				externalLink(BankUrlManager.getOpenAccountUrl())));
 	}
-	
+
 	private static OnClickListener externalLink(final String url){
 
 		return new OnClickListener() {
@@ -42,7 +42,7 @@ public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 			}
 		};
 	}
-	
+
 	/**
 	 * Returns a click listener that is responsible for navigating the user to the transfer money workflow.
 	 * @return
@@ -55,31 +55,28 @@ public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 				Activity activity = DiscoverActivityManager.getActiveActivity();
 				final boolean isLoggedIn = (activity != null);
 				final boolean isBankNavigationRootActivityActive = activity instanceof BankNavigationRootActivity;
-				
+
 				/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 				if( isLoggedIn && isBankNavigationRootActivityActive) {
 					final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 					activity = null;
-					
+
 					/**Check if user is already in the Transfer Money work-flow*/
 					if( navActivity.getCurrentContentFragment().getGroupMenuLocation()  != BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP) {
-
 						BankConductor.navigateToHomePage();
-						
-						BankConductor.navigateToTransferMoneyLandingPage();
-
+						BankConductor.navigateToTransferMoneyLandingPage(null);
 					} else {
 						final String TAG = BankTransferMoneySectionInfo.class.getSimpleName();
 
 						if( Log.isLoggable(TAG, Log.WARN)) {
 							Log.w(TAG,"User is already in the check deposit work-flow");
 						}
-						
+
 						navActivity.hideSlidingMenuIfVisible();
 					}
 				}
 			}
-			
+
 		};
 	}
 

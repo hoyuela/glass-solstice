@@ -57,6 +57,7 @@
 
 	<string name="are_you_sure_title">Are You Sure You Want to Go Back?</string>
 	<string name="account_ending_in">Account ending in</string>
+	<string name="account_ending_in_first_two_caps">Account Ending in</string>
 	
 	<string name="sending_deposit_title_text">Sending Deposit</string>
 	<string name="sending_deposit_detail_text">Your deposit is being sent securely to the bank. Please wait for the transaction to be completed.</string>

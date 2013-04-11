@@ -25,6 +25,7 @@ import com.discover.mobile.bank.services.BankApiServiceCall;
 import com.discover.mobile.bank.services.BankHolidayServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
@@ -54,6 +55,9 @@ import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
+import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
+import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
+import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -77,7 +81,7 @@ import com.google.common.base.Strings;
  * class follows a singleton design pattern and its single instance is added as a listener to each GenericAsyncCallback<> built
  * and associated with a NetworkServiceCall<> via the AsynCallbackBuilderLibrary. In addition, this class manages Strong Authentication
  * challenges when received as a resposne to a NetworkServiceCall<>.
- * 
+ *
  * @author henryoyuela
  *
  */
@@ -92,7 +96,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 * retransmit a NetworkServiceCall<> when required. Set in the start() method implementation
 	 * each time a NetworkServiceCall<> is made.
 	 */
-	private NetworkServiceCall<?> prevCall; 
+	private NetworkServiceCall<?> prevCall;
 	/**
 	 * Holds a reference to the Current NetworkServiceCall<> being processed by the application, used to
 	 * keep context of the state of the application with respect to NetworkServiceCalls. Set in the start()
@@ -128,7 +132,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return Returns Singleton instance of NetworkServiceCallManager
 	 */
 	static public BankNetworkServiceCallManager getInstance() {
@@ -138,7 +142,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 	/**
 	 * Determines whether the ErrorResponse object is a StrongAuth challenge.
-	 * 
+	 *
 	 * @param error Reference to an error provided via a response to a NetworkServiceCall<>
 	 * @return True if it is a StrongAuth Challenge, false otherwise.
 	 */
@@ -166,7 +170,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	/**
 	 * Determines if the ErrorResponse was a signal to authenticate against card
 	 * (for SSO).
-	 * 
+	 *
 	 * @param error
 	 *            Reference to an error provided via a response to a
 	 *            NetworkServiceCall<>
@@ -191,10 +195,10 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		return isSSO;
 	}
-	
+
 	/**
 	 * Determines if the error was from a bank session refresh. If so, it means that the user's session is no longer alive.
-	 * 
+	 *
 	 * @param error
 	 *            Reference to an error provided via a response to a
 	 *            NetworkServiceCall<>
@@ -232,30 +236,32 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
 				//Send request to Strong Auth web-service API
 				BankServiceCallFactory.createStrongAuthRequest().submit();
-			} 
-	
+			}
+
 			// Check if the error is an SSO User
 			else if (isSSOUser(error)) {
 				BankConductor.authWithCardPayload(
 						(LoginActivity) activeActivity,
 						((BankErrorSSOResponse) error).token,
 						((BankErrorSSOResponse) error).hashedValue);
-			}	
+			}
 			// Check if the error was a Ping. if so, then session died.
 			else if (isSessionDead(error)) {
 				BankConductor.logoutUser(activeActivity);
 			}
 			//Dispatch response to BankBaseErrorHandler to determine how to handle the error
-			else if( !isBackgroundServiceCall(sender) )  {
+			else if( !(sender instanceof BankApiServiceCall ||
+					   sender instanceof BankHolidayServiceCall ||
+					   sender instanceof RefreshBankSessionCall) )  {
 				errorHandler.handleFailure(sender, error);
-	
+
 				((AlertDialogParent)activeActivity).closeDialog();
 			}
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "GUI is not ready, process response async");
 			}
-			
+
 			handleResponseAsync( new NetworkServiceCallAsyncArgs(sender, error));
 		}
 
@@ -269,7 +275,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final Throwable arg1) {
 		if( isGuiReady() ) {
-			if( !isBackgroundServiceCall(sender) ) {
+			if( !(sender instanceof BankApiServiceCall ||
+				  sender instanceof BankHolidayServiceCall ||
+				  sender instanceof RefreshBankSessionCall)) {
 				final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
 				activeActivity.closeDialog();
 			}
@@ -277,7 +285,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "GUI is not ready, process response async");
 			}
-			
+
 			handleResponseAsync( new NetworkServiceCallAsyncArgs(sender, arg1));
 		}
 
@@ -286,9 +294,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 	/**
 	 * FIXME: This will need to be implemented properly
-	 * @return 
+	 * @return
 	 */
-	protected boolean customHandleSuccessResult(final NetworkServiceCall<?> sender, final Serializable result, final Bundle bundle){ 
+	protected boolean customHandleSuccessResult(final NetworkServiceCall<?> sender, final Serializable result, final Bundle bundle){
 		this.success(sender,result);
 		return true;
 	}
@@ -308,17 +316,17 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "GUI is not ready, process response async");
 			}
-			
+
 			handleResponseAsync( new NetworkServiceCallAsyncArgs(sender, result));
 		}
 	}
-	
+
 	/**
 	 * Method for handling a successful NetworkServiceCall<?> response.
 	 */
 	public void handleSuccessSync(final NetworkServiceCall<?> sender, final Serializable result) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
-		
+
 		//A successful call refreshes the session -- update KeepAlive service with information.
 		KeepAlive.updateLastBankRefreshTime();
 
@@ -334,21 +342,21 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			//Cannot swap fragments on the navigation root activity because it is not in the foreground
 			//during a strong auth or after. Have to wait for navigation root to come to foreground first.
 			this.handleSuccessLater(sender, result);
-		}	
+		}
 		//Download Customer Information if a Login call is successful
 		else if( sender instanceof CreateBankLoginCall || sender instanceof CreateBankSSOLoginCall) {
 			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-			
+
 			KeepAlive.setBankAuthenticated(true);
-			
+
 			//Set logged in to be able to save user name in persistent storage
 			Globals.setLoggedIn(true);
 
 			//Update current account based on user logged in and account type
 			activity.updateAccountInformation(AccountType.BANK_ACCOUNT);
-			
+
 			BankServiceCallFactory.createCustomerDownloadCall().submit();
-		} 
+		}
 		//Download Account Summary Information if a Customer Download is successful
 	    else if( sender instanceof CustomerServiceCall ) {
 			//Verify user has bank accounts otherwise navigate to no accounts page
@@ -367,7 +375,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			BankConductor.navigateToPayBillsTerms(bundle);
 		}
 		//If the user accepts the Bank terms and services for pay bills, navigate them to the originally
-		//chosen option. 
+		//chosen option.
 		else if(sender instanceof AcceptTermsService ){
 			final AcceptTermsService acceptTerms = (AcceptTermsService)sender;
 			if( acceptTerms.getEligibility().isPaymentsEligibility() ) {
@@ -402,17 +410,28 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		//Handle the manage payee service call (which is a get payee service call).
 		else if( sender instanceof ManagePayeeServiceCall) {
 			final Bundle bundle = new Bundle();
-			
+
 			/**Check to see if the payees were downloaded because of a delete payee call*/
-			if( prevCall instanceof DeletePayeeServiceCall ) {	
+			if( prevCall instanceof DeletePayeeServiceCall ) {
 				/**Clear Prev Call to avoid incorrect behavior*/
 				prevCall = null;
-				
+
 				bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
-			} 
-			
+			}
+
 			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
 			BankConductor.navigateToManagePayee(bundle);
+		}
+		else if(sender instanceof GetExternalTransferAccountsCall) {
+			final Bundle args = new Bundle();
+			args.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, (AccountList)result);
+
+			BankConductor.navigateToTransferMoneyLandingPage(args);
+		}
+		else if(sender instanceof ScheduleTransferCall) {
+			final TransferDetail confirmationResults = (TransferDetail)result;
+
+//			BankConductor.navigateToTransferConfirmation(confirmationResults);
 		}
 		//Handle the payee success call
 		else if( sender instanceof GetPayeeServiceCall){
@@ -504,7 +523,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			//Update list of payees
 			BankServiceCallFactory.createManagePayeeServiceRequest().submit();
 		}
-		// Ignore success		
+		// Ignore success
 		else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "NetworkServiceCallManager ignored success of a NetworkServiceCall!");
@@ -550,7 +569,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			BankRotationHelper.getHelper().setBundle(null);
 			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 			BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
-		}		
+		}
 	}
 
 	/**
@@ -563,25 +582,26 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	@Override
 	public void start(final NetworkServiceCall<?> sender) {
 		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
-		
+
 		/* Service calls that do not show dialog must override functionality here */
-		if( !isBackgroundServiceCall(sender) ) {
+		if( !(sender instanceof RefreshBankSessionCall ||
+			  sender instanceof BankApiServiceCall ||
+			  sender instanceof BankHolidayServiceCall) ) {
 			activeActivity.startProgressDialog();
 		
 
-			/**Clear the current last error stored in the error handler*/
-			errorHandler.clearLastError();
-	
-			/**
-			 * Update prevCall only if it is a different service request from current call
-			 * or if current call is null
-			 */
-			if( curCall == null || curCall.getClass() != sender.getClass() ) {
-				prevCall = curCall;			
-			} else {
-				if( Log.isLoggable(TAG, Log.WARN)) {
-					Log.w(TAG, "Previous NetworkServiceCall was not updated!");
-				}
+		/**Clear the current last error stored in the error handler*/
+		errorHandler.clearLastError();
+
+		/**
+		 * Update prevCall only if it is a different service request from current call
+		 * or if current call is null
+		 */
+		if( curCall == null || curCall.getClass() != sender.getClass() ) {
+			prevCall = curCall;
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Previous NetworkServiceCall was not updated!");
 			}
 	
 			/**Update current call*/
@@ -592,9 +612,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	/**
 	 * Method used after successfully answering a Strong Auth Challenge Question and receiving a successful response to the
 	 * NetworkSerivceCall<> that triggered the Strong Auth Challenge. Must wait for the Strong Auth Activity to close
-	 * and the NavigationRootActivity to resume in order to handle the success event, which may require changing fragments on 
+	 * and the NavigationRootActivity to resume in order to handle the success event, which may require changing fragments on
 	 * the NavigationRootActivity.
-	 * 
+	 *
 	 * @param sender Reference to NetworkServiceCall<> which has received a successful response.
 	 * @param result Result from NetworkServiceCall<> response if any
 	 */
@@ -604,7 +624,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			 * Thid method does not execute in a UI Thread
 			 */
 			@Override
-			protected Void doInBackground(final Void... params) {	
+			protected Void doInBackground(final Void... params) {
 				synchronized (instance) {
 					/**Wait for Navigation root activity to be brought to the foreground*/
 					try {
@@ -673,31 +693,31 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			instance.notifyAll();
 		}
 	}
-	
+
 	/**
 	 * Method used to see if GUI is ready to process an incoming NetworkServiceCall<?> response.
-	 * 
+	 *
 	 * @return True if Active Activity is in Resume State, false otherwise.
 	 */
 	private boolean isGuiReady() {
 		boolean ret = false;
-		
+
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		if( activity != null && activity instanceof SyncedActivity) {
 			ret = ((SyncedActivity)activity).isReady();
 		}
-		
-		return ret;	
+
+		return ret;
 	}
-	
+
 	/**
 	 * Method used to defer the handling of an incoming success response should the GUI not be
 	 * ready to process it.
-	 * 
+	 *
 	 * @param sender NetworkServiceCall whose successful response is to be handled.
 	 * @param arguments Object represent the result read from the successful response body.
 	 */
-	private void handleResponseAsync(final NetworkServiceCallAsyncArgs args) {	
+	private void handleResponseAsync(final NetworkServiceCallAsyncArgs args) {
 		final AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
 			/**
 			 * Thid method does not execute in a UI Thread
@@ -705,7 +725,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			@Override
 			protected Void doInBackground(final Void... params) {
 				boolean isReady = false;
-				
+
 				while( !isReady ) {
 					final Activity activity = DiscoverActivityManager.getActiveActivity();
 					if( activity != null && activity instanceof SyncedActivity) {
@@ -729,7 +749,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 					handleFailure(args.sender, args.error);
 					break;
 				case Success:
-					handleSuccessSync(args.sender, args.arguments); 
+					handleSuccessSync(args.sender, args.arguments);
 					break;
 				}
 			}
@@ -737,7 +757,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		task.execute();
 	}
-	
+
 	/**
 	 * Method used to check to see if the service call should occur in the background without a progress dialog
 	 * 
@@ -769,59 +789,59 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 *
 	 */
 	public enum Result { Success, Failure, Exception };
-	
+
 	/**
 	 * Class used to hold information provided via a callback called by a NetworkServiceCall<?>
-	 * 
+	 *
 	 * @author henryoyuela
 	 *
 	 */
-	public class NetworkServiceCallAsyncArgs {		 
+	public class NetworkServiceCallAsyncArgs {
 		public final NetworkServiceCall<?> sender;
 		public final Serializable arguments;
 		public final Throwable exception;
 		public final ErrorResponse<?> error;
 		public final Result result;
-	
+
 		/**
 		 * Constructor used for a creating an object representing a successful NetworkServiceCall<?>
-		 * 
+		 *
 		 * @param s NetworkServiceCall that succeeded
 		 * @param r Result sent in body of a response to an HTTP request sent via NetworkServiceCall
 		 */
 		public NetworkServiceCallAsyncArgs(final NetworkServiceCall<?> s, final Serializable r  ) {
 			sender = s;
-			arguments = r;		
+			arguments = r;
 			exception = null;
 			error = null;
 			result = Result.Success;
 		}
-		
+
 		/**
 		 * Constructor used for a creating an object representing a failed NetworkServiceCall<?> because
 		 * of an exception.
-		 *  
+		 *
 		 * @param s NetworkServiceCall that failed
 		 * @param ex Exception cause of the failure
 		 */
 		public NetworkServiceCallAsyncArgs(final NetworkServiceCall<?> s, final Throwable ex  ) {
 			sender = s;
-			arguments = null;		
+			arguments = null;
 			exception = ex;
 			error = null;
 			result = Result.Exception;
 		}
-		
+
 		/**
 		 * Constructor used for a creating an object representing a failed NetworkServiceCall<?> because
 		 * of an error.
-		 * 
+		 *
 		 * @param s NetworkServiceCall that succeeded
 		 * @param e Error cause of the failure
 		 */
 		public NetworkServiceCallAsyncArgs(final NetworkServiceCall<?> s, final ErrorResponse<?> e ) {
 			sender = s;
-			arguments = null;		
+			arguments = null;
 			exception = null;
 			error = e;
 			result = Result.Failure;
