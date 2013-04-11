@@ -47,7 +47,7 @@ public final class HelpMenuListFactory {
 		allFaq = new HelpItemGenerator(R.string.help_all_faq, true, false, getAllFaqListener());
 		paybills = new HelpItemGenerator(R.string.pay_bills_help, false, false, 
 													getDefaultClickListener(BankExtraKeys.BILL_PAY_FAQ));
-		checkDeposit = new HelpItemGenerator(R.string.check_deposit_help, false, false, 
+		checkDeposit = new HelpItemGenerator(R.string.check_deposit_faq, false, false, 
 													getDefaultClickListener(BankExtraKeys.CHECK_DEPOSIT_FAQ));
 	}
 
