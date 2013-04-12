@@ -105,6 +105,10 @@ public class BankAccountActivityTable extends BaseTable{
 			footer.showDone();
 		}
 		adapter.notifyDataSetChanged();
+		final ReceivedUrl url = getLoadMoreUrl();
+		if(null == url){
+			showNothingToLoad();
+		}
 	}
 
 	/**
