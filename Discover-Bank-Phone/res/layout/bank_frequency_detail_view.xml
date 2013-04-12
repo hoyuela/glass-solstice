@@ -52,6 +52,7 @@
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_weight=".65"
             android:checked="true"
+            android:button="@drawable/make_payment_radio_button_ds"
             android:clickable="false" />
 
         <TextView
@@ -94,6 +95,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_marginRight="@dimen/forms_inner_padding"
+            android:button="@drawable/make_payment_radio_button"
             android:layout_weight=".5" />
 
         <LinearLayout
@@ -164,6 +166,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_marginRight="@dimen/forms_inner_padding"
+            android:button="@drawable/make_payment_radio_button"
             android:layout_weight=".5"
             android:clickable="false" />
 
@@ -214,6 +217,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/forms_inner_padding"
+            android:button="@drawable/make_payment_radio_button"
             android:layout_weight=".5"
             android:clickable="false" />
 
