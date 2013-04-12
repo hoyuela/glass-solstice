@@ -312,6 +312,16 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	}
 
 	/**
+	 * Show the search bar
+	 */
+	public void showBar(){
+		searchLayout.startAnimation(Animator.createSlideToRightAnimation(this.getContext(), searchLayout));
+		isSearchExpanded = true;
+		searchLayout.setVisibility(View.VISIBLE);
+		show.setVisibility(View.GONE);
+	}
+
+	/**
 	 * @return the isSearchExpanded
 	 */
 	public boolean isSearchExpanded() {
