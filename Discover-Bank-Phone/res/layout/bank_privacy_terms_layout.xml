@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/light_gray_bkgrd">
+    
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="1dp"
+        android:layout_marginLeft="@dimen/forms_inner_padding" 
+    	android:layout_marginRight="@dimen/forms_inner_padding" 
+        android:layout_marginTop="@dimen/status_bar_height" 
+        android:background="@drawable/rounded_table_corners_no_padding" />
+    
+     <com.discover.mobile.common.help.HelpWidget
+            android:id="@+id/help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+  
+</RelativeLayout>

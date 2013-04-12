@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
@@ -56,6 +57,10 @@ import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.terms.BankPrivacyTermsActivity;
+import com.discover.mobile.bank.terms.BankPrivacyTermsFragment;
+import com.discover.mobile.bank.terms.PrivacyTermsType;
+import com.discover.mobile.bank.terms.TermsLandingPageFragment;
 import com.discover.mobile.bank.transfer.BankTransferFrequencyWidget;
 import com.discover.mobile.bank.transfer.BankTransferNotEligibleFragment;
 import com.discover.mobile.bank.transfer.BankTransferSelectAccount;
@@ -505,7 +510,7 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToUnderDevelopment() {
 		final BankUnderDevelopmentFragment fragment =  new BankUnderDevelopmentFragment();
-		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment, false);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 
 	}
 
@@ -1049,6 +1054,70 @@ public final class BankConductor  extends Conductor {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		activity.popTillFragment(BankTransferStepOneFragment.class);
 		((BankTransferStepOneFragment) activity.getCurrentContentFragment()).handleChosenAccount(bundle);
+	}
+
+	public static void navigateBackFromTransferSelectAccount(final Bundle bundle) {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		activity.popTillFragment(BankTransferStepOneFragment.class);
+		((BankTransferStepOneFragment) activity.getCurrentContentFragment()).handleChosenAccount(bundle);
+	}
+
+
+	/**
+	 * Method to navigate to Privacy and Terms page. Specify which page to load via the type parameter.
+	 * If user is not logged in and Privacy and Terms is not already displayed, then this method will 
+	 * launch an activity with the Privacy and Terms landing page.
+	 * 
+	 * @param type Enum type that specifies which Privacy and Terms page to display on the active Navigation Activity.
+	 */
+	public static void navigateToPrivacyTerms(final PrivacyTermsType type) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		if( activity != null ) {
+			/**Launch Privacy & Terms Activity if user is not logged in*/
+			if( activity instanceof LoginActivity ) {
+				((LoginActivity)activity).launchActivityFromClass(BankPrivacyTermsActivity.class);
+			} 			
+			/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
+			else if( activity instanceof NavigationRootActivity ) {
+				final NavigationRootActivity navActivity = (NavigationRootActivity) activity;
+								
+				BaseFragment fragment = navActivity.getCurrentContentFragment();
+				boolean continueNavigation = false;
+				
+				/** Check whether to continue with navigation to Privacy and terms or not*/
+				if( navActivity instanceof BankNavigationRootActivity ) {
+					/**
+					 * Show requested page if no fragment is present, user is not already in privacy terms view, or if 
+					 * user is already viewing privacy and terms, they are not requesting to view the landing page again
+					 * */
+					continueNavigation = (fragment == null ||
+							              fragment.getGroupMenuLocation() != BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP ||
+							             (fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP &&
+							              fragment instanceof TermsLandingPageFragment &&
+							              type != PrivacyTermsType.LandingPage));
+				} else {
+					continueNavigation = true;
+				}
+				
+				if( continueNavigation ) {
+					if( type == PrivacyTermsType.LandingPage ) {
+						fragment = new TermsLandingPageFragment();
+					} else {
+						/**Must specify what page to show to the BankPrivacyTermsFragment*/
+						final Bundle bundle = new Bundle();
+						bundle.putSerializable(BankPrivacyTermsFragment.KEY_TERMS_TYPE, type);
+						
+						fragment = new BankPrivacyTermsFragment();
+						fragment.setArguments(bundle);
+					}
+					
+					navActivity.makeFragmentVisible(fragment);	
+				} else {
+					navActivity.hideSlidingMenuIfVisible();
+				}
+			}
+		}
 	}
 }
 

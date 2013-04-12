@@ -4,18 +4,21 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.terms.PrivacyTermsType;
 
 /**
  * Load more footer for the tables.
  * @author jthornton
  *
  */
-public class TableLoadMoreFooter extends RelativeLayout{
+public class TableLoadMoreFooter extends RelativeLayout implements OnClickListener{
 
 	/**View that shows the loading*/
 	private final View load;
@@ -43,6 +46,8 @@ public class TableLoadMoreFooter extends RelativeLayout{
 		line = view.findViewById(R.id.line);
 		privacy =  (TextView) view.findViewById(R.id.privacy_footer);
 
+		privacy.setOnClickListener(this);
+		
 		hideAll();
 		addView(view);
 	}
@@ -103,5 +108,13 @@ public class TableLoadMoreFooter extends RelativeLayout{
 	 */
 	public TextView getGo() {
 		return go;
+	}
+
+	@Override
+	public void onClick(final View sender) {
+		if( sender.getId() == privacy.getId() ) {
+			BankConductor.navigateToPrivacyTerms(PrivacyTermsType.LandingPage);
+		}
+		
 	}
 }
