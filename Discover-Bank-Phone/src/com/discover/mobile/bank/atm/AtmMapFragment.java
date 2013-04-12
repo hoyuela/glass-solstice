@@ -656,6 +656,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		}
 		this.getChildFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
 		this.getChildFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
+		if(!searchBar.isSearchExpanded()){
+			searchBar.hideBar();
+		}
 	}
 
 	/**
