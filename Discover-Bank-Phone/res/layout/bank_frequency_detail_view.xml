@@ -52,6 +52,7 @@
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_weight=".65"
             android:checked="true"
+            android:layout_gravity="center_vertical"
             android:button="@drawable/make_payment_radio_button_ds"
             android:clickable="false" />
 
@@ -96,6 +97,7 @@
             android:layout_height="fill_parent"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:button="@drawable/make_payment_radio_button"
+            android:layout_gravity="center_vertical"
             android:layout_weight=".5" />
 
         <LinearLayout
@@ -167,6 +169,7 @@
             android:layout_height="fill_parent"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:button="@drawable/make_payment_radio_button"
+            android:layout_gravity="center_vertical"
             android:layout_weight=".5"
             android:clickable="false" />
 
@@ -186,7 +189,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/forms_inner_padding"
             android:layout_weight="1.75"
-            android:imeOptions="actionDone"
             android:textCursorDrawable="@null" />
     </LinearLayout>
     <!-- End count items -->
@@ -218,6 +220,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:button="@drawable/make_payment_radio_button"
+            android:layout_gravity="center_vertical"
             android:layout_weight=".5"
             android:clickable="false" />
 

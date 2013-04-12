@@ -3,9 +3,13 @@
  */
 package com.discover.mobile.bank.transfer;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +20,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.ui.widgets.CalendarFragment;
+import com.discover.mobile.common.ui.widgets.CalendarListener;
 import com.discover.mobile.common.ui.widgets.SsnEditText;
 
 /**
@@ -67,6 +76,15 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	/**Application Resources*/
 	private final Resources res;
 
+	/** Earliest payment date */
+	private final Calendar earliestPaymentDate;
+
+	/** Chosen payment date */
+	private final Calendar chosenPaymentDate;
+
+	/** Fragment used to select a payment date*/
+	private CalendarFragment calendarFragment;
+
 	/**
 	 * Constructor for the view
 	 * @param context - activity context
@@ -95,6 +113,8 @@ public class BankFrequencyDetailView extends RelativeLayout{
 
 		dollarAmount.setEnabled(false);
 		transactionAmount.setEnabled(false);
+		earliestPaymentDate = Calendar.getInstance();
+		chosenPaymentDate = Calendar.getInstance();
 
 		addView(view);
 	}
@@ -132,16 +152,32 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	 * @param bundle - bundle containing the data
 	 */
 	public void resumeState(final Bundle bundle){
-		index = bundle.getInt(RADIO, CANCELLED);
-		final String date = bundle.getString(DATE_VALUE);
-		final String transaction = bundle.getString(TRANS_VALUE);
-		final String amount = bundle.getString(AMOUNT_VALUE);
-		if(null != date){
-			dateValue.setText(date);
+		if(bundle != null){
+			index = bundle.getInt(RADIO, CANCELLED);
+			final String date = bundle.getString(DATE_VALUE);
+			final String transaction = bundle.getString(TRANS_VALUE);
+			final String amount = bundle.getString(AMOUNT_VALUE);
+			if(null != date){
+				dateValue.setText(date);
+			}
 			transactionAmount.setText(transaction);
 			dollarAmount.setText(amount);
+			disableCancelled();
+			switch(index){
+			case CANCELLED:
+				enableCancelled();
+				break;
+			case DATE:
+				enableDate();
+				break;
+			case TRANSACTION:
+				enableTransaction();
+				break;
+			case AMOUNT:
+				enableAmount();
+				break;
+			}
 		}
-		enableCell(index);
 	}
 
 	/**
@@ -212,6 +248,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 			disableTransaction();
 			disableAmount();
 			hideKeyboard();
+			showCalendar();
 			break;
 		case TRANSACTION:
 			disableCancelled();
@@ -281,6 +318,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	 * Enable the cancelled cell
 	 */
 	private void enableCancelled(){
+		index = CANCELLED;
 		cancelled.setChecked(true);
 		cancelled.setButtonDrawable(R.drawable.make_payment_radio_button_ds);
 		((TextView)view.findViewById(R.id.canceled_label)).setTextColor(res.getColor(R.color.body_copy));
@@ -290,6 +328,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	 * Enable the date cell
 	 */
 	private void enableDate(){
+		index = DATE;
 		date.setChecked(true);
 		date.setButtonDrawable(R.drawable.make_payment_radio_button_ds);
 		((TextView)view.findViewById(R.id.date_value)).setTextColor(res.getColor(R.color.body_copy));
@@ -299,6 +338,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	 * Enable the transaction cell
 	 */
 	private void enableTransaction(){
+		index = TRANSACTION;
 		transaction.setChecked(true);
 		transaction.setButtonDrawable(R.drawable.make_payment_radio_button_ds);
 		((TextView)view.findViewById(R.id.transactions_label)).setTextColor(res.getColor(R.color.body_copy));
@@ -310,6 +350,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	 * Enable the amount cell
 	 */
 	private void enableAmount(){
+		index = AMOUNT;
 		dollar.setChecked(true);
 		dollar.setButtonDrawable(R.drawable.make_payment_radio_button_ds);
 		((TextView)view.findViewById(R.id.dollar)).setTextColor(res.getColor(R.color.body_copy));
@@ -331,5 +372,116 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	private void hideKeyboard(){
 		final InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(view.getWindowToken(),0); 
+	}
+
+	/**
+	 * Method displays a calendar in a dialog form with the chosen date selected.
+	 */
+	public void showCalendar() {
+		calendarFragment = new CalendarFragment();
+
+		/**Reset Calendar Event Listener*/
+		final Fragment fragment = 
+				((NavigationRootActivity)DiscoverActivityManager.getActiveActivity())
+				.getSupportFragmentManager().findFragmentByTag(CalendarFragment.TAG);
+		if( fragment != null && fragment instanceof CalendarFragment) {
+			calendarFragment = (CalendarFragment) fragment;
+			calendarFragment.setCaldroidListener(createCalendarListener());
+		}
+
+		/**Convert stored in text field into chosen date, this will avoid issue on rotation*/
+		try{
+			final String[] date = dateValue.getText().toString().split("[\\/]+");
+			chosenPaymentDate.set( Integer.parseInt(date[2]),
+					Integer.parseInt(date[0]) - 1,
+					Integer.parseInt(date[1]));
+		}catch(final Exception ex){
+			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
+					earliestPaymentDate.get(Calendar.MONTH),
+					earliestPaymentDate.get(Calendar.DAY_OF_MONTH));
+		}
+
+
+		/**Show calendar as a dialog*/
+		calendarFragment.show(((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(),
+				res.getString(R.string.schedule_pay_date_picker_title),
+				chosenPaymentDate, 
+				earliestPaymentDate,
+				BankUser.instance().getHolidays(),
+				createCalendarListener());
+	}
+
+	/**
+	 * Create the calendar listener
+	 */
+	private CalendarListener createCalendarListener() {
+		// Setup listener
+		final CalendarListener calendarListener = new CalendarListener(calendarFragment) {
+			private static final long serialVersionUID = -5277452816704679940L;
+
+			@Override
+			public void onSelectDate(final Date date, final View view) {
+				super.onSelectDate(date, view);
+
+				final Calendar cal=Calendar.getInstance();
+				cal.setTime(date);
+				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
+
+				calendarFragment.dismiss();
+			}
+		};
+
+		return calendarListener;
+	}
+
+	/**
+	 * Updates the chosen date Calendar variable, {@code chosenPaymentDate}. If
+	 * the date is earlier than the earliest possible date, then it is set to
+	 * that. This additionally updates the text view.
+	 * 
+	 * @param year
+	 * @param month
+	 * @param day
+	 */
+	private void setChosenPaymentDate(final Integer year, final Integer month,
+			final Integer day) {
+
+		dateValue.setText(formatDate(year.toString(),
+				formatDayOfMonth(month), formatDayOfMonth(day)));
+		chosenPaymentDate.set(year, month - 1, day);
+	}
+
+
+	/**
+	 * Formats date as MM/dd/YYYY.
+	 * 
+	 * @param year
+	 * @param month
+	 *            formatted 1-12 (i.e. not 0 for January)
+	 * @param day
+	 * @return formatted date
+	 */
+	private String formatDate(final String year, final String month,
+			final String day) {
+		final StringBuilder sb = new StringBuilder();
+		sb.append(month); // Month
+		sb.append('/');
+		sb.append(day); // Day
+		sb.append('/');
+		sb.append(year); // Year
+		return sb.toString();
+	}
+
+	/**
+	 * Format the day of the month
+	 * @param value- value to format
+	 * @return the formatted value
+	 */
+	private String formatDayOfMonth(final Integer value){
+		String valueString = value.toString();
+		if (value < 10){
+			valueString = "0" + valueString;
+		}
+		return valueString;
 	}
 }

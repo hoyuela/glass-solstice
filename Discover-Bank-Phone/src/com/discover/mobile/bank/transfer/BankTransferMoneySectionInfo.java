@@ -8,6 +8,8 @@ import android.view.View.OnClickListener;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -46,7 +48,10 @@ public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 		return new OnClickListener() {
 
 			@Override
-			public void onClick(final View v) {
+			public void onClick(final View v) {/**Start download for bank holiday concurrently with payees download*/
+				if( BankUser.instance().getHolidays().isEmpty() ) {
+					BankServiceCallFactory.createBankHolidayDownloadServiceCall().submit();
+				}
 				Activity activity = DiscoverActivityManager.getActiveActivity();
 				final boolean isLoggedIn = (activity != null);
 				final boolean isBankNavigationRootActivityActive = activity instanceof BankNavigationRootActivity;
@@ -62,7 +67,7 @@ public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 						BankConductor.navigateToTransferMoneyLandingPage(null);
 					} else {
 						final String TAG = BankTransferMoneySectionInfo.class.getSimpleName();
-						
+
 						//Log.isLoggable will throw an exception if it is given a tag of length > 23, 
 						//so we need to truncate it.
 						final String limitedTAG = TAG.substring(0, Math.min(TAG.length(), 23));
