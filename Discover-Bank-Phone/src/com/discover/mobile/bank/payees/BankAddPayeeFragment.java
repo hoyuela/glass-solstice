@@ -50,6 +50,10 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 */
 	protected Bundle bundle = null;
 	/**
+	 * Flag set to true if updating  a payee, and set to false if adding a new payee
+	 */
+	protected boolean isUpdate;
+	/**
 	 * Key used for storing the detail data member in a bundle when onSaveInstanceState() is called.
 	 */
 	final private static String KEY_PAYEE_DETAIL = "new-payee";
@@ -99,7 +103,11 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_payee_details, R.string.bank_payee_added, R.string.bank_payee_added);
 
-		actionButton.setText(R.string.bank_add_payee);
+		if( isUpdate ) {
+			actionButton.setText(R.string.bank_save_payee);
+		} else {
+			actionButton.setText(R.string.bank_add_payee);
+		}
 
 		actionLink.setText(R.string.bank_add_cancel);
 		
@@ -166,7 +174,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		if( canProceed() ) {
 			clearErrors();
 			
-			BankServiceCallFactory.createAddPayeeRequest(getPayeeDetail()).submit();
+			BankServiceCallFactory.createAddPayeeRequest(getPayeeDetail(), isUpdate).submit();
 		} else {
 			updateFieldsAppearance();
 		}

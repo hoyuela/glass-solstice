@@ -34,6 +34,9 @@ public class UpdatePaymentCall extends BankJsonResponseMappingNetworkServiceCall
 			requiresSessionForRequest = true;
 			sendDeviceIdentifiers = true;
 
+			/**Set Payee ID to null as it is not editable*/
+			payment.payee = null;
+			
 			body = payment;
 			
 			errorResponseParser = BankErrorResponseParser.instance();

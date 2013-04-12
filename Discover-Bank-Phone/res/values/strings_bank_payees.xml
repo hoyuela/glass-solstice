@@ -60,5 +60,7 @@
 	<!-- Add Unmanaged Payee Error Strings -->
 	<string name="bank_invalid_phone_number">Invalid phone numbers</string>
 	
-	
+	<!-- Edit Payee -->
+	<string name="bank_save_payee">Save</string>
+	<string name="bank_updated_confirm">The payee has been successfully updated.</string>
 </resources>

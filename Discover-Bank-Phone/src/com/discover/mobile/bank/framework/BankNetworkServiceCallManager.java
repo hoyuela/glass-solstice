@@ -467,6 +467,10 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if( sender instanceof AddPayeeServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
+			
+			/**Set parameter that specifies whether it is an update or newly added payee*/
+			bundle.putSerializable(BankAddPayeeConfirmFragment.KEY_PAYEE_UPDATE, 
+					((AddPayeeServiceCall)sender).isUpdate());
 			BankConductor.navigateToAddPayee(BankAddPayeeConfirmFragment.class, bundle);
 		}
 		//ATM locator service call

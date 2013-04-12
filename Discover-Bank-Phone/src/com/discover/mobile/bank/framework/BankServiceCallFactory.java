@@ -424,14 +424,14 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	}
 
 	/**
-	 * Creates a AddPayeeServiceCall object used to add a payee to the session user's account via
+	 * Creates a AddPayeeServiceCall object used to add/update a payee to the session user's account via
 	 * an HTTP POST request to the Bank Web-service API "Add a Payee" using the url /api/payees.
 	 *
 	 * @param value - Holds information about the Payee being added to the session user's account
-	 *
+	 * @Param isUpdate - True if updating a payee, false if adding a payee
 	 * @return Reference to the AddPayeeServiceCall object created.
 	 */
-	public static AddPayeeServiceCall createAddPayeeRequest(final AddPayeeDetail value) {
+	public static AddPayeeServiceCall createAddPayeeRequest(final AddPayeeDetail value, final boolean isUpdate) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<PayeeDetail>  callback =
@@ -439,7 +439,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						activity, (ErrorHandlerUi) activity)
 						.build();
 
-		return new AddPayeeServiceCall(activity, callback, value);
+		return new AddPayeeServiceCall(activity, callback, value, isUpdate);
 	}
 
 	/**
@@ -554,7 +554,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 							activity, (ErrorHandlerUi) activity)
 							.build();
 
-			return new AddPayeeServiceCall(activity, callback, (AddPayeeDetail) payload);
+			return new AddPayeeServiceCall(activity, callback, (AddPayeeDetail) payload, false);
 
 		}
 		// FIXME : Add the rest in here!!!

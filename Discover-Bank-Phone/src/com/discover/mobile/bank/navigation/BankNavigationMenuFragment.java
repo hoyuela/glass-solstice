@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,8 +19,10 @@ import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.atm.BankAtmLocatorInfo;
 import com.discover.mobile.bank.customerservice.BankCustomerServiceSectionInfo;
 import com.discover.mobile.bank.deposit.BankDepositChecksSectionInfo;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.BankPayBillsSectionInfo;
+import com.discover.mobile.bank.terms.PrivacyTermsType;
 import com.discover.mobile.bank.transfer.BankTransferMoneySectionInfo;
 import com.discover.mobile.common.nav.NavigationItem;
 import com.discover.mobile.common.nav.NavigationMenuFragment;
@@ -36,6 +39,7 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		super.onActivityCreated(savedInstanceState);
 		final TextView version = (TextView) getActivity().findViewById(R.id.navigation_version);
 		final TextView copy = (TextView) getActivity().findViewById(R.id.navigation_copyright);
+		final TextView privacy = (TextView)getActivity().findViewById(R.id.navigation_privacy);
 		final Calendar cal = Calendar.getInstance();
 		final View footerView = getActivity().getLayoutInflater().inflate(R.layout.list_view_footer, null);
 
@@ -55,6 +59,16 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		lv.setDivider(null);
 		lv.setDividerHeight(0);
 		lv.addFooterView(footerView, null, false);
+		
+		
+		privacy.setOnClickListener( new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				BankConductor.navigateToPrivacyTerms(PrivacyTermsType.LandingPage);
+			}
+		});
+		
+		
 
 		/**
 		 * Initializes the navigation menu

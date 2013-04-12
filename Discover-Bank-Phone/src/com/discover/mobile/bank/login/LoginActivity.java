@@ -36,6 +36,7 @@ import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.bank.terms.PrivacyTermsType;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
@@ -925,12 +926,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * in the Bank Login Screen
 	 */
 	public void openPrivacyAndTerms() {
-		//TODO: Remove this code once implemented. This is only for QA testing purposes only
-		final CharSequence text = "Privacy & Terms Under Development";
-		final int duration = Toast.LENGTH_SHORT;
-
-		final Toast toast = Toast.makeText(this, text, duration);
-		toast.show();
+		BankConductor.navigateToPrivacyTerms(PrivacyTermsType.LandingPage);
 	}
 
 	/**
