@@ -12,6 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
@@ -56,6 +57,9 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 
 	/**TextView that displays the title of the page within the fragment*/
 	protected TextView pageTitle;
+	
+	/**Relative Layout that show the footer at the bottom of the page with accept button*/
+	protected RelativeLayout footer;
 
 	/**
 	 * Get the title text that was passed in by the previous Fragment.
@@ -75,6 +79,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		acceptButton = (Button)mainView.findViewById(R.id.accept_button);
 		loadingSpinner = (ProgressBar)mainView.findViewById(R.id.progress_bar);
 		pageTitle = (TextView)mainView.findViewById(R.id.select_payee_title);
+		footer = (RelativeLayout)mainView.findViewById(R.id.footer);
 	}
 
 	/**
@@ -149,6 +154,21 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	public void onClick(final View v) {
 		if( v == acceptButton) {
 			this.onAcceptClicked();
+		}
+	}
+	
+	/**
+	 * Method used to show or hide footer at the bottom of the page.
+	 * 
+	 * @param value True to show footer, false to hide
+	 */
+	public void showFooter( final boolean value ) {
+		if( footer != null ) {
+			if( value ) {
+				footer.setVisibility(View.VISIBLE);
+			} else {
+				footer.setVisibility(View.GONE);
+			}
 		}
 	}
 	

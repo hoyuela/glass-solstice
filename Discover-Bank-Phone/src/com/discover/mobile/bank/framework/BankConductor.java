@@ -1056,13 +1056,6 @@ public final class BankConductor  extends Conductor {
 		((BankTransferStepOneFragment) activity.getCurrentContentFragment()).handleChosenAccount(bundle);
 	}
 
-	public static void navigateBackFromTransferSelectAccount(final Bundle bundle) {
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-		activity.popTillFragment(BankTransferStepOneFragment.class);
-		((BankTransferStepOneFragment) activity.getCurrentContentFragment()).handleChosenAccount(bundle);
-	}
-
-
 	/**
 	 * Method to navigate to Privacy and Terms page. Specify which page to load via the type parameter.
 	 * If user is not logged in and Privacy and Terms is not already displayed, then this method will 
