@@ -398,7 +398,7 @@ public class SchedulePaymentFragment extends BaseFragment
 		progressHeader.initialize(0);
 		progressHeader.hideStepTwo();
 		progressHeader.setTitle(R.string.bank_pmt_details,
-				R.string.bank_pmt_scheduled, R.string.bank_pmt_scheduled);
+				R.string.confirm, R.string.confirm);
 	}
 
 	/**

@@ -125,14 +125,14 @@ public class BankUrlManager  {
 	 * @return The URL link to be used for getting Privacy & Terms from the server
 	 */
 	public static String getPrivacyTermsUrl() {		
-		return getUrl(PRIVACY_POLICY_KEY);
+		return getBaseUrl() +getUrl(PRIVACY_POLICY_KEY);
 	}
 
 	/**
 	 * @return The URL link to be used for getting Terms of Use from the server
 	 */
 	public static String getTermsOfUse() {		
-		return getUrl(TERMS_OF_USE);
+		return getBaseUrl() +getUrl(TERMS_OF_USE);
 	}
 
 	/**

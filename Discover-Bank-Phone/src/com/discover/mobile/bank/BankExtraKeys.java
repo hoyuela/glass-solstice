@@ -67,26 +67,26 @@ public final class BankExtraKeys {
 	public static final String RESELECT_ACCOUNT = "newAccount";
 
 	/**
-	 * Used to let the first step of check deposit know if the user has just accepted 
+	 * Used to let the first step of check deposit know if the user has just accepted
 	 * the terms and should see the how it works modal
 	 */
 	public static final String ACCEPTED_TERMS = "accepted";
-	
+
 	/** The key used when navigating to a specific FAQ section */
 	public static final String FAQ_TYPE = "faq type";
-	
+
 	/** The key used when navigating to the gernal FAQs */
 	public static final String GENERAL_FAQ = "general faq";
-	
+
 	/** The key used when navigating to bill pay FAQs */
 	public static final String BILL_PAY_FAQ = "pay bills faq";
-	
+
 	/** The key used for navigating to check deposit FAQs*/
 	public static final String CHECK_DEPOSIT_FAQ = "deposit faq";
-	
+
 	/** The key used for navigating to ATM Locator FAQs */
 	public static final String ATM_LOCATOR_FAQ = "atm faq";
-	
+
 	/** A key used for when something is loading more content and needs so save this state to a bundle */
 	public static final String IS_LOADING_MORE = "loading";
 
@@ -95,6 +95,12 @@ public final class BankExtraKeys {
 	 */
 	public static final String FREQUENCY_CODE = "code";
 	public static final String FREQUENCY_TEXT = "text";
+
+	/** Keys used when passing around internal and external accounts */
+	public static final String INTERNAL_ACCOUNTS = "intaccts";
+	public static final String EXTERNAL_ACCOUNTS = "extaccts";
+	public static final String DATE = "date";
+	public static final String SHOULD_NAVIGATE_BACK = "snb";
 
 	/**Used to signify sort set up*/
 	public static final int SORT_DATE_DESC = 0;

@@ -22,7 +22,7 @@ import com.discover.mobile.common.help.HelpWidget;
 /**
  * Widget used to determine how often the user would like to have
  * the funds transfer happen.
- * 
+ *
  * @author jthornton
  *
  */
@@ -51,7 +51,7 @@ public class BankTransferFrequencyWidget extends BaseFragment{
 	}
 
 	/**
-	 * This method will take the loaded list of payees and fill 
+	 * This method will take the loaded list of payees and fill
 	 * the list on the screen with the data.
 	 */
 	private void initLayout() {
@@ -75,13 +75,12 @@ public class BankTransferFrequencyWidget extends BaseFragment{
 				item = createListItem(text[i], codes[i]);
 				list.addView(item);
 			}
-			item.setTextBlue(getActivity());
 		}
 	}
 
 	/**
 	 * Create a single choose list item for a middle entry - dashed on top, no bottom stroke
-	 * 
+	 *
 	 * @param detail
 	 *            - detail used to show the text and associate to the item
 	 * @return the single choose list item
@@ -96,7 +95,7 @@ public class BankTransferFrequencyWidget extends BaseFragment{
 
 	/**
 	 * Create a single choose list item for the bottom entry - solid stroke on bottom
-	 * 
+	 *
 	 * @param detail
 	 *            - detail used to show the text and associate to the item
 	 * @return the single choose list item
@@ -111,7 +110,7 @@ public class BankTransferFrequencyWidget extends BaseFragment{
 
 	/**
 	 * Create a single choose list item for a top entry - solid stroke on top
-	 * 
+	 *
 	 * @param detail
 	 *            - detail used to show the text and associate to the item
 	 * @return the single choose list item
@@ -126,7 +125,7 @@ public class BankTransferFrequencyWidget extends BaseFragment{
 
 	/**
 	 * Create a single choose list item for a single list entry - solid stroke on all sides.
-	 * 
+	 *
 	 * @param detail
 	 *            - detail used to show the text and associate to the item
 	 * @return the single choose list item
@@ -147,7 +146,12 @@ public class BankTransferFrequencyWidget extends BaseFragment{
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				final Bundle bundle = new Bundle();
+				Bundle bundle = getArguments();
+
+				if(bundle == null) {
+					bundle = new Bundle();
+				}
+
 				bundle.putString(BankExtraKeys.FREQUENCY_CODE, code);
 				bundle.putString(BankExtraKeys.FREQUENCY_TEXT, string);
 				BankConductor.navigateBackFromTransferWidget(bundle);

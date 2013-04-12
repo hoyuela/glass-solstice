@@ -13,6 +13,7 @@ import com.discover.mobile.bank.services.error.BankError;
 import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.AddUnmanagedPayee;
+import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.google.common.base.Strings;
 
@@ -136,10 +137,30 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 	protected void initializeData(final Bundle bundle) {
 		detail = new AddUnmanagedPayee();
 		
-		if( null != bundle &&  null != bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM)) {		
-			payeeSearchResult =  (SearchPayeeResult)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);	
-			detail.name = payeeSearchResult.name;
-			detail.nickName = detail.name;
+		final Object item = bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+		
+		if( null != bundle &&  null != item) {	
+			/**Check if user navigated to this page from Search Payee or Edit Payee*/
+			if( item instanceof SearchPayeeResult ) {
+				payeeSearchResult =  (SearchPayeeResult)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);	
+				detail.name = payeeSearchResult.name;
+				detail.nickName = detail.name;
+				
+				/**Set flag to false so that when service call is called it adds payee*/
+				isUpdate = false;
+			} else if( item instanceof PayeeDetail ) {
+				final AddUnmanagedPayee unmanagedPayee = (AddUnmanagedPayee)detail;
+				
+				unmanagedPayee.name = ((PayeeDetail)item).name;
+				unmanagedPayee.nickName = ((PayeeDetail)item).nickName;
+				unmanagedPayee.verified = false;
+				unmanagedPayee.phone = ((PayeeDetail)item).phone;
+				unmanagedPayee.address = ((PayeeDetail)item).address;
+				unmanagedPayee.memo =  ((PayeeDetail)item).memo;
+				
+				/**Set flag to true so that when service call is called it updates payee*/
+				isUpdate = true;
+			}
 		} 
 	}
 

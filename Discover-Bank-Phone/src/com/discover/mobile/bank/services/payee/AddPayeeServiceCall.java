@@ -42,6 +42,7 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 
 	/** Reference to the PayeeDetail with the information that will be sent to the server for adding a payee**/
 	private final AddPayeeDetail payeeDetail;
+	private final boolean isUpdate;
 	
 	/**
 	 * 
@@ -52,13 +53,16 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 	 */
 	public AddPayeeServiceCall(final Context context,
 			final AsyncCallback<PayeeDetail> callback,
-			final AddPayeeDetail details) {
+			final AddPayeeDetail details, final boolean update) {
 
 		/**Generate the ServiceCall Params and provide the Paramter Types to be used by the Super Class**/
 		super(context, generateCallParams(details), PayeeDetail.class);
 		
 		/**Information about the Payee being added*/
 		payeeDetail = details;
+		
+		/**Set flag usedto determine whether the service call is for an update or new payee request*/
+		isUpdate = update;
 		
 		/**Create the handler for the response for this request*/
 		this.handler = new SimpleReferenceHandler<PayeeDetail>(callback);
@@ -125,5 +129,15 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 	public AddPayeeDetail getAddedPayee() {
 		return this.payeeDetail;
 	}
+	
+	
+	/**
+	 * 
+	 * @return True if service call was made to update a payee, false otherise.
+	 */
+	public boolean isUpdate() {
+		return isUpdate;
+	}
+	
 
 }

@@ -19,4 +19,12 @@
     <string name="search">Search</string>
     <string name="transaction_detail">Transaction Details</string>
     
+    <string name="transfer_continue_until">Continue Until</string>
+    <string name="transfer_cancelled">Cancelled</string>
+    <string name="transfer_transactions">Transactions</string>
+    <string name="transfer_dollar_amount">Dollar Amount</string>
+    <string name="transfer_date">Date</string>
+    <string name="transfer_selected_date">Select A Date</string>
+    <string name="transfer_date_edit">EDIT</string>
+    
 </resources>

@@ -156,8 +156,9 @@
             android:layout_height="20dp"
             android:layout_above="@+id/report"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:paddingTop="@dimen/groups_of_elements_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginBottom="@dimen/between_related_elements_padding"
             android:background="@drawable/atm_street_view_icon_sm" />
 
         <Button

@@ -14,6 +14,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.error.BankError;
 import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
+import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.google.common.base.Strings;
 
@@ -81,12 +82,31 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 	 */
 	@Override
 	protected void initializeData( final Bundle bundle ) {
-		if( null != bundle &&  null != bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM)) {
-			payeeSearchResult =  (SearchPayeeResult)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);	
-			detail.name = payeeSearchResult.name;
-			detail.verified = true;
-			detail.merchantNumber = payeeSearchResult.merchantNumber;
-			detail.isZipRequired = payeeSearchResult.isZipRequired();
+		final Object item = bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+		
+		if( null != bundle &&  null != item ) {
+			if( item instanceof SearchPayeeResult ) {
+				payeeSearchResult =  (SearchPayeeResult)item;	
+				detail.name = payeeSearchResult.name;
+				detail.verified = true;
+				detail.merchantNumber = payeeSearchResult.merchantNumber;
+				detail.isZipRequired = payeeSearchResult.isZipRequired();
+				
+				/**Set flag to false so that when service call is called it adds payee*/
+				isUpdate = false;
+			} else if( item instanceof PayeeDetail ) {
+				detail.name = ((PayeeDetail)item).name;
+				detail.nickName = ((PayeeDetail)item).nickName;
+				detail.verified = true;
+				detail.merchantNumber = ((PayeeDetail) item).merchantNumber;
+				detail.isZipRequired = ((PayeeDetail) item).isZipRequired;
+				detail.accountNumber = "";
+				detail.accountNumberConfirmed = "";
+				detail.zip = ((PayeeDetail)item).zip;
+				
+				/**Set flag to true so that when service call is called it updates payee*/
+				isUpdate = true;
+			}
 		} 
 	}
 	

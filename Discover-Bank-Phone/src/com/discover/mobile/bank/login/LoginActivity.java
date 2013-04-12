@@ -3,8 +3,6 @@ package com.discover.mobile.bank.login;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -38,6 +36,7 @@ import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.bank.terms.PrivacyTermsType;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
@@ -142,7 +141,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private AccountType lastLoginAcct = AccountType.CARD_ACCOUNT;
 
 	private final int LOGOUT_TEXT_COLOR = R.color.body_copy;
-	private final ScreenOffService screenOffService = new ScreenOffService();
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -364,7 +362,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		}
 
 		final IntentFilter intentFilter = new IntentFilter("android.intent.action.SCREEN_OFF");
-		registerReceiver(screenOffService, intentFilter);
 
 		//If previous screen was Strong Auth Page then clear text fields and show text fields in red
 		//because that means the user did not login successfully
@@ -376,11 +373,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 	}
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		unregisterReceiver(screenOffService);
-	}
 	/**
 	 * Ran at the start of an activity when an activity is brought to the front.
 	 * This also will trigger the Xtify SDK to start.
@@ -934,12 +926,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * in the Bank Login Screen
 	 */
 	public void openPrivacyAndTerms() {
-		//TODO: Remove this code once implemented. This is only for QA testing purposes only
-		final CharSequence text = "Privacy & Terms Under Development";
-		final int duration = Toast.LENGTH_SHORT;
-
-		final Toast toast = Toast.makeText(this, text, duration);
-		toast.show();
+		BankConductor.navigateToPrivacyTerms(PrivacyTermsType.LandingPage);
 	}
 
 	/**
@@ -1167,25 +1154,5 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 						aluModal.dismiss();
 					}
 				});
-	}
-
-	/**
-	 * A broadcast receiver that will clear the password field if the screen is shut off.
-	 * and the ID field if the check mark is not checked when the screen is turned off.
-	 * @author scottseward
-	 *
-	 */
-	private class ScreenOffService extends BroadcastReceiver {
-		@Override
-		public void onReceive(final Context context, final Intent intent) {
-			passField.getText().clear();
-			if(!saveUserId){
-				idField.getText().clear();
-				deleteAndSaveCurrentUserPrefs();
-			}
-			idField.clearFocus();
-			passField.clearFocus();
-			setInputFieldsDrawablesToDefault();
-		}
 	}
 }

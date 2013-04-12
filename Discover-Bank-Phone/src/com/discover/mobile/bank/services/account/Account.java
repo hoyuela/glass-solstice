@@ -14,9 +14,9 @@ import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * This class is used for storing Account information provided in a JSON response to a 
+ * This class is used for storing Account information provided in a JSON response to a
  * Bank Accounts service API invocation via GetCustomerAccountsServerCall.
- * 
+ *
  * {
  * 	"accountNumber": {
  * 		"ending": "5125",
@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 		"value": 0.008,
  * 		"formatted": "0.80%"
  * 	},
- * 	"apy": { 
+ * 	"apy": {
  * 		"value": 0.008,
  * 		"formatted": "0.80%"
  * 	},
@@ -151,20 +151,20 @@ public class Account implements Serializable {
 
 	/**
 	 * The account type code which signifies which type of account this is.
-	 * 
+	 *
 	 */
 	@JsonProperty("type")
 	public String type;
 
 	/**
-	 * The monetary value that is available for withdrawl at this instant, 
+	 * The monetary value that is available for withdrawl at this instant,
 	 * represented in cents. (e.g. 12345 would be $123.45)
 	 */
 	@JsonProperty("balance")
 	public Money balance;
 
 	/**
-	 * The current interest rate for the account, if any, specified as a 
+	 * The current interest rate for the account, if any, specified as a
 	 * composite object of a numerator, denomenator, and a preferred display string.
 	 */
 	@JsonProperty("interestRate")
@@ -175,14 +175,14 @@ public class Account implements Serializable {
 	public Percentage apy;
 
 	/**
-	 * The amount of interest that was compounded and added to the account balance 
+	 * The amount of interest that was compounded and added to the account balance
 	 * from last the last statement, represented in cents.(e.g. 12345 would be $123.45)
 	 */
 	@JsonProperty("interestEarnedLastStatement")
 	public Money interestEarnedLastStatement;
 
 	/**
-	 * The amount of interest that was compounded and added to the account balance 'Year to Date', 
+	 * The amount of interest that was compounded and added to the account balance 'Year to Date',
 	 * represented in cents. (e.g. 12345 would be $123.45)
 	 */
 	@JsonProperty("interestYearToDate")
@@ -244,13 +244,13 @@ public class Account implements Serializable {
 	 * Holds a reference to limits for this account
 	 */
 	public AccountLimits limits;
-	
+
 	/**
 	 * Holds list of joint owners for this account
 	 */
 	@JsonProperty("jointOwners")
 	public List<Customer> jointOwners;
-	
+
 	/**
 	 * Contains Bank web-service API Resource links for postedActivity and scheduledActivity
 	 */
@@ -259,7 +259,7 @@ public class Account implements Serializable {
 
 	/**
 	 * Read URL from hash-map of links stored in links using a Key.
-	 * 
+	 *
 	 * @param Key Can be either LINKS_POSTED_ACTIVITY and LINKS_SCHEDULED_ACTIVITY
 	 * @return Returns a ReceivedUrl object which holds the URL link
 	 */
@@ -267,15 +267,15 @@ public class Account implements Serializable {
 
 		return BankUrlManager.getUrl(links, Key);
 	}
-	
+
 	/**
 	 * Method used to determine the group the Account belongs in
-	 * 
+	 *
 	 * @return Returns a string that specifies the group to use for the account.
 	 */
 	public String getGroupCategory() {
 		String ret = "";
-		
+
 		//Group for Checking: Holds only Checking Types
 		if( this.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {		
 			ret = Account.ACCOUNT_CHECKING;	
@@ -285,7 +285,7 @@ public class Account implements Serializable {
 				 this.type.equalsIgnoreCase(Account.ACCOUNT_MMA) ||
 				 this.type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
 			ret = Account.ACCOUNT_SAVINGS;
-			
+
 		}
 		//Group for Retirement Plans: Holds IRA, IRA CDs
 		else if( this.type.equalsIgnoreCase(Account.ACCOUNT_IRA)) {
@@ -297,26 +297,36 @@ public class Account implements Serializable {
 		} else {
 			ret = this.type;
 		}
-		
+
 		return ret;
 	}
-	
+
 	/**
 	 * @return Returns true if account is eligible for check deposit, false otherwise.
 	 */
 	public boolean isDepositEligible() {
 		return ( type.equalsIgnoreCase(ACCOUNT_CHECKING) || type.equalsIgnoreCase(ACCOUNT_SAVINGS) || type.equalsIgnoreCase(ACCOUNT_MMA));
 	}
-	
+
 	public String getDottedFormattedAccountNumber() {
 		return this.nickname +" (..." +this.accountNumber.ending +")";
 	}
-	
+
 	/**
 	 * @return Returns true if account is eligible for scheduling payment, false otherwise.
 	 */
 	public boolean canSchedulePayment() {
 		return (type.equalsIgnoreCase(ACCOUNT_CHECKING) || type.equalsIgnoreCase(ACCOUNT_MMA));
+	}
+
+	public boolean isExternalAccount() {
+		return "external".equals(type);
+	}
+
+	public boolean isTransferEligible() {
+		return type.equalsIgnoreCase("money_market") ||
+				type.equalsIgnoreCase("checking") ||
+				type.equalsIgnoreCase("savings") ;
 	}
 
 }

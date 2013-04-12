@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/light_gray_bkgrd"
+    android:fillViewport="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:padding="@dimen/forms_inner_padding" >
+
+        <TextView
+            android:id="@+id/page_title"
+            style="@style/page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/forms_inner_padding"
+            android:text="@string/edit" />
+
+        <TextView
+            android:id="@+id/external_accounts_title"
+            style="@style/sub_copy_medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/page_title"
+            android:text="@string/external_accounts" />
+
+        <LinearLayout
+            android:id="@+id/content_table_external_accounts"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/external_accounts_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:background="@drawable/rounded_table_corners_no_padding"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/change_other_account_link"
+            style="@style/sub_copy_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/content_table_external_accounts"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:text="@string/empty"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/internal_accounts_title"
+            style="@style/sub_copy_medium"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/change_other_account_link"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:text="@string/internal_accounts" />
+
+        <LinearLayout
+            android:id="@+id/content_table_internal_accounts"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/internal_accounts_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:background="@drawable/rounded_table_corners_no_padding"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/provide_feedback"
+            style="@style/bank_blue_hyperlink_small"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/content_table_internal_accounts"
+            android:layout_marginTop="@dimen/orange_button_margin_top"
+            android:gravity="center_horizontal|bottom"
+            android:paddingBottom="@dimen/orange_button_margin_top"
+            android:text="@string/feedback_text" />
+
+        <com.discover.mobile.common.help.HelpWidget
+            android:id="@+id/help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</ScrollView>

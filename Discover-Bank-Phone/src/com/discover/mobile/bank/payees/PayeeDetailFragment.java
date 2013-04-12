@@ -50,12 +50,17 @@ public class PayeeDetailFragment extends DetailFragment implements OnClickListen
 	@Override
 	public void onClick(final View sender) {
 		final int senderId = sender.getId(); 
+		final Bundle bundle = new Bundle();
+		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, item);
 		
 		if( senderId == R.id.edit_payee_button ) {
-			
-		} else if( senderId == R.id.delete_payee_button) {
-			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, item);
+			/**Check if payee is managed or unmanaged*/
+			if( item.verified ) {
+				BankConductor.navigateToAddPayee(BankAddManagedPayeeFragment.class, bundle);
+			} else {
+				BankConductor.navigateToAddPayee(BankAddUnmanagedPayeeFragment.class, bundle);
+			}
+		} else if( senderId == R.id.delete_payee_button) {		
 			BankConductor.navigateToDeletePayeeModal(bundle);
 		}
 	}
