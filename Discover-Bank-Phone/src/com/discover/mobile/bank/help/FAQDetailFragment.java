@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
@@ -181,16 +182,15 @@ public class FAQDetailFragment extends BaseFragment {
 		return R.string.faq_title;
 	}
 
+
 	@Override
 	public int getGroupMenuLocation() {
-		// TODO Auto-generated method stub
-		return 0;
+		return BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		// TODO Auto-generated method stub
-		return 0;
+		return BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS;
 	}
 	
 }

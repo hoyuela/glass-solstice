@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
-import com.discover.mobile.bank.terms.PrivacyTermsType;
+import com.discover.mobile.bank.help.PrivacyTermsType;
 
 /**
  * Load more footer for the tables.

@@ -18,17 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/between_related_elements_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:layout_marginTop="@dimen/forms_inner_padding"
             android:text="@string/by_phone" />
-        
-       <ImageButton
-            android:id="@+id/help"
-            style="@style/orange_help_button"
-            android:layout_width="@dimen/orange_help_button_size"
-            android:layout_height="@dimen/orange_help_button_size"
-            android:layout_marginRight="@dimen/between_related_elements_padding"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true" />
 
         <TextView
             android:id="@+id/card_phone_title_label"
@@ -107,15 +98,15 @@
             android:layout_below="@+id/bank_mail_title_label" >
         </LinearLayout>
 
-        <Button
-            android:id="@+id/provide_feedback_button"
-            style="@style/call_to_action_theme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/bank_mail_address_list"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/orange_button_margin_top"
-            android:text="@string/feedback_text" />
+        <TextView
+           android:id="@+id/provide_feedback_button"
+           style="@style/bank_blue_hyperlink_small"
+           android:layout_below="@+id/bank_mail_address_list"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="@dimen/orange_button_margin_top"
+           android:gravity="center_horizontal|bottom"
+           android:text="@string/feedback_text" />
 
         <TextView
             android:id="@+id/discover_copyright"
@@ -126,6 +117,11 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:text="@string/discover_copyright_text" />
+        
+         <com.discover.mobile.common.help.HelpWidget
+            android:id="@+id/help"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/help_bar_height_two_items" />
     </RelativeLayout>
 
 </ScrollView>

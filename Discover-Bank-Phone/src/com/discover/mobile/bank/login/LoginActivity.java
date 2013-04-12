@@ -32,11 +32,11 @@ import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
-import com.discover.mobile.bank.help.CustomerServiceContactsActivity;
+import com.discover.mobile.bank.help.ContactUsType;
+import com.discover.mobile.bank.help.PrivacyTermsType;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
-import com.discover.mobile.bank.terms.PrivacyTermsType;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
@@ -521,7 +521,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 			@Override
 			public void onClick(final View v) {
-				launchActivityFromClass(CustomerServiceContactsActivity.class);
+				BankConductor.navigateToContactUs(ContactUsType.ALL);
 			}
 		});
 
@@ -555,20 +555,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			@Override
 			public void onClick(final View v) {
 				openPrivacyAndTerms();
-			}
-		});
-
-		privacySecOrTermButtonCard.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				openPrivacyAndSecurity();
-			}
-		});
-
-		customerServiceButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				launchActivityFromClass(CustomerServiceContactsActivity.class);
 			}
 		});
 

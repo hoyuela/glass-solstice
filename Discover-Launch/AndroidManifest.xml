@@ -284,7 +284,7 @@
         <activity android:name=".bank.atm.AtmLocatorActivity"
             android:windowSoftInputMode="adjustPan"></activity>
     
-		 <activity android:name=".bank.terms.BankPrivacyTermsActivity"
+		 <activity android:name=".bank.help.BankInfoNavigationActivity"
 		            android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
