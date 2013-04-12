@@ -198,6 +198,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		if(shouldGoBack){
 			streetView.showWebView();
 		}
+
+		setMapTransparent((ViewGroup)fragment.getView());
 	}
 
 	/**
