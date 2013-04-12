@@ -1046,7 +1046,7 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateBackFromTransferWidget(final Bundle bundle) {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-		activity.popTillFragment(BankTransferStepOneFragment.class);
+		activity.onBackPressed();
 		((BankTransferStepOneFragment) activity.getCurrentContentFragment()).handleChosenFrequency(bundle);
 	}
 
@@ -1074,10 +1074,10 @@ public final class BankConductor  extends Conductor {
 			/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 			else if( activity instanceof NavigationRootActivity ) {
 				final NavigationRootActivity navActivity = (NavigationRootActivity) activity;
-								
+
 				BaseFragment fragment = navActivity.getCurrentContentFragment();
 				boolean continueNavigation = false;
-				
+
 				/** Check whether to continue with navigation to Privacy and terms or not*/
 				if( navActivity instanceof BankNavigationRootActivity ) {
 					/**
@@ -1085,14 +1085,14 @@ public final class BankConductor  extends Conductor {
 					 * user is already viewing privacy and terms, they are not requesting to view the landing page again
 					 * */
 					continueNavigation = (fragment == null ||
-							              fragment.getGroupMenuLocation() != BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP ||
-							             (fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP &&
-							              fragment instanceof TermsLandingPageFragment &&
-							              type != PrivacyTermsType.LandingPage));
+							fragment.getGroupMenuLocation() != BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP ||
+							(fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP &&
+							fragment instanceof TermsLandingPageFragment &&
+							type != PrivacyTermsType.LandingPage));
 				} else {
 					continueNavigation = true;
 				}
-				
+
 				if( continueNavigation ) {
 					if( type == PrivacyTermsType.LandingPage ) {
 						fragment = new TermsLandingPageFragment();
@@ -1100,11 +1100,11 @@ public final class BankConductor  extends Conductor {
 						/**Must specify what page to show to the BankPrivacyTermsFragment*/
 						final Bundle bundle = new Bundle();
 						bundle.putSerializable(BankPrivacyTermsFragment.KEY_TERMS_TYPE, type);
-						
+
 						fragment = new BankPrivacyTermsFragment();
 						fragment.setArguments(bundle);
 					}
-					
+
 					navActivity.makeFragmentVisible(fragment);	
 				} else {
 					navActivity.hideSlidingMenuIfVisible();
