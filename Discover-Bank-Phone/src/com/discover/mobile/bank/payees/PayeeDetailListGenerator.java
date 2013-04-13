@@ -238,7 +238,6 @@ final public class PayeeDetailListGenerator  {
 		memo.getEditableField().setMinimum(0);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(32) };
 		memo.getEditableField().setFilters(inputFilters);
-		memo.getEditableField().setRawInputType(InputType.TYPE_NUMBER_VARIATION_NORMAL);
 		memo.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		memo.enableEditing(isEditable);
 		memo.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);

@@ -124,6 +124,7 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 				/**Show error at the top of the screen */
 				else {
 					showGeneralError(error.message);
+					scrollToTop();
 				}
 			}
 		}
