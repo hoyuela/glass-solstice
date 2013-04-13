@@ -57,7 +57,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		return (RelativeLayout)LayoutInflater.from(context).inflate(R.layout.bank_edit_detail_view, null);
 	}
 	
-	private void loadViews() {
+	protected void loadViews() {
 		view = findViewById(R.id.list_item);
 		caret = findViewById(R.id.caret);
 		topLabel = (TextView)findViewById(R.id.top_label);
@@ -137,8 +137,10 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	 * @param value True to allow the user to edit the editableField, false otherwise.
 	 */
 	public void enableEditing(final boolean value) {
+		editableField.setEnabled(value);
+		
 		if( value ) {
-			caret.setVisibility(View.VISIBLE);
+			caret.setVisibility(View.VISIBLE);			
 		} else {
 			caret.setVisibility(View.GONE);
 		}
@@ -212,7 +214,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		 * If any part of the view is clicked and the view is editable
 		 * then toggle the edit mode for this view.
 		 */
-		if( sender == view  && caret.getVisibility() == View.VISIBLE) {
+		if( sender == view  && isEditable()) {
 			setEditMode(!(editableField.getVisibility() == View.VISIBLE));		
 		}
 	}
@@ -284,4 +286,11 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		this.editableField.enableValidation(value);
 	}
 	
+	/**
+	 * Method used to check whether the control is editable
+	 * @return
+	 */
+	public boolean isEditable() {
+		return (caret.getVisibility() == View.VISIBLE && this.getEditableField().isEnabled());
+	}
 }

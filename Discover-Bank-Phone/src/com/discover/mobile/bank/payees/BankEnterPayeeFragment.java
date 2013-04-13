@@ -62,12 +62,16 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		/**Button used to trigger Payee search*/
 		continueButton = (Button)view.findViewById(R.id.continue_button); 
 		continueButton.setOnClickListener(this);
-
+	
 		/**Lookup EditText field used for searching for a payee**/
 		searchField = (PayeeValidatedEditField)view.findViewById(R.id.search_field);
 		searchField.setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		searchField.setMinimum(2);
 		searchField.attachErrorLabel(errorLabel);
+
+		/**Temporarily disable validation*/
+		searchField.enableValidation(false);
+	
 
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
@@ -109,6 +113,8 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		imm.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
 
 		if( sender == continueButton ) {
+			searchField.enableValidation(true);
+			
 			if( searchField.isValid() ) {
 				final String search = searchField.getText().toString().trim();
 				BankServiceCallFactory.createPayeeSearchRequest(search).submit();
@@ -135,7 +141,7 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 	@Override
 	public void onResume() {
 		super.onResume();
-
+	
 		if( clearText ) {
 			searchField.getText().clear();
 		}

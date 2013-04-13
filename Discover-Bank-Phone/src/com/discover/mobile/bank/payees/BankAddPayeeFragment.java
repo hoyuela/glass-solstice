@@ -24,9 +24,9 @@ import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.help.HelpWidget;
-import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
+import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.google.common.base.Strings;
 
 /**
@@ -136,8 +136,12 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		if( content != null){
 			for(final Object element : content) {
 				if( element instanceof BankEditDetail) {
+					((BankEditDetail)element).enableValidation(true);
+					
 					ret = ((BankEditDetail)element).getEditableField().isValid();
-
+					
+					((BankEditDetail)element).enableValidation(false);
+					
 					if( !ret ) {					
 						break;
 					}
@@ -156,8 +160,14 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		if( content != null){
 			for(final Object element : content) {
 				if( element instanceof BankEditDetail) {
+					/**Enable validation to be able to show inline errors and validate text*/
+					((BankEditDetail)element).enableValidation(true);
+					
 					((BankEditDetail)element).setEditMode(false);
 					((BankEditDetail)element).getEditableField().updateAppearanceForInput();
+					
+					/**Disable validation to improve performance while typing*/
+					((BankEditDetail)element).enableValidation(false);
 				}
 			}
 		}
@@ -176,8 +186,44 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 			
 			BankServiceCallFactory.createAddPayeeRequest(getPayeeDetail(), isUpdate).submit();
 		} else {
-			updateFieldsAppearance();
+			
+			/**Scroll screen to top if first error is at the top of the sreen*/
+			final int firstItemWithError = getFindError();
+			if( firstItemWithError >= 0 && firstItemWithError <= 4 ) {
+				scrollToTop();
+			}
+			
+			updateFieldsAppearance();			
 		}
+	}
+	
+	/**
+	 * Method used to return the index of the first item with an inline error
+	 * 
+	 * @return -1 if no line errors, otherwise the index of the item with an inline error.
+	 */
+	protected int getFindError() {
+		int firstItemWithError = -1;
+		
+		/**Iterate through each BankEditDetail and ensure it validates correctly otherwise show inline errors*/
+		if( content != null) {
+			for( int i = 0; i < content.size(); i++ ) {
+				final BankEditDetail detail = (BankEditDetail) content.get(i);
+				
+				detail.enableValidation(true);
+				
+				final boolean isValid = !detail.getEditableField().isValid();
+				
+				detail.enableValidation(false);
+				
+				if( isValid ) {
+					firstItemWithError = i;
+					break;
+				}
+			}
+		}
+		
+		return firstItemWithError;
 	}
 	
 	/**
@@ -193,55 +239,40 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 * from user to canel or not.
 	 */
 	public void cancel() {
-		// Create a one button modal to notify the user that they are cancelling the Add Payee transaction
-		final ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(getActivity(), null);
-		cancelModalTopView.setTitle(R.string.bank_cancel_title);
-		cancelModalTopView.setContent(R.string.bank_cancel_msg);
-
-		final ModalDefaultTwoButtonBottomView cancelModalButtons = new ModalDefaultTwoButtonBottomView(getActivity(), null);
-		cancelModalButtons.setCancelButtonText(R.string.bank_cancel_noaction);
-		cancelModalButtons.setOkButtonText(R.string.bank_cancel_yesaction);
-
-		final ModalAlertWithTwoButtons cancelModal = new ModalAlertWithTwoButtons(
-				getActivity(), cancelModalTopView, cancelModalButtons);
-		/**
-		 * Hide the need help footer for the modal.
-		 */
-		final ModalDefaultTopView topView = (ModalDefaultTopView)cancelModal.getTop();
-		topView.hideNeedHelpFooter();
+		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this.getActivity(), null);
+		final ModalDefaultTopView top = new ModalDefaultTopView(this.getActivity(), null);
+		final ModalAlertWithOneButton cancelModal = new ModalAlertWithOneButton(this.getActivity(), top, bottom);
 		
-		cancelModalButtons.getOkButton().setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(final View v) {
-						cancelModal.dismiss();
-						/**
-						 * Pop all fragments till we reach BankManagePayee. 
-						 * Checking if the Activity is null due to a crash occuring when the modal is open
-						 * and you tap yes quickly the activity is null and the app will crash. 
-						 */
-						if ((BankNavigationRootActivity) getActivity() != null) {
-							/**Check if user navigated to this screen from Manage Payees*/
-							final boolean handled = ((BankNavigationRootActivity) getActivity()).popTillFragment(BankManagePayee.class);
-							
-							/**If was unable to navigate to Manage Payees then navigate to BankSelect Payee*/
-							if( !handled ) {
-								((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
-							}
-						}
-					}
-				});
-
-		cancelModalButtons.getCancelButton().setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(final View v) {
-						cancelModal.dismiss();
-					}
-				});
+		top.setTitle(R.string.cancel_this_action);
+		top.setContent(R.string.cancel_this_action_content);
+		top.hideNeedHelpFooter();
 		
-		/**Show modal*/
-		((BankNavigationRootActivity) getActivity()).showCustomAlert(cancelModal);
+		bottom.setButtonText(R.string.cancel_this_action);
+		bottom.getButton().setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				cancelModal.dismiss();
+			    
+				/**
+				 * Pop all fragments till we reach BankManagePayee. 
+				 * Checking if the Activity is null due to a crash occuring when the modal is open
+				 * and you tap yes quickly the activity is null and the app will crash. 
+				 */
+				if ((BankNavigationRootActivity) getActivity() != null) {
+					/**Check if user navigated to this screen from Manage Payees*/
+					final boolean handled = ((BankNavigationRootActivity) getActivity()).popTillFragment(BankManagePayee.class);
+					
+					/**If was unable to navigate to Manage Payees then navigate to BankSelect Payee*/
+					if( !handled ) {
+						((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
+					}
+				}
+			}
+
+		});
+			
+		this.showCustomAlertDialog(cancelModal);
 	}
 
 
@@ -344,7 +375,13 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 									
 									item.setEditModeNoFocus(true);
 									
+									/**Enable validation to be able to show in-line errors and validate text*/
+									item.enableValidation(true);
+																		
 									item.getEditableField().showErrorLabel(errorString);
+									
+									/**Disable validation to improve performance while typing*/
+									item.enableValidation(false);
 								}
 								
 								showGeneralError(genError);
@@ -437,6 +474,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		return ret;
 	}
 
+	
 	@Override
 	protected void helpMenuOnClick(final HelpWidget help) {
 		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
@@ -476,7 +514,11 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	
 	@Override
 	public boolean handleError(final BankErrorResponse msgErrResponse) {
-		this.scrollToTop();
+		/**Scroll screen to top if first error is at the top of the sreen*/
+		final int firstItemWithError = getFindError();
+		if( firstItemWithError >= 0 && firstItemWithError <= 4 ) {
+			scrollToTop();
+		}
 		
 		return false;
 	}

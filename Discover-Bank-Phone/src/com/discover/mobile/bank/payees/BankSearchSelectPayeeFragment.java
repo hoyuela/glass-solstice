@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
@@ -191,27 +190,19 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	@Override
 	public void onClick(final View sender) {
 		
-		/**Help button was clicked**/
-		if( sender == helpButton ) {
-			final CharSequence text = "Help Under Development";
-			final int duration = Toast.LENGTH_SHORT;
-
-			final Toast toast = Toast.makeText(this.getActivity(), text, duration);
-			toast.show();
-		}
-		else if( sender instanceof SimpleChooseListItem ) {
+		if( sender instanceof SimpleChooseListItem ) {	
 			/**Enter Payee Details was clicked to add Unmanaged Payee*/
 			if( sender.getId() ==  enterPayeeDetails.getId()) {
-				BankConductor.navigateToAddPayee(BankAddUnmanagedPayeeFragment.class, new Bundle());
+				/**Send bundle to the next screen to display the search value used as the name and nickname*/
+				BankConductor.navigateToAddPayee(BankAddUnmanagedPayeeFragment.class, bundle);
 			}
 			/**A list item with a Managed Verified Payee Name was clicked*/
 			else {
 				final SimpleChooseListItem item = (SimpleChooseListItem)sender;
 				final SearchPayeeResult result = (SearchPayeeResult)item.getItem();
-	
-				final Bundle bundle = new Bundle();
+
 				bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
-	
+				
 				BankConductor.navigateToAddPayee(BankAddManagedPayeeFragment.class, bundle);
 			}
 		}
