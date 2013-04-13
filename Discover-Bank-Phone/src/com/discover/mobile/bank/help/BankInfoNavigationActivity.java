@@ -1,6 +1,7 @@
-package com.discover.mobile.bank.terms;
+package com.discover.mobile.bank.help;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +22,10 @@ import com.slidingmenu.lib.SlidingMenu;
  * @author henryoyuela
  *
  */
-public class BankPrivacyTermsActivity extends NavigationRootActivity implements OnClickListener{	
+public class BankInfoNavigationActivity extends NavigationRootActivity implements OnClickListener{	
+	public static final String CONTACT_US = "contact-us";
+	public static final String PRIVACY_AND_TERMS = "privacy-terms";
+	
 	/**
 	 * Reference to action bar back button.
 	 */
@@ -37,7 +41,7 @@ public class BankPrivacyTermsActivity extends NavigationRootActivity implements 
 		
 		/**Check if this is the first time this activity is being launched*/
 		if( savedInstanceState == null ) {
-			makeFragmentVisible(new TermsLandingPageFragment());
+			launchStartPage();
 		}
 		
 		showActionBar();
@@ -46,6 +50,21 @@ public class BankPrivacyTermsActivity extends NavigationRootActivity implements 
 		enableSlidingMenu(false);
 	}
 
+	private void launchStartPage() {
+		final Bundle bundle = this.getIntent().getExtras();
+		if( bundle == null ) {
+			makeFragmentVisible(new TermsLandingPageFragment());
+		} else {
+			if( bundle.containsKey(CONTACT_US)) {
+				final Fragment contactUs = new CustomerServiceContactsFragment();
+				contactUs.setArguments(bundle);
+				makeFragmentVisible( contactUs );
+			} else if( bundle.containsKey(PRIVACY_AND_TERMS)) {
+				makeFragmentVisible(new TermsLandingPageFragment());
+			}
+		}
+	}
+	
 	/**
 	 * Show the action bar with the custom layout
 	 */

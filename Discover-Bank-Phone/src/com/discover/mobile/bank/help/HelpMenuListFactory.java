@@ -6,8 +6,10 @@ package com.discover.mobile.bank.help;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
@@ -17,6 +19,7 @@ import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpItemGenerator;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * Singleton class to put all of the help list items so that they are easily accessible to the fragment.
@@ -39,7 +42,7 @@ public final class HelpMenuListFactory {
 
 	/**Instance of the factory*/
 	private static HelpMenuListFactory factory;
-
+	
 	/**
 	 * Private constructor, creates the default help menu items.
 	 */
@@ -62,6 +65,42 @@ public final class HelpMenuListFactory {
 		return factory;
 	}
 
+	/**
+	 * Get the menu items that are associated with the Login Page.
+	 * 
+	 * @return - the list of help menu items associated with the Login Page
+	 */
+	public List<HelpItemGenerator> getLoggedOutHelpItems(){
+		/**Default menu item representing the "Bank ALL FAQ" item*/
+		final HelpItemGenerator bankFaq = new HelpItemGenerator(R.string.help_bank_faq, true, false, getAllFaqListener());
+		
+		/**Default menu item representing the "Card ALL FAQ" item*/
+		final HelpItemGenerator cardFaq = new HelpItemGenerator(R.string.help_card_faq, true, false, getCardFaqListener());
+		
+		/**Default menu item representing the "Help number" item*/
+		final HelpItemGenerator helpNumber = new HelpItemGenerator(R.string.help_menu_number, true, false, getHelpNumberListener());
+		
+		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
+		
+		items.add(helpNumber);
+		items.add(cardFaq);
+		items.add(bankFaq);
+		return items;
+	}
+	
+	/**
+	 * Get the menu items that are associated with the account summary pages
+	 * @return - the list of help menu items associated with the account summary pages
+	 */
+	public List<HelpItemGenerator> getCardHelpItems(){	
+		/**Default menu item representing the "Card ALL FAQ" item*/
+		final HelpItemGenerator cardFaq = new HelpItemGenerator(R.string.help_card_faq, true, false, getCardFaqListener());
+			
+		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
+	
+		items.add(cardFaq);
+		return items;
+	}
 
 	/**
 	 * Get the menu items that are associated with the account summary pages
@@ -155,6 +194,37 @@ public final class HelpMenuListFactory {
 		};
 	}
 
+	/**
+	 * Click listener for the Help Number item.  On click the user will be directed to the dialer with the help number
+	 * @return Click listener for the Help Number FAQ item.  On click the user will be directed to the dialer with Help Number.
+	 */
+	private OnClickListener getHelpNumberListener(){
+		return new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				final Activity activity = DiscoverActivityManager.getActiveActivity();
+				CommonUtils.dialNumber(activity.getResources().getString(R.string.help_menu_number), activity);
+			}
+		};
+	}
+	
+	/**
+	 * Click listener for the all FAQ item.  On click the user will be directed to the all FAQ page
+	 * @return Click listener for the all FAQ item.  On click the user will be directed to the all FAQ page
+	 */
+	private OnClickListener getCardFaqListener(){
+		return new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				final CharSequence text = "Card FAQ Under Development";
+				final int duration = Toast.LENGTH_SHORT;
+
+				final Toast toast = Toast.makeText(DiscoverActivityManager.getActiveActivity(), text, duration);
+				toast.show();
+			}
+		};
+	}
+	
 	/**
 	 * Click listener for the all FAQ item.  On click the user will be directed to the all FAQ page
 	 * @return Click listener for the all FAQ item.  On click the user will be directed to the all FAQ page

@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.terms;
+package com.discover.mobile.bank.help;
 
 import java.io.Serializable;
 

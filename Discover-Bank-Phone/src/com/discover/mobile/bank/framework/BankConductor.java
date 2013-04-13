@@ -31,10 +31,17 @@ import com.discover.mobile.bank.deposit.CaptureReviewFragment;
 import com.discover.mobile.bank.deposit.CheckDepositErrorFragment;
 import com.discover.mobile.bank.deposit.DuplicateCheckErrorFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
+import com.discover.mobile.bank.help.BankInfoNavigationActivity;
+import com.discover.mobile.bank.help.BankPrivacyTermsFragment;
+import com.discover.mobile.bank.help.ContactUsType;
+import com.discover.mobile.bank.help.CustomerServiceContactsFragment;
 import com.discover.mobile.bank.help.FAQDetailFragment;
 import com.discover.mobile.bank.help.FAQLandingPageFragment;
 import com.discover.mobile.bank.help.LoggedOutFAQActivity;
+import com.discover.mobile.bank.help.PrivacyTermsType;
+import com.discover.mobile.bank.help.TermsLandingPageFragment;
 import com.discover.mobile.bank.login.LoginActivity;
+import com.discover.mobile.bank.navigation.BankNavigationHelper;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.BankPayConfirmFragment;
 import com.discover.mobile.bank.paybills.BankPayTerms;
@@ -57,10 +64,6 @@ import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
-import com.discover.mobile.bank.terms.BankPrivacyTermsActivity;
-import com.discover.mobile.bank.terms.BankPrivacyTermsFragment;
-import com.discover.mobile.bank.terms.PrivacyTermsType;
-import com.discover.mobile.bank.terms.TermsLandingPageFragment;
 import com.discover.mobile.bank.transfer.BankTransferFrequencyWidget;
 import com.discover.mobile.bank.transfer.BankTransferNotEligibleFragment;
 import com.discover.mobile.bank.transfer.BankTransferSelectAccount;
@@ -195,7 +198,16 @@ public final class BankConductor  extends Conductor {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 		if(currentActivity instanceof BankNavigationRootActivity) {
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-			activity.makeFragmentVisible(new FAQLandingPageFragment());
+			
+			final BaseFragment fragment = activity.getCurrentContentFragment();
+			
+			/**Check if user is already viewing FAQ*/
+			if( !BankNavigationHelper.isViewingMenuSection(BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP, 
+					 									   BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS)) {
+				activity.makeFragmentVisible(new FAQLandingPageFragment());
+			} else {
+				activity.hideSlidingMenuIfVisible();
+			}
 		}else{
 			final Intent loggedOutFAQ = new Intent(currentActivity, LoggedOutFAQActivity.class);
 			currentActivity.startActivity(loggedOutFAQ);
@@ -1069,7 +1081,11 @@ public final class BankConductor  extends Conductor {
 		if( activity != null ) {
 			/**Launch Privacy & Terms Activity if user is not logged in*/
 			if( activity instanceof LoginActivity ) {
-				((LoginActivity)activity).launchActivityFromClass(BankPrivacyTermsActivity.class);
+				final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
+				final Bundle bundle = new Bundle();
+				bundle.putSerializable(BankInfoNavigationActivity.PRIVACY_AND_TERMS, type);
+				activity.startActivity(intent);
+				activity.finish();
 			} 			
 			/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 			else if( activity instanceof NavigationRootActivity ) {
@@ -1106,6 +1122,48 @@ public final class BankConductor  extends Conductor {
 					}
 
 					navActivity.makeFragmentVisible(fragment);	
+				} else {
+					navActivity.hideSlidingMenuIfVisible();
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Method used to navigate to Contact Us Page. The Contact US page can show both
+	 * card and bank information, card only or bank only information. The type is used
+	 * to specify what information is shown.
+	 * 
+	 * @param type Used to specify what contact us information is displayed.
+	 */
+	public static void navigateToContactUs(final ContactUsType type ) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final Bundle bundle = new Bundle();
+		bundle.putSerializable(BankInfoNavigationActivity.CONTACT_US, type);
+		
+		if( activity != null ) {
+			/**Launch Privacy & Terms Activity if user is not logged in*/
+			if( activity instanceof LoginActivity ) {
+				final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
+				intent.putExtras(bundle);
+				activity.startActivity(intent);
+				activity.finish();
+			} 			
+			/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
+			else if( activity instanceof NavigationRootActivity ) {
+				final NavigationRootActivity navActivity = (NavigationRootActivity) activity;
+								
+				BaseFragment fragment = navActivity.getCurrentContentFragment();
+						
+				if( !BankNavigationHelper.isViewingMenuSection( BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP, 
+						   										BankMenuItemLocationIndex.CONTACT_US_SECTION)) {
+				
+					fragment = new CustomerServiceContactsFragment();
+					fragment.setArguments(bundle);
+					
+					navActivity.makeFragmentVisible(fragment);		
 				} else {
 					navActivity.hideSlidingMenuIfVisible();
 				}
