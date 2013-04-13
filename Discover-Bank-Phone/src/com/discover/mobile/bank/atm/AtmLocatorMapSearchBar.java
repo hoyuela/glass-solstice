@@ -301,4 +301,37 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 			searchBox.requestFocusFromTouch();
 		}
 	}
+
+	/**
+	 * Hide the search bar
+	 */
+	public void hideBar(){
+		show.setVisibility(View.VISIBLE);
+		searchLayout.startAnimation(Animator.createSlideToLeftAnimation(this.getContext(), searchLayout));
+		isSearchExpanded = false;
+	}
+
+	/**
+	 * Show the search bar
+	 */
+	public void showBar(){
+		searchLayout.startAnimation(Animator.createSlideToRightAnimation(this.getContext(), searchLayout));
+		isSearchExpanded = true;
+		searchLayout.setVisibility(View.VISIBLE);
+		show.setVisibility(View.GONE);
+	}
+
+	/**
+	 * @return the isSearchExpanded
+	 */
+	public boolean isSearchExpanded() {
+		return isSearchExpanded;
+	}
+
+	/**
+	 * @param isSearchExpanded the isSearchExpanded to set
+	 */
+	public void setSearchExpanded(final boolean isSearchExpanded) {
+		this.isSearchExpanded = isSearchExpanded;
+	}
 }

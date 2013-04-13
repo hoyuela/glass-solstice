@@ -22,9 +22,17 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 
+/**
+ * Service Call to get the ATMs based on a certain locaiton.
+ * @author jthornton
+ *
+ */
 public class GetAtmDetailsCall extends BankJsonResponseMappingNetworkServiceCall<AtmResults> {
 
 	private final TypedReferenceHandler<AtmResults> handler;
+
+	/**Custom timeout*/
+	private static int timeout = 60;
 
 	/**
 	 * 
@@ -44,6 +52,8 @@ public class GetAtmDetailsCall extends BankJsonResponseMappingNetworkServiceCall
 				sendDeviceIdentifiers = true;
 				// Specify what error parser to use when receiving an error response is received
 				errorResponseParser = BankErrorResponseParser.instance();
+				//specifiy custom timeout
+				connectTimeoutSeconds = timeout;
 			}
 		}, AtmResults.class, BankUrlManager.getAtmLocatorUrl());
 
