@@ -92,6 +92,13 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		frequencyListItem.getErrorLabel().setVisibility(View.GONE);
 		reoccuring.resumeState(bundle);
 	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		reoccuring.onPause();
+	}
 
 	/**
 	 * Save the current state of the screen.

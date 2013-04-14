@@ -19,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
@@ -45,7 +46,11 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	private static final int DATE = 1;
 	private static final int TRANSACTION = 2;
 	private static final int AMOUNT = 3;
-
+	/**Holds the current calendar month being displayed when the calendar is open*/
+	public int calendarMonth = -1;
+	/**Holds the current calendar year being displayed when the calendar is open*/
+	public int calendarYear = -1;
+	
 	/**Selected Radio Index*/
 	private int index;
 
@@ -144,9 +149,22 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		outState.putString(TRANS_VALUE, transactionAmount.getText().toString());
 		outState.putString(AMOUNT_VALUE, dollarAmount.getText().toString());
 
+		/**Re-create dialog on rotation to avoid calendar cut-off issue. Issue with Caldroid library*/
+		if( this.calendarFragment != null ) {
+			outState.putInt(BankExtraKeys.CALENDAR_MONTH, calendarMonth);
+			outState.putInt(BankExtraKeys.CALENDAR_YEAR, calendarYear);
+		}
+		
 		return outState;
 	}
 
+	public void onPause() {
+		/**Dismiss the calendar as it will be recreated in on resume if necessary*/
+		if( this.calendarFragment != null ) {
+			calendarFragment.dismiss();
+		}
+	}
+	
 	/**
 	 * Resume the sate of the view
 	 * @param bundle - bundle containing the data
@@ -176,6 +194,13 @@ public class BankFrequencyDetailView extends RelativeLayout{
 			case AMOUNT:
 				enableAmount();
 				break;
+			}
+			
+			/**Check if calendar is required to be restored*/
+			if(bundle.containsKey(BankExtraKeys.CALENDAR_MONTH) ) {
+				this.calendarMonth = bundle.getInt(BankExtraKeys.CALENDAR_MONTH);
+				this.calendarYear = bundle.getInt(BankExtraKeys.CALENDAR_YEAR);
+				this.showCalendar();
 			}
 		}
 	}
@@ -389,24 +414,44 @@ public class BankFrequencyDetailView extends RelativeLayout{
 			calendarFragment.setCaldroidListener(createCalendarListener());
 		}
 
+		/** The calendar will appear with the month and year in this Calendar instance */
+		Calendar displayedDate = Calendar.getInstance();
+		
+		
 		/**Convert stored in text field into chosen date, this will avoid issue on rotation*/
 		try{
 			final String[] date = dateValue.getText().toString().split("[\\/]+");
+			
+			/** The Calendar will appear with the date specified by this calendar instance selected*/
 			chosenPaymentDate.set( Integer.parseInt(date[2]),
-					Integer.parseInt(date[0]) - 1,
-					Integer.parseInt(date[1]));
+				      Integer.parseInt(date[0]) - 1,
+					  Integer.parseInt(date[1]));
+			
+			/**Check if restoring calendar selection date, -1 means it is initializing*/
+			if(  calendarMonth == -1 ) {	
+				displayedDate = chosenPaymentDate;
+			} else {
+				displayedDate.set( calendarYear,
+							       calendarMonth - 1,
+						           Integer.parseInt(date[1]));
+			}
+			
+			/**Reset values for current calendar year and month*/
+			calendarMonth = calendarYear = -1;
 		}catch(final Exception ex){
 			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
-					earliestPaymentDate.get(Calendar.MONTH),
-					earliestPaymentDate.get(Calendar.DAY_OF_MONTH));
+					chosenPaymentDate.get(Calendar.MONTH),
+					chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
+			
+			displayedDate = chosenPaymentDate;
 		}
-
-
+		
 		/**Show calendar as a dialog*/
 		calendarFragment.show(((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(),
 				res.getString(R.string.schedule_pay_date_picker_title),
-				chosenPaymentDate, 
-				earliestPaymentDate,
+				displayedDate,
+			    chosenPaymentDate, 
+			    earliestPaymentDate,
 				BankUser.instance().getHolidays(),
 				createCalendarListener());
 	}
@@ -428,6 +473,19 @@ public class BankFrequencyDetailView extends RelativeLayout{
 				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
 
 				calendarFragment.dismiss();
+			}
+			
+			@Override
+			public void onChangeMonth(final int month, final int year) { 
+				super.onChangeMonth(month, year);
+				
+				/**Keep track of month the user is on for when 
+				 * the phone is rotated and restore the state of calendar*/
+				calendarMonth = month;
+				
+				/**Keep track of year the user is on for when 
+				 * the phone is rotated and restore the state of calendar*/
+				calendarYear = year;
 			}
 		};
 
