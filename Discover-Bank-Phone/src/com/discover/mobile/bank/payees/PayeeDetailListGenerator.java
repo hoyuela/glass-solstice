@@ -40,6 +40,9 @@ final public class PayeeDetailListGenerator  {
 											  final String text) {
 		final BankEditDetail item = new BankEditDetail(context);
 		
+		/**Turn of text validation by default*/
+		item.enableValidation(false);
+		
 		if(text != null) {
 			item.getTopLabel().setText(topLabelResource);
 			item.setText(text);
@@ -63,7 +66,6 @@ final public class PayeeDetailListGenerator  {
 		name.getEditableField().setMinimum(2);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(32) };
 		name.getEditableField().setFilters(inputFilters);
-		name.getEditableField().setInvalidPattern(PayeeValidatedEditField.NON_ALPHANUMERIC);
 		return name;
 	}
 	
@@ -79,7 +81,8 @@ final public class PayeeDetailListGenerator  {
 		nickName.getEditableField().setMinimum(2);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(30) };
 		nickName.getEditableField().setFilters(inputFilters);
-		nickName.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
+		nickName.getEditableField().setInvalidPattern(PayeeValidatedEditField.NON_ALPHA);
+		nickName.getEditableField().setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 		nickName.enableEditing(isEditable);
 		nickName.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		return nickName;
@@ -115,7 +118,7 @@ final public class PayeeDetailListGenerator  {
 		/**Add Re-Enter Account #, Validation 1 char min./32 char max, Invalid characters <>;"[]{}, and matches Account #*/
 		final BankEditDetail reenterAccount = createBankEditDetail(context, R.string.bank_payee_reenter_account, text);
 		reenterAccount.getEditableField().setMinimum(1);
-		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(30) };
+		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(32) };
 		reenterAccount.getEditableField().setError(R.string.bank_nonmatching_acct);
 		reenterAccount.getEditableField().setFilters(inputFilters);
 		reenterAccount.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -141,7 +144,7 @@ final public class PayeeDetailListGenerator  {
 		zipCode.getEditableField().setMinimum(5);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(9) };
 		zipCode.getEditableField().setFilters(inputFilters);
-		zipCode.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
+		zipCode.getEditableField().setInvalidPattern(PayeeValidatedEditField.NON_ZIPCODE);
 		zipCode.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
 		zipCode.getEditableField().setError(R.string.bank_invalid_zip);
 		zipCode.enableEditing(isEditable);
@@ -162,10 +165,6 @@ final public class PayeeDetailListGenerator  {
 		
 		if(phone != null) {	phoneNumber.setText(phone);}
 		phoneNumber.getTopLabel().setText(R.string.bank_payee_phone_number);
-		phoneNumber.getEditableField().setMinimum(10);
-		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(10) };
-		phoneNumber.getEditableField().setFilters(inputFilters);
-		phoneNumber.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
 		phoneNumber.enableEditing(isEditable);
 		phoneNumber.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		phoneNumber.getEditableField().setError(R.string.bank_invalid_phone_number);
@@ -177,7 +176,7 @@ final public class PayeeDetailListGenerator  {
 			
 		item.getTopLabel().setText(R.string.bank_payee_state);
 		item.setText(state);
-		item.enableEditing(isEditable);
+		item.getEditableField().setEnabled(false);
 		item.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT);
 		return item;
 	}
@@ -188,8 +187,9 @@ final public class PayeeDetailListGenerator  {
 		final BankEditDetail city = createBankEditDetail(context, R.string.bank_payee_city, text);
 		city.getEditableField().setMinimum(2);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(25) };
+		city.getEditableField().setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS|InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
 		city.getEditableField().setFilters(inputFilters);
-		city.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
+		city.getEditableField().setInvalidPattern(PayeeValidatedEditField.NON_ALPHA);
 		city.enableEditing(isEditable);
 		city.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		return city;
@@ -210,6 +210,7 @@ final public class PayeeDetailListGenerator  {
 		address.getEditableField().setMinimum(2);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(30) };
 		address.getEditableField().setFilters(inputFilters);
+		address.getEditableField().setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS|InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
 		address.getEditableField().setInvalidPattern(PayeeValidatedEditField.NON_ALPHANUMERIC);
 		address.enableEditing(isEditable);
 		address.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
@@ -223,9 +224,9 @@ final public class PayeeDetailListGenerator  {
 		address.getEditableField().setMinimum(0);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(30) };
 		address.getEditableField().setFilters(inputFilters);
-		address.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
+		address.getEditableField().setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS|InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+		address.getEditableField().setInvalidPattern(PayeeValidatedEditField.NON_ALPHANUMERIC);
 		address.enableEditing(isEditable);
-		address.enableValidation(false);
 		address.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		return address;
 	}
@@ -235,9 +236,10 @@ final public class PayeeDetailListGenerator  {
 		/**Add City, Validation min=?, max=? and Invalid characters for a payee nickname: <>;"[]{} */
 		final BankEditDetail memo = createBankEditDetail(context, R.string.bank_payee_memo, text);
 		memo.getEditableField().setMinimum(0);
-		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(34) };
+		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(32) };
+		memo.getEditableField().setFilters(inputFilters);
+		memo.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		memo.enableEditing(isEditable);
-		memo.enableValidation(false);
 		memo.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		memo.getMiddleLabel().setTextAppearance(context, R.style.sub_copy_big);
 		return memo;
@@ -330,7 +332,7 @@ final public class PayeeDetailListGenerator  {
 	public static List<RelativeLayout> getUnmanagedPayeeDetailList(final Context context, final AddUnmanagedPayee item) {
 		final List<RelativeLayout> items = new ArrayList<RelativeLayout>();
 
-		final BankEditDetail name = createName(context, item.name, item.verified, true);
+		final BankEditDetail name = createName(context, item.name, item.verified, false);
 		final BankEditDetail nickName = createNickName(context, item.nickName, true);
 		final BankEditDetail phoneNumber =  createPhoneNumber(context, item.phone.formatted, true);
 		final BankEditDetail addressLine1 =  createAddressLine1(context, item.address.streetAddress, true);

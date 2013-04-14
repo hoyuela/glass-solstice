@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.payees;
 
 import android.content.Context;
+import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,11 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
 			
 			/**Set Event Handlers*/
 			stateSpinner.setOnItemSelectedListener(this);
+			
+			/**Set minimum and maximum character limits*/
+			getEditableField().setMinimum(2);
+			final InputFilter[] inputFilters = { new InputFilter.LengthFilter(2) };
+			getEditableField().setFilters(inputFilters);
 		}
 	}
 	

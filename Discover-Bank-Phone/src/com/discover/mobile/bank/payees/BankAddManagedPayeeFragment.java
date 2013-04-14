@@ -191,6 +191,7 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 				/**Show error at the top of the screen */
 				else {
 					showGeneralError(error.message);
+					scrollToTop();
 				}
 			}
 		}
@@ -262,6 +263,7 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 		return accountNum.equals(accountMatch); 
 	}
 	
+	
 	/**
 	 * Method used to validate all input fields to make sure they meet the 
 	 * criteria associated with each at creation. Refer to PayeeDetailListGenerator
@@ -274,10 +276,8 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 		boolean ret = super.canProceed();
 
 		/**Make sure account number matches re-enter account number*/
-		if( ret ) {
-			ret = doAcctNumbersMatch();
-		}
-
+		ret &= doAcctNumbersMatch();
+		
 		return ret;
 	}
 
