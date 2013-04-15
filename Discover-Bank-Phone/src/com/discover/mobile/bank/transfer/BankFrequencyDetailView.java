@@ -153,6 +153,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		if( this.calendarFragment != null ) {
 			outState.putInt(BankExtraKeys.CALENDAR_MONTH, calendarMonth);
 			outState.putInt(BankExtraKeys.CALENDAR_YEAR, calendarYear);
+			calendarFragment = null;
 		}
 		
 		return outState;

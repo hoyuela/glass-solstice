@@ -260,6 +260,8 @@ public class SchedulePaymentFragment extends BaseFragment
 		if( this.calendarFragment != null ) {
 			outState.putInt(BankExtraKeys.CALENDAR_MONTH, calendarMonth);
 			outState.putInt(BankExtraKeys.CALENDAR_YEAR, calendarYear);
+
+			calendarFragment = null;
 		}
 		
 		outState.putInt(PAY_FROM_ACCOUNT_ID, accountIndex);
