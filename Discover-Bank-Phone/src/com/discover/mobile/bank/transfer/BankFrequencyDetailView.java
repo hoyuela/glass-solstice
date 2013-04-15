@@ -162,6 +162,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		/**Dismiss the calendar as it will be recreated in on resume if necessary*/
 		if( this.calendarFragment != null ) {
 			calendarFragment.dismiss();
+			calendarFragment.setRetainInstance(true);
 		}
 	}
 	
@@ -404,6 +405,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	 */
 	public void showCalendar() {
 		calendarFragment = new CalendarFragment();
+		calendarFragment.setRetainInstance(false);
 
 		/**Reset Calendar Event Listener*/
 		final Fragment fragment = 
@@ -435,9 +437,6 @@ public class BankFrequencyDetailView extends RelativeLayout{
 							       calendarMonth - 1,
 						           Integer.parseInt(date[1]));
 			}
-			
-			/**Reset values for current calendar year and month*/
-			calendarMonth = calendarYear = -1;
 		}catch(final Exception ex){
 			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
 					chosenPaymentDate.get(Calendar.MONTH),
@@ -473,6 +472,9 @@ public class BankFrequencyDetailView extends RelativeLayout{
 				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
 
 				calendarFragment.dismiss();
+				
+				/**Reset values for current calendar year and month*/
+				calendarMonth = calendarYear = -1;
 			}
 			
 			@Override

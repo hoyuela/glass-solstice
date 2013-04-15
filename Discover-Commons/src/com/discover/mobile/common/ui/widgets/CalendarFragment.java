@@ -18,7 +18,6 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.caldroid.CaldroidFragment;
-import com.caldroid.CaldroidGridAdapter;
 import com.discover.mobile.common.R;
 
 /**
@@ -100,12 +99,7 @@ public class CalendarFragment extends CaldroidFragment {
 	 * Reference to text view that displays at the top of the fragment as the title
 	 */
 	protected TextView titleTxtVw;
-	
-	@Override
-	public CaldroidGridAdapter getNewDatesGridAdapter(final int month, final int year) {
-		return new CalendarAdapter(getActivity(), month, year, disableDates, selectedDates, minDateTime, maxDateTime);
-	}
-	
+		
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {

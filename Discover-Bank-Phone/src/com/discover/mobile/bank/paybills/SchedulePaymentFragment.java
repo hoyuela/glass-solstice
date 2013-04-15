@@ -256,6 +256,12 @@ public class SchedulePaymentFragment extends BaseFragment
 		super.onSaveInstanceState(outState);
 		if(amountEdit == null || dateText == null || memoText == null) { return; }
 
+		/**Re-create dialog on rotation to avoid calendar cut-off issue. Issue with Caldroid library*/
+		if( this.calendarFragment != null ) {
+			outState.putInt(BankExtraKeys.CALENDAR_MONTH, calendarMonth);
+			outState.putInt(BankExtraKeys.CALENDAR_YEAR, calendarYear);
+		}
+		
 		outState.putInt(PAY_FROM_ACCOUNT_ID, accountIndex);
 		outState.putString(AMOUNT, amountEdit.getText().toString());
 		final String[] datesToSave = dateText.getText().toString().split("/");
@@ -286,13 +292,6 @@ public class SchedulePaymentFragment extends BaseFragment
 		if( conflictError.getVisibility() == View.VISIBLE ) {
 			outState.putString(CONFLICT, conflictError.getText().toString());
 		}
-		
-		/**Re-create dialog on rotation to avoid calendar cut-off issue. Issue with Caldroid library*/
-		if( this.calendarFragment != null ) {
-			outState.putInt(BankExtraKeys.CALENDAR_MONTH, calendarMonth);
-			outState.putInt(BankExtraKeys.CALENDAR_YEAR, calendarYear);
-		}
-
 	}
 
 	
@@ -943,8 +942,9 @@ public class SchedulePaymentFragment extends BaseFragment
 		/**Disable Text Watcher to support rotation*/
 		amountEdit.enableBankAmountTextWatcher(false);
 		
-		/**Dismiss the calendar as it will be recreated in on resume if necessary*/
-		if( this.calendarFragment != null ) {
+		/**Dismiss the calendar as it will be recreated in on resume if necessary*/	
+		if( calendarFragment != null ) {
+			calendarFragment.setRetainInstance(true);
 			calendarFragment.dismiss();
 		}
 	}
@@ -1007,6 +1007,9 @@ public class SchedulePaymentFragment extends BaseFragment
 				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
 			
 				calendarFragment.dismiss();
+				
+				/**Reset values for current calendar year and month*/
+				calendarMonth = calendarYear = -1;
 			}
 			
 			@Override
@@ -1032,6 +1035,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	 */
 	private void showCalendar() {
 		calendarFragment = new CalendarFragment();
+		calendarFragment.setRetainInstance(false);
 		
 		/** The calendar will appear with the month and year in this Calendar instance */
 		Calendar displayedDate = Calendar.getInstance();
@@ -1054,9 +1058,6 @@ public class SchedulePaymentFragment extends BaseFragment
 							       calendarMonth - 1,
 						           Integer.parseInt(date[1]));
 			}
-			
-			/**Reset values for current calendar year and month*/
-			calendarMonth = calendarYear = -1;
 		}catch(final Exception ex){
 			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
 					chosenPaymentDate.get(Calendar.MONTH),
