@@ -443,8 +443,10 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		Account otherAccount = null;
 		final List<Account> allAccounts = new ArrayList<Account>();
 
-		allAccounts.addAll(getInternalAccounts().accounts);
-		allAccounts.addAll(getExternalAccounts().accounts);
+		if(getInternalAccounts() != null)
+			allAccounts.addAll(getInternalAccounts().accounts);
+		if(getExternalAccounts() != null)
+			allAccounts.addAll(getExternalAccounts().accounts);
 
 		for(final Account item : allAccounts){
 			if(!item.equals(account) && item.isTransferEligible() && 

@@ -43,6 +43,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 
 	/**Bank Edit Detail frequency slot*/
 	private BankEditDetail frequencyListItem;
+	private final List<BankEditDetail> transferListItems = new ArrayList<BankEditDetail>();
 
 	/**Code of the frequency*/
 	private String frequencyCode = TransferDetail.ONE_TIME_TRANSFER;
@@ -64,8 +65,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	
 	/** This boolean is used for the back button to determine which onBackPressed method should be used */
 	private boolean useMyBackPress = true;
-
-	private Bundle bundle;
 	
 	/** The downloaded external accounts */
 	private AccountList externalAccounts = new AccountList();
@@ -74,7 +73,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-
+		
 		/**Hide controls that are not needed*/
 		actionButton.setText(R.string.schedule_transfer);
 		actionLink.setText(R.string.cancel_text);
@@ -86,11 +85,13 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
-		amountField.enableBankAmountTextWatcher(false);
-		restoreStateFromBundle(getArguments());
-		restoreStateFromBundle(savedInstanceState);
-		bundle = savedInstanceState;
-
+		final Bundle args = getArguments();
+		
+		if(args != null)
+			externalAccounts = (AccountList)args.getSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS);
+		
+		restoreStateFromBundle(args);
+		
 		return view;
 	}
 
@@ -101,11 +102,15 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		amountField.enableBankAmountTextWatcher(true);
 		updateSelectedAccountLabels();
 		frequencyListItem.setText(frequencyText);
 		frequencyListItem.getErrorLabel().setVisibility(View.GONE);
-		recurring.resumeState(bundle);
+		recurring.resumeState(getArguments());
+		hideAllListErrorLabels();
+		
+		amountField.enableBankAmountTextWatcher(false);
+		amountField.setText(getArguments().getString(BankExtraKeys.AMOUNT));
+		amountField.enableBankAmountTextWatcher(true);
 	}
 	
 	@Override
@@ -113,6 +118,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		super.onPause();
 		
 		recurring.onPause();
+		amountField.enableBankAmountTextWatcher(false);
 	}
 
 	/**
@@ -121,8 +127,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-		recurring.saveState(outState);
-		outState.putAll(getCurrentFragmentBundle());
+		getCurrentFragmentBundle();
+		recurring.saveState(getArguments());
 	}
 
 	/**
@@ -131,28 +137,29 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	 * 			this screen.
 	 */
 	private Bundle getCurrentFragmentBundle() {
-		final Bundle args = getArguments();
-		final Bundle outState = new Bundle();
+		Bundle args = getArguments();
 
-		if(args != null) {
-			outState.putAll(args);
+		if(args == null) {
+			args = new Bundle();
 		}
 
 		if(amountField != null) {
-			outState.putString(BankExtraKeys.AMOUNT, amountField.getText().toString());
+			args.putString(BankExtraKeys.AMOUNT, amountField.getText().toString());
 		}
 
 		if(frequencyCode != null) {
-			outState.putString(BankExtraKeys.FREQUENCY_CODE, frequencyCode);
+			args.putString(BankExtraKeys.FREQUENCY_CODE, frequencyCode);
 		}
 
-		frequencyText = frequencyListItem.getMiddleLabel().getText().toString();
-		outState.putString(BankExtraKeys.FREQUENCY_TEXT, frequencyText);
+		if(frequencyText != null)
+			frequencyText = frequencyListItem.getMiddleLabel().getText().toString();
+		
+		args.putString(BankExtraKeys.FREQUENCY_TEXT, frequencyText);
 
-		outState.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, getSelectedAccounts());
+		args.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, getSelectedAccounts());
 
-		outState.putString(date, dateTextView.getText().toString());
-		return outState;
+		args.putString(date, dateTextView.getText().toString());
+		return args;
 	}
 
 	/**
@@ -161,7 +168,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	 */
 	private void restoreStateFromBundle(final Bundle bundle) {
 		if(bundle != null) {
-			final AccountList bundleExternalAccounts = (AccountList)bundle.getSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS);
+			final AccountList bundleExternalAccounts = 
+					(AccountList)bundle.getSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS);
 			if(bundleExternalAccounts != null)
 				externalAccounts = bundleExternalAccounts;
 			
@@ -181,10 +189,14 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 			if(!Strings.isNullOrEmpty(value)) {
 				frequencyText = value;
 			}
+			
+			if(frequencyListItem != null)
+				frequencyListItem.setText(frequencyText);
+			
+			if(dateTextView != null)
+				dateTextView.setText(bundle.getString(date));
 
-			dateTextView.setText(bundle.getString(date));
 
-			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
 
 			if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
 				recurring.setVisibility(View.GONE);
@@ -232,6 +244,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	 * @param bundle a Bundle which contains an Account array of selected Account objects.
 	 */
 	public void handleChosenAccount(final Bundle bundle) {
+		restoreStateFromBundle(bundle);
 		final Account[] selectedAccounts = (Account[])bundle.getSerializable(BankExtraKeys.DATA_SELECTED_INDEX);
 		setSelectedAccounts(selectedAccounts);
 		updateSelectedAccountLabels();
@@ -243,6 +256,11 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	@Override
 	protected int getProgressIndicatorStep() {
 		return 0;
+	}
+	
+	private void hideAllListErrorLabels() {
+		for(final BankEditDetail item : transferListItems)
+			item.getErrorLabel().setVisibility(View.GONE);
 	}
 
 	/**
@@ -263,6 +281,11 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		content.add(getFrequencyListItem(currentActivity));
 		content.add(getSendOnListItem(currentActivity));
 		content.add(recurring);
+
+		for(final RelativeLayout item : content) {
+			if(item instanceof BankEditDetail)
+				transferListItems.add((BankEditDetail)item);
+		}
 
 		if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
 			recurring.setVisibility(View.GONE);
