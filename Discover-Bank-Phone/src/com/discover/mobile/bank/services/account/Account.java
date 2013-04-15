@@ -309,10 +309,14 @@ public class Account implements Serializable {
 	 * @return Returns true if account is eligible for check deposit, false otherwise.
 	 */
 	public boolean isDepositEligible() {
-		return !isExternalAccount() ||
-				type.equalsIgnoreCase(ACCOUNT_CHECKING) ||
-				type.equalsIgnoreCase(ACCOUNT_SAVINGS) ||
-				type.equalsIgnoreCase(ACCOUNT_MMA);
+		boolean isDepositEligible = false;
+		if(type != null) {
+			isDepositEligible = type.equalsIgnoreCase(ACCOUNT_CHECKING) ||
+					type.equalsIgnoreCase(ACCOUNT_SAVINGS) ||
+					type.equalsIgnoreCase(ACCOUNT_MMA);
+		}
+		
+		return isDepositEligible;
 	}
 
 	public String getDottedFormattedAccountNumber() {

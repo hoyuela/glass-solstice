@@ -48,13 +48,12 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	AccountList internalAccounts = null;
 	AccountList externalAccounts = null;
 
-	private final ListItemGenerator listItemGenerator = new ListItemGenerator(this.getActivity());
 	private boolean useMyBackPress = true;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
-
+		
 		final View mainView = inflater.inflate(R.layout.bank_transfer_select_account, null);
 		setTitleFromArguments(mainView);
 
@@ -200,7 +199,7 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		final boolean accountShouldBeAdded =  wontAllowTwoExternals || getTotalAccountSize() <= 2;
 
 		if(canAddAccount && accountShouldBeAdded) {
-			table.addView(getListItemFromAccount(account, listItemGenerator));
+			table.addView(getListItemFromAccount(account));
 		}
 	}
 
@@ -343,7 +342,8 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	 * @param generator a ListItemGenerator instance.
 	 * @return a constructed table cell with the information from an account object.
 	 */
-	private ViewPagerListItem getListItemFromAccount(final Account account, final ListItemGenerator generator) {
+	private ViewPagerListItem getListItemFromAccount(final Account account) {
+		final ListItemGenerator generator = new ListItemGenerator(this.getActivity());
 		final ViewPagerListItem item = generator.getTwoItemCell(R.string.empty, account.nickname);
 
 		item.getTopLabel().setText(getAccountEndingTextForAccount(account.accountNumber.ending));
