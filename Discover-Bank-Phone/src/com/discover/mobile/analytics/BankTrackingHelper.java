@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.util.Log;
-
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.atm.SearchByLocationFragment;
@@ -69,7 +67,6 @@ public final class BankTrackingHelper {
 			createMap();
 		}
 		if(!previousTrackedPage.equals(className) && null != trackingMap.get(className)){
-			Log.i("Tracking Helper", "Tracked Page: " + className + " - "+ DiscoverActivityManager.getActiveActivity().getString(trackingMap.get(className)));
 			TrackingHelper.trackBankPage(
 					DiscoverActivityManager.getActiveActivity().getString(trackingMap.get(className)), getExtras(className));
 			previousTrackedPage = className;
@@ -102,6 +99,10 @@ public final class BankTrackingHelper {
 		return map;
 	}
 
+	/**
+	 * Create the account string that is used throughout being logged into the application.
+	 * @return the account list string
+	 */
 	private static String createAccountString() {
 		final AccountList list = BankUser.instance().getAccounts();
 		final List<String> types = new ArrayList<String>();
@@ -139,7 +140,6 @@ public final class BankTrackingHelper {
 	 * @param trackingString - resource id of the string that should be used to track the page
 	 */
 	public static void forceTrackPage(final int trackingString){
-		Log.i("Tracking Helper", "Force Tracked Page: " + trackingString);
 		TrackingHelper.trackBankPage(DiscoverActivityManager.getActiveActivity().getString(trackingString));
 	}
 
