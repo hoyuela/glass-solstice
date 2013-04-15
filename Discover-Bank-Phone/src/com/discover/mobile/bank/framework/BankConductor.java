@@ -64,6 +64,7 @@ import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.transfer.BankTransferConfirmationFragment;
 import com.discover.mobile.bank.transfer.BankTransferFrequencyWidget;
 import com.discover.mobile.bank.transfer.BankTransferNotEligibleFragment;
 import com.discover.mobile.bank.transfer.BankTransferSelectAccount;
@@ -749,12 +750,34 @@ public final class BankConductor  extends Conductor {
 			}
 
 			if(nextVisibleFragment != null) {
-				navActivity.makeFragmentVisible(nextVisibleFragment);
+				if(args != null && args.getBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK))
+					navActivity.popTillFragment(BankTransferStepOneFragment.class);
+				else
+					navActivity.makeFragmentVisible(nextVisibleFragment);
 			}
 		}
 
 	}
 
+	/**
+	 * Navigate the user to the transfer confirmation page with the results from a successful
+	 * transfer from the Bundle parameter.
+	 * @param args
+	 */
+	public static void navigateToTransferConfirmation(final Bundle args) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+			final Fragment nextVisibleFragment = new BankTransferConfirmationFragment();
+			
+			navActivity.closeDialog();
+			nextVisibleFragment.setArguments(args);
+			navActivity.makeFragmentVisible(nextVisibleFragment);
+		}
+	}
+	
 	/**
 	 * Navigation method used to navigate to Check Deposit work-flow. Navigates to Check Deposit - Terms
 	 * and Conditions if user is eligible and not enrolled. If it is the start of the work flow, then navigates

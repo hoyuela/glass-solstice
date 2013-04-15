@@ -24,7 +24,6 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
-import com.discover.mobile.bank.services.transfer.TransferEntity;
 import com.discover.mobile.bank.ui.table.AmountListItem;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
@@ -32,8 +31,15 @@ import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.google.common.base.Strings;
 
+/**
+ * This is the first step in the transfer money process.
+ * It presents the user with information about which accounts they are transferring
+ * between, the amount of the transfer and the date the transfer will occur.
+ * 
+ * @author scottseward
+ *
+ */
 public class BankTransferStepOneFragment extends BankTransferBaseFragment {
-	private final String TAG = BankTransferStepOneFragment.class.getSimpleName();
 
 	/**Bank Edit Detail frequency slot*/
 	private BankEditDetail frequencyListItem;
@@ -41,6 +47,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	/**Code of the frequency*/
 	private String frequencyCode = TransferDetail.ONE_TIME_TRANSFER;
 	private String frequencyText = "One Time";
+	
+	private final String date = "date";
 
 	private AmountValidatedEditField amountField;
 
@@ -51,13 +59,16 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	private TextView fromAccountTextView;
 	private TextView dateTextView;
 
-	/**Reocurring frequency view*/
-	private BankFrequencyDetailView reoccuring;
+	/**Recurring frequency view*/
+	private BankFrequencyDetailView recurring;
+	
+	/** This boolean is used for the back button to determine which onBackPressed method should be used */
+	private boolean useMyBackPress = true;
 
-	/**Bundle used for restoring the state*/
 	private Bundle bundle;
-
-	private final List<Account>externalAccounts = new ArrayList<Account>();
+	
+	/** The downloaded external accounts */
+	private AccountList externalAccounts = new AccountList();
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -83,6 +94,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		return view;
 	}
 
+	/**
+	 * Finalize setup of the Fragment. Enable the amount field text watcher, so that it will format any restored input.
+	 * 
+	 */
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -90,14 +105,14 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		updateSelectedAccountLabels();
 		frequencyListItem.setText(frequencyText);
 		frequencyListItem.getErrorLabel().setVisibility(View.GONE);
-		reoccuring.resumeState(bundle);
+		recurring.resumeState(bundle);
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
 		
-		reoccuring.onPause();
+		recurring.onPause();
 	}
 
 	/**
@@ -106,10 +121,15 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-		reoccuring.saveState(outState);
+		recurring.saveState(outState);
 		outState.putAll(getCurrentFragmentBundle());
 	}
 
+	/**
+	 * 
+	 * @return a Bundle with all of the information that is currently presented or related to the state of
+	 * 			this screen.
+	 */
 	private Bundle getCurrentFragmentBundle() {
 		final Bundle args = getArguments();
 		final Bundle outState = new Bundle();
@@ -131,7 +151,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 
 		outState.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, getSelectedAccounts());
 
-		outState.putString("date", dateTextView.getText().toString());
+		outState.putString(date, dateTextView.getText().toString());
 		return outState;
 	}
 
@@ -141,7 +161,14 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	 */
 	private void restoreStateFromBundle(final Bundle bundle) {
 		if(bundle != null) {
-			final Account[] selectedAccounts = (Account[])bundle.getSerializable(BankExtraKeys.DATA_SELECTED_INDEX);
+			final AccountList bundleExternalAccounts = (AccountList)bundle.getSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS);
+			if(bundleExternalAccounts != null)
+				externalAccounts = bundleExternalAccounts;
+			
+			Account[] selectedAccounts = (Account[])bundle.getSerializable(BankExtraKeys.DATA_SELECTED_INDEX);
+			if(selectedAccounts == null)
+				selectedAccounts = new Account[2];
+			
 			this.setSelectedAccounts(selectedAccounts);
 			this.updateSelectedAccountLabels();
 
@@ -155,18 +182,18 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 				frequencyText = value;
 			}
 
-			dateTextView.setText(bundle.getString("date"));
+			dateTextView.setText(bundle.getString(date));
 
 			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
 
 			if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
-				reoccuring.setVisibility(View.GONE);
+				recurring.setVisibility(View.GONE);
 			}else{
-				reoccuring.setVisibility(View.VISIBLE);
+				recurring.setVisibility(View.VISIBLE);
 			}
 		}
 	}
-
+	
 	/**
 	 * Update the text labels on the screen for the selected accounts.
 	 */
@@ -193,50 +220,64 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		frequencyListItem.getErrorLabel().setVisibility(View.GONE);
 
 		if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
-			reoccuring.setVisibility(View.GONE);
+			recurring.setVisibility(View.GONE);
 		}else{
-			reoccuring.setVisibility(View.VISIBLE);
+			recurring.setVisibility(View.VISIBLE);
 		}
 	}
 
+	/**
+	 * This is used when the user has selected a new account or accounts from the select
+	 * account widget. It loads the selected accounts into a local array of Account objects.
+	 * @param bundle a Bundle which contains an Account array of selected Account objects.
+	 */
 	public void handleChosenAccount(final Bundle bundle) {
 		final Account[] selectedAccounts = (Account[])bundle.getSerializable(BankExtraKeys.DATA_SELECTED_INDEX);
 		setSelectedAccounts(selectedAccounts);
 		updateSelectedAccountLabels();
 	}
 
+	/**
+	 * Set the progress step to the first position.
+	 */
 	@Override
 	protected int getProgressIndicatorStep() {
 		return 0;
 	}
 
+	/**
+	 * Returns the information that will be presented in the table on screen.
+	 * This includes items such as the to and from account items, the amount cell, the date cell,
+	 * and more.
+	 */
 	@Override
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
 		final FragmentActivity currentActivity = this.getActivity();
-		final int expectedSize = 5;
-		final List<RelativeLayout>content = new ArrayList<RelativeLayout>(expectedSize);
-		reoccuring = new BankFrequencyDetailView(currentActivity, null);
+		final int expectedMaxSize = 8;
+		final List<RelativeLayout>content = new ArrayList<RelativeLayout>(expectedMaxSize);
+		recurring = new BankFrequencyDetailView(currentActivity, null);
 
 		content.add(getFromListItem(currentActivity));
 		content.add(getToListItem(currentActivity));
 		content.add(getAmountListItem(currentActivity));
 		content.add(getFrequencyListItem(currentActivity));
 		content.add(getSendOnListItem(currentActivity));
-		content.add(reoccuring);
+		content.add(recurring);
 
 		if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
-			reoccuring.setVisibility(View.GONE);
+			recurring.setVisibility(View.GONE);
 		}else{
-			reoccuring.setVisibility(View.VISIBLE);
+			recurring.setVisibility(View.VISIBLE);
 		}
 
 		return content;
 	}
 
-	private BankFrequencyDetailView getReocurringWidget(){
-		return reoccuring;
-	}
 
+	/**
+	 *
+	 * @return an array of Account objects which contain the currently selected Accounts.
+	 */
 	private Account[] getSelectedAccounts() {
 		final Account[] currentAccounts = new Account[2];
 
@@ -248,6 +289,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		return currentAccounts;
 	}
 
+	/**
+	 * Sets the local selected Account objects to that of the provided array of Account objects.
+	 * @param selectedAccounts an Account array of size 2.
+	 */
 	private void setSelectedAccounts(final Account[] selectedAccounts) {
 		if(selectedAccounts.length > 1) {
 			toAccount = selectedAccounts[0];
@@ -255,6 +300,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		}
 	}
 
+	/**
+	 * Used for the to account table cell, when it is clicked, navigate to the select
+	 * to account screen.
+	 */
 	final OnClickListener toAccountClickListener = new OnClickListener() {
 
 		@Override
@@ -264,6 +313,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 
 	};
 
+	/**
+	 * Used for the from account table cell, when it is clicked, navigate to the select
+	 * from account screen.
+	 */
 	final OnClickListener fromAccountClickListener = new OnClickListener() {
 
 		@Override
@@ -272,17 +325,26 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		}
 	};
 
+	/**
+	 * Sets up the navigate to select to/from account screen.
+	 * @param titleResource the kind of screen we are going to (to/from)
+	 */
 	private void navToSelectAccountWithTitle(final int titleResource) {
 		final Bundle accounts = getCurrentFragmentBundle();
 		final AccountList internalAccounts = BankUser.instance().getAccounts();
 
 		accounts.putInt(BankExtraKeys.TITLE_TEXT, titleResource);
 		accounts.putSerializable(BankExtraKeys.INTERNAL_ACCOUNTS, internalAccounts);
-		accounts.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, null);
+		accounts.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, externalAccounts);
 
 		BankConductor.navigateToSelectTransferAccount(accounts);
 	}
 
+	/**
+	 * 
+	 * @param currentActivity
+	 * @return a BankEditDetail object which will be inserted into the content table on screen.
+	 */
 	private BankEditDetail getFromListItem(final Activity currentActivity) {
 		final BankEditDetail fromListItem = new BankEditDetail(currentActivity);
 
@@ -298,6 +360,11 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		return fromListItem;
 	}
 
+	/**
+	 * 
+	 * @param currentActivity
+	 * @return a BankEditDetail object which will be inserted into the content table on screen.
+	 */
 	private BankEditDetail getToListItem(final Activity currentActivity) {
 		final BankEditDetail toListItem = new BankEditDetail(currentActivity);
 		toListItem.getEditableField().setVisibility(View.GONE);
@@ -313,12 +380,22 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		return toListItem;
 	}
 
+	/**
+	 * 
+	 * @param currentActivity
+	 * @return a BankEditDetail object which will be inserted into the content table on screen.
+	 */
 	private AmountListItem getAmountListItem(final Activity currentActivity) {
 		final AmountListItem amountListItem = new AmountListItem(currentActivity);
 		amountField = amountListItem.getEditField();
 		return amountListItem;
 	}
 
+	/**
+	 * 
+	 * @param currentActivity
+	 * @return a BankEditDetail object which will be inserted into the content table on screen.
+	 */
 	private BankEditDetail getFrequencyListItem(final Activity currentActivity) {
 		frequencyListItem = new BankEditDetail(currentActivity);
 		frequencyListItem.getTopLabel().setText(R.string.frequency);
@@ -336,6 +413,11 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		return frequencyListItem;
 	}
 
+	/**
+	 * 
+	 * @param currentActivity
+	 * @return a BankEditDetail object which will be inserted into the content table on screen.
+	 */
 	private BankEditDetail getSendOnListItem(final Activity currentActivity) {
 		final BankEditDetail sendOnListItem = new BankEditDetail(currentActivity);
 
@@ -354,12 +436,15 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		showCancelModal();
 	}
 
+	/**
+	 * Submit the current information on the page to schedule a transfer.
+	 */
 	@Override
 	protected void onActionButtonClick() {
 		final TransferDetail transferObject = new TransferDetail();
 
-		transferObject.fromAccount = new TransferEntity();
-		transferObject.toAccount = new TransferEntity();
+		transferObject.fromAccount = new Account();
+		transferObject.toAccount = new Account();
 		transferObject.amount = new Money();
 
 		if(fromAccount != null) {
@@ -372,7 +457,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 			transferObject.frequency = frequencyCode;
 		}
 
-		transferObject.sendDate = "2013-04-10T00:00:00Z";
+		transferObject.sendDate = "2013-04-16T00:00:00Z";
 
 		final String inputAmount = amountField.getText().toString();
 		final String cents = inputAmount.replaceAll("[^0-9]", "");
@@ -383,14 +468,18 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 			transferObject.amount.value = 0;
 		}
 
-		if(reoccuring.getVisibility() == View.VISIBLE){
-			transferObject.durationType = reoccuring.getDurationType();
-			transferObject.durationValue = reoccuring.getDurationValue();
+		if(recurring.getVisibility() == View.VISIBLE){
+			transferObject.durationType = recurring.getDurationType();
+			transferObject.durationValue = recurring.getDurationValue();
 		}
 
 		BankServiceCallFactory.createScheduleTransferCall(transferObject).submit();
 	}
 
+	/**
+	 * Shows a modal dialog on the page to notify the user that if they cancel their current action
+	 * all information will be lost.
+	 */
 	private void showCancelModal() {
 		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this.getActivity(), null);
 
@@ -413,12 +502,15 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		this.showCustomAlertDialog(cancelModal);
 	}
 
+	/**
+	 * If the back button is pressed, we need to show a modal to alert the user that
+	 * going back will delete any entered information.
+	 */
 	@Override
 	public void onBackPressed() {
 		showCancelModal();
 	}
 
-	private boolean useMyBackPress = true;
 	@Override
 	public boolean isBackPressDisabled() {
 		return useMyBackPress;

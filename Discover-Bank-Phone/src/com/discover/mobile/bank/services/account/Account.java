@@ -12,6 +12,7 @@ import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.services.json.Percentage;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 
 /**
  * This class is used for storing Account information provided in a JSON response to a
@@ -250,6 +251,9 @@ public class Account implements Serializable {
 	 */
 	@JsonProperty("jointOwners")
 	public List<Customer> jointOwners;
+	
+	@JsonProperty("serviceAccountId")
+	public String serviceAccountId;
 
 	/**
 	 * Contains Bank web-service API Resource links for postedActivity and scheduledActivity
@@ -305,7 +309,10 @@ public class Account implements Serializable {
 	 * @return Returns true if account is eligible for check deposit, false otherwise.
 	 */
 	public boolean isDepositEligible() {
-		return ( type.equalsIgnoreCase(ACCOUNT_CHECKING) || type.equalsIgnoreCase(ACCOUNT_SAVINGS) || type.equalsIgnoreCase(ACCOUNT_MMA));
+		return !isExternalAccount() ||
+				type.equalsIgnoreCase(ACCOUNT_CHECKING) ||
+				type.equalsIgnoreCase(ACCOUNT_SAVINGS) ||
+				type.equalsIgnoreCase(ACCOUNT_MMA);
 	}
 
 	public String getDottedFormattedAccountNumber() {
@@ -318,15 +325,26 @@ public class Account implements Serializable {
 	public boolean canSchedulePayment() {
 		return (type.equalsIgnoreCase(ACCOUNT_CHECKING) || type.equalsIgnoreCase(ACCOUNT_MMA));
 	}
-
-	public boolean isExternalAccount() {
-		return "external".equals(type);
-	}
-
+	
+	/**
+	 * 
+	 * @return if the current account is eligible for the transfer service.
+	 */
 	public boolean isTransferEligible() {
-		return type.equalsIgnoreCase("money_market") ||
-				type.equalsIgnoreCase("checking") ||
-				type.equalsIgnoreCase("savings") ;
+		return isExternalAccount() ||
+				type.equalsIgnoreCase(ACCOUNT_CHECKING) ||
+				type.equalsIgnoreCase(ACCOUNT_SAVINGS) ||
+				type.equalsIgnoreCase(ACCOUNT_MMA);
+
 	}
+
+	/**
+	 * If the account does not have anything in the type field, it is an external account.
+	 * @return
+	 */
+	public boolean isExternalAccount() {
+		return Strings.isNullOrEmpty(type);
+	}
+
 
 }

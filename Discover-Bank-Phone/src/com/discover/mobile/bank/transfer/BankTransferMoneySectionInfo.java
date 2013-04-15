@@ -63,13 +63,12 @@ public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 
 					/**Check if user is already in the Transfer Money work-flow*/
 					if( navActivity.getCurrentContentFragment().getGroupMenuLocation()  != BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP) {
-						BankConductor.navigateToHomePage();
-						BankConductor.navigateToTransferMoneyLandingPage(null);
+						BankServiceCallFactory.createGetExternalTransferAccountsCall().submit();
 					} else {
 						final String TAG = BankTransferMoneySectionInfo.class.getSimpleName();
 
 						//Log.isLoggable will throw an exception if it is given a tag of length > 23, 
-						//so we need to truncate it.
+						//so we need to restrict it.
 						final String limitedTAG = TAG.substring(0, Math.min(TAG.length(), 23));
 
 						if( Log.isLoggable(limitedTAG, Log.WARN)) {

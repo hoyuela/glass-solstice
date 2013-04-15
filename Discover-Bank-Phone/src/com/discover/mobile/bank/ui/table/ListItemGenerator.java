@@ -15,6 +15,7 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.google.common.base.Strings;
 
@@ -228,7 +229,7 @@ public class ListItemGenerator {
 		items.add(getPayFromAccountCell(account.accountNumber.ending, account.nickname));
 		items.add(getAmountCell(item.amount.value));
 		items.add(getPaymentDateCell(item));
-		if("SCHEDULED".equals(item.status)){
+		if("SCHEDULED".equalsIgnoreCase(item.status)){
 			items.add(getStatusCell(item.status));
 		}
 		items.add(getConfirmationCell(item.confirmationNumber));
@@ -262,6 +263,51 @@ public class ListItemGenerator {
 	}
 
 	/**
+	 * Returns a table cell to be shown in a table on screen.
+	 * @param transferAccount the Account object that contains information to show on screen.
+	 * @param isFromCell if the Account to be shown is a 'from' account instead of a 'to' account
+	 * @return a ViewPagerListItem that can be inserted into a layout at runtime.
+	 */
+	public ViewPagerListItem getTransferAccountCell(final Account transferAccount, final boolean isFromCell) {
+		final ViewPagerListItem item = getTwoItemCell(R.string.empty, "");
+		final StringBuilder builder = new StringBuilder();
+		int direction = 0;
+					
+		direction = (isFromCell) ? R.string.from : R.string.to;
+		
+		builder.append(context.getString(direction));
+		builder.append(" ");
+		builder.append(context.getString(R.string.account_ending_in_first_two_caps));
+		builder.append(" ");
+		builder.append(transferAccount.accountNumber.ending);
+		
+		item.getTopLabel().setText(builder.toString());
+		item.getMiddleLabel().setText(transferAccount.nickname);
+		
+		return item;
+	}
+	
+	/**
+	 * Return a list of items that will be shown on the transfer confirmation page.
+	 * This list shows different information based on the type of information provided in the 
+	 * TransferDetail parameter object.
+	 * @param results a TransferDetail object which contains information that needs to be presented on screen.
+	 * @return a List of items which can be inserted into a layout at runtine.
+	 */
+	public List<ViewPagerListItem> getTransferConfirmationList(final TransferDetail results) {
+		final List<ViewPagerListItem> list = new ArrayList<ViewPagerListItem>();
+		
+		list.add(getTransferAccountCell(results.fromAccount, true));
+		list.add(getTransferAccountCell(results.toAccount, false));
+		list.add(getAmountCell(results.amount.value));
+		list.add(getSendOnCell(BankStringFormatter.getFormattedDate(results.sendDate)));
+		list.add(getDeliverByCell(BankStringFormatter.getFormattedDate(results.deliverBy)));
+		list.add(getFrequencyCell(results.frequency));
+
+		return list;
+	}
+	
+	/**
 	 * Returns a payment date cell based on a PaymentDetail object. It returns a date based on the kind of
 	 * payment that was passed to it, like SCHEDULED, COMPLETED, or CANCELLED.
 	 * @param item
@@ -272,14 +318,14 @@ public class ListItemGenerator {
 		final String itemStatus = item.status;
 		ViewPagerListItem paymentDateItem = null;
 
-		if("SCHEDULED".equals(itemStatus)){
+		if("SCHEDULED".equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(convertDate(dates.split(PaymentDetail.DATE_DIVIDER)[0]));
-		}else if("PAID".equals(itemStatus)){
+		}else if("PAID".equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(convertDate(dates.split(PaymentDetail.DATE_DIVIDER)[0]));
 			paymentDateItem.getTopLabel().setText(R.string.completed_pay_date);
-		}else if ("CANCELLED".equals(itemStatus)){
+		}else if ("CANCELLED".equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(convertDate(dates.split(PaymentDetail.DATE_DIVIDER)[0]));
 			paymentDateItem.getTopLabel().setText(R.string.completed_pay_date);
