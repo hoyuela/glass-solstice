@@ -14,6 +14,8 @@ import java.util.Map;
 import android.content.Context;
 import android.util.Log;
 
+import com.discover.mobile.analytics.BankTrackingHelper;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
@@ -89,6 +91,9 @@ public class GetAtmDetailsCall extends BankJsonResponseMappingNetworkServiceCall
 		}
 
 		data = super.parseSuccessResponse(status, header, stream);
+		if(null != data && null != data.results && null != data.results.atms && !data.results.atms.isEmpty()){
+			BankTrackingHelper.forceTrackPage(R.string.bank_atm_locator_results);
+		}
 		return data;
 	}
 

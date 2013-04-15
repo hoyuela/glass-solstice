@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
+import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandler;
@@ -60,13 +62,27 @@ implements OnPaymentCanceledListener {
 		compareLastTouchTimeAndUpdateSession();
 	}
 
+	@Override
+	public void makeFragmentVisible(final Fragment fragment){
+		Log.i("Tracking Helper", "Passed class name: " + fragment.getClass().getSimpleName());
+		BankTrackingHelper.trackPage(fragment.getClass().getSimpleName());
+		super.makeFragmentVisible(fragment);
+	}
+
+	@Override
+	public void makeFragmentVisible(final Fragment fragment, final boolean addToHistory){
+		Log.i("Tracking Helper", "Passed class name: " + fragment.getClass().getSimpleName());
+		BankTrackingHelper.trackPage(fragment.getClass().getSimpleName());
+		super.makeFragmentVisible(fragment, addToHistory);
+	}
+
 	/**
 	 * Refreshes the sliding menu when its closed. This ensures that the highlighting on the menu is accurate
 	 */
 	private void updateMenuOnClose() {
 		final SlidingMenu slidingMenu = getSlidingMenu();
 		slidingMenu.setOnOpenListener(new OnOpenListener() {
-			
+
 			@Override
 			public void onOpen() {
 				/**

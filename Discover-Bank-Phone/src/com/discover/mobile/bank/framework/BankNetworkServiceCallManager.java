@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
@@ -353,7 +354,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			BankServiceCallFactory.createCustomerDownloadCall().submit();
 		}
 		//Download Account Summary Information if a Customer Download is successful
-	    else if( sender instanceof CustomerServiceCall ) {
+		else if( sender instanceof CustomerServiceCall ) {
 			//Verify user has bank accounts otherwise navigate to no accounts page
 			if( BankUser.instance().getCustomerInfo().hasAccounts() ) {
 				BankServiceCallFactory.createGetCustomerAccountsServerCall().submit();
@@ -387,6 +388,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isGetCall()) {
 			final BankStrongAuthDetails value = (BankStrongAuthDetails)result;
 			if( !BankStrongAuthDetails.ALLOW_STATUS.equals(value.status ) ) {
+				//Track that a strong auth was triggered
+				BankTrackingHelper.forceTrackPage(R.string.bank_strong_auth);
 				BankConductor.navigateToStrongAuth(activeActivity, value, null);
 			} else {
 				//Retransmit the previous NetworkServiceCall<>
@@ -426,7 +429,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if(sender instanceof ScheduleTransferCall) {
 			final TransferDetail confirmationResults = (TransferDetail)result;
 
-//			BankConductor.navigateToTransferConfirmation(confirmationResults);
+			//			BankConductor.navigateToTransferConfirmation(confirmationResults);
 		}
 		//Handle the payee success call
 		else if( sender instanceof GetPayeeServiceCall){
@@ -467,7 +470,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if( sender instanceof AddPayeeServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
-			
+
 			/**Set parameter that specifies whether it is an update or newly added payee*/
 			bundle.putSerializable(BankAddPayeeConfirmFragment.KEY_PAYEE_UPDATE, 
 					((AddPayeeServiceCall)sender).isUpdate());
@@ -588,7 +591,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 			/**Clear the current last error stored in the error handler*/
 			errorHandler.clearLastError();
-	
+
 			/**
 			 * Update prevCall only if it is a different service request from current call
 			 * or if current call is null
@@ -767,19 +770,19 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		boolean ret = false;
 
 		if( sender != null ) {
-	 		if( sender instanceof BackgroundServiceCall ) {
+			if( sender instanceof BackgroundServiceCall ) {
 				ret = ((BackgroundServiceCall)sender).isBackgroundCall();
-	 		}
+			}
 
 			ret |=  sender instanceof RefreshBankSessionCall ||
 					sender instanceof BankApiServiceCall ||
 					sender instanceof BankHolidayServiceCall;
- 		}
+		}
 
 		return ret;
 	}
 
-	
+
 	/**
 	 * Enum used to specify whether a NetworkServiceCallAsyncArgs is for a successful, error or exception
 	 * response to a network service call.
