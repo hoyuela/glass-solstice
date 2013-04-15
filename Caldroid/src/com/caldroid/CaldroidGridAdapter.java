@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
 	protected DateTime minDateTime;
 	protected DateTime maxDateTime;
 	
-	public void setMonthYearFromDateTime(DateTime dateTime) {
+	public void setAdapterDateTime(DateTime dateTime) {
 		this.month = dateTime.getMonthOfYear();
 		this.year = dateTime.getYear();
 		this.datetimeList = CalendarHelper.getFullWeeks(this.month, this.year);
@@ -124,6 +125,8 @@ public class CaldroidGridAdapter extends BaseAdapter {
 			cellView = (TextView) inflater.inflate(R.layout.date_cell, null);
 		}
 		
+		cellView.setTextColor(Color.BLACK);
+		
 		// Get dateTime of this cell
 		DateTime dateTime = this.datetimeList.get(position);
 		Resources resources = context.getResources();
@@ -133,8 +136,6 @@ public class CaldroidGridAdapter extends BaseAdapter {
 			cellView.setTextColor(resources
 					.getColor(R.color.caldroid_darker_gray));
 		}
-
-		
 		
 		boolean shouldResetDiabledView = false;
 		boolean shouldResetSelectedView = false;

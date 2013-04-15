@@ -77,7 +77,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/field_stroke"
-        android:visibility="visible" >
+        android:visibility="visible" 
+        android:paddingTop="@dimen/forms_inner_padding">
 
         <TextView
             android:id="@+id/hours_label"

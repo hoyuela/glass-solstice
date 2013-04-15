@@ -4,6 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,11 +34,21 @@ import com.google.common.base.Strings;
 public class PayeeValidatedEditField extends ValidatedInputField {
 	/**
 	 * Pattern used to determine whether any of the invalid characters have been entered 
-	 * by the user. It is used by the isValid() method
+	 * by the user. 
 	 */
 	public static Pattern INVALID_CHARACTERS = Pattern.compile("[<>\\(\\)&;\'\"\\[\\]{}]");
-	public static Pattern NON_ALPHANUMERIC = Pattern.compile("^[\\W]*$");
-	public static Pattern NON_ALPHANUMERIC_OR_WHITESPACE = Pattern.compile("^[(?!\\w|\\s)]*$");
+	/**
+	 * Pattern used to determine whether the user has entered a non-alphabetic character or space. 
+	 */
+	public static Pattern NON_ALPHA = Pattern.compile("[^a-zA-Z' ']");
+	/**
+	 * Pattern used to determine whether the user has entered a non-alphanumeric character or space. 
+	 */
+	public static Pattern NON_ALPHANUMERIC = Pattern.compile("[^0-9a-zA-Z' ']");
+	/**
+	 * Pattern used to determine whether the user has entered a valid zip code. 
+	 */
+	public static Pattern NON_ZIPCODE = Pattern.compile("^(?:(?!(^(\\d{5}|\\d{9})$)).)*$");
 	/**
 	 * Holds the minimum amount of characters allowed for this text field.
 	 */
@@ -57,13 +69,17 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 * Flag used to specify whether to validate text and show inline error.
 	 */
 	private boolean isValidationEnabled = true;
+	/**
+	 * Reference to text watcher that performs validation
+	 */
+	private TextWatcher validator;
 	
 	/**
 	 * Default constructor 
 	 * @param context the context of use for the EditText.
 	 */ 
 	public PayeeValidatedEditField(final Context context) {
-		super(context);	
+		super(context);		
 	}
 
 	public PayeeValidatedEditField(final Context context, final AttributeSet attrs) {
@@ -92,10 +108,12 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 */
 	public void showErrorLabel(final int text) {
 		if( errorLabel != null ) {
+			this.enableValidation(true);
 			this.errorLabel.setText(text);
 			this.errorLabel.setVisibility(View.VISIBLE);
 			this.showingError = true;
 			this.updateAppearanceForInput();
+			this.enableValidation(false);
 		}
 	}
 	
@@ -163,8 +181,13 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 		if( valid ) {
 			final String text = this.getText().toString();
 			
-			//Validate text field Is Not Empty or null
-			valid = !Strings.isNullOrEmpty(text);
+			/**
+			 * Validate text field Is Not Empty or null only 
+			 * if min value is greater than 0
+			 */
+			if( minValue > 0 ) {
+				valid = !Strings.isNullOrEmpty(text);
+			}
 			
 			//Validate that a minimum characters has been entered
 			if( valid ) {
@@ -231,6 +254,12 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 */
 	public void enableValidation(final boolean value) {
 		isValidationEnabled = value;
+		
+		if( value ) {
+			this.removeTextChangedListener(validator);
+		} else {
+			this.setupTextChangedListener();
+		}
 	}
 	
 	@Override
@@ -238,5 +267,32 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 		if( isValidationEnabled ) {
 			super.updateAppearanceForInput();
 		}
+	}
+	
+	@Override
+	/**
+	 * Sets a text changed listener to listen for new input. Validates
+	 * the input in real time, so that if the field has been 
+	 * previously marked as an error, it will turn 'normal' as soon as
+	 * the input reaches a valid state.
+	 */
+	protected void setupTextChangedListener(){
+		validator = new TextWatcher() {
+
+			@Override
+			public void afterTextChanged(final Editable s) {
+				if(isValid())
+					clearErrors();
+			}
+
+			@Override
+			public void beforeTextChanged(final CharSequence s, final int start, final int count,
+					final int after){/*Intentionally Empty*/}
+			@Override
+			public void onTextChanged(final CharSequence s, final int start, final int before,
+					final int count) {/*Intentionally Empty*/}
+		};
+		
+		this.addTextChangedListener( validator);
 	}
 }

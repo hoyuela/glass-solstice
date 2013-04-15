@@ -18,7 +18,6 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.caldroid.CaldroidFragment;
-import com.caldroid.CaldroidGridAdapter;
 import com.discover.mobile.common.R;
 
 /**
@@ -100,12 +99,7 @@ public class CalendarFragment extends CaldroidFragment {
 	 * Reference to text view that displays at the top of the fragment as the title
 	 */
 	protected TextView titleTxtVw;
-	
-	@Override
-	public CaldroidGridAdapter getNewDatesGridAdapter(final int month, final int year) {
-		return new CalendarAdapter(getActivity(), month, year, disableDates, selectedDates, minDateTime, maxDateTime);
-	}
-	
+		
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -174,10 +168,12 @@ public class CalendarFragment extends CaldroidFragment {
 	 * @param manager Reference to the FragmentManager of the current FragmentActivity displayed on the application.
 	 * @param title Title to display in the header of the dialog.
 	 * @param date The highlighted first selectable date on the calendar.
+	 * @param displayedDate Holds the month and year the calendar should display.
 	 * @param disabledDates The list of dates to be considered non-selectable on the calendar.
 	 * @param listener Reference to listern to receive selected date and change month notifications
 	 */
-	public void show(final FragmentManager manager, final String title, 
+	public void show(final FragmentManager manager, final String title, 				 
+					 final Calendar displayedDate,
 					 final Calendar selectedDate,
 					 final Calendar minDate, 
 					 final ArrayList<Date> disabledDates, 
@@ -186,8 +182,8 @@ public class CalendarFragment extends CaldroidFragment {
 		/**Set title, month and year of calendar using bundle*/
 		final Bundle args = new Bundle();
 		args.putString(CalendarFragment.DIALOG_TITLE, title);
-		args.putInt(MONTH, selectedDate.get(Calendar.MONTH) + 1);
-		args.putInt(YEAR, selectedDate.get(Calendar.YEAR));
+		args.putInt(MONTH, displayedDate.get(Calendar.MONTH) + 1);
+		args.putInt(YEAR, displayedDate.get(Calendar.YEAR));
 		args.putSerializable(SELECTED_DATE, selectedDate);
 		args.putSerializable(MIN_DATE, minDate);
 		args.putSerializable(DISABLED_DATES, disabledDates);

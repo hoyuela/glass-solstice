@@ -50,7 +50,12 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	private TextView toAccountTextView;
 	private TextView fromAccountTextView;
 	private TextView dateTextView;
+
+	/**Reocurring frequency view*/
 	private BankFrequencyDetailView reoccuring;
+
+	/**Bundle used for restoring the state*/
+	private Bundle bundle;
 
 	private final List<Account>externalAccounts = new ArrayList<Account>();
 
@@ -73,6 +78,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		amountField.enableBankAmountTextWatcher(false);
 		restoreStateFromBundle(getArguments());
 		restoreStateFromBundle(savedInstanceState);
+		bundle = savedInstanceState;
 
 		return view;
 	}
@@ -82,6 +88,16 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		super.onResume();
 		amountField.enableBankAmountTextWatcher(true);
 		updateSelectedAccountLabels();
+		frequencyListItem.setText(frequencyText);
+		frequencyListItem.getErrorLabel().setVisibility(View.GONE);
+		reoccuring.resumeState(bundle);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		reoccuring.onPause();
 	}
 
 	/**
@@ -129,18 +145,25 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 			this.setSelectedAccounts(selectedAccounts);
 			this.updateSelectedAccountLabels();
 
-			if(Strings.isNullOrEmpty(frequencyCode)) {
-				frequencyCode = bundle.getString(BankExtraKeys.FREQUENCY_CODE);
+			final String freq = bundle.getString(BankExtraKeys.FREQUENCY_CODE);
+			final String value = bundle.getString(BankExtraKeys.FREQUENCY_TEXT);
+
+			if(!Strings.isNullOrEmpty(freq)) {
+				frequencyCode = freq;
 			}
-			if(Strings.isNullOrEmpty(frequencyText)) {
-				frequencyText = bundle.getString(BankExtraKeys.FREQUENCY_TEXT);
+			if(!Strings.isNullOrEmpty(value)) {
+				frequencyText = value;
 			}
 
 			dateTextView.setText(bundle.getString("date"));
 
 			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
 
-			getReocurringWidget().resumeState(bundle);
+			if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
+				reoccuring.setVisibility(View.GONE);
+			}else{
+				reoccuring.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 
@@ -166,7 +189,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		frequencyCode = bundle.getString(BankExtraKeys.FREQUENCY_CODE);
 		frequencyText = bundle.getString(BankExtraKeys.FREQUENCY_TEXT);
 
-		frequencyListItem.getMiddleLabel().setText(frequencyText);
+		frequencyListItem.setText(frequencyText);
 		frequencyListItem.getErrorLabel().setVisibility(View.GONE);
 
 		if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
@@ -197,8 +220,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		content.add(getFromListItem(currentActivity));
 		content.add(getToListItem(currentActivity));
 		content.add(getAmountListItem(currentActivity));
-		final BankEditDetail temp = getFrequencyListItem(currentActivity);
-		temp.getMiddleLabel().setText(frequencyText);
 		content.add(getFrequencyListItem(currentActivity));
 		content.add(getSendOnListItem(currentActivity));
 		content.add(reoccuring);
@@ -360,6 +381,11 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 			transferObject.amount.value = Integer.parseInt(cents);
 		} else {
 			transferObject.amount.value = 0;
+		}
+
+		if(reoccuring.getVisibility() == View.VISIBLE){
+			transferObject.durationType = reoccuring.getDurationType();
+			transferObject.durationValue = reoccuring.getDurationValue();
 		}
 
 		BankServiceCallFactory.createScheduleTransferCall(transferObject).submit();

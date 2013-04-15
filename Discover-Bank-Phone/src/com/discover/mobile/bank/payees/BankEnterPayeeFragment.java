@@ -33,6 +33,7 @@ import com.discover.mobile.common.help.HelpWidget;
  */
 public class BankEnterPayeeFragment extends BaseFragment implements OnClickListener {
 	private static final String KEY_KEEP_TEXT = "keep-text";
+	private static final String KEY_HAS_ERROR = "has-error";
 
 	/**
 	 * Reference to TextView used to display a help message when the user navigates
@@ -52,7 +53,7 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 	 * Used to determine if text should be cleared onResume. Uses bundle saveInstanceState in onCreateView to determine this.
 	 */
 	private boolean clearText = false;
-
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -62,12 +63,16 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		/**Button used to trigger Payee search*/
 		continueButton = (Button)view.findViewById(R.id.continue_button); 
 		continueButton.setOnClickListener(this);
-
+	
 		/**Lookup EditText field used for searching for a payee**/
 		searchField = (PayeeValidatedEditField)view.findViewById(R.id.search_field);
 		searchField.setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
 		searchField.setMinimum(2);
 		searchField.attachErrorLabel(errorLabel);
+
+		/**Temporarily disable validation*/
+		searchField.enableValidation(false);
+	
 
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
@@ -90,6 +95,10 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		if( null == savedInstanceState || !savedInstanceState.getBoolean(KEY_KEEP_TEXT) ) {
 			clearText = true;
 		}
+		
+		if( savedInstanceState != null && savedInstanceState.getBoolean(KEY_HAS_ERROR)) {
+			searchField.setTag(KEY_HAS_ERROR);
+		}
 
 		return view;
 	}
@@ -109,11 +118,19 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		imm.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
 
 		if( sender == continueButton ) {
+			searchField.enableValidation(true);
+			
 			if( searchField.isValid() ) {
+				/**Clear tag so an inline error is not shown on rotation*/
+				searchField.setTag(null);
+				
 				final String search = searchField.getText().toString().trim();
 				BankServiceCallFactory.createPayeeSearchRequest(search).submit();
 
 			} else {
+				/**Set tag to keep track of when to show an inline error on rotation*/
+				searchField.setTag(KEY_HAS_ERROR);
+				
 				searchField.updateAppearanceForInput();
 			}
 		}
@@ -126,16 +143,37 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		super.onSaveInstanceState(outState);
-
+	
 		outState.putBoolean(KEY_KEEP_TEXT, true);
-
+        outState.putBoolean(KEY_HAS_ERROR, hasInlineError());
 	}
 
-
+	/**
+	 * Method used to see if there is an inline error under search field.
+	 * @return True if there is an inline error, false otherwise.
+	 */
+	public boolean hasInlineError() {
+		return ( searchField != null && 
+				 searchField.getTag() != null && 
+				 searchField.getTag().toString().equals(KEY_HAS_ERROR));	
+	}
+	
+	@Override
+	public void onPause() {
+		if( searchField != null ) {
+			final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			searchField.clearFocus();
+			
+			imm.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
+		}
+		
+		super.onPause();
+	}
+	
 	@Override
 	public void onResume() {
 		super.onResume();
-
+	
 		if( clearText ) {
 			searchField.getText().clear();
 		}
@@ -150,6 +188,13 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 					searchField.requestFocus();
 					
 					imm.showSoftInput(searchField, InputMethodManager.SHOW_FORCED);
+					
+					/**Show inline error if there was one prior to resuming*/
+					if( hasInlineError() ) {
+						searchField.enableValidation(true);
+						searchField.updateAppearanceForInput();
+						searchField.enableValidation(false);
+					}
 				}
 			}
 		}, 1000);

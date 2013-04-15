@@ -17,10 +17,8 @@
         <item>Weekly</item>
         <item>Every Two Weeks</item>
         <item>Monthly</item>
-        <item>Every Two Months</item>
-        <item>Twice a Year</item>
-        <item>Three Times a Year</item>
-        <item>Quarterly</item>
+        <item>Every Three Months</item>
+        <item>Every Six Months</item>
         <item>Annually</item>
     </string-array>
     
@@ -29,10 +27,8 @@
         <item>weekly</item>
         <item>every_two_weeks</item>
         <item>monthly</item>
-        <item>every_two_months</item>
-        <item>twice_a_year</item>
-        <item>three_times_a_year</item>
-        <item>quarterly</item>
+        <item>every_three_months</item>
+        <item>every_six_months</item>
         <item>annually</item>
     </string-array>
     

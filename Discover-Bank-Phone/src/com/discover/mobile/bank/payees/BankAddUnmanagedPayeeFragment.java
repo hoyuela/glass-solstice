@@ -3,6 +3,7 @@ package com.discover.mobile.bank.payees;
 import java.util.List;
 
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.AddUnmanagedPayee;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
-import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.google.common.base.Strings;
 
 
@@ -63,9 +63,10 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
 		if( null == savedInstanceState ) {
-			final BankEditDetail name = getFieldDetail(UnmanagedPayeeFields.PayeeName.ordinal());
-			if( name != null) {
-				final String key = name.getTopLabel().getText().toString();
+			/**Set focus to nick-name onResume()*/
+			final BankEditDetail nickName = getFieldDetail(UnmanagedPayeeFields.PayeeNickName.ordinal());
+			if( nickName != null) {
+				final String key = nickName.getTopLabel().getText().toString();
 				if( bundle != null ) {
 					bundle.putBoolean(key, true);
 				}
@@ -123,6 +124,7 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 				/**Show error at the top of the screen */
 				else {
 					showGeneralError(error.message);
+					scrollToTop();
 				}
 			}
 		}
@@ -136,19 +138,18 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 	@Override
 	protected void initializeData(final Bundle bundle) {
 		detail = new AddUnmanagedPayee();
-		
-		final Object item = bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-		
-		if( null != bundle &&  null != item) {	
+				
+		if( null != bundle ) {	
+			final Object item = bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+			
 			/**Check if user navigated to this page from Search Payee or Edit Payee*/
-			if( item instanceof SearchPayeeResult ) {
-				payeeSearchResult =  (SearchPayeeResult)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);	
-				detail.name = payeeSearchResult.name;
+			if( bundle.containsKey(BankSearchSelectPayeeFragment.SEARCH_ITEM) ) { 	
+				detail.name =  bundle.getString(BankSearchSelectPayeeFragment.SEARCH_ITEM);
 				detail.nickName = detail.name;
 				
 				/**Set flag to false so that when service call is called it adds payee*/
 				isUpdate = false;
-			} else if( item instanceof PayeeDetail ) {
+			} else if(item != null && item instanceof PayeeDetail ) {
 				final AddUnmanagedPayee unmanagedPayee = (AddUnmanagedPayee)detail;
 				
 				unmanagedPayee.name = ((PayeeDetail)item).name;
@@ -158,6 +159,12 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 				unmanagedPayee.address = ((PayeeDetail)item).address;
 				unmanagedPayee.memo =  ((PayeeDetail)item).memo;
 				
+				/**Make sure number provided by server is formatted*/
+				if(  unmanagedPayee.phone != null && 
+					 !Strings.isNullOrEmpty(unmanagedPayee.phone.number))  {				
+					unmanagedPayee.phone.formatted = PhoneNumberUtils.formatNumber(unmanagedPayee.phone.formatted);
+				}
+					
 				/**Set flag to true so that when service call is called it updates payee*/
 				isUpdate = true;
 			}
@@ -183,7 +190,13 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 			payee.address.locality = getFieldText(UnmanagedPayeeFields.City.ordinal());
 			payee.address.region = getFieldText(UnmanagedPayeeFields.State.ordinal());
 			payee.address.postalCode = getFieldText(UnmanagedPayeeFields.ZipCode.ordinal());
-			payee.accountNumber = getFieldText(UnmanagedPayeeFields.Memo.ordinal());
+			payee.memo = getFieldText(UnmanagedPayeeFields.Memo.ordinal());
+			
+			/**Remove dashes from phone number, server only accepts digits*/
+			if( !Strings.isNullOrEmpty(payee.phone.number) ) {
+				payee.phone.formatted = payee.phone.number;
+				payee.phone.number = payee.phone.number.replace("-", "");
+			}
 		}
 
 		return detail;
@@ -200,13 +213,13 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 			
 			setFieldText(UnmanagedPayeeFields.PayeeName.ordinal(), detail.name);
 			setFieldText(UnmanagedPayeeFields.PayeeNickName.ordinal(), detail.nickName);
-			setFieldText(UnmanagedPayeeFields.PhoneNumber.ordinal(), payee.phone.number);
+			setFieldText(UnmanagedPayeeFields.PhoneNumber.ordinal(), payee.phone.formatted);
 			setFieldText(UnmanagedPayeeFields.AddressLine1.ordinal(), payee.address.streetAddress);
 			setFieldText(UnmanagedPayeeFields.AddressLine2.ordinal(), payee.address.extendedAddress);
 			setFieldText(UnmanagedPayeeFields.City.ordinal(), payee.address.locality);
 			setFieldText(UnmanagedPayeeFields.State.ordinal(), payee.address.region);
 			setFieldText(UnmanagedPayeeFields.ZipCode.ordinal(), payee.address.postalCode);	
-			setFieldText(UnmanagedPayeeFields.Memo.ordinal(), payee.accountNumber);
+			setFieldText(UnmanagedPayeeFields.Memo.ordinal(), payee.memo);
 		} 	
 	}
 
@@ -218,5 +231,4 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
 		return PayeeDetailListGenerator.getUnmanagedPayeeDetailList(getActivity(), (AddUnmanagedPayee)detail);
 	}
-	
 }

@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
@@ -72,11 +73,11 @@ public class FAQLandingPageFragment extends BaseFragment {
 
 	@Override
 	public int getGroupMenuLocation() {
-		return 0;
+		return BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return 0;
+		return BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS;
 	}
 }
