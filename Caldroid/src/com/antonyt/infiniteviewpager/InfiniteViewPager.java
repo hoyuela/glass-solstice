@@ -8,7 +8,6 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -20,7 +19,7 @@ import android.view.View;
 public class InfiniteViewPager extends ViewPager {
 
 	// ******* Declaration *********
-	public static final int OFFSET = 500;
+	public static final int OFFSET = 1000;
 
 	/**
 	 * dateInMonthsList is required to calculate the height correctly
@@ -33,8 +32,8 @@ public class InfiniteViewPager extends ViewPager {
 	private boolean enabled = true;
 
 	/**
-	 * A calendar height is not fixed, it may have 4, 5 or 6 rows. Set fitAllMonths
-	 * to true so that the calendar will always have 6 rows
+	 * A calendar height is not fixed, it may have 4, 5 or 6 rows. Set
+	 * fitAllMonths to true so that the calendar will always have 6 rows
 	 */
 	private boolean fitAllMonths = true;
 
@@ -113,23 +112,23 @@ public class InfiniteViewPager extends ViewPager {
 	 */
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		Log.d("Caldroid", "onMeasure" + getCurrentItem());
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
 		// Calculate row height
 		int rows = dateInMonthsList.size() / 7;
-		
+
 		boolean wrapHeight = MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST;
-		
+
+		int height = getMeasuredHeight();
 		if (wrapHeight && rowHeight == 0) {
-			/**
+			/*
 			 * The first super.onMeasure call made the pager take up all the
 			 * available height. Since we really wanted to wrap it, we need to
 			 * remeasure it. Luckily, after that call the first child is now
 			 * available. So, we take the height from it.
 			 */
 
-			int width = getMeasuredWidth(), height = getMeasuredHeight();
+			int width = getMeasuredWidth();
 
 			// Use the previously measured width but simplify the calculations
 			widthMeasureSpec = MeasureSpec.makeMeasureSpec(width,
@@ -161,6 +160,12 @@ public class InfiniteViewPager extends ViewPager {
 			calHeight = rowHeight * 6;
 		} else { // Otherwise we return correct number of rows
 			calHeight = rowHeight * rows;
+		}
+
+		// If the calculated height is bigger than the parent height, set it to
+		// parent height so the gridview can be scrolled
+		if (calHeight > height) {
+			calHeight = height;
 		}
 
 		heightMeasureSpec = MeasureSpec.makeMeasureSpec(calHeight,
