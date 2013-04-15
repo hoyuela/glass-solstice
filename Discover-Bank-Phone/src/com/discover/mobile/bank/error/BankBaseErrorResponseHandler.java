@@ -4,6 +4,8 @@ import java.net.HttpURLConnection;
 
 import android.app.Activity;
 
+import com.discover.mobile.analytics.BankTrackingHelper;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -43,13 +45,13 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	 * Holds reference to the last error response received from the server.
 	 */
 	protected ErrorResponse<?> lastErrorResponse;
-	
+
 	/**
 	 * Default constructor should not be used
 	 */
 	@SuppressWarnings("unused")
 	private BankBaseErrorResponseHandler() {
-		
+
 	}
 	/**
 	 * Constructor used to initialized an instance of the BankBaseErrorResponseHandler.
@@ -61,9 +63,9 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	public BankBaseErrorResponseHandler(final ErrorHandlerUi errorHandlerUi) {
 		mErrorHandlerUi = errorHandlerUi;
 		mErrorHandler = errorHandlerUi.getErrorHandler();
-	
+
 	}
-	
+
 	/**
 	 * This function is the callback used by a NetworkServiceCall<> to notify the application
 	 * that an error response was received. This calls uses this callback to dispatch the
@@ -72,10 +74,10 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	@Override
 	public final boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 		boolean handled = false;
-		
+
 		/**Set the last error that occurred*/
 		lastErrorResponse = errorResponse;
-		
+
 		if (errorResponse instanceof BankErrorResponse) {
 			//Use JSON Error Response Handler if error response has a JSON body in it
 			handled = handleJsonErrorCode(sender, (BankErrorResponse)errorResponse);
@@ -83,13 +85,13 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			//Use HTTP Error Response Handler if error response has no JSON body in it
 			handled = handleHTTPErrorCode(errorResponse.getHttpStatusCode(), errorResponse.getConnection());
 		}
-		
+
 		//If it is a screen with inline errors then clear the text fields on an error
 		if( DiscoverActivityManager.getActiveActivity() instanceof ErrorHandlerUi ) {
 			final ErrorHandlerUi currentUi = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
 			mErrorHandler.showErrorsOnScreen(currentUi, null);
 		}
-		
+
 		return handled;
 	}
 
@@ -104,7 +106,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	 */
 	protected boolean handleJsonErrorCode(final NetworkServiceCall<?> sender, final BankErrorResponse msgErrResponse) {	
 		boolean handled = false;
-	
+
 		final String errCode = msgErrResponse.getErrorCode();
 
 		if( !Strings.isNullOrEmpty(msgErrResponse.getErrorCode()) ) {
@@ -120,7 +122,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			else if(sender instanceof CreateBankSSOLoginCall && 
 					(errCode.equals(BankErrorCodes.ERROR_INVALID_SSO_PAYLOAD) || 
 							errCode.equals(BankErrorCodes.ERROR_FRAUD_USER))) {
-				
+
 				((BankErrorHandler) mErrorHandler).handleInvalidSSOPayloadErrorModal(mErrorHandlerUi);
 			} 
 			//Non-SSO Fraud users, and SSO (Card ALU) Fraud users are handled here, they stay at login page.
@@ -130,11 +132,13 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			//Strong Auth Errors
 			else if( errCode.equals(BankErrorCodes.ERROR_INVALID_STRONG_AUTH) || errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH) ) {
 				final BankStrongAuthDetails details = new BankStrongAuthDetails(msgErrResponse);
-				
+
 				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
 				BankConductor.navigateToStrongAuth(activeActivity, details, msgErrResponse.getErrorMessage());
-				
+
+				//Track that a strong auth was triggered
+				BankTrackingHelper.forceTrackPage(R.string.bank_strong_auth);				
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOCKED_STRONG_AUTH)) {
 				mErrorHandler.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			}
@@ -143,14 +147,14 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				mErrorHandler.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
 			} else if( errCode.equals(BankErrorCodes.ERROR_MAINTENANCE_UNPLANNED )) {
 				mErrorHandler.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
-			//Error Handling for 422 Unprocessable Entity
+				//Error Handling for 422 Unprocessable Entity
 			} else if( msgErrResponse.getHttpStatusCode() == BankHttpStatusCodes.HTTP_UNPROCESSABLE_ENTITY.getValue()  ) {
 				//Check if 422 could be meant for inline error handling, if it fails to handle them then send to generic handler
 				final BankErrorHandler errorHandler = (BankErrorHandler)BankErrorHandler.getInstance();
 				if( !errorHandler.handleUnprocessableEntity(msgErrResponse) ) {
 					mErrorHandler.handleGenericError(msgErrResponse.getHttpStatusCode());
 				}
-			//Error handling for 403 Forbidden
+				//Error handling for 403 Forbidden
 			} else if( msgErrResponse.getHttpStatusCode() == HttpURLConnection.HTTP_FORBIDDEN ) {
 				//Check if 403 is meant for check deposit functionality otherwise send to generic handler
 				final BankErrorHandler errorHandler = (BankErrorHandler)BankErrorHandler.getInstance();
@@ -164,11 +168,11 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			mErrorHandler.handleGenericError(msgErrResponse.getHttpStatusCode());
 			handled = true;
 		}
-			
+
 		return handled;
 	}
 
-	
+
 	/**
 	 * Exposed as protected method in case of need to override by
 	 * child class.
@@ -183,7 +187,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 
 		return handleHTTPErrorCode(httpErrorCode, conn, null);
 	}
-	
+
 	/**
 	 * Exposed as protected method in case of need to override by child class.
 	 * 
@@ -203,7 +207,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 		switch (httpErrorCode) {
 		case HttpURLConnection.HTTP_UNAUTHORIZED:
 			final String wwwAuthenticateValue = conn
-					.getHeaderField(HttpHeaders.Authentication);
+			.getHeaderField(HttpHeaders.Authentication);
 
 			if (!Strings.isNullOrEmpty(wwwAuthenticateValue)) {
 				// Check if token expired
@@ -263,7 +267,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	public ErrorResponse<?> getLastError() {
 		return lastErrorResponse;
 	}
-	
+
 	/**
 	 * Clear the last error received from the server for a network service call.
 	 */

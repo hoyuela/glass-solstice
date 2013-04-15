@@ -26,6 +26,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
@@ -302,8 +303,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	@Override
 	public void onResume(){
 		super.onResume();
-		
-		
+
+
 		//Check if the login activity was launched because of a logout
 		maybeShowUserLoggedOut();
 
@@ -352,16 +353,16 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		//application is be launched for the first time
 		if( !preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) ) {
 			showSplashScreen(!preAuthHasRun);
-			
+
 			/**Download links for Bank Application*/
 			BankServiceCallFactory.createBankApiServiceCall().submit();
-			
+
 			preAuthHasRun = true;
 		} else {
 			this.showLoginPane();
 		}
 
-		final IntentFilter intentFilter = new IntentFilter("android.intent.action.SCREEN_OFF");
+		new IntentFilter("android.intent.action.SCREEN_OFF");
 
 		//If previous screen was Strong Auth Page then clear text fields and show text fields in red
 		//because that means the user did not login successfully
@@ -383,7 +384,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		super.onStart();
 		FacadeFactory.getPushFacade().startXtifySDK(this);
 	}
-	
+
 	@Override
 	public void onRestoreInstanceState(final Bundle bundle) {
 		super.onRestoreInstanceState(bundle);
@@ -770,6 +771,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			//Setup Bank Login.
 			else {
 				setLoginTypeToBank();
+				//Track that the bank toggle was selected
+				BankTrackingHelper.trackPage(LoginActivity.class.getSimpleName());
 			}
 
 			//Refresh Screen based on Selected Account Preferences
@@ -891,6 +894,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * in the BANK Login Screen
 	 */
 	public void openAtmLocator() {
+		BankTrackingHelper.forceTrackPage(R.string.bank_atm_start);
 		launchActivityFromClass(AtmLocatorActivity.class);
 	}
 

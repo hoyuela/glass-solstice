@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseActivity;
@@ -43,52 +44,52 @@ import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 
 public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
 	private final String TAG = CheckDepositCaptureActivity.class.getSimpleName();
-	
+
 	public static final int RETAKE_FRONT = 1;
 	public static final int RETAKE_BACK  = 2;
 	public static final String FRONT_PICTURE = "frontCheckImage";
 	public static final String BACK_PICTURE = "backCheckImage";
-	
+
 	//BUTTONS
 	private Button captureButton;
 	private Button retakeButton;
 	private ImageView closeButton;
 	private ImageView helpButton;
-	
+
 	//BOUNDARY INDICATORS
 	private ImageView bracketTopRight;
 	private ImageView bracketBottomRight;
 	private ImageView bracketBottomLeft;
 	private ImageView bracketTopLeft;
-	
+
 	//COUNTDOWN IMAGE
 	private ImageView countdownLogo;
 
 	//TEXT LABELS
 	private TextView frontLabel;
 	private TextView backLabel;
-	
+
 	//BREADCRUMB CHECKMARKS
 	private ImageView stepOneCheck;
 	private ImageView stepTwoCheck;
-	
+
 	//CAMERA
 	private SurfaceView cameraPreview;
 	private SurfaceHolder previewHolder;
 	private Camera camera;
 	private CameraCountdownTask timerTask;
-	
+
 	//OTHER
 	private Drawable countdownThree;
 	private Drawable countdownTwo;
 	private Drawable countdownOne;
-	
+
 	final int THREE = 3;
 	private int count = THREE;
 
 	private boolean cameraConfigured = false;
 	private boolean isPaused = false;
-	
+
 	/**
 	 * Setup the Activity. Loads all UI elements to local references and starts camera setup.
 	 * @param savedInstanceState
@@ -103,9 +104,9 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		loadViews();
 
 		timerTask = new CameraCountdownTask();
-		
+
 		getWindow().setFormat(PixelFormat.UNKNOWN);
-		
+
 		//This deprecated call is needed to support API 10 devices.
 		previewHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
@@ -114,7 +115,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		setupCameraForRetake();
 		cameraPreview.setOnClickListener(autoFocusClickListener);
 	}
-	
+
 	/**
 	 * On resume of the Activity, get the camera ready to use.
 	 */
@@ -132,19 +133,20 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		isPaused = true;		
 		super.onPause();
 	}
-	
+
 	/**
 	 * If the async task is not finished when the activity stops, we need to cancel it.
 	 */
 	@Override
 	public void onStop() {
 		super.onStop();
-		if(timerTask.isRunning())
+		if(timerTask.isRunning()) {
 			timerTask.cancel(true);
+		}
 
 		resetCountdown();
 	}
-	
+
 	/**
 	 * Setup all local references to UI elements.
 	 */
@@ -153,27 +155,27 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		countdownLogo = (ImageView)findViewById(R.id.countdown_logo);
 		previewHolder = cameraPreview.getHolder();		
 		previewHolder.addCallback(this);
-		
+
 		bracketTopLeft = (ImageView)findViewById(R.id.image_bracket_top_left);
 		bracketTopRight = (ImageView)findViewById(R.id.image_bracket_top_right);
 		bracketBottomLeft = (ImageView)findViewById(R.id.image_bracket_bottom_left);
 		bracketBottomRight = (ImageView)findViewById(R.id.image_bracket_bottom_right);
-		
+
 		stepOneCheck = (ImageView)findViewById(R.id.front_check);
 		stepTwoCheck = (ImageView)findViewById(R.id.back_check);
-		
+
 		closeButton = (ImageView)findViewById(R.id.close_button);
 		helpButton  = (ImageView)findViewById(R.id.help_button);
-		
+
 		frontLabel = (TextView)findViewById(R.id.front_label);
 		backLabel = (TextView)findViewById(R.id.back_label);
-		
+
 		captureButton = (Button)findViewById(R.id.capture_button);
 		retakeButton = (Button)findViewById(R.id.retake_button);
-		
+
 		helpButton.setClickable(true);
 	}
-	
+
 	/**
 	 * Setup the camera to retake a specified image.
 	 * This specified image comes from a provided integer passed as a Bundle extra.
@@ -184,7 +186,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			setupPictureRetake(extras.getInt(BankExtraKeys.RETAKE_PICTURE));
 		}
 	}
-	
+
 	/**
 	 * Deletes the front check image from storage.
 	 * @param context the calling context.
@@ -193,7 +195,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	public static boolean deleteFrontImage(final Context context) {
 		return deleteImage(FRONT_PICTURE, context);
 	}
-	
+
 	/**
 	 * Deletes the back check image from storage.
 	 * @param context the calling context.
@@ -202,7 +204,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	public static boolean deleteBackImage(final Context context) {
 		return deleteImage(BACK_PICTURE, context);
 	}
-	
+
 	/**
 	 * Finds the absolute path to an imageName and then attempts to delete that image. 
 	 * @param imageName the name of an an image to delete
@@ -212,7 +214,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private static boolean deleteImage(final String imageName, final Context context){
 		return context.deleteFile(imageName);
 	}
-	
+
 	/**
 	 * Attempts to delete both check images, one after the other.
 	 * @param context the calling context.
@@ -221,7 +223,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	public static boolean deleteBothImages(final Context context) {
 		return deleteBackImage(context) & deleteFrontImage(context);
 	}
-	
+
 	/**
 	 * Load the drawables that are used for the countdown timer.
 	 */
@@ -231,7 +233,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		countdownTwo = res.getDrawable(R.drawable.chckdep_2);
 		countdownOne = res.getDrawable(R.drawable.chckdep_1);
 	}
-	
+
 	/**
 	 * Setup the button on the screen.
 	 */
@@ -239,7 +241,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		retakeButton.setOnClickListener(retakeClickListener);
 		setDefaultButtons();
 		closeButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(final View v) {
 				if(!isStepOneChecked() || !isStepTwoChecked()) {
@@ -248,10 +250,10 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				}
 			}
 		});
-		
-		
+
+
 		helpButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(final View v) {
 				if(!timerTask.isRunning){
@@ -260,21 +262,23 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			}
 		});
 	}
-	
+
 	private void showModal(final AlertDialog modal) {
-		if(modal != null)
+		if(modal != null) {
 			this.showCustomAlert(modal);
+		}
 	}
-	
+
 	/**
 	 * Clears the image cache if the user is not re-taking an image
 	 */
 	private void clearImageCacheIfNotRetaking() {
 		final Bundle extras = getIntent().getExtras();
 		int retakeValue = 0;
-		if(extras != null)
+		if(extras != null) {
 			retakeValue = extras.getInt(BankExtraKeys.RETAKE_PICTURE);
-		
+		}
+
 		/**
 		 * If the user was not re-taking an image we can delete the cache.
 		 */
@@ -282,7 +286,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			deleteBothImages(this);
 		}
 	}
-	
+
 	/**
 	 * Sets up the front/back breadcrumb trail to display either the front or back
 	 * as already been taken if we are retaking an image.
@@ -296,21 +300,21 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			goToNextStep();
 		}
 	}
-	
+
 	/**
 	 * Hide the check boundary indicators.
 	 */
 	private void hideImageBrackets() {
 		setImageBracketVisibility(View.INVISIBLE);
 	}
-	
+
 	/**
 	 * Show the check boundary indicators
 	 */
 	private void showImageBrackets() {
 		setImageBracketVisibility(View.VISIBLE);
 	}
-	
+
 	/**
 	 * Set the check boundary indicators to a given visibility.
 	 * @param visibility the visibility to set the check boundary indicators to.
@@ -321,19 +325,20 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		bracketBottomRight.setVisibility(visibility);
 		bracketBottomLeft.setVisibility(visibility);
 	}
-	
+
 	/**
 	 * An OnClickListener that calls the camera's auto focus feature.
 	 */
 	private final OnClickListener autoFocusClickListener = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(final View v) {
-			if(!timerTask.isRunning())
+			if(!timerTask.isRunning()) {
 				focusCamera();
+			}
 		}
 	};
-	
+
 	/**
 	 * An OnTouchListener for the capture button.
 	 * This touch listener will make the capture button stay pressed upon touch,
@@ -343,23 +348,34 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		@Override
 		public boolean onTouch(final View v, final MotionEvent event) {
 			if( !(isStepOneChecked() && isStepTwoChecked()) ) {
-				if(event.getAction() == MotionEvent.ACTION_DOWN) return true;
-	            if(event.getAction() != MotionEvent.ACTION_UP) return false;
-	            captureButton.setPressed(true);   
-	            disableClickListeners();
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+					return true;
+				}
+				if(event.getAction() != MotionEvent.ACTION_UP) {
+					return false;
+				}
+				captureButton.setPressed(true);   
+				disableClickListeners();
 				startCountdownTimer();
+
+				//Track the taking of pictures
+				if(!isStepOneChecked()){
+					BankTrackingHelper.forceTrackPage(R.string.bank_capture_front);
+				}else if(!isStepTwoChecked()){
+					BankTrackingHelper.forceTrackPage(R.string.bank_capture_back);
+				}
 			}
-            return true;		    
+			return true;		    
 		}
 	};
-	
+
 	/**
 	 * Disable the  click listeners for the touch to auto focus and capture button.
 	 */
 	private void disableClickListeners() {
-        captureButton.setOnTouchListener(null);
-        captureButton.setClickable(false);
-        cameraPreview.setOnClickListener(null);
+		captureButton.setOnTouchListener(null);
+		captureButton.setClickable(false);
+		cameraPreview.setOnClickListener(null);
 	}	            
 
 	/**
@@ -371,11 +387,11 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			timerTask.execute();
 		}
 	}
-	
+
 	private boolean isStepOneChecked() {
 		return stepOneCheck.getVisibility() == View.VISIBLE;
 	}
-	
+
 	private boolean isStepTwoChecked() {
 		return stepTwoCheck.getVisibility() == View.VISIBLE;
 	}
@@ -385,7 +401,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * preview so that the next picture can be taken. It also resets the buttons back to their default state.
 	 */
 	private final OnClickListener confirmClickListener = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(final View v) {
 			saveLastConfirmedImage();
@@ -398,8 +414,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			}
 		}
 	};
-	
-	
+
+
 	@Override
 	public void onBackPressed() {
 		clearImageCacheIfNotRetaking();
@@ -410,7 +426,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * buttons on the screen to their default state.
 	 */
 	private final OnClickListener retakeClickListener = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(final View v) {
 			resetCamera();
@@ -420,7 +436,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			resetCurrentCheckMark();
 		}
 	};
-	
+
 	/**
 	 * Resets the camera so that it is ready to take a new picture.
 	 */
@@ -428,7 +444,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		camera.stopPreview();
 		camera.startPreview();
 	}
-	
+
 	/**
 	 * Advances the breadcrumb to the next selection, like from Front to Back.
 	 */
@@ -442,39 +458,41 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			setDefaultButtons();
 		}
 	}
-	
+
 	/**
 	 * Sets the next check mark to be visible, starting from left to right.
 	 */
 	private void setNextCheckVisible() {
-		
+
 		if(!isStepOneChecked()){
 			stepOneCheck.setVisibility(View.VISIBLE);
 		}else if(!isStepTwoChecked()) {
 			stepTwoCheck.setVisibility(View.VISIBLE);
 		}
 	}
-	
+
 	/**
 	 * The reverse of setNextCheckVisible. This removes one check from right to left.
 	 */
 	private void resetCurrentCheckMark() {
 		final Bundle extras = getIntent().getExtras();
 		int retakeValue = 0;
-		
-		if(extras != null)
+
+		if(extras != null) {
 			retakeValue = extras.getInt(BankExtraKeys.RETAKE_PICTURE);
-		
+		}
+
 		if(retakeValue == RETAKE_FRONT){
 			stepOneCheck.setVisibility(View.INVISIBLE);
 		}
-		else if(isStepTwoChecked())
+		else if(isStepTwoChecked()) {
 			stepTwoCheck.setVisibility(View.INVISIBLE);
-		else if(isStepOneChecked())
+		} else if(isStepOneChecked()) {
 			stepOneCheck.setVisibility(View.INVISIBLE);
-		
+		}
+
 	}
-	
+
 	/**
 	 * Reset the countdown timer.
 	 * Hide the contdown logo, reset its image, and reset the counter.
@@ -493,36 +511,36 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private byte[] lastPicture = null;
 	private final PictureCallback mPicture = new PictureCallback() {
 
-	    @Override
-	    public void onPictureTaken(final byte[] data, final Camera camera) {
-	    	playShutterSound();
-	    	cameraPreview.setOnClickListener(null);
-	    	
-	    	setPictureConfirmationButtons();
-	    	hideImageBrackets();
-	    	setNextCheckVisible();
-	    	lastPicture = data;
-	    }
+		@Override
+		public void onPictureTaken(final byte[] data, final Camera camera) {
+			playShutterSound();
+			cameraPreview.setOnClickListener(null);
+
+			setPictureConfirmationButtons();
+			hideImageBrackets();
+			setNextCheckVisible();
+			lastPicture = data;
+		}
 	};
-	
+
 	/**
 	 * Saves the image in the local lastPicture byte array to the device.
 	 */
 	private void saveLastConfirmedImage() {
 		//Write the image to disk.
-        try {
-        	if(lastPicture != null && lastPicture.length > 0) {
-	        	final FileOutputStream fos = getFileOutputStream();
-	            fos.write(lastPicture);
-	            fos.close();
-        	}
-        } catch (final FileNotFoundException e) {
-            Log.d(TAG, "File not found: " + e.getMessage());
-        } catch (final IOException e) {
-            Log.d(TAG, "Error accessing file: " + e.getMessage());
-        }
+		try {
+			if(lastPicture != null && lastPicture.length > 0) {
+				final FileOutputStream fos = getFileOutputStream();
+				fos.write(lastPicture);
+				fos.close();
+			}
+		} catch (final FileNotFoundException e) {
+			Log.d(TAG, "File not found: " + e.getMessage());
+		} catch (final IOException e) {
+			Log.d(TAG, "Error accessing file: " + e.getMessage());
+		}
 	}
-	
+
 	/**
 	 * Setup the buttons on the screen to be confirmation buttons.
 	 * The confirmation button changes its text and left drawable, along with its click functionality.
@@ -533,31 +551,33 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				getResources().getDrawable(R.drawable.chckdep_checkmark_white), null, null, null);
 		captureButton.setText(R.string.picture_confirm);
 		retakeButton.setVisibility(View.VISIBLE);
-    	captureButton.setOnClickListener(confirmClickListener);
+		captureButton.setOnClickListener(confirmClickListener);
 		captureButton.setOnTouchListener(null);
 		captureButton.setPressed(false);
 		captureButton.setClickable(true);
 		closeButton.setVisibility(View.VISIBLE);
 	}
-	
+
 	/**
 	 * Plays a default shutter sound provided by the android operating system.
 	 */
 	private void playShutterSound() {
-	    final AudioManager meng = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
-	    final int volume = meng.getStreamVolume( AudioManager.STREAM_NOTIFICATION);
-	    final Uri soundResource = Uri.parse(getResources().getString(R.string.shutter_sound_file));
-	    MediaPlayer shutterPlayer = null;
-	    
-	    if (volume > 0) {
-	        if (shutterPlayer == null)
-	        	shutterPlayer = MediaPlayer.create(getContext(), soundResource);
-	        
-	        if (shutterPlayer != null)
-	        	shutterPlayer.start();
-	    }
+		final AudioManager meng = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+		final int volume = meng.getStreamVolume( AudioManager.STREAM_NOTIFICATION);
+		final Uri soundResource = Uri.parse(getResources().getString(R.string.shutter_sound_file));
+		MediaPlayer shutterPlayer = null;
+
+		if (volume > 0) {
+			if (shutterPlayer == null) {
+				shutterPlayer = MediaPlayer.create(getContext(), soundResource);
+			}
+
+			if (shutterPlayer != null) {
+				shutterPlayer.start();
+			}
+		}
 	}
-	
+
 	/**
 	 * Setup the buttons on the screen to be in their default state.
 	 * Reset the click listeners, text, and drawables. Hide the retake button.
@@ -572,7 +592,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		captureButton.setClickable(true);
 		cameraPreview.setOnClickListener(autoFocusClickListener);
 	}
-	
+
 	/** 
 	 * Create a File for saving the image.
 	 * Determines what name to use when saving the file based on the visibility of the check marks next to the
@@ -581,28 +601,30 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private FileOutputStream getFileOutputStream() {
 		FileOutputStream fos = null;
 		int retakePicture = 0;
-		
+
 		final Bundle extras = getIntent().getExtras();
-		if(extras != null)
+		if(extras != null) {
 			retakePicture = extras.getInt(BankExtraKeys.RETAKE_PICTURE);
-		
+		}
+
 		try {
 			if(retakePicture == RETAKE_FRONT) { 
 				fos = openFileOutput(FRONT_PICTURE, Context.MODE_PRIVATE);
 			}
 			else if (isStepOneChecked() && isStepTwoChecked()){
 				fos = openFileOutput(BACK_PICTURE, Context.MODE_PRIVATE);
-			}else
+			} else {
 				fos = openFileOutput(FRONT_PICTURE, Context.MODE_PRIVATE);
+			}
 		} catch (final FileNotFoundException e) {
 			Log.e(TAG, "Cannot find file : " + e);
 		}
-		
+
 		return fos;	
 	}
-	
+
 	private final Camera.AutoFocusCallback focusAndCaptureCallback = new Camera.AutoFocusCallback() {
-		
+
 		@Override
 		public void onAutoFocus(final boolean success, final Camera camera) {
 			//Cancel auto focus is called because if not, the flash may stay on.
@@ -615,26 +637,27 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * Call the camera's auto focus method then take a picture once it is done.
 	 */
 	private void focusThenTakePicture() {
-		if(camera != null)
+		if(camera != null) {
 			camera.autoFocus(focusAndCaptureCallback);
+		}
 	}
-	
+
 	/**
 	 * Call the camera's auto focus method.
 	 */
 	private void focusCamera() {
 		camera.autoFocus(autoFocusCallback);
 	}
-	
+
 	private final Camera.AutoFocusCallback autoFocusCallback = new Camera.AutoFocusCallback() {
-		
+
 		@Override
 		public void onAutoFocus(final boolean success, final Camera camera) {
 			//Cancel auto focus is called because if not, the flash may stay on.
 			camera.cancelAutoFocus();
 		}
 	};
-	
+
 	/**
 	 * Setup the parameters for the camera that might be useful.
 	 */
@@ -642,18 +665,19 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		final Camera.Parameters parameters = camera.getParameters();
 		final int eightHundredPixels = 800;
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
-		
+
 		Size smallCaptureSize = null;
-		
+
 		for(final Size size : sizes) {
 			if(size.width < eightHundredPixels && smallCaptureSize == null) {
 				smallCaptureSize = size;
 			}
 		}
-		
-		if(smallCaptureSize != null)
+
+		if(smallCaptureSize != null) {
 			parameters.setPictureSize(smallCaptureSize.width, smallCaptureSize.height);
-		
+		}
+
 		parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
 		camera.setParameters(parameters);
 	}
@@ -676,18 +700,18 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		final int piHalf = pi >> 1;
 
 		switch (rotation) {
-			case Surface.ROTATION_0: 
-				degrees = 0; 
-				break;
-			case Surface.ROTATION_90: 
-				degrees = piHalf; 
-				break;
-			case Surface.ROTATION_180: 
-				degrees = pi; 
-				break;
-			case Surface.ROTATION_270: 
-				degrees = twoPi - piHalf; 
-				break;
+		case Surface.ROTATION_0: 
+			degrees = 0; 
+			break;
+		case Surface.ROTATION_90: 
+			degrees = piHalf; 
+			break;
+		case Surface.ROTATION_180: 
+			degrees = pi; 
+			break;
+		case Surface.ROTATION_270: 
+			degrees = twoPi - piHalf; 
+			break;
 		}
 
 		int result;
@@ -735,7 +759,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns a constructed modal dialog that provides instructions on how to use the
 	 * check capture feature.
@@ -753,16 +777,16 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		top.showErrorIcon(false);
 		top.hideNeedHelpFooter();
 		bottom.setButtonText(R.string.ok);
-		
+
 		final CheckDepositModal modal = new CheckDepositModal(this, top, bottom);
 		bottom.getButton().setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(final View v) {
 				modal.dismiss();
 			}
 		});
-		
+
 		return modal;
 	}
 
@@ -813,7 +837,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		if(camera == null) {
 			camera = Camera.open();
 			setupCameraParameters();
-			
+
 			try {
 				camera.setPreviewDisplay(previewHolder);
 			} catch (final IOException e) {			
@@ -830,7 +854,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			camera.stopPreview();
 			camera.cancelAutoFocus();
 			camera.release();
-	
+
 			//This is set to null so that we can check in the autofocus callback to see if the camera has been released
 			//so that we do not try to focus a unavailable camera and cause a crash.
 			camera = null;
@@ -841,7 +865,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	public ErrorHandler getErrorHandler() {
 		return null;
 	}
-	
+
 	/**
 	 * The AsyncTask responsible for displaying the countdown timer before the user takes a picture.
 	 * 
@@ -851,7 +875,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	public class CameraCountdownTask extends AsyncTask<Void, Void, Void> {
 		private boolean isRunning = false;
 		final int ONE_SECOND = 1000;
-		
+
 		/**
 		 * Before the task begins its background processing, make sure that the close button is not visible
 		 * and that the countdown logo is visible.
@@ -862,7 +886,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			closeButton.setVisibility(View.INVISIBLE);
 			countdownLogo.setVisibility(View.VISIBLE);
 		}
-		
+
 		/**
 		 * Wait for a second between changing the countdown image.
 		 */
@@ -873,10 +897,10 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			} catch (final InterruptedException e) {
 				Log.e(TAG, "Countdown Thread Interrupted: " + e);
 			}
-			
+
 			return null;
 		}
-		
+
 		/**
 		 * After the one second pause in doInBackground, decrement the count and update
 		 * the count image. Then check to see if we should keep counting down, or take the picture.
@@ -885,7 +909,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		protected void onPostExecute(final Void result) {
 			count--;
 			updateCountImage();
-			
+
 			if(count < 1){
 				focusThenTakePicture();
 				count = THREE;
@@ -896,7 +920,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				timerTask.execute();
 			}
 		}
-		
+
 		/**
 		 * Returns if the current task is running.
 		 * @return if the current task is running.
@@ -904,20 +928,21 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		public boolean isRunning() {
 			return isRunning;
 		}
-		
+
 		/**
 		 * Update the countdown image based on the count variable value.
 		 */
 		private void updateCountImage() {
-			if(count == THREE)
+			if(count == THREE) {
 				countdownLogo.setImageDrawable(countdownThree);
-			else if (count == 2)
+			} else if (count == 2) {
 				countdownLogo.setImageDrawable(countdownTwo);
-			else if(count == 1)
+			} else if(count == 1) {
 				countdownLogo.setImageDrawable(countdownOne);
-			else if (count < 1)
+			} else if (count < 1) {
 				resetCountdown();
+			}
 		}
 	}
-	
+
 }

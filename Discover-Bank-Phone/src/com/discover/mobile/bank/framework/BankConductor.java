@@ -198,12 +198,12 @@ public final class BankConductor  extends Conductor {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 		if(currentActivity instanceof BankNavigationRootActivity) {
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-			
-			final BaseFragment fragment = activity.getCurrentContentFragment();
-			
+
+			activity.getCurrentContentFragment();
+
 			/**Check if user is already viewing FAQ*/
 			if( !BankNavigationHelper.isViewingMenuSection(BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP, 
-					 									   BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS)) {
+					BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS)) {
 				activity.makeFragmentVisible(new FAQLandingPageFragment());
 			} else {
 				activity.hideSlidingMenuIfVisible();
@@ -492,7 +492,7 @@ public final class BankConductor  extends Conductor {
 
 		//Fetch the current activity
 		if( activity instanceof BaseFragmentActivity ) {
-			final NavigationRootActivity fragActivity = (NavigationRootActivity)activity;
+			final BankNavigationRootActivity fragActivity = (BankNavigationRootActivity)activity;
 
 			fragActivity.closeDialog();
 
@@ -1048,7 +1048,7 @@ public final class BankConductor  extends Conductor {
 	public static void navigateToFrequencyWidget(final Bundle args) {
 		final BankTransferFrequencyWidget widget = new BankTransferFrequencyWidget();
 		widget.setArguments(args);
-		((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(widget);
+		((BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(widget);
 
 	}
 
@@ -1142,7 +1142,7 @@ public final class BankConductor  extends Conductor {
 
 		final Bundle bundle = new Bundle();
 		bundle.putSerializable(BankInfoNavigationActivity.CONTACT_US, type);
-		
+
 		if( activity != null ) {
 			/**Launch Privacy & Terms Activity if user is not logged in*/
 			if( activity instanceof LoginActivity ) {
@@ -1154,15 +1154,15 @@ public final class BankConductor  extends Conductor {
 			/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
 			else if( activity instanceof NavigationRootActivity ) {
 				final NavigationRootActivity navActivity = (NavigationRootActivity) activity;
-								
+
 				BaseFragment fragment = navActivity.getCurrentContentFragment();
-						
+
 				if( !BankNavigationHelper.isViewingMenuSection( BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP, 
-						   										BankMenuItemLocationIndex.CONTACT_US_SECTION)) {
-				
+						BankMenuItemLocationIndex.CONTACT_US_SECTION)) {
+
 					fragment = new CustomerServiceContactsFragment();
 					fragment.setArguments(bundle);
-					
+
 					navActivity.makeFragmentVisible(fragment);		
 				} else {
 					navActivity.hideSlidingMenuIfVisible();
