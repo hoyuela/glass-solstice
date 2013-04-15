@@ -1,5 +1,6 @@
 package com.discover.mobile.common.analytics;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import android.app.Activity;
@@ -67,16 +68,36 @@ public final class TrackingHelper {
 	/**Bank Application Name*/
 	private static final String BANK_APP_NAME = "DiscoverBank:Native:Android";
 
+	/**SSO detailed tag*/
+	public static final String SSO_TAG = "s.eVar43";
+
+	/**Account types Detailed tag*/
+	public static final String ACCOUNT_TAG = "s.eVar41";
+
+	/**Single Sign on Value*/
+	public static final String SINGLE_SIGN_ON_VALUE = "<Single Sign On>";
+
 	/**
 	 * Track a bank page
 	 * @param pageName - string value of the page that should be represented
 	 */
 	public static void trackBankPage(final String pageName){
-		trackPageView(pageName, BANK_APP_NAME);
+		trackPageView(pageName, BANK_APP_NAME, null);
 	}
 
+	/**
+	 * Track a page with extra data
+	 */
+	public static void trackBankPage(final String pageName, final HashMap<String, Object> extras){
+		trackPageView(pageName, BANK_APP_NAME, extras);
+	}
+
+	/**
+	 * Track the card pages
+	 * @param pageName - string value of the page to track
+	 */
 	public static void trackPageView(final String pageName){
-		trackPageView(pageName, APP_NAME);
+		trackPageView(pageName, APP_NAME, null);
 	}
 
 	/**
@@ -84,7 +105,7 @@ public final class TrackingHelper {
 	 * 
 	 * @param pageName - supply the page name according to the specification from Discover
 	 */
-	private static void trackPageView(final String pageName, final String appName) {
+	private static void trackPageView(final String pageName, final String appName, final HashMap<String, Object> extras) {
 		if(measurement == null){return;}
 		measurement.clearVars();
 		final Hashtable<String, Object> contextData = new Hashtable<String, Object>();
@@ -95,7 +116,6 @@ public final class TrackingHelper {
 			contextData.put(CONTEXT_EDS_VAR, ServiceCallSessionManager.getEDSKey());
 			contextData.put(CONTEXT_USER_PROP,CUSTOMER);
 			contextData.put(CONTEXT_USER_VAR,CUSTOMER);
-
 		}else{ 
 			contextData.put(CONTEXT_USER_PROP,PROSPECT);
 			contextData.put(CONTEXT_USER_VAR,PROSPECT);
@@ -108,6 +128,10 @@ public final class TrackingHelper {
 		}else if(BANK_APP_NAME.equals(appName)){
 			contextData.put(CONTEXT_VSTR_ID_PROP,PROSPECT);
 			contextData.put(CONTEXT_VSTR_ID_VAR,PROSPECT);
+		}
+
+		if(null != extras){
+			contextData.putAll(extras);
 		}
 
 		contextData.put(CONTEXT_PAGE_NAME, pageName);
