@@ -4,8 +4,6 @@ import java.net.HttpURLConnection;
 
 import android.app.Activity;
 
-import com.discover.mobile.analytics.BankTrackingHelper;
-import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -137,8 +135,6 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 
 				BankConductor.navigateToStrongAuth(activeActivity, details, msgErrResponse.getErrorMessage());
 
-				//Track that a strong auth was triggered
-				BankTrackingHelper.forceTrackPage(R.string.bank_strong_auth);				
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOCKED_STRONG_AUTH)) {
 				mErrorHandler.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			}
@@ -216,7 +212,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 					mErrorHandler.handleSessionExpired();
 				}
 				// Check if strong auth challenge
-				else if (wwwAuthenticateValue.contains(BankSchema.BANKSA)) {
+				else if (wwwAuthenticateValue.contains(BankSchema.BANKSA)) {	
 					BankServiceCallFactory.createStrongAuthRequest().submit();
 				}
 				// Check if not authorized to view page
