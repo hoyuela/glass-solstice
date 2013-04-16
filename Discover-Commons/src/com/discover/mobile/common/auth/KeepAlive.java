@@ -16,10 +16,10 @@ public class KeepAlive {
 
 	/** Minimum amount of time (ms) required before making card refresh call. */
 	public static final long MIN_TIME_FOR_CARD_REFRESH = 30000; // 30 secs
-	
+
 	/** This is used to set the last call time back if a request fails due to network service. */
 	private static final long BANK_REFRESH_TIMEOUT_RESET = 15000; // 15 secs
-	
+
 	/** This is used to set the last call time back if a request fails due to network service. */
 	private static final long CARD_REFRESH_TIMEOUT_RESET = 5000; // 5 secs
 
@@ -75,7 +75,7 @@ public class KeepAlive {
 	 * call.
 	 */
 	public static void checkForRequiredSessionRefresh() {
-		Calendar calendar = Calendar.getInstance();
+		Calendar.getInstance();
 
 		if (isBankAuthenticated && isBankRefreshRequired()) {
 			FacadeFactory.getBankKeepAliveFacade().refreshBankSession();
@@ -133,7 +133,7 @@ public class KeepAlive {
 	 * 
 	 * @param isCardAuthenticated
 	 */
-	public static void setCardAuthenticated(boolean isCardAuthenticated) {
+	public static void setCardAuthenticated(final boolean isCardAuthenticated) {
 		KeepAlive.isCardAuthenticated = isCardAuthenticated;
 	}
 
@@ -144,7 +144,27 @@ public class KeepAlive {
 	 * 
 	 * @param isBankAuthenticated
 	 */
-	public static void setBankAuthenticated(boolean isBankAuthenticated) {
+	public static void setBankAuthenticated(final boolean isBankAuthenticated) {
 		KeepAlive.isBankAuthenticated = isBankAuthenticated;
+	}
+
+	/**
+	 * Tells KeepAlive whether or not refresh calls should be made for this
+	 * session. 
+	 * 
+	 * @return isCardAuthenticated
+	 */
+	public static boolean getCardAuthenticated() {
+		return isCardAuthenticated;
+	}
+
+	/**
+	 * Tells KeepAlive whether or not refresh calls should be made for this
+	 * session.
+	 * 
+	 * @return isBankAuthenticated
+	 */
+	public static boolean getBankAuthenticated() {
+		return isBankAuthenticated;
 	}
 }

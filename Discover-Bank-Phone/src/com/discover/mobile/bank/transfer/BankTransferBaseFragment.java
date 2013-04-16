@@ -30,6 +30,8 @@ public abstract class BankTransferBaseFragment extends BankOneButtonFragment {
 		progressIndicator.initialize(getProgressIndicatorStep());
 		progressIndicator.setTitle(R.string.transfer_money, R.string.empty, R.string.confirm);
 
+        progressIndicator.hideStepTwo();
+        
 		return view;
 	}
 	

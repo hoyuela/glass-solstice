@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
@@ -37,7 +38,7 @@ import com.google.common.base.Strings;
  *
  */
 public class BankTransferSelectAccount extends BaseFragment implements FragmentOnBackPressed {
-	final String TAG = BankTransferSelectAccount.class.getSimpleName();
+	private final String TAG = BankTransferSelectAccount.class.getSimpleName();
 
 	private Account[] selectedAccounts = new Account[2];
 
@@ -47,10 +48,12 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	AccountList internalAccounts = null;
 	AccountList externalAccounts = null;
 
+	private boolean useMyBackPress = true;
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
-
+		
 		final View mainView = inflater.inflate(R.layout.bank_transfer_select_account, null);
 		setTitleFromArguments(mainView);
 
@@ -97,6 +100,12 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		}
 	}
 
+	/**
+	 * Replaces the external account table with a warning text that notifies the user that they cannot
+	 * select two external accounts to transfer between. This text is clickable and permits the user
+	 * to change their selected external account.
+	 * @param mainView
+	 */
 	private void showExternalAccountWarning(final View mainView) {
 		final TextView editOtherAccountLink = (TextView)mainView.findViewById(R.id.change_other_account_link);
 
@@ -112,6 +121,10 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 
 	}
 
+	/**
+	 * The click listener that will direct the user to the other select account screen so that they can change
+	 * their external account if they wish.
+	 */
 	private final OnClickListener pushReselectClickListener = new OnClickListener() {
 
 		@Override
@@ -124,6 +137,11 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		}
 	};
 
+	/**
+	 * Because we need to possibly navigate between two different instances of this fragment, we need a way
+	 * to change the presented title of the screen. This method manages the title value that is stored in 
+	 * the bundle of this Fragment.
+	 */
 	private void flipTitleBundle() {
 		final Bundle args = getArguments();
 		int title = 0;
@@ -136,6 +154,10 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		args.putInt(BankExtraKeys.TITLE_TEXT, title);
 	}
 
+	/**
+	 * 
+	 * @return if this screen is a 'to' account screen.
+	 */
 	private boolean isToAccountScreen() {
 		boolean isToScreen = false;
 		final Bundle args = getArguments();
@@ -149,18 +171,35 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		return isToScreen;
 	}
 
+	/**
+	 * Populates the content tables on the screen with the appropriate accounts.
+	 * @param accountType
+	 * @param accountList
+	 * @param mainView
+	 */
 	private void populateTableWithAccounts(final int accountType, final AccountList accountList, final View mainView) {
 		final LinearLayout table = (LinearLayout)mainView.findViewById(getResourceFor(accountType));
-		final ListItemGenerator generator = new ListItemGenerator(table.getContext());
-
 		final List<Account> accounts = accountList.accounts;
+		
 		if(accounts != null && accounts.size() > 0){
 			for(final Account account : accounts) {
-				if(account.isTransferEligible() || account.isExternalAccount()) {
-					if(!(account.isExternalAccount() && isOtherAccountExternalAccount()) || getTotalAccountSize() <= 2)
-						table.addView(getListItemFromAccount(account, generator));
-				}
+				addAccountToTable(account, table);
 			}
+		}
+	}
+	
+	/**
+	 * Add a given account to a given table.
+	 * @param account an Account object that can be added to the table.
+	 * @param table a table to add an Account object to.
+	 */
+	private void addAccountToTable(final Account account, final LinearLayout table) {
+		final boolean canAddAccount = account.isTransferEligible() || account.isExternalAccount();
+		final boolean wontAllowTwoExternals = !(account.isExternalAccount() && isOtherAccountExternalAccount()) ;
+		final boolean accountShouldBeAdded =  wontAllowTwoExternals || getTotalAccountSize() <= 2;
+
+		if(canAddAccount && accountShouldBeAdded) {
+			table.addView(getListItemFromAccount(account));
 		}
 	}
 
@@ -178,6 +217,10 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		return hasExternalAccount;
 	}
 
+	/**
+	 * Returns the previously selected account with respect to the kind of screen we are on.
+	 * @return the 'from' account if we are on 'to' or the 'to' account if we are on 'from'
+	 */
 	private Account getOtherSelectedAccount() {
 		Account otherSelectedAccount = null;
 
@@ -223,10 +266,10 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 
 		switch(accountType) {
 			case INTERNAL_ACCOUNT :
-				accountList = (AccountList)args.getSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS);
+				accountList = (AccountList)args.getSerializable(BankExtraKeys.INTERNAL_ACCOUNTS);
 				break;
 			case EXTERNAL_ACCOUNT :
-				accountList = (AccountList)args.getSerializable(BankExtraKeys.INTERNAL_ACCOUNTS);
+				accountList = (AccountList)args.getSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS);
 				break;
 			default :
 				break;
@@ -235,15 +278,26 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		return accountList;
 	}
 
+	/**
+	 *  
+	 * @return the internal accounts that were provided to this screen through the Bundle or a new empty list
+	 * if none were found.
+	 */
 	private AccountList getInternalAccounts() {
-		if(internalAccounts == null)
+		if(internalAccounts == null) {
 			internalAccounts = getAccounts(INTERNAL_ACCOUNT);
 			if(internalAccounts == null)
 				internalAccounts = getNewAccountList();
+		}
 
 		return internalAccounts;
 	}
 
+	/**
+	 * 
+	 * @return the external accounts that were provided to this screen through the Bundle or a new empty list
+	 * if none were found.
+	 */
 	private AccountList getExternalAccounts() {
 		if(externalAccounts == null) {
 			externalAccounts = getAccounts(EXTERNAL_ACCOUNT);
@@ -254,12 +308,19 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		return externalAccounts;
 	}
 
+	/**
+	 * 
+	 * @return a new AccountList object.
+	 */
 	private AccountList getNewAccountList() {
 		final AccountList temp = new AccountList();
 		temp.accounts = new ArrayList<Account>();
 		return temp;
 	}
 
+	/**
+	 * Loads to local references all previously selected accounts.
+	 */
 	private void loadSelectedAccounts() {
 		final Bundle args = getArguments();
 		if(args != null)
@@ -281,7 +342,8 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	 * @param generator a ListItemGenerator instance.
 	 * @return a constructed table cell with the information from an account object.
 	 */
-	private ViewPagerListItem getListItemFromAccount(final Account account, final ListItemGenerator generator) {
+	private ViewPagerListItem getListItemFromAccount(final Account account) {
+		final ListItemGenerator generator = new ListItemGenerator(this.getActivity());
 		final ViewPagerListItem item = generator.getTwoItemCell(R.string.empty, account.nickname);
 
 		item.getTopLabel().setText(getAccountEndingTextForAccount(account.accountNumber.ending));
@@ -303,6 +365,10 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		return item;
 	}
 
+	/**
+	 * 
+	 * @return the size of external and internal accounts combined.
+	 */
 	private int getTotalAccountSize() {
 		return getAccountSize(getExternalAccounts()) + getAccountSize(getInternalAccounts());
 	}
@@ -352,6 +418,10 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 			BankConductor.navigateBackFromTransferSelectAccount(args);
 	}
 
+	/**
+	 * If there are only two accounts to choose from, this method will select the account that was not selected by
+	 * the user, so that we can auto fill one account field.
+	 */
 	private void twoAccountAutoSelect() {
 
 		if(getTotalAccountSize() == 2) {
@@ -364,15 +434,23 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		}
 	}
 
+	/**
+	 * 
+	 * @param account 
+	 * @return the first Account in either external or internal accounts that is not the account in the parameter.
+	 */
 	private Account getFirstAccountThatIsNotThisAccount(final Account account) {
 		Account otherAccount = null;
 		final List<Account> allAccounts = new ArrayList<Account>();
 
-		allAccounts.addAll(getInternalAccounts().accounts);
-		allAccounts.addAll(getExternalAccounts().accounts);
+		if(getInternalAccounts() != null)
+			allAccounts.addAll(getInternalAccounts().accounts);
+		if(getExternalAccounts() != null)
+			allAccounts.addAll(getExternalAccounts().accounts);
 
 		for(final Account item : allAccounts){
-			if(!item.equals(account)) {
+			if(!item.equals(account) && item.isTransferEligible() && 
+					!(isOtherAccountExternalAccount() && item.isExternalAccount())) {
 				otherAccount = item;
 			}
 		}
@@ -380,6 +458,11 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		return otherAccount;
 	}
 
+	/**
+	 * 
+	 * @param accountList
+	 * @return the number of transfer eligible accounts in the given list.
+	 */
 	private int getAccountSize(final AccountList accountList) {
 		int size = 0;
 		if(accountList != null && accountList.accounts != null)
@@ -436,18 +519,22 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 
 	@Override
 	public int getGroupMenuLocation() {
-		return 0;
+		return BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return 0;
+		return BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP;
 	}
 
 	public void helpMenuOnClick(final HelpWidget help) {
 		help.showHelpItems(HelpMenuListFactory.instance().getBankTransferHelpItems());
 	}
 
+	/**
+	 * Navigates back to either a previous instance of the select account screen, or back to step one of transfer
+	 * money. Depending on if the user pressed the change external account link or not.
+	 */
 	@Override
 	public void onBackPressed() {
 		final Bundle args = getArguments();
@@ -456,17 +543,15 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		if(args.getBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK)) {
 			args.putBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK, false);
 			flipTitleBundle();
-			hasHandledSelfBackPress = false;
+			useMyBackPress = false;
 			((BankNavigationRootActivity)this.getActivity()).onBackPressed();
 		}else
 			BankConductor.navigateBackFromTransferSelectAccount(args);
 	}
 
-	boolean hasHandledSelfBackPress = true;
 	@Override
 	public boolean isBackPressDisabled() {
-		// TODO Auto-generated method stub
-		return hasHandledSelfBackPress;
+		return useMyBackPress;
 	}
 
 }

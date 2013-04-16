@@ -9,7 +9,6 @@ import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
@@ -83,7 +82,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 		this(context);
 
 		this.account = account;
-		
+
 		this.setAccountInformation(account);
 	}
 
@@ -103,12 +102,12 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 		if( !Strings.isNullOrEmpty(value.formatted)) {
 			try{
 				String formatted = value.formatted;
-				
+
 				if(formatted.charAt(0)=='(') {
 					formatted = formatted.replaceAll("\\(", "-");
 					formatted = formatted.replaceAll("\\)", "");
 				}
-				
+
 				/**Set Text view for displaying balance for account */
 				acctBalance.setText(formatted);
 
@@ -168,9 +167,6 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 		//Set Current Account to be accessed by other objects in the application
 		BankUser.instance().setCurrentAccount(account);
 
-		//Clear the rotation helper
-		BankRotationHelper.getHelper().setBundle(null);
-
 		//Send Request to download the current accounts posted activity
 		BankServiceCallFactory.createGetActivityServerCall(link).submit();
 	}
@@ -188,13 +184,13 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 				R.drawable.home_list_item_dash));
 		lastView.setPadding(
 				(int)context.getResources()
-						.getDimension(R.dimen.forms_inner_padding), 0,
+				.getDimension(R.dimen.forms_inner_padding), 0,
 				(int)context.getResources()
-						.getDimension(R.dimen.forms_inner_padding),
+				.getDimension(R.dimen.forms_inner_padding),
 				(int)context.getResources()
-						.getDimension(R.dimen.table_inner_padding));
+				.getDimension(R.dimen.table_inner_padding));
 	}
-	
+
 	/**
 	 * Changes this view's background drawable such that it draws a solid stroke
 	 * on all sides but the but the bottom, which is blank.
@@ -208,13 +204,13 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 				R.drawable.home_list_item_no_bottom_stroke));
 		lastView.setPadding(
 				(int)context.getResources()
-						.getDimension(R.dimen.forms_inner_padding), 0,
+				.getDimension(R.dimen.forms_inner_padding), 0,
 				(int)context.getResources()
-						.getDimension(R.dimen.forms_inner_padding),
+				.getDimension(R.dimen.forms_inner_padding),
 				(int)context.getResources()
-						.getDimension(R.dimen.table_inner_padding));
+				.getDimension(R.dimen.table_inner_padding));
 	}
-	
+
 	/**
 	 * Changes this view's background drawable such that it draws a solid stroke
 	 * on all sides.
@@ -228,10 +224,10 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 				R.drawable.home_list_item));
 		lastView.setPadding(
 				(int)context.getResources()
-						.getDimension(R.dimen.forms_inner_padding), 0,
+				.getDimension(R.dimen.forms_inner_padding), 0,
 				(int)context.getResources()
-						.getDimension(R.dimen.forms_inner_padding),
+				.getDimension(R.dimen.forms_inner_padding),
 				(int)context.getResources()
-						.getDimension(R.dimen.table_inner_padding));
+				.getDimension(R.dimen.table_inner_padding));
 	}
 }

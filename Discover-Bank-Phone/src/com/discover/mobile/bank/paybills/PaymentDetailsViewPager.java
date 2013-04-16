@@ -8,20 +8,23 @@ import android.support.v4.view.ViewPager;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.SpinnerFragment;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
+import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.google.common.base.Strings;
 
-public class PaymentDetailsViewPager extends DetailViewPager {
+public class PaymentDetailsViewPager extends DetailViewPager implements FragmentOnBackPressed{
 	private ListPaymentDetail detailList = new ListPaymentDetail();
 	private int initialViewPosition = 0;
 	private int fragmentTitle;
@@ -55,7 +58,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 
 	}
 
-	
+
 	/**
 	 * 
 	 * @return if the currently displayed data set has more data that can be retrieved from the server.
@@ -64,7 +67,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		return detailList != null && detailList.links != null &&
 				detailList.links.get(ListActivityDetail.NEXT) != null;
 	}
-	
+
 	/**
 	 * Save the current Bundle state so that we can restore it on rotation change.
 	 */
@@ -98,14 +101,16 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		if(currentBundle == null) {
 			currentBundle = new Bundle();
 		}
-		
+
 		final ViewPager viewPager = getViewPager();
-		if(viewPager != null)
+		if(viewPager != null) {
 			currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, viewPager.getCurrentItem());
-		if(detailList != null)
+		}
+		if(detailList != null) {
 			currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, detailList);
+		}
 		return currentBundle;
-		
+
 	}
 
 	/**
@@ -124,7 +129,7 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		}else {
 			pageFragment = new SpinnerFragment();
 		}
-		
+
 		return pageFragment;	
 	}
 
@@ -176,7 +181,6 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 		detailList.payments.addAll(newDetails.payments);
 		updateNavigationButtons();
 		detailList.links.putAll(newDetails.links);
-		BankRotationHelper.getHelper().getBundle().putSerializable(BankExtraKeys.PRIMARY_LIST, detailList);
 		resetViewPagerAdapter();
 	}
 
@@ -187,7 +191,6 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	@Override
 	public void onPause() {
 		super.onPause();
-		BankRotationHelper.getHelper().getBundle().putAll(getCurrentFragmentBundle());
 		initialViewPosition = getViewPager().getCurrentItem();
 	}
 
@@ -198,14 +201,15 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	@Override
 	protected void loadMoreIfNeeded(final int position) {
 		final int loadMorePosition = getViewCount() - 2;
-		
+
 		if(loadMorePosition <= position && null != detailList.links.get(ListActivityDetail.NEXT)){
 			final ReceivedUrl url = getLoadMoreUrl();
-			if(url != null && !Strings.isNullOrEmpty(url.url))
+			if(url != null && !Strings.isNullOrEmpty(url.url)) {
 				loadMore(detailList.links.get(ListActivityDetail.NEXT).url);
+			}
 		}
 	}
-	
+
 	/**
 	 * Get the load more URL
 	 * @return get the load more URL from the correct object
@@ -250,6 +254,22 @@ public class PaymentDetailsViewPager extends DetailViewPager {
 	@Override
 	protected void helpMenuOnClick(final HelpWidget help) {
 		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
+	}
+
+	@Override
+	public void onBackPressed() {
+		final BankNavigationRootActivity activity = 
+				(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		activity.getSupportFragmentManager().popBackStackImmediate();
+		final BaseFragment fragment = activity.getCurrentContentFragment();
+		if(fragment instanceof ReviewPaymentsTable){
+			((ReviewPaymentsTable) fragment).loadDataFromBundle(getCurrentFragmentBundle());
+		}
+	}
+
+	@Override
+	public boolean isBackPressDisabled() {
+		return true;
 	}
 
 }

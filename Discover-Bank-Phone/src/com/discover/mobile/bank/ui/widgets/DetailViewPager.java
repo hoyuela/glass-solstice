@@ -59,7 +59,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * @return a Fragment ready to be displayed in the ViewPager.
 	 */
 	protected abstract Fragment getDetailItem(final int position);
-	
+
 	/**
 	 * Abstract Method to be implemented for the help menu
 	 */
@@ -109,17 +109,17 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		final View mainView = inflater.inflate(R.layout.account_item_detail_view, null);
-		
+
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) mainView.findViewById(R.id.help);
 		helpMenuOnClick(help);
 
 		final Bundle args = getArguments();
 		isLoadingMore = args.getBoolean(BankExtraKeys.IS_LOADING_MORE);
-		
+
 		loadAllViewsFrom(mainView);		
 		setupNavButtons(mainView);
-		
+
 		return mainView;
 	}
 
@@ -130,13 +130,13 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	public void onPause() {
 		final SlidingMenu slidingMenu = ((SlidingFragmentActivity)this.getActivity()).getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		
+
 		final Bundle args = getArguments();
 		args.putBoolean(BankExtraKeys.IS_LOADING_MORE, isLoadingMore);
-		
+
 		super.onPause();
 	}
-	
+
 	@Override
 	public void onStop() {
 		if(viewPager != null){
@@ -153,7 +153,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 		updateViewPagerState(viewPager.getCurrentItem());
 		updateSlidingDrawerLock();
 	}
-	
+
 	/**
 	 * Updates the text of the label to the left of the next/previous buttons.
 	 * @param titleTextResource a String resource to use as the title label for a transaction.
@@ -179,7 +179,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 		jointAccountWarning = (TextView)mainBar.findViewById(R.id.joint_account_warning_label);
 
 	}
-	
+
 	protected ViewPager getViewPager() {
 		return viewPager;
 	}
@@ -191,7 +191,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 				showNextFragment(v);
 			}
 		});
-		
+
 		((ImageView)mainView.findViewById(R.id.previous_button)).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -220,7 +220,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 			@Override
 			public void onPageScrollStateChanged(final int arg0) {}
 		});
-		
+
 	}
 
 	/**
@@ -252,7 +252,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 			jointAccountWarning.setText(formattedWarningText);
 			jointAccountWarning.setVisibility(View.VISIBLE);
 		}
-		*/
+		 */
 	}
 
 	/**
@@ -265,10 +265,11 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 		if(currentActivity != null) {
 			final SlidingMenu slidingMenu = currentActivity.getSlidingMenu();
 			if(slidingMenu != null) {
-				if(isCurrentPositionAtStart())
+				if(isCurrentPositionAtStart()) {
 					slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-				else
+				} else {
 					slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+				}
 			}
 		}
 	}
@@ -320,15 +321,17 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * @param position
 	 */
 	protected abstract void loadMoreIfNeeded(final int position);
-	
+
 	public void showNextFragment(final View view) {
-		if(viewPager != null)
+		if(viewPager != null) {
 			viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+		}
 	}
-	
+
 	public void showPreviousFragment(final View view) {
-		if(viewPager != null)
+		if(viewPager != null) {
 			viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+		}
 	}
 
 	/**
@@ -339,7 +342,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	public void setIsLoadingMore(final boolean isLoadingMore){
 		this.isLoadingMore = isLoadingMore;
 	}
-	
+
 	protected void resetViewPagerAdapter() {
 		final PagerAdapter temp = getViewPager().getAdapter();
 		final int position = getViewPager().getCurrentItem();
@@ -363,7 +366,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 *
 	 */
 	public class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
-		
+
 		public ViewPagerFragmentAdapter(final FragmentManager fragmentManager) {
 			super(fragmentManager);
 		}
@@ -387,5 +390,5 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 			return null;
 		}
 	}
-	
+
 }
