@@ -6,7 +6,6 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
@@ -52,7 +51,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 				if( BankUser.instance().getHolidays().isEmpty() ) {
 					BankServiceCallFactory.createBankHolidayDownloadServiceCall().submit();
 				}
-				
+
 				/**Check if user is already in this workflow*/
 				if( !BankPayBillsSectionInfo.isViewingMenuSection(BankMenuItemLocationIndex.PAY_BILLS_SECTION)) {
 					if(!isEligible()){
@@ -129,7 +128,6 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 						if(null == BankUser.instance().getPayees()) {
 							BankServiceCallFactory.createGetPayeeServiceRequest(true).submit();
 						} else{
-							BankRotationHelper.getHelper().setBundle(null);
 							final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 							BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 						}
@@ -156,7 +154,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 	protected static boolean isEnrolled(){
 		return BankUser.instance().getCustomerInfo().isPaymentsEnrolled();
 	}
-	
+
 	/**
 	 * Method used to determine if user is already viewing a screen that the user can navigate to
 	 * via the menu section specified.
@@ -169,6 +167,6 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 				BankMenuItemLocationIndex.PAY_BILLS_GROUP,
 				section);
 	}
-	
-	
+
+
 }

@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.AccountActivityViewPager;
 import com.discover.mobile.bank.account.BankAccountActivityTable;
@@ -496,11 +495,6 @@ public final class BankConductor  extends Conductor {
 			final BankNavigationRootActivity fragActivity = (BankNavigationRootActivity)activity;
 
 			fragActivity.closeDialog();
-
-			final Bundle helperBundle = BankRotationHelper.getHelper().getBundle();
-
-			helperBundle.putAll(bundle);
-
 			fragActivity.getSupportFragmentManager().popBackStackImmediate();
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {

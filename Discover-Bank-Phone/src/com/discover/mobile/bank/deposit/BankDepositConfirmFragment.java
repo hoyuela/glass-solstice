@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
@@ -40,49 +39,49 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 	 * Reference to a DepositDetail object which is provided via the bundle on creation of fragment.
 	 */
 	private DepositDetail depositDetail;
-	
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
-		
+
 		bundle = ( null != savedInstanceState ) ? savedInstanceState : getArguments();
-		
+
 		/**Store bundle provided to restore state of fragment onResume*/
 		if( null != bundle ) {
 			depositDetail = (DepositDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		}
-		
+
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-		
+
 		/**Hide controls that are not needed*/
 		noteTitle.setVisibility(View.GONE);
 		noteTextMsg.setVisibility(View.GONE);
 		feedbackLink.setVisibility(View.GONE);
-		
+
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
-		
+
 		/**Show Action Button text in single button on screen*/
 		actionButton.setText(R.string.bank_deposit_received_actionbutton);
-		
+
 		/**Show Link text in link on screen*/
 		actionLink.setText(R.string.bank_deposit_received_actionlink);
-			
+
 		return view;
 	}
-	
+
 	@Override
 	public boolean isBackPressDisabled() {
 		return true;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
 		activity.popTillFragment(BankDepositSelectAccount.class);
 	}
-	
+
 	/**
 	 * Used to specify the step in the bread crumb displayed above this page.
 	 */
@@ -110,24 +109,21 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 	protected void onActionLinkClick() {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
 		activity.popTillFragment(BankAccountSummaryFragment.class);
-		
+
 		final Account account = BankUser.instance().getAccount( Integer.toString(depositDetail.account) );
-		
+
 		//Navigate to Scheduled Transactions Activity Page
 		if( account != null ) {
 			final String link = account.getLink(Account.LINKS_POSTED_ACTIVITY);
-	
+
 			//Set Current Account to be accessed by other objects in the application
 			BankUser.instance().setCurrentAccount(account);
-	
-			//Clear the rotation helper
-			BankRotationHelper.getHelper().setBundle(null);
-	
+
 			//Send Request to download the current accounts posted activity
 			BankServiceCallFactory.createGetActivityServerCall(link).submit();
 		}
 	}
-	
+
 	/**
 	 * Returns a string that is displayed as the title on the fragment layout.
 	 */
@@ -147,14 +143,14 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-		
+
 		/**Store values stored in each field*/
 		if(depositDetail != null) {
 			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, depositDetail);
 		} else if( getArguments().getSerializable(BankExtraKeys.DATA_LIST_ITEM) != null ) {
 			outState.putAll(getArguments());
 		}
-		
+
 	}
-	
+
 }

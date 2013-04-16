@@ -12,7 +12,6 @@ import android.util.Log;
 
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.deposit.BankDepositWorkFlowStep;
@@ -435,7 +434,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		//Handle the payee success call
 		else if( sender instanceof GetPayeeServiceCall){
 			if(((GetPayeeServiceCall)sender).isChainCall()){
-				BankRotationHelper.getHelper().setBundle(null);
 				final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 				BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 			} else {
@@ -569,7 +567,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		} else if(currentTitle.equals(managePayees)) {
 			BankServiceCallFactory.createManagePayeeServiceRequest().submit();
 		} else{
-			BankRotationHelper.getHelper().setBundle(null);
 			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 			BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 		}

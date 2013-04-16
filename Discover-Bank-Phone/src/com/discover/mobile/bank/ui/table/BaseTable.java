@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
@@ -48,6 +47,12 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		final View view = inflater.inflate(R.layout.bank_list, null);
 		table = (PullToRefreshListView) view.findViewById(R.id.bank_table);
 		footer = (TableLoadMoreFooter) view.findViewById(R.id.footer);
+
+		if(null != savedInstanceState){
+			loadBundle = savedInstanceState;
+		}else{
+			loadBundle = this.getArguments();
+		}
 
 		createDefaultLists();
 		setupHeader();
@@ -99,8 +104,6 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	@Override
 	public void onResume(){
 		super.onResume();
-		final Bundle bundle = BankRotationHelper.getHelper().getBundle();
-		loadBundle = (null == bundle) ? this.getArguments() : bundle;
 		loadDataFromBundle(loadBundle);
 		table.setAdapter(getAdapter());
 	}
@@ -111,7 +114,10 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
-		BankRotationHelper.getHelper().setBundle(saveDataInBundle());
+		final Bundle bundle = saveDataInBundle();
+		if(null != bundle){
+			outState.putAll(saveDataInBundle());
+		}
 		super.onSaveInstanceState(outState);
 	}
 
