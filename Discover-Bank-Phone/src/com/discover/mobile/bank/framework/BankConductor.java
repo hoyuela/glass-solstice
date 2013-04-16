@@ -494,11 +494,6 @@ public final class BankConductor  extends Conductor {
 			final BankNavigationRootActivity fragActivity = (BankNavigationRootActivity)activity;
 
 			fragActivity.closeDialog();
-
-			//			final Bundle helperBundle = BankRotationHelper.getHelper().getBundle();
-			//
-			//			helperBundle.putAll(bundle);
-
 			fragActivity.getSupportFragmentManager().popBackStackImmediate();
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
