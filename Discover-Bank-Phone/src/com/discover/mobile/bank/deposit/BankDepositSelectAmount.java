@@ -90,7 +90,6 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		noteTitle.setVisibility(View.GONE);
 		noteTextMsg.setVisibility(View.GONE);
 		actionLink.setVisibility(View.GONE);
-		feedbackLink.setVisibility(View.GONE);
 		(view.findViewById(R.id.top_note_text)).setVisibility(View.GONE);
 	}
 	

@@ -109,7 +109,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		/**Hide controls that are not needed*/
 		noteTitle.setVisibility(View.GONE);
 		noteTextMsg.setVisibility(View.GONE);
-		feedbackLink.setVisibility(View.GONE);
 		pageTitle.setVisibility(View.GONE);
 
 		/**Hide top note as it is not needed for this view**/

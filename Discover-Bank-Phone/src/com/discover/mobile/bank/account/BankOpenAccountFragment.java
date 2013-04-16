@@ -14,7 +14,6 @@ import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
-import com.discover.mobile.bank.util.BankNeedHelpFooter;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 
@@ -28,8 +27,6 @@ import com.discover.mobile.common.DiscoverActivityManager;
  *
  */
 public class BankOpenAccountFragment extends BaseFragment implements OnClickListener {
-	private BankNeedHelpFooter helpFooter;
-	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -41,10 +38,6 @@ public class BankOpenAccountFragment extends BaseFragment implements OnClickList
 		
 		/**Set the fragment activity as the handler for the button click event*/
 		openAccountBtn.setOnClickListener(this);
-
-		/**Create footer that will listen when user taps on Need Help Number to dial*/
-		helpFooter = new BankNeedHelpFooter((ViewGroup)view);
-		helpFooter.setToDialNumberOnClick(com.discover.mobile.bank.R.string.bank_need_help_number_text);
 
 		return view;
 	}

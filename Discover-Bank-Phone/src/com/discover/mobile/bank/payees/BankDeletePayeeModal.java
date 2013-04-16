@@ -64,8 +64,6 @@ public class BankDeletePayeeModal extends BankOneButtonFragment {
 		contentTable.setVisibility(View.GONE);
 		noteTitle.setVisibility(View.GONE);
 		actionLink.setVisibility(View.GONE);
-		feedbackLink.setVisibility(View.GONE);
-		helpFooter.show(false);
 			
 		return view;
 	}

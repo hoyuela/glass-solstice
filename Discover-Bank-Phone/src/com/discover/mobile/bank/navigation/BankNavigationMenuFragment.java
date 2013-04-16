@@ -4,11 +4,11 @@ package com.discover.mobile.bank.navigation;
 import java.util.Calendar;
 
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,9 +19,7 @@ import com.discover.mobile.bank.account.BankOpenAccountFragment;
 import com.discover.mobile.bank.atm.BankAtmLocatorInfo;
 import com.discover.mobile.bank.customerservice.BankCustomerServiceSectionInfo;
 import com.discover.mobile.bank.deposit.BankDepositChecksSectionInfo;
-import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankUser;
-import com.discover.mobile.bank.help.PrivacyTermsType;
 import com.discover.mobile.bank.paybills.BankPayBillsSectionInfo;
 import com.discover.mobile.bank.transfer.BankTransferMoneySectionInfo;
 import com.discover.mobile.common.nav.NavigationItem;
@@ -60,21 +58,14 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		lv.setDividerHeight(0);
 		lv.addFooterView(footerView, null, false);
 		
-		
-		privacy.setOnClickListener( new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				BankConductor.navigateToPrivacyTerms(PrivacyTermsType.LandingPage);
-			}
-		});
+		/**Underline text for Privacy & Terms*/
+		privacy.setPaintFlags(privacy.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		
 		
 
 		/**
 		 * Initializes the navigation menu
 		 */		
-
-
 		final NavigationRootActivity activity = (NavigationRootActivity) getActivity();
 		Fragment homeFragment = activity.getCurrentContentFragment();
 		activity.setMenu(this);

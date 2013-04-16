@@ -35,9 +35,6 @@ public class BankTransferNotEligibleFragment extends BankOneButtonFragment{
 		noteTextMsg.setText(R.string.transfer_money_not_eligible_body);
 		noteTextMsg.setVisibility(View.VISIBLE);
 		
-		helpFooter.show(true);
-		feedbackLink.setVisibility(View.GONE);
-		
 		actionButton.setText(R.string.open_an_account);
 		actionButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.external_link_icon, 0);
 

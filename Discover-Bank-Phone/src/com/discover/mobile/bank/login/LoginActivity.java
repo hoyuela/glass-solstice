@@ -530,8 +530,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 			@Override
 			public void onClick(final View v) {
-				// TODO Fill-Out, later Sprint
-
+				BankConductor.navigateToFeedback();
 			}
 		});
 

@@ -73,6 +73,13 @@
 	         android:drawablePadding="@dimen/between_related_elements_padding"
 	         android:text="@string/continue_text" />
 	    
+	    <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
+            android:id="@+id/bank_footer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/continue_button" 
+            style="@style/bank_layout_footer_style"/>
+	    
 	    <com.discover.mobile.common.help.HelpWidget
             android:id="@+id/help"
             android:layout_width="match_parent"

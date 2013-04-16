@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- BankLayoutFooterType Custom Attributes  -->
+    <declare-styleable name="com.discover.mobile.bank.ui.widgets.BankLayoutFooter">
+        <attr name="footerType" format="integer"/>
+        <attr name="helpNumber" format="string"/>
+        <attr name="helpPrompt" format="boolean"/>
+    </declare-styleable>
+</resources>

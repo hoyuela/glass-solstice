@@ -38,6 +38,7 @@ import com.discover.mobile.bank.help.FAQDetailFragment;
 import com.discover.mobile.bank.help.FAQLandingPageFragment;
 import com.discover.mobile.bank.help.LoggedOutFAQActivity;
 import com.discover.mobile.bank.help.PrivacyTermsType;
+import com.discover.mobile.bank.help.ProvideFeedbackFragment;
 import com.discover.mobile.bank.help.TermsLandingPageFragment;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationHelper;
@@ -507,8 +508,26 @@ public final class BankConductor  extends Conductor {
 	 * Navigation method used to display feedback landing page
 	 */
 	public static void navigateToFeedback() {
-		//Need to integrate with Feedback landing page once completed
-		navigateToUnderDevelopment();
+		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+		
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final Bundle bundle = new Bundle();
+		bundle.putBoolean(BankInfoNavigationActivity.PROVIDE_FEEDBACK, true);
+		
+		if( activity != null ) {
+			/**Launch Provide Feedback Activity if user is not logged in*/
+			if( activity instanceof LoginActivity ) {
+				final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
+				intent.putExtras(bundle);
+				activity.startActivity(intent);
+				activity.finish();
+			} 			
+			/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
+			else if(currentActivity != null && currentActivity instanceof NavigationRootActivity) {
+				((NavigationRootActivity)currentActivity).makeFragmentVisible(new ProvideFeedbackFragment());
+			}
+		}
 	}
 
 	/**

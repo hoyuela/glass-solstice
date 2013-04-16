@@ -98,7 +98,7 @@
         <item name="android:ems">8</item>
         <item name="android:focusable">true</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textCursorDrawable">@null</item>
+       <!--  <item name="android:textCursorDrawable">@null</item> -->
         <item name="android:hint">@string/bank_deposit_amount_hint</item>
     </style>
     
@@ -130,5 +130,14 @@
     <style name="atm_line">
         <item name="android:layout_marginTop">@dimen/forms_inner_padding</item>
         <item name="android:layout_marginBottom">@dimen/forms_inner_padding</item>
+    </style>
+    
+     <!-- Bank Layout Footer Widget Style -->
+    <style name="bank_layout_footer_style">
+         <item name="android:gravity">center_horizontal|bottom</item>
+         <item name="android:layout_marginTop">@dimen/modal_footer_topmargin</item>      
+    	 <item name="android:paddingBottom">@dimen/between_related_elements_padding</item>
+    	 <item name="android:layout_centerHorizontal">true</item>
+    	 <item name="android:layout_alignParentBottom">true</item>
     </style>
 </resources>

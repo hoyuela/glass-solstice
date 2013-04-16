@@ -19,6 +19,7 @@ import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.common.help.HelpWidget;
 
 /**
@@ -86,6 +87,9 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 		noteTextMsg.setVisibility(View.GONE);
 
 		actionButton.setText(R.string.bank_sch_payment);
+		
+		/**Set footer to show privacy & terms | feedback*/
+		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
 		
 		/**Check if confirmation page is for a payee update or addition*/
 		if( isUpdate ) {
@@ -162,7 +166,6 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	protected List<ViewPagerListItem> getViewPagerListContent() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

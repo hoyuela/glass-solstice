@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
-import com.discover.mobile.bank.util.BankNeedHelpFooter;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
 import com.google.common.base.Strings;
@@ -27,11 +27,12 @@ public class BankDepositForbidden extends BaseFragment {
 	 * Key used to read error message from bundle passed to this fragment.
 	 */
 	public final static String KEY_ERROR_MESSAGE = "error-messgae";
-	
 	/**
-	 * Helper class for enabling the user to dial the Need Help Number
+	 * Reference to footer in layout
 	 */
-	private BankNeedHelpFooter helpFooter;
+	protected BankLayoutFooter footer;
+	
+	
 	/**
 	 * Reference to TextView that displays the error message to the user.
 	 */
@@ -43,8 +44,8 @@ public class BankDepositForbidden extends BaseFragment {
 		final View view = inflater.inflate(R.layout.bank_deposit_forbidden, null);
 		
 		/**Create footer that will listen when user taps on Need Help Number to dial*/
-		helpFooter = new BankNeedHelpFooter((ViewGroup)view);
-		helpFooter.setToDialNumberOnClick(com.discover.mobile.bank.R.string.bank_deposit_forbidden_number);
+		footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
+		footer.setHelpNumber(getString(com.discover.mobile.bank.R.string.bank_deposit_forbidden_number));
 		
 		/**Fetch text view that will display error message to the user*/
 		errorText = (TextView)view.findViewById(R.id.top_note_text);

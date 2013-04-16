@@ -14,10 +14,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
-import com.discover.mobile.bank.util.BankNeedHelpFooter;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
@@ -57,10 +56,6 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 */
 	protected TextView actionLink;
 	/**
-	 * Reference to a TextView whose click event navigates the application to the feedback landing page
-	 */
-	protected TextView feedbackLink;
-	/**
 	 * Reference to a Progress indicator used to display a users progress in the current work-flow
 	 */
 	protected BankHeaderProgressIndicator progressIndicator;
@@ -84,10 +79,6 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 */
 	protected List<?> content;
 	/**
-	 * Helper class for enabling the user to dial the Need Help Number
-	 */
-	protected BankNeedHelpFooter helpFooter;
-	/**
 	 * Reference to TextView that shows on top of content table used for showing general errors for the screen.
 	 */
 	protected TextView generalError = null;
@@ -99,6 +90,10 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 * String appended to a string to determine whether a field has an error on rotation
 	 */
 	final protected static String KEY_ERROR_EXT = ".hasError";
+	/**
+	 * Reference to footer in layout
+	 */
+	protected BankLayoutFooter footer;
 	
 
 	/**
@@ -126,10 +121,7 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		
 		actionLink = (TextView)view.findViewById(R.id.actionLink);
 		actionLink.setOnClickListener(this);
-		
-		feedbackLink = (TextView)view.findViewById(R.id.provide_feedback);
-		feedbackLink.setOnClickListener(this);
-		
+			
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
@@ -160,8 +152,8 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		}
 		
 		/**Create footer that will listen when user taps on Need Help Number to dial*/
-		helpFooter = new BankNeedHelpFooter((ViewGroup)view, promptUserForNeedHelp() );
-		helpFooter.setToDialNumberOnClick(com.discover.mobile.bank.R.string.bank_need_help_number_text);
+		footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
+		footer.promptForHelp(promptUserForNeedHelp());
 		
 		loadListElementsToLayoutFromList(contentTable, content);
 			
@@ -235,9 +227,7 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 */
 	@Override
 	public void onClick(final View sender) {
-		if( sender == feedbackLink) {
-			BankConductor.navigateToFeedback();
-		}  else if( sender == actionButton ) {
+		if( sender == actionButton ) {
 			this.onActionButtonClick();
 		} else if( sender == actionLink) {
 			this.onActionLinkClick();
