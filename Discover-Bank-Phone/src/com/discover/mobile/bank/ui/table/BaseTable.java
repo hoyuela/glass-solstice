@@ -114,7 +114,10 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
-		outState.putAll(saveDataInBundle());
+		final Bundle bundle = saveDataInBundle();
+		if(null != bundle){
+			outState.putAll(saveDataInBundle());
+		}
 		super.onSaveInstanceState(outState);
 	}
 
