@@ -101,6 +101,7 @@ public final class BankExtraKeys {
 	public static final String EXTERNAL_ACCOUNTS = "extaccts";
 	public static final String DATE = "date";
 	public static final String SHOULD_NAVIGATE_BACK = "snb";
+	public static final String TRANSFER_SUCCESS_DATA = "tsd";
 
 	/**Used to signify sort set up*/
 	public static final int SORT_DATE_DESC = 0;

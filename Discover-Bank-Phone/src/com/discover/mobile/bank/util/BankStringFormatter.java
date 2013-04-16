@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.google.common.base.Strings;
 
@@ -134,6 +135,31 @@ public class BankStringFormatter {
 		}
 		return accountEndingInBuilder.toString();
 
+	}
+	
+	/**
+	 * Returns a String which is a formatted date in the form of mm/dd/yy from a formatted date String passed as the 
+	 * parameter.
+	 * @param longDate a formatted date
+	 * @return an mm/dd/yy representation of the parameter.
+	 */
+	public static String getFormattedDate(final String longDate) {
+		String formattedDate = "";
+		
+		if(longDate.contains(ActivityDetail.DATE_DIVIDER)){
+			formattedDate = longDate.split(ActivityDetail.DATE_DIVIDER)[0];
+		}
+		
+		final SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+		final SimpleDateFormat tableFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
+
+		try{
+			formattedDate = tableFormat.format(serverFormat.parse(formattedDate));
+		} catch (final ParseException e) {
+			formattedDate = longDate;
+		}
+		
+		return formattedDate;
 	}
 
 	/**

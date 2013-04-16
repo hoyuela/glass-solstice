@@ -57,7 +57,6 @@ import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
 import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
 import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
-import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -422,14 +421,16 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		else if(sender instanceof GetExternalTransferAccountsCall) {
 			final Bundle args = new Bundle();
+				
 			args.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, result);
 
 			BankConductor.navigateToTransferMoneyLandingPage(args);
 		}
 		else if(sender instanceof ScheduleTransferCall) {
-			final TransferDetail confirmationResults = (TransferDetail)result;
-
-			//			BankConductor.navigateToTransferConfirmation(confirmationResults);
+			final Bundle resultBundle = new Bundle();
+			resultBundle.putSerializable(BankExtraKeys.TRANSFER_SUCCESS_DATA, result);
+			
+			BankConductor.navigateToTransferConfirmation(resultBundle);
 		}
 		//Handle the payee success call
 		else if( sender instanceof GetPayeeServiceCall){

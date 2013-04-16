@@ -3,6 +3,7 @@
 
     <string name="transfer_money">Transfer Money</string>
     <string name="schedule_transfer">Schedule Transfer</string>
+    <string name="schedule_another_transfer">Schedule Another Transfer</string>
     <string name="select_account">Select Account</string>
     <string name="one_time">One Time</string>
     <string name="select_a_date">Select a Date</string>
@@ -11,6 +12,7 @@
     <string name="transfer_money_not_eligible_body">Enjoy the ease and convenience of Transferring Money between two accounts.\n\nTo start, simply have a total of two accounts with one internal account.</string>
     <string name="open_an_account">Open an Account</string>
     <string name="frequency_title">Frequency</string>
+    <string name="view_account_summary">View Account Summary</string>
     
     <string-array name="transfer_frequency_strings">
         <item>One Time</item>
@@ -41,4 +43,6 @@
     <string name="cancel_this_action">Cancel This Action</string>
 	<string name="cancel_this_action_content">Are you sure you wants to cancel? All information you have entered will be lost.</string>
     
+	<string name="transfer_success_title">You have successfully scheduled this transfer</string>
+	
 </resources>

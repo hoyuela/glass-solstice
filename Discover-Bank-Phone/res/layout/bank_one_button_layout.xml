@@ -59,11 +59,23 @@
                 android:text="@string/note_title"
                 style="@style/field_copy"/>
              
+             
+             <TextView 
+                android:id="@+id/success_note_text"
+                android:layout_marginBottom="@dimen/groups_of_elements_padding"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_note_text"
+                android:visibility="gone"
+                android:text="@null"
+                style="@style/field_copy_big"/>
+               
+                               
               <TextView
 		         android:id="@+id/general_error"
 		         android:layout_width="match_parent"
 		         android:layout_height="wrap_content"
-		         android:layout_below="@+id/top_note_text"
+		         android:layout_below="@+id/success_note_text"
 		         android:layout_alignLeft="@+id/top_note_text"
 		         android:text="@string/status_text"
 		         android:layout_marginBottom="@dimen/forms_inner_padding"

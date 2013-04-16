@@ -2,6 +2,7 @@ package com.discover.mobile.bank.services.transfer;
 
 import java.io.Serializable;
 
+import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.json.Money;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -28,10 +29,10 @@ public class TransferDetail implements Serializable {
 	public String id;
 
 	@JsonProperty("fromAccount")
-	public TransferEntity fromAccount;
+	public Account fromAccount;
 
 	@JsonProperty("toAccount")
-	public TransferEntity toAccount;
+	public Account toAccount;
 
 	@JsonProperty("amount")
 	public Money amount;
@@ -50,5 +51,5 @@ public class TransferDetail implements Serializable {
 
 	@JsonProperty("durationValue")
 	public String durationValue;
-
+		
 }
