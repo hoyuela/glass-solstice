@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/footer_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/need_help_footer"
+        layout="@layout/old_general_need_help_footer" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/forms_inner_padding" 
+ 		android:gravity="center_horizontal|bottom">
+
+        <TextView
+            android:id="@+id/privacy_terms"
+            style="@style/bank_blue_hyperlink_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bank_terms_privacy_n_terms" />
+        
+          <TextView
+            android:id="@+id/divider"
+            style="@style/bank_blue_hyperlink_small"
+            android:layout_toRightOf="@+id/privacy_terms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/between_related_elements_padding"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:text="@string/bank_divider" />
+
+        <TextView
+            android:id="@+id/provide_feedback_button"
+            style="@style/bank_blue_hyperlink_small"
+            android:layout_toRightOf="@+id/divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/feedback_text" />
+    </RelativeLayout>
+    
+  	<TextView
+       android:id="@+id/discover_copyright"
+       style="@style/sub_copy_small"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="@dimen/between_related_elements_padding"
+       android:text="@string/discover_copyright_text" /> 
+
+</LinearLayout>

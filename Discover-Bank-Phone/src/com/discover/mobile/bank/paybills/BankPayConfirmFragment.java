@@ -21,6 +21,7 @@ import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 
@@ -69,6 +70,9 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_pmt_details, R.string.confirm, R.string.confirm);
 
+		/**Set footer to show privacy & terms | feedback*/
+		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
+		
 		return view;
 	}
 

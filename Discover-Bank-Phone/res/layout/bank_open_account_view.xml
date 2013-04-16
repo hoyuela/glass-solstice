@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    xmlns:custom="http://schemas.android.com/apk/res-auto/com.discover.mobile.bank"
     style="@style/default_background"
     android:fillViewport="true"
     android:layout_width="match_parent"
@@ -44,32 +46,13 @@
             android:layout_gravity="center"
             android:text="@string/bank_open_account" />
 
-         <LinearLayout
-             	android:id="@+id/footer_layout"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_below="@+id/openAccount"
-                android:layout_alignParentBottom="true"
-	            android:layout_centerHorizontal="true"
-	            android:layout_marginTop="@dimen/modal_footer_topmargin"            
-   				android:paddingBottom="@dimen/between_related_elements_padding"
-                android:orientation="vertical">
-                
-                <include 
-                    layout="@layout/old_general_need_help_footer" 
-                    android:layout_weight="0.25"
-                    android:id="@+id/need_help_footer"/>
-                
-                <TextView
-		            android:id="@+id/provide_feedback_button"
-		            style="@style/bank_blue_hyperlink_small"
-		            android:layout_weight="0.75"
-		            android:layout_width="fill_parent"
-		            android:layout_height="wrap_content"
-		            android:layout_marginTop="@dimen/between_related_elements_padding"
-		            android:gravity="center_horizontal|bottom"
-		            android:text="@string/feedback_text" />
-        </LinearLayout> 
+        <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
+            android:id="@+id/bank_footer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/openAccount" 
+            style="@style/bank_layout_footer_style"
+            custom:footerType="3"/>
     </RelativeLayout>
 
 </ScrollView>

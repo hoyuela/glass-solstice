@@ -25,6 +25,7 @@ import com.slidingmenu.lib.SlidingMenu;
 public class BankInfoNavigationActivity extends NavigationRootActivity implements OnClickListener{	
 	public static final String CONTACT_US = "contact-us";
 	public static final String PRIVACY_AND_TERMS = "privacy-terms";
+	public static final String PROVIDE_FEEDBACK = "provide-feedback";
 	
 	/**
 	 * Reference to action bar back button.
@@ -61,6 +62,8 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 				makeFragmentVisible( contactUs );
 			} else if( bundle.containsKey(PRIVACY_AND_TERMS)) {
 				makeFragmentVisible(new TermsLandingPageFragment());
+			} else if( bundle.containsKey(PROVIDE_FEEDBACK)) {
+				makeFragmentVisible(new ProvideFeedbackFragment());
 			}
 		}
 	}
@@ -84,7 +87,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 		navigationBackButton = (ImageView) findViewById(R.id.navigation_back_button);
 		titleView.setVisibility(View.VISIBLE);
 		navigationToggle.setVisibility(View.INVISIBLE);
-		navigationBackButton.setVisibility(View.VISIBLE);
+		navigationBackButton.setVisibility(View.GONE);
 		logout.setVisibility(View.INVISIBLE);	
 		navigationBackButton.setOnClickListener(this);
 	}

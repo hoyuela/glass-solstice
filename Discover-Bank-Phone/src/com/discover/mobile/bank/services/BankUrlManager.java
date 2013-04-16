@@ -47,6 +47,7 @@ public class BankUrlManager  {
 	private static final String ATM_LOCATOR_URL = "https://api.discover.com/api/atmLocator/SearchGeocodedLocation.xml";
 	private static final String ATM_DIRECTIONS_BASE_URL = "http://maps.googleapis.com/maps/api/directions/json";
 	private static final String ATM_ADDRESS_TO_LOCATION_BASE_URL = "http://maps.google.com/maps/api/geocode/json";
+	private static final String FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=OWPeJUwo";
 	private static final String REFRESH_URL = "/api/auth/ping";
 	private static final String API_URL = "/api/";
 
@@ -225,6 +226,13 @@ public class BankUrlManager  {
 	 */
 	public static String getOpenAccountUrl() {
 		return OPEN_ACCOUNT_URL;
+	}
+	
+	/**
+	 * @return Returns the URL for providing feedback 
+	 */
+	public static String getProvideFeedbackUrl() {
+		return BankUrlManager.FEEDBACK_URL;
 	}
 
 	/**

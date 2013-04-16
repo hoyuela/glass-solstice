@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
@@ -28,7 +28,7 @@
         android:id="@+id/main_layout"
         android:layout_below="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:fillViewport="true"
         android:focusable="true"
         android:focusableInTouchMode="true" >
@@ -136,34 +136,12 @@
                 android:layout_marginTop="@dimen/between_related_elements_padding"
                 android:text="@string/action_link" />
 
-            <LinearLayout
-             	android:id="@+id/footer_layout"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_below="@+id/actionLink"
-                android:layout_alignParentBottom="true"
-	            android:layout_centerHorizontal="true"
-	            android:focusable="true"
-   				android:focusableInTouchMode="true"        
-   				android:paddingBottom="@dimen/between_related_elements_padding"
-                android:orientation="vertical">
-                
-                <include 
-                    layout="@layout/old_general_need_help_footer" 
-                    android:layout_weight="0.25"
-                    android:id="@+id/need_help_footer"/>
-                
-                 <!-- Feedback Link -->
-                <TextView
-		            android:id="@+id/provide_feedback"
-		            style="@style/bank_blue_hyperlink_small"
-		            android:layout_weight="0.75"
-		            android:layout_width="fill_parent"
-		            android:layout_height="wrap_content"
-		            android:layout_marginTop="@dimen/between_related_elements_padding"
-		            android:gravity="center_horizontal|bottom"
-		            android:text="@string/feedback_text" />
-        	</LinearLayout> 
+            <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
+	            android:id="@+id/bank_footer"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/actionLink" 
+	            style="@style/bank_layout_footer_style"/>
         </RelativeLayout>
     </ScrollView>
     <com.discover.mobile.common.help.HelpWidget

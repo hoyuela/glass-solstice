@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
@@ -110,10 +109,6 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		}
 
 		actionLink.setText(R.string.bank_add_cancel);
-		
-		//Need Help and feedback footer not required for this view
-		final LinearLayout footer = (LinearLayout)mainView.findViewById(R.id.footer_layout);
-		footer.setVisibility(View.GONE);
 	}
 
 

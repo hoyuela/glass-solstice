@@ -24,6 +24,7 @@
 		 />
 	 
 	<ScrollView
+	    android:id="@+id/main_view"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:layout_below="@+id/divider"
@@ -337,8 +338,15 @@
 	            android:text="@string/cancel_text" >
 	        </Button>
 	        
+	        <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
+	            android:id="@+id/bank_footer"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/cancel_button" 
+	            style="@style/bank_layout_footer_style"/>
 	    </RelativeLayout>	
 	</ScrollView>
+	 
 	<com.discover.mobile.common.help.HelpWidget
             android:id="@+id/help"
             android:layout_width="match_parent"

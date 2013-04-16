@@ -1,19 +1,17 @@
 package com.discover.mobile.bank.transfer;
 
-import java.util.List;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
-import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
-import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.bank.ui.fragments.BankMessageFragment;
 import com.discover.mobile.common.help.HelpWidget;
 
 /**
@@ -23,7 +21,7 @@ import com.discover.mobile.common.help.HelpWidget;
  * @author scottseward
  *
  */
-public class BankTransferNotEligibleFragment extends BankOneButtonFragment{
+public class BankTransferNotEligibleFragment extends BankMessageFragment{
 
 	/**
 	 * Setup the fragment to display the proper information.
@@ -32,55 +30,27 @@ public class BankTransferNotEligibleFragment extends BankOneButtonFragment{
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, 
 			final Bundle savedInstanceState) {	
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-		noteTextMsg.setText(R.string.transfer_money_not_eligible_body);
-		noteTextMsg.setVisibility(View.VISIBLE);
 		
-		helpFooter.show(true);
-		feedbackLink.setVisibility(View.GONE);
-		
-		actionButton.setText(R.string.open_an_account);
 		actionButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.external_link_icon, 0);
+		actionButton.setCompoundDrawablePadding((int) getResources().getDimension(R.dimen.between_related_elements_padding));
 
-		actionLink.setVisibility(View.GONE);
+		/**Help widget setup to show faq*/
+		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
+		help.showHelpItems(HelpMenuListFactory.instance().getBankTransferHelpItems());
+		
+		final ImageView image = (ImageView)view.findViewById(R.id.icon);
+		image.setVisibility(View.GONE);
+		
 		
 		return view;
 	}
 	
+	
 	@Override
-	protected String getPageTitle() {
+	public String getPageTitle() {
 		return getResources().getString(R.string.transfer_money_not_eligible_title);
 	}
 	
-	@Override
-	public void onBackPressed() {
-		
-	}
-
-	@Override
-	protected List<ViewPagerListItem> getViewPagerListContent() {
-		return null;
-	}
-
-	@Override
-	protected List<RelativeLayout> getRelativeLayoutListContent() {
-		return null;
-	}
-
-	@Override
-	protected void onActionButtonClick() {
-		BankConductor.navigateToBrowser(BankUrlManager.getOpenAccountUrl());
-	}
-
-	@Override
-	protected void onActionLinkClick() {
-		
-	}
-
-	@Override
-	protected void helpMenuOnClick(final HelpWidget help) {
-		help.showHelpItems(HelpMenuListFactory.instance().getBankTransferHelpItems());
-	}
-
 	@Override
 	public int getActionBarTitle() {
 		return R.string.transfer_money;
@@ -88,12 +58,28 @@ public class BankTransferNotEligibleFragment extends BankOneButtonFragment{
 
 	@Override
 	public int getGroupMenuLocation() {
-		return 0;
+		return BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return 0;
+		return BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP;
 	}
+
+	@Override
+	public void onClick(final View arg0) {
+		BankConductor.navigateToBrowser(BankUrlManager.getOpenAccountUrl());	
+	}
+
+	@Override
+	public String getActionButtonText() {
+		return this.getResources().getString(R.string.open_an_account);
+	}
+
+	@Override
+	public String getBodyText() {
+		return this.getResources().getString(R.string.transfer_money_not_eligible_body);
+	}
+
 
 }
