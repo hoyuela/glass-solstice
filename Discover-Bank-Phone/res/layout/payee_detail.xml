@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/content_table"
             android:layout_centerHorizontal="true"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:text="@string/bank_payee_action_edit" >
         </Button>

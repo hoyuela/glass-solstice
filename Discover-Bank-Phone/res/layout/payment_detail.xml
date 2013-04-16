@@ -24,7 +24,8 @@
             android:layout_below="@+id/content_table"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
-            android:text="@string/edit_payment" >
+            android:text="@string/edit_payment"
+            android:visibility="gone" >
         </Button>
 
         <Button
@@ -32,10 +33,11 @@
             style="@style/blue_hyperlink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/edit_payment_button"  
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/edit_payment_button"
             android:layout_centerHorizontal="true"
-            android:background="@null"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:background="@null"
             android:text="@string/delete_payment" >
         </Button>
         
