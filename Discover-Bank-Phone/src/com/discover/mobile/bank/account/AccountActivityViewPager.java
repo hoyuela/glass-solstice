@@ -6,14 +6,17 @@ import android.support.v4.view.ViewPager;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.ui.SpinnerFragment;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
+import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 
 /**
@@ -25,7 +28,7 @@ import com.discover.mobile.common.help.HelpWidget;
  * 
  * @author scottseward
  */
-public class AccountActivityViewPager extends DetailViewPager{
+public class AccountActivityViewPager extends DetailViewPager implements FragmentOnBackPressed{
 	//The list that is used to display detail Activity information.
 	private ListActivityDetail activityItems = null;
 	private int initialViewPosition = 0;
@@ -51,10 +54,12 @@ public class AccountActivityViewPager extends DetailViewPager{
 		}
 
 		final ViewPager viewPager = getViewPager();
-		if(viewPager != null)
+		if(viewPager != null) {
 			currentBundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, viewPager.getCurrentItem());
-		if(activityItems != null)
+		}
+		if(activityItems != null) {
 			currentBundle.putSerializable(BankExtraKeys.PRIMARY_LIST, activityItems);
+		}
 		return currentBundle;
 	}
 
@@ -112,8 +117,9 @@ public class AccountActivityViewPager extends DetailViewPager{
 
 		if(activityItems.activities != null) {
 			viewCount = activityItems.activities.size();
-			if (canLoadMore())
+			if (canLoadMore()) {
 				viewCount++;
+			}
 		}
 
 		return viewCount;
@@ -126,18 +132,18 @@ public class AccountActivityViewPager extends DetailViewPager{
 	@Override
 	protected Fragment getDetailItem(final int position) {
 		Fragment pageFragment = null;
-		
+
 		if(position < activityItems.activities.size()) {
 			pageFragment = new ActivityDetailFragment();
 			final ActivityDetail detailObject = activityItems.activities.get(position);
-	
+
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, detailObject);
 			pageFragment.setArguments(bundle);
 		}else {
 			pageFragment = new SpinnerFragment();
 		}
-		
+
 		return pageFragment;
 	}
 
@@ -148,7 +154,6 @@ public class AccountActivityViewPager extends DetailViewPager{
 	@Override
 	public void onPause() {
 		super.onPause();
-		BankRotationHelper.getHelper().setBundle(getCurrentFragmentBundle());
 		initialViewPosition = getViewPager().getCurrentItem();
 	}
 
@@ -180,12 +185,12 @@ public class AccountActivityViewPager extends DetailViewPager{
 	@Override
 	protected void loadMoreIfNeeded(final int currentPosition) {
 		final int loadMorePosition = getViewCount() - 2;
-		
+
 		if(loadMorePosition <= currentPosition && canLoadMore()){
 			loadMore(activityItems.links.get(ListActivityDetail.NEXT).url);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return if the currently displayed data set has more data that can be retrieved from the server.
@@ -238,5 +243,21 @@ public class AccountActivityViewPager extends DetailViewPager{
 	protected void helpMenuOnClick(final HelpWidget help) {
 		help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
 	}
-	
+
+	@Override
+	public void onBackPressed() {
+		final BankNavigationRootActivity activity = 
+				(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		activity.getSupportFragmentManager().popBackStackImmediate();
+		final BaseFragment fragment = activity.getCurrentContentFragment();
+		if(fragment instanceof BankAccountActivityTable){
+			((BankAccountActivityTable) fragment).loadDataFromBundle(getCurrentFragmentBundle());
+		}
+	}
+
+	@Override
+	public boolean isBackPressDisabled() {
+		return true;
+	}
+
 }

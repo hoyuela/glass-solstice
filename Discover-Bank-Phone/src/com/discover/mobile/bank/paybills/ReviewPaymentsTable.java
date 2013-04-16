@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
-import com.discover.mobile.bank.BankRotationHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
@@ -290,7 +289,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		bundle.putSerializable(canceledKey, canceled);
 		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index);
 		bundle.putBoolean(BankExtraKeys.IS_LOADING_MORE, getIsLoadingMore());
-		BankRotationHelper.getHelper().setBundle(bundle);
 		BankConductor.navigateToPaymentDetailScreen(bundle);
 	}
 
@@ -345,11 +343,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		}else if (canceled != null){
 			this.updateAdapter(canceled.payments);
 		}
-
-		final ReceivedUrl url = getLoadMoreUrl();
-		if(null == url){
-			showNothingToLoad();
-		}
 	}
 
 	/**
@@ -389,6 +382,11 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			table.setMode(Mode.PULL_FROM_END);
 			header.clearMessage();
 			footer.showDone();
+		}
+
+		final ReceivedUrl url = getLoadMoreUrl();
+		if(null == url){
+			showNothingToLoad();
 		}
 		adapter.notifyDataSetChanged();
 	}

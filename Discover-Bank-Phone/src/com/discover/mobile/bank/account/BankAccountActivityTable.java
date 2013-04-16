@@ -281,12 +281,13 @@ public class BankAccountActivityTable extends BaseTable{
 		}
 		header.setSortOrder(bundle.getInt(BankExtraKeys.SORT_ORDER, BankExtraKeys.SORT_DATE_DESC));
 		header.setHeaderExpanded(bundle.getBoolean(BankExtraKeys.TITLE_EXPANDED, false));
-		createDefaultLists();
-		this.updateAdapter(current.activities);
+		if(null != current){
+			this.updateAdapter(current.activities);
 
-		final ReceivedUrl url = getLoadMoreUrl();
-		if(null == url){
-			showNothingToLoad();
+			final ReceivedUrl url = getLoadMoreUrl();
+			if(null == url){
+				showNothingToLoad();
+			}
 		}
 	}
 
