@@ -61,7 +61,7 @@ public class CardErrorHandler extends BaseErrorHandler {
 	@Override
 	public void showErrorsOnScreen(final ErrorHandlerUi errorHandlerUi, final String errorText) {
 		// Show error label and display error text
-		if (errorHandlerUi != null) {
+		if (errorHandlerUi != null && errorHandlerUi.getErrorLabel() != null) {
 			final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 			errorHandlerUi.getErrorLabel().setTextColor(activeActivity.getResources().getColor(R.color.error_indicator));
 			errorHandlerUi.getErrorLabel().setText(errorText);
