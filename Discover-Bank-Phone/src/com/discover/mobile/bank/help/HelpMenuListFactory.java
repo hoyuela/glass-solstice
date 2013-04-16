@@ -48,9 +48,9 @@ public final class HelpMenuListFactory {
 	 */
 	private HelpMenuListFactory(){
 		allFaq = new HelpItemGenerator(R.string.help_all_faq, true, false, getAllFaqListener());
-		paybills = new HelpItemGenerator(R.string.pay_bills_help, false, false, 
+		paybills = new HelpItemGenerator(R.string.pay_bills_help, true, false, 
 													getDefaultClickListener(BankExtraKeys.BILL_PAY_FAQ));
-		checkDeposit = new HelpItemGenerator(R.string.check_deposit_faq, false, false, 
+		checkDeposit = new HelpItemGenerator(R.string.check_deposit_faq, true, false, 
 													getDefaultClickListener(BankExtraKeys.CHECK_DEPOSIT_FAQ));
 	}
 
@@ -129,7 +129,6 @@ public final class HelpMenuListFactory {
 	 */
 	public List<HelpItemGenerator> getPayBillsHelpItems(){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
-		items.add(paybills);
 		items.add(allFaq);
 		return items;
 	}
@@ -140,11 +139,10 @@ public final class HelpMenuListFactory {
 	 */
 	public List<HelpItemGenerator> getCheckDepositHelpItems(){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
-		final HelpItemGenerator howItWorksModal = new HelpItemGenerator(R.string.check_deposit_help, false, false, 
+		final HelpItemGenerator howItWorksModal = new HelpItemGenerator(R.string.check_deposit_help, true, false, 
 																				getHowItWorksModalListener());
-		items.add(howItWorksModal);
-		items.add(checkDeposit);
 		items.add(allFaq);
+		items.add(howItWorksModal);
 		return items;
 	}
 
@@ -155,13 +153,12 @@ public final class HelpMenuListFactory {
 	public List<HelpItemGenerator> getAtmHelpItems(){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
 		final HelpItemGenerator atmHelp = 
-				new HelpItemGenerator(R.string.help_menu_atm_help, false, true, getAtmHelpListener());
+				new HelpItemGenerator(R.string.help_menu_atm_help, true, false, getAtmHelpListener());
 		final HelpItemGenerator atmFaq = 
-				new HelpItemGenerator(R.string.help_menu_atm_faq, false, true, 
+				new HelpItemGenerator(R.string.help_menu_atm_faq, true, true, 
 												getDefaultClickListener(BankExtraKeys.ATM_LOCATOR_FAQ));
-		items.add(atmHelp);
-		items.add(atmFaq);
 		items.add(allFaq);
+		items.add(atmHelp);
 		return items;
 	}
 
