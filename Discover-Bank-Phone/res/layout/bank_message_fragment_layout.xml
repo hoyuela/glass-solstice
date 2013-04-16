@@ -30,7 +30,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_toRightOf="@+id/icon"
-		      	android:layout_alignTop="@+id/icon"
+		        android:layout_marginTop="@dimen/forms_inner_padding"
 		        android:layout_marginBottom="@dimen/table_inner_padding"
 		        android:text="@string/bank_deposit_error_title" />
 		

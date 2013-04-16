@@ -478,7 +478,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 			transferObject.frequency = frequencyCode;
 		}
 
-		transferObject.sendDate = "2013-04-16T00:00:00Z";
+		transferObject.sendDate = "2013-04-19T00:00:00Z";
 
 		final String inputAmount = amountField.getText().toString();
 		final String cents = inputAmount.replaceAll("[^0-9]", "");

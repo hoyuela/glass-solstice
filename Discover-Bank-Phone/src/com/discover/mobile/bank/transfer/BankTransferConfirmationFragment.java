@@ -15,6 +15,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
+import com.discover.mobile.bank.ui.widgets.FooterType;
 
 /**
  * This is the confirmation screen for a bank transfer.
@@ -35,8 +36,10 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment {
 		
 		actionButton.setText(R.string.schedule_another_transfer);
 		actionLink.setText(R.string.view_account_summary);
+			 
+        /**Set footer to show privacy & terms | feedback*/
+		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
 		
-	
 		showSuccessfulTransferTitle(view);
 		
 		return view;
