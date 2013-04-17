@@ -115,7 +115,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	public void onPause() {
 		super.onPause();
 		
-		recurring.onPause();
 		amountField.enableBankAmountTextWatcher(false);
 	}
 
@@ -126,7 +125,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
 		getCurrentFragmentBundle();
-		recurring.saveState(getArguments());
+		
+		if( recurring != null ) {
+			recurring.saveState(getArguments());
+		}
 	}
 
 	/**
@@ -149,14 +151,19 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 			args.putString(BankExtraKeys.FREQUENCY_CODE, frequencyCode);
 		}
 
-		if(frequencyText != null)
+		if(frequencyText != null && frequencyListItem != null ) {
 			frequencyText = frequencyListItem.getMiddleLabel().getText().toString();
 		
-		args.putString(BankExtraKeys.FREQUENCY_TEXT, frequencyText);
+			args.putString(BankExtraKeys.FREQUENCY_TEXT, frequencyText);
+		}
 
-		args.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, getSelectedAccounts());
+		if( toAccount != null && fromAccount != null) {
+			args.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, getSelectedAccounts());
+		}
 
-		args.putString(date, dateTextView.getText().toString());
+		if( dateTextView != null )
+			args.putString(date, dateTextView.getText().toString());
+		
 		return args;
 	}
 
