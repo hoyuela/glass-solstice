@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -94,6 +96,9 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	@SuppressLint("NewApi")
 	private void setupWebView() {
 		pageLoadSuccess = true;
+		final WebSettings webSettings = termsWebView.getSettings();
+		webSettings.setJavaScriptEnabled(true);
+		webSettings.setRenderPriority(RenderPriority.HIGH);
 		termsWebView.loadUrl(this.getTermsUrl());
 		termsWebView.setBackgroundColor(Color.TRANSPARENT);
 		termsWebView.setWebViewClient(new WebViewClient() {
