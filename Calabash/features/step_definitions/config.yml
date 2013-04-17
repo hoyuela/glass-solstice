@@ -1,0 +1,10 @@
+:login:
+    :bank:
+        :username: "asystest505"
+        :password: "pass123$"
+        :name: "Angela"
+    :card:
+        :username: "TODO"
+        :password: "TODO"
+        :name: "TODO"
+:securityAnswer: "test"

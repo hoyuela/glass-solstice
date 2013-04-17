@@ -1,0 +1,75 @@
+require 'YAML'
+CONFIG = YAML::load_file(File.join(File.dirname(File.expand_path(__FILE__)), 'config.yml'))
+DEFAULT_SERVICE_TIMEOUT = 60; # Seconds to wait for a service call to complete
+
+# Wait for Splash Screen to dismiss
+Given /^The splash screen is finished$/ do
+	performAction('wait_for_text', "User ID")
+end
+
+# Switches to the Card or Bank tab on the Login screen
+Given /^I am on the (card|bank) tab$/ do |which|
+	id = which + "_login_toggle"
+	performAction('click_on_view_by_id', id)
+end
+
+# Allows for custom credentials on the login screen
+Given /^I enter credentials "([^\"]*)", "([^\"]*)"$/ do |user, password|	
+	performAction('clear_numbered_field', 1)
+	performAction('clear_numbered_field', 2)
+	performAction('enter_text_into_numbered_field', user, 1)
+	performAction('enter_text_into_numbered_field', password, 2)
+end
+
+# Meant to be called on startup, or at least from Login screen
+# Performs a basic login and completes the Enhanced Security Screen
+Given /^I am logged in as (card|bank) user "([^\"]*)", "([^\"]*)"$/ do |which, user, password|
+	macro 'The splash screen is finished'
+	macro %Q[I am on the #{which} tab]
+	macro %Q[I enter credentials "#{user}", "#{password}"]
+	performAction('click_on_view_by_id', "login_button") # Presess the "Login" Button
+	macro 'I am on a public device' # Complete enhanced account security screen
+	performAction('wait_for_screen', "BankNavigationRootActivity", DEFAULT_SERVICE_TIMEOUT) # Wait for the home screen. 
+end
+
+# Performs a basic login and completes the Enhanced Security Screen
+# Uses credentials from config.yml
+Given /^I am logged in as(?: a| the)? default (bank|card) user$/ do |which|
+	creds = CONFIG[:login][which.to_sym]
+	macro %Q[I am logged in as #{which} user "#{creds[:username]}", "#{creds[:password]}"]
+end
+
+# Completes the Enhanced Security Screen but does not save the device
+# Meant to be called during Login if the Enhanced Security Screen is to be shown
+Given /^I am on a public device$/ do
+	# Wait for the security screen (up to 60 seconds)
+	performAction('wait_for_screen', "EnhancedAccountSecurityActivity", DEFAULT_SERVICE_TIMEOUT)
+
+	# Security answer
+	security = CONFIG[:securityAnswer]
+	performAction('enter_text_into_numbered_field', security, 1)
+
+	performAction('click_on_view_by_id', "account_security_choice_two_radio") # "No. This is a public device."
+	performAction('click_on_view_by_id', "account_security_continue_button") # "Continue" button
+	performAction('wait_for_dialog_to_close') # Wait for Loading dialog to close
+end
+
+# Toggles the "Remember Me" button on the Login screen
+Given /^I press remember me$/ do
+	performAction('click_on_view_by_id', "remember_user_id_button")
+end
+
+# Asserts the presence of the gretting "Hi, [first name]"
+# Uses the default credentials from config.yml
+Given /^I see the (bank|card) greeting$/ do |which|
+	name = CONFIG[:login][which.to_sym][:name]
+	greeting = "Hi, " + name
+	performAction('wait_for_text', greeting)
+end
+
+# Clicks the "Log Out" button and asserts return to the Login screen
+Given /^I (?:am logged|log) out$/ do
+	performAction('click_on_view_by_id', "logout_button")
+	performAction('wait_for_dialog_to_close') # Wait for Loading dialog to close
+	performAction('wait_for_screen', "LoginActivity", DEFAULT_SERVICE_TIMEOUT)
+end

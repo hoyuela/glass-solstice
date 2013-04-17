@@ -43,7 +43,9 @@ public class BankAmountItem extends RelativeLayout {
 		amountField = (BankAmountLimitValidatedField)layout.findViewById(R.id.editable_field);
 		errorLabel = (TextView)layout.findViewById(R.id.error_label);
 		
-		/**Associate the error label with the amount field*/
+		/**Associate the error label with the amount field. 
+		 * We also ensure that the label will be INVISIBLE when hidden (as opposed to "GONE").*/
+		amountField.setHiddenErrorVisibility(false);
 		amountField.attachErrorLabel(errorLabel);
 		
 		addView(layout);

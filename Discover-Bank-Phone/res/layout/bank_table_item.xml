@@ -14,14 +14,34 @@
         android:paddingBottom="@dimen/table_inner_padding"
         android:paddingTop="@dimen/table_inner_padding"
         android:weightSum="4" >
-
-        <TextView
-            android:id="@+id/date"
-            style="@style/table_text"
+        
+        
+          <RelativeLayout
+            android:id="@+id/filter_1"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingRight="@dimen/between_related_elements_padding" />
+            android:paddingRight="@dimen/between_related_elements_padding" >
+
+            <TextView
+                android:id="@+id/date"
+                style="@style/table_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <!-- Avoiding a compound drawable so that the symbol can be easily shown/hidden  -->
+
+            <ImageView
+                android:id="@+id/reocurring"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/date"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/recurring_icon"
+                android:visibility="gone" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/description"
