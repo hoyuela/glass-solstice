@@ -77,6 +77,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		table.setShowViewWhileRefreshing(true);
 		table.setShowIndicator(false);
 		table.getLoadingLayoutProxy().setRefreshingLabel("");
+		table.setScrollingWhileRefreshingEnabled(false);
 		table.setOnRefreshListener(new OnRefreshListener<ListView>() {
 			@Override
 			public void onRefresh(final PullToRefreshBase<ListView> refreshView) {
