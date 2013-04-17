@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
@@ -92,6 +93,11 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 	/**Reference handler for returning to the UI*/
 	private final TypedReferenceHandler<ListPaymentDetail> handler;
 
+	/**Boolean set to true if a payment was recently deleted*/
+	private boolean wasDeleted = false;
+
+	/**Bundle of data to pass after making the call*/
+	private Bundle extras;
 
 	/**
 	 * 
@@ -142,5 +148,33 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 	@Override
 	public TypedReferenceHandler<ListPaymentDetail> getHandler() {
 		return handler;
+	}
+
+	/**
+	 * @return the wasDeleted
+	 */
+	public boolean isWasDeleted() {
+		return wasDeleted;
+	}
+
+	/**
+	 * @param wasDeleted the wasDeleted to set
+	 */
+	public void setWasDeleted(final boolean wasDeleted) {
+		this.wasDeleted = wasDeleted;
+	}
+
+	/**
+	 * @return the extras
+	 */
+	public Bundle getExtras() {
+		return extras;
+	}
+
+	/**
+	 * @param extras the extras to set
+	 */
+	public void setExtras(final Bundle extras) {
+		this.extras = extras;
 	}
 }

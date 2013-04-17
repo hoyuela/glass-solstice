@@ -58,14 +58,8 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 						BankConductor.navigateToPayBillsLanding();
 					} else if(isEligible() && !isEnrolled()){
 						sendToTermsScreen(R.string.section_title_pay_bills);
-					} else{								
-						if(null == BankUser.instance().getPayees()) {							
-							BankServiceCallFactory.createGetPayeeServiceRequest().submit();
-						} else{
-							final Bundle bundle = new Bundle();
-							bundle.putSerializable(BankExtraKeys.PAYEES_LIST, BankUser.instance().getPayees());
-							BankConductor.navigateToSelectPayee(bundle);
-						}
+					} else{
+						BankConductor.getInstance().launchFragment(BankSelectPayee.class, null, null);
 					}
 				} else {
 					BankNavigationHelper.hideSlidingMenu();
@@ -89,7 +83,11 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 						BankConductor.navigateToPayBillsLanding();
 					} else if (isEligible() && !isEnrolled()) {
 						sendToTermsScreen(R.string.sub_section_title_manage_payees);
-					}else {
+					}else if(null != BankUser.instance().getPayees()){
+						final Bundle bundle = new Bundle();
+						bundle.putSerializable(BankExtraKeys.PAYEES_LIST, BankUser.instance().getPayees());
+						BankConductor.navigateToManagePayee(bundle);
+					}else{
 						BankServiceCallFactory.createManagePayeeServiceRequest().submit();
 					}
 				} else {
@@ -125,9 +123,13 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 					} else if(isEligible() && !isEnrolled()){
 						sendToTermsScreen(R.string.review_payments_title);
 					} else{
-						if(null == BankUser.instance().getPayees()) {
+						if(null == BankUser.instance().getPayees() && null == BankUser.instance().getScheduled()) {
 							BankServiceCallFactory.createGetPayeeServiceRequest(true).submit();
-						} else{
+						} else if(null != BankUser.instance().getPayees() && null != BankUser.instance().getScheduled()){
+							final Bundle bundle = new Bundle();
+							bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, BankUser.instance().getScheduled());
+							BankConductor.navigateToReviewPaymentsTable(bundle);
+						}else{
 							final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 							BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 						}

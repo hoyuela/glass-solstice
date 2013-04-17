@@ -2,7 +2,6 @@ package com.discover.mobile.bank.paybills;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +14,7 @@ import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
@@ -68,13 +68,13 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		}
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
 			scheduled = (null == scheduled) ? list : handleReceivedData(scheduled, list);
-			updateAdapter(scheduled.payments);
+			updateAdapter(scheduled);
 		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS){
 			completed = (null == completed) ? list : handleReceivedData(completed, list);
-			updateAdapter(completed.payments);
+			updateAdapter(completed);
 		}else{
 			canceled = (null == canceled) ? list : handleReceivedData(canceled, list);
-			updateAdapter(canceled.payments);
+			updateAdapter(canceled);
 		}
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
@@ -179,12 +179,15 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			@Override
 			public void onClick(final View v) {
 				header.setCurrentCategory(ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
-				if(null == scheduled){
+				if(null == scheduled && null == BankUser.instance().getScheduled()){
 					//Generate a url to download schedule payments
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}else if(null == scheduled && null != BankUser.instance().getScheduled()){
+					scheduled = BankUser.instance().getScheduled();
+					updateAdapter(scheduled);
 				}else{
-					updateAdapter(scheduled.payments);
+					updateAdapter(scheduled);
 				}
 			}
 		});
@@ -193,12 +196,14 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			@Override
 			public void onClick(final View v) {
 				header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
-				if(null == completed){
-					//Generate a url to download completed payments
+				if(null == completed && null == BankUser.instance().getCompleted()){
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.COMPLETED);
 					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}else if(null == completed && null != BankUser.instance().getCompleted()){
+					completed = BankUser.instance().getCompleted();
+					updateAdapter(completed);
 				}else{
-					updateAdapter(completed.payments);
+					updateAdapter(completed);
 				}
 			}
 		});
@@ -207,12 +212,14 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			@Override
 			public void onClick(final View v) {
 				header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
-				if(null == canceled){
-					//Generate a url to download cancelled payments
+				if(null == canceled && null == BankUser.instance().getCancelled()){
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.CANCELLED);
 					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+				}else if(null == canceled && null != BankUser.instance().getCancelled()){
+					canceled = BankUser.instance().getCancelled();
+					updateAdapter(canceled);
 				}else{
-					updateAdapter(canceled.payments);
+					updateAdapter(canceled);
 				}
 			}
 		});
@@ -337,11 +344,11 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		}
 
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS && scheduled != null){
-			this.updateAdapter(scheduled.payments);
+			this.updateAdapter(scheduled);
 		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS && completed != null){
-			this.updateAdapter(completed.payments);
+			this.updateAdapter(completed);
 		}else if (canceled != null){
-			this.updateAdapter(canceled.payments);
+			this.updateAdapter(canceled);
 		}
 	}
 
@@ -368,12 +375,19 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 
 	/**
 	 * Update the adapter
-	 * @param activities - activities to update the adapter with
+	 * @param list - activities to update the adapter with
 	 */
-	public void updateAdapter(final List<PaymentDetail> activities){
-
+	public void updateAdapter(final ListPaymentDetail list){
+		final int category = header.getCurrentCategory();
+		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS && null == BankUser.instance().getScheduled()){
+			BankUser.instance().setScheduled(list);
+		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS && null == BankUser.instance().getCompleted()){
+			BankUser.instance().setCompleted(list);
+		}else if(category == ReviewPaymentsHeader.CANCELED_PAYMENTS && null == BankUser.instance().getCancelled()){
+			BankUser.instance().setCancelled(list);
+		}
 		adapter.clear();
-		adapter.setData(activities);
+		adapter.setData(list.payments);
 		if(adapter.getCount() < 1){
 			header.setMessage(this.getEmptyStringText());
 			showNothingToLoad();

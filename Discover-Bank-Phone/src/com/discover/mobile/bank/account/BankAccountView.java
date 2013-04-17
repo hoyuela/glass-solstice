@@ -2,6 +2,7 @@ package com.discover.mobile.bank.account;
 
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,9 @@ import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.account.Account;
@@ -168,7 +171,13 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 		BankUser.instance().setCurrentAccount(account);
 
 		//Send Request to download the current accounts posted activity
-		BankServiceCallFactory.createGetActivityServerCall(link).submit();
+		if(null != account.posted){
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, account.posted);
+			BankConductor.navigateToAccountActivityPage(bundle);
+		}else{
+			BankServiceCallFactory.createGetActivityServerCall(link).submit();
+		}
 	}
 
 	/**

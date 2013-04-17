@@ -219,7 +219,7 @@ public class ListItemGenerator {
 
 		final Account account = BankUser.instance().getAccount(item.paymentAccount.id);
 
-		String payeeName = BankUser.instance().getPayees().getNameFromId(item.payee.id);	
+		String payeeName = item.payee.nickName;	
 		if( Strings.isNullOrEmpty(payeeName)) {
 			payeeName = item.payee.nickName;
 		}
@@ -272,21 +272,21 @@ public class ListItemGenerator {
 		final ViewPagerListItem item = getTwoItemCell(R.string.empty, "");
 		final StringBuilder builder = new StringBuilder();
 		int direction = 0;
-					
+
 		direction = (isFromCell) ? R.string.from : R.string.to;
-		
+
 		builder.append(context.getString(direction));
 		builder.append(" ");
 		builder.append(context.getString(R.string.account_ending_in_first_two_caps));
 		builder.append(" ");
 		builder.append(transferAccount.accountNumber.ending);
-		
+
 		item.getTopLabel().setText(builder.toString());
 		item.getMiddleLabel().setText(transferAccount.nickname);
-		
+
 		return item;
 	}
-	
+
 	/**
 	 * Return a list of items that will be shown on the transfer confirmation page.
 	 * This list shows different information based on the type of information provided in the 
@@ -296,7 +296,7 @@ public class ListItemGenerator {
 	 */
 	public List<ViewPagerListItem> getTransferConfirmationList(final TransferDetail results) {
 		final List<ViewPagerListItem> list = new ArrayList<ViewPagerListItem>();
-		
+
 		list.add(getTransferAccountCell(results.fromAccount, true));
 		list.add(getTransferAccountCell(results.toAccount, false));
 		list.add(getAmountCell(results.amount.value));
@@ -306,7 +306,7 @@ public class ListItemGenerator {
 
 		return list;
 	}
-	
+
 	/**
 	 * Returns a payment date cell based on a PaymentDetail object. It returns a date based on the kind of
 	 * payment that was passed to it, like SCHEDULED, COMPLETED, or CANCELLED.

@@ -54,6 +54,10 @@ public class BankSelectPayee extends BaseFragment{
 
 	public boolean errorExists;
 
+	public BankSelectPayee(){
+
+	}
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,11 +74,11 @@ public class BankSelectPayee extends BaseFragment{
 			final Bundle savedInstanceState) {
 
 		view = inflater.inflate(R.layout.select_payee, null);
-		
+
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
 		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
-		
+
 		payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
 		empty = (TextView)view.findViewById(R.id.no_payees);
 		error = (TextView)view.findViewById(R.id.payee_error_text);
@@ -107,10 +111,10 @@ public class BankSelectPayee extends BaseFragment{
 	 */
 	private void initViewWithBundleData() {
 		final Button addPayee = (Button)view.findViewById(R.id.add_payee);
-		
+
 		/**Used Cache list of Payees*/
 		payees = BankUser.instance().getPayees();
-		
+
 		/**Set Button Text to specific text when there are no payees in list*/
 		if(null == payees || payees.payees.isEmpty()){
 			empty.setVisibility(View.VISIBLE);			
@@ -125,7 +129,7 @@ public class BankSelectPayee extends BaseFragment{
 			final int size = payees.payees.size();
 			for(final PayeeDetail payee : payees.payees){
 				SimpleChooseListItem item = null;
-				
+
 				if(size == 1) {
 					item = createSingleListItem(payee);
 					payeesList.addView(item);
@@ -188,7 +192,7 @@ public class BankSelectPayee extends BaseFragment{
 		item.setOnClickListener(getOnClickListener(detail));
 		return item;
 	}
-	
+
 	/**
 	 * Create a single choose list item for a single list entry - solid stroke on all sides.
 	 * 
@@ -279,7 +283,7 @@ public class BankSelectPayee extends BaseFragment{
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.PAY_BILLS_SECTION;
 	}
-	
+
 	/**
 	 * Method used to refresh the screen with new date downloaded.
 	 * 
