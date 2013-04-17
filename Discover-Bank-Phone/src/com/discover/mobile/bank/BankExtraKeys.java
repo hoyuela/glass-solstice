@@ -7,11 +7,6 @@ package com.discover.mobile.bank;
  */
 public final class BankExtraKeys {
 
-	/**Calendar Keys*/
-	public static final String CALENDAR_MONTH = "cal-month";
-	public static final String CALENDAR_YEAR = "cal-year";
-
-
 	/**Payload that would be retrieved from the service*/
 	public static final String PAYLOAD = "payLoad";
 
