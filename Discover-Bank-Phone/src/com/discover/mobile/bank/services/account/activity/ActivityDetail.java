@@ -154,6 +154,9 @@ public class ActivityDetail implements Serializable{
 	/**Confirmation string*/
 	@JsonProperty("confirmation")
 	public String confirmation;
+	
+	@JsonProperty("paymentMethod")
+	public Account paymentMethod;
 
 	/**
 	 * Return the date that needs to be shown in the table

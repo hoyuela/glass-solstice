@@ -1,10 +1,7 @@
 package com.discover.mobile.bank.ui.table;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import android.content.Context;
 import android.view.View;
@@ -20,8 +17,9 @@ import com.discover.mobile.bank.util.BankStringFormatter;
 import com.google.common.base.Strings;
 
 /**
- * this detail item class is able to return the individual table cells to present
- * in the transaction detail fragment.
+ * This detail item class is able to return the individual table cells to present
+ * inside of a table view style interface element.
+ * It is most commonly used in the ViewPager, confirmation screens, and other custom, not very scrollable lists.
  * 
  * @author scottseward
  *
@@ -47,6 +45,17 @@ public class ListItemGenerator {
 			listItem.getBottomLabel().setVisibility(View.GONE);
 		}
 		return listItem;
+	}
+	
+	public ViewPagerListItem getTwoItemImageCell(final int topLabelResource, final String middleLabelText) {
+		final ViewPagerListItemWithImage listItemWithImage = new ViewPagerListItemWithImage(context);
+		
+		if(middleLabelText != null) {
+			listItemWithImage.getTopLabel().setText(topLabelResource);
+			listItemWithImage.getMiddleLabel().setText(middleLabelText);
+			listItemWithImage.getBottomLabel().setVisibility(View.GONE);
+		}
+		return listItemWithImage;
 	}
 
 	public ViewPagerListItem getThreeItemCell(final int topLabelResource, final String middleLabelText, 
@@ -79,8 +88,8 @@ public class ListItemGenerator {
 		return getTwoItemCell(R.string.balance, BankStringFormatter.convertCentsToDollars(balance));
 	}
 
-	public ViewPagerListItem getDateCell(final String formattedDate) {
-		return getTwoItemCell(R.string.date, convertDate(formattedDate.split(ActivityDetail.DATE_DIVIDER)[0]));
+	public ViewPagerListItem getDateCell(final String date) {
+		return getTwoItemCell(R.string.date, BankStringFormatter.getFormattedDate(date));
 	}
 
 	public ViewPagerListItem getAmountCell(final String amount) {
@@ -112,7 +121,13 @@ public class ListItemGenerator {
 	}
 
 	public ViewPagerListItem getFrequencyCell(final String frequency) {
-		return getTwoItemCell(R.string.frequency, frequency);
+		ViewPagerListItem item = null;
+		if(TransferDetail.ONE_TIME_TRANSFER.equals(frequency))
+			item = getTwoItemCell(R.string.frequency, frequency);
+		else
+			item = getTwoItemImageCell(R.string.frequency, frequency);
+		
+		return item;
 	}
 
 	public ViewPagerListItem getPayeeCell(final String payee) {
@@ -153,6 +168,10 @@ public class ListItemGenerator {
 
 	public ViewPagerListItem getPhoneNumberCell(final String phoneNumber) {
 		return getTwoItemCell(R.string.phone_number, badPhoneNumberFormatter(unformatPhoneNumber(phoneNumber)));
+	}
+	
+	public ViewPagerListItem getFrequencyDurationCell(final String frequencyDuration) {
+		return getTwoItemCell(R.string.duration, frequencyDuration);
 	}
 
 	// TEMP this may (and should) be replaced with the server formatting the phone numbers.
@@ -200,11 +219,11 @@ public class ListItemGenerator {
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
 
 		items.add(getAmountCell(item.amount.value));
-		items.get(0).getDividerLine().setVisibility(View.GONE);
 		items.add(getDescriptionCell(item.description, item.id));
 		items.add(getDateCell(item.postedDate));
 		items.add(getBalanceCell(item.balance.value));
 
+		hideDivider(items);
 		return items;
 	}
 
@@ -225,7 +244,6 @@ public class ListItemGenerator {
 		}
 
 		items.add(getPayeeCell(payeeName));
-		items.get(0).getDividerLine().setVisibility(View.GONE);
 		items.add(getPayFromAccountCell(account.accountNumber.ending, account.nickname));
 		items.add(getAmountCell(item.amount.value));
 		items.add(getPaymentDateCell(item));
@@ -235,6 +253,7 @@ public class ListItemGenerator {
 		items.add(getConfirmationCell(item.confirmationNumber));
 		items.add(getMemoItemCell(item.memo));
 
+		hideDivider(items);
 		return items;
 	}
 
@@ -248,7 +267,6 @@ public class ListItemGenerator {
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
 		//verified payees have different content to show.
 		items.add(getPayeeNameCell(item.name));
-		items.get(0).getDividerLine().setVisibility(View.GONE);
 		items.add(getPayeeNicknameCell(item.nickName));
 
 		if(item.verified){
@@ -259,6 +277,7 @@ public class ListItemGenerator {
 			items.add(getUnmanagedPayeeMemoCell(item.memo));	
 		}
 
+		hideDivider(items);
 		return items;
 	}
 
@@ -320,34 +339,87 @@ public class ListItemGenerator {
 
 		if("SCHEDULED".equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
-			paymentDateItem = getDeliverByCell(convertDate(dates.split(PaymentDetail.DATE_DIVIDER)[0]));
+			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
 		}else if("PAID".equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
-			paymentDateItem = getDeliverByCell(convertDate(dates.split(PaymentDetail.DATE_DIVIDER)[0]));
+			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
 			paymentDateItem.getTopLabel().setText(R.string.completed_pay_date);
 		}else if ("CANCELLED".equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
-			paymentDateItem = getDeliverByCell(convertDate(dates.split(PaymentDetail.DATE_DIVIDER)[0]));
+			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
 			paymentDateItem.getTopLabel().setText(R.string.completed_pay_date);
 		}
 
 		return paymentDateItem;
 	}
+	
+	/**
+	 * Generates a list of items that can be inserted into a layout at runtime.
+	 * 
+	 * @param item an ActivityDetail item that contains information related to a schedueld transfer.
+	 * @return a list of items which display the information in the ActivityDetail item.
+	 */
+	public List<ViewPagerListItem> getScheduledBillPayList(final ActivityDetail item) {
+		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
+		
+		items.add(getFromCell(item.paymentMethod.nickname, "NULL"));
+
+		items.add(getPayeeCell(item.payee.nickName));
+		items.add(getAmountCell(BankStringFormatter.convertCentsToDollars(item.amount.value)));
+		items.add(getStatusCell(item.status));
+		items.add(getDeliverByCell(BankStringFormatter.getFormattedDate(item.deliverByDate)));
+		
+		if(item.confirmationNumber != null)
+			items.add(getConfirmationCell(item.confirmationNumber));
+		
+		items.add(getMemoItemCell(item.memo));
+		hideDivider(items);
+		return items;
+	}
+	
+	/**
+	 * Generates a list of items that can be inserted into a linear layout.
+	 * @param item an ActivityDetail item that contains information related to a schedueld transfer.
+	 * @return a list of items which display the information in the ActivityDetail item.
+	 */
+	public List<ViewPagerListItem> getScheduledTransferList(final ActivityDetail item) {
+		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
+
+		if(item.fromAccount != null)
+			items.add(getFromCell(item.fromAccount.nickname, item.fromAccount.balance.formatted));
+		
+		items.add(getToCell(item.toAccount.nickname));
+		items.add(getAmountCell(item.amount.formatted));
+		items.add(getSendOnCell(item.sendDate));
+		items.add(getDeliverByCell(item.deliverByDate));
+		
+		items.add(getFrequencyCell(item.durationType));
+		if(item.durationValue != null)
+			items.add(getFrequencyDurationCell(item.durationValue));
+		
+		hideDivider(items);
+		return items;
+	}
 
 	/**
-	 * Convert the date from the format dd/MM/yyyy to dd/MM/yy
-	 * @param date - date to be converted
-	 * @return the converted date
+	 * Generates a list of items that can be inserted into a layout at runtime.
+	 * 
+	 * @param item an ActivityDetail item that contains information related to a schedueld transfer.
+	 * @return a list of items which display the information in the ActivityDetail item.
 	 */
-	private String convertDate(final String date){
-		final SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-		final SimpleDateFormat tableFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+	public List<ViewPagerListItem> getScheduledDepositList(final ActivityDetail item) {
+		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
 
-		try{
-			return tableFormat.format(serverFormat.parse(date));
-		} catch (final ParseException e) {
-			return date;
-		}
+		items.add(getAmountCell(item.amount.formatted));
+		items.add(getDateCell(item.getTableDisplayDate()));
+		
+		hideDivider(items);
+		return items;
+	}
+	
+	private void hideDivider(final List<ViewPagerListItem> items) {
+		if(items != null && items.size() > 0)
+			items.get(0).getDividerLine().setVisibility(View.GONE);
 	}
 
 }
