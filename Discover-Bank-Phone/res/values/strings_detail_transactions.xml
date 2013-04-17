@@ -41,5 +41,6 @@
     <string name="address">Address</string>
     <string name="payee_details">Payee Details</string>
     <string name="payee_memo">Account #/Memo (Optional)</string>
+    <string name="duration">Duration</string>
     
 </resources>

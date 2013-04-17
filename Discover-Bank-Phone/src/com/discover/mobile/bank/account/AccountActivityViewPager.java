@@ -18,6 +18,7 @@ import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
+import com.google.common.base.Strings;
 
 /**
  * This is a subclass of the DetailView pager.
@@ -134,11 +135,11 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 		Fragment pageFragment = null;
 
 		if(position < activityItems.activities.size()) {
-			pageFragment = new ActivityDetailFragment();
-			final ActivityDetail detailObject = activityItems.activities.get(position);
-
 			final Bundle bundle = new Bundle();
+			final ActivityDetail detailObject = activityItems.activities.get(position);
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, detailObject);
+			
+			pageFragment = new ActivityDetailFragment();
 			pageFragment.setArguments(bundle);
 		}else {
 			pageFragment = new SpinnerFragment();
@@ -171,11 +172,31 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 
 	/**
 	 * Return the title for the current fragment.
-	 * These fragments do not need to change their title.
 	 */
 	@Override
 	protected int getTitleForFragment(final int position) {
-		return R.string.transaction;
+		int title = R.string.transaction;
+		//If the fragment is a spinner fragment, which would mean we are loadig more, return no title.
+		if(activityItems.activities.size() <= position){
+			title = R.string.empty;
+		}else {
+			final String transactionType = activityItems.activities.get(position).type;
+			
+			//Decide what kind of transaction we have, and return an applicable title.
+			if(!ActivityDetail.POSTED.equalsIgnoreCase(transactionType)){
+				if(ActivityDetail.TYPE_DEPOSIT.equalsIgnoreCase(transactionType))
+					title = R.string.check_deposit;
+				else if(ActivityDetail.TYPE_PAYMENT.equalsIgnoreCase(transactionType))
+					title = R.string.bill_pay;
+				else if(ActivityDetail.TYPE_TRANSFER.equalsIgnoreCase(transactionType)) {
+					if(!Strings.isNullOrEmpty(activityItems.activities.get(position).durationValue))
+						title = R.string.repeating_funds_transfer;
+					else
+						title = R.string.funds_transfer;
+				}
+			}
+		}
+		return title;
 	}
 
 	/**
