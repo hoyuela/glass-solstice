@@ -99,10 +99,35 @@ public class CalendarFragment extends CaldroidFragment {
 	 * Reference to text view that displays at the top of the fragment as the title
 	 */
 	protected TextView titleTxtVw;
+	/**
+	 * Integer that holds the month that is currently being displayed on the calendar. Used to handle rotation.
+	 */
+	private int displayedMonth;
+	/**
+	 * Integer that holds the year that is currently being displayed on the calendar. Used to handle rotation.
+	 */
+	private int displayedYear;
+	/**
+	 * Reference to listener that will receive events when there is a change in month or selected date from the calendar.
+	 */
+	protected CalendarListener eventListener;
+	
+	
+	@Override
+	public void onCreate (final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		
+		/**
+		 * Initialize month and year that will be displayed on the calendar. Note that the fragment retains it's state on
+		 * rotation so this onCreate is only called once and not called on rotation.
+		 */
+		displayedMonth = getArguments().getInt(MONTH);
+		displayedYear = getArguments().getInt(YEAR);
+	}
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-			final Bundle savedInstanceState) {
+			final Bundle savedInstanceState) {		
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
 		/**Check if onCreateView is called because of rotation*/
@@ -161,7 +186,38 @@ public class CalendarFragment extends CaldroidFragment {
 		super.onSaveInstanceState(outstate);
 	}
 	
+	/**
+	 * Method used to the listener that will receive events when there is a change in month or selected date 
+	 * from the calendar.
+	 * 
+	 * @param listener Reference to a CalendarListener object
+	 */
+	public void setCalendarListener(final CalendarListener listener) {
+		eventListener = listener;
+	}
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		/**Update calendar with month and year that was displayed prior to rotation*/
+		final Calendar current = Calendar.getInstance();
+		current.set(Calendar.MONTH, displayedMonth - 1);
+		current.set(Calendar.YEAR, displayedYear);
+		this.moveToDate(current.getTime());
+		
+		/**Set listener here to avoid updates while calendar is being initialized*/
+		setCaldroidListener(eventListener);
+	}
+	
+	@Override
+	public void onPause() {
+		/**Set listener to null here to avoid updates while the calendar is being rotated*/
+		setCaldroidListener(null);
+		
+		super.onPause();
+	}
+
 	/**
 	 * Method used to display the fragment as a dialog on top of the existing activity.
 	 * 
@@ -189,11 +245,11 @@ public class CalendarFragment extends CaldroidFragment {
 		args.putSerializable(DISABLED_DATES, disabledDates);
 		args.putBoolean("fitAllMonths", false);
 		setArguments(args);
-
 		
 		updateData(args);
 		
-		setCaldroidListener(listener);
+		eventListener = listener;
+		
 	
 		show(manager,TAG);
 	}
@@ -300,5 +356,20 @@ public class CalendarFragment extends CaldroidFragment {
 		final int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 		return (Calendar.SATURDAY == dayOfWeek || Calendar.SUNDAY == dayOfWeek);	
 	}
+	
+
+	/**
+	 * Method used to update the displayed month and year. This method does not update the UI, only stores the values
+	 * such that they are read on rotation and update the UI according to the values provided in the parameter list.
+	 * This method is not meant to be used by a hosting application but by a CalenderListener.
+	 * 
+	 * @param displayedMonth Current Month being displayed on the calendar.
+	 * @param displayedYear Current Year being displayed on the calendar.
+	 */
+	public void updateDisplayedDate(final int displayedMonth, final int displayedYear) {
+		this.displayedMonth = displayedMonth;
+		this.displayedYear = displayedYear;
+	}
+	
 
 }
