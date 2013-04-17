@@ -156,7 +156,7 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 	
 	/**
 	 * Set the visibility of the attached error label to INVISIBLE or GONE.
-	 * You 
+	 * The default visibility is GONE and can be set via method setHiddenErrorVisibility(boolean)
 	 */
 	@Override
 	protected void hideErrorLabel() {
