@@ -238,7 +238,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		final ModalDefaultTopView top = new ModalDefaultTopView(this.getActivity(), null);
 		final ModalAlertWithOneButton cancelModal = new ModalAlertWithOneButton(this.getActivity(), top, bottom);
 		
-		top.setTitle(R.string.cancel_this_action);
+		top.setTitle(R.string.bank_cancel_title);
 		top.setContent(R.string.cancel_this_action_content);
 		top.hideNeedHelpFooter();
 		

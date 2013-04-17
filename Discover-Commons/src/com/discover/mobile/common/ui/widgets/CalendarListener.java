@@ -29,8 +29,9 @@ public abstract class CalendarListener extends CaldroidListener implements Seria
 		calFrag = owner;		
 	}
 	
+	
 	@Override
-	public void onSelectDate(final Date date, final View view) {
+	public void onSelectDate(final Date date, final View view) {	
 		calFrag.clearSelectedDates();
 		
 		/**Toggle the selected date from the current selected to the newly selected*/
@@ -41,12 +42,11 @@ public abstract class CalendarListener extends CaldroidListener implements Seria
 	
 	@Override
 	public void onChangeMonth(final int month, final int year) {
-		/**Store month and year values in arguments of fragment for rotation handling*/
-		calFrag.getArguments().putInt(CalendarFragment.MONTH, month);
-		calFrag.getArguments().putInt(CalendarFragment.YEAR, year);
+		
+		calFrag.updateDisplayedDate(month, year);
 		
 		/**Refresh the disable dates on the calendar after navigation between months on the calendar*/
-		calFrag.updateDisableDates(month-1, year);
+ 		calFrag.updateDisableDates(month-1, year);
 		calFrag.refreshView();
 	}
 	
