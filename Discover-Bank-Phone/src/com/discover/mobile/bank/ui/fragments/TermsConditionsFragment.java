@@ -62,6 +62,9 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	
 	/**Relative Layout that show the footer at the bottom of the page with accept button*/
 	protected RelativeLayout footer;
+	
+	/**Divider between the content and the footer*/
+	protected View divider;
 
 	/**
 	 * Get the title text that was passed in by the previous Fragment.
@@ -82,6 +85,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		loadingSpinner = (ProgressBar)mainView.findViewById(R.id.progress_bar);
 		pageTitle = (TextView)mainView.findViewById(R.id.select_payee_title);
 		footer = (RelativeLayout)mainView.findViewById(R.id.footer);
+		divider = mainView.findViewById(R.id.footer_divider);
 	}
 
 	/**
@@ -171,8 +175,10 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		if( footer != null ) {
 			if( value ) {
 				footer.setVisibility(View.VISIBLE);
+				divider.setVisibility(View.VISIBLE);
 			} else {
 				footer.setVisibility(View.GONE);
+				divider.setVisibility(View.GONE);
 			}
 		}
 	}
