@@ -195,16 +195,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		return getActivity();
 	}
 
-	private OnClickListener dismissModalOnClickListener(final ModalAlertWithTwoButtons modal) {
-		return new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				modal.dismiss();
-			}
-		};
-	}
-
 	private OnClickListener getCancelDepositWorkflowClickListener(final AlertDialog modal) {
 		return new OnClickListener() {
 
@@ -229,20 +219,17 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 
 		if(currentActivity != null) {
 			final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
-			final ModalDefaultTwoButtonBottomView bottom = new ModalDefaultTwoButtonBottomView(currentActivity, null);
+			final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(currentActivity, null);
 
-			bottom.setOkButtonText(R.string.continue_text);
-			bottom.setCancelButtonText(R.string.cancel_text);
+			bottom.setButtonText(R.string.continue_text);
 
 			modalTopView.setTitle(R.string.are_you_sure_title);
 			modalTopView.setContent(R.string.cancel_deposit_content);
 
 			modalTopView.getHelpFooter().show(false);
 
-			final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(currentActivity, modalTopView, bottom);
-			bottom.getOkButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
-
-			bottom.getCancelButton().setOnClickListener(dismissModalOnClickListener(modal));
+			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(currentActivity, modalTopView, bottom);
+			bottom.getButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
 
 			currentActivity.showCustomAlert(modal);
 		}
