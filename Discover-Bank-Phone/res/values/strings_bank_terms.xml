@@ -3,7 +3,7 @@
     <!-- Privacy & Terms Landing Page Sections  -->
     <string name="bank_terms_privacy_n_terms">Privacy &amp; Terms</string>
     <string name="bank_terms_privacy_statement_title">Mobile Privacy\nStatement</string>
-    <string name="bank_terms_privacy_statement">Mobile PrivacyStatement</string>
+    <string name="bank_terms_privacy_statement">Mobile Privacy Statement</string>
     <string name="bank_terms_of_use">Mobile Terms of Use</string>
     <string name="bank_terms_bill_pay">Bill Pay Terms of Use</string>
     <string name="bank_deposit_check_title">Deposit a Check\nTerms of Use</string>
