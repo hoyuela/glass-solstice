@@ -61,9 +61,16 @@ public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 					final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 					activity = null;
 
+					final boolean isEligible = BankUser.instance().getCustomerInfo().isTransferEligible();
+
+					
 					/**Check if user is already in the Transfer Money work-flow*/
 					if( navActivity.getCurrentContentFragment().getGroupMenuLocation()  != BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP) {
-						BankServiceCallFactory.createGetExternalTransferAccountsCall().submit();
+						if( isEligible ) {
+							BankServiceCallFactory.createGetExternalTransferAccountsCall().submit();
+						} else {
+							BankConductor.navigateToTransferMoneyLandingPage(null);
+						}
 					} else {
 						final String TAG = BankTransferMoneySectionInfo.class.getSimpleName();
 

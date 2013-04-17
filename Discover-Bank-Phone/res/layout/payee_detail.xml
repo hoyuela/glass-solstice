@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/content_table"
             android:layout_centerHorizontal="true"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:text="@string/bank_payee_action_edit" >
         </Button>
@@ -34,11 +35,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/edit_payee_button" 
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:background="@null"
             android:text="@string/bank_payee_action_delete" >
         </Button>
+        
+         <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
+            android:id="@+id/bank_footer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/delete_payee_button" 
+            style="@style/bank_layout_footer_style"/>
     </RelativeLayout>
 
 </ScrollView>

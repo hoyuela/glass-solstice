@@ -80,6 +80,13 @@
             android:layout_centerHorizontal="true"
             android:text="@string/select_payee_add" />
         
+        <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
+            android:id="@+id/bank_footer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_payee" 
+            style="@style/bank_layout_footer_style"/>
+        
          <com.discover.mobile.common.help.HelpWidget
             android:id="@+id/help"
             android:layout_width="match_parent"

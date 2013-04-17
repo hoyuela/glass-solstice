@@ -8,6 +8,8 @@
     <string name="bank_terms_bill_pay">Bill Pay Terms of Use</string>
     <string name="bank_deposit_check_title">Deposit a Check\nTerms of Use</string>
     <string name="bank_deposit_check">Deposit a Check Terms of Use</string>
+    <string name="bank_divider">|</string>
+    <string name="bank_provide_feedback">Provide Feedback</string>
      
     <!-- Privacy & Terms Section Titles Array -->
     <string-array name="terms_sections">

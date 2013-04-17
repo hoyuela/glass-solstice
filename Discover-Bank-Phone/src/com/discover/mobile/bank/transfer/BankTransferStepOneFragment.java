@@ -79,8 +79,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		actionLink.setText(R.string.cancel_text);
 		noteTitle.setVisibility(View.GONE);
 		noteTextMsg.setVisibility(View.GONE);
-		helpFooter.show(false);
-		feedbackLink.setVisibility(View.GONE);
 
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
@@ -480,7 +478,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 			transferObject.frequency = frequencyCode;
 		}
 
-		transferObject.sendDate = "2013-04-16T00:00:00Z";
+		transferObject.sendDate = "2013-04-19T00:00:00Z";
 
 		final String inputAmount = amountField.getText().toString();
 		final String cents = inputAmount.replaceAll("[^0-9]", "");

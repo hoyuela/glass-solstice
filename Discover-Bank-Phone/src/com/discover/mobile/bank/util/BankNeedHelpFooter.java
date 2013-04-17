@@ -22,7 +22,7 @@ public class BankNeedHelpFooter extends NeedHelpFooter {
 	/**
 	 * Flag used to decide whether to show Call Modal when the Need Help link is tapped by the user.
 	 */
-	private final boolean promptUser;
+	private boolean promptUser;
 	
 	public BankNeedHelpFooter(final ViewGroup rootView) {
 		super(rootView);
@@ -34,6 +34,10 @@ public class BankNeedHelpFooter extends NeedHelpFooter {
 		super(rootView);
 		show(false);
 		this.promptUser = promptUser;
+	}
+	
+	public void promptForHelp(final boolean value) {
+		this.promptUser = value;
 	}
 	
 	/**

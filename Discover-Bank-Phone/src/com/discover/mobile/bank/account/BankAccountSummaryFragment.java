@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
@@ -27,10 +26,8 @@ import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
-import com.discover.mobile.bank.util.BankNeedHelpFooter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.widgets.AccountToggleView;
 
@@ -50,7 +47,6 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	
 	private LinearLayout accountSummary; 
 	private Button openAccount;
-	private BankNeedHelpFooter helpFooter;
 	private AccountToggleView toggleView;
 	private View view;
 	private ImageView accountToggleIcon;
@@ -75,29 +71,12 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
 		help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
 
-		/**Create footer that will listen when user taps on Need Help Number to dial*/
-		helpFooter = new BankNeedHelpFooter((ViewGroup)view);
-		helpFooter.setToDialNumberOnClick(com.discover.mobile.bank.R.string.bank_need_help_number_text);
-
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
 		
 		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
 		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
 		setupAccountToggle();
-
-		/**Hyperlink used to provide feedback*/
-		final TextView feedback = (TextView)view.findViewById(R.id.provide_feedback_button);
-		feedback.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				final CharSequence text = "Feedback Under Development";
-				final int duration = Toast.LENGTH_SHORT;
-
-				final Toast toast = Toast.makeText(DiscoverActivityManager.getActiveActivity(), text, duration);
-				toast.show();
-			}			
-		});
 
 		if (savedInstanceState != null
 				&& savedInstanceState.getBoolean(SHOW_TOGGLE_KEY, false)) {

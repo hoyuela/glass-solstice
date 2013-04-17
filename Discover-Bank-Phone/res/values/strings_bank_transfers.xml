@@ -8,7 +8,7 @@
     <string name="one_time">One Time</string>
     <string name="select_a_date">Select a Date</string>
     <string name="select_account">Select Account</string>
-    <string name="transfer_money_not_eligible_title">Sign Up for Transfer Money</string>
+    <string name="transfer_money_not_eligible_title">Sign Up for\nTransfer Money</string>
     <string name="transfer_money_not_eligible_body">Enjoy the ease and convenience of Transferring Money between two accounts.\n\nTo start, simply have a total of two accounts with one internal account.</string>
     <string name="open_an_account">Open an Account</string>
     <string name="frequency_title">Frequency</string>

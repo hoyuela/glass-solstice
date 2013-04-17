@@ -12,7 +12,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
-import com.discover.mobile.bank.util.BankNeedHelpFooter;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
 
@@ -24,11 +24,10 @@ import com.discover.mobile.common.help.HelpWidget;
  *
  */
 public class BankDepositNotEligibleFragment extends BaseFragment implements OnClickListener  {
-
 	/**
-	 * Helper class for enabling the user to dial the Need Help Number
+	 * Reference to footer in layout
 	 */
-	private BankNeedHelpFooter helpFooter;
+	protected BankLayoutFooter footer;
 
 	
 	@Override
@@ -37,8 +36,8 @@ public class BankDepositNotEligibleFragment extends BaseFragment implements OnCl
 		final View view = inflater.inflate(R.layout.bank_deposit_not_eligible, null);
 		
 		/**Create footer that will listen when user taps on Need Help Number to dial*/
-		helpFooter = new BankNeedHelpFooter((ViewGroup)view);
-		helpFooter.setToDialNumberOnClick(com.discover.mobile.bank.R.string.bank_deposit_noteligible_number);
+		footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
+		footer.setHelpNumber(getString(com.discover.mobile.bank.R.string.bank_deposit_noteligible_number));
 		
 		/**Set the fragment as the handler for the button click event*/
 		final Button openAccountBtn = (Button)view.findViewById(R.id.openAccount);		
