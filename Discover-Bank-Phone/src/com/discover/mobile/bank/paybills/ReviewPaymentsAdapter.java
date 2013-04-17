@@ -58,7 +58,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		inflater = LayoutInflater.from(context);
 		res = context.getResources();
 		this.fragment =fragment;
-		payees = BankUser.instance().getPayees();
+		payees = (ListPayeeDetail) BankUser.instance().getObjectFromCache(ListPayeeDetail.class);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		holder.date.setText(convertDate(detail));
 
 		/**Get Name from payee list*/
-		String nickName = payees.getNameFromId(detail.payee.id);
+		String nickName = detail.payee.nickName;
 
 		/**Use nickname from payee if name does not exist in name*/
 		if( Strings.isNullOrEmpty(nickName) ) {

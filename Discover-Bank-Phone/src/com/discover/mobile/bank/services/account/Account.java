@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.deposit.AccountLimits;
 import com.discover.mobile.bank.services.json.Money;
@@ -251,7 +252,7 @@ public class Account implements Serializable {
 	 */
 	@JsonProperty("jointOwners")
 	public List<Customer> jointOwners;
-	
+
 	@JsonProperty("serviceAccountId")
 	public String serviceAccountId;
 
@@ -260,6 +261,12 @@ public class Account implements Serializable {
 	 */
 	@JsonProperty("links")
 	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
+
+	/**Posted activity of the account*/
+	public ListActivityDetail posted;
+
+	/**Scheduled activity of the account*/
+	public ListActivityDetail scheduled;
 
 	/**
 	 * Read URL from hash-map of links stored in links using a Key.
@@ -281,25 +288,25 @@ public class Account implements Serializable {
 		String ret = "";
 
 		//Group for Checking: Holds only Checking Types
-		if( this.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {		
+		if( type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {		
 			ret = Account.ACCOUNT_CHECKING;	
 		}
 		//Group for Savings: Holds Online Savings, MMA, CDs
-		else if( this.type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) || 
-				 this.type.equalsIgnoreCase(Account.ACCOUNT_MMA) ||
-				 this.type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
+		else if( type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) || 
+				type.equalsIgnoreCase(Account.ACCOUNT_MMA) ||
+				type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
 			ret = Account.ACCOUNT_SAVINGS;
 
 		}
 		//Group for Retirement Plans: Holds IRA, IRA CDs
-		else if( this.type.equalsIgnoreCase(Account.ACCOUNT_IRA)) {
+		else if( type.equalsIgnoreCase(Account.ACCOUNT_IRA)) {
 			ret = Account.ACCOUNT_IRA;
 		}
 		//Group Personal Loans: Personal Loans
-		else if( this.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
+		else if( type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
 			ret = Account.ACCOUNT_LOAN;
 		} else {
-			ret = this.type;
+			ret = type;
 		}
 
 		return ret;
@@ -315,12 +322,12 @@ public class Account implements Serializable {
 					type.equalsIgnoreCase(ACCOUNT_SAVINGS) ||
 					type.equalsIgnoreCase(ACCOUNT_MMA);
 		}
-		
+
 		return isDepositEligible;
 	}
 
 	public String getDottedFormattedAccountNumber() {
-		return this.nickname +" (..." +this.accountNumber.ending +")";
+		return nickname +" (..." +accountNumber.ending +")";
 	}
 
 	/**
@@ -329,7 +336,7 @@ public class Account implements Serializable {
 	public boolean canSchedulePayment() {
 		return (type.equalsIgnoreCase(ACCOUNT_CHECKING) || type.equalsIgnoreCase(ACCOUNT_MMA));
 	}
-	
+
 	/**
 	 * 
 	 * @return if the current account is eligible for the transfer service.

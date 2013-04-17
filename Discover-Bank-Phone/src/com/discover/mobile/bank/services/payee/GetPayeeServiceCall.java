@@ -7,7 +7,6 @@ import java.util.Map;
 
 import android.content.Context;
 
-import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
@@ -103,10 +102,10 @@ public class GetPayeeServiceCall extends BankUnamedListJsonResponseMappingNetwor
 
 				// Specify what error parser to use when receiving an error response is received
 				errorResponseParser = BankErrorResponseParser.instance();
-
 			}
 		}, ListPayeeDetail.class, PayeeDetail.class);
 
+		cacheResult = true;
 		handler = new SimpleReferenceHandler<ListPayeeDetail>(callback);
 	}
 
@@ -155,12 +154,7 @@ public class GetPayeeServiceCall extends BankUnamedListJsonResponseMappingNetwor
 
 		final ListPayeeDetail details = new ListPayeeDetail();
 		details.payees = super.parseUnamedList(body);
-		
-		/**Cache the downloaded list of payees in singleton BankUser object*/
-		BankUser.instance().setPayees(details);
-		
 		return details;
-
 	}
 
 	/**

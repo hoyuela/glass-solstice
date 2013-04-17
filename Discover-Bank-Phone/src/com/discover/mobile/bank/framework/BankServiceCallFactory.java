@@ -519,9 +519,9 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		final GetAccountLimits serviceCall =  new GetAccountLimits(activity, callback, account);
 		serviceCall.setIsBackgroundCall(isBackground);
-		
+
 		return serviceCall;
-		
+
 	}
 
 	/**
@@ -545,17 +545,10 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	public NetworkServiceCall<?> createServiceCall(@SuppressWarnings("rawtypes") final Class cacheObject,
 			final Serializable payload) {
 
-		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		DiscoverActivityManager.getActiveActivity();
 
-		if ( cacheObject == PayeeDetail.class ) {
-
-			final AsyncCallback<PayeeDetail>  callback =
-					BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PayeeDetail.class,
-							activity, (ErrorHandlerUi) activity)
-							.build();
-
-			return new AddPayeeServiceCall(activity, callback, (AddPayeeDetail) payload, false);
-
+		if ( cacheObject == ListPayeeDetail.class ) {
+			return createGetPayeeServiceRequest();
 		}
 		// FIXME : Add the rest in here!!!
 		return null;
