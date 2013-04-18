@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.View;
 
 import com.discover.mobile.bank.R;
@@ -25,7 +26,7 @@ import com.google.common.base.Strings;
  *
  */
 public class ListItemGenerator { 
-
+	
 	private ViewPagerListItem listItem;
 	private Context context = null;
 
@@ -43,6 +44,20 @@ public class ListItemGenerator {
 			listItem.getTopLabel().setText(topLabelResource);
 			listItem.getMiddleLabel().setText(middleLabelText);
 			listItem.getBottomLabel().setVisibility(View.GONE);
+		}
+		return listItem;
+	}
+	
+	/** Same as a Two Item Cell but with a decreased text size for the middle label. */
+	public ViewPagerListItem getSmallTwoItemCell(final int topLabelResource, final String middleLabelText) {
+		initNewListItem();
+		if(middleLabelText != null) {
+			listItem.getTopLabel().setText(topLabelResource);
+			listItem.getMiddleLabel().setVisibility(View.GONE);
+			// Allows the bottom label to "mimic" the middle label but keeps the smaller text size
+			listItem.getBottomLabel().setText(middleLabelText);
+			listItem.getBottomLabel().setTypeface(Typeface.DEFAULT_BOLD);
+			listItem.getBottomLabel().setTextColor(listItem.getMiddleLabel().getTextColors());
 		}
 		return listItem;
 	}
@@ -152,6 +167,10 @@ public class ListItemGenerator {
 
 	public ViewPagerListItem getConfirmationCell(final String confirmationNumber) {
 		return getTwoItemCell(R.string.confirmation_number, confirmationNumber);
+	}
+	
+	public ViewPagerListItem getLongConfirmationCell(final String confirmationNumber) {
+		return getSmallTwoItemCell(R.string.confirmation_number, confirmationNumber);
 	}
 
 	public ViewPagerListItem getPayeeNameCell(final String payeeName) {
@@ -370,8 +389,8 @@ public class ListItemGenerator {
 		items.add(getStatusCell(BankStringFormatter.capitalize(item.status)));
 		items.add(getDeliverByCell(BankStringFormatter.getFormattedDate(item.deliverByDate)));
 			
-		// Using transaction id for the confirmation number
-		items.add(getConfirmationCell(item.id));
+		// Using transaction id for the confirmation number. Using specialized Confirmation cell to fit the long id.
+		items.add(getLongConfirmationCell(item.id));
 		
 		items.add(getMemoItemCell(item.memo));
 		hideDivider(items);
