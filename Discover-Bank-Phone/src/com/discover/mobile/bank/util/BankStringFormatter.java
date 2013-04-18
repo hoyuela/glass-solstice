@@ -16,6 +16,8 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.google.common.base.Strings;
 
 public class BankStringFormatter {
+	private static final String TAG = BankStringFormatter.class.getSimpleName();
+	
 	public final static String EMPTY_DOLLAR = "$0.00";
 	private final static String TAG = BankStringFormatter.class.getSimpleName();
 	
@@ -163,6 +165,34 @@ public class BankStringFormatter {
 		}
 		
 		return formattedDate;
+	}
+	
+	/**
+	 *
+	 * @param formattedDate a String in the format mm/dd/yyyy
+	 * @return a String in the format yyyy-MM-dd'T'HH:mm:ssZ
+	 */
+	public static String getLongDate(final String formattedDate) {
+		String selectedDate = "";
+		
+		if(formattedDate != null) {
+			selectedDate = formattedDate;
+			
+			final SimpleDateFormat chosenDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			final SimpleDateFormat submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+			
+			try {
+				final Date temp = chosenDateFormat.parse(selectedDate);
+				selectedDate = submissionDateFormat.format(temp);
+			} catch (final ParseException e) {
+				Log.e(TAG, "Could not format date : " + e);
+			}
+			
+		}
+		
+		return selectedDate;
+		
+		
 	}
 
 	/**

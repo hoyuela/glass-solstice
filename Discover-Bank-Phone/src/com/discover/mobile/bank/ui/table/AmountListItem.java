@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
@@ -44,8 +45,12 @@ public class AmountListItem extends RelativeLayout {
 		return amount;
 	}
 	
-	private RelativeLayout getInflatedLayout(final Context context) {
+	protected RelativeLayout getInflatedLayout(final Context context) {
 		return (RelativeLayout)LayoutInflater.from(context).inflate(R.layout.formatted_amount_list_item, null);
+	}
+	
+	public TextView getErrorLabel() {
+		return (TextView)findViewById(R.id.amount_error);
 	}
 
 }

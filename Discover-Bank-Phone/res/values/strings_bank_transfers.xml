@@ -45,4 +45,7 @@
     
 	<string name="transfer_success_title">You have successfully scheduled this transfer</string>
 	
+	
+	<!-- Error Labels -->
+	<string name="amount_less_than_twenty_five">Too low (less than $25)</string>
 </resources>
