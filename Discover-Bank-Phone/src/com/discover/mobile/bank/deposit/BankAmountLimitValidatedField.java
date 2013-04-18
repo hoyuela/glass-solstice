@@ -3,6 +3,7 @@ package com.discover.mobile.bank.deposit;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.deposit.AccountLimits;
@@ -35,6 +36,9 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 	 * Reference to a list of limits that are provided by the server for a specific account.
 	 */
 	private AccountLimits limits = null;
+	
+	/** Visibility to set the error label to when hidden. */
+	private int hiddenErrorVisibility = View.GONE;
 	
 	public BankAmountLimitValidatedField(final Context context) {
 		super(context);	
@@ -140,5 +144,23 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 			this.errorLabel.setText(R.string.bank_deposit_invalid_amount);
 		}
 		return ret;
+	}
+	
+	/**
+	 * Allows for a hidden error label to be GONE or INVISIBLE.
+	 * @param isGone - {@code true} when hidden error labels should be of Visibility type GONE.
+	 */
+	public void setHiddenErrorVisibility(boolean isGone) {
+		hiddenErrorVisibility = isGone ? View.GONE : View.INVISIBLE;
+	}
+	
+	/**
+	 * Set the visibility of the attached error label to INVISIBLE or GONE.
+	 * The default visibility is GONE and can be set via method setHiddenErrorVisibility(boolean)
+	 */
+	@Override
+	protected void hideErrorLabel() {
+		if(errorLabel != null)
+			this.errorLabel.setVisibility(hiddenErrorVisibility);
 	}
 }

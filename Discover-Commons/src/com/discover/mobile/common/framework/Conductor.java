@@ -12,10 +12,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
-
 import com.discover.mobile.common.net.NetworkServiceCall;
 /**
  * Conductor - The user agent has two jobs. The first job is to get the data by
@@ -32,9 +32,9 @@ import com.discover.mobile.common.net.NetworkServiceCall;
  * 
  */
 public abstract class Conductor   {
-	
+
 	public static final String TAG = Conductor.class.getSimpleName();
-	
+
 	protected CacheManager cacheMgr = CacheManager.instance();
 
 	/**
@@ -57,7 +57,7 @@ public abstract class Conductor   {
 	 * 
 	 * @param serviceCallFactory
 	 */
-	public Conductor(ServiceCallFactory pServiceCallFactory) {
+	public Conductor(final ServiceCallFactory pServiceCallFactory) {
 		serviceCallFactory = pServiceCallFactory;
 	}
 
@@ -67,8 +67,8 @@ public abstract class Conductor   {
 	@SuppressWarnings("unused")
 	private Conductor() {
 	}
-	
-	
+
+
 
 	/**
 	 * Navigates to the given fragment. 1. checks to see if fragment requires
@@ -80,10 +80,10 @@ public abstract class Conductor   {
 	 * assumes no payload required for service call, if necessary 
 	 * 
 	 */
-	public void launchFragment(Class<Fragment> fragmentClass){
+	public void launchFragment(final Class<? extends BaseFragment> fragmentClass){
 		launchFragment(fragmentClass, null, null);
 	}
-	
+
 	/**
 	 * Navigates to the given fragment. 1. checks to see if fragment requires
 	 * data 2. requests data from cache manager 3. makes service call if cache
@@ -94,10 +94,10 @@ public abstract class Conductor   {
 	 * assumes no payload required for service call, if necessary 
 	 *           
 	 */
-	public void launchActivity(Class<Activity> activityClass){ 
+	public void launchActivity(final Class<Activity> activityClass){ 
 		launchActivity(activityClass, null, null);
 	}
-	
+
 	/**
 	 * Navigates to the given fragment. 
 	 * <pre>
@@ -112,19 +112,21 @@ public abstract class Conductor   {
 	 * @param bundle
 	 *            - bundle to pass on when navigating.
 	 */
-	public void launchFragment(Class<Fragment> fragmentClass, Serializable payload, Bundle bundle) {
+	public void launchFragment(final Class<? extends BaseFragment> fragmentClass, final Serializable payload, final Bundle bundle) {
 		@SuppressWarnings("rawtypes")
+		final
 		Class cacheObjReq = lookupCacheRequiredForDestination(fragmentClass);
 		if (cacheObjReq == null) {
 			// no data required, don't perform the service call; just navigate
 			navigateToFrament(fragmentClass, bundle);
 		} else {
-			Object o = cacheMgr.getObjectFromCache(cacheObjReq);
+			final Object o = cacheMgr.getObjectFromCache(cacheObjReq);
 			if (o == null) {
 				// cache is null, let's make the call
 
 				// call payload in the bundle
 				@SuppressWarnings("unchecked")
+				final
 				NetworkServiceCall<?> call = serviceCallFactory.createServiceCall(cacheObjReq,payload);
 				// associate the destination with the call
 				destinationMap.put(call.hashCode(), new DestinationDetails(
@@ -146,19 +148,21 @@ public abstract class Conductor   {
 	 * 				- an optional bundle to pass to the destination
 	 *           
 	 */
-	public void launchActivity(Class<Activity> activityClass, Serializable payload, Bundle bundle) {
+	public void launchActivity(final Class<Activity> activityClass, final Serializable payload, final Bundle bundle) {
 		@SuppressWarnings("rawtypes")
+		final
 		Class cacheObjReq = lookupCacheRequiredForDestination(activityClass);
 		if (cacheObjReq == null) {
 			// no data required, don't perform the service call; just navigate
 			navigateToActivity(activityClass, bundle);
 		} else {
-			Object o = cacheMgr.getObjectFromCache(cacheObjReq);
+			final Object o = cacheMgr.getObjectFromCache(cacheObjReq);
 			if (o == null) {
 				// cache is null, let's make the call
 
 				// call payload in the bundle
 				@SuppressWarnings("unchecked")
+				final
 				NetworkServiceCall<?> call = serviceCallFactory.createServiceCall(cacheObjReq,payload);
 				// associate the destination with the call
 				destinationMap.put(call.hashCode(), new DestinationDetails(
@@ -175,11 +179,11 @@ public abstract class Conductor   {
 	 * @param bundle
 	 */
 	protected void navigateToFrament(
-			@SuppressWarnings("rawtypes") Class destClass, Bundle bundle) {
+			@SuppressWarnings("rawtypes") final Class destClass, final Bundle bundle) {
 		Fragment fragment;
 		try {
 			fragment = (Fragment) destClass.newInstance();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new RuntimeException(
 					"Unable to instantiate to supplied fragment!  Please ensure public no-arg constructor");
 		}
@@ -187,7 +191,7 @@ public abstract class Conductor   {
 			fragment.setArguments(bundle);
 		}
 		((BaseFragmentActivity) DiscoverActivityManager.getActiveActivity())
-				.makeFragmentVisible(fragment);
+		.makeFragmentVisible(fragment);
 	}
 
 	/**
@@ -197,11 +201,12 @@ public abstract class Conductor   {
 	 * @param bundle
 	 */
 	protected void navigateToActivity(
-			@SuppressWarnings("rawtypes") Class destClass, Bundle bundle) {
-		Activity activeActivity = DiscoverActivityManager.getActiveActivity();
+			@SuppressWarnings("rawtypes") final Class destClass, final Bundle bundle) {
+		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 		final Intent intent = new Intent(activeActivity, destClass);
-		if (bundle != null)
+		if (bundle != null) {
 			intent.putExtras(bundle);
+		}
 		activeActivity.startActivity(intent);
 		activeActivity.finish();
 	}
@@ -216,7 +221,7 @@ public abstract class Conductor   {
 	@SuppressWarnings("rawtypes")
 	public abstract Class lookupCacheRequiredForDestination(Class c);
 
-	
+
 
 	/**
 	 * Navigates to the caller's original destination.  Puts the service call results 
@@ -225,23 +230,23 @@ public abstract class Conductor   {
 	 * @param sender
 	 * @param value
 	 */
-	public void success(NetworkServiceCall<?> sender, Serializable value) {
+	public void success(final NetworkServiceCall<?> sender, final Serializable value) {
 
 		// let's navigate !
-		DestinationDetails destinationDetails = destinationMap.get(sender.hashCode());
-		
+		final DestinationDetails destinationDetails = destinationMap.get(sender.hashCode());
+
 		if ( destinationDetails == null ){
 			Log.w(TAG,"Created a network service call without using the Conductor Pattern!  Sender: " + sender.getClass().getSimpleName());
 			return;
 		}
-		
+
 		// stuff the result into the bundle where the caller can find it 
 		Bundle bundle = destinationDetails.getDestBundle();
 		if ( bundle == null ){ 
 			bundle = new Bundle();
 		}
 		bundle.putSerializable(IntentExtraKey.SERVICE_RESULT,value);
-		
+
 		if (destinationDetails.getDestType() == DestinationType.FRAGMENT) {
 			navigateToFrament(destinationDetails.getDestFragment(),
 					bundle);
@@ -252,7 +257,7 @@ public abstract class Conductor   {
 
 	}
 
-	
+
 
 	/**
 	 * rest of class is for inner workings
@@ -304,11 +309,11 @@ public abstract class Conductor   {
 		}
 
 		@SuppressWarnings("rawtypes")
-		public DestinationDetails(DestinationType destinationType,
-				Class destFragment, Bundle destBundle) {
+		public DestinationDetails(final DestinationType destinationType,
+				final Class destFragment, final Bundle destBundle) {
 			this.destBundle = destBundle;
 			this.destFragment = destFragment;
-			this.destType = destinationType;
+			destType = destinationType;
 		}
 
 	}
@@ -318,8 +323,8 @@ public abstract class Conductor   {
 	 * @param callClass
 	 * @return
 	 */
-	public Bundle getBundleForCall(int callHashCode) {
-		DestinationDetails destDetails =  this.destinationMap.get(callHashCode);
+	public Bundle getBundleForCall(final int callHashCode) {
+		final DestinationDetails destDetails =  destinationMap.get(callHashCode);
 		if ( destDetails != null ){ 
 			return destDetails.getDestBundle();
 		}

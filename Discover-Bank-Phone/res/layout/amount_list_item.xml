@@ -40,5 +40,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/amount_row"
         android:text="@string/bank_invalid_characters"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 </RelativeLayout>

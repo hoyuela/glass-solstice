@@ -394,9 +394,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 		isOnMap = !savedInstanceState.getBoolean(BUTTON_KEY, true);
 		toggleButton();
-		listFragment.handleReceivedData(savedInstanceState);
 		results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
+		listFragment.handleReceivedData(savedInstanceState);
 		if(0.0 == lat && 0.0 == lon){
 			mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
 		}else{

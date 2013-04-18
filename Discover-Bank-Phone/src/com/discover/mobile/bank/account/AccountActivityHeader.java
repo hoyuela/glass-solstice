@@ -150,7 +150,17 @@ public class AccountActivityHeader extends RelativeLayout{
 	 */
 	public void addAccount(){
 		if(null == account){return;}
-		type.setText(account.type);
+		final String s = account.type.replaceAll("_", " ");
+		final StringBuilder result = new StringBuilder(s.length());
+		final String[] charArray = s.split("\\s");
+		final int l = charArray.length;
+		for(int i = 0; i < l; ++i) {
+			if(i>0){
+				result.append(" ");      
+			}
+			result.append(Character.toUpperCase(charArray[i].charAt(0))).append(charArray[i].substring(1));
+		}
+		type.setText(result.toString());
 		title.setText(account.nickname);
 		checking.setText(account.accountNumber.formatted);
 		availableBalance.setText(account.balance.formatted);

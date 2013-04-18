@@ -52,7 +52,7 @@ public class PayeeDetailViewPager extends DetailViewPager {
 		outState.putAll(getCurrentFragmentBundle());
 		super.onSaveInstanceState(outState);
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -81,15 +81,15 @@ public class PayeeDetailViewPager extends DetailViewPager {
 	 */
 	private PayeeDetail[] getArrayFromList(final List<PayeeDetail> payeeList) {
 		PayeeDetail[] payeeArray = {};
-		
+
 		if(payeeList != null) {
 			payeeArray = new PayeeDetail[payeeList.size()];
-			
+
 			for(int i = 0; i < payeeList.size(); ++i) {
 				payeeArray[i] = payeeList.get(i);
 			}
 		}
-		
+
 		return payeeArray;
 	}
 	/**
@@ -97,18 +97,20 @@ public class PayeeDetailViewPager extends DetailViewPager {
 	 * and return the updated Bundle
 	 * @return an up to date Bundle with the current information of the ViewPager.
 	 */
-	private Bundle getCurrentFragmentBundle() {
+	public Bundle getCurrentFragmentBundle() {
 		Bundle currentBundle = getArguments();
 		if(currentBundle == null) {
 			currentBundle = new Bundle();
 		}
-		
+
 		final ViewPager viewPager = getViewPager();
-		if(viewPager != null)
+		if(viewPager != null) {
 			currentBundle.putInt(BankExtraKeys.SELECTED_PAYEE, viewPager.getCurrentItem());
-		if(detailList != null)
+		}
+		if(detailList != null) {
 			currentBundle.putSerializable(BankExtraKeys.PAYEES_LIST, detailList);
-		
+		}
+
 		return currentBundle;
 	}
 
@@ -185,7 +187,7 @@ public class PayeeDetailViewPager extends DetailViewPager {
 	@Override
 	protected void helpMenuOnClick(final HelpWidget help) {
 		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
-		
+
 	}
 
 }

@@ -140,8 +140,8 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		/**Check if a successful response was received*/
 		handlePendingConfirmation();
 	}
-	
-	
+
+
 	/**
 	 * Method checks if a socket timeout occurred, if so navigates the user to 
 	 * CheckDepositErrorFragment.
@@ -151,9 +151,9 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 
 		/**Check if a socket timeout exception occurred*/
 		if( exceptionHandler.getLastException() != null &&
-			exceptionHandler.getLastSender() != null &&
-			exceptionHandler.getLastSender() instanceof SubmitCheckDepositCall ) {
-			
+				exceptionHandler.getLastSender() != null &&
+				exceptionHandler.getLastSender() instanceof SubmitCheckDepositCall ) {
+
 			/**Clear the last exception occurred to avoid the back press not working*/
 			exceptionHandler.clearLastException();
 
@@ -178,6 +178,11 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			if( !submitDepositCall.isHandled() && null != submitDepositCall.getResult()) {
 				submitDepositCall.setHandled(true);
 
+				//Mark the scheduled activity dirty so that it is refreshed
+				account.scheduled = null;
+				//Mark the posted activity dirty so that it is refreshed
+				account.posted = null;
+
 				//Navigate to Check Deposit Confirmation Page
 				final Bundle bundle = new Bundle();
 				bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, submitDepositCall.getResult());
@@ -188,16 +193,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 
 	private Activity getThisActivity() {
 		return getActivity();
-	}
-
-	private OnClickListener dismissModalOnClickListener(final ModalAlertWithTwoButtons modal) {
-		return new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				modal.dismiss();
-			}
-		};
 	}
 
 	private OnClickListener getCancelDepositWorkflowClickListener(final AlertDialog modal) {
@@ -224,20 +219,17 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 
 		if(currentActivity != null) {
 			final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
-			final ModalDefaultTwoButtonBottomView bottom = new ModalDefaultTwoButtonBottomView(currentActivity, null);
+			final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(currentActivity, null);
 
-			bottom.setOkButtonText(R.string.continue_text);
-			bottom.setCancelButtonText(R.string.cancel_text);
+			bottom.setButtonText(R.string.continue_text);
 
 			modalTopView.setTitle(R.string.are_you_sure_title);
 			modalTopView.setContent(R.string.cancel_deposit_content);
 
 			modalTopView.getHelpFooter().show(false);
 
-			final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(currentActivity, modalTopView, bottom);
-			bottom.getOkButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
-
-			bottom.getCancelButton().setOnClickListener(dismissModalOnClickListener(modal));
+			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(currentActivity, modalTopView, bottom);
+			bottom.getButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
 
 			currentActivity.showCustomAlert(modal);
 		}
@@ -412,8 +404,8 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		for( final BankError error : msgErrResponse.errors ) {
 			/**Check if error was because of a duplicate check*/
 			if( !Strings.isNullOrEmpty(error.code) && 
-				(error.code.equals(BankErrorCodes.ERROR_CHECK_DUPLICATE)  ||
-				 error.code.equals(BankErrorCodes.ERROR_CHECK_DUPLICATE_EX ))) {
+					(error.code.equals(BankErrorCodes.ERROR_CHECK_DUPLICATE)  ||
+							error.code.equals(BankErrorCodes.ERROR_CHECK_DUPLICATE_EX ))) {
 				BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.DuplicateError);
 				handled = true;
 			}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/forms_inner_padding"
+    android:orientation="vertical" >
+
+    <View
+        android:id="@+id/divider_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/table_solid_line" />
+
+    <RelativeLayout
+        android:id="@+id/list_item"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/forms_inner_padding"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/forms_inner_padding" >
+
+        <TextView
+            android:id="@+id/top_label"
+            style="@style/field_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider_line"
+            android:singleLine="true"
+            android:text="@string/edit" />
+
+        <TextView
+            android:id="@+id/middle_label"
+            style="@style/sub_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/top_label"
+            android:singleLine="true"
+            android:text="@string/edit"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/bottom_label"
+            style="@style/field_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/middle_label"
+            android:singleLine="true"
+            android:text="@string/edit" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@null"
+            android:src="@drawable/recurring_icon" />
+    </RelativeLayout>
+
+</RelativeLayout>

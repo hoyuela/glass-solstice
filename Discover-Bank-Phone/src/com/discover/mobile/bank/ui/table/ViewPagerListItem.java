@@ -42,7 +42,7 @@ public class ViewPagerListItem extends RelativeLayout {
 	}
 	
 	private RelativeLayout getInflatedLayout(final Context context) {
-		return (RelativeLayout)LayoutInflater.from(context).inflate(R.layout.view_pager_list_item, null);
+		return (RelativeLayout)LayoutInflater.from(context).inflate(getItemLayout(), null);
 	}
 	
 	private void loadViews() {
@@ -50,6 +50,10 @@ public class ViewPagerListItem extends RelativeLayout {
 		middleLabel = (TextView)findViewById(R.id.middle_label);
 		bottomLabel = (TextView)findViewById(R.id.bottom_label);
 		dividerLine = findViewById(R.id.divider_line);
+	}
+	
+	protected int getItemLayout() {
+		return R.layout.view_pager_list_item;
 	}
 	
 	/**

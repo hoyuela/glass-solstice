@@ -1,5 +1,7 @@
 package com.discover.mobile.bank.framework;
 
+import java.io.Serializable;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -57,13 +59,17 @@ import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
 import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.BankSearchSelectPayeeFragment;
 import com.discover.mobile.bank.payees.PayeeDetailViewPager;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.BankSSOLoginDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
+import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
+import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.transfer.BankTransferConfirmationFragment;
 import com.discover.mobile.bank.transfer.BankTransferFrequencyWidget;
 import com.discover.mobile.bank.transfer.BankTransferNotEligibleFragment;
@@ -84,6 +90,7 @@ import com.discover.mobile.common.framework.CacheManager;
 import com.discover.mobile.common.framework.Conductor;
 import com.discover.mobile.common.framework.ServiceCallFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.utils.CommonUtils;
@@ -127,6 +134,87 @@ public final class BankConductor  extends Conductor {
 			instance = new BankConductor(new BankServiceCallFactory());
 		}
 		return instance;
+	}
+
+	/**
+	 * Navigates to the given fragment. 1. checks to see if fragment requires
+	 * data 2. requests data from cache manager 3. makes service call if cache
+	 * data unavailable 4. navigates to class
+	 * 
+	 * @param fragmentClass
+	 *            - the destination class
+	 * assumes no payload required for service call, if necessary 
+	 * 
+	 */
+	@Override
+	public void launchFragment(final Class<? extends BaseFragment> fragmentClass){
+		launchFragment(fragmentClass, null, null);
+	}
+
+	/**
+	 * Navigates to the given fragment. 
+	 * <pre>
+	 * 1. checks to see if fragment requires data 
+	 * 2. requests data from cache manager 
+	 * 3. makes service call if cache data unavailable 
+	 * 4. navigates to class
+	 * 
+	 * @param fragmentClass
+	 *            - the destination class
+	 * @param payload  - the payload for the service call, if necessary
+	 * @param bundle
+	 *            - bundle to pass on when navigating.
+	 */
+	@Override
+	public void launchFragment(final Class<? extends BaseFragment> fragmentClass, final Serializable payload, final Bundle bundle) {
+		@SuppressWarnings("rawtypes")
+		final
+		Class cacheObjReq = lookupCacheRequiredForDestination(fragmentClass);
+		if (cacheObjReq == null) {
+			// no data required, don't perform the service call; just navigate
+			navigateToFrament(fragmentClass, bundle);
+		} else {
+			final Serializable o = (Serializable) BankUser.instance().getObjectFromCache(cacheObjReq);
+			if (o == null) {
+				// cache is null, let's make the call
+
+				// call payload in the bundle
+				@SuppressWarnings("unchecked")
+				final NetworkServiceCall<?> call = serviceCallFactory.createServiceCall(cacheObjReq,payload);
+				// associate the destination with the call
+				destinationMap.put(call.hashCode(), new DestinationDetails(DestinationType.FRAGMENT, fragmentClass, bundle));
+				call.submit();
+			}else{
+				final Bundle updatedBundle = new Bundle();
+				if(null != bundle){
+					updatedBundle.putAll(bundle);
+				}
+				updatedBundle.putSerializable(BankExtraKeys.PAYLOAD, o);
+				navigateToFrament(fragmentClass, updatedBundle);
+			}
+		}
+	}
+
+	/**
+	 * reusable navigate method
+	 * 
+	 * @param destClass
+	 * @param bundle
+	 */
+	@Override
+	protected void navigateToFrament(
+			@SuppressWarnings("rawtypes") final Class destClass, final Bundle bundle) {
+		Fragment fragment;
+		try {
+			fragment = (Fragment) destClass.newInstance();
+		} catch (final Exception e) {
+			throw new RuntimeException(
+					"Unable to instantiate to supplied fragment!  Please ensure public no-arg constructor");
+		}
+		if (bundle != null) {
+			fragment.setArguments(bundle);
+		}
+		((BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
 
 
@@ -471,21 +559,6 @@ public final class BankConductor  extends Conductor {
 	}
 
 	/**
-	 * Navigation method used to display the Review Payments page
-	 */
-	public static void navigateToReviewPayments(final Bundle bundle,final Boolean value) {
-		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
-
-		//View Pager seems to require the bundle and value parameters, need to discuss with
-		//Jon and Scott what it is meant for
-
-		//Also needed for after confirmation of a scheduled payment
-
-		//Remove this line after integration
-		navigateToUnderDevelopment();
-	}
-
-	/**
 	 * Navigation method used to display the Review Payments page with the delete message
 	 */
 	public static void navigateToReviewPaymentsFromDelete(final Bundle bundle) {
@@ -493,10 +566,12 @@ public final class BankConductor  extends Conductor {
 
 		//Fetch the current activity
 		if( activity instanceof BaseFragmentActivity ) {
-			final BankNavigationRootActivity fragActivity = (BankNavigationRootActivity)activity;
+			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+			final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
+			call.setWasDeleted(true);
+			call.setExtras(bundle);
+			call.submit();
 
-			fragActivity.closeDialog();
-			fragActivity.getSupportFragmentManager().popBackStackImmediate();
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "Unable to get current Activity");
@@ -763,10 +838,11 @@ public final class BankConductor  extends Conductor {
 			}
 
 			if(nextVisibleFragment != null) {
-				if(args != null && args.getBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK))
+				if(args != null && args.getBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK)) {
 					navActivity.popTillFragment(BankTransferStepOneFragment.class);
-				else
+				} else {
 					navActivity.makeFragmentVisible(nextVisibleFragment);
+				}
 			}
 		}
 
@@ -784,13 +860,13 @@ public final class BankConductor  extends Conductor {
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			final Fragment nextVisibleFragment = new BankTransferConfirmationFragment();
-			
+
 			navActivity.closeDialog();
 			nextVisibleFragment.setArguments(args);
 			navActivity.makeFragmentVisible(nextVisibleFragment);
 		}
 	}
-	
+
 	/**
 	 * Navigation method used to navigate to Check Deposit work-flow. Navigates to Check Deposit - Terms
 	 * and Conditions if user is eligible and not enrolled. If it is the start of the work flow, then navigates
@@ -1073,8 +1149,11 @@ public final class BankConductor  extends Conductor {
 	 */
 	@Override
 	public Class lookupCacheRequiredForDestination(final Class destination) {
-
-		return null;
+		Class payloadClass = null;
+		if(destination == BankSelectPayee.class){
+			payloadClass = ListPayeeDetail.class;
+		}
+		return payloadClass;
 	}
 
 	/**

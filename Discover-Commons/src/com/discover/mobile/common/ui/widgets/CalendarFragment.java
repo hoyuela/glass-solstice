@@ -3,6 +3,7 @@ package com.discover.mobile.common.ui.widgets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -371,5 +372,56 @@ public class CalendarFragment extends CaldroidFragment {
 		this.displayedYear = displayedYear;
 	}
 	
+	
+	/**
+	 * Returns a calendar which starts at the first possible valid day from it's current day and on.
+	 * @param currentCalendar a calendar object which has its current date set to some value.
+	 * @param holidays a list of Date objects which are not valid for the returned calendar to have selected.
+	 * @return a Calendar who's current day is the first valid day of the currentCalendar, that is 
+	 * not a weekend or holiday.
+	 */
+	public static Calendar getFirstValidDateCalendar(final Calendar currentCalendar, final List<Date> holidays) {
+		final Calendar hasNextValidDateCal = currentCalendar;
+		
+		if(hasNextValidDateCal != null) {	
+			//Get the current day so we can see if its a weekend
+			int currentDayOfWeek = hasNextValidDateCal.get(Calendar.DAY_OF_WEEK);
+			
+			//While today is a weekend, increment today to the next day.
+			while (currentDayOfWeek == Calendar.SATURDAY || 
+					currentDayOfWeek == Calendar.SUNDAY ||
+					isHoliday(hasNextValidDateCal, holidays)) {
+				hasNextValidDateCal.add(Calendar.DAY_OF_MONTH, 1);
+				currentDayOfWeek = hasNextValidDateCal.get(Calendar.DAY_OF_WEEK);
+			}
+		}
+		
+		return hasNextValidDateCal;
+	}
+	
+	/**
+	 * Checks the current day of a given calendar against a list of holiday dates. Returns if the selected day is
+	 * a holiday.
+	 * @param calendar a calendar who's current date needs to be compared against a list of holidays.
+	 * @param holidays a list of Date objects that represent holidays that the calendar is not allowed to use.
+	 * @return if the current date of the calendar is a holiday.
+	 */
+	public static boolean isHoliday(final Calendar calendar, final List<Date> holidays) {
+		boolean isTodayHoliday = false;
+		
+		if(calendar != null && holidays != null && holidays.size() > 0) {
+			final Calendar holidayCalendar = Calendar.getInstance();
+			//Compare each valid holiday date against the passed holiday date
+			for(final Date holiday : holidays) {
+				holidayCalendar.setTime(holiday);
+	
+				isTodayHoliday |= holidayCalendar.get(Calendar.DAY_OF_MONTH) == calendar.get(Calendar.DAY_OF_MONTH) &&
+					holidayCalendar.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
+					holidayCalendar.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
+			}
+		}
+		
+		return isTodayHoliday;
+	}
 
 }

@@ -7,6 +7,9 @@ package com.discover.mobile.bank;
  */
 public final class BankExtraKeys {
 
+	/**Payload that would be retrieved from the service*/
+	public static final String PAYLOAD = "payLoad";
+
 	/**Used to get the list of payees from a bundle*/
 	public static final String PAYEES_LIST = "payees-list";
 

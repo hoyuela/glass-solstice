@@ -11,6 +11,7 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
+import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.framework.CacheManager;
 
@@ -49,13 +50,19 @@ public final class BankUser extends CacheManager implements Serializable {
 	 */
 	private Account currentAccount;
 
-	/**List of payees*/
-	private ListPayeeDetail payees;
-	
 	/**List of bank holidays where user cannot schedule certain bank transactions*/
 	private BankHolidays holidays = new BankHolidays();
-	
-	
+
+	/**List of scheduled payments*/
+	private ListPaymentDetail scheduled;
+
+	/**List of completed payments*/
+	private ListPaymentDetail completed;
+
+	/**List of cancelled payments*/
+	private ListPaymentDetail cancelled;
+
+
 	/**
 	 * 
 	 * @return Returns reference to single instance of BankUser
@@ -79,7 +86,7 @@ public final class BankUser extends CacheManager implements Serializable {
 	public AccountList getPaymentCapableAccounts() {
 		final AccountList newList = new AccountList();
 		newList.accounts = new ArrayList<Account>();
-		
+
 		if( this.hasAccounts() ) {
 			for(final Account account : accountList.accounts) {
 				if( account.canSchedulePayment() ) {
@@ -89,7 +96,7 @@ public final class BankUser extends CacheManager implements Serializable {
 		}
 		return newList;
 	}
-	
+
 	/**
 	 * Returns the {@code Account} for a given Account id.
 	 * 
@@ -123,26 +130,26 @@ public final class BankUser extends CacheManager implements Serializable {
 	public boolean hasAccounts() {
 		return (accountList != null && !accountList.accounts.isEmpty());
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @return Returns True if user has a Checking, Money Market or Savings Account, false otherwise.
 	 */
 	public boolean hasDepositEligibleAccounts() {
 		boolean ret = false;
-		
+
 		if( hasAccounts() ) {
 			for( final Account account : accountList.accounts) {
 				if( account.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING) ||
-				    account.type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) ||
-				    account.type.equalsIgnoreCase(Account.ACCOUNT_MMA)) {
+						account.type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) ||
+						account.type.equalsIgnoreCase(Account.ACCOUNT_MMA)) {
 					ret = true;
 					break;
 				}
 			}
 		}
-		
+
 		return ret;
 	}
 
@@ -167,6 +174,14 @@ public final class BankUser extends CacheManager implements Serializable {
 	}
 
 	/**
+	 * Get the list of payees
+	 * @return the list of payees
+	 */
+	public ListPayeeDetail getPayees(){
+		return (ListPayeeDetail) this.getObjectFromCache(ListPayeeDetail.class);
+	}
+
+	/**
 	 * Used to clear all cached data during the session of a user logged into
 	 * Bank
 	 */
@@ -176,9 +191,13 @@ public final class BankUser extends CacheManager implements Serializable {
 		customerInfo = null;
 		BankUrlManager.clearLinks();
 		currentAccount = null;
-		payees = null;
+		scheduled = null;
+		completed = null;
+		cancelled = null;
 		//Ensure that any cached check images are deleted upon logout or timeout.
 		CheckDepositCaptureActivity.deleteBothImages(DiscoverActivityManager.getActiveActivity());
+		//Clear the cache manager
+		super.clearSession();
 	}
 
 	/**
@@ -200,24 +219,10 @@ public final class BankUser extends CacheManager implements Serializable {
 		return currentAccount;
 	}
 
-	/**
-	 * @return the payees
-	 */
-	public ListPayeeDetail getPayees() {
-		return payees;
-	}
-
-	/**
-	 * @param payees the payees to set
-	 */
-	public void setPayees(final ListPayeeDetail payees) {
-		this.payees = payees;
-	}
-	
 	public void setBankUser(final BankUser bu) {
 		currentBankUser = bu;
 	}
-	
+
 	/**
 	 * @return Returns a list of dates that are considered Bank Holidays
 	 */
@@ -231,8 +236,50 @@ public final class BankUser extends CacheManager implements Serializable {
 	 * @param value Reference to a BankHolidays object generated from a response to a BankHolidayServiceCall.
 	 */
 	public void setHolidays(final BankHolidays value) {
-		if( value != null )
+		if( value != null ) {
 			holidays = value;
+		}
 	}
 
+	/**
+	 * @return the scheduled
+	 */
+	public ListPaymentDetail getScheduled() {
+		return scheduled;
+	}
+
+	/**
+	 * @param scheduled the scheduled to set
+	 */
+	public void setScheduled(final ListPaymentDetail scheduled) {
+		this.scheduled = scheduled;
+	}
+
+	/**
+	 * @return the completed
+	 */
+	public ListPaymentDetail getCompleted() {
+		return completed;
+	}
+
+	/**
+	 * @param completed the completed to set
+	 */
+	public void setCompleted(final ListPaymentDetail completed) {
+		this.completed = completed;
+	}
+
+	/**
+	 * @return the cancelled
+	 */
+	public ListPaymentDetail getCancelled() {
+		return cancelled;
+	}
+
+	/**
+	 * @param cancelled the cancelled to set
+	 */
+	public void setCancelled(final ListPaymentDetail cancelled) {
+		this.cancelled = cancelled;
+	}
 }

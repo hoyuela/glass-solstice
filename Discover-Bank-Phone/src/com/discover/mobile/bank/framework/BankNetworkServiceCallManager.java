@@ -324,6 +324,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		//A successful call refreshes the session -- update KeepAlive service with information.
 		KeepAlive.updateLastBankRefreshTime();
 
+		// FIRST UPDATE GLOBAL CACHE IF DESIRED
+		if ( sender.cacheResults() ) { 
+			BankUser.instance().updateCache(result);
+		}
+
 		//If Strong Auth Activity is open close it only in the case when the user is NOT logging in
 		if( !(sender instanceof CreateStrongAuthRequestCall) && 		//Shouldn't close strong auth page on a strong auth success
 				!(sender instanceof CustomerServiceCall) &&					//Customer Service call is only made when logging in
@@ -397,6 +402,14 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		} else if( sender instanceof CreatePaymentCall || sender instanceof UpdatePaymentCall) {
 			final PaymentDetail value = (PaymentDetail)result;
 			BankConductor.navigateToPayConfirmFragment(value);
+
+			//Mark the scheduled activity dirty so that it is refreshed
+			final Account account = BankUser.instance().getAccount(value.paymentAccount.id);
+			if(null != account){
+				account.scheduled = null;
+			}
+			//Mark the scheduled payments dirty so that it is refreshed
+			BankUser.instance().setScheduled(null);
 		}
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
 		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isPostCall() ) {
@@ -415,12 +428,14 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
 			}
 
+			//Update the current list of payees
+			BankUser.instance().updateCache(result);
 			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
 			BankConductor.navigateToManagePayee(bundle);
 		}
 		else if(sender instanceof GetExternalTransferAccountsCall) {
 			final Bundle args = new Bundle();
-				
+
 			args.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, result);
 
 			BankConductor.navigateToTransferMoneyLandingPage(args);
@@ -428,7 +443,10 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if(sender instanceof ScheduleTransferCall) {
 			final Bundle resultBundle = new Bundle();
 			resultBundle.putSerializable(BankExtraKeys.TRANSFER_SUCCESS_DATA, result);
-			
+
+			//Mark the scheduled and posted activity dirty so that it is refreshed
+			BankUser.instance().getCurrentAccount().scheduled = null;
+			BankUser.instance().getCurrentAccount().posted = null;
 			BankConductor.navigateToTransferConfirmation(resultBundle);
 		}
 		//Handle the payee success call
@@ -452,8 +470,17 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if( sender instanceof DeletePaymentServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
-			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, ((DeletePaymentServiceCall)sender).getPaymentDetail());
+			final PaymentDetail detail = ((DeletePaymentServiceCall)sender).getPaymentDetail();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, detail);
 			BankConductor.navigateToReviewPaymentsFromDelete(bundle);
+
+			//Mark the scheduled activity dirty so that it is refreshed
+			final Account account = BankUser.instance().getAccount(detail.paymentAccount.id);
+			if(null != account){
+				account.scheduled = null;
+			}
+			//Mark the scheduled payments dirty so that it is refreshed
+			BankUser.instance().setScheduled(null);
 		}
 		//Payee Search Success, navigate to Add Payee Workflow Step 4
 		else if( sender instanceof SearchPayeeServiceCall ) {
@@ -463,6 +490,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if( sender instanceof GetPaymentsServiceCall ) {
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
+			if(((GetPaymentsServiceCall) sender).isWasDeleted()){
+				bundle.putAll(((GetPaymentsServiceCall) sender).getExtras());
+			}
 			BankConductor.navigateToReviewPaymentsTable(bundle);
 		}
 		//Payee Add Success, navigate to Add Payee Confirmation Pge in Workflow Step 5
