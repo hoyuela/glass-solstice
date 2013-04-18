@@ -19,6 +19,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
 import com.discover.mobile.bank.deposit.BankDepositWorkFlowStep;
+import com.discover.mobile.bank.deposit.CaptureReviewFragment;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -247,11 +248,16 @@ public class BankErrorHandler implements ErrorHandler {
 			final BankErrorResponse bankErrorResponse = (BankErrorResponse) errorResponse;
 			final String phoneNumber = bankErrorResponse.getPhoneNumber();
 			final String title = bankErrorResponse.getTitle();
-
+			final String message = bankErrorResponse.getErrorMessage();
+			
 			/**Set modal title with title sent from server*/
 			if( !Strings.isNullOrEmpty(title) )
 				modalTopView.setTitle(title);
 
+			/**Set body text with text sent from server*/
+			if( !Strings.isNullOrEmpty(message)) 
+				modalTopView.setContent(message);
+			
 			/**Set modal phonenumber with number sent from server*/
 			if( !Strings.isNullOrEmpty(phoneNumber) && modalTopView.getHelpFooter() != null)
 				modalTopView.getHelpFooter().setToDialNumberOnClick(phoneNumber);
@@ -558,5 +564,53 @@ public class BankErrorHandler implements ErrorHandler {
 
 		BankConductor.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
 	}
-
+	
+	/**
+	 * Method used to show a No Connection - Retry modal. The modal will attempt to retransmit the
+	 * last NetworkServiceCall<?> that was sent by the application and was monitored by the BankNetworkServiceCallmanager.
+	 * 
+	 */
+	public void handleNoConnection() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+	
+		if( activity != null && activity instanceof ErrorHandlerUi ) {
+			// Create a one button modal to notify the user that they are leaving the application
+			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+					R.string.bank_network_connection_error_title,
+					R.string.bank_network_connection_error_body,
+					R.string.bank_network_connection_error_action);
+	
+			//Set dismiss modal and will retransmit the service call when the user clicks on it
+			modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(final View v) {
+					modal.dismiss();
+					
+					/**Check if the activity is meant for check deposit, which is handled differently from other service calls*/
+					if( activity instanceof BankNavigationRootActivity &&  
+						((BankNavigationRootActivity)activity).getCurrentContentFragment() instanceof CaptureReviewFragment) {
+						
+						final CaptureReviewFragment fragment =  (CaptureReviewFragment)((BankNavigationRootActivity)activity).getCurrentContentFragment();
+						fragment.sendDeposit();
+						
+					} else {
+						final NetworkServiceCall<?> networkServiceCall =  BankNetworkServiceCallManager.getInstance().getLastServiceCall();
+						if( networkServiceCall != null ) {
+							networkServiceCall.retransmit(activity);
+						}
+					}
+				}
+			});
+			
+			
+			/**
+			 * Hide the need help footer for the delete modal.
+			 */
+			final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
+			topView.hideNeedHelpFooter();
+			topView.showErrorIcon(true);
+	
+			((ErrorHandlerUi) activity).showCustomAlert(modal);	
+		}
+	}
 }

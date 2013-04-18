@@ -47,4 +47,9 @@
     <string name="bank_callmodal_title">Your Session May End</string>
     <string name="bank_callmodal_msg">If you dial for help Discover may end your session to protect your security. You will have to log back in to complete your transaction.</string>
     <string name="bank_callmodal_action">Call Now</string>
+    
+    <!-- Network Connection Error Strings  -->
+    <string name="bank_network_connection_error_title">Network Connection Error</string>
+    <string name="bank_network_connection_error_body">The internet connection appears to be offline at this moment. In order to login and access the features of the application you will need internet connectivity. Please check your device settings and try again once the connection has been restored.</string>
+    <string name="bank_network_connection_error_action">Retry</string>
 </resources>
