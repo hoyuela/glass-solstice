@@ -37,20 +37,20 @@ public class BankErrorSSOResponse extends BankErrorResponse {
 	/**
 	 * Contains value associated with sso user.
 	 **/
-	@JsonProperty("value")
+	@JsonProperty("ssoToken")
 	public String token; 
 	/**
 	 * Hashed value associated with sso user.
 	 */
-	@JsonProperty("hashedValue")
+	@JsonProperty("ssoTokenHash")
 	public String hashedValue;
 	/**
 	 * Returns links to actionable services 
 	 */
 	@JsonProperty("links")
 	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
-	
-	
+
+
 	/**
 	 * Not Used in this class
 	 */
