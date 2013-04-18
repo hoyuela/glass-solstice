@@ -19,6 +19,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
 import com.discover.mobile.bank.deposit.BankDepositWorkFlowStep;
+import com.discover.mobile.bank.deposit.CaptureReviewFragment;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -585,9 +586,18 @@ public class BankErrorHandler implements ErrorHandler {
 				public void onClick(final View v) {
 					modal.dismiss();
 					
-					final NetworkServiceCall<?> networkServiceCall =  BankNetworkServiceCallManager.getInstance().getLastServiceCall();
-					if( networkServiceCall != null ) {
-						networkServiceCall.retransmit(activity);
+					/**Check if the activity is meant for check deposit, which is handled differently from other service calls*/
+					if( activity instanceof BankNavigationRootActivity &&  
+						((BankNavigationRootActivity)activity).getCurrentContentFragment() instanceof CaptureReviewFragment) {
+						
+						final CaptureReviewFragment fragment =  (CaptureReviewFragment)((BankNavigationRootActivity)activity).getCurrentContentFragment();
+						fragment.sendDeposit();
+						
+					} else {
+						final NetworkServiceCall<?> networkServiceCall =  BankNetworkServiceCallManager.getInstance().getLastServiceCall();
+						if( networkServiceCall != null ) {
+							networkServiceCall.retransmit(activity);
+						}
 					}
 				}
 			});

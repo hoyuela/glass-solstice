@@ -36,10 +36,8 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.google.common.base.Strings;
 
 /**
@@ -371,6 +369,14 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 
 	@Override
 	protected void onActionButtonClick() {
+		sendDeposit();
+	}
+
+	/**
+	 * Method used to start the DepositSubmissionActivity and send a request to submit a check deposit. The
+	 * DepositSubmissionActivity will send request at launch.
+	 */
+	public void sendDeposit() {
 		clearErrors();
 
 		final Intent depositSubmission = new Intent(getThisActivity(), DepositSubmissionActivity.class);
@@ -381,7 +387,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 
 		startActivityForResult(depositSubmission, depositSubmitActivityId);
 	}
-
+	
 	@Override
 	protected void onActionLinkClick() {
 		final Activity currentActivity = getActivity();
