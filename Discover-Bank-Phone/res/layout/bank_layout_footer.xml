@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/need_help_footer"
-        layout="@layout/old_general_need_help_footer" />
+        layout="@layout/new_general_need_help_footer" />
 
     <RelativeLayout
         android:layout_width="match_parent"
