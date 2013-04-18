@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:text="@string/need_help_text"
             android:layout_centerHorizontal="true"
-            style="@style/body_copy" />
+            style="@style/body_copy_title" />
 
 	    <TextView
 	        android:id="@+id/help_number_label"
@@ -22,7 +22,7 @@
 	        android:layout_centerHorizontal="true"
 	        android:layout_below="@+id/need_help_label"
 	        android:text="@string/need_help_number_text"
-	        style="@style/blue_hyperlink"
+	        style="@style/bank_blue_hyperlink"
 	        android:paddingRight="@dimen/content_padding"
 	        android:paddingLeft="@dimen/content_padding"
 	        android:paddingBottom="@dimen/content_padding"/>
