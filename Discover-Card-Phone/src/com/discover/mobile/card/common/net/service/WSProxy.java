@@ -92,9 +92,9 @@ public final class WSProxy {
         setLastRestCallTime();
         final WSResponse response = new WSResponse();
         X_APP_VERSION = Utils.getStringResource(context,
-                R.string.xClientPlatform);
+        		R.string.xApplicationVersion);
         X_CLIENT_PLATFORM = Utils.getStringResource(context,
-                R.string.xApplicationVersion);
+        		 R.string.xClientPlatform );
 
         X_CONTENT_TYPE = "application/json";
 
@@ -105,9 +105,12 @@ public final class WSProxy {
         try {
             final InputStream is = ConnectionManager.connect(connection,
                     context, requestDetail.getInput());
-            response.setResponseCode(connection.getResponseCode());
-            response.setHeaders(connection.getHeaderFields());
-            response.setInputStream(is);
+            if (null!=is)
+            {
+                response.setResponseCode(connection.getResponseCode());
+                response.setHeaders(connection.getHeaderFields());
+                response.setInputStream(is);
+            }
         } catch (final IOException e) {
             e.printStackTrace();
         }
@@ -157,8 +160,8 @@ public final class WSProxy {
             if (headers != null) {
                 final Set<String> keys = headers.keySet();
                 for (final String key : keys) {
-                    // System.out.println("Headers========> " + key + " "
-                    // + headers.get(key));
+                     System.out.println("Headers========> " + key + " "
+                     + headers.get(key));
                     connection.setRequestProperty(key, headers.get(key));
                 }
             }

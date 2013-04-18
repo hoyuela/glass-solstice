@@ -9,7 +9,7 @@ import com.discover.mobile.common.Struct;
  * 
  * ©2013 Discover Bank
  * 
- *  holding error response parse data
+ * holding error response parse data
  * 
  * @author CTS
  * 
@@ -32,6 +32,11 @@ public class CardErrorResponse implements Serializable {
         public String status;
         public String saStatus;
         public String userid;
+        public String questionId;
+        public String questionText;
+        public boolean isSSOUidDLinkable;
+        public boolean isSSOUser;
+        public boolean isSSNMatch;
     }
 
 }

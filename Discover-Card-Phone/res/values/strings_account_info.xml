@@ -11,9 +11,7 @@
 	    Account Center access at discover.com. We\'d love to have you, but for now you must
 	    register through the Sam\'s Club Website to manage your account.</string>
 
-	<string name="account_info_input_restrictions_label">This is a 16&#8211;digit number starting with 6011.
-	    Do not include spaces or hyphens.
-	</string>
+	<string name="account_info_input_restrictions_label">This is a 16&#8211;digit number starting with 6011.</string>
 	
 	<!-- Account Info Screen 2 -->
     <string name="account_info_two_id_detail_info_text">6&#8211;16 characters can contain most special characters except: (\"), (\'), (\\) and spaces.</string>

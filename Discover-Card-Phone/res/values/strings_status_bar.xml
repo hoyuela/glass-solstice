@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="status_bar_help">Help</string>
+    <string name="status_bar_indicators">- - -</string>
+    <string name="hi_note">Hi, </string>
+</resources>

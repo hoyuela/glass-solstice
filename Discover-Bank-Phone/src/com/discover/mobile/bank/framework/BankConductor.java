@@ -584,12 +584,12 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToFeedback() {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
-		
+
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final Bundle bundle = new Bundle();
 		bundle.putBoolean(BankInfoNavigationActivity.PROVIDE_FEEDBACK, true);
-		
+
 		if( activity != null ) {
 			/**Launch Provide Feedback Activity if user is not logged in*/
 			if( activity instanceof LoginActivity ) {
@@ -1009,6 +1009,8 @@ public final class BankConductor  extends Conductor {
 		}
 	}
 
+
+	//TODO:  Remove this comment it is a way for me to identify the SSO code in this  class ----------------------------------------
 	/**
 	 * Authorizes a Bank user against the service. If successful, the user will
 	 * be logged-in and taken to the Bank landing page of the application.
@@ -1044,8 +1046,7 @@ public final class BankConductor  extends Conductor {
 	 * @param hashedTokenValue
 	 */
 	public static void authWithCardPayload(final LoginActivity activity, final String tokenValue, final String hashedTokenValue) {
-		FacadeFactory.getCardLoginFacade().loginWithPayload(activity,
-				tokenValue, hashedTokenValue);
+		FacadeFactory.getCardLoginFacade().loginWithPayload(activity, tokenValue, hashedTokenValue);
 	}
 
 	/**
@@ -1054,8 +1055,8 @@ public final class BankConductor  extends Conductor {
 	 * prompt the user about the issue and continue if they accept.
 	 */
 	public static void authDueToALUStatus() {
-		final LoginActivity activity = (LoginActivity) DiscoverActivityManager
-				.getActiveActivity();
+		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
+		//TODO: Why are we passing a null value here this call passes credentials to the next call
 		activity.showALUStatusModal(null);
 	}
 
@@ -1067,14 +1068,13 @@ public final class BankConductor  extends Conductor {
 		final BankLoginDetails credentials = new BankLoginDetails();
 		credentials.username = username;
 		credentials.password = password;
-		final LoginActivity activity = (LoginActivity) DiscoverActivityManager
-				.getActiveActivity();
+		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
 		activity.showALUStatusModal(credentials);
 	}
 
 	/**
 	 * Continues with the Skip SSO login call using provided credentials.
-	 * Typicall used when a login call originates from Card.
+	 * Typically used when a login call originates from Card.
 	 */
 	public static void continueAuthDueToALU(final BankLoginDetails credentials) {
 		KeepAlive.setCardAuthenticated(false);
@@ -1092,6 +1092,9 @@ public final class BankConductor  extends Conductor {
 			loginDetails = null;
 		}
 	}
+
+
+	//TODO:  Remove this comment it is a way for me to identify the SSO code in this  class ----------------------------------------
 
 	/**
 	 * Navigate to the email screen after getting the directions

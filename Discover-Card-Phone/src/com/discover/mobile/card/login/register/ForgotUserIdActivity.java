@@ -120,9 +120,9 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity implemen
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_forgot_id);
 
-		final HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
+		/*final HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
 		progress.initChangePasswordHeader(0);
-		progress.hideStepTwo();
+		progress.hideStepTwo();*/
 
 		loadAllViews();
 		setupInputFields();
@@ -499,8 +499,12 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity implemen
 	@Override
 	public void goBack() {
 		finish();
-		final Intent forgotCredentialsActivity = new Intent(this, ForgotCredentialsActivity.class);
-		startActivity(forgotCredentialsActivity);
+		/*final Intent forgotCredentialsActivity = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(forgotCredentialsActivity);*/
+		final Bundle bundle = new Bundle();
+        bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+        bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
+        FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
 	}
 
 	@Override

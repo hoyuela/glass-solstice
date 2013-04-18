@@ -1,0 +1,858 @@
+/*
+ * 
+ */
+
+package com.discover.mobile.card.statement;
+
+import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import org.apache.cordova.DroidGap;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.Uri;
+import android.net.http.AndroidHttpClient;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.webkit.ConsoleMessage;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.PDFObject;
+import com.discover.mobile.card.common.utils.Utilss;
+
+/**
+ * Displays cardmembers selected statement images in a scrollable view
+ * 
+ * @author sgoff0
+ */
+public class StatementActivity extends DroidGap {
+
+    private static final String LOG_TAG = "StatementActivity";
+    public static final int EXPIRE_SESSION = 1;
+    public static final int MAINT_EXPIRE_SESSION = 2;
+
+    private static long sLastHealthCheck = new Date().getTime();
+    private static long sHealthCheckThreshold = 30 * 1000;
+    private static long sExpireSession = 15 * 60 * 1000; // 15 min
+    private static long sWaitImageLoad = 7 * 1000;
+
+    final Handler mHandler = new Handler();
+    private Context mContext;
+
+    private static String sBaseUrl = null;
+    private static JSONArray sJsonArray = null;
+    private StatementInfo mStatementInfo = new StatementInfo();
+    private int previousIndex = 0;
+    private boolean isPageLoading = false;
+
+    private CountDownTimer mCountDownTimer;
+
+    // page elements
+    private TextView mTextCycleDate;
+    private WebView mWebView;
+    private ImageButton mBtnPrev;
+    private ImageButton mBtnNext;
+    private Button mBtnDownloadPDF;
+
+    private CharSequence mErrorMessage;
+
+    private ProgressDialog mProgressDialog;
+    private Animation mFadeInAnimation;
+
+    @Override
+    public void onUserInteraction() {
+        if (mCountDownTimer != null) {
+            mCountDownTimer.start();
+        }
+        performServiceHealthCheck();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_statement);
+
+        try {
+            processBundle();
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "Error reading input");
+            // TODO show error that input couldn't be read properly
+            finish();
+        }
+
+        mTextCycleDate = (TextView) findViewById(R.id.statement_text_cycleDates);
+        mWebView = (WebView) findViewById(R.id.statement_webView);
+        mBtnDownloadPDF = (Button) findViewById(R.id.statement_btn_downloadPDF);
+        mBtnPrev = (ImageButton) findViewById(R.id.statement_btn_prev);
+        mBtnNext = (ImageButton) findViewById(R.id.statement_btn_next);
+
+        mFadeInAnimation = AnimationUtils.loadAnimation(StatementActivity.this,
+                R.anim.fadein);
+
+        hideUI();
+
+        mContext = this;
+
+        mCountDownTimer = new CountDownTimer(sExpireSession, sExpireSession) {
+            @Override
+            public void onFinish() {
+                Log.d("Stmt", "timer expiring...");
+                setResult(EXPIRE_SESSION);
+                finish();
+            }
+
+            @Override
+            public void onTick(long arg0) {
+                // Do nothing on tick, we only care when it expires
+            }
+        }.start();
+
+        // fetch & display data
+        mStatementInfo = getStatementDataAtIndex(mStatementInfo.getIndex());
+        loadWebView(mStatementInfo);
+        configureWebView();
+    }
+
+    /**
+     * Configures settings for specified webview
+     */
+    private void configureWebView() {
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setBuiltInZoomControls(true);
+
+        // loads the WebView completely zoomed out
+        // webView.getSettings().setLoadWithOverviewMode(true);
+        // makes the Webview have a normal viewport (such as a normal desktop
+        // browser), while when false the webview will have a viewport
+        // constrained to it's own dimensions (so if the webview is 50px*50px
+        // the viewport will be the same size)
+        mWebView.getSettings().setUseWideViewPort(true);
+        mWebView.setVerticalScrollBarEnabled(false);
+        mWebView.setHorizontalScrollBarEnabled(false);
+        mWebView.getSettings().setLoadsImagesAutomatically(true);
+
+        final JavaScriptInterface myJavaScriptInterface = new JavaScriptInterface(
+                this);
+        mWebView.addJavascriptInterface(myJavaScriptInterface,
+                "AndroidFunction");
+
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage cm) {
+                Log.d("StatementsWebView",
+                        cm.message() + " -- From line " + cm.lineNumber()
+                                + " of " + cm.sourceId());
+                return true;
+            }
+        });
+
+        mWebView.setWebViewClient(new WebViewClient() {
+            private CountDownTimer loadingTimer;
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                isPageLoading = true;
+                Log.d(LOG_TAG, "onPageStarted: " + url);
+                mWebView.setVisibility(View.INVISIBLE);
+                mBtnDownloadPDF.setVisibility(View.INVISIBLE);
+                mProgressDialog = ProgressDialog.show(StatementActivity.this,
+                        "", "Loading...", true);
+
+                // start cdt
+                loadingTimer = new CountDownTimer(sWaitImageLoad,
+                        sWaitImageLoad) {
+                    @Override
+                    public void onFinish() {
+                        showUI();
+                        isPageLoading = false;
+                        Log.e(LOG_TAG, "ImageLoadTimer: expired");
+                    }
+
+                    @Override
+                    public void onTick(long arg0) {
+                        // Do nothing on tick, we only care when it expires
+                    }
+                }.start();
+            }
+
+            @Override
+            public void onLoadResource(WebView view, String url) {
+                Log.d(LOG_TAG, "onLoadResource: " + url);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(mWebView, url);
+                Log.d(LOG_TAG, "onPageFinished: " + url);
+                if (null != loadingTimer)
+                    loadingTimer.cancel();
+                showUI();
+                mWebView.loadUrl("javascript:asyncEagerImageFetch()");
+                isPageLoading = false;
+            }
+        });
+    }
+
+    private void showUI() {
+        if (mStatementInfo == null || mStatementInfo.isError()) {
+            mProgressDialog.dismiss();
+            return;
+        }
+
+        mTextCycleDate.setText(mStatementInfo.getCycleDateText());
+        mTextCycleDate.setTextSize(mStatementInfo.getFontSize());
+
+        mBtnNext.setVisibility(View.VISIBLE);
+        mBtnPrev.setVisibility(View.VISIBLE);
+        mBtnNext.setEnabled(mStatementInfo.getIndex() != 0);
+        mBtnPrev.setEnabled(mStatementInfo.getIndex() != sJsonArray.length() - 1);
+        mWebView.setVisibility(View.VISIBLE);
+        mBtnDownloadPDF.setVisibility(View.VISIBLE);
+        mTextCycleDate.setVisibility(View.VISIBLE);
+
+        mWebView.startAnimation(mFadeInAnimation);
+        mBtnDownloadPDF.startAnimation(mFadeInAnimation);
+        if (mProgressDialog != null)
+            mProgressDialog.dismiss();
+    }
+
+    private void hideUI() {
+        mBtnNext.setVisibility(View.INVISIBLE);
+        mBtnPrev.setVisibility(View.INVISIBLE);
+        mWebView.setVisibility(View.INVISIBLE);
+        mTextCycleDate.setVisibility(View.INVISIBLE);
+        mBtnDownloadPDF.setVisibility(View.INVISIBLE);
+    }
+
+    private void processBundle() throws JSONException {
+        // extract input parameters
+        Bundle b = getIntent().getExtras();
+        String statements = b.getString("statements");
+        sJsonArray = new JSONArray(statements);
+        if (sJsonArray.length() == 0) {
+            // TODO no content, define proper error
+            alertCloseActivity(getText(R.string.statement_invalidData_message));
+        }
+        sBaseUrl = b.getString("baseUrl");
+        mStatementInfo = new StatementInfo();
+        mStatementInfo.setIndex(b.getInt("index"));
+    }
+
+    private StatementInfo getStatementDataAtIndex(int index) {
+        if (!isValidIndex(index)) {
+            Log.d(LOG_TAG, "Invalid index: " + index);
+            if (index < 0 && isValidIndex(0)) {
+                index = 0;
+            } else if (isValidIndex(index - 1)) {
+                index = index - 1;
+            } else {
+                return null;
+            }
+        }
+
+        StatementInfo statementInfo = new StatementInfo();
+        statementInfo.setIndex(index);
+        previousIndex = index;
+
+        StatementDate thisMonth = new StatementDate();
+        StatementDate nextMonth = new StatementDate();
+        StatementDate previousMonth = new StatementDate();
+
+        try {
+            JSONObject jsonObject = sJsonArray.getJSONObject(index);
+
+            String endDate = jsonObject.get("endDate").toString();
+            String startDate = jsonObject.get("startDate").toString();
+            String cycleDateHeader = getDateString(startDate, endDate);
+            statementInfo.setCycleDateText(cycleDateHeader);
+
+            // for smaller screen sizes
+            if (getWindowManager().getDefaultDisplay().getWidth() <= 480) {
+                if (cycleDateHeader.length() > 23) {
+                    statementInfo.setFontSize(15);
+                    // mTextCycleDate.setTextSize(15);
+                } else {
+                    statementInfo.setFontSize(17);
+                    // mTextCycleDate.setTextSize(17);
+                }
+            } else {
+                statementInfo.setFontSize(18);
+                // mTextCycleDate.setTextSize(18);
+            }
+
+            thisMonth.setDate(jsonObject.get("date").toString());
+            thisMonth.setPageCount(Integer.parseInt(jsonObject.get("pageCount")
+                    .toString()));
+            statementInfo.setThisMonth(thisMonth);
+
+            if (index > 0) {
+                JSONObject prevJsonObject = sJsonArray.getJSONObject(index - 1);
+                nextMonth.setDate(prevJsonObject.get("date").toString());
+                nextMonth.setPageCount(Integer.parseInt(prevJsonObject.get(
+                        "pageCount").toString()));
+                statementInfo.setNextMonth(nextMonth);
+            }
+
+            if (index < sJsonArray.length() - 1) {
+                JSONObject nextJsonObject = sJsonArray.getJSONObject(index + 1);
+                previousMonth.setDate(nextJsonObject.get("date").toString());
+                previousMonth.setPageCount(Integer.parseInt(nextJsonObject.get(
+                        "pageCount").toString()));
+                statementInfo.setPreviousMonth(previousMonth);
+            }
+        } catch (JSONException e) {
+            Log.e("JSON Exception", e.getMessage());
+            // TODO handle error
+        } catch (NumberFormatException nfe) {
+            Log.e("NumberFormatException", nfe.getMessage());
+            // TODO handle error
+        }
+
+        return statementInfo;
+    }
+
+    private void loadWebView(StatementInfo statementInfo) {
+        // performServiceHealthCheck();
+        if (statementInfo == null) {
+            // TODO handle error
+            return;
+        }
+
+        Display display = getWindowManager().getDefaultDisplay();
+        int screenWidth = display.getWidth();
+
+        double pageWidth = statementInfo.getThisMonth().getPageCount()
+                * (807 + 20);
+        double initialScale = screenWidth / 875.0;
+        double minimumScale = initialScale * 0.5;
+        double maximumScale = initialScale * 3.0;
+        Log.d(LOG_TAG, "Screen width: " + screenWidth);
+        Log.d(LOG_TAG, "Initial scale: " + initialScale);
+
+        StringBuilder html = new StringBuilder();
+        html.append("<html><head>")
+                .append("<meta name='viewport' content='")
+                // without this I have extra whitespace below images
+                .append("width=device-width")
+                .append(", initial-scale=")
+                .append(initialScale)
+                .append(", minimum-scale=")
+                .append(minimumScale)
+                .append(", maximum-scale=")
+                .append(maximumScale)
+                .append(", target-densitydpi=device-dpi")
+                .append("' />")
+                .append("<style>img{display:inline; margin:10px; "
+                        + "-moz-box-shadow:    0 0 5px 5px lightgray; "
+                        + "-webkit-box-shadow: 0 0 5px 5px lightgray; "
+                        + "box-shadow:         0 0 5px 5px lightgray; " + ";}")
+                .append("</style></head><body>");
+
+        html.append("<div style='width:").append(pageWidth).append("px;'>");
+        for (int i = 1; i <= statementInfo.getThisMonth().getPageCount(); i++) {
+            html.append("<img src=\"")
+                    .append(sBaseUrl + "/"
+                            + statementInfo.getThisMonth().getDate() + "/" + i
+                            + ".gif").append("\"></img>");
+        }
+        html.append("</div>");
+
+        html.append("<script type='text/javascript'>").append(
+                "function asyncEagerImageFetch(){");
+        if (statementInfo.getNextMonth() != null) {
+            html.append(prefetchImageHtml(statementInfo.getNextMonth()
+                    .getDate(), statementInfo.getNextMonth().getPageCount()));
+        }
+        if (statementInfo.getPreviousMonth() != null) {
+            html.append(prefetchImageHtml(statementInfo.getPreviousMonth()
+                    .getDate(), statementInfo.getPreviousMonth().getPageCount()));
+        }
+        html.append("}").append("</script>").append("</body>")
+                .append("</html>");
+
+        Log.d(LOG_TAG, "Source: " + html.toString());
+        mWebView.loadData(html.toString(), "text/html", null);
+    }
+
+    private String prefetchImageHtml(String date, int pageCount) {
+        StringBuilder html = new StringBuilder();
+        for (int i = 1; i <= pageCount; i++) {
+            html.append("new Image().src='" + sBaseUrl + "/" + date + "/" + i
+                    + ".gif';");
+        }
+        return html.toString();
+    }
+
+    private void performServiceHealthCheck() {
+        long currentTime = new Date().getTime();
+        if (currentTime - sLastHealthCheck > (sHealthCheckThreshold)) {
+            Log.d(LOG_TAG, "Performing healthcheck");
+            new StatementHealthCheck().execute();
+            sLastHealthCheck = currentTime;
+        }
+    }
+
+    /** Called when the user clicks the previous button */
+    public void navigatePrevious(View view) {
+        if (isPageLoading)
+            return;
+
+        if (mStatementInfo == null) {
+            mStatementInfo = new StatementInfo();
+            mStatementInfo.setIndex(previousIndex);
+        }
+        mStatementInfo = getStatementDataAtIndex(mStatementInfo.getIndex() + 1);
+        loadWebView(mStatementInfo);
+    }
+
+    /** Called when the user clicks the next button */
+    public void navigateNext(View view) {
+        if (isPageLoading)
+            return;
+
+        if (mStatementInfo == null) {
+            mStatementInfo = new StatementInfo();
+            mStatementInfo.setIndex(previousIndex);
+        }
+        mStatementInfo = getStatementDataAtIndex(mStatementInfo.getIndex() - 1);
+        loadWebView(mStatementInfo);
+    }
+
+    /** Called when the user clicks the download pdf button */
+    public void downloadPdf(View view) {
+        // performServiceHealthCheck();
+        String url = sBaseUrl + "/" + mStatementInfo.getThisMonth().getDate()
+                + ".pdf";
+        Log.d(LOG_TAG, "Download pdf from: " + url);
+
+        Log.d(LOG_TAG, "Testing network connection");
+        if (!(Utilss
+                .isNetworkConnection((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE)))) {
+            Log.d(LOG_TAG, "No network connection");
+
+            alertCloseActivity(getText(R.string.common_noInternetConnection_message));
+        } else {
+            Log.d(LOG_TAG, "Yes network connection");
+            new DownloadFile().execute(url);
+        }
+    }
+
+    private boolean isValidIndex(int index) {
+        return (index >= 0 && index < sJsonArray.length());
+    }
+
+    private static String[] month = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+    // formats date for header
+    private static String getDateString(String startDate, String endDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd", Locale.US);
+        try {
+            Date dStart = formatter.parse(startDate);
+            Date dEnd = formatter.parse(endDate);
+
+            Calendar cStart = Calendar.getInstance();
+            cStart.setTime(dStart);
+            Calendar cEnd = Calendar.getInstance();
+            cEnd.setTime(dEnd);
+
+            String dStartString;
+            if (cStart.get(Calendar.MONTH) == 11) {
+                // set text size smaller so all text can fit
+                dStartString = month[cStart.get(Calendar.MONTH)] + " "
+                        + cStart.get(Calendar.DATE) + ", "
+                        + (cStart.get(Calendar.YEAR));
+            } else {
+                // set text size to default size
+                dStartString = month[cStart.get(Calendar.MONTH)] + " "
+                        + cStart.get(Calendar.DATE);
+            }
+
+            return dStartString + " - " + month[cEnd.get(Calendar.MONTH)] + " "
+                    + cEnd.get(Calendar.DATE) + ", "
+                    + (cEnd.get(Calendar.YEAR));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    /**
+     * Allows webview to invoke native code
+     * 
+     * @author sgoff0
+     * 
+     */
+    public class JavaScriptInterface {
+        Context mContext;
+
+        JavaScriptInterface(Context c) {
+            mContext = c;
+        }
+
+        public void imageLoadError() {
+            if (mStatementInfo.isError())
+                return;
+            mStatementInfo.setError(true);
+            // image failed to load, determine whether to check into why this
+            // happened
+
+            if (!(Utilss
+                    .isNetworkConnection((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE)))) {
+                alertCloseActivity(getText(R.string.common_noInternetConnection_message));
+            } else {
+                new StatementHealthCheck().execute();
+            }
+        }
+    }
+
+    /**
+     * Checks health of user's session. On no internet connection or non 200
+     * http status from service returns a session expired message
+     * 
+     * @author sgoff0
+     * 
+     */
+    private class StatementHealthCheck extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected Integer doInBackground(Void... arg0) {
+            final HttpClient client = new DefaultHttpClient();
+            final HttpGet getRequest = new HttpGet(sBaseUrl + "/healthCheck");
+            CookieSyncManager.getInstance().sync();
+            String domain = sBaseUrl.substring(0, sBaseUrl.indexOf(".com") + 4);
+            String cookies = CookieManager.getInstance().getCookie(domain);
+            getRequest.setHeader("Cookie", cookies);
+            Integer status = -1;
+            try {
+                HttpResponse response = client.execute(getRequest);
+                final int statusCode = response.getStatusLine().getStatusCode();
+                status = statusCode;
+            } catch (IllegalStateException e) {
+                Log.d(LOG_TAG, "ISE: " + e.getMessage(), e);
+                getRequest.abort();
+                mStatementInfo.setError(true);
+            } catch (Exception e) {
+                Log.d(LOG_TAG, "E: " + e.getMessage(), e);
+                getRequest.abort();
+                mStatementInfo.setError(true);
+            } finally {
+                if ((client instanceof AndroidHttpClient)) {
+                    ((AndroidHttpClient) client).close();
+                }
+            }
+
+            return status;
+        }
+
+        @Override
+        protected void onPostExecute(Integer statusCode) {
+            if (statusCode != HttpStatus.SC_OK) {
+                Log.w("StatementHealthCheck", "Error " + statusCode
+                        + " while calling healthcheck " + sBaseUrl
+                        + "/healthCheck");
+                if (statusCode == -1) {
+                    // cannot connect to URL, probably no internet
+                    alertCloseActivity(getText(R.string.common_noInternetConnection_message));
+                } else if (statusCode == 401) {
+                    // session expired
+                    alertCloseActivity(getText(R.string.common_sessionExpired_message));
+                } else if (statusCode == 503) {
+                    setResult(MAINT_EXPIRE_SESSION);
+                    finish();
+                } else {
+                    // another error
+                    finish();
+                }
+            }
+        }
+    }
+
+    /**
+     * Displays alert and closes activity
+     * 
+     * @param message
+     */
+    private void alertCloseActivity(CharSequence message) {
+        mErrorMessage = message;
+
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mStatementInfo == null) {
+                    mStatementInfo = new StatementInfo();
+                }
+                mStatementInfo.setError(true);
+                hideUI();
+
+                AlertDialog alertDialog = new AlertDialog.Builder(
+                        StatementActivity.this).create();
+                alertDialog.setMessage(mErrorMessage);
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                    int which) {
+                                Log.d(LOG_TAG, "onClick: " + which);
+                                if (mWebView != null) {
+                                    mWebView.destroy();
+                                }
+                                if (mProgressDialog != null) {
+                                    mProgressDialog.dismiss();
+                                }
+
+                                // if session timeout
+                                if (mErrorMessage
+                                        .equals(getText(R.string.common_sessionExpired_message))) {
+                                    setResult(EXPIRE_SESSION);
+                                }
+                                finish();
+                            }
+                        });
+                alertDialog.setCancelable(false);
+                alertDialog.setCanceledOnTouchOutside(false);
+                alertDialog.show();
+            }
+        });
+    }
+
+    /**
+     * Downloads PDF
+     * 
+     */
+    private class DownloadFile extends AsyncTask<String, Integer, PDFObject> {
+        private static final String TYPE_PDF = "application/pdf";
+        private static final String TITLE_NO_PDF = "No PDF Viewer";
+        private static final String MSG_NO_PDF = "A PDF Viewer was not found to view the file.";
+
+        @Override
+        protected PDFObject doInBackground(String... sUrl) {
+            try {
+                String url = sUrl[0];
+                return Utilss.downloadPDF(url);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast startToast = Toast.makeText(mContext, "Starting Download...",
+                    Toast.LENGTH_SHORT);
+            startToast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            startToast.show();
+        }
+
+        @Override
+        protected void onPostExecute(PDFObject result) {
+            super.onPostExecute(result);
+            if (result.isSuccess()) {
+                File file = result.getFile();
+                Uri path = Uri.fromFile(file);
+                Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
+                pdfIntent.setDataAndType(path, TYPE_PDF);
+                pdfIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                try {
+                    NotificationManager mNotificationManager = (NotificationManager) mContext
+                            .getSystemService(Context.NOTIFICATION_SERVICE);
+                    Notification notification = new Notification(
+                            android.R.drawable.stat_sys_download_done,
+                            "Statement Download Complete",
+                            System.currentTimeMillis());
+                    PendingIntent pendingIntent = PendingIntent.getActivity(
+                            mContext, 1, pdfIntent,
+                            PendingIntent.FLAG_CANCEL_CURRENT);
+                    notification.setLatestEventInfo(mContext,
+                            "View Discover Statement",
+                            "View " + file.getName(), pendingIntent);
+                    notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                    mNotificationManager.notify(1, notification);
+                } catch (Exception e) {
+                    Log.w(LOG_TAG,
+                            "onPageStarted() Problem with launching PDF Viewer.",
+                            e);
+                    Utilss.showOkAlert(mContext, TITLE_NO_PDF, MSG_NO_PDF);
+                }
+            } else {
+                Utilss.showOkAlert(mContext, result.getTitle(),
+                        result.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Value object representing the statement being displayed.
+     * 
+     * @author sgoff0
+     * 
+     */
+    private class StatementInfo {
+        private String cycleDateText;
+        private boolean error;
+        private StatementDate nextMonth;
+        private StatementDate previousMonth;
+        private StatementDate thisMonth;
+        private int index;
+        private int fontSize;
+
+        public int getIndex() {
+            return index;
+        }
+
+        public String getCycleDateText() {
+            return cycleDateText;
+        }
+
+        public void setCycleDateText(String cycleDateText) {
+            this.cycleDateText = cycleDateText;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+
+        public boolean isError() {
+            return error;
+        }
+
+        public void setError(boolean error) {
+            this.error = error;
+        }
+
+        public StatementDate getNextMonth() {
+            return nextMonth;
+        }
+
+        public void setNextMonth(StatementDate nextMonth) {
+            this.nextMonth = nextMonth;
+        }
+
+        public StatementDate getPreviousMonth() {
+            return previousMonth;
+        }
+
+        public void setPreviousMonth(StatementDate previousMonth) {
+            this.previousMonth = previousMonth;
+        }
+
+        public StatementDate getThisMonth() {
+            return thisMonth;
+        }
+
+        public void setThisMonth(StatementDate thisMonth) {
+            this.thisMonth = thisMonth;
+        }
+
+        public int getFontSize() {
+            return fontSize;
+        }
+
+        public void setFontSize(int fontSize) {
+            this.fontSize = fontSize;
+        }
+
+    }
+
+    /**
+     * Value object holding on to a specific statement date and it's page count.
+     * 
+     * @author sgoff0
+     * 
+     */
+    private class StatementDate {
+        private String date;
+        private Integer pageCount;
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public Integer getPageCount() {
+            return pageCount;
+        }
+
+        public void setPageCount(int pageCount) {
+            this.pageCount = pageCount;
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.cordova.DroidGap#onKeyUp(int, android.view.KeyEvent)
+     */
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        Log.d("Stmt", "inside onkeyup of stmt....");
+        return true;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.cordova.DroidGap#onKeyDown(int, android.view.KeyEvent)
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.d("Stmt", "inside onkeydown of stmt....");
+
+        if (mWebView == null) {
+            Log.d("My Tag",
+                    "Webview is null on KeyCode: " + String.valueOf(keyCode));
+        }
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (mWebView.canGoBack()) {
+                Log.d("Stmt", "back key detected n can go back.");
+                mWebView.goBack();
+            } else {
+                finish();
+            }
+        }
+        return true;
+    }
+}

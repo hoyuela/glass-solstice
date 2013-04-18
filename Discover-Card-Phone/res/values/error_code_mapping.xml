@@ -2,26 +2,28 @@
 <resources>
 
     <string name="E_401">Sorry. The User ID and/or Password does not match our records, or you are not registered. Please try again.</string>
-    <string name="E_503">We\'re sorry. Our services are unavailable at this time. We apologize for any inconvenience.</string>
+    <string name="E_503">Your Discover card is no longer accessible through the mobile app. Please sign in at discover.com to review your account information.</string>
+    <string name="E_4031110">Your Discover card is no longer accessible through the mobile app. Please sign in at discover.com to review your account information.</string>
     <string name="E_4011103">You have one more log in attempt today. For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call 1-877-742-7822</string>
     <string name="E_4011107">Your temporary password has been used or is expired.</string>
     <string name="E_4031101">We know you’re excited to get into the app, but you’ve tried to log in with the wrong username or password too many times. Please contact Customer Service at 1-877-742-7822 for assistance</string>
     <string name="E_4031104">Your online access is still being set up. Please try back again	later.</string>
-    <string name="E_4031105">We\'re sorry, you may no longer use this Discover card account number to access Discover.com Mobile. Instead, please visit www.discover.com to create a User ID and password. If you have any questions, please contact Customer Service at 1-877-742-7822.</string>
-    <string name="E_4031105_WITHUSERID">We\'re Sorry, you may no longer use this Discover Card account number	to access the app. Instead, please log in using	your User ID and Password. !~~! "&lt;br&#47;&gt;""&lt;br&#47;&gt;"If you have any questions,Please contact Customer Service at	1-877-742-7822</string>
+    <string name="E_4031105">We\'re sorry, you may no longer use this Discover card account number to access the app. Instead, please visit www.discover.com to create User ID and password. If you have any questions, please contact Customer Service at 1-877-742-7822</string>
+    <string name="E_4031105_WITHUSERID">We\'re Sorry, you may no longer use this Discover Card account number	to access the app. Instead, please log in using	your User ID and Password. !~~!</string>
     <string name="E_4031106">Your Discover Card Account Number has been changed. In order to	access your account through the mobile channel, you must first log in to the Account Center on www.discover.com. For more information,please contact Customer Service at 1-877-742-7822</string>
-    <string name="E_4031401_NOTENROLLED">Help us keep your account safe by visiting Discover.com on your primary computer to establish your set of security questions.</string>
+    <string name="E_4031401_NOTENROLLED">Help us keep your account safe by visiting discover.com on your primary computer to establish your set of security questions.</string>
     <string name="E_4031402">For security purposes, your online account has been locked.Please call Discover Customer Service at	1-888-251-8003 for information about accessing your account online.</string>
     <string name="E_4031402_LOCKOUT">For security purposes, your online account has been locked."&lt;br&#47;&gt;""&lt;br&#47;&gt;Please call Discover Customer Service at	1-888-251-8003 for information about accessing your account online.</string>
     <string name="E_4031401_DENY">LOST CARD.</string>
-    <string name="E_4031401_UNLOCKED">Help us keep your account safe by visiting Discover.com on your primary PC to establish your set of security questions.</string>
-    <string name="E_4031401_UNVERIFIED">Help us keep your account safe by visiting Discover.com on your primary PC to establish your set of security questions.</string>
+    <string name="E_4031401_UNLOCKED">Help us keep your account safe by visiting discover.com on your primary PC to establish your set of security questions.</string>
+    <string name="E_4031401_UNVERIFIED">Help us keep your account safe by visiting discover.com on your primary PC to establish your set of security questions.</string>
     <string name="E_4031401_LOCKOUT">For security purposes, your online account has been locked.Please call Discover Customer Service at 1-888-251-8003 for information about accessing your account online.</string>
     <string name="E_0">We\'re sorry.Some of our web site features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.</string>
-    <string name="E_4031102">Due to special conditions related to your account, we could not	complete your request. Please contact Customer Service at 1-800-347-2683.</string>
+    <string name="E_4031102">Due to special conditions related to your account, we could not	complete your request. Please contact Customer Service at 1-877-742-7822.</string>
     <string name="E_4031102_SSO_DELINK">Due to special conditions related to your credit card account, we cannot provide you with access to your account information at this time.To recover your User ID, you will need to re-register for online account access at DiscoverBank.com.</string>
     <string name="E_4031102_SSO_DELINK_BUTTON">true.</string>
     <string name="E_4031102_SSO">Due to special conditions related to your credit card account, we can\'t provide you with access to your account information at this time.Because of increased security measures, you will need to log into Discover Bank in order to access your online account.</string>
+    <string name="E_40311021">SSN NOT MATCHED !!</string>
     <string name="E_4031102_SSO_BUTTON">true.</string>
     <string name="E_1601">Promotion code is required.</string>
     <string name="E_1602">Please enter a valid promotion code.</string>
@@ -126,7 +128,7 @@
     <string name="E_INSUFFICIENT_CBB_BALANCE_FOR_REDEEM_STATEMENT_CREDIT">We\'re sorry, but you do not have sufficient Bonus Statement Credit redemptions are available in increments of $$statement_credit_minDisbIncrAmt$$.</string>
     <string name="E_INSUFFICIENT_CBB_BALANCE_FOR_REDEEM_DIRECT_DEPOSIT">We\'re sorry, but you do not have sufficient Cashback Bonus to issue a Direct Deposit at this time. Direct Depost redemptions are available in increments of $$directDeposit1_minDisbIncrAmt$$.</string>
     <string name="E_403">For security purposes, your online account has been	locked.Please call Discover Customer Service at	1-888-251-8003 for information about accessing your account online.</string>
-    <string name="E_acLiteOutageMode">We\'re sorry. Some of our website features are unavailable at this	time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue soon.</string>
+    <string name="E_acLiteOutageMode">Some of our website features are unavailable at this	time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.</string>
     <string name="E_acLiteOutageMode_ACL">We\'re sorry.Some of our website features are unavailable at this time. We sincerely apologize	for this temporary inconvenience and are working to resolve the issue soon.</string>
     <string name="E_1403">We\'re sorry. We are experiencing technical difficulties with the service you are trying to access.</string>
     <string name="E_1404">We are currently experiencing technical difficulties. We apologize for the inconvenience.Please try again later or contact Customer Service at 1-800-DISCOVER (1-800-347-2683).</string>
@@ -190,7 +192,7 @@
     <string name="E_5031006">We\'re sorry. We will be performing a system maintenance between	1 a.m. and 6 a.m. Eastern Time. We apologize for any inconvenience.	Please try again later.	</string>
     <string name="E_5031007">We\'re sorry. We are currently updating our system and cannot complete your request at this time. We apologize for any inconvenience. Please	try again later. </string>
     <string name="E_5031008">We\'re sorry. We will be performing a system maintenance between	1 a.m. and 6 a.m. Eastern Time. We apologize for any inconvenience.	Please try again later, or for immediate assistance call 1-877-742-7822.</string>
-    <string name="E_5031108">Cashback Bonus is currently unavailable. We apologize for the inconvenience. Please try again later.</string>
+    <string name="E_5031108">We apologize for the temporary inconvenience.Please try again later.</string>
     <string name="E_OPTIONAL_UPGRADE">An updated version of application is now available! Please update	to the newest version to take advantage of all the latest features and performance and security enhancements.</string>
     <string name="E_pendingPayErrMsg">Some of our website features are unavailable at this time resulting in limited access to functionality. Your most recent pending payment is listed below. Please note that we can only	display	this one pending payment, even if you have others scheduled.</string>
     <string name="E_payConfirmBack">Make a Payment: There may have been a problem with your payment request. To verify that the payment was submitted please	check your Pending Payments \ For assistance please call 1-877-742-7822</string>
@@ -220,7 +222,7 @@
 
     <!-- NEW CODES Titles-->
 	
-	<string name="E_T_5031108">Performing System Maintenance</string>
+	<string name="E_T_5031108">Cashback Bonus is Currently Unavailable</string>
 	<string name="E_T_1401_LOCKOUT">Secure Credit Card Login</string>
     <string name="E_T_4031102_SSO_DELINK">We\'re Sorry.</string>
 	<string name="E_T_4031102_SSO">We\'re Sorry.</string>
@@ -228,6 +230,7 @@
 	<string name="E_T_4031106">Card Number Error</string>
 	<string name="E_T_4031101"> You\'ve Been Locked Out</string>
 	 <string name="E_T_503">We\'re Sorry</string>
+	 <string name="E_T_4031110">We\'re Sorry</string>
 	 <string name="E_T_100">Network Error</string>
     <string name="E_100">No Network Available</string>
     <string name="E_T_403">You\'ve Been Locked Out</string>
@@ -260,26 +263,66 @@
     <string name="E_T_1402_LOCKOUT">Enhanced Account Security</string>
     <string name="E_T_5031006">Performing System Maintenance</string>
     <string name="E_T_5031007">Performing System Maintenance</string>
-    
+     <!-- <string name="E_T_503">Performing System Maintenance</string> -->
+    <string name="E_T_4011107">Password Error</string>
     
     
     <!-- New Codes Message -->
-    <string name="E_1401">Help us keep your account safe by visiting Discover.com on your primary computer to establish your set of security questions.</string>
+    <string name="E_1401">Help us keep your account safe by visiting discover.com on your primary computer to establish your set of security questions.</string>
     <string name="E_1402">We know you’re excited to get into the app, but you’ve tried to log in with the wrong username or password too many times. Please contact us at 1-877-742-7822 or use our enhanced account security to regain access to your account.</string>
     <string name="E_1910">We know you’re excited to get into the app, but you’ve tried to log in with the wrong username or password too many times. Please contact us at 1-877-742-7822 or use our enhanced account security to regain access to your account.</string>
     <string name="E_1905">As a Sam\'s Club Discover Cardmember, you cannot register for Account Center access at discover.com. We\'d love to have you, but for now you must register through the Sam\'s Club Website to manage your account.</string>
     <string name="E_1910">You have one more login attempt today.  For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call 1-877-742-7822.</string>
     <string name="E_1906">You have entered invalid information.Carefully review your information and please try again.</string>
-    <string name="E_1102">Due to special conditions related to your account, we cannot provide you with access to Discover.com Mobile at this time.  Please contact customer service at 18777427822 for more information or assistance.</string>
-    <string name="E_1911">Due to special conditions related to your account, we cannot provide you with access to Discover.com Mobile at this time. 
+    <string name="E_1102">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time.  Please contact customer service at 18777427822 for more information or assistance.</string>
+    <string name="E_1911">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time. 
 	     Please contact customer service at 18777427822 for more information or assistance.</string>
-    <string name="E_1912">Due to special conditions related to your account, we cannot provide you with access to Discover.com Mobile at this time. 
+    <string name="E_1912">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time. 
 	     Please contact customer service at 18777427822 for more information or assistance.</string>
-    <string name="E_1913">Due to special conditions related to your account, we cannot provide you with access to Discover.com Mobile at this time. 
+    <string name="E_1913">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time. 
 	     Please contact customer service at 18777427822 for more information or assistance.</string>
-    <string name="E_1907">Due to special conditions related to your account, we cannot provide you with access to Discover.com Mobile at this time. 
+    <string name="E_1907">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time. 
 	     Please contact customer service at 18777427822 for more information or assistance.</string>
     <string name="E_1008">We will be performing a system maintenance between 1 a.m. and 6 a.m. Eastern Time. We apologize for any inconvenience. Please try again later, or for immediate assistance call 18777427822</string>
     <string name="E_1916">You have entered invalid information.Carefully review your information and please try again.</string>
-
+    
+   
+    
+    
+<!-- need help footer and feedback -->
+<!-- 0 for hide need help footer and show feedback -->
+<!-- 1 for hide feedback link and show need help footer -->
+<!-- 2 for hide both -->
+<!-- 3 for show both -->
+<!--4 for show both feedback link and  need help footer and ok button navigate to logout activity  -->
+     <string name="E_H_4031101">0</string>
+     <string name="E_H_4031402">0</string>
+     <string name="E_H_4031401_LOCKOUT">0</string>
+      <string name="E_H_403">0</string>
+     <string name="E_H_4031402_LOCKOUT">0</string>
+     <string name="E_H_4031102">0</string>
+     <string name="E_H_4031102_SSO_DELINK">0</string>
+     <string name="E_H_4031102_SSO">0</string>
+     <string name="E_H_4031105">0</string>
+     <string name="E_H_4031105_WITHUSERID">3</string>
+     <string name="E_H_4031106">0</string>
+     
+     <string name="E_H_4011107">3</string>
+     <string name="E_H_503">4</string>
+     <string name="E_H_5031006">4</string>
+     <string name="E_H_5031007">4</string>
+     <string name="E_H_5031108">4</string>
+     <string name="E_H_4031104">3</string>
+     <string name="E_H_4031401_NOTENROLLED">3</string>
+     <string name="E_H_4031401_UNLOCKED">3</string>
+     <string name="E_H_4031401_UNVERIFIED">3</string>
+     
+   
+  
+      
+ 
+    
+    
+           
+       
 </resources>

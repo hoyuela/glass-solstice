@@ -22,11 +22,13 @@ public final class CacheManagerUtil {
 
     public void clearJQMGlobalCache() {
         Log.d("CacheManagement", "inside clearJQMGlobalCache()......");
+        if(null!=m_cwv)
         m_cwv.sendJavascript("clearGlobalCache();");
     }
 
     public void clearJQMHistory() {
         Log.d("CacheManagement", "inside clearJQMGlobalCache()......");
+        if(null!=m_cwv)
         m_cwv.sendJavascript("clearHistory();");
     }
 }

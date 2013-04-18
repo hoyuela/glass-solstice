@@ -4,6 +4,11 @@ import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
 import static com.discover.mobile.common.StandardErrorCodes.SCHEDULED_MAINTENANCE;
 import static com.discover.mobile.common.net.error.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
 import static com.discover.mobile.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -11,12 +16,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.error.CardErrHandler;
+import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.services.auth.forgot.ForgotPasswordTwoCall;
 import com.discover.mobile.card.services.auth.forgot.ForgotPasswordTwoDetails;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.callback.AsyncCallbackAdapter;
 import com.discover.mobile.common.error.BaseExceptionFailureHandler;
@@ -24,6 +36,16 @@ import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+
+import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.net.error.CardErrorBean;
+import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
+import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
+import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
+import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
+import com.discover.mobile.card.common.net.service.WSRequest;
+import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.uiwidget.ConfirmationEditText;
 import com.discover.mobile.common.utils.CommonUtils;
 /**
@@ -31,7 +53,7 @@ import com.discover.mobile.common.utils.CommonUtils;
  * @author scottseward
  *
  */
-public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
+public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep implements CardErrorHandlerUi{
 
 	private static final String TAG = EnterNewPasswordActivity.class.getSimpleName();
 
@@ -74,6 +96,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 	 */
 	protected void getPreviousScreenType() {
 		isForgotFlow = getIntent().getBooleanExtra(IntentExtraKey.SCREEN_FORGOT_BOTH, false);
+		isForgotPassword = getIntent().getBooleanExtra(IntentExtraKey.SCREEN_FORGOT_PASS, false);
 	}
 
 	/**
@@ -159,7 +182,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 	 * Take the information provided by the user and send it to the server for serverside validation.
 	 */
 	private void submitFormInfo() {
-		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
+	/*	final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
 
 		//Lock orientation while request is being processed
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
@@ -233,10 +256,66 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 		final ForgotPasswordTwoCall forgotPassTwoCall = 
 				new ForgotPasswordTwoCall(this, callback, passTwoDetails);
 		forgotPassTwoCall.submit();
+	    */
+	    CardEventListener cardEventListener = new CardEventListener() {
+            
+            @Override
+            public void onSuccess(Object data) {
+                // TODO Auto-generated method stub
+                
+                RegistrationConfirmationDetails registrationConfirmationDetails =  (RegistrationConfirmationDetails)data;
+                retrieveAccountDetailsFromServer(registrationConfirmationDetails);
+            }
+            
+            @Override
+            public void OnError(Object data) {
+                // TODO Auto-generated method stub
+                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                        (CardErrorHandlerUi) EnterNewPasswordActivity.this);
+                cardErrorResHandler.handleCardError((CardErrorBean) data);
+                
+            }
+        };
+	       WSRequest request = new WSRequest();
+
+	        // Setting the headers available for the service
+	        HashMap<String, String> headers = request.getHeaderValues();
+	        headers.put("X-SEC-Token", "");
+	        String url = NetworkUtility.getWebServiceUrl(this,
+	                R.string.createpassword_url);
+
+	        request.setUrl(url);
+	        request.setHeaderValues(headers);
+	        request.setMethodtype("POST");
+
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+	        try {
+                JacksonObjectMapperHolder.getMapper().writeValue(baos,
+                        passTwoDetails);
+            } catch (JsonGenerationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+	        request.setInput(baos.toByteArray());
+
+	        WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, new RegistrationConfirmationDetails(),
+	                "Discover", "Loading...", cardEventListener);
+	        serviceCall.execute(request);
+	        
+	      
 
 	}
 
-	/**
+	
+    /**
 	 * If all of the information is valid on the page then submit the info to get validated
 	 * by the server.
 	 * @param v
@@ -264,5 +343,14 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep {
 		}
 
 	}
+
+    /* (non-Javadoc)
+     * @see com.discover.mobile.card.error.CardErrorHandlerUi#getCardErrorHandler()
+     */
+    @Override
+    public CardErrHandler getCardErrorHandler() {
+        // TODO Auto-generated method stub
+        return CardErrorUIWrapper.getInstance();
+    }
 
 }

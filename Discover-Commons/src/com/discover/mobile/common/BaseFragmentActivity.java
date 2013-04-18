@@ -49,7 +49,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  *
  */
 public abstract class BaseFragmentActivity extends SlidingFragmentActivity 
-	implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
+implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 
 	private static final String TAG = BaseFragmentActivity.class.getSimpleName();
 	/**
@@ -71,7 +71,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity
 	 * lock used to synchronize with threads attempting to update activity
 	 */
 	private static final Object lock = new Object();
-	
+
 	/**
 	 * Reference to the dialog currently being displayed on top of this activity. Is set using setDialog();
 	 */
@@ -124,20 +124,20 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity
 			DiscoverModalManager.getActiveModal().show();
 			DiscoverModalManager.setAlertShowing(true);
 		}
-		
+
 		/**
 		 * Unlocks any thread blocking on waitForResume() 
 		 */
 		notifyResumed();
-		
-		
+
+
 	}
 
 	@Override
 	protected void onPause() {
 		/**Reset flag to detect if activity is in it's resumed state*/
 		resumed = false;
-		
+
 		super.onPause();
 
 		//Save all application and user preferences into persistent storage
@@ -214,7 +214,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity
 	 * Sets the fragment seen by the user
 	 * @param fragment - fragment to be shown
 	 */
-	private void setVisibleFragment(final Fragment fragment) {
+	protected void setVisibleFragment(final Fragment fragment) {
 
 		currentFragment = fragment;
 		getSupportFragmentManager()
@@ -232,7 +232,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity
 	 * Sets the fragment seen by the user, but does not add it to the history
 	 * @param fragment - fragment to be shown
 	 */
-	private void setVisibleFragmentNoHistory(final Fragment fragment) {
+	protected void setVisibleFragmentNoHistory(final Fragment fragment) {
 		currentFragment = fragment;
 		getSupportFragmentManager()
 		.beginTransaction()
@@ -258,7 +258,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity
 	public void makeFragmentVisible(final Fragment fragment) {
 		/**Clear any modal that may have been created during the life of the current fragment*/
 		DiscoverModalManager.clearActiveModal();
-		
+
 		setVisibleFragment(fragment);
 		hideSlidingMenuIfVisible();
 	}
@@ -271,7 +271,7 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity
 	public void makeFragmentVisible(final Fragment fragment, final boolean addToHistory) {
 		/**Clear any modal that may have been created during the life of the current fragment*/
 		DiscoverModalManager.clearActiveModal();
-		
+
 		if(addToHistory){
 			setVisibleFragment(fragment);
 		}else{
@@ -442,26 +442,26 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity
 	public void onBackPressed() {
 		/**Clear any modal that may have been created during the life of the current activity*/
 		DiscoverModalManager.clearActiveModal();
-		
+
 		super.onBackPressed();
 	}
-	
+
 	@Override
 	public void startActivity (final Intent intent) {
 		/**Clear any modal that may have been created during the life of the current activity*/
 		DiscoverModalManager.clearActiveModal();
-		
+
 		super.startActivity(intent);
 	}
-	
+
 	@Override
 	public void startActivityForResult (final Intent intent, final int requestCode) {
 		/**Clear any modal that may have been created during the life of the current activity*/
 		DiscoverModalManager.clearActiveModal();
-		
+
 		super.startActivityForResult(intent, requestCode);
 	}
-	
+
 	/**
 	 * Utility method used for debugging issues in the back stack
 	 */
@@ -506,17 +506,17 @@ public abstract class BaseFragmentActivity extends SlidingFragmentActivity
 				}
 			}
 		} 
-		
+
 		return isReady();
 	}
-	
+
 	/**
 	 * Method utilize to unblock any thread blocking on waitForResume
 	 */
 	private void notifyResumed() {	
 		synchronized (lock) {
 			resumed = true;
-			
+
 			lock.notifyAll();
 		}
 	}

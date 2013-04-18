@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.services.auth.registration.AccountInformationCall;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -140,5 +141,4 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

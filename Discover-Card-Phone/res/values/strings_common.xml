@@ -2,4 +2,9 @@
 <resources>
     <string name="logout_broadcast_action">com.discover.mobile.card.navigation.LogoutUser</string>
     
+    <!-- Card types which will decide which menus will be listed in Left Navigation Menu -->
+    <string name="card_cashback">Cashback</string>
+    <string name="card_miles">Miles</string>
+    <string name="card_sendmoney">SendMoney</string>
+    
 </resources>

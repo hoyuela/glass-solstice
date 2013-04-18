@@ -43,7 +43,7 @@ public class PaymentsSectionInfo extends GroupComponentInfo {
                 }),
 
         new ClickComponentInfo(
-                R.string.sub_section_title_manage_bank_information, false,
+                R.string.sub_section_title_manage_bank_information, true,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

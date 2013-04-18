@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/home_list_item"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/topLeftLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="12dp"
+            android:paddingTop="12dp" >
+
+            <TextView
+                android:id="@id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current Balance:"
+                android:textColor="#576166"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@id/content_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="5dp"
+                android:text=""
+                android:textColor="#3d484d"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!--
+             <View
+            android:id="@id/divider_line"
+            android:layout_toLeftOf="@id/blue_button_text"
+            android:layout_alignBottom="@id/general_list_item_separator_line"
+            android:layout_width="0.5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:alpha=".6"
+            android:background="#c0c8cc" />
+        -->
+
+        <TextView
+            android:id="@id/blue_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/topLeftLayout"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:text="PAY"
+            android:layout_marginRight="22dp"
+            android:textColor="#267bb1"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/general_Page_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="12dp"
+            android:src="@drawable/blue_arrow_right" />
+
+        <View
+            android:id="@id/general_list_item_separator_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/topLeftLayout"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:background="#c0c8cc" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/general_list_item_subsection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@id/bottom_bar_label"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="8dp"
+            android:text="Credit Available:"
+            android:textColor="#8a9499"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@id/bottom_bar_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/bottom_bar_label"
+            android:paddingBottom="12dp"
+            android:paddingTop="8dp"
+            android:text=""
+            android:textColor="#8a9499"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+</LinearLayout>

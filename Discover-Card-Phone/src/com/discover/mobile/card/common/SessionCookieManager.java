@@ -8,6 +8,9 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
+
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 
 import com.discover.mobile.card.R;
 
@@ -66,10 +69,14 @@ public final class SessionCookieManager {
     }
 
     public String getSecToken() {
-        return secToken;
+        final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                .getInstance(sessionCookieContext);
+        return (String)cardShareDataStoreObj.getValueOfAppCache("secToken");
+        //return secToken;
     }
 
     public void setSecToken(final String secToken) {
+        Log.d("setSecToken in ", "token:"+secToken);
         this.secToken = secToken;
     }
 
@@ -83,20 +90,43 @@ public final class SessionCookieManager {
 
     public void clearSecToken() {
         secToken = null;
+//        java.net.CookieStore cookieStore = getCookieStore();
+//        if (null != cookieStore)
+//            cookieStore.removeAll();
     }
 
     /**
      * This method is used to fetch the value from http Cookie manager
      */
     public void setCookieValues() {
-        for (final HttpCookie cookie : getHttpCookie()) {
+        List<HttpCookie> cookieList = getHttpCookie();
+        if (null != cookieList) {
+            for (final HttpCookie cookie : cookieList) {
 
-            if (sectoken.equalsIgnoreCase(cookie.getName())) {
-                setSecToken(cookie.getValue());
-            } else if (vfirst.equalsIgnoreCase(cookie.getName())) {
-                setVone(cookie.getValue());
-            } else if (dfsedskey.equalsIgnoreCase(cookie.getName())) {
-                setDfsKey(cookie.getValue());
+                if (sectoken.equalsIgnoreCase(cookie.getName())) {
+                    setSecToken(cookie.getValue());
+                    Log.d("setCookieValues","token value"+cookie.getValue());
+                } else if (vfirst.equalsIgnoreCase(cookie.getName())) {
+                    setVone(cookie.getValue());
+                } else if (dfsedskey.equalsIgnoreCase(cookie.getName())) {
+                    setDfsKey(cookie.getValue());
+                }
+            }
+        }
+    }
+    
+    /**
+     * This method is used to fetch the value from http Cookie manager
+     */
+    public void setSecTokenInCookie(String strSecToken) {
+        List<HttpCookie> cookieList = getHttpCookie();
+        if (null != cookieList) {
+            for (final HttpCookie cookie : cookieList) {
+
+                if (sectoken.equalsIgnoreCase(cookie.getName())) {
+                    cookie.setValue(strSecToken);
+                    Log.d("setCookieValues","token value"+cookie.getValue());
+                }
             }
         }
     }
@@ -106,7 +136,12 @@ public final class SessionCookieManager {
      */
     public List<HttpCookie> getHttpCookie() {
         final URI u = getBaseUri();
-        return getCookieStore().get(u);
+        Log.d("getHttpCookie in ", "base url"+u);
+        java.net.CookieStore cookieStore = getCookieStore();
+        if (null != u && null != cookieStore)
+            return cookieStore.get(u);
+        else
+            return null;
     }
 
     /**
@@ -114,8 +149,18 @@ public final class SessionCookieManager {
      */
     public CookieStore getCookieStore() {
         if (null == rawCookieStore) {
-            rawCookieStore = ((java.net.CookieManager) CookieHandler
-                    .getDefault()).getCookieStore();
+            // java.net.CookieManager cookieMgr = ((java.net.CookieManager)
+            // CookieHandler.getDefault());
+            // if (null!=cookieMgr)
+            // rawCookieStore =cookieMgr.getCookieStore();
+            try {
+                rawCookieStore = ((java.net.CookieManager) CookieHandler
+                        .getDefault()).getCookieStore();
+            }
+
+            catch (Exception e) {
+
+            }
         }
 
         return rawCookieStore;

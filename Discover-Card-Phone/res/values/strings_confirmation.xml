@@ -5,10 +5,10 @@
 	    Registration Confirmation
 	</string>
 	<string name="account_info_confirm_first_paragraph_text">
-	    You have successfully registered your account and a confirmation email has been sent. You are logged in and ready to go. 
+	    You are logged in
 	</string>
 	<string name="account_info_confirm_security_precaution_text">
-	    As a security precaution, the first 12 digits of your account numbers are not shown. 
+	   As a security precaution your password and the first 12 digits of your account number are not shown.  
 	</string>
 	<string name="account_info_confirm_summary_text">
 	    Your Online Account Information

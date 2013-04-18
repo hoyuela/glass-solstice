@@ -1,5 +1,8 @@
 package com.discover.mobile.card.common.net.service;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.util.HashMap;
 
 /**
@@ -28,6 +31,13 @@ public final class WSRequest {
         hmHeaderValues = null;
     }
 
+    public void setCookieHander()
+    {
+        CookieHandler.setDefault(new CookieManager());
+        ((CookieManager)CookieHandler.getDefault()).setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+        
+    }
+    
     /**
      * @return the url
      */

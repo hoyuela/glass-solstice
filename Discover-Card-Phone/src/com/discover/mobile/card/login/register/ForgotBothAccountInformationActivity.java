@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.services.auth.registration.AccountInformationCall;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -83,17 +84,6 @@ public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstS
 		startActivity(forgotCredentials);
 	}
 
-	@Override
-	public TextView getErrorLabel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<EditText> getInputFields() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void showCustomAlert(final AlertDialog alert) {
@@ -113,29 +103,4 @@ public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstS
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
-	public Context getContext() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setLastError(final int errorCode) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getLastError() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public ErrorHandler getErrorHandler() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

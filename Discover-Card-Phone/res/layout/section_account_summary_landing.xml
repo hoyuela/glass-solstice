@@ -4,28 +4,78 @@
     android:layout_height="wrap_content"
     android:background="@drawable/light_gray_bkgrd" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="15dp"
-        android:paddingTop="7dp" >
+        android:layout_height="wrap_content" >
 
-        <include
-            android:id="@+id/home_current_balance"
-            layout="@layout/general_list_item" />
+        <LinearLayout
+            android:id="@+id/homestatusbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp" >
 
-        <include
-            android:id="@+id/home_last_statement"
-            layout="@layout/general_list_item" />
+            <include
+                android:id="@+id/accounthomestatusbar"
+                layout="@layout/status_bar_layout" />
+        </LinearLayout>
 
-        <include
-            android:id="@+id/home_bonus_balance"
-            layout="@layout/general_list_item" />
+        <LinearLayout
+            android:id="@+id/aclitemessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/homestatusbar"
+            android:orientation="vertical"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp" >
 
-        <include
-            android:id="@+id/home_bonus_offer"
-            layout="@layout/general_list_item_simple" />
-    </LinearLayout>
+            <include
+                android:id="@+id/acoutagemode_message"
+                layout="@layout/error_message_outage_mode"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/aclitemessage"
+            android:orientation="vertical"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp" >
+
+            <include
+                android:id="@+id/home_current_balance"
+                layout="@layout/general_list_item" />
+
+            <include
+                android:id="@+id/home_last_statement"
+                layout="@layout/general_list_item" />
+
+            <include
+                android:id="@+id/home_bonus_balance"
+                layout="@layout/general_list_item" />
+
+            <include
+                android:id="@+id/home_bonus_offer"
+                layout="@layout/general_list_item_simple" />
+
+            <TextView
+                android:id="@+id/provide_feedback_button1"
+                style="@style/blue_hyperlink_smallest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:text="@string/feedback_text"
+                android:textColor="@color/footer_link" />
+        </LinearLayout>
+        
+         <com.discover.mobile.common.ui.widgets.AccountToggleView
+            android:id="@+id/acct_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           />
+    </RelativeLayout>
 
 </ScrollView>

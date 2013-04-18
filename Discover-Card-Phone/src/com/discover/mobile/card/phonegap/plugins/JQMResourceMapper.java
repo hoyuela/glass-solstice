@@ -50,7 +50,7 @@ public class JQMResourceMapper {
 
         Map<String, Integer> temp = new HashMap<String, Integer>();
         temp.put("Account Summary", R.string.sub_section_title_account_summary);
-        temp.put("Account Activity", R.string.sub_section_title_recent_activity);
+        temp.put("Recent Activity", R.string.sub_section_title_recent_activity);
         temp.put("Search Transactions",
                 R.string.sub_section_title_search_transaction);
         temp.put("Statements", R.string.sub_section_title_statements);
@@ -63,12 +63,11 @@ public class JQMResourceMapper {
         temp.put("Send Money History",
                 R.string.sub_section_title_send_money_history);
 
-        temp.put("Sign up for Cashback",
-                R.string.sub_section_title_signup_for_5);
+        temp.put("Sign up for 2%", R.string.sub_section_title_signup_for_2);
         temp.put("Extras", R.string.sub_section_title_extras);
         temp.put("Refer A Friend", R.string.sub_section_title_refer_a_friend);
 
-        temp.put("Partner Gift Cards n eCerts",
+        temp.put("Partner Gift Cards & eCerts",
                 R.string.sub_section_title_partner_gift_cards);
         temp.put("Discover Gift Cards",
                 R.string.sub_section_title_discover_gift_cards);
@@ -79,6 +78,20 @@ public class JQMResourceMapper {
                 R.string.sub_section_title_pay_with_cashback_bonus);
         temp.put("Redemption History",
                 R.string.sub_section_title_redemption_history);
+
+        temp.put("Manage Text & Alerts",
+                R.string.sub_section_title_manage_alerts);
+        temp.put("Alerts History", R.string.sub_section_title_alert_history);
+        temp.put("Create Cash PIN", R.string.sub_section_title_create_cash_pin);
+
+        temp.put("Contact Us", R.string.sub_section_title_contact_us);
+        temp.put("Frequently Asked Questions", R.string.sub_section_title_faq);
+
+        temp.put("Sign up for Miles",
+                R.string.sub_section_title_sign_up_for_miles);
+
+        temp.put("Redeem Miles", R.string.section_title_redeem_miles);
+        temp.put("Privacy & Terms", R.string.privacy_terms_title);
 
         titleIdMap = Collections.unmodifiableMap(temp);
     }
@@ -98,8 +111,8 @@ public class JQMResourceMapper {
         int titleId = -1;
 
         if (null != title) {
-            titleId = titleIdMap.get(title);
-            ;
+            if (titleIdMap.containsKey(title))
+                titleId = titleIdMap.get(title);
             return titleId;
         } else
             return titleId;

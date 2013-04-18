@@ -5,40 +5,70 @@
 <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="@dimen/forms_inner_padding" >
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"  >
 
     <TextView
         android:id="@+id/account_info_confirm_first_paragraph_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/groups_of_elements_padding"
-        android:layout_marginTop="@dimen/groups_of_elements_padding"
+        android:includeFontPadding="false"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="12dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:text="@string/account_info_confirm_first_paragraph_text"
-        android:textColor="@color/sub_copy"
-        android:textSize="@dimen/small_copy_mid" />
+        android:textColor="@color/title"
+        android:textSize="24dp"
+        android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/account_info_confirm_security_precaution_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_below="@+id/account_info_confirm_first_paragraph_label"
+        android:text="@string/account_info_confirm_security_precaution_text"
+        android:textColor="@color/darkgray"
+        android:textSize="16dp"
+        android:textStyle="normal" />
+    
     <RelativeLayout
         android:id="@+id/account_info_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/account_info_confirm_first_paragraph_label"
+        android:layout_below="@+id/account_info_confirm_security_precaution_label"
         android:background="@drawable/notification_list_item"
-        android:padding="@dimen/forms_inner_padding" >
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:layout_marginBottom="20dp"  >
 
         <TextView
             android:id="@+id/account_info_confirm_summary_label"
-            style="@style/confirmation_info_value_text"
+            android:textColor="@color/title"
+        	android:textStyle="bold"
+       		android:textSize="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:layout_marginBottom="4dp"
+	        android:layout_marginTop="4dp"
+	        android:paddingTop="4dp"
+	        android:paddingBottom="4dp"
             android:layout_below="@+id/account_info_confirm_security_precaution_label"
-            android:text="@string/account_info_confirm_summary_text"
-            android:textSize="@dimen/small_copy_mid" />
+            android:text="@string/account_info_confirm_summary_text" />
 
         <TextView
             android:id="@+id/account_info_confirm_id_title_label"
             style="@style/confirmation_info_header_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+	        android:paddingTop="4dp"
+	        android:paddingBottom="2dp"
+            android:includeFontPadding="false"
             android:layout_below="@+id/account_info_confirm_summary_label"
             android:text="@string/account_info_confirm_id_title_text" />
 
@@ -47,6 +77,10 @@
             style="@style/confirmation_info_value_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:layout_marginBottom="4dp"
+	        android:paddingTop="2dp"
+	        android:paddingBottom="4dp"
             android:layout_below="@+id/account_info_confirm_id_title_label"
             android:text="@string/account_info_confirm_id_placeholder_text" />
 
@@ -55,6 +89,9 @@
             style="@style/confirmation_info_header_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+	        android:paddingTop="4dp"
+	        android:paddingBottom="4dp"
             android:layout_below="@+id/account_info_confirm_id_label"
             android:text="@string/account_info_confirm_email_title_text" />
 
@@ -63,6 +100,9 @@
             style="@style/confirmation_info_value_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:paddingBottom="4dp"
+            android:layout_marginBottom="10dp"
             android:layout_below="@+id/account_info_confirm_email_title_label"
             android:maxLines="@integer/MAX_INPUT_LINES"
             android:text="@string/email_placeholder" />
@@ -72,6 +112,9 @@
             style="@style/confirmation_info_header_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             android:layout_below="@+id/account_info_confirm_email_label"
             android:text="@string/account_info_confirm_account_title_text" />
 
@@ -80,6 +123,7 @@
             style="@style/confirmation_info_value_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
             android:layout_below="@+id/account_info_confirm_account_title_label"
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@+id/account_info_confirm_account_stars_label"
@@ -91,8 +135,11 @@
             style="@style/confirmation_info_value_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
             android:layout_below="@+id/account_info_confirm_account_title_label"
             android:layout_marginLeft="4dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
             android:text="@string/account_info_confirm_account_stars_text"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -100,30 +147,22 @@
             android:id="@+id/account_info_confirm_note_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
             android:layout_below="@+id/account_info_confirm_account_stars_label"
-            android:layout_marginTop="@dimen/table_inner_padding"
+			android:layout_marginTop="6dp"
             android:textColor="@color/sub_copy"
         	android:textSize="@dimen/small_copy_mid" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/account_info_confirm_security_precaution_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/account_info_layout"
-        android:paddingTop="@dimen/forms_inner_padding"
-        android:text="@string/account_info_confirm_security_precaution_text"
-        android:textColor="@color/sub_copy"
-        android:textSize="@dimen/small_copy_mid" />
     
     <Button
         android:id="@+id/home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/modal_orange_margin_top"
-        android:layout_marginBottom="@dimen/modal_orange_margin_bottom"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         style="@style/call_to_action_theme"
-        android:layout_below="@+id/account_info_confirm_security_precaution_label"
+        android:layout_below="@+id/account_info_layout"
         android:layout_centerHorizontal="true"
         android:text="@string/home_text"/>
 
