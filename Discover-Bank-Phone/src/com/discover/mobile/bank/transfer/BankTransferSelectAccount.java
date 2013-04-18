@@ -40,13 +40,13 @@ import com.google.common.base.Strings;
 public class BankTransferSelectAccount extends BaseFragment implements FragmentOnBackPressed {
 	private final String TAG = BankTransferSelectAccount.class.getSimpleName();
 
-	private Account[] selectedAccounts = new Account[2];
+	private final Account[] selectedAccounts = new Account[2];
 
 	private final int INTERNAL_ACCOUNT = 0;
 	private final int EXTERNAL_ACCOUNT = 1;
 
-	AccountList internalAccounts = null;
-	AccountList externalAccounts = null;
+	private AccountList internalAccounts = null;
+	private AccountList externalAccounts = null;
 
 	private boolean useMyBackPress = true;
 
@@ -323,10 +323,15 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	 */
 	private void loadSelectedAccounts() {
 		final Bundle args = getArguments();
-		if(args != null)
-			selectedAccounts = (Account[])args.getSerializable(BankExtraKeys.DATA_SELECTED_INDEX);
-		else
-			selectedAccounts = new Account[2];
+		
+		if(args != null) {
+			final Account[] temp = (Account[])args.getSerializable(BankExtraKeys.DATA_SELECTED_INDEX);
+			 
+			if(temp != null){
+				for(int i = 0; i < temp.length; ++i)
+					 selectedAccounts[i] = temp[i];
+			}
+		}
 
 	}
 

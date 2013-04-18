@@ -112,6 +112,13 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	public View getView() {
 		return view;
 	}
+	
+	/**
+	 * @return the caret
+	 */
+	public View getCaret() {
+		return caret;
+	}
 
 	/**
 	 * Method used to set the text for the middle label and editable field at once.
