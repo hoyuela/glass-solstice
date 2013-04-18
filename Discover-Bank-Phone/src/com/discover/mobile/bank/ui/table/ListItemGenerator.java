@@ -361,16 +361,17 @@ public class ListItemGenerator {
 	 */
 	public List<ViewPagerListItem> getScheduledBillPayList(final ActivityDetail item) {
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
-		
-		items.add(getFromCell(item.paymentMethod.nickname, "NULL"));
 
+		// TODO: Add Available Balance value once JSON is updated
+		items.add(getFromCell(item.paymentMethod.nickname, "NULL"));	
+		
 		items.add(getPayeeCell(item.payee.nickName));
 		items.add(getAmountCell(BankStringFormatter.convertCentsToDollars(item.amount.value)));
-		items.add(getStatusCell(item.status));
+		items.add(getStatusCell(BankStringFormatter.capitalize(item.status)));
 		items.add(getDeliverByCell(BankStringFormatter.getFormattedDate(item.deliverByDate)));
-		
-		if(item.confirmationNumber != null)
-			items.add(getConfirmationCell(item.confirmationNumber));
+			
+		// Using transaction id for the confirmation number
+		items.add(getConfirmationCell(item.id));
 		
 		items.add(getMemoItemCell(item.memo));
 		hideDivider(items);
