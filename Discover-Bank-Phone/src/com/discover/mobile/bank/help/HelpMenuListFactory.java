@@ -76,13 +76,9 @@ public final class HelpMenuListFactory {
 		
 		/**Default menu item representing the "Card ALL FAQ" item*/
 		final HelpItemGenerator cardFaq = new HelpItemGenerator(R.string.help_card_faq, true, false, getCardFaqListener());
-		
-		/**Default menu item representing the "Help number" item*/
-		final HelpItemGenerator helpNumber = new HelpItemGenerator(R.string.help_menu_number, true, false, getHelpNumberListener());
-		
+			
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
 		
-		items.add(helpNumber);
 		items.add(cardFaq);
 		items.add(bankFaq);
 		return items;
