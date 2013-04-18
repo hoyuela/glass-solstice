@@ -23,29 +23,19 @@
             android:text="@string/select_payee_title" />
 
         <TextView
-            android:id="@+id/matches"
-            style="@style/normal_static_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/select_payee_title"
-            android:layout_marginBottom="@dimen/forms_inner_padding"
-            android:text="@string/bank_matches_for" />
-
-        <TextView
             android:id="@+id/search_name"
-            style="@style/body_copy_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="false"
             android:layout_below="@+id/select_payee_title"
             android:layout_marginBottom="@dimen/forms_inner_padding"
-            android:layout_toRightOf="@+id/matches"
             android:text="@string/bank_connie_smith" />
 
         <LinearLayout
             android:id="@+id/payee_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/matches"
+            android:layout_below="@+id/search_name"
             android:layout_marginBottom="@dimen/groups_of_elements_padding"
             android:orientation="vertical" />
 

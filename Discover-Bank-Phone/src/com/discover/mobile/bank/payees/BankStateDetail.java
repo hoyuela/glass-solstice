@@ -80,9 +80,12 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
 			stateSpinner.setOnItemSelectedListener(this);
 			
 			/**Set minimum and maximum character limits*/
-			getEditableField().setMinimum(2);
+			getEditableField().setMinimum(0);
 			final InputFilter[] inputFilters = { new InputFilter.LengthFilter(2) };
 			getEditableField().setFilters(inputFilters);
+			
+			/**Disables validation*/
+			getEditableField().enableValidation(false);
 		}
 	}
 	
