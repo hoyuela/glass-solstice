@@ -350,7 +350,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Download Customer Information if a Login call is successful
 		else if( sender instanceof CreateBankLoginCall || sender instanceof CreateBankSSOLoginCall) {
-			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
+			final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 			KeepAlive.setBankAuthenticated(true);
 
@@ -358,7 +358,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			Globals.setLoggedIn(true);
 
 			//Update current account based on user logged in and account type
-			activity.updateAccountInformation(AccountType.BANK_ACCOUNT);
+			if(activity instanceof LoginActivity){
+				((LoginActivity)activity).updateAccountInformation(AccountType.BANK_ACCOUNT);
+			}
 
 			BankServiceCallFactory.createCustomerDownloadCall().submit();
 		}
