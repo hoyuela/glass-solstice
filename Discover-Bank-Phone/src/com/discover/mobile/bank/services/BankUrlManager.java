@@ -17,7 +17,7 @@ import com.google.common.base.Strings;
  */
 public class BankUrlManager  {
 
-	//private static String BASE_URL = BankBaseUrl.getString("BankUrlManager.0");
+	private static String BASE_URL = BankBaseUrl.getString("BankUrlManager.0");
 	private static String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
 	//private static String BASE_URL = "https://beta.discoverbank.com";
 	//private static String DISCOVER_STRIPPED_URL = "http://beta.discoverbank.com";
@@ -27,7 +27,7 @@ public class BankUrlManager  {
 	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
 	//	private static final String BASE_URL = "http://192.168.1.94:8008";
 	//	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
-	private static String BASE_URL = "http://10.6.216.156:8009"; //Jon's Laptop
+	//private static String BASE_URL = "http://10.6.216.156:8009"; //Jon's Laptop
 	//	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Scott/DiscoverBank"; //Scott's Mock Service
 	//	private static String BASE_URL = "http://192.168.2.173:8008";
 
