@@ -3,7 +3,9 @@ package com.discover.mobile.bank.util;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import android.app.Activity;
 import android.util.Log;
@@ -15,7 +17,8 @@ import com.google.common.base.Strings;
 
 public class BankStringFormatter {
 	public final static String EMPTY_DOLLAR = "$0.00";
-
+	private final static String TAG = BankStringFormatter.class.getSimpleName();
+	
 	/**String representing a negative*/
 	public static final String NEGATIVE = "-";
 
@@ -186,11 +189,41 @@ public class BankStringFormatter {
 	 * Capitalizes the first letter of a given String.
 	 * @return {@link String} with the first letter converted to upper case (or null if the given String was null)
 	 */
-	public static String capitalize(String string) {
+	public static String capitalize(final String string) {
 		if (Strings.isNullOrEmpty(string)) {
 			return string;
 		}
 		return string.length() > 1 ? string.substring(0, 1).toUpperCase() + string.substring(1) 
 				: string.toUpperCase(); 
+	}
+	
+	/**
+	 *
+	 * @param formattedDate a String in the format mm/dd/yyyy
+	 * @return a String in the format yyyy-MM-dd'T'HH:mm:ssZ
+	 */
+	public static String getLongDate(final String formattedDate) {
+		String selectedDate = "";
+		
+		if(!Strings.isNullOrEmpty(formattedDate)) {
+			final String easternTime = "America/New_York";
+			selectedDate = formattedDate;
+			
+			final SimpleDateFormat chosenDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			chosenDateFormat.setTimeZone(TimeZone.getTimeZone(easternTime));
+			
+			final SimpleDateFormat submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+			submissionDateFormat.setTimeZone(TimeZone.getTimeZone(easternTime));
+			
+			try {							
+				final Date unformattedDate = chosenDateFormat.parse(selectedDate);
+				selectedDate = submissionDateFormat.format(unformattedDate);
+			} catch (final ParseException e) {
+				Log.e(TAG, "Could not format date : " + e);
+			}
+			
+		}
+		
+		return selectedDate;
 	}
 }
