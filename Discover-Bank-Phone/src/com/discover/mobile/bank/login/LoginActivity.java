@@ -265,6 +265,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);
 		idField.clearFocus();
 		passField.clearFocus();
+		setCheckMark(false, false);
 	}
 
 	/**
