@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 
@@ -64,6 +66,7 @@ public class AddPayeeDetail implements Serializable {
 	public String accountNumberConfirmed;
 
 	@JsonProperty("billingPostalCode")
+	@JsonInclude(Include.NON_EMPTY)
 	public String zip;
 	
 	@JsonIgnore

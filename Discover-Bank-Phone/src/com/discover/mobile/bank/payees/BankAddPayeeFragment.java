@@ -182,10 +182,10 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 			BankServiceCallFactory.createAddPayeeRequest(getPayeeDetail(), isUpdate).submit();
 		} else {
 			
-			/**Scroll screen to top if first error is at the top of the sreen*/
+			/**Scroll screen to top first field with inline error*/
 			final int firstItemWithError = getFindError();
-			if( firstItemWithError >= 0 && firstItemWithError <= 4 ) {
-				scrollToTop();
+			if( firstItemWithError >= 0 ) {
+				getFieldDetail(firstItemWithError).getEditableField().requestFocus();
 			}
 			
 			updateFieldsAppearance();			
@@ -509,10 +509,10 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	
 	@Override
 	public boolean handleError(final BankErrorResponse msgErrResponse) {
-		/**Scroll screen to top if first error is at the top of the sreen*/
+		/**Scroll screen to top first field with inline error*/
 		final int firstItemWithError = getFindError();
-		if( firstItemWithError >= 0 && firstItemWithError <= 4 ) {
-			scrollToTop();
+		if( firstItemWithError >= 0 ) {
+			getFieldDetail(firstItemWithError).getEditableField().requestFocus();
 		}
 		
 		return false;

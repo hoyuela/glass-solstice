@@ -37,6 +37,7 @@ import com.discover.mobile.common.error.NavigateToLoginOnDismiss;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.common.ui.help.NeedHelpFooter;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.widgets.ValidatedInputField;
@@ -259,13 +260,15 @@ public class BankErrorHandler implements ErrorHandler {
 				modalTopView.setContent(message);
 			
 			/**Set modal phonenumber with number sent from server*/
-			if( !Strings.isNullOrEmpty(phoneNumber) && modalTopView.getHelpFooter() != null)
-				modalTopView.getHelpFooter().setToDialNumberOnClick(phoneNumber);
+			final NeedHelpFooter footer = modalTopView.getHelpFooter();
+			if( !Strings.isNullOrEmpty(phoneNumber) && footer != null) {
+				footer.show(true);
+				footer.setToDialNumberOnClick(phoneNumber);
+			} else {
+				modalTopView.hideNeedHelpFooter();
+			}
 
 		}
-
-		modalTopView.hideNeedHelpFooter();
-
 	}
 
 	/*
@@ -480,7 +483,7 @@ public class BankErrorHandler implements ErrorHandler {
 	public void handleGenericError(final int httpErrorCode) {
 		final ModalAlertWithOneButton modal = createErrorModal(httpErrorCode, R.string.error_request_not_completed_title,
 				R.string.error_request_not_completed_msg);
-
+		
 		showCustomAlert(modal);
 
 		//If it is a screen with inline errors then clear the text fields on an error

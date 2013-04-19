@@ -116,8 +116,8 @@
     <string name="logout">Logout</string>
     <string name="problem_authenticating">There was a problem authenticating your registration information.</string>
     <string name="error_strongauth_noanswer">The answer does not match your Account information.</string>
-	<string name="error_request_not_completed_title">Your Request Could Not Be Completed</string>
-	<string name="error_request_not_completed_msg">Some of our website features are unavailable at this time. We sincerely apologize for the inconvenience and are working to resolve the issue.</string>
+	<string name="error_request_not_completed_title">Your Request Cannot Be Completed</string>
+	<string name="error_request_not_completed_msg">Some of our website features are unavailable at this time. We sincerely apologize for the inconvenience and are working to resolve the issue. Please contact us for more information.</string>
 	<string name="lockout_title">You\'ve Been Locked Out</string>
     <string name="doesnt_match_records">Doesn\'t Match Our Records</string>
     <string name="privacy_terms">Privacy &amp; Terms</string>

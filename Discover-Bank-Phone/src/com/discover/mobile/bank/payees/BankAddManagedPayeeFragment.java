@@ -168,34 +168,40 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 	@Override
 	public boolean handleError(final BankErrorResponse msgErrResponse) {
 		super.handleError(msgErrResponse);
+				
+		boolean handled = false;
 		
 		for( final BankError error : msgErrResponse.errors ) {
 			if( !Strings.isNullOrEmpty(error.name) ) {
-				/**Check if error is for Payee field*/
-				if( error.name.equals(AddPayeeDetail.NAME_FIELD) ) {
-					setErrorString(ManagedPayeeFields.PayeeName.ordinal(),error.message);
-				}
 				/**Check if error is for amount field*/
-				else if( error.name.equals(AddPayeeDetail.NICKNAME_FIELD)) {
+				if( error.name.equalsIgnoreCase(AddPayeeDetail.NICKNAME_FIELD)) {
 					setErrorString(ManagedPayeeFields.PayeeNickName.ordinal(), error.message);
 				}
 				/**Check if error is for Payment method field*/
-				else if( error.name.equals(AddPayeeDetail.ACCOUNT_NUMBER_FIELD)) {
+				else if( error.name.equalsIgnoreCase(AddPayeeDetail.ACCOUNT_NUMBER_FIELD)) {
 					setErrorString(ManagedPayeeFields.PayeeAccountNumber.ordinal(),error.message);
 					setErrorString(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal(), error.message);
 				}
 				/**Check if error is for Deliver by field*/
-				else if( error.name.equals(AddPayeeDetail.BILLING_POSTAL_CODE_FIELD) ) {
+				else if( error.name.equalsIgnoreCase(AddPayeeDetail.BILLING_POSTAL_CODE_FIELD) ) {
 					setErrorString(ManagedPayeeFields.PayeeZipCode.ordinal(),error.message);
 				}
 				/**Show error at the top of the screen */
 				else {
 					showGeneralError(error.message);
-					scrollToTop();
 				}
+				
+				handled = true;
+			} else if( !Strings.isNullOrEmpty(error.message)) {				
+				showGeneralError(error.message);
+				
+				handled = true;
+				
+				scrollToTop();
 			}
 		}
-		return true;
+	
+		return handled;
 	}
 	
 	
