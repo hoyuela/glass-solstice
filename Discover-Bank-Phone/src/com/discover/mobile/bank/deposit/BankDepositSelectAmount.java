@@ -20,6 +20,8 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
+import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
@@ -81,6 +83,10 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	            return false;
 	        }
 	    });
+		
+		/**Setup footer*/
+		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
+		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.NEED_HELP);
 		
 		return view;
 	}
