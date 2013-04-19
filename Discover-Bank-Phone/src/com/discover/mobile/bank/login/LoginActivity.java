@@ -944,6 +944,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			this.getErrorHandler().showErrorsOnScreen(this, errorText);
 			idField.clearFocus();
 			passField.clearFocus();
+			setCheckMark(false, true);
 			return true;
 		}
 		// All fields were populated.
