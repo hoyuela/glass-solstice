@@ -63,19 +63,27 @@ final public class CardErrorUtil {
         Log.d("handleCardErrorforResponse",
                 "RespCode:" + response.getResponseCode());
         switch (response.getResponseCode()) {
-        case CardErrorResponseHandler.INCORRECT_USERID_PASSWORD: // 401:Invalid
-                                                                 // user id
-                                                                 // password
+        case CardErrorResponseHandler.INCORRECT_USERID_PASSWORD: // 401:Invalid user id password
+        	CardErrorBean cardErrBean = getCardErrorBeanwithResponseStatus(response, false);
+        	if (null==cardErrBean.getErrorCode())
+        		cardErrBean.setErrorCode(""+response.getResponseCode());
+            return cardErrBean;
         case CardErrorResponseHandler.USER_ACCOUNT_LOCKED: // 403: a/c locked
-
-            return getCardErrorBeanwithResponseStatus(response, false);
-        case CardErrorResponseHandler.SERVICE_UNDER_MAINTENANCE: // 503:
-                                                                 // maintenance
-                                                                 // error
-            return getCardErrorBeanwithResponseStatus(response, true);
+        	CardErrorBean cardErrBean1 = getCardErrorBeanwithResponseStatus(response, false);
+        	if (null==cardErrBean1.getErrorCode())
+        		cardErrBean1.setErrorCode(""+response.getResponseCode());
+            return cardErrBean1;
+        case CardErrorResponseHandler.SERVICE_UNDER_MAINTENANCE: // 503: maintenance error
+        	CardErrorBean cardErrBean2 = getCardErrorBeanwithResponseStatus(response, true);
+        	if (null==cardErrBean2.getErrorCode())
+        		cardErrBean2.setErrorCode(""+response.getResponseCode());
+            return cardErrBean2;
 
         default: // for other error
-            return getCardErrorBeanwithoutResponseStatus(response);
+        	CardErrorBean cardErrBean3 = getCardErrorBeanwithoutResponseStatus(response);
+        	if (null==cardErrBean3.getErrorCode())
+        		cardErrBean3.setErrorCode(""+response.getResponseCode());
+            return cardErrBean3;
         }
 
     }
@@ -546,6 +554,9 @@ final public class CardErrorUtil {
         boolean isSSOUidDLinkable = false;
         boolean isSSOUser = false;
         boolean isSSNMatch = false;
+        String footerStatus =null;
+        String errTitle =null;
+        String errText=null;
         final StringBuilder errCode = new StringBuilder();
 
         String resCode = Integer.toString(response.getResponseCode());
@@ -568,6 +579,10 @@ final public class CardErrorUtil {
             }
         }
 
-        return new CardErrorBean(isSSOUidDLinkable, isSSOUser,isSSNMatch, errCode.toString());
+        errTitle = getTitleforErrorCode(errCode.toString());
+        errText = getMessageforErrorCode(errCode.toString());
+        
+        footerStatus = getHelpFooterErrorCode(errCode.toString());
+        return new CardErrorBean(isSSOUidDLinkable, isSSOUser,isSSNMatch, errCode.toString(),errTitle,errText,footerStatus);
     }
 }

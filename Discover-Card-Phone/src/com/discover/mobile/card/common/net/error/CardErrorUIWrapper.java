@@ -167,7 +167,8 @@ public class CardErrorUIWrapper implements CardErrHandler
     }
     
     @Override
-    public ModalAlertWithTwoButtons createErrorModalWithTwoButton(final String titleText, final String errorText, final String footerStatus, final CardErrorCallbackListener errorClickCallback)
+    public ModalAlertWithTwoButtons createErrorModalWithTwoButton(final String titleText, final String errorText,
+    		final String footerStatus, final CardErrorCallbackListener errorClickCallback)
     {
 
         final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
@@ -186,7 +187,8 @@ public class CardErrorUIWrapper implements CardErrHandler
          */
 
         // Create a one button modal with text as per parameters provided
-        final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(activeActivity, titleText, errorText, true, helpResId, R.string.register_btn, R.string.cancel_text);
+        final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(activeActivity, titleText, errorText, 
+        		true, helpResId, R.string.register_btn, R.string.cancel_text);
 
         final ModalDefaultTopView view = (ModalDefaultTopView) modal.getTop();
 
@@ -212,6 +214,10 @@ public class CardErrorUIWrapper implements CardErrHandler
                 {
                     //Big Browser
                     modal.dismiss();
+                    if (null != errorClickCallback) {
+                    	errorClickCallback.onButton1Pressed();
+                    }
+                    
                 }
 
             }
@@ -226,6 +232,9 @@ public class CardErrorUIWrapper implements CardErrHandler
                 {
                     Log.d("ondismiss dialog", "modal dismiss");
                     modal.dismiss();
+                    if (null != errorClickCallback) {
+                    	errorClickCallback.onButton2Pressed();
+                    }
                 }
 
             }

@@ -145,7 +145,9 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
         try {
             response = wsProxy.invoke(context, params[0]);
             Map<String, List<String>> headers = response.getHeaders();
-
+            CardShareDataStore cardShareDataStore = CardShareDataStore
+                    .getInstance(context);
+            
             if (headers != null) {
                 final Set<String> keys = headers.keySet();
                 for (final String key : keys) {
@@ -157,11 +159,12 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
                     // Adding values to application cache for Strong
                     // Authentication
                     if (key != null && key.equalsIgnoreCase("WWW-Authenticate")) {
-                        CardShareDataStore cardShareDataStore = CardShareDataStore
-                                .getInstance(context);
+                        
                         cardShareDataStore.addToAppCache("WWW-Authenticate",
                                 headers.get(key).get(0));
-                    } /*else if (key != null
+                    }
+                    
+                    /*else if (key != null
                             && key.equalsIgnoreCase("Set-Cookie")) {
 
                         Log.i("Headers========>",
@@ -227,6 +230,7 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
             } else {
                 // response.setResponseCode(503);
                 int statusCode = response.getResponseCode();
+               // statusCode = 403;
                 Log.d("doInBackground", "statusCode: before check" + statusCode);
                 if (statusCode < 200 || statusCode > 299) {
                     Log.d("doInBackground", "statusCode:" + statusCode);

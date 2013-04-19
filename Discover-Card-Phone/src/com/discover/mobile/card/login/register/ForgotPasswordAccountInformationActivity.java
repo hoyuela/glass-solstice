@@ -3,15 +3,20 @@ package com.discover.mobile.card.login.register;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.services.auth.forgot.ForgotPasswordCall;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.utils.CommonUtils;
+
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * ForgotPasswordAccountInformationActivity - This activity extends the
@@ -122,4 +127,19 @@ public class ForgotPasswordAccountInformationActivity extends
 		return false;
 	}
 
+	@Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        if (v.getId() == R.id.provide_feedback_button) {
+            if(accountIdentifierField.isUsernameField())
+            Utils.createProvideFeedbackDialog(ForgotPasswordAccountInformationActivity.this, FORGOTPASSWORDREFERER);
+        }else if(v.getId()==R.id.account_info_cancel_label)
+        {
+        	finish();
+    		final Bundle bundle = new Bundle();
+            bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+            bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
+            FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
+        }
+    }
 }

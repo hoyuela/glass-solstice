@@ -17,6 +17,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,8 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.card.common.uiwidget.ConfirmationEditText;
+import com.discover.mobile.card.common.utils.Utils;
+
 import com.discover.mobile.common.utils.CommonUtils;
 
 /**
@@ -63,7 +66,7 @@ import com.discover.mobile.common.utils.CommonUtils;
  * @author scottseward
  *
  */
-public class CreateLoginActivity extends ForgotOrRegisterFinalStep  implements CardErrorHandlerUi{
+public class CreateLoginActivity extends ForgotOrRegisterFinalStep  implements CardErrorHandlerUi , OnClickListener{
 	private final String TAG = ForgotOrRegisterFinalStep.class.getSimpleName();
 
 	private CreateLoginDetails formDataTwo;
@@ -79,7 +82,11 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep  implements C
 	private static final String SERVER_ERROR_STRING = "i";
 	private static final String UPDATE_PASSWORD_STATE = "k";
 	private static final String UPDATE_ID_STATE = "l";
+	private static final String REFERER = "forgot-both-step2-pg";
 
+	//TEXT LABELS
+	private TextView provideFeedback ;
+	
 	//ERROR LABELS
 	private TextView mainErrorMessageLabel;
 	private TextView mainErrorMessageLabelTwo;
@@ -128,6 +135,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep  implements C
 
 		setupHeaderProgress();
 		setupHelpNumber();
+		provideFeedback.setOnClickListener(this);
 		restoreState(savedInstanceState);
 	}
 
@@ -256,6 +264,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep  implements C
 		mainScrollView = (ScrollView)findViewById(R.id.main_scroll);
 
 		headerProgressIndicator = (HeaderProgressIndicator)findViewById(R.id.header);
+		provideFeedback = (TextView)findViewById(R.id.provide_feedback_button);
 
 	}
 
@@ -493,6 +502,14 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep  implements C
     public CardErrHandler getCardErrorHandler() {
         // TODO Auto-generated method stub
         return CardErrorUIWrapper.getInstance();
+    }
+
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        if (v.getId() == R.id.provide_feedback_button) {
+            Utils.createProvideFeedbackDialog(CreateLoginActivity.this, REFERER);
+        }
     }
 
 }

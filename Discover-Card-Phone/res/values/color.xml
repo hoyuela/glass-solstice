@@ -5,6 +5,7 @@
     <color name="string_indicator">#8ed402</color>
     
     <!-- Various Colors -->
+    <color name="offwhite">#c0c8cc</color>
     <color name="white">#ffffff</color>
 	<color name="black">#000</color>
 	<color name="blue">#025D96</color>

@@ -9,6 +9,8 @@ import android.content.Intent;
 
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
@@ -16,13 +18,17 @@ import com.discover.mobile.card.login.register.RegistrationAccountInformationAct
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.card.services.auth.AccountDetails;
+import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.CardFacade;
 import com.discover.mobile.common.facade.CardKeepAliveFacade;
+import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.ui.CardInfoForToggle;
 import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.utils.Utils;
 
  
 /**
@@ -30,10 +36,7 @@ import com.discover.mobile.card.common.sharedata.CardShareDataStore;
  * @author ekaram
  *
  */
-public class CardFacadeImpl implements CardFacade, CardKeepAliveFacade{
-
-	private PageTimeOutUtil pagetimeout;	
-	
+public class CardFacadeImpl implements CardFacade{
 	//private Context context;	
 	
 	@Override
@@ -77,15 +80,54 @@ public class CardFacadeImpl implements CardFacade, CardKeepAliveFacade{
 	 * This method will return card member name and last 4 digit of card in  
 	 */
 	@Override
-	public CardInfoForToggle getCardInfoForToggle(Context context) {
+	public CardInfoForToggle getCardInfoForToggle(final Context context) {
 		try
 		{
-			final CardShareDataStore cardShareDataStoreObj = CardShareDataStore.getInstance(context);
-			AccountDetails cardHomedata = (AccountDetails)cardShareDataStoreObj.getValueOfAppCache(context.getString(R.string.account_details));		
-	    	CardInfoForToggle cardInfo = new CardInfoForToggle();
+					
+	    	final CardInfoForToggle cardInfo = new CardInfoForToggle();
+	    	
+	    	//Go to AC Home
+            Utils.updateAccountDetails(context,new CardEventListener() {
+				
+				@Override
+				public void onSuccess(Object data) {
+					// TODO Auto-generated method stub
+					 Globals.setLoggedIn(true);
+                     final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                                  .getInstance(context);
+                     final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
+                                  .getCookieManagerInstance();
+                     sessionCookieManagerObj.setCookieValues();
+
+                    /* final LoginActivityInterface callingActivity = (LoginActivityInterface) context;
+
+                     callingActivity
+                                  .updateAccountInformation(AccountType.CARD_ACCOUNT);*/
+
+                     /*CardSessionContext.getCurrentSessionDetails()
+                                  .setNotCurrentUserRegisteredForPush(false);
+                     CardSessionContext.getCurrentSessionDetails()
+                                  .setAccountDetails((AccountDetails) data);
+
+                     cardShareDataStoreObj.addToAppCache(
+                                  context.getString(R.string.account_details),
+                                  (AccountDetails) data);*/
+                     AccountDetails cardHomedata = (AccountDetails) data;
+                     cardInfo.setCardEndingDigits(cardHomedata.lastFourAcctNbr);
+         			 cardInfo.setCardAccountName(cardHomedata.primaryCardMember.nameOnCard);
+				}
+				
+				@Override
+				public void OnError(Object data) {
+					// TODO Auto-generated method stub
+					
+				}
+			}, "Discover", "Authenticating......");
+            /*final CardShareDataStore cardShareDataStoreObj = CardShareDataStore.getInstance(context);
+			AccountDetails cardHomedata = (AccountDetails)cardShareDataStoreObj.getValueOfAppCache(context.getString(R.string.account_details));
 			cardInfo.setCardEndingDigits(cardHomedata.lastFourAcctNbr);
 			cardInfo.setCardAccountName(cardHomedata.primaryCardMember.nameOnCard);
-			cardHomedata=null;
+			cardHomedata=null;*/
 			return cardInfo;			
 		}
 		catch(Exception e)
@@ -94,22 +136,5 @@ public class CardFacadeImpl implements CardFacade, CardKeepAliveFacade{
 		}
 		return null;		
 	}
-/**
- * This method will keep on refreshing the session for card from bank side 
- * TODO - Pass the context as an argument to this method call
- */
-	@Override
-	public void refreshCardSession() {	
-		
-		/*try{
-			//TODO pass context which is received in argument
-			
-			pagetimeout = new PageTimeOutUtil(context);
-			pagetimeout.keepSessionAlive();
-		}
-		catch(Exception e)
-		{
-			 e.printStackTrace();
-		}*/		
-	}
+
 }

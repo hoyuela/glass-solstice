@@ -3,12 +3,14 @@ package com.discover.mobile.card.services.auth;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.util.Base64;
 
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
+
+import com.discover.mobile.card.R;
 
 /**
  * ©2013 Discover Bank
@@ -21,47 +23,51 @@ import com.discover.mobile.card.common.net.utility.NetworkUtility;
  */
 public class SSOAuthenticate {
 
-	private final Context context;
-	private final CardEventListener listener;
+    private final Context context;
+    private final CardEventListener listener;
 
-	/**
-	 * Constructor
-	 * 
-	 */
-	public SSOAuthenticate(final Context context, final CardEventListener listner) {
-		this.context = context;
-		listener = listner;
-	}
+    /**
+     * Constructor
+     * 
+     */
+    public SSOAuthenticate(Context context, CardEventListener listner) {
+        this.context = context;
+        this.listener = listner;
+    }
 
-	/**
-	 * This method prepairs header/request and send data to server
-	 * 
-	 * @param tokenValue
-	 * @param hashedTokenValue
-	 */
-	public void sendRequest(final String tokenValue,
-			final String hashedTokenValue) {
+    /**
+     * This method prepairs header/request and send data to server
+     * 
+     * @param tokenValue
+     * @param hashedTokenValue
+     */
+    public void sendRequest(final String tokenValue,
+            final String hashedTokenValue) {
 
-		final WSRequest request = new WSRequest();
-		final HashMap<String, String> headers = request.getHeaderValues();
-		final String url = NetworkUtility.getWebServiceUrl(context,
-				R.string.sso_authenticate_url);
-		final String authString = getAuthorizationString(tokenValue, hashedTokenValue);
-		headers.put("Authorization", authString);
-		request.setUrl(url);
-		request.setHeaderValues(headers);
+        WSRequest request = new WSRequest();
+        HashMap<String, String> headers = request.getHeaderValues();
+        String url = NetworkUtility.getWebServiceUrl(context,
+                R.string.sso_authenticate_url);
+        
+        if(tokenValue != null && hashedTokenValue != null)
+        {
+	        String authString = getAuthorizationString(tokenValue, hashedTokenValue);
+	        headers.put("Authorization", authString);
+	        request.setHeaderValues(headers);
+        }
+        request.setUrl(url);
 
-		final WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
-				new BankPayload(), "Discover", "Authenticating...", listener);
-		serviceCall.execute(request);
+        WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
+                new BankPayload(), "Discover", "Authenticating...", listener);
+        serviceCall.execute(request);
 
-	}
+    }
 
-	// encode credential
-	private String getAuthorizationString(final String tokenValue,
-			final String hashedTokenValue) {
-		final String concatenatedCreds = "DCRDSSO "+tokenValue + ": :" + hashedTokenValue;
-		return   concatenatedCreds;//Base64.encodeToString(concatenatedCreds.getBytes(),Base64.NO_WRAP);
-
-	}
+    // encode credential
+    private String getAuthorizationString(final String tokenValue,
+            final String hashedTokenValue) {
+        final String concatenatedCreds = "DCRDSSO "+tokenValue + ": :" + hashedTokenValue;
+        return   concatenatedCreds;//Base64.encodeToString(concatenatedCreds.getBytes(),Base64.NO_WRAP);
+                
+    }
 }

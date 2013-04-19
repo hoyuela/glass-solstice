@@ -78,7 +78,6 @@ public final class CardErrorResponseHandler
             String errorCode = cardErrorHold.getErrorCode();
             String[] errorMsgSplit = errorCode.split("_");
             final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
-
             switch (errorCodeNumber)
             {
             case INCORRECT_USERID_PASSWORD:
@@ -86,19 +85,6 @@ public final class CardErrorResponseHandler
                 // for inline error messages
                 handleInlineError(cardErrorHold.getErrorMessage());
                 break;
-            case 4031102:
-            	//errorHandlerUi.getContext().getString(R.string.E_SSO_NO_UID);
-            	handleGenericError(errorHandlerUi.getContext().getString(R.string.E_T_1401_LOCKOUT), errorHandlerUi.getContext().getString(R.string.E_4031102_SSO), cardErrorHold.getNeedHelpFooter(), errorClickCallback);
-            	break;
-            case 40311021:
-            	//errorHandlerUi.getContext().getString(R.string.E_SSO_NO_UID);
-            	handleGenericError(errorHandlerUi.getContext().getString(R.string.E_T_1401_LOCKOUT), errorHandlerUi.getContext().getString(R.string.E_40311021), cardErrorHold.getNeedHelpFooter(), errorClickCallback);
-            	break;
-            case 40311022:
-            	//errorHandlerUi.getContext().getString(R.string.E_SSO_NO_UID);
-            	handleGenericError(errorHandlerUi.getContext().getString(R.string.E_T_1401_LOCKOUT), errorHandlerUi.getContext().getString(R.string.E_4031102_SSO_DELINK), cardErrorHold.getNeedHelpFooter(), errorClickCallback);
-            	break;	
-            	
             	
             default:
                 handleGenericError(cardErrorHold.getErrorTitle(), cardErrorHold.getErrorMessage(), cardErrorHold.getNeedHelpFooter(), errorClickCallback);
@@ -139,12 +125,12 @@ public final class CardErrorResponseHandler
         case 101:
             sendToTwoButtonErrorModal(errorTitle, errorText, footerStatus, errorClickCallback);
             break;
-        case 5:
+        /*case 5:
         	 sendToTwoButtonErrorModal(errorTitle, errorText, footerStatus, errorClickCallback);
         case 6:
         	sendToErrorPage(errorHandlerUi.getContext().getString(R.string.E_T_1401_LOCKOUT),
         			 errorHandlerUi.getContext().getString(R.string.E_4031102_SSO), footerStatus, errorClickCallback);
-        	 break;
+        	 break;*/
         default:
             sendToErrorPage(errorTitle, errorText, footerStatus, errorClickCallback);
             break;
@@ -153,10 +139,12 @@ public final class CardErrorResponseHandler
 
     }
 
-    private void sendToTwoButtonErrorModal(final String errorTitle, final String errorText, final String footerStatus, final CardErrorCallbackListener errorClickCallback)
+    private void sendToTwoButtonErrorModal(final String errorTitle, final String errorText, 
+    		final String footerStatus, final CardErrorCallbackListener errorClickCallback)
     {
         final CardErrHandler handler = getErrorFieldUi().getCardErrorHandler();
-        final AlertDialog dialog = handler.createErrorModalWithTwoButton(errorTitle, errorText, footerStatus, errorClickCallback);
+        final AlertDialog dialog = handler.createErrorModalWithTwoButton(errorTitle, errorText, 
+        		footerStatus, errorClickCallback);
         handler.showCustomAlert(dialog);
 
     }

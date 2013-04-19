@@ -25,7 +25,8 @@
 	        style="@style/contact_no_hyperlink"
 	        android:paddingRight="@dimen/content_padding"
 	        android:paddingLeft="@dimen/content_padding"
-	        android:paddingBottom="@dimen/content_padding"/>
+	        android:paddingBottom="4dp"
+	        />
     </RelativeLayout>  
 
 </merge>

@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -141,4 +142,10 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        
+    }
 }

@@ -69,7 +69,7 @@ public class HomeSummaryFragment extends BaseFragment implements
 	// Toggle BANK/CARD VIEW
 	private ImageView cardBankToggle = null;
 	private AccountToggleView toggleView = null;
-	private boolean showToggleView = false;
+	private boolean showToggleView = true;
 	private ImageView accountToggleArrow = null;
 
 	@Override

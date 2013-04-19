@@ -29,6 +29,8 @@ import com.discover.mobile.card.common.uiwidget.CustomDatePickerDialog;
 import com.discover.mobile.card.common.uiwidget.DatePickerEditText;
 import com.discover.mobile.card.common.uiwidget.SsnEditText;
 import com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText;
+import com.discover.mobile.card.common.utils.Utils;
+
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.services.auth.forgot.ForgotBoth;
 import com.discover.mobile.card.services.auth.forgot.ForgotPassword;
@@ -58,9 +60,11 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  * 
  */
 
-abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity {
+abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity implements OnClickListener {
 
 	protected AccountInformationDetails accountInformationDetails;
+	protected static final String FORGOTPASSWORDREFERER = "forgot-password-step1-pg";
+	protected static final String FORGOTBOTHREFERER = "forgot-both-step1-pg";
 
 	protected final String ANALYTICS_PAGE_IDENTIFIER;
 
@@ -103,6 +107,8 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity {
 	protected TextView accountIdentifierFieldLabel;
 	protected TextView accountIdentifierFieldRestrictionsLabel;
 	protected TextView helpNumber;
+	protected TextView provideFeedback ;
+	protected TextView cancel;
 
 	// INPUT FIELDS
 	protected UsernameOrAccountNumberEditText accountIdentifierField;
@@ -128,6 +134,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity {
 
 	// BUTTONS
 	protected Button continueButton;
+	
 
 	final Calendar currentDate = Calendar.getInstance();
 
@@ -167,6 +174,8 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity {
 		loadAllViews();
 		setupFieldsAndLabels();
 		setupCustomTextChangedListeners();
+		provideFeedback.setOnClickListener(this);
+		cancel.setOnClickListener(this);
 		setupClickablePhoneNumbers();
 		setHeaderProgressText();
 
@@ -207,6 +216,8 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity {
 		cardExpDatePicker = (CardExpirationDateEditText) findViewById(R.id.account_info_card_exp_date_picker);
 		helpNumber = (TextView) findViewById(R.id.help_number_label);
 		continueButton = (Button) findViewById(R.id.account_info_continue_button);
+		provideFeedback = (TextView)findViewById(R.id.provide_feedback_button);
+		cancel = (TextView)findViewById(R.id.account_info_cancel_label);
 	}
 
 	/**
@@ -682,4 +693,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity {
 
 	}
 
+    
+
+	
 }

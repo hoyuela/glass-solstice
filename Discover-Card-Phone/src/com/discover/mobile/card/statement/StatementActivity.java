@@ -846,12 +846,12 @@ public class StatementActivity extends DroidGap {
                     "Webview is null on KeyCode: " + String.valueOf(keyCode));
         }
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mWebView.canGoBack()) {
-                Log.d("Stmt", "back key detected n can go back.");
-                mWebView.goBack();
-            } else {
+//            if (mWebView.canGoBack()) {
+//                Log.d("Stmt", "back key detected n can go back.");
+//                mWebView.goBack();
+//            } else {
                 finish();
-            }
+//            }
         }
         return true;
     }

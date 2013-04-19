@@ -109,47 +109,56 @@ public class StrongAuthHandler {
             }
         };
 
-        // Call strong auth web service
-        StrongAuthCheck authCheckCall = new StrongAuthCheck(context,
-                new CardEventListener() {
-
-                    // On success return back success to calling activity
-                    @Override
-                    public void onSuccess(Object data) {
-                        if (authListener != null) {
-                            authListener.onStrongAuthSucess(data);
-                        } else {
-                            listener.onSuccess(data);
-                        }
-                    }
-
-                    @Override
-                    public void OnError(Object data) {
-                        CardErrorBean bean = (CardErrorBean) data;
-                        CardShareDataStore cardShareDataStore = CardShareDataStore
-                                .getInstance(context);
-                        String cache = (String) cardShareDataStore
-                                .getValueOfAppCache("WWW-Authenticate");
-
-                        // If error code is 401 and cache contains challenge
-                        // then show strong auth question
-                        if (bean.getErrorCode().contains(
-                                "" + HttpURLConnection.HTTP_UNAUTHORIZED)
-                                && cache.contains("challenge")) {
-                            cardShareDataStore
-                                    .deleteCacheObject("WWW-Authenticate");
-                            StrongAuthQuestion authQuestion = new StrongAuthQuestion(
-                                    context, strongAuthQuestionListener);
-                            authQuestion.sendRequest();
-                        } else {
-                            if (authListener != null) {
-                                authListener.onStrongAuthError(data);
-                            } else {
-                                listener.OnError(data);
-                            }
-                        }
-                    }
-                });
-        authCheckCall.sendRequest();
+        if(authListener != null)
+        {
+        	StrongAuthQuestion authQuestion = new StrongAuthQuestion(
+                    context, strongAuthQuestionListener);
+            authQuestion.sendRequest();
+        }
+        else
+        {
+	        // Call strong auth web service
+	        StrongAuthCheck authCheckCall = new StrongAuthCheck(context,
+	                new CardEventListener() {
+	
+	                    // On success return back success to calling activity
+	                    @Override
+	                    public void onSuccess(Object data) {
+	                        if (authListener != null) {
+	                            authListener.onStrongAuthSucess(data);
+	                        } else {
+	                            listener.onSuccess(data);
+	                        }
+	                    }
+	
+	                    @Override
+	                    public void OnError(Object data) {
+	                        CardErrorBean bean = (CardErrorBean) data;
+	                        CardShareDataStore cardShareDataStore = CardShareDataStore
+	                                .getInstance(context);
+	                        String cache = (String) cardShareDataStore
+	                                .getValueOfAppCache("WWW-Authenticate");
+	
+	                        // If error code is 401 and cache contains challenge
+	                        // then show strong auth question
+	                        if (bean.getErrorCode().contains(
+	                                "" + HttpURLConnection.HTTP_UNAUTHORIZED)
+	                                && cache.contains("challenge")) {
+	                            cardShareDataStore
+	                                    .deleteCacheObject("WWW-Authenticate");
+	                            StrongAuthQuestion authQuestion = new StrongAuthQuestion(
+	                                    context, strongAuthQuestionListener);
+	                            authQuestion.sendRequest();
+	                        } else {
+	                            if (authListener != null) {
+	                                authListener.onStrongAuthError(data);
+	                            } else {
+	                                listener.OnError(data);
+	                            }
+	                        }
+	                    }
+	                });
+	        authCheckCall.sendRequest();
+        }
     }
 }

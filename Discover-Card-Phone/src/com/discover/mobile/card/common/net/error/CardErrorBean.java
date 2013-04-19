@@ -53,9 +53,9 @@ public final class CardErrorBean {
 	 */
 	public CardErrorBean(final String errMessage, final boolean isAppError) {
 
-		errorMessage = errMessage;
+		this.errorMessage = errMessage;
 		this.isAppError = isAppError;
-
+		this.errorCode = "-1";
 	}
 
 	/**
@@ -80,12 +80,14 @@ public final class CardErrorBean {
 	 */
 	public CardErrorBean(final boolean isSSOUidDLinkable,
 			final boolean isSSOUser, final boolean isSSNMatched,
-			final String errCode) {
+			final String errCode,final String errTitle, final String errMessage,final String footerStatus) {
 		this.isSSOUidDLinkable = isSSOUidDLinkable;
 		this.isSSOUser = isSSOUser;
 		this.isSSNMatched = isSSNMatched;
 		this.errorCode = errCode;
-
+		errorMessage = errMessage;
+		errorTitle = errTitle;
+		this.footerStatus = footerStatus;
 	}
 	
 	/**

@@ -17,7 +17,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true" >
 
-        <include layout="@layout/navigation_footer" />
+        <include layout="@layout/navigation_card_footer" />
     </RelativeLayout>
 
     <fragment

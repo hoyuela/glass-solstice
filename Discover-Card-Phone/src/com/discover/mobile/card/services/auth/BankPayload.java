@@ -14,6 +14,6 @@ public class BankPayload implements Serializable {
 	/** generated serial id */
 	private static final long serialVersionUID = 1120551241724746805L;
 	
-	@JsonProperty("payloadSSOText")
+	@JsonProperty("payloadText")
 	public String payload;
 }

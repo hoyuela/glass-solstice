@@ -2,6 +2,7 @@ package com.discover.mobile.card.common.net.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.ProtocolException;
@@ -24,12 +25,16 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.http.cookie.Cookie;
+
 import android.content.Context;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.conn.ConnectionManager;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
@@ -102,6 +107,7 @@ public final class WSProxy {
             setupDeviceIdentifiers(context);
         }
         connection = createConnection(requestDetail);
+        setCookies(connection, context);
         try {
             final InputStream is = ConnectionManager.connect(connection,
                     context, requestDetail.getInput());
@@ -328,6 +334,24 @@ public final class WSProxy {
         connection.setRequestProperty("X-Client-Platform", X_CLIENT_PLATFORM);
         connection.setRequestProperty("X-Application-Version", X_APP_VERSION);
         connection.setRequestProperty("Content-Type", X_CONTENT_TYPE);
+    }
+    
+    private void setCookies(final HttpURLConnection connection,Context context)
+    {
+    	final CardShareDataStore cardShareDataStore = CardShareDataStore
+                .getInstance(context);
+        final SessionCookieManager sessionCookieManager = cardShareDataStore
+                .getCookieManagerInstance();
+        List<HttpCookie> cookies=sessionCookieManager.getHttpCookie();
+        StringBuffer cookieStringBuffer = new StringBuffer();
+        for (HttpCookie cookie : cookies) {
+        	cookieStringBuffer.append(cookie.getName());
+        	cookieStringBuffer.append("=");
+        	cookieStringBuffer.append(cookie.getValue());
+        	cookieStringBuffer.append(";");
+        	
+        }
+        connection.setRequestProperty("Cookie",cookieStringBuffer.toString());
     }
 
     /**

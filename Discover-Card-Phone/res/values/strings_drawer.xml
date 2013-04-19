@@ -16,7 +16,7 @@
     <string name="sub_section_title_send_money_history">Send Money History</string>
     
     
-    <string name="section_title_earn_cashback_bonus">Earn Cashback Bonus</string> 
+    <string name="section_title_earn_cashback_bonus">Earn <i>Cashback Bonus</i></string> 
     <string name="sub_section_title_signup_for_2">Sign up for 2%</string>
     <string name="sub_section_title_extras">Extras</string>
     <string name="sub_section_title_refer_a_friend">Refer A Friend</string>
@@ -31,7 +31,7 @@
     
     <string name="section_title_profile_and_settings">Profile &amp; Settings</string>
     <string name="sub_section_title_manage_alerts">Manage Text &amp; Alerts</string>
-    <string name="sub_section_title_alert_history">Alerts History</string>
+    <string name="sub_section_title_alert_history">Push Alerts History</string>
     <string name="sub_section_title_create_cash_pin">Create Cash PIN</string>    
     
     <string name="section_title_customer_service">Customer Service</string>

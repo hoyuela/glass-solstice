@@ -2,170 +2,170 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:background="@drawable/light_gray_bkgrd" >
-    
+    android:background="@drawable/light_gray_bkgrd"
+    android:orientation="vertical" >
+
     <ScrollView
         android:id="@+id/main_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/forms_inner_padding"
- 		    android:paddingRight="@dimen/forms_inner_padding"
             android:focusable="true"
-            android:focusableInTouchMode="true" >
-
-        <TextView
-            android:id="@+id/forgot_id_title_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"
-            style="@style/title_copy"
-            android:textSize="24dp"
-            android:text="@string/forgot_id_title_text" />
-
-        <TextView
-            android:id="@+id/forgot_id_submission_error_label"
-            style="@style/error_label"
-            android:textSize="16dp"
-            android:includeFontPadding="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:layout_marginBottom="3dp"
-            android:layout_below="@+id/forgot_id_title_label" />
-        
-        <TextView
-            android:id="@+id/forgot_id_account_num_label"
-            style="@style/body_copy"
-            android:textSize="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:layout_marginBottom="2dp"
-            android:layout_below="@+id/forgot_id_submission_error_label"
-            android:text="@string/account_info_label_one" />
-
-        <com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText
-            android:id="@+id/forgot_id_id_field"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/forgot_id_account_num_label"
-            android:textCursorDrawable="@null" />
-
-        <TextView
-            android:id="@+id/forgot_id_id_error_label"
-            style="@style/error_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:layout_below="@+id/forgot_id_id_field"
-            android:text="@string/invalid_input" />
-
-        <TextView
-            android:id="@+id/account_information_input_info_label"
-            android:textColor="@color/sub_copy"
-       		android:textStyle="normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:textSize="14dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="5dp"
-            android:layout_below="@+id/forgot_id_id_error_label"
-            android:text="@string/account_info_input_restrictions_label" />
-
-        <TextView
-            android:id="@+id/forgot_id_password_label"
-            style="@style/body_copy"
-            android:includeFontPadding="false"
-            android:textSize="16dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="2dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/account_information_input_info_label"
-            android:text="@string/forgot_id_password_text" />
-
-        <com.discover.mobile.card.common.uiwidget.NonEmptyEditText
-            android:id="@+id/forgot_id_password_field"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/forgot_id_password_label"
-            android:inputType="textPassword"
-            android:maxLength="32" 
-            android:textCursorDrawable="@null" />
-
-        <TextView
-            android:id="@+id/forgot_id_pass_error_label"
-            style="@style/error_label"
-            android:includeFontPadding="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/forgot_id_password_field"
-            android:text="@string/invalid_input" />
-
-        <Button
-            android:id="@+id/forgot_id_submit_button"
-            style="@style/call_to_action_theme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/forgot_id_password_field"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="14dp"
-            android:layout_marginTop="36dp"
-            android:text="@string/submit_text" />
+            android:focusableInTouchMode="true"
+            android:paddingLeft="@dimen/forms_inner_padding"
+            android:paddingRight="@dimen/forms_inner_padding" >
 
             <TextView
-            android:id="@+id/account_info_cancel_label"
-            style="@style/blue_hyperlink"
-            android:textSize="17dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:layout_below="@+id/forgot_id_submit_button"
-            android:layout_centerHorizontal="true"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:layout_marginBottom="44dp"
-            android:clickable="true"
-            android:text="@string/cancel_text" />
+                android:id="@+id/forgot_id_title_label"
+                style="@style/title_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="8dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/forgot_id_title_text"
+                android:textSize="24dp" />
 
-        <RelativeLayout
-            android:id="@+id/footer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/account_info_cancel_label" >
+            <TextView
+                android:id="@+id/forgot_id_submission_error_label"
+                style="@style/error_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/forgot_id_title_label"
+                android:layout_marginBottom="3dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:textSize="16dp" />
 
-            <include layout="@layout/old_general_need_help_footer" />
-        </RelativeLayout>
-        <TextView
+            <TextView
+                android:id="@+id/forgot_id_account_num_label"
+                style="@style/body_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/forgot_id_submission_error_label"
+                android:layout_marginBottom="2dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/account_info_label_one"
+                android:textSize="16dp" />
+
+            <com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText
+                android:id="@+id/forgot_id_id_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/forgot_id_account_num_label"
+                android:textCursorDrawable="@null" />
+
+            <TextView
+                android:id="@+id/forgot_id_id_error_label"
+                style="@style/error_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/forgot_id_id_field"
+                android:includeFontPadding="false"
+                android:text="@string/invalid_input" />
+
+            <TextView
+                android:id="@+id/account_information_input_info_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/forgot_id_id_error_label"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="2dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/account_info_input_restrictions_label"
+                android:textColor="@color/sub_copy"
+                android:textSize="14dp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/forgot_id_password_label"
+                style="@style/body_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_information_input_info_label"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="4dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/forgot_id_password_text"
+                android:textSize="16dp" />
+
+            <com.discover.mobile.card.common.uiwidget.NonEmptyEditText
+                android:id="@+id/forgot_id_password_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/forgot_id_password_label"
+                android:inputType="textPassword"
+                android:maxLength="32"
+                android:textCursorDrawable="@null" />
+
+            <TextView
+                android:id="@+id/forgot_id_pass_error_label"
+                style="@style/error_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/forgot_id_password_field"
+                android:includeFontPadding="false"
+                android:text="@string/invalid_input" />
+
+            <Button
+                android:id="@+id/forgot_id_submit_button"
+                style="@style/call_to_action_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/forgot_id_password_field"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="36dp"
+                android:text="@string/submit_text" />
+
+            <TextView
+                android:id="@+id/account_info_cancel_label"
+                style="@style/blue_hyperlink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/forgot_id_submit_button"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="44dp"
+                android:clickable="true"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/cancel_text"
+                android:textSize="17dp" />
+
+            <RelativeLayout
+                android:id="@+id/footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_info_cancel_label" >
+
+                <include layout="@layout/old_general_need_help_footer" />
+            </RelativeLayout>
+
+            <TextView
                 android:id="@+id/provide_feedback_button"
                 style="@style/blue_hyperlink_small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:includeFontPadding="false"
                 android:layout_below="@+id/footer"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/orange_button_margin_top"
                 android:layout_marginTop="@dimen/orange_button_margin_top"
+                android:includeFontPadding="false"
                 android:text="@string/feedback_text" />
+        </RelativeLayout>
+    </ScrollView>
 
-     </RelativeLayout>
-	</ScrollView>
-	
 </RelativeLayout>
