@@ -166,7 +166,7 @@
                 <Button
                     android:id="@+id/login_button"
                     style="@style/call_to_action_theme"
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/remember_user_id_button"
                     android:layout_centerHorizontal="true"

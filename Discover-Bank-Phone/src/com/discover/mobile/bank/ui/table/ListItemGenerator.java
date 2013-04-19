@@ -118,6 +118,10 @@ public class ListItemGenerator {
 	public ViewPagerListItem getFromCell(final String from, final String balance) {
 		return getThreeItemCell(R.string.from, from, context.getString(R.string.available_balance) + " " + balance);
 	}
+	
+	public ViewPagerListItem getFromCell(final String from) {
+		return getTwoItemCell(R.string.from, from);
+	}
 
 	public ViewPagerListItem getToCell(final String to) {
 		return getTwoItemCell(R.string.to, to);
@@ -381,9 +385,7 @@ public class ListItemGenerator {
 	public List<ViewPagerListItem> getScheduledBillPayList(final ActivityDetail item) {
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
 
-		// TODO: Add Available Balance value once JSON is updated
-		items.add(getFromCell(item.paymentMethod.nickname, "NULL"));	
-		
+		items.add(getFromCell(item.paymentMethod.nickname));	
 		items.add(getPayeeCell(item.payee.nickName));
 		items.add(getAmountCell(BankStringFormatter.convertCentsToDollars(item.amount.value)));
 		items.add(getStatusCell(BankStringFormatter.capitalize(item.status)));
@@ -406,7 +408,7 @@ public class ListItemGenerator {
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
 
 		if(item.fromAccount != null)
-			items.add(getFromCell(item.fromAccount.nickname, item.fromAccount.balance.formatted));
+			items.add(getFromCell(item.fromAccount.nickname));
 		
 		items.add(getToCell(item.toAccount.nickname));
 		items.add(getAmountCell(item.amount.formatted));
