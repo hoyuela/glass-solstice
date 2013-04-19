@@ -40,17 +40,29 @@ public class BankErrorCodes {
 	 * Error Code used to describe a Strong Auth Locked Out error response with HTTP Status Code 403
 	 */
 	public static final String ERROR_LOCKED_STRONG_AUTH = "Auth.SA.Locked";
-	
+
 	/**
 	 * Error Code used to describe a Fraud user error response with HTTP Status Code 403
 	 */
 	public static final String ERROR_FRAUD_USER = "Auth.Login.BadStatus";
-	
+
+	/**
+	 * Error Code used to describe when a Strong Auth Skipped Error
+	 */
+	//TODO: This may change
+	public static final String ERROR_SA_SKIPPED_ERROR = "Skipped_error";
+
+	/**
+	 * Error code used to describe when a Strong Auth No Enrolled
+	 */
+	//TODO: This needs to change
+	public static final String ERROR_SA_NOT_AVAILABLE = "";
+
 	/**
 	 * Error Code used to describe a No Accounts Found error response with HTTP Status Code 403
 	 */
 	public static final String ERROR_NO_ACCOUNTS_FOUND = "Auth.Login.NoAccountsFound";
-	
+
 	/**
 	 * Error Code used to describe a Check Duplicate error with HTTP Status code 422.
 	 */

@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -34,8 +35,17 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 	private final TextView userAcctNbrLabel;
 	
 	/**Text View First paragraph text*/
-	private final TextView firstParagraph;
+	private final TextView dialogTitle;
 	
+	/**Text View First paragraph text*/
+    private final TextView securityText;
+    
+    /**Text View First paragraph text*/
+    private final TextView firstParagraph;
+    
+    /**Text View First paragraph text*/
+    private final TextView secondParagraph , securityLabelAbove , securityLabelBelow;
+    
 	/**Button to close the modal*/
 	private final Button home;
 	
@@ -55,10 +65,18 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 		userIdLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_id_label);
 		userEmailLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_email_label);
 		userAcctNbrLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_account_label);
-		firstParagraph = (TextView) mainView.findViewById(R.id.account_info_confirm_first_paragraph_label);	
-		noteLabel.setText(Html.fromHtml(context.getString(R.string.account_info_confirm_note_text)));
+		
+		dialogTitle = (TextView) mainView.findViewById(R.id.account_info_confirm_first_paragraph_label);	
+		securityText = (TextView)mainView.findViewById(R.id.account_info_confirm_security_precaution_label);
+		firstParagraph = (TextView)mainView.findViewById(R.id.account_info_confirm_message_first);
+		secondParagraph = (TextView)mainView.findViewById(R.id.account_info_confirm_message_second);
+		
+		securityLabelAbove = (TextView)mainView.findViewById(R.id.account_info_confirm_security_precaution_label);
+		securityLabelBelow = (TextView)mainView.findViewById(R.id.account_info_confirm_security_precaution);
+		        
 		home = (Button) mainView.findViewById(R.id.home);
 		
+		noteLabel.setText(Html.fromHtml(context.getString(R.string.account_info_confirm_note_text)));
 		addView(mainView);
 	}
 
@@ -87,25 +105,64 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 	 * Set the text in the first paragraph
 	 */
 	public void setConfirmationText(final String text){
-		firstParagraph.setText(text);
+	    dialogTitle.setText(text);
 	}
 	
 	/**
 	 * Set the screenType based on what is passed in
 	 * @param screenType - screen type to show
-	 */
+	 *//*
 	public void setScreenType(final String screenType){
 		if(IntentExtraKey.SCREEN_FORGOT_BOTH.equals(screenType)){
-			firstParagraph.setText(res.getString(R.string.forgot_both_changed_text));
+		    firstParagraph.setText(res.getString(R.string.forgot_both_changed_text));
 		} else if(IntentExtraKey.SCREEN_FORGOT_PASS.equals(screenType)){
-			firstParagraph.setText(res.getString(R.string.password_confirmation_changed_text));
+		    firstParagraph.setText(res.getString(R.string.password_confirmation_changed_text));
 		} else if(IntentExtraKey.SCREEN_FOROGT_USER.equals(screenType)){
-			firstParagraph.setText(res.getString(R.string.user_confirmation_changed_text));
+		    firstParagraph.setText(res.getString(R.string.user_confirmation_changed_text));
 		} else if(IntentExtraKey.SCREEN_REGISTRATION.equals(screenType)){
-			firstParagraph.setText(res.getString(R.string.account_info_confirm_first_paragraph_text));
+		    firstParagraph.setText(res.getString(R.string.account_info_confirm_first_paragraph_text));
 		}
 	}
+	*/
 	
+	
+    
+    /**
+     * Set the screenType based on what is passed in
+     * @param screenType - screen type to show
+     */
+    public void setDialog(final String screenType){
+        if(IntentExtraKey.SCREEN_FORGOT_BOTH.equals(screenType)){
+            dialogTitle.setText("Success!");
+            firstParagraph.setVisibility(View.VISIBLE);
+            secondParagraph.setVisibility(View.VISIBLE);
+            firstParagraph.setText(res.getString(R.string.forgot_both_changed_text));
+            secondParagraph.setText(res.getString(R.string.second_paragraph_information));
+            securityLabelAbove.setVisibility(View.GONE);
+            securityLabelBelow.setVisibility(View.VISIBLE);
+        } else if(IntentExtraKey.SCREEN_FORGOT_PASS.equals(screenType)){
+            dialogTitle.setText("Success!");
+            firstParagraph.setVisibility(View.VISIBLE);
+            secondParagraph.setVisibility(View.VISIBLE);
+            firstParagraph.setText(res.getString(R.string.password_confirmation_changed_text));
+            secondParagraph.setText(res.getString(R.string.second_paragraph_information));
+            securityLabelAbove.setVisibility(View.GONE);
+            securityLabelBelow.setVisibility(View.VISIBLE);
+        } else if(IntentExtraKey.SCREEN_FOROGT_USER.equals(screenType)){
+            
+        } else if(IntentExtraKey.SCREEN_REGISTRATION.equals(screenType)){
+            dialogTitle.setText("Success!");
+            firstParagraph.setVisibility(View.VISIBLE);
+            secondParagraph.setVisibility(View.VISIBLE);
+            firstParagraph.setText(res.getString(R.string.account_info_confirm_first_paragraph_text));
+            secondParagraph.setText(res.getString(R.string.second_paragraph_information));
+            securityLabelAbove.setVisibility(View.GONE);
+            securityLabelAbove.setVisibility(View.VISIBLE);
+        }
+            
+    }
+   
+    
 	/**
 	 * Set the title view text
 	 */

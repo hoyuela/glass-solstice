@@ -3,6 +3,8 @@ package com.discover.mobile.bank.error;
 import java.net.HttpURLConnection;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
@@ -22,6 +24,9 @@ import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
+import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.google.common.base.Strings;
 
 /**
@@ -138,6 +143,15 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOCKED_STRONG_AUTH)) {
 				mErrorHandler.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			}
+			//Strong auth skipped error
+			else if(errCode.equals(BankErrorCodes.ERROR_SA_SKIPPED_ERROR)){
+				//TODO: Pop the modal to bring them to enroll in SA
+				mErrorHandler.showCustomAlert(getStrongAuthUnavailable((Activity)mErrorHandler));
+			}
+			//Strong auth not available
+			else if(errCode.equals(BankErrorCodes.ERROR_SA_NOT_AVAILABLE)){
+				//TODO: Handle this we will need to go to big browser
+			}
 			//Maintenance Errors
 			else if( errCode.equals(BankErrorCodes.ERROR_MAINTENANCE_PLANNED)) {
 				mErrorHandler.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
@@ -169,6 +183,12 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	}
 
 
+	private AlertDialog getStrongAuthUnavailable(final Context context) {
+		final ModalDefaultTopView top  = new ModalDefaultTopView(context, null);
+		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(context, null);
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(context, top, bottom);
+		return modal;
+	}
 	/**
 	 * Exposed as protected method in case of need to override by
 	 * child class.

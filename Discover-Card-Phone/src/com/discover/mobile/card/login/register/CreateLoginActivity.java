@@ -6,21 +6,44 @@ import static com.discover.mobile.common.net.error.RegistrationErrorCodes.ID_ALR
 import static com.discover.mobile.common.net.error.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
 import static com.discover.mobile.common.net.error.RegistrationErrorCodes.ID_AND_SSN_EQUAL;
 import static com.discover.mobile.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.discover.mobile.card.R;
+
+import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.net.error.CardErrorBean;
+import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
+import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
+import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
+import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
+import com.discover.mobile.card.common.net.service.WSRequest;
+import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.uiwidget.EmailEditText;
+
+import com.discover.mobile.card.error.CardErrHandler;
+import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 import com.discover.mobile.card.services.auth.registration.CreateLoginCall;
 import com.discover.mobile.card.services.auth.registration.CreateLoginDetails;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -31,6 +54,8 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 import com.discover.mobile.card.common.uiwidget.ConfirmationEditText;
+import com.discover.mobile.card.common.utils.Utils;
+
 import com.discover.mobile.common.utils.CommonUtils;
 
 /**
@@ -41,7 +66,7 @@ import com.discover.mobile.common.utils.CommonUtils;
  * @author scottseward
  *
  */
-public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
+public class CreateLoginActivity extends ForgotOrRegisterFinalStep  implements CardErrorHandlerUi , OnClickListener{
 	private final String TAG = ForgotOrRegisterFinalStep.class.getSimpleName();
 
 	private CreateLoginDetails formDataTwo;
@@ -57,7 +82,11 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	private static final String SERVER_ERROR_STRING = "i";
 	private static final String UPDATE_PASSWORD_STATE = "k";
 	private static final String UPDATE_ID_STATE = "l";
+	private static final String REFERER = "forgot-both-step2-pg";
 
+	//TEXT LABELS
+	private TextView provideFeedback ;
+	
 	//ERROR LABELS
 	private TextView mainErrorMessageLabel;
 	private TextView mainErrorMessageLabelTwo;
@@ -106,6 +135,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 
 		setupHeaderProgress();
 		setupHelpNumber();
+		provideFeedback.setOnClickListener(this);
 		restoreState(savedInstanceState);
 	}
 
@@ -234,6 +264,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 		mainScrollView = (ScrollView)findViewById(R.id.main_scroll);
 
 		headerProgressIndicator = (HeaderProgressIndicator)findViewById(R.id.header);
+		provideFeedback = (TextView)findViewById(R.id.provide_feedback_button);
 
 	}
 
@@ -319,7 +350,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 	 * register/forgot both step 1. On success, retrieve the users account information.
 	 */
 	private void submitFormInfo() {
-		final ProgressDialog progress = 
+		/*final ProgressDialog progress = 
 				ProgressDialog.show(this, "Discover", "Loading...", true);
 
 		//Lock orientation while request is being processed
@@ -411,7 +442,74 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep {
 
 		final CreateLoginCall registrationCall = 
 				new CreateLoginCall(this, callback, formDataTwo);
-		registrationCall.submit();
+		registrationCall.submit();*/
+		   CardEventListener cardEventListener = new CardEventListener() {
+	            
+	            @Override
+	            public void onSuccess(Object data) {
+	                // TODO Auto-generated method stub
+	                RegistrationConfirmationDetails registrationConfirmationDetails =  (RegistrationConfirmationDetails)data;
+	                retrieveAccountDetailsFromServer(registrationConfirmationDetails);
+	            }
+	            
+	            @Override
+	            public void OnError(Object data) {
+	                // TODO Auto-generated method stub
+	                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+	                        (CardErrorHandlerUi) CreateLoginActivity.this);
+	                cardErrorResHandler.handleCardError((CardErrorBean) data);
+	            }
+	        };
+	           WSRequest request = new WSRequest();
+
+	            // Setting the headers available for the service
+	            HashMap<String, String> headers = request.getHeaderValues();
+	            headers.put("X-SEC-Token", "");
+	            String url = NetworkUtility.getWebServiceUrl(this,
+	                    R.string.createlogin_url);
+
+	            request.setUrl(url);
+	            request.setHeaderValues(headers);
+	            request.setMethodtype("POST");
+
+	            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+	            try {
+	                JacksonObjectMapperHolder.getMapper().writeValue(baos,
+	                        formDataTwo);
+	            } catch (JsonGenerationException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            } catch (JsonMappingException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            } catch (IOException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            }
+
+	            request.setInput(baos.toByteArray());
+
+	            WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, new RegistrationConfirmationDetails(),
+	                    "Discover", "Loading...", cardEventListener);
+	            serviceCall.execute(request);
 	}
+
+    /* (non-Javadoc)
+     * @see com.discover.mobile.card.error.CardErrorHandlerUi#getCardErrorHandler()
+     */
+    @Override
+    public CardErrHandler getCardErrorHandler() {
+        // TODO Auto-generated method stub
+        return CardErrorUIWrapper.getInstance();
+    }
+
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        if (v.getId() == R.id.provide_feedback_button) {
+            Utils.createProvideFeedbackDialog(CreateLoginActivity.this, REFERER);
+        }
+    }
 
 }

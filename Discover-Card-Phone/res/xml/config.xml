@@ -55,6 +55,12 @@
     
     <plugin name="HybridControlPlugin" value="com.discover.mobile.card.phonegap.plugins.HybridControlPlugin"/>
     <plugin name="PageSessionTimerPlugin" value="com.discover.mobile.card.phonegap.plugins.PageSessionTimerPlugin"/>
+    <plugin name="ScreenshotPlugin" value="com.discover.mobile.card.phonegap.plugins.ScreenshotPlugin"/>
+    <plugin name="EventManagerPlugin" value="com.discover.mobile.card.phonegap.plugins.EventManagerPlugin"/>
+    <plugin name="StatementPlugin" value="com.discover.mobile.card.phonegap.plugins.StatementPlugin"/>
+    <plugin name="ChildBrowser" value="com.discover.mobile.card.phonegap.plugins.ChildBrowser"/>
+    <plugin name="NetworkConnectivityPlugin" value="com.discover.mobile.card.phonegap.plugins.NetworkConnectivityPlugin"/>    
+    
 </plugins>
 </cordova>
 

@@ -4,12 +4,12 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.net.service.WSProxy;
+import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 
 /**
  * This class will hold page timeout related logic and will also be shared by
@@ -29,20 +29,32 @@ public final class PageTimeOutUtil {
     private static final long TIMEOUT_PERIOD = 600000; // 600000
     private Calendar mCalendar;
 
-    private PageTimeOutUtil(final Context context) {
+    public PageTimeOutUtil(final Context context) {
         mContext = context;
         mWSProxy = new WSProxy();
     }
 
     public static synchronized PageTimeOutUtil getInstance(
             final Context mContext) {
-        if (null == PageTimeOutUtil.mPageTimeOut) {
-            PageTimeOutUtil.mPageTimeOut = new PageTimeOutUtil(mContext);
+        if (null == mPageTimeOut) {
+            
+           mPageTimeOut = new PageTimeOutUtil(mContext);
+           Log.d("getInstance", "mPageTimeOut object......"+mPageTimeOut);
+            
         }
 
+        
+        
+        
         return mPageTimeOut;
     }
 
+    
+    public static void destroyTimer()
+    {
+       mPageTimeOut = null;
+       Log.d("inside destroyTimer", "mPageTimeOut object......"+mPageTimeOut);
+    }
     /*
      * This function will start the initial timer after login
      */
@@ -122,10 +134,14 @@ public final class PageTimeOutUtil {
      */
     public void logoutUserOnTimerExpire() {
         Log.d(TAG, "inside logoutUserOnTimerExpire().....");
-        final Intent logoutintent = new Intent();
-        logoutintent
-                .setAction("com.discover.mobile.card.navigation.LogoutUser");
-        mContext.sendBroadcast(logoutintent);
-        Log.d(TAG, "broadcast is sent.....");
+        
+//        final Intent logoutintent = new Intent();
+//        logoutintent
+//                .setAction("com.discover.mobile.card.navigation.LogoutUser");
+//        mContext.sendBroadcast(logoutintent);
+//        Log.d(TAG, "broadcast is sent.....");
+        ((CardNavigationRootActivity)mContext).logout();
+        
+        
     }
 }

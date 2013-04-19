@@ -42,11 +42,11 @@ import com.discover.mobile.common.ui.widgets.AccountToggleView;
  *
  */
 public class BankAccountSummaryFragment extends BaseFragment implements OnClickListener, FragmentOnBackPressed {
-	
+
 	private static final String TAG = "AccountSummary";
-	
+
 	private static final String SHOW_TOGGLE_KEY = "showToggle";
-	
+
 	private LinearLayout accountSummary; 
 	private Button openAccount;
 	private AccountToggleView toggleView;
@@ -56,7 +56,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
-		this.view = inflater.inflate(R.layout.bank_account_summary_view, null);
+		view = inflater.inflate(R.layout.bank_account_summary_view, null);
 
 
 		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
@@ -72,17 +72,24 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
 		help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
-		
+
 		/**Footer setup*/
 		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
 		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK | FooterType.NEED_HELP);
-		
+
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
-		
+
 		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
 		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
 		setupAccountToggle();
+
+		//If card and bank are authenticated then show the down arrow, since we are here
+		//Bank must be authenticated already so we only need to check to see if the card is 
+		//authenticated.
+		if(BankUser.instance().isSsoUser()){
+			view.findViewById(R.id.downArrow).setVisibility(View.VISIBLE);
+		}
 
 		if (savedInstanceState != null
 				&& savedInstanceState.getBoolean(SHOW_TOGGLE_KEY, false)) {
@@ -91,7 +98,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		return view;
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		if(toggleView != null && toggleView.getVisibility() == View.VISIBLE) {
@@ -201,7 +208,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
 	}
-	
+
 	/**
 	 * Determines the placement of the icon upon its layout. It's then used to
 	 * measure the postion of the indicator. Additionally, this implements the
@@ -213,10 +220,10 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 			@Override
 			public void onGlobalLayout() {
 				if(!toggleView.hasIndicatorBeenDrawn()) {
-				toggleView.setIndicatorPosition(accountToggleIcon.getLeft(),
-						accountToggleIcon.getTop(),
-						accountToggleIcon.getWidth(),
-						accountToggleIcon.getHeight());
+					toggleView.setIndicatorPosition(accountToggleIcon.getLeft(),
+							accountToggleIcon.getTop(),
+							accountToggleIcon.getWidth(),
+							accountToggleIcon.getHeight());
 				}
 			}
 		});
@@ -226,7 +233,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		accountToggleArrow.setOnClickListener(new AccountToggleListener());
 		accountToggleIcon.setOnClickListener(new AccountToggleListener());
 	}
-	
+
 	/**
 	 * Listener associated with items that hide/show the Account Toggle Widget. 
 	 */
@@ -236,7 +243,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		public void onClick(final View v) {
 			toggleView.toggleVisibility();
 		}
-		
+
 	}
 
 	@Override
@@ -244,7 +251,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		if(toggleView.getVisibility() == View.VISIBLE) {
 			toggleView.setVisibility(View.INVISIBLE);
 		}
-		
+
 	}
 
 	@Override
@@ -252,7 +259,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		if(toggleView.getVisibility() == View.VISIBLE) {
 			return true;
 		}
-		
+
 		return false;
 	}
 

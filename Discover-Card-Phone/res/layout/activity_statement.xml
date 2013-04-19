@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:background="@drawable/header_bg" >
+
+        <ImageView
+            android:id="@+id/discoverLogo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_weight="1"
+            android:contentDescription="@string/discoverLogo_img_desc"
+            android:src="@drawable/discover_logo" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/statement_btn_next"
+            android:layout_width="48dp"
+            android:layout_height="45dp"
+            android:layout_marginRight="6dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/statement_btn_next_desc"
+            android:background="@drawable/statementnavbutton"
+            android:onClick="navigateNext"
+            android:src="@drawable/navigation_collapse" />
+
+        <ImageButton
+            android:id="@+id/statement_btn_prev"
+            android:layout_width="48dp"
+            android:layout_height="45dp"
+            android:layout_marginRight="6dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/statement_btn_next"
+            android:contentDescription="@string/statement_btn_prev_desc"
+            android:background="@drawable/statementnavbutton"
+            android:onClick="navigatePrevious"
+            android:src="@drawable/navigation_expand" />
+
+        <TextView
+            android:id="@+id/statement_text_cycleDates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/blue_grey"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <WebView
+        android:id="@+id/statement_webView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/statement_btn_downloadPDF"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/button_type_discover_orange"
+        android:onClick="downloadPdf"
+        android:text="@string/statement_btn_download_text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+</LinearLayout>

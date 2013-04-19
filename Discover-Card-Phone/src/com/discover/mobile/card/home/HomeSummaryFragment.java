@@ -1,28 +1,44 @@
 package com.discover.mobile.card.home;
 
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.Locale;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.card.CardMenuItemLocationIndex;
-import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.CommonMethods;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.net.error.CardErrorBean;
+import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.utils.Utils;
+import com.discover.mobile.card.error.CardErrorHandlerUi;
+import com.discover.mobile.card.navigation.CardMenuInterface;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.ui.widgets.AccountToggleView;
 
-public class HomeSummaryFragment extends BaseFragment {
+public class HomeSummaryFragment extends BaseFragment implements
+		OnClickListener {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.discover.mobile.BaseFragment#onResume()
 	 */
 	@Override
@@ -31,17 +47,165 @@ public class HomeSummaryFragment extends BaseFragment {
 		super.onResume();
 	}
 
+	protected static final String TAG = "HomeSummaryFragment";
+	private static final String REFERER = "cardHome-pg";
 	private View view;
+	private TextView ViewOption, payOption, redeemOption, offerOption,
+			provideFeedback, accountName;
+	private LinearLayout currentBalance, lastStatement, bonusBalance;
+	private RelativeLayout bonusOffer;
+	private View statusBarView;
+	private boolean isCashback = true;
+	HashMap<String, String> rewardsInfo = new HashMap<String, String>();
+	HashMap<String, String> rewardsOffer = new HashMap<String, String>();
+	String incentiveCodePrefix = "";
+	String incentiveTypeCodePrefix = "";
+	String rewardsInfoKey = "";
+	String rewardsOfferKey = "";
+	AccountDetails accountDetails = null;
+	Activity callingActivity = null;
+	CardEventListener cardEventListener = null;
+
+	// Toggle BANK/CARD VIEW
+	private ImageView cardBankToggle = null;
+	private AccountToggleView toggleView = null;
+	private boolean showToggleView = true;
+	private ImageView accountToggleArrow = null;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.section_account_summary_landing, null);
-		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)){
-			setupHomeElements();
+		provideFeedback = (TextView) view
+				.findViewById(R.id.provide_feedback_button1);
+		statusBarView = view.findViewById(R.id.accounthomestatusbar);
+
+		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+				.getInstance(callingActivity);
+		accountDetails = (AccountDetails) cardShareDataStoreObj
+				.getValueOfAppCache(callingActivity
+						.getString(R.string.account_details));
+		accountName = (TextView) statusBarView.findViewById(R.id.account_name);
+		
+
+		//Get the boolean flag from extra
+        final Bundle extras = getActivity().getIntent().getExtras();
+        if (extras != null) {
+        	
+        	showToggleView = extras.getBoolean("showToggleFlag");
+        }
+
+		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)) {
+			// setupHomeElements();
+			// Statusbarfragment is removed from Account Home View is included
+			// in Home Summary Fragment itself
 			showActionBarLogo();
 		}
+
+		if (null != accountDetails) {
+
+			// Toggle BANK/CARD VIEW
+			setupAccountToggle(showToggleView);
+
+			setAccountName();
+			setupHomeElements();
+		} else {
+			updateAccountDetailsEventListener();
+			Utils.updateAccountDetails(callingActivity, cardEventListener,
+					"Discover", "Updating Account Details...");
+		}
+
+		provideFeedback.setOnClickListener(this);
 		return view;
+	}
+
+	/* *//**
+	 * 
+	 * Statusbarfragment is removed from Account Home View is included in
+	 * Home Summary Fragment itself This method will display the Status bar on
+	 * Account home
+	 */
+	/*
+	 * private void showStatusBar() { // TODO Auto-generated method stub final
+	 * CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+	 * .getInstance(callingActivity); accountDetails = (AccountDetails)
+	 * cardShareDataStoreObj .getValueOfAppCache(callingActivity
+	 * .getString(R.string.account_details)); accountName = (TextView)
+	 * statusBarView.findViewById(R.id.account_name); setAccountName(); }
+	 */
+
+	/**
+	 * To fetch the account name from the account details object
+	 */
+	private void setAccountName() {
+		// TODO Auto-generated method stub
+		StringBuilder defaultHiText = new StringBuilder(
+				callingActivity.getString(R.string.hi_note));
+		if (null != accountDetails) {
+			if (null != accountDetails.mailingAddress) {
+				if (null != accountDetails.mailingAddress.firstName) {
+					defaultHiText.append(" "
+							+ accountDetails.mailingAddress.firstName);
+				}
+			} else {
+
+				if (null != accountDetails.primaryCardMember) {
+					if (null != accountDetails.primaryCardMember.nameOnCard) {
+						defaultHiText.append(" "
+								+ accountDetails.primaryCardMember.nameOnCard);
+					}
+				}
+
+			}
+
+		}
+		setStatusBarText(defaultHiText.toString());
+	}
+
+	/**
+	 * @param string
+	 *            the defaultHiText including user name if present
+	 * 
+	 *            Will set the text in Hi TextView
+	 */
+	private void setStatusBarText(final String text) {
+		// TODO Auto-generated method stub
+		accountName.setText(text);
+	}
+
+	/**
+	 * to create cardEventListener Object that will be passed to
+	 * updateAccountDetails
+	 * 
+	 */
+	private void updateAccountDetailsEventListener() {
+		// TODO Auto-generated method stub
+		cardEventListener = new CardEventListener() {
+
+			@Override
+			public void onSuccess(final Object data) {
+				// TODO Auto-generated method stub
+				final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+						.getInstance(callingActivity);
+				cardShareDataStoreObj.addToAppCache(
+						callingActivity.getString(R.string.account_details),
+						data);
+				accountDetails = (AccountDetails) data;
+
+				// Toggle BANK/CARD VIEW
+				setupAccountToggle(showToggleView);
+				setAccountName();
+				setupHomeElements();
+			}
+
+			@Override
+			public void OnError(final Object data) {
+				// TODO Auto-generated method stub
+				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+						(CardErrorHandlerUi) callingActivity);
+				cardErrorResHandler.handleCardError((CardErrorBean) data);
+			}
+		};
 	}
 
 	@Override
@@ -51,19 +215,137 @@ public class HomeSummaryFragment extends BaseFragment {
 		hideActionBarLogo();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.actionbarsherlock.app.SherlockFragment#onAttach(android.app.Activity)
+	 */
+	@Override
+	public void onAttach(final Activity activity) {
+		// TODO Auto-generated method stub
+		super.onAttach(activity);
+		callingActivity = activity;
+	}
+
 	/**
 	 * Builds the four elements (Current balance, last statement, cashback
 	 * balance, & cashback offer) on the Home view.
 	 */
 	private void setupHomeElements() {
 
-		final AccountDetails accountDetails = CardSessionContext
-				.getCurrentSessionDetails().getAccountDetails();
-
 		setupCurrentBalanceElement(accountDetails);
-		//setupLastStatementElement(accountDetails);
-		//setupBonusBalance(accountDetails);
-		//setupBonusOffer(accountDetails);
+		setupLastStatementElement(accountDetails);
+
+		populateRewardsInfo();
+		populateRewardsOffer();
+
+		// This has been added to enable the visibility of CashBack Bonus
+		// Balance and CashBack Bonus Offer options as per the Card Type
+
+		if (!(accountDetails.rewardOutage || accountDetails.acLiteOutageMode)) {
+
+			if (accountDetails.incentiveCode != null) {
+				incentiveCodePrefix = "_" + accountDetails.incentiveCode;
+			}
+
+			if (accountDetails.incentiveTypeCode != null) {
+				incentiveTypeCodePrefix = "_"
+						+ accountDetails.incentiveTypeCode;
+			}
+
+			rewardsInfoKey = "rewards_info" + incentiveTypeCodePrefix
+					+ incentiveCodePrefix;
+			if (!rewardsInfo.containsKey(rewardsInfoKey)) {
+				rewardsInfoKey = "rewards_info" + incentiveTypeCodePrefix;
+				if (!rewardsInfo.containsKey(rewardsInfoKey)) {
+					view.findViewById(R.id.home_bonus_balance).setVisibility(
+							View.GONE);
+				} else {
+					setupBonusBalance(accountDetails);
+				}
+			} else {
+				setupBonusBalance(accountDetails);
+			}
+
+			rewardsOfferKey = "rewards_offer" + incentiveTypeCodePrefix
+					+ incentiveCodePrefix;
+			if (!rewardsOffer.containsKey(rewardsOfferKey)) {
+				rewardsOfferKey = "rewards_offer" + incentiveTypeCodePrefix;
+				if (!rewardsOffer.containsKey(rewardsOfferKey)) {
+					view.findViewById(R.id.home_bonus_offer).setVisibility(
+							View.GONE);
+				} else {
+					setupBonusOffer(accountDetails);
+				}
+			} else {
+				setupBonusOffer(accountDetails);
+			}
+		} else {
+			view.findViewById(R.id.acoutagemode_message).setVisibility(
+					View.VISIBLE);
+			view.findViewById(R.id.home_bonus_balance).setVisibility(View.GONE);
+			view.findViewById(R.id.home_bonus_offer).setVisibility(View.GONE);
+		}
+
+		accountDetails = null;
+
+	}
+
+	// This method will populate the rewardsOffer with combinations of
+	// incentiveCode and incentiveTypeCode
+	private void populateRewardsOffer() {
+		// TODO Auto-generated method stub
+
+		rewardsOffer.put("rewards_offer_CBB_000001", "cashBack Bonus Offer");
+		rewardsOffer.put("rewards_offer_CBB_000011", "cashBack Bonus Offer");
+		rewardsOffer.put("rewards_offer_CBB_000013", "cashBack Bonus Offer");
+		rewardsOffer.put("rewards_offer_CBB_000014", "cashBack Bonus Offer");
+		rewardsOffer.put("rewards_offer_CBB_000015", "cashBack Bonus Offer");
+		rewardsOffer.put("rewards_offer_CBB_000016", "cashBack Bonus Offer");
+		rewardsOffer.put("rewards_offer_MI2", " ");
+		rewardsOffer.put("rewards_offer_MIL", " ");
+		rewardsOffer.put("rewards_offer_MI2_000002", "miles Rewards Offer");
+		rewardsOffer.put("rewards_offer_SBC", " ");
+		rewardsOffer.put("rewards_offer_CBB", " ");
+		rewardsOffer.put("rewards_offer_SML", " ");
+	}
+
+	// This method will populate the rewardsInfo with combinations of
+	// incentiveCode and incentiveTypeCode
+	private void populateRewardsInfo() {
+		// TODO Auto-generated method stub
+
+		rewardsInfo.put("rewards_info_CBB_000001", "redeem");
+		rewardsInfo.put("rewards_info_CBB_000011", "redeem");
+		rewardsInfo.put("rewards_info_CBB_000013", "redeem");
+		rewardsInfo.put("rewards_info_CBB_000014", "redeem");
+		rewardsInfo.put("rewards_info_CBB_000015", "redeem");
+		rewardsInfo.put("rewards_info_CBB_000016", "redeem");
+		rewardsInfo.put("rewards_info_MI2", "earnRewardsAmount");
+		rewardsInfo.put("rewards_info_MI2_000002", "redeem");
+		rewardsInfo.put("rewards_info_MIL", "earnRewardsAmount");
+		rewardsInfo.put("rewards_info_SBC", "newlyEarnRewardsAmount");
+		rewardsInfo.put("rewards_info_CBB", "newlyEarnRewardsAmount");
+		rewardsInfo.put("rewards_info_SML", "earnRewardsAmount");
+	}
+
+	private String convertToDollars(final String dollar) {
+		if (null != dollar) {
+			double amount = Double.parseDouble(dollar);
+			if (amount < 0) {
+				amount *= -1;
+				return NumberFormat.getCurrencyInstance(Locale.US)
+						.format(amount).replace("$", "$-");
+			}
+
+			else {
+				return NumberFormat.getCurrencyInstance(Locale.US).format(
+						amount);
+			}
+		} else {
+			return "$0.00";
+		}
 	}
 
 	/**
@@ -73,27 +355,30 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * @param accountDetails
 	 */
 	private void setupCurrentBalanceElement(final AccountDetails accountDetails) {
-		final LinearLayout currentBalance = (LinearLayout) view
+		currentBalance = (LinearLayout) view
 				.findViewById(R.id.home_current_balance);
-		final double currBalance = getDoublevalue(accountDetails.currentBalance);
-		final double credAvailable = getDoublevalue(accountDetails.availableCredit);
+		// final double currBalance =
+		// getDoublevalue(accountDetails.currentBalance);
+		// final double credAvailable =
+		// getDoublevalue(accountDetails.availableCredit);
 
 		// main content
 		((TextView) currentBalance.findViewById(R.id.title))
-		.setText(R.string.current_balance);
+				.setText(R.string.current_balance);
 		((TextView) currentBalance.findViewById(R.id.content_text))
-		.setText(NumberFormat.getCurrencyInstance(Locale.US).format(currBalance));
+				.setText(convertToDollars(accountDetails.currentBalance));
 
 		// subsection
 		((TextView) currentBalance.findViewById(R.id.bottom_bar_label))
-		.setText(getString(R.string.credit_available));
+				.setText(getString(R.string.credit_available));
 		((TextView) currentBalance.findViewById(R.id.bottom_bar_value))
-		.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
-				credAvailable));
+				.setText(convertToDollars(accountDetails.availableCredit));
 
 		// View button
-		((TextView) currentBalance.findViewById(R.id.blue_button_text))
-		.setText(getString(R.string.view_blue_button_text));
+		ViewOption = (TextView) currentBalance
+				.findViewById(R.id.blue_button_text);
+		ViewOption.setText(getString(R.string.view_blue_button_text));
+		currentBalance.setOnClickListener(this);
 
 	}
 
@@ -104,37 +389,41 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * @param accountDetails
 	 */
 	private void setupLastStatementElement(final AccountDetails accountDetails) {
-		final LinearLayout lastStatement = (LinearLayout) view
+		lastStatement = (LinearLayout) view
 				.findViewById(R.id.home_last_statement);
 
-		if(null == accountDetails.minimumPaymentDue){
+		if (null == accountDetails.minimumPaymentDue) {
 			lastStatement.setVisibility(View.GONE);
 			return;
 		}
-		final double lastBalance = getDoublevalue(accountDetails.statementBalance);
-		final double minPayment = getDoublevalue(accountDetails.minimumPaymentDue);
+		// final double lastBalance =
+		// getDoublevalue(accountDetails.statementBalance);
+		// final double minPayment =
+		// getDoublevalue(accountDetails.minimumPaymentDue);
 
 		// main content
 		((TextView) lastStatement.findViewById(R.id.title))
-		.setText(R.string.last_statement_balance);
+				.setText(R.string.last_statement_balance);
 		((TextView) lastStatement.findViewById(R.id.content_text))
-		.setText(NumberFormat.getCurrencyInstance(Locale.US).format(lastBalance));
+				.setText(convertToDollars(accountDetails.statementBalance));
 
 		// subsection
 		((TextView) lastStatement.findViewById(R.id.bottom_bar_label))
-		.setText(formatMinimumPaymentTitle(accountDetails));
+				.setText(formatMinimumPaymentTitle(accountDetails));
 		((TextView) lastStatement.findViewById(R.id.bottom_bar_value))
-		.setText(NumberFormat.getCurrencyInstance(Locale.US).format(minPayment));
+				.setText(convertToDollars(accountDetails.minimumPaymentDue));
 
 		// Pay button
-		((TextView) lastStatement.findViewById(R.id.blue_button_text))
-		.setText(R.string.pay_blue_button_text);
+		payOption = (TextView) lastStatement
+				.findViewById(R.id.blue_button_text);
+		payOption.setText(R.string.pay_blue_button_text);
+		lastStatement.setOnClickListener(this);
 	}
 
-	private double getDoublevalue(final String amount){
-		if(null == amount){
+	private double getDoublevalue(final String amount) {
+		if (null == amount) {
 			return 0.00;
-		} else{
+		} else {
 			return Double.valueOf(amount);
 		}
 	}
@@ -146,50 +435,57 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * @param accountDetails
 	 */
 	private void setupBonusBalance(final AccountDetails accountDetails) {
-		final LinearLayout bonusBalance = (LinearLayout) view
+		bonusBalance = (LinearLayout) view
 				.findViewById(R.id.home_bonus_balance);
 
 		// main content & subsection
-		final boolean isCashback = CommonMethods.isCashbackCard(accountDetails);
+		isCashback = CommonMethods.isCashbackCard(accountDetails);
 
 		if (isCashback) {
 
-			final double cashBonus = Double.valueOf(accountDetails.earnRewardAmount);
-			final double newlyEarned = Double.valueOf(accountDetails.newlyEarnedRewards);
+			final double cashBonus = Double
+					.valueOf(accountDetails.earnRewardAmount);
+			final double newlyEarned = Double
+					.valueOf(accountDetails.newlyEarnedRewards);
 
 			((TextView) bonusBalance.findViewById(R.id.title))
-			.setText(R.string.cashback_bonus_balance);
+					.setText(R.string.cashback_bonus_balance);
 			((TextView) bonusBalance.findViewById(R.id.content_text))
-			.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
-					cashBonus));
+					.setText(NumberFormat.getCurrencyInstance(Locale.US)
+							.format(cashBonus));
 
 			((TextView) bonusBalance.findViewById(R.id.bottom_bar_label))
-			.setText(getString(R.string.newly_earned));
+					.setText(getString(R.string.newly_earned));
 			((TextView) bonusBalance.findViewById(R.id.bottom_bar_value))
-			.setText(NumberFormat.getCurrencyInstance(Locale.US).format(
-					newlyEarned));
+					.setText(NumberFormat.getCurrencyInstance(Locale.US)
+							.format(newlyEarned));
 		} else {
 			((TextView) bonusBalance.findViewById(R.id.title))
-			.setText(R.string.miles_balance);
+					.setText(R.string.miles_balance);
 			((TextView) bonusBalance.findViewById(R.id.content_text))
-			.setText(CommonMethods
-					.insertCommas(accountDetails.earnRewardAmount));
+					.setText(CommonMethods
+							.insertCommas(accountDetails.earnRewardAmount));
 
 			((TextView) bonusBalance.findViewById(R.id.bottom_bar_label))
-			.setText(getString(R.string.newly_earned));
+					.setText(getString(R.string.newly_earned));
 			((TextView) bonusBalance.findViewById(R.id.bottom_bar_value))
-			.setText(CommonMethods
-					.insertCommas(accountDetails.newlyEarnedRewards));
+					.setText(CommonMethods
+							.insertCommas(accountDetails.newlyEarnedRewards));
 		}
 
 		// Redeem button
 		if (!CommonMethods.isEscapeCard(accountDetails)) {
-			((TextView) bonusBalance.findViewById(R.id.blue_button_text))
-			.setText(R.string.redeem_blue_button_text);
+			redeemOption = (TextView) bonusBalance
+					.findViewById(R.id.blue_button_text);
+			redeemOption.setText(R.string.redeem_blue_button_text);
 		} else {
-			((TextView) bonusBalance.findViewById(R.id.blue_button_text))
-			.setVisibility(View.GONE);
+			redeemOption = (TextView) bonusBalance
+					.findViewById(R.id.blue_button_text);
+			redeemOption.setVisibility(View.GONE);
 		}
+
+		bonusBalance.setOnClickListener(this);
+
 	}
 
 	/**
@@ -199,25 +495,25 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * @param accountDetails
 	 */
 	private void setupBonusOffer(final AccountDetails accountDetails) {
-		final RelativeLayout bonusOffer = (RelativeLayout) view
-				.findViewById(R.id.home_bonus_offer);
+		bonusOffer = (RelativeLayout) view.findViewById(R.id.home_bonus_offer);
 
 		// main content
-		final boolean isCashback = CommonMethods.isCashbackCard(accountDetails);
+		isCashback = CommonMethods.isCashbackCard(accountDetails);
 		if (isCashback) {
 			((TextView) bonusOffer.findViewById(R.id.title))
-			.setText(R.string.cashback_bonus_offer);
+					.setText(R.string.cashback_bonus_offer);
 		} else {
 			((TextView) bonusOffer.findViewById(R.id.title))
-			.setText(R.string.miles_offer);
+					.setText(R.string.miles_offer);
 		}
 
 		((TextView) bonusOffer.findViewById(R.id.content_text))
-		.setText(getString(R.string.cashback_miles_offer_subtext));
+				.setText(getString(R.string.cashback_miles_offer_subtext));
 
 		// SignUp button
-		((TextView) bonusOffer.findViewById(R.id.blue_button_text))
-		.setText(R.string.sign_up_blue_button_text);
+		offerOption = (TextView) bonusOffer.findViewById(R.id.blue_button_text);
+		offerOption.setText(R.string.sign_up_blue_button_text);
+		bonusOffer.setOnClickListener(this);
 	}
 
 	/**
@@ -228,7 +524,9 @@ public class HomeSummaryFragment extends BaseFragment {
 	 * @return Formatted title with due date.
 	 */
 	private String formatMinimumPaymentTitle(final AccountDetails accountDetails) {
-		if(null == accountDetails.paymentDueDate){return getString(R.string.min_payment_due);}
+		if (null == accountDetails.paymentDueDate) {
+			return getString(R.string.min_payment_due);
+		}
 		final StringBuilder sb = new StringBuilder();
 		sb.append(getString(R.string.min_payment_due));
 		sb.append(' ');
@@ -248,7 +546,7 @@ public class HomeSummaryFragment extends BaseFragment {
 	public int getActionBarTitle() {
 		return -1;
 	}
-	
+
 	@Override
 	public int getGroupMenuLocation() {
 		return CardMenuItemLocationIndex.HOME_GROUP;
@@ -258,4 +556,100 @@ public class HomeSummaryFragment extends BaseFragment {
 	public int getSectionMenuLocation() {
 		return CardMenuItemLocationIndex.HOME_SECTION;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.view.View.OnClickListener#onClick(android.view.View)
+	 */
+	@Override
+	public void onClick(final View v) {
+		// TODO Auto-generated method stub
+
+		if (v.getId() == R.id.home_current_balance) {
+			((CardMenuInterface) callingActivity)
+					.sendNavigationTextToPhoneGapInterface("Recent Activity");
+		} else if (v.getId() == R.id.home_last_statement) {
+			((CardMenuInterface) callingActivity)
+					.sendNavigationTextToPhoneGapInterface("Make a Payment");
+		} else if (v.getId() == R.id.home_bonus_balance) {
+			if (isCashback) {
+				((CardMenuInterface) callingActivity)
+						.sendNavigationTextToPhoneGapInterface("Partner Gift Cards & eCerts");
+			} else {
+				((CardMenuInterface) callingActivity)
+						.sendNavigationTextToPhoneGapInterface("Redeem Miles");
+			}
+		} else if (v.getId() == R.id.home_bonus_offer) {
+			if (isCashback) {
+				((CardMenuInterface) callingActivity)
+						.sendNavigationTextToPhoneGapInterface("Sign up for 2%");
+			} else {
+				((CardMenuInterface) callingActivity)
+						.sendNavigationTextToPhoneGapInterface("Sign up for Miles");
+			}
+		} else if (v.getId() == R.id.provide_feedback_button1) {
+			Utils.createProvideFeedbackDialog(callingActivity, REFERER);
+		}
+	}
+
+	/**
+	 * Determines the placement of the icon upon its layout. It's then used to
+	 * measure the postion of the indicator. Additionally, this implements the
+	 * listeners for the AccountToggle.
+	 */
+	private void setupAccountToggle(boolean showToggleView) {
+
+		// If user is SSO then only Account Toggle View will be displayed.
+		if (showToggleView) {
+			cardBankToggle = (ImageView) view.findViewById(R.id.cardBankIcon);
+			toggleView = (AccountToggleView) view
+					.findViewById(R.id.acct_toggle);
+
+			final ViewTreeObserver vto = cardBankToggle.getViewTreeObserver();
+			vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+				@Override
+				public void onGlobalLayout() {
+					if (!toggleView.hasIndicatorBeenDrawn()) {
+						toggleView.setIndicatorPosition(
+								cardBankToggle.getLeft(),
+								cardBankToggle.getTop(),
+								cardBankToggle.getWidth(),
+								cardBankToggle.getHeight());
+					}
+				}
+			});
+
+			accountToggleArrow = (ImageView) view
+					.findViewById(R.id.AC_orange_arrow_down);
+			accountToggleArrow.setOnClickListener(new AccountToggleListener());
+			cardBankToggle.setOnClickListener(new AccountToggleListener());
+			
+		} else {
+			
+			// Even Card icon will not be displayed.
+			cardBankToggle = (ImageView) view.findViewById(R.id.cardBankIcon);
+			toggleView = (AccountToggleView) view
+					.findViewById(R.id.acct_toggle);
+			accountToggleArrow = (ImageView) view
+					.findViewById(R.id.AC_orange_arrow_down);
+			cardBankToggle.setVisibility(view.GONE);
+			toggleView.setVisibility(view.GONE);
+			accountToggleArrow.setVisibility(view.GONE);
+		}
+
+	}
+
+	/**
+	 * Listener associated with items that hide/show the Account Toggle Widget.
+	 */
+	private class AccountToggleListener implements OnClickListener {
+
+		@Override
+		public void onClick(final View v) {
+			toggleView.toggleVisibility();
+		}
+
+	}
+
 }

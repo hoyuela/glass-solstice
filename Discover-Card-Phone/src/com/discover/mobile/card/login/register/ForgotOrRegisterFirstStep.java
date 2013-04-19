@@ -1,75 +1,70 @@
 package com.discover.mobile.card.login.register;
 
-import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
-import static com.discover.mobile.common.StandardErrorCodes.FAILED_SECURITY;
-import static com.discover.mobile.common.StandardErrorCodes.INVALID_EXTERNAL_STATUS;
-import static com.discover.mobile.common.StandardErrorCodes.INVALID_ONLINE_STATUS;
-import static com.discover.mobile.common.StandardErrorCodes.MAX_LOGIN_ATTEMPTS;
-import static com.discover.mobile.common.StandardErrorCodes.ONLINE_STATUS_PROHIBITED;
-import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
-import static com.discover.mobile.common.StandardErrorCodes.STRONG_AUTH_NOT_ENROLLED;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.LOCKED_OUT_ACCOUNT;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.SAMS_CLUB_MEMBER;
-
-import java.net.HttpURLConnection;
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.auth.strong.EnhancedAccountSecurityActivity;
+import com.discover.mobile.card.auth.strong.StrongAuthHandler;
+import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.net.error.CardErrorBean;
+import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
+import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
+import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
 import com.discover.mobile.card.common.uiwidget.CardExpirationDateEditText;
 import com.discover.mobile.card.common.uiwidget.CustomDatePickerDialog;
 import com.discover.mobile.card.common.uiwidget.DatePickerEditText;
 import com.discover.mobile.card.common.uiwidget.SsnEditText;
 import com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText;
+import com.discover.mobile.card.common.utils.Utils;
+
+import com.discover.mobile.card.error.CardErrHandler;
+import com.discover.mobile.card.services.auth.forgot.ForgotBoth;
+import com.discover.mobile.card.services.auth.forgot.ForgotPassword;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
-import com.discover.mobile.card.services.auth.strong.GetStrongAuthQuestionCall;
-import com.discover.mobile.card.services.auth.strong.StrongAuthCheckCall;
-import com.discover.mobile.card.services.auth.strong.StrongAuthDetails;
-import com.discover.mobile.card.services.auth.strong.StrongAuthErrorResponse;
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-
 import com.discover.mobile.common.utils.CommonUtils;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
- * AbstractAccountInformationActivity this activity handles the forgot user password, both, and registration.
+ * AbstractAccountInformationActivity this activity handles the forgot user
+ * password, both, and registration.
  * 
- * It is an abstract class that is inherited by ForgotPasswordAccountInformationActivity, 
- * ForgotBothAccountInformationActivity, and RegistrationAccountInformationActivity.
+ * It is an abstract class that is inherited by
+ * ForgotPasswordAccountInformationActivity,
+ * ForgotBothAccountInformationActivity, and
+ * RegistrationAccountInformationActivity.
  * 
- * All of these steps are similar and only require minor adjustments to the UI, so they all use the same basic layout.
+ * All of these steps are similar and only require minor adjustments to the UI,
+ * so they all use the same basic layout.
  * 
  * @author scottseward
- *
+ * 
  */
 
-abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
-
-	private final String TAG = ForgotOrRegisterFirstStep.class.getSimpleName();
+abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity implements OnClickListener {
 
 	protected AccountInformationDetails accountInformationDetails;
+	protected static final String FORGOTPASSWORDREFERER = "forgot-password-step1-pg";
+	protected static final String FORGOTBOTHREFERER = "forgot-both-step1-pg";
 
 	protected final String ANALYTICS_PAGE_IDENTIFIER;
 
@@ -108,55 +103,68 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	private int modalBodyText;
 	private boolean modalClosesActivity = false;
 
-	//TEXT LABELS
+	// TEXT LABELS
 	protected TextView accountIdentifierFieldLabel;
 	protected TextView accountIdentifierFieldRestrictionsLabel;
 	protected TextView helpNumber;
+	protected TextView provideFeedback ;
+	protected TextView cancel;
 
-	//INPUT FIELDS
+	// INPUT FIELDS
 	protected UsernameOrAccountNumberEditText accountIdentifierField;
 	protected SsnEditText ssnField;
 
-	//ERROR LABELS
+	// ERROR LABELS
 	protected TextView errorMessageLabel;
 	protected TextView cardErrorLabel;
 	protected TextView ssnErrorLabel;
 	protected TextView dobErrorLabel;
 	protected TextView expirationDateErrorLabel;
 
-	//SCROLL VIEW
+	// SCROLL VIEW
 	private ScrollView mainScrollView;
 
-	//DATE PICKER ELEMENTS
+	// DATE PICKER ELEMENTS
 	protected CardExpirationDateEditText cardExpDatePicker;
 	protected DatePickerEditText birthDatePicker;
 
-	//DATE PICKER DIALOGS
+	// DATE PICKER DIALOGS
 	protected CustomDatePickerDialog dobPickerDialog;
 	protected CustomDatePickerDialog cardPickerDialog;
 
-	//BUTTONS
+	// BUTTONS
 	protected Button continueButton;
+	
 
 	final Calendar currentDate = Calendar.getInstance();
 
-	protected void doCustomUiSetup(){/*Intentionally empty*/}
+	protected void doCustomUiSetup() {/* Intentionally empty */
+	}
 
-	protected abstract void addCustomFieldToDetails(AccountInformationDetails details, String value);
+	protected abstract void addCustomFieldToDetails(
+			AccountInformationDetails details, String value);
+
 	protected abstract Class<?> getSuccessfulStrongAuthIntentClass();
-	protected abstract NetworkServiceCall<?> 
-	createServiceCall(AsyncCallback<Object> callback, AccountInformationDetails details);
+
+	protected abstract NetworkServiceCall<?> createServiceCall(
+			AsyncCallback<Object> callback, AccountInformationDetails details);
 
 	protected ForgotOrRegisterFirstStep(final String analyticsPageIdentifier) {
 		ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
 	}
 
 	protected abstract void setHeaderProgressText();
-	protected void setupCustomTextChangedListeners() {}
+
+	protected void setupCustomTextChangedListeners() {
+	}
+
 	protected abstract boolean isForgotFlow();
 
+	private CardEventListener strongAuthCheckListener;
+	private final int REQUEST_CODE = 0x01;
+
 	@Override
-	public void onCreate(final Bundle savedInstanceState){
+	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_enter_account_info);
 
@@ -166,58 +174,80 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		loadAllViews();
 		setupFieldsAndLabels();
 		setupCustomTextChangedListeners();
+		provideFeedback.setOnClickListener(this);
+		cancel.setOnClickListener(this);
 		setupClickablePhoneNumbers();
 		setHeaderProgressText();
 
 		restoreState(savedInstanceState);
 		TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 
-	}
+		strongAuthCheckListener = new CardEventListener() {
 
+			@Override
+			public void onSuccess(Object data) {
+				navToNextScreenWithDetails(accountInformationDetails);
+			}
+
+			@Override
+			public void OnError(Object data) {
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+						ForgotOrRegisterFirstStep.this);
+				cardErrorResHandler.handleCardError((CardErrorBean) data);
+			}
+		};
+	}
 
 	/**
 	 * Initialize the member variables that will reference UI elements.
 	 */
 	public void loadAllViews() {
-		accountIdentifierFieldLabel = (TextView)findViewById(R.id.account_info_label_one_label);
-		accountIdentifierFieldRestrictionsLabel  = (TextView)findViewById(R.id.account_information_input_info_label);
-		accountIdentifierField = (UsernameOrAccountNumberEditText)findViewById(R.id.account_info_main_input_field);
-		ssnField = (SsnEditText)findViewById(R.id.account_info_ssn_input_field);
-		errorMessageLabel = (TextView)findViewById(R.id.account_info_error_label);
-		cardErrorLabel = (TextView)findViewById(R.id.account_info_card_account_number_error_label);
-		ssnErrorLabel = (TextView)findViewById(R.id.account_info_ssn_error_label);
-		dobErrorLabel = (TextView)findViewById(R.id.account_info_dob_year_error_label);
-		expirationDateErrorLabel = (TextView)findViewById(R.id.account_info_expiration_date_error_label);
-		mainScrollView = (ScrollView)findViewById(R.id.account_info_scroll_view);
-		birthDatePicker =(DatePickerEditText)findViewById(R.id.account_info_birth_date_picker);
-		cardExpDatePicker = (CardExpirationDateEditText)findViewById(R.id.account_info_card_exp_date_picker);
-		helpNumber = (TextView)findViewById(R.id.help_number_label);
-		continueButton = (Button)findViewById(R.id.account_info_continue_button);
+		accountIdentifierFieldLabel = (TextView) findViewById(R.id.account_info_label_one_label);
+		accountIdentifierFieldRestrictionsLabel = (TextView) findViewById(R.id.account_information_input_info_label);
+		accountIdentifierField = (UsernameOrAccountNumberEditText) findViewById(R.id.account_info_main_input_field);
+		ssnField = (SsnEditText) findViewById(R.id.account_info_ssn_input_field);
+		errorMessageLabel = (TextView) findViewById(R.id.account_info_error_label);
+		cardErrorLabel = (TextView) findViewById(R.id.account_info_card_account_number_error_label);
+		ssnErrorLabel = (TextView) findViewById(R.id.account_info_ssn_error_label);
+		dobErrorLabel = (TextView) findViewById(R.id.account_info_dob_year_error_label);
+		expirationDateErrorLabel = (TextView) findViewById(R.id.account_info_expiration_date_error_label);
+		mainScrollView = (ScrollView) findViewById(R.id.account_info_scroll_view);
+		birthDatePicker = (DatePickerEditText) findViewById(R.id.account_info_birth_date_picker);
+		cardExpDatePicker = (CardExpirationDateEditText) findViewById(R.id.account_info_card_exp_date_picker);
+		helpNumber = (TextView) findViewById(R.id.help_number_label);
+		continueButton = (Button) findViewById(R.id.account_info_continue_button);
+		provideFeedback = (TextView)findViewById(R.id.provide_feedback_button);
+		cancel = (TextView)findViewById(R.id.account_info_cancel_label);
 	}
 
 	/**
 	 * Check to see if all of the fields on the page contain valid input.
+	 * 
 	 * @return true if all fields contain valid information.
 	 */
 	public boolean isFormCompleteAndValid() {
-		return accountIdentifierField.isValid() && cardExpDatePicker.isValid() && birthDatePicker.isValid()
-				&& ssnField.isValid();
+		return accountIdentifierField.isValid() && cardExpDatePicker.isValid()
+				&& birthDatePicker.isValid() && ssnField.isValid();
 	}
 
 	/**
-	 * When the state of the screen needs to be saved (on orientation change) then save the fields to a bundle.
+	 * When the state of the screen needs to be saved (on orientation change)
+	 * then save the fields to a bundle.
 	 */
 	@Override
-	public void onSaveInstanceState(final Bundle outState){
-		outState.putString(MAIN_FIELD_KEY, accountIdentifierField.getText().toString());
+	public void onSaveInstanceState(final Bundle outState) {
+		outState.putString(MAIN_FIELD_KEY, accountIdentifierField.getText()
+				.toString());
 
 		saveCardExpirationDateEditText(outState);
 		saveBirthDatePicker(outState);
 
 		outState.putString(SSN_KEY, ssnField.getText().toString());
 
-		outState.putString(MAIN_ERROR_TEXT_KEY, errorMessageLabel.getText().toString());
-		outState.putInt(MAIN_ERROR_VISIBILITY_KEY, errorMessageLabel.getVisibility());
+		outState.putString(MAIN_ERROR_TEXT_KEY, errorMessageLabel.getText()
+				.toString());
+		outState.putInt(MAIN_ERROR_VISIBILITY_KEY,
+				errorMessageLabel.getVisibility());
 
 		outState.putInt(MAIN_FIELD_ERROR_KEY, cardErrorLabel.getVisibility());
 		outState.putInt(DOB_ERROR_KEY, dobErrorLabel.getVisibility());
@@ -240,19 +270,21 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 
 			@Override
 			public void onClick(final View v) {
-				CommonUtils.dialNumber(helpNumber.getText().toString(), currentContext);				
+				CommonUtils.dialNumber(helpNumber.getText().toString(),
+						currentContext);
 			}
 		});
 	}
 
 	/**
-	 * If a valid date of birth has been entered and the state of the screen needs to be saved,
-	 * save the state to the passed Bundle.
+	 * If a valid date of birth has been entered and the state of the screen
+	 * needs to be saved, save the state to the passed Bundle.
 	 * 
-	 * @param outState the Bundle to save state to.
+	 * @param outState
+	 *            the Bundle to save state to.
 	 */
 	private void saveBirthDatePicker(final Bundle outState) {
-		if(birthDatePicker.isValid()){
+		if (birthDatePicker.isValid()) {
 			outState.putInt(DOB_DAY_KEY, birthDatePicker.getDay());
 			outState.putInt(DOB_MONTH_KEY, birthDatePicker.getMonth());
 			outState.putInt(DOB_YEAR_KEY, birthDatePicker.getYear());
@@ -260,13 +292,14 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	}
 
 	/**
-	 * If a valid expiration date has been entered and the state of the screen needs to be saved,
-	 * save the state to the passed Bundle.
+	 * If a valid expiration date has been entered and the state of the screen
+	 * needs to be saved, save the state to the passed Bundle.
 	 * 
-	 * @param outState the Bundle to save state to.
+	 * @param outState
+	 *            the Bundle to save state to.
 	 */
 	private void saveCardExpirationDateEditText(final Bundle outState) {
-		if(cardExpDatePicker.isValid()){
+		if (cardExpDatePicker.isValid()) {
 			outState.putInt(EXP_MONTH_KEY, cardExpDatePicker.getMonth());
 			outState.putInt(EXP_YEAR_KEY, cardExpDatePicker.getYear());
 		}
@@ -279,47 +312,57 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	 */
 	public void restoreState(final Bundle savedInstanceState) {
 
-		if(savedInstanceState != null){
-			accountIdentifierField.setText(savedInstanceState.getString(MAIN_FIELD_KEY));
+		if (savedInstanceState != null) {
+			accountIdentifierField.setText(savedInstanceState
+					.getString(MAIN_FIELD_KEY));
 
-			cardErrorLabel.setVisibility(savedInstanceState.getInt(MAIN_FIELD_ERROR_KEY));
-			if(cardErrorLabel.getVisibility() == View.VISIBLE)
+			cardErrorLabel.setVisibility(savedInstanceState
+					.getInt(MAIN_FIELD_ERROR_KEY));
+			if (cardErrorLabel.getVisibility() == View.VISIBLE)
 				accountIdentifierField.updateAppearanceForInput();
 
 			ssnField.setText(savedInstanceState.getString(SSN_KEY));
 
-			ssnErrorLabel.setVisibility(savedInstanceState.getInt(SSN_ERROR_KEY));
-			if(ssnErrorLabel.getVisibility() == View.VISIBLE)
+			ssnErrorLabel.setVisibility(savedInstanceState
+					.getInt(SSN_ERROR_KEY));
+			if (ssnErrorLabel.getVisibility() == View.VISIBLE)
 				ssnField.updateAppearanceForInput();
 
 			restoreCardExpDatePicker(savedInstanceState);
 			restoreDatePickerEditText(savedInstanceState);
 			restoreMainErrorLabel(savedInstanceState);
 
-			modalIsPresent = savedInstanceState.getBoolean(MODAL_IS_SHOWING_KEY);
-			if(modalIsPresent){
-				displayModal(savedInstanceState.getInt(MODAL_TITLE_KEY), 
-						savedInstanceState.getInt(MODAL_BODY_KEY), 			
-						savedInstanceState.getBoolean(MODAL_CLOSES_ACTIVITY_KEY));
+			modalIsPresent = savedInstanceState
+					.getBoolean(MODAL_IS_SHOWING_KEY);
+			if (modalIsPresent) {
+				displayModal(savedInstanceState.getInt(MODAL_TITLE_KEY),
+						savedInstanceState.getInt(MODAL_BODY_KEY),
+						savedInstanceState
+								.getBoolean(MODAL_CLOSES_ACTIVITY_KEY));
 			}
 		}
 	}
 
 	/**
 	 * Restore the main error label's text and visibility
+	 * 
 	 * @param savedInstanceState
 	 */
 	private void restoreMainErrorLabel(final Bundle savedInstanceState) {
-		errorMessageLabel.setVisibility(savedInstanceState.getInt(MAIN_ERROR_VISIBILITY_KEY));
-		errorMessageLabel.setText(savedInstanceState.getString(MAIN_ERROR_TEXT_KEY));
+		errorMessageLabel.setVisibility(savedInstanceState
+				.getInt(MAIN_ERROR_VISIBILITY_KEY));
+		errorMessageLabel.setText(savedInstanceState
+				.getString(MAIN_ERROR_TEXT_KEY));
 	}
 
 	/**
-	 * Restores the DOB date picker to its previous state from a Bundle. If the saved values
-	 * in the Bundle were invalid, don't update the picker and set its variables to invalid
-	 * values.
+	 * Restores the DOB date picker to its previous state from a Bundle. If the
+	 * saved values in the Bundle were invalid, don't update the picker and set
+	 * its variables to invalid values.
 	 * 
-	 * @param savedInstanceState a Bundle that contains save state information about this date picker.
+	 * @param savedInstanceState
+	 *            a Bundle that contains save state information about this date
+	 *            picker.
 	 */
 	private void restoreDatePickerEditText(final Bundle savedInstanceState) {
 		birthDatePicker.setDay(savedInstanceState.getInt(DOB_DAY_KEY));
@@ -327,40 +370,44 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		birthDatePicker.setYear(savedInstanceState.getInt(DOB_YEAR_KEY));
 		dobErrorLabel.setVisibility(savedInstanceState.getInt(DOB_ERROR_KEY));
 
-		if(birthDatePicker.isValid()){
+		if (birthDatePicker.isValid()) {
 			birthDatePicker.updateLabelWithSavedDate();
 			birthDatePicker.updateAppearanceForInput();
-		}else{
+		} else {
 			birthDatePicker.clearData();
-			if(dobErrorLabel.getVisibility() == View.VISIBLE)
-				birthDatePicker.updateAppearanceForInput();		
+			if (dobErrorLabel.getVisibility() == View.VISIBLE)
+				birthDatePicker.updateAppearanceForInput();
 		}
 	}
 
 	/**
-	 * Restores the card expiration date picker to its previous state from a Bundle. If the saved values
-	 * in the Bundle were invalid, don't update the picker and set its variables to invalid values.
+	 * Restores the card expiration date picker to its previous state from a
+	 * Bundle. If the saved values in the Bundle were invalid, don't update the
+	 * picker and set its variables to invalid values.
 	 * 
-	 * @param savedInstanceState a Bundle that contains save state information about this date picker.
+	 * @param savedInstanceState
+	 *            a Bundle that contains save state information about this date
+	 *            picker.
 	 */
 	private void restoreCardExpDatePicker(final Bundle savedInstanceState) {
 		cardExpDatePicker.setMonth(savedInstanceState.getInt(EXP_MONTH_KEY));
 		cardExpDatePicker.setYear(savedInstanceState.getInt(EXP_YEAR_KEY));
-		expirationDateErrorLabel.setVisibility(savedInstanceState.getInt(EXP_ERROR_KEY));
+		expirationDateErrorLabel.setVisibility(savedInstanceState
+				.getInt(EXP_ERROR_KEY));
 
-		if(cardExpDatePicker.isValid()) {
+		if (cardExpDatePicker.isValid()) {
 			cardExpDatePicker.updateLabelWithSavedDate();
 			cardExpDatePicker.updateAppearanceForInput();
-		}else{
+		} else {
 			cardExpDatePicker.clearData();
-			if(expirationDateErrorLabel.getVisibility() == View.VISIBLE)
+			if (expirationDateErrorLabel.getVisibility() == View.VISIBLE)
 				cardExpDatePicker.updateAppearanceForInput();
 		}
 	}
 
 	/**
-	 * Set the title of the screen to the title that a subclass of this activity responds with.
-	 * Then do any custom UI setup that is required.
+	 * Set the title of the screen to the title that a subclass of this activity
+	 * responds with. Then do any custom UI setup that is required.
 	 */
 	private void setupFieldsAndLabels() {
 		doCustomUiSetup();
@@ -372,26 +419,30 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 	}
 
 	/**
-	 * Checks to see if the provided information in the form on the screen abides to what is valid, and then if
-	 * everything passes validation, it is submitted to the server for confirmation of the validation. Called from XML.
+	 * Checks to see if the provided information in the form on the screen
+	 * abides to what is valid, and then if everything passes validation, it is
+	 * submitted to the server for confirmation of the validation. Called from
+	 * XML.
 	 * 
-	 * @param v - the calling View.
+	 * @param v
+	 *            - the calling View.
 	 */
-	public void validateInfoAndSubmitOnSuccess(final View v){
+	public void validateInfoAndSubmitOnSuccess(final View v) {
 		updateAllErrorStates();
 
-		if(isFormCompleteAndValid()){
-			submitFormInfo();
-		}
-		else{
-			showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));					
+		if (isFormCompleteAndValid()) {
+			// submitFormInfo();
+			submit();
+		} else {
+			showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
 			resetScrollPosition();
 		}
 
 	}
 
 	/**
-	 * Update the state of all input fields based on their input and hide the main error label.
+	 * Update the state of all input fields based on their input and hide the
+	 * main error label.
 	 */
 	private void updateAllErrorStates() {
 		CommonUtils.setViewGone(errorMessageLabel);
@@ -400,137 +451,40 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		cardExpDatePicker.updateAppearanceForInput();
 		ssnField.updateAppearanceForInput();
 	}
+
 	/**
-	 * Takes all of the information in the form and saves it to the accountInformationDetails object.
-	 * addCustomFieldToDetails determines the type of account information to provide from the main
-	 * input field. It is overridden in subclasses of AbstractAccountInformationActivity.
-	 * This object is used when submitting information to the server.
+	 * Takes all of the information in the form and saves it to the
+	 * accountInformationDetails object. addCustomFieldToDetails determines the
+	 * type of account information to provide from the main input field. It is
+	 * overridden in subclasses of AbstractAccountInformationActivity. This
+	 * object is used when submitting information to the server.
 	 */
 	private void saveFormDetailsToObject() {
-		final String accountNumString = accountIdentifierField.getText().toString();
+		final String accountNumString = accountIdentifierField.getText()
+				.toString();
 		final String memberSsnNumString = ssnField.getText().toString();
 
 		accountInformationDetails = new AccountInformationDetails();
 		addCustomFieldToDetails(accountInformationDetails, accountNumString);
 		accountInformationDetails.socialSecurityNumber = memberSsnNumString;
-		accountInformationDetails.dateOfBirthDay = String.valueOf(birthDatePicker.getDay());
-		accountInformationDetails.dateOfBirthMonth = String.valueOf(birthDatePicker.getMonth() + 1);
-		accountInformationDetails.dateOfBirthYear = String.valueOf(birthDatePicker.getYear());
-		accountInformationDetails.expirationMonth = String.valueOf(cardExpDatePicker.getMonth() + 1);
-		accountInformationDetails.expirationYear = String.valueOf(cardExpDatePicker.getYear());
+		accountInformationDetails.dateOfBirthDay = String
+				.valueOf(birthDatePicker.getDay());
+		accountInformationDetails.dateOfBirthMonth = String
+				.valueOf(birthDatePicker.getMonth() + 1);
+		accountInformationDetails.dateOfBirthYear = String
+				.valueOf(birthDatePicker.getYear());
+		accountInformationDetails.expirationMonth = String
+				.valueOf(cardExpDatePicker.getMonth() + 1);
+		accountInformationDetails.expirationYear = String
+				.valueOf(cardExpDatePicker.getYear());
 	}
 
 	/**
-	 * Send the accountInformationDetails object to the server for server side verification.
-	 */
-	private void submitFormInfo() {
-		saveFormDetailsToObject();
-
-		progress = ProgressDialog.show(this, "Discover", "Loading...", true);
-
-		//Lock orientation while request is being processed
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-
-		final AsyncCallbackAdapter<Object> callback = new AsyncCallbackAdapter<Object>() {
-			@Override
-			public void success(final NetworkServiceCall<?> sender, final Object value) {
-				checkForStrongAuth();
-
-			}
-
-			@Override
-			public void complete(final NetworkServiceCall<?> sender, final Object result) {
-				//Unlock orientation after request has been processed
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-			}
-
-			@Override
-			public void failure(final NetworkServiceCall<?> sender, final Throwable executionException) {
-				//Catch all exception handler
-				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-				exceptionHandler.handleFailure(sender, executionException);
-			}
-
-			@Override
-			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
-				progress.dismiss();
-				resetScrollPosition();
-				switch (errorResponse.getHttpStatusCode()) {
-				// TEMP temp fix for strange 503 coming back from server on some accounts. v
-				case HttpURLConnection.HTTP_UNAVAILABLE:
-					showMainErrorLabelWithText(getString(R.string.unkown_error_text));
-					return true;
-
-				default:
-					Log.e(TAG, "ERROR SUBMITTING FORM INFO: " + errorResponse.toString());
-					showErrorModal(R.string.could_not_complete_request, R.string.unknown_error, false);
-					return true;
-				}
-
-			}
-
-			@Override
-			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse messageErrorResponse) {
-				boolean handled = false;
-				progress.dismiss();
-				resetScrollPosition();
-
-				// FIXME add "assertions" for what the HTTP status code should be
-				switch (messageErrorResponse.getMessageStatusCode()) {
-				case SAMS_CLUB_MEMBER: 
-					displayModal(R.string.we_are_sorry, R.string.account_info_sams_club_card_error_text, true);
-					handled = true;
-					break;
-				case REG_AUTHENTICATION_PROBLEM: 
-					showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));					
-					handled = true;
-					break;
-				case BAD_ACCOUNT_STATUS:
-					displayModal(R.string.could_not_complete_request, R.string.problem_authenticating, true);
-					handled = true;
-					break;
-				case FINAL_LOGIN_ATTEMPT:
-					showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
-					handled = true;
-					break;
-				case MAX_LOGIN_ATTEMPTS:
-					displayModal(R.string.lockout_title, R.string.locked_account, true);
-					handled = true;
-					break;
-				case INVALID_EXTERNAL_STATUS:
-				case ONLINE_STATUS_PROHIBITED:
-				case INVALID_ONLINE_STATUS:
-					displayModal(R.string.could_not_complete_request, R.string.zluba_error, true);
-					handled = true;
-					break;
-				case STRONG_AUTH_NOT_ENROLLED:
-					displayModal(R.string.account_security_title_text, R.string.account_security_not_enrolled, true);
-					handled = true;
-					break;
-				case PLANNED_OUTAGE:
-					displayModal(R.string.could_not_complete_request, R.string.planned_outage_one, true);
-					handled = true;
-					break;
-				case FAILED_SECURITY:	
-					showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-					handled = true;
-					break;
-				default:
-					Log.e(TAG, "UNHANDLED ERROR: " + messageErrorResponse.getMessage());
-					break;
-				}
-				return handled;
-			}	
-		};
-
-		final NetworkServiceCall<?> serviceCall = createServiceCall(callback, accountInformationDetails);
-		serviceCall.submit();
-	}
-
-	/**
-	 * Set the text of the main error label to the given String value and set it to visible.
+	 * Set the text of the main error label to the given String value and set it
+	 * to visible.
 	 * 
-	 * @param text the String value to set the error label to.
+	 * @param text
+	 *            the String value to set the error label to.
 	 */
 	public void showMainErrorLabelWithText(final String text) {
 		errorMessageLabel.setText(text);
@@ -539,199 +493,70 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 
 	/**
 	 * Called from XML for the cancel 'hyperlink' style button.
-	 * @param v the calling View
+	 * 
+	 * @param v
+	 *            the calling View
 	 */
 	public void goBack(@SuppressWarnings("unused") final View v) {
 		goBack();
 	}
 
 	/**
-	 * The inherited goBack method from NotLoggedInRoboActivity for the software back button.
+	 * The inherited goBack method from NotLoggedInRoboActivity for the software
+	 * back button.
 	 */
 	@Override
 	public void goBack() {
-		final Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
+		final Intent forgotCredentials = new Intent(this,
+				ForgotCredentialsActivity.class);
 		startActivity(forgotCredentials);
-		finish();		
+		finish();
 	}
 
-
 	/**
-	 * Animate scrolling the screen to the top. Used when something has gone wrong. Bad input etc.
+	 * Animate scrolling the screen to the top. Used when something has gone
+	 * wrong. Bad input etc.
 	 */
-	public void resetScrollPosition(){
+	public void resetScrollPosition() {
 		mainScrollView.smoothScrollTo(0, 0);
 	}
 
-	protected void checkForStrongAuth() {
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-
-		final AsyncCallbackAdapter<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
-			@Override
-			public void success(final NetworkServiceCall<?> sender, final StrongAuthDetails value) {
-				progress.dismiss();
-				navToNextScreenWithDetails(accountInformationDetails);
-			}
-
-			@Override
-			public void complete(final NetworkServiceCall<?> sender, final Object result) {
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-			}
-
-			@Override
-			public void failure(final NetworkServiceCall<?> sender, final Throwable executionException) {
-				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-				exceptionHandler.handleFailure(sender, executionException);
-			}
-
-			@Override
-			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
-
-				progress.dismiss();
-
-				if(errorResponse instanceof StrongAuthErrorResponse)
-					return handleStrongAuthErrorResponse((StrongAuthErrorResponse)errorResponse);
-
-				// TODO handle or remove cases where we don't have handling
-				switch (errorResponse.getHttpStatusCode()) {
-
-				case HttpURLConnection.HTTP_UNAUTHORIZED:
-					getStrongAuthQuestion();
-					return true;
-
-				default:
-					Log.e(TAG, "UNHANDLED ERROR: " + errorResponse.toString());
-					displayModal(R.string.could_not_complete_request, R.string.unknown_error, false);
-					return true;
-				}
-
-			}
-
-			private boolean handleStrongAuthErrorResponse(final StrongAuthErrorResponse errorResponse) {
-				if(errorResponse.getResult().endsWith("skipped")) {
-					navToNextScreenWithDetails(accountInformationDetails);
-					return true;
-				}
-				else if (errorResponse.getResult().endsWith("challenge")) { 
-					getStrongAuthQuestion();
-					return true;
-				}
-				else
-					return false;
-			}
-
-			@Override
-			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, final JsonMessageErrorResponse messageErrorResponse) {
-				progress.dismiss();
-
-				switch(messageErrorResponse.getMessageStatusCode()){
-
-				case LOCKED_OUT_ACCOUNT:
-					displayModal(R.string.account_security_title_text, R.string.account_security_locked_out, true);
-					return true;
-
-				case STRONG_AUTH_NOT_ENROLLED:
-					displayModal(R.string.account_security_title_text, R.string.account_security_not_enrolled, true);
-					return true;
-
-
-				default:
-					Log.e(TAG, "UNHANDLED ERROR: " + messageErrorResponse.getMessage());
-					return false;
-				}
-			}
-		};
-
-		final StrongAuthCheckCall strongAuthCall = new StrongAuthCheckCall(this, callback);
-		strongAuthCall.submit();
-
-	}
-
 	/**
-	 * If strong auth is required, this call is made to retrieve the question and question ID for Strong Auth.
-	 * On success Strong Auth is launched and the question and id are passed to the activity.
-	 * It is launched for intent, so once Strong Auth is done, we come back to the launching activity
-	 * and decide how to proceed.
-	 */
-	private void getStrongAuthQuestion() {
-		final ProgressDialog progress = ProgressDialog.show(this, "Discover", "Loading...", true);
-
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-
-		final AsyncCallback<StrongAuthDetails> callback = new AsyncCallbackAdapter<StrongAuthDetails>() {
-			@Override
-			public void success(final NetworkServiceCall<?> sender, final StrongAuthDetails value) {
-
-				progress.dismiss();
-				strongAuthQuestion = value.questionText;
-				strongAuthQuestionId = value.questionId;
-
-				final Intent strongAuth = new Intent(ForgotOrRegisterFirstStep.this, EnhancedAccountSecurityActivity.class);
-
-				strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, strongAuthQuestion);
-				strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, strongAuthQuestionId);
-
-				startActivity(strongAuth);
-
-			}
-
-			@Override
-			public void complete(final NetworkServiceCall<?> sender, final Object result) {
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-			}
-
-			@Override
-			public void failure(final NetworkServiceCall<?> sender, final Throwable executionException) {
-				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-				exceptionHandler.handleFailure(sender, executionException);
-			}
-
-			@Override
-			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
-				progress.dismiss();
-
-				switch (errorResponse.getHttpStatusCode()) {
-				default:
-					Log.e(TAG, "UNHANDLED ERROR: " + errorResponse.toString());
-					displayModal(R.string.could_not_complete_request, R.string.unknown_error, false);
-					return false;
-				}
-			}
-
-		};
-
-		final GetStrongAuthQuestionCall strongAuthCall = 
-				new GetStrongAuthQuestionCall(this, callback);
-		strongAuthCall.submit();
-
-	}
-
-	protected final int STRONG_AUTH_ACTIVITY = 0;
-	
-
-	/**
-	 * This method handles the result of the Strong Auth activity.
-	 * When Strong Auth finishes, either navigate to the next screen, or cancel the registration process.
+	 * This method handles the result of the Strong Auth activity. When Strong
+	 * Auth finishes, either navigate to the next screen, or cancel the
+	 * registration process.
 	 */
 	@Override
-	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {	
-		if(requestCode == STRONG_AUTH_ACTIVITY) {
-			if(resultCode == RESULT_OK) {
+	protected void onActivityResult(final int requestCode,
+			final int resultCode, final Intent data) {
+		if (requestCode == REQUEST_CODE) { // REQUEST_CODE
+											// //STRONG_AUTH_ACTIVITY
+			if (resultCode == RESULT_OK) {
 				navToNextScreenWithDetails(accountInformationDetails);
-			} else if (resultCode == RESULT_CANCELED){
+			} else if (resultCode == RESULT_CANCELED) {
+				goBack();
+			}
+			// If account locked by strong auth, user will be redirect back
+			else if (resultCode == EnhancedAccountSecurityActivity.STRONG_AUTH_LOCKED) {
 				goBack();
 			}
 		}
 	}
 
 	/**
-	 * Put all of the form details as a serializable object extra and pass it to the next activity
-	 * which will append more info onto that object.
+	 * Put all of the form details as a serializable object extra and pass it to
+	 * the next activity which will append more info onto that object.
 	 */
-	protected void navToNextScreenWithDetails(final AccountInformationDetails details) {
-		final Intent createLoginActivity = new Intent(this, getSuccessfulStrongAuthIntentClass());
-		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, details);
-		createLoginActivity.putExtra(IntentExtraKey.SCREEN_FORGOT_BOTH, isForgotFlow());
+	protected void navToNextScreenWithDetails(
+			final AccountInformationDetails details) {
+		final Intent createLoginActivity = new Intent(this,
+				getSuccessfulStrongAuthIntentClass());
+		createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS,
+				details);
+		createLoginActivity.putExtra(IntentExtraKey.SCREEN_FORGOT_BOTH,
+				isForgotFlow());
+		createLoginActivity.putExtra(IntentExtraKey.SCREEN_FORGOT_PASS,
+		        accountIdentifierField.isUsernameField());
 
 		startActivity(createLoginActivity);
 		finish();
@@ -745,11 +570,130 @@ abstract class ForgotOrRegisterFirstStep extends NotLoggedInRoboActivity {
 		goBack(null);
 	}
 
-	private void displayModal(final int titleText, final int bodyText, final boolean finishActivityOnClose){
+	private void displayModal(final int titleText, final int bodyText,
+			final boolean finishActivityOnClose) {
 		modalBodyText = bodyText;
 		modalTitleText = titleText;
 		modalClosesActivity = finishActivityOnClose;
 
-		showErrorModalForRegistration(titleText, bodyText, finishActivityOnClose);
+		showErrorModalForRegistration(titleText, bodyText,
+				finishActivityOnClose);
 	}
+
+	/**
+	 * Submitting account information to server. If server returns success then
+	 * check for strong authentication
+	 */
+	public void submit() {
+
+		saveFormDetailsToObject();
+		//Check whether its is for Forgot Password or Forgot Both/Register
+		try {
+		    if(accountIdentifierField.isUsernameField()){
+			ForgotPassword forgotPassword = new ForgotPassword(
+					ForgotOrRegisterFirstStep.this, new CardEventListener() {
+
+						@Override
+						public void onSuccess(Object data) {
+
+							// This is hook for Strong Auth Check
+							StrongAuthHandler authHandler = new StrongAuthHandler(
+									ForgotOrRegisterFirstStep.this,
+									strongAuthCheckListener, REQUEST_CODE);
+							authHandler.strongAuth();
+						}
+
+						@Override
+						public void OnError(Object data) {
+							CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+									ForgotOrRegisterFirstStep.this);
+							cardErrorResHandler
+									.handleCardError((CardErrorBean) data);
+						}
+					}, accountInformationDetails);
+			forgotPassword.sendRequest();
+		    }else
+		    {
+		        ForgotBoth forgotBoth = new ForgotBoth(
+	                    ForgotOrRegisterFirstStep.this, new CardEventListener() {
+
+	                        @Override
+	                        public void onSuccess(Object data) {
+
+	                            // This is hook for Strong Auth Check
+	                            StrongAuthHandler authHandler = new StrongAuthHandler(
+	                                    ForgotOrRegisterFirstStep.this,
+	                                    strongAuthCheckListener, REQUEST_CODE);
+	                            authHandler.strongAuth();
+	                        }
+
+	                        @Override
+	                        public void OnError(Object data) {
+	                            CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+	                                    ForgotOrRegisterFirstStep.this);
+	                            cardErrorResHandler
+	                                    .handleCardError((CardErrorBean) data);
+	                        }
+	                    }, accountInformationDetails);
+		        forgotBoth.sendRequest();
+		    }
+		} catch (JsonGenerationException e) {
+			handleError(e);
+		} catch (JsonMappingException e) {
+			handleError(e);
+		} catch (IOException e) {
+			handleError(e);
+		}
+	}
+
+	/**
+	 * This method application error if any occurs
+	 * 
+	 * @param Exception
+	 */
+	private void handleError(Exception e) {
+		e.printStackTrace();
+		CardErrorBean cardErrorBean = new CardErrorBean(e.toString(), true);
+		CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+				ForgotOrRegisterFirstStep.this);
+		cardErrorResHandler.handleCardError(cardErrorBean);
+	}
+
+	@Override
+	public CardErrHandler getCardErrorHandler() {
+		return CardErrorUIWrapper.getInstance();
+	}
+
+	@Override
+	public void onSuccess(Object data) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void OnError(Object data) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public TextView getErrorLabel() {
+		return errorMessageLabel;
+	}
+
+	@Override
+	public Context getContext() {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
+	@Override
+	public List<EditText> getInputFields() {
+		return null;
+
+	}
+
+    
+
+	
 }

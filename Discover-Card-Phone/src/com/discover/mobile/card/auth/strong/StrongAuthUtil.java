@@ -11,10 +11,14 @@ import android.content.Context;
 import android.telephony.TelephonyManager;
 
 /**
+ * 
+ * ©2013 Discover Bank
+ *
  * This class generate key for Strong Authentication
- * 
- * @author Ravi Bhojani
- * 
+ *
+ * @author CTS
+ *
+ * @version 1.0
  */
 public class StrongAuthUtil {
 
@@ -28,13 +32,17 @@ public class StrongAuthUtil {
      */
     private final String ID_PREFIX = "%&(()!12[";
 
+    /**
+     * Constructor
+     * @param context
+     */
     public StrongAuthUtil(final Context context) {
         this.context = context;
     }
 
     /**
      * This method get deviceId, simId and subscriberId from telephone manager
-     * and return strong Auth data.
+     * and return strong Authentication data.
      * 
      * @return StrongAuthBean
      * @throws NoSuchAlgorithmException
@@ -46,7 +54,7 @@ public class StrongAuthUtil {
         authBean.setDeviceId(getSha256Hash(telephonyManager.getDeviceId()));
         authBean.setSimId(getSha256Hash(telephonyManager.getSimSerialNumber()));
         authBean.setSubscriberId(getSha256Hash(telephonyManager
-                .getSubscriberId()));
+                .getDeviceId()));
         return authBean;
     }
 
@@ -63,8 +71,7 @@ public class StrongAuthUtil {
                 + toHash;
 
         final MessageDigest digester = MessageDigest.getInstance("SHA-256");
-        final byte[] preHash = safeToHash.getBytes(); // TODO consider
-                                                      // specifying charset
+        final byte[] preHash = safeToHash.getBytes(); 
 
         // Reset happens automatically after digester.digest() but we don't know
         // its state beforehand so call reset()

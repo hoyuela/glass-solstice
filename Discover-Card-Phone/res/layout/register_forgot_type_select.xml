@@ -12,26 +12,33 @@
         <LinearLayout
             android:id="@+id/linear_layout_one"
             android:layout_width="fill_parent"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+                      
             <TextView
                 android:id="@+id/forgot_credentials_label"
                 style="@style/title_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="50dp"
                 android:text="@string/forgot_credentials_text" />
 
             <ListView
                 android:id="@android:id/list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="190dp"
                 android:layout_marginTop="@dimen/groups_of_elements_padding"
-                android:background="@drawable/rounded_table_corners_no_padding"
-                android:cacheColorHint="#00000000"
-                android:divider="@color/field_stroke"
-                android:dividerHeight="1dp" >
+                android:background="@drawable/list_bg"
+                android:divider="@drawable/row_shadow"
+                android:cacheColorHint="@android:color/transparent">
             </ListView>
+                
+       <!--      "
+       android:footerDividersEnabled="false" -->
+           
         </LinearLayout>
 
         <RelativeLayout
@@ -44,6 +51,7 @@
             <include layout="@layout/old_general_need_help_footer" />
         </RelativeLayout>
 
+          
         <TextView
             android:id="@+id/provide_feedback_button"
             style="@style/blue_hyperlink_small"
@@ -54,6 +62,7 @@
             android:layout_marginBottom="@dimen/orange_button_margin_top"
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:text="@string/feedback_text" />
-    </RelativeLayout>
+        
+        </RelativeLayout>
 
 </ScrollView>

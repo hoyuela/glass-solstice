@@ -24,6 +24,8 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.utils.CommonUtils;
+
+import com.discover.mobile.card.common.utils.Utils;
 /**
  * This class handles a user's choice and navigation to the first step of forgot password/user id/ or both.
  * It contains a list of choices, upon tapping a choice, this activity is finished and the selected
@@ -32,11 +34,13 @@ import com.discover.mobile.common.utils.CommonUtils;
  * @author scottseward
  *
  */
-public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
+public class ForgotCredentialsActivity extends NotLoggedInRoboActivity implements OnClickListener{
 
 	private ArrayAdapter<Option> optionAdapter;
+	private static final String REFERER = "forgot-uid-or-password-menu-pg";
 	final Activity currentContext = this;
 	protected TextView helpNumber;
+	protected TextView provideFeedback;
 
 	/**
 	 * Load list options into the list and setup an OnClickListener to wait for list selections.
@@ -49,6 +53,9 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 		optionAdapter = new ArrayAdapter<Option>(this, R.layout.register_forgot_type_select_option_item, android.R.id.text1,
 				Option.values());
 		helpNumber = (TextView)findViewById(R.id.help_number_label);
+		provideFeedback = (TextView)findViewById(R.id.provide_feedback_button);
+		provideFeedback.setOnClickListener(this);
+		
 		choicesList.setAdapter(optionAdapter);
 
 
@@ -73,6 +80,7 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 		setupClickablePhoneNumbers();
 
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_MENU);
+		
 	}
 
 	/**
@@ -193,6 +201,14 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity {
 	public ErrorHandler getErrorHandler() {
 		return null;
 	}
+
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        if (v.getId() == R.id.provide_feedback_button) {
+            Utils.createProvideFeedbackDialog(ForgotCredentialsActivity.this, REFERER);
+        }
+    }
 
 
 }

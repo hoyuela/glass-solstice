@@ -1117,19 +1117,16 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * SSO sign-on because of a Card BadStatus.
 	 */
 	public void showALUStatusModal(final BankLoginDetails credentials) {
-		final ModalDefaultTopView aluModalTopView = new ModalDefaultTopView(
-				this, null);
+		final ModalDefaultTopView aluModalTopView = new ModalDefaultTopView(this, null);
 		aluModalTopView.setTitle(R.string.skipsso_modal_title);
 		aluModalTopView.setContent(R.string.skipsso_modal_body);
 		aluModalTopView.hideNeedHelpFooter();
 		aluModalTopView.showErrorIcon(true);
 
-		final ModalDefaultOneButtonBottomView confirmModalButton = new ModalDefaultOneButtonBottomView(
-				this, null);
+		final ModalDefaultOneButtonBottomView confirmModalButton = new ModalDefaultOneButtonBottomView(this, null);
 		confirmModalButton.setButtonText(R.string.skipsso_modal_button);
 
-		final ModalAlertWithOneButton aluModal = new ModalAlertWithOneButton(
-				this, aluModalTopView, confirmModalButton);
+		final ModalAlertWithOneButton aluModal = new ModalAlertWithOneButton(this, aluModalTopView, confirmModalButton);
 		this.showCustomAlert(aluModal);
 		closeDialog();
 

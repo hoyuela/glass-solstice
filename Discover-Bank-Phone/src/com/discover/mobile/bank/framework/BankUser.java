@@ -62,6 +62,8 @@ public final class BankUser extends CacheManager implements Serializable {
 	/**List of cancelled payments*/
 	private ListPaymentDetail cancelled;
 
+	/**Boolean set to true if the login occurred through an SSO sequence*/
+	private boolean ssoUser = false;
 
 	/**
 	 * 
@@ -194,6 +196,7 @@ public final class BankUser extends CacheManager implements Serializable {
 		scheduled = null;
 		completed = null;
 		cancelled = null;
+		ssoUser = false;
 		//Ensure that any cached check images are deleted upon logout or timeout.
 		CheckDepositCaptureActivity.deleteBothImages(DiscoverActivityManager.getActiveActivity());
 		//Clear the cache manager
@@ -281,5 +284,19 @@ public final class BankUser extends CacheManager implements Serializable {
 	 */
 	public void setCancelled(final ListPaymentDetail cancelled) {
 		this.cancelled = cancelled;
+	}
+
+	/**
+	 * @return the ssoUser
+	 */
+	public boolean isSsoUser() {
+		return ssoUser;
+	}
+
+	/**
+	 * @param ssoUser the ssoUser to set
+	 */
+	public void setSsoUser(final boolean ssoUser) {
+		this.ssoUser = ssoUser;
 	}
 }

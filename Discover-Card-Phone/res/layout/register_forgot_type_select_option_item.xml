@@ -10,8 +10,18 @@
         android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
 		android:layout_centerVertical="true"
-        android:padding="12dp"
-		style="@style/blue_hyperlink"
+        android:padding="12dip"
+		style="@style/blue_hyperlink_forgot"
 		android:textStyle="bold"/>
 
+     <ImageView 
+                android:id="@+id/landingPage_arrow"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerVertical="true"
+		        android:layout_alignParentRight="true"
+		        android:padding="12dip"
+		        android:src="@drawable/gray_arrow_right" 
+		       />
+     
 </RelativeLayout>	
