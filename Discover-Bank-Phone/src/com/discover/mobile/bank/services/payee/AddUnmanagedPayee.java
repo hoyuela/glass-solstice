@@ -44,23 +44,23 @@ public class AddUnmanagedPayee extends AddPayeeDetail {
 	/**
 	 * Holds the name of the Address Line 1 field in a JSON request.
 	 */
-	public static final String NAME_ADDRESS_LINE1 = "streetAddress";
+	public static final String NAME_ADDRESS_LINE1 = "address.streetAddress";
 	/**
 	 * Holds the name of the Address Line 2 field in a JSON request.
 	 */
-	public static final String NAME_ADDRESS_LINE2 = "extendedAddress";
+	public static final String NAME_ADDRESS_LINE2 = "address.extendedAddress";
 	/**
 	 * Holds the name of the City field in a JSON request.
 	 */
-	public static final String NAME_ADDRESS_CITY = "locality";
+	public static final String NAME_ADDRESS_CITY = "address.locality";
 	/**
 	 * Holds the name of the State field in a JSON request.
 	 */
-	public static final String NAME_ADDRESS_STATE = "region";
+	public static final String NAME_ADDRESS_STATE = "address.region";
 	/**
 	 * Holds the name of the Zip field in a JSON request.
 	 */
-	public static final String NAME_ADDRESS_ZIP = "postalCode";
+	public static final String NAME_ADDRESS_ZIP = "address.postalCode";
 	/**
 	 * Holds the name of the Memo field in a JSON request.
 	 */
@@ -68,7 +68,7 @@ public class AddUnmanagedPayee extends AddPayeeDetail {
 	/**
 	 * Holds the name of the phone field in a JSON request.
 	 */
-	public static final String NAME_PHONE = "phoneNumber";
+	public static final String NAME_PHONE = "phoneNumber.number";
 
 	@JsonProperty("phoneNumber")
 	public PhoneNumber phone;
