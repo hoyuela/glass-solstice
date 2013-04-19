@@ -572,9 +572,9 @@ final public class CardErrorUtil {
                 if (responseBean.data.get(index).isSSOUser) {
                     isSSOUser = responseBean.data.get(index).isSSOUser;
                 }
-                if(responseBean.data.get(index).isSSNMatch)
+                if(responseBean.data.get(index).isSSNMatched)
                 {
-                	isSSNMatch = responseBean.data.get(index).isSSNMatch;
+                	isSSNMatch = responseBean.data.get(index).isSSNMatched;
                 }
             }
         }

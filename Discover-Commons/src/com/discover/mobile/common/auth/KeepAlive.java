@@ -2,6 +2,7 @@ package com.discover.mobile.common.auth;
 
 import java.util.Calendar;
 
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.facade.FacadeFactory;
 
 /**
@@ -82,7 +83,7 @@ public class KeepAlive {
 		}
 
 		if (isCardAuthenticated && isCardRefreshRequired()) {
-			FacadeFactory.getCardKeepAliveFacade().refreshCardSession();
+			FacadeFactory.getCardKeepAliveFacade().refreshCardSession((DiscoverActivityManager.getActiveActivity()));
 		}
 	}
 

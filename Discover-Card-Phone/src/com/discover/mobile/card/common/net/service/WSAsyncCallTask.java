@@ -230,7 +230,6 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
             } else {
                 // response.setResponseCode(503);
                 int statusCode = response.getResponseCode();
-               // statusCode = 403;
                 Log.d("doInBackground", "statusCode: before check" + statusCode);
                 if (statusCode < 200 || statusCode > 299) {
                     Log.d("doInBackground", "statusCode:" + statusCode);

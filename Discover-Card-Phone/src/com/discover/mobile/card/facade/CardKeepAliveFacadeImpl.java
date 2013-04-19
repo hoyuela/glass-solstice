@@ -3,6 +3,8 @@
  */
 package com.discover.mobile.card.facade;
 
+import android.content.Context;
+
 import com.discover.mobile.common.facade.CardKeepAliveFacade;
 
 /**
@@ -12,9 +14,8 @@ import com.discover.mobile.common.facade.CardKeepAliveFacade;
 public class CardKeepAliveFacadeImpl implements CardKeepAliveFacade{
 
 	@Override
-	public void refreshCardSession() {
+	public void refreshCardSession(final Context context) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 }
