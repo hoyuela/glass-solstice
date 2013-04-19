@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 401 Not Authorized
  * WWW-Authenticate: CardAuth realm="www.discovercard.com"
  * {
- *	"value": "X5jK0jqYMvIhgkb2B4gGa2phipI="
- *	"hashedValue": "437fcc12dfdfbb3bc4f58af7a34d0556"
+ *	"ssoToken": "X5jK0jqYMvIhgkb2B4gGa2phipI="
+ *	"ssoTokenHash": "437fcc12dfdfbb3bc4f58af7a34d0556"
  *	"links" : {
  *		"self" : {
  *			"ref" : "/api/auth/token",
