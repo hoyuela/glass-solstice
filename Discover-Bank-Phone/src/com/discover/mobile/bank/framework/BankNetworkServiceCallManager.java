@@ -239,10 +239,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 			// Check if the error is an SSO User
 			else if (isSSOUser(error)) {
+				//Set the boolean tha the SSO user is trying to login
+				BankUser.instance().setSsoUser(true);
+				//Hand the authorization over to card so that they can auth
 				BankConductor.authWithCardPayload(
 						(LoginActivity) activeActivity,
 						((BankErrorSSOResponse) error).token,
 						((BankErrorSSOResponse) error).hashedValue);
+				//Close the dialog after the next call has been submitted.
+				((LoginActivity)DiscoverActivityManager.getActiveActivity()).closeDialog();
 			}
 			// Check if the error was a Ping. if so, then session died.
 			else if (isSessionDead(error)) {
@@ -720,20 +725,20 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 */
 	public static boolean isNetworkConnected() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		
-	    final ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(activity.CONNECTIVITY_SERVICE);
-	    boolean connected = false;
-	    
-	    // test for connection
-	    if ( cm.getActiveNetworkInfo() != null
-	         && cm.getActiveNetworkInfo().isAvailable()
-	         && cm.getActiveNetworkInfo().isConnected()) {
-	       connected = true;
-	    } 
-	    
-	    return connected;
+
+		final ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(activity.CONNECTIVITY_SERVICE);
+		boolean connected = false;
+
+		// test for connection
+		if ( cm.getActiveNetworkInfo() != null
+				&& cm.getActiveNetworkInfo().isAvailable()
+				&& cm.getActiveNetworkInfo().isConnected()) {
+			connected = true;
+		} 
+
+		return connected;
 	}
-	
+
 	/**
 	 * Method used to notify this class when the active Activity has changed on the application.
 	 */
@@ -831,7 +836,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		return ret;
 	}
-	
+
 	/**
 	 * Enum used to specify whether a NetworkServiceCallAsyncArgs is for a successful, error or exception
 	 * response to a network service call.

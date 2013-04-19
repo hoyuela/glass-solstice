@@ -30,7 +30,6 @@ import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.widgets.AccountToggleView;
 
@@ -73,11 +72,11 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
 		help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
-		
+
 		/**Footer setup*/
 		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
 		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK | FooterType.NEED_HELP);
-		
+
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
 		this.populateList(BankUser.instance().getAccounts());
 
@@ -88,7 +87,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		//If card and bank are authenticated then show the down arrow, since we are here
 		//Bank must be authenticated already so we only need to check to see if the card is 
 		//authenticated.
-		if(KeepAlive.getCardAuthenticated()){
+		if(BankUser.instance().isSsoUser()){
 			view.findViewById(R.id.downArrow).setVisibility(View.VISIBLE);
 		}
 
