@@ -10,6 +10,7 @@
     <string name="bank_deposit_check">Deposit a Check Terms of Use</string>
     <string name="bank_divider">|</string>
     <string name="bank_provide_feedback">Provide Feedback</string>
+    <string name="bank_terms_google">Google Terms of Use</string>
      
     <!-- Privacy & Terms Section Titles Array -->
     <string-array name="terms_sections">
@@ -17,5 +18,6 @@
         <item>@string/bank_terms_of_use</item>
         <item>@string/bank_terms_bill_pay</item>
         <item>@string/bank_deposit_check</item>
+        <item>@string/bank_terms_google</item>
     </string-array>
 </resources>

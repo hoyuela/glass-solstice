@@ -14,5 +14,6 @@ public enum PrivacyTermsType implements Serializable{
 	MobilePrivacyStatement,
 	MobileTermsOfUse,
 	BillPayTermsOfUse,
-	DepositTermsOfUse
+	DepositTermsOfUse,
+	GoogleTermsOfUse
 }

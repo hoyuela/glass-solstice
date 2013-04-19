@@ -75,6 +75,7 @@ import com.discover.mobile.bank.transfer.BankTransferFrequencyWidget;
 import com.discover.mobile.bank.transfer.BankTransferNotEligibleFragment;
 import com.discover.mobile.bank.transfer.BankTransferSelectAccount;
 import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
+import com.discover.mobile.bank.ui.fragments.BankTextViewFragment;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.bank.util.BankAtmUtil;
 import com.discover.mobile.common.AlertDialogParent;
@@ -94,6 +95,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.common.base.Strings;
 
 /**
@@ -1225,15 +1227,24 @@ public final class BankConductor  extends Conductor {
 				}
 
 				if( continueNavigation ) {
+					/**Must specify what page to show to the BankPrivacyTermsFragment*/
+					final Bundle bundle = new Bundle();
+					
+					/**Display Landing Page for Privacy and Terms*/
 					if( type == PrivacyTermsType.LandingPage ) {
 						fragment = new TermsLandingPageFragment();
 					} else {
-						/**Must specify what page to show to the BankPrivacyTermsFragment*/
-						final Bundle bundle = new Bundle();
-						bundle.putSerializable(BankPrivacyTermsFragment.KEY_TERMS_TYPE, type);
-
-						fragment = new BankPrivacyTermsFragment();
-						fragment.setArguments(bundle);
+						/**Check if Google Terms of Use is being displayed */
+						if( type == PrivacyTermsType.GoogleTermsOfUse) {
+							bundle.putSerializable(BankTextViewFragment.KEY_TEXT, GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(activity));
+							fragment = new BankTextViewFragment();
+							fragment.setArguments(bundle);
+						} else {	
+							bundle.putSerializable(BankPrivacyTermsFragment.KEY_TERMS_TYPE, type);
+							
+							fragment = new BankPrivacyTermsFragment();
+							fragment.setArguments(bundle);
+						}
 					}
 
 					navActivity.makeFragmentVisible(fragment);	
