@@ -861,12 +861,16 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToTransferConfirmation(final Bundle args) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-
+		
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+			final Bundle currentArgs = navActivity.getCurrentContentFragment().getArguments();
 			final Fragment nextVisibleFragment = new BankTransferConfirmationFragment();
-
+			if(currentArgs != null) {
+				args.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, 
+						currentArgs.getSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS));
+			}
 			navActivity.closeDialog();
 			nextVisibleFragment.setArguments(args);
 			navActivity.makeFragmentVisible(nextVisibleFragment);
