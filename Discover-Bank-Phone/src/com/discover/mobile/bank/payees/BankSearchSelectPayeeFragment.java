@@ -1,6 +1,9 @@
 package com.discover.mobile.bank.payees;
 
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -8,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TextView.BufferType;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
@@ -56,10 +60,6 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 */
 	private ImageButton helpButton;
 	/**
-	 * TextView used to display message to user either "Matches For" or "There are no matches for"
-	 */
-	private TextView matches;
-	/**
 	 * TextView which displays what search criteria was used to run the Payees Search
 	 */
 	private TextView searchName;
@@ -96,9 +96,6 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 		/**Linear Layout which holds the results for the Payees Search**/
 		payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
 
-		/**TextView whose text will dynamically be changed depending on whether you have search results or not*/
-		matches = (TextView)view.findViewById(R.id.matches);
-
 		/**TextView which shows the user what the search criteria was used to generate the list of Payees*/
 		searchName = (TextView)view.findViewById(R.id.search_name);
 
@@ -116,9 +113,8 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 			/**Generate list of payees found using the search criteria read from bundle*/
 			loadListFromBundle(bundle);
 		} 
-
-		/**Set text to show what the criteria was used to generate the list of payees found*/
-		searchName.setText(" \"" +searchCriteria +"\"");
+		
+		setMatchText();
 		
 		return view;
 	}
@@ -148,12 +144,12 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 */
 	public void loadListFromBundle(final Bundle bundle){
 		search = (SearchPayeeResultList)bundle.getSerializable(BankExtraKeys.PAYEES_LIST);
+
+		
 		if(null == search || null == search.results || search.results.isEmpty()) {
-			matches.setText(R.string.bank_no_matches_for);
 			payeesList.setVisibility(View.GONE);		
 			noneOfAbove.setVisibility(View.GONE);
 		}else{
-			matches.setText(R.string.bank_matches_for);
 			payeesList.setVisibility(View.VISIBLE);
 			noneOfAbove.setVisibility(View.VISIBLE);
 			
@@ -162,6 +158,36 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 				payeesList.addView(createListItem(result));
 			}
 		}
+	}
+	
+	/**
+	 * Method used to show a message that specifies whether a match was found or not for
+	 * the search criteria entered by the user.
+	 */
+	public void setMatchText() {
+		String searchMsg;
+		
+		if(null == search || null == search.results || search.results.isEmpty()) {
+			/**Show No Matches For Search Message*/
+			searchMsg = getResources().getString(R.string.bank_no_matches_for);
+		}else{
+			/**Show No Matches For Search Message*/
+			searchMsg = getResources().getString(R.string.bank_matches_for);
+		}
+		
+		final int matchForStart = 0;
+		final int matchForEnd = searchMsg.length();
+		final int criteriaStart = searchMsg.length() + 1;		
+		searchMsg += " \"" +searchCriteria +"\"";
+		final int criteriaEnd = searchMsg.length();
+		
+		/**Apply styles to the text*/
+		final Spannable spanRange = new SpannableString(searchMsg);
+		final TextAppearanceSpan tas1 = new TextAppearanceSpan(getActivity(), R.style.normal_static_text);
+		final TextAppearanceSpan tas2 = new TextAppearanceSpan(getActivity(), R.style.body_copy_title);
+		spanRange.setSpan(tas1, matchForStart, matchForEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		spanRange.setSpan(tas2, criteriaStart, criteriaEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);		
+		searchName.setText(spanRange, BufferType.SPANNABLE);
 	}
 
 	/**

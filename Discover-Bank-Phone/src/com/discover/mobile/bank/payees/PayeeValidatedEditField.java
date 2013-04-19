@@ -137,11 +137,19 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 */
 	public void showErrorLabel(final String text ) {
 		if( errorLabel != null && !Strings.isNullOrEmpty(text)  ) {
+			final boolean tempValidationValue = isValidationEnabled;
+			
+			//Enable flag to be able to show red border around text view
+			isValidationEnabled = true;
+			
 			errorLabel.setText(text);
 			errorLabel.setVisibility(View.VISIBLE);
 			this.showingError = true;
 			this.updateAppearanceForInput();
 			this.showingError = true;
+			
+			//Restore original value
+			isValidationEnabled = tempValidationValue;
 		}
 	}
 	

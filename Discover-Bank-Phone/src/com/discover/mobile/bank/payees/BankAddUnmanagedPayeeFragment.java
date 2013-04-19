@@ -82,53 +82,59 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 	@Override
 	public boolean handleError(final BankErrorResponse msgErrResponse) {
 		super.handleError(msgErrResponse);
+
+		boolean handled  = false;
 		
 		for( final BankError error : msgErrResponse.errors ) {
 			if( !Strings.isNullOrEmpty(error.name) ) {
-				/**Check if error is for Payee field*/
-				if( error.name.equals(AddUnmanagedPayee.NAME_FIELD) ) {
-					setErrorString(UnmanagedPayeeFields.PayeeName.ordinal(),error.message);
-				}
 				/**Check if error is for Nick name field*/
-				else if( error.name.equals(AddUnmanagedPayee.NICKNAME_FIELD)) {
+				if( error.name.equalsIgnoreCase(AddUnmanagedPayee.NICKNAME_FIELD)) {
 					setErrorString(UnmanagedPayeeFields.PayeeNickName.ordinal(), error.message);
 				}
 				/**Check if error is for phone number field*/
-				else if( error.name.equals(AddUnmanagedPayee.NAME_PHONE)) {
-					setErrorString(UnmanagedPayeeFields.PayeeNickName.ordinal(), error.message);
+				else if( error.name.equalsIgnoreCase(AddUnmanagedPayee.NAME_PHONE)) {
+					setErrorString(UnmanagedPayeeFields.PhoneNumber.ordinal(), error.message);
 				}
 				/**Check if error is for address line 1 field*/
-				else if( error.name.equals(AddUnmanagedPayee.NAME_ADDRESS_LINE1)) {
+				else if( error.name.equalsIgnoreCase(AddUnmanagedPayee.NAME_ADDRESS_LINE1)) {
 					setErrorString(UnmanagedPayeeFields.AddressLine1.ordinal(), error.message);
 				}
 				/**Check if error is for address line 2 field*/
-				else if( error.name.equals(AddUnmanagedPayee.NAME_ADDRESS_LINE2)) {
+				else if( error.name.equalsIgnoreCase(AddUnmanagedPayee.NAME_ADDRESS_LINE2)) {
 					setErrorString(UnmanagedPayeeFields.AddressLine2.ordinal(), error.message);
 				}
 				/**Check if error is for address city field*/
-				else if( error.name.equals(AddUnmanagedPayee.NAME_ADDRESS_CITY)) {
+				else if( error.name.equalsIgnoreCase(AddUnmanagedPayee.NAME_ADDRESS_CITY)) {
 					setErrorString(UnmanagedPayeeFields.City.ordinal(), error.message);
 				}
 				/**Check if error is for address state field*/
-				else if( error.name.equals(AddUnmanagedPayee.NAME_ADDRESS_STATE)) {
+				else if( error.name.equalsIgnoreCase(AddUnmanagedPayee.NAME_ADDRESS_STATE)) {
 					setErrorString(UnmanagedPayeeFields.State.ordinal(), error.message);
 				}
 				/**Check if error is for address zip field*/
-				else if( error.name.equals(AddUnmanagedPayee.NAME_ADDRESS_ZIP)) {
+				else if( error.name.equalsIgnoreCase(AddUnmanagedPayee.NAME_ADDRESS_ZIP)) {
 					setErrorString(UnmanagedPayeeFields.ZipCode.ordinal(), error.message);
 				}
 				/**Check if error is for address memo field*/
-				else if( error.name.equals(AddUnmanagedPayee.NAME_MEMO)) {
+				else if( error.name.equalsIgnoreCase(AddUnmanagedPayee.NAME_MEMO)) {
 					setErrorString(UnmanagedPayeeFields.Memo.ordinal(), error.message);
 				}
 				/**Show error at the top of the screen */
 				else {
 					showGeneralError(error.message);
-					scrollToTop();
 				}
+				
+				handled = true;
+			} else if( !Strings.isNullOrEmpty(error.message)) {
+				showGeneralError(error.message);
+				
+				handled = true;
+				
+				scrollToTop();
 			}
 		}
-		return true;
+	
+		return handled;
 	}
 
 	/**
@@ -230,5 +236,22 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 	@Override
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
 		return PayeeDetailListGenerator.getUnmanagedPayeeDetailList(getActivity(), (AddUnmanagedPayee)detail);
+	}
+	
+	/**
+	 * Method used to validate all input fields to make sure they meet the 
+	 * criteria associated with each at creation. Refer to PayeeDetailListGenerator
+	 * for the criteria associated with each BankEditDetail object.
+	 * 
+	 * @return True if all fields validate correctly, false otherwise.
+	 */
+	@Override
+	protected boolean canProceed() {
+		boolean ret = super.canProceed();
+
+		/**Make sure State is selected*/
+		ret &= !Strings.isNullOrEmpty(getFieldDetail(UnmanagedPayeeFields.State.ordinal()).getText().toString());
+		
+		return ret;
 	}
 }

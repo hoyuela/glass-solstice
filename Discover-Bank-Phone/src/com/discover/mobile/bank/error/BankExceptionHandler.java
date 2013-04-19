@@ -3,12 +3,10 @@ package com.discover.mobile.bank.error;
 import android.util.Log;
 
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.login.LoginActivity;
-import com.discover.mobile.bank.services.BackgroundServiceCall;
-import com.discover.mobile.bank.services.BankApiServiceCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
-import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
@@ -63,7 +61,7 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 		lastSender = sender;
 		
 		//Check if exception should be handled
-		if( isConsiderable(sender) ) {
+		if( !BankNetworkServiceCallManager.getInstance().isBackgroundServiceCall(sender)) {
 			// If exception occurred because of a pre-auth call just continue to the login page
 			if ( sender instanceof PreAuthCheckCall ) {
 				final LoginActivity loginActivity = (LoginActivity) DiscoverActivityManager
@@ -83,7 +81,14 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 			}
 			//Catch-all exception handler
 			else  {
-				BankErrorHandler.getInstance().handleGenericError(0);
+				//Check if network connection available
+				if( BankNetworkServiceCallManager.isNetworkConnected() ) {
+					//Display Catch all modal if connection is available
+					BankErrorHandler.getInstance().handleGenericError(0);
+				} else {
+					//Display No Connection Available Modal when No Network Connection Available
+					((BankErrorHandler)BankErrorHandler.getInstance()).handleNoConnection();
+				}
 			}
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
@@ -95,23 +100,6 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 		return true;
 	}
 	
-	/**
-	 * Method used to check to see if the network service call should be handled for an exception
-	 * 
-	 * @param service Service to be check to see whether it should be handled or not
-	 * 
-	 * @return True to handle exception, false otherwise
-	 */
-	public boolean isConsiderable( final NetworkServiceCall<?> service ) {
-		boolean ret =  !( service instanceof SubmitCheckDepositCall || 
-				 		  service instanceof BankApiServiceCall);
-		
-		if( service instanceof BackgroundServiceCall ) {
-			ret &= !(((BackgroundServiceCall)service).isBackgroundCall());
- 		}
-		
-		return ret;
-	}
 	
 	/**
 	 * @return Reference to last exception that was raised by a network service call sent by the application

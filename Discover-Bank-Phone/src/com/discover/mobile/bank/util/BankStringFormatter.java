@@ -181,4 +181,16 @@ public class BankStringFormatter {
 			return "";
 		}
 	}
+	
+	/**
+	 * Capitalizes the first letter of a given String.
+	 * @return {@link String} with the first letter converted to upper case (or null if the given String was null)
+	 */
+	public static String capitalize(String string) {
+		if (Strings.isNullOrEmpty(string)) {
+			return string;
+		}
+		return string.length() > 1 ? string.substring(0, 1).toUpperCase() + string.substring(1) 
+				: string.toUpperCase(); 
+	}
 }

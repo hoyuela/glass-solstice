@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/phone_title_label"
-            style="@style/page_title"
+            style="@style/title_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/between_related_elements_padding"
@@ -104,7 +104,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/bank_mail_address_list" 
-            custom:footerType="9"
+            custom:footerType="11"
             style="@style/bank_layout_footer_style"/>
         
          <com.discover.mobile.common.help.HelpWidget

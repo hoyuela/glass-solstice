@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.app.Activity;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -713,6 +714,27 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	}
 
 	/**
+	 * Method used to check for network connectivity on the device.
+	 * 
+	 * @return True if the device has a network connection avaiable, false otherwise.
+	 */
+	public static boolean isNetworkConnected() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
+	    final ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(activity.CONNECTIVITY_SERVICE);
+	    boolean connected = false;
+	    
+	    // test for connection
+	    if ( cm.getActiveNetworkInfo() != null
+	         && cm.getActiveNetworkInfo().isAvailable()
+	         && cm.getActiveNetworkInfo().isConnected()) {
+	       connected = true;
+	    } 
+	    
+	    return connected;
+	}
+	
+	/**
 	 * Method used to notify this class when the active Activity has changed on the application.
 	 */
 	@Override
@@ -809,8 +831,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		return ret;
 	}
-
-
+	
 	/**
 	 * Enum used to specify whether a NetworkServiceCallAsyncArgs is for a successful, error or exception
 	 * response to a network service call.

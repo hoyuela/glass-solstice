@@ -37,7 +37,8 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/cardBankIcon"
         android:paddingLeft="@dimen/nav_section_pading"
-        android:src="@drawable/orange_down_carrot" />
+        android:src="@drawable/orange_down_carrot"
+        android:visibility="invisible" />
      
      <ImageView
         android:id="@+id/bottom_line"

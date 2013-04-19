@@ -43,8 +43,9 @@ final public class PayeeDetailListGenerator  {
 		/**Turn of text validation by default*/
 		item.enableValidation(false);
 		
-		if(text != null) {
-			item.getTopLabel().setText(topLabelResource);
+		item.getTopLabel().setText(topLabelResource);
+		
+		if(text != null) {		
 			item.setText(text);
 		}
 		return item;

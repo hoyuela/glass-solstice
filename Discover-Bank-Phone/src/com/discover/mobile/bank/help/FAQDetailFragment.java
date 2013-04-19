@@ -117,6 +117,9 @@ public class FAQDetailFragment extends BaseFragment {
 		//Cache the length value.
 		final int listItemLength = listItems.length;
 		
+		//Clear items in list if any
+		faqItems.clear();
+		
 		//The loop is incremented by 2 each time because we are grabbing data two values at a time.
 		for(int i = 0; i < listItemLength && (i + 1) < listItemLength; i += 2) {
 			final FAQListItem listItem = new FAQListItem(getActivity());
@@ -134,6 +137,7 @@ public class FAQDetailFragment extends BaseFragment {
 		
 		//To be sure that the only content in the table is the FAQ items, remove everything else first.
 		contentTable.removeAllViews();
+		
 		for(final FAQListItem item : faqItems)
 			if(item != null)
 				contentTable.addView(item);

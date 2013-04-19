@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/need_help_footer"
-        layout="@layout/old_general_need_help_footer" />
+        layout="@layout/new_general_need_help_footer" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,9 +45,10 @@
   	<TextView
        android:id="@+id/discover_copyright"
        style="@style/sub_copy_small"
-       android:layout_width="wrap_content"
+       android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_marginTop="@dimen/between_related_elements_padding"
+       android:gravity="center_horizontal|bottom"
        android:text="@string/discover_copyright_text" /> 
 
 </LinearLayout>
