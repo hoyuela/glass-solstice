@@ -99,7 +99,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 			if( account.isDepositEligible() ) {		
 				item = new BankSelectAccountItem(context, account, this);	
 				
-				if( items.size() > 0 ) {
+				if (items.isEmpty()) {
 					item.drawTopStroke(context);
 				} 
 				
