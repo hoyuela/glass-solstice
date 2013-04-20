@@ -2,6 +2,8 @@ package com.discover.mobile.bank.services.payee;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Object for holding an Address JSON object.
@@ -30,6 +32,7 @@ public class Address implements Serializable{
 	public String streetAddress;
 	
 	@JsonProperty("extendedAddress")
+	@JsonInclude(Include.NON_EMPTY)
 	public String extendedAddress;
 	
 	@JsonProperty("locality")
@@ -42,6 +45,7 @@ public class Address implements Serializable{
 	public String postalCode;
 	
 	@JsonProperty("formatted")
+	@JsonInclude(Include.NON_EMPTY)
 	public String formattedAddress;
 	
 }

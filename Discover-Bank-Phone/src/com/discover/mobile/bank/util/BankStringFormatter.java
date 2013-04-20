@@ -201,19 +201,19 @@ public class BankStringFormatter {
 	/**
 	 *
 	 * @param formattedDate a String in the format mm/dd/yyyy
-	 * @return a String in the format yyyy-MM-dd'T'HH:mm:ssZ
+	 * @return a String in the format yyyy-MM-dd'T'HH:mm:ss.SSSZ in the eastern time zone
 	 */
-	public static String getLongDate(final String formattedDate) {
+	public static String convertToISO8601Date(final String formattedDate) {
 		String selectedDate = "";
-		
+
 		if(!Strings.isNullOrEmpty(formattedDate)) {
 			final String easternTime = "America/New_York";
 			selectedDate = formattedDate;
 			
-			final SimpleDateFormat chosenDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			final SimpleDateFormat chosenDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
 			chosenDateFormat.setTimeZone(TimeZone.getTimeZone(easternTime));
 			
-			final SimpleDateFormat submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+			final SimpleDateFormat submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ", Locale.getDefault() );
 			submissionDateFormat.setTimeZone(TimeZone.getTimeZone(easternTime));
 			
 			try {							

@@ -60,7 +60,7 @@ public class PaymentDetailFragment extends DetailFragment{
 		//If the payment is not a scheduled payment, hide the delete and edit button.
 		deleteButton = (Button)mainView.findViewById(R.id.delete_payment_button);
 		editButton = (Button)mainView.findViewById(R.id.edit_payment_button);
-		if(!"SCHEDULED".equals(item.status) || item.isJointPayment ){
+		if(!"SCHEDULED".equalsIgnoreCase(item.status) || item.isJointPayment ){
 			deleteButton.setVisibility(View.GONE);
 			editButton.setVisibility(View.GONE);
 		}else{

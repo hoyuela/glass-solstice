@@ -173,8 +173,8 @@ public class AccountActivityHeader extends RelativeLayout{
 	 */
 	private void setSpan(final int res){
 		final ImageSpan imagespan = new ImageSpan(this.getContext(), res, ImageSpan.ALIGN_BASELINE); 
-		final SpannableString text = new SpannableString(account.nickname + "  ");
-		text.setSpan(imagespan, text.length()-1, text.length(), SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
+		final SpannableString text = new SpannableString("  " +account.nickname);
+		text.setSpan(imagespan, 0, 1, SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
 		title.setText(text);
 	}
 
