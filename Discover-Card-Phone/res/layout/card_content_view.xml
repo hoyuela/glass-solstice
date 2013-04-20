@@ -5,7 +5,7 @@
     
     <fragment
         android:id="@+id/status_bar"
-        android:name="com.discover.mobile.card.navigation.StatusBarFragment"
+        android:name="com.discover.mobile.card.nav.StatusBarFragment"
         android:layout_width="match_parent"
         android:layout_height="40dp"/>
      <FrameLayout
