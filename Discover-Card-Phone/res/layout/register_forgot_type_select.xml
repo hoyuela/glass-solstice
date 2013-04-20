@@ -48,7 +48,7 @@
             android:layout_below="@+id/linear_layout_one"
             android:paddingTop="30dp" >
 
-            <include layout="@layout/old_general_need_help_footer" />
+            <include layout="@layout/card_old_general_need_help_footer" />
         </RelativeLayout>
 
           

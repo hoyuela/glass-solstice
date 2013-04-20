@@ -56,13 +56,13 @@ public class HelpWidget extends RelativeLayout{
 	 */
 	public HelpWidget(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		final View view = LayoutInflater.from(context).inflate(R.layout.help_widget, null);
+		final View view = LayoutInflater.from(context).inflate(R.layout.card_help_widget, null);
 
 		help = (ImageButton) view.findViewById(R.id.help);
 		expandableView = (RelativeLayout) view.findViewById(R.id.help_list);
 		list = (ListView) view.findViewById(R.id.help_list_view);
 
-		adapter = new HelpAdapter(context, R.layout.help_list_item, new ArrayList<HelpItemGenerator>());
+		adapter = new HelpAdapter(context, R.layout.card_help_list_item, new ArrayList<HelpItemGenerator>());
 		list.setAdapter(adapter);
 
 		help.setOnClickListener(new OnClickListener() {
