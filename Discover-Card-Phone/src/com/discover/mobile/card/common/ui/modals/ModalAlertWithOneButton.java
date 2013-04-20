@@ -11,6 +11,7 @@ import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.card.R;
 
@@ -23,6 +24,8 @@ import com.discover.mobile.card.R;
  */
 public class ModalAlertWithOneButton extends AlertDialog{
 
+    /** Orientation listener*/
+    private OrientationEventListener orientationListener;
 	/**Top view too be displayed*/
 	private final ModalTopView top;
 
@@ -59,6 +62,8 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	/**Static variable for the orientation*/
 	static int orientation = 0;
 
+	
+	
 	/**
 	 * Constructor for the alert
 	 * @param context - activity context
@@ -97,6 +102,15 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		topView.setTitle(title);
 		topView.setContent(content);
 		bottomView.setButtonText(buttonText);
+		
+		topView.getFeedbackTextView().setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                dismiss();
+                
+            }
+        });
+		
 		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
 
 			@Override
@@ -130,6 +144,15 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		topView.setTitle(title);
 		topView.setDynamicContent(content);
 		bottomView.setButtonText(buttonText);
+		
+		topView.getFeedbackTextView().setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                dismiss();
+                
+            }
+        });
+
 		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
 
 			@Override
@@ -170,6 +193,14 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		topView.setContent(content);
 		topView.getHelpFooter().setToDialNumberOnClick(helpNumber);
 		bottomView.setButtonText(buttonText);
+		
+		topView.getFeedbackTextView().setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                dismiss();
+                
+            }
+        });
 		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
 
 			@Override
@@ -211,6 +242,14 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		topView.setContent(content);
 		topView.getHelpFooter().setToDialNumberOnClick(helpNumber);
 		bottomView.setButtonText(buttonText);
+		
+	/*	topView.getFeedbackTextView().setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                dismiss();
+                
+            }
+        });
 		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
 
 			@Override
@@ -219,7 +258,7 @@ public class ModalAlertWithOneButton extends AlertDialog{
 			}
 
 		});
-
+*/
 		top = topView;
 		bottom = bottomView;
 
@@ -237,7 +276,7 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		this.setContentView(mainView);
 		linearLayout = (LinearLayout) mainView.findViewById(R.id.modal_linear_layout);		
 
-		this.createOrientationListener();
+		orientationListener = this.createOrientationListener();
 	}
 
 	/**
@@ -283,6 +322,15 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		return bottom;
 	}
 
+/**
+ * 	Get the orientation listener instance 
+ * @return orientation listener instance
+ */
+	public OrientationEventListener getOrientationEventListener()
+    {
+        return orientationListener;
+    }
+	
 	/**
 	 * Create the orientation changed listener
 	 * @return the orientation changed listener
@@ -297,7 +345,7 @@ public class ModalAlertWithOneButton extends AlertDialog{
 				}
 			}
 		};
-
+        
 		ret.enable();
 		return ret;  
 	}
@@ -336,4 +384,7 @@ public class ModalAlertWithOneButton extends AlertDialog{
 			linearLayout.addView((View)bottom, p2);
 		}
 	}
+	
+	
+	
 }

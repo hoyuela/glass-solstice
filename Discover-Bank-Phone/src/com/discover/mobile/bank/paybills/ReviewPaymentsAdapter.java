@@ -144,9 +144,9 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	private String convertDate(final PaymentDetail item){
 		final String itemStatus = item.status;
 		String date = "";
-		if("SCHEDULED".equals(itemStatus)){
+		if("SCHEDULED".equalsIgnoreCase(itemStatus)){
 			date = item.deliverBy.split(PaymentDetail.DATE_DIVIDER)[0];
-		}else if("PAID".equals(itemStatus)){
+		}else if("PAID".equalsIgnoreCase(itemStatus)){
 			date = item.deliverBy.split(PaymentDetail.DATE_DIVIDER)[0];
 		}else{
 			date = item.deliverBy.split(PaymentDetail.DATE_DIVIDER)[0];

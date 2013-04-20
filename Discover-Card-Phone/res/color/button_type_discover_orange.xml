@@ -1,0 +1,19 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true"><shape android:shape="rectangle">
+            <gradient android:angle="270" android:endColor="@color/orange_from" android:startColor="@color/orange_to" />
+            
+            <corners android:radius="@dimen/Button_Corner" />
+        </shape></item>
+    <item android:state_focused="true"><shape android:shape="rectangle">
+            <gradient android:angle="270" android:endColor="@color/orange_from" android:startColor="@color/orange_to" />
+
+            <corners android:radius="@dimen/Button_Corner" />
+        </shape></item>
+    <item><shape android:shape="rectangle">
+            <gradient android:angle="270" android:endColor="@color/orange_to" android:startColor="@color/orange_from" />
+
+            <corners android:radius="@dimen/Button_Corner" />
+        </shape></item>
+
+</selector>

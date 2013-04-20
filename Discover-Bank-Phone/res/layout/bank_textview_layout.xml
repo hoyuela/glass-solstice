@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/light_gray_bkgrd" >
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:paddingTop="@dimen/forms_inner_padding" >
+
+        <TextView
+            android:id="@+id/page_title"
+            style="@style/page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/help"
+            android:text="@string/welcome_to_pay_bills" />        
+    </RelativeLayout>
+
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+ 		android:layout_below="@+id/header">
+	    <TextView
+	        android:id="@+id/content_text_view"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+			style="@style/small_copy"
+	        android:layout_marginLeft="@dimen/between_related_elements_padding"
+	        android:layout_marginRight="@dimen/between_related_elements_padding"/>
+	</ScrollView>
+   
+    <com.discover.mobile.common.help.HelpWidget
+            android:id="@+id/help"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/help_bar_height_two_items" />
+
+</RelativeLayout>

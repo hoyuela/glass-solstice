@@ -3,6 +3,7 @@ package com.discover.mobile.card.login.register;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -32,10 +34,10 @@ import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 
 import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
@@ -44,19 +46,15 @@ import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
-import com.discover.mobile.card.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.card.common.uiwidget.NonEmptyEditText;
 import com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText;
 import com.discover.mobile.card.common.utils.Utils;
 
-import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
-import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.push.register.PushRegistrationStatusErrorHandler;
 import com.discover.mobile.card.push.register.PushRegistrationStatusSuccessListener;
 import com.discover.mobile.card.services.auth.AccountDetails;
-import com.discover.mobile.card.services.auth.AuthenticateCall;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
 import com.discover.mobile.card.services.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail;
@@ -71,10 +69,10 @@ import com.xtify.sdk.api.XtifySDK;
  * @author scottseward
  *
  */
-public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity implements CardEventListener  {
+public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity implements CardEventListener , OnClickListener  {
 
 	private static final String TAG = ForgotUserIdActivity.class.getSimpleName();
-
+	private static final String REFERER = "forgot-uid-pg";
 	private static final String MAIN_ERROR_LABEL_TEXT_KEY = "a";
 	private static final String SHOULD_UPDATE_PASS_APPEARANCE = "b";
 	private static final String SHOULD_UPDATE_ACCT_NBR_APPEARANCE = "c";
@@ -104,6 +102,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity implemen
 	//TEXT LABELS
 	private TextView cancelLabel;
 	private TextView helpNumber;
+	private TextView provideFeedback ;
 
 	//INPUT FIELDS
 	private UsernameOrAccountNumberEditText cardNumField;
@@ -114,21 +113,24 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity implemen
 	private ScrollView mainScrollView;
 	
 	private int errorCode = 0x0;
-
+	protected final Activity currentContext = this;
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_forgot_id);
 
-		final HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
+		/*final HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
 		progress.initChangePasswordHeader(0);
-		progress.hideStepTwo();
+		progress.hideStepTwo();*/
 
 		loadAllViews();
 		setupInputFields();
 		globalCache=(DiscoverApplication)getApplicationContext();
 
 		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
+		provideFeedback = (TextView)findViewById(R.id.provide_feedback_button);
+		provideFeedback.setOnClickListener(this);
 
 		setOnClickActions();
 		attachErrorLabels();
@@ -376,38 +378,36 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity implemen
 	 * responsible for handling and presenting error messages to the user.
 	 * 
 	 */
-	private void getAccountDetails() {
-		final AsyncCallback<AccountDetails> callback = GenericAsyncCallback
-				.<AccountDetails> builder(this)
-				.showProgressDialog("Discover", "Loading...", true)
-				.withErrorResponseHandler(new CardBaseErrorResponseHandler(this))
-				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-			
-				.withSuccessListener(new SuccessListener<AccountDetails>() {
+	private void getAccountDetails(final RegistrationConfirmationDetails user) {
+		
+		confirmationDetails = user;
+		CardEventListener cardEventListener = new CardEventListener() {
 
-					@Override
-					public CallbackPriority getCallbackPriority() {
-						return CallbackPriority.MIDDLE;
-					}
+            @Override
+            public void onSuccess(Object data) {
+                // TODO Auto-generated method stub
+                Globals.setLoggedIn(true);
+                final CardShareDataStore cardShareDataStoreObj = CardShareDataStore.getInstance(ForgotUserIdActivity.this);
+                final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj.getCookieManagerInstance();
+                sessionCookieManagerObj.setCookieValues();
+                cardShareDataStoreObj.addToAppCache(ForgotUserIdActivity.this.getString(R.string.account_details), data);
+            	//getXtifyRegistrationStatus();
+                navigateToConfirmationScreenWithResponseData(confirmationDetails);
+                finish();
+            }
 
-					@Override
-					public void success(final NetworkServiceCall<?> sender, final AccountDetails value) {
-						// Set logged in to be able to save user name in
-						// persistent storage
-						Globals.setLoggedIn(true);
+            @Override
+            public void OnError(Object data) {
+                // TODO Auto-generated method stub
+                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                        ForgotUserIdActivity.this);
+                cardErrorResHandler.handleCardError((CardErrorBean) data);
+                
+            }
+        };
+        Utils.updateAccountDetails(currentContext, cardEventListener , "Discover", "Loading...");
 
-						// Update current account based on user logged
-
-						CardSessionContext.getCurrentSessionDetails()
-						.setAccountDetails(value);
-
-						getXtifyRegistrationStatus();
-
-					}
-				})
-				.build();
-
-		new AuthenticateCall(this, callback).submit();
+		
 	}
 
 	/**
@@ -499,8 +499,12 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity implemen
 	@Override
 	public void goBack() {
 		finish();
-		final Intent forgotCredentialsActivity = new Intent(this, ForgotCredentialsActivity.class);
-		startActivity(forgotCredentialsActivity);
+		/*final Intent forgotCredentialsActivity = new Intent(this, ForgotCredentialsActivity.class);
+		startActivity(forgotCredentialsActivity);*/
+		final Bundle bundle = new Bundle();
+        bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+        bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
+        FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
 	}
 
 	@Override
@@ -529,7 +533,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity implemen
 	{
 		CardShareDataStore.getInstance(this).addToAppCache(cardNumField.getText().toString().replace(" ", ""), user);
 		confirmationDetails = user;
-        getAccountDetails();
+        getAccountDetails(confirmationDetails);
         
 //		CardSessionContext.getCurrentSessionDetails().setAccountDetails(new AccountDetails());
 //		navigateToConfirmationScreenWithResponseData(user);
@@ -553,6 +557,14 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity implemen
     @Override
     public CardErrHandler getCardErrorHandler() {
         return CardErrorUIWrapper.getInstance();
+    }
+
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        if (v.getId() == R.id.provide_feedback_button) {
+            Utils.createProvideFeedbackDialog(ForgotUserIdActivity.this, REFERER);
+        }
     }
 	
    

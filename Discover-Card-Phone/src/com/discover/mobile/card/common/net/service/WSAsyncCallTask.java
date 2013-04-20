@@ -1,20 +1,32 @@
 package com.discover.mobile.card.common.net.service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorUtil;
 import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
-
+import com.discover.mobile.card.services.auth.AccountDetails;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -83,8 +95,32 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
     protected void onPreExecute() {
         // TODO Auto-generated method stub
         super.onPreExecute();
-        fetchingProgressDialog = Utils.getProgressDialog(context,
-                strProgressBarTitle, strProgressBarMsg);
+        // ((Activity)context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        // int prevOrientation = ((Activity)context).getRequestedOrientation();
+        if (((Activity) context).getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            ((Activity) context)
+                    .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else if (((Activity) context).getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            ((Activity) context)
+                    .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            ((Activity) context)
+                    .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        }
+
+       /* fetchingProgressDialog = Utils.getProgressDialog((Activity)context,
+                strProgressBarTitle, strProgressBarMsg);*/
+        //In place of getProgressDialog showSpinner has been used 
+        
+        try
+        {
+            Utils.showSpinner(context,strProgressBarTitle , strProgressBarMsg);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+       
         // );
     }
 
@@ -108,34 +144,104 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
         InputStream in = null;
         try {
             response = wsProxy.invoke(context, params[0]);
-            final int statusCode = response.getResponseCode();
-            if ((statusCode < 200 || statusCode > 299)) {
-                Log.d("doInBackground", "statusCode:" + statusCode);
+            Map<String, List<String>> headers = response.getHeaders();
+            CardShareDataStore cardShareDataStore = CardShareDataStore
+                    .getInstance(context);
+            
+            if (headers != null) {
+                final Set<String> keys = headers.keySet();
+                for (final String key : keys) {
+                    String strongAuthSvcs = null;
+                    String compareKey = "STRONGAUTHSVCS";
+                    String compareSecTokenKey = "sectoken";
+                    Log.i("Headers========>", "" + key + " " + headers.get(key));
+
+                    // Adding values to application cache for Strong
+                    // Authentication
+                    if (key != null && key.equalsIgnoreCase("WWW-Authenticate")) {
+                        
+                        cardShareDataStore.addToAppCache("WWW-Authenticate",
+                                headers.get(key).get(0));
+                    }
+                    
+                    /*else if (key != null
+                            && key.equalsIgnoreCase("Set-Cookie")) {
+
+                        Log.i("Headers========>",
+                                "" + key + " " + headers.get(key));
+                       
+                        for (int counter = 0; counter < headers.get(key).size(); counter++) {
+                            String cookie = headers.get(key).get(counter);
+                            String[] cookieSet = cookie.split(";");
+
+                            for (int index = 0; index < cookieSet.length; index++) {
+                                if (cookieSet[index].contains(compareSecTokenKey)) {
+                                    String newSecToken = cookieSet[index]
+                                            .subSequence(
+                                                    compareSecTokenKey.length() + 1,
+                                                    cookieSet[index].length())
+                                            .toString();
+                                    final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                                            .getInstance(context);
+                                    cardShareDataStoreObj.addToAppCache("secToken", newSecToken);
+                                    
+                                    
+//                                    final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+//                                            .getInstance(context);
+//                                    final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
+//                                            .getCookieManagerInstance();
+//                                    sessionCookieManagerObj.setSecTokenInCookie(newSecToken);
+                                }
+                                else if (cookieSet[index].contains(compareKey)) {
+                                    strongAuthSvcs = cookieSet[index]
+                                            .subSequence(
+                                                    compareKey.length() + 1,
+                                                    cookieSet[index].length())
+                                            .toString();
+                                }
+                            }
+
+                        }
+                        Log.i("-------------yoy-----------", "--data--" + strongAuthSvcs);
+
+                        if(null!=strongAuthSvcs)
+                        {
+                            CardShareDataStore cardShareDataStore = CardShareDataStore
+                                    .getInstance(context);
+                            cardShareDataStore.addToAppCache(context.getString(R.string.strong_auth_svcs),
+                                    strongAuthSvcs);
+                        }
+                    }*/
+                }
+
+            }
+            in = response.getInputStream();
+
+            if (null == in) {
                 CardErrorUtil cardErrUtil = new CardErrorUtil(context);
 
-                cardErrBean = cardErrUtil.handleCardErrorforResponse(response);
+                final String ErrorMessage = cardErrUtil
+                        .getMessageforErrorCode("100");// for network error
+                // message
+                final String errorTitle = cardErrUtil
+                        .getTitleforErrorCode("100");
+                cardErrBean = new CardErrorBean(errorTitle, ErrorMessage,
+                        "100", false, "0");
             } else {
-                in = response.getInputStream();
-                if (null != in) {
+                // response.setResponseCode(503);
+                int statusCode = response.getResponseCode();
+                Log.d("doInBackground", "statusCode: before check" + statusCode);
+                if (statusCode < 200 || statusCode > 299) {
+                    Log.d("doInBackground", "statusCode:" + statusCode);
+                    CardErrorUtil cardErrUtil = new CardErrorUtil(context);
+
+                    cardErrBean = cardErrUtil
+                            .handleCardErrorforResponse(response);
+                } else {
+
                     if (null != dataHolder) {
                         parseResponse(in);
                     }
-                } else {
-                    // Show No network Error
-                    CardErrorUtil cardErrUtil = new CardErrorUtil(context);
-                    
-                   
-                    final String ErrorMessage = cardErrUtil
-                            .getMessageforErrorCode("100");// for network error
-                                                           // message
-                    final String errorTitle = cardErrUtil
-                            .getTitleforErrorCode("100");
-                    cardErrBean = new CardErrorBean(errorTitle, ErrorMessage,
-                            "100", false);
-                    /*
-                     * cardErrBean.setErrorMessage(ErrorMessage, false);
-                     * cardErrBean.setErrorTitle(errorTitle);
-                     */
                 }
             }
 
@@ -176,7 +282,22 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
     @Override
     protected void onPostExecute(final Object result) {
         super.onPostExecute(result);
-        fetchingProgressDialog.dismiss();
+       // fetchingProgressDialog.dismiss();
+      //In place of dismiss() hideSpinner() has been used 
+        
+        try
+        {
+            Utils.hideSpinner();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+       
+
+        ((Activity) context)
+                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
 
         if (null != result && result.getClass() == CardErrorBean.class) {
             callBackListner.OnError(result);
@@ -193,10 +314,31 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
      * @param in
      *            Inputstream containing the json data.
      */
-    private void parseResponse(final InputStream in) {
+    private void parseResponse(InputStream in) {
         try {
-            dataHolder = JacksonObjectMapperHolder.getMapper().readValue(in,
-                    dataHolder.getClass());
+
+            if (dataHolder.getClass() == AccountDetails.class) {
+                final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                        .getInstance(context);
+                BufferedReader br = new BufferedReader(
+                        new InputStreamReader(in));
+                StringBuilder sb = new StringBuilder();
+
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                String strJSON = sb.toString();
+                cardShareDataStoreObj.addToAppCache(
+                        context.getString(R.string.account_details_for_js),
+                        strJSON);
+                dataHolder = JacksonObjectMapperHolder.getMapper().readValue(
+                        strJSON, dataHolder.getClass());
+            } else {
+                dataHolder = JacksonObjectMapperHolder.getMapper().readValue(
+                        in, dataHolder.getClass());
+            }
         } catch (final JsonParseException e) {
             e.printStackTrace();
         } catch (final JsonMappingException e) {

@@ -3,7 +3,14 @@ package com.discover.mobile.bank.error;
 import java.net.HttpURLConnection;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
+import android.view.View;
+import android.view.View.OnClickListener;
 
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -19,9 +26,14 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
+import com.discover.mobile.common.facade.FacadeFactory;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
+import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.google.common.base.Strings;
 
 /**
@@ -123,6 +135,10 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 
 				((BankErrorHandler) mErrorHandler).handleInvalidSSOPayloadErrorModal(mErrorHandlerUi);
 			} 
+			//Handle bad bank status but good card status
+			else if(sender instanceof CreateBankSSOLoginCall && errCode.equalsIgnoreCase(BankErrorCodes.ERROR_SSO_BAD_BANK_STATUS)){
+				getBadBankStatusModal().show();
+			}
 			//Non-SSO Fraud users, and SSO (Card ALU) Fraud users are handled here, they stay at login page.
 			else if (errCode.equals(BankErrorCodes.ERROR_FRAUD_USER) || errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
 				mErrorHandler.handleHttpFraudNotFoundUserErrorModal(mErrorHandlerUi, msgErrResponse.getErrorMessage());
@@ -168,6 +184,47 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 		return handled;
 	}
 
+	/**
+	 * Get the modal that is shown when the user is a bad status user
+	 * @return the modal
+	 */
+	private AlertDialog getBadBankStatusModal() {
+		final Context context = DiscoverActivityManager.getActiveActivity();
+		final ModalDefaultTopView top  = new ModalDefaultTopView(context, null);
+		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(context, null);
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(context, top, bottom);
+		top.setTitle(R.string.sso_bad_bank_status_title);
+		top.setContent(R.string.sso_bad_bank_status_content);
+		top.showErrorIcon(true);
+		bottom.setButtonText(R.string.sso_bad_bank_button);
+		bottom.getButton().setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(final View v) {
+				modal.dismiss();
+			}
+
+		});
+		modal.setOnDismissListener(new OnDismissListener(){
+
+			@Override
+			public void onDismiss(final DialogInterface dialog) {
+				goToCardHome();
+
+			}
+
+		});
+		return modal;
+	}
+
+	public void goToCardHome(){
+		//if the activity is a navigation root activity the user should be in card
+		if(DiscoverActivityManager.getActiveActivity() instanceof NavigationRootActivity){
+			//Do nothing here
+		}else{
+			FacadeFactory.getCardLoginFacade().toggleToCard(mErrorHandlerUi.getContext());
+		}
+	}
 
 	/**
 	 * Exposed as protected method in case of need to override by

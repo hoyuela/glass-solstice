@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -14,6 +15,8 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.error.ErrorHandler;
+
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * Activity definition used to display a help guide for either User ID
@@ -29,12 +32,24 @@ import com.discover.mobile.common.error.ErrorHandler;
  */
 public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 	private static final String TAG = StrengthBarHelpActivity.class.getSimpleName();
-
+	private static final String REFERER = "forgot-password-step2-pg";
+	protected TextView provideFeedback ;
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.register_help_strength);
+		provideFeedback = (TextView)findViewById(R.id.provide_feedback_button);
+		provideFeedback.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Utils.createProvideFeedbackDialog(StrengthBarHelpActivity.this,
+                        REFERER);
+            }
+        });
 
 		//Determine what help guide to configure the screen for based on extra in INTENT
 		final Bundle extras = getIntent().getExtras();

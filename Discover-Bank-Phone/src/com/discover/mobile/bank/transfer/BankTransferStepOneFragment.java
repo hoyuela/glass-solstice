@@ -1,7 +1,5 @@
 package com.discover.mobile.bank.transfer;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,18 +20,23 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
-import com.discover.mobile.bank.payees.BankEditDetail;
+import com.discover.mobile.bank.payees.BankSimpleEditDetail;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
+import com.discover.mobile.bank.services.error.BankError;
+import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
-import com.discover.mobile.bank.ui.table.AmountListItem;
+import com.discover.mobile.bank.ui.table.AdjustedAmountListItem;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
+import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
@@ -49,12 +53,9 @@ import com.google.common.base.Strings;
  * @author scottseward
  *
  */
-public class BankTransferStepOneFragment extends BankTransferBaseFragment {
-
-	/**Bank Edit Detail frequency slot*/
-	private BankEditDetail frequencyListItem;
-	private final List<BankEditDetail> transferListItems = new ArrayList<BankEditDetail>();
-
+public class BankTransferStepOneFragment extends BankTransferBaseFragment implements BankErrorHandlerDelegate {
+	private final String TAG = BankTransferStepOneFragment.class.getSimpleName();
+	
 	/**Code of the frequency*/
 	private String frequencyCode = TransferDetail.ONE_TIME_TRANSFER;
 	private String frequencyText = "One Time";
@@ -87,8 +88,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	/** The downloaded external accounts */
 	private AccountList externalAccounts = new AccountList();
 	
-	private BankEditDetail sendOnCell = null;
-	private BankEditDetail frequencyCell = null;
+	private BankSimpleEditDetail sendOnDateCell = null;
+	private BankSimpleEditDetail frequencyCell = null;
+	private BankSimpleEditDetail fromCell = null;
+	private BankSimpleEditDetail toCell = null;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -124,17 +127,13 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	public void onResume() {
 		super.onResume();
 		updateSelectedAccountLabels();
-		frequencyListItem.setText(frequencyText);
-		frequencyListItem.getErrorLabel().setVisibility(View.GONE);
+		frequencyCell.setText(frequencyText);
+		frequencyCell.getErrorLabel().setVisibility(View.GONE);
 		recurring.resumeState(getArguments());
 		
-		amountField.enableBankAmountTextWatcher(false);
-		amountField.setText(getArguments().getString(BankExtraKeys.AMOUNT));
-		amountField.enableBankAmountTextWatcher(true);
 		restoreStateFromBundle(getArguments());
 
 		updateDateField();
-		hideAllListErrorLabels();
 	}
 	
 	/**
@@ -187,9 +186,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	}
 	
 	private void disableDateSelection() {
-		sendOnCell.getMiddleLabel().setTextColor(getResources().getColor(R.color.field_copy));
-		sendOnCell.getCaret().setVisibility(View.INVISIBLE);
-		sendOnCell.getView().setOnClickListener(null);
+		sendOnDateCell.getMiddleLabel().setTextColor(getResources().getColor(R.color.field_copy));
+		sendOnDateCell.getCaret().setVisibility(View.INVISIBLE);
+		sendOnDateCell.getView().setOnClickListener(null);
 	}
 	
 	/**
@@ -246,8 +245,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 			args.putString(BankExtraKeys.FREQUENCY_CODE, frequencyCode);
 		}
 
-		if(frequencyText != null && frequencyListItem != null ) {
-			frequencyText = frequencyListItem.getMiddleLabel().getText().toString();
+		if(frequencyText != null && frequencyCell != null ) {
+			frequencyText = frequencyCell.getMiddleLabel().getText().toString();
 		
 			args.putString(BankExtraKeys.FREQUENCY_TEXT, frequencyText);
 		}
@@ -290,13 +289,15 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 				frequencyText = value;
 			}
 			
-			if(frequencyListItem != null)
-				frequencyListItem.setText(frequencyText);
+			if(frequencyCell != null)
+				frequencyCell.setText(frequencyText);
 			
 			if(dateTextView != null)
 				dateTextView.setText(bundle.getString(date));
 
-
+			amountField.enableBankAmountTextWatcher(false);
+			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
+			amountField.enableBankAmountTextWatcher(true);
 
 			if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
 				recurring.setVisibility(View.GONE);
@@ -308,8 +309,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		/**Reset Calendar Event Listener*/
 	    final Fragment fragment = getFragmentManager().findFragmentByTag(CalendarFragment.TAG);
 	    if( fragment != null && fragment instanceof CalendarFragment) {
-	      calendarFragment = (CalendarFragment) fragment;
-	      calendarFragment.setCalendarListener(createCalendarListener());
+	    	calendarFragment = (CalendarFragment) fragment;
+	    	calendarFragment.setCalendarListener(createCalendarListener());
 	    }
 	}
 	
@@ -325,8 +326,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		}
 	}
 
-
-
 	/**
 	 * Handle the chosen frequency from the frequency widget
 	 * @param bundle - bundle of data
@@ -335,8 +334,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		frequencyCode = bundle.getString(BankExtraKeys.FREQUENCY_CODE);
 		frequencyText = bundle.getString(BankExtraKeys.FREQUENCY_TEXT);
 
-		frequencyListItem.setText(frequencyText);
-		frequencyListItem.getErrorLabel().setVisibility(View.GONE);
+		frequencyCell.setText(frequencyText);
+		frequencyCell.getErrorLabel().setVisibility(View.GONE);
 
 		if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
 			recurring.setVisibility(View.GONE);
@@ -364,13 +363,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	protected int getProgressIndicatorStep() {
 		return 0;
 	}
-	
-	private void hideAllListErrorLabels() {
-		if(transferListItems != null)
-			for(final BankEditDetail item : transferListItems) 
-				item.getErrorLabel().setVisibility(View.GONE);
-
-	}
 
 	/**
 	 * Returns the information that will be presented in the table on screen.
@@ -390,11 +382,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 		content.add(getFrequencyListItem(currentActivity));
 		content.add(getSendOnListItem(currentActivity));
 		content.add(recurring);
-
-		for(final RelativeLayout item : content) {
-			if(item instanceof BankEditDetail)
-				transferListItems.add((BankEditDetail)item);
-		}
 
 		if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
 			recurring.setVisibility(View.GONE);
@@ -475,85 +462,80 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	/**
 	 * 
 	 * @param currentActivity
-	 * @return a BankEditDetail object which will be inserted into the content table on screen.
+	 * @return a BankSimpleEditDetail object which will be inserted into the content table on screen.
 	 */
-	private BankEditDetail getFromListItem(final Activity currentActivity) {
-		final BankEditDetail fromListItem = new BankEditDetail(currentActivity);
+	private BankSimpleEditDetail getFromListItem(final Activity currentActivity) {
+		fromCell = new BankSimpleEditDetail(currentActivity);
 
-		fromListItem.getDividerLine().setVisibility(View.INVISIBLE);
-		fromListItem.getEditableField().setVisibility(View.GONE);
-		fromListItem.getTopLabel().setText(R.string.from);
-		fromListItem.getMiddleLabel().setText(R.string.select_account);
-		fromListItem.getView().setOnFocusChangeListener(null);
-		fromListItem.getErrorLabel().setVisibility(View.GONE);
-		fromListItem.getView().setOnClickListener(fromAccountClickListener);
-		fromAccountTextView = fromListItem.getMiddleLabel();
+		fromCell.getDividerLine().setVisibility(View.INVISIBLE);
+		fromCell.getTopLabel().setText(R.string.from);
+		fromCell.getMiddleLabel().setText(R.string.select_account);
 
-		return fromListItem;
+		fromCell.getView().setOnClickListener(fromAccountClickListener);
+		fromAccountTextView = fromCell.getMiddleLabel();
+		
+		
+		return fromCell;
 	}
 
 	/**
 	 * 
 	 * @param currentActivity
-	 * @return a BankEditDetail object which will be inserted into the content table on screen.
+	 * @return a BankSimpleEditDetail object which will be inserted into the content table on screen.
 	 */
-	private BankEditDetail getToListItem(final Activity currentActivity) {
-		final BankEditDetail toListItem = new BankEditDetail(currentActivity);
-		toListItem.getEditableField().setVisibility(View.GONE);
-		toListItem.getMiddleLabel().setText(R.string.select_account);
-		toListItem.getView().setOnFocusChangeListener(null);
-		toListItem.getErrorLabel().setVisibility(View.GONE);
+	private BankSimpleEditDetail getToListItem(final Activity currentActivity) {
+		toCell = new BankSimpleEditDetail(currentActivity);
+		toCell.getMiddleLabel().setText(R.string.select_account);
 
-		toListItem.getDividerLine().setVisibility(View.VISIBLE);
-		toListItem.getTopLabel().setText(R.string.to);
-		toListItem.getView().setOnClickListener(toAccountClickListener);
-		toAccountTextView = toListItem.getMiddleLabel();
-
-		return toListItem;
+		toCell.getDividerLine().setVisibility(View.VISIBLE);
+		toCell.getTopLabel().setText(R.string.to);
+		toCell.getView().setOnClickListener(toAccountClickListener);
+		toAccountTextView = toCell.getMiddleLabel();
+		
+		return toCell;
 	}
 
 	/**
 	 * 
 	 * @param currentActivity
-	 * @return a BankEditDetail object which will be inserted into the content table on screen.
+	 * @return a BankSimpleEditDetail object which will be inserted into the content table on screen.
 	 */
-	private AmountListItem getAmountListItem(final Activity currentActivity) {
-		final AmountListItem amountListItem = new AmountListItem(currentActivity);
+	private AdjustedAmountListItem getAmountListItem(final Activity currentActivity) {
+		final AdjustedAmountListItem amountListItem = new AdjustedAmountListItem(currentActivity);
 		amountField = amountListItem.getEditField();
+		amountField.attachErrorLabel(amountListItem.getErrorLabel());
+		amountListItem.getErrorLabel().setText(R.string.amount_less_than_twenty_five);
 		return amountListItem;
 	}
 
 	/**
 	 * 
 	 * @param currentActivity
-	 * @return a BankEditDetail object which will be inserted into the content table on screen.
+	 * @return a BankSimpleEditDetail object which will be inserted into the content table on screen.
 	 */
-	private BankEditDetail getFrequencyListItem(final Activity currentActivity) {
-		frequencyListItem = new BankEditDetail(currentActivity);
-		frequencyListItem.getTopLabel().setText(R.string.frequency);
-		frequencyListItem.getMiddleLabel().setText(R.string.one_time);
-		frequencyListItem.getView().setOnFocusChangeListener(null);
-		frequencyListItem.getView().setOnClickListener(new OnClickListener(){
+	private BankSimpleEditDetail getFrequencyListItem(final Activity currentActivity) {
+		frequencyCell = new BankSimpleEditDetail(currentActivity);
+		frequencyCell.getTopLabel().setText(R.string.frequency);
+		frequencyCell.getMiddleLabel().setText(R.string.one_time);
+
+		frequencyCell.getView().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View view){
 				BankConductor.navigateToFrequencyWidget(getAndSaveFragmentStateToArgumentBundle());
 			}
 		});
-		frequencyListItem.getEditableField().setVisibility(View.GONE);
-		frequencyListItem.getErrorLabel().setVisibility(View.GONE);
 
-		frequencyCell = frequencyListItem;
 		
-		return frequencyListItem;
+		return frequencyCell;
 	}
 
 	/**
 	 * 
 	 * @param currentActivity
-	 * @return a BankEditDetail object which will be inserted into the content table on screen.
+	 * @return a BankSimpleEditDetail object which will be inserted into the content table on screen.
 	 */
-	private BankEditDetail getSendOnListItem(final Activity currentActivity) {
-		final BankEditDetail sendOnListItem = new BankEditDetail(currentActivity);
+	private BankSimpleEditDetail getSendOnListItem(final Activity currentActivity) {
+		final BankSimpleEditDetail sendOnListItem = new BankSimpleEditDetail(currentActivity);
 
 		sendOnListItem.getTopLabel().setText(R.string.send_on);
 		sendOnListItem.getMiddleLabel().setText(R.string.select_a_date);
@@ -564,12 +546,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 				showCalendar();
 			}
 		});
-		sendOnListItem.getView().setOnFocusChangeListener(null);
-		sendOnListItem.getEditableField().setVisibility(View.GONE);
-		sendOnListItem.getErrorLabel().setVisibility(View.GONE);
 		dateTextView = sendOnListItem.getMiddleLabel();
 		
-		sendOnCell = sendOnListItem;
+		sendOnDateCell = sendOnListItem;
 		
 		return sendOnListItem;
 	}
@@ -583,63 +562,84 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 	 * Submit the current information on the page to schedule a transfer.
 	 */
 	@Override
-	protected void onActionButtonClick() {
-		final TransferDetail transferObject = new TransferDetail();
-
-		transferObject.fromAccount = new Account();
-		transferObject.toAccount = new Account();
-		transferObject.amount = new Money();
-
-		if(fromAccount != null) {
-			transferObject.fromAccount.id = fromAccount.id;
-		}
-		if(toAccount != null) {
-			transferObject.toAccount.id = toAccount.id;
-		}
-		if(!Strings.isNullOrEmpty(frequencyCode)) {
-			transferObject.frequency = frequencyCode;
-		}
-		
-		transferObject.sendDate = getSendOnDate();
-
-		final String inputAmount = amountField.getText().toString();
-		final String cents = inputAmount.replaceAll("[^0-9]", "");
-
-		if(!Strings.isNullOrEmpty(cents)) {
-			transferObject.amount.value = Integer.parseInt(cents);
-		} else {
-			transferObject.amount.value = 0;
-		}
-
-		if(recurring.getVisibility() == View.VISIBLE){
-			transferObject.durationType = recurring.getDurationType();
-			transferObject.durationValue = recurring.getDurationValue();
-		}
-
-		BankServiceCallFactory.createScheduleTransferCall(transferObject).submit();
-	}
-
-	private String getSendOnDate() {
-		String selectedDate = "";
-		
-		if(dateTextView != null) {
-			selectedDate = dateTextView.getText().toString();
-			final SimpleDateFormat chosenDateFormat = new SimpleDateFormat("MM/dd/yyyy");
-			final SimpleDateFormat submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-			
-			try {
-				final Date temp = chosenDateFormat.parse(selectedDate);
-				selectedDate = submissionDateFormat.format(temp);
-			} catch (final ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	protected void onActionButtonClick() {		
+		if(isFormInfoComplete()) {
+			final TransferDetail transferObject = new TransferDetail();
+	
+			transferObject.fromAccount = new Account();
+			transferObject.toAccount = new Account();
+			transferObject.amount = new Money();
+	
+			if(fromAccount != null) {
+				transferObject.fromAccount.id = fromAccount.id;
+			}
+			if(toAccount != null) {
+				transferObject.toAccount.id = toAccount.id;
+			}
+			if(!Strings.isNullOrEmpty(frequencyCode)) {
+				transferObject.frequency = frequencyCode;
 			}
 			
+			transferObject.sendDate = BankStringFormatter.convertToISO8601Date(dateTextView.getText().toString());
+	
+			final String cents = amountField.getText().toString().replaceAll("[^0-9]", "");
+			if(!Strings.isNullOrEmpty(cents)) {
+				transferObject.amount.value = Integer.parseInt(cents);
+			}
+			
+			if(recurring.getVisibility() == View.VISIBLE){
+				transferObject.durationType = recurring.getDurationType();
+				transferObject.durationValue = recurring.getDurationValue();
+			}
+	
+			BankServiceCallFactory.createScheduleTransferCall(transferObject).submit();
+		}else {
+			scrollView.smoothScrollTo(0, 0);
+		}
+	}
+	
+	private boolean isFormInfoComplete() {
+		boolean isComplete = true;
+		
+		isComplete &= validateAccountsAreSelected();
+		isComplete &= validateAmount();
+		
+		return isComplete;
+	}
+	
+	private boolean validateAccountsAreSelected() {
+		final boolean accountsAreSelected = toAccount != null && fromAccount != null;
+		
+		if(!accountsAreSelected) {
+			generalError.setText("Please select a To and From account to make a transfer.");
+			generalError.setVisibility(View.VISIBLE);
 		}
 		
-		return selectedDate;
-		
+		return accountsAreSelected;
 	}
+	
+	private boolean validateAmount() {
+		amountField.clearFocus();
+		final String amount = amountField.getText().toString();
+		
+		int value = 0;
+		final int twentyFiveDollars = 2500;
+		
+		if(!Strings.isNullOrEmpty(amount))
+			value = Integer.parseInt(amount.replaceAll("[^0-9]", ""));
+		
+		final boolean isValid = InputValidator.isValueBoundedBy(value, twentyFiveDollars, Integer.MAX_VALUE);
+		
+		if(!isValid) {
+			amountField.setErrors();
+			amountField.getErrorLabel().setText("Too low (less than $25)");
+			amountField.getErrorLabel().setVisibility(View.VISIBLE);
+		}
+		
+		return isValid;
+	}
+
+	
 	/**
 	 * Shows a modal dialog on the page to notify the user that if they cancel their current action
 	 * all information will be lost.
@@ -795,5 +795,60 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment {
 				BankUser.instance().getHolidays(),
 				createCalendarListener());
 	}
+
+	
+	/**
+	 * Handle errors that the server returns.
+	 * This is for displaying inline errors on the screen for the user.
+	 * 
+	 */
+	@Override
+	public boolean handleError(final BankErrorResponse msgErrResponse) {
+		boolean handled = false;		
+		for(final BankError error : msgErrResponse.errors) {
+			final String errorFieldName = error.name;
+			
+			handled = true;
+			
+			if(TransferDetail.AMOUNT.equalsIgnoreCase(errorFieldName)) {
+				showAmountError(error.message);
+			}
+			else if(TransferDetail.SEND_DATE.equalsIgnoreCase(errorFieldName)) {
+				showErrorOnField(error.message, sendOnDateCell);
+			}
+			else if(TransferDetail.FROM_ACCOUNT.equalsIgnoreCase(errorFieldName)) {
+				showErrorOnField(error.message, fromCell);
+			}
+			else if(TransferDetail.TO_ACCOUNT.equalsIgnoreCase(errorFieldName)) {
+				showErrorOnField(error.message, toCell);
+			}else {
+				handled = false;
+			}
+
+		}
+
+		scrollView.smoothScrollTo(0, 0);
+		return handled;
+	}
+	
+	private void showAmountError(final String error) {
+		amountField.getErrorLabel().setText(error);
+		amountField.getErrorLabel().setVisibility(View.VISIBLE);
+	}
+	
+	private void showErrorOnField(final String error, final BankSimpleEditDetail tableRow) {
+		tableRow.getErrorLabel().setText(error);
+		tableRow.getErrorLabel().setVisibility(View.VISIBLE);
+	}
+	
+	private void showErrorLabel(final String error, final TextView label) {
+		if(label != null) {
+			label.setText(error);
+			label.setVisibility(View.VISIBLE);
+		}else {
+			Log.e(TAG, "Could not show error label with message : " + error);
+		}
+	}
+	
 
 }

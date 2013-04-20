@@ -25,7 +25,7 @@ public class EarnCashbackBonusInfo extends GroupComponentInfo {
     public EarnCashbackBonusInfo() {
         super(R.string.section_title_earn_cashback_bonus,
 
-        new ClickComponentInfo(R.string.sub_section_title_signup_for_5, false,
+        new ClickComponentInfo(R.string.sub_section_title_signup_for_2, false,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

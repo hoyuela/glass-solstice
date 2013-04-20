@@ -5,6 +5,7 @@
     <color name="string_indicator">#8ed402</color>
     
     <!-- Various Colors -->
+    <color name="offwhite">#c0c8cc</color>
     <color name="white">#ffffff</color>
 	<color name="black">#000</color>
 	<color name="blue">#025D96</color>
@@ -15,6 +16,7 @@
 	<color name="gray">#CCCCCC</color>
 	<color name="lightRed">#1fff0000</color>
 	<color name="lightBlue">#d0025D96</color>
+	<color name="darkgray">#3D484D</color>
 	
     <!-- Old -->
     <color name="primary">#00A8BF</color>
@@ -42,6 +44,7 @@
 	<color name="weak_indicator">#ffdb11</color>
 	<color name="strong_indicator">#8ed402</color>
 	<color name="blue_link">#0267b1</color>
+	<color name="footer_link">#267bb1</color>
 	<color name="green_acceptance">#4ba90a</color>
 	
 	<!-- Discover Secondary Colors Darker -->
@@ -65,5 +68,13 @@
 	<color name="menu_light_gray">#617277</color>
 	<color name="menu_dark_gray">#516064</color>
 	<color name="none">#00000000</color>
+	
+	<color name="blue_link">#0267b1</color>
+	
+	<!-- Statements -->
+	  <color name="blue_grey">#3d484d</color>    
+    <color name="orange_from">#FFC053</color>
+    <color name="orange_to">#FC510B</color>
+	
     
 </resources>

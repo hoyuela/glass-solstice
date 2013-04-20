@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/forms_inner_padding"
+    android:orientation="vertical" >
+
+    <View
+        android:id="@+id/divider_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/table_solid_line" />
+
+    <RelativeLayout
+        android:id="@+id/list_item"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/forms_inner_padding" >
+
+        <TextView
+            android:id="@+id/top_label"
+            style="@style/field_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/forms_inner_padding"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:singleLine="true"
+            android:text="@string/edit" />
+
+        <TextView
+            android:id="@+id/middle_label"
+            style="@style/body_copy_title_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/top_label"
+            android:layout_below="@+id/top_label"
+            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:layout_toLeftOf="@+id/caret"
+            android:singleLine="true"
+            android:text="@string/edit" />
+
+        <TextView
+            android:id="@+id/error_label"
+            style="@style/inline_error_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/top_label"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/middle_label"
+            android:visibility="gone"
+            android:text="@string/bank_invalid_characters" />
+
+        <ImageView
+            android:id="@+id/caret"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="@dimen/between_related_elements_padding"
+            android:contentDescription="@string/caret_description"
+            android:src="@drawable/blue_arrow_right" />
+    </RelativeLayout>
+
+</RelativeLayout>

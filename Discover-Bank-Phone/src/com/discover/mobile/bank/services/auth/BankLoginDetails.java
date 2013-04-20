@@ -20,6 +20,7 @@ public class BankLoginDetails implements Serializable {
 	private static final long serialVersionUID = 3482967163857273037L;
 	@JsonProperty("username")
 	public String username;
+
 	@JsonProperty("password")
 	public String password;
 }

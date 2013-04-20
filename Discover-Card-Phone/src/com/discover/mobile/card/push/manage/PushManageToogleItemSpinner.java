@@ -106,10 +106,10 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 	 */
 	public void setSpinnerDropdown(final List<String> values){
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
-																	  R.layout.push_simple_spinner, 
+																	  R.layout.card_push_simple_spinner, 
 																	  R.id.amount,
 																	  values);
-		adapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
+		adapter.setDropDownViewResource(R.layout.card_push_simple_spinner_dropdown);
 		amountSpinner.setAdapter(adapter);
 	}
 	

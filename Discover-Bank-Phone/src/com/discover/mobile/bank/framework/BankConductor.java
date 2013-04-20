@@ -75,6 +75,7 @@ import com.discover.mobile.bank.transfer.BankTransferFrequencyWidget;
 import com.discover.mobile.bank.transfer.BankTransferNotEligibleFragment;
 import com.discover.mobile.bank.transfer.BankTransferSelectAccount;
 import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
+import com.discover.mobile.bank.ui.fragments.BankTextViewFragment;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.bank.util.BankAtmUtil;
 import com.discover.mobile.common.AlertDialogParent;
@@ -94,6 +95,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.common.base.Strings;
 
 /**
@@ -555,7 +557,7 @@ public final class BankConductor  extends Conductor {
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, value);
 		fragment.setArguments(bundle);
 
-		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment, false);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
 
 	/**
@@ -565,7 +567,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		//Fetch the current activity
-		if( activity instanceof BaseFragmentActivity ) {
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 			final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
 			call.setWasDeleted(true);
@@ -584,12 +586,12 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToFeedback() {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
-		
+
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final Bundle bundle = new Bundle();
 		bundle.putBoolean(BankInfoNavigationActivity.PROVIDE_FEEDBACK, true);
-		
+
 		if( activity != null ) {
 			/**Launch Provide Feedback Activity if user is not logged in*/
 			if( activity instanceof LoginActivity ) {
@@ -739,8 +741,7 @@ public final class BankConductor  extends Conductor {
 	 * @param bundle - bundle to pass into the screen
 	 */
 	public static void navigateToReviewPaymentsTable(final Bundle bundle, final boolean isGoingBack){
-		final BankNavigationRootActivity activity =
-				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 		((AlertDialogParent)activity).closeDialog();
 
 		//Handle the case where loading more data
@@ -751,6 +752,14 @@ public final class BankConductor  extends Conductor {
 		else if( activity.getCurrentContentFragment() instanceof ReviewPaymentsTable ) {
 			final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable)activity.getCurrentContentFragment();
 			revPmtFrag.handleReceivedData(bundle);
+		}
+		//Handle case where a payment was deleted
+		else if( bundle.containsKey(BankExtraKeys.CONFIRM_DELETE)) {
+			//Navigate back to Review Payments, the user should be on the Payment Detail page for the deleted Payment
+			if( activity.popTillFragment(ReviewPaymentsTable.class) ) {
+				final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable)activity.getCurrentContentFragment();
+				revPmtFrag.handleReceivedData(bundle);
+			}
 		}
 		//Handle the first time user opens Review Payments page
 		else {
@@ -840,6 +849,10 @@ public final class BankConductor  extends Conductor {
 			if(nextVisibleFragment != null) {
 				if(args != null && args.getBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK)) {
 					navActivity.popTillFragment(BankTransferStepOneFragment.class);
+					navActivity.getSupportFragmentManager().popBackStack();
+					nextVisibleFragment = new BankTransferStepOneFragment();
+					nextVisibleFragment.setArguments(args);
+					navActivity.makeFragmentVisible(nextVisibleFragment);
 				} else {
 					navActivity.makeFragmentVisible(nextVisibleFragment);
 				}
@@ -855,12 +868,16 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToTransferConfirmation(final Bundle args) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-
+		
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+			final Bundle currentArgs = navActivity.getCurrentContentFragment().getArguments();
 			final Fragment nextVisibleFragment = new BankTransferConfirmationFragment();
-
+			if(currentArgs != null) {
+				args.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, 
+						currentArgs.getSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS));
+			}
 			navActivity.closeDialog();
 			nextVisibleFragment.setArguments(args);
 			navActivity.makeFragmentVisible(nextVisibleFragment);
@@ -1009,6 +1026,8 @@ public final class BankConductor  extends Conductor {
 		}
 	}
 
+
+	//TODO:  Remove this comment it is a way for me to identify the SSO code in this  class ----------------------------------------
 	/**
 	 * Authorizes a Bank user against the service. If successful, the user will
 	 * be logged-in and taken to the Bank landing page of the application.
@@ -1044,8 +1063,7 @@ public final class BankConductor  extends Conductor {
 	 * @param hashedTokenValue
 	 */
 	public static void authWithCardPayload(final LoginActivity activity, final String tokenValue, final String hashedTokenValue) {
-		FacadeFactory.getCardLoginFacade().loginWithPayload(activity,
-				tokenValue, hashedTokenValue);
+		FacadeFactory.getCardLoginFacade().loginWithPayload(activity, tokenValue, hashedTokenValue);
 	}
 
 	/**
@@ -1054,8 +1072,8 @@ public final class BankConductor  extends Conductor {
 	 * prompt the user about the issue and continue if they accept.
 	 */
 	public static void authDueToALUStatus() {
-		final LoginActivity activity = (LoginActivity) DiscoverActivityManager
-				.getActiveActivity();
+		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
+		//TODO: Why are we passing a null value here this call passes credentials to the next call
 		activity.showALUStatusModal(null);
 	}
 
@@ -1067,14 +1085,13 @@ public final class BankConductor  extends Conductor {
 		final BankLoginDetails credentials = new BankLoginDetails();
 		credentials.username = username;
 		credentials.password = password;
-		final LoginActivity activity = (LoginActivity) DiscoverActivityManager
-				.getActiveActivity();
+		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
 		activity.showALUStatusModal(credentials);
 	}
 
 	/**
 	 * Continues with the Skip SSO login call using provided credentials.
-	 * Typicall used when a login call originates from Card.
+	 * Typically used when a login call originates from Card.
 	 */
 	public static void continueAuthDueToALU(final BankLoginDetails credentials) {
 		KeepAlive.setCardAuthenticated(false);
@@ -1092,6 +1109,9 @@ public final class BankConductor  extends Conductor {
 			loginDetails = null;
 		}
 	}
+
+
+	//TODO:  Remove this comment it is a way for me to identify the SSO code in this  class ----------------------------------------
 
 	/**
 	 * Navigate to the email screen after getting the directions
@@ -1225,15 +1245,24 @@ public final class BankConductor  extends Conductor {
 				}
 
 				if( continueNavigation ) {
+					/**Must specify what page to show to the BankPrivacyTermsFragment*/
+					final Bundle bundle = new Bundle();
+					
+					/**Display Landing Page for Privacy and Terms*/
 					if( type == PrivacyTermsType.LandingPage ) {
 						fragment = new TermsLandingPageFragment();
 					} else {
-						/**Must specify what page to show to the BankPrivacyTermsFragment*/
-						final Bundle bundle = new Bundle();
-						bundle.putSerializable(BankPrivacyTermsFragment.KEY_TERMS_TYPE, type);
-
-						fragment = new BankPrivacyTermsFragment();
-						fragment.setArguments(bundle);
+						/**Check if Google Terms of Use is being displayed */
+						if( type == PrivacyTermsType.GoogleTermsOfUse) {
+							bundle.putSerializable(BankTextViewFragment.KEY_TEXT, GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(activity));
+							fragment = new BankTextViewFragment();
+							fragment.setArguments(bundle);
+						} else {	
+							bundle.putSerializable(BankPrivacyTermsFragment.KEY_TERMS_TYPE, type);
+							
+							fragment = new BankPrivacyTermsFragment();
+							fragment.setArguments(bundle);
+						}
 					}
 
 					navActivity.makeFragmentVisible(fragment);	

@@ -3,7 +3,7 @@
     
     <string name="section_title_account">Account</string>
     <string name="sub_section_title_recent_activity">Recent Activity</string>
-    <string name="sub_section_title_search_transaction">Search Transaction</string>
+    <string name="sub_section_title_search_transaction">Search Transactions</string>
     <string name="sub_section_title_account_summary">Account Summary</string>
     <string name="sub_section_title_statements">Statements</string>
     
@@ -17,17 +17,34 @@
     
     
     <string name="section_title_earn_cashback_bonus">Earn Cashback Bonus</string> 
-    <string name="sub_section_title_signup_for_5">Sign up for Cashback</string>
+    <string name="sub_section_title_signup_for_2">Sign up for 2%</string>
     <string name="sub_section_title_extras">Extras</string>
     <string name="sub_section_title_refer_a_friend">Refer A Friend</string>
     
     <string name="section_title_redeem_cashback_bonus">Redeem Cashback Bonus</string>  
-    <string name="sub_section_title_partner_gift_cards">Partner Gift Cards n eCerts</string>
+    <string name="sub_section_title_partner_gift_cards">Partner Gift Cards &amp; eCerts</string>
     <string name="sub_section_title_discover_gift_cards">Discover Gift Cards</string>
     <string name="sub_section_title_statement_credit">Statement Credit</string>
     <string name="sub_section_title_direct_deposit">Direct Deposit</string>
     <string name="sub_section_title_pay_with_cashback_bonus">Pay with Cashback Bonus</string>
     <string name="sub_section_title_redemption_history">Redemption History</string> 
+    
+    <string name="section_title_profile_and_settings">Profile &amp; Settings</string>
+    <string name="sub_section_title_manage_alerts">Manage Text &amp; Alerts</string>
+    <string name="sub_section_title_alert_history">Push Alerts History</string>
+    <string name="sub_section_title_create_cash_pin">Create Cash PIN</string>    
+    
+    <string name="section_title_customer_service">Customer Service</string>
+    <string name="sub_section_title_contact_us">Contact Us</string>
+    <string name="sub_section_title_faq">Frequently Asked Questions</string>
+    
+    <string name="section_title_miles">Earn Miles</string>
+    <string name="sub_section_title_sign_up_for_miles">Sign up for Miles</string>
+    <string name="sub_section_title_miles_extras">Extras</string>
+    <string name="sub_section_title_miles_refer_a_friend">Refer A Friend</string>
+    
+    <string name="section_title_redeem_miles">Redeem Miles</string>
+    <string name="privacy_terms_title">Privacy &amp; Terms</string>
     
     
 </resources>

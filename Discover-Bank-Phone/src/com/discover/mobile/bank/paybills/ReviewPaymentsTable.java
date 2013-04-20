@@ -51,7 +51,14 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	private ReviewPaymentsAdapter adapter;
 
 	/**
-	 * Handle the received data.
+	 * Handle the received data. Can be called to referesh the list data or in order to load more data.
+	 * The keys read from the bundle are the following:
+	 * 
+	 * BankExtraKeys.CONFIRM_DELETE - Holds a boolean flag which is set to true if data has been deleted and list
+	 *                                needs to be udpated with the data in PRIMARY_LIST.
+	 * BankExtraKeys.PRIMARY_LIST - Holds the new data downloaded from server. This data will either be appended or
+	 * 							    replace the existing data. The criteria used to determine whether to update or replace
+	 * 								is the CONFIRM_DELETE passed in the bundle and whether the view currently has any data.
 	 * @param bundle - bundle of received data
 	 */
 	@Override
@@ -60,22 +67,36 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		super.refreshListener();
 		footer.showDone();
 		final int category = header.getCurrentCategory();
+		
+		final boolean dataDeleted = bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE);
 		ListPaymentDetail list = (ListPaymentDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		if (list == null) {
 			list = new ListPaymentDetail();
 			list.payments = new ArrayList<PaymentDetail>();
 			list.links = new HashMap<String, ReceivedUrl>();
 		}
+		
+		//Check what view the user is currently is in Scheduled, Completed or Cancelled.
+		//The corresponding view list will be updated based on whether this method was called 
+		//to load more data or refresh the list because of a deleted item.
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
-			scheduled = (null == scheduled) ? list : handleReceivedData(scheduled, list);
+			scheduled = (null == scheduled || dataDeleted) ? list : handleReceivedData(scheduled, list);
 			updateAdapter(scheduled);
 		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS){
-			completed = (null == completed) ? list : handleReceivedData(completed, list);
+			completed = (null == completed || dataDeleted) ? list : handleReceivedData(completed, list);
 			updateAdapter(completed);
 		}else{
-			canceled = (null == canceled) ? list : handleReceivedData(canceled, list);
+			canceled = (null == canceled || dataDeleted) ? list : handleReceivedData(canceled, list);
 			updateAdapter(canceled);
 		}
+		
+		//Show indication that a payment has been deleted under header
+		if( dataDeleted ) {
+			header.showStatusMessage();
+		}
+		
+		//Check if after the new update there is any more payments transactions that can be loaded
+		//otherwise disable the load more feature
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
 			showNothingToLoad();
@@ -93,6 +114,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		list.links.putAll(newList.links);
 		return list;
 	}
+	
+
 
 	/**
 	 * @return the action bar title resource
@@ -335,13 +358,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		completed = (ListPaymentDetail)bundle.getSerializable(getCompletedKey(category));
 		canceled = (ListPaymentDetail)bundle.getSerializable(getCanceledKey(category));
 		createDefaultLists();	
-
-		final boolean showStatus = bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE, false);
-		if(showStatus){
-			header.showStatusMessage();
-			bundle.putBoolean(BankExtraKeys.COMPLETED_LIST, false);
-			scheduled.payments.remove(bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM));
-		}
 
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS && scheduled != null){
 			this.updateAdapter(scheduled);

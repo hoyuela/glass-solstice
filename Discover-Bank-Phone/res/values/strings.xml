@@ -52,4 +52,9 @@
     <string name="bank_network_connection_error_title">Network Connection Error</string>
     <string name="bank_network_connection_error_body">The internet connection appears to be offline at this moment. In order to login and access the features of the application you will need internet connectivity. Please check your device settings and try again once the connection has been restored.</string>
     <string name="bank_network_connection_error_action">Retry</string>
+    
+    <!-- SSO modal string -->
+    <string name="sso_bad_bank_status_title">Your Request Could Not Be Completed</string>
+    <string name="sso_bad_bank_status_content">We\'re sorry. We can\'t complete your request to log into your Discover Bank Account at this time.  You will be directed to your Discover Card Home Screen.</string>
+	<string name="sso_bad_bank_button">Continue</string>
 </resources>

@@ -26,7 +26,6 @@ import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.KeepAlive;
 
 /**
  * Class used to wrap the tracking helper to track the users as they move through out the application.
@@ -92,7 +91,7 @@ public final class BankTrackingHelper {
 
 		}
 
-		if(KeepAlive.getBankAuthenticated() && KeepAlive.getCardAuthenticated()){
+		if(BankUser.instance().isSsoUser()){
 			map.put(TrackingHelper.SSO_TAG, TrackingHelper.SINGLE_SIGN_ON_VALUE);
 		}
 

@@ -23,7 +23,8 @@ import com.discover.mobile.common.utils.CommonUtils;
 public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	private boolean isUsernameField = true;
 
-	private static final int DEFAULT_EMS = 20;
+
+    private static final int DEFAULT_EMS = 20;
 
 	private static final int VALID_ACCOUNT_NUMBER_LENGTH = 19;
 	private static final int MAX_USERNAME_LENGTH = 16;
@@ -73,12 +74,21 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 		setupAccountNumberInputRestrictions();
 		setupInputStylizer();
 	}
+	   /**
+     * @return the isUsernameField
+     */
+    public boolean isUsernameField() {
+        return isUsernameField;
+    }
+
 
 	@Override
 	public void setupDefaultAppearance() {
 		super.setupDefaultAppearance();
 		this.setEms(DEFAULT_EMS);
 	}
+	
+
 	/**
 	 * Listens for hardware keyboard inputs and stylizes the input for account numbers.
 	 * 

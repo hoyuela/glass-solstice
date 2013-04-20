@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/amount_element"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/forms_inner_padding"
+    android:orientation="vertical" >
+
+    <View
+        android:id="@+id/divider_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/table_solid_line" />
+
+    <LinearLayout
+        android:id="@+id/amount_llayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginTop="@dimen/forms_inner_padding"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/forms_inner_padding"
+        android:weightSum="4" >
+
+        <TextView
+            android:id="@+id/amount_title"
+            style="@style/field_copy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/schedule_pay_amount" />
+
+        <TextView
+            style="@style/field_copy_big"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingRight="3dp"
+            android:text="@string/bank_dollar_sign"
+            android:textColor="@color/black" />
+
+        <com.discover.mobile.bank.ui.widgets.AmountValidatedEditField
+            android:id="@+id/amount_edit"
+            android:imeOptions="actionDone"
+            style="@style/pmt_amount_style" >
+        </com.discover.mobile.bank.ui.widgets.AmountValidatedEditField>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/amount_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/amount_llayout"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:paddingBottom="@dimen/forms_inner_padding"
+        android:text="@string/edit"
+        android:textColor="@color/error_indicator"
+        android:visibility="visible" />
+
+</RelativeLayout>

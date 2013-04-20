@@ -33,7 +33,7 @@ public interface CardLoginFacade {
 	 * against Bank services. The Bank authentication process, upon success,
 	 * will start the user at their account landing view.
 	 */
-	public void toggleLoginToBank();
+	public void toggleLoginToBank(Context context);
 
 	/**
 	 * Toggles the user to the Card side of the application which was previous

@@ -21,6 +21,8 @@ public class AccountDetails implements Serializable {
 	@JsonProperty("primaryCardmember")
 	public PrimaryCardMember primaryCardMember;
 	
+	@JsonProperty("mailingAddress")
+	public MailingAddress mailingAddress;  
 	public String statementBalance;
 	public String earnRewardAmount;
 	public String lastFourAcctNbr;
@@ -32,17 +34,37 @@ public class AccountDetails implements Serializable {
 	public String optionCode;
 	public String newlyEarnedRewards;
 	public String statementsTransaction;
+	public String payLoadSSOText;
+	
 	
 	public boolean acLiteOutageMode;
 	public boolean cardProductGroupOutageMode;
 	public boolean paperlessOutageMode;
 	public boolean rewardOutage;
 	public boolean smcOutageMode;
+	public boolean isSSNMatched;
+	public boolean isSSOUser;
+	
+	
+	
+	
 
 	@Struct
 	public static class PrimaryCardMember {
 		public String nameOnCard;
 		public String emailAddress;
+	}
+	@Struct
+	public static class MailingAddress
+	{
+	    public String    city ;
+	    public String    firstName ;
+	    public String    lastName ;
+	    public String    line1 ;
+	    public String    line2 ;
+	    public String    middleName ;
+	    public String    postalCode ;
+	    public String    state ;
 	}
 	
 }

@@ -9,9 +9,12 @@ import roboguice.util.Strings;
 import android.content.Context;
 import android.util.Log;
 
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.error.BankErrorSSOResponseParser;
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.SessionTokenManager;
@@ -20,12 +23,12 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.net.error.ExceptionLibrary;
 
 public class CreateBankSSOLoginCall extends
-		BankJsonResponseMappingNetworkServiceCall<BankLoginData> {
+BankJsonResponseMappingNetworkServiceCall<BankLoginData> {
 
 	private final String TAG = CreateBankSSOLoginCall.class.getSimpleName();
 	private final TypedReferenceHandler<BankLoginData> handler;
 
-	public CreateBankSSOLoginCall(Context context,
+	public CreateBankSSOLoginCall(final Context context,
 			final AsyncCallback<BankLoginData> callback,
 			final BankSSOLoginDetails login) {
 		super(context, new PostCallParams(BankUrlManager.getSSOTokenUrl()) {
@@ -35,9 +38,9 @@ public class CreateBankSSOLoginCall extends
 				requiresSessionForRequest = false;
 
 				sendDeviceIdentifiers = true;
-						
+
 				body = login;
-				
+
 				// Specify what error parser to use when receiving an error response
 				errorResponseParser = BankErrorSSOResponseParser.instance();
 			}
@@ -50,7 +53,7 @@ public class CreateBankSSOLoginCall extends
 	protected TypedReferenceHandler<BankLoginData> getHandler() {
 		return handler;
 	}
-	
+
 	/**
 	 * Verifies that a token is provided by the service via the Authorization HTTP Header. If it is, 
 	 * then it caches the token in the SessionTokenManager which will later be used by any bank related
@@ -64,23 +67,27 @@ public class CreateBankSSOLoginCall extends
 	protected BankLoginData parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 		final BankLoginData data = super.parseSuccessResponse(status, headers, body);
-		
+
 		//Fetch token from JSON response
 		if( data.token != null && !Strings.isEmpty(data.token)  ) {
 			//When sending a request with a token as part of the request the format to follow is 
 			//Authorization: BankBasic <<token>>
 			SessionTokenManager.setToken(BankSchema.BANKBASIC +" " +data.token);
 			BankUrlManager.setNewLinks(data.links);
+			//Set the account type over
+			Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
+			//Set the sso user to true so the carrot and the application will know.
+			BankUser.instance().setSsoUser(true);
 		} else {
 			final String message = "Response does not include token";
-			
+
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, message);
 			}
-	
+
 			throw new ExceptionLibrary.MissingTokenException();
 		}
-		
+
 		return data;
 	}
 

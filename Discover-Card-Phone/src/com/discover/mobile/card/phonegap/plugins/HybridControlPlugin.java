@@ -12,10 +12,14 @@ import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.net.error.CardErrorBean;
+import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.navigation.CordovaWebFrag;
+import com.discover.mobile.card.navigation.StatusBarFragment;
 import com.discover.mobile.common.Globals;
 
 public class HybridControlPlugin extends CordovaPlugin {
@@ -33,16 +37,22 @@ public class HybridControlPlugin extends CordovaPlugin {
     public static final String popCurrentFragment = "popCurrentFragment";
     public static final String getAccountDetails = "getAccountDetails";
     public static final String dismissProgressBar = "dismissProgressBar";
+    public static final String getSecToken = "getSecToken";
+    public static final String updatedAccountDetails = "updatedAccountDetails";
+    public static final String getStrongAuthSvcs = "getStrongAuthSvcs";
+    public static final String logOutUser = "logOutUser";
+	public static final String gotoAchome = "gotoAchome";
 
     private static final String TAG = "HybridControlPlugin";
+    public static Fragment frag123 = null;
 
     @Override
-    public boolean execute(String action, JSONArray args,
+    public boolean execute(final String action, final JSONArray args,
             final CallbackContext callbackContext) throws JSONException {
 
         if (action.equals(changeStatusText)) {
             final String newTitle = (String) args.get(0);
-            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) this.cordova
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
@@ -50,12 +60,13 @@ public class HybridControlPlugin extends CordovaPlugin {
                     cnrAct.statusBarFragment.setStatusBarText(newTitle);
                 }
             });
-            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
         } else if (action.equals(showMenu)) {
-            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) this.cordova
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
@@ -63,12 +74,13 @@ public class HybridControlPlugin extends CordovaPlugin {
                     cnrAct.showBehind();
                 }
             });
-            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
         } else if (action.equals(hideMenu)) {
-            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) this.cordova
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
@@ -76,12 +88,13 @@ public class HybridControlPlugin extends CordovaPlugin {
                     cnrAct.showAbove();
                 }
             });
-            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
         } else if (action.equals(showHeaderNavBar)) {
-            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) this.cordova
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
@@ -90,13 +103,14 @@ public class HybridControlPlugin extends CordovaPlugin {
                     actionBar.show();
                 }
             });
-            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
 
         } else if (action.equals(hideHeaderNavBar)) {
-            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) this.cordova
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
@@ -105,14 +119,15 @@ public class HybridControlPlugin extends CordovaPlugin {
                     actionBar.hide();
                 }
             });
-            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
 
         } else if (action.equals(showHeaderStatusBar)) {
             Globals.setStatusBarVisibility(true);
-            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) this.cordova
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
@@ -120,13 +135,14 @@ public class HybridControlPlugin extends CordovaPlugin {
                     cnrAct.updateStatusBarVisibility();
                 }
             });
-            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
         } else if (action.equals(hideHeaderStatusBar)) {
             Globals.setStatusBarVisibility(false);
-            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) this.cordova
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
@@ -134,7 +150,8 @@ public class HybridControlPlugin extends CordovaPlugin {
                     cnrAct.updateStatusBarVisibility();
                 }
             });
-            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
@@ -143,10 +160,10 @@ public class HybridControlPlugin extends CordovaPlugin {
             try {
                 title0 = (String) args.get(0);
                 Log.d(TAG, "title received is " + title0);
-            } catch (Exception e) {
+            } catch (final Exception e) {
             }
             final String title = title0;
-            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) this.cordova
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
 
             cnrAct.runOnUiThread(new Runnable() {
@@ -161,7 +178,8 @@ public class HybridControlPlugin extends CordovaPlugin {
                     }
                 }
             });
-            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
@@ -171,20 +189,11 @@ public class HybridControlPlugin extends CordovaPlugin {
                     .getActivity();
             final FragmentManager fragmentManager = cnrAct
                     .getSupportFragmentManager();
-            Fragment fragmentByTag = fragmentManager
-                    .findFragmentByTag("CordovaWebFrag");
-            if (fragmentByTag == null) {
-                fragmentByTag = new CordovaWebFrag();
-            }
-            final Fragment cordovaFrag = fragmentByTag;
-            cnrAct.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.navigation_content, cordovaFrag)
-                            .commit();
-                }
-            });
+            final int fragCount = fragmentManager.getBackStackEntryCount();
+
+            String fragTag = fragmentManager.getBackStackEntryAt(fragCount - 1)
+                    .getName();
+
             String title0 = null;
             try {
                 title0 = (String) args.get(0);
@@ -192,41 +201,95 @@ public class HybridControlPlugin extends CordovaPlugin {
                         + title0);
             } catch (Exception e) {
             }
+
             final String title = title0;
 
-            cnrAct.runOnUiThread(new Runnable() {
+            if (!title.equalsIgnoreCase("No Title")) {
 
-                @Override
-                public void run() {
-                    if (title != null) {
-                    	cnrAct.hideActionBarLogo();
-                        cnrAct.setActionBarTitle(title);
-                        cnrAct.updateActionBarTitle();
-                    } else {
+                cnrAct.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if (title != null) {
+                            cnrAct.hideActionBarLogo();
+                            cnrAct.setActionBarTitle(title);
+                            cnrAct.updateActionBarTitle();
+                        }
+                    }
+
+                });
+            } else {
+                cnrAct.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
                         Log.d(TAG,
                                 "calling showactionbarlogo from popPhoneGapToFront action");
                         cnrAct.showActionBarLogo();
                     }
+                });
+            }
+
+            if (!fragTag.equalsIgnoreCase(title0)) {
+
+                Fragment fragmentByTag = fragmentManager
+                        .findFragmentByTag("CordovaWebFrag");
+                if (fragmentByTag == null) {
+                    fragmentByTag = new CordovaWebFrag();
                 }
-                
-                
-            });
+                final Fragment cordovaFrag = fragmentByTag;
+
+                frag123 = cordovaFrag;
+
+                final StatusBarFragment statusBarFragment;
+                statusBarFragment = (StatusBarFragment) fragmentManager
+                        .findFragmentById(R.id.status_bar);
+
+                // final String backStackString = title0;
+
+                cnrAct.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        /*
+                         * fragmentManager.beginTransaction()
+                         * .replace(R.id.navigation_content, cordovaFrag)
+                         * .commit();
+                         */
+
+                        fragmentManager
+                                .beginTransaction()
+                              /*  .hide(statusBarFragment)*/
+                                .remove(cordovaFrag)
+                                .add(R.id.navigation_content, cordovaFrag,
+                                        "CordovaWebFrag").addToBackStack(title)
+                                .commit();
+                        fragmentManager.executePendingTransactions();
+                        Utils.hideSpinner();
+                    }
+                });
+            } else {
+                cnrAct.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Utils.hideSpinner();
+                    }
+                });
+            }
 
             PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
-            Utils.hideSpinner();
-            
+
             return true;
         } else if (action.equals(pushFragment)) {
             final String fragmentName = args.getString(0);
             String tag0 = null;
-            int lastIndexOf = fragmentName.lastIndexOf(".");
+            final int lastIndexOf = fragmentName.lastIndexOf(".");
             if (lastIndexOf != -1) {
                 tag0 = fragmentName.substring(lastIndexOf + 1);
             }
             final String tag = tag0;
-            CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) this.cordova
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             final FragmentManager fragmentManager = cnrAct
                     .getSupportFragmentManager();
@@ -240,28 +303,30 @@ public class HybridControlPlugin extends CordovaPlugin {
                                 .commit();
                     } else {
                         try {
-                            Fragment fragObject = (Fragment) Class.forName(
-                                    fragmentName).newInstance();
+                            final Fragment fragObject = (Fragment) Class
+                                    .forName(fragmentName).newInstance();
                             fragmentManager
                                     .beginTransaction()
                                     .add(R.id.navigation_content, fragObject,
                                             tag).commit();
-                        } catch (InstantiationException e) {
+                        } catch (final InstantiationException e) {
                             e.printStackTrace();
-                        } catch (IllegalAccessException e) {
+                        } catch (final IllegalAccessException e) {
                             e.printStackTrace();
-                        } catch (ClassNotFoundException e) {
+                        } catch (final ClassNotFoundException e) {
                             e.printStackTrace();
                         }
                     }
                 }
             });
-            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
         } else if (action.equals(popCurrentFragment)) {
-            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) this.cordova
+            Log.d(TAG, "inside popCurrentFragment ");
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             final FragmentManager fragmentManager = cnrAct
                     .getSupportFragmentManager();
@@ -275,7 +340,7 @@ public class HybridControlPlugin extends CordovaPlugin {
                         }
                     }
                 });
-                PluginResult pluginResult = new PluginResult(
+                final PluginResult pluginResult = new PluginResult(
                         PluginResult.Status.OK);
                 pluginResult.setKeepCallback(true);
                 callbackContext.sendPluginResult(pluginResult);
@@ -289,30 +354,149 @@ public class HybridControlPlugin extends CordovaPlugin {
              * "inside getAccountDetails", Toast.LENGTH_SHORT).show();
              */
             Log.d(TAG, "inside getAccountDetails ");
-            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) this.cordova
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
-            String json = (String) CardShareDataStore
+            final String json = (String) CardShareDataStore
                     .getInstance(cnrAct)
                     .getReadOnlyAppCache()
-                    .get(this.cordova.getActivity().getString(
-                            R.string.account_details));
+                    .get(cordova.getActivity().getString(
+                            R.string.account_details_for_js));
             Log.d(TAG, "json: " + json);
             /*
              * Toast.makeText(this.cordova.getActivity().getApplicationContext(),
              * "json: " + json, Toast.LENGTH_SHORT).show();
              */
-            PluginResult pluginResult = new PluginResult(
+            final PluginResult pluginResult = new PluginResult(
                     PluginResult.Status.OK, json);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
         }
-        
-        else if(action.equals(dismissProgressBar))
-        {
-        	Utils.hideSpinner();
-        	        	
+
+        else if (action.equals(dismissProgressBar)) {
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+            cnrAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Utils.hideSpinner();
+                }
+            });
+        } else if (action.equals(updatedAccountDetails)) {
+            Log.d(TAG, "inside updatedAcdountDetails");
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+            final String accountDetails = cnrAct
+                    .getString(R.string.account_details);
+            final String accountDetailsJson = cnrAct
+                    .getString(R.string.account_details_for_js);
+
+            CardShareDataStore.getInstance(cnrAct).deleteCacheObject(
+                    accountDetails);
+            CardShareDataStore.getInstance(cnrAct).deleteCacheObject(
+                    accountDetailsJson);
+
+            final CardEventListener cardEventListener = new CardEventListener() {
+
+                @Override
+                public void onSuccess(final Object data) {
+                    // TODO Auto-generated method stub
+                    CardShareDataStore.getInstance(cnrAct).addToAppCache(
+                            accountDetails, data);
+
+                    final PluginResult pluginResult = new PluginResult(
+                            PluginResult.Status.OK);
+                    pluginResult.setKeepCallback(true);
+                    callbackContext.sendPluginResult(pluginResult);
+
+                    Log.d(TAG,
+                            "inside updatedAccountDetails Success in account service call");
+                }
+
+                @Override
+                public void OnError(final Object data) {
+                    // TODO Auto-generated method stub
+                    Log.d(TAG,
+                            "inside updatedAccountDetails Error in account service call");
+
+                    final PluginResult pluginResult = new PluginResult(
+                            PluginResult.Status.ERROR);
+                    pluginResult.setKeepCallback(true);
+                    callbackContext.sendPluginResult(pluginResult);
+
+                    final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                            cnrAct);
+                    cardErrorResHandler.handleCardError((CardErrorBean) data);
+                }
+            };
+
+            cnrAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Utils.updateAccountDetails(cnrAct, cardEventListener ,"Discover", "Updating Account Details...");
+                }
+            });
+
+            return true;
         }
+
+        else if (action.equals(getSecToken)) {
+            Log.d(TAG, "inside getSecToken ");
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+            final String secToken = CardShareDataStore.getInstance(cnrAct)
+                    .getCookieManagerInstance().getSecToken();
+            Log.d(TAG, "token: " + secToken);
+
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK, secToken);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(getStrongAuthSvcs)) {
+
+            Log.d(TAG, "inside getStrongAuthSvcs ");
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+            final String strongAuthSvcs = (String) CardShareDataStore
+                    .getInstance(cnrAct).getReadOnlyAppCache()
+                    .get(cnrAct.getString(R.string.strong_auth_svcs));
+            Log.d(TAG, "strongAuthSvcs: " + strongAuthSvcs);
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK, strongAuthSvcs);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(logOutUser)) {
+            Log.d(TAG, "inside logOut ");
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+            cnrAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    cnrAct.logout();
+                }
+            });
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        }else if (action.equals(gotoAchome)) {
+        	Log.d(TAG, "inside gotoAchome ");
+        	final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+        			.getActivity();
+        	final FragmentManager fragManager = cnrAct.getSupportFragmentManager();
+        	Fragment homeFragment = fragManager
+        			.findFragmentByTag("HomeSummaryFragment");
+        	cnrAct.makeFragmentVisible(homeFragment, false);
+        	final PluginResult pluginResult = new PluginResult(
+        			PluginResult.Status.OK);
+        	pluginResult.setKeepCallback(true);
+        	callbackContext.sendPluginResult(pluginResult);
+        	return true;
+        }
+
         return false;
     }
 }

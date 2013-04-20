@@ -24,60 +24,99 @@
 
             <TextView
                 android:id="@+id/account_info_label_one_label"
-                style="@style/title_copy"
+                style="@style/body_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_error_label"
-                android:text="@string/account_info_label_one" />
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="8dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/account_info_label_one"
+                android:textSize="16dp" />
 
             <com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText
                 android:id="@+id/account_info_main_input_field"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/input_field_height"
                 android:layout_below="@+id/account_info_label_one_label"
-                android:layout_marginTop="@dimen/between_related_elements_padding"
                 android:imeOptions="actionDone"
-                android:textCursorDrawable="@null" />
+                android:textColor="#8a9499"
+                android:textCursorDrawable="@null"
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/account_information_input_info_label"
-                style="@style/field_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_card_account_number_error_label"
-                android:paddingTop="@dimen/between_related_elements_padding"
-                android:text="@string/account_info_input_restrictions_label" />
+                android:layout_marginTop="2dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/account_info_input_restrictions_label"
+                android:textColor="@color/sub_copy"
+                android:textSize="14dp"
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/account_info_card_account_number_error_label"
                 style="@style/error_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_main_input_field"
+                android:includeFontPadding="false"
                 android:text="@string/invalid_input" >
             </TextView>
 
             <TextView
                 android:id="@+id/account_info_error_label"
-                style="@style/error_label" />
+                style="@style/error_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false" />
 
             <TextView
                 android:id="@+id/account_info_card_expiration_date_label"
-                style="@style/title_copy"
+                style="@style/body_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/account_information_input_info_label"
-                android:layout_marginTop="@dimen/forms_inner_padding"
-                android:text="@string/card_expiration_date_text" />
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="8dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/card_expiration_date_text"
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/account_info_ssn_info_label"
-                style="@style/title_copy"
+                style="@style/body_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_expiration_date_error_label"
-                android:layout_marginTop="@dimen/table_inner_padding"
-                android:text="@string/account_info_ssn_info_text" />
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="8dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/account_info_ssn_info_text"
+                android:textSize="16dp" />
 
             <com.discover.mobile.card.common.uiwidget.SsnEditText
                 android:id="@+id/account_info_ssn_input_field"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_ssn_info_label"
-                android:layout_marginTop="@dimen/between_related_elements_padding"
                 android:layout_toRightOf="@+id/account_info_ssn_prefix_label"
                 android:imeOptions="actionDone"
-                android:textCursorDrawable="@null" />
+                android:textColor="#8a9499"
+                android:textCursorDrawable="@null"
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/account_info_ssn_prefix_label"
@@ -87,27 +126,43 @@
                 android:layout_alignTop="@id/account_info_ssn_input_field"
                 android:layout_below="@+id/account_info_ssn_info_label"
                 android:paddingTop="8dp"
+                android:paddingRight="4dp"
                 android:text="@string/ssn_prefix"
-                android:textColor="@color/field_copy" />
+                android:textColor="#8a9499"
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/account_info_ssn_error_label"
                 style="@style/error_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/account_info_ssn_input_field"
                 android:layout_below="@+id/account_info_ssn_input_field"
+                android:includeFontPadding="false"
                 android:text="@string/invalid_input" />
 
             <TextView
                 android:id="@+id/account_info_dob_label"
-                style="@style/title_copy"
+                style="@style/body_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_ssn_error_label"
-                android:layout_marginTop="@dimen/between_related_elements_padding"
-                android:text="@string/account_info_dob_text" />
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="8dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/account_info_dob_text"
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/account_info_dob_year_error_label"
                 style="@style/error_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_birth_date_picker"
+                android:includeFontPadding="false"
                 android:text="@string/invalid_input" />
 
             <Button
@@ -117,51 +172,63 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_birth_date_picker"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/orange_button_margin_top"
-                android:layout_marginTop="@dimen/orange_button_margin_top"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="36dp"
                 android:onClick="validateInfoAndSubmitOnSuccess"
                 android:text="@string/continue_text" />
 
-            <Button
-                android:id="@+id/account_info_cancel_button"
+            <TextView
+                android:id="@+id/account_info_cancel_label"
                 style="@style/blue_hyperlink"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_continue_button"
                 android:layout_centerHorizontal="true"
-                android:background="@color/none"
-                android:onClick="goBack"
-                android:text="@string/cancel_text" />
+                android:layout_marginBottom="44dp"
+                android:clickable="true"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/cancel_text"
+                android:textSize="17dp" />
 
             <com.discover.mobile.card.common.uiwidget.CardExpirationDateEditText
                 android:id="@+id/account_info_card_exp_date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_card_expiration_date_label"
-                android:layout_marginTop="@dimen/between_related_elements_padding" />
+                android:textColor="#8a9499"
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/account_info_expiration_date_error_label"
                 style="@style/error_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_card_exp_date_picker"
+                android:includeFontPadding="false"
                 android:text="@string/invalid_input" />
 
             <com.discover.mobile.card.common.uiwidget.DatePickerEditText
                 android:id="@+id/account_info_birth_date_picker"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_dob_label"
-                android:layout_marginTop="@dimen/between_related_elements_padding" />
+                android:textColor="#8a9499"
+                android:textSize="14dp"
+                android:textStyle="bold" 
+                />
 
             <RelativeLayout
                 android:id="@+id/footer"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_cancel_button"
-                android:layout_marginTop="@dimen/groups_of_elements_padding" >
+                android:layout_below="@+id/account_info_cancel_label" >
 
-                <include layout="@layout/old_general_need_help_footer" />
+                <include layout="@layout/card_old_general_need_help_footer" />
             </RelativeLayout>
+
             <TextView
                 android:id="@+id/provide_feedback_button"
                 style="@style/blue_hyperlink_small"
@@ -169,9 +236,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/footer"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/orange_button_margin_top"
-                android:layout_marginTop="@dimen/orange_button_margin_top"
-                android:text="@string/feedback_text" />
+                android:layout_marginTop="38dp"
+                android:includeFontPadding="false"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="@string/feedback_text"
+                 android:textSize="14dp" />
         </RelativeLayout>
     </ScrollView>
 

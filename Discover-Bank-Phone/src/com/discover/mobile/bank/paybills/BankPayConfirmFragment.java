@@ -88,14 +88,7 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	protected void onActionButtonClick() {
-		/**
-		 * Remove this fragment from the transactions list, this seems to be required since 
-		 * makeVisible(fragment, boolean) was used.
-		 */
-		getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
-		activity.popTillFragment(BankSelectPayee.class);
+		this.onBackPressed();
 	}
 
 	/**
@@ -104,13 +97,6 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	protected void onActionLinkClick() {
-
-		/**
-		 * Remove this fragment from the transactions list, this seems to be required since 
-		 * makeVisible(fragment, boolean) was used.
-		 */
-		getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-
 		//Generate a url to download schedule payments
 		final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 
@@ -149,10 +135,11 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	public boolean isBackPressDisabled() {
 		return true;
 	}
-
+	
 	@Override
 	public void onBackPressed() {
-		//Nothing todo here
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
+		activity.popTillFragment(BankSelectPayee.class);
 	}
 
 

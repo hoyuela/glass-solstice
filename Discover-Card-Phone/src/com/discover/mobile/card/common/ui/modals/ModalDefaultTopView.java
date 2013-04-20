@@ -37,6 +37,8 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	/**View that holds the content text*/
 	private TextView text;
 	
+	private TextView feedback;
+	
 	/**View that holds the footer text*/
 	private NeedHelpFooter helpFooter;
 
@@ -49,7 +51,7 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 		super(context, attrs);
 		
 		final View mainView = (View) LayoutInflater.from(context)
-                .inflate(R.layout.modal_default_top_view, null);
+                .inflate(R.layout.card_modal_default_top_view, null);
 		
 		res = context.getResources();
 		
@@ -57,7 +59,7 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 		title = (TextView) mainView.findViewById(R.id.modal_alert_title);
 		text = (TextView) mainView.findViewById(R.id.modal_alert_text);
 		helpFooter = new NeedHelpFooter((ViewGroup)mainView);
-		
+		feedback = (TextView) mainView.findViewById(R.id.modal_feedback_text);
 		addView(mainView);		
 	}
 
@@ -134,5 +136,25 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	public void hideNeedHelpFooter(){
 		helpFooter.show(false);
 	}
+	/**
+	 *   
+	 * @return returns the feed back textview instance
+	 */
+	public TextView getFeedbackTextView()
+	{
+	    return feedback;
+	}
+	
+	
+	/**
+     * Hide the feed back text view
+     */
+    public void hideFeedbackView(){
+       
+        feedback.setVisibility(View.GONE);
+    }
+    
+   
+    
 
 }

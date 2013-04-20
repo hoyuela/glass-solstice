@@ -239,10 +239,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 			// Check if the error is an SSO User
 			else if (isSSOUser(error)) {
+				//Set the boolean the the SSO user is trying to login
+				BankUser.instance().setSsoUser(true);
+				//Hand the authorization over to card so that they can auth
 				BankConductor.authWithCardPayload(
 						(LoginActivity) activeActivity,
 						((BankErrorSSOResponse) error).token,
 						((BankErrorSSOResponse) error).hashedValue);
+				//Close the dialog after the next call has been submitted.
+				((LoginActivity)DiscoverActivityManager.getActiveActivity()).closeDialog();
 			}
 			// Check if the error was a Ping. if so, then session died.
 			else if (isSessionDead(error)) {
@@ -345,7 +350,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Download Customer Information if a Login call is successful
 		else if( sender instanceof CreateBankLoginCall || sender instanceof CreateBankSSOLoginCall) {
-			final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
+			final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 			KeepAlive.setBankAuthenticated(true);
 
@@ -353,7 +358,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			Globals.setLoggedIn(true);
 
 			//Update current account based on user logged in and account type
-			activity.updateAccountInformation(AccountType.BANK_ACCOUNT);
+			if(activity instanceof LoginActivity){
+				((LoginActivity)activity).updateAccountInformation(AccountType.BANK_ACCOUNT);
+			}
 
 			BankServiceCallFactory.createCustomerDownloadCall().submit();
 		}
@@ -445,9 +452,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			final Bundle resultBundle = new Bundle();
 			resultBundle.putSerializable(BankExtraKeys.TRANSFER_SUCCESS_DATA, result);
 
+			final Account currentAccount = BankUser.instance().getCurrentAccount();
 			//Mark the scheduled and posted activity dirty so that it is refreshed
-			BankUser.instance().getCurrentAccount().scheduled = null;
-			BankUser.instance().getCurrentAccount().posted = null;
+			if(currentAccount != null) {
+				currentAccount.scheduled = null;
+				currentAccount.posted = null;
+			}else{
+				Log.d(TAG, "Could not mark scheduled and posted activity as dirty");
+			}
+
 			BankConductor.navigateToTransferConfirmation(resultBundle);
 		}
 		//Handle the payee success call
@@ -720,20 +733,20 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 */
 	public static boolean isNetworkConnected() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		
-	    final ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(activity.CONNECTIVITY_SERVICE);
-	    boolean connected = false;
-	    
-	    // test for connection
-	    if ( cm.getActiveNetworkInfo() != null
-	         && cm.getActiveNetworkInfo().isAvailable()
-	         && cm.getActiveNetworkInfo().isConnected()) {
-	       connected = true;
-	    } 
-	    
-	    return connected;
+
+		final ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(activity.CONNECTIVITY_SERVICE);
+		boolean connected = false;
+
+		// test for connection
+		if ( cm.getActiveNetworkInfo() != null
+				&& cm.getActiveNetworkInfo().isAvailable()
+				&& cm.getActiveNetworkInfo().isConnected()) {
+			connected = true;
+		} 
+
+		return connected;
 	}
-	
+
 	/**
 	 * Method used to notify this class when the active Activity has changed on the application.
 	 */
@@ -831,7 +844,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		return ret;
 	}
-	
+
 	/**
 	 * Enum used to specify whether a NetworkServiceCallAsyncArgs is for a successful, error or exception
 	 * response to a network service call.

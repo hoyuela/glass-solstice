@@ -64,7 +64,13 @@ public class TermsLandingPageFragment extends BaseFragment {
 				 customer.getDepositsEligibility().isEligible() ) {
 				values.add(allValues.get(3));
 			}
-		} 
+			
+			/**Add Google Menu Item*/
+			values.add(allValues.get(4));
+		} else {
+			/**Add Google Menu Item*/
+			values.add(allValues.get(4));
+		}
 		
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), 
 				R.layout.single_item_table_cell, android.R.id.text1, values);
@@ -96,7 +102,8 @@ public class TermsLandingPageFragment extends BaseFragment {
 			BankConductor.navigateToPrivacyTerms(PrivacyTermsType.BillPayTermsOfUse);
 		else if(title.equals(res.getString(R.string.bank_deposit_check)))
 			BankConductor.navigateToPrivacyTerms(PrivacyTermsType.DepositTermsOfUse);
-	
+		else if(title.equals(res.getString(R.string.bank_terms_google))) 
+			BankConductor.navigateToPrivacyTerms(PrivacyTermsType.GoogleTermsOfUse);
 	}
 		
 	@Override
