@@ -18,7 +18,7 @@
 
             <include
                 android:id="@+id/accounthomestatusbar"
-                layout="@layout/status_bar_layout" />
+                layout="@layout/card_status_bar_layout" />
         </LinearLayout>
 
         <LinearLayout
@@ -46,19 +46,19 @@
 
             <include
                 android:id="@+id/home_current_balance"
-                layout="@layout/general_list_item" />
+                layout="@layout/card_general_list_item" />
 
             <include
                 android:id="@+id/home_last_statement"
-                layout="@layout/general_list_item" />
+                layout="@layout/card_general_list_item" />
 
             <include
                 android:id="@+id/home_bonus_balance"
-                layout="@layout/general_list_item" />
+                layout="@layout/card_general_list_item" />
 
             <include
                 android:id="@+id/home_bonus_offer"
-                layout="@layout/general_list_item_simple" />
+                layout="@layout/card_general_list_item_simple" />
 
             <TextView
                 android:id="@+id/provide_feedback_button1"

@@ -40,7 +40,7 @@ public class StatusBarFragment extends Fragment {
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
 
-		final View view = inflater.inflate(R.layout.status_bar_layout,
+		final View view = inflater.inflate(R.layout.card_status_bar_layout,
 				container);
 		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
 				.getInstance(stsActivity);
