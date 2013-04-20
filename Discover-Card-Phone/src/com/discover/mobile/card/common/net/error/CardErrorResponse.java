@@ -36,7 +36,7 @@ public class CardErrorResponse implements Serializable {
         public String questionText;
         public boolean isSSOUidDLinkable;
         public boolean isSSOUser;
-        public boolean isSSNMatch;
+        public boolean isSSNMatched;
     }
 
 }

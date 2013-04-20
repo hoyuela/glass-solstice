@@ -110,62 +110,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 			public void onStrongAuthError(Object data) {
 				// TODO Auto-generated method stub
 
-				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-						new CardErrorHandlerUi() {
-							@Override
-							public void showOneButtonAlert(int title,
-									int content, int buttonText) {
-								// TODO Auto-generated method stub
-							}
-
-							@Override
-							public void showDynamicOneButtonAlert(int title,
-									String content, int buttonText) {
-								// TODO Auto-generated method stub
-							}
-
-							@Override
-							public void showCustomAlert(AlertDialog alert) {
-								// TODO Auto-generated method stub
-							}
-
-							@Override
-							public void setLastError(int errorCode) {
-								// TODO Auto-generated method stub
-							}
-
-							@Override
-							public int getLastError() {
-								// TODO Auto-generated method stub
-								return 0;
-							}
-
-							@Override
-							public TextView getErrorLabel() {
-								// TODO Auto-generated method stub
-								return ((com.discover.mobile.common.error.ErrorHandlerUi) context)
-										.getErrorLabel();
-							}
-
-							@Override
-							public List<EditText> getInputFields() {
-								// TODO Auto-generated method stub
-								return ((com.discover.mobile.common.error.ErrorHandlerUi) context)
-										.getInputFields();
-							}
-
-							@Override
-							public Context getContext() {
-								// TODO Auto-generated method stub
-								return context;
-							}
-
-							@Override
-							public CardErrHandler getCardErrorHandler() {
-								// TODO Auto-generated method stub
-								return CardErrorUIWrapper.getInstance();
-							}
-						});
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data);
 
 			}
@@ -173,7 +118,8 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 			@Override
 			public void onStrongAuthCardLock(Object data) {
 				// TODO Auto-generated method stub
-
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				cardErrorResHandler.handleCardError((CardErrorBean) data);
 			}
 		};
 	}
@@ -388,8 +334,9 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 						CardNavigationRootActivity.class);
 				TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 				
-				showToggleFlag = true;
+				Globals.setCurrentAccount(AccountType.CARD_ACCOUNT);
 				
+				showToggleFlag = true;
 				confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
 
 				context.startActivity(confirmationScreen);

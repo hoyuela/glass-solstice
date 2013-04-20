@@ -3,6 +3,9 @@
  */
 package com.discover.mobile.card.facade;
 
+import android.content.Context;
+
+import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.common.facade.CardKeepAliveFacade;
 
 /**
@@ -11,10 +14,12 @@ import com.discover.mobile.common.facade.CardKeepAliveFacade;
  */
 public class CardKeepAliveFacadeImpl implements CardKeepAliveFacade{
 
+	PageTimeOutUtil pagetimeout;
 	@Override
-	public void refreshCardSession() {
-		// TODO Auto-generated method stub
-		
+	public void refreshCardSession(final Context context) {
+
+		pagetimeout = new PageTimeOutUtil(context);
+		pagetimeout.keepSessionAlive();
 	}
 
 }

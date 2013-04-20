@@ -143,10 +143,10 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * @return
 	 */
 	public static CreateBankSSOLoginCall createSSOLoginCall(final BankSSOLoginDetails credentials) {
-		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<BankLoginData> callback =
-				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, (ErrorHandlerUi)activity)
 				.build();
 
 		final CreateBankSSOLoginCall loginCall =  new CreateBankSSOLoginCall(activity, callback, credentials);
