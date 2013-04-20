@@ -58,9 +58,10 @@ public class CardErrorHandler extends BaseErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#showErrorsOnScreen(com.discover
 	 * .mobile.error.ErrorHandlerUi, java.lang.String)
 	 */
+	@Override
 	public void showErrorsOnScreen(final ErrorHandlerUi errorHandlerUi, final String errorText) {
 		// Show error label and display error text
-		if (errorHandlerUi != null) {
+		if (errorHandlerUi != null && null != errorHandlerUi.getErrorLabel()) {
 			errorHandlerUi.getErrorLabel().setText(errorText);
 			errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
 		}
@@ -77,15 +78,16 @@ public class CardErrorHandler extends BaseErrorHandler {
 		}
 	}
 
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
 	 * com.discover.mobile.error.ErrorHandler#clearTextOnScreen(com.discover.mobile.error.ErrorHandlerUi)
 	 */
+	@Override
 	public void clearTextOnScreen(final ErrorHandlerUi errorHandlerUi) {
-		
+
 		// Hide error label and display error text
 		if (errorHandlerUi != null && errorHandlerUi.getErrorLabel() != null) {
 			errorHandlerUi.getErrorLabel().setVisibility(View.GONE);
@@ -101,9 +103,9 @@ public class CardErrorHandler extends BaseErrorHandler {
 				text.setText("");
 				text.setBackgroundResource(R.drawable.edit_text_default);
 			}
-			
+
 		}
-		
+
 	}
 
 	/**
@@ -112,21 +114,23 @@ public class CardErrorHandler extends BaseErrorHandler {
 	 * @param alert
 	 *            - the modal alert to be shown
 	 */
+	@Override
 	public void showCustomAlert(final AlertDialog alert) {
 		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	}
 
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see com.discover.mobile.error.ErrorHandler#createErrorModal(int, int,
 	 * int)
 	 */
-	
+
+	@Override
 	public ModalAlertWithOneButton createErrorModal(final int errorCode, final int titleText, final int errorText) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
@@ -134,7 +138,7 @@ public class CardErrorHandler extends BaseErrorHandler {
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 
 
-		
+
 
 		// Create a one button modal with text as per parameters provided
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, errorText, true, R.string.need_help_number_text,
@@ -160,7 +164,8 @@ public class CardErrorHandler extends BaseErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#createErrorModal(java.lang.String,
 	 * java.lang.String)
 	 */
-	
+
+	@Override
 	public ModalAlertWithOneButton createErrorModal(final String titleText, final String errorText) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
@@ -168,15 +173,16 @@ public class CardErrorHandler extends BaseErrorHandler {
 		TrackingHelper.trackPageView(AnalyticsPage.LOGIN_ERROR);
 
 		// Decide on what help number to show
-		int helpResId =  R.string.need_help_number_text;
-	
+		final int helpResId =  R.string.need_help_number_text;
+
 
 		// Create a one button modal with text as per parameters provided
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, errorText, true, helpResId,
 				R.string.ok);
 
 		modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
-			
+
+			@Override
 			public void onClick(final View v) {
 				modal.dismiss();
 
@@ -194,7 +200,8 @@ public class CardErrorHandler extends BaseErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#handleHttpInternalServerErrorModal
 	 * ()
 	 */
-	
+
+	@Override
 	public ModalAlertWithOneButton handleHttpInternalServerErrorModal() {
 
 		final ModalAlertWithOneButton modal = createErrorModal(HttpURLConnection.HTTP_INTERNAL_ERROR, R.string.error_500_title,
@@ -211,7 +218,8 @@ public class CardErrorHandler extends BaseErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#handleHttpFraudNotFoundUserErrorModal
 	 * (com.discover.mobile.error.ErrorHandlerUi, java.lang.String)
 	 */
-	
+
+	@Override
 	public ModalAlertWithOneButton handleHttpFraudNotFoundUserErrorModal(final ErrorHandlerUi mErrorHandlerUi,
 			final String message) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
@@ -229,7 +237,8 @@ public class CardErrorHandler extends BaseErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#handleHttpServiceUnavailableModal
 	 * (java.lang.String)
 	 */
-	
+
+	@Override
 	public ModalAlertWithOneButton handleHttpServiceUnavailableModal(final String errorText) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
@@ -267,7 +276,8 @@ public class CardErrorHandler extends BaseErrorHandler {
 	 * 
 	 * @see com.discover.mobile.error.ErrorHandler#handleHttpForbiddenError()
 	 */
-	
+
+	@Override
 	public void handleHttpForbiddenError() {
 		// TODO: Will complete this in the Handle Technical Difficulties User
 		// Story
@@ -278,7 +288,8 @@ public class CardErrorHandler extends BaseErrorHandler {
 	 * 
 	 * @see com.discover.mobile.error.ErrorHandler#handleGenericError(int)
 	 */
-	
+
+	@Override
 	public void handleGenericError(final int httpErrorCode) {
 		final ModalAlertWithOneButton modal = createErrorModal(httpErrorCode, R.string.error_request_not_completed_title,
 				R.string.error_request_not_completed_msg);
@@ -291,12 +302,13 @@ public class CardErrorHandler extends BaseErrorHandler {
 	 * 
 	 * @see com.discover.mobile.error.ErrorHandler#handleHttpUnauthorizedError()
 	 */
-	
+
+	@Override
 	public void handleHttpUnauthorizedError() {
 
 	}
 
-	
+
 
 	/*
 	 * (non-Javadoc)
@@ -305,7 +317,8 @@ public class CardErrorHandler extends BaseErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#handleLoginAuthFailure(com.discover
 	 * .mobile.error.ErrorHandlerUi, java.lang.String)
 	 */
-	
+
+	@Override
 	public void handleLoginAuthFailure(final ErrorHandlerUi errorHandlerUi, final String errorMessage) {
 		showErrorsOnScreen(errorHandlerUi, errorMessage);
 	}
@@ -317,7 +330,8 @@ public class CardErrorHandler extends BaseErrorHandler {
 	 * com.discover.mobile.error.ErrorHandler#handleLockedOut(com.discover.mobile
 	 * .error.ErrorHandlerUi, java.lang.String)
 	 */
-	
+
+	@Override
 	public ModalAlertWithOneButton handleLockedOut(final ErrorHandlerUi errorHandlerUi, final String errorText) {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
@@ -346,13 +360,14 @@ public class CardErrorHandler extends BaseErrorHandler {
 		return modal;
 	}
 
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see com.discover.mobile.error.ErrorHandler#handleSessionExpired()
 	 */
-	
+
+	@Override
 	public void handleSessionExpired() {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 		final Bundle bundle = new Bundle();
