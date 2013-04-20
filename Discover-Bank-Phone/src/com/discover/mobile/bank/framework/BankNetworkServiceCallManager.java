@@ -239,7 +239,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 			// Check if the error is an SSO User
 			else if (isSSOUser(error)) {
-				//Set the boolean tha the SSO user is trying to login
+				//Set the boolean the the SSO user is trying to login
 				BankUser.instance().setSsoUser(true);
 				//Hand the authorization over to card so that they can auth
 				BankConductor.authWithCardPayload(
@@ -460,7 +460,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			}else{
 				Log.d(TAG, "Could not mark scheduled and posted activity as dirty");
 			}
-			
+
 			BankConductor.navigateToTransferConfirmation(resultBundle);
 		}
 		//Handle the payee success call
