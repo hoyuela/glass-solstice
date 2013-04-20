@@ -196,6 +196,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(context, top, bottom);
 		top.setTitle(R.string.sso_bad_bank_status_title);
 		top.setContent(R.string.sso_bad_bank_status_content);
+		top.showErrorIcon(true);
 		bottom.setButtonText(R.string.sso_bad_bank_button);
 		bottom.getButton().setOnClickListener(new OnClickListener(){
 
@@ -218,7 +219,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	}
 
 	public void goToCardHome(){
-		//if the activty is a navigation root acitivty the user should be in card
+		//if the activity is a navigation root activity the user should be in card
 		if(DiscoverActivityManager.getActiveActivity() instanceof NavigationRootActivity){
 			//Do nothing here
 		}else{
