@@ -107,7 +107,9 @@ public final class WSProxy {
             setupDeviceIdentifiers(context);
         }
         connection = createConnection(requestDetail);
+       
         setCookies(connection, context);
+        
         try {
             final InputStream is = ConnectionManager.connect(connection,
                     context, requestDetail.getInput());
@@ -345,10 +347,14 @@ public final class WSProxy {
         List<HttpCookie> cookies=sessionCookieManager.getHttpCookie();
         StringBuffer cookieStringBuffer = new StringBuffer();
         for (HttpCookie cookie : cookies) {
+        	
+        	if(null!=cookie&&null!=cookie.getName()&& (!("null".equals(cookie.getValue()))&& null!=cookie.getValue()))
+        	{
         	cookieStringBuffer.append(cookie.getName());
         	cookieStringBuffer.append("=");
         	cookieStringBuffer.append(cookie.getValue());
         	cookieStringBuffer.append(";");
+        	}
         	
         }
         connection.setRequestProperty("Cookie",cookieStringBuffer.toString());
