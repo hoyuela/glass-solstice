@@ -16,6 +16,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.google.common.base.Strings;
 
 public class BankStringFormatter {
+	
 	public final static String EMPTY_DOLLAR = "$0.00";
 	private final static String TAG = BankStringFormatter.class.getSimpleName();
 	

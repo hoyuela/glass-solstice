@@ -141,7 +141,10 @@ public class ListItemGenerator {
 
 	public ViewPagerListItem getFrequencyCell(final String frequency) {
 		ViewPagerListItem item = null;
-		if(TransferDetail.ONE_TIME_TRANSFER.equals(frequency))
+		final boolean isOneTimeTransfer = TransferDetail.ONE_TIME_TRANSFER.equalsIgnoreCase(frequency) ||
+									context.getResources().getString(R.string.one_time).equalsIgnoreCase(frequency);
+		
+		if(isOneTimeTransfer)
 			item = getTwoItemCell(R.string.frequency, frequency);
 		else
 			item = getTwoItemImageCell(R.string.frequency, frequency);
@@ -163,6 +166,10 @@ public class ListItemGenerator {
 		final ViewPagerListItem temp = getTwoItemCell(R.string.empty, accountName);
 		temp.getTopLabel().setText(formattedTitle);
 		return temp;
+	}
+	
+	public ViewPagerListItem getReferenceNumberCell(final String referenceNumber) {
+		return getTwoItemCell(R.string.reference_number, "#" + referenceNumber);
 	}
 
 	public ViewPagerListItem getStatusCell(final String status) {
@@ -337,6 +344,18 @@ public class ListItemGenerator {
 	 * @return a List of items which can be inserted into a layout at runtine.
 	 */
 	public List<ViewPagerListItem> getTransferConfirmationList(final TransferDetail results) {
+		final String[] frequencyCodes = context.getResources().getStringArray(R.array.transfer_frequency_codes);
+		final String[] formattedFrequency = context.getResources().getStringArray(R.array.transfer_frequency_strings);
+		String frequency = "";
+		
+		for(int i = 0; i < frequencyCodes.length; ++i) {
+			if(frequencyCodes[i].equalsIgnoreCase(results.frequency))
+				frequency = formattedFrequency[i];
+		}
+		
+		if(Strings.isNullOrEmpty(frequency))
+			frequency = results.frequency;
+		
 		final List<ViewPagerListItem> list = new ArrayList<ViewPagerListItem>();
 
 		list.add(getTransferAccountCell(results.fromAccount, true));
@@ -344,7 +363,8 @@ public class ListItemGenerator {
 		list.add(getAmountCell(results.amount.value));
 		list.add(getSendOnCell(BankStringFormatter.getFormattedDate(results.sendDate)));
 		list.add(getDeliverByCell(BankStringFormatter.getFormattedDate(results.deliverBy)));
-		list.add(getFrequencyCell(results.frequency));
+		list.add(getFrequencyCell(frequency));
+		list.add(getReferenceNumberCell(results.id));
 
 		return list;
 	}

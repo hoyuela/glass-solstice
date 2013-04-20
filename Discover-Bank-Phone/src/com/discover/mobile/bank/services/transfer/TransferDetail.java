@@ -22,34 +22,47 @@ public class TransferDetail implements Serializable {
 
 	/**Variable used to signify a one time transfer*/
 	public static final String ONE_TIME_TRANSFER = "one_time_transfer";
-
+	
+	/**
+	 * These values are used with the intention of identifying inline error responses from the server.
+	 */
+	public static final String AMOUNT = "amount.value";
+	public static final String FROM_ACCOUNT = "fromAccount";
+	public static final String ID = "id";
+	public static final String TO_ACCOUNT = "toAccount";
+	public static final String SEND_DATE = "sendDate";
+	public static final String DELIVER_BY_DATE = "deliverBy";
+	public static final String FREQUENCY = "frequency";
+	public static final String DURATION_TYPE = "durationType";
+	public static final String DURATION_VALUE = "durationValue";
+	
 	private static final long serialVersionUID = 3220773738601798470L;
 
-	@JsonProperty("id")
+	@JsonProperty(ID)
 	public String id;
 
-	@JsonProperty("fromAccount")
+	@JsonProperty(FROM_ACCOUNT)
 	public Account fromAccount;
 
-	@JsonProperty("toAccount")
+	@JsonProperty(TO_ACCOUNT)
 	public Account toAccount;
 
 	@JsonProperty("amount")
 	public Money amount;
 
-	@JsonProperty("sendDate")
+	@JsonProperty(SEND_DATE)
 	public String sendDate;
 
-	@JsonProperty("deliverBy")
+	@JsonProperty(DELIVER_BY_DATE)
 	public String deliverBy;
 
-	@JsonProperty("frequency")
+	@JsonProperty(FREQUENCY)
 	public String frequency;
 
-	@JsonProperty("durationType")
+	@JsonProperty(DURATION_TYPE)
 	public String durationType;
 
-	@JsonProperty("durationValue")
+	@JsonProperty(DURATION_VALUE)
 	public String durationValue;
 		
 }

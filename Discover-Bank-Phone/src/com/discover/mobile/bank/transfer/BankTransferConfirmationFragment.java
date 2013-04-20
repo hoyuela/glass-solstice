@@ -16,6 +16,7 @@ import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
 import com.discover.mobile.bank.ui.widgets.FooterType;
+import com.discover.mobile.bank.util.FragmentOnBackPressed;
 
 /**
  * This is the confirmation screen for a bank transfer.
@@ -24,7 +25,7 @@ import com.discover.mobile.bank.ui.widgets.FooterType;
  * @author scottseward
  *
  */
-public class BankTransferConfirmationFragment extends BankTransferBaseFragment {
+public class BankTransferConfirmationFragment extends BankTransferBaseFragment implements FragmentOnBackPressed {
 	private TransferDetail successDetail = null;
 
 	@Override
@@ -90,9 +91,13 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment {
 	 */
 	@Override
 	protected void onActionButtonClick() {
-		final Bundle navBackBundle = new Bundle();
-		navBackBundle.putBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK, true);
-		BankConductor.navigateToTransferMoneyLandingPage(navBackBundle);
+		Bundle args = getArguments();
+		if(args == null) {
+			args = new Bundle();
+		}
+		
+		args.putBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK, true);
+		BankConductor.navigateToTransferMoneyLandingPage(args);
 	}
 
 	/**
@@ -109,6 +114,16 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment {
 	@Override
 	protected int getProgressIndicatorStep() {
 		return 3;
+	}
+	
+	@Override
+	public void onBackPressed() {
+		
+	}
+	
+	@Override
+	public boolean isBackPressDisabled() {
+		return true;
 	}
 	
 }

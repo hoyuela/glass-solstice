@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -24,11 +25,12 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
+import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.widgets.CalendarFragment;
 import com.discover.mobile.common.ui.widgets.CalendarListener;
-import com.discover.mobile.common.ui.widgets.SsnEditText;
+import com.discover.mobile.common.ui.widgets.PositiveIntegerEditText;
 
 /**
  * View for the reocurring transfer widget
@@ -67,7 +69,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	private final AmountValidatedEditField dollarAmount;
 
 	/**Transaction Amount field*/
-	private final SsnEditText transactionAmount;
+	private final PositiveIntegerEditText transactionAmount;
 
 	/**Text view holding the date*/
 	private final TextView dateValue;
@@ -105,7 +107,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		dollar = (RadioButton) view.findViewById(R.id.dollar_button);
 		dollar.setEnabled(false);
 		dollarAmount = (AmountValidatedEditField) view.findViewById(R.id.amount_edit);
-		transactionAmount = (SsnEditText) view.findViewById(R.id.transaction_amount);
+		transactionAmount = (PositiveIntegerEditText) view.findViewById(R.id.transaction_amount);
 		dateValue = (TextView) view.findViewById(R.id.date_value);
 
 		((LinearLayout) view.findViewById(R.id.cancelled_layout)).setOnClickListener(getLayoutListener(CANCELLED));
@@ -167,19 +169,19 @@ public class BankFrequencyDetailView extends RelativeLayout{
 			dollarAmount.setText(amount);
 			disableCancelled();
 			switch(index){
-			case CANCELLED:
-				enableCancelled();
-				break;
-			case DATE:
-				enableDate();
-				break;
-			case TRANSACTION:
-				enableTransaction();
-				break;
-			case AMOUNT:
-				enableAmount();
-				break;
-			}
+				case CANCELLED:
+					enableCancelled();
+					break;
+				case DATE:
+					enableDate();
+					break;
+				case TRANSACTION:
+					enableTransaction();
+					break;
+				case AMOUNT:
+					enableAmount();
+					break;
+				}
 			
 			/**Reset Calendar Event Listener*/
 			final Fragment fragment = 
@@ -200,21 +202,21 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	public String getDurationType(){
 		String duration;
 		switch(index){
-		case CANCELLED:
-			duration = TransferDetail.UNTIL_CANCELLED;
-			break;
-		case DATE:
-			duration = TransferDetail.UNTIL_DATE;
-			break;
-		case TRANSACTION:
-			duration = TransferDetail.UNTIL_COUNT;
-			break;
-		case AMOUNT:
-			duration = TransferDetail.UNTIL_AMOUNT;
-			break;
-		default:
-			duration = TransferDetail.UNTIL_CANCELLED;
-			break;
+			case CANCELLED:
+				duration = TransferDetail.UNTIL_CANCELLED;
+				break;
+			case DATE:
+				duration = TransferDetail.UNTIL_DATE;
+				break;
+			case TRANSACTION:
+				duration = TransferDetail.UNTIL_COUNT;
+				break;
+			case AMOUNT:
+				duration = TransferDetail.UNTIL_AMOUNT;
+				break;
+			default:
+				duration = TransferDetail.UNTIL_CANCELLED;
+				break;
 		}
 		return duration;
 	}
@@ -226,18 +228,18 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	public String getDurationValue(){
 		final String value;
 		switch(index){
-		case DATE:
-			value = dateValue.getText().toString();
-			break;
-		case TRANSACTION:
-			value = transactionAmount.getText().toString();
-			break;
-		case AMOUNT:
-			value = dollarAmount.getText().toString().replaceAll("[^0-9]", "");
-			break;
-		default:
-			value = "";
-			break;
+			case DATE:
+				value = BankStringFormatter.getLongDate(dateValue.getText().toString());
+				break;
+			case TRANSACTION:
+				value = transactionAmount.getText().toString();
+				break;
+			case AMOUNT:
+				value = dollarAmount.getText().toString().replaceAll("[^0-9]", "");
+				break;
+			default:
+				value = "";
+				break;
 		}
 		return value;
 	}
@@ -248,35 +250,35 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	 */
 	private void enableCell(final int selected) {
 		switch(selected){
-		case CANCELLED:
-			enableCancelled();
-			disableDate();
-			disableTransaction();
-			disableAmount();
-			hideKeyboard();
-			break;
-		case DATE:
-			disableCancelled();
-			enableDate();
-			disableTransaction();
-			disableAmount();
-			hideKeyboard();
-			showCalendar();
-			break;
-		case TRANSACTION:
-			disableCancelled();
-			disableDate();
-			enableTransaction();
-			disableAmount();
-			showKeyboard();
-			break;
-		case AMOUNT:
-			disableCancelled();
-			disableDate();
-			disableTransaction();
-			enableAmount();
-			showKeyboard();
-			break;
+			case CANCELLED:
+				enableCancelled();
+				disableDate();
+				disableTransaction();
+				disableAmount();
+				hideKeyboard();
+				break;
+			case DATE:
+				disableCancelled();
+				enableDate();
+				disableTransaction();
+				disableAmount();
+				hideKeyboard();
+				showCalendar();
+				break;
+			case TRANSACTION:
+				disableCancelled();
+				disableDate();
+				enableTransaction();
+				disableAmount();
+				showKeyboard();
+				break;
+			case AMOUNT:
+				disableCancelled();
+				disableDate();
+				disableTransaction();
+				enableAmount();
+				showKeyboard();
+				break;
 		}
 
 	}
@@ -298,6 +300,8 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		date.setButtonDrawable(R.drawable.make_payment_radio_button);
 		((TextView)view.findViewById(R.id.date_label)).setTextColor(res.getColor(R.color.field_copy));
 		((TextView)view.findViewById(R.id.date_value)).setTextColor(res.getColor(R.color.field_copy));
+		final ImageView caret = (ImageView)view.findViewById(R.id.freq_caret);
+		caret.setImageDrawable(getResources().getDrawable(R.drawable.gray_right_arrow));
 	}
 
 	/**
@@ -345,6 +349,8 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		date.setChecked(true);
 		date.setButtonDrawable(R.drawable.make_payment_radio_button_ds);
 		((TextView)view.findViewById(R.id.date_value)).setTextColor(res.getColor(R.color.body_copy));
+		final ImageView caret = (ImageView)view.findViewById(R.id.freq_caret);
+		caret.setImageDrawable(getResources().getDrawable(R.drawable.blue_arrow_right));
 	}
 
 	/**

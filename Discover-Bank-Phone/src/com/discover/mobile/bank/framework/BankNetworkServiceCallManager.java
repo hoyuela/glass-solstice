@@ -450,9 +450,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			final Bundle resultBundle = new Bundle();
 			resultBundle.putSerializable(BankExtraKeys.TRANSFER_SUCCESS_DATA, result);
 
+			final Account currentAccount = BankUser.instance().getCurrentAccount();
 			//Mark the scheduled and posted activity dirty so that it is refreshed
-			BankUser.instance().getCurrentAccount().scheduled = null;
-			BankUser.instance().getCurrentAccount().posted = null;
+			if(currentAccount != null) {
+				currentAccount.scheduled = null;
+				currentAccount.posted = null;
+			}else{
+				Log.d(TAG, "Could not mark scheduled and posted activity as dirty");
+			}
+			
 			BankConductor.navigateToTransferConfirmation(resultBundle);
 		}
 		//Handle the payee success call

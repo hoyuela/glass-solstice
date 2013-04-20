@@ -49,11 +49,11 @@
             android:id="@+id/cancelled_button"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
+            android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_weight=".65"
-            android:checked="true"
-            android:layout_gravity="center_vertical"
             android:button="@drawable/make_payment_radio_button_ds"
+            android:checked="true"
             android:clickable="false" />
 
         <TextView
@@ -75,7 +75,6 @@
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/cancelled_layout"
-        android:layout_marginBottom="@dimen/forms_inner_padding"
         android:layout_marginLeft="@dimen/orange_button_margin_top"
         android:background="@drawable/table_solid_line" />
 
@@ -95,16 +94,19 @@
             android:id="@+id/date_button"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:button="@drawable/make_payment_radio_button"
             android:layout_gravity="center_vertical"
-            android:layout_weight=".5" />
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_weight=".5"
+            android:button="@drawable/make_payment_radio_button" />
 
         <LinearLayout
             android:id="@+id/inner_date_layout"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/between_related_elements_padding"
             android:layout_weight="4"
+            android:gravity="center_vertical"
             android:orientation="vertical" >
 
             <TextView
@@ -122,11 +124,19 @@
                 style="@style/body_copy_title_max"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/forms_inner_padding"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/transfer_selected_date"
                 android:textColor="@color/field_copy" />
+
+            <TextView
+                android:id="@+id/date_error_label"
+                style="@style/inline_error_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/forms_inner_padding"
+                android:text="You cannot schedule a transfer in the past."
+                android:visibility="gone" />
         </LinearLayout>
 
         <ImageView
@@ -138,8 +148,9 @@
             android:paddingBottom="@dimen/between_related_elements_padding"
             android:paddingRight="@dimen/between_related_elements_padding"
             android:scaleType="center"
-            android:src="@drawable/blue_arrow_right" />
+            android:src="@drawable/gray_right_arrow" />
     </LinearLayout>
+
     <!-- End date layout items -->
 
     <View
@@ -167,28 +178,45 @@
             android:id="@+id/transactions_button"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:button="@drawable/make_payment_radio_button"
             android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_weight=".5"
+            android:button="@drawable/make_payment_radio_button"
             android:clickable="false" />
 
-        <TextView
-            android:id="@+id/transactions_label"
-            style="@style/field_copy"
+        <LinearLayout
+            android:id="@+id/inner_count_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2.75"
             android:gravity="center_vertical"
-            android:text="@string/transfer_transactions"
-            android:textColor="@color/field_copy" />
+            android:orientation="vertical" >
 
-        <com.discover.mobile.common.ui.widgets.SsnEditText
+            <TextView
+                android:id="@+id/transactions_label"
+                style="@style/field_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/transfer_transactions"
+                android:textColor="@color/field_copy" />
+
+            <TextView
+                android:id="@+id/transactions_error_label"
+                style="@style/inline_error_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter the number of total transfers, must be greater than 1."
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <com.discover.mobile.common.ui.widgets.PositiveIntegerEditText
             android:id="@+id/transaction_amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/forms_inner_padding"
             android:layout_weight="1.75"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
             android:textCursorDrawable="@null" />
     </LinearLayout>
     <!-- End count items -->
@@ -212,26 +240,42 @@
         android:orientation="horizontal"
         android:paddingLeft="@dimen/forms_inner_padding"
         android:paddingRight="@dimen/forms_inner_padding"
-        android:weightSum="5" >
+        android:weightSum="5.5" >
 
         <RadioButton
             android:id="@+id/dollar_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:button="@drawable/make_payment_radio_button"
+            android:layout_height="fill_parent"
             android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_weight=".5"
+            android:button="@drawable/make_payment_radio_button"
             android:clickable="false" />
 
-        <TextView
-            android:id="@+id/dollar_label"
-            style="@style/field_copy"
+        <LinearLayout
+            android:id="@+id/inner_dollar_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2.25"
+            android:layout_weight="2.75"
             android:gravity="center_vertical"
-            android:text="@string/transfer_dollar_amount" />
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/dollar_label"
+                style="@style/field_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/transfer_dollar_amount"
+                android:textColor="@color/field_copy" />
+
+            <TextView
+                android:id="@+id/dollar_error_label"
+                style="@style/inline_error_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+				android:text="This amount must be greater than the send amount."
+                android:visibility="gone" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/dollar"
@@ -249,8 +293,8 @@
             style="@style/pmt_amount_style"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.75" >
-        </com.discover.mobile.bank.ui.widgets.AmountValidatedEditField>
+            android:layout_weight="1.75"
+            android:imeOptions="actionDone" />
     </LinearLayout>
 
     <!-- End dollar amount item -->
