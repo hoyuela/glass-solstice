@@ -294,8 +294,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 
 		request.setUrl(url);
 		request.setHeaderValues(headers);
-		request.setMethodtype("GET");
-
+		
 		WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
 				new BankPayload(), "Discover", "Authenticating...", listener);
 		serviceCall.execute(request);
