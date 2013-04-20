@@ -8,9 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.discover.mobile.card.common.sharedata.CardShareDataStore;
-
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.services.auth.AccountDetails;
 
 /**
@@ -40,7 +39,7 @@ public class StatusBarFragment extends Fragment {
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
 
-		final View view = inflater.inflate(R.layout.card_status_bar_layout,
+		final View view = inflater.inflate(R.layout.status_bar_layout,
 				container);
 		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
 				.getInstance(stsActivity);
@@ -60,10 +59,10 @@ public class StatusBarFragment extends Fragment {
 	 * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
 	 */
 	@Override
-	public void onAttach(Activity activity) {
+	public void onAttach(final Activity activity) {
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
-		this.stsActivity = activity;
+		stsActivity = activity;
 	}
 
 	/**
@@ -74,28 +73,28 @@ public class StatusBarFragment extends Fragment {
 	private void setAccountName() {
 		// FIXME This is temporary and used just to populate something in the
 		// account Name
-		StringBuilder defaultHiText = new StringBuilder(
+		final StringBuilder defaultHiText = new StringBuilder(
 				stsActivity.getString(R.string.hi_note));
 		if (null != accountDetails) {
-		    if (null != accountDetails.mailingAddress) {
-                if (null != accountDetails.mailingAddress.firstName) {
-                    defaultHiText
-                            .append(" "+accountDetails.mailingAddress.firstName);
-                }
-            }
-		    else
-		    {
-		        
-		        if (null != accountDetails.primaryCardMember) {
-	                if (null != accountDetails.primaryCardMember.nameOnCard) {
-	                    defaultHiText
-	                            .append(" "+accountDetails.primaryCardMember.nameOnCard);
-	                }
-	            }
-		        
-		    }
-		    
-			
+			if (null != accountDetails.mailingAddress) {
+				if (null != accountDetails.mailingAddress.firstName) {
+					defaultHiText
+					.append(" "+accountDetails.mailingAddress.firstName);
+				}
+			}
+			else
+			{
+
+				if (null != accountDetails.primaryCardMember) {
+					if (null != accountDetails.primaryCardMember.nameOnCard) {
+						defaultHiText
+						.append(" "+accountDetails.primaryCardMember.nameOnCard);
+					}
+				}
+
+			}
+
+
 		}
 		setStatusBarText(defaultHiText.toString());
 	}

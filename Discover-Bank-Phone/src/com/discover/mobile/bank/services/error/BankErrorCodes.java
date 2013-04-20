@@ -75,6 +75,12 @@ public class BankErrorCodes {
 	 * Error Code used to describe an expired or invalid BankPayload (from Card Service)
 	 */
 	public static final String ERROR_INVALID_SSO_PAYLOAD = "Auth.SSO.InvalidPayload";
+
+	/**
+	 * Error Code used to describe when the sso user is a bad bank status user
+	 */
+	public static final String ERROR_SSO_BAD_BANK_STATUS = "Auth.SSO.BadStatus";
+
 	/**
 	 * Default constructor is not to be used
 	 */
