@@ -229,7 +229,7 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		final String value;
 		switch(index){
 			case DATE:
-				value = BankStringFormatter.getLongDate(dateValue.getText().toString());
+				value = BankStringFormatter.convertToISO8601Date(dateValue.getText().toString());
 				break;
 			case TRANSACTION:
 				value = transactionAmount.getText().toString();

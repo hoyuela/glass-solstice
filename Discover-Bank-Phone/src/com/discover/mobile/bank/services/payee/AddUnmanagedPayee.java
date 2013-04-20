@@ -1,6 +1,8 @@
 package com.discover.mobile.bank.services.payee;
 
 import com.discover.mobile.bank.services.json.PhoneNumber;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -77,6 +79,7 @@ public class AddUnmanagedPayee extends AddPayeeDetail {
 	public Address address;
 	
 	@JsonProperty("memo")
+	@JsonInclude(Include.NON_EMPTY)
 	public String memo;
 	
 	public AddUnmanagedPayee() {

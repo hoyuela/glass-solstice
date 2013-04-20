@@ -238,7 +238,7 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 				detailList.payments != null && 
 				detailList.payments.size() > 0) &&
 				isUserPrimaryHolder(position) &&
-				"SCHEDULED".equals(detailList.payments.get(position).status );
+				"SCHEDULED".equalsIgnoreCase(detailList.payments.get(position).status );
 	}
 
 	@Override

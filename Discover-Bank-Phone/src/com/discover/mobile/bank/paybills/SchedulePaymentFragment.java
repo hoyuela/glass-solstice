@@ -50,6 +50,7 @@ import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
+import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
@@ -58,7 +59,6 @@ import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.widgets.CalendarFragment;
 import com.discover.mobile.common.ui.widgets.CalendarListener;
-import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
 public class SchedulePaymentFragment extends BaseFragment 
@@ -811,11 +811,8 @@ public class SchedulePaymentFragment extends BaseFragment
 					payment.amount = formatAmount(amountEdit.getText()
 									.toString());
 					payment.paymentMethod.id = Integer.toString(accountId);
-					payment.deliverBy = CommonUtils
-							.getServiceFormattedISO8601Date(chosenPaymentDate
-									.get(Calendar.MONTH), chosenPaymentDate
-									.get(Calendar.DAY_OF_MONTH),
-									chosenPaymentDate.get(Calendar.YEAR));
+					payment.deliverBy = BankStringFormatter.convertToISO8601Date(dateText.getText().toString());
+							
 					if ( !Strings.isNullOrEmpty(memo)) {
 						payment.memo = memo;
 					}
@@ -861,6 +858,9 @@ public class SchedulePaymentFragment extends BaseFragment
 
 	@Override
 	public boolean handleError(final BankErrorResponse msgErrResponse) {		
+		/**If handled is false it the Error Handler that called this method will show a catch all modal*/
+		boolean handled = false;
+		
 		for( final BankError error : msgErrResponse.errors ) {
 			if( !Strings.isNullOrEmpty(error.name) ) {
 				/**Check if error is for Payee field*/
@@ -887,9 +887,13 @@ public class SchedulePaymentFragment extends BaseFragment
 				else {
 					setErrorString(conflictError,error.message);
 				}
+				
+				/**Set to true to avoid a catch all modal being displayed*/
+				handled = true;
 			}
 		}
-		return true;
+		
+		return handled;
 	}
 
 	/**

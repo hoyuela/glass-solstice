@@ -3,6 +3,8 @@ package com.discover.mobile.bank.services.payment;
 import java.io.Serializable;
 
 import com.discover.mobile.bank.services.json.ID;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /*
@@ -62,6 +64,7 @@ public class CreatePaymentDetail implements Serializable {
 
 	/* Memo (if it exists) */
 	@JsonProperty("memo")
+	@JsonInclude(Include.NON_EMPTY)
 	public String memo;
 	
 	public CreatePaymentDetail() {

@@ -557,7 +557,7 @@ public final class BankConductor  extends Conductor {
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, value);
 		fragment.setArguments(bundle);
 
-		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment, false);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
 
 	/**
@@ -567,7 +567,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		//Fetch the current activity
-		if( activity instanceof BaseFragmentActivity ) {
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 			final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
 			call.setWasDeleted(true);
@@ -741,8 +741,7 @@ public final class BankConductor  extends Conductor {
 	 * @param bundle - bundle to pass into the screen
 	 */
 	public static void navigateToReviewPaymentsTable(final Bundle bundle, final boolean isGoingBack){
-		final BankNavigationRootActivity activity =
-				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 		((AlertDialogParent)activity).closeDialog();
 
 		//Handle the case where loading more data
@@ -753,6 +752,14 @@ public final class BankConductor  extends Conductor {
 		else if( activity.getCurrentContentFragment() instanceof ReviewPaymentsTable ) {
 			final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable)activity.getCurrentContentFragment();
 			revPmtFrag.handleReceivedData(bundle);
+		}
+		//Handle case where a payment was deleted
+		else if( bundle.containsKey(BankExtraKeys.CONFIRM_DELETE)) {
+			//Navigate back to Review Payments, the user should be on the Payment Detail page for the deleted Payment
+			if( activity.popTillFragment(ReviewPaymentsTable.class) ) {
+				final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable)activity.getCurrentContentFragment();
+				revPmtFrag.handleReceivedData(bundle);
+			}
 		}
 		//Handle the first time user opens Review Payments page
 		else {
