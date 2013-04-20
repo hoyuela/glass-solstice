@@ -153,7 +153,6 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 
 			} else if( errCode.equals(BankErrorCodes.ERROR_LOCKED_STRONG_AUTH)) {
 				mErrorHandler.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
-				handled = true;
 			}
 			//Maintenance Errors
 			else if( errCode.equals(BankErrorCodes.ERROR_MAINTENANCE_PLANNED)) {
