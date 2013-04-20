@@ -73,10 +73,10 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 				cd.addAll(cat.otherCategories);
 
 				final ArrayAdapter<CategoryDetail> spinnerAdapter = new ArrayAdapter<CategoryDetail>(
-						getActivity(), R.layout.push_simple_spinner,
+						getActivity(), R.layout.card_push_simple_spinner,
 						R.id.amount, cd);
 				spinnerAdapter
-						.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
+						.setDropDownViewResource(R.layout.card_push_simple_spinner_dropdown);
 				categorySpinner.setAdapter(spinnerAdapter);
 
 				categorySpinner
@@ -112,9 +112,9 @@ public class AccountSearchTransactionFragment extends BaseFragment {
 	 */
 	public void setSpinnerDropdown(final List<String> values) {
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-				getActivity(), R.layout.push_simple_spinner, R.id.amount,
+				getActivity(), R.layout.card_push_simple_spinner, R.id.amount,
 				values);
-		adapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
+		adapter.setDropDownViewResource(R.layout.card_push_simple_spinner_dropdown);
 		categorySpinner.setAdapter(adapter);
 	}
 
