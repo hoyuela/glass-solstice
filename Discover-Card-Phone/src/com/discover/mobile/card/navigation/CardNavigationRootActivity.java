@@ -39,6 +39,7 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.nav.StatusBarFragment;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 
 /**
@@ -56,8 +57,8 @@ import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
  */
 
 public class CardNavigationRootActivity extends NavigationRootActivity
-		implements CardMenuInterface, CordovaInterface, CardEventListener,
-		CardErrorHandlerUi {
+implements CardMenuInterface, CordovaInterface, CardEventListener,
+CardErrorHandlerUi {
 
 	CordovaWebFrag cordovaWebFrag;
 	FrameLayout navigationContent;
@@ -91,18 +92,18 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 			frag = new CordovaWebFrag();
 			frag.setContext(this.getContext());
 
-			boolean isFragmentAdded = (Boolean) mCardStoreData
+			final boolean isFragmentAdded = (Boolean) mCardStoreData
 					.getValueOfAppCache("isFragmentAdded");
 
 			if (isFragmentAdded) {
 				Log.d("CardNavigationRootActivity", "frag is already added");
 				fragmentTransaction.remove(frag)
-						.add(R.id.navigation_content, frag, "CordovaWebFrag")
-						.addToBackStack("CordovaWebFrag").commit();
+				.add(R.id.navigation_content, frag, "CordovaWebFrag")
+				.addToBackStack("CordovaWebFrag").commit();
 			} else {
 				fragmentTransaction
-						.add(R.id.navigation_content, frag, "CordovaWebFrag")
-						.addToBackStack("CordovaWebFrag").commit();
+				.add(R.id.navigation_content, frag, "CordovaWebFrag")
+				.addToBackStack("CordovaWebFrag").commit();
 				// fragmentTransaction.hide(frag);
 				mCardStoreData.addToAppCache("isFragmentAdded", true);
 			}
@@ -120,8 +121,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		}
 
 		// Start inital page timer.
-		if (!isLogout)
+		if (!isLogout) {
 			PageTimeOutUtil.getInstance(this.getContext()).startPageTimer();
+		}
 
 		/*
 		 * pageTimeOutUtil = new PageTimeOutUtil(this);
@@ -242,7 +244,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 			if (cordovaWebFrag != null) {
 				try {
 					Utils.showSpinner(getActivity(), null, null);
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					e.printStackTrace();
 				}
 				this.showAbove();
@@ -346,9 +348,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		Log.d("clear cache", "get token before clear"
 				+ cardShareDataStore.getCookieManagerInstance().getSecToken());
 		cardShareDataStore.clearCache(); // Call this method to clear native
-											// cache
+		// cache
 		cardShareDataStore.getCookieManagerInstance().clearSecToken(); // Call
-																		// to
+		// to
 		Log.d("clear cache", "get token after clear"
 				+ cardShareDataStore.getCookieManagerInstance().getSecToken()); // clear
 		// the
@@ -366,8 +368,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 					cordovaWebFrag.getCordovaWebviewInstance());
 			cacheMgmt.clearJQMGlobalCache();
 			cacheMgmt.clearJQMHistory();
-		} else
+		} else {
 			Log.d("logout from cardnavigation", "Codova webview object is null");
+		}
 	}
 
 	@Override
@@ -398,9 +401,10 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 					.findFragmentByTag("CordovaWebFrag");
 			cordovaWebFrag.setTitle(title);
 			if (title
-					.equalsIgnoreCase(getString(R.string.sub_section_title_statements)))
+					.equalsIgnoreCase(getString(R.string.sub_section_title_statements))) {
 				highlightMenuItems(cordovaWebFrag.getGroupMenuLocation(),
 						cordovaWebFrag.getSectionMenuLocation());
+			}
 		}
 	}
 
@@ -425,29 +429,29 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
 		if (fragment.getClass().getSimpleName()
 				.equalsIgnoreCase("HomeSummaryFragment") && fragCount >= 2) {
-				String fragTag = fragManager.getBackStackEntryAt(fragCount - 1)
-						.getName();
+			final String fragTag = fragManager.getBackStackEntryAt(fragCount - 1)
+					.getName();
 
-				if (!fragTag.equalsIgnoreCase("HomeSummaryFragment")) {
-					getSupportFragmentManager()
-							.beginTransaction()
-							.remove(fragment)
-							.add(R.id.navigation_content, fragment,
-									fragment.getClass().getSimpleName())
-							// Adds the class name and fragment to the back
-							// stack
-							.addToBackStack(fragment.getClass().getSimpleName())
-							.commit();
-			}			
-		}else{
-
-		getSupportFragmentManager()
+			if (!fragTag.equalsIgnoreCase("HomeSummaryFragment")) {
+				getSupportFragmentManager()
 				.beginTransaction()
 				.remove(fragment)
 				.add(R.id.navigation_content, fragment,
 						fragment.getClass().getSimpleName())
-				// Adds the class name and fragment to the back stack
-				.addToBackStack(fragment.getClass().getSimpleName()).commit();
+						// Adds the class name and fragment to the back
+						// stack
+						.addToBackStack(fragment.getClass().getSimpleName())
+						.commit();
+			}			
+		}else{
+
+			getSupportFragmentManager()
+			.beginTransaction()
+			.remove(fragment)
+			.add(R.id.navigation_content, fragment,
+					fragment.getClass().getSimpleName())
+					// Adds the class name and fragment to the back stack
+					.addToBackStack(fragment.getClass().getSimpleName()).commit();
 		}
 
 		hideSlidingMenuIfVisible();
@@ -464,11 +468,11 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		currentFragment = fragment;
 
 		getSupportFragmentManager()
-				.beginTransaction()
-				.remove(fragment)
-				.add(R.id.navigation_content, fragment,
-						fragment.getClass().getSimpleName()).commit();
-		
+		.beginTransaction()
+		.remove(fragment)
+		.add(R.id.navigation_content, fragment,
+				fragment.getClass().getSimpleName()).commit();
+
 		hideSlidingMenuIfVisible();
 	}
 
@@ -481,14 +485,14 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		Log.d("CardNavigationRootActivity", "inside onBackPressed()");
 
 		DiscoverModalManager.clearActiveModal();
-;
+		;
 		final FragmentManager fragManager = this.getSupportFragmentManager();
 		final int fragCount = fragManager.getBackStackEntryCount();
 
 		Log.d("CardNavigationRootActivity", "frag count is " + fragCount);
 
 		if (fragCount > 2) {
-			String fragTag = fragManager.getBackStackEntryAt(fragCount - 2)
+			final String fragTag = fragManager.getBackStackEntryAt(fragCount - 2)
 					.getName();
 			// Fragment frg = HybridControlPlugin.frag123;//
 			// fragManager.findFragmentByTag(str);
@@ -501,14 +505,14 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 			 * frg).getCordovaWebviewInstance().goBack(); } else {
 			 */
 
-			boolean isPopped = fragManager.popBackStackImmediate();
+			final boolean isPopped = fragManager.popBackStackImmediate();
 			Log.d("CardNavigationRootActivity", "is fragment popped" + isPopped);
 
 			printFragmentsInBackStack();
 
 			if (fragTag.equalsIgnoreCase("HomeSummaryFragment")) {
 
-				Fragment homeFragment = fragManager
+				final Fragment homeFragment = fragManager
 						.findFragmentByTag("HomeSummaryFragment");
 				makeFragmentVisible(homeFragment, false);
 
@@ -530,9 +534,10 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		final int fragCount = fragManager.getBackStackEntryCount();
 		if (fragCount > 0) {
 			for (int i = 0; i < fragCount; i++) {
-				if (null != fragManager.getBackStackEntryAt(i).getName())
+				if (null != fragManager.getBackStackEntryAt(i).getName()) {
 					Log.v("CardNavigationRootActivity", fragManager
 							.getBackStackEntryAt(i).getName());
+				}
 			}
 		}
 	}
@@ -545,7 +550,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	 * .v4.app.Fragment)
 	 */
 	@Override
-	public void onAttachFragment(Fragment fragment) {
+	public void onAttachFragment(final Fragment fragment) {
 		// TODO Auto-generated method stub
 		super.onAttachFragment(fragment);
 
@@ -561,12 +566,12 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	 * android.view.KeyEvent)
 	 */
 	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
+	public boolean onKeyUp(final int keyCode, final KeyEvent event) {
 		Log.d("CardNavigationRootActivity", "inside onKeyUp");
-		Fragment frg = HybridControlPlugin.frag123;// fragManager.findFragmentByTag(str);
+		final Fragment frg = HybridControlPlugin.frag123;// fragManager.findFragmentByTag(str);
 		if (frg instanceof CordovaWebFrag
 				&& ((CordovaWebFrag) frg).getCordovaWebviewInstance()
-						.canGoBack()) {
+				.canGoBack()) {
 
 			return ((CordovaWebFrag) frg).getCordovaWebviewInstance().onKeyUp(
 					keyCode, event);
@@ -582,23 +587,23 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	 * android.view.KeyEvent)
 	 */
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
 		Log.d("CardNavigationRootActivity", "inside onKeyDown");
 		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
 		if (requestCode == 1) {
 			Log.d("CardNavigationRootActivity",
 					"inside on activity result of stmt plugin n result code is "
 							+ requestCode + " n result code is " + resultCode);
 			if (resultCode == StatementActivity.EXPIRE_SESSION) {
 				logout();
-			} else if (resultCode == StatementActivity.MAINT_EXPIRE_SESSION)
+			} else if (resultCode == StatementActivity.MAINT_EXPIRE_SESSION) {
 				Log.d("CardNavigationRootActivity",
 						"call gethealthcheck from here...");
-			else {
+			} else {
 				sendNavigationTextToPhoneGapInterface(getString(R.string.sub_section_title_statements));
 			}
 		}
