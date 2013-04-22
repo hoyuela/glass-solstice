@@ -25,42 +25,49 @@
             android:layout_marginBottom="@dimen/forms_inner_padding"
             android:text="@string/edit" />
 
-        <TextView
-            android:id="@+id/external_accounts_title"
-            style="@style/sub_copy_medium"
-            android:layout_width="fill_parent"
+        <RelativeLayout
+            android:id="@+id/external_accounts_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/page_title"
-            android:text="@string/external_accounts" />
+            android:layout_marginBottom="@dimen/groups_of_elements_padding" >
 
-        <LinearLayout
-            android:id="@+id/content_table_external_accounts"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/external_accounts_title"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/between_related_elements_padding"
-            android:background="@drawable/rounded_table_corners_no_padding"
-            android:orientation="vertical" >
-        </LinearLayout>
+            <TextView
+                android:id="@+id/external_accounts_title"
+                style="@style/sub_copy_medium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/page_title"
+                android:text="@string/external_accounts" />
 
-        <TextView
-            android:id="@+id/change_other_account_link"
-            style="@style/sub_copy_medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/content_table_external_accounts"
-            android:layout_marginTop="@dimen/between_related_elements_padding"
-            android:text="@string/empty"
-            android:visibility="gone" />
+            <LinearLayout
+                android:id="@+id/content_table_external_accounts"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/external_accounts_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/between_related_elements_padding"
+                android:background="@drawable/rounded_table_corners_no_padding"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/change_other_account_link"
+                style="@style/sub_copy_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/content_table_external_accounts"
+                android:layout_marginTop="@dimen/between_related_elements_padding"
+                android:text="@string/empty"
+                android:visibility="gone" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/internal_accounts_title"
             style="@style/sub_copy_medium"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/change_other_account_link"
-            android:layout_marginTop="@dimen/groups_of_elements_padding"
+            android:layout_below="@+id/external_accounts_layout"
             android:text="@string/internal_accounts" />
 
         <LinearLayout

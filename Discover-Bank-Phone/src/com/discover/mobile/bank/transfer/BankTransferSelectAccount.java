@@ -92,7 +92,7 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 
 		if (args != null) {
 			final AccountList accountList = getAccounts(accountType);
-			if(accountList != null){
+			if(accountList != null && getAccountSize(accountList) > 0) {
 				populateTableWithAccounts(accountType, accountList, mainView);
 			}else {
 				hideTable(accountType, mainView);
@@ -179,10 +179,9 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	 */
 	private void populateTableWithAccounts(final int accountType, final AccountList accountList, final View mainView) {
 		final LinearLayout table = (LinearLayout)mainView.findViewById(getResourceFor(accountType));
-		final List<Account> accounts = accountList.accounts;
-		
-		if(accounts != null && accounts.size() > 0){
-			for(final Account account : accounts) {
+
+		if(table != null){
+			for(final Account account : accountList.accounts) {
 				addAccountToTable(account, table);
 			}
 		}
@@ -351,7 +350,8 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		final ListItemGenerator generator = new ListItemGenerator(this.getActivity());
 		final ViewPagerListItem item = generator.getTwoItemCell(R.string.empty, account.nickname);
 
-		item.getTopLabel().setText(getAccountEndingTextForAccount(account.accountNumber.ending));
+		if(account.accountNumber != null)
+			item.getTopLabel().setText(getAccountEndingTextForAccount(account.accountNumber.ending));
 
 		if(getTotalAccountSize() > 2 && account.equals(getOtherSelectedAccount()))
 			item.getMiddleLabel().setTextColor(getResources().getColor(R.color.field_copy));
@@ -508,8 +508,7 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 				containingView.findViewById(R.id.internal_accounts_title).setVisibility(View.GONE);
 				break;
 			case EXTERNAL_ACCOUNT :
-				containingView.findViewById(R.id.content_table_external_accounts).setVisibility(View.GONE);
-				containingView.findViewById(R.id.external_accounts_title).setVisibility(View.GONE);
+				containingView.findViewById(R.id.external_accounts_layout).setVisibility(View.GONE);
 				break;
 			default :
 				Log.e(TAG, "Unsupported table type to hide for hideTable(int, View) method.");
