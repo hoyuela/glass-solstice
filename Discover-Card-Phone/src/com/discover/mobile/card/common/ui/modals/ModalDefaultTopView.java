@@ -3,6 +3,7 @@ package com.discover.mobile.card.common.ui.modals;
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -51,7 +52,7 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 		super(context, attrs);
 		
 		final View mainView = (View) LayoutInflater.from(context)
-                .inflate(R.layout.card_modal_default_top_view, null);
+                .inflate(R.layout.modal_default_top_view, null);
 		
 		res = context.getResources();
 		
@@ -97,6 +98,7 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	public void setContent(final String content) {
 		text.setText(Html.fromHtml(content));
 		Linkify.addLinks(text, Linkify.ALL);
+		text.setMovementMethod(LinkMovementMethod.getInstance());
 	}
 	
 	/**

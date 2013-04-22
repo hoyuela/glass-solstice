@@ -216,7 +216,10 @@ public class Utils {
                 progressBar.setTitle("Discover");
         }
         try {
-            progressBar.show();
+        	if(progressBar != null && !progressBar.isShowing())
+        	{
+        		progressBar.show();
+        	}
         } catch (Exception e) {
             e.printStackTrace();
         }
