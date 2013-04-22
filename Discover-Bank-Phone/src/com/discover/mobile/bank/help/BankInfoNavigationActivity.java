@@ -26,11 +26,16 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 	public static final String CONTACT_US = "contact-us";
 	public static final String PRIVACY_AND_TERMS = "privacy-terms";
 	public static final String PROVIDE_FEEDBACK = "provide-feedback";
+	public static final String GO_BACK_TO_LOGIN = "goBackToLogin";
 	
 	/**
 	 * Reference to action bar back button.
 	 */
 	private ImageView navigationBackButton;
+	/**
+	 * True when "onBackPressed" will navigate to login on back (given no fragments on the stack)
+	 */
+	private boolean goBackToLogin = true;
 	
 	/**
 	 * Create the activity
@@ -65,6 +70,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 			} else if( bundle.containsKey(PROVIDE_FEEDBACK)) {
 				makeFragmentVisible(new ProvideFeedbackFragment());
 			}
+			goBackToLogin = bundle.getBoolean(GO_BACK_TO_LOGIN, true);
 		}
 	}
 	
@@ -140,8 +146,19 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 		
 		if( backStackCount > 1 ) {
 			super.onBackPressed();
-		} else {
+		} else if (goBackToLogin) {
 			BankConductor.navigateToLoginPage(this, "", "");
+		} else {
+			finish();
 		}
+	}
+	
+	/**
+	 * Sets variables associated with controlling back navigation.
+	 * @param goToLoginOnBack - True when "onBackPressed" will navigate to login on back 
+	 * (given no fragments on the stack) 
+	 */
+	public void setOnBackNavigation(boolean goToLoginOnBack) {
+		this.goBackToLogin = goToLoginOnBack;
 	}
 }
