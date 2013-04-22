@@ -19,7 +19,7 @@
 
         <TextView
             android:id="@+id/sending_deposit_detail_label"
-            style="@style/body_copy"
+            style="@style/sub_copy_big"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/sending_deposit_title_label"
