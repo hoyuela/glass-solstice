@@ -73,12 +73,12 @@ public class HelpWidget extends RelativeLayout{
 					help.setImageDrawable(context.getResources().getDrawable(R.drawable.help_icon_gray_no_glow));
 				}else{
 					expandableView.setVisibility(View.INVISIBLE);
-					help.setImageDrawable(context.getResources().getDrawable(R.drawable.question_mark_icon));
+					help.setImageDrawable(context.getResources().getDrawable(R.drawable.card_question_mark_icon));
 				}
 			}
 		});
 
-		
+
 		addView(view);
 	}
 
