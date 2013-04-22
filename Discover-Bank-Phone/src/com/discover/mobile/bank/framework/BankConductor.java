@@ -1213,63 +1213,72 @@ public final class BankConductor  extends Conductor {
 	public static void navigateToPrivacyTerms(final PrivacyTermsType type) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		if( activity != null ) {
-			/**Launch Privacy & Terms Activity if user is not logged in*/
-			if( activity instanceof LoginActivity ) {
-				final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
-				final Bundle bundle = new Bundle();
-				bundle.putSerializable(BankInfoNavigationActivity.PRIVACY_AND_TERMS, type);
-				activity.startActivity(intent);
+		if (activity == null) {
+			return;
+		}
+		
+		/** Launches Privacy & Terms Activity */
+		if (activity instanceof LoginActivity || activity instanceof AtmLocatorActivity) {
+			final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankInfoNavigationActivity.PRIVACY_AND_TERMS, type);
+			bundle.putBoolean(BankInfoNavigationActivity.GO_BACK_TO_LOGIN, 
+					activity instanceof LoginActivity ? true : false);
+			activity.startActivity(intent);
+
+			if (activity instanceof LoginActivity) {
 				activity.finish();
-			} 			
-			/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-			else if( activity instanceof NavigationRootActivity ) {
-				final NavigationRootActivity navActivity = (NavigationRootActivity) activity;
-
-				BaseFragment fragment = navActivity.getCurrentContentFragment();
-				boolean continueNavigation = false;
-
-				/** Check whether to continue with navigation to Privacy and terms or not*/
-				if( navActivity instanceof BankNavigationRootActivity ) {
-					/**
-					 * Show requested page if no fragment is present, user is not already in privacy terms view, or if 
-					 * user is already viewing privacy and terms, they are not requesting to view the landing page again
-					 * */
-					continueNavigation = (fragment == null ||
-							fragment.getGroupMenuLocation() != BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP ||
-							(fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP &&
-							fragment instanceof TermsLandingPageFragment &&
-							type != PrivacyTermsType.LandingPage));
-				} else {
-					continueNavigation = true;
-				}
-
-				if( continueNavigation ) {
-					/**Must specify what page to show to the BankPrivacyTermsFragment*/
-					final Bundle bundle = new Bundle();
-					
-					/**Display Landing Page for Privacy and Terms*/
-					if( type == PrivacyTermsType.LandingPage ) {
-						fragment = new TermsLandingPageFragment();
-					} else {
-						/**Check if Google Terms of Use is being displayed */
-						if( type == PrivacyTermsType.GoogleTermsOfUse) {
-							bundle.putSerializable(BankTextViewFragment.KEY_TEXT, GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(activity));
-							fragment = new BankTextViewFragment();
-							fragment.setArguments(bundle);
-						} else {	
-							bundle.putSerializable(BankPrivacyTermsFragment.KEY_TERMS_TYPE, type);
-							
-							fragment = new BankPrivacyTermsFragment();
-							fragment.setArguments(bundle);
-						}
-					}
-
-					navActivity.makeFragmentVisible(fragment);	
-				} else {
-					navActivity.hideSlidingMenuIfVisible();
-				}
 			}
+		}
+		
+		/** Verify that the user is logged in and the BankNavigationRootActivity is the active activity */
+		else if (activity instanceof NavigationRootActivity) {
+			final NavigationRootActivity navActivity = (NavigationRootActivity) activity;
+			BaseFragment fragment = navActivity.getCurrentContentFragment();
+			boolean continueNavigation = true;
+
+			/** Check whether to continue with navigation to Privacy and terms or not  */
+			if (navActivity instanceof BankNavigationRootActivity) {
+				/** 
+				 * Show requested page if no fragment is present, user is not already in privacy terms view, 
+				 * or if user is already viewing privacy and terms, 
+				 * they are not requesting to view the landing page again
+				 */
+				continueNavigation = (fragment == null
+						|| fragment.getGroupMenuLocation() != BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP 
+						|| (fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP
+							&& fragment instanceof TermsLandingPageFragment && type != PrivacyTermsType.LandingPage));
+			}
+
+			if (continueNavigation) {
+				/** Must specify what page to show to the BankPrivacyTermsFragment */
+				final Bundle bundle = new Bundle();
+
+				switch(type) {
+				case LandingPage:
+					/** Display Landing Page for Privacy and Terms */
+					fragment = new TermsLandingPageFragment();
+					break;
+					
+				case GoogleTermsOfUse:
+					/** Check if Google Terms of Use is being displayed */
+					bundle.putSerializable(BankTextViewFragment.KEY_TEXT,
+							GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(activity));
+					fragment = new BankTextViewFragment();
+					fragment.setArguments(bundle);
+					break;
+					
+				default:
+					bundle.putSerializable(BankPrivacyTermsFragment.KEY_TERMS_TYPE, type);
+					fragment = new BankPrivacyTermsFragment();
+					fragment.setArguments(bundle);
+					break;
+				}				
+				navActivity.makeFragmentVisible(fragment);
+			} else {
+				navActivity.hideSlidingMenuIfVisible();
+			}
+			
 		}
 	}
 
