@@ -71,11 +71,12 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 	private final int SSO_SSN_MATCHED = 1106;
 	private final String NOT_ENROLLED_MSG = "NOTENROLLED";
 	private final String SA_LOCKED_MSG = "LOCKOUT";
+	private WSRequest request;
 
 	@Override
 	public void login(final LoginActivityInterface callingActivity, final String username, final String password)
 	{
-		final WSRequest request = new WSRequest();
+		request = new WSRequest();
 		final String authString = NetworkUtility.getAuthorizationString(username, password);
 		context = callingActivity.getContext();
 
@@ -87,6 +88,8 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 		final String url = NetworkUtility.getWebServiceUrl(context, R.string.login_url);
 		request.setUrl(url);
 		request.setHeaderValues(headers);
+		request.setUsername(username);
+		request.setPassword(password);
 		// /request.setCookieHander(); //do not use
 		final WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, new AccountDetails(), "Discover", "Authenticating...", this);
 		serviceCall.execute(request);
@@ -524,10 +527,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 			{
 				if (isSSNMatched)
 				{ // Bank call for Auth
-					//TODO: Retrieve username and password
-					final String username = "";
-					final String password = "";
-					FacadeFactory.getBankLoginFacade().authDueToALUStatus(username, password);
+					FacadeFactory.getBankLoginFacade().authDueToALUStatus(request.getUsername(), request.getPassword());
 				}
 				else
 				{
