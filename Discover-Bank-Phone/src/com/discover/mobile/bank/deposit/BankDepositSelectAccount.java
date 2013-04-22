@@ -107,11 +107,13 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 			}
 		}
 		
-		if( item != null ){
+		if (items.size() == 1) {
+			item.drawAllStrokes(context);
+		} else if (items.size() >= 2){
 			item.drawBottomStroke(context);
 		}
 		
-		return items;													
+		return items;							
 	}
 
 	/**
