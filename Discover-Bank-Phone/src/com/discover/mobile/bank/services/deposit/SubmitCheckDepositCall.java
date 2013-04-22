@@ -42,6 +42,8 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 
 				body = modelClass;
 				
+				/**Wait for response to request for two minutes maximum*/
+				this.readTimeoutSeconds = 120;
 				
 				final TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
 				

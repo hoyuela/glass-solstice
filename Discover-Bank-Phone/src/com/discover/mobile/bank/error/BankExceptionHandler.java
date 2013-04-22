@@ -80,15 +80,9 @@ public class BankExceptionHandler extends BaseExceptionFailureHandler {
 				KeepAlive.resetLastBankRefreshTime();
 			}
 			//Catch-all exception handler
-			else  {
-				//Check if network connection available
-				if( BankNetworkServiceCallManager.isNetworkConnected() ) {
-					//Display Catch all modal if connection is available
-					BankErrorHandler.getInstance().handleGenericError(0);
-				} else {
-					//Display No Connection Available Modal when No Network Connection Available
-					((BankErrorHandler)BankErrorHandler.getInstance()).handleNoConnection();
-				}
+			else  {	
+				//Display Catch all modal if connection is available
+				BankErrorHandler.getInstance().handleGenericError(0);
 			}
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {

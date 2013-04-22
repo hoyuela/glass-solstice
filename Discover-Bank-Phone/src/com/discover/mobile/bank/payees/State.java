@@ -10,8 +10,6 @@ public class State {
 	public static State[] STATES = new State[] {
 		new State("Alabama", "AL"),
 		new State("Alaska", "AK"),
-		new State("Alabama", "AL"),
-		new State("Alaska", "AK"),
 		new State("Arizona", "AZ"),
 		new State("Arkansas", "AR"),
 		new State("California", "CA"),
