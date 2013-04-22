@@ -3,6 +3,8 @@ package com.discover.mobile.bank.login;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -1134,13 +1136,19 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				new OnClickListener() {
 					@Override
 					public void onClick(final View v) {
-						if (credentials == null) {
-							BankConductor.continueAuthDueToALU();
-						} else {
-							BankConductor.continueAuthDueToALU(credentials);
-						}
 						aluModal.dismiss();
 					}
 				});
+		aluModal.setOnDismissListener(new OnDismissListener(){
+			@Override
+			public void onDismiss(final DialogInterface dialog) {
+				if (credentials == null) {
+					BankConductor.continueAuthDueToALU();
+				} else {
+					BankConductor.continueAuthDueToALU(credentials);
+				}
+			}
+
+		});
 	}
 }

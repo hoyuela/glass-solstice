@@ -13,13 +13,15 @@ import com.discover.mobile.common.facade.CardKeepAliveFacade;
  *
  */
 public class CardKeepAliveFacadeImpl implements CardKeepAliveFacade{
-
-	PageTimeOutUtil pagetimeout;
+PageTimeOutUtil pagetimeout;
 	@Override
-	public void refreshCardSession(final Context context) {
-
-		pagetimeout = new PageTimeOutUtil(context);
-		pagetimeout.keepSessionAlive();
-	}
+	public void refreshCardSession(Context context) {
+		   
+        pagetimeout = new PageTimeOutUtil(context);
+        pagetimeout.keepSessionAlive();
+ }
+ 
+		
+	
 
 }

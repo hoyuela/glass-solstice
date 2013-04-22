@@ -89,6 +89,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		//authenticated.
 		if(BankUser.instance().isSsoUser()){
 			view.findViewById(R.id.downArrow).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.cardBankIcon).setVisibility(View.VISIBLE);
 		}
 
 		if (savedInstanceState != null

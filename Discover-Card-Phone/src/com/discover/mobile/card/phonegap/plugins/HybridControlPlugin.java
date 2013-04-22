@@ -6,8 +6,10 @@ import org.apache.cordova.api.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -42,7 +44,9 @@ public class HybridControlPlugin extends CordovaPlugin {
     public static final String getStrongAuthSvcs = "getStrongAuthSvcs";
     public static final String logOutUser = "logOutUser";
 	public static final String gotoAchome = "gotoAchome";
-
+	public static final String getSID = "getSID";
+	public static final String getDID = "getDID";
+	public static final String getOID = "getOID";
     private static final String TAG = "HybridControlPlugin";
     public static Fragment frag123 = null;
 
@@ -495,8 +499,38 @@ public class HybridControlPlugin extends CordovaPlugin {
         	pluginResult.setKeepCallback(true);
         	callbackContext.sendPluginResult(pluginResult);
         	return true;
-        }
-
+        }else if (action.equals(getDID)) {
+        	Log.d(TAG, "inside DID ");        	
+        	final TelephonyManager telephonyManager = (TelephonyManager) cordova.getContext()
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+            String did = telephonyManager.getDeviceId();
+            final PluginResult pluginResult = new PluginResult(
+        			PluginResult.Status.OK, did);
+        	pluginResult.setKeepCallback(true);
+        	callbackContext.sendPluginResult(pluginResult);
+        	return true;
+        }else if (action.equals(getSID)) {
+        	Log.d(TAG, "inside SID ");        	
+        	final TelephonyManager telephonyManager = (TelephonyManager) cordova.getContext()
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+            String sid = telephonyManager.getSimSerialNumber();
+            Log.d("sid:",sid);
+            final PluginResult pluginResult = new PluginResult(
+        			PluginResult.Status.OK, sid);
+        	pluginResult.setKeepCallback(true);
+        	callbackContext.sendPluginResult(pluginResult);
+        	return true;
+        }else if (action.equals(getOID)) {
+        	Log.d(TAG, "inside OID ");        	
+        	final TelephonyManager telephonyManager = (TelephonyManager) cordova.getContext()
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+            String oid = telephonyManager.getDeviceId();
+            final PluginResult pluginResult = new PluginResult(
+        			PluginResult.Status.OK, oid);
+        	pluginResult.setKeepCallback(true);
+        	callbackContext.sendPluginResult(pluginResult);
+        	return true;
+        }        
         return false;
     }
 }

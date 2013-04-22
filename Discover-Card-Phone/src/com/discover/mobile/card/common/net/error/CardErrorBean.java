@@ -42,7 +42,7 @@ public final class CardErrorBean {
 		errorTitle = errTitle;
 		this.isAppError = isAppError;
 		this.footerStatus = footerStatus;
-
+		
 	}
 
 	/**
@@ -56,6 +56,7 @@ public final class CardErrorBean {
 		this.errorMessage = errMessage;
 		this.isAppError = isAppError;
 		this.errorCode = "-1";
+		footerStatus = "0";
 	}
 
 	/**
@@ -70,6 +71,7 @@ public final class CardErrorBean {
 		this.questionId = questionId;
 		this.questionText = questionText;
 		this.errorCode = errCode;
+		footerStatus = "0";
 	}
 
 	/**

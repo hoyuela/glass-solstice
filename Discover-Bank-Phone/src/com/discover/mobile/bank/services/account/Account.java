@@ -343,9 +343,9 @@ public class Account implements Serializable {
 	 */
 	public boolean isTransferEligible() {
 		return isExternalAccount() ||
-				type.equalsIgnoreCase(ACCOUNT_CHECKING) ||
-				type.equalsIgnoreCase(ACCOUNT_SAVINGS) ||
-				type.equalsIgnoreCase(ACCOUNT_MMA);
+				ACCOUNT_CHECKING.equalsIgnoreCase(type) ||
+				ACCOUNT_SAVINGS.equalsIgnoreCase(type) ||
+				ACCOUNT_MMA.equalsIgnoreCase(type);
 
 	}
 
@@ -354,7 +354,7 @@ public class Account implements Serializable {
 	 * @return
 	 */
 	public boolean isExternalAccount() {
-		return Strings.isNullOrEmpty(type);
+		return Strings.isNullOrEmpty(type) && !Strings.isNullOrEmpty(id);
 	}
 
 

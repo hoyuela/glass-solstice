@@ -174,6 +174,12 @@ final public class CardErrorUtil {
                         if (isSSOUser) {
                             return getSSOData(response, responseBean);
                         }
+                        else{
+                            errorCode = getErrorCodewithResponse(response,
+                                    responseBean);
+                            errorTitle = getTitleforErrorCode(errorCode);
+                            footerStatus = getHelpFooterErrorCode(errorCode);
+                        }
                     } else {
                         errorCode = getErrorCodewithResponse(response,
                                 responseBean);
@@ -427,13 +433,16 @@ final public class CardErrorUtil {
 
         String ErrorMessage = null;
 
-        Log.d("get msg in", "getMessageforErrorCode");
+        Log.d("get msg in", "getMessageforErrorCode"+errorResponseCode);
 
         String name = appendErrortag("E_", errorResponseCode);
         try {
             final int resId = mResource.getIdentifier(name, "string",
                     context.getPackageName());
             ErrorMessage = mResource.getString(resId);
+            
+            Log.d("get msg out--", "ErrorMessage " + ErrorMessage);
+            
             if (null != userIdToken) {
                 ErrorMessage = ErrorMessage.replace("!~~!", userIdToken);
             }
@@ -583,6 +592,10 @@ final public class CardErrorUtil {
         errText = getMessageforErrorCode(errCode.toString());
         
         footerStatus = getHelpFooterErrorCode(errCode.toString());
+        
+        Log.i(CardErrorUtil.class.getSimpleName(), "errCode "+errCode+" errTitle "+
+        		errTitle+" errText "+errText+" footerStatus "
+        		+footerStatus);
         return new CardErrorBean(isSSOUidDLinkable, isSSOUser,isSSNMatch, errCode.toString(),errTitle,errText,footerStatus);
     }
 }

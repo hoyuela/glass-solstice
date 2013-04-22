@@ -688,8 +688,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * @param cameraId
 	 * @param camera
 	 */
-	public static void setCameraDisplayOrientation(final Activity activity,
-			final int cameraId, final android.hardware.Camera camera) {
+	public void setCameraDisplayOrientation(final Activity activity, final int cameraId, 
+			final Camera camera) {
 		final android.hardware.Camera.CameraInfo info =
 				new android.hardware.Camera.CameraInfo();
 		android.hardware.Camera.getCameraInfo(cameraId, info);
@@ -700,18 +700,18 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		final int piHalf = pi >> 1;
 
 		switch (rotation) {
-		case Surface.ROTATION_0: 
-			degrees = 0; 
-			break;
-		case Surface.ROTATION_90: 
-			degrees = piHalf; 
-			break;
-		case Surface.ROTATION_180: 
-			degrees = pi; 
-			break;
-		case Surface.ROTATION_270: 
-			degrees = twoPi - piHalf; 
-			break;
+			case Surface.ROTATION_0: 
+				degrees = 0; 
+				break;
+			case Surface.ROTATION_90: 
+				degrees = piHalf; 
+				break;
+			case Surface.ROTATION_180: 
+				degrees = pi; 
+				break;
+			case Surface.ROTATION_270: 
+				degrees = twoPi - piHalf; 
+				break;
 		}
 
 		int result;
