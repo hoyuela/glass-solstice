@@ -15,7 +15,7 @@ import com.discover.mobile.common.facade.BankLoginFacade;
 public class BankLoginFacadeImpl implements BankLoginFacade {
 
 	@Override
-	public void authorizeWithBankPayload(String payload) {
+	public void authorizeWithBankPayload(final String payload) {
 		BankConductor.authWithBankPayload(payload);
 	}
 
@@ -25,7 +25,7 @@ public class BankLoginFacadeImpl implements BankLoginFacade {
 	}
 
 	@Override
-	public void authDueToALUStatus(String username, String password) {
-		BankConductor.authDueToALUStatus();
+	public void authDueToALUStatus(final String username, final String password) {
+		BankConductor.authDueToALUStatus(username, password);
 	}
 }

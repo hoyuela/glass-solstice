@@ -224,7 +224,7 @@ public final class SessionCookieManager {
 
         if (null == baseUri) {
             final String url = sessionCookieContext
-                    .getString(R.string.base_url_dev);
+                    .getString(R.string.url_in_use);
             try {
                 baseUri = new URI(url);
             } catch (final URISyntaxException e) {

@@ -868,7 +868,7 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToTransferConfirmation(final Bundle args) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		
+
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
@@ -1073,7 +1073,6 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void authDueToALUStatus() {
 		final LoginActivity activity = (LoginActivity) DiscoverActivityManager.getActiveActivity();
-		//TODO: Why are we passing a null value here this call passes credentials to the next call
 		activity.showALUStatusModal(null);
 	}
 
@@ -1109,9 +1108,6 @@ public final class BankConductor  extends Conductor {
 			loginDetails = null;
 		}
 	}
-
-
-	//TODO:  Remove this comment it is a way for me to identify the SSO code in this  class ----------------------------------------
 
 	/**
 	 * Navigate to the email screen after getting the directions
@@ -1216,7 +1212,7 @@ public final class BankConductor  extends Conductor {
 		if (activity == null) {
 			return;
 		}
-		
+
 		/** Launches Privacy & Terms Activity */
 		if (activity instanceof LoginActivity || activity instanceof AtmLocatorActivity) {
 			final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
@@ -1230,7 +1226,7 @@ public final class BankConductor  extends Conductor {
 				activity.finish();
 			}
 		}
-		
+
 		/** Verify that the user is logged in and the BankNavigationRootActivity is the active activity */
 		else if (activity instanceof NavigationRootActivity) {
 			final NavigationRootActivity navActivity = (NavigationRootActivity) activity;
@@ -1247,7 +1243,7 @@ public final class BankConductor  extends Conductor {
 				continueNavigation = (fragment == null
 						|| fragment.getGroupMenuLocation() != BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP 
 						|| (fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP
-							&& fragment instanceof TermsLandingPageFragment && type != PrivacyTermsType.LandingPage));
+						&& fragment instanceof TermsLandingPageFragment && type != PrivacyTermsType.LandingPage));
 			}
 
 			if (continueNavigation) {
@@ -1259,7 +1255,7 @@ public final class BankConductor  extends Conductor {
 					/** Display Landing Page for Privacy and Terms */
 					fragment = new TermsLandingPageFragment();
 					break;
-					
+
 				case GoogleTermsOfUse:
 					/** Check if Google Terms of Use is being displayed */
 					bundle.putSerializable(BankTextViewFragment.KEY_TEXT,
@@ -1267,7 +1263,7 @@ public final class BankConductor  extends Conductor {
 					fragment = new BankTextViewFragment();
 					fragment.setArguments(bundle);
 					break;
-					
+
 				default:
 					bundle.putSerializable(BankPrivacyTermsFragment.KEY_TERMS_TYPE, type);
 					fragment = new BankPrivacyTermsFragment();
@@ -1278,7 +1274,7 @@ public final class BankConductor  extends Conductor {
 			} else {
 				navActivity.hideSlidingMenuIfVisible();
 			}
-			
+
 		}
 	}
 

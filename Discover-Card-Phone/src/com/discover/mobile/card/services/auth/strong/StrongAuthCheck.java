@@ -55,7 +55,7 @@ public class StrongAuthCheck {
 				.getCookieManagerInstance();
 		sessionCookieManagerObj.setCookieValues();
 
-		headers.put("X-SEC-Token", sessionCookieManagerObj.getSecToken());
+		headers.put("X-Sec-Token", sessionCookieManagerObj.getSecToken());
 		String url = NetworkUtility.getWebServiceUrl(context,
 				R.string.strongAuth_url);
 

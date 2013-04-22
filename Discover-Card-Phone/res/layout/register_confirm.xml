@@ -75,7 +75,8 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/notification_list_item"
             android:paddingLeft="@dimen/forms_inner_padding"
-            android:paddingRight="@dimen/forms_inner_padding" >
+            android:paddingRight="@dimen/forms_inner_padding"
+            android:paddingBottom="7dp" >
 
             <TextView
                 android:id="@+id/account_info_confirm_summary_label"
@@ -83,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_confirm_security_precaution_label"
                 android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="5dp"
                 android:includeFontPadding="false"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
@@ -182,7 +183,8 @@
                 android:layout_marginTop="6dp"
                 android:includeFontPadding="false"
                 android:textColor="@color/sub_copy"
-                android:textSize="@dimen/small_copy_mid" />
+                android:paddingBottom="4dp"
+                android:textSize="14dp" />
         </RelativeLayout>
 
         <TextView

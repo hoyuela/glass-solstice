@@ -41,6 +41,7 @@ public class CardErrorUIWrapper implements CardErrHandler
 {
 
     static final CardErrHandler instance = new CardErrorUIWrapper();
+    private int footerValue = 0;
 
     /**
      * Constructor
@@ -95,7 +96,11 @@ public class CardErrorUIWrapper implements CardErrHandler
 
         final ModalDefaultTopView view = (ModalDefaultTopView) modal.getTop();
 
-        final int footerValue = Integer.parseInt(footerStatus);
+        footerValue = 0;
+        if(footerStatus != null)
+        {
+        	footerValue = Integer.parseInt(footerStatus);
+        }
         view.hideFeedbackView(); // to hide feedback footer for all cases
         switch (footerValue) {
         case 0:// to hide only need help footer
@@ -192,7 +197,11 @@ public class CardErrorUIWrapper implements CardErrHandler
 
         final ModalDefaultTopView view = (ModalDefaultTopView) modal.getTop();
 
-        final int footerValue = Integer.parseInt(footerStatus);
+        footerValue = 0;
+        if(footerStatus != null)
+        {
+        	footerValue = Integer.parseInt(footerStatus);
+        }
 
         switch (footerValue)
         {

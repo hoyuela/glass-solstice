@@ -28,7 +28,8 @@
         android:paddingLeft="@dimen/nav_section_pading"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:src="@drawable/bank_gray_icon" />
+        android:src="@drawable/bank_gray_icon"
+        android:visibility="invisible"  />
 
     <ImageView
         android:id="@+id/downArrow"

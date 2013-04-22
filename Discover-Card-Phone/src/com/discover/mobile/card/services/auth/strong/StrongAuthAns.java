@@ -14,10 +14,12 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.auth.strong.StrongAuthBean;
 import com.discover.mobile.card.auth.strong.StrongAuthUtil;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.fasterxml.jackson.core.JsonGenerationException;
 
 /**
@@ -80,6 +82,15 @@ public class StrongAuthAns {
 
 		WSRequest request = new WSRequest();
 		HashMap<String, String> headers = request.getHeaderValues();
+		
+		CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+				.getInstance(context);
+		SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
+				.getCookieManagerInstance();
+		sessionCookieManagerObj.setCookieValues();
+
+		headers.put("X-Sec-Token", sessionCookieManagerObj.getSecToken());
+		
 		String url = NetworkUtility.getWebServiceUrl(context,
 				R.string.strongAuth_ans_url);
 

@@ -637,7 +637,6 @@ public class HomeSummaryFragment extends BaseFragment implements
 			toggleView.setVisibility(view.GONE);
 			accountToggleArrow.setVisibility(view.GONE);
 		}
-
 	}
 
 	/**

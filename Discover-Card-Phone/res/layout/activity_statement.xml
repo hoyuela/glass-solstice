@@ -16,7 +16,7 @@
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_weight="1"
             android:contentDescription="@string/discoverLogo_img_desc"
-            android:src="@drawable/discover_logo" />
+            android:src="@drawable/card_discover_logo" />
     </LinearLayout>
 
     <LinearLayout
