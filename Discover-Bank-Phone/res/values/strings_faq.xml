@@ -11,9 +11,10 @@
     
 <!-- FAQ Section Titles -->
     <string name="faq_title">FAQs</string>
+    
     <string name="general">General</string>
-	<string name="atm_locator_single_line">ATM Locator</string>
 	<string name="online_bill_pay">Online Bill Pay</string>
-
 	<string name="deposit_a_check">Deposit a Check</string>
+	<string name="atm_locator_single_line">ATM Locator</string>
+	
 </resources>

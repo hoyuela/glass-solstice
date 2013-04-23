@@ -10,16 +10,17 @@
 	</string-array>
 
 <!-- General FAQ Items -->
-	<string name="is_banking_safe_title">Is DiscoverBank.com Mobile Secure?</string>
-	<string name="is_banking_safe_body">Yes! The mobile account center was designed with security in mind. 
-	    This means that your information is encrypted and we will not reveal your full account number 
-	    on the mobile site. Each time you log in we will authenticate you with your user ID and password and your 
-	    session will time-out after a period of inactivity.
+	<string name="is_banking_safe_title">Is Discover.com Mobile Secure?</string>
+	<string name="is_banking_safe_body">
+		Discover.com Mobile uses the same security standards as discover.com.  
+		We ensure a high security level by never showing your account number, 
+		timing out each session after a period of inactivity and by using your existing 
+		User ID and Password, which only you know.
 	</string>
 	
 	<string name="whats_required_title">What do I need to log in to Discover Mobile?</string>
-	<string name="whats_required_body">To log in, use the same User ID and Password that you 
-	    have set up at DiscoverBank.com.
+	<string name="whats_required_body">
+		To log in, use the same User ID and Password that you have set up at discoverbank.com.
 	</string>
 	
 </resources>
