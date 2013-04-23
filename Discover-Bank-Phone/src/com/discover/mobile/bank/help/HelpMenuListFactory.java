@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.atm.AtmModalFactory;
 import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.framework.BankConductor;
@@ -42,16 +43,16 @@ public final class HelpMenuListFactory {
 
 	/**Instance of the factory*/
 	private static HelpMenuListFactory factory;
-	
+
 	/**
 	 * Private constructor, creates the default help menu items.
 	 */
 	private HelpMenuListFactory(){
 		allFaq = new HelpItemGenerator(R.string.help_all_faq, true, false, getAllFaqListener());
 		paybills = new HelpItemGenerator(R.string.pay_bills_help, true, false, 
-													getDefaultClickListener(BankExtraKeys.BILL_PAY_FAQ));
+				getDefaultClickListener(BankExtraKeys.BILL_PAY_FAQ));
 		checkDeposit = new HelpItemGenerator(R.string.check_deposit_faq, true, false, 
-													getDefaultClickListener(BankExtraKeys.CHECK_DEPOSIT_FAQ));
+				getDefaultClickListener(BankExtraKeys.CHECK_DEPOSIT_FAQ));
 	}
 
 	/**
@@ -73,17 +74,17 @@ public final class HelpMenuListFactory {
 	public List<HelpItemGenerator> getLoggedOutHelpItems(){
 		/**Default menu item representing the "Bank ALL FAQ" item*/
 		final HelpItemGenerator bankFaq = new HelpItemGenerator(R.string.help_bank_faq, true, false, getAllFaqListener());
-		
+
 		/**Default menu item representing the "Card ALL FAQ" item*/
 		final HelpItemGenerator cardFaq = new HelpItemGenerator(R.string.help_card_faq, true, false, getCardFaqListener());
-			
+
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
-		
+
 		items.add(cardFaq);
 		items.add(bankFaq);
 		return items;
 	}
-	
+
 	/**
 	 * Get the menu items that are associated with the account summary pages
 	 * @return - the list of help menu items associated with the account summary pages
@@ -91,9 +92,9 @@ public final class HelpMenuListFactory {
 	public List<HelpItemGenerator> getCardHelpItems(){	
 		/**Default menu item representing the "Card ALL FAQ" item*/
 		final HelpItemGenerator cardFaq = new HelpItemGenerator(R.string.help_card_faq, true, false, getCardFaqListener());
-			
+
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
-	
+
 		items.add(cardFaq);
 		return items;
 	}
@@ -107,8 +108,8 @@ public final class HelpMenuListFactory {
 		items.add(allFaq);
 		return items;
 	}
-	
-	
+
+
 	/**
 	 * Returns a list of items to be shown in the help dropdown menu during bank transfers.
 	 * @return a list of items to be shown in the help dropdown menu during bank transfers.
@@ -136,7 +137,7 @@ public final class HelpMenuListFactory {
 	public List<HelpItemGenerator> getCheckDepositHelpItems(){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
 		final HelpItemGenerator howItWorksModal = new HelpItemGenerator(R.string.check_deposit_help, true, false, 
-																				getHowItWorksModalListener());
+				getHowItWorksModalListener());
 		items.add(allFaq);
 		items.add(howItWorksModal);
 		return items;
@@ -146,28 +147,36 @@ public final class HelpMenuListFactory {
 	 * Get the menu items that need to be added to the help menu when on ATM Locator
 	 * @return the menu items for ATM locator
 	 */
-	public List<HelpItemGenerator> getAtmHelpItems(){
+	public List<HelpItemGenerator> getAtmHelpItems(final AtmMapFragment fragment){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
 		final HelpItemGenerator atmHelp = 
-				new HelpItemGenerator(R.string.help_menu_atm_help, true, false, getAtmHelpListener());
-		final HelpItemGenerator atmFaq = 
-				new HelpItemGenerator(R.string.help_menu_atm_faq, true, true, 
-												getDefaultClickListener(BankExtraKeys.ATM_LOCATOR_FAQ));
+				new HelpItemGenerator(R.string.help_menu_atm_help, true, false, getAtmHelpListener(fragment));
+		new HelpItemGenerator(R.string.help_menu_atm_faq, true, true, 
+				getDefaultClickListener(BankExtraKeys.ATM_LOCATOR_FAQ));
 		items.add(allFaq);
 		items.add(atmHelp);
 		return items;
 	}
 
 	/**
+	 * Show the ATM help modal if it needs to be shown
+	 */
+	public void showAtmHelpModal() {
+		final BaseFragmentActivity activity = (BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();
+		activity.showCustomAlert(AtmModalFactory.getAtmLocatorHelpModal(activity));
+	}
+
+	/**
 	 * Return the click listener for the atm help menu item
 	 * @return the click listener for the atm help menu item
 	 */
-	private OnClickListener getAtmHelpListener() {
+	private OnClickListener getAtmHelpListener(final AtmMapFragment fragment) {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
 				final BaseFragmentActivity activity = (BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();
 				activity.showCustomAlert(AtmModalFactory.getAtmLocatorHelpModal(activity));
+				fragment.setHelpModalShowing(true);
 			}	
 		};
 	}
@@ -200,7 +209,7 @@ public final class HelpMenuListFactory {
 			}
 		};
 	}
-	
+
 	/**
 	 * Click listener for the all FAQ item.  On click the user will be directed to the all FAQ page
 	 * @return Click listener for the all FAQ item.  On click the user will be directed to the all FAQ page
@@ -217,7 +226,7 @@ public final class HelpMenuListFactory {
 			}
 		};
 	}
-	
+
 	/**
 	 * Click listener for the all FAQ item.  On click the user will be directed to the all FAQ page
 	 * @return Click listener for the all FAQ item.  On click the user will be directed to the all FAQ page
@@ -230,14 +239,14 @@ public final class HelpMenuListFactory {
 			}
 		};
 	}
-	
+
 	/**
 	 * Returns a click listener that will show the how it works modal onClick.
 	 * @return a click listener that will show the how it works modal onClick.
 	 */
 	private OnClickListener getHowItWorksModalListener() {
 		return new OnClickListener() {
-			
+
 			@Override
 			public void onClick(final View v) {
 				BankDepositSelectAccount.showHowItWorksModal();
