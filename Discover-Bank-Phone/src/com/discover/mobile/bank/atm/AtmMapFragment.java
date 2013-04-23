@@ -61,6 +61,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	/**Private static key for the street view showing*/
 	private static final String STREET_VIEW_SHOWING = "svs";
 
+	/**Key to get the state of the help modal from the bundle*/
+	private static final String ATM_HELP_MODAL = "atmModal";
+
 	/**Modal that asks the user if the app can use their current location*/
 	private ModalAlertWithTwoButtons locationModal;
 
@@ -136,6 +139,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	/**Location of the user*/
 	private Location location;
 
+	/**Boolean true if the help menu alert menu is showing*/
+	private boolean helpModalShowing = false;
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -156,7 +162,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		mapButton = (Button) view.findViewById(R.id.map_nav);
 		listButton = (Button) view .findViewById(R.id.list_nav);
 		help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getAtmHelpItems());
+		help.showHelpItems(HelpMenuListFactory.instance().getAtmHelpItems(this));
 		navigationPanel = (LinearLayout) view.findViewById(R.id.map_navigation_panel);
 		streetView.hide();
 		locationManagerWrapper = new DiscoverLocationMangerWrapper(this);
@@ -200,6 +206,10 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		}
 
 		setMapTransparent((ViewGroup)fragment.getView());
+
+		if(isHelpModalShowing()){
+			HelpMenuListFactory.instance().showAtmHelpModal();
+		}
 	}
 
 	/**
@@ -397,6 +407,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
 		listFragment.handleReceivedData(savedInstanceState);
+		setHelpModalShowing(savedInstanceState.getBoolean(ATM_HELP_MODAL, false));
 		if(0.0 == lat && 0.0 == lon){
 			mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
 		}else{
@@ -553,6 +564,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		if(shouldGoBack){
 			streetView.bundleData(outState);
 		}
+		outState.putBoolean(ATM_HELP_MODAL, helpModalShowing);
 		super.onSaveInstanceState(outState);
 	}
 
@@ -748,5 +760,19 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 */
 	public String getCurrentLocationAddress() {
 		return mapWrapper.getGetAddressString();
+	}
+
+	/**
+	 * @return the helpModalShowing
+	 */
+	public boolean isHelpModalShowing() {
+		return helpModalShowing;
+	}
+
+	/**
+	 * @param helpModalShowing the helpModalShowing to set
+	 */
+	public void setHelpModalShowing(final boolean helpModalShowing) {
+		this.helpModalShowing = helpModalShowing;
 	}
 }
