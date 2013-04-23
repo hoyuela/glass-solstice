@@ -3,12 +3,14 @@ package com.discover.mobile.bank.help;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
@@ -25,14 +27,18 @@ import com.google.common.base.Strings;
  *
  */
 public class FAQDetailFragment extends BaseFragment {
+	private final static String SCROLL_Y = "a";
+	
 	/** The list of FAQ items that will be shown in this Fragment */
 	final List<FAQListItem>faqItems = new ArrayList<FAQListItem>();
 
 	/**
 	 * Setup the Fragment to be shown.
 	 */
+	@SuppressLint("NewApi")
 	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {		
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, 
+																		final Bundle savedInstanceState) {
 		
 		super.onCreateView(inflater, container, savedInstanceState);
 		final View view = inflater.inflate(R.layout.faq_detail_fragment, null);
@@ -41,6 +47,22 @@ public class FAQDetailFragment extends BaseFragment {
 		titleLabel.setText(getResources().getString(getTitleForFragment()));
 		populateFAQItemsToTable((LinearLayout)view.findViewById(R.id.content_table));
 		restoreState(savedInstanceState);
+		
+		//Disable hardware acceleration for the UI so that the dotted line gets drawn correctly.
+		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+	        view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+	    }
+		
+		//Restore the scroll position on rotation change.
+		final ScrollView mainScroll = (ScrollView)view.findViewById(R.id.scroll_view);
+		mainScroll.post(new Runnable() {
+			@Override
+			public void run() {
+				if(savedInstanceState != null && mainScroll != null)
+					mainScroll.scrollTo(0, savedInstanceState.getInt(SCROLL_Y));
+			}
+		});
+			
 		return view;
 	}
 	
@@ -74,6 +96,7 @@ public class FAQDetailFragment extends BaseFragment {
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		outState.putSerializable(BankExtraKeys.PRIMARY_LIST, getSaveStateValues());
+		outState.putInt(SCROLL_Y, ((ScrollView)this.getView().findViewById(R.id.scroll_view)).getScrollY());
 	}
 		
 	/**
@@ -95,7 +118,7 @@ public class FAQDetailFragment extends BaseFragment {
 	 * Restores the state of the faqItems expand state. It opens items that were previously open.
 	 * @param savedInstanceState a Bundle which contains a boolean array with open and close states.
 	 */
-	private void restoreState(final Bundle savedInstanceState) {
+	protected void restoreState(final Bundle savedInstanceState) {
 		if(savedInstanceState != null) {
 			final boolean[] openStates = savedInstanceState.getBooleanArray(BankExtraKeys.PRIMARY_LIST);
 			
