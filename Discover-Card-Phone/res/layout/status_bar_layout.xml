@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/cardBankIcon"
-        android:src="@drawable/card_orange_arrow_down" />
+        android:src="@drawable/orange_arrow_down" />
       
       
 <!--     <ImageView
@@ -42,7 +42,7 @@
         android:layout_centerVertical="true"
   		android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
-        android:src="@drawable/card_question_mark_icon" /> -->
+        android:src="@drawable/question_mark_icon" /> -->
       
     
    <!--  <TextView

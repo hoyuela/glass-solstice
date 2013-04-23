@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -56,8 +57,8 @@ public class ChildBrowser extends CordovaPlugin {
 	CallbackContext callbackContext1;
 	JSONArray jsonArray;
 
-	private Bitmap loadDrawable(final String filename) throws java.io.IOException {
-		final InputStream input = cordova.getActivity().getAssets()
+	private Bitmap loadDrawable(String filename) throws java.io.IOException {
+		InputStream input = this.cordova.getActivity().getAssets()
 				.open(filename);
 		return BitmapFactory.decodeStream(input);
 	}
@@ -74,10 +75,9 @@ public class ChildBrowser extends CordovaPlugin {
 	 * @return A PluginResult object with a status and message.
 	 */
 
-	@Override
-	public boolean execute(final String action, final String rawArgs,
-			final CallbackContext callbackContext) throws JSONException {
-		callbackContext1 = callbackContext;
+	public boolean execute(String action, String rawArgs,
+			CallbackContext callbackContext) throws JSONException {
+		this.callbackContext1 = callbackContext;
 		Log.d(LOG_TAG, "---data-- " + rawArgs);
 		jsonArray = new JSONArray(rawArgs);
 
@@ -92,7 +92,7 @@ public class ChildBrowser extends CordovaPlugin {
 
 			// result = this.showWebPage(args.getString(0),
 			// args.optJSONObject(1));
-			final String url = jsonArray.getString(0);
+			String url = jsonArray.getString(0);
 			Log.d("dailog", url);
 			JSONObject options = null;
 			try {
@@ -101,20 +101,20 @@ public class ChildBrowser extends CordovaPlugin {
 					options = jsonArray.getJSONObject(1);
 					Log.i(LOG_TAG, "--1 --" + options);
 				}
-			} catch (final JSONException e) {
+			} catch (JSONException e) {
 				e.printStackTrace();
 				Log.i(LOG_TAG, e.getMessage(), e);
 			}
 			Log.d(LOG_TAG, "---2---" + url);
 			this.showWebPage(url, options);
 
-			final PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
 			callbackContext.sendPluginResult(pluginResult);
 			return true;
 
 		} else {
 			Log.d("%% Else of Child Browser", rawArgs);
-			final PluginResult pluginResult = new PluginResult(
+			PluginResult pluginResult = new PluginResult(
 					PluginResult.Status.ERROR);
 			callbackContext.sendPluginResult(pluginResult);
 			return false;
@@ -130,16 +130,16 @@ public class ChildBrowser extends CordovaPlugin {
 	 *            Load url in PhoneGap webview
 	 * @return "" if ok, or error message.
 	 */
-	public String openExternal(final String url, final boolean usePhoneGap) {
+	public String openExternal(String url, boolean usePhoneGap) {
 		try {
 			Intent intent = null;
 			if (usePhoneGap) {
 				// intent = new Intent().setClass(this.ctx.getContext(),
 				// org.apache.cordova.DroidGap.class);
-				intent = new Intent().setClass(cordova.getActivity()
+				intent = new Intent().setClass(this.cordova.getActivity()
 						.getApplicationContext(), DroidGap.class);
 				intent.setData(Uri.parse(url)); // This line will be removed in
-				// future.
+												// future.
 				intent.putExtra("url", url);
 
 				// Timeout parameter: 60 sec max - May be less if http device
@@ -149,28 +149,28 @@ public class ChildBrowser extends CordovaPlugin {
 				// These parameters can be configured if you want to show the
 				// loading dialog
 				intent.putExtra("loadingDialog", "Wait,Loading web page..."); // show
-				// loading
-				// dialog
+																				// loading
+																				// dialog
 				intent.putExtra("hideLoadingDialogOnPageLoad", true); // hide it
-				// once
-				// page
-				// has
-				// completely
-				// loaded
+																		// once
+																		// page
+																		// has
+																		// completely
+																		// loaded
 			} else {
 				intent = new Intent(Intent.ACTION_VIEW);
 				intent.setData(Uri.parse(url));
 			}
 
-			final CardNavigationRootActivity activity = (CardNavigationRootActivity) cordova
+			CardNavigationRootActivity activity = (CardNavigationRootActivity) this.cordova
 					.getActivity();
 			activity.overridePendingTransition(
 					com.discover.mobile.card.R.anim.slide_in_up,
 					com.discover.mobile.card.R.anim.slide_out_down);
 
-			cordova.getActivity().startActivity(intent);
+			this.cordova.getActivity().startActivity(intent);
 			return "";
-		} catch (final android.content.ActivityNotFoundException e) {
+		} catch (android.content.ActivityNotFoundException e) {
 			Log.d(LOG_TAG,
 					"ChildBrowser: Error loading url " + url + ":"
 							+ e.toString());
@@ -193,7 +193,7 @@ public class ChildBrowser extends CordovaPlugin {
 	 * @return boolean
 	 */
 	private boolean getShowLocationBar() {
-		return showLocationBar;
+		return this.showLocationBar;
 	}
 
 	/**
@@ -203,15 +203,14 @@ public class ChildBrowser extends CordovaPlugin {
 	 *            The url to load.
 	 * @param jsonObject
 	 */
-	public void showWebPage(final String url, final JSONObject options) {
+	public void showWebPage(final String url, JSONObject options) {
 		// Determine if we should hide the location bar.
 		if (options != null) {
 			showLocationBar = options.optBoolean("showLocationBar", true);
 		}
 		Log.d("@@@ showWebPage", url);
 		// Create dialog in new thread
-		final Runnable runnable = new Runnable() {
-			@Override
+		Runnable runnable = new Runnable() {
 			@SuppressWarnings("deprecation")
 			public void run() {
 				dialog = new Dialog(ChildBrowser.this.cordova.getActivity(),
@@ -220,39 +219,38 @@ public class ChildBrowser extends CordovaPlugin {
 				dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 				dialog.setCancelable(true);
 				dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-					@Override
-					public void onDismiss(final DialogInterface dialog) {
+					public void onDismiss(DialogInterface dialog) {
 						try {
-							final JSONObject obj = new JSONObject();
+							JSONObject obj = new JSONObject();
 							obj.put("type", CLOSE_EVENT);
 
 							sendUpdate(obj, false);
-						} catch (final JSONException e) {
+						} catch (JSONException e) {
 							Log.d(LOG_TAG, "Should never happen");
 						}
 					}
 				});
 
 				// ** +added code to purple-cabbage **
-				final RelativeLayout.LayoutParams logoParams = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams logoParams = new RelativeLayout.LayoutParams(
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				logoParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-				final RelativeLayout.LayoutParams closeParams = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams closeParams = new RelativeLayout.LayoutParams(
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				closeParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 				closeParams.setMargins(0, 10, 20, 30); // left, top, right,
-				// bottom
-				final LinearLayout.LayoutParams wvParams = new LinearLayout.LayoutParams(
+														// bottom
+				LinearLayout.LayoutParams wvParams = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
-				final LinearLayout main = new LinearLayout(ChildBrowser.this.cordova
+				LinearLayout main = new LinearLayout(ChildBrowser.this.cordova
 						.getActivity().getApplicationContext());
 				main.setOrientation(LinearLayout.VERTICAL);
 
-				final RelativeLayout toolbar = new RelativeLayout(
+				RelativeLayout toolbar = new RelativeLayout(
 						ChildBrowser.this.cordova.getActivity()
-						.getApplicationContext());
+								.getApplicationContext());
 				toolbar.setBackgroundColor(Color.BLACK);
 				toolbar.setLayoutParams(new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -263,12 +261,12 @@ public class ChildBrowser extends CordovaPlugin {
 				logoView.setLayoutParams(logoParams);
 
 				if (logoDestination == null) {
-					logoView.setImageResource(R.drawable.card_discover_logo);
+					logoView.setImageResource(R.drawable.discover_logo);
 
 				} else {
 					try {
 						logoView.setImageBitmap(loadDrawable(logoDestination));
-					} catch (final IOException e) {
+					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -276,11 +274,10 @@ public class ChildBrowser extends CordovaPlugin {
 				}
 				// ** _added code to purple-cabbage **
 
-				final ImageButton close = new ImageButton(ChildBrowser.this.cordova
+				ImageButton close = new ImageButton(ChildBrowser.this.cordova
 						.getActivity().getApplicationContext());
 				close.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(final View v) {
+					public void onClick(View v) {
 						closeDialog();
 					}
 				});
@@ -296,7 +293,7 @@ public class ChildBrowser extends CordovaPlugin {
 				//Changed as getting force close if submit is clicked without rating
 				webview = new WebView(ChildBrowser.this.cordova.getActivity());
 				webview.setWebChromeClient(new WebChromeClient());
-				final WebSettings settings = webview.getSettings();
+				WebSettings settings = webview.getSettings();
 				settings.setJavaScriptEnabled(true);
 				settings.setJavaScriptCanOpenWindowsAutomatically(true);
 				settings.setBuiltInZoomControls(true);
@@ -317,7 +314,7 @@ public class ChildBrowser extends CordovaPlugin {
 				}
 				main.addView(webview);
 
-				final WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 				lp.copyFrom(dialog.getWindow().getAttributes());
 				lp.width = WindowManager.LayoutParams.FILL_PARENT;
 				lp.height = WindowManager.LayoutParams.FILL_PARENT;
@@ -326,13 +323,13 @@ public class ChildBrowser extends CordovaPlugin {
 					dialog.setContentView(main);
 					dialog.show();
 					dialog.getWindow().setAttributes(lp);
-				} catch (final Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 
 		};
-		cordova.getActivity().runOnUiThread(runnable);
+		this.cordova.getActivity().runOnUiThread(runnable);
 	}
 
 	/**
@@ -341,8 +338,8 @@ public class ChildBrowser extends CordovaPlugin {
 	 * @param obj
 	 *            a JSONObject contain event payload information
 	 */
-	private void sendUpdate(final JSONObject obj, final boolean keepCallback) {
-		final PluginResult result = new PluginResult(PluginResult.Status.OK, obj);
+	private void sendUpdate(JSONObject obj, boolean keepCallback) {
+		PluginResult result = new PluginResult(PluginResult.Status.OK, obj);
 		result.setKeepCallback(keepCallback);
 		callbackContext1.sendPluginResult(result);
 	}

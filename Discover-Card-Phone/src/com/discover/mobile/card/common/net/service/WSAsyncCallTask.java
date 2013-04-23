@@ -164,54 +164,7 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
                                 headers.get(key).get(0));
                     }
                     
-                    /*else if (key != null
-                            && key.equalsIgnoreCase("Set-Cookie")) {
-
-                        Log.i("Headers========>",
-                                "" + key + " " + headers.get(key));
-                       
-                        for (int counter = 0; counter < headers.get(key).size(); counter++) {
-                            String cookie = headers.get(key).get(counter);
-                            String[] cookieSet = cookie.split(";");
-
-                            for (int index = 0; index < cookieSet.length; index++) {
-                                if (cookieSet[index].contains(compareSecTokenKey)) {
-                                    String newSecToken = cookieSet[index]
-                                            .subSequence(
-                                                    compareSecTokenKey.length() + 1,
-                                                    cookieSet[index].length())
-                                            .toString();
-                                    final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-                                            .getInstance(context);
-                                    cardShareDataStoreObj.addToAppCache("secToken", newSecToken);
-                                    
-                                    
-//                                    final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-//                                            .getInstance(context);
-//                                    final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
-//                                            .getCookieManagerInstance();
-//                                    sessionCookieManagerObj.setSecTokenInCookie(newSecToken);
-                                }
-                                else if (cookieSet[index].contains(compareKey)) {
-                                    strongAuthSvcs = cookieSet[index]
-                                            .subSequence(
-                                                    compareKey.length() + 1,
-                                                    cookieSet[index].length())
-                                            .toString();
-                                }
-                            }
-
-                        }
-                        Log.i("-------------yoy-----------", "--data--" + strongAuthSvcs);
-
-                        if(null!=strongAuthSvcs)
-                        {
-                            CardShareDataStore cardShareDataStore = CardShareDataStore
-                                    .getInstance(context);
-                            cardShareDataStore.addToAppCache(context.getString(R.string.strong_auth_svcs),
-                                    strongAuthSvcs);
-                        }
-                    }*/
+  
                 }
 
             }
