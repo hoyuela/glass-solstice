@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Forgot User ID Confirmation</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="forgot-uid-confirmation-pg" data-theme="d">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+			<header id="header" class="cmn_header"> </header>
+		</div>
+		<!-- header	end	-->
+		<div id="r4-wrap">
+		<!-- content start -->
+		<div id="registration" data-role="content" class="ui-content-internalpages ui-content" role="main">
+			<div class="wrapper confirmation">
+
+				<h1>You Are Now Logged In</h1>
+				
+				<p>As a security precaution, your password and the first 12 digits of your Account number are not shown.</p>
+				
+				<p class="bolded">Your Online Account Information:</p>
+				
+				<dl class="confirmation-list">
+					<dt>User ID</dt>
+					<dd id="fuid-userId"></dd>
+					
+					<dt>E-mail Address</dt>
+					<dd id="fuid-email"></dd>	
+						
+					<dt>Account Number</dt>
+					<dd>**** **** **** <span class="bolded" id="fuid-last4"></span></dd>
+				</dl>			
+								
+			</div>
+			<!-- / .wrapper -->
+			
+			<div id="home-wrapper">
+				<input type="hidden" value="0" name='count' id="js-list-count" />
+				<a id="js-home-link" class="small_btn" data-role="button" href="#" data-theme="c">Home</a>
+			</div>
+			<!-- /#home-wrapper -->	
+			
+			<div id="footnotes" class="footnotes" ></div>
+            
+            </div><!-- / R4 wrap -->
+		</div>
+		<!-- content end -->
+		<div data-role="footer" id="pg-footer" data-position="fixed"
+			data-id="myfooter" data-tap-toggle="false">
+			<footer id="footer" class="mnu_footer">
+			</footer>
+		</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

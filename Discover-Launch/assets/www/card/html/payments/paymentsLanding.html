@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Payments Home</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="paymentsLanding-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+		<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<div id="name">
+					<h1>Payments</h1>
+				</div>
+
+				<ul data-role="listview" data-theme="d" data-inset="true" id="list1"
+					class="account-list-view">
+					<li data-icon="false"><a href="#" onclick="navigation('../payments/paymentsSummary');" class="bluelink">Payment
+							Summary</a> <span class="floatright arrow"> &gt; </span></li>
+			<!--		<li data-icon="false"><a href="#" onclick="navigation('../payments/paymentStep1');" class="bluelink">Make
+							a Payment </a> <span class="floatright arrow"> &gt; </span></li> -->
+					<li data-icon="false"><a href="#" onclick="navigation('../payments/pendingPayments');" class="bluelink">Pending
+							Payments</a> <span class="floatright arrow"> &gt; </span></li>
+					<li data-icon="false"><a href="#" onclick="navigation('../payments/paymentsHistory');" class="bluelink">Payments
+							History</a> <span class="floatright arrow"> &gt; </span></li>
+			<!-- 		<li data-icon="false"><a href="#" onclick="navigation('manageBankInformation');"  class="bluelink">Manage
+							Bank Information</a> <span class="floatright arrow"> &gt; </span></li> -->
+				</ul>
+			</div>
+
+			<div id="footnotes" class="footnotes" ></div>
+		</div>
+
+
+		<!-- content end -->
+
+	<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
+            <footer id="footer" class="mnu_footer">
+			</footer>
+				</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

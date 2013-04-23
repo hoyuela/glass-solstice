@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - User ID Strength</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="uid-strength-meter-pg" data-theme="d">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-position="fixed">
+			<header id="header" class="cmn_header_nologout"></header>
+		</div>
+		<!-- header	end	-->	
+		<div id="r4-wrap">	
+		<!-- content start -->
+		<div id="registration" data-role="content" class="ui-content-internalpages ui-content" role="main">
+			<div class="wrapper strength-info">
+
+				<h1>User ID Strength</h1>
+					
+				<div class="strength-block">
+					<label class="strength-label">User ID Strength:</label>
+					<div class="strength-meter low">Not Valid</div>
+					<p>Does not meet minimum requirements (not 6-16 characters, looks like an account number, or uses spaces or the following characters: (&#96;)(&#39;)(&#34;)(&#92;))</p>
+				</div>
+				
+				<div class="strength-block">
+					<label class="strength-label">User ID Strength:</label>
+					<div class="strength-meter medium">Moderate</div>
+					<p>Meets minimum requirements but does not include a variation of letters, numbers, and special characters.</p>
+				</div>
+
+				<div class="strength-block">
+					<label class="strength-label">User ID Strength:</label>
+					<div class="strength-meter high">Strong</div>
+					<p>Meets minimum requirements and combines a variation of letters, numbers, and special characters.</p>
+				</div>	
+			</div>
+			<!-- / .wrapper -->
+			<br/><br/>
+			<div id="footnotes" class="footnotes-reg" ></div>
+		</div>
+		<!-- content end -->
+		</div><!-- / R4 wrap -->
+	</div>
+	<!--page end -->
+</body>
+</html>

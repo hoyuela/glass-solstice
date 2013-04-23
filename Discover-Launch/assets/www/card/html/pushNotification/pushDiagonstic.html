@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Discover - Push Diagonistic</title>             
+    </head>
+    <body>
+        <!--page start  -->
+        <div data-role="page" id="pushDiagonstic-pg" >
+            <!--header start  -->
+            <div data-role="header" id="pg-header" data-position="fixed" data-tap-toggle="false">
+                <header id="header" class="cmn_header">
+                </header>
+            </div>
+            <!-- header end -->
+            <!-- content start -->            
+            <div data-role="content" class="ui-content-internalpages">
+                <div class="wraper">
+                   <div> 
+                       <h1>Push Admin Diagonstic</h1>
+                   </div>          
+                    
+                    App State: <span id="appState"></span>       
+                    <p> 
+                    Custom data: <span id="customData"></span>       
+                    <p> 
+                    <input id="getXid" type="button" value="Get VendorID" onclick="getXidFromNative();"/>        
+                    : <span id="result2"></span>       
+                    <p>        
+                    <input id="getOneLocation" type="button" value="Location Info" onclick="getLocationFromNative();"/>        
+                    : <span id="result3"></span>                             
+                    <p>       
+                    <input id="getBadge" type="button" value="Get Badge No" onclick="getBadgeFromNative();"/>       
+                     Badge Count: <span id="result5"></span>    
+                    <p>       
+                    <input id="clearNotifs" type="button" value="Reset Badge" onclick="clearNotificationsAndBadgeNative();"/>      
+                     Action Result: <span id="result6"></span>  
+                    <p>                    
+                    <input id="setBadge" type="button" value="Set Badge No" onclick="setBadgeToNative();"/>
+                    Action Result: <span id="result4"></span> <input type="text" id="badgeCount"/>       
+                    
+                    
+                </div>                
+                <div id="footnotes" class="footnotes" ></div>
+            </div>
+            <!-- content end -->
+            <div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
+                <footer id="footer" class="mnu_footer">
+                </footer>
+            </div>
+        </div>
+		<!--page end -->
+    </body>
+</html>
+

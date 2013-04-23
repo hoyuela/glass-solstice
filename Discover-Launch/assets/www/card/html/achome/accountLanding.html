@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Account Home</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="accountLanding-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+            <header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+                <h1>Statements</h1>
+				<ul data-role="listview" data-theme="d" data-inset="true" id="list1"
+					class="account-list-view">
+		<!--			<li data-icon="false">
+						<a href="#" onclick="navigation('../achome/accountSummary');"  class="bluelink buttonBorderSupress">Account Summary</a> <span class="floatright arrow"> &gt; </span>
+					</li>
+					<li data-icon="false">
+						<a href="#" onclick="navigation('../statements/accountActivity');" class="bluelink buttonBorderSupress" >Account Activity </a> 
+						<span class="floatright arrow"> &gt; </span>
+					</li>
+					<li data-icon="false">
+						<a href="#" onclick="navigation('../statements/searchTrans');" class="bluelink buttonBorderSupress">Search Transactions </a> 
+						<span class="floatright arrow"> &gt; </span> -->
+					</li>
+					<li data-icon="false" id="statementsNav">
+						<a href="#" onclick="navigation('../statements/statementLanding');" class="bluelink buttonBorderSupress">Statements </a> 
+						<span class="floatright arrow"> &gt; </span>
+					</li>
+			    </ul>
+			</div>
+			<div id="footnotes" class="footnotes"></div>
+		</div>
+		<!-- content end -->
+		<div data-role="footer" id="pg-footer" data-position="fixed" data-id="myfooter" data-tap-toggle="false">
+            <footer id="footer" class="mnu_footer">	</footer>
+		</div>
+	</div>
+	<!-- page end -->
+</body>
+</html>

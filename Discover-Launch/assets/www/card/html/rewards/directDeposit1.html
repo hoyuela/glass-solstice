@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Redeem Direct Deposit Confirmation: 1 of 3</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="directDeposit1-pg" class="rd-page">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-position="fixed">
+			<header id="header" class="cmn_header"> </header>
+			<div class="clearboth"></div>
+		</div>
+		<!-- header end -->
+		<section id="cbbSection">
+				<p class="cbb-panel">Current Cashback Bonus: <span id="directDeposit1_CashBackBonusBalance"></span>&nbsp;</p>
+			</section>
+		<!-- content start -->
+			<div id="pgPadding"></div>
+			<div class="progress-indicator pos-center">
+		<ul>
+		    <li><a href="#" class="active ui-link">1. Review/Edit</a></li>
+                    <li><a href="#" class="ui-link">2. Verify</a></li>
+                    <li><a href="#" class="ui-link">3. Confirmation</a></li>
+		</ul>
+		<div class="clearboth"></div>
+	    </div>
+
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+		
+				<!-- div>
+					<h1>Redeem Cashback Bonus:</h1>
+				</div >
+				<h2>Step 1 of 3</h2 -->
+				
+				<h1>Direct Deposit</h1>
+				<!-- h2>Review</h2 -->
+
+				<p class="fontsize13px">Deposit your Cashback Bonus Rewards directly into your bank
+					account in $50 increments. This action is final and cannot be
+					undone. Direct deposits will post within 72 hours to a bank account
+					associated to this ID. Deposits may only be made in increments of
+					$50.</p>
+				<ul
+					class="white-box-rd-corner ui-listview ui-listview-inset ui-corner-all ui-shadow"
+					data-inset="true" data-theme="d" data-role="listview">
+					<li data-icon="false"
+						class="ui-li ui-li-static ui-body-d ui-corner-top ui-corner-bottom" id="bankAmountLi" style="border-bottom-width: 0px !important;">
+					
+					<h3 class="fontsize13px">
+							Choose a $<span id="directDeposit1_minDisbIncrAmt"></span>
+							increment to deposit<span id="singleAccountDetails"></span>:
+						</h3>
+						<div class="ui-select">
+							<div data-theme="d"
+								class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-up-d">
+								<span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true"><span
+									class="ui-btn-text" id="DD1">Choose a $<span
+										id="directDeposit1_minDisbIncrAmt"></span> increment...</span><span
+									class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span> </span> <span
+									id="directDeposit1_AmoutSelectField"></span>
+							</div>
+						</div>
+					</li>
+
+					<li data-icon="false" class="ui-li ui-li-static ui-body-d ui-corner-top ui-corner-bottom" id="bankAccountLi">
+						<h3>Select a Bank Account:</h3>
+						<div class="ui-select">
+							<div data-theme="d"
+								class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-up-d">
+								<span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true"><span
+									class="ui-btn-text" id="DD2">Select a Bank Account</span><span
+									class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span> </span> <span
+									id="directDeposit1_AccountNumberList"></span>
+							</div>
+
+
+						</div>
+					</li>
+
+				</ul>
+				<div class="txtcenteraln">
+					<span class="small_btn_150px"> <input
+						onclick="dfs.crd.cbb.redeemDirectDeposit2();" id="direct1_continue_btn"
+						type='button' value='Continue' disabled="disabled" /> </span>
+				</div>
+				<p>
+				<p class="fontsize13px">Need to add or update an account? <a href="#" class="bluelink" onclick="navigation('../custormerService/customerServiceUpdateAccount')">Click Here</a></p>
+				</p>
+
+				<p>
+				<h3>
+					<ul class='collapsible'>
+						<li><a href="#" class='collapslink deactive'
+							rel='directDeposit1_TermsConditions'>Terms and Conditions</a>
+							<div id="directDeposit1_TermsConditions" style='display: none;'></div>
+						</li>
+					</ul>
+				</h3>
+				</p>
+			</div>
+			<div id="footnotes" class="footnotes"></div>
+		</div>
+		<!-- content end -->
+
+		<div data-role="footer" id="pg-footer" data-position="fixed"
+			data-id="myfooter">
+			<footer id="footer" class="mnu_footer"> </footer>
+		</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

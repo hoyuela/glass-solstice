@@ -1,0 +1,8 @@
+{
+"history.amount":"Decimal", 
+"history.merchant":"String", 
+"history.redeemedDate":"Date", 
+"history.awardAmountType":"String", 
+"incentiveTypeCode":"String",
+"incentiveCode":"Number"
+}
