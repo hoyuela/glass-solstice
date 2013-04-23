@@ -49,8 +49,10 @@ public class LockOutUserActivity extends RoboActivity {
 		setContentView(R.layout.login_locked_out);
 		errorTextView = (TextView) findViewById(R.id.error_text_view);
 		
-		final Integer errorText = (Integer) this.getIntent().getExtras().getSerializable(IntentExtraKey.ERROR_TEXT_KEY);
-		final Integer errorTitleText = (Integer) this.getIntent().getExtras().getSerializable(IntentExtraKey.ERROR_TITLE_TEXT_KEY);
+		final Bundle extras = this.getIntent().getExtras();
+		final Integer errorText = (Integer) extras.getSerializable(IntentExtraKey.ERROR_TEXT_KEY);
+		final Integer errorTitleText = (Integer) extras.getSerializable(IntentExtraKey.ERROR_TITLE_TEXT_KEY);
+		
 		if (errorText != null)
 			setErrorText(errorText);
 		if (errorTitleText != null)

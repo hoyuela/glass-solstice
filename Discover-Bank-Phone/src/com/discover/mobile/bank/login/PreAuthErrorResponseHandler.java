@@ -35,9 +35,9 @@ public class PreAuthErrorResponseHandler extends CardBaseErrorResponseHandler im
 	 */
 	@Override
 	protected boolean handleHTTPErrorCode(final int httpErrorCode)  {
-		boolean ret = super.handleHTTPErrorCode(httpErrorCode);
+		final boolean ret = super.handleHTTPErrorCode(httpErrorCode);
 		
-		LoginActivity loginActivity = (LoginActivity)getErrorFieldUi();
+		final LoginActivity loginActivity = (LoginActivity)getErrorFieldUi();
 		
 		if( null != loginActivity ) {
 			//Notify login activity that Pre-Auth call has completed
@@ -55,17 +55,15 @@ public class PreAuthErrorResponseHandler extends CardBaseErrorResponseHandler im
 	 *         otherwise.
 	 */
 	@Override
-	protected boolean handleJsonErrorCode(JsonMessageErrorResponse messageErrorResponse) {
-		switch (messageErrorResponse.getMessageStatusCode()) {
-		case FORCED_UPGRADE_REQUIRED:
+	protected boolean handleJsonErrorCode(final JsonMessageErrorResponse messageErrorResponse) {
+		if (messageErrorResponse.getMessageStatusCode() == FORCED_UPGRADE_REQUIRED) {
 			TrackingHelper.trackPageView(AnalyticsPage.FORCED_UPGRADE);
-
 			PreAuthCallHelper.showForcedUpgradeAlertDialog(errorHandlerUi);
 			PreAuthCallHelper.updateDateInPrefs(errorHandlerUi.getContext());
 			return true;
 		}
 
-		LoginActivity loginActivity = (LoginActivity)getErrorFieldUi();
+		final LoginActivity loginActivity = (LoginActivity)getErrorFieldUi();
 		
 		if( null != loginActivity ) {
 			//Notify login activity that Pre-Auth call has completed

@@ -30,7 +30,7 @@ import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
  * @author scottseward, ekaram
  *
  */
-public class PreAuthCallHelper  {
+public final class PreAuthCallHelper  {
 	
 	
 	protected static final String DATETIME_KEY = "com.discover.mobile.optionalupdatedate";
@@ -46,7 +46,10 @@ public class PreAuthCallHelper  {
 	
 	protected static final String PREFS_FILE = "UpdatePreferences";
 
-	
+	private PreAuthCallHelper() {
+		// No need to instantiate or extend this class since all methods are static.
+		throw new AssertionError();
+	}
 	
 	/**
 	 * Shows the optional upgrade message to the user.
