@@ -83,13 +83,13 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * state bundle for restoring the state of the screen upon orientation
 	 * changes.
 	 */
-	private final String PASS_KEY = "a";
-	private final String ID_KEY = "b";
-	private final String SAVE_ID_KEY = "c";
-	private final String PRE_AUTH_KEY = "e";
-	private final String ERROR_MESSAGE_KEY = "g";
-	private final String ERROR_MESSAGE_VISIBILITY = "h";
-	private final String ERROR_MESSAGE_COLOR = "i";
+	private static final String PASS_KEY = "a";
+	private static final String ID_KEY = "b";
+	private static final String SAVE_ID_KEY = "c";
+	private static final String PRE_AUTH_KEY = "e";
+	private static final String ERROR_MESSAGE_KEY = "g";
+	private static final String ERROR_MESSAGE_VISIBILITY = "h";
+	private static final String ERROR_MESSAGE_COLOR = "i";
 
 	/** ID that allows control over relative buttons' placement.*/
 	private static final int LOGIN_BUTTON_ID = 1;
@@ -115,7 +115,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 	// TEXT LABELS
 	private LinearLayout cardForgotAndPrivacySection;
-	private TextView privacySecOrTermButtonCard;
 	private TextView privacySecOrTermButtonBank;
 	private TextView errorTextView;
 	private TextView forgotUserIdOrPassText;
@@ -136,12 +135,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private boolean saveUserId = false;
 
 	private InputMethodManager imm;
-
-	/**
-	 * Used to remember the lastLoginAccount at startup of the application, in case the user toggles to a different account
-	 * and does not login. This variable will be used to revert the application back to the original last logged in account.
-	 */
-	private AccountType lastLoginAcct = AccountType.CARD_ACCOUNT;
 
 	private final int LOGOUT_TEXT_COLOR = R.color.body_copy;
 
@@ -190,7 +183,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		provideFeedbackButton = (Button) findViewById(R.id.provide_feedback_button);
 		loginButton = (Button) findViewById(R.id.login_button);
 		registerOrAtmButton = (Button) findViewById(R.id.register_now_or_atm_button);
-		privacySecOrTermButtonCard = (TextView) findViewById(R.id.privacy_and_security_button_card);
 		privacySecOrTermButtonBank = (TextView) findViewById(R.id.privacy_and_security_button_bank);
 		cardForgotAndPrivacySection = (LinearLayout) findViewById(R.id.card_forgot_and_privacy_section);
 		customerServiceButton = (Button) findViewById(R.id.customer_service_button);
@@ -724,7 +716,11 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * Updates the view based on the application account selected by the user. Called by application at start-up.
 	 */
 	private void setApplicationAccount() {
-		lastLoginAcct = Globals.getCurrentAccount();
+		/**
+		 * Used to remember the lastLoginAccount at startup of the application, in case the user toggles to a different account
+		 * and does not login. This variable will be used to revert the application back to the original last logged in account.
+		 */
+		AccountType lastLoginAcct = Globals.getCurrentAccount();
 		if (AccountType.BANK_ACCOUNT == lastLoginAcct) {
 			setLoginTypeToBank();
 		} else {
