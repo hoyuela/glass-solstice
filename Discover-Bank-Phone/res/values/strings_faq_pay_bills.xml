@@ -28,25 +28,26 @@
 		</string-array>
 	
 	<!-- Online Bill Pay Items -->
-		<string name="who_can_use_bill_pay_title">Who can use Online Bill Pay?</string>
+		<string name="who_can_use_bill_pay_title">
+		    Who can use Online Bill Pay?
+		</string>
 		<string name="who_can_use_bill_pay_body">
-		    Online Bill Pay can be used by any Discover Bank customer who has a Money Market Account,
-		    with the exception of individuals acting in the following capacities: Agent, Attorney-In-Fact
-		    and Guardian.
+		    Online Bill Pay can be used by any Discover Bank customer who has a Money Market Account, 
+		    with the exception of individuals acting in the following capacities: Agent, Attorney-In-Fact and Guardian.
 		</string>
 		
 		<string name="who_can_i_pay_title">Who can I pay?</string>
-		<string name="who_can_i_pay_body">Use Online Bill Pay for your utilities, credit card payments, 
-		    insurance premiums or other companies you make regular payments to. 
-		    You can also pay other individuals and businesses, such as landlords, 
-		    contractors, relatives, etc.
+		<string name="who_can_i_pay_body">
+			Use Online Bill Pay for your utilities, credit card payments, insurance premiums or other companies 
+			you make regular payments to. You can also pay other individuals and businesses, 
+			such as landlords, contractors, relatives, etc.
 		</string>
 		
 		<string name="fees_associated_title">Are there any fees associated with Online Bill Pay?</string>
-		<string name="fees_associated_body">No. Our Online Bill Pay service is offered at no charge. However,
-		     bill pay transactions count toward the limit of 6 restricted 
-		    withdrawals from your Money Market Account per statement cycle. 
-		    For more information, please refer to your Account Agreement.
+		<string name="fees_associated_body">
+			No. Our Online Bill Pay service is offered at no charge. However, bill pay transactions count 
+			toward the limit of 6 restricted withdrawals from your Money Market Account per statement cycle. 
+			For more information, please refer to your Account Agreement.
 		</string>
 		
 		<string name="how_is_payment_sent_title">
@@ -65,24 +66,26 @@
 		    For bill payments made by check, the funds will be debited when the payee has cashed the check.
 		</string>
 		
-		<string name="status_question_title">What does the Status next to my bill payment mean?</string>
+		<string name="status_question_title">
+		    What does the Status next to my bill payment mean?
+		</string>
 		<string name="status_question_body">
-		    Scheduled – Bill payment has been scheduled but not yet initiated. 
-		    Bill payments in a Scheduled status can be edited or deleted.
-		    \n\nProcessing – Bill payment has been initiated and is in the process of being paid. 
-			These bill payments cannot be edited or deleted.
-			\n\nSent – Bill payment has been sent to the payee.
-			\n\nPaid – Electronic bill payments are marked at Paid when the
+		    Scheduled – Bill payment has been scheduled but not yet initiated. Bill payments in a 
+		    Scheduled status can be edited or deleted.\n\nProcessing – Bill payment has been initiated and 
+		    is in the process of being paid. 
+			These bill payments cannot be edited or deleted.\n\nSent – Bill payment has been sent to the 
+			payee.\n\nPaid – Electronic bill payments are marked at Paid when the
 			payment has been sent. In the case of a paper check being mailed, 
-			bill payments are marked as Paid 3 business days thereafter.
-			\n\nCancelled – Bill payment has been cancelled. Deleting a scheduled bill payment will result in a cancelled status.
+			bill payments are marked as Paid 3 business days thereafter.\n\nCancelled –
+			Bill payment has been cancelled. Deleting a scheduled bill
+			payment will result in a canceled status.
 		</string>
 		
 		<string name="delete_payment_title">Why can’t I edit or delete a bill payment?</string>
 		<string name="delete_payment_body">
 		    If the bill payment has already been processed and sent to the payee, you cannot edit or delete it. 
-		    Additionally, bill payments that have been scheduled by a Joint Account holder can only be 
-		    edited or deleted by the person who initially scheduled the bill payment.
+		    Additionally, bill payments that have been scheduled by a Joint Account holder can only be edited or 
+		    deleted by the person who initially scheduled the bill payment.
 		</string>
 		
 		<string name="repeating_payment_title">How do I set up a repeating bill payment?</string>

@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.help;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,21 +24,30 @@ import com.discover.mobile.common.BaseFragment;
  * @author scottseward
  *
  */
+
 public class FAQLandingPageFragment extends BaseFragment {
 
 	/**
 	 * Setup the view using a default adapter for the list. 
 	 */
+	@SuppressLint("NewApi")
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.faq_landing_page, null);
 		
 		final String[] values = getResources().getStringArray(R.array.faq_sections);
-		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.single_item_table_cell, android.R.id.text1, values);
+		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), 
+													R.layout.single_item_table_cell, android.R.id.text1, values);
 		final ListView list = (ListView)view.findViewById(android.R.id.list);
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(itemClickListener);
+		
+		//Disable hardware acceleration for the UI so that the dotted line gets drawn correctly.
+		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+		
 		return view;
 	}
 

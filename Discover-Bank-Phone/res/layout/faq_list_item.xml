@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" 
-    android:padding="@dimen/between_related_elements_padding">
+    android:layout_height="wrap_content" >
     
 	<View
 	    android:id="@+id/divider"
@@ -10,7 +9,11 @@
 		android:layout_height="2dp"
         android:background="@drawable/table_dotted_line" 
         android:layout_marginBottom="@dimen/between_related_elements_padding"/>
-	
+	<RelativeLayout
+	     android:layout_width="match_parent"
+    android:layout_height="wrap_content" 
+    android:padding="@dimen/between_related_elements_padding"
+	    >
     <TextView
         android:id="@+id/expand_indicator"
         android:layout_below="@+id/divider"
@@ -40,5 +43,5 @@
         android:layout_below="@+id/faq_section_title"
         android:text="@string/edit" 
         android:visibility="gone"/>
-
+</RelativeLayout>
 </RelativeLayout>

@@ -5,27 +5,30 @@
         <item>@string/how_to_find_atm_title</item>
         <item>@string/how_to_find_atm_body</item>
         
+        <item>@string/where_can_you_use_title</item>
+        <item>@string/where_can_you_use_body</item>
+
+        <item>@string/lost_or_stolen_title</item>
+        <item>@string/lost_or_stolen_body</item>
+        
         <item>@string/surcharge_free_title</item>
         <item>@string/surcharge_free_body</item>
         
         <item>@string/are_there_fees_title</item>
         <item>@string/are_there_fees_body</item>
         
-        <item>@string/where_can_you_use_title</item>
-        <item>@string/where_can_you_use_body</item>
-        
-        <item>@string/lost_or_stolen_title</item>
-        <item>@string/lost_or_stolen_body</item>
-        
         <item>@string/how_change_pin_title</item>
         <item>@string/how_change_pin_body</item>
         
         <item>@string/daily_withdrawal_limit_title</item>
         <item>@string/daily_withdrawal_limit_body</item>
-        
+
         <item>@string/atm_withdrawal_fees_title</item>
         <item>@string/atm_withdrawal_fees_body</item>
         
+		<item>@string/surcharge_free_title</item>
+		<item>@string/surcharge_free_body</item>
+	
         <item>@string/outside_us_use_title</item>
         <item>@string/outside_us_use_body</item>
         
@@ -34,13 +37,17 @@
         
         <item>@string/wrongfully_charged_title</item>
         <item>@string/wrongfully_charged_body</item>
+        
+        <item>@string/surcharge_free_fees_title</item>
+        <item>@string/surcharge_free_fees_body</item>
+        
     </string-array>
     
     <!-- ATM Locator FAQ Strings -->
     <string name="how_to_find_atm_title">How do I find an ATM near me?</string>
 	<string name="how_to_find_atm_body">
-	    To find an ATM near you, click the “Search” icon at the top of the ATM Locator screen and type in the address, 
-	    zip code, or landmark where you wish to find an ATM.
+	    To find an ATM near you, click the “Search” icon at the top of the ATM Locator 
+	    screen and type in the address, zip code or landmark where you wish to find an ATM. 
 	</string>
 	
 	<string name="surcharge_free_title">
@@ -66,64 +73,72 @@
 	    At which ATMs can I use my Discover debit card?
 	</string>
 	<string name="where_can_you_use_body">
-	    You can use your Discover debit card at ATMs displaying the Discover, PULSE® or MoneyPass® logos.
+		You can use your Discover debit card at ATMs displaying the Discover, PULSE® or MoneyPass® logos.	
 	</string>
 	
 	<string name="lost_or_stolen_title">
 	    How do I report a lost or stolen debit card?
 	</string>
 	<string name="lost_or_stolen_body">
-	    To report lost or stolen debit cards, please call 1-800-347-7000 immediately. 
+		To report lost or stolen debit cards, please call 1-800-347-7000 immediately.	
 	</string>
 	
 	<string name="how_change_pin_title">
 	    How do I change my PIN?
 	</string>
 	<string name="how_change_pin_body">
-	    To change your PIN, please call 1-800-983-1266; you will be prompted to enter your current 
-	    PIN and then your new desired PIN.
+	    To change your PIN, please call 1-800-983-1266; 
+	    you will be prompted to enter your current PIN and then your new desired PIN.
 	</string>
 	
 	<string name="daily_withdrawal_limit_title">
-	    Is there a daily ATM withdrawal limit?
+		Is there a daily ATM withdrawal limit?
 	</string>
 	<string name="daily_withdrawal_limit_body">
 	    Yes. The maximum amount you can withdraw from ATMs is $510.00 per day. 
 	    The Discover ATM withdrawal limit is $510 per day. 
-	    Some ATMs may have lower withdrawal limits but you complete multiple transactions until you meet the 
-	    Discover withdrawal limit of $510 per day. 
+	    Some ATMs may have lower withdrawal limits but you complete multiple transactions until 
+	    you meet the Discover withdrawal limit of $510 per day.
 	</string>
 	
 	<string name="atm_withdrawal_fees_title">
-	    Are there any fees for withdrawing money from an ATM?
+		Are there any fees for withdrawing money from an ATM?
 	</string>
 	<string name="atm_withdrawal_fees_body">
-	    There are no fees for withdrawing money from 23,000 surcharge-free MoneyPass ATMs nationwide. 
-	    However, you may be subject to a fee from the ATM owner/financial institution if you do not use a 
-	    surcharge-free ATM. Discover will never charge you a fee to use an ATM. 
+	    There are no fees for withdrawing money from 23,000 
+	    surcharge-free MoneyPass ATMs nationwide. However, 
+	    you may be subject to a fee from the ATM owner/financial institution if 
+	    you do not use a surcharge-free ATM. Discover will never charge you a fee to use an ATM. 
 	    You can use our ATM Locator to find surcharge-free MoneyPass ATMs nearby.
+	</string>
+	
+	<string name="surcharge_free_title">
+	    How do I find a surcharge-free ATM?
+	</string>
+	<string name="surcharge_free_body">
+	    To display only surcharge-free ATMs on your search, enable the “Display only Surcharge-Free ATMs” button. 
+	    Surcharge-free ATMs are represented by orange icons in map and list view. 
 	</string>
 	
 	<string name="outside_us_use_title">
 	    Can I use my debit card outside of the United States? 
 	</string>
 	<string name="outside_us_use_body">
-	    You can use your Discover debit card to withdraw cash at ATMs and make purchases at 
-	    participating merchants in the United States, Canada, Mexico and the Caribbean wherever you see the 
-	    PULSE®, Discover, or MoneyPass® symbols. 
+	    You can use your Discover debit card to withdraw cash at ATMs 
+	    and make purchases at participating merchants in the United States, 
+	    Canada, Mexico and the Caribbean wherever you see the PULSE®, Discover or MoneyPass® symbols.
 	</string>
 	
 	<string name="deposit_to_atm_title">
 	    Can I make a deposit at an ATM?
 	</string>
 	<string name="deposit_to_atm_body">
-	    Currently, Discover Bank does not accept deposits at ATM locations 
-	    (other than at its branch in Greenwood, DE), If you need to deposit a check, please use the mobile 
-	    check deposit feature on Discover’s mobile app or mail it to us at 
-		\nDiscover Bank
+		Currently, Discover Bank does not accept deposits at ATM locations (other than at its branch in Greenwood, DE).
+		 If you need to deposit a check, please use the mobile check deposit 
+		 feature on Discover’s mobile app or mail it to us at:
+		\n\nDiscover Bank
 		\nP.O. Box 30417
-		\nSalt Lake City, UT
-		\n84130
+		\nSalt Lake City, UT 84130
 	</string>
 	
 	<string name="wrongfully_charged_title">
@@ -131,12 +146,28 @@
 	    What can I do? 
 	</string>
 	<string name="wrongfully_charged_body">
-	    If you are at a MoneyPass ATM and it indicates you are being charged a fee, accept the fee and proceed with 
-	    your transaction. Then notify Discover Bank by sending a message through our Secure Message Center or 
-	    calling us at 1-800-347-7000 and we will credit your account for fee if you provide the following information:\n 
-		•	Date and time of the transaction\n
-		•	ATM location\n
-		•	Last four digits of your debit card\n
-		•	Amount of the fee you were charged\n
+	    If you are at a MoneyPass ATM and it indicates you are being charged a fee, 
+	    accept the fee and proceed with your transaction. Then notify Discover Bank by sending a message 
+	    through our Secure Message Center or calling us at 1-800-347-7000 and we will credit your account 
+	    for the fee if you provide the following information: 
+		\n\n•	Date and time of the transaction
+		\n•	ATM location
+		\n•	Last four digits of your debit card
+		\n•	Amount of the fee you were charged
 	</string>
+	
+	<string name="surcharge_free_fees_title">
+		Are there any fees associated with the use of a surcharge-free ATM?
+	</string>
+	<string name="surcharge_free_fees_body">
+		You will not be charged an ATM surcharge when you withdraw cash with your Discover debit card 
+		at the surcharge-free ATMs represented by orange map pins. 
+		If you take a cash advance with your Discover credit card at one of these locations, 
+		you will not be charged an ATM surcharge fee but your cash advance APR and cash advance fee will apply. 
+		ATM surcharge fees may apply to Discover cash withdrawals at other ATMs not designated “Surcharge-Free.”
+	</string>
+	
 </resources>
+
+
+
