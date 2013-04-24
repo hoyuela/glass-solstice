@@ -61,7 +61,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/help_text"
         android:layout_marginLeft="5dp"
-        android:src="@drawable/question_mark_icon" />
+        android:src="@drawable/common_question_mark_icon" />
 
     <ImageView
         android:id="@+id/cardBankIcon"

@@ -30,7 +30,7 @@ public class StatusBarFragment extends Fragment {
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		
-		final View view = inflater.inflate(R.layout.status_bar_layout, container);
+		final View view = inflater.inflate(R.layout.common_status_bar_layout, container);
 		accountName = (TextView) view.findViewById(R.id.account_name);
 		setAccountName();
 		return view;

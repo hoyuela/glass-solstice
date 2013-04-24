@@ -96,7 +96,7 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 		 * that will handle swapping the fragments in and out as well as a static fragment for the 
 		 * status bar.
 		 */
-		setContentView(R.layout.content_view);
+		setContentView(R.layout.common_content_view);
 	}
 
 	/**

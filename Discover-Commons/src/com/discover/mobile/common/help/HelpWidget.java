@@ -58,13 +58,13 @@ public class HelpWidget extends RelativeLayout {
 	 */
 	public HelpWidget(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		final View view = LayoutInflater.from(context).inflate(R.layout.help_widget, null);
+		final View view = LayoutInflater.from(context).inflate(R.layout.common_help_widget, null);
 
 		help = (ImageButton) view.findViewById(R.id.help);
 		expandableView = (RelativeLayout) view.findViewById(R.id.help_list);
 		list = (ListView) view.findViewById(R.id.help_list_view);
 
-		adapter = new HelpAdapter(context, R.layout.help_list_item, new ArrayList<HelpItemGenerator>());
+		adapter = new HelpAdapter(context, R.layout.common_help_list_item, new ArrayList<HelpItemGenerator>());
 		list.setAdapter(adapter);
 
 		help.setOnClickListener(new OnClickListener() {
@@ -81,7 +81,7 @@ public class HelpWidget extends RelativeLayout {
 					fadeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out_animation);
 					expandableView.startAnimation(fadeAnimation);
 					expandableView.setVisibility(View.INVISIBLE);
-					help.setImageDrawable(context.getResources().getDrawable(R.drawable.question_mark_icon));
+					help.setImageDrawable(context.getResources().getDrawable(R.drawable.common_question_mark_icon));
 				}
 			}
 		});

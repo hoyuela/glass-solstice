@@ -18,7 +18,7 @@ import com.discover.mobile.bank.R;
 public class StateArrayAdapter extends ArrayAdapter<State> {
 
 	public StateArrayAdapter(final Context context) {
-		super(context, R.layout.push_simple_spinner_view, State.STATES);
+		super(context, R.layout.common_push_simple_spinner_view, State.STATES);
 	
 	}
 
