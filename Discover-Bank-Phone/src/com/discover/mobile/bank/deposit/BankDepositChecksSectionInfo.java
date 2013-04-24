@@ -50,9 +50,6 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 					
 						/**Check if user is already in the Check Deposit work-flow*/
 						if( navActivity.getCurrentContentFragment().getGroupMenuLocation()  != BankMenuItemLocationIndex.DEPOSIT_CHECK_GROUP) {
-							/**Navigate the user back to the home fragment before navigating to the check deposit work-flow*/
-							BankConductor.navigateToHomePage();
-							
 							/**Navigates to either to Check Deposit - Select Account Page or Check Deposit - Accept Terms page*/
 							BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.SelectAccount);
 						} else {
