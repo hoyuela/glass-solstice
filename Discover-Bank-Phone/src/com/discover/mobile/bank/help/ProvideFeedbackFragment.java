@@ -9,6 +9,7 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpWidget;
 
 /**
@@ -34,7 +35,11 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 		
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
+		if( !Globals.isLoggedIn() ) {
+			help.showHelpItems(HelpMenuListFactory.instance().getLoggedOutHelpItems());
+		} else {
+			help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
+		}
 		
 		/**Hide footer with accept button*/
 		showFooter(false);
