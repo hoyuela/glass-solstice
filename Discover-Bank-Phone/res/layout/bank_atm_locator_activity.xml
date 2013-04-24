@@ -4,12 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <fragment class="com.discover.mobile.bank.atm.SearchNearbyFragment"
+    <FrameLayout
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="0dp" 
-        android:layout_weight="1"
-        android:name="com.google.android.gms.maps.MapFragment"/>
+        android:layout_weight="1"/>
     
 
 </LinearLayout>

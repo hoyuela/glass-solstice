@@ -288,6 +288,7 @@
     <style name="need_help_number_link" parent="body_copy">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textColor">@color/blue_link</item>
+        <item name="android:textStyle">normal</item>
     </style>
     
     <style name="terms_and_conditions_title" parent="title_copy">

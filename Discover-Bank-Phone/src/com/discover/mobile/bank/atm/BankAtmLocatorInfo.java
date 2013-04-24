@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.atm;
 
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -25,6 +26,8 @@ public final class BankAtmLocatorInfo extends GroupComponentInfo {
 				final NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 				if(!(activity.getCurrentContentFragment() instanceof SearchNearbyFragment)){
 					final SearchNearbyFragment fragment = new SearchNearbyFragment();
+					/**Provide a bundle in arguments to handle storing its state on rotation*/
+					fragment.setArguments(new Bundle());
 					activity.makeFragmentVisible(fragment);
 				}else{
 					activity.getSlidingMenu().toggle();
@@ -41,6 +44,8 @@ public final class BankAtmLocatorInfo extends GroupComponentInfo {
 				final NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 				if(!(activity.getCurrentContentFragment() instanceof SearchByLocationFragment)){
 					final SearchByLocationFragment fragment = new SearchByLocationFragment();
+					/**Provide a bundle in arguments to handle storing its state on rotation*/
+					fragment.setArguments(new Bundle());
 					activity.makeFragmentVisible(fragment);
 				}else{
 					activity.getSlidingMenu().toggle();

@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -72,6 +73,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	private static final String DATE_DAY = "e";
 	private static final String MEMO = "f";
 	private static final String CONFLICT = "conflict";
+	private static final String FOCUS="focus";
 
 	private RelativeLayout parentView;
 
@@ -262,6 +264,16 @@ public class SchedulePaymentFragment extends BaseFragment
 		outState.putString(DATE_MONTH, datesToSave[0]);
 		outState.putString(DATE_YEAR, datesToSave[2]);
 		outState.putString(MEMO, memoText.getText().toString());
+		
+		/**Remember which field has focus*/
+		if( amountEdit.hasFocus() ) {
+			outState.putString(FOCUS, AMOUNT);
+		} else if( memoEdit.hasFocus() ) {
+			outState.putString(FOCUS, MEMO);
+		} else {
+			/**Set to empty string to clear focus on rotation if none of the text editable fields had focus*/
+			outState.putString(FOCUS, "");
+		}
 
 		/**Set to true so that keyboard is not closed in onPause*/
 		isOrientationChanging = true;
@@ -325,6 +337,19 @@ public class SchedulePaymentFragment extends BaseFragment
 					setErrorString(dateError, data.getString(CreatePaymentDetail.DELIVERBY_FIELD));
 					setErrorString(memoError,data.getString(CreatePaymentDetail.MEMO_FIELD));
 					setErrorString(conflictError,data.getString(CONFLICT));
+					
+					/**Restore focus state*/
+					if( data.containsKey(FOCUS) ) {
+						if( data.getString(FOCUS).equals(MEMO)) {
+							/**This seems to required to open the keyboard on rotation for memo field*/
+							memoItem.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN , 0, 0, 0));
+							memoItem.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP , 0, 0, 0));                      
+						} else if(data.getString(FOCUS).equals(AMOUNT)) {
+							amountEdit.requestFocus();
+						}				
+					} else {
+						amountEdit.requestFocus();
+					}
 				}
 			}, 1000);
 
@@ -917,20 +942,6 @@ public class SchedulePaymentFragment extends BaseFragment
 
 		/**Enable text watcher which will format text in text field*/
 		amountEdit.enableBankAmountTextWatcher(true);
-
-		/**
-		 * Have to execute the setting of the editable field to edit mode asyncronously otherwise
-		 * the keyboard doesn't open.
-		 */
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if( amountItem != null ) {
-					amountEdit.requestFocus();
-				}
-			}
-		}, 1000);
-
 	}
 
 	@Override

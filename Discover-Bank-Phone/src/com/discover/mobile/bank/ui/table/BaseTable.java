@@ -48,12 +48,9 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		table = (PullToRefreshListView) view.findViewById(R.id.bank_table);
 		footer = (TableLoadMoreFooter) view.findViewById(R.id.footer);
 
-		if(null != savedInstanceState){
-			loadBundle = savedInstanceState;
-		}else{
-			loadBundle = this.getArguments();
-		}
-
+	
+		loadBundle = this.getArguments();
+		
 		createDefaultLists();
 		setupHeader();
 		setupFooter();
@@ -117,7 +114,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	public void onSaveInstanceState(final Bundle outState){
 		final Bundle bundle = saveDataInBundle();
 		if(null != bundle){
-			outState.putAll(saveDataInBundle());
+			getArguments().putAll(saveDataInBundle());
 		}
 		super.onSaveInstanceState(outState);
 	}

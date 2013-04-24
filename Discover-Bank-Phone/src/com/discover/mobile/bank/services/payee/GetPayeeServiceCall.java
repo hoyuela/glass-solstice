@@ -2,6 +2,7 @@ package com.discover.mobile.bank.services.payee;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -154,6 +155,9 @@ public class GetPayeeServiceCall extends BankUnamedListJsonResponseMappingNetwor
 
 		final ListPayeeDetail details = new ListPayeeDetail();
 		details.payees = super.parseUnamedList(body);
+		
+		/**Sort Payees based on nickname*/
+		Collections.sort(details.payees, new PayeeComparable());
 		return details;
 	}
 

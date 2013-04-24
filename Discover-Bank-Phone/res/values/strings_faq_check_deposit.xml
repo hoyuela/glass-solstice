@@ -6,23 +6,17 @@
         <item>@string/how_to_access_deposit_title</item>
         <item>@string/how_to_access_deposit_body</item>
         
-        <item>@string/no_smartphone_title</item>
-        <item>@string/no_smartphone_body</item>
-        
-        <item>@string/how_to_access_title</item>
-        <item>@string/how_to_access_body</item>
-        
         <item>@string/kinds_of_checks_title</item>
         <item>@string/kinds_of_checks_body</item>
-        
+               
         <item>@string/deposit_limits_title</item>
         <item>@string/deposit_limits_body</item>
         
         <item>@string/when_deposit_posted_title</item>
         <item>@string/when_deposit_posted_body</item>
         
-        <item>@string/when_deposit_withdrawal_available_title</item>
-        <item>@string/when_deposit_withdrawal_available_body</item>
+        <item>@string/deposit_available_title</item>
+        <item>@string/deposit_available_body</item>
         
         <item>@string/check_care_title</item>
         <item>@string/check_care_body</item>
@@ -35,6 +29,7 @@
         
         <item>@string/check_exceeds_limit_title</item>
         <item>@string/check_exceeds_limit_body</item>
+        
     </string-array>
     
     <!-- Check Deposit FAQ String Values -->
@@ -42,35 +37,35 @@
         How do I access the Mobile Check Deposit service?
     </string>
     <string name="how_to_access_deposit_body">
-        You should download the latest version of the Discover Mobile App from the Apple® or 
-        Android™ store to your smartphone.  You must already be enrolled in the Discover Bank Account 
-        Center to log into the Mobile App.  After logging in, click on the Deposit Check tab at the bottom 
-        of the screen.  After you agree to the terms of the Mobile Check Deposit User Agreement (initial use only), 
-        follow the simple instruction to submit your check.
-    </string>
-    
-    <string name="no_smartphone_title">
-    	What if I don’t have an Apple® or Android™ smartphone?
-    </string>
-    <string name="no_smartphone_body">
-        Presently the Mobile Check Deposit service is only available on these brand smartphones.
-    </string>
-    
-    <string name="how_to_access_title">
-        How do I access a copy of the Mobile Check Deposit User Agreement?
-    </string>
-    <string name="how_to_access_body">
-        Please log into Discover.com and click the Customer Service link, followed by the Banking link, 
-        and then the Forms and Documents link.
+        You must already be enrolled in the Discover Account Center. 
+        Once enrolled, you can download the Discover App from your App store to your Smartphone. 
+        Log into the Discover App and click on the Check Deposit tab. 
+        Follow the simple instructions to submit your check deposit.
     </string>
     
     <string name="kinds_of_checks_title">
         What kind of checks can I deposit with this service?
     </string>
     <string name="kinds_of_checks_body">
-        Checks payable to you, in U.S. dollars and drawn on any U.S. bank located in the United 
-        States, including, but not limited to the follow: personal checks, checks from a business and 
-        U.S. Treasury checks.
+        Checks payable to you, in U.S. dollars and drawn on any U.S. bank including, but not limited to the 
+        following:\nPersonal checks\nBusiness checks\nUS Treasury checks
+    </string>
+    
+    <string name="deposit_limits_title">
+        Are there deposit limits?
+    </string>
+    <string name="deposit_limits_body">
+        You may deposit up to 50 checks per day.
+		\n\nFor savings and money market accounts, there is a limit of $5,000 per check, $25,000 per month.
+		\n\nFor checking accounts, there is a limit of $1,000 per check, $5,000 per day and $15,000 per month.
+		\n\nAccounts that have been open for less than 6 months may have reduced limits.
+    </string>
+    
+    <string name="deposit_fees_title">
+		Are there any fees to use the Mobile Check deposit service?
+	</string>
+    <string name="deposit_fees_body">
+        No. There are no fees to use this service. Message and data rates may apply. 
     </string>
     
     <string name="deposit_limits_title">
@@ -86,52 +81,45 @@
         When will my deposit be posted to my account?
     </string>
     <string name="when_deposit_posted_body">
-        Deposits received and accepted by 6:30 P.M. Eastern Time on a business day will be posted to your account 
-        on the next business day.  Deposits received and accepted after this time 
-        will be posted to your account on the second business day.
+        Deposits received and accepted by 6:30 P.M. Eastern Time on a business day will be posted to your 
+        account on that day. Deposits received and accepted after this time will be posted the following business day.
     </string>
     
-    <string name="when_deposit_withdrawal_available_title">
+    <string name="deposit_available_title">
         When will my deposit be available for withdrawal?
     </string>
-    <string name="when_deposit_withdrawal_available_body">
-        For savings and money market accounts the funds will be available the 5th business day after the day of deposit.
-        \n\nFor checking accounts, $200 will be available the next business day, 
-		the remainder the 2nd business day after the day of deposit.
+    
+    <string name="deposit_available_body">
+        For savings and money market accounts the funds will be available 
+        the 5th business day after the day of deposit.
+		\n\nFor checking accounts, $200 will be available the next day, the remainder the 2nd business day after the 
+		day of deposit. For new customers for the first 30 days, $200 will be available the next day, the remainder 
+		the 7th business day after the day of deposit. 
     </string>
     
     <string name="check_care_title">
         What should I do with my check after I deposit it?
     </string>
     <string name="check_care_body">
-        After your deposit has been credited to your account, mark it void and store it in a secure location for 60 days.
-    </string>
-    
-    <string name="deposit_fees_title">
-        Are there any fees to use the Mobile Check Deposit service?
-    </string>
-    <string name="deposit_fees_body">
-        No.  There are no feeds charged by Discover to use this service. 
-        Message and data rates from your cellular service provider may apply.
+		After your deposit has been credited to your account, 
+		mark it void and store it in a secure location for 90 days.
     </string>
     
     <string name="check_rejected_title">
         What if my check deposit is rejected?
     </string>
     <string name="check_rejected_body">
-        If your check is rejected, you will receive a notification via email. 
-        You may log into the Account Center for a secure message that will provide the reason the check was rejected.
-        \n\nIf you have any questions about a rejected deposit, you can call Discover at 866-245-7419.
+       If your check is rejected, you will receive a notification via e-mail. 
+       You may log into the Account Center for a secure message that will provide the reason the check was rejected.
     </string>
     
     <string name="check_exceeds_limit_title">
-        What if my check amount exceeds one of the Mobile Check Deposit service limits?
+		What if my check amount exceeds the deposit limit?
     </string>
     <string name="check_exceeds_limit_body">
-        Mail the endorsed check made payable to you or Discover Bank to the address below.  
-        Include your account number on the check or include deposit instructions on a separate sheet of paper.
+		Mail the check that includes your account number, made payable to you or Discover Bank to: 
 		\n\nDiscover Bank
-		\nP.O. Box 30417
+		\nPO Box 30417
 		\nSalt Lake City, UT 84130
     </string>
     

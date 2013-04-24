@@ -12,6 +12,8 @@
         android:padding="1dp"
         android:layout_marginTop="@dimen/between_related_elements_padding" 
         android:background="@drawable/rounded_table_corners_no_padding"
+        android:divider="@drawable/table_dotted_line"
+        android:dividerHeight="1px"
         >
     </ListView>
 
