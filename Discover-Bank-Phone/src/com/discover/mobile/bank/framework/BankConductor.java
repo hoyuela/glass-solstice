@@ -277,11 +277,17 @@ public final class BankConductor  extends Conductor {
 			//Close current activity
 			activity.finish();
 		} else {
-			if( Log.isLoggable(TAG, Log.DEBUG)) {
-				Log.d(TAG, "Application is already in Home Page view");
+			/** Check if current activity is a navigation activity*/
+			if( activity instanceof BankNavigationRootActivity ) {
+				/**Check current fragment is an account summary, if so just close navigation drawer. No need to create a new one*/
+				if( ((BankNavigationRootActivity) activity).getCurrentContentFragment() instanceof BankAccountSummaryFragment) {
+					((BankNavigationRootActivity) activity).hideSlidingMenuIfVisible();
+				}
+				/**Add a new instance of Account Summary page to the back stack and place in foreground of application*/
+				else {
+					((BankNavigationRootActivity) activity).makeFragmentVisible(new BankAccountSummaryFragment());
+				}
 			}
-
-			((BankNavigationRootActivity)activity).popTillFragment(BankAccountSummaryFragment.class);
 		}
 	}
 
