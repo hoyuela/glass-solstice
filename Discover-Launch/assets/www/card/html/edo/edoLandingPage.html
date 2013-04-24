@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Edo-LandingPage</title>
+             
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" class="edo-page" id="edoLandingPage-pg" >
+		 <!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+			<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<!-- div class="ui-grid-a rd-landing-heading-text edoHistoryHeader">
+                    <div class="ui-block-a">
+                        <div class="margin-8px">
+                        	<h1>EXTRAS</h1>
+                        </div>
+                    </div>
+                    <div class="ui-block-b">
+                        <div class="rd-faq-main">
+                        	<img src="../../images/icon_faqs.png"  class="icon_faqs"/>
+                        </div>
+                    </div>
+                </div -->
+				<div class="faqWraper"><div class="rd-faq-main"><img src="../../images/icon_faqs.png" class="icon_faqs"/></div></div>
+				<div class="rd-landing-heading-text"><h1>EXTRAS</h1></div>
+                
+                <div id="exclusiveEDOOffer"></div>
+               
+                <div class="navtabs ui-grid-a">
+                    <a class="ui-block-a navtabsStyle selectedTab">
+                        <span>Extras</span>
+                    </a>
+                    <a class="ui-block-b navtabsStyle" href="#" onClick="dfs.crd.sct.extrasHistoryTabSwitch('History Tab');navigation('edoHistory');" >
+                        <span>History</span>
+                    </a>
+                </div>
+                
+                <div class="navBtns ui-grid-a">
+                	<div class="ui-block-a" id="edoLandingSortOptions">
+                    	<select id="sortFeatures" data-theme="d">
+                          <option value="featured">Featured</option>
+                          <option value="a-z" id="sortAtoZ">A-Z</option>
+                          <option value="mostrecent" id="sortDesc">Most Recent</option>
+                          <option value="expiringsoon">Expiring Soon</option>
+                        </select>
+                    </div>
+                    <div class="ui-block-b">
+                    	<div class="changeView">
+						<div id="changeViewBtn" class="changeViewBtn_gridImg"></div>
+                        </div>
+                    </div>
+                </div>
+				<span id = "edoDetailsDisplay"></span>	
+						<!--<div class="btmBtns">
+                	<div data-role="button" class="viewMoreOffers" onclick="dfs.crd.edo.ViewMoreEDO()">View More</div>
+                </div>-->
+                <div class="clearboth"></div>
+                <div id="footnotes" class="footnotes">
+				</div>
+            </div><!--wraper end-->
+            
+		<!-- content end --> 
+       
+	</div>
+	<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter" data-tap-toggle="false">
+            <footer id="footer" class="mnu_footer">
+			</footer>
+		</div>
+		
+    <!--tooltip-->
+    <div class="tooltip">
+    	<span class="arrow_head"></span>
+        <div class="bubble_data">
+          <div class="cls_all_parent"></div>
+          <div class="data_in_bubble">
+            <div class="rd-landing-bubble-h1">Help with EXTRAS</div>
+            <div class="rd-landing-bubble-data">
+                <ul>
+                    <li><b><a href="javascript:void(0);" id="open-overview-rdl">EXTRAS Overview</a></b></li>
+                    <li><b><a href="javascript:void(0);" onclick="navigation('../edo/edoFaqs');" data-ajax="false">EXTRAS FAQs</a></b></li>
+                </ul>
+             </div>
+          </div>
+        </div>
+    </div>
+   <div class="overlay"></div>
+   <div id="overlay_wraper" class="overlay_wraper">
+            	<div class="overlay-header">
+                	<div class="hdr-text">	
+                		<span>EXTRAS</span>
+                        <p class="punchLine">No work. All rewards.</p>
+                    </div>
+                    <img src="../../images/closeOverlay.png" width="37" height="37" alt="close overlay" class="close-overlay" id="closebtn"/>
+                    <div class="clearboth"></div>
+                </div>
+                <div class="overlay-content">
+                	<div class="innerText">
+                        <p>
+                        	Discover Extras are easy ways to earn additional savings just by using your card. These offers put more money back in your pocket on top of the <i>Cashback Bonus</i><sup>&reg;</sup> you earn on every purchase. So check back often to make sure you don't miss any new ways to save.
+                        </p>
+                    </div>
+                    
+                </div>
+                <div class="overlayBtn divider">
+                	<div data-role="button" id="overlayShowExtras" class="close-overlay">Show Extras</div>
+                </div>
+            </div>
+  </div>
+</body>
+</html>

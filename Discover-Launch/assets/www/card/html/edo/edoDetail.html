@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Edo-DetailPage</title>
+
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" class="edo-page" id="edoDetail" >
+		 <!--header start -->
+            <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+				<header id="header" class="cmn_header">
+				</header>
+			</div>
+            <!-- header end -->
+
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+                <div class="dtl-view-wrap">
+					<div class="prtnr-icon macys" id="edoMerchantLogoImage"></div>
+					<div class="expiry-dt">
+                        <div>
+                        <span>Expires:</span></br>
+                        <span id="edoDetailExpDate"></span>
+                        </div>
+                    </div>
+                    <div class="clearboth"></div>
+					<div class="desc">
+					<p class="heading" id= "edoDetailName"></p>
+						<p class="headingStatic">Savings will be applied as a statement credit.</p>
+                        <!--Discover&reg; card must be used for payment. The purchase must post to your account no later than 8/15/12. We are not responsible for merchant delays in processing transactions. Promotional reward will be applied within 8 weeks from the end of the promotional period. See Cashback Bonus Terms and Conditions, visit Discover.com, or call 1-800-Discover for more details.-->
+						<span id="edoDetailTerm" class='edoDetailInformation'></span>   
+						<!--<span class="edoDetailInformation1">Discover<sup>&reg;</sup> card must be used for payment.</span>-->
+                          <span class="edoDetailInformation">Purchases made using Near Field Communication (NFC), virtual wallets, or similar technology may not be eligible. Please allow up to 14 days for a statement credit to be applied to your account. </span>
+                        <span class="edoDetailInformation">By selecting view map, you hereby agree that Discover<sup>&reg;</sup> may access and use your location information.</span>
+                    </div>
+					
+                    <div class="textcenter">
+
+					<a href="#" id="detailBtn" onclick="dfs.crd.edo.showMap();dfs.crd.sct.viewMap();" data-role="button" class="greybtn"><span class="img"><img src="../../images/viewMapBtn.png" /></span><span class="txt">View Map</span></a>
+					<a href="#" data-role="button" class="greybtn" id="calenderBtn" onclick="clickAddtoCalendar();dfs.crd.sct.addToCalendar();"> <span class="img"><img src="../../images/AddtoCalender.png" /></span><span class="txt">Add to Calendar</span></a>
+					</div>
+					<div id="edoCouponDiv" style="display:none"></div>
+					
+                </div>
+			</div>
+			<div class="clearboth"></div>
+			<div id="footnotes" class="footnotes">
+			</div>
+                
+		</div>
+		<!-- content end --> 
+        
+		<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter" data-tap-toggle="false">
+            <footer id="footer" class="mnu_footer">
+			</footer>
+		</div>
+	</div>
+	<!-- page end -->
+</body>
+</html>

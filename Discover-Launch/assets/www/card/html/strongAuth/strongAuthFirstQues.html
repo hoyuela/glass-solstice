@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="strongAuthFirstQues-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover"
+			data-position="fixed">
+			<header id="header" class="cmn_header"> </header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<h1>Enhanced Account Security</h1>
+				<p>For your security, please answer the following question
+					before continuing.</p>
+				<div class="errormsg" id="wrongAnswer"></div>
+				<p class="boldtext" id="firstQues" style="font-size:12px;"></p>
+				<div>
+					<input type="text" name="name" id="answer" value="" placeholder="Your Answer"
+                                    class="inputtext" onkeyup="dfs.crd.sa.showHideContinueBtn(this);"/>
+				</div>
+				<p class="boldtext"  style="font-size:12px;">Would you like us to remember this device?</p>
+				<ul class="collapsible">
+					<li>
+						<a href="#" class="collapslink deactive" rel="strongAuthFirstQues_WhatThis"><b>What's this?</b></a>
+						<p id="strongAuthFirstQues_WhatThis" style="display: none;">
+							Choose "Yes" if this is a private device that you will frequently
+							use to access your account. By doing so, you'll still benefit
+							from heightened account security, but will receive fewer security
+							question prompts when logging in. <br /> Choose "No" if this is a
+							public device or you share it with others who are not authorized
+							Cardmembers on your account.
+						</p>
+					</li>
+				</ul>
+
+				<div class="white-form" style="margin:0px; width:96%">
+					
+					<div>
+						<input type="radio"  name="radio1" id="radio-choice-4"
+							value="choice-3" checked="true"/><label for="radio-choice-4" >Yes.
+							This is my mobile device that I use to access my Account.</label>
+					</div>
+					<div class="clearboth borderbottom"></div>
+					<div>
+						<input type="radio" name="radio1" id="radio-choice-3"
+							value="choice-3" /> <label for="radio-choice-3">
+							No. This is a public or shared device or one I don't plan on using
+							often to access my account. </label>
+					</div>
+					<div class="clearboth"></div>
+				</div>
+				<div class="txtcenteraln r3matchbtn margintop20px">					
+						<input type="button" disabled = "disabled" id ="continue" onclick="dfs.crd.sa.validateSAParam();" data-role="button" value="Continue"/>
+				</div>
+			</div>
+
+			<div id="footnotes" class="footnotes"></div>
+		</div>
+
+		<!-- content end -->
+		<div data-role="footer" id="pg-footer" data-position="fixed"
+			data-id="myfooter">
+			<footer id="footer" class="mnu_footer"> </footer>
+		</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+"campaignId":"String", 
+"merchantName":"String", 
+"name":"String", 
+"awardAmountType":"String", 
+"amount":"Decimal", 
+"minAmount":"Decimal", 
+"logo":"String",
+"expires":"Date",
+"currentDate":"Date",
+"isBarCodeType":"Boolean",
+"isCouponType":"Boolean",
+"terms":"String", 
+"cardMemberId":"String",
+"incentiveTypeCode":"String", 
+"incentiveCode":"Number"
+}

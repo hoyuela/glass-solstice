@@ -63,20 +63,21 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 	private String userId;
 	private boolean uidIsAccountNumber = false;
 	private StrongAuthListener listener;
-	private boolean showToggleFlag = false;;
+	private boolean showToggleFlag = false;
 	private final int SA_LOCKED = 1402;
 	private final int NOT_ENROLLED = 1401;
 	private final int SSN_NOT_MATCHED = 1111;
-	private final int SSO_ERROR_FLAG = 1102;
 	private final int SSO_SSN_MATCHED = 1106;
+	private final int SSO_ERROR_FLAG = 1102;
 	private final String NOT_ENROLLED_MSG = "NOTENROLLED";
 	private final String SA_LOCKED_MSG = "LOCKOUT";
-	private WSRequest request;
+
+	private  WSRequest request ;
 
 	@Override
 	public void login(final LoginActivityInterface callingActivity, final String username, final String password)
 	{
-		request = new WSRequest();
+		 request = new WSRequest();
 		final String authString = NetworkUtility.getAuthorizationString(username, password);
 		context = callingActivity.getContext();
 
@@ -98,7 +99,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 		{
 
 			@Override
-			public void onStrongAuthSucess(final Object data)
+			public void onStrongAuthSucess(Object data)
 			{
 				// TODO Auto-generated method stub
 
@@ -108,35 +109,34 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 				TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 				context.startActivity(confirmationScreen);
 				// Close current activity
-				if (context instanceof Activity) {
+				if (context instanceof Activity)
 					((Activity) context).finish();
-				}
 
 			}
 
 			@Override
-			public void onStrongAuthError(final Object data)
+			public void onStrongAuthError(Object data)
 			{
 				// TODO Auto-generated method stub
 
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data);
 
 			}
 
 			@Override
-			public void onStrongAuthCardLock(final Object data)
+			public void onStrongAuthCardLock(Object data)
 			{
 				// TODO Auto-generated method stub
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data);
 			}
 
 			@Override
-			public void onStrongAuthSkipped(final Object data)
+			public void onStrongAuthSkipped(Object data)
 			{
 				// TODO Auto-generated method stub
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data, new CardErrorCallbackListener()
 				{
 
@@ -157,10 +157,10 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 			}
 
 			@Override
-			public void onStrongAuthNotEnrolled(final Object data)
+			public void onStrongAuthNotEnrolled(Object data)
 			{
 
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data, new CardErrorCallbackListener()
 				{
 
@@ -175,7 +175,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 					public void onButton1Pressed()
 					{
 						// Go to Big Browser
-						final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.discover.com"));
+						Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.discover.com"));
 						context.startActivity(browserIntent);
 					}
 				});
@@ -194,20 +194,20 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 		SSOCardEventListener = new CardEventListener()
 		{
 			@Override
-			public void onSuccess(final Object data)
+			public void onSuccess(Object data)
 			{
 				// Get the bankpayload and return to bank via facade
-				final BankPayload bankPayload = (BankPayload) data;
+				BankPayload bankPayload = (BankPayload) data;
 				Log.i(LOG_TAG, "---payload-- " + bankPayload.payload);
 				FacadeFactory.getBankLoginFacade().authorizeWithBankPayload(bankPayload.payload);
 			}
 
 			@Override
-			public void OnError(final Object data)
+			public void OnError(Object data)
 			{
-				final CardErrorBean cardErrorBean = (CardErrorBean) data;
-				final CardShareDataStore cardShareDataStore = CardShareDataStore.getInstance(context);
-				final String cache = (String) cardShareDataStore.getValueOfAppCache("WWW-Authenticate");
+				CardErrorBean cardErrorBean = (CardErrorBean) data;
+				CardShareDataStore cardShareDataStore = CardShareDataStore.getInstance(context);
+				String cache = (String) cardShareDataStore.getValueOfAppCache("WWW-Authenticate");
 
 				Log.i(LOG_TAG, "--cache--" + cache + " cardErrorBean " + cardErrorBean.getErrorCode());
 
@@ -219,7 +219,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 					cardShareDataStore.deleteCacheObject("WWW-Authenticate");
 
 					// Check if it's required strong authentication. Skip check for SA
-					final StrongAuthHandler authHandler = new StrongAuthHandler(callingActivity.getContext(), authListener,true);
+					StrongAuthHandler authHandler = new StrongAuthHandler(callingActivity.getContext(), authListener,true);
 					authHandler.strongAuth();
 				}
 				else if (cardErrorBean.getErrorCode().contains("" + HttpURLConnection.HTTP_UNAUTHORIZED) && 
@@ -231,29 +231,28 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 						&& cardErrorBean.getErrorCode().contains(""+SA_LOCKED)
 						& cardErrorBean.getErrorCode().contains("" +SA_LOCKED_MSG))
 				{
-					authListener.onStrongAuthCardLock(cardErrorBean);
+						authListener.onStrongAuthCardLock(cardErrorBean);
 				}
 				else if(cardErrorBean.getErrorCode().contains("" + HttpURLConnection.HTTP_FORBIDDEN)
 						&& cardErrorBean.getErrorCode().contains(""+NOT_ENROLLED)
 						&& cardErrorBean.getErrorCode().contains("" +NOT_ENROLLED_MSG))
 				{
-					Log.i(LOG_TAG, "--NOt Enrolled --");
-					authListener.onStrongAuthNotEnrolled(cardErrorBean);
+						Log.i(LOG_TAG, "--NOt Enrolled --");
+						authListener.onStrongAuthNotEnrolled(cardErrorBean);
 				}
 				else if (cardErrorBean.getErrorCode().contains("" + HttpURLConnection.HTTP_FORBIDDEN) && 
-						(cardErrorBean.getErrorCode().contains(""+SSO_ERROR_FLAG) || 
-								cardErrorBean.getErrorCode().contains(""+SSO_SSN_MATCHED)))
+						(cardErrorBean.getErrorCode().contains(""+SSO_ERROR_FLAG)||cardErrorBean.getErrorCode().contains(""+SSO_SSN_MATCHED)))
 				{
-					final boolean isSSODLinkable = cardErrorBean.getIsSSODelinkable();
-					final boolean isSSOUser = cardErrorBean.getIsSSOUser();
-					final boolean isSSNMatch = cardErrorBean.getIsSSNMatched();
+					boolean isSSODLinkable = cardErrorBean.getIsSSODelinkable();
+					boolean isSSOUser = cardErrorBean.getIsSSOUser();
+					boolean isSSNMatch = cardErrorBean.getIsSSNMatched();
 
 					Log.i(LOG_TAG, "isSSODLinkable " + isSSODLinkable + " isSSOUser " + isSSOUser + " isSSNMatch " + isSSNMatch);
 
 					// Get error model based on error flags
 					getErrorMatchModelForPayload(isSSOUser, isSSNMatch, isSSODLinkable, cardErrorBean);
 				}
-
+				
 				//If SSN not Matched
 				else if(cardErrorBean.getErrorCode().contains("" + HttpURLConnection.HTTP_FORBIDDEN)
 						&& cardErrorBean.getErrorCode().contains(""+SSN_NOT_MATCHED))
@@ -263,7 +262,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 				}
 				else
 				{
-					final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 					cardErrorResHandler.handleCardError((CardErrorBean) data);
 				}
 			}
@@ -273,33 +272,33 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 		{
 
 			@Override
-			public void onStrongAuthSucess(final Object data)
+			public void onStrongAuthSucess(Object data)
 			{
 				// Calling service for SSO authentication
 				getSSOAuthenticationWithoutToken();
 			}
 
 			@Override
-			public void onStrongAuthError(final Object data)
+			public void onStrongAuthError(Object data)
 			{
 				// TODO Auto-generated method stub
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data);
 			}
 
 			@Override
-			public void onStrongAuthCardLock(final Object data)
+			public void onStrongAuthCardLock(Object data)
 			{
 				// TODO Auto-generated method stub
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data);
 			}
 
 			@Override
-			public void onStrongAuthSkipped(final Object data)
+			public void onStrongAuthSkipped(Object data)
 			{
 				// TODO Auto-generated method stub
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data, new CardErrorCallbackListener()
 				{
 
@@ -320,11 +319,11 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 			}
 
 			@Override
-			public void onStrongAuthNotEnrolled(final Object data)
+			public void onStrongAuthNotEnrolled(Object data)
 			{
 
 				Log.i(LOG_TAG, "--NOt Enrolled 1--");
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data, new CardErrorCallbackListener()
 				{
 
@@ -340,7 +339,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 					{
 						Log.i(LOG_TAG, "--NOt Enrolled 2--");
 						// Go to Big Browser
-						final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.discover.com"));
+						Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.discover.com"));
 						context.startActivity(browserIntent);
 					}
 				});
@@ -349,7 +348,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 		};
 
 		Log.i(LOG_TAG, "---SSoAuthenticate---");
-		final SSOAuthenticate authenticate = new SSOAuthenticate(callingActivity.getContext(), SSOCardEventListener);
+		SSOAuthenticate authenticate = new SSOAuthenticate(callingActivity.getContext(), SSOCardEventListener);
 		authenticate.sendRequest(tokenValue, hashedTokenValue);
 	}
 
@@ -357,23 +356,23 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 	public void toggleLoginToBank(final Context context)
 	{
 		this.context = context;
-		final CardEventListener cardEventListener = new CardEventListener()
+		CardEventListener cardEventListener = new CardEventListener()
 		{
 
 			@Override
-			public void onSuccess(final Object data)
+			public void onSuccess(Object data)
 			{
 				// Set Payload data
 				// Get the bankpayload and return to bank via facade
 
-				final BankPayload bankPayload = (BankPayload) data;
+				BankPayload bankPayload = (BankPayload) data;
 				bankPayloadText = bankPayload.payload;
 				Log.i("Payload from Bank.....", "" + bankPayloadText);
 
 				if (bankPayloadText == null)
 				{
 					final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
-					final CardErrorCallbackListener errorClickCallback = new CardErrorCallbackListener()
+					CardErrorCallbackListener errorClickCallback = new CardErrorCallbackListener()
 					{
 						@Override
 						public void onButton1Pressed()
@@ -389,10 +388,10 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 							// Handled automatically
 						}
 					};
-					final CardErrorUtil cardErrUtil = new CardErrorUtil(context);
+					CardErrorUtil cardErrUtil = new CardErrorUtil(context);
 					final String errorMessage = cardErrUtil.getMessageforErrorCode("40311021");
 					final String errorTitle = cardErrUtil.getTitleforErrorCode("1401_LOCKOUT");
-					final CardErrorBean cardErrorBean = new CardErrorBean(errorTitle, errorMessage, "40311023", false, "101");
+					CardErrorBean cardErrorBean = new CardErrorBean(errorTitle, errorMessage, "40311023", false, "101");
 					cardErrorResHandler.handleCardError(cardErrorBean, errorClickCallback);
 
 				}
@@ -403,10 +402,10 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 			}
 
 			@Override
-			public void OnError(final Object data)
+			public void OnError(Object data)
 			{
 				// SSN NOT MATCH HANDLED
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data);
 
 			}
@@ -414,7 +413,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 
 		// Get payload from server
 		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore.getInstance(context);
-		final AccountDetails accountDetails = (AccountDetails) cardShareDataStoreObj.getValueOfAppCache(context.getString(R.string.account_details));
+		AccountDetails accountDetails = (AccountDetails) cardShareDataStoreObj.getValueOfAppCache(context.getString(R.string.account_details));
 		if (accountDetails.isSSNMatched)
 		{
 			getBankPayloadFromServer(cardEventListener);
@@ -422,9 +421,9 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 		else
 		{
 			Globals.setCurrentAccount(AccountType.CARD_ACCOUNT);
-			final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
-			final CardErrorUtil cardErrorUtil = new CardErrorUtil(context);
-			final CardErrorBean bean = new CardErrorBean(cardErrorUtil.getTitleforErrorCode("4031102_SSN_NOT_MATCH"), cardErrorUtil.getMessageforErrorCode("4031102_SSN_NOT_MATCH"), "4031102", false, "0");
+			CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+			CardErrorUtil cardErrorUtil = new CardErrorUtil(context);
+			CardErrorBean bean = new CardErrorBean(cardErrorUtil.getTitleforErrorCode("4031102_SSN_NOT_MATCH"), cardErrorUtil.getMessageforErrorCode("4031102_SSN_NOT_MATCH"), "4031102", false, "0");
 			cardErrorResHandler.handleCardError(bean);
 		}
 
@@ -435,17 +434,17 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 	 * 
 	 * @param listener
 	 */
-	public void getBankPayloadFromServer(final CardEventListener listener)
+	public void getBankPayloadFromServer(CardEventListener listener)
 	{
 
-		final WSRequest request = new WSRequest();
-		final HashMap<String, String> headers = request.getHeaderValues();
-		final String url = NetworkUtility.getWebServiceUrl(context, R.string.sso_authenticate_bank_payload);
+		WSRequest request = new WSRequest();
+		HashMap<String, String> headers = request.getHeaderValues();
+		String url = NetworkUtility.getWebServiceUrl(context, R.string.sso_authenticate_bank_payload);
 
 		request.setUrl(url);
 		request.setHeaderValues(headers);
 
-		final WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, new BankPayload(), "Discover", "Authenticating...", listener);
+		WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, new BankPayload(), "Discover", "Authenticating...", listener);
 		serviceCall.execute(request);
 
 	}
@@ -458,7 +457,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 		{
 
 			@Override
-			public void onSuccess(final Object data)
+			public void onSuccess(Object data)
 			{
 				// TODO Auto-generated method stub
 				Globals.setLoggedIn(true);
@@ -476,7 +475,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 				CardSessionContext.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(false);
 				CardSessionContext.getCurrentSessionDetails().setAccountDetails((AccountDetails) data);
 
-				cardShareDataStoreObj.addToAppCache(context.getString(R.string.account_details), data);
+				cardShareDataStoreObj.addToAppCache(context.getString(R.string.account_details), (AccountDetails) data);
 				final Intent confirmationScreen = new Intent(context, CardNavigationRootActivity.class);
 				TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 
@@ -488,17 +487,16 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 				context.startActivity(confirmationScreen);
 
 				// Close current activity
-				if (context instanceof Activity) {
+				if (context instanceof Activity)
 					((Activity) context).finish();
-				}
 
 			}
 
 			@Override
-			public void OnError(final Object data)
+			public void OnError(Object data)
 			{
 				// TODO Auto-generated method stub
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data);
 
 			}
@@ -508,33 +506,34 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 	@Override
 	public void OnError(final Object data)
 	{
-		final CardErrorBean bean = (CardErrorBean) data;
+		CardErrorBean bean = (CardErrorBean) data;
 		boolean ssoUser = false;
 		boolean delinkable = false;
 		final boolean isSSNMatched = bean.getIsSSNMatched();
-		final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(this);
-		final String statusCode = bean.getErrorCode();
+		final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler((CardErrorHandlerUi) this);
+		String statusCode = bean.getErrorCode();
 		Log.d("status code", "statusCode---" + statusCode);
-		bean.getErrorMessage();
+		String errorResponseData = bean.getErrorMessage();
 		delinkable = bean.getIsSSODelinkable();
 		ssoUser = bean.getIsSSOUser();
-
-		final CardShareDataStore cardShareDataStore = CardShareDataStore.getInstance(context);
-		final String cache = (String) cardShareDataStore.getValueOfAppCache("WWW-Authenticate");
-		if (statusCode.equalsIgnoreCase("4031102") || statusCode.equalsIgnoreCase("4031106"))
+		
+		CardShareDataStore cardShareDataStore = CardShareDataStore.getInstance(context);
+		String cache = (String) cardShareDataStore.getValueOfAppCache("WWW-Authenticate");
+		if (statusCode.equalsIgnoreCase("4031102")||statusCode.equalsIgnoreCase("4031106"))
 		{
 			if (ssoUser && !delinkable) // A/L/U status
 			{
 				if (isSSNMatched)
 				{ // Bank call for Auth
-					FacadeFactory.getBankLoginFacade().authDueToALUStatus(request.getUsername(), request.getPassword());
+					if(null!=request)
+					FacadeFactory.getBankLoginFacade().authDueToALUStatus(request.getUsername(),request.getPassword());
 				}
 				else
 				{
 					// Show SSN not matched modal
 
-					final CardErrorUtil cardErrorUtil = new CardErrorUtil(context);
-					final CardErrorBean beanError = new CardErrorBean(cardErrorUtil.getTitleforErrorCode("4031102_SSN_NOT_MATCH"), cardErrorUtil.getMessageforErrorCode("4031102_SSN_NOT_MATCH"), "4031102",
+					CardErrorUtil cardErrorUtil = new CardErrorUtil(context);
+					CardErrorBean beanError = new CardErrorBean(cardErrorUtil.getTitleforErrorCode("4031102_SSN_NOT_MATCH"), cardErrorUtil.getMessageforErrorCode("4031102_SSN_NOT_MATCH"), "4031102",
 							false, "0");
 					cardErrorResHandler.handleCardError(beanError);
 				}
@@ -542,13 +541,13 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 			}
 			else if (ssoUser && delinkable)// ZB status
 			{
-				final CardErrorCallbackListener errorClickCallback = new CardErrorCallbackListener()
+				CardErrorCallbackListener errorClickCallback = new CardErrorCallbackListener()
 				{
 					@Override
 					public void onButton1Pressed()
 					{
 						// Register Button click flow - Big browser link
-						final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.discover.com"));
+						Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.discover.com"));
 						context.startActivity(browserIntent);
 					}
 
@@ -558,7 +557,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 						// TODO Cancel Button click flow
 					}
 				};
-				final CardErrorBean cardErrorBean = (CardErrorBean) data;
+				CardErrorBean cardErrorBean = (CardErrorBean) data;
 				cardErrorBean.setErrorCode("40311022");
 				cardErrorBean.setFooterStatus("101");
 				cardErrorResHandler.handleCardError(cardErrorBean, errorClickCallback);
@@ -566,7 +565,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 			}
 		}
 		//CardErrorBean cardErrorBean = (CardErrorBean) data;
-
+		
 		// If error code is 401 and cache contains challenge
 		// then show strong auth question
 		else if (bean.getErrorCode().contains("" + HttpURLConnection.HTTP_UNAUTHORIZED) && 
@@ -575,7 +574,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 			cardShareDataStore.deleteCacheObject("WWW-Authenticate");
 
 			// Check if it's required strong authentication. Skip check for SA
-			final StrongAuthHandler authHandler = new StrongAuthHandler(context, listener,true);
+			StrongAuthHandler authHandler = new StrongAuthHandler(context, listener,true);
 			authHandler.strongAuth();
 		}
 		else if (bean.getErrorCode().contains("" + HttpURLConnection.HTTP_UNAUTHORIZED) && 
@@ -604,7 +603,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 	}
 
 	@Override
-	public void onSuccess(final Object data)
+	public void onSuccess(Object data)
 	{
 		Globals.setLoggedIn(true);
 		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore.getInstance(context);
@@ -616,14 +615,14 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 		CardSessionContext.getCurrentSessionDetails().setAccountDetails((AccountDetails) data);
 		cardShareDataStoreObj.addToAppCache(context.getString(R.string.account_details), data);
 
-		final boolean isSSOUserVar = ((AccountDetails) data).isSSOUser;
+		boolean isSSOUserVar = ((AccountDetails) data).isSSOUser;
 
 		uidIsAccountNumber = Utils.validateUserforSSO(userId);
 		if (uidIsAccountNumber && isSSOUserVar)
 		{// Cannot Login with Account no
 			// modal
-			final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(this);
-			final CardErrorCallbackListener errorClickCallback = new CardErrorCallbackListener()
+			final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler((CardErrorHandlerUi) this);
+			CardErrorCallbackListener errorClickCallback = new CardErrorCallbackListener()
 			{
 				@Override
 				public void onButton1Pressed()
@@ -639,36 +638,35 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 					// Handled automatically
 				}
 			};
-			final CardErrorUtil cardErrUtil = new CardErrorUtil(context);
+			CardErrorUtil cardErrUtil = new CardErrorUtil(context);
 			final String errorMessage = cardErrUtil.getMessageforErrorCode("4031102_SSO_AccountNo");
 			final String errorTitle = cardErrUtil.getTitleforErrorCode("1401_LOCKOUT");
-			final CardErrorBean cardErrorBean = new CardErrorBean(errorTitle, errorMessage, "40311023", false, "101");
+			CardErrorBean cardErrorBean = new CardErrorBean(errorTitle, errorMessage, "40311023", false, "101");
 			cardErrorResHandler.handleCardError(cardErrorBean, errorClickCallback);
 		}
 		else if (!uidIsAccountNumber && isSSOUserVar)
 		{ // Strong Auth flow
 			CardSessionContext.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(false);
 			CardSessionContext.getCurrentSessionDetails().setAccountDetails((AccountDetails) data);
-			cardShareDataStoreObj.addToAppCache(context.getString(R.string.account_details), data);
+			cardShareDataStoreObj.addToAppCache(context.getString(R.string.account_details), (AccountDetails) data);
 			if (shouldShowSSOToggle(data))
 			{
 				showToggleFlag = true;
-
+				
 				//Strong auth need. Done skip checking with server if SA required or not.
-				final StrongAuthHandler authHandler = new StrongAuthHandler(context, listener,false);
+				StrongAuthHandler authHandler = new StrongAuthHandler(context, listener,false);
 				authHandler.strongAuth();
 			}
 		}
 		else
-			// if(!isSSOUserVar)
+		// if(!isSSOUserVar)
 		{ // Card normal flow
 			final Intent confirmationScreen = new Intent(context, CardNavigationRootActivity.class);
 			confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
 			TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 			context.startActivity(confirmationScreen);
-			if (context instanceof Activity) {
+			if (context instanceof Activity)
 				((Activity) context).finish();
-			}
 		}
 	}
 
@@ -678,15 +676,14 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 	 * @param acHome
 	 * @return
 	 */
-	public boolean shouldShowSSOToggle(final Object acHome)
+	public boolean shouldShowSSOToggle(Object acHome)
 	{
-		final boolean isSSOUserVar = ((AccountDetails) acHome).isSSOUser;
-		final String payLoadSSOTextVar = ((AccountDetails) acHome).payLoadSSOText;
-		if (isSSOUserVar && payLoadSSOTextVar != null) {
+		boolean isSSOUserVar = ((AccountDetails) acHome).isSSOUser;
+		String payLoadSSOTextVar = ((AccountDetails) acHome).payLoadSSOText;
+		if (isSSOUserVar && payLoadSSOTextVar != null)
 			return true;
-		} else {
+		else
 			return false;
-		}
 	}
 
 	@Override
@@ -706,21 +703,21 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 	}
 
 	@Override
-	public void showCustomAlert(final AlertDialog alert)
+	public void showCustomAlert(AlertDialog alert)
 	{
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void showOneButtonAlert(final int title, final int content, final int buttonText)
+	public void showOneButtonAlert(int title, int content, int buttonText)
 	{
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void showDynamicOneButtonAlert(final int title, final String content, final int buttonText)
+	public void showDynamicOneButtonAlert(int title, String content, int buttonText)
 	{
 		// TODO Auto-generated method stub
 
@@ -734,7 +731,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 	}
 
 	@Override
-	public void setLastError(final int errorCode)
+	public void setLastError(int errorCode)
 	{
 		// TODO Auto-generated method stub
 
@@ -763,7 +760,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 	 * @param isSSODLinkable
 	 * @param cardErrBean
 	 */
-	public void getErrorMatchModelForPayload(final boolean isSSOUser, final boolean isSSNMatch, final boolean isSSODLinkable, final CardErrorBean cardErrBean)
+	public void getErrorMatchModelForPayload(boolean isSSOUser, final boolean isSSNMatch, boolean isSSODLinkable, final CardErrorBean cardErrBean)
 	{
 		// ALU status
 		if (isSSOUser && !isSSODLinkable)
@@ -779,9 +776,9 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 			else
 			{
 				// SSN not match model
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
-				final CardErrorUtil cardErrorUtil = new CardErrorUtil(context);
-				final CardErrorBean bean = new CardErrorBean(cardErrorUtil.getTitleforErrorCode("4031102_SSN_NOT_MATCH"), cardErrorUtil.getMessageforErrorCode("4031102_SSN_NOT_MATCH"),
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorUtil cardErrorUtil = new CardErrorUtil(context);
+				CardErrorBean bean = new CardErrorBean(cardErrorUtil.getTitleforErrorCode("4031102_SSN_NOT_MATCH"), cardErrorUtil.getMessageforErrorCode("4031102_SSN_NOT_MATCH"),
 						cardErrBean.getErrorCode(), false, cardErrBean.getNeedHelpFooter());
 				cardErrorResHandler.handleCardError(bean);
 			}
@@ -792,7 +789,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 		{
 			// Show alert for ZB status
 			cardErrBean.setFooterStatus("101");
-			final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+			CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 			cardErrorResHandler.handleCardError(cardErrBean, new CardErrorCallbackListener()
 			{
 
@@ -807,7 +804,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 				public void onButton1Pressed()
 				{
 					// Big Broweser
-					final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.discover.com"));
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.discover.com"));
 					context.startActivity(browserIntent);
 				}
 			});
@@ -817,9 +814,9 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 		else if (!isSSNMatch)
 		{
 			// Show SSN Error model
-			final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
-			final CardErrorUtil cardErrorUtil = new CardErrorUtil(context);
-			final CardErrorBean bean = new CardErrorBean(cardErrorUtil.getTitleforErrorCode("4031102_SSN_NOT_MATCH"), cardErrorUtil.getMessageforErrorCode("4031102_SSN_NOT_MATCH"),
+			CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+			CardErrorUtil cardErrorUtil = new CardErrorUtil(context);
+			CardErrorBean bean = new CardErrorBean(cardErrorUtil.getTitleforErrorCode("4031102_SSN_NOT_MATCH"), cardErrorUtil.getMessageforErrorCode("4031102_SSN_NOT_MATCH"),
 					cardErrBean.getErrorCode(), false, cardErrBean.getNeedHelpFooter());
 			cardErrorResHandler.handleCardError(bean, new CardErrorCallbackListener()
 			{
@@ -848,28 +845,28 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 	 */
 	public void getSSOAuthenticationWithoutToken()
 	{
-		final CardEventListener cardEventListener = new CardEventListener()
+		CardEventListener cardEventListener = new CardEventListener()
 		{
 
 			@Override
-			public void onSuccess(final Object data)
+			public void onSuccess(Object data)
 			{
 
 				// Get the bankpayload and return to bank via facade
-				final BankPayload bankPayload = (BankPayload) data;
+				BankPayload bankPayload = (BankPayload) data;
 				Log.i(LOG_TAG, "---payload-- " + bankPayload.payload);
 				FacadeFactory.getBankLoginFacade().authorizeWithBankPayload(bankPayload.payload);
 			}
 
 			@Override
-			public void OnError(final Object data)
+			public void OnError(Object data)
 			{
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data);
 			}
 		};
 
-		final SSOAuthenticate authenticate = new SSOAuthenticate(context, cardEventListener);
+		SSOAuthenticate authenticate = new SSOAuthenticate(context, cardEventListener);
 		authenticate.sendRequest(null, null);
 	}
 
@@ -883,7 +880,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 		{
 
 			@Override
-			public void onSuccess(final Object data)
+			public void onSuccess(Object data)
 			{
 				// TODO Auto-generated method stub
 				Globals.setLoggedIn(true);
@@ -898,24 +895,23 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 				CardSessionContext.getCurrentSessionDetails().setNotCurrentUserRegisteredForPush(false);
 				CardSessionContext.getCurrentSessionDetails().setAccountDetails((AccountDetails) data);
 
-				cardShareDataStoreObj.addToAppCache(context.getString(R.string.account_details), data);
+				cardShareDataStoreObj.addToAppCache(context.getString(R.string.account_details), (AccountDetails) data);
 				final Intent confirmationScreen = new Intent(context, CardNavigationRootActivity.class);
 				TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 
 				context.startActivity(confirmationScreen);
 
 				// Close current activity
-				if (context instanceof Activity) {
+				if (context instanceof Activity)
 					((Activity) context).finish();
-				}
 
 			}
 
 			@Override
-			public void OnError(final Object data)
+			public void OnError(Object data)
 			{
 				// TODO Auto-generated method stub
-				final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data);
 
 			}

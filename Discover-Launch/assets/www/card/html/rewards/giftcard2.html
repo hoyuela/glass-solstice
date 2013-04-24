@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>    
+    <head>
+        <title>Discover - Gift Card</title>
+        
+	</head>
+    
+    <body>
+        <!--page start -->
+        <div data-role="page" id="gift-card-verify" class="cbb-page rd-page">
+            <!--header start -->
+            <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed" data-tap-toggle="false">
+                 <header id="header" class="cmn_header">
+				</header>
+                 <div class="clearboth"></div>
+		    </div>
+			<section id="cbbSection">
+			<p class="cbb-panel">Current Cashback Bonus: <span id="giftCard2_CashBackBonusBalance"></span>&nbsp;</p>
+                    </section>
+            <div id="pgPadding"></div>
+            <div class="progress-indicator">
+		<ul>
+		    <li><a href="#" class="visited">1. Review/Edit</a></li>
+                    <li><a href="#" class="active">2. Verify</a></li>
+                    <li><a href="#">3. Confirmation</a></li>
+		</ul>
+		<div class="clearboth"></div>
+	    </div>
+            <!-- header end -->
+            <!-- Middle content start from here-->
+            <div data-role="content" class="ui-content-internalpages">
+                <div>
+                    <div class="repeater-border">
+                    <div class="details-section-container">
+                        <div class="shipping-detl-content">
+                        	<span class="details-title">details</span>
+                    		<!--<h1><span class="cbb-redem" id="selected-redeem-cbb"></span>  Discover Gift Card</h1>-->
+                            <div class="shipping-details">
+						<div class="card-design-lft" >
+                        	<h3>Card Design:</h3>
+                            <div>
+                            <img id="giftCard2Image" class="current-img" width="116" height="73" alt="">
+                            <!--<h1><span class="cbb-redem" id="selected-redeem-cbb"></span><br/>  Discover Gift Card</h1>-->
+								<div class="divhead">
+									<h1 class="cbb-redem" id="selected-redeem-cbb"></h1>
+									<h2> Discover Gift Card</h2>
+								</div>
+                            </div>
+			    <p class="gcard-name" id="giftCardImgDesc"></p>
+                        </div>
+                        <div class="floatleft">
+                        	<h3>Name to Appear on Card:</h3>
+                        	<p class="add-name-txt" id="add-name-txt"></p>
+                            <div class="shipping-address">
+                            	<span class="shiping-title">Ships to current billing address:</span>
+                                <address id="shippingAddr"></address>
+                            </div>
+                        </div>
+                        <div class="clearboth"></div>
+                        </div>
+                        </div>
+                        
+                        <div class="shipping-detl-content cbb-detail">
+						
+							<ul>
+								<li><p class="col1">Current <i>Cashback Bonus</i> Balance:</p>
+									<p id="cbb-curr-balance" class="col2"></p></li>
+								<li class="borderBottomGrey"><p class="col1"><i>Cashback Bonus</i> to be Redeemed:</p>
+                                    <p id="cbb-redem" class="col2"></p></li>
+								<li><p class="noBorderBottom col1"><i>Cashback Bonus</i> Remaining (after transaction):</p>
+									<p class="boldnum noBorderBottom col2" id="cbb-balance"></p></li>
+							</ul>
+	</div>
+                        <div class="terms-note">
+                        	<p>By clicking Redeem, you hereby agree to the</p>
+                            <a href="#" data-transition="pop" class="link-style-3" id="gcTerms">Discover Gift Card terms &amp; conditions.</a>
+                        </div>
+                    </div>
+                    </div>
+					<div class="textcenter">
+                    	<a href="#" data-role="button" id="giftCard2Redeem" class="common-btn">Redeem</a>
+					</div>
+					<div class="textcenter margintop10px">
+						<a href="#" id="giftCard2Cancel">Cancel</a>
+					</div>
+                    <div class="cardverify-note">
+                    <!-- <p><span class="bold-text">Note:</span> In the unlikely event that the design you select is out of stock, we will substitute the Gold Bow card design to ensure timely delivery.</p>
+
+	<p>Maximum 20 Cards or $3,000 value per 7-day period. Not for sale or shipment to residents of CO, HI, ME, NJ, TN and VT. A $2.50 per month servicing fee applies after 12 consecutive months of non-use after activation except where prohibited by law. </p> -->
+                    </div>
+                     
+                </div>
+                <div id="footnotes" class="footnotes"></div>
+            </div>
+            <!-- Middle content end here-->
+             <div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter" data-tap-toggle="false">
+                <footer id="footer" class="mnu_footer">
+       			 </footer>
+            </div>
+        </div>
+		
+    </body>
+
+</html>

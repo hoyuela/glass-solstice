@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Payments Step-I</title>
+</head>
+<body>
+	<!-- page start  -->
+	<div data-role="page" id="paymentStep1-pg" class="rd-page">
+		<!-- header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover"
+			data-position="fixed">
+			<header id="header" class="cmn_header"> </header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div id="pgPadding"></div>
+<!--<div class="progress-indicator pos-center">
+		<ul>
+		    <li><a href="#" class="active ui-link">1. Review/Edit</a></li>
+                    <li><a href="#" class="ui-link">2. Verify</a></li>
+                    <li><a href="#" class="ui-link">3. Confirmation</a></li>
+		</ul>
+		<div class="clearboth"></div>
+	    </div>-->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<div class="wraper1">
+					<!--<h1>Make a Payment:</h1>-->
+					<!-- h2 style="margin-bottom:0px">Step 1 of 3</h2 -->
+                    <div class="progress-indicator pos-center">
+						<ul>
+						    <li><a href="#" class="active ui-link">1. Review/Edit</a></li>
+                    		<li><a href="#" class="ui-link">2. Verify</a></li>
+                    		<li><a href="#" class="ui-link">3. Confirmation</a></li>
+						</ul>
+					<div class="clearboth"></div>
+				    </div>
+					<div>
+					<div class="errormsg2" id="ha_MakePaymentStepOne_Error"></div>
+						<span class="marginTB15 fontsize13px" id="cuttOff_Note_MakePaymentOne"></span>
+						<div class="errormsg2" id="commonErrorInMakePaymentStepOneDiv"></div>
+						<div class="errormsg2" id="amounterror"></div>
+						<h3 class="margintop10px">Select a Bank Account</h3>
+						<span class="white-box-rd-corner trans-bg" id="bank_info"> </span>
+						
+						<div class="errormsg2" id="errorbankinfoDiv" ></div>
+					</div>
+					<a href="#" onclick="navigation('manageBankInformation');" class="normaltext bluelink managebank" id='manage_Bank_Information'>
+					Manage Bank Information</a>
+					<form action="javascript:void(0)" method="post">
+						<div class="white-form">
+							<div>   
+								<div>
+									<span class="errormsg2" id="radio1Error"></span>
+								</div>
+								<div class="col1">
+									<input type="radio" name="radio-choice-1" id="radio-choice-1"
+										value="choice-1" disabled="disabled"
+										onclick='dfs.crd.pymt.changeDropDownLabel()' /> <label
+										for="radio-choice-1" data-role="none">Minimum Payment
+									</label>
+								</div>
+								<div class="col2_RM amount2" id="minpaystepone_minpayment"></div>
+								<div class="clearboth borderbottom"></div>
+							</div>
+
+
+
+							<div>
+								<div>
+									<span class="errormsg2" id="radio2Error"></span>
+								</div>
+								<div class="col1">
+									<input type="radio" name="radio-choice-1" id="radio-choice-2"
+										value="choice-2" onclick='dfs.crd.pymt.changeDropDownLabel()' disabled="disabled" />
+									<label for="radio-choice-2" data-role="none"><span id="variable_lable">Current Balance</span> </label>
+								</div>
+								<div class="col2_RM amount2"
+									id="minpaystepone_laststatementbalance"></div>
+								<div class="clearboth borderbottom"></div>
+							</div>
+							<div class="margintop5px">
+								<div>
+									<span class="errormsg2" id="errorPaymentAmountExceed"></span>
+								</div>
+
+								<div class="col1 disableActiveRadio" onclick="focusOtherAmount();">
+									<input type="radio" onclick='dfs.crd.pymt.changeDropDownLabel()'
+										name="radio-choice-1" id="radio-choice-3" value="choice-3" />
+									<label for="radio-choice-3" data-role="none">Other
+										Amount </label>
+
+
+
+								</div>
+								<div class="col2_RM amount" id="otheramountfield" style="line-height:44px;">
+									$<input type="number" placeholder="0.00" maxlength="8"
+										id="minpaystepone_other" class="inputtext paymentinputtext"
+										style="margin-top: 0px" /> <span class="floatright"
+										style="margin-top: 5px; margin-right: 5px;"> </span>
+								</div>
+								<div class="clearboth"></div>
+							</div>
+						</div>
+						<a href="javascript:void(0)" class="bluelink latepaywarn" onclick="navigation('lateMinPayWarn');">Late and Minimum Payment warning</a>
+						<ul class="nobg_2coltbl" style="margin-top: 4px;">
+							<li><span class="errormsg" id="errorPostingDate"></span>
+								<div class="col1" style="line-height: 24px;">Payment Date</div>
+								<div class="col2 boldtext">
+									<!--<div id="datepicker-val" class="boldtext txtrightaln" style="margin: 4px 0px"></div>-->
+									<fieldset id="payment-date">
+										<input type="hidden" name="date-post" id="datepicker-value"
+											class="datepicker-value" placeholder="" value="" /> 
+                                            <input type="hidden" name="date-compare" id="date-compare" />
+									</fieldset>
+									<!--<a class="date-picker disabled" id="button-selectdate" href="#" data-role="button" data-theme="d" style="margin: 2px;">Select a Date</a>-->
+                   <div class="datealign"> <input name="date-post" id="datepicker-val"
+						 class="datepicker-value" placeholder="     /        /      " value="" />  
+                                
+     				<a class="date-picker disabled" id="button-selectdate" href="#" data-theme="d" style="margin: 2px;"> 
+    					 <img class="calicon" src="../../images/calendar_icon.png" /> </a>
+								 </div> 
+                                </div>
+							</li>
+							<li>
+							   <div class="col1">Payment Due Date</div>
+								<div class="col2 boldtext" id="minpaystepone_paymentduedate"></div>
+							</li>
+						</ul>
+						<div class="txtcenteraln r3matchbtn">
+							<div>
+								<!--  a class="small_btn" data-role="button" onclick="continuePaymentStep1ToStep2();" id="makePaymentOneContinue"  href="#">Continue</a -->
+								<input type="button" data-role="button"
+									onclick="dfs.crd.pymt.continuePaymentStep1ToStep2();"
+									id="makePaymentOneContinue" value="Continue">
+							</div>
+						</div>
+						<div>
+							<p>Payments made after 5p.m. Eastern Time<br/>will post on next business day<br/></p>
+						</div>
+						<div>
+							<a href="#" onclick="navigation('paymentInformation');" class="bluelink boldtext" >Important Information about Online Payments</a>
+						</div>
+
+					</form>
+					<!-- Added the Id cuttOff_Note -->
+					<!-- <p class="note">Payment made after 5 p.m. eastern time will post
+					on the next business day.</p> -->
+
+				</div>
+
+
+				<!-- calender start -->
+				<div class="wraper2" style="display: none">
+					<h3 class="calenderH3">Select Payment date</h3>
+					<div id="calendar"></div>
+					<div class="txtcenteraln">
+						<a href="#" class="bluelink normaltext boldtext cancelbtnarea"
+							id="calendar-cancel">Cancel</a>
+					</div>
+				</div>
+				<!-- calender end -->
+			</div>
+			<div id="footnotes" class="footnotes"></div>
+		</div>
+		<!-- content end -->
+		<div data-role="footer" data-position="fixed" id="pg-footer"
+			data-id="myfooter">
+			<footer id="footer" class="mnu_footer"> </footer>
+		</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

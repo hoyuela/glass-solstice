@@ -52,7 +52,7 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 		super(context, attrs);
 		
 		final View mainView = (View) LayoutInflater.from(context)
-                .inflate(R.layout.card_modal_default_top_view, null);
+                .inflate(R.layout.modal_default_top_view, null);
 		
 		res = context.getResources();
 		

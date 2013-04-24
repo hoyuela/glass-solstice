@@ -1,0 +1,2593 @@
+/********************************************************************* *
+ * ******************************************************************* *
+ * ******************************************************************* *
+ * ***************                                    **************** *  
+ * ***************                                    **************** *
+ * *************** Start Acquity Group R4 Page Styles **************** *
+ * ***************                                    **************** *
+ * ***************                                    **************** *  
+ * ******************************************************************* *
+ * ******************************************************************* *
+ ***********************************************************************/
+
+/*body #r4-wrap{
+	line-height:1;
+}*/
+ 
+#r4-wrap .fl{float:left;}
+#r4-wrap .fr{float:right;/* width:30%;*/ text-align:right !important;}
+#r4-wrap .clr{clear:both;}
+
+#r4-wrap input[type=number]::-webkit-inner-spin-button,
+#r4-wrap input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),    
+only screen and (-o-min-device-pixel-ratio: 3/2),    
+only screen and (min--moz-device-pixel-ratio: 1.5),    
+only screen and (min-device-pixel-ratio: 1.5)  
+{	
+	#r4-wrap header .discover_logo {
+	   /* background: url('../images/handset-login-logo@2x.png') 0 50% no-repeat;*/
+	}
+}
+
+
+
+/*footer navigation retina support start */
+/* START */
+@media (-webkit-min-device-pixel-ratio: 2) {
+		#r4-wrap span.hd { 
+			display: block; 
+			width: 20px; 
+			height: 20px; 
+			float:left; 
+			background-repeat: no-repeat; 
+			margin-right: 10px; 
+		}
+		
+		#r4-wrap span.hd.icon-email { 
+			background-image: url(../images/icon-email@2x.png); 
+		}
+		
+		#r4-wrap span.hd.icon-sms { 
+			background-image: url(../images/icon-sms@2x.png); 
+		}
+		
+		#r4-wrapspan.hd.icon-facebook { 
+			background-image: url(../images/face-book@2x.png); 
+		}
+}
+/* END */
+/* footer navigation retina support end */
+
+/* keeping 10px padding from internal content */
+#r4-wrap .ui-content {
+	padding: 10px;
+}
+
+/* background color for all internal pages */
+#r4-wrap .ui-content-internalpages, 
+#r4-wrap .ui-page {
+  	display: block;
+  	background-color: #1a82f7;
+	background: url(images/linear_bg_2.png);
+	background-repeat: repeat-x;
+	/* Safari 4-5, Chrome 1-9 */
+	background: -webkit-gradient(linear, left top, right top, from(#d1d1d1), color-stop(0.15, #fafafa), color-stop(0.5, #fafafa), color-stop(0.85, #fafafa),to(#d1d1d1));
+	/* Safari 5.1, Chrome 10+ */
+	background: -webkit-linear-gradient(left, #d1d1d1, #fafafa,  #d1d1d1);
+	/* Firefox 3.6+ */
+	background: -moz-linear-gradient(left, #d1d1d1, #fafafa,  #d1d1d1);
+	/* IE 10 */
+	background: -ms-linear-gradient(left, #d1d1d1, #fafafa,  #d1d1d1);
+	/* Opera 11.10+ */
+	background: -o-linear-gradient(left, #d1d1d1, #fafafa,  #d1d1d1);
+}
+
+/* common for all internal pages */
+#r4-wrap .ui-content-internalpages h1, 
+#r4-wrap .ui-content-internalpages h2, 
+#r4-wrap .ui-content-internalpages h3, 
+#r4-wrap .ui-content-internalpages p {
+	padding: 0; 
+}
+	
+#r4-wrap .ui-content-internalpages h1 {font-size: 19px; margin:0px 0 10px 0}
+#r4-wrap .ui-content-internalpages h2 {color: rgb(250, 83, 21); font-size: 18px; margin:0px 0 10px 0}
+#r4-wrap .ui-content-internalpages h3 {font-size: 12px; font-weight: bold; margin:0px 0 5px 0; color:#000}
+#r4-wrap .ui-content-internalpages p {font-size: 12px; font-weight: normal; margin:0px 0 10px 0; color:#000}
+#r4-wrap .ui-content-internalpages ul {font-size: 12px; font-weight: normal; margin:0; padding:0;}
+#r4-wrap .ui-content-internalpages ul li {list-style-type: none; padding:0 0 0 15px; overflow:auto}
+#r4-wrap .ui-content-internalpages ul.showbullet li {list-style-type: none; background: url(../images/bullet01.png) no-repeat left 4px; padding:0 0 0 15px; overflow:auto}
+#r4-wrap .ui-content-internalpages ol.faq {font-size: 12px; font-weight:bold; margin: 0 0 0 20px; padding: 0;}
+#r4-wrap .ui-content-internalpages ol.faq h2 { margin-left: -20px;}
+#r4-wrap .ui-content-internalpages ol.faq li { margin-bottom: 10px;}
+#r4-wrap .ui-content-internalpages ol.faq div {font-size: 11px; font-weight:normal; }
+
+
+
+#r4-wrap .wrapper.textual-content .ui-content-internalpages h1 {
+	color: #000000;
+	font-size: 19px;
+	line-height: 1;
+	margin: 19px 0 12px;
+	text-shadow: 0 0 0 transparent;
+}
+
+
+#r4-wrap .ui-content-internalpages h2 {
+	color: rgb(250, 83, 21); 
+	font-size: 18px; 
+	margin: 0px 0 10px 0;
+}
+
+#r4-wrap .ui-content-internalpages h3 {
+	font-size: 12px; 
+	font-weight: bold; 
+	margin:0px 0 5px 0; 
+	color:#000;
+}
+
+#r4-wrap .ui-content-internalpages p {
+	font-size: 12px; 
+	font-weight: normal; 
+	margin: 0px 0 10px 0; 
+	color: #000;
+}
+
+#r4-wrap .ui-content-internalpages ul {
+	font-size: 12px; 
+	font-weight: normal; 
+	margin: 0; 
+	padding: 0;
+}
+
+#r4-wrap .ui-content-internalpages ul li {
+	list-style-type: none; 
+	padding:0 0 0 15px; 
+	overflow: auto;
+}
+
+#r4-wrap .ui-content-internalpages ul.showbullet li {
+	list-style-type: none; 
+	background: url(../images/bullet01.png) no-repeat left 4px; 
+	padding:0 0 0 15px; 
+	overflow:auto;
+}
+
+#r4-wrap .ui-content-internalpages ol.faq {
+	font-size: 12px; 
+	font-weight:bold; 
+	margin: 0 0 0 20px; 
+	padding: 0;
+}
+
+#r4-wrap .ui-content-internalpages ol.faq h2 { 
+	margin-left: -20px;
+}
+
+#r4-wrap .ui-content-internalpages ol.faq li { 
+	margin-bottom: 10px;
+}
+
+#r4-wrap .ui-content-internalpages ol.faq div {
+	font-size: 11px; 
+	font-weight: normal; 
+}
+
+/* simple rounded box for Ul */
+#r4-wrap .ui-content-internalpages ul.rounded-list-box  li img {
+	float:left; 
+	margin-right:10px;
+}
+
+#r4-wrap .ui-content-internalpages ul.rounded-list-box  li span.rightarrow { 
+	font-size: 11px; 
+	font-weight: bold; 
+	text-decoration: none; 
+	float: right; 
+	line-height: 20px; 
+	color: rgb(36, 137, 206); 
+	width: 10px; 
+	text-align: right;
+}
+
+#r4-wrap .ui-content-internalpages ul.rounded-list-box  li a.bluelink {
+	font-size: 11px; 
+	font-weight: bold; 
+	text-decoration: none; 
+	float: left; 
+	line-height: 20px;
+}
+
+/*#r4-wrap .ui-content-internalpages ul.rounded-list-box-simple {}
+
+#r4-wrap .ui-content-internalpages ul.rounded-list-box-simple li { 
+	background: #fff; 
+	font-size: 11px; 
+	font-weight: normal;
+}*/
+#contactUs-pg  ul.whitebg-list-view div:first-child {
+	float: left;  
+	width: 32%;
+}
+#contactUs-pg  ul.contactusCols div:first-child {
+	float: left;  
+	width: 27% !important;
+}
+#contactUs-pg .contactusCols .col2 { width:73%}
+
+#contactUs-pg  ul.whitebg-list-view span {
+	float: left;  
+	/*width: 35%;*/
+	clear:both;
+}
+
+#contactUs-pg ul.whitebg-list-view div+div{
+	float: right; 
+/*	width: 40%; */
+	text-align: left; 
+	color: #3d484d !important; 
+	/*font-size: 13px;*/
+	font-weight: bold;
+}
+
+
+/*#r4-wrap .ui-content-internalpages ul.whitebg-list-view div:first-child {
+	float: left;  
+	width: 50%;
+}
+	
+#r4-wrap .ui-content-internalpages ul.whitebg-list-view div:last-child {
+	float: right; 
+	width: 45%; 
+	text-align: right; 
+	color: rgb(36, 137, 206); 
+	font-size: 13px; 
+	font-weight: bold; 
+}
+
+#r4-wrap .ui-content-internalpages ul.whitebg-list-view div:first-child {
+	float: left;  
+	width: 38%;
+}
+
+#r4-wrap .ui-content-internalpages ul.whitebg-list-view div:last-child {
+	float: right; 
+	width: 60%; 
+	text-align: left; 
+	font-weight: bold; 
+}
+
+#r4-wrap #list1 li, #r4-wrap #list2 li, 
+#r4-wrap .ui-content-internalpages ul.whitebg-list-view li {
+	margin-top: 0px; 
+	border-bottom: 1px solid #d6d5d5 !important;
+	background-color: #ffffff;
+	background: url(images/linear_bg_2.png);
+	background-repeat: repeat-x;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffffff), to(#f4f6f7));  
+	background: -webkit-linear-gradient(top, #ffffff, #f4f6f7);  
+	background: -moz-linear-gradient(top, #ffffff, #f4f6f7);  
+	background: -ms-linear-gradient(top, #ffffff, #f4f6f7);  
+	background: -o-linear-gradient(top, #ffffff, #f4f6f7);
+}
+
+#r4-wrap #list1 li:last-child,
+#r4-wrap #list2 li:last-child, 
+#r4-wrap .ui-content-internalpages ul.whitebg-list-view li:last-child { 
+	border: 0px !important;
+}*/
+
+#r4-wrap .ui-content-internalpages #footer-links {
+	color: #267BB1;	
+}
+
+
+
+/* using for all page title */
+#r4-wrap #name {
+	font-size: 14px; 
+	font-weight: bold;
+}
+
+#r4-wrap #footnotes #footer-text {
+	font-size: 11px;
+	margin: 10px auto;
+	text-align: center;
+}
+
+/*foot notes */
+#r4-wrap #footnotes a,
+#r4-wrap #footnotes p,
+#r4-wrap #footnotes1 a,
+#r4-wrap #footnotes1 p {
+	text-align: center !important; 
+	display: block;	
+	color: #838383;	
+	text-decoration: none;	
+	font-size: 10px; 
+	text-shadow: none;	
+	margin-top: 0px;
+	margin-bottom: 0px; 
+}
+
+#r4-wrap #footnotes a {
+	font-size: 12px; 
+	color: #dadada;	
+	font-weight: normal;
+}
+
+#r4-wrap #footnotes1 {
+	margin-bottom: 10px;  
+	text-align: center;
+}
+
+#r4-wrap #footnotes1 a { 
+	color: rgb(36, 137, 206) !important;  
+	display: inline-block;
+}
+
+#r4-wrap #footnotes1 span { 
+	border-left: 1px solid #a1a1a1; 
+	font-size: 10px; 
+	padding-left: 10px; 
+	margin-left: 10px; 
+	color: #a1a1a1;
+}
+
+#r4-wrap #footnotes1 {
+	font-size: 10px; 
+	color:#a1a1a1;
+}
+
+#r4-wrap #footnotes {
+	text-align:center;
+/*	margin: 5px; */
+	font-size: 9px;
+/*	width: 100%;*/
+/*	min-height: 50px;*/
+}
+
+#r4-wrap #footnotes #footer-links a {
+	display: inline;
+}
+
+
+
+/*inputs*/
+#r4-wrap input.ui-input-text {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+/*footnotes*/
+#r4-wrap #register,
+#r4-wrap #remember {
+	float: right;
+	padding-top: 15px;
+	padding-right: 5px;
+	font-size: 12px;
+	text-decoration: none;
+}
+
+#r4-wrap #remember {
+	color: #7B7B7B;
+}
+
+#r4-wrap #register {
+	background: url(../images/handset-register-arrow.png) no-repeat 80px 19px; 
+	padding-right: 15px;
+}
+
+
+
+/*slider*/
+#r4-wrap .ui-slider-switch-b .ui-btn-active {
+	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053), to(#ef6713), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) );
+	border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+}
+
+/*reflection*/
+#r4-wrap #reflection {
+	background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0) );
+	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2) ), to(rgba(255, 255, 255, 0) ) );
+	height: 30px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	margin-top: 1px;
+}
+
+/*third screen or building look and fill of card home page */
+#r4-wrap #gri1 .ui-block-a,
+#r4-wrap #grid2 .ui-block-a, 
+#r4-wrap #grid3 .ui-block-a,
+#r4-wrap #grid4 .ui-block-a {
+	width: auto;  
+	font-size: 12px; 
+}
+
+#r4-wrap #gri1 .ui-block-b,
+#r4-wrap #grid2 .ui-block-b, 
+#r4-wrap #grid3 .ui-block-b,
+#r4-wrap #grid4 .ui-block-b	{
+	width: auto; 
+	text-align: right; 
+	float: right; 
+	color: rgb(36, 137, 206);
+}
+
+#r4-wrap #list1, 
+#r4-wrap #list-payment {
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+#r4-wrap #list1 li, 
+#r4-wrap #list2 li, 
+#r4-wrap #list-payment li,
+#r4-wrap #list-pay-2 li {
+	padding-left: 5px;
+	padding-right: 5px;
+	border: none;
+}
+
+#r4-wrap #grid11>.ui-block-b,
+#r4-wrap #grid21>.ui-block-b,
+#r4-wrap #grid31>.ui-block-b
+,#r4-wrap #grid41>.ui-block-b {
+	float: right;
+	padding-right: 5px;
+	color: rgb(250, 83, 21);
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+#r4-wrap #list1 .ui-grid-a a,
+#r4-wrap #list-payment .ui-grid-a a {
+	text-decoration: none;
+	letter-spacing: -1px;
+	font-size: 13px;
+	float: right;
+}
+
+#r4-wrap .redtext, 
+#r4-wrap .errormsg, 
+#r4-wrap p.errormsg {
+	color: red; 
+	font-size: 12px !important;
+}
+
+#r4-wrap .lightblue { 
+	color: rgb(36, 137, 206); 
+}
+
+
+#r4-wrap .floatleft {
+	float: left;
+}
+
+#r4-wrap .floatright {
+	float: right;
+}
+
+/*#r4-wrap .account-list-view li a.bluelink { 
+	color: rgb(0, 112, 168) !important; 
+	background: url(../images/blue-arrow.png) no-repeat right 10px; 
+	font-size: 14px;
+}*/
+
+/*#r4-wrap .account-list-view li span.arrow {
+	color: rgb(36, 137, 206) !important; 
+	padding: 10px; 
+	width: 10%; 
+	display: none;
+}*/
+
+#r4-wrap .account-list-view .activetab {
+	background: #fff !important;
+}
+
+#r4-wrap .account-list-view .activetab .bluelink {
+	color: #0070A8 !important;
+    text-shadow: 0 0 0 transparent !important;
+}
+
+#r4-wrap .transdata div {
+	padding:  5px 0 5px 0;
+}
+
+/* normal white rounded corner box */
+#r4-wrap ul.whitebg-list-view {
+	margin-bottom: 10px;
+}
+
+#r4-wrap ul.whitebg-list-view li:first-child {
+	-moz-border-top-left-radius: 4px !important;
+	-moz-border-top-right-radius: 4px !important;
+	-webkit-border-top-left-radius: 4px  !important;
+	-webkit-border-top-right-radius: 4px  !important;
+}
+
+#r4-wrap ul.whitebg-list-view li:last-child {
+	-moz-border-bottom-left-radius: 4px !important;
+	-moz-border-bottom-right-radius: 4px !important;
+	-webkit-border-bottom-left-radius:4px  !important;
+	-webkit-border-bottom-right-radius: 4px  !important;
+	border-bottom: 0px;
+}
+
+#r4-wrap .whitebg-list-view li {
+	border: 0; 
+	border-bottom: 1px solid #c2c2c2; 
+	border-radius: 0px !important; 
+	font-size: 12px; 
+	font-weight: normal; 
+	background: #fff !important; 
+	padding: 10px !important;
+}
+
+#r4-wrap ul.whitebg-list-view li.grayheading {
+	background: #d2d4d6 !important; 
+}
+
+#r4-wrap ul.whitebg-list-view .trans_history .active {
+	color:#000 !important;
+}
+
+#r4-wrap .whitebg-list-view li:hover { 
+	cursor: default !important;
+}
+
+#r4-wrap .whitebg-list-view li {
+	text-align: left;  
+	color: #000 !important;
+}
+
+#r4-wrap .whitebg-list-view li a {
+	display: inline-block; 
+	font-size: 12px;
+	color: rgb(36, 137, 206) !important; 
+}
+
+#r4-wrap .whitebg-list-view li span { 
+	text-align: right !important; 
+	float: right; 
+	padding-right: 10px;
+}
+
+#r4-wrap .whitebg-list-view li .ui-icon, 
+#r4-wrap .whitebg-list-view li .ui-icon-shadow {
+	display: none;
+}
+
+#r4-wrap .whitebg-list-view .textcenter, 
+#r4-wrap .textcenter { 
+	text-align:center;
+}
+
+#r4-wrap .ui-input-text { 
+	pause: 5px; 
+	-moz-border-radius: 3px !important;
+	-webkit-border-radius: 3px  !important; 
+}
+
+#r4-wrap .ui-btn-inner{
+	overflow:visible;
+}
+
+/* common orange color button class */
+#r4-wrap a.small_btn .ui-btn-inner {
+	text-align: center !important;  
+	min-width: 60px; 
+	display: inline-block;
+	/*text-decoration: none;*/
+}
+ 
+/*#r4-wrap a.small_btn .ui-btn-text {
+	padding: 5px; 
+	line-height: 18px; 
+}*/
+
+#r4-wrap #login-submit { 
+	display: block; 
+}
+
+/* orange button with 110px width */
+#r4-wrap .small_btn_110px { 
+	width: 110px; 
+	margin: 10px auto 0 auto; 
+	font-size: 11px !important; 
+}
+
+
+/* normal drop down theme */
+/*#r4-wrap .ui-select .ui-btn {
+	height: 28px;
+	font-size: 12px; 
+	text-align: left;
+	font-weight:normal; 
+	line-height: 18px;
+	border: 1px solid #828282;
+	background-color: #fbfbfb;
+	background: url(images/linear_bg_2.png);
+	background-repeat: repeat-x;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fbfbfb), to(#d1d1d1));  
+	background: -webkit-linear-gradient(top, #fbfbfb, #d1d1d1);  
+	background: -moz-linear-gradient(top, #fbfbfb, #d1d1d1);  
+	background: -ms-linear-gradient(top, #fbfbfb, #d1d1d1);  
+	background: -o-linear-gradient(top, #fbfbfb, #d1d1d1);
+}*/
+
+#r4-wrap .ui-select  .ui-btn-up-b, 
+#r4-wrap .ui-select  .ui-btn-hover-b {
+	text-shadow: 0 0px 0px #194B7E;
+}
+
+/*#r4-wrap .ui-select .ui-btn .ui-icon	{
+		right: 0px;
+		top: 8px;
+		height: 30px;
+		width: 25px;
+		background: url("../images/icons-18-white.png") no-repeat scroll -211px 6px rgba(0, 0, 0, 0.4);
+		-webkit-border-radius: 0px 4px 7px 0px;
+	}*/
+
+	
+/* white color background list view */
+#r4-wrap .white-box-rd-corner {
+	background: #fff !important;
+}
+
+#r4-wrap .trans-bg {
+	background: none !important;
+}
+
+#r4-wrap .white-box-rd-corner label { 
+	font-size: 12px;
+}
+ 
+#r4-wrap .inputtext { 
+	width: 95% !important;
+	padding: 3px !important;
+	background: #fff !important; 
+	border: 1px  solid #ccc;  
+	-webkit-border-radius: 5px;
+}
+
+#r4-wrap .white-box-rd-corner .ui-btn, 
+#r4-wrap .white-box-rd-corner #ui-btn:hover, 
+#r4-wrap .selectDD_wraper { 
+	height: 25px; 
+	font-size: 12px; 
+	text-align: left;
+	font-weight:normal; 
+	line-height: 12px;
+	border: 1px solid #828282;
+	background-color: #fbfbfb;
+	background: url(images/linear_bg_2.png);
+	background-repeat: repeat-x;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fbfbfb), to(#d1d1d1));  
+	background: -webkit-linear-gradient(top, #fbfbfb, #d1d1d1);  
+	background: -moz-linear-gradient(top, #fbfbfb, #d1d1d1);  
+	background: -ms-linear-gradient(top, #fbfbfb, #d1d1d1);  
+	background: -o-linear-gradient(top, #fbfbfb, #d1d1d1);
+}
+
+#r4-wrap .white-box-rd-corner .ui-btn {
+	text-align: center;
+}
+
+#r4-wrap .white-box-rd-corner .ui-select .ui-btn-icon-right .ui-icon {
+	right: 0px; 
+	top: 6px; 
+	height: 30px;
+}
+	
+#r4-wrap .white-box-rd-corner .ui-icon, .white-box-rd-corner .ui-icon-searchfield:after {
+	border-radius: 0px 0px 0px 0px !important;
+	-moz-border-radius: 0px !important;
+	-webkit-border-radius: 0px  !important;
+	height: 25px;
+    width: 25px;
+    margin-top: -13px;
+}
+
+#r4-wrap .white-box-rd-corner .ui-btn-corner-all { 
+	border-radius: 4px !important;
+	-moz-border-radius: 4px !important;
+	-webkit-border-radius: 4px  !important;
+}
+
+#r4-wrap .white-box-rd-corner .ui-select, 
+#r4-wrap .white-box-rd-corner #div12, 
+#r4-wrap .white-box-rd-corner  #gri1 > .ui-block-a { 
+	width: 100%; 
+}
+
+#r4-wrap .white-box-rd-corner .ui-icon {
+	background: url(../images/down-arrow.gif) no-repeat center center; 
+}
+
+#r4-wrap .white-box-rd-corner .ui-icon, 
+#r4-wrap .ui-icon-searchfield:after {
+    background: url("../images/icons-18-white.png") no-repeat scroll -211px 8px rgba(0, 0, 0, 0.4);
+    -webkit-border-radius: 9px 9px 9px 9px;
+}
+
+#r4-wrap .white-box-rd-corner .ui-btn-inner, 
+#r4-wrap .white-box-rd-corner .ui-btn-text {
+	padding-top: 3px;
+}
+
+#r4-wrap .white-box-rd-corner .ui-select .ui-btn-icon-right .ui-btn-inner {  
+	padding-right: 20px; 
+}
+#r4-wrap .white-box-rd-corner .accountsearchresult .col1 {
+	float: left; 
+	text-align: left; 
+	width: 48%; 
+	font-size: 12px;
+}
+
+#r4-wrap .white-box-rd-corner .accountsearchresult .col2 {
+	float: right; 
+	width: 50%; 
+	text-align: right;
+}
+
+#r4-wrap .white-box-rd-corner .accountsearchresult .date {
+	font-weight: normal; 
+	font-size: 12px;
+}
+
+#r4-wrap .white-box-rd-corner .accountsearchresult .title {
+	font-weight: bold; 
+	font-size: 12px;
+}
+
+#r4-wrap .white-box-rd-corner .accountsearchresult a {
+	text-decoration: none; 
+	font-weight: normal; 
+	font-size: 12px;
+	margin-top: 10px; 
+	display: inline-block;
+}
+
+#r4-wrap .white-box-rd-corner .ui-li-heading {
+	white-space:normal !important;
+}
+
+#r4-wrap .white-box-rd-corner select.selectopt_errormsg {
+	border: 1px solid red important; 
+}
+
+/*#r4-wrap .ui-select .ui-btn-text {
+	color: #444444;
+}*/
+
+/* common css feature classes */
+#r4-wrap .clearboth {
+	clear: both;
+}
+#r4-wrap .normaltext { 
+	font-size: 12px; 
+	font-weight: normal !important;
+}
+
+#r4-wrap .orangetxt {
+	color: #FA5315 !important;
+}
+
+#r4-wrap .bluelink {
+	text-decoration: none !important;
+}
+
+/*#r4-wrap .boldtext { 
+	font-weight: bold !important;
+}*/
+
+#r4-wrap .paddingtop20px {
+	padding-top: 20px;
+}
+
+#r4-wrap .margintop20px {
+	margin-top: 20px;
+}
+
+#r4-wrap .hrow { 
+	background: url("../images/gray-dot.gif") repeat-x left center;height: 6px; 
+}
+
+#r4-wrap .borderbottom { 
+	border-bottom: 1px solid #ccc;
+}
+
+#r4-wrap .note, 
+#r4-wrap p.note {
+	font-size: 9px;
+}
+
+#r4-wrap .txtrightaln { 
+	text-align: right; 
+}
+
+#r4-wrap .txtcenteraln { 
+	text-align:center !important;
+	overflow:hidden;
+}
+
+#r4-wrap .noborder {
+	border: 0px !important;
+}
+
+#r4-wrap .redtxt {
+	color: red;
+}
+
+#r4-wrap .orangeborder {
+	border: 1px solid #FA5315; 
+	padding: 7px; 
+	margin: 7px 0;
+}
+
+#r4-wrap input.ui-input-text, 
+#r4-wrap textarea.ui-input-text { 
+	font-size:12px !important;
+}
+
+#r4-wrap .ui-header .ui-btn-left{
+	top: 9px !important;
+	left: 21px !important;
+}
+
+#r4-wrap .landingPgLi .account-list-view li a {
+		margin: 6px 6px 6px 6px !important;
+		padding: 0px;
+		color:#474e55 !important;
+}
+	
+/* start new class for orientation  */
+@media all and (orientation:portrait) {
+	#r4-wrap #login-form { 
+		margin-top: 20%;
+	}
+	
+	#r4-wrap .account-list-view li a.bluelink {
+		margin: 12px 6px 12px 6px;
+	}
+	
+	
+	
+	#r4-wrap #gri1>.ui-block-a,
+	#r4-wrap #grid2>.ui-block-a,
+	#r4-wrap #grid3>.ui-block-a,
+	#r4-wrap #grid4>.ui-block-a	{	
+		width: 70%; 
+	}
+	
+	#r4-wrap #pg-header .logo-img {
+		float: left; 
+		width: 59%; 
+		text-align: center; 
+/*		padding: 10px 0px 6px 0px;*/
+	}
+}
+
+@media all and (orientation:landscape) {
+	
+	#r4-wrap .account-list-view li a.bluelink{
+		margin: 6px;
+	}
+	
+	
+	#r4-wrap #gri1>.ui-block-a,
+	#r4-wrap #grid2>.ui-block-a, 
+	#r4-wrap #grid3>.ui-block-a,
+	#r4-wrap #grid4>.ui-block-a	{	
+		width: 70%; 
+	}
+	
+
+}
+/* End new class for orientation  */
+
+#r4-wrap .errormsg {
+	display: none; 
+	font-size: 11px !important;  
+	font-weight:bold; 
+}
+
+#r4-wrap input[type="text"].errormsg {
+	color: #000; 
+	border: 1px solid red; 
+}
+
+#r4-wrap input[type="password"].errormsg {
+	color: #000; 
+	border: 1px solid red; 
+}
+
+/* simple white bg form */
+#r4-wrap .white-form { 
+	background: #fff; 
+	border-radius: 8px;	
+	-webkit-border-radius: 8px; 
+	-moz-border-radius: 8px;
+	padding: 8px;
+	font-size: 11px; 
+	font-weight: normal;
+}
+
+#r4-wrap .white-form .ui-radio .ui-btn { 
+	background: none; 
+	display: inline-block; 
+	border: 0px;  
+	font-size: 11px; 
+	font-weight: normal;
+}
+
+#r4-wrap .white-form .ui-icon { 
+	height: 16px; 
+	width: 16px; 
+}
+
+#r4-wrap .white-form .ui-btn {
+	color: #000;
+}
+
+/*#r4-wrap .white-form .ui-radio .ui-icon {
+	margin-left: 4px; 
+	top: 15px;
+}*/
+
+#r4-wrap .white-form .ui-radio-on .ui-icon {
+	background: url("../images/radio-btn.png") no-repeat  -10px -20px; 
+	background:none;
+}
+
+#r4-wrap .white-form .ui-radio-off .ui-icon {
+	background: url("../images/radio-btn.png") no-repeat  0px -1px;  
+	background:none;
+}
+
+#r4-wrap .white-form .ui-checkbox, 
+#r4-wrap .ui-radio { 
+	margin: 0px; 
+	display: inline-block;
+}
+
+#r4-wrap .white-form .col1 {
+	width: 65% ; 
+	float: left;
+}
+
+#r4-wrap .white-form .col2, 
+#r4-wrap .white-form .col2_RM { 
+	width: 25%; 
+	float: right;  
+}
+
+#r4-wrap .white-form .col2_RM { 
+	margin-right: 20px; 
+}
+
+#r4-wrap .white-form .amount {
+	line-height: 30px; 
+	text-align: right; 
+	font-weight: bold;
+}
+
+#r4-wrap .white-form .amount .inputtext {
+	width: 70% !important; 
+	float: right;
+}
+
+
+
+#r4-wrap .ui-btn-up-errormsg { 
+	border: 1px solid red !important;
+}
+
+/* new changes 29 feb */
+#r4-wrap #pg-header .header, 
+#r4-wrap #pg-header header {
+	display: inline-block !important; 
+	height: 40px; 
+	width: 100%;
+}
+
+/* new changes 5 mar */
+
+#r4-wrap .account-list-view li.activetab a.bluelink {
+	color:#000;
+	text-shadow: 0px 0px #000; 
+}
+
+/* RNF AG ADDITION */
+
+#r4-wrap #list2 li .ui-block-b {
+	text-align: right;
+	text-decoration: none;
+}
+
+#r4-wrap #list2 li .ui-block-b a {
+	text-decoration: none;
+}
+
+#r4-wrap .ui-radio label.ui-btn:hover {
+	background:none !important;
+}
+
+#r4-wrap #login-form {
+	border-radius: 5px;	
+	-webkit-border-radius: 5px;
+}
+
+#r4-wrap input[type="radio"], 
+#r4-wrap input[type="radio"]:hover,
+#r4-wrap input[type="radio"]:visited,
+#r4-wrap input[type="radio"]:active {
+	background: none; 
+}
+
+/* normal collapsible text */
+#r4-wrap .collapsible { 
+	border-bottom: 1px solid #ccc; 
+	border-top: 1px solid #ccc;
+}
+
+#r4-wrap .collapsible a.collapslink {
+	display: block; 
+	width: 95%; 
+	padding: 8px 0 8px 0; 
+	text-decoration: none;
+}
+
+#r4-wrap .collapsible a.active {
+	background: url(../images/minus.png) no-repeat right 8px;
+}
+
+#r4-wrap .collapsible a.deactive {
+	background: url(../images/pluse.png) no-repeat right 8px;
+}
+
+#r4-wrap #loading {
+	display: none; 
+	position: absolute; 
+	z-index: 100; 
+	top: 155px; 
+	left: 130px;
+}
+
+#r4-wrap .textlink {
+	text-decoration: none !important;
+	color: black !important; 
+}
+
+.ui-simpledialog-controls {
+	text-align: center;
+}
+ 
+.ui-simpledialog-controls .ui-icon {
+	display: none;
+} 
+
+.ui-simpledialog-controls .ui-btn-inner {
+	padding-left: 0px !important;
+	min-width: 80px;
+} 
+
+.ui-simpledialog-controls .ui-btn {
+	display: inline-block;
+}
+
+#r4-wrap .paddingtopbottom10px { 
+	padding-top:7px !important; 
+	padding-bottom: 7px !important;
+}
+
+#r4-wrap .ui-li .ui-btn-inner a.ui-link-inherit, 
+#r4-wrap .ui-li-static.ui-li {
+	/*padding: 10px;*/
+}
+
+#r4-wrap .search_bar input[type='text'] {
+	float: left; 
+	width: 72% !important;
+	line-height: 22px; 
+}
+
+#r4-wrap .search_bar .searchbtn {
+	float: right; 
+	width: 25%; 
+	margin-top: -3px; 
+	text-align: right; 
+}
+
+#r4-wrap h2.recent_ac_activity_h2 {
+	text-transform: uppercase; 
+	font-size: 12px; 
+	font-weight: bold;
+}
+
+#r4-wrap .col2_layout li { 
+	background: #fff !important;
+}
+
+#r4-wrap .col2_layout .data {
+	font-size: 12px;
+}
+
+#r4-wrap .col2_layout .data { 
+	float: left; 
+	width: 60%; 
+	display: inline; 
+	font-size: 12px; 
+	text-transform: uppercase;
+}
+
+#r4-wrap .col2_layout .amt {
+	float: right; 
+	width: 40%;
+	text-align: right;
+	font-size: 13px;
+}
+
+#r4-wrap .whitetxt {
+	color: #fff !important; 
+	text-shadow: none;
+}
+
+
+/*#r4-wrap .ui-select .ui-btn .ui-btn-text {  
+	text-align: left;
+}*/
+
+#r4-wrap .footnotes {
+	padding-top: 10px;
+} 
+
+#r4-wrap .italic_text { 
+	font-style: italic !important;
+}
+
+/* @end retina Styles */
+/* @end global header & footer */
+
+/* @group Retina Display Styles */
+@media all and (-webkit-min-device-pixel-ratio: 2) {
+	#share-pg #r4-wrap span.hd.icon-email { 
+		background-image: url(../images/icon-email@2x.png); 
+		background-size: 22px 15px;
+	}
+
+	#share-pg #r4-wrap span.hd.icon-sms { 
+		background-image: url(../images/icon-sms@2x.png); 
+		background-size: 21px 20px;
+	}
+
+	#share-pg #r4-wrap span.hd.icon-facebook { 
+		background-image: url(../images/face-book@2x.png); 
+		background-size: 21px 21px;
+	}
+	
+	#share-pg #r4-wrap .account-list-view li a.bluelink { 
+	/*	background: url(../images/blue-arrow@2x.png) no-repeat right 10px !important; 
+		background-size: 6px 9px;*/
+	}
+}
+
+
+/*@ search */
+#search #r4-wrap {
+    -moz-background-size: 100% 100%;
+    -webkit-background-size:  100% 100%;
+    background-size: 100% 100%;
+    padding:0;
+    -webkit-text-size-adjust: none;
+    height: 100%;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 14px;
+}
+#search #r4-wrap .searchresults-data p{margin:0px; border-radius:4px; -webkit-border-radius:4px; cursor:pointer;}
+/* #search #r4-wrap .searchresults-data{font-size: 13px;}*/
+ #search #r4-wrap .inlineLabel{display:inline-block; margin:0 5px 2px 0;}
+ #search #r4-wrap .searchresultsresponse{width: 350px; margin: 0 0 6px 0;}
+ #search #r4-wrap #search-sortContainer{margin: 8px 0 0 0;}
+ #search #r4-wrap #sortByLabel{font-weight:bold;}
+
+ #search #r4-wrap .invalid{
+    border:1px solid red !important;
+}
+
+#search #r4-wrap .transaction-list .ui-li-desc{
+	margin-top: 0;
+}
+
+#r4-wrap .transaction-results-amount{
+	font-weight:bold !important;
+}
+
+#r4-wrap .transaction-results-location{
+	margin-bottom: 0 !important;
+}
+
+/*#search #r4-wrap h1 {
+	background:0;
+	border:none;
+    color: #000000;
+    font-size: 19px;
+    margin: 19px 0 12px;
+    font-weight:bold;
+    text-align:left;
+    text-shadow:none;
+}*/
+
+#search #r4-wrap #loadTransactions-container{
+	text-align:center;
+	margin: 25px 0 40px 0;
+}
+
+#r4-wrap .error-message, 
+#r4-wrap .error-details {
+	color: #FD0202 !important;
+	margin: 0 0 1px 0;
+	font-size: 11px;
+}
+
+#r4-wrap .error-details p {
+	margin: 0 0 8px 0;
+}
+/*
+#r4-wrap .error-message {
+	font-weight: bold;
+}
+*/
+#r4-wrap .error-message-server-side {
+	font-weight: bold !important;
+}
+
+#r4-wrap input[type="text"].error,
+#r4-wrap input[type="search"].error,
+#r4-wrap input[type="password"].error,
+#r4-wrap input[type="email"].error,
+#r4-wrap input[type="number"].error {
+    border: 2px solid#fd0202;
+}
+
+/* #search #r4-wrap #loadTransactions-container{
+	text-align:center;
+	margin: 0 0 40px 0;
+} */
+
+#r4-wrap .block{display:block;}
+
+#r4-wrap .hide{display:none;}
+
+/*to change corner radius*/
+/*#r4-wrap .ui-btn-corner-all  {
+	border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+}*/
+/*space manaagement */ 
+
+#r4-wrap .inlineBlock{
+	display:inline-block;
+}
+/*#r4-wrap .from-selection .inlineBlock{
+	width:50%;
+}*/
+#r4-wrap .from-selection label span.inlineBlock, #r4-wrap .to-selection label span.inlineBlock{
+	width:50%;
+}
+#r4-wrap .from-a-selection label span.inlineBlock, #r4-wrap .to-date-selection label span.inlineBlock{width:100%;}
+
+#r4-wrap .link-button {
+	padding:0.625em 0;
+}
+
+/* Statements would not follow the standard ui-block-a so added this. */
+#r4-wrap .two-up-button .ui-block-a-btn,
+#r4-wrap .two-up-button .ui-block-b-btn {
+	 float:left; 
+	 width:50%;
+}
+
+/*orange button*/
+/*#r4-wrap .ui-btn-up-c, 
+#r4-wrap .small_btn, 
+#r4-wrap .white-box-rd-corner 
+#r4-wrap .small_btn, 
+#r4-wrap .white-box-rd-corner .small_btn_110px  {
+	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053),
+		to(#fc510b), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) );
+	border: 1px solid rgba(241, 113, 20, 0.5);
+	color: white;
+	border-radius: 6px !important;
+	-webkit-border-radius: 6px !important;
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: none;
+	display:inline-block;
+	padding:0px !important;
+}
+
+#r4-wrap .ui-btn-up-c.ui-btn-up-hover-c,
+#r4-wrap .ui-btn-hover-c.ui-btn-up-down-c {
+	padding: 0 !important;
+}*/
+
+/*#r4-wrap .ui-btn-up-c.ui-disabled {
+	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713) !important;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#a2a2a2),
+		to(#818181), color-stop(0.5, #a2a2a2), color-stop(0.51, #818181) ) !important;
+	border: 1px solid #ccc;
+	color: white;
+	border-radius: 6px !important;
+	-webkit-border-radius: 6px !important;
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: none;
+	display:inline-block;
+	padding:0 5px 0 0px;
+	opacity:1;
+	}*/
+	
+/*#r4-wrap .ui-select .ui-icon {
+	background: url("../images/downArrow.gif") no-repeat scroll -10px -5px rgba(0, 0, 0, 0.4) !important;
+	-webkit-background-size: 48px 43px;
+	background-size: 48px 43px;
+	-webkit-border-radius: 9px 9px 9px 9px;
+}*/
+
+/*!
+ * jQuery UI Datepicker 1.8.19
+ *
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Datepicker#theming
+ */
+.ui-datepicker { padding: .2em .2em 0; display: none; }
+.ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; }
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }
+.ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 1px; }
+.ui-datepicker .ui-datepicker-prev { left:2px; }
+.ui-datepicker .ui-datepicker-next { right:2px; }
+.ui-datepicker .ui-datepicker-prev-hover { left:1px; }
+.ui-datepicker .ui-datepicker-next-hover { right:1px; }
+.ui-datepicker .ui-datepicker-prev span, .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 50%; margin-left: -8px; top: 50%; margin-top: -8px;  }
+.ui-datepicker .ui-datepicker-title { margin: 0 2.3em; line-height: 1.8em; text-align: center; }
+.ui-datepicker .ui-datepicker-title select { font-size:1em; margin:1px 0; }
+.ui-datepicker select.ui-datepicker-month-year {width: 100%;}
+.ui-datepicker select.ui-datepicker-month, 
+.ui-datepicker select.ui-datepicker-year { width: 49%;}
+.ui-datepicker table {width: 108%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em -4%; }
+.ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: bold; border: 0;  }
+.ui-datepicker td { border: 0; padding: 1px; }
+.ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: right; text-decoration: none; }
+.ui-datepicker .ui-datepicker-buttonpane { background-image: none; margin: .7em 0 0 0; padding:0 .2em; border-left: 0; border-right: 0; border-bottom: 0; }
+.ui-datepicker .ui-datepicker-buttonpane button { float: right; margin: .5em .2em .4em; cursor: pointer; padding: .2em .6em .3em .6em; width:auto; overflow:visible; }
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current { float:left; }
+
+/* with multiple calendars */
+.ui-datepicker.ui-datepicker-multi { width:auto; }
+.ui-datepicker-multi .ui-datepicker-group { float:left; }
+.ui-datepicker-multi .ui-datepicker-group table { width:95%; margin:0 auto .4em; }
+.ui-datepicker-multi-2 .ui-datepicker-group { width:50%; }
+.ui-datepicker-multi-3 .ui-datepicker-group { width:33.3%; }
+.ui-datepicker-multi-4 .ui-datepicker-group { width:25%; }
+.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header { border-left-width:0; }
+.ui-datepicker-multi .ui-datepicker-buttonpane { clear:left; }
+.ui-datepicker-row-break { clear:both; width:100%; font-size:0em; }
+
+/* RTL support */
+.ui-datepicker-rtl { direction: rtl; }
+.ui-datepicker-rtl .ui-datepicker-prev { right: 2px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next { left: 2px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-prev:hover { right: 1px; left: auto; }
+.ui-datepicker-rtl .ui-datepicker-next:hover { left: 1px; right: auto; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane { clear:right; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button { float: left; }
+.ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group { float:right; }
+.ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+.ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header { border-right-width:0; border-left-width:1px; }
+
+/* IE6 IFRAME FIX (taken from datepicker 1.5.3 */
+.ui-datepicker-cover {
+    display: none; /*sorry for IE5*/
+    display/**/: block; /*sorry for IE5*/
+    position: absolute; /*must have*/
+    z-index: -1; /*must have*/
+   /* //filter: mask(); must have*/
+    top: -4px; /*must have*/
+    left: -4px; /*must have*/
+    width: 200px; /*must have*/
+    height: 200px; /*must have*/
+}
+
+ h2.calendar-header {
+	font-size: 12px;
+	color: black;
+	margin: 19px 0 10px 0;
+}
+
+ a.calendar-cancel {
+	font-size: 12px;
+	font-weight: bold;
+	width: 100px;
+	margin: 0 auto;
+	text-align: center;
+	display: block;
+}
+
+#r4-wrap #js-searchResults-container{
+	position:relative;
+	z-index: 200;
+	padding:0;
+}
+
+#js-date-picker-wrapper {
+	/*float: left;
+	width: 100%;*/
+	margin-top: 0 !important;
+}
+
+.ui-overlay-shadow {
+	position: static !important;
+	box-shadow: 0 none !important;
+	-webkit-box-shadow: 0 none !important;
+	margin-top: -20px;
+	-webkit-border-radius: 0 !important;
+	-webkit-background-size: 100% 100%;
+	float: left;
+	min-height: 400px !important;
+}
+
+#calendar {
+	background: none;
+/*	padding: 0px 13px 50px 13px;*/
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+	border: 0;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+	color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+	margin: 10px auto;
+	z-index: 999999;
+	position: static !important;
+	max-width: 93% !important;
+/*	height: 80% !important;*/
+}
+
+#calendar #js-date-picker {
+/*	max-width: 480px !important; */
+	height: 80% !important;
+}
+
+#calendar a {
+	color: #227BB2 !important;
+}
+
+#calendar td {
+	/*background: #9f9f9f;*/
+	height: 36px;
+	/*border: 1px solid #464646;*/
+	text-align: center;
+	vertical-align: middle;
+	font-size: 15px;
+}
+
+#calendar h2.modal-header {
+	color: #000;
+	font-size:12px;
+}
+
+.ui-datepicker-calendar th {
+	background: #424242 !important;
+	font-size: 12px;
+	border: 1px solid #464646;
+	padding: 0 0 5px 0;
+}
+ 
+.ui-datepicker-unselectable {
+	background: #666666;
+}
+
+.ui-datepicker-other-month.ui-datepicker-unselectable {	
+	background: #505050;
+}
+
+.ui-datepicker-unselectable {
+	color: #aaa;
+}
+
+.ui-datepicker-other-month.ui-datepicker-unselectable {
+	color: #888;
+}
+
+.ui-datepicker-unselectable a {
+	color: #afafaf !important;
+}
+
+#calendar .ui-datepicker-current-day {
+	background: #E9F2F7;
+}
+
+.ui-datepicker-header {
+	background: #424242;
+	position: relative;
+	height: 40px;
+	font-size: 14px;
+}
+
+#calendar .ui-datepicker-prev {
+	background:url('../images/ui-datepicker-nav.png') 0 top no-repeat;
+	width: 32px;
+	/*background-color:#000;*/
+	height: 32px;
+	left: 7px;
+	top: 7px;
+	display:block;
+	cursor: pointer;
+	/*z-index: 10000;*/
+	background-position: 0px 0px; 
+}
+
+#calendar .ui-datepicker-next {
+	background:url('../images/ui-datepicker-nav.png') 0 bottom no-repeat;
+	width: 32px;
+	height: 32px;
+	/*background-color:#000;*/
+	display:block;
+	right: 7px;
+	top: 7px;
+	/*z-index: 11000;*/
+	cursor: pointer;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2) {
+	#calendar .ui-datepicker-prev {
+		/*background:url(../images/ui-datepicker-nav2x.png) 0 top no-repeat;*/
+        background-size: 32px 64px;
+	}
+	#calendar .ui-datepicker-next {
+		/*background:url(../images/ui-datepicker-nav2x.png) 0 bottom no-repeat;*/
+        background-size: 32px 64px;
+	}
+}
+
+#calendar .ui-datepicker-prev span,
+#calendar .ui-datepicker-next span {
+	display: none;
+}
+
+#calendar .ui-datepicker-header .ui-datepicker-title {
+	position: absolute;
+	left: 32px;
+	right:32px;
+	top: 14px; 
+	text-align: center;
+}
+
+#calendar .ui-corner-all{
+	-moz-border-radius:0 !important;
+	-webkit-border-radius:0 !important;
+	border-radius: 0 !important;
+}
+
+.ui-body-c #calendar, 
+#calendar{
+	text-shadow: none !important;
+}
+
+#search #r4-wrap .ui-content{
+	padding: 10px 15px 10px 10px;
+}
+
+#search #r4-wrap input{
+	width:99%; 
+	padding: 0; 
+	margin: 0;
+}
+
+/*#search #r4-wrap select{
+	width:100%; 
+	padding: 0; 
+	margin: 0; 
+}*/
+
+#search #r4-wrap #searchParams li{
+	margin: 0 0 15px 0;
+	padding: 0;
+}
+
+#search #r4-wrap #searchParams li.amountList{
+	margin:0;
+}
+
+#search #r4-wrap #searchParams li.category{
+	margin:15px 0 0 0;
+}
+
+#search #r4-wrap label{
+	margin: 0 0 5px 0;
+	font-size: 17px;
+	display: inline;
+	line-height:1;
+}
+
+#search #r4-wrap label input,.rd-page #amountCombo input{
+	display: inline-block;
+	font-size: 12px;
+	height: 26px;
+	line-height: 26px;
+	padding: 4px;
+	margin: 5px 3px 0 0;
+	max-width: 95%;
+}
+	
+#search #r4-wrap #js-date-picker-range input {
+	width: 85px;
+	font-size: 13px !important;
+}	
+	
+#search #r4-wrap label p{
+	margin: 0;
+}
+
+#search #r4-wrap .picker-input{
+	font-size: 14px !important;
+	height: 26px; 
+	width:102px;
+}
+
+#search #r4-wrap .ui-select{
+	margin: 3px 0 5px 0;
+}
+
+#search #r4-wrap .exampleText{
+	margin: 5px 0 1px 0;
+	font-size: 10px;
+	color:#576166;
+}
+#search .setfont label span.exampleText{ font-size:14px !important;}
+
+#search #r4-wrap .from-selection,#search #r4-wrap .from-a-selection{
+/*	width: 155px;*/
+    width: 148px;
+}
+	
+#search #r4-wrap .to-selection,#search #r4-wrap .to-date-selection{ 
+	margin-left: 16px;
+	width: 134px;
+	float:right;
+}
+#search #r4-wrap .from-selection span.block, #search #r4-wrap .from-a-selection span.block{ font-size:10px; }
+
+#search #r4-wrap img.datepicker-trigger{
+	width: 30px; 
+	vertical-align: middle; 
+	margin: -5px 0 0 1px;
+	cursor:pointer;
+}
+
+#r4-wrap #submit-container,#loadTransactions-container,#tnc-confirmation  .ui-block-b a,#accountSummary-pg .txtcenteraln,#pageError-pg .txtcenteraln, #contactUs-pg .txtcenteraln, #redeem-gift-card .txtcenteraln, .rd-page .btm-links,.rd-page .gift-card-selection div a{
+	text-align: center !important;
+	margin-top:20px;
+}
+#tnc-confirmation  .ui-block-b{width:100% !important; text-align:center;}
+.rd-page .gift-card-selection div{text-align: center;}
+#search #r4-wrap #submit-container .ui-btn-inner{
+	padding: 5px 32px;
+}
+
+#r4-wrap #pageFooterSecureWrap{
+	margin: 4px 0 0 0 !important;
+}
+
+#forgot-uid-pg #r4-wrap .need-help,
+#forgot-uid-confirmation-pg #r4-wrap .need-help,
+#forgot-uid-or-password-menu-pg #r4-wrap .need-help,
+#forgot-password-step1-pg #r4-wrap .need-help,
+#forgot-password-step2-pg #r4-wrap .need-help,
+#forgot-password-confirmation-pg #r4-wrap .need-help,
+#forgot-both-step1-pg #r4-wrap .need-help,
+#forgot-both-step2-pg #r4-wrap .need-help,
+#forgot-both-confirmation #r4-wrap .need-help,
+#uid-strength-meter-pg #r4-wrap .need-help,
+#password-strength-meter-pg #r4-wrap .need-help {
+	margin: 0 0 35px 0 !important;
+}
+
+#forgot-uid-pg #r4-wrap .txtcenteraln,
+#forgot-uid-confirmation-pg #r4-wrap .txtcenteraln,
+#forgot-uid-or-password-menu-pg #r4-wrap .txtcenteraln,
+#forgot-password-step1-pg #r4-wrap .txtcenteraln,
+#forgot-password-step2-pg #r4-wrap .txtcenteraln,
+#forgot-password-confirmation-pg #r4-wrap .txtcenteraln,
+#forgot-both-step1-pg #r4-wrap .txtcenteraln,
+#forgot-both-step2-pg #r4-wrap .txtcenteraln,
+#forgot-both-confirmation #r4-wrap .txtcenteraln,
+#uid-strength-meter-pg #r4-wrap .txtcenteraln,
+#password-strength-meter-pg #r4-wrap .txtcenteraln {
+	margin: 0 0 35px 0;
+}
+
+#search #r4-wrap .to-date-selection .inlineLabel,
+#search #r4-wrap .from-a-selection .inlineLabel
+{
+	margin-right: 0px;
+}
+
+#search #r4-wrap .to-date-selection
+{
+	margin-left: 15px;
+}
+
+
+/* footer navigation retina support start */
+/* START */
+@media (-webkit-min-device-pixel-ratio: 2) {
+		#search #r4-wrap span.hd{ display: block; width: 20px; height: 20px; float:left; background-repeat:no-repeat; margin-right:10px; }
+		#search #r4-wrap span.hd.icon-email{ background-image:url(../images/icon-email@2x.png); }
+		#search #r4-wrap span.hd.icon-sms{ background-image:url(../images/icon-sms@2x.png); }
+	    #search #r4-wrap span.hd.icon-facebook{ background-image:url(../images/face-book@2x.png); }
+	
+}
+
+#r4-wrap .strength-info{
+	margin-bottom: 35px;
+	overflow:hidden;
+}
+
+/*
+ * jQuery Mobile Framework : plugin to provide a simple Dialog widget.
+ * Copyright (c) JTSage
+ * CC 3.0 Attribution.  May be relicensed without permission/notifcation.
+ * https://github.com/jtsage/jquery-mobile-simpledialog
+ */
+
+/* Shared Styles */
+ .ui-header .ui-title{color:#fff;}
+ .ui-simpledialog-header h4 { margin-top: 5px; margin-bottom: 5px; text-align: center; }
+.ui-simpledialog-container { border: 5px solid #111 !important; width:85%; max-width:500px;}
+/*.ui-simpledialog-screen { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 7000;}*/
+.ui-simpledialog-hidden { display: none; }
+.ui-simpledialog-input { width: 85% !important; display: block !important; margin-left: auto; margin-right: auto;}
+.ui-simpledialog-screen-modal { background-color: black; -moz-opacity: 0.8; opacity:.80; filter: alpha(opacity=80); }
+.ui-simpledialog-subtitle { text-align: center; }
+.ui-simpledialog-controls .buttons-separator {min-height: .6em;}
+.ui-simpledialog-controls .button-hidden { display:none; }
+
+.ui-dialog .ui-simpledialog-container { border: none !important; }
+.ui-dialog-simpledialog .ui-content { padding: 5px !important;}
+
+#account-activity #r4-wrap a,#account-activity #r4-wrap a:link,#account-activity #r4-wrap a:visited {text-decoration:none;font-weight: normal !important;}
+
+#account-activity #r4-wrap #load-more {
+	font-weight: bold !important;
+}
+
+#account-activity #r4-wrap .hidden {
+	display: none;
+	visibility: hidden;
+}
+
+#account-activity #r4-wrap p.view-message {
+	font-weight: bold !important;
+}
+
+#account-activity #r4-wrap .select-range .ui-select .ui-btn-block {
+	width: 97% !important;
+	margin: 0 0 15px;
+}
+
+/*#account-activity #r4-wrap #pending-transactions {
+	margin: 0 0 20px;
+}*/
+
+#account-activity #r4-wrap #activity-selection {
+    display: block;
+    margin: -5px 0 10px;
+	max-width: 99%;
+}
+
+#account-activity #r4-wrap .account-activity .ui-btn-up-a {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#feb448), color-stop(100%,#f37613)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #feb448 0%,#f37613 100%); /* Chrome10+,Safari5.1+ */
+	border-color: #f27d28;
+	margin: 20px 0 20px;
+	text-shadow: none;
+}
+
+#r4-wrap #load-more-button{ text-align: center;}
+
+/* @group transactions */
+#r4-wrap .transaction-list {
+	list-style-type: none;
+	padding: 0;
+	display: block;
+	margin: 0 0 15px 0;
+	-webkit-border-radius: 4px;
+}
+
+#r4-wrap .transaction-list li p.zero-results-message,
+#r4-wrap .transaction-list li p.error-message {
+	font-size: 14px;
+	margin: 10px 0 10px;
+	padding-right: 6px;
+	line-height: 16px;
+}
+
+/**
+*	Start: Fix for Sifter #1455 and #1466
+*	jQuery Mobile's ui-li-desc class is applied automatically and interferes with proper word wrapping. Overriding this fixes the issue.
+*/
+#r4-wrap .transaction-list li p.ui-li-desc.zero-results-message,
+#r4-wrap .transaction-list li p.ui-li-desc.error-message,
+#r4-wrap .transaction-list li p.ui-li-desc.transaction-results-location {
+	overflow: visible !important;
+	text-overflow: ellipsis !important;
+	white-space: normal !important;
+}
+/**
+*	End: Fix for Sifter #1455 and #1466
+*/
+
+/**
+*	Start: Fix for Sifter #1466
+*/
+#r4-wrap .transaction-list .fl {
+	max-width: 70%;
+}
+/**
+*	End: Fix for Sifter #1466
+*/
+
+#r4-wrap .transaction-list li p.error-message {
+	color:red;
+}
+
+/* @end transactions */
+
+
+/* @group General Styles */
+
+#forgot-uid-pg #r4-wrap a,
+#forgot-uid-pg #r4-wrap a:link,
+#forgot-uid-pg #r4-wrap a:visited,
+#forgot-uid-confirmation-pg #r4-wrap a,
+#forgot-uid-confirmation-pg #r4-wrap a:link,
+#forgot-uid-confirmation-pg #r4-wrap a:visited,
+#forgot-uid-or-password-menu-pg #r4-wrap a,
+#forgot-uid-or-password-menu-pg #r4-wrap a:link,
+#forgot-uid-or-password-menu-pg #r4-wrap a:visited,
+#forgot-password-step1-pg #r4-wrap a,
+#forgot-password-step1-pg #r4-wrap a:link,
+#forgot-password-step1-pg #r4-wrap a:visited,
+#forgot-password-step2-pg #r4-wrap a,
+#forgot-password-step2-pg #r4-wrap a:link,
+#forgot-password-step2-pg #r4-wrap a:visited,
+#forgot-password-confirmation-pg #r4-wrap a,
+#forgot-password-confirmation-pg #r4-wrap a:link,
+#forgot-password-confirmation-pg #r4-wrap a:visited,
+#forgot-both-step1-pg #r4-wrap a,
+#forgot-both-step1-pg #r4-wrap a:link,
+#forgot-both-step1-pg #r4-wrap a:visited,
+#forgot-both-step2-pg #r4-wrap a,
+#forgot-both-step2-pg #r4-wrap a:link,
+#forgot-both-step2-pg #r4-wrap a:visited,
+#forgot-both-confirmation #r4-wrap a,
+#forgot-both-confirmation #r4-wrap a:link,
+#forgot-both-confirmation #r4-wrap a:visited,
+#uid-strength-meter-pg #r4-wrap a,
+#uid-strength-meter-pg #r4-wrap a:link,
+#uid-strength-meter-pg #r4-wrap a:visited,
+#password-strength-meter-pg #r4-wrap a,
+#password-strength-meter-pg #r4-wrap a:link,
+#password-strength-meter-pg #r4-wrap a:visited {
+	text-decoration: none;
+}
+
+#forgot-uid-pg #r4-wrap .required,
+#forgot-uid-confirmation-pg #r4-wrap .required,
+#forgot-uid-or-password-menu-pg #r4-wrap .required,
+#forgot-password-step1-pg #r4-wrap .required,
+#forgot-password-step2-pg #r4-wrap .required,
+#forgot-password-confirmation-pg #r4-wrap .required,
+#forgot-both-step1-pg #r4-wrap .required,
+#forgot-both-step2-pg #r4-wrap .required,
+#forgot-both-confirmation #r4-wrap .required,
+#uid-strength-meter-pg #r4-wrap .required,
+#password-strength-meter-pg #r4-wrap .required {
+	border:1px solid red !important;
+	/*border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-style: dashed; border-right-style: dashed; border-bottom-style: dashed; border-left-style: dashed; border-top-color: red; border-right-color: red; border-bottom-color: red; border-left-color: red;*/
+}
+
+/*red error button*/
+.ui-btn-up-f, .ui-btn-hover-f{
+	border:1px solid red !important;
+}
+
+#forgot-uid-pg #r4-wrap .inline-error-msg,
+#forgot-uid-confirmation-pg #r4-wrap .inline-error-msg,
+#forgot-uid-or-password-menu-pg #r4-wrap .inline-error-msg,
+#forgot-password-step1-pg #r4-wrap .inline-error-msg,
+#forgot-password-step2-pg #r4-wrap .inline-error-msg,
+#forgot-password-confirmation-pg #r4-wrap .inline-error-msg,
+#forgot-both-step1-pg #r4-wrap .inline-error-msg,
+#forgot-both-step2-pg #r4-wrap .inline-error-msg,
+#forgot-both-confirmation #r4-wrap .inline-error-msg,
+#uid-strength-meter-pg #r4-wrap .inline-error-msg,
+#password-strength-meter-pg #r4-wrap .inline-error-msg {
+	color:red;
+	display: none;
+	font-size:12px;
+}
+
+/* p.inline-error-msg style, there is also a span.inline-error-msg style */
+#forgot-uid-pg #r4-wrap p.inline-error-msg,
+#forgot-uid-confirmation-pg #r4-wrap p.inline-error-msg,
+#forgot-uid-or-password-menu-pg #r4-wrap p.inline-error-msg,
+#forgot-password-step1-pg #r4-wrap p.inline-error-msg,
+#forgot-password-step2-pg #r4-wrap p.inline-error-msg,
+#forgot-password-confirmation-pg #r4-wrap p.inline-error-msg,
+#forgot-both-step1-pg #r4-wrap p.inline-error-msg,
+#forgot-both-step2-pg #r4-wrap p.inline-error-msg,
+#forgot-both-confirmation #r4-wrap p.inline-error-msg,
+#uid-strength-meter-pg #r4-wrap p.inline-error-msg,
+#password-strength-meter-pg #r4-wrap p.inline-error-msg {
+	margin-top:8px;
+}
+
+#forgot-password-step1-pg #r4-wrap .date-of-birth .inline-error-msg,
+#forgot-both-step1-pg #r4-wrap .date-of-birth .inline-error-msg {
+	margin-left:200px;
+}
+
+#forgot-uid-pg #r4-wrap .cancel,
+#forgot-uid-confirmation-pg #r4-wrap .cancel,
+#forgot-uid-or-password-menu-pg #r4-wrap .cancel,
+#forgot-password-step1-pg #r4-wrap .cancel,
+#forgot-password-step2-pg #r4-wrap .cancel,
+#forgot-password-confirmation-pg #r4-wrap .cancel,
+#forgot-both-step1-pg #r4-wrap .cancel,
+#forgot-both-step2-pg #r4-wrap .cancel,
+#forgot-both-confirmation #r4-wrap .cancel,
+#uid-strength-meter-pg #r4-wrap .cancel,
+#password-strength-meter-pg #r4-wrap .cancel {
+	display: inline-block !important;
+	color: #267BB1 !important;
+	font-size: 12px;
+	font-weight: bold;
+	margin: 10px 0 0;
+}
+
+#forgot-uid-pg #r4-wrap .ui-block-a,
+#forgot-uid-pg #r4-wrap .ui-block-b,
+#forgot-uid-confirmation-pg #r4-wrap .ui-block-a,
+#forgot-uid-confirmation-pg #r4-wrap .ui-block-b,
+#forgot-uid-or-password-menu-pg #r4-wrap .ui-block-a,
+#forgot-uid-or-password-menu-pg #r4-wrap .ui-block-b,
+#forgot-password-step1-pg #r4-wrap .ui-block-a,
+#forgot-password-step1-pg #r4-wrap .ui-block-b,
+#forgot-password-step2-pg #r4-wrap .ui-block-a,
+#forgot-password-step2-pg #r4-wrap .ui-block-b,
+#forgot-password-confirmation-pg #r4-wrap .ui-block-a,
+#forgot-password-confirmation-pg #r4-wrap .ui-block-b,
+#forgot-both-step1-pg #r4-wrap .ui-block-a,
+#forgot-both-step1-pg #r4-wrap .ui-block-b,
+#forgot-both-step2-pg #r4-wrap .ui-block-a,
+#forgot-both-step2-pg #r4-wrap .ui-block-b,
+#forgot-both-confirmation #r4-wrap .ui-block-a,
+#forgot-both-confirmation #r4-wrap .ui-block-b,
+#uid-strength-meter-pg #r4-wrap .ui-block-a,
+#uid-strength-meter-pg #r4-wrap .ui-block-b,
+#password-strength-meter-pg #r4-wrap .ui-block-a,
+#password-strength-meter-pg #r4-wrap .ui-block-b {
+	width: 50%;
+}
+
+#forgot-uid-pg #r4-wrap .ui-body-d .ui-link,
+#forgot-uid-confirmation-pg #r4-wrap .ui-body-d .ui-link,
+#forgot-uid-or-password-menu-pg #r4-wrap .ui-body-d .ui-link,
+#forgot-password-step1-pg #r4-wrap .ui-body-d .ui-link,
+#forgot-password-step2-pg #r4-wrap .ui-body-d .ui-link,
+#forgot-password-confirmation-pg #r4-wrap .ui-body-d .ui-link,
+#forgot-both-step1-pg #r4-wrap .ui-body-d .ui-link,
+#forgot-both-step2-pg #r4-wrap .ui-body-d .ui-link,
+#forgot-both-confirmation #r4-wrap .ui-body-d .ui-link,
+#uid-strength-meter-pg #r4-wrap .ui-body-d .ui-link,
+#password-strength-meter-pg #r4-wrap .ui-body-d .ui-link {
+    color: #025D96;
+}
+
+#forgot-uid-pg #r4-wrap.ui-content-internalpages .wrapper ul.rounded-list-box li span.rightarrow,
+#forgot-uid-confirmation-pg #r4-wrap.ui-content-internalpages .wrapper ul.rounded-list-box li span.rightarrow,
+#forgot-uid-or-password-menu-pg #r4-wrap.ui-content-internalpages .wrapper ul.rounded-list-box li span.rightarrow,
+#forgot-password-step1-pg #r4-wrap.ui-content-internalpages .wrapper ul.rounded-list-box li span.rightarrow,
+#forgot-password-step2-pg #r4-wrap.ui-content-internalpages .wrapper ul.rounded-list-box li span.rightarrow,
+#forgot-password-confirmation-pg #r4-wrap.ui-content-internalpages .wrapper ul.rounded-list-box li span.rightarrow,
+#forgot-both-step1-pg #r4-wrap.ui-content-internalpages .wrapper ul.rounded-list-box li span.rightarrow,
+#forgot-both-step2-pg #r4-wrap.ui-content-internalpages .wrapper ul.rounded-list-box li span.rightarrow,
+#forgot-both-confirmation #r4-wrap.ui-content-internalpages .wrapper ul.rounded-list-box li span.rightarrow,
+#uid-strength-meter-pg #r4-wrap.ui-content-internalpages .wrapper ul.rounded-list-box li span.rightarrow,
+#password-strength-meter-pg #r4-wrap.ui-content-internalpages .wrapper ul.rounded-list-box li span.rightarrow {
+	background: url(../images/blue-arrow.png) left top no-repeat transparent;
+	width: 6px !important;
+	height: 9px !important;
+	margin: 3px 0 0;
+    display: block;
+    text-indent: -9999px !important;
+	text-align: left !important;
+}
+
+#forgot-uid-pg #r4-wrap ul.account-list-view,
+#forgot-uid-confirmation-pg #r4-wrap ul.account-list-view,
+#forgot-uid-or-password-menu-pg #r4-wrap ul.account-list-view,
+#forgot-password-step1-pg #r4-wrap ul.account-list-view,
+#forgot-password-step2-pg #r4-wrap ul.account-list-view,
+#forgot-password-confirmation-pg #r4-wrap ul.account-list-view,
+#forgot-both-step1-pg #r4-wrap ul.account-list-view,
+#forgot-both-step2-pg #r4-wrap ul.account-list-view,
+#forgot-both-confirmation #r4-wrap ul.account-list-view,
+#uid-strength-meter-pg #r4-wrap ul.account-list-view,
+#password-strength-meter-pg #r4-wrap ul.account-list-view {
+	border: 1px solid #D6D5D5 !important;
+}
+
+#forgot-uid-pg #r4-wrap ul.rounded-list-box ui-li,
+#forgot-uid-confirmation-pg #r4-wrap ul.rounded-list-box ui-li,
+#forgot-uid-or-password-menu-pg #r4-wrap ul.rounded-list-box ui-li,
+#forgot-password-step1-pg #r4-wrap ul.rounded-list-box ui-li,
+#forgot-password-step2-pg #r4-wrap ul.rounded-list-box ui-li,
+#forgot-password-confirmation-pg #r4-wrap ul.rounded-list-box ui-li,
+#forgot-both-step1-pg #r4-wrap ul.rounded-list-box ui-li,
+#forgot-both-step2-pg #r4-wrap ul.rounded-list-box ui-li,
+#forgot-both-confirmation #r4-wrap ul.rounded-list-box ui-li,
+#uid-strength-meter-pg #r4-wrap ul.rounded-list-box ui-li,
+#password-strength-meter-pg #r4-wrap ul.rounded-list-box ui-li {
+	border-bottom: 0 !important;
+}
+
+#forgot-uid-pg #r4-wrap fieldset.nav-buttons,
+#forgot-uid-confirmation-pg #r4-wrap fieldset.nav-buttons,
+#forgot-uid-or-password-menu-pg #r4-wrap fieldset.nav-buttons,
+#forgot-password-step1-pg #r4-wrap fieldset.nav-buttons,
+#forgot-password-step2-pg #r4-wrap fieldset.nav-buttons,
+#forgot-password-confirmation-pg #r4-wrap fieldset.nav-buttons,
+#forgot-both-step1-pg #r4-wrap fieldset.nav-buttons,
+#forgot-both-step2-pg #r4-wrap fieldset.nav-buttons,
+#forgot-both-confirmation #r4-wrap fieldset.nav-buttons,
+#uid-strength-meter-pg #r4-wrap fieldset.nav-buttons,
+#password-strength-meter-pg #r4-wrap fieldset.nav-buttons {
+	display: block;
+	margin: 0 0 10px;
+}
+
+/* @end General Styles */
+
+/* @group forgot User ID */
+#forgot-uid-pg label,
+#forgot-uid-confirmation-pg label,
+#forgot-uid-or-password-menu-pg label,
+#forgot-password-step1-pg label,
+#forgot-password-step2-pg label,
+#forgot-password-confirmation-pg label,
+#forgot-both-step1-pg label,
+#forgot-both-step2-pg label,
+#forgot-both-confirmation label,
+#uid-strength-meter-pg label,
+#password-strength-meter-pg label {
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: 0 0 0 transparent;
+	margin: 0;
+	padding: 0;
+}
+
+#forgot-uid-pg #r4-wrap fieldset,
+#forgot-uid-confirmation-pg #r4-wrap fieldset,
+#forgot-uid-or-password-menu-pg #r4-wrap fieldset,
+#forgot-password-step1-pg #r4-wrap fieldset,
+#forgot-password-step2-pg #r4-wrap fieldset,
+#forgot-password-confirmation-pg #r4-wrap fieldset,
+#forgot-both-step1-pg #r4-wrap fieldset,
+#forgot-both-step2-pg #r4-wrap fieldset,
+#forgot-both-confirmation #r4-wrap fieldset,
+#uid-strength-meter-pg #r4-wrap fieldset,
+#password-strength-meter-pg #r4-wrap fieldset {
+	margin: 10px 0 0;
+}
+
+#forgot-id-form #r4-wrap {
+	margin: 0 0 50px;
+}
+
+/* @end forgot User ID */
+
+/* @group Need Help */
+#forgot-uid-pg #r4-wrap .need-help,
+#forgot-uid-confirmation-pg #r4-wrap .need-help,
+#forgot-uid-or-password-menu-pg #r4-wrap .need-help,
+#forgot-password-step1-pg #r4-wrap .need-help,
+#forgot-password-step2-pg #r4-wrap .need-help,
+#forgot-password-confirmation-pg #r4-wrap .need-help,
+#forgot-both-step1-pg #r4-wrap .need-help,
+#forgot-both-step2-pg #r4-wrap .need-help,
+#forgot-both-confirmation #r4-wrap .need-help,
+#uid-strength-meter-pg #r4-wrap .need-help,
+#password-strength-meter-pg #r4-wrap .need-help {
+	margin: 10px auto;
+	text-align: center;
+	font-size: 11px;
+}
+
+#forgot-uid-pg #r4-wrap .need-help span,
+#forgot-uid-confirmation-pg #r4-wrap .need-help span,
+#forgot-uid-or-password-menu-pg #r4-wrap .need-help span,
+#forgot-password-step1-pg #r4-wrap .need-help span,
+#forgot-password-step2-pg #r4-wrap .need-help span,
+#forgot-password-confirmation-pg #r4-wrap .need-help span,
+#forgot-both-step1-pg #r4-wrap .need-help span,
+#forgot-both-step2-pg #r4-wrap .need-help span,
+#forgot-both-confirmation #r4-wrap .need-help span,
+#uid-strength-meter-pg #r4-wrap .need-help span,
+#password-strength-meter-pg #r4-wrap .need-help span {
+	color: #666;
+	font-weight: bold;
+	display: inline;
+}
+
+#forgot-uid-pg #r4-wrap .need-help a,
+#forgot-uid-confirmation-pg #r4-wrap .need-help a,
+#forgot-uid-or-password-menu-pg #r4-wrap .need-help a,
+#forgot-password-step1-pg #r4-wrap .need-help a,
+#forgot-password-step2-pg #r4-wrap .need-help a,
+#forgot-password-confirmation-pg #r4-wrap .need-help a,
+#forgot-both-step1-pg #r4-wrap .need-help a,
+#forgot-both-step2-pg #r4-wrap .need-help a,
+#forgot-both-confirmation #r4-wrap .need-help a,
+#uid-strength-meter-pg #r4-wrap .need-help a,
+#password-strength-meter-pg #r4-wrap .need-help a {
+	color: #267BB1;
+	font-weight: bold;
+	display: inline;
+}
+/* @end Need Help */
+
+/* @group Form Elements */
+#forgot-uid-pg #r4-wrap h1 .step-description,
+#forgot-uid-confirmation-pg #r4-wrap h1 .step-description,
+#forgot-uid-or-password-menu-pg #r4-wrap h1 .step-description,
+#forgot-password-step1-pg #r4-wrap h1 .step-description,
+#forgot-password-step2-pg #r4-wrap h1 .step-description,
+#forgot-password-confirmation-pg #r4-wrap h1 .step-description,
+#forgot-both-step1-pg #r4-wrap h1 .step-description,
+#forgot-both-step2-pg #r4-wrap h1 .step-description,
+#forgot-both-confirmation #r4-wrap h1 .step-description,
+#uid-strength-meter-pg #r4-wrap h1 .step-description,
+#password-strength-meter-pg #r4-wrap h1 .step-description {
+	color: #f27d28 !important;
+	text-shadow: 0 0 0 transparent;
+	margin: 10px 0 0;
+	display: block;
+}
+
+#r4-wrap fieldset {
+	margin: 0 0 15px;
+}
+
+#r4-wrap label {
+	width: 100%;
+	display: block;
+	margin: 0 0 10px;
+}
+
+#r4-wrap .dob-year {
+	width: 70px !important;
+	text-indent: 5px !important;
+	display: inline-block !important; 
+	margin-top: 0 !important;
+	height: 17px;
+	padding-top: 9px !important;
+	font-size: 14px;
+	vertical-align: middle;
+	line-height: 1 !important;
+}
+
+#r4-wrap .ssn-label {
+	font-size: 12px;
+	font-weight: normal;
+	display: inline;
+	width: auto !important;
+}
+
+
+#r4-wrap .default-color {
+	color: #999;
+}
+
+#r4-wrap .ssn-ending {
+	width: 70px !important;
+	display: inline !important;
+}
+
+#forgot-uid-pg #r4-wrap z.metered-input,
+#forgot-uid-confirmation-pg #r4-wrap z.metered-input,
+#forgot-uid-or-password-menu-pg #r4-wrap z.metered-input,
+#forgot-password-step1-pg #r4-wrap z.metered-input,
+#forgot-password-step2-pg #r4-wrap z.metered-input,
+#forgot-password-confirmation-pg #r4-wrap z.metered-input,
+#forgot-both-step1-pg #r4-wrap z.metered-input,
+#forgot-both-step2-pg #r4-wrap z.metered-input,
+#forgot-both-confirmation #r4-wrap z.metered-input,
+#uid-strength-meter-pg #r4-wrap z.metered-input,
+#password-strength-meter-pg #r4-wrap z.metered-input {
+	margin-top:15px;
+}
+
+#forgot-uid-pg #r4-wrap label.strength-label,
+#forgot-uid-confirmation-pg #r4-wrap label.strength-label,
+#forgot-uid-or-password-menu-pg #r4-wrap label.strength-label,
+#forgot-password-step1-pg #r4-wrap label.strength-label,
+#forgot-password-step2-pg #r4-wrap label.strength-label,
+#forgot-password-confirmation-pg #r4-wrap label.strength-label,
+#forgot-both-step1-pg #r4-wrap label.strength-label,
+#forgot-both-step2-pg #r4-wrap label.strength-label,
+#forgot-both-confirmation #r4-wrap label.strength-label,
+#uid-strength-meter-pg #r4-wrap label.strength-label,
+#password-strength-meter-pg #r4-wrap label.strength-label {
+	display: block;
+	float: left;
+	margin: 0 10px 0 0;
+	width: 120px !important;
+}
+
+#forgot-uid-pg #r4-wrap input,
+#forgot-uid-confirmation-pg #r4-wrap input,
+#forgot-uid-or-password-menu-pg #r4-wrap input,
+#forgot-password-step1-pg #r4-wrap input,
+#forgot-password-step2-pg #r4-wrap input,
+#forgot-password-confirmation-pg #r4-wrap input,
+#forgot-both-step1-pg #r4-wrap input,
+#forgot-both-step2-pg #r4-wrap input,
+#forgot-both-confirmation #r4-wrap input,
+#uid-strength-meter-pg #r4-wrap input,
+#password-strength-meter-pg #r4-wrap input {
+	/*height: 17px;*/
+	/*width: 70px !important;*/
+	/*text-indent: 5px !important;*/
+	display: inline-block !important; 
+	margin-top: 0 !important;
+	height: 17px;
+	padding-top: 9px !important;
+	font-size: 14px;
+	/*vertical-align: middle;*/
+	/*line-height: 1 !important;*/
+}
+
+#r4-wrap .strength-field-name {
+	display: block;
+	float: left;
+	font-size: 12px;
+	font-weight: bold;
+	margin: 0 10px 0 0;
+	width: 120px !important;
+}
+
+#r4-wrap label.full-width {
+	width: 100% !important;
+	display: block;
+	margin: 0 0 3px !important;
+}
+
+#r4-wrap .birth-month,
+#r4-wrap .birth-date {
+	float: left !important;
+}
+
+/* @group Password Strength */
+#r4-wrap .strength-meter {
+	background: url(../images/passwordStrength.png) left top no-repeat;
+    display: block;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    height: 14px;
+    margin: 0 10px 0 0;
+    padding: 10px 0 0;
+    width: 115px;
+}
+
+#r4-wrap .strength-meter.low {
+	background-position: 0 -24px;
+}
+
+#r4-wrap .strength-meter.medium {
+	background-position: 0 -48px;
+}
+
+#r4-wrap .strength-meter.high {
+	background-position: 0 -72px;
+}
+/* @end Password Strength */
+
+#r4-wrap a.help-icon {
+	text-decoration: none;
+	text-indent: -9999px;
+	width: 24px;
+	height: 24px;
+	display: block;
+	background: url(../images/helpIcon.png);
+	float: left;
+	margin: -2px 0 0;
+}
+
+#r4-wrap .expiration-month-year .ui-select .ui-btn:first-child,
+#r4-wrap .date-of-birth .ui-select .ui-btn {
+	float: left;
+	margin-right: 10px;
+	padding: 0 !important;
+}
+
+#r4-wrap .expiration-month,
+#r4-wrap .expiration-year {
+    display: block;
+    float: left;
+}
+
+/* @end Form Elements */
+
+/* @group Confirmation */
+
+#r4-wrap dl,
+#r4-wrap dt,
+#r4-wrap dd {
+	margin: 0;
+	padding: 0;
+	display: block;
+}
+
+#r4-wrap dl.confirmation-list dt,
+#r4-wrap dl.confirmation-list dd {
+	float: left;
+}
+
+#r4-wrap dl.confirmation-list {
+	width: 100%;
+	float: left;
+	margin: 0 0 15px;
+}
+
+#r4-wrap dl.confirmation-list dt {
+	width: 35%;
+	font-size: 11px;
+	margin: 0 0 5px;
+}
+
+#r4-wrap dl.confirmation-list dd {
+	width: 65%;
+	font-size: 12px;
+	margin: 0 0 5px;
+	font-weight: bold;
+}
+
+#r4-wrap .bolded {
+	font-weight: bold !important;
+}
+/*
+#r4-wrap #footnotes {
+	text-align: center; 
+	font-size: 9px;
+	margin: 0; 
+	padding: 0;
+	width: 100%;
+	clear: both;
+} 
+*/
+#r4-wrap #home-wrapper {
+	width: 100%;
+	text-align: center;
+}
+
+#r4-wrap .confirmation p:first-child {
+	margin: 15px 0 0;
+}
+
+#r4-wrap .confirmation p {
+	font-size: 13px !important;
+	margin: 0 0 15px !important;
+}
+
+#r4-wrap .footnotes-gap #home-wrapper div {  
+	margin: 10px auto 70px !important;
+}
+
+/* @end Confirmation */
+
+/* @group Strength Blocks */
+#r4-wrap .strength-block {
+	padding: 20px 0 10px;
+	border-bottom: 1px solid #c1c1c1;
+	display: block;
+	float: left;
+	width: 99%;
+}
+
+#r4-wrap .strength-block p {
+	float: left;
+	margin: 5px 0 !important;
+	display: block;
+}
+
+#r4-wrap .strength-info .strength-block p {
+	margin: 5px 0 10px !important;
+}
+
+#r4-wrap .strength-block:last-child {
+	border-bottom: 0;
+}
+/* @end Strength Blocks */
+
+/* @group Retina Display Styles */
+@media all and (-webkit-min-device-pixel-ratio: 2) {
+	#r4-wrap .strength-meter {
+		background: url(../images/passwordStrength@2x.png) left top no-repeat;
+		background-size: 115px 96px;
+	}
+	
+	#r4-wrap .rightarrow {
+		background: url(../images/blue-arrow@2x.png) left top no-repeat transparent;
+		background-size: 6px 9px;
+	}
+		
+	#r4-wrap a.help-icon {
+		/* THIS IS A PLACEHOLDER. WE NEED RETINA OPTIMIZED IMAGE FROM DESIGN */
+		background: url(../images/helpIcon@2x.png) left top no-repeat;
+		background-size: 24px 24px;
+	}
+}
+/* @end Retina Display Styles 
+
+/************************************ *
+ * ********************************** *
+ * ********************************** *
+ * End Acquity Group R4 Page Styles   *
+ * ********************************** *
+ * ********************************** *
+ **************************************/
+ 
+ /************************************************************************
+* jcoyne - added the following overrides to fix choppy listview scrolling
+* //TODO - if/when JQM team adds these styles to discoverCard.css, remove from here
+************************************************************************/
+#r4-wrap ul.ui-shadow,
+#r4-wrap ul.ui-btn-up-a,
+#r4-wrap ul.ui-btn-hover-a,
+#r4-wrap ul.ui-btn-down-a,
+#r4-wrap ul.ui-body-b,
+#r4-wrap ul.ui-btn-up-b,
+#r4-wrap ul.ui-btn-hover-b,
+#r4-wrap ul.ui-btn-down-b,
+#r4-wrap ul.ui-bar-c,
+#r4-wrap ul.ui-body-c,
+#r4-wrap ul.ui-btn-up-c,
+#r4-wrap ul.ui-btn-hover-c,
+#r4-wrap ul.ui-btn-down-c,
+#r4-wrap ul.ui-bar-c,
+#r4-wrap ul.ui-body-d,
+#r4-wrap ul.ui-btn-up-d,
+#r4-wrap ul.ui-btn-hover-d,
+#r4-wrap ul.ui-btn-down-d,
+#r4-wrap ul.ui-bar-d,
+#r4-wrap ul.ui-body-e,
+#r4-wrap ul.ui-btn-up-e,
+#r4-wrap ul.ui-btn-hover-e,
+#r4-wrap ul.ui-btn-down-e,
+#r4-wrap ul.ui-bar-e,
+#r4-wrap ul.ui-overlay-shadow,
+#r4-wrap ul.ui-shadow,
+#r4-wrap ul.ui-btn-active,
+#r4-wrap ul.ui-body-a,
+#r4-wrap ul.ui-bar-a {
+ 	text-shadow: none;
+ 	box-shadow: none;
+ 	-webkit-box-shadow: none;
+}
+
+/**
+*	START: Resolution for Sifter 1464
+*/
+#forgot-link {
+	float: right;
+	/*padding: 20px 0 10px 0;*/
+	font-size: 12px;
+	text-decoration: none;
+	color: #025D96;
+}
+/**
+*	END: Resolution for Sifter 1464
+*/
+
+/**
+*	START: Resolution for Sifter 1473
+*/
+.inline-error-msg.inline-error-msg-ssn {
+	margin-left: 54px !important;
+}
+ 
+.inline-error-msg.inline-error-msg-dob-year {
+	margin-left: 181px !important;
+}
+/**
+*	END: Resolution for Sifter 1473
+*/
+
+/**
+* QC 76248
+*/
+#forgot-uid-or-password-menu-pg #r4-wrap #footnotes a,
+#forgot-both-step1-pg #r4-wrap #footnotes a,
+#forgot-both-step2-pg #r4-wrap #footnotes a,
+#forgot-both-confirmation-pg #r4-wrap #footnotes a,
+#forgot-password-step1-pg #r4-wrap #footnotes a,
+#forgot-password-step2-pg #r4-wrap #footnotes a,
+#forgot-password-confirmation-pg #r4-wrap #footnotes a,
+#password-strength-meter-pg #r4-wrap #footnotes a,
+#uid-strength-meter-pg #r4-wrap #footnotes a,
+#forgot-uid-pg #r4-wrap #footnotes a,
+#forgot-uid-confirmation-pg #footnotes a
+ {
+	color: rgb(38, 123, 177);
+}
+
+#forgot-both-step1-pg #r4-wrap input.credit-card-number,#forgot-uid-pg #r4-wrap input, #forgot-password-step1-pg #r4-wrap input.credit-card-account-number {
+            width:96%;
+}
+#forgot-both-step1-pg #forgot-both-page-1 #r4-wrap .dob-year, #forgot-password-step1-pg #forgot-password-page-1 #r4-wrap .dob-year{
+            margin-top:5px !important;
+}
+#r4-wrap #js-searchResults-container #loadTransactions-container a.small_btn:hover{padding:0 15px 0 15px !important;}
+/*#updateEmail-pg  .whitebg-list-view,#personalizeCashPin1-pg ul{ border:none;}*/
+#updateEmail-pg  ul,#personalizeCashPin1-pg ul { background:none; padding:0px; border:none;}
+#updateEmail-pg  ul li{background:none !important;border:none; border-bottom:none !important; padding:5px 0 10px 0px !important; margin:0;}
+#updateEmail-pg.faq-page .rd-faq-question-list .ui-grid-a .ui-block-b{width:94%;} 
+#updateEmail-pg.faq-page .wraper .rd-faq-question-list a, .faq-page .wraper .rd-faq-question-list a:hover{color:#3c4a4e !important;}
+#updateEmail-pg .whitebg-list-view div h3{margin-bottom:3px;}
+#updateEmail-pg .whitebg-list-view div input{ margin-top:0px;}
+#personalizeCashPin1-pg .bullate01 li{ padding:0px 1px 9px 33px !important; border-bottom:none; width:90%;}
+#personalizeCashPin1-pg ul.white-box-rd-corner li:first-child{width: 44%;float: left;background: none !important;padding-left: 0px;}
+#personalizeCashPin1-pg ul.white-box-rd-corner li:last-child{width: 44%;float: right;background: none;border-bottom: none;padding-right: 3px;}
+#personalizeCashPin1-pg .white-box-rd-corner label{ font-size:13px;}
+#personalizeCashPin1-pg ul.white-box-rd-corner li div input{margin-top:5px; height:20px;}
+#personalizeCashPin1-pg ul{margin-top:0;}
+#paymentsHistory-pg .ui-li-static.ui-li,#pendingPayments-pg .ui-li-static.ui-li{padding:10px;}
+#personalizeCashPin1-pg.faq-page .rd-faq-question-list li{ padding:5px 0px 15px 0px;}
+#personalizeCashPin2-pg .bluelink{ font-size:12px !important;}
+#paymentStep1-pg .white-form .ui-radio .ui-icon{ top:19px;}
+#strongAuthFirstQues-pg .ui-radio span span.ui-btn-text{ font-size:12px;}
+#strongAuthFirstQues-pg .ui-radio .ui-btn-up-c,#strongAuthFirstQues-pg .ui-radio .ui-btn-hover-c{ line-height:20px !important;}
+/*#updateEmail-pg .whitebg-list-view li.span{
+font-weight: bold;
+font-size: 14px;
+color: #42484d;
+display: block;
+text-shadow: none;
+padding-top: 12px;}*/

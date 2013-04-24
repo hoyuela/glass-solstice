@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Payments Step-II</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="paymentStep2-pg" class="rd-page">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+		<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div id="pgPadding"></div>
+<div class="progress-indicator">
+		<ul>
+		    <li><a href="#" class="visited ui-link">1. Review/Edit</a></li>
+                    <li><a href="#" class="active ui-link">2. Verify</a></li>
+                    <li><a href="#" class="ui-link">3. Confirmation</a></li>
+		</ul>
+		<div class="clearboth"></div>
+	    </div>
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<h1>Make a Payment:</h1>
+				<!-- h2>Step 2 of 3</h2 -->
+				<p class="redtext" id="safeSecureDiv" ></p>
+				<p class="marginTB15 fontsize13px" id="cuttOff_Note"></p>
+				<ul class="whitebg-list-view">
+					<li><span id="bankname"></span><br/><span class="amt_bold" id="accountnumber"></span></li>
+					<li><span>Payment Option</span><br/><span class="amt_bold" id="paymentOption_value"></span></li>
+					<li><span>Amount</span><br/><span class="amt_bold" id="amount_value"></span></li>
+					<li><span>Posting Date</span><br/><span class="amt_bold" id="paymentStep2_posting_date"></span></li>
+				</ul>
+				<div  id="milesRedeem-button">
+					<div class="txtcenteraln r3matchbtn">
+						<a href="#" onclick="dfs.crd.pymt.confirmfromstep2tostep3(false,'');" data-role="button">Confirm</a><br/>
+						<a href="#" onclick="navigation('cancelPayment')" class="bluelink boldtext">Cancel</a>
+					</div>
+				</div>
+			</div>
+			<div id="footnotes" class="footnotes" ></div>
+		</div>
+
+		<!-- content end -->
+
+<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
+            <footer id="footer" class="mnu_footer">
+			</footer>
+				</div>
+		</div>
+
+	<!--page end -->
+</body>
+</html>
