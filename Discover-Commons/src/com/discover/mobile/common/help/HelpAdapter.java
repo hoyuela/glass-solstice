@@ -61,7 +61,7 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>>{
 		if(null == view || !(view.getTag() instanceof HelpViewHolder)){
 			holder = new HelpViewHolder();
 			if(null != detail){
-				view = inflater.inflate(R.layout.help_list_item, null);
+				view = inflater.inflate(R.layout.common_help_list_item, null);
 				holder.text = (TextView) view.findViewById(R.id.text);
 			}
 			/**Else reuse the old one*/

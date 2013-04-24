@@ -397,10 +397,10 @@ public class SchedulePaymentFragment extends BaseFragment
 		/**Populate Spinner with eligible bank accounts for Bill Pay*/
 		if (bankUser.getPaymentCapableAccounts().accounts.size() > 1) {
 			final AccountAdapter accountAdapter = new AccountAdapter(
-					getActivity(), R.layout.push_simple_spinner_view,
+					getActivity(), R.layout.common_push_simple_spinner_view,
 					bankUser.getPaymentCapableAccounts().accounts);
 
-			accountAdapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
+			accountAdapter.setDropDownViewResource(R.layout.common_push_simple_spinner_dropdown);
 			paymentAccountSpinner.setAdapter(accountAdapter);
 		} else {
 			/**Hide Caret when only a single account is selectable for scheduling payment*/

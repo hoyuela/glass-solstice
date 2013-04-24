@@ -39,7 +39,7 @@
                 android:layout_below="@+id/modal_alert_text"
                 android:layout_marginTop="@dimen/modal_footer_topmargin">
                 
-                <include layout="@layout/old_general_need_help_footer" android:id="@+id/need_help_footer"/>
+                <include layout="@layout/common_old_general_need_help_footer" android:id="@+id/need_help_footer"/>
         </RelativeLayout> 
     </RelativeLayout>
 </ScrollView>
