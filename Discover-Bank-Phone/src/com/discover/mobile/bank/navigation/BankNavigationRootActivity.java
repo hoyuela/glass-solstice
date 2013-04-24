@@ -75,6 +75,19 @@ implements OnPaymentCanceledListener {
 		BankTrackingHelper.trackPage(fragment.getClass().getSimpleName());
 		super.makeFragmentVisible(fragment, addToHistory);
 	}
+	
+	/**
+	 * Set up the first visible fragment
+	 */
+	@Override
+	protected void setupFirstVisibleFragment() {
+		/**
+		 * Loading the content_view layout as the first fragment. This layout contains a frame view
+		 * that will handle swapping the fragments in and out as well as a static fragment for the 
+		 * status bar.
+		 */
+		setContentView(R.layout.bank_content_view);
+	}
 
 	/**
 	 * Refreshes the sliding menu when its closed. This ensures that the highlighting on the menu is accurate
