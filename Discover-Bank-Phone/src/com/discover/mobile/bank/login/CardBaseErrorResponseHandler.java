@@ -98,23 +98,28 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 			// FIRST we will try for common status code generic handling
 			switch (messageErrorResponse.getMessageStatusCode()) {
 				case UNSCHEDULED_MAINTENANCE:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.temporary_outage));
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+							resources.getString(R.string.temporary_outage));
 					return true;
 	
 				case SCHEDULED_MAINTENANCE:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.planned_outage_one));
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+							resources.getString(R.string.planned_outage_one));
 					return true;
 	
 				case PLANNED_OUTAGE:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.planned_outage_one));
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+							resources.getString(R.string.planned_outage_one));
 					return true;
 	
 				case NO_DATA_FOUND:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.no_data_found));
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+							resources.getString(R.string.no_data_found));
 					return true;
 				
 				case EXCEEDED_LOGIN_ATTEMPTS:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.locked_account));
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+							resources.getString(R.string.locked_account));
 					return true;
 					
 				case LAST_ATTEMPT_WARNING:
@@ -122,28 +127,34 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 					return true;
 					
 				case STRONG_AUTH_NOT_ENROLLED:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.account_security_not_enrolled));
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+							resources.getString(R.string.account_security_not_enrolled));
 					return true;
 				
 				case AUTH_BAD_ACCOUNT_STATUS:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.zluba_error));
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+							resources.getString(R.string.zluba_error));
 					return true;
 				
 				case ACCOUNT_NUMBER_REREGISTERED:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.account_number_reregistered));
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+							resources.getString(R.string.account_number_reregistered));
 					return true;
 					
 				case LOCKED_OUT_ACCOUNT:
 					TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_LOCKED);
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.locked_account));
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+							resources.getString(R.string.locked_account));
 					return true;
 					
 				case ACCOUNT_SETUP_PENDING:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.account_setup_pending));
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+							resources.getString(R.string.account_setup_pending));
 					return true;
 				
 				case ACCOUNT_NUMBER_CHANGED:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, resources.getString(R.string.account_number_changed));
+					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+							resources.getString(R.string.account_number_changed));
 					return true;
 					
 			}

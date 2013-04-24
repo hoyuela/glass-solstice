@@ -9,10 +9,10 @@ public class SchedulePaymentSingleton {
 
 	private static volatile SchedulePaymentSingleton instance = null;
 	
-	private Bundle schedulePaymentBundle;
+	private Bundle schedulePaymentBundle = null;
 	
 	private SchedulePaymentSingleton() {
-		schedulePaymentBundle = null;
+		// Constructor only to be accessed by getInstance.
 	}
 	
 	public static SchedulePaymentSingleton getInstance() {
@@ -22,7 +22,7 @@ public class SchedulePaymentSingleton {
 		return instance;
 	}
 	
-	public void setState(Bundle bundle) {
+	public void setState(final Bundle bundle) {
 		schedulePaymentBundle = null;
 		if(bundle != null) {
 			schedulePaymentBundle = new Bundle(bundle);
