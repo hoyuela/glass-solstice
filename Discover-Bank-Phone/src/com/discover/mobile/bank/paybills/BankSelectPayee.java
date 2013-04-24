@@ -55,12 +55,7 @@ public class BankSelectPayee extends BaseFragment{
 	public boolean errorExists;
 
 	public BankSelectPayee(){
-
-	}
-
-	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		// Default constructor
 	}
 
 	/**
@@ -93,7 +88,9 @@ public class BankSelectPayee extends BaseFragment{
 	/**
 	 * Optional Override in subclass
 	 */
-	protected void customSetup(){}
+	protected void customSetup(){
+		// Called in onCreateView. Meant to be overridden if needed.
+	}
 
 	@Override
 	public void onResume() {
@@ -110,27 +107,29 @@ public class BankSelectPayee extends BaseFragment{
 	 * the list on the screen with the data.
 	 */
 	private void initViewWithBundleData() {
-		final Button addPayee = (Button)view.findViewById(R.id.add_payee);
+		final Button addPayee = (Button) view.findViewById(R.id.add_payee);
 
-		/**Used Cache list of Payees*/
+		/** Used Cache list of Payees */
 		payees = BankUser.instance().getPayees();
 
-		/**Set Button Text to specific text when there are no payees in list*/
-		if(null == payees || payees.payees.isEmpty()){
-			empty.setVisibility(View.VISIBLE);			
+		/** Set Button Text to specific text when there are no payees in list */
+		if (null == payees || payees.payees.isEmpty()) {
+			empty.setVisibility(View.VISIBLE);
 			addPayee.setText(getResources().getString(R.string.select_payee_no_payees));
 		}
-		/**Set Button Text  to specific text when there are payees in the list, 
-		 * in addition populate list of payees*/
-		else{
+		/**
+		 * Set Button Text to specific text when there are payees in the list,
+		 * in addition populate list of payees
+		 */
+		else {
 			addPayee.setText(getResources().getString(R.string.select_payee_another_payee));
 			payeesList.removeAllViews();
 			int i = 0;
 			final int size = payees.payees.size();
-			for(final PayeeDetail payee : payees.payees){
+			for (final PayeeDetail payee : payees.payees) {
 				SimpleChooseListItem item = null;
 
-				if(size == 1) {
+				if (size == 1) {
 					item = createSingleListItem(payee);
 					payeesList.addView(item);
 				} else if (i == 0) {

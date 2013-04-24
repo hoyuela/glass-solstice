@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,17 +33,11 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	/**Inflater used to inflate layouts*/
 	private final LayoutInflater inflater;
 
-	/**Resources of the application*/
-	private final Resources res;
-
 	/**Fragment currently displayed*/
 	private final ReviewPaymentsTable fragment;
 
 	/**Integer value to convert from cents to dollar*/
 	private static final int DOLLAR_CONVERSION = 100;
-
-	/**List of payees in the application*/
-	private final ListPayeeDetail payees;
 
 	/**
 	 * Constuctor for the adapter
@@ -56,9 +49,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	public ReviewPaymentsAdapter(final Context context, final int textViewResourceId, final ReviewPaymentsTable fragment) {
 		super(context, textViewResourceId);
 		inflater = LayoutInflater.from(context);
-		res = context.getResources();
 		this.fragment =fragment;
-		payees = (ListPayeeDetail) BankUser.instance().getObjectFromCache(ListPayeeDetail.class);
 	}
 
 	/**
