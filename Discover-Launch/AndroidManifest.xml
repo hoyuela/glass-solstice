@@ -39,7 +39,7 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
- � �
+ 
     <application
         android:name="com.discover.mobile.common.DiscoverApplication"
         android:allowBackup="false"
@@ -94,22 +94,21 @@
             android:label="@string/app_name"
             android:launchMode="standard" >
         </activity>
- � � � �
+ 
         <activity
             android:name="com.discover.mobile.card.auth.strong.EnhancedAccountSecurityActivity"
             android:label="@string/app_name"
             android:launchMode="standard" >
- � � � �
         </activity>
         
- � � �  <activity
+ 	    <activity
             android:name="com.discover.mobile.bank.deposit.CheckDepositCaptureActivity"
             android:label="@string/app_name"
             android:launchMode="standard" 
             android:screenOrientation="landscape">
         </activity>
         
-  � � �  <activity
+ 	    <activity
             android:name="com.discover.mobile.bank.help.LoggedOutFAQActivity"
             android:label="@string/app_name"
             android:launchMode="standard" >
@@ -118,9 +117,8 @@
  		 <activity
             android:name="com.discover.mobile.bank.deposit.DepositSubmissionActivity"
             android:label="@string/app_name"
-            android:launchMode="standard" 
-            android:screenOrientation="portrait">
-        </activity>
+            android:launchMode="standard"
+            android:configChanges="orientation|keyboard|screenSize"/>
         
         <activity
             android:name="com.discover.mobile.bank.login.LockOutUserActivity"
@@ -181,15 +179,11 @@
         <receiver android:name="com.xtify.sdk.c2dm.C2DMBroadcastReceiver" >
             <intent-filter android:permission="com.google.android.c2dm.permission.SEND" >
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
- � � � � � � � �
                 <category android:name="com.discover.mobile" />
- � � � � � �
             </intent-filter>
             <intent-filter android:permission="com.google.android.c2dm.permission.SEND" >
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
- � � � � � � � �
                 <category android:name="com.discover.mobile" />
- � � � � � �
             </intent-filter>
         </receiver>
         <receiver android:name="com.discover.mobile.card.push.receive.XtifyNotifier" >
@@ -235,6 +229,9 @@
                 <action android:name="com.discover.mobile.card.navigation.LogoutUser"/>
             </intent-filter>
         </receiver>
+        
+         <activity android:name=".bank.help.BankInfoNavigationActivity"
+                   android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

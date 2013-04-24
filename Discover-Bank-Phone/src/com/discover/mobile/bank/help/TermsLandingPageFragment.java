@@ -21,6 +21,7 @@ import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpWidget;
 
 /**
@@ -41,7 +42,11 @@ public class TermsLandingPageFragment extends BaseFragment {
 		
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
+		if( !Globals.isLoggedIn() ) {
+			help.showHelpItems(HelpMenuListFactory.instance().getLoggedOutHelpItems());
+		} else {
+			help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
+		}
 		
 		/**Populate menu based on users eligibility of features*/
 		final List<String> allValues = new ArrayList<String>(
