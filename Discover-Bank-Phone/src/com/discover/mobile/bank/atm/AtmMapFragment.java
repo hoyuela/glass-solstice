@@ -233,14 +233,13 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			streetView.showWebView();
 		}
 
-		setMapTransparent((ViewGroup)fragment.getView());
-
-		if(isHelpModalShowing()){
-			HelpMenuListFactory.instance().showAtmHelpModal();
-		}
 		if( fragment.getView() != null && fragment.getMap() != null ) {
 			setMapTransparent((ViewGroup)fragment.getView());
 		}
+	
+		if(isHelpModalShowing()){
+			HelpMenuListFactory.instance().showAtmHelpModal();
+		}		
 	}
 
 	/**
