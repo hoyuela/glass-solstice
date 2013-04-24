@@ -36,8 +36,6 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.bank_atm_locator_activity);
 		showActionBar();
-
-		setMapFragment((AtmMapFragment) this.getSupportFragmentManager().findFragmentById(R.id.map));
 	}
 
 	/**
@@ -68,6 +66,42 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 		navigationToggle.setVisibility(View.INVISIBLE);
 		logout.setVisibility(View.INVISIBLE);
 	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		/**
+		 * If the backstack of the fragment manager for this activity is empty, then
+		 * the map fragment has not been added and it should be added.
+		 */
+		if( 0 == this.getSupportFragmentManager().getBackStackEntryCount() )  {
+			mapFragment = new SearchNearbyFragment();
+			mapFragment.setArguments(new Bundle());
+			getSupportFragmentManager().beginTransaction()
+									   .add(R.id.map, mapFragment)
+									   .addToBackStack(mapFragment.getClass().getSimpleName())
+									   .commit();
+		}
+		
+		setMapFragment(mapFragment);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		/**
+		 * Remove the fragment from the activity to avoid any leaks only if onPause is being called
+		 * because this Activity is being destroyed
+		 */
+		if(isFinishing() && mapFragment != null && getSupportFragmentManager().getBackStackEntryCount() > 0 ) {
+			getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
+			mapFragment = null;
+		}
+	}
+	
+	
 
 	@Override
 	public ErrorHandler getErrorHandler() {

@@ -1,5 +1,5 @@
 /*
- * © Copyright Solstice Mobile 2013
+ * ï¿½ Copyright Solstice Mobile 2013
  */
 package com.discover.mobile.bank.atm;
 
@@ -145,17 +145,40 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		fragment = SupportMapFragment.newInstance();
-		listFragment = new AtmListFragment();
-		listFragment.setObserver(this);
-		GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(getActivity());
+		
+		/**
+		 * Check if this is called because of rotation or because it is the first time it is instantiated.
+		 * Nested Fragments should only be instantiated on the initial creation of this fragment.
+		 */
+		if( savedInstanceState == null ) {
+			fragment = SupportMapFragment.newInstance();
+			listFragment = new AtmListFragment();
+			listFragment.setObserver(this);
+			GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(getActivity());
+		}
 	}
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		view = inflater.inflate(getLayout(), null);
-		this.getChildFragmentManager().beginTransaction().replace(R.id.discover_map, fragment).commitAllowingStateLoss();
-		this.getChildFragmentManager().beginTransaction().replace(R.id.discover_list, listFragment).commitAllowingStateLoss();
+		
+		/**
+		 * The map and list fragments should only be added if they aren't already on the back stack. These
+		 * are the only nested fragments that should be on the back stack of the child fragment manager for this fragment.
+		 */
+		if( getChildFragmentManager().getBackStackEntryCount() == 0 ) {
+			this.getChildFragmentManager().beginTransaction().add(R.id.discover_map, fragment).addToBackStack(fragment.getClass().getSimpleName()).commit();
+			this.getChildFragmentManager().beginTransaction().add(R.id.discover_list, listFragment).addToBackStack(listFragment.getClass().getSimpleName()).commit();
+		}
+		/**
+		 * If fragments are already on the back stack then just do a look up in the back stack.
+		 */
+		else {
+			fragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.discover_map);
+			listFragment = (AtmListFragment)getChildFragmentManager().findFragmentById(R.id.discover_list);
+			listFragment.setObserver(this);
+		}
+		
 		final WebView web = (WebView) view.findViewById(R.id.web_view);
 		final ProgressBar bar = (ProgressBar) view.findViewById(R.id.progress_bar);
 		streetView = new AtmWebView(web, bar);
@@ -173,7 +196,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 		setUpListeners();
 		disableMenu();
-		savedState = savedInstanceState;
+		savedState = getArguments();
+		
 		return view;
 	}
 
@@ -184,6 +208,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void onResume(){
 		super.onResume();
+		
 		final NavigationRootActivity activity = ((NavigationRootActivity)this.getActivity());
 		activity.setCurrentFragment(this);
 		setUpMap();
@@ -195,7 +220,10 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			showList();
 		}	
 
-		if(null != savedState){
+		/**
+		 * Verify that the bundle used to populate the map fragment has data.
+		 */
+		if(null != savedState && !savedState.isEmpty()){
 			resumeStateOfFragment(savedState);
 		}
 
@@ -209,6 +237,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 		if(isHelpModalShowing()){
 			HelpMenuListFactory.instance().showAtmHelpModal();
+		}
+		if( fragment.getView() != null && fragment.getMap() != null ) {
+			setMapTransparent((ViewGroup)fragment.getView());
 		}
 	}
 
@@ -398,6 +429,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 * @param savedInstanceState - bundle holding the state of the fragment
 	 */
 	private void resumeStateOfFragment(final Bundle savedInstanceState) {
+	
 		locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
 		final Double lat = savedInstanceState.getDouble(LAT_KEY);
 		final Double lon = savedInstanceState.getDouble(LONG_KEY);
@@ -431,6 +463,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 				showStreetView(savedInstanceState);
 			}
 		}
+		
 	}
 
 	/**
@@ -536,8 +569,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	/**
 	 * Save the state of the fragment
 	 */
-	@Override
-	public void onSaveInstanceState(final Bundle outState){
+	private void onStoreState(final Bundle outState){
 		//Something went wrong, do not save any information
 		if(null == locationManagerWrapper){return;}
 		locationManagerWrapper.stopGettingLocaiton();
@@ -564,15 +596,22 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		if(shouldGoBack){
 			streetView.bundleData(outState);
 		}
-		outState.putBoolean(ATM_HELP_MODAL, helpModalShowing);
-		super.onSaveInstanceState(outState);
 	}
 
 	@Override
 	public void onPause(){
 		super.onPause();
+		
 		location = mapWrapper.getCurrentLocation();
 		enableMenu();
+		
+		/**
+		 * Save the state of this fragment in the argument bundle provided
+		 * at instantiation. This allows for the data to persist even
+		 * if another fragment has been placed on top of this one in the
+		 * hosting activities back stack.
+		 */
+		this.onStoreState(getArguments());
 	}
 
 	/**

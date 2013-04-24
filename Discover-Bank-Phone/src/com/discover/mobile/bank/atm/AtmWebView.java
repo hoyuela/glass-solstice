@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.google.common.base.Strings;
 
 /**
  * Class controlling the web view and anything that needs to be loaded into it.
@@ -141,8 +142,10 @@ public class AtmWebView{
 	public void bundleData(final Bundle outState){
 		outState.putBoolean(REPORTING, isReportingAtm);
 		if(!isReportingAtm){
-			outState.putDouble(BankExtraKeys.STREET_LAT, Double.parseDouble(lat));
-			outState.putDouble(BankExtraKeys.STREET_LON, Double.parseDouble(lon));
+			if( !Strings.isNullOrEmpty(lat) && !Strings.isNullOrEmpty(lon)) {
+				outState.putDouble(BankExtraKeys.STREET_LAT, Double.parseDouble(lat));
+				outState.putDouble(BankExtraKeys.STREET_LON, Double.parseDouble(lon));
+			}
 		}else {
 			outState.putString(BankExtraKeys.ATM_ID, atm_id);
 		}
