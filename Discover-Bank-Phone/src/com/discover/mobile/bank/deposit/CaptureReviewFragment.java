@@ -50,11 +50,7 @@ import com.google.common.base.Strings;
  *
  */
 public class CaptureReviewFragment extends BankDepositBaseFragment implements BankErrorHandlerDelegate {	
-	/**
-	 * The cell in the table that has the account selected for check deposit in it 
-	 * we need a reference to it so we can set inline error.
-	 */
-	private BankEditDetail accountDetail;
+
 	/**
 	 * The cell in the table that has the amount for check deposit in it 
 	 * we need a reference to it so we can set inline error.
@@ -72,16 +68,10 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	/**
 	 * Key used to store in-line error for the image cell which shows the captured images for checks
 	 */
-	private final static String IMAGE_CELL_ERROR_KEY = "image" +KEY_ERROR_EXT;
-	/**
-	 * Boolean flag used to determine if user received a duplicate check error
-	 */
-	private static boolean hasDuplicateError = false;
+	private final static String IMAGE_CELL_ERROR_KEY = "image" + KEY_ERROR_EXT;
 
-	private final int depositSubmitActivityId = 1;
-
-	int depositAmount = 0;
-	Account account = null;
+	private int depositAmount = 0;
+	private Account account = null;
 
 	/**
 	 * Inflate and setup the UI for this fragment.
@@ -270,7 +260,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		if( account != null ) {
 			/**These BankEditDetail objects override the onClick
 			 * focusChange listeners of its super class.*/
-			accountDetail = new BankEditDetail(currentActivity);
+			final BankEditDetail accountDetail = new BankEditDetail(currentActivity);
 
 			accountDetail.getDividerLine().setVisibility(View.INVISIBLE);
 			accountDetail.getTopLabel().setText(BankStringFormatter.getAccountEndingInString(account.accountNumber.ending));
@@ -378,8 +368,9 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		if(extras != null) {
 			depositSubmission.putExtras(extras);
 		}
-
-		startActivityForResult(depositSubmission, depositSubmitActivityId);
+		final int activityId = 1;
+		
+		startActivityForResult(depositSubmission, activityId);
 	}
 	
 	@Override
@@ -444,7 +435,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	public void clearErrors() {
 		clearGeneralError();
 		amountDetail.getEditableField().clearErrors();
-		checkImageCell.clearError();		
+		checkImageCell.clearError();
 	}
 
 	/**
@@ -463,7 +454,8 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			/**Store error shown at bottom of amount field*/
 			if( amountDetail != null && amountDetail.getEditableField().isInErrorState ) {
 				final String key = amountDetail.getTopLabel().getText().toString();
-				outState.putString(key +KEY_ERROR_EXT, amountDetail.getEditableField().getErrorLabel().getText().toString());
+				outState.putString(key + KEY_ERROR_EXT, 
+										amountDetail.getEditableField().getErrorLabel().getText().toString());
 			}
 
 			/**Store error shown at bottom of captured image field*/

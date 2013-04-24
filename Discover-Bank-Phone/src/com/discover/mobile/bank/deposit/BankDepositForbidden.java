@@ -32,12 +32,6 @@ public class BankDepositForbidden extends BaseFragment {
 	 */
 	protected BankLayoutFooter footer;
 	
-	
-	/**
-	 * Reference to TextView that displays the error message to the user.
-	 */
-	private TextView errorText;
-	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -48,7 +42,7 @@ public class BankDepositForbidden extends BaseFragment {
 		footer.setHelpNumber(getString(com.discover.mobile.bank.R.string.bank_deposit_forbidden_number));
 		
 		/**Fetch text view that will display error message to the user*/
-		errorText = (TextView)view.findViewById(R.id.top_note_text);
+		final TextView errorText = (TextView)view.findViewById(R.id.top_note_text);
 		
 		/**Help widget setup to show faq*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
