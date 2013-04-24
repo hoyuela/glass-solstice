@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.framework.BankConductor;
@@ -145,7 +146,12 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			/**Clear the last exception occurred to avoid the back press not working*/
 			exceptionHandler.clearLastException();
 			
-			BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.DepositError);			
+			//Check if network connection available
+			if( BankNetworkServiceCallManager.isNetworkConnected() ) {
+				BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.DepositError);  
+			} else {
+				((BankErrorHandler)BankErrorHandler.getInstance()).handleNoConnection();
+			}			
 		}
 	}
 

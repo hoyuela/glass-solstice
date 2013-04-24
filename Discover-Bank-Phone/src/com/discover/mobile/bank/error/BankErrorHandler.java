@@ -19,7 +19,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
 import com.discover.mobile.bank.deposit.BankDepositWorkFlowStep;
-import com.discover.mobile.bank.deposit.CaptureReviewFragment;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -581,27 +580,13 @@ public class BankErrorHandler implements ErrorHandler {
 			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
 					R.string.bank_network_connection_error_title,
 					R.string.bank_network_connection_error_body,
-					R.string.bank_network_connection_error_action);
+					R.string.ok);
 	
 			//Set dismiss modal and will retransmit the service call when the user clicks on it
 			modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(final View v) {
 					modal.dismiss();
-					
-					/**Check if the activity is meant for check deposit, which is handled differently from other service calls*/
-					if( activity instanceof BankNavigationRootActivity &&  
-						((BankNavigationRootActivity)activity).getCurrentContentFragment() instanceof CaptureReviewFragment) {
-						
-						final CaptureReviewFragment fragment =  (CaptureReviewFragment)((BankNavigationRootActivity)activity).getCurrentContentFragment();
-						fragment.sendDeposit();
-						
-					} else {
-						final NetworkServiceCall<?> networkServiceCall =  BankNetworkServiceCallManager.getInstance().getLastServiceCall();
-						if( networkServiceCall != null ) {
-							networkServiceCall.retransmit(activity);
-						}
-					}
 				}
 			});
 			
