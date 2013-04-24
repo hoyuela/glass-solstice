@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.R;
+import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.ui.CardInfoForToggle;
 
@@ -71,13 +72,20 @@ public class AccountToggleView extends RelativeLayout {
 
 		this.setVisibility(View.INVISIBLE);
 
-		final CardInfoForToggle cardInfo = FacadeFactory.getCardFacade().getCardInfoForToggle(this.context);
+		if(KeepAlive.getCardAuthenticated()){
+			CardInfoForToggle cardInfo;
+			if(null != Globals.getCardLastFour()){
+				cardInfo = FacadeFactory.getCardFacade().getCardInfoForToggle(this.context);
+			}else{
+				cardInfo = new CardInfoForToggle(Globals.getCardName(), Globals.getCardLastFour());
+			}
 
-		if(null != cardInfo){
-			cardName.setText(cardInfo.getCardAccountName());
-			cardEnding.setText(context.getResources().getString(
-					R.string.account_ending_in)
-					+ " " +cardInfo.getCardEndingDigits());
+			if(null != cardInfo){
+				cardName.setText(cardInfo.getCardAccountName());
+				cardEnding.setText(context.getResources().getString(
+						R.string.account_ending_in)
+						+ " " +cardInfo.getCardEndingDigits());
+			}
 		}
 
 		setAccountType();
@@ -93,6 +101,8 @@ public class AccountToggleView extends RelativeLayout {
 	 *            card's ending digits.
 	 */
 	public void setCardNameAndEnding(final String name, final String endingDigits) {
+		Globals.setCardLastFour(endingDigits);
+		Globals.setCardName(name);
 		cardName.setText(name);
 		cardEnding.setText(context.getResources().getString(
 				R.string.account_ending_in)
