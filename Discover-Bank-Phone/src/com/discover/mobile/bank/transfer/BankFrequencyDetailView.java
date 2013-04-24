@@ -159,29 +159,16 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	public void resumeState(final Bundle bundle){
 		if(bundle != null){
 			index = bundle.getInt(RADIO, CANCELLED);
-			final String date = bundle.getString(DATE_VALUE);
-			final String transaction = bundle.getString(TRANS_VALUE);
-			final String amount = bundle.getString(AMOUNT_VALUE);
-			if(null != date){
-				dateValue.setText(date);
+			final String savedDate = bundle.getString(DATE_VALUE);
+			final String savedTransactionLimit = bundle.getString(TRANS_VALUE);
+			final String savedAmount = bundle.getString(AMOUNT_VALUE);
+			if(null != savedDate){
+				dateValue.setText(savedDate);
 			}
-			transactionAmount.setText(transaction);
-			dollarAmount.setText(amount);
+			transactionAmount.setText(savedTransactionLimit);
+			dollarAmount.setText(savedAmount);
 			disableCancelled();
-			switch(index){
-				case CANCELLED:
-					enableCancelled();
-					break;
-				case DATE:
-					enableDate();
-					break;
-				case TRANSACTION:
-					enableTransaction();
-					break;
-				case AMOUNT:
-					enableAmount();
-					break;
-				}
+			setRadioButtonState(index);
 			
 			/**Reset Calendar Event Listener*/
 			final Fragment fragment = 
@@ -195,6 +182,27 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		}
 	}
 
+	/**
+	 * Updates the selected radio button to the passed index value.
+	 * 
+	 * @param selectedIndex
+	 */
+	private void setRadioButtonState(final int selectedIndex) {
+		switch(selectedIndex){
+		case CANCELLED:
+			enableCancelled();
+			break;
+		case DATE:
+			enableDate();
+			break;
+		case TRANSACTION:
+			enableTransaction();
+			break;
+		case AMOUNT:
+			enableAmount();
+			break;
+		}
+	}
 	/**
 	 * Get the duration type for the service call
 	 * @return the duration type for the service call
@@ -424,7 +432,8 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		}
 		
 		/**Show calendar as a dialog*/
-		calendarFragment.show(((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(),
+		calendarFragment
+			.show(((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(),
 				res.getString(R.string.schedule_pay_date_picker_title),
 				displayedDate,
 			    chosenPaymentDate, 
@@ -440,27 +449,32 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		// Setup listener
 		final CalendarListener calendarListener = new CalendarListener(calendarFragment) {
 			private static final long serialVersionUID = -5277452816704679940L;
-
+			
 			@Override
 			public void onSelectDate(final Date date, final View view) {
 				super.onSelectDate(date, view);
-
-				final Calendar cal=Calendar.getInstance();
+				final long halfSecondDelay = 500;
+				final Calendar cal = Calendar.getInstance();
 				cal.setTime(date);
 				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
-
+				
 				//Delay closing of calendar to be able to see the selection change
-				new Handler().postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						calendarFragment.dismiss();
-					}
-				}, 500);
+				new Handler().postDelayed(getCalendarDissmissRunnable(), halfSecondDelay);
 			}
 		};
-
 		return calendarListener;
 	}
+	
+	private Runnable getCalendarDissmissRunnable() {
+		return new Runnable() {
+			
+			@Override
+			public void run() {
+				calendarFragment.dismiss();
+			}
+		};
+	}
+
 
 	/**
 	 * Updates the chosen date Calendar variable, {@code chosenPaymentDate}. If
@@ -505,11 +519,16 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	 * @param value- value to format
 	 * @return the formatted value
 	 */
-	private String formatDayOfMonth(final Integer value){
-		String valueString = value.toString();
-		if (value < 10){
+	private String formatDayOfMonth(final Integer dayOfMonth){
+		String valueString = dayOfMonth.toString();
+		final int minDoubleDigitDay = 10;
+		
+		final boolean isSingleDigitDay = dayOfMonth < minDoubleDigitDay;
+		
+		if (isSingleDigitDay){
 			valueString = "0" + valueString;
 		}
+		
 		return valueString;
 	}
 }
