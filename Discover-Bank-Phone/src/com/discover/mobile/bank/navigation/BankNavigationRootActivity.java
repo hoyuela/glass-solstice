@@ -46,8 +46,8 @@ implements OnPaymentCanceledListener {
 	/** If a fragment error exists this will be set to true. */
 	private boolean fragmentErrorShown = false;
 
-	private final String BANK_USER_KEY = "bankUser";
-	private final String BANK_SESSION_KEY = "session";
+	private static final String BANK_USER_KEY = "bankUser";
+	private static final String BANK_SESSION_KEY = "session";
 
 	/**
 	 * Resume the activity to the state that it was when the activity went to
