@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.os.Bundle;
 
+import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
@@ -42,6 +45,7 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 
 	/** Reference to the PayeeDetail with the information that will be sent to the server for adding a payee**/
 	private final AddPayeeDetail payeeDetail;
+	private PayeeDetail result;
 	private final boolean isUpdate;
 	
 	/**
@@ -119,6 +123,9 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 			throws IOException {
 		final PayeeDetail data = super.parseSuccessResponse(status, headers, body);
 		
+		/**Store the result*/
+		result = data;
+		
 		return data;
 	}
 	
@@ -139,5 +146,15 @@ public class AddPayeeServiceCall extends BankJsonResponseMappingNetworkServiceCa
 		return isUpdate;
 	}
 	
+	@Override
+	public Bundle getResponse() {
+		final Bundle bundle = new Bundle();
+		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
+
+		/**Set parameter that specifies whether it is an update or newly added payee*/
+		bundle.putSerializable(BankAddPayeeConfirmFragment.KEY_PAYEE_UPDATE, isUpdate);
+		
+		return bundle;
+	}
 
 }

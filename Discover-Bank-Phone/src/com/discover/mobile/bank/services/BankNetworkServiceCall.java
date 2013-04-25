@@ -19,6 +19,11 @@ public abstract class BankNetworkServiceCall<M>
 	 * Flag used to determine whether service call is to run silently in background.
 	 */
 	boolean isBackgroundCall = false;
+	/**
+	 * Flag used to mark the service call as being handled by the application. 
+	 * Caller is responsible for marking this flag once the result has been processed to avoid re-handling
+	 */
+	boolean handled = false;
 	
 	/**
 	 * 
@@ -43,6 +48,23 @@ public abstract class BankNetworkServiceCall<M>
 	@Override
 	public boolean isBackgroundCall() {
 		return isBackgroundCall;
+	}
+	
+	/**
+	 * Method used to mark as the service call being handled. This allows the application to know whether the service call has
+	 * been processed.
+	 */
+	public void markHandled() {
+		handled = true;
+	}
+	
+	/**
+	 * Method used to check if the service call response has been processed.
+	 * 
+	 * @return True if handled, false otherwise
+	 */
+	public boolean isHandled() {
+		return handled;
 	}
 
 }
