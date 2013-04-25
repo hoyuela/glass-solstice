@@ -5,7 +5,7 @@
     android:paddingLeft="@dimen/forms_inner_padding"
     android:paddingRight="@dimen/forms_inner_padding">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"  >
 	   
@@ -24,6 +24,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@+id/error_icon"
+	        android:paddingTop="5dp"
 	        style="@style/modal_title_text"/>
 	   	
 	    <TextView
