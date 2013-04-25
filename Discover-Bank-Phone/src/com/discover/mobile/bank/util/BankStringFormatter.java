@@ -111,7 +111,7 @@ public final class BankStringFormatter {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 		final StringBuilder accountEndingInBuilder = new StringBuilder("");
 		if(R.string.account_ending_in != 0){
-			final String endingIn = currentActivity.getResources().getString(R.string.account_ending_in);
+			final String endingIn = currentActivity.getResources().getString(R.string.account_ending_in_first_two_caps);
 			accountEndingInBuilder.append(endingIn);
 			accountEndingInBuilder.append(" ");
 			if(!Strings.isNullOrEmpty(accountNumber))

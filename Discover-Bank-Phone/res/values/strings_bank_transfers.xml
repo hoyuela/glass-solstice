@@ -47,6 +47,8 @@
 	
 	
 	<!-- Error Labels -->
-	<string name="amount_less_than_twenty_five">Too low (less than $25)</string>
-	<string name="invalid_date">Please select a date</string>
+	<string name="select_accounts_error">Please select a To and From account to make a transfer.</string>
+	<string name="amount_less_than_twenty_five">Too low (less than $25).</string>
+	<string name="invalid_date">Please select a date.</string>
+	<string name="too_few_transfers">Enter the number of total transfers, must be greater than 1.</string>
 </resources>

@@ -152,7 +152,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 				areBothAccountsInternal = !toAccount.isExternalAccount() && !fromAccount.isExternalAccount();
 			}
 			
-			if(isRecurringTransfer) {
+			if(isRecurringTransfer && !areBothAccountsInternal) {
 				setDateFieldToFirstValidDate(1);
 			} else if(areBothAccountsInternal) {
 				setDateFieldToFirstValidDate(0);
@@ -160,8 +160,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 				
 				setFrequencyToOneTime();
 				disableFrequencySelection();
-			}
-			else if(!Strings.isNullOrEmpty(savedDate)) {
+			} else if(!Strings.isNullOrEmpty(savedDate)) {
 				dateTextView.setText(savedDate);				
 			}else {
 				setDateFieldToFirstValidDate(0);
@@ -351,14 +350,36 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 * Update the text labels on the screen for the selected accounts.
 	 */
 	private void updateSelectedAccountLabels() {
-		if(toAccount != null) {
+		if(toAccount != null && toCell != null) {
+			toCell.getTopLabel().setText(getEndingInText(true, toAccount));
 			toAccountTextView.setText(toAccount.nickname);
 		}
 		if(fromAccount != null) {
+			fromCell.getTopLabel().setText(getEndingInText(false, fromAccount));
 			fromAccountTextView.setText(fromAccount.nickname);
 		}
 	}
 
+	/**
+	 * 
+	 * @param cell a BankSimpleEditDetail cell that has a top label which should display an Account Ending in XXXX
+	 * @param account an account which has a last 4 digits of an account.
+	 * @return a String in the form of {previous title text} Account Ending in {last 4 digits}
+	 */
+	private String getEndingInText (final boolean isToAccount, final Account account) {
+		final StringBuilder builder = new StringBuilder();
+		String prefix = "From";
+		if(isToAccount)
+			prefix = "To";
+		
+		builder.append(prefix);
+		if(account != null && account.accountNumber != null && !Strings.isNullOrEmpty(account.accountNumber.ending)) {
+			builder.append(" ");
+			builder.append(BankStringFormatter.getAccountEndingInString(account.accountNumber.ending));
+		}
+		return builder.toString();
+	}
+	
 	/**
 	 * Handle the chosen frequency from the frequency widget
 	 * @param bundle - bundle of data
@@ -637,8 +658,23 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		isComplete &= validateAmount();
 		isComplete &= validateContinueUntilDate();
 		isComplete &= validateContinueUntilSetAmount();
+		isComplete &= validateUntilTransfersReached();
 		
 		return isComplete;
+	}
+	
+	private boolean validateUntilTransfersReached() {
+		boolean hasEnoughTransfers = true;
+		
+		if(TransferDetail.UNTIL_COUNT.equalsIgnoreCase(recurring.getDurationType())) {
+			hasEnoughTransfers = 1 < Integer.parseInt(recurring.getDurationValue());
+			if(!hasEnoughTransfers) {
+				showErrorLabel(getString(R.string.too_few_transfers), 
+										(TextView)recurring.findViewById(R.id.transactions_error_label));
+			}
+		}
+		
+		return hasEnoughTransfers;
 	}
 	
 	private boolean validateContinueUntilDate() {
@@ -650,7 +686,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 					!getString(R.string.select_a_date).equalsIgnoreCase(untilDate);
 			
 			if(!hasGoodDate) {
-				showErrorLabel(getString(R.string.invalid_date), (TextView)recurring.findViewById(R.id.date_error_label));
+				showErrorLabel(getString(R.string.invalid_date), 
+										(TextView)recurring.findViewById(R.id.date_error_label));
 			}
 		}else {
 			//User is not using this widget.
@@ -682,8 +719,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		final boolean accountsAreSelected = toAccount != null && fromAccount != null;
 		
 		if(!accountsAreSelected) {
-			showErrorLabel("Please select a To and From account to make a transfer.", 
-														(TextView)getView().findViewById(R.id.general_error));
+			showErrorLabel(getString(R.string.select_accounts_error), 
+								(TextView)getView().findViewById(R.id.general_error));
 		}
 		
 		return accountsAreSelected;
@@ -892,6 +929,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 				handled = false;
 			}
 		}
+		
+		handled |= recurring.handleError(msgErrResponse);
+		
 		showErrorLabel(getString(R.string.bank_deposit_error_notify), (TextView)getView().findViewById(R.id.general_error));
 
 		scrollView.smoothScrollTo(0, 0);
