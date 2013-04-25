@@ -33,6 +33,7 @@ import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.help.ContactUsType;
 import com.discover.mobile.bank.help.PrivacyTermsType;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
@@ -718,7 +719,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		 * Used to remember the lastLoginAccount at startup of the application, in case the user toggles to a different account
 		 * and does not login. This variable will be used to revert the application back to the original last logged in account.
 		 */
-		AccountType lastLoginAcct = Globals.getCurrentAccount();
+		final AccountType lastLoginAcct = Globals.getCurrentAccount();
 		if (AccountType.BANK_ACCOUNT == lastLoginAcct) {
 			setLoginTypeToBank();
 		} else {
@@ -1113,6 +1114,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * SSO sign-on because of a Card BadStatus.
 	 */
 	public void showALUStatusModal(final BankLoginDetails credentials) {
+		//Set that an sso user is attempting to login
+		BankUser.instance().setSsoUser(true);
 		final ModalDefaultTopView aluModalTopView = new ModalDefaultTopView(this, null);
 		aluModalTopView.setTitle(R.string.skipsso_modal_title);
 		aluModalTopView.setContent(R.string.skipsso_modal_body);
