@@ -116,6 +116,8 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		((LinearLayout) view.findViewById(R.id.dollar_layout)).setOnClickListener(getLayoutListener(AMOUNT));
 
 		dollarAmount.setEnabled(false);
+		dollarAmount.enableBankAmountTextWatcher(true);
+		
 		transactionAmount.setEnabled(false);
 		earliestPaymentDate = Calendar.getInstance();
 		chosenPaymentDate = Calendar.getInstance();
@@ -465,16 +467,20 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		return calendarListener;
 	}
 	
+	/**
+	 * 
+	 * @return a runnable, which when, is run, dismisses the calendar fragment
+	 */
 	private Runnable getCalendarDissmissRunnable() {
 		return new Runnable() {
 			
 			@Override
 			public void run() {
-				calendarFragment.dismiss();
+				if(calendarFragment != null)
+					calendarFragment.dismiss();
 			}
 		};
 	}
-
 
 	/**
 	 * Updates the chosen date Calendar variable, {@code chosenPaymentDate}. If
@@ -488,47 +494,9 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	private void setChosenPaymentDate(final Integer year, final Integer month,
 			final Integer day) {
 
-		dateValue.setText(formatDate(year.toString(),
-				formatDayOfMonth(month), formatDayOfMonth(day)));
+		dateValue.setText(BankStringFormatter.formatDate(year.toString(),
+				BankStringFormatter.formatDayOfMonth(month), BankStringFormatter.formatDayOfMonth(day)));
 		chosenPaymentDate.set(year, month - 1, day);
 	}
 
-
-	/**
-	 * Formats date as MM/dd/YYYY.
-	 * 
-	 * @param year
-	 * @param month
-	 *            formatted 1-12 (i.e. not 0 for January)
-	 * @param day
-	 * @return formatted date
-	 */
-	private String formatDate(final String year, final String month,
-			final String day) {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(month); // Month
-		sb.append('/');
-		sb.append(day); // Day
-		sb.append('/');
-		sb.append(year); // Year
-		return sb.toString();
-	}
-
-	/**
-	 * Format the day of the month
-	 * @param value- value to format
-	 * @return the formatted value
-	 */
-	private String formatDayOfMonth(final Integer dayOfMonth){
-		String valueString = dayOfMonth.toString();
-		final int minDoubleDigitDay = 10;
-		
-		final boolean isSingleDigitDay = dayOfMonth < minDoubleDigitDay;
-		
-		if (isSingleDigitDay){
-			valueString = "0" + valueString;
-		}
-		
-		return valueString;
-	}
 }

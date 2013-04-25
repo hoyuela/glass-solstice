@@ -15,7 +15,8 @@ import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.util.BankStringFormatter;
 
 /**
- * Widget used to display a user's Account information in a Grouped format. This view will display each account in the group within a BankAccountView.
+ * Widget used to display a user's Account information in a Grouped format. This view will display each account 
+ * in the group within a BankAccountView.
  * Uses the layout specified in res\layout\bank_account_group_view.xml to display the data.
  * 
  * @author henryoyuela
@@ -100,7 +101,7 @@ public class BankAccountGroupView extends LinearLayout  {
 	 */
 	private void setBalance(final double value) {
 		//Format incoming value to a String with a $ prefix
-		final String text = BankStringFormatter.convertToDollars(Double.toString(value));
+		final String text = BankStringFormatter.convertStringFloatToDollars(Double.toString(value));
 		//If balance value is negative change color to red otherwise set as black
 		final int color = (value < 0) ? R.color.error_indicator : R.color.black;
 		

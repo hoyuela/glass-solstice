@@ -474,7 +474,9 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 *            the Bundle from which the data is loaded.
 	 */
 	public void restoreState() {
-		if( bundle != null  ) {			
+		if( bundle != null  ) {	
+			final long oneSecond = 1000;
+			
 			final String key = (amountDetail != null) ? amountDetail.getTopLabel().getText().toString() : "";
 			final String amountError = bundle.getString(key +KEY_ERROR_EXT);
 			final String imageError = bundle.getString(IMAGE_CELL_ERROR_KEY);
@@ -495,7 +497,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 						checkImageCell.showErrorLabel(imageError);
 					}
 				}
-			}, 1000);
+			}, oneSecond);
 		}
 	}
 
