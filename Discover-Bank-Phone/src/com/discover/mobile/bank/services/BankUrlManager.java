@@ -18,18 +18,7 @@ import com.google.common.base.Strings;
 public class BankUrlManager  {
 
 	private static String BASE_URL = BankBaseUrl.getString("BankUrlManager.0");
-	private final static String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
-	//private static String BASE_URL = "https://beta.discoverbank.com";
-	//private static String DISCOVER_STRIPPED_URL = "http://beta.discoverbank.com";
-	//		private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Jon/DiscoverBank"; //Jon Mock Service
-	//  private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Erin/";
-	//	private static final String BASE_URL = "http://192.168.2.177:8008"; //Henry's Laptop
-	//	private static final String BASE_URL = "http://solsticebeta.com/Discover/DiscoverBank";
-	//	private static final String BASE_URL = "http://192.168.1.94:8008";
-	//	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Henry/DiscoverBank";
-	//private static String BASE_URL = "http://10.6.216.156:8009"; //Jon's Laptop
-	//	private static String BASE_URL = "http://solsticebeta.com/Discover/Users/Scott/DiscoverBank"; //Scott's Mock Service
-	//	private static String BASE_URL = "http://192.168.2.173:8008";
+	private static final String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
 
 	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
 
@@ -47,7 +36,7 @@ public class BankUrlManager  {
 	private static final String ATM_LOCATOR_URL = "https://api.discover.com/api/atmLocator/SearchGeocodedLocation.xml";
 	private static final String ATM_DIRECTIONS_BASE_URL = "http://maps.googleapis.com/maps/api/directions/json";
 	private static final String ATM_ADDRESS_TO_LOCATION_BASE_URL = "http://maps.google.com/maps/api/geocode/json";
-	private static final String FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=OWPeJUwo";
+	private static final String FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=WcvPUBHp ";
 	private static final String REFRESH_URL = "/api/auth/ping";
 	private static final String API_URL = "/api/";
 
