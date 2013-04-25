@@ -34,12 +34,7 @@ import com.discover.mobile.common.help.HelpWidget;
 public class BankEnterPayeeFragment extends BaseFragment implements OnClickListener {
 	private static final String KEY_KEEP_TEXT = "keep-text";
 	private static final String KEY_HAS_ERROR = "has-error";
-
-	/**
-	 * Reference to TextView used to display a help message when the user navigates
-	 * to this page as a result of a failed attempt to Enter A Pay Bill with no Payees
-	 */
-	private TextView msgText;
+	
 	/**
 	 * Field used to run a search of Payees using the Bank API Web Services
 	 */
@@ -79,7 +74,7 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
 		
 		/**Text View which displays a message to the user on why they are shown this screen, by visibility is gone*/
-		msgText = (TextView)view.findViewById(R.id.msg_text);
+		TextView msgText = (TextView)view.findViewById(R.id.msg_text);
 
 		/**
 		 * Check if message text should be made visible, shown when navigating from Manage Payees Welcome page
@@ -117,7 +112,7 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		final InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(searchField.getWindowToken(), 0);
 
-		if( sender == continueButton ) {
+		if( sender.equals(continueButton) ) {
 			searchField.enableValidation(true);
 			
 			if( searchField.isValid() ) {

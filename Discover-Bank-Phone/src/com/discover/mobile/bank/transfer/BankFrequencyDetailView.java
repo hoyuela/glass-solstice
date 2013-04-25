@@ -1,5 +1,5 @@
 /*
- * © Copyright Solstice Mobile 2013
+ * ï¿½ Copyright Solstice Mobile 2013
  */
 package com.discover.mobile.bank.transfer;
 
@@ -203,6 +203,8 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		case AMOUNT:
 			enableAmount();
 			break;
+		default:
+			break;
 		}
 	}
 	/**
@@ -288,6 +290,8 @@ public class BankFrequencyDetailView extends RelativeLayout{
 				disableTransaction();
 				enableAmount();
 				showKeyboard();
+				break;
+			default:
 				break;
 		}
 

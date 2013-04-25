@@ -227,9 +227,9 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 */
 	@Override
 	public void onClick(final View sender) {
-		if( sender == actionButton ) {
+		if( sender.equals(actionButton) ) {
 			this.onActionButtonClick();
-		} else if( sender == actionLink) {
+		} else if( sender.equals(actionLink)) {
 			this.onActionLinkClick();
 		}
 	}

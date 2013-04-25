@@ -43,37 +43,28 @@ import com.discover.mobile.common.BaseFragment;
 public abstract class TermsConditionsFragment extends BaseFragment implements OnClickListener{
 
 	/**We need an api call that is avaialable in API11+ so this is defined to check against version numbers*/
-	final int apiEleven = 11;
+	private static final int API_ELEVEN = 11;
 
 	/**The String resource that is used for the title in the Action bar*/
 	int titleStringResource;
 
 	/**The ProgressBar that is shown while the web view loads its content */
-	protected ProgressBar loadingSpinner;
+	private ProgressBar loadingSpinner;
 
 	/**The button that the user needs to press to accept the terms and conditions */
-	protected Button acceptButton;
+	private Button acceptButton;
 
 	/**The web view that displays the content for the terms of service to the user */
-	protected WebView termsWebView;
+	private WebView termsWebView;
 
 	/**TextView that displays the title of the page within the fragment*/
-	protected TextView pageTitle;
+	private TextView pageTitle;
 	
 	/**Relative Layout that show the footer at the bottom of the page with accept button*/
-	protected RelativeLayout footer;
+	private RelativeLayout footer;
 	
 	/**Divider between the content and the footer*/
-	protected View divider;
-
-	/**
-	 * Get the title text that was passed in by the previous Fragment.
-	 */
-	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-	}
+	private View divider;
 
 	/**
 	 * Get all of the interface elements that we need to access.
@@ -125,7 +116,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 
 		//Disable hardware accelerated scrolling for the web view if the current API is 11 or higher.
 		//this allows the background of the web view to be transparent and not buggy on API 11+ devices.
-		if(Build.VERSION.SDK_INT >= apiEleven) {
+		if(Build.VERSION.SDK_INT >= API_ELEVEN) {
 			termsWebView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
 		}
 	}
@@ -161,7 +152,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	 */
 	@Override
 	public void onClick(final View v) {
-		if( v == acceptButton) {
+		if( v.equals(acceptButton)) {
 			this.onAcceptClicked();
 		}
 	}

@@ -221,7 +221,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		 * If any part of the view is clicked and the view is editable
 		 * then toggle the edit mode for this view.
 		 */
-		if( sender == view  && isEditable()) {
+		if( sender.equals(view)  && isEditable()) {
 			setEditMode(!(editableField.getVisibility() == View.VISIBLE));		
 		}
 	}

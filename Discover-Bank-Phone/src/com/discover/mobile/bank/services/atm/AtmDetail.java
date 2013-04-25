@@ -1,5 +1,5 @@
 /*
- * © Copyright Solstice Mobile 2013
+ * Â© Copyright Solstice Mobile 2013
  */
 package com.discover.mobile.bank.services.atm;
 
@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AtmDetail extends LocationObject implements Serializable{
 
 	/**Static string to show that the atm is surcharge free*/
-	public static String SURCHARGE_FREE = "Y";
+	public static final String SURCHARGE_FREE = "Y";
 
 	/**Unique serialized object id*/
 	private static final long serialVersionUID = -3207359834100328198L;

@@ -44,12 +44,6 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	/**Boolean used to determine if the fragment is loading more*/
 	private boolean isLoadingMore = false;
 
-	/** 
-	 * The text label that is used to show an error if a user is viewing a scheduled transaction and is not
-	 * the primary account holder.
-	 */
-	private TextView jointAccountWarning;
-
 	/** Requires any subclass to define what title label to use for the ViewPager action bar*/
 	@Override
 	public abstract int getActionBarTitle();
@@ -176,7 +170,6 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 		//Access the views that are inside of the nav_buttons layout inside of our layout.
 		final RelativeLayout mainBar = (RelativeLayout)mainView.findViewById(R.id.nav_buttons);
 		titleLabel = (TextView)mainBar.findViewById(R.id.title);
-		jointAccountWarning = (TextView)mainBar.findViewById(R.id.joint_account_warning_label);
 
 	}
 
