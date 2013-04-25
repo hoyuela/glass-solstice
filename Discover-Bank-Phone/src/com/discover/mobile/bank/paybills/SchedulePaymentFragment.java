@@ -81,8 +81,6 @@ public class SchedulePaymentFragment extends BaseFragment
 	private RelativeLayout paymentAccountItem;
 	/** Memo table item */
 	private RelativeLayout memoItem;
-	/** Amount table item */
-	private RelativeLayout amountItem;
 	/** Date table item */
 	private RelativeLayout dateItem;
 
@@ -145,7 +143,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	/** date error exists - Cannot submit payment */
 	private boolean isDateError = false;
 	/** Max character length for memo */
-	private final int MAX_CHAR_MEMO = 40;
+	private static final int MAX_CHAR_MEMO = 40;
 	/** Boolean flag to detect if fragment's orientation is changing*/
 	private boolean isOrientationChanging = false;
 	/** Reference to the Activity's canceled listener */
@@ -158,9 +156,14 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * Pattern to match the ISO8601 date & time returned by payee service -
 	 * 2013-01-30T05:00:00.000+0000 - old 2013-01-30T05:00:00Z - new TODO
 	 */
-	static final Pattern r8601 = Pattern
+	private static final Pattern R8601 = Pattern
 			.compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
 					+ "(\\d{2}):(\\d{2})\\.(\\d{3}))((\\+|-)(\\d{4}))");
+	
+	/** Amount of time to wait when closing the calendar to finish selection animation. */
+	private static final int CALENDAR_DELAY = 500;
+	private static final int ERROR_STATE_DELAY = 1000;
+	private static final int TWO_DIGIT_DAY = 10;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
@@ -188,7 +191,6 @@ public class SchedulePaymentFragment extends BaseFragment
 		paymentAccountError = (TextView)view.findViewById(R.id.payment_acct_error);
 		amountEdit = (AmountValidatedEditField) view.findViewById(R.id.amount_edit);
 		amountEdit.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-		amountItem = (RelativeLayout) view.findViewById(R.id.amount_element);
 		amountError = (TextView) view.findViewById(R.id.amount_error);
 		dateText = (TextView) view.findViewById(R.id.date_text);
 		dateError = (TextView) view.findViewById(R.id.date_error);
@@ -213,12 +215,11 @@ public class SchedulePaymentFragment extends BaseFragment
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
 		if(savedInstanceState != null) {
 			savedBundle = new Bundle(savedInstanceState);
 		}
-
-		super.onCreate(savedInstanceState);
-
 	}
 
 	/**
@@ -351,13 +352,13 @@ public class SchedulePaymentFragment extends BaseFragment
 						amountEdit.requestFocus();
 					}
 				}
-			}, 1000);
+			}, ERROR_STATE_DELAY);
 
 		}
 		
 		/**Reset Calendar Event Listener*/
 	    final Fragment fragment = getFragmentManager().findFragmentByTag(CalendarFragment.TAG);
-	    if( fragment != null && fragment instanceof CalendarFragment) {
+	    if(fragment instanceof CalendarFragment) {
 	      calendarFragment = (CalendarFragment) fragment;
 	      calendarFragment.setCalendarListener(createCalendarListener());
 	    }
@@ -397,10 +398,10 @@ public class SchedulePaymentFragment extends BaseFragment
 		/**Populate Spinner with eligible bank accounts for Bill Pay*/
 		if (bankUser.getPaymentCapableAccounts().accounts.size() > 1) {
 			final AccountAdapter accountAdapter = new AccountAdapter(
-					getActivity(), R.layout.push_simple_spinner_view,
+					getActivity(), R.layout.common_push_simple_spinner_view,
 					bankUser.getPaymentCapableAccounts().accounts);
 
-			accountAdapter.setDropDownViewResource(R.layout.push_simple_spinner_dropdown);
+			accountAdapter.setDropDownViewResource(R.layout.common_push_simple_spinner_dropdown);
 			paymentAccountSpinner.setAdapter(accountAdapter);
 		} else {
 			/**Hide Caret when only a single account is selectable for scheduling payment*/
@@ -534,50 +535,10 @@ public class SchedulePaymentFragment extends BaseFragment
 
 	private String formateDayMonth(final Integer value){
 		String valueString = value.toString();
-		if (value < 10){
+		if (value < TWO_DIGIT_DAY){
 			valueString = "0" + valueString;
 		}
 		return valueString;
-	}
-
-	/**
-	 * Checks to see if the chosen date is a valid date according to the
-	 * earliest payment date.
-	 * 
-	 * @param chosenYear
-	 * @param chosenMonth
-	 * @param chosenDay
-	 * @return true if valid, false otherwise.
-	 */
-	private boolean isValidPaymentDate(final int chosenYear,
-			final int chosenMonth, final int chosenDay) {
-
-		final int payYear = earliestPaymentDate.get(Calendar.YEAR);
-		final int payMonth = earliestPaymentDate.get(Calendar.MONTH) + 1;
-		final int payDay = earliestPaymentDate.get(Calendar.DAY_OF_MONTH);
-
-		if (chosenYear < payYear) {
-			return false;
-		} else if (chosenYear > payYear) {
-			return true;
-		}
-
-		// Years are equal.
-		if (chosenMonth < payMonth) {
-			return false;
-		} else if (chosenMonth > payMonth) {
-			return true;
-		}
-
-		// Years & Months are equal.
-		if (chosenDay < payDay) {
-			return false;
-		} else if (chosenDay > payDay) {
-			return true;
-		}
-
-		// Dates are equal.
-		return true;
 	}
 
 	/**
@@ -662,7 +623,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * @return
 	 */
 	private String getPaymentDate(final String date) {
-		final Matcher m = r8601.matcher(date);
+		final Matcher m = R8601.matcher(date);
 		if (m.lookingAt()) {
 			earliestPaymentDate = Calendar.getInstance();
 			// Month - 1 is because Calendar starts Months at 0.
@@ -687,7 +648,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * @return
 	 */
 	private void updateEarliestPaymentDate(final String date) {
-		final Matcher m = r8601.matcher(date);
+		final Matcher m = R8601.matcher(date);
 		if (m.lookingAt()) {
 			earliestPaymentDate = Calendar.getInstance();
 			// Month - 1 is because Calendar starts Months at 0.
@@ -860,14 +821,13 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * @param amount
 	 * @return
 	 */
-	private int formatAmount(String amount){
+	private int formatAmount(String amount) {
 		int ret = 0;
-		if( !Strings.isNullOrEmpty(amount) ) {
-			amount = amount.replaceAll(",", "");
-			amount = amount.replace(".", "");
-			ret = Integer.parseInt(amount);
+		if (!Strings.isNullOrEmpty(amount)) {
+			String formattedAmount = amount.replaceAll(",", "");
+			formattedAmount = formattedAmount.replace(".", "");
+			ret = Integer.parseInt(formattedAmount);
 		}
-		
 		return ret;
 	}
 
@@ -974,10 +934,8 @@ public class SchedulePaymentFragment extends BaseFragment
 	 */
 	@Override
 	public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_DONE) {
-			if( v == memoEdit ) {
-				flipMemoElements(false);
-			}
+		if (actionId == EditorInfo.IME_ACTION_DONE && v.equals(memoEdit)) {
+			flipMemoElements(false);
 		}
 		return false;
 	}
@@ -1015,7 +973,7 @@ public class SchedulePaymentFragment extends BaseFragment
 					public void run() {
 						calendarFragment.dismiss();
 					}
-				}, 500);
+				}, CALENDAR_DELAY);
 			}
 			
 		};

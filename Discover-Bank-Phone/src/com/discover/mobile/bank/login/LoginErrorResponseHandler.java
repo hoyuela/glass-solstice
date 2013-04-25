@@ -43,15 +43,16 @@ public class LoginErrorResponseHandler extends CardBaseErrorResponseHandler {
 	 * @return returns true if the given error was handled by this method, false otherwise.
 	 */
 	/* (non-Javadoc)
-	 * @see com.discover.mobile.login.BaseErrorResponseHandler#handleJsonErrorCode(com.discover.mobile.common.net.json.JsonMessageErrorResponse)
+	 * @see com.discover.mobile.login.BaseErrorResponseHandler
+	 * 		#handleJsonErrorCode(com.discover.mobile.common.net.json.JsonMessageErrorResponse)
 	 */
 	@Override
-	protected boolean handleJsonErrorCode(JsonMessageErrorResponse messageErrorResponse) {
+	protected boolean handleJsonErrorCode(final JsonMessageErrorResponse messageErrorResponse) {
 		//Clear UI text fields in UI
 		clearInputs();
 		
 		//Fetch response status code
-		int statusCode = messageErrorResponse.getMessageStatusCode();
+		final int statusCode = messageErrorResponse.getMessageStatusCode();
 		
 		//Set last error code for UI
 		setLastError(statusCode);

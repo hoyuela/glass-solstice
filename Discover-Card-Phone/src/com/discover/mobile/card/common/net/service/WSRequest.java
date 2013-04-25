@@ -12,127 +12,116 @@ import java.util.HashMap;
  */
 
 public final class WSRequest {
-	private String strURL;
-	private String strMethodType;
-	private byte[] btInput;
-	private HashMap<String, String> hmHeaderValues;
+    private String strURL;
+    private String strMethodType;
+    private byte[] btInput;
+    private HashMap<String, String> hmHeaderValues;
+    public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	private String username;
-	private String password;
+    private String password;
+    
+    private int connectionTimeOut=10000;
 
-	private int connectionTimeOut=10000;
+    public WSRequest() {
+        hmHeaderValues = new HashMap<String, String>();
+    }
 
-	public WSRequest() {
-		hmHeaderValues = new HashMap<String, String>();
-	}
+    @Override
+    protected void finalize() throws Throwable {
+        // TODO Auto-generated method stub
+        super.finalize();
+        hmHeaderValues.clear();
+        hmHeaderValues = null;
+    }
 
-	@Override
-	protected void finalize() throws Throwable {
-		// TODO Auto-generated method stub
-		super.finalize();
-		hmHeaderValues.clear();
-		hmHeaderValues = null;
-	}
+    public void setCookieHander()
+    {
+        CookieHandler.setDefault(new CookieManager());
+        ((CookieManager)CookieHandler.getDefault()).setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+        
+    }
+    
+    /**
+     * @return the url
+     */
+    public String getUrl() {
+        return strURL;
+    }
 
-	public void setCookieHander()
-	{
-		CookieHandler.setDefault(new CookieManager());
-		((CookieManager)CookieHandler.getDefault()).setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+    /**
+     * @param url
+     *            the url to set
+     */
+    public void setUrl(final String url) {
+        strURL = url;
+    }
 
-	}
+    /**
+     * @return the methodtype
+     */
+    public String getMethodtype() {
+        return strMethodType;
+    }
 
-	/**
-	 * @return the url
-	 */
-	public String getUrl() {
-		return strURL;
-	}
+    /**
+     * @param methodtype
+     *            the methodtype to set
+     */
+    public void setMethodtype(final String methodtype) {
+        strMethodType = methodtype;
+    }
 
-	/**
-	 * @param url
-	 *            the url to set
-	 */
-	public void setUrl(final String url) {
-		strURL = url;
-	}
+    /**
+     * @return the headerValues
+     */
+    public HashMap<String, String> getHeaderValues() {
+        return hmHeaderValues;
+    }
 
-	/**
-	 * @return the methodtype
-	 */
-	public String getMethodtype() {
-		return strMethodType;
-	}
+    /**
+     * @param headerValues
+     *            the headerValues to set
+     */
+    public void setHeaderValues(final HashMap<String, String> headerValues) {
+        hmHeaderValues = headerValues;
+    }
 
-	/**
-	 * @param methodtype
-	 *            the methodtype to set
-	 */
-	public void setMethodtype(final String methodtype) {
-		strMethodType = methodtype;
-	}
+   
+    /**
+     * @return the input
+     */
+    public byte[] getInput() {
+        return btInput;
+    }
 
-	/**
-	 * @return the headerValues
-	 */
-	public HashMap<String, String> getHeaderValues() {
-		return hmHeaderValues;
-	}
-
-	/**
-	 * @param headerValues
-	 *            the headerValues to set
-	 */
-	public void setHeaderValues(final HashMap<String, String> headerValues) {
-		hmHeaderValues = headerValues;
-	}
-
-	/**
-	 * @return the input
-	 */
-	public byte[] getInput() {
-		return btInput;
-	}
-
-	/**
-	 * @param input
-	 *            the input to set
-	 */
-	public void setInput(final byte[] input) {
-		btInput = input;
-	}
+    /**
+     * @param input
+     *            the input to set
+     */
+    public void setInput(final byte[] input) {
+        btInput = input;
+    }
 
 	public int getConnectionTimeOut() {
 		return connectionTimeOut;
 	}
 
-	public void setConnectionTimeOut(final int connectionTimeOut) {
+	public void setConnectionTimeOut(int connectionTimeOut) {
 		this.connectionTimeOut = connectionTimeOut;
-	}
-
-	/**
-	 * @return the username
-	 */
-	public String getUsername() {
-		return username;
-	}
-
-	/**
-	 * @param username the username to set
-	 */
-	public void setUsername(final String username) {
-		this.username = username;
-	}
-
-	/**
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * @param password the password to set
-	 */
-	public void setPassword(final String password) {
-		this.password = password;
 	}
 }

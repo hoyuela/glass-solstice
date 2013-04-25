@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Redeem Direct Deposit Confirmation: 2 of 3</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="directDeposit2-pg" class="rd-page">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+			<header id="header" class="cmn_header"></header>
+			<div class="clearboth"></div>
+			<section id="cbbSection">
+				<p class="cbb-panel">Current Cashback Bonus: <span id="directDeposit2_CashBackBonusBalance"></span>&nbsp;</p>
+			</section>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div id="pgPadding"></div>
+		<div class="progress-indicator">
+		<ul>
+		    <li><a href="#" class="visited ui-link">1. Review/Edit</a></li>
+                    <li><a href="#" class="active ui-link">2. Verify</a></li>
+                    <li><a href="#" class="ui-link">3. Confirmation</a></li>
+		</ul>
+		<div class="clearboth"></div>
+	    </div>
+					<div>
+		<div data-role="content" class="ui-content-internalpages">
+		<div class="wraper">
+		
+						<!--h1>Redeem Cashback Bonus:</h1>
+					</div>
+					<h2>Step 2 of 3</h2 -->
+					<!-- h2>Verify</h2 -->
+					<p>Please confirm to redeem you Cashback Bonus for the following Direct Deposit.</p>
+					
+						<ul class="whitebg-list-view">
+							<li>Date <span id="div11" class="boldtext fontsize13px"><span id="directDeposit2_RedeemDate"></span></span></li>
+							<li>Reward Type<span id="div21" class="boldtext fontsize13px"><span id="directDeposit2_RewardType"></span></span></li>
+							<li>Redemption Amount <span id="div31" class="boldtext fontsize13px">$<span id="directDeposit2_RedeemAmount"></span></span></li>
+							<li class="endingIn">Account
+								<ul class="textsetting" >
+									<li id="directDeposit2_BankName" class="blackboldfont17"></li>
+									<li class="endingtxt blackboldfont17"> ending in </li>
+									<li id='directDeposit2_accNumber' class="blackboldfont17"></li>
+								</ul>
+							</li>
+						</ul>
+					<div class="txtcenteraln">
+				<!-- a onclick="navigation('../rewards/directDepositCancelTrans')" class="bluelink boldtext">Cancel</a -->
+				<a href="#" onclick="dfs.crd.cbb.renderDirectDeposit3Page();" data-role="button"  >Confirm</a>
+				</div>
+				<div class="txtcenteraln">
+				<a onclick="navigation('../rewards/directDepositCancelTrans')" class="bluelink boldtext">Cancel</a>
+				
+				</div>
+				</div>
+				
+				
+				<div id="footnotes"  class="footnotes"></div>
+				
+			</div>
+	<!-- content end -->
+
+		<div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
+            <footer id="footer" class="mnu_footer">
+			</footer>
+				</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

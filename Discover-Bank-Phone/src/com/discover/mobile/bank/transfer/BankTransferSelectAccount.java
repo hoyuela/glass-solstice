@@ -352,9 +352,11 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 
 		if(account.accountNumber != null)
 			item.getTopLabel().setText(getAccountEndingTextForAccount(account.accountNumber.ending));
-
-		if(getTotalAccountSize() > 2 && account.equals(getOtherSelectedAccount()))
+		
+		if(account.equals(getOtherSelectedAccount()) || getTotalAccountSize() > 2 && 
+				account.equals(getOtherSelectedAccount())) 
 			item.getMiddleLabel().setTextColor(getResources().getColor(R.color.field_copy));
+		
 		else
 			item.getMiddleLabel().setTextColor(getResources().getColor(R.color.black));
 
@@ -362,7 +364,8 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 
 			@Override
 			public void onClick(final View v) {
-				if(getTotalAccountSize() <= 2 || !isAccountAlreadyChosen(account)) {
+				if(getTotalAccountSize() <= 2 || !isAccountAlreadyChosen(account) && 
+						!account.equals(getOtherSelectedAccount())) {
 					selectAccount(account);
 				}
 			}

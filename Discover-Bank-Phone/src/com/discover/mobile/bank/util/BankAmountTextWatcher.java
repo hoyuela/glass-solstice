@@ -31,7 +31,11 @@ public class BankAmountTextWatcher implements TextWatcher {
 	/**
 	 * Holds the maximum value that can be entered by the user in watchee.
 	 */
-	protected double MAX_VALUE = 99999.99;
+	protected final static double MAX_VALUE = 99999.99;
+	
+	private final static double SHIFT_ONE = 10.0;
+	private final static double SHIFT_TWO = 100.0;
+	private final static double SHIFT_THREE = 1000.0;
 
 	public BankAmountTextWatcher( final String startValue ) {
 		if( !Strings.isNullOrEmpty(startValue) ) {
@@ -122,14 +126,14 @@ public class BankAmountTextWatcher implements TextWatcher {
 		// 100 to get both decimal places to the left of the decimal place, 10
 		// times more to put a 0
 		// immediately left of the decimal
-		double upped = value * 1000.0;
+		double upped = value * SHIFT_THREE;
 
 		// Add the int to the ones place
 		upped += digit;
 
 		// Divide by 100 to put the two digits left of the decimal back to the
 		// right
-		upped /= 100.0;
+		upped /= SHIFT_TWO;
 
 		value = upped;
 	}
@@ -142,13 +146,13 @@ public class BankAmountTextWatcher implements TextWatcher {
 	private void chopOffLastDigit() {
 
 		// Get the first digit right of the decimal place to the left of it
-		double raised = value * 10.0;
+		double raised = value * SHIFT_ONE;
 
 		// Floor this value to chop off all digits right of the decimal
 		raised = Math.floor(raised);
 
 		// Put the digits back to the right of the decimal place
-		value = raised / 100.0;
+		value = raised / SHIFT_TWO;
 
 	}
 
@@ -159,7 +163,7 @@ public class BankAmountTextWatcher implements TextWatcher {
 
 		if (value > 0) {
 
-			valueText = BankStringFormatter.convertToDollars(Double.toString(value));
+			valueText = BankStringFormatter.convertStringFloatToDollars(Double.toString(value));
 			valueText = valueText.replace("$", "");
 			watchee.removeTextChangedListener(this);
 			watchee.setText(valueText.toString());

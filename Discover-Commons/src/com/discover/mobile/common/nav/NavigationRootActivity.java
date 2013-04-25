@@ -90,7 +90,7 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	/**
 	 * Set up the first visible fragment
 	 */
-	private void setupFirstVisibleFragment() {
+	protected void setupFirstVisibleFragment() {
 		/**
 		 * Loading the content_view layout as the first fragment. This layout contains a frame view
 		 * that will handle swapping the fragments in and out as well as a static fragment for the 

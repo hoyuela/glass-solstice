@@ -10,6 +10,7 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpWidget;
 
 /**
@@ -32,7 +33,11 @@ public class BankTextViewFragment extends BaseFragment {
 		
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
+		if( !Globals.isLoggedIn() ) {
+			help.showHelpItems(HelpMenuListFactory.instance().getLoggedOutHelpItems());
+		} else {
+			help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
+		}
 		
 		/**Populate text view text with google's terms of use*/
 		final TextView content = (TextView)view.findViewById(R.id.content_text_view);

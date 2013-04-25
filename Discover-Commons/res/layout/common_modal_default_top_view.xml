@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="@dimen/forms_inner_padding"
+    android:paddingRight="@dimen/forms_inner_padding">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"  >
+	   
+		<ImageView
+	        android:id="@+id/error_icon"
+	        android:contentDescription="@string/discover_copyright_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignTop="@+id/modal_alert_title"
+	        android:src="@drawable/error_icon_red" 
+	        android:visibility="gone"
+	        style="@style/modal_error_image"/>
+	    
+	   	<TextView 
+	        android:id="@+id/modal_alert_title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@+id/error_icon"
+	        style="@style/modal_title_text"/>
+	   	
+	    <TextView
+	        android:id="@+id/modal_alert_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/modal_alert_title"
+	        style="@style/modal_content_text"/>
+	    
+	  <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/modal_alert_text"
+                android:layout_marginTop="@dimen/modal_footer_topmargin">
+                
+                <include layout="@layout/common_old_general_need_help_footer" android:id="@+id/need_help_footer"/>
+        </RelativeLayout> 
+    </RelativeLayout>
+</ScrollView>

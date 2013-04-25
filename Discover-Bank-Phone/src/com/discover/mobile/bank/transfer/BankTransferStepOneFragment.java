@@ -61,6 +61,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	private String frequencyText = "One Time";
 	
 	private final String date = "date";
+	private static final String NON_NUMBER_CHARACTERS = "[^0-9]";
 
 	private AmountValidatedEditField amountField;
 
@@ -144,14 +145,17 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		final Bundle args = getArguments();
 		if(args != null) {
 			final String savedDate = args.getString(date);
+			final boolean isRecurringTransfer = !TransferDetail.ONE_TIME_TRANSFER.equalsIgnoreCase(frequencyCode);
 			
 			boolean areBothAccountsInternal = false;
 			if(toAccount != null && fromAccount != null) {
 				areBothAccountsInternal = !toAccount.isExternalAccount() && !fromAccount.isExternalAccount();
 			}
 			
-			if(areBothAccountsInternal) {
-				setDateFieldToFirstValidDate();
+			if(isRecurringTransfer) {
+				setDateFieldToFirstValidDate(1);
+			} else if(areBothAccountsInternal) {
+				setDateFieldToFirstValidDate(0);
 				disableDateSelection();
 				
 				setFrequencyToOneTime();
@@ -160,11 +164,14 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			else if(!Strings.isNullOrEmpty(savedDate)) {
 				dateTextView.setText(savedDate);				
 			}else {
-				setDateFieldToFirstValidDate();
+				setDateFieldToFirstValidDate(0);
 			}
 		}
 	}
 	
+	/**
+	 * Sets the frequency selection to 'One Time' along with the frequencyCode.
+	 */
 	private void setFrequencyToOneTime() {
 		final Bundle args = getArguments();
 		if(args != null) {
@@ -194,14 +201,16 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	/**
 	 * Sets the dateTextView text to display the first valid date based on the current date.
 	 */
-	private void setDateFieldToFirstValidDate() {
+	private void setDateFieldToFirstValidDate(final int offset) {
+		final Calendar tempCal = Calendar.getInstance();
+		tempCal.add(Calendar.DAY_OF_MONTH, offset);
+		
 		//Set the date to the first valid date for a transfer.
-			earliestPaymentDate = CalendarFragment.getFirstValidDateCalendar(Calendar.getInstance(), 
-					BankUser.instance().getHolidays());
+		earliestPaymentDate = CalendarFragment.getFirstValidDateCalendar(tempCal, BankUser.instance().getHolidays());
 		
 		//Set the dateTextView's text to the new valid date.
 		if(dateTextView != null) {
-			dateTextView.setText(formatDate(String.valueOf(earliestPaymentDate.get(Calendar.YEAR)),
+			dateTextView.setText(BankStringFormatter.formatDate(String.valueOf(earliestPaymentDate.get(Calendar.YEAR)),
 					String.valueOf(earliestPaymentDate.get(Calendar.MONTH) + 1),
 							String.valueOf(earliestPaymentDate.get(Calendar.DAY_OF_MONTH))));
 		}
@@ -241,15 +250,13 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			args.putString(BankExtraKeys.AMOUNT, amountField.getText().toString());
 		}
 
-		if(frequencyCode != null) {
-			args.putString(BankExtraKeys.FREQUENCY_CODE, frequencyCode);
-		}
-
-		if(frequencyText != null && frequencyCell != null ) {
-			frequencyText = frequencyCell.getMiddleLabel().getText().toString();
+		args.putString(BankExtraKeys.FREQUENCY_CODE, frequencyCode);
 		
-			args.putString(BankExtraKeys.FREQUENCY_TEXT, frequencyText);
+		if(frequencyCell != null ) {
+			frequencyText = frequencyCell.getMiddleLabel().getText().toString();
 		}
+		
+		args.putString(BankExtraKeys.FREQUENCY_TEXT, frequencyText);
 
 		if( toAccount != null && fromAccount != null) {
 			args.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, getSelectedAccounts());
@@ -279,18 +286,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			this.setSelectedAccounts(selectedAccounts);
 			this.updateSelectedAccountLabels();
 
-			final String freq = bundle.getString(BankExtraKeys.FREQUENCY_CODE);
-			final String value = bundle.getString(BankExtraKeys.FREQUENCY_TEXT);
-
-			if(!Strings.isNullOrEmpty(freq)) {
-				frequencyCode = freq;
-			}
-			if(!Strings.isNullOrEmpty(value)) {
-				frequencyText = value;
-			}
-			
-			if(frequencyCell != null)
-				frequencyCell.setText(frequencyText);
+			restoreFrequencyText(bundle);
+			restoreFrequencyTable(bundle);
 			
 			if(dateTextView != null)
 				dateTextView.setText(bundle.getString(date));
@@ -299,14 +296,50 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
 			amountField.enableBankAmountTextWatcher(true);
 
-			if(frequencyCode.equals(TransferDetail.ONE_TIME_TRANSFER)){
-				recurring.setVisibility(View.GONE);
-			}else{
-				recurring.setVisibility(View.VISIBLE);
-			}
+			
 		}
 		
-		/**Reset Calendar Event Listener*/
+		resetCalendarEventListener();
+	}
+	
+	/**
+	 * Access a Bundle and retrieve the saved frequency text and restore the local variables to its value and update
+	 * the UI with this value.
+	 * @param bundle a Bundle which contains the value saved from the frequencyCell.
+	 */
+	private void restoreFrequencyText(final Bundle bundle) {
+		final String value = bundle.getString(BankExtraKeys.FREQUENCY_TEXT);
+		
+		if(!Strings.isNullOrEmpty(value)) {
+			frequencyText = value;
+		}
+		
+		if(frequencyCell != null)
+			frequencyCell.setText(frequencyText);
+	}
+	
+	/**
+	 * Access a Bundle and restore a saved frequency value.  
+	 * @param bundle
+	 */
+	private void restoreFrequencyTable(final Bundle bundle) {
+		final String freq = bundle.getString(BankExtraKeys.FREQUENCY_CODE);
+		
+		if(!Strings.isNullOrEmpty(freq)) {
+			frequencyCode = freq;
+		}
+		
+		if(frequencyCode.equalsIgnoreCase(TransferDetail.ONE_TIME_TRANSFER)){
+			recurring.setVisibility(View.GONE);
+		}else{
+			recurring.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	/**
+	 * Reset Calendar Event Listener
+	 */
+	private void resetCalendarEventListener() {
 	    final Fragment fragment = getFragmentManager().findFragmentByTag(CalendarFragment.TAG);
 	    if( fragment != null && fragment instanceof CalendarFragment) {
 	    	calendarFragment = (CalendarFragment) fragment;
@@ -391,7 +424,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 
 		return content;
 	}
-
 
 	/**
 	 *
@@ -582,7 +614,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			
 			transferObject.sendDate = BankStringFormatter.convertToISO8601Date(dateTextView.getText().toString());
 	
-			final String cents = amountField.getText().toString().replaceAll("[^0-9]", "");
+			final String cents = amountField.getText().toString().replaceAll(NON_NUMBER_CHARACTERS, "");
 			if(!Strings.isNullOrEmpty(cents)) {
 				transferObject.amount.value = Integer.parseInt(cents);
 			}
@@ -603,43 +635,97 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		
 		isComplete &= validateAccountsAreSelected();
 		isComplete &= validateAmount();
+		isComplete &= validateContinueUntilDate();
+		isComplete &= validateContinueUntilSetAmount();
 		
 		return isComplete;
+	}
+	
+	private boolean validateContinueUntilDate() {
+		boolean hasGoodDate = false;
+		
+		if(TransferDetail.UNTIL_DATE.equalsIgnoreCase(recurring.getDurationType())) {
+			final String untilDate = recurring.getDurationValue();
+			hasGoodDate = !Strings.isNullOrEmpty(untilDate) && 
+					!getString(R.string.select_a_date).equalsIgnoreCase(untilDate);
+			
+			if(!hasGoodDate) {
+				showErrorLabel(getString(R.string.invalid_date), (TextView)recurring.findViewById(R.id.date_error_label));
+			}
+		}else {
+			//User is not using this widget.
+			hasGoodDate = true;
+		}
+		
+		return hasGoodDate;
+	}
+	
+	private boolean validateContinueUntilSetAmount() {
+		boolean isValid = false;
+		
+		if(TransferDetail.UNTIL_AMOUNT.equalsIgnoreCase(recurring.getDurationType())) {
+			isValid = isAmountTwentyFiveDollarsOrMore(recurring.getDurationValue());
+			if(!isValid) {
+				final TextView recurringAmountErrorLabel = (TextView)recurring.findViewById(R.id.dollar_error_label);
+				showErrorLabel(getString(R.string.amount_less_than_twenty_five), recurringAmountErrorLabel);
+			}
+		}else {
+			isValid = true;
+		}
+		
+		
+		
+		return isValid;
 	}
 	
 	private boolean validateAccountsAreSelected() {
 		final boolean accountsAreSelected = toAccount != null && fromAccount != null;
 		
 		if(!accountsAreSelected) {
-			generalError.setText("Please select a To and From account to make a transfer.");
-			generalError.setVisibility(View.VISIBLE);
+			showErrorLabel("Please select a To and From account to make a transfer.", 
+														(TextView)getView().findViewById(R.id.general_error));
 		}
 		
 		return accountsAreSelected;
 	}
 	
+	/**
+	 * Verify that the provided amount value is greater than $25, if it not valid then
+	 * inline errors are shown.
+	 * @return
+	 */
 	private boolean validateAmount() {
 		amountField.clearFocus();
 		final String amount = amountField.getText().toString();
 		
-		int value = 0;
-		final int twentyFiveDollars = 2500;
-		
-		if(!Strings.isNullOrEmpty(amount))
-			value = Integer.parseInt(amount.replaceAll("[^0-9]", ""));
-		
-		final boolean isValid = InputValidator.isValueBoundedBy(value, twentyFiveDollars, Integer.MAX_VALUE);
+		final boolean isValid = isAmountTwentyFiveDollarsOrMore(amount);
 		
 		if(!isValid) {
 			amountField.setErrors();
-			amountField.getErrorLabel().setText("Too low (less than $25)");
+			amountField.getErrorLabel().setText(getString(R.string.amount_less_than_twenty_five));
 			amountField.getErrorLabel().setVisibility(View.VISIBLE);
 		}
 		
 		return isValid;
 	}
-
 	
+	/**
+	 * Validates that the amount passed in, a String representation of a double, is 
+	 * greater than or equal to $25.
+	 * 
+	 * @param amount an amount, should be a double in the form of a String.
+	 * @return if the amount is equal to or greater than $25
+	 */
+	private boolean isAmountTwentyFiveDollarsOrMore(final String amount) {
+		int value = 0;
+		final int twentyFiveDollars = 2500;
+		
+		if(!Strings.isNullOrEmpty(amount))
+			value = Integer.parseInt(amount.replaceAll(NON_NUMBER_CHARACTERS, ""));
+		
+		return InputValidator.isValueBoundedBy(value, twentyFiveDollars, Integer.MAX_VALUE);
+	}
+
 	/**
 	 * Shows a modal dialog on the page to notify the user that if they cancel their current action
 	 * all information will be lost.
@@ -680,6 +766,11 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		return useMyBackPress;
 	}
 	
+	/**
+	 * Return a calendar listener that will update the chosen payment date upon a user selecting
+	 * a date on the calendar.
+	 * @return a CalendarListener object.
+	 */
 	private CalendarListener createCalendarListener() {	
 		// Setup listener
 		final CalendarListener calendarListener = new CalendarListener(calendarFragment) {
@@ -694,17 +785,27 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
 			
 				//Delay closing of calendar to be able to see the selection change
-				new Handler().postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						calendarFragment.dismiss();
-					}
-				}, 500);
+				final long halfSecondDelay = 500;
+				new Handler().postDelayed(getCalendarDissmissRunnable(), halfSecondDelay);
 			}
-			
 		};
 	
 		return calendarListener;
+	}
+	
+	/**
+	 * 
+	 * @return a runnable that will dismiss the calendar fragment when run.
+	 */
+	private Runnable getCalendarDissmissRunnable() {
+		return new Runnable() {
+			
+			@Override
+			public void run() {
+				if(calendarFragment != null)
+					calendarFragment.dismiss();
+			}
+		};
 	}
 	
 	/**
@@ -719,43 +820,11 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	private void setChosenPaymentDate(final Integer year, final Integer month,
 			final Integer day) {
 
-		dateTextView.setText(formatDate(year.toString(),
-				formatDayOfMonth(month), formatDayOfMonth(day)));
+		dateTextView.setText(BankStringFormatter.formatDate(year.toString(),
+				BankStringFormatter.formatDayOfMonth(month), BankStringFormatter.formatDayOfMonth(day)));
 		chosenPaymentDate.set(year, month - 1, day);
 	}
-	
-	/**
-	 * Formats date as MM/dd/YYYY.
-	 * 
-	 * @param year
-	 * @param month
-	 *            formatted 1-12 (i.e. not 0 for January)
-	 * @param day
-	 * @return formatted date
-	 */
-	private String formatDate(final String year, final String month,
-			final String day) {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(month); // Month
-		sb.append('/');
-		sb.append(day); // Day
-		sb.append('/');
-		sb.append(year); // Year
-		return sb.toString();
-	}
-	
-	/**
-	 * Format the day of the month
-	 * @param value- value to format
-	 * @return the formatted value
-	 */
-	private String formatDayOfMonth(final Integer value){
-		String valueString = value.toString();
-		if (value < 10){
-			valueString = "0" + valueString;
-		}
-		return valueString;
-	}
+
 	/**
 	 * Method displays a calendar in a dialog form with the chosen date selected.
 	 */
@@ -768,17 +837,17 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		
 		/**Convert stored in text field into chosen date, this will avoid issue on rotation*/
 		try{
-			final String[] date = dateTextView.getText().toString().split("[\\/]+");
+			final String[] selectedDate = dateTextView.getText().toString().split("[\\/]+");
 			
 			/** The Calendar will appear with the date specified by this calendar instance selected*/
-			chosenPaymentDate.set( Integer.parseInt(date[2]),
-				      Integer.parseInt(date[0]) - 1,
-					  Integer.parseInt(date[1]));
+			chosenPaymentDate.set( Integer.parseInt(selectedDate[2]),
+				      Integer.parseInt(selectedDate[0]) - 1,
+					  Integer.parseInt(selectedDate[1]));
 			
 			/**Check if restoring calendar selection date, -1 means it is initializing*/
 			displayedDate = chosenPaymentDate;
 			
-		}catch(final Exception ex){
+		} catch(final Exception ex){
 			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
 					chosenPaymentDate.get(Calendar.MONTH),
 					chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
@@ -787,7 +856,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		}
 		
 		/**Show calendar as a dialog*/
-		calendarFragment.show(((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(),
+		calendarFragment
+			.show(((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(),
 				getResources().getString(R.string.schedule_pay_deliver_on_title),
 				displayedDate,
 			    chosenPaymentDate, 
@@ -796,7 +866,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 				createCalendarListener());
 	}
 
-	
 	/**
 	 * Handle errors that the server returns.
 	 * This is for displaying inline errors on the screen for the user.
@@ -805,6 +874,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	@Override
 	public boolean handleError(final BankErrorResponse msgErrResponse) {
 		boolean handled = false;		
+
 		for(final BankError error : msgErrResponse.errors) {
 			final String errorFieldName = error.name;
 			
@@ -812,43 +882,54 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			
 			if(TransferDetail.AMOUNT.equalsIgnoreCase(errorFieldName)) {
 				showAmountError(error.message);
-			}
-			else if(TransferDetail.SEND_DATE.equalsIgnoreCase(errorFieldName)) {
+			} else if(TransferDetail.SEND_DATE.equalsIgnoreCase(errorFieldName)) {
 				showErrorOnField(error.message, sendOnDateCell);
-			}
-			else if(TransferDetail.FROM_ACCOUNT.equalsIgnoreCase(errorFieldName)) {
+			} else if(TransferDetail.FROM_ACCOUNT.equalsIgnoreCase(errorFieldName)) {
 				showErrorOnField(error.message, fromCell);
-			}
-			else if(TransferDetail.TO_ACCOUNT.equalsIgnoreCase(errorFieldName)) {
+			} else if(TransferDetail.TO_ACCOUNT.equalsIgnoreCase(errorFieldName)) {
 				showErrorOnField(error.message, toCell);
-			}else {
+			} else {
 				handled = false;
 			}
-
 		}
+		showErrorLabel(getString(R.string.bank_deposit_error_notify), (TextView)getView().findViewById(R.id.general_error));
 
 		scrollView.smoothScrollTo(0, 0);
 		return handled;
 	}
 	
+	/**
+	 * Show an inline error underneath the send amount field
+	 * @param error a String to show as an error message.
+	 */
 	private void showAmountError(final String error) {
 		amountField.getErrorLabel().setText(error);
 		amountField.getErrorLabel().setVisibility(View.VISIBLE);
 	}
 	
+	/**
+	 * Show an error message on a given BankSimpleEditDetail object, which already has an error label defined
+	 * for it.
+	 * @param error a String error message to display.
+	 * @param tableRow the BankSimpleEditDetail to show the error beneath.
+	 */
 	private void showErrorOnField(final String error, final BankSimpleEditDetail tableRow) {
 		tableRow.getErrorLabel().setText(error);
 		tableRow.getErrorLabel().setVisibility(View.VISIBLE);
 	}
 	
+	/**
+	 * Sets the provided TextView's text to the error String and make it visible.
+	 * @param error a String to use as error text.
+	 * @param label a TextView to use as an error label.
+	 */
 	private void showErrorLabel(final String error, final TextView label) {
-		if(label != null) {
+		if(label != null && error != null) {
 			label.setText(error);
 			label.setVisibility(View.VISIBLE);
 		}else {
-			Log.e(TAG, "Could not show error label with message : " + error);
+			Log.e(TAG, "Could not show error label : TextView was NULL!");
 		}
 	}
 	
-
 }

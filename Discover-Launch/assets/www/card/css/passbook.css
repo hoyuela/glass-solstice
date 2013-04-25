@@ -1,0 +1,149 @@
+/***************** passbook  [STARTS HERE] *******/
+	 /* added for pass book button starts here*/
+#ecart-ios .addto, #rd-history-ios .addto{
+		display:inline;
+		font-size:10px;
+		text-align:left;
+		margin: 2px 0 1px -30px !important;
+		
+	}
+#ecart-ios .greybtn, #rd-history-ios .greybtn{
+	min-height:30px;
+	min-width:105px;
+	background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.13, rgb(203,204,206)),
+	color-stop(0.68, rgb(255,255,255))
+	);
+	 -webkit-border-radius:5px;
+	 border: 1px solid #686a6c;
+	text-align:center;
+	color:#576166;
+	-webkit-box-shadow:none !important;
+	float:left;
+}
+	
+		
+#ecart-ios .passbookimage, #rd-history-ios .passbookimage{
+			float:left;
+			margin:5px 0 5px 5px;
+			
+	}
+#addPassbookBTN img{
+	margin-top:5px;
+}
+.clickArea{
+	float:right; padding-left:8px;
+}
+#ecart-ios .passbook, #rd-history-ios .passbook{
+	color:#fff;
+	font-size:13px !important;
+	margin-left:-5px !important;
+	}
+#ecart-ios	.ui-btn-inner, #rd-history-ios .ui-btn-inner{
+	padding:0px !important;
+	padding-left:6px !important;	
+	
+	
+	}
+#ecart-ios .greybtn, #rd-history-ios .greybtn{
+	padding:0 0 5px 0 !important;
+	margin-top:0;
+	
+	}
+	
+	
+#ecart-ios	.passbtn, #rd-history-ios .passbtn{
+	display:inline-block;
+}
+
+#ecart-ios	.passbtn .viewButton, #rd-history-ios .passbtn .viewButton{
+	margin:0 0 0 7% !important;
+	float:left;
+	
+}
+#ecart-ios	.passbtn .viewButton .ui-btn-inner, #rd-history-ios .passbtn .viewButton .ui-btn-inner{
+   margin-top:9px;
+}
+#ecart-ios	.passbtn .addtoPassbook, #rd-history-ios .passbtn .addtoPassbook{
+	margin-top:5px;
+	height: 20px;
+	text-decoration: none;
+}
+ 
+	/* added for pass book button ends here*/
+/****************** **************/
+
+/*added for save to photos starts here.*/
+#ecart-ios .emailCertif, #rd-history-ios .emailCertif
+{
+	height: 33px;
+    padding-top: 6px;
+}
+#ecart-ios #viewEmailCertiff, #rd-history-ios  #viewEmailCertiff
+{
+	margin-top:-1px !important;
+}
+#ecart-ios .savetoPhotos, #rd-history-ios .savetoPhotos{
+	background:none;
+	padding:0 !important;	
+}
+#ecart-ios .gry-wht-btn, #rd-history-ios .gry-wht-btn{
+	border:none;
+	padding:0 !important;
+}
+#ecart-ios .saveto, #rd-history-ios .saveto{
+	display:block;
+	text-align:left;
+	margin-left:34px;
+	
+}
+#ecart-ios .passbookimage, #rd-history-ios .passbookimage{
+	float:left;
+	margin-left:-2px;
+}
+
+#ecart-ios .btns .r5-btn, #rd-history-ios .btns .r5-btn{
+	min-width:94px;
+}
+#ecart-ios .btns a:first-child, #rd-history-ios .btns a:first-child{
+	margin-left:0px !important;
+}
+
+#ecart-ios .passbook, #rd-history-ios .passbook{
+	1margin-left:10px;
+}
+
+#ecart-ios .btns .gry-wht-btn-new, #rd-history-ios  .btns .gry-wht-btn-new{
+	/*float:left;*/
+	margin-left:5px !important;
+}
+#ecart-ios .btns .savetoPhotos, #rd-history-ios .btns .savetoPhotos {
+	float:right;
+	margin-right:5%;
+}
+/*added for save to photos ends here.*/
+.gry-wht-btn-new{ /*background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.17, rgb(203,204,206)),
+	color-stop(0.66, rgb(255,255,255)));*/
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fe8738), to(#ed4b0b), color-stop(0.5, #ed4b0b), color-stop(0.51, #ed4b0b) ) !important;
+	border-radius: 4px !important;
+	-webkit-border-radius: 4px !important;
+	border: 1px solid #fff; color:#fff !important; display:inline-block; margin:5px 0 0 0;}
+
+.gry-wht-btn-new span{ font-weight:bold;}
+.r5-btn-new{ -webkit-border-radius:5px; padding:2px 0 2px 0 !important; margin:6px 0 0 0 !important; font-size:12px; min-height:24px; min-width:85px;}
+#ecart-ios .r5-btn-new, #rd-history-ios .r5-btn-new{ min-width:73px; margin:0 !important;}
+#redemption-landing .r5-btn-new{ min-width:114px !Important;}
+#ecart-ios .passBookAlign, #rd-history-ios .passBookAlign{ min-width:108px; height:31px;}
+.passBookImg{ float:left; margin:1px 5px 0 5px;}
+.passBookTxt{ float:left; text-align:left;}
+
+
+
+

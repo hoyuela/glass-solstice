@@ -1,0 +1,21 @@
+{
+"designCode":"String",
+"designDesc":"String",
+"redeemDate":"Date",
+"redemptionAmt":"Decimal",
+ "orderId":"String",
+ "rewardType":"String",
+ "modeCode":"String",
+ "modeDesc":"String",
+ "modeUntDsc":"String",
+"cardType":"Number",
+ "optionCode":"Number",
+ "stateCode":"String",
+ "incentiveTypeCode":"String",
+ "incentiveCode":"Number",
+"currentBalance":"Decimal",
+"availToRedeem":"Decimal",
+"anniversaryMonth":"String",
+"anniversaryAmt":"Decimal",
+"newlyEarnedAmt":"Decimal"
+}

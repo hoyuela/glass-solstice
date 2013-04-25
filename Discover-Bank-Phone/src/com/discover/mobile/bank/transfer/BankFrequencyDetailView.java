@@ -1,5 +1,5 @@
 /*
- * © Copyright Solstice Mobile 2013
+ * ï¿½ Copyright Solstice Mobile 2013
  */
 package com.discover.mobile.bank.transfer;
 
@@ -116,6 +116,8 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		((LinearLayout) view.findViewById(R.id.dollar_layout)).setOnClickListener(getLayoutListener(AMOUNT));
 
 		dollarAmount.setEnabled(false);
+		dollarAmount.enableBankAmountTextWatcher(true);
+		
 		transactionAmount.setEnabled(false);
 		earliestPaymentDate = Calendar.getInstance();
 		chosenPaymentDate = Calendar.getInstance();
@@ -159,29 +161,16 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	public void resumeState(final Bundle bundle){
 		if(bundle != null){
 			index = bundle.getInt(RADIO, CANCELLED);
-			final String date = bundle.getString(DATE_VALUE);
-			final String transaction = bundle.getString(TRANS_VALUE);
-			final String amount = bundle.getString(AMOUNT_VALUE);
-			if(null != date){
-				dateValue.setText(date);
+			final String savedDate = bundle.getString(DATE_VALUE);
+			final String savedTransactionLimit = bundle.getString(TRANS_VALUE);
+			final String savedAmount = bundle.getString(AMOUNT_VALUE);
+			if(null != savedDate){
+				dateValue.setText(savedDate);
 			}
-			transactionAmount.setText(transaction);
-			dollarAmount.setText(amount);
+			transactionAmount.setText(savedTransactionLimit);
+			dollarAmount.setText(savedAmount);
 			disableCancelled();
-			switch(index){
-				case CANCELLED:
-					enableCancelled();
-					break;
-				case DATE:
-					enableDate();
-					break;
-				case TRANSACTION:
-					enableTransaction();
-					break;
-				case AMOUNT:
-					enableAmount();
-					break;
-				}
+			setRadioButtonState(index);
 			
 			/**Reset Calendar Event Listener*/
 			final Fragment fragment = 
@@ -195,6 +184,29 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		}
 	}
 
+	/**
+	 * Updates the selected radio button to the passed index value.
+	 * 
+	 * @param selectedIndex
+	 */
+	private void setRadioButtonState(final int selectedIndex) {
+		switch(selectedIndex){
+		case CANCELLED:
+			enableCancelled();
+			break;
+		case DATE:
+			enableDate();
+			break;
+		case TRANSACTION:
+			enableTransaction();
+			break;
+		case AMOUNT:
+			enableAmount();
+			break;
+		default:
+			break;
+		}
+	}
 	/**
 	 * Get the duration type for the service call
 	 * @return the duration type for the service call
@@ -278,6 +290,8 @@ public class BankFrequencyDetailView extends RelativeLayout{
 				disableTransaction();
 				enableAmount();
 				showKeyboard();
+				break;
+			default:
 				break;
 		}
 
@@ -424,7 +438,8 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		}
 		
 		/**Show calendar as a dialog*/
-		calendarFragment.show(((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(),
+		calendarFragment
+			.show(((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(),
 				res.getString(R.string.schedule_pay_date_picker_title),
 				displayedDate,
 			    chosenPaymentDate, 
@@ -440,26 +455,35 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		// Setup listener
 		final CalendarListener calendarListener = new CalendarListener(calendarFragment) {
 			private static final long serialVersionUID = -5277452816704679940L;
-
+			
 			@Override
 			public void onSelectDate(final Date date, final View view) {
 				super.onSelectDate(date, view);
-
-				final Calendar cal=Calendar.getInstance();
+				final long halfSecondDelay = 500;
+				final Calendar cal = Calendar.getInstance();
 				cal.setTime(date);
 				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
-
+				
 				//Delay closing of calendar to be able to see the selection change
-				new Handler().postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						calendarFragment.dismiss();
-					}
-				}, 500);
+				new Handler().postDelayed(getCalendarDissmissRunnable(), halfSecondDelay);
 			}
 		};
-
 		return calendarListener;
+	}
+	
+	/**
+	 * 
+	 * @return a runnable, which when, is run, dismisses the calendar fragment
+	 */
+	private Runnable getCalendarDissmissRunnable() {
+		return new Runnable() {
+			
+			@Override
+			public void run() {
+				if(calendarFragment != null)
+					calendarFragment.dismiss();
+			}
+		};
 	}
 
 	/**
@@ -474,42 +498,9 @@ public class BankFrequencyDetailView extends RelativeLayout{
 	private void setChosenPaymentDate(final Integer year, final Integer month,
 			final Integer day) {
 
-		dateValue.setText(formatDate(year.toString(),
-				formatDayOfMonth(month), formatDayOfMonth(day)));
+		dateValue.setText(BankStringFormatter.formatDate(year.toString(),
+				BankStringFormatter.formatDayOfMonth(month), BankStringFormatter.formatDayOfMonth(day)));
 		chosenPaymentDate.set(year, month - 1, day);
 	}
 
-
-	/**
-	 * Formats date as MM/dd/YYYY.
-	 * 
-	 * @param year
-	 * @param month
-	 *            formatted 1-12 (i.e. not 0 for January)
-	 * @param day
-	 * @return formatted date
-	 */
-	private String formatDate(final String year, final String month,
-			final String day) {
-		final StringBuilder sb = new StringBuilder();
-		sb.append(month); // Month
-		sb.append('/');
-		sb.append(day); // Day
-		sb.append('/');
-		sb.append(year); // Year
-		return sb.toString();
-	}
-
-	/**
-	 * Format the day of the month
-	 * @param value- value to format
-	 * @return the formatted value
-	 */
-	private String formatDayOfMonth(final Integer value){
-		String valueString = value.toString();
-		if (value < 10){
-			valueString = "0" + valueString;
-		}
-		return valueString;
-	}
 }

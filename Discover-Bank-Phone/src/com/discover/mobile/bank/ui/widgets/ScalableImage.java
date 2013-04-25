@@ -15,8 +15,6 @@ import android.view.View;
  */
 public class ScalableImage extends View {
 
-  private Drawable logo = this.getBackground();
-
   	public ScalableImage(final Context context) {
 	    super(context);
   	}
@@ -35,7 +33,7 @@ public class ScalableImage extends View {
   	 * Sets the height of the View to a proportion of the width.
   	 */
   	@Override protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-  		logo = this.getBackground();
+  		Drawable logo = this.getBackground();
   		int width = 0;
   		int height = 0;
   		

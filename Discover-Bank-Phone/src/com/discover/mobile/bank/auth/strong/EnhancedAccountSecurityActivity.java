@@ -5,8 +5,6 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +22,6 @@ import com.discover.mobile.bank.services.auth.strong.BankStrongAuthAnswerDetails
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
-import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.google.common.base.Strings;
 
@@ -63,18 +60,11 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 * expanded. (When collapsed it is set to 0)
 	 */
 	private static final int HELP_DROPDOWN_LINE_HEIGHT = 10;
-
-	private static final String TAG = EnhancedAccountSecurityActivity.class.getSimpleName();
-
-	private String strongAuthQuestion;
-	private String strongAuthQuestionId;
 	/**
 	 * Holds a reference to a BankStrongAuthDetails which is provide after requesting a Strong Challenge Question
 	 * via an Intent in the onResume() method of this activity or via updateQuestion().
 	 */
 	private BankStrongAuthDetails strongAuthDetails;
-
-	private String questionId;
 
 	private RadioGroup securityRadioGroup;
 	private TextView detailHelpLabel;
@@ -116,25 +106,9 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 * Minimum string length allowed to be sent as an answer to a Strong Auth Challenge Question
 	 */
 	private static final int MIN_ANSWER_LENGTH = 2;
-
-	/**
-	 * Callback to watch the text field for empty/non-empty entered text from user
-	 */
-	private final TextWatcher mTextWatcher = new TextWatcher() {
-
-		@Override
-		public void beforeTextChanged(final CharSequence s, final int start, final int before, final int after) { }
-
-		@Override
-		public void onTextChanged(final CharSequence s, final int start, final int before, final int after) {
-			EnhancedAccountSecurityActivity.this.onTextChanged(s);
-		}
-
-		@Override
-		public void afterTextChanged(final Editable s) {
-		}
-	};
-
+	
+	/** String used to determine if the menu is closed. */
+	private static final String CLOSED_MENU = "+";
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -202,7 +176,6 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 
 			@Override
 			public void onCheckedChanged(final RadioGroup group, final int checkedId) { 
-
 				final RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
 				if (checkedRadioButton.equals(radioButtonOne) ){
 					radioButtonOne.setTextColor(subCopyColor);
@@ -292,7 +265,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 */
 	private void restoreExpandableHelpMenu() {
 		statusIconLabel.setText(dropdownSymbol);
-		if("+".equals(statusIconLabel.getText().toString())) {
+		if(CLOSED_MENU.equals(statusIconLabel.getText().toString())) {
 			closeHelpMenu();
 		} else {
 			openHelpMenu();
@@ -313,7 +286,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 *  If the menu is open and its gets clicked, it closes.
 	 */
 	public void expandHelpMenu(final View v) {
-		if ("+".equals(statusIconLabel.getText().toString())) { //$NON-NLS-1$
+		if (CLOSED_MENU.equals(statusIconLabel.getText().toString())) { //$NON-NLS-1$
 			openHelpMenu();
 		} else {
 			closeHelpMenu();
@@ -398,11 +371,6 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		BankServiceCallFactory.createStrongAuthRequest(details).submit();
 	}
 
-	private void startHomeFragment() {
-		FacadeFactory.getCardFacade().navToHomeFragment(this);
-	}
-
-
 	/**
 	 * If the back button is pressed then cancel the strong auth activity and notify the
 	 * calling activity that this activity was canceled.
@@ -413,14 +381,6 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		finish();
 		
 		super.onBackPressed();
-	}
-
-	/**
-	 * If Strong Auth finishes with success, notify the calling activity of this and close.
-	 */
-	private void finishWithResultOK() {
-		activityResult = RESULT_OK;
-		finish();
 	}
 
 	/**

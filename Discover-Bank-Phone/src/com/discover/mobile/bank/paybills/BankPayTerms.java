@@ -34,12 +34,14 @@ import com.discover.mobile.common.help.HelpWidget;
  *
  */
 public class BankPayTerms extends BaseFragment{
+	/**We need an api call that is available in API11+ so this is defined to check against version numbers*/
+	private static final int API_ELEVEN = 11;
+	
+	/**The URL that provides the terms and conditions content for the URL */
+	private static final String TERMS_URL = "https://asys.discoverbank.com/api/content/payments/terms.html";
 
 	/**The default title text that will be used if for some reason one is not passed in the Bundle */
-	int titleText = R.string.pay_a_bill_title;
-
-	/**We need an api call that is avaialable in API11+ so this is defined to check against version numbers*/
-	final int apiEleven = 11;
+	private int titleText = R.string.pay_a_bill_title;
 
 	/**The String resource that is used for the title in the Action bar*/
 	int titleStringResource;
@@ -52,9 +54,6 @@ public class BankPayTerms extends BaseFragment{
 
 	/**The web view that displays the content for the terms of service to the user */
 	private WebView termsWebView;
-
-	/**The URL that provides the terms and conditiond content for the URL */
-	private final String termsUrl = "https://asys.discoverbank.com/api/content/payments/terms.html";
 
 	/**
 	 * Get the title text that was passed in by the previous Fragment.
@@ -99,7 +98,7 @@ public class BankPayTerms extends BaseFragment{
 	 */
 	@SuppressLint("NewApi")
 	private void setupWebView() {
-		termsWebView.loadUrl(termsUrl);
+		termsWebView.loadUrl(TERMS_URL);
 		termsWebView.setBackgroundColor(Color.TRANSPARENT);
 		termsWebView.setWebViewClient(new WebViewClient() {
 			@Override
@@ -114,7 +113,7 @@ public class BankPayTerms extends BaseFragment{
 
 		//Disable hardware accelerated scrolling for the web view if the current API is 11 or higher.
 		//this allows the background of the web view to be transparent and not buggy on API 11+ devices.
-		if(Build.VERSION.SDK_INT >= apiEleven) {
+		if(Build.VERSION.SDK_INT >= API_ELEVEN) {
 			termsWebView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
 		}
 	}

@@ -83,6 +83,12 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 									   .addToBackStack(mapFragment.getClass().getSimpleName())
 									   .commit();
 		}
+		/**
+		 * Map Fragment should not have to be re-created on rotation or when activity is minimized
+		 */
+		else {
+			mapFragment = (AtmMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+		}
 		
 		setMapFragment(mapFragment);
 	}

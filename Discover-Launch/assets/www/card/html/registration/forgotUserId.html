@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Forgot User ID</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="forgot-uid-pg" data-theme="d">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-position="fixed">
+			<header id="header" class="cmn_header_nologout"> </header>
+		</div>
+		<!-- header	end	-->
+		
+		<div id="forgot-user-id-page-1">
+		<!-- R4 wrap -->
+		<div id="r4-wrap">
+		<!-- content start -->
+		<div id="registration" data-role="content" class="ui-content-internalpages ui-content header-only-content" role="main">
+			<div class="wrapper">
+				<h1>Forgot User ID</h1>
+				<p class="inline-error-msg"></p>
+				<form id="forgot-uid-form" action="javascript:void(0)" data-transition="slide">
+						<fieldset>
+							<legend></legend>
+							<label>Credit Card Account Number:</label>
+							<p>(This is a 16-digit number starting with 6011. Do not include spaces or hyphens.)</p>
+							<p class="inline-error-msg">Invalid value</p>
+							<input type="tel" pattern="\d*" class="invalid credit-card-account-number" name="credit-card-account-number" pattern="\d*" maxlength="16"  autocorrect="off" autocapitalize="off" />
+						</fieldset>
+			
+						<fieldset>
+							<legend></legend>
+							<label>Account Center Password:</label>
+							<p class="inline-error-msg">Invalid value</p>
+							<input type="password" class="invalid account-center-password" name="account-center-password" maxlength="32"/>
+						</fieldset>
+						
+						<fieldset class="txtcenteraln">
+							<div class="ui-block-a link-button">
+								<a href="#" id="js-back" class="bluelink normaltext"  data-transition="slide" data-direction="reverse" onclick="dfs.crd.sct.cancelForgotUserIdLink();">Cancel</a>
+							</div>
+							<div class="ui-block-b">
+								<a href="#" data-role="button" id="js-submit" data-theme="c">Submit</a>
+							</div>
+						</fieldset>
+
+					</form>
+					<!-- / #forgot-id-form -->	
+			</div>
+			<!-- / .wrapper -->
+			<div id="footnotes" class="footnotes-reg" ></div>
+			
+		</div><!-- / R4 wrap -->
+		</div>
+		</div>
+		<!-- content end -->
+	</div>
+	<!--page end -->
+</body>
+</html>

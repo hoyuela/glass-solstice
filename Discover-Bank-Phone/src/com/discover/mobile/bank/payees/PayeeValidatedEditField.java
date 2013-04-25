@@ -36,19 +36,19 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 * Pattern used to determine whether any of the invalid characters have been entered 
 	 * by the user. 
 	 */
-	public static Pattern INVALID_CHARACTERS = Pattern.compile("[<>\\(\\)&;\'\"\\[\\]{}]");
+	public final static Pattern INVALID_CHARACTERS = Pattern.compile("[<>\\(\\)&;\'\"\\[\\]{}]");
 	/**
 	 * Pattern used to determine whether the user has entered a non-alphabetic character or space. 
 	 */
-	public static Pattern NON_ALPHA = Pattern.compile("[^a-zA-Z' ']");
+	public final static Pattern NON_ALPHA = Pattern.compile("[^a-zA-Z' ']");
 	/**
 	 * Pattern used to determine whether the user has entered a non-alphanumeric character or space. 
 	 */
-	public static Pattern NON_ALPHANUMERIC = Pattern.compile("[^0-9a-zA-Z' ']");
+	public final static Pattern NON_ALPHANUMERIC = Pattern.compile("[^0-9a-zA-Z' ']");
 	/**
 	 * Pattern used to determine whether the user has entered a valid zip code. 
 	 */
-	public static Pattern NON_ZIPCODE = Pattern.compile("^(?:(?!(^(\\d{5}|\\d{9})$)).)*$");
+	public final static Pattern NON_ZIPCODE = Pattern.compile("^(?:(?!(^(\\d{5}|\\d{9})$)).)*$");
 	/**
 	 * Holds the minimum amount of characters allowed for this text field.
 	 */

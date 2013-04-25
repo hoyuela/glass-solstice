@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Home</title>
+<meta name="viewport"
+	content="width=device-width,height=device-height, initial-scale=1">
+
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="cancelTransactionHistory-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+			<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper"> 
+				<div class="white-rd-cor">
+					<!-- body text area star -->
+					<div class="floatleft">
+						<h1>Cancel Transaction:</h1>
+					</div>
+					<div class="floatright pay-pal-logo"> </div>
+					<div class="clearboth"></div>
+					<h3>Are you sure you want to cancel this transaction?</h3>
+					<p>Are you sure you want to cancel your payment?</p>
+					<p>Tap "Yes, Cancel" to cancel this payment. Tap "No" to return
+						to previous page.</p>
+
+			 <!-- 	<div id="loading_image" class="txtcenteraln loading_imageBG" style="display:none;" >
+						loading...
+					</div> -->
+					 
+					 <div id="loader_img" class="txtcenteraln" style="display:none";>
+                              <img src="../../../images/load-more.gif"/>
+                        </div>
+					 
+					<div id="yes_cancel" class="txtcenteraln">
+						<a class="small_btn_110px" data-role="button" onclick="dfs.crd.p2p.postCancelStatus()" >Yes, Cancel </a>
+					</div>
+					
+					<div id="no_cancel" class="txtcenteraln">
+						<a class="small_btn_110px" data-role="button"  onclick="dfs.crd.p2p.goBackToTransHistory()" >No </a>
+					</div>
+					
+				</div>
+			</div>
+			<!-- body text area end -->
+			<div id="footnotes" class="footnotes" ></div>
+		</div>
+
+		<!-- content end -->
+		<div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
+			<footer id="footer" class="mnu_footer">
+			</footer>
+		</div>
+	</div>
+	
+	<!--page end -->
+</body>
+</html>

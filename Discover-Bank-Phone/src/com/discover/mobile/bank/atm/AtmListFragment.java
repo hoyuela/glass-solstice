@@ -1,5 +1,5 @@
 /*
- * © Copyright Solstice Mobile 2013
+ * Â© Copyright Solstice Mobile 2013
  */
 package com.discover.mobile.bank.atm;
 
@@ -35,12 +35,6 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 	/**Adapter used to display data*/
 	private AtmListAdapter adapter;
 
-	/**ATMs retrieved from the server*/
-	private AtmResults results;
-
-	/**Current amount of results being shown*/
-	private int index;
-
 	/**Fragment holding this fragment*/
 	private AtmMapFragment observer;
 
@@ -59,8 +53,10 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
-		results = (AtmResults)bundle.get(BankExtraKeys.DATA_LIST_ITEM);
-		index = (bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0));
+		/**ATMs retrieved from the server*/
+		AtmResults results = (AtmResults)bundle.get(BankExtraKeys.DATA_LIST_ITEM);
+		/**Current amount of results being shown*/
+		int index = (bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0));
 
 		//If the results is empty or null
 		if(null == results || null == results.results || null == results.results.atms || results.results.atms.isEmpty()){
@@ -205,7 +201,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
 	@Override
 	public void showFooterMessage() {
-		//footer.showEmpty(this.getString(R.string.atm_location_no_results));
+		// 
 	}
 
 	@Override

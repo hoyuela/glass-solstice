@@ -108,7 +108,7 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 		
 			
 			/**Verify a AccountLimits object has been associated with this object otherwise mark input as invalid*/
-			if( limits != null ) {
+			if( limits != null && errorLabel != null) {
 				/**Verify Total amount allowed to be deposited in this account per month has not been exceeded*/
 				if(limits.monthlyDepositAmount == null || !limits.monthlyDepositAmount.isValidAmount(amount) ) {
 					this.errorLabel.setText(getErrorTextWithDollarAmount(limits.monthlyDepositAmount));
@@ -135,13 +135,15 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
 					Log.e(TAG, "Unable to verify amount entered by user");
 				}
-				this.errorLabel.setText(R.string.bank_deposit_unknown_limit);
+				if(errorLabel != null)
+					this.errorLabel.setText(R.string.bank_deposit_unknown_limit);
 			}
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Invalid amount entered by user");
 			}
-			this.errorLabel.setText(R.string.bank_deposit_invalid_amount);
+			if(errorLabel != null)
+				this.errorLabel.setText(R.string.bank_deposit_invalid_amount);
 		}
 		return ret;
 	}
@@ -150,7 +152,7 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 	 * Allows for a hidden error label to be GONE or INVISIBLE.
 	 * @param isGone - {@code true} when hidden error labels should be of Visibility type GONE.
 	 */
-	public void setHiddenErrorVisibility(boolean isGone) {
+	public void setHiddenErrorVisibility(final boolean isGone) {
 		hiddenErrorVisibility = isGone ? View.GONE : View.INVISIBLE;
 	}
 	

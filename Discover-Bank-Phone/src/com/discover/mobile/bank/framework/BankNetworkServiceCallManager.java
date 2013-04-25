@@ -427,19 +427,33 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		//Handle the manage payee service call (which is a get payee service call).
 		else if( sender instanceof ManagePayeeServiceCall) {
 			final Bundle bundle = new Bundle();
-
-			/**Check to see if the payees were downloaded because of a delete payee call*/
-			if( prevCall instanceof DeletePayeeServiceCall ) {
-				/**Clear Prev Call to avoid incorrect behavior*/
-				prevCall = null;
-
-				bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
-			}
-
+			
 			//Update the current list of payees
 			BankUser.instance().updateCache(result);
 			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
-			BankConductor.navigateToManagePayee(bundle);
+			
+			/**Check to see if the payees were downloaded because of a delete payee call*/
+			if( prevCall instanceof DeletePayeeServiceCall &&
+				!((DeletePayeeServiceCall)prevCall).isHandled()) {
+				/**Mark the Service as being handled to avoid this block of code being called again on the next update*/
+				((DeletePayeeServiceCall)prevCall).markHandled();
+
+				bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
+				
+				BankConductor.navigateToManagePayee(bundle);
+			} 
+			/**Check to see if the payees were downloaded because of an added payee call*/
+			else if( prevCall instanceof AddPayeeServiceCall && 
+					!((AddPayeeServiceCall)prevCall).isHandled() ) {
+				/**Mark the Service as being handled to avoid this block of code being called again on the next update*/
+				((AddPayeeServiceCall)prevCall).markHandled();
+				
+				BankConductor.navigateToAddPayee(BankAddPayeeConfirmFragment.class, ((AddPayeeServiceCall)prevCall).getResponse());
+			} 
+			/**Catch-all means it was just a payee download*/
+			else {
+				BankConductor.navigateToManagePayee(bundle);
+			}
 		}
 		else if(sender instanceof GetExternalTransferAccountsCall) {
 			final Bundle args = new Bundle();
@@ -511,13 +525,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Payee Add Success, navigate to Add Payee Confirmation Pge in Workflow Step 5
 		else if( sender instanceof AddPayeeServiceCall ) {
-			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, result);
-
-			/**Set parameter that specifies whether it is an update or newly added payee*/
-			bundle.putSerializable(BankAddPayeeConfirmFragment.KEY_PAYEE_UPDATE, 
-					((AddPayeeServiceCall)sender).isUpdate());
-			BankConductor.navigateToAddPayee(BankAddPayeeConfirmFragment.class, bundle);
+			/**Update Payee List such that updates the cache, after which it will navigate to confirmation page*/
+			BankServiceCallFactory.createManagePayeeServiceRequest().submit();
 		}
 		//ATM locator service call
 		else if(sender instanceof GetAtmDetailsCall){

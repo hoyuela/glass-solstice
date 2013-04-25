@@ -7,7 +7,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
-import com.discover.mobile.common.nav.section.FragmentComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 
 
@@ -15,7 +14,7 @@ public final class BankAccountSectionInfo extends GroupComponentInfo {
 
 	public BankAccountSectionInfo() {
 		super(R.string.section_title_account,
-				new FragmentComponentInfo(R.string.sub_section_title_account_summary, BankAccountSummaryFragment.class), 
+				new ClickComponentInfo(R.string.sub_section_title_account_summary, openAccountSummary()), 
 				new ClickComponentInfo(R.string.sub_section_title_open_new_account,true, externalLink(BankUrlManager.getOpenAccountUrl())),
 				new ClickComponentInfo(R.string.sub_section_title_statement,true,externalLink(BankUrlManager.getStatementsUrl())));
 	}
@@ -32,4 +31,14 @@ public final class BankAccountSectionInfo extends GroupComponentInfo {
 	}
 	
 	
+	private static OnClickListener openAccountSummary() {
+		return new OnClickListener() {
+
+			@Override
+			public void onClick(final View arg0) {
+				BankConductor.navigateToHomePage();		
+			}
+		};
+		
+	}
 }

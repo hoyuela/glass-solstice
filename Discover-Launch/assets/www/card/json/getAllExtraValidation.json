@@ -1,0 +1,16 @@
+{
+"extras.campaignId":"String", 
+"extras.merchantName":"String", 
+"extras.name":"String", 
+"extras.awardAmountType":"String", 
+"extras.amount":"Decimal", 
+"extras.minAmount":"Decimal", 
+"extras.logo":"String", 
+"extras.actualBeginDate":"Date", 
+"extras.expires":"Date", 
+"extras.daysLeft":"String", 
+"extras.warningLevel":"String", 
+"extras.rewardType":"String",
+"incentiveTypeCode":"String", 
+"incentiveCode":"Number"
+}

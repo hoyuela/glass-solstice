@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Force Upgrade</title>
+</head>
+<body>
+	<div data-role="page" id="forceUpgrade-pg">
+		<div data-role="header" id="pg-header" data-position="fixed">
+			<header id="header" class="cmn_header_nologout"></header>
+		</div>
+		<div data-role="content">
+			<div class="loginbox" id="login-form">
+				<form action="javascript:void(0)" method="post"
+					class="ui-body ui-body-d ui-corner-all" id="login-form">
+					<div id="card-login">
+						<label id="sccl"></label>
+						<div class="errormsg"></div>
+						<div class="txtcenteraln btnRedBorder">
+						<a href="#" data-rel="back" class="bluelink boldtext">Not Now</a>&nbsp;&nbsp;
+							<a href="#"
+								onclick="redirectToPageAfterConfirm('updateAppVersion')"
+								data-role="button" class="small_btn">Get the Latest App</a>
+						</div>
+					</div>
+				</form>
+				<div id="reflection"></div>
+			</div>
+			<div id="footnotes" class="footnotes"></div>
+		</div>
+		<div data-role="footer" id="pg-footer" data-position="fixed"></div>
+	</div>
+</body>
+</html>

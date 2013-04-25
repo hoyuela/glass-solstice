@@ -29,8 +29,6 @@ public class SimpleChooseListItem extends RelativeLayout{
 	/**View of the item*/
 	private final RelativeLayout mainView;
 
-	private ImageView caret;
-
 	public SimpleChooseListItem(final Context context, final AttributeSet attrs){
 		super(context, attrs);
 		mainView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.simple_choose_item, null);
@@ -85,7 +83,7 @@ public class SimpleChooseListItem extends RelativeLayout{
 		mainView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.simple_choose_item, null);
 
 		/**Check whether caret in the layout should be shown or hidden*/
-		caret = (ImageView)mainView.findViewById(R.id.carrot);		
+		final ImageView caret = (ImageView)mainView.findViewById(R.id.carrot);		
 		caret.setVisibility((showCaret)?View.VISIBLE:View.GONE);
 
 		final TextView title = (TextView) mainView.findViewById(R.id.text);

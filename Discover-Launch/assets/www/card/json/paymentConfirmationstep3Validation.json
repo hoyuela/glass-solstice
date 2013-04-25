@@ -1,0 +1,9 @@
+{
+"maskedBankAccountNumber":"String",
+"accountType":"String",
+"bankName":"String",
+"confirmationNumber":"String",
+"paymentDate":"Date",
+"paymentAmount":"Decimal",
+"isAcLiteOutageMode":"Boolean"
+}

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Discover - Manage Notification</title>  
+  </head>
+    <body >
+        <!--page start -->
+        <div data-role="page" id="manageAlerts-pg" class="pn-page">
+            <!--header start -->
+            <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+                <header id="header" class="cmn_header">
+                </header>
+            </div>
+            <!-- header end -->
+            <!-- content start -->
+                <div data-role="content" id="mangedummyID" class="ui-content-internalpages push-alerts">
+                    <div class="wraper">
+                        <div id="loading" style="display: none; position: absolute; z-index: 100; top: 155px; left: 130px">
+                            <p>
+                            <img src="../images/ajaxLoader.gif" style="" id="img1" />
+                            </p>
+                        </div>
+                        <!-- body text area star -->
+				<div class="faqWraper"><a href="#" onclick= "dfs.crd.sct.globalFaqLinks();navigation('../pushNotification/faqDeviceAlerts');" class="i_icon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></div>
+             
+                        <div id='global-errors'></div>
+                        <div id="phonenumber-block">
+                            <p class="changenumber">
+                                <span>Text Alerts are sent to: <br/></span>
+                                <span id="phonenumber"></span>&nbsp;
+                                <a class="bluelink boldtext">Edit</a>
+                            </p>
+                            <div id="changenumber">
+                                <div class="ui-grid-b">
+                                    <div class="ui-block-b">
+                                        <input type="tel" id="txt-change-phone-number" placeholder="Phone number" class="phone_number" maxlength="10" />
+                                    </div>
+                                    <div class="ui-block-a addnumberSelect">
+									<div class="select-range" data-theme="d" id="activitySelection" >
+                                         <select id="changenumberSelect" data-theme="d" name="changenumber-select">
+                                            <option value="">Select Carrier</option>
+                                            <option value="message.alltel.com">Alltel</option>
+                                            <option value="txt.att.net">ATT</option>
+                                            <option value="myboostmobile.com">Boost Mobile</option>
+                                            <option value="messaging.nextel.com">Nextel</option>
+                                            <option value="messaging.sprintpcs.com">Sprint</option>
+                                            <option value="tmomail.net">T-Mobile</option>
+                                            <option value="email.uscc.net">U.S. Cellular</option>
+                                            <option value="vtext.com">Verizon/Amp'd</option>
+                                            <option value="vmobl.com">Virgin Mobile</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						</div>
+                        <div id="doubleoptin-error" style="display: none">
+                            <p class="redtext">This number is not verified. From this number text "YES" and the last four of your acct # to 347268 to verify.
+                            </p>
+                        </div>
+                        <div id="slider">
+                            <div data-role="fieldcontain" style="border:0px">
+                                <select name="alertsetting" id="flip-b" data-role="slider" style="float:right">
+                                    <option value="off">OFF</option>
+                                    <option value="on">ON</option>
+                                </select>
+                                <h2 for="alertsetting" class="boldtext floatleft">Enable Push Alerts</h2>
+								<div>
+                            <div style="clear:both"></div>
+                        </div>
+                        <div id="registered-tnclinks" style="display: none">
+                            <p>
+                                <a href="#" onclick="navigation('../pushNotification/manageAlertsTermsAndConditions');" class="bluelink" data-transition="slide">&nbsp;Text Messages Terms and Conditions</a>
+                            <br/>
+                            <a href="#" onclick="navigation('../pushNotification/manageAlertsTermsAndConditions');" class="bluelink" data-transition="slide">&nbsp;Push Alerts Terms and Conditions</a>
+                            </p>
+                        </div>    
+                        <div id="notifsettings">
+                            <div data-role="collapsible" data-inline="true" data-collapsed="false" id="manage-accounts-block">
+                                
+                                <ul class="whitebg-list-view">
+								 <li class="hideLiMain"><span class="pn-plus"></span><h3 class="bluetext">Manage Your Accounts</h3></li>
+                                    <div class="hidden-element">
+								   <li id="STMT" class="hideLi">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input type="checkbox" id="SMRM" class="custom pn-txt-chk alert-chk" name="SMRM" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="PNRM" type="checkbox" class="custom alert-chk" name="alerts" value="" data-role="none"
+                                                        data-theme="a">
+                                                        </fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">Statement Available</span>
+                                                <br/>Notify me when a new statement is available to view at Discover.com</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li id="MINP"  class="hideLi">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="PNRM" type="checkbox" class="custom alert-chk" name="alerts" value="" data-role="none"
+                                                        data-theme="a">
+                                                        </fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">Minimum Payment Due</span>
+                                                <br/>Get a timely reminder 6 to 7 days before your due date if the minimum
+                                                payment due has not been received.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li id="PMTR"  class="hideLi">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="PNRM" type="checkbox" class="custom alert-chk" name="alerts" value="" data-role="none"
+                                                        data-theme="a">
+                                                        </fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">Payment Posted</span>
+                                                <br/>Know exactly when your payments post to your account</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li id="MCRD" class="hideLi">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="PNRM" type="checkbox" class="custom alert-chk" name="alerts" value="" data-role="none"
+                                                        data-theme="a">
+                                                        </fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">Merchant Refund Posted</span>
+                                                <br/>Know when a merchant refund/ credit posts to your account.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li id="BALT" class="hideLi">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="PNRM" type="checkbox" class="custom alert-chk" name="alerts" value="" data-role="none"
+                                                        data-theme="a">
+                                                        </fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">Balance Transfer Posted</span>
+                                                <br/>Know when a balance transfer posts to your account</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li id="FRAD" class="hideLi">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b" class="boldtext">N/A</fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">Fraud alert</span>
+                                                <br/>Be immediately notified if we detect any unusual activity on your account</p>
+                                            </div>
+                                        </div>
+                                    </li>
+									</div>
+                                </ul>
+                       
+                           
+                                
+                                <ul class="whitebg-list-view">
+								<li class="hideLiMain"> <span class="pn-plus" style="background-position: 0px 0px;"></span><h3 class="bluetext">Monitor Your Spending</h3></li>
+								 <div class="hidden-element">
+                                    <li id="TAMT" class="hideLi">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="PNRM" type="checkbox" class="custom alert-chk" name="alerts" value="" data-role="none" data-theme="a">
+                                                        </fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">Transaction Exceeds a Specified Amount</span>
+                                                <br/>
+                                                <span class="boldtext">$
+                                                    <input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt textbox_alertspage"
+                                                    type="tel" name='tamtDefAmt' placeholder="300.00" data-inline="true" maxlength="5" />
+                                                </span>or more<br/>Minimum amount is $<span id='tamtDefAmt'> </span></p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li id="BALA" class="hideLi">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="PNRM" type="checkbox" class="custom alert-chk" name="alerts" value="" data-role="none"
+                                                        data-theme="a">
+                                                        </fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">Account Balance Exceeds a Specified Amount</span>
+                                                <br/>
+                                                <span class="boldtext">$
+                                                    <input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt  textbox_alertspage"
+                                                    type="tel" name='balaDefAmt' placeholder="500.00" data-inline="true" maxlength="5" />
+                                                </span>or more<br/>Minimum amount is $<span id='balaDefAmt'> </span></p>
+                                            </div>
+                                        </div>
+                                    </li>                                    
+                                    <li id="CRLT" class="hideLi">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="PNRM" type="checkbox" class="custom alert-chk" name="alerts" value="" data-role="none"
+                                                        data-theme="a">
+                                                        </fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">Nearing Account Credit Line</span><br/>Learn when you account balance is within
+                                                <br/>
+                                                </p>
+                                                
+                                              
+											   <div class="ui-select">
+												<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-icon="arrow-d" data-iconpos="right" data-theme="d" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-right ui-btn-up-d">
+													<span class="ui-btn-inner ui-btn-corner-all">
+														<span class="ui-btn-text">
+															<span id="crltDefAmtsetVal">$20</span>
+														</span>
+														<span class="ui-icon ui-icon-arrow-d ui-icon-shadow">&nbsp;</span>
+													</span>
+                                                    <select name="crltDefAmt" class='crltDefAmt' onchange="updateValcrltDefAmt(this.value)" id='VALUE' data-role="none">														
+                                                    </select>
+													</div>
+											</div>
+											</br> of your credit line
+                                            </div>
+                                        </div>
+                                    </li>
+									</div>
+                                </ul>
+                  
+                          
+                                <ul class="whitebg-list-view">
+								  <li class="hideLiMain 5CBB"><span class="pn-plus" style="background-position: 0px 0px;"></span><h3 class="bluetext">Maximize Your Rewards</h3></li>
+								  <div class="hidden-element">
+                                    <li id="5CBB" class="hideLi 5CBB">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="PNRM" type="checkbox" class="custom pn-push-chk alert-chk" name="alerts" value="" data-role="none"
+                                                        data-theme="a">
+                                                        </fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">Rewards Reminder</span>
+                                                <br/>Learn when it's time to enroll for a Reward Program</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li id="SHPD" class="hideLi">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b">N/A</fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">New Retailers on ShopDiscover</span>
+                                                <br/>Learn about new places to earn 5% - 10% CashBack Bonus when shopping through
+                                                ShopDiscover.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li id="MRRW" class="hideLi">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="PNRM" type="checkbox" class="custom alert-chk" name="alerts" value="" data-role="none"
+                                                        data-theme="a">
+                                                        </fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">Cashback Bonus Reaches Specified Amount</span>
+                                                <br/>
+                                                <span class="boldtext">$
+                                                    <input id="VALUE" class="textbox_alertspage cls-ma-fld-cashback-amt" type="tel" placeholder="100.00" data-inline="true" name='mrrwDefAmt' onfocus="blank(this)" onblur="unblank(this)" maxlength="5" />
+                                                </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li id="MLRW" class="hideLi">
+                                        <div class="ui-grid-b">
+                                            <div class="ui-block-a">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+                                                        </fieldset>
+                                                <label for="SMRM">Text</label>
+                                            </div>
+                                            <div class="ui-block-b">
+                                                <fieldset data-role="controlgroup" data-theme="b">
+                                                    <input id="PNRM" type="checkbox" class="custom alert-chk" name="alerts" value="" data-role="none"
+                                                        data-theme="a">
+                                                        </fieldset>
+                                                <label for="alerts">Push Alerts</label>
+                                            </div>
+                                            <div class="ui-block-c">
+                                                <p>
+                                                <span class="boldtext">Miles Reaches Specified Amount</span>
+                                                <br/>
+                                                <span class="boldtext">&nbsp;
+                                                    <input id="VALUE" class="textbox_alertspage cls-ma-fld-cashback-amt" type="tel" placeholder="100.00" data-inline="true" name='mlrwDefAmt' onfocus="blank(this)" onblur="unblank(this)" maxlength="5" />
+                                                </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+									</div>
+                                </ul>
+                         
+                        </div>
+                        <div id="addnumber" style="display: none">
+                            <p class="mL2">Phone # required for text message notifications:</p>
+                            <div class="ui-grid-a">
+                                <div class="ui-block-a">
+                                    <input type="tel" id='txt-phone-number' placeholder="Phone number" class="add_phone_number" maxlength="10"/>
+                                </div>
+                                <div class="ui-block-b addnumberSelect">
+                                     <select id="addnumberSelect">
+                                        <option value="">Select</option>
+                                        <option value="message.alltel.com">Alltel</option>
+                                        <option value="txt.att.net">ATT</option>
+                                        <option value="myboostmobile.com">Boost Mobile</option>
+                                        <option value="messaging.nextel.com">Nextel</option>
+                                        <option value="messaging.sprintpcs.com">Sprint</option>
+                                        <option value="tmomail.net">T-Mobile</option>
+                                        <option value="email.uscc.net">U.S. Cellular</option>
+                                        <option value="vtext.com">Verizon/Amp'd</option>
+                                        <option value="vmobl.com">Virgin Mobile</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ui-grid-b">
+                                <div class="ui-block-a otherInputWidth"></div>
+                                <div class="ui-block-b add-msg-dot-com hidden">
+                                        <div>
+                                            <div class="at-rate">@&nbsp;</div>
+                                            <input id="custom-carrier" type="email" placeholder="" class="dot-com"/>
+                                            <span class="eg-msg">(e.g.,messaging.nextel.com)</span>
+                                            <div class="clearboth"></div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearboth"></div>
+                        <div id="push-tnc" style="display: none">
+                            <fieldset data-role="controlgroup" id="tnc">
+                                <input type="checkbox" name="tnc" id="reg-tnc-chkbox" values="" data-role="none" data-theme="a" />
+                            </fieldset>
+                            <p class="labelfor_tnc" style="padding-top:5px;">I have read and agree to the Terms and Conditions</p>
+                        </div>
+                        <div class="center_align"> 
+                            <div class="savecancel ui-grid-a" style="text-align:center">
+							 <div class="ui-block-b" style="width:100%">
+                                    <a href="#" data-role="button" data-inline="false" id="id-notify-save" class="notifsave savenumber">Save Changes</a>
+                                </div>
+                                <div class="ui-block-a" style="width:100%">
+                                    <a href="#" data-role="link" data-inline="false" id="id-notify-cancel" class="notifcancel">Cancel</a>
+                                </div>
+                               
+                            </div>
+                        </div>
+                        </br>
+                        <div id="unregistered-tnclinks">
+                            <p>
+                            <span class="mL2">By clicking on the Save button I agree to the</span>
+                            </br>
+                            <a href="#" onclick="s.prop1='PUSH_HANDSET_MANAGE_ALERTS_ACCEPT_TERMS_BTN';dfs.crd.sct.textTermsNConditions();navigation('../pushNotification/manageAlertsTermsAndConditions');" class="bluelink" >Terms of Use</a>
+                            </p>
+                        </div> 
+                    </div>   
+                        <!-- body text area end -->
+                    <div id="footnotes" class="footnotes" ></div>
+                </div>
+            <div class="overlay"></div>
+            <div id="overlay_wraper_saveConfirm" class="overlay_wraper">
+                <span class="close-overlay closeOverlay"></span>
+				<img src="../../images/closeOverlay.png" width="37" height="37" alt="close overlay" class="close-overlay" id="closebtn" style="float: right;position: absolute;top: -17px;right: -14px;"/>
+                <h2>You did not save your changes</h2>				
+                <div class="Overlaydata">
+                    <p>Are you sure you want to leave this page without saving? Any changes to text messages and push alert settings will be lost.</p>
+                    <div class="saveconfirmblock ui-grid-a" style="text-align:center;">                        
+                        <div id="save_push_overlay" class="ui-block-b" style="width:100%">						
+                            <input type="button" value="Continue Without Saving" class="continue-overlay"/>
+                        </div>
+						<div id="cancel_push_overlay" class="ui-block-a" style="width:100%"><a href="javascript:void(0);" class="close-overlay">Cancel</a></div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!-- content end -->
+            <div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
+                <footer id="footer" class="mnu_footer">
+                </footer>
+            </div>
+        </div>
+        <!--page end -->        
+    </body>
+</html>

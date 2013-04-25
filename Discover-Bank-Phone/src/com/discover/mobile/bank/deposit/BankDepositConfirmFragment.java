@@ -32,10 +32,7 @@ import com.discover.mobile.common.help.HelpWidget;
  *
  */
 public class BankDepositConfirmFragment extends BankDepositBaseFragment {
-	/**
-	 * Reference to bundle provided in onCreateView or via getArguments() depending on what created the fragment.
-	 */
-	private Bundle bundle = null;
+
 	/**
 	 * Reference to a DepositDetail object which is provided via the bundle on creation of fragment.
 	 */
@@ -45,7 +42,7 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 
-		bundle = ( null != savedInstanceState ) ? savedInstanceState : getArguments();
+		final Bundle bundle = ( null != savedInstanceState ) ? savedInstanceState : getArguments();
 
 		/**Store bundle provided to restore state of fragment onResume*/
 		if( null != bundle ) {
@@ -89,7 +86,8 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 	 */
 	@Override
 	protected int getProgressIndicatorStep() {
-		return 3;
+		final int lastPosition = 3;
+		return lastPosition;
 	}
 
 	@Override
