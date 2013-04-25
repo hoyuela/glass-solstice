@@ -71,6 +71,8 @@ public class BankPrivacyTermsFragment extends TermsConditionsFragment {
 		case DepositTermsOfUse:
 			url = BankUser.instance().getCustomerInfo().getDepositsEligibility().getTermsUrl();
 			break;
+		default:
+			break;
 		}
 		
 		return url;
@@ -92,6 +94,8 @@ public class BankPrivacyTermsFragment extends TermsConditionsFragment {
 			break;
 		case DepositTermsOfUse:
 			title = R.string.bank_deposit_check_title;
+			break;
+		default:
 			break;
 		}
 		return title;

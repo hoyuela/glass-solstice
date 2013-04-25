@@ -103,9 +103,6 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	/**Wrapper for the location manager*/
 	private DiscoverLocationMangerWrapper locationManagerWrapper;
 
-	/**View of the layout*/
-	private View view;
-
 	/**Search bar of the fragment*/
 	private AtmLocatorMapSearchBar searchBar;
 
@@ -160,7 +157,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
-		view = inflater.inflate(getLayout(), null);
+		View view = inflater.inflate(getLayout(), null);
 		
 		/**
 		 * The map and list fragments should only be added if they aren't already on the back stack. These
@@ -270,6 +267,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		case LOCKED_ON:
 			setUserLocation(mapWrapper.getCurrentLocation());
 			break;
+		default:
+			break;
 		}
 	}
 
@@ -367,11 +366,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			mapWrapper.clear();
 			currentIndex = 0;
 			mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, this.getActivity());
-			if(LocationManager.GPS_PROVIDER == location.getProvider()){
-				mapWrapper.zoomToLocation(location, MAP_CURRENT_GPS_ZOOM);
-			}else{
-				mapWrapper.zoomToLocation(location, MAP_CURRENT_NETWORK_ZOOM);
-			}
+			
+			zoomToLocation(location);
+			
 			getAtms(location);
 			hasLoadedAtms = true;
 		}
@@ -544,11 +541,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		locationStatus = LOCKED_ON;
 		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, this.getActivity());
 		if(null == location){return;}
-		if(LocationManager.GPS_PROVIDER == location.getProvider()){
-			mapWrapper.zoomToLocation(location, MAP_CURRENT_GPS_ZOOM);
-		}else{
-			mapWrapper.zoomToLocation(location, MAP_CURRENT_NETWORK_ZOOM);
-		}
+		
+		zoomToLocation(location);
+		
 		if(!hasLoadedAtms){
 			getAtms(location);
 			hasLoadedAtms = true;
@@ -812,5 +807,13 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 */
 	public void setHelpModalShowing(final boolean helpModalShowing) {
 		this.helpModalShowing = helpModalShowing;
+	}
+	
+	private void zoomToLocation(Location location) {
+		if (LocationManager.GPS_PROVIDER == location.getProvider()) {
+			mapWrapper.zoomToLocation(location, MAP_CURRENT_GPS_ZOOM);
+		} else {
+			mapWrapper.zoomToLocation(location, MAP_CURRENT_NETWORK_ZOOM);
+		}
 	}
 }

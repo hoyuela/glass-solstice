@@ -1,5 +1,5 @@
 /*
- * © Copyright Solstice Mobile 2013
+ * Â© Copyright Solstice Mobile 2013
  */
 package com.discover.mobile.bank.atm;
 
@@ -41,9 +41,6 @@ public class AtmMarkerBalloonManager{
 	/**Context used for rendering*/
 	private final Context context;
 
-	/**Image for the street view*/
-	private ImageView streetView;
-
 	/**Current location address object*/
 	private Address address;
 
@@ -51,7 +48,7 @@ public class AtmMarkerBalloonManager{
 	private final AtmMapFragment fragment;
 
 	/**Number of characters allowed in a title*/
-	private final int MAX_LENGTH = 15;
+	private static final int MAX_LENGTH = 15;
 
 	/**String representing ellipses*/
 	private static final String DOTS = "...";
@@ -110,7 +107,6 @@ public class AtmMarkerBalloonManager{
 		final TextView hoursLabel = (TextView) view.findViewById(R.id.hours_label);
 		final ImageView hoursDivider = (ImageView) view.findViewById(R.id.divider1);
 		final ImageView directionsDivider = (ImageView) view.findViewById(R.id.divider3);
-		streetView = (ImageView) view.findViewById(R.id.street_view);
 		final TextView hours = (TextView) view.findViewById(R.id.hours);
 		final TextView directionsLabel = (TextView) view.findViewById(R.id.directions_label);
 

@@ -852,16 +852,14 @@ public final class BankConductor  extends Conductor {
 				nextVisibleFragment = new BankTransferNotEligibleFragment();
 			}
 
-			if(nextVisibleFragment != null) {
-				if(args != null && args.getBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK)) {
-					navActivity.popTillFragment(BankTransferStepOneFragment.class);
-					navActivity.getSupportFragmentManager().popBackStack();
-					nextVisibleFragment = new BankTransferStepOneFragment();
-					nextVisibleFragment.setArguments(args);
-					navActivity.makeFragmentVisible(nextVisibleFragment);
-				} else {
-					navActivity.makeFragmentVisible(nextVisibleFragment);
-				}
+			if (args != null && args.getBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK)) {
+				navActivity.popTillFragment(BankTransferStepOneFragment.class);
+				navActivity.getSupportFragmentManager().popBackStack();
+				nextVisibleFragment = new BankTransferStepOneFragment();
+				nextVisibleFragment.setArguments(args);
+				navActivity.makeFragmentVisible(nextVisibleFragment);
+			} else {
+				navActivity.makeFragmentVisible(nextVisibleFragment);
 			}
 		}
 

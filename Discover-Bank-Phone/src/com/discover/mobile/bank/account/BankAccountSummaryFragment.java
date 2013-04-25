@@ -194,7 +194,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 	@Override
 	public void onClick(final View sender) {
-		if( sender == openAccount ) {
+		if( sender.equals(openAccount) ) {
 			BankConductor.navigateToBrowser(BankUrlManager.getOpenAccountUrl());
 		}
 	}

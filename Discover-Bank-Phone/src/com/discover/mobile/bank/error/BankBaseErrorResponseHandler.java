@@ -219,9 +219,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 
 	public void goToCardHome(){
 		//if the activity is a navigation root activity the user should be in card
-		if(DiscoverActivityManager.getActiveActivity() instanceof NavigationRootActivity){
-			//Do nothing here
-		}else{
+		if(!(DiscoverActivityManager.getActiveActivity() instanceof NavigationRootActivity)){
 			FacadeFactory.getCardLoginFacade().toggleToCard(mErrorHandlerUi.getContext());
 		}
 	}

@@ -1,5 +1,5 @@
 /*
- * � Copyright Solstice Mobile 2013
+ * ��� Copyright Solstice Mobile 2013
  */
 package com.discover.mobile.bank.help;
 
@@ -35,12 +35,6 @@ public final class HelpMenuListFactory {
 	/**Default menu item representing the "All FAQ" item*/
 	private final HelpItemGenerator allFaq;
 
-	/**Pay Bills Menu item*/
-	private final HelpItemGenerator paybills;
-
-	/**Check Deposit Menu Item*/
-	private final HelpItemGenerator checkDeposit;
-
 	/**Instance of the factory*/
 	private static HelpMenuListFactory factory;
 
@@ -49,10 +43,6 @@ public final class HelpMenuListFactory {
 	 */
 	private HelpMenuListFactory(){
 		allFaq = new HelpItemGenerator(R.string.help_all_faq, true, false, getAllFaqListener());
-		paybills = new HelpItemGenerator(R.string.pay_bills_help, true, false, 
-				getDefaultClickListener(BankExtraKeys.BILL_PAY_FAQ));
-		checkDeposit = new HelpItemGenerator(R.string.check_deposit_faq, true, false, 
-				getDefaultClickListener(BankExtraKeys.CHECK_DEPOSIT_FAQ));
 	}
 
 	/**
