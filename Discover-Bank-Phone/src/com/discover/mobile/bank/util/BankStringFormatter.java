@@ -15,40 +15,23 @@ import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.google.common.base.Strings;
 
-public class BankStringFormatter {
+public final class BankStringFormatter {
+	private final static String TAG = BankStringFormatter.class.getSimpleName();
+	
+	private BankStringFormatter() {
+		Log.e(TAG, "Cannot create instance of " + this.getClass().getSimpleName());
+	}
 	
 	public final static String EMPTY_DOLLAR = "$0.00";
-	private final static String TAG = BankStringFormatter.class.getSimpleName();
 	
 	/**String representing a negative*/
 	public static final String NEGATIVE = "-";
 
 	/**String representing a dollar sign*/
 	public static final String DOLLAR = "$";
-
-	/**
-	 * Convert the string amount to a dollar amount
-	 * @param dollar - dollar amount
-	 * @return the dollar amount in string form
-	 */
-	public static String convertToDollars(final String dollar){
-		if(null != dollar){
-			try {
-				final double amount = Double.parseDouble(dollar);
-				String value = NumberFormat.getCurrencyInstance(Locale.US).format(amount);
-
-				if( value.startsWith("(") ) {
-					value = "-" + value.substring(1, value.length()-1);
-				}
-
-				return value;
-			} catch(final Exception ex) {
-				return EMPTY_DOLLAR;
-			}
-		} else{
-			return EMPTY_DOLLAR;
-		}
-	}
+	
+	private static final String DATE_YYYY_MM_DD = "yyyy-MM-dd";
+	private static final String DATE_MM_DD_YYYY = "MM/dd/yyyy";
 	
 	/**
 	 * Convert the date from the format dd/MM/yyyy to dd/MM/yy
@@ -56,8 +39,8 @@ public class BankStringFormatter {
 	 * @return the converted date
 	 */
 	public static String convertDate(final String date){
-		final SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-		final SimpleDateFormat tableFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+		final SimpleDateFormat serverFormat = new SimpleDateFormat(DATE_YYYY_MM_DD, Locale.US);
+		final SimpleDateFormat tableFormat = new SimpleDateFormat(DATE_MM_DD_YYYY, Locale.US);
 
 		try{
 			return tableFormat.format(serverFormat.parse(date));
@@ -83,13 +66,14 @@ public class BankStringFormatter {
 	 * @return the dollar amount in string form
 	 */
 	public static String convertCentsToDollars(final int cents){
-		double amount = (double)cents/100;
+		final int centsPerDollar = 100;
+		double amount = (double)cents/centsPerDollar;
 		final StringBuilder formattedString = new StringBuilder();
 
 		//If negative, make positive
 		if(amount < 0){
 			amount *= -1;
-			formattedString.append("-");
+			formattedString.append(NEGATIVE);
 		}
 
 		formattedString.append(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
@@ -110,7 +94,7 @@ public class BankStringFormatter {
 		//If negative, make positive
 		if(amount < 0){
 			amount *= -1;
-			formattedCurrency.append("-");
+			formattedCurrency.append(NEGATIVE);
 		}	
 		
 		formattedCurrency.append(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
@@ -154,7 +138,7 @@ public class BankStringFormatter {
 			formattedDate = longDate.split(ActivityDetail.DATE_DIVIDER)[0];
 		}
 		
-		final SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+		final SimpleDateFormat serverFormat = new SimpleDateFormat(DATE_YYYY_MM_DD, Locale.US);
 		final SimpleDateFormat tableFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
 
 		try{
@@ -174,11 +158,14 @@ public class BankStringFormatter {
 	 */
 	public static String convertToAccountEnding(final String value){
 		if(!Strings.isNullOrEmpty(value)){
+			final int startPosition = 0;
+			final int fourthCharacter = 3;
+			
 			final StringBuilder strBuilder = new StringBuilder();
 			strBuilder.append("(");
-			strBuilder.append(value.substring(0, 3));
-			strBuilder.append("-");
-			strBuilder.append(value.substring(3));
+			strBuilder.append(value.substring(startPosition, fourthCharacter));
+			strBuilder.append(NEGATIVE);
+			strBuilder.append(value.substring(fourthCharacter));
 			strBuilder.append(")");
 			return strBuilder.toString();
 		} else{
@@ -194,8 +181,8 @@ public class BankStringFormatter {
 		if (Strings.isNullOrEmpty(string)) {
 			return string;
 		}
-		return string.length() > 1 ? string.substring(0, 1).toUpperCase() + string.substring(1) 
-				: string.toUpperCase(); 
+		return string.length() > 1 ? string.substring(0, 1).toUpperCase(Locale.US) + string.substring(1) 
+				: string.toUpperCase(Locale.US); 
 	}
 	
 	/**
@@ -210,10 +197,11 @@ public class BankStringFormatter {
 			final String easternTime = "America/New_York";
 			selectedDate = formattedDate;
 			
-			final SimpleDateFormat chosenDateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+			final SimpleDateFormat chosenDateFormat = new SimpleDateFormat(DATE_MM_DD_YYYY, Locale.getDefault());
 			chosenDateFormat.setTimeZone(TimeZone.getTimeZone(easternTime));
 			
-			final SimpleDateFormat submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ", Locale.getDefault() );
+			final SimpleDateFormat submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ", 
+																						Locale.getDefault() );
 			submissionDateFormat.setTimeZone(TimeZone.getTimeZone(easternTime));
 			
 			try {							
@@ -227,4 +215,43 @@ public class BankStringFormatter {
 		
 		return selectedDate;
 	}
+	
+	
+	/**
+	 * Formats date as MM/dd/YYYY.
+	 * 
+	 * @param year
+	 * @param month
+	 *            formatted 1-12 (i.e. not 0 for January)
+	 * @param day
+	 * @return formatted date
+	 */
+	public static String formatDate(final String year, final String month, final String day) {
+		final StringBuilder sb = new StringBuilder();
+		sb.append(month); // Month
+		sb.append('/');
+		sb.append(day); // Day
+		sb.append('/');
+		sb.append(year); // Year
+		return sb.toString();
+	}
+	
+	/**
+	 * Format the day of the month
+	 * @param value- value to format
+	 * @return the formatted value
+	 */
+	public static String formatDayOfMonth(final Integer dayOfMonth){
+		String valueString = dayOfMonth.toString();
+		final int minDoubleDigitDay = 10;
+		
+		final boolean isSingleDigitDay = dayOfMonth < minDoubleDigitDay;
+		
+		if (isSingleDigitDay){
+			valueString = "0" + valueString;
+		}
+		
+		return valueString;
+	}
+	
 }

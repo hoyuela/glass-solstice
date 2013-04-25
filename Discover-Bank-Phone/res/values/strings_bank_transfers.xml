@@ -48,4 +48,5 @@
 	
 	<!-- Error Labels -->
 	<string name="amount_less_than_twenty_five">Too low (less than $25)</string>
+	<string name="invalid_date">Please select a date</string>
 </resources>

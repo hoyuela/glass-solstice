@@ -218,7 +218,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 			else if( amount > 0 ) {
 				final double doubleAmount = amount/100;
 				
-				String valueText = BankStringFormatter.convertToDollars(Double.toString(doubleAmount));
+				String valueText = BankStringFormatter.convertStringFloatToDollars(Double.toString(doubleAmount));
 				valueText = valueText.replace("$", "");
 				
 				amountItem.getEditableField().setText(valueText);

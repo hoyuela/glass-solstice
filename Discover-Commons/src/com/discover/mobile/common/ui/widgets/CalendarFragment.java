@@ -323,7 +323,10 @@ public class CalendarFragment extends CaldroidFragment {
 		/**Dates earlier than this will appear grayed out and unselectable*/
 		minDate = (Calendar) bundle.get(MIN_DATE);
 		setMinDate(minDate.getTime());
-		
+		/** Restrict the maximum date that a user can select to one year from today */
+		final Calendar yearFromTodayCalendar = Calendar.getInstance();
+		yearFromTodayCalendar.add(Calendar.YEAR, 1);
+		setMaxDate(yearFromTodayCalendar.getTime());
 		/**Specify which dates should appear selected on calendar*/
 		this.setSelectedDates(selectedDate.getTime(), selectedDate.getTime());
 				
