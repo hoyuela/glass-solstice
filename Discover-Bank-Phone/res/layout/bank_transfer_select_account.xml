@@ -81,17 +81,6 @@
             android:orientation="vertical" >
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/provide_feedback"
-            style="@style/bank_blue_hyperlink_small"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/content_table_internal_accounts"
-            android:layout_marginTop="@dimen/orange_button_margin_top"
-            android:gravity="center_horizontal|bottom"
-            android:paddingBottom="@dimen/orange_button_margin_top"
-            android:text="@string/feedback_text" />
-
         <com.discover.mobile.common.help.HelpWidget
             android:id="@+id/help"
             android:layout_width="match_parent"
