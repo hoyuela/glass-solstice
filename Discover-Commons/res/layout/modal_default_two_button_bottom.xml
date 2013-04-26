@@ -27,7 +27,7 @@
         android:id="@+id/modal_alert_cancel"
        	android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/common_blue_hyperlink"
+        style="@style/normal_blue_hyperlink"
         android:background="@drawable/transparent_square"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"/>

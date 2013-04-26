@@ -62,17 +62,23 @@
     </style>
     
     <!--  Blue Hyperlink styles -->
-    <style name="common_blue_hyperlink">
+    <style name="blue_hyperlink">
+        <item name="android:textColor">@color/blue_link</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="normal_blue_hyperlink">
         <item name="android:textColor">@color/blue_link</item>
         <item name="android:textSize">@dimen/body_copy_min</item>
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="blue_hyperlink_small" parent="common_blue_hyperlink">
+    <style name="blue_hyperlink_small" parent="blue_hyperlink">
         <item name="android:textSize">@dimen/small_copy_max</item>
     </style>
     
-    <style name="blue_hyperlink_extra_small"  parent="common_blue_hyperlink">
+    <style name="blue_hyperlink_extra_small"  parent="blue_hyperlink">
         <item name="android:textSize">12sp</item>
     </style>
     

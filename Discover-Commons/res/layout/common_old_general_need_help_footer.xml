@@ -22,7 +22,7 @@
 	        android:layout_centerHorizontal="true"
 	        android:layout_below="@+id/need_help_label"
 	        android:text="@string/need_help_number_text"
-	        style="@style/common_blue_hyperlink"
+	        style="@style/normal_blue_hyperlink"
 	        android:paddingRight="@dimen/content_padding"
 	        android:paddingLeft="@dimen/content_padding"
 	        android:paddingBottom="@dimen/content_padding"/>
