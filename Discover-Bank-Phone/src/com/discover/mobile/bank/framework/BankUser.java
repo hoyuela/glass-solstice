@@ -65,6 +65,9 @@ public final class BankUser extends CacheManager implements Serializable {
 	/**Boolean set to true if the login occurred through an SSO sequence*/
 	private boolean ssoUser = false;
 
+	/**Boolean set to true when the account list needs to be updated*/
+	private boolean accountOutDated = false; 
+
 	/**
 	 * 
 	 * @return Returns reference to single instance of BankUser
@@ -298,5 +301,19 @@ public final class BankUser extends CacheManager implements Serializable {
 	 */
 	public void setSsoUser(final boolean ssoUser) {
 		this.ssoUser = ssoUser;
+	}
+
+	/**
+	 * @return the accountOutDated
+	 */
+	public boolean isAccountOutDated() {
+		return accountOutDated;
+	}
+
+	/**
+	 * @param accountOutDated the accountOutDated to set
+	 */
+	public void setAccountOutDated(final boolean accountOutDated) {
+		this.accountOutDated = accountOutDated;
 	}
 }
