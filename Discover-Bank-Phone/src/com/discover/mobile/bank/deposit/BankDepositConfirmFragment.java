@@ -54,7 +54,7 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 		/**Hide controls that are not needed*/
 		noteTitle.setVisibility(View.GONE);
 		noteTextMsg.setVisibility(View.GONE);
-		
+
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
@@ -64,7 +64,7 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 
 		/**Show Link text in link on screen*/
 		actionLink.setText(R.string.bank_deposit_received_actionlink);
-			
+
 		/**Set footer to show privacy & terms | feedback*/
 		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
 		return view;
@@ -77,8 +77,7 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 
 	@Override
 	public void onBackPressed() {
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
-		activity.popTillFragment(BankDepositSelectAccount.class);
+		//Disable the back press
 	}
 
 	/**
