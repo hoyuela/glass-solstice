@@ -506,9 +506,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				}
 				//Clear the last error that occurred
 				setLastError(0);
-//				if (idField.getText().length() > 0 || passField.getText().length() > 0){
-					login();
-//				}
+				login();
 			}
 		});
 
