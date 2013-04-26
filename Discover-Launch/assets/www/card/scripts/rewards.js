@@ -143,7 +143,7 @@ dfs.crd.rwds.populateCBBLandingPromitionsList = function(cashbackbonusSignupDeta
 					if(isEnrolled){
 						signupStatusText="<span class='signin orangetxt'>You&#39;re Signed Up!</span>";
 					}else{
-						signupStatusText="<a href='#' data-role='button' class='ui-block-b ui-btn-up-c' onclick='dfs.crd.rwds.showCBBDetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Learn&nbsp;More</span></span></a>";
+						signupStatusText="<a href='#' data-role='button' class='ui-block-b ui-btn-up-c' onclick='dfs.crd.rwds.showCBBDetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Sign Up</span></span></a>";
 					}
 					promoCodeTextData['signupStatusText'] = signupStatusText;
 					promoCodeTextData['CBBPromotionObj'] = promotionInfoString;	
@@ -533,7 +533,7 @@ dfs.crd.rwds.populateMilesLandingPromitionsList = function(milesSignupDetails){
 					if(isEnrolled){
 						signupStatusText="<span class='signin orangetxt'>You&#39;re Signed Up!</span>";
 					}else{
-						signupStatusText="<a href='#' data-role='button' class='ui-block-b ui-btn-up-c' onclick='dfs.crd.rwds.showMI2DetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Learn&nbsp;More</span></span></a>";
+						signupStatusText="<a href='#' data-role='button' class='ui-block-b ui-btn-up-c' onclick='dfs.crd.rwds.showMI2DetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Sign Up</span></span></a>";
 					}
 					promoCodeTextData['signupStatusText'] = signupStatusText;
 					promoCodeTextData['CBBPromotionObj'] = promotionInfoString;			

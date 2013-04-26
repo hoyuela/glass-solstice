@@ -6,6 +6,7 @@ var BANK_URL;
 var BANK_LUA_URL;
 var BANK_REG_URL;
 var BANK_SSO_URL;
+var BANK_SSO_SSN_NOT_MATCHED_URL;
 var BASEURL;
 var RESTURL;
 var HREF_URL;
@@ -43,6 +44,7 @@ env = (function () {
 		BANK_LUA_URL = xmlDoc.getElementsByTagName("bankbaseurl")[0].childNodes[0].nodeValue + "/m/accounts/login?cardstat=LUA&view=Touch/Handset&DiscoverMobileVersion="+APPVER;
 		BANK_REG_URL = xmlDoc.getElementsByTagName("bankbaseurl")[0].childNodes[0].nodeValue + "/bankac/loginreg/regone?view=Touch/Handset&DiscoverMobileVersion="+APPVER;
 		BANK_SSO_URL = xmlDoc.getElementsByTagName("bankbaseurl")[0].childNodes[0].nodeValue + "/m/accounts/bankdeeplink?view=Touch/Handset&DiscoverMobileVersion="+APPVER+"&payload=";
+		BANK_SSO_SSN_NOT_MATCHED_URL = xmlDoc.getElementsByTagName("bankbaseurl")[0].childNodes[0].nodeValue + "/m/accounts/errors/contact-customer-service-sso?view=Touch/Handset&DiscoverMobileVersion="+APPVER;
 		var array1 = HREF_URL.split("//");
 		var array2 = array1[1].split(".");
 		if (array2[0]==="m" || array2[0]==="www")

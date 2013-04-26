@@ -13,7 +13,7 @@
     <string name="sub_section_title_review_payments">Review Payments</string>
     <string name="sub_section_title_manage_payees">Manage Payees</string>
     <string name="section_title_deposit_checks">Deposit Check</string>
-    <string name="sub_section_title_deposit_a_check">Deposit Now</string>
+    <string name="sub_section_title_deposit_a_check">Deposit a Check</string>
     <string name="section_title_customer_service">Customer Service</string>
     <string name="sub_section_title_contact_us">Contact Us</string>
     <string name="sub_section_title_faq">Frequently Asked Questions</string>

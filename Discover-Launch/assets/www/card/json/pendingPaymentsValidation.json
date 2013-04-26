@@ -1,11 +1,11 @@
 {
 "isHaMode":"Boolean",
 "pendingPayments.bankName":"String",
-"pendingPayments.maskedBankAccountNumber":"Number",
+"pendingPayments.maskedBankAccountNumber":"String",
 "pendingPayments.scheduledSource":"String",
 "pendingPayments.isAutoPayPayment":"Boolean",
 "pendingPayments.paymentAmount":"String",
 "pendingPayments.paymentDate":"Date",
 "pendingPayments.paymentMethod":"String",
-"pendingPayments.sequenceNumber":"Decimal"
+"pendingPayments.sequenceNumber":"String"
 }

@@ -21,7 +21,7 @@ height:20px;width:20px
 }
 #edoHistory-pg .ui-content-internalpages h3 {
 font-size: 17px;
-font-weight: 100;
+font-weight: normal;
 margin: 0px 10px 5px 10px;
 color: #3d484d;
 line-height: 19px;
@@ -64,6 +64,12 @@ width: 90%;
 
 /* New Header for Push Notification */
 .borderBottomGrey{border-bottom: 1px dashed #a6a6a6 !important;}
+#edoLandingPage-pg .ui-focus {
+background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.27, #9BA2A4
+ ), color-stop(1, #404649) ) !important;
+ 
+}
+#edoLandingPage-pg .ui-focus  .ui-btn-text{color:#ffffff !important; text-decoration:none; text-shadow:none;}
 #pg-header {
     padding-top: 3px;
     padding-bottom:3px;
@@ -228,7 +234,7 @@ border-top: 1px solid #d5dbdb;
 .ui-content-internalpages h2 {
 	/*color: rgb(250, 83, 21);*/
 	font-size: 18px;
-	margin: 0px 0 5px 0;
+	margin: 8px 0 0px 0;
 	color: #3d484d;
 }
 
@@ -277,6 +283,7 @@ border-top: 1px solid #d5dbdb;
 	/*background-size: 10px !important;*/ 
 	
 }
+#statementCredit1-pg .ui-content-internalpages ul li,#directDeposit1-pg .ui-content-internalpages ul li,#personalizeCashPin2-pg .ui-content-internalpages ul li {padding: 4px 0px;}
 #faqDeviceAlerts-pg  .ui-content-internalpages ul li .ui-grid-a .ui-block-a{width:95% !important;}
 #faqDeviceAlerts-pg  .ui-content-internalpages ul li a{text-decoration:none;font-size: 14px;
 color: #41474b;}
@@ -549,16 +556,16 @@ width:101%;
 }
 
 #footnotes a {
-	color: #267BB1; 
+	color: #0267b1; 
 	font-weight: normal;
 	font-weight: bold;
 }
 
-#edo-faqs #footnotes a {
+/*#edo-faqs #footnotes a {
 	color: #267BB1 !important; 
 	font-weight: normal;
 	font-weight: bold;
-}
+}*/
 /*#footnotes a,#footnotes p {
 	text-align: center;
 	display: block;
@@ -1061,7 +1068,8 @@ text-align: right;
 width: 24%;
 }
 #alertHistory-pg .pn-plus{width:17px !important;float:right !important;}
-#manageAlerts-pg  .ui-slider{float:right}
+#manageAlerts-pg  .ui-slider{float:right; border:0px !important; margin:0px; top:-4px;}
+#manageAlerts-pg  #slider h2{ margin:0px !important;}
 #manageAlerts-pg label.ui-slider {
 font-size: 16px;
 line-height: 1.4;
@@ -1304,7 +1312,7 @@ a.small_btn .ui-btn-text {
 }
 .orgtxt {color:#ff6600}
 
-.bluelink, .bluelink2 {text-decoration: none !important; color:#267bb1 !important; font-size:14px !important;}
+.bluelink, .bluelink2 {text-decoration: none !important; color:#0267b1 !important; font-size:14px !important;}
 /*.bluelink2 {font-size:14px;}*/
 .boldtext {	font-weight: bold !important; color:#3d484d;}
 .small11pxfont {	font-size: 11px !important;  margin-left:5px !important; font-weight:bold !important;}
@@ -1797,7 +1805,8 @@ border-radius: 4px;
 }
 
 .white-form .col2_RM {
-	margin-right: 20px;
+	margin-right: 7px;
+	padding-top:6px !important;
 }
 
 .col2_RM input.ui-input-text {margin-bottom:0px;}
@@ -1959,6 +1968,7 @@ input[type="radio"],input[type="radio"]:hover,input[type="radio"]:visited,input[
 	border-bottom: 1px solid #ccc;
 	border-top: 1px solid #ccc;
 	margin-bottom: 15px !important;
+	width:98%;
 }
 
 .collapsible a.collapslink {
@@ -1974,6 +1984,7 @@ input[type="radio"],input[type="radio"]:hover,input[type="radio"]:visited,input[
 	background-size: 15px 12px;
     padding: 2px 0 0 15px;
 }
+
 
 .collapsible a.deactive {
 	background: url(../images/pluse.png) no-repeat left 4px;
@@ -2425,7 +2436,7 @@ a.date-picker.disabled {
 }*/
 table.ui-datepicker-calendar {
 	width: 100%;
-	border-collapse: collapse;
+	/*border-collapse: collapse;*/
 }
 .calicon{ height:28px; width:28px; margin-top:6px;}
 #calendar .ui-datepicker-header {
@@ -2698,7 +2709,7 @@ h6.ui-li-heading {
 	border-radius: 4px !important;
 }
 .r3matchbtn .ui-disabled {padding:0px 10px 0px 10px;
-line-height:20px;
+line-height:26px;
 min-width:100px; border:0px
 }
 .r3matchbtn .ui-btn .ui-btn-inner {
@@ -2751,117 +2762,6 @@ display: inline-block;
 position: relative;
 margin-top: 1px;
 margin-right: 6px;
-}
-/* retina image changes */
-@media ( -webkit-min-device-pixel-ratio :2) {
-	.cardhome_ul a .col2 {
-	background: url(../images/nav-arrow2x.png) no-repeat right 2px;
-	-webkit-background-size: 12px 24px;
-	background-size: 12px 24px;
-	}
-	.account-list-view li a.bluelink {
-	background: url(../images/GrayArrow-2x.png) no-repeat right center;
-	-webkit-background-size: 12px 12px;
-	background-size: 12px 12px;
-	}
-	.ui-content-internalpages ul.socialnetIcon li span.rightarrow {background:url(../images/blueArrow-2x.png) no-repeat center center; 
-	-webkit-background-size: 12px 12px;
-	background-size: 12px 12px;
-	}
-	.yellow-bg-value {
-		background: url("../images/pill2x.png") no-repeat center -19px;
-		-webkit-background-size: 75px 38px;
-		background-size: 75px 38px
-	}
-	.comp-logo-list-active .yellow-bg,.yellow-bg {
-		background: url("../images/pill2x.png") no-repeat center -19px;
-		-webkit-background-size: 75px 38px;
-		background-size: 75px 38px
-	}
-	.comp-logo-list-deactive .yellow-bg {
-		background: url("../images/pill2x.png") no-repeat center top;
-		-webkit-background-size: 75px 38px;
-		background-size: 75px 38px
-	}
-	.redeemPointsIcon {
-		background: url(../images/money-to-money2x.png) no-repeat right bottom;
-		-webkit-background-size: 40px 14px;
-		background-size: 40px 14px
-	}
-	.footer-text-icon span {
-		background: url(../images/lock_2x.png) no-repeat right 1px;
-		-webkit-background-size: 9px 10px;
-		background-size: 9px 10px
-	}
-	.signin {
-		background: url(../images/checkmark2x.png) no-repeat left center;
-	}
-	.MobileSolutions {
-		background: url('../images/iconMobilePhone2x.png') no-repeat left top;
-	}
-	.logo-img a,.logo-img div {
-		background: url(../images/discover-logo2x.png) no-repeat 0 50%;
-		-webkit-background-size: 130px 21px;
-		background-size: 130px 21px
-	}
-	.pay-pal-logo{
-		background:url(../images/pay-pal2x.png) no-repeat;
-		-webkit-background-size: 85px 17px;
-		background-size: 85px 17px
-	}	
-	.ui-content-internalpages ul.socialnetIcon li div {
-	background: url(../images/community-sprite2x.png) no-repeat;
-	-webkit-background-size: auto 96px;
-	background-size: auto 96px
-	}
-	.ui-content-internalpages ul.socialnetIcon li.cashback-blog div{
-	background:url(../images/community-sprite2x.png) no-repeat 5px 0px !important;
-	-webkit-background-size: 22px 96px;
-	background-size: 22px 96px
-	}
-	.ui-content-internalpages ul.socialnetIcon li.discover-blog div{
-	background:url(../images/community-sprite2x.png) no-repeat 5px -26px !important;
-	-webkit-background-size: 22px 96px;
-	background-size: 22px 96px
-	}
-	.ui-content-internalpages ul.socialnetIcon li.facebook div{
-	background:url(../images/community-sprite2x.png) no-repeat 5px -50px !important;
-	-webkit-background-size: 22px 96px;
-	background-size: 22px 96px
-	}
-	.ui-content-internalpages ul.socialnetIcon li.twitter div{
-	background:url(../images/community-sprite2x.png) no-repeat 5px -77px !important;
-	-webkit-background-size: 22px 96px;
-	background-size: 22px 96px
-	}	
-	#pg-footer li div {
-	background:url(../images/handsetNavSpriteTrans@2x.png) no-repeat center top;
-	-webkit-background-size: 515px 98px;
-	background-size: 515px 98px
-	}
-	#pg-footer li div#home {background-position:-1px 0px;}
-	#pg-footer li div.ui-btn-active#home {background-position:-1px -49px; color: #fff;}
-	#pg-footer li div#account  {background-position: -66px 0px;}
-	#pg-footer li div.ui-btn-active#account {background-position:-66px -49px; color: #fff;}
-	#pg-footer li div#payments{background-position:-130px 0px;}
-	#pg-footer li div.ui-btn-active#payments {background-position: -130px -49px;color: #fff;}
-	#pg-footer li div#custservice{background-position:-450px 0px;}
-	#pg-footer li div.ui-btn-active#custservice {background-position: -450px -49px;color: #fff;}
-	#pg-footer li div#cashback {background-position:-193px 0px;}
-	#pg-footer li div.ui-btn-active#cashback{background-position:-193px -49px;color: #fff;}
-	#pg-footer li div#more {background-position:-259px 0px;}
-	#pg-footer li div.ui-btn-active#more{background-position:-259px -49px;color: #fff;}
-	#pg-footer li div#expdiscover {background-position:-452px 0px;}
-	#pg-footer li div.ui-btn-active#expdiscover{background-position:-452px -49px;color: #fff;}
-	#pg-footer li div#sendmoney {background-position:-387px 0px;}
-	#pg-footer li div.ui-btn-active#sendmoney{background-position:-387px -49px;color: #fff;}
-	#pg-footer li div#miles {background-position:-323px 0px;}
-	#pg-footer li div.ui-btn-active#miles{background-position:-323px -49px;color: #fff;}
-	/*.back_btn_normal,#back {
-		background: url(../images/back-button2x.png) no-repeat;
-		-webkit-background-size: 50px 29px;
-		background-size: 50px 29px
-	}*/
 }
 
 /*#card-login .ui-slider-switch .ui-btn-active{
@@ -3493,7 +3393,7 @@ font-weight: bold; display:block !important;padding-top: 7px;}
 #calendar .ui-datepicker-current-day a {color:#fff!important; }
 #calendar .dueDateParCs{background-color:#ffffff !important;}
 #calendar .dueDateCs{
-	border: 1px solid #667072;
+	/*border: 1px solid #667072;*/
 	display: block;
 	min-height: 24px;
 	padding-top: 5px;
@@ -3502,7 +3402,7 @@ font-weight: bold; display:block !important;padding-top: 7px;}
 #calendar .dueDateText{display:block;font-size: 7px;}
 #calendar td.ui-datepicker-other-month.ui-datepicker-unselectable{color: #CED6D7;  background: #fff;}
 #calendar .dueDateParCs a
-{ color:#000 !important;}
+{ /*color:#000 !important; */}
 
 input[type="tel"]:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:focus, textarea:focus{
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0) !important;    
@@ -3518,7 +3418,7 @@ background: #EBEFF0 !important;
 padding-top: 1px;
 }
 .ui-slider-label {
-height: 32px;
+height: 26px;
 /*color: #8B8B8B;*/
 }
 .ui-slider-switch .ui-btn-down-d,#manageAlerts-pg .ui-slider-switch .ui-btn-down-c {
@@ -3537,13 +3437,15 @@ background: -o-linear-gradient(top, #666f72 0%,#8b9498 80%,#899195 100%) !import
 background: -ms-linear-gradient(top, #666f72 0%,#8b9498 80%,#899195 100%) !important; /* IE10+ */
 background: linear-gradient(to bottom, #666f72 0%,#8b9498 80%,#899195 100%) !important; /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666f72', endColorstr='#899195',GradientType=0 ); /* IE6-9 */
+border-top:1px solid #656c70 !important;
 }
 
+#slider div div.ui-slider span.ui-btn-down-c{ border:none !important; border-bottom:1px solid #8d9497 !important;}
 .ui-slider-switch a.ui-btn.ui-slider-handle .ui-btn-inner {
 background: #bcc2c4 url(../images/slider.png) center center no-repeat;
 background-size: 30px 30px;
 box-shadow: inset 0px 0px 15px #bcc2c4;
-padding: 5px 8px 3px 17px;
+padding: 2px 8px 2px 17px;
 margin-top: -2px;
 margin-left: -2px;
 border-radius:0;
@@ -3657,4 +3559,117 @@ text-transform: uppercase;
 -webkit-background-size: 15px 15px;
 background-size: 15px 15px; color:#3d484d !important; font-size:13px;}
 
+/* retina image changes */
+@media ( -webkit-min-device-pixel-ratio :2) {
+	.cardhome_ul a .col2 {
+	background: url(../images/nav-arrow2x.png) no-repeat right 2px;
+	-webkit-background-size: 12px 24px;
+	background-size: 12px 24px;
+	}
+	.account-list-view li a.bluelink {
+	background: url(../images/GrayArrow-2x.png) no-repeat right center;
+	-webkit-background-size: 12px 12px;
+	background-size: 12px 12px;
+	}
+	.ui-content-internalpages ul.socialnetIcon li span.rightarrow {background:url(../images/blueArrow-2x.png) no-repeat center center; 
+	-webkit-background-size: 12px 12px;
+	background-size: 12px 12px;
+	}
+	.yellow-bg-value {
+		background: url("../images/pill2x.png") no-repeat center -19px;
+		-webkit-background-size: 75px 38px;
+		background-size: 75px 38px
+	}
+	.comp-logo-list-active .yellow-bg,.yellow-bg {
+		background: url("../images/pill2x.png") no-repeat center -19px;
+		-webkit-background-size: 75px 38px;
+		background-size: 75px 38px
+	}
+	.comp-logo-list-deactive .yellow-bg {
+		background: url("../images/pill2x.png") no-repeat center top;
+		-webkit-background-size: 75px 38px;
+		background-size: 75px 38px
+	}
+	.redeemPointsIcon {
+		background: url(../images/money-to-money2x.png) no-repeat right bottom;
+		-webkit-background-size: 40px 14px;
+		background-size: 40px 14px
+	}
+	.footer-text-icon span {
+		background: url(../images/lock_2x.png) no-repeat right 1px;
+		-webkit-background-size: 9px 10px;
+		background-size: 9px 10px
+	}
+	.signin {
+		background: url(../images/checkmark2x.png) no-repeat left center;
+	}
+	.MobileSolutions {
+		background: url('../images/iconMobilePhone2x.png') no-repeat left top;
+	}
+	.logo-img a,.logo-img div {
+		background: url(../images/discover-logo2x.png) no-repeat 0 50%;
+		-webkit-background-size: 130px 21px;
+		background-size: 130px 21px
+	}
+	.pay-pal-logo{
+		background:url(../images/pay-pal2x.png) no-repeat;
+		-webkit-background-size: 85px 17px;
+		background-size: 85px 17px
+	}	
+	.ui-content-internalpages ul.socialnetIcon li div {
+	background: url(../images/community-sprite2x.png) no-repeat;
+	-webkit-background-size: auto 96px;
+	background-size: auto 96px
+	}
+	.ui-content-internalpages ul.socialnetIcon li.cashback-blog div{
+	background:url(../images/community-sprite2x.png) no-repeat 5px 0px !important;
+	-webkit-background-size: 22px 96px;
+	background-size: 22px 96px
+	}
+	.ui-content-internalpages ul.socialnetIcon li.discover-blog div{
+	background:url(../images/community-sprite2x.png) no-repeat 5px -26px !important;
+	-webkit-background-size: 22px 96px;
+	background-size: 22px 96px
+	}
+	.ui-content-internalpages ul.socialnetIcon li.facebook div{
+	background:url(../images/community-sprite2x.png) no-repeat 5px -50px !important;
+	-webkit-background-size: 22px 96px;
+	background-size: 22px 96px
+	}
+	.ui-content-internalpages ul.socialnetIcon li.twitter div{
+	background:url(../images/community-sprite2x.png) no-repeat 5px -77px !important;
+	-webkit-background-size: 22px 96px;
+	background-size: 22px 96px
+	}	
+	#pg-footer li div {
+	background:url(../images/handsetNavSpriteTrans@2x.png) no-repeat center top;
+	-webkit-background-size: 515px 98px;
+	background-size: 515px 98px
+	}
+file:///D:/project/discover/discover-31.2/discover_13.2_svn/trunk/Discover-13.2-Native-Development/handset_Native_13.2/card/html/rewards/redeemPartner1.html#	#pg-footer li div#home {background-position:-1px 0px;}
+	#pg-footer li div.ui-btn-active#home {background-position:-1px -49px; color: #fff;}
+	#pg-footer li div#account  {background-position: -66px 0px;}
+	#pg-footer li div.ui-btn-active#account {background-position:-66px -49px; color: #fff;}
+	#pg-footer li div#payments{background-position:-130px 0px;}
+	#pg-footer li div.ui-btn-active#payments {background-position: -130px -49px;color: #fff;}
+	#pg-footer li div#custservice{background-position:-450px 0px;}
+	#pg-footer li div.ui-btn-active#custservice {background-position: -450px -49px;color: #fff;}
+	#pg-footer li div#cashback {background-position:-193px 0px;}
+	#pg-footer li div.ui-btn-active#cashback{background-position:-193px -49px;color: #fff;}
+	#pg-footer li div#more {background-position:-259px 0px;}
+	#pg-footer li div.ui-btn-active#more{background-position:-259px -49px;color: #fff;}
+	#pg-footer li div#expdiscover {background-position:-452px 0px;}
+	#pg-footer li div.ui-btn-active#expdiscover{background-position:-452px -49px;color: #fff;}
+	#pg-footer li div#sendmoney {background-position:-387px 0px;}
+	#pg-footer li div.ui-btn-active#sendmoney{background-position:-387px -49px;color: #fff;}
+	#pg-footer li div#miles {background-position:-323px 0px;}
+	#pg-footer li div.ui-btn-active#miles{background-position:-323px -49px;color: #fff;}
+	/*.back_btn_normal,#back {
+		background: url(../images/back-button2x.png) no-repeat;
+		-webkit-background-size: 50px 29px;
+		background-size: 50px 29px
+	}*/
+}
 
+.ui-body-c .ui-link {color:#0267b1;}
+#personalizeCashPin2-pg .collapsible {border:0px;}

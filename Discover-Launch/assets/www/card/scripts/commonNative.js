@@ -176,3 +176,12 @@ function privacyTerms()
 {
 	navigation('../common/moreLanding');
 }
+
+function noTitle(){
+	console.log("WE are in no title function");
+	window.history.back(-2);
+}
+
+function acHome(){
+	navigation('../achome/cardHome');
+}

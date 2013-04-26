@@ -22,7 +22,7 @@ dfs.crd.p2p.heightSet;
 dfs.crd.p2p.count = 0;
 
 dfs.crd.p2p.validatePriorPage = function(validPriorPages) {
-	try {
+	try{
 		for ( var i in validPriorPages) {
 			if (fromPageName == validPriorPages[i])
 				return true;
@@ -45,11 +45,14 @@ $("#sendMoney1-pg").live('click', function() {
 	}
 });
 function sendMoney1Load() {
-	try {
+	try {	
+		if(fromPageName!="sendMoney2"){
+			killDataFromCache("SM1_DATA");
+		}
 		dfs.crd.p2p.validPriorPagesOfStep1 = new Array("moreLanding",
 				"sendMoneyLanding", "strongAuthFirstQues", "howItWorks",
 				"sendMoney2", "pageError", "transactionHistory",
-				"confirmCancelTransaction", "updateEmail", "cancelTransaction");
+				"confirmCancelTransaction", "updateEmail", "cancelTransaction","sendMoney3");
 		if (acLiteModeFlag) {
 			cpEvent.preventDefault();
 			errorHandler("acLiteOutageMode_ACL", "", "sendMoney1");
@@ -632,7 +635,6 @@ function sendMoney3Load() {
 dfs.crd.p2p.populateSendMoney3 = function(sendMoneyHistory) {
 	try {
 		dfs.crd.p2p.setSM3Data(sendMoneyHistory);
-		killDataFromCache("SENDMONEY_SUMMARY");
 		killDataFromCache("SM1_DATA");
 		killDataFromCache("SENDMONEY");
 	} catch (err) {

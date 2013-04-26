@@ -5,7 +5,7 @@
 .raf-page .new-messages{color:#fff;font-size:10px;margin-right:3px;float:right;}
 
 
-.raf-page .icon_faqs{float:right;margin-top:-7px;}
+.raf-page .icon_faqs{float:right;/*margin-top:-7px;*/}
 
 .raf-page  .ui-content-internalpages .text-below-orange-text{font-size:12px;width:70%;float:left;margin-top:3px;text-align:left;}
 
@@ -175,14 +175,14 @@ background-size:32px 32px;
 float: right;
 /*margin-top: -25px;*/
 /*margin-right: 5px;*/}
-.raf-page .ui-content-internalpages .white-box-div .share-box .openit{color:#40484b;font-size:14px; cursor:pointer;font-weight:bold;padding: 20px 25px !important;}
-.raf-page .ui-content-internalpages .white-box-div .share-box .openit #plus-expand-btn{height: 8px;
-margin-top: -12px;
+.raf-page .ui-content-internalpages .white-box-div .share-box .openit{color:#40484b;font-size:14px; cursor:pointer;font-weight:bold;padding:10px 5px 10px 10px !important;}
+.raf-page .ui-content-internalpages .white-box-div .share-box .openit #plus-expand-btn{height: 20px;
+margin-top: 3px;
 width: 12px;
 background: url('../images/plus-expand.png') no-repeat;
 float: left;
 background-size: 70%;
-margin-left: -13px;} 
+/* margin-left: -13px; */} 
 .raf-page .hidden{display:none;}
 .raf-page .ui-content-internalpages .white-box-div .share-box .to .cont-editable{display:inline-block;width:97%;font-size:13px;margin:1px 0 0; }
 .raf-page .ui-content-internalpages .share-box{font-size:11px;border: 1px solid #eef0f1;
@@ -202,11 +202,11 @@ width: 40px;}
 font-size: 14px;
 color: #596162;
 line-height: 17px;}
-.raf-page .ui-content-internalpages .white-box-div .share-box #show-hide p{font-size:12px;margin-top:-5px;width:90%;padding-left: 20px;} /*26/06/12*/
+.raf-page .ui-content-internalpages .white-box-div .share-box #show-hide p{font-size:12px;margin-top:-5px;width:90%;padding-left: 13px;} /*26/06/12*/
 
 .raf-page .ui-content-internalpages .white-box-div .share-box-prv li{padding:7px 5px 7px 5px;}
 .raf-page .ui-content-internalpages .white-box-div .share-box-prv .subj .subj-edit{font-size:13px;float:right;color:#828282;margin-right:2px;}
-.raf-page .ui-content-internalpages .white-box-div .share-box-prv li:nth-child(1){border-bottom:solid #d7d5d5;border-width:thin;}
+.raf-page .ui-content-internalpages .white-box-div .share-box-prv li:nth-child(1){border-bottom:solid #f8f8f8;border-width:thin;}
 .raf-page .ui-content-internalpages .white-box-div .share-box-prv .message p{margin: 2px 0px 2px 0px;
 font-size: 14px;
 line-height: 17px;}
@@ -334,3 +334,4 @@ font-weight: bold; }
 .raf-page .footnotes #footer-text{font-size:10px;font-weight:600 !important;margin-bottom:10px;}
 #share-mail-app .cont-editable input.email-inputs-from{margin-left:-5px; font-weight: bold; font-size: 16px !important;}
 #navToRafShareWithEmail .ui-grid-c .ui-block-a{ margin-top:1px !important;}
+#list_subject span.to-color{ margin-top:2px;}

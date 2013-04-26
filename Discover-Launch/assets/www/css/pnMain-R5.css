@@ -14,19 +14,6 @@ body.ui-mobile-viewport,div.ui-mobile-viewport {
 #pg-header .centerPart a.head-bg-logo{background:url(../images/handsetLoginLogo.png) no-repeat center top;width:140px;height:22px;display:inline-block;-webkit-background-size:140px 22px;}
 /*End - For Global Header*/
 
-@media ( -webkit-min-device-pixel-ratio :2) 
-{
-    #pg-header .centerPart a.head-bg-logo{background:url(../images/discover-logo2x.png) no-repeat center top;width:140px;height:22px;display:inline-block;-webkit-background-size:140px 22px;}
-    
-    .back_btn_normal,#back {
-		background: url(../images/backButton2x.png) no-repeat;
-		display: inline-block;
-		-webkit-background-size: 32px 30px;
-		background-size: 32px 30px
-        margin:6px 3px 0px 6px;
-	}
-}
-
 .pn-page #notifsettings .ui-btn-up-c, .small_btn, .white-box-rd-corner .small_btn {
     background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713);
     background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053), to(#fc510b), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) );
@@ -43,11 +30,22 @@ body.ui-mobile-viewport,div.ui-mobile-viewport {
 #changenumber .ui-block-b {float:right;/*margin-right:10%;*/width: 40%;margin-top: -0.5%;}
 #changenumber .ui-block-b input {border: 1px solid #bbb;border-radius:4px !important}
 .pn-page h1 a{float:right;background: url("../images/icon_faqs.png") center center no-repeat;}
-.pn-page #VALUE{width:85%}
+/*.pn-page #VALUE{width:85%}*/
+.pn-page .push-alerts .ui-select .ui-btn-down-d { border:1px solid #bbb !important}
+.pn-page .push-alerts .ui-select {width: 90px; height:40px; background:none; top:2px;}
+.pn-page .push-alerts .ui-select .ui-btn-icon-right .ui-btn-inner {padding-left:0px;}
+.pn-page .push-alerts .ui-select .ui-icon {display:block !important; width:50%}
+.pn-page .push-alerts .ui-select  .ui-btn-text { width:70%}
+
+.pn-page .addnumberSelect {top:2px; margin-top: 0px;}
+.pn-page  .addnumberSelect .ui-icon {width:20%; }
+.pn-page  .addnumberSelect .ui-btn .ui-btn-text {width:100%}
+
 .pn-page .whitebg-list-view li{color: #474747 !important; }
 
 .pn-page #phonenumber{font-weight: bold;
 font-size: 18px;}
+
 .pn-page .ui-btn-up-c, .small_btn, .white-box-rd-corner .small_btn {
     background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713);
     background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053), to(#fc510b), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) );
@@ -63,10 +61,10 @@ font-size: 18px;}
 }
 
 .pn-page .ui-slider-switch a.ui-btn.ui-slider-handle .ui-btn-inner {
-background: #bcc2c4 url(../images/slider.png) center center no-repeat;
-background-size: 30px 30px;
+/*background: #bcc2c4 url(../images/slider.png) center center no-repeat;*/
+background-size: 34px 34px;
 box-shadow: inset 0px 0px 15px #bcc2c4;
-padding: 5px 8px 5px 17px;
+padding: 2px 6px 2px 17px;
 margin-top: -2px;
 margin-left: -3px;
 border-radius: 4px !important;
@@ -74,21 +72,24 @@ border-radius: 4px !important;
 /*.pn-page div.ui-slider-switch .ui-slider-handle {
 margin: 2px 0 0 -21px;
 }*/
+
 .pn-page a{
     text-decoration:none !important;
     font-weight:normal;
 }
 .pn-plus {
 height: 20px;
-width: 31px !important;
+width: 29px !important;
 float: left !important;
 background-image: url('../card/images/plus-minus.png');
 display: inline-block;
 cursor: pointer;
 background-position: top center;
-margin: 0px 0px 0px 0px;
+margin: 2px 0px 0px 0px;
 background-repeat: no-repeat;
 }
+#search .pn-plus{ margin:0px;} 
+
 .pn-page .white-box-rd-corner .small_btn_110px  {
     background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713) !important;
     background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053),to(#fc510b), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) ) !important;
@@ -153,6 +154,7 @@ background-repeat: no-repeat;
     display:inline-block;
     padding:0 5px 0 5px;
 }*/
+
 
 .pn-page .small_btn {
     background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713) !important;
@@ -391,7 +393,7 @@ background-repeat: no-repeat;
 }
 .pn-page #changenumber input[type="tel"], .pn-page #addnumber input[type="tel"]{
     float:right !important;
-    margin:1px 10px 2px 2px !important;
+    margin:2px 10px 2px 2px !important;
     height:28px !important;
     width:80% !important;
     border-radius:8px !important;
@@ -475,7 +477,7 @@ background-repeat: no-repeat;
 .pn-page #addnumber input[type="tel"]{
     float:right !important;
     margin:0px 10px 2px 2px !important;
-    height:20px !important;
+    height:28px !important;
     width:85% !important
 }
 .pn-page #addnumber select {
@@ -493,6 +495,7 @@ background-repeat: no-repeat;
 }
 /*.pn-page #slider .ui-btn-hover-c,.pn-page #slider .ui-btn-down-c,.pn-page #slider .small_btn:hover,.pn-page .white-box-rd-corner #ui-btn:hover,.pn-page .white-box-rd-corner .pn-page .small_btn:hover,.pn-page .small_btn_110px:hover {
    background-image: -webkit-gradient(linear, left top, left bottom, from(#d26d2d), to(#c6400c), color-stop(0.5, #c6400c), color-stop(0.51, #c6400c) ) !important;
+
     border:0px solid grey ;
     color: white !important;*/
  /*   border-radius: 0.5em !important;*/
@@ -503,6 +506,7 @@ background-repeat: no-repeat;
     display: inline-block;
     padding: 0 ;
 }*/
+
 
 /*.pn-page #slider .ui-btn-corner-all{
     border-radius:0.4em;
@@ -538,6 +542,7 @@ background-repeat: no-repeat;
     border-radius:0.6em !important;
     -webkit-border-radius:0.6em !important;
     width: 73px;
+
 }
 .pn-page #slider .ui-slider-inneroffset{
     margin:0 -23px !important;
@@ -575,6 +580,7 @@ background-repeat: no-repeat;
     padding:0 !important;
     width:100%
 }*/
+
 .pn-page #notifsettings .blockrow{
     padding:0px
 }
@@ -610,8 +616,10 @@ background-repeat: no-repeat;
     border-top:1px solid transparent !important;
 }
 .pn-page #notifsettings .ui-icon{
-    background:none
+    background:none;
+
 }
+
 .pn-page #notifsettings .ui-icon-shadow{
     box-shadow:none;moz-box-shadow:none;
     -webkit-box-shadow:none;
@@ -629,10 +637,12 @@ background-repeat: no-repeat;
 }
 .pn-page #notifsettings .ui-collapsible h3{
    /* margin:0.5em -12px 2px -12px!important;*/
-   float:right;
-   width:85%;
+   float:left;   
+   width:89%;
    margin-bottom: 0px;
    color:#3d484d;
+   margin-top: 2px;
+   font-size: 16px;
 }
 .pn-page #tnc label{
     font-size:12px !important
@@ -664,7 +674,7 @@ background-repeat: no-repeat;
     width:120px
 }
 .pn-page .textbox_alertspage{
-    width:50% !important;
+    width:25% !important;
     /*text-align:right;*/
     display:inline !important;
     margin:5px !important
@@ -683,11 +693,10 @@ background-repeat: no-repeat;
     color:green !important;
 	font-weight: 200 !important;
 }
-.pn-page .redtext{
-   .pn-page .redtext {
+
+.pn-page .redtext {
 color: red !important;
 font-weight: 200 !important;
-}
 }
 
 .pn-page .normalText{
@@ -745,6 +754,7 @@ font-weight: 200 !important;
 /*.pn-page .ui-select{
     width:200px !important;
 }*/
+
 .pn-page .select_class{
     margin-top:8px;
     position:relative;
@@ -836,7 +846,7 @@ font-weight: 200 !important;
     left:3px !important;
 }
 .pn-page #id-main-content .ui-grid-c{
-    margin-top:15px;
+    margin-top:10px;
 }
 .pn-page #id-main-content .ui-grid-c .ui-block-a {
     display:none;
@@ -853,15 +863,17 @@ font-weight: 200 !important;
 }
 .pn-page #id-main-content .ui-grid-c .ui-block-d {
 width: 27%;
-text-align: center;
+/*text-align: center; */
+text-align:right;
 float: right;
 margin-right: -3px;
+margin-top:3px;
 }
 .pn-page #id-main-content .blue_header{
     color:#2673A2;
     font-weight:bold;
     font-size:14px;
-    margin-left:9px;
+    margin-left:12px !important;
 	cursor:none;
 }
 .pn-page #id-main-content #id-alert-description { 
@@ -888,9 +900,9 @@ margin-right: -3px;
     padding:5px 0px 5px 5px;
 }
 
-.pn-page #id-main-content .ui-grid-c .ui-block-d {
+/* .pn-page #id-main-content .ui-grid-c .ui-block-d {
     text-align:right;
-}
+} */
 .pn-page #no_wrap{
     white-space:nowrap;
 }
@@ -909,24 +921,26 @@ margin-right: -3px;
 }
 .pn-page #alerthistory .right_arrow{
     float:right;
-    margin-top:2px;
+    margin-top:5px;
     margin-right:0px;
     background-position:0px 0px;
 }
 
 .pn-page #alerthistory .deactive_down_arrow{
-    background-image:url('../images/plus-minus.png');
-    width:22px; 
-    height:17px;
+    background-image:url('../images/navArrow.png');
+    width:23px; 
+    height:14px;
     background-repeat:no-repeat;
+	margin-left:4px;
 }
 .pn-page #alerthistory .active_down_arrow{
-    background-image:url('../images/plus-minus.png');
-    width:22px; 
+    background-image:url('../images/navArrow.png');
+    width:23px; 
     height:17px;
     background-repeat:no-repeat;
-    background-position:0px -30px;
+    background-position:0px -13px;
     margin-top:8px;
+	margin-left:4px;
 }
 
 .pn-page #id-main-content .loadbutton {
@@ -969,9 +983,10 @@ margin-right: -3px;
     margin-top:10px;
     display:none;
 }*/
+
 .pn-page #alert_header .ui-grid-b .ui-block-b {
     padding-right:10px;
-    margin-top:9px;
+   /* margin-top:9px;*/
 }
 /*.pn-page #id-main-content .bluelink{
     font-size:13px;
@@ -980,6 +995,7 @@ margin-right: -3px;
     position:absolute;
     right: 1px;
 }*/
+
 
 .pn-page #alerthistory{
     background-color:#fff;
@@ -1018,9 +1034,10 @@ margin-right: -3px;
     border-radius:0px !important; 
     font-size: 12px; 
     font-weight: normal;
-    padding: 10px 0px 10px 10px !important; 
+    padding: 0px 0px 10px 10px !important; 
     background:transparent !important
 }
+.ui-content-internalpages p.main_heading_paragraph{margin:10px 0 -5px 0}
 .pn-page .red_textfont{
     color:red; 
     font-size:12px;
@@ -1149,7 +1166,7 @@ margin-right: -3px;
 
 
 .pn-page .margin_top15{
-    margin-top:15px;
+    margin-top:5px;
 }
 
 .pn-page #sub_detail{
@@ -1221,11 +1238,14 @@ margin-right: -3px;
 
 /* 13-jun-2012 */
 
-.pn-page  h1 .i_icon {
+.pn-page .faqWraper .i_icon {
     display:inline;
-    padding-top:22px;
+    /*padding-top:22px;*/
     background:url(../images/icon_faqs.png) no-repeat left center;
     white-space:nowrap;
+	float:right;
+	height: 30px;
+width: 30px;
 }
 .pn-page #mg-al-nosettings-pg h2 {   
     color:black !important; 
@@ -1242,7 +1262,7 @@ padding-right: 23px;
   margin-top: 5px;
   margin-left: 3px;
 }
-
+/*#phonenumber-block{height:85px}*/
 .pn-page a.jqTransformCheckbox {
   background: transparent url('../images/unselected.png') no-repeat center top;
   height: 17px;
@@ -1289,9 +1309,12 @@ padding-right: 23px;
     text-align:right !important;
 }
 .pn-page #comments-list .links a{
-    margin-top:4px; 
+    margin-top:4px;
     margin-right:1px;
 	font-size:11px;
+	color:#267bb1 !important;
+	text-align: right !important;
+	float: right;
 }
 
 #manageAlerts-pg #tnc #labelfor_tnc{
@@ -1307,6 +1330,7 @@ padding-right: 23px;
 /*.pn-page .ui-content-internalpages h1 {
     margin-top:10px;
 }*/
+
 /*
 * Below Classers are Added Specific to the pages(Manage - Alerts & Manage-Alerts-nosettings-selected)
 */ 
@@ -1321,13 +1345,16 @@ padding-right: 23px;
 /*.pn-page .ui-content-internalpages .bluetext{
     color:#2489CE !important
 }*/
+
 /*.pn-page .account-list-view li a.bluelink{
     margin:0px 0px !important
 }*/
+
 /*.pn-page .ui-btn-text{
     width:99% !important; 
     font-weight:bold !important
 }*/
+
 
 /*  To hide li element based on permission */
 .pn-page li.hideLi {
@@ -1395,9 +1422,11 @@ padding-right: 23px;
 
 
 
+
+
 /*Code for FAQ page*/
-#faqDeviceAlerts-pg a { font-weight:normal; text-decoration:none}
-#faqDeviceAlerts-pg .rdFaqs{padding:15px 5px; text-shadow:none}
+/*#faqDeviceAlerts-pg a { font-weight:normal; text-decoration:none}*/
+#faqDeviceAlerts-pg .rdFaqs{padding:5px 5px; text-shadow:none}
 #faqDeviceAlerts-pg .ui-content .ui-listview{margin:0px !important}
 .pn-faq-page .rd-faq-question-list{background-color:white;border-radius:5px;border:1px solid #DADADA;padding:7px 0px;-webkit-border-radius:5px;}
 .pn-faq-page .rdfaq-plus{height:20px;width:20px; float:right;background-image:url('../images/plus-minus.png');display:inline-block;margin-right:10px;background-position:top center;cursor:pointer}
@@ -1412,6 +1441,7 @@ overflow: visible;
 border: 0px !important;
 }
 .pn-faq-page ul.pnfaq-inner-list li{ background: none !important; padding-left: 0px !important;}
+
 .pn-faq-page ul.pnfaq-number-list{list-style-type:decimal !important;overflow:visible}
 /*.rd-page .rdfaq-inner-list li{border:0px; padding-bottom:0 !important;}*/
 #faqDeviceAlerts-pg .ui-content-internalpages .rdfaq-inner-list{padding-left:40px;}
@@ -1425,7 +1455,7 @@ border: 0px !important;
 
 .overlay_wraper{
 	background-color:#ececec;
-	color:#000;
+	color:#3d484d;
     font-size:12px;
     margin:auto;
 	display:none;
@@ -1456,17 +1486,23 @@ border: 0px !important;
 	margin-left:10px;
 	margin-top:10px;
 	font-family:helvetica;
-	font-size:12px;
+	font-size:13px;
+	color#576166;
 	}
-#overlay_wraper_saveConfirm	.saveconfirmblock{margin-top:40px;}
+#overlay_wraper_saveConfirm	.Overlaydata p{
+margin-left: 10px;
+font-size: 14px;
+color: #576166;
+}
+/*#overlay_wraper_saveConfirm	.saveconfirmblock{margin-top:40px;}*/
 #overlay_wraper_saveConfirm	.saveconfirmblock .ui-block-a{
 	width:50%;
 	text-align:center;
 	margin-top:8px;
 	}
 #overlay_wraper_saveConfirm	.saveconfirmblock .ui-block-a a{
-	color:#025D96;
-	font-size:12px;
+	color:#267bb1;
+	font-size:17px;
 	font-weight:bold;
 	text-decoration:none;
 	display:block;
@@ -1485,12 +1521,13 @@ border: 0px !important;
 #manageAlerts-pg h1 {
     font-size: 18px;
     white-space:nowrap;
+	height:12px;
 }
 
-#cancel_push_overlay{
+/*#cancel_push_overlay{
     padding-left:56px;
     padding-right: 25px;
-}
+}*/
 
 
 /*Css for Overlay Ends here*/
@@ -1499,8 +1536,8 @@ border: 0px !important;
 
 #specialNotes{ 
     clear:both; 
-    font-size:12px; 
-    color:#4f4f4f; 
+    font-size:14px; 
+    color:#474e55; 
 }
 
 /*added styles  13.1 Changes */ 
@@ -1544,15 +1581,51 @@ border: 0px !important;
 /*added styles*/
 .acHomeLink{ font-size:14px; padding-top:13px;}
 
-.dataRelBack, #alert_history_page_link {display:inline-block}
+.dataRelBack, #alert_history_page_link {
+display:inline-block;
+margin-right :6px;
+}
+
+
+
 
 #alertHistory-pg .deleted_messages{
     margin:10px 0 18px 0 !important;
 }
-#overlay_wraper_saveConfirm .saveconfirmblock {text-align:center}
+#overlay_wraper_saveConfirm .saveconfirmblock {/* text-align:center;margin-left:20px; */}
 .pn-page#manageAlerts-pg .whitebg-list-view  .ui-grid-b .ui-block-a{ width:20% !important; }
 .pn-page#manageAlerts-pg .whitebg-list-view  .ui-grid-b .ui-block-b {width:20% !important}
 .pn-page#manageAlerts-pg .whitebg-list-view  .ui-grid-b .ui-block-c {width:55% !important}
 .pn-page#manageAlerts-pg .whitebg-list-view li {padding:8px 5px 8px 5px !important}
 #changenumber .ui-select .ui-btn .ui-btn-text {font-size:13px;}
 .ui-focus, .ui-btn:focus {-webkit-box-shadow:0px 0px 0px } 
+#ma-link {display: block;
+text-align: right;}
+
+/* retina image changes */
+@media ( -webkit-min-device-pixel-ratio :2) {
+	.pn-page #alerthistory .deactive_down_arrow {
+		background-image:url('../card/images/nav-arrow2x.png');
+		-webkit-background-size: 12px 24px;
+		background-size: 12px 24px;
+	}
+	
+	#pg-header .centerPart a.head-bg-logo{
+		background:url(../images/discover-logo2x.png) no-repeat center top;
+		-webkit-background-size:140px 22px;
+	}
+    
+    .back_btn_normal,#back {
+		background: url('../card/images/backButton2x.png') no-repeat;
+		display: inline-block;
+		-webkit-background-size: 32px 30px;
+		background-size: 32px 30px;
+        margin:6px 3px 0px 6px;
+	}
+	
+	.pn-plus {
+		background-image: url('../card/images/plus-minus2x.png');
+		-webkit-background-size: 25px 48px;
+		background-size: 25px 48px;
+	}
+}

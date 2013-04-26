@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.discover.mobile"
+    package="com.discoverfinancial.mobile"
     android:versionCode="1"
     android:versionName="1.0" >
     
@@ -60,7 +60,7 @@
         <!-- Xtify Provider -->
         <provider
             android:name="com.xtify.sdk.db.Provider"
-            android:authorities="com.discover.mobile.XTIFY_PROVIDER"
+            android:authorities="com.discoverfinancial.mobile.XTIFY_PROVIDER"
             android:exported="false" />
         <!-- Xtify Provider -->
 

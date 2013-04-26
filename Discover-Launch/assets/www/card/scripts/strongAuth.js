@@ -153,6 +153,7 @@ function strongAuthFirstQuesLoad() {
 
 dfs.crd.sa.validateSAParam = function() {
 	try {
+		moveWindowTop();
 		dfs.crd.sa.clearErrorFromDiv();
 		dfs.crd.sa.answerText = $("#answer").val();
 		if ($("#radio-choice-4").prop("checked")) {

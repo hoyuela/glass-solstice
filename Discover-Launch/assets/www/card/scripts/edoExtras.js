@@ -822,6 +822,13 @@ $("#edoLandingPage-pg, #edoLandingWithoutOffer").live('pageshow',function(event)
                                                       var offerUl = $(".allItemList");
                                                       var liObject = offerUl.children("li").get();
                                                       
+                                                      	$('#sortFeatures').live('blur',function(){
+													$(".navBtns .ui-block-a .ui-select .ui-btn").removeClass("selectedTab");
+													});
+													$('#sortFeatures').live('focus',function(){	
+													$(".navBtns .ui-block-a .ui-select .ui-btn").addClass("selectedTab");
+													});
+                                                      
                                                       /*click handler for SORT option*/
                                                       
                                                       $('#sortFeatures').change(function(){
@@ -882,8 +889,12 @@ $("#edoLandingPage-pg, #edoLandingWithoutOffer").live('pageshow',function(event)
                                                       // activate when the link with class launchLink is clicked
                                                       $('#open-overview-rdl').die("click").live("click",edoExtraOverlay);
                                                       // close it when closeLink is clicked
-                                                      $('.close-overlay').click( function(){ doOverlayClose(); } );
-                                                      $('.overlay').click( function(){doOverlayClose()});
+                                                      $('.close-overlay').click( function(){
+													  doOverlayClose(); 
+													  } );
+                                                      $('.overlay').click( function(){
+														/*doOverlayClose()*/
+													  });
                                                       $('.tooltip').hide();
                                                       doOverlayOpen();
                                                       }catch(err){
@@ -895,6 +906,8 @@ $("#edoLandingPage-pg, #edoLandingWithoutOffer").live('pageshow',function(event)
 $("#edoHistory-pg").live('pageshow',function(){
                          try{
                          /*Click handler for Tooltip*/
+                         $('#closebtn').click( function(){
+						 $("#overlay_wraper, .overlay").hide()});
                          $(".icon_faqs").click(function(){
                                                $(".tooltip").fadeIn(300);
                                                /*$(this).css({"opacity":"0.6"});*/
@@ -916,8 +929,12 @@ $("#edoHistory-pg").live('pageshow',function(){
                          // activate when the link with class launchLink is clicked
                          $('#open-overview-rdl').die("click").live("click",edoExtraOverlay);
                          // close it when closeLink is clicked
-                         $('.close-overlay').click( function(){ doOverlayClose(); } );
-                         $('.overlay').click( function(){doOverlayClose()});
+                         $('.close-overlay').click( function(){ 
+						 doOverlayClose(); 
+						 } );
+                         $('.overlay').click( function(){
+							/*doOverlayClose()*/
+							});
                          $('.tooltip').hide();
                          
                          /**Click handler for top tabs**/
@@ -1050,10 +1067,10 @@ var refreshList = function(){
 	try{
 		var visibleList = $('ul.allItemList>li.items').length - $(".edoDisplayNone").length;
 		$('ul.allItemList>li.items').addClass('edoDisplayNone');
-		if($('ul.allItemList').hasClass("showGridview")){
+		/*if($('ul.allItemList').hasClass("showGridview")){
 			$('ul.allItemList > li:nth-child(2n)').css("float", "right");
 			$('ul.allItemList > li:nth-child(2n+1)').css("float", "left");
-		}
+		}*/
 		$('ul.allItemList > li.items').each(function(i){
                                             if(i < visibleList){
                                             $(this).removeClass('edoDisplayNone');
@@ -1352,7 +1369,7 @@ dfs.crd.edo.populateEdoHistory = function(pageName){
             }
             dfs.crd.edo.populateEdoHistoryPageDivs(edoHistory, lowerEDOHistOffset, upperEDOHistOffset);
 		}else{
-			var edoHistoryErrorText = "<div class='claimText'><h3 style='color:#566164'>Thanks for visiting Extras. It looks like you haven't used any of your available offers yet. What are you waiting for? Start saving today!</h3></div>";
+			var edoHistoryErrorText = "<div class='claimText'><p style='color:#566164;'>Thanks for visiting Extras. It looks like you haven't used any of your available offers yet. What are you waiting for? Start saving today!</p></div>";
 			$("#edo_history").html(edoHistoryErrorText);
 		}
 	}catch(err){
@@ -1437,7 +1454,7 @@ dfs.crd.edo.populateEdoHistoryPageDivs = function(edoHistory, pageId) {
 				}
 				$("#edo_history").html(edoHistoryList);
 			}else{
-				var edoHistoryErrorText = "<div class='claimText'><h3 style='color:#566164'>Thanks for visiting Extras. It looks like you haven't used any of your available offers yet. What are you waiting for? Start saving today!</h3></div>";
+				var edoHistoryErrorText = "<div class='claimText'><p style='color:#566164;'>Thanks for visiting Extras. It looks like you haven't used any of your available offers yet. What are you waiting for? Start saving today!</p></div>";
 				$("#edo_history").html(edoHistoryErrorText);
 			}
 		}

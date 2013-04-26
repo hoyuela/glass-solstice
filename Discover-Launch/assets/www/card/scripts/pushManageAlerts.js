@@ -234,7 +234,7 @@ manageAlertsLoad = function ()
                                      {
                                         // redirect the user to without saving alert 
                                         $('.ui-loader').hide();
-                                            var customSettings = {"ContentHolder": "#overlay_wraper_saveConfirm","height":"200","resize":false,"width":"300"};
+                                            var customSettings = {"ContentHolder": "#overlay_wraper_saveConfirm","height":"215","resize":false,"width":"300"};
                                         dfs.crd.push.manage.fnOverlay(customSettings);
 										trackchangesNotSavedError();
                                      }
@@ -262,7 +262,7 @@ manageAlertsLoad = function ()
                                      {
                                         // redirect the user to without saving alert 
                                         $('.ui-loader').hide();
-                                            var customSettings = {"ContentHolder": "#overlay_wraper_saveConfirm","height":"200","resize":false,"width":"300"};
+                                            var customSettings = {"ContentHolder": "#overlay_wraper_saveConfirm","height":"215","resize":false,"width":"300"};
                                         dfs.crd.push.manage.fnOverlay(customSettings);
 										trackchangesNotSavedError();
                                      }
@@ -787,7 +787,7 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
         var textglobalStatus;
         	if (dfs.crd.push.manage.userOverride == true)
 			{
-				textglobalStatus = "<h3 class='greentext'>Previous account settings will be removed once your preferences are saved. </h3>";
+				textglobalStatus = "<h3 class='redtext'>Previous account settings will be removed once your preferences are saved. </h3>";
 				$("#alertsetting").attr('disabled', false);
 				$("#alertsetting").val('on').slider('refresh'); 
 				
