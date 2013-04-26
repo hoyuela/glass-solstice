@@ -4,6 +4,8 @@
 package com.discover.mobile.bank.atm;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -66,7 +68,7 @@ public final class AtmModalFactory{
 		});
 		return modal;
 	}
-	
+
 	/**
 	 * Get the modal that includes the location allow / decline buttons
 	 * (and their respective listeners).
@@ -114,23 +116,44 @@ public final class AtmModalFactory{
 	 * @return the modal that will ask the user if they would like to allow
 	 * the app to use their current location
 	 */
-	public static ModalAlertWithTwoButtons getLocationAcceptanceModal(final Context context, final LocationFragment fragment){
-		return getLocationModal(context, fragment, 
-				R.string.atm_location_modal_title, R.string.atm_location_modal_content);
+	public static ModalAlertWithTwoButtons getLocationAcceptanceModal(final Context context, 
+			final LocationFragment fragment){
+		final AtmGetLocationModal top = new AtmGetLocationModal(context, null);
+		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(context, top, null);
+		final String content = context.getString(R.string.atm_location_modal_content);
+		top.getContentView().setText(Html.fromHtml(content));
+		top.getContentView().setMovementMethod(LinkMovementMethod.getInstance());
+		top.getAllow().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				fragment.setLocationStatus(LocationFragment.SEARCHING);
+				fragment.getLocation();
+				modal.dismiss();
+			}
+		});
+		top.getDontAllow().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v){
+				modal.dismiss();
+				fragment.setLocationStatus(LocationFragment.NOT_USING_LOCATION);
+			}
+		});
+		return modal;
 	}
 
 	/**
 	 * Get the modal that will alert the user to failing getting the users current location and ask them to retry.
 	 * @param context - activity context
 	 * @param fragment - fragment using the modal
-	 * @return the modal that will alert the user to failing getting the users current location and ask them to retry.
+	 * @return modal that will alert the user to failing to get the users current location and ask them to retry.
 	 */
-	public static ModalAlertWithTwoButtons getCurrentLocationFailModal(final Context context, final LocationFragment fragment){
+	public static ModalAlertWithTwoButtons getCurrentLocationFailModal(final Context context, 
+			final LocationFragment fragment){
 		return getLocationModal(context, fragment, 
 				R.string.atm_location_timeout_title, R.string.atm_location_timeout_text);
 	}
 
-	
+
 	/**
 	 * Get the modal that includes one "OK" button that simply dismisses the modal.
 	 * @param context - activity context
@@ -157,7 +180,7 @@ public final class AtmModalFactory{
 
 		return modal;
 	}
-	
+
 
 	/**
 	 * Get the modal that informs the users that there were no results
