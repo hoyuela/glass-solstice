@@ -326,8 +326,29 @@ public class Account implements Serializable {
 		return isDepositEligible;
 	}
 
+	/**
+	 * 
+	 * @return a String containing the account nickname and 
+	 * 	last 4 digits of the account in the format "{nickname} (...XXXX)" where XXXX is the last 4 digits of 
+	 *  the account number.
+	 */
 	public String getDottedFormattedAccountNumber() {
 		return nickname +" (..." +accountNumber.ending +")";
+	}
+	
+	
+	/**
+	 * 
+	 * @return a String containing the last 4 digits of the account in the format "(...XXXX)" where XXXX is the 
+     *			last 4 digits of the account number. If there is no account number an empty String is returned.
+	 */
+	public String getShortDottedFormattedAccountNumber() {
+		String dottedFormattedAccountNumber = "";
+		
+		if(accountNumber != null && !Strings.isNullOrEmpty(accountNumber.ending))
+			dottedFormattedAccountNumber = "(..." + accountNumber.ending + ")";
+		
+		return dottedFormattedAccountNumber;
 	}
 
 	/**
