@@ -96,55 +96,57 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 		final String amountText = this.getText().toString().replace(",","");
 		
 		/**Verify the user has entered an non-empty value*/
-		if( !Strings.isNullOrEmpty(amountText) ) {
-			double amount = 0.00;
-			
-			/**Catch exception if it fails to format text entered by user into a double*/
-			try {
-				amount = Double.parseDouble(amountText);
-			}catch( final Exception ex) {
-				Log.e(TAG, "Unable to convert text to currency");
-			}
-		
-			
-			/**Verify a AccountLimits object has been associated with this object otherwise mark input as invalid*/
-			if( limits != null && errorLabel != null) {
-				/**Verify Total amount allowed to be deposited in this account per month has not been exceeded*/
-				if(limits.monthlyDepositAmount == null || !limits.monthlyDepositAmount.isValidAmount(amount) ) {
-					this.errorLabel.setText(getErrorTextWithDollarAmount(limits.monthlyDepositAmount));
-				} 
-				/** Verify Number of deposits allowed on this account per month has not been exceeded*/
-				else if(limits.monthlyDepositCount == null || limits.monthlyDepositCount.remaining <= 0 ) {
-					this.errorLabel.setText(getErrorTextWithLimitCount(limits.monthlyDepositCount));
-				}
-				/**Verify Total amount allowed to be deposited in this account per day has not been exceeded*/
-				else if( limits.dailyDepositAmount == null || !limits.dailyDepositAmount.isValidAmount(amount) ) {					
-					this.errorLabel.setText(getErrorTextWithDollarAmount(limits.dailyDepositAmount));
-				} 
-				/**Verify Maximum amount allowed to be deposited in this account per transaction has not been exceeded.*/
-				else if(limits.depositAmount == null || !limits.depositAmount.isValidAmount(amount) ) {
-					this.errorLabel.setText(getErrorTextWithDollarAmount(limits.depositAmount));
-				}
-				/**Verify Number of deposits allowed on this account per day has not been exceeded*/
-				else if(limits.dailyDepositCount == null || limits.dailyDepositCount.remaining <= 0 ) {
-					this.errorLabel.setText(getErrorTextWithLimitCount(limits.dailyDepositCount));
-				} else {
-					ret = true;
-				}		
-			} else {
-				if( Log.isLoggable(TAG, Log.ERROR)) {
-					Log.e(TAG, "Unable to verify amount entered by user");
-				}
-				if(errorLabel != null)
-					this.errorLabel.setText(R.string.bank_deposit_unknown_limit);
-			}
-		} else {
+		if( Strings.isNullOrEmpty(amountText) ) {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Invalid amount entered by user");
 			}
-			if(errorLabel != null)
-				this.errorLabel.setText(R.string.bank_deposit_invalid_amount);
+			if(errorLabel != null) {
+				errorLabel.setText(R.string.bank_deposit_invalid_amount);
+			}
+			return false;
 		}
+		
+		double amount = 0.00;
+			
+		/**Catch exception if it fails to format text entered by user into a double*/
+		try {
+			amount = Double.parseDouble(amountText);
+		} catch (final Exception ex) {
+			Log.e(TAG, "Unable to convert text to currency");
+		}	
+			
+		/**Verify a AccountLimits object has been associated with this object (& it has all its values)*/
+		if (limits != null && errorLabel != null && !limits.isMissingValues()) {
+			/**Verify Total amount allowed to be deposited in this account per month has not been exceeded*/
+			if (!limits.monthlyDepositAmount.isValidAmount(amount)) {
+				errorLabel.setText(getErrorTextWithDollarAmount(limits.monthlyDepositAmount));
+			}
+			/** Verify Number of deposits allowed on this account per month has not been exceeded*/
+			else if (limits.monthlyDepositCount.remaining <= 0) {
+				errorLabel.setText(getErrorTextWithLimitCount(limits.monthlyDepositCount));
+			}
+			/**Verify Total amount allowed to be deposited in this account per day has not been exceeded*/
+			else if (!limits.dailyDepositAmount.isValidAmount(amount)) {
+				errorLabel.setText(getErrorTextWithDollarAmount(limits.dailyDepositAmount));
+			}
+			/**Verify Maximum amount allowed to be deposited in this account per transaction has not been exceeded.*/
+			else if (!limits.depositAmount.isValidAmount(amount)) {
+				errorLabel.setText(getErrorTextWithDollarAmount(limits.depositAmount));
+			}
+			/**Verify Number of deposits allowed on this account per day has not been exceeded*/
+			else if (limits.dailyDepositCount.remaining <= 0) {
+				errorLabel.setText(getErrorTextWithLimitCount(limits.dailyDepositCount));
+			} else {
+				ret = true; // Everything is valid
+			}	
+		} else {
+			if (Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Unable to verify amount entered by user");
+			}
+			if (errorLabel != null)
+				errorLabel.setText(R.string.bank_deposit_unknown_limit);
+		}
+
 		return ret;
 	}
 	
