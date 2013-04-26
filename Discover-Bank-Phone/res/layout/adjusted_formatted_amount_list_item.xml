@@ -38,8 +38,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:paddingRight="3dp"
-            android:text="@string/bank_dollar_sign"
-            android:textColor="@color/black" />
+            android:text="@string/bank_dollar_sign" />
 
         <com.discover.mobile.bank.ui.widgets.AmountValidatedEditField
             android:id="@+id/amount_edit"
