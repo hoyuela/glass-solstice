@@ -32,6 +32,7 @@ import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.help.ContactUsType;
@@ -259,6 +260,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		idField.clearFocus();
 		passField.clearFocus();
 		setCheckMark(false, false);
+		Log.e("Allie", "Error shows, check toggled off");
 	}
 
 	/**
@@ -506,7 +508,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				}
 				//Clear the last error that occurred
 				setLastError(0);
-				login();
+				if (idField.getText().length() > 0 || passField.getText().length() > 0){
+					login();
+				}
 			}
 		});
 
@@ -669,7 +673,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final BankLoginDetails login = new BankLoginDetails();
 		login.password = password;
 		login.username = username;
-
 		BankConductor.authorizeWithCredentials(login);
 	}
 
@@ -706,6 +709,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * @param v the calling view.
 	 */
 	public void toggleCheckBoxFromXml(final View v) {
+		Log.e("Allie", "Toggled from XML");
 		toggleSaveUserIdSwitch(v, true);
 	}
 
@@ -769,7 +773,10 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				//Track that the bank toggle was selected
 				BankTrackingHelper.trackPage(LoginActivity.class.getSimpleName());
 			}
-
+			
+			// Need to reset the error handler type to card|bank for service calls
+			BankNetworkServiceCallManager.getInstance().resetErrorHandler();
+			
 			//Refresh Screen based on Selected Account Preferences
 			loadSavedCredentials();
 			idField.clearFocus();
@@ -933,8 +940,11 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final boolean wasIdEmpty = Strings.isNullOrEmpty(idField.getText().toString());
 		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 
-		if(wasIdEmpty && wasPassEmpty) {
-			this.getErrorHandler().showErrorsOnScreen(this, null);
+		if (wasIdEmpty && wasPassEmpty){
+			return false;
+		}else if(wasIdEmpty || wasPassEmpty) {
+			final String errorText = this.getResources().getString(R.string.login_error);
+			this.getErrorHandler().showErrorsOnScreen(this, errorText);
 			idField.clearFocus();
 			passField.clearFocus();
 			setCheckMark(false, true);

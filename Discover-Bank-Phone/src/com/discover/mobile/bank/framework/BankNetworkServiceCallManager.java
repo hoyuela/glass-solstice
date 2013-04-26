@@ -106,7 +106,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 * Holds reference to an instance of BankBaseErrorResponseHandler used to handle failures when a NetworkServiceCall
 	 * fails.
 	 */
-	private final BankBaseErrorResponseHandler errorHandler;
+	private BankBaseErrorResponseHandler errorHandler;
 	/**
 	 * Holds Reference to Singleton instance of NetworkServiceCallManager
 	 */
@@ -137,6 +137,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	static public BankNetworkServiceCallManager getInstance() {
 
 		return instance;
+	}
+	
+	/**
+	 * Initializes a new error handler based on the current Activity.
+	 */
+	public void resetErrorHandler() {
+		errorHandler = new BankBaseErrorResponseHandler((ErrorHandlerUi) DiscoverActivityManager.getActiveActivity());
 	}
 
 	/**
