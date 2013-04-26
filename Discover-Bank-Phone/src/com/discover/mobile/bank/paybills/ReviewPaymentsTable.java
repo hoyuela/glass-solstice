@@ -209,17 +209,17 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			@Override
 			public void onClick(final View v) {
 				futureValue = ReviewPaymentsHeader.SCHEDULED_PAYMENTS;
-				if(null == scheduled && null == BankUser.instance().getScheduled()){
-					//Generate a url to download schedule payments
-					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
-					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
-				}else if(null == scheduled && null != BankUser.instance().getScheduled()){
+				if (scheduled != null) {
+					header.setCurrentCategory(ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
+					updateAdapter(scheduled);
+				} else if (BankUser.instance().getScheduled() != null) {
 					header.setCurrentCategory(ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
 					scheduled = BankUser.instance().getScheduled();
 					updateAdapter(scheduled);
-				}else{
-					header.setCurrentCategory(ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
-					updateAdapter(scheduled);
+				} else {
+					//Generate a url to download schedule payments
+					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 				}
 			}
 		});
@@ -228,16 +228,16 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			@Override
 			public void onClick(final View v) {
 				futureValue = ReviewPaymentsHeader.COMPLETED_PAYMENTS;
-				if(null == completed && null == BankUser.instance().getCompleted()){
-					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.COMPLETED);
-					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
-				}else if(null == completed && null != BankUser.instance().getCompleted()){
+				if (completed != null) {
+					header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
+					updateAdapter(completed);
+				} else if (BankUser.instance().getCompleted() != null) {
 					header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
 					completed = BankUser.instance().getCompleted();
 					updateAdapter(completed);
-				}else{
-					header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
-					updateAdapter(completed);
+				} else {
+					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.COMPLETED);
+					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 				}
 			}
 		});
@@ -246,16 +246,16 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			@Override
 			public void onClick(final View v) {
 				futureValue = ReviewPaymentsHeader.CANCELED_PAYMENTS;
-				if(null == canceled && null == BankUser.instance().getCancelled()){
-					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.CANCELLED);
-					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
-				}else if(null == canceled && null != BankUser.instance().getCancelled()){
+				if (canceled != null) {
+					header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
+					updateAdapter(canceled);
+				} else if (BankUser.instance().getCancelled() != null) {
 					header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
 					canceled = BankUser.instance().getCancelled();
 					updateAdapter(canceled);
-				}else{
-					header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
-					updateAdapter(canceled);
+				} else {
+					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.CANCELLED);
+					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 				}
 			}
 		});
@@ -307,12 +307,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		final Bundle bundle = new Bundle();
 		final int category = header.getCurrentCategory();
 		bundle.putInt(BankExtraKeys.CATEGORY_SELECTED, category);
-		final String scheduleKey = 
-				(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.SCHEDULED_LIST;
-		final String completedKey =
-				(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.COMPLETED_LIST;
-		final String canceledKey =
-				(category == ReviewPaymentsHeader.CANCELED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.CANCELED_LIST;
 
 		/**Set the resource identifier that should be displayed in the details screen*/
 		switch( category ) {
@@ -327,9 +321,9 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			break;
 		}
 
-		bundle.putSerializable(scheduleKey, scheduled);
-		bundle.putSerializable(completedKey, completed);
-		bundle.putSerializable(canceledKey, canceled);
+		bundle.putSerializable(getScheduleKey(category), scheduled);
+		bundle.putSerializable(getCompletedKey(category), completed);
+		bundle.putSerializable(getCanceledKey(category), canceled);
 		bundle.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, index);
 		bundle.putBoolean(BankExtraKeys.IS_LOADING_MORE, getIsLoadingMore());
 		BankConductor.navigateToPaymentDetailScreen(bundle);
@@ -345,16 +339,9 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		if(null == header){return bundle;}
 		final int category = header.getCurrentCategory();
 		bundle.putInt(BankExtraKeys.CATEGORY_SELECTED, category);
-		final String scheduleKey = 
-				(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.SCHEDULED_LIST;
-		final String completedKey =
-				(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.COMPLETED_LIST;
-		final String canceledKey =
-				(category == ReviewPaymentsHeader.CANCELED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.CANCELED_LIST;
-
-		bundle.putSerializable(scheduleKey, scheduled);
-		bundle.putSerializable(completedKey, completed);
-		bundle.putSerializable(canceledKey, canceled);
+		bundle.putSerializable(getScheduleKey(category), scheduled);
+		bundle.putSerializable(getCompletedKey(category), completed);
+		bundle.putSerializable(getCanceledKey(category), canceled);
 		bundle.putInt(FUTURE_VALUE_KEY, futureValue);
 
 		return bundle;

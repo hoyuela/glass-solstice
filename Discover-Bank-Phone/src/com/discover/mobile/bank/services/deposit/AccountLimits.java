@@ -114,17 +114,24 @@ public class AccountLimits implements Serializable {
 	 */
 	public boolean isAmountValid(final double amount) {
 		
-			return !(monthlyDepositAmount == null || !monthlyDepositAmount.isValidAmount(amount) ||
+			return !(isMissingValues() || !monthlyDepositAmount.isValidAmount(amount) ||
 			/** Verify Number of deposits allowed on this account per month has not been exceeded*/
-			monthlyDepositCount == null || monthlyDepositCount.remaining <= 0 ||
+			monthlyDepositCount.remaining <= 0 ||
 			/**Verify Total amount allowed to be deposited in this account per day has not been exceeded*/
-			dailyDepositAmount == null || !dailyDepositAmount.isValidAmount(amount) ||					
+			!dailyDepositAmount.isValidAmount(amount) ||					
 			
 			/**Verify Maximum amount allowed to be deposited in this account per transaction has not been exceeded.*/
-			depositAmount == null || !depositAmount.isValidAmount(amount) ||
+			!depositAmount.isValidAmount(amount) ||
 			
 			/**Verify Number of deposits allowed on this account per day has not been exceeded*/
-			dailyDepositCount == null || dailyDepositCount.remaining <= 0);				
+			dailyDepositCount.remaining <= 0);				
+	}
+	
+	/** @return {@code true} if any of the Limit objects are missing. */
+	public boolean isMissingValues() {
+		return monthlyDepositAmount == null || monthlyDepositCount == null ||
+				dailyDepositAmount == null || depositAmount == null ||
+				dailyDepositCount == null;
 	}
 }
 
