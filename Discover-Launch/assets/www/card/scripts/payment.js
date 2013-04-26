@@ -123,7 +123,7 @@ dfs.crd.pymt.populatePaymentSummaryPageDivs = function(payDataObj, pageId){
 					var errMsg = errorCodeMap["Over_Limit"];
 					overLimitAmt["overLimitAmount"] = overLimitAmount;
 					inLineError.css("display", "block");
-					inLineError.append("<br/>" + parseContent(errMsg, overLimitAmt));
+					inLineError.append(parseContent(errMsg, overLimitAmt));
 				}
 			}	
 
@@ -137,7 +137,7 @@ dfs.crd.pymt.populatePaymentSummaryPageDivs = function(payDataObj, pageId){
 				$("#minPaymentDue_Li").remove();
 				$("#paymentDueDate_Li").remove();
 				inLineError.css("display", "block");
-				inLineError.html("<br/>" + errorCodeMap["NO_MIN_PAY"]);
+				inLineError.html(errorCodeMap["NO_MIN_PAY"]);
 			}
 
 			if (parseFloat(payDataObj.currentBalance) < 0.01) {
@@ -151,13 +151,13 @@ dfs.crd.pymt.populatePaymentSummaryPageDivs = function(payDataObj, pageId){
 				details["currentBalance"] = payDataObj.currentBalance
 				errorMessage = parseContent(errorMessage, details);
 				inLineError.css("display", "block");
-				inLineError.html("<br/>" + errorMessage);
+				inLineError.html(errorMessage);
 				$("#paymentsummaryval_btn").remove();
 			}
 
 			if(dfs.crd.pymt.afterMakePayFlag){
 				inLineError.css("display", "block");
-				inLineError.html("<br/>" + dfs.crd.pymt.messageAftrmakePay);
+				inLineError.html(dfs.crd.pymt.messageAftrmakePay);
 			}
 		}
 
@@ -488,7 +488,7 @@ dfs.crd.pymt.populatePaymentHistoryPageDivs = function(paymentHistory, pageId)
 						paymentHistoryVal["paymentAmount"] = "0.00";
 					paymentHistoryVal["paymentDate"] = innerHisTransVal[i].paymentDate;
 					paymentHistoryVal["paymentMethod"] = innerHisTransVal[i].paymentMethod;
-					var paymentHistoryDataActivityJSON = "<li class ='borderbottom'><div><div class='col1'>!~paymentDate~!</div><div class='col2'>!~paymentMethod~!</div><div class='col3'>$!~paymentAmount~!</div><div class='accountsearchresult'><div class='toprow1'>!~bank~!</div></div></div></li>";
+					var paymentHistoryDataActivityJSON = "<li class ='borderbottom'><div class='accountsearchresult'><div class='toprow1'>!~bank~!</div><div><div class='col1'>!~paymentDate~!</div><div class='col2'>!~paymentMethod~!</div><div class='col3'>$!~paymentAmount~!</div></div></div></li>";
 
 					var paymentHistoryDataActivity = parseContent(
 							paymentHistoryDataActivityJSON, paymentHistoryVal);
@@ -527,7 +527,7 @@ function paymentStep1Load()
 		
 		var validPriorPagesOfpayStep1 = new Array("paymentStep2",
 				"paymentsSummary", "paymentsLanding", "pendingPayments",
-				"paymentsHistory", "accountSummary", "cardHome","pageError","confirmCancelPayment");
+				"paymentsHistory", "accountSummary", "cardHome","pageError","confirmCancelPayment", "paymentInformation");
 		if (jQuery.inArray(fromPageName, validPriorPagesOfpayStep1) > -1 || isLhnNavigation) {
 		
 			isLhnNavigation  = false;
@@ -538,10 +538,11 @@ function paymentStep1Load()
 			deactiveBtn("postingDateStepOne");
 			deactiveBtn("makePaymentOneContinue");
 			
-			if(fromPageName != "paymentStep2" ){
+			var pagesToSaveDataFor = new Array("paymentStep2",
+                                               "paymentInformation");
+			if(jQuery.inArray(fromPageName, pagesToSaveDataFor) == -1 ){
 				killDataFromCache("OPTION_SELECTED_ON_MAP1");
 			}
-			
 			$(".date-picker").live("click", function()
 					{
 				$(".wraper1").hide();
@@ -727,16 +728,16 @@ function paymentStep1Load()
 					isBankSelected = true;
 
 
-				if ($("#date-compare").val() != "") 
-					isDateSelected = true;
+/*				if ($("#date-compare").val() != "") 
+					isDateSelected = true; */				
 				
 				if((event.which > 47 && event.which < 58) || (event.which > 95 && event.which < 106)){
-					if(isBankSelected && isDateSelected){
+					if(isBankSelected /*&& isDateSelected*/){
 						activebtn("makePaymentOneContinue");
 					}
 				}else if(event.which == 190 || event.which == 110){
 					if(minPayStepOne.val().indexOf('.') == -1){
-						if(isBankSelected && isDateSelected){
+						if(isBankSelected /*&& isDateSelected*/){
 							activebtn("makePaymentOneContinue");
 						}
 					}else{
@@ -1087,6 +1088,7 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 				}
 				minPayStepOnePayDueDate
 				.text(formatPaymentDueDate_MakePaymentStep1(formatDate));
+				$("#calendar").datepicker( "option", { minDueDate: new Date(dfs.crd.pymt.validDays[0]) } );
 				$("#calendar").datepicker( "option", { dueDate: paymentDueDate } );
 			}
 
@@ -1184,7 +1186,7 @@ dfs.crd.pymt.getBankList = function(stepOne)
 
 
 
-			if (!(stepOne.isHaMode)&& isCutOffMakePaymentOne) {
+			if (!(stepOne.isHaMode)/*&& isCutOffMakePaymentOne*/) {
 				if(projectBeyondCard)
 					$("#cuttOff_Note_MakePaymentOne").text(errorCodeMap["Is_cutoffPB"]);
 				else
@@ -1206,6 +1208,7 @@ dfs.crd.pymt.getBankList = function(stepOne)
 							"option",
 							"maxDate",
 							dfs.crd.pymt.validDays[dfs.crd.pymt.validDays.length - 1]);
+					  dfs.crd.pymt.paymentDateSet(dfs.crd.pymt.validDays[0]);
 				}
 				$("#button-selectdate").removeClass('disabled');
 			}
@@ -1278,6 +1281,7 @@ dfs.crd.pymt.bankSelected = function()
 						// otherwise enable button & remove error
 					}else {                 
 						dfs.crd.pymt.validDays = stepOne.bankInfo[option.index() - 1].openDates;
+						dfs.crd.pymt.paymentDateSet(dfs.crd.pymt.validDays[0]);
 						dateButton.removeClass("disabled ui-btn-up-errormsg");
 					}
 					var existDate = $("#date-compare").val();
@@ -1314,12 +1318,16 @@ dfs.crd.pymt.paymentDateSet = function(paymentDate)
 {
 	try {
 		$("a#calendar-cancel").click();
+		/*var stepOne = getDataFromCache("MAKEPAYMENTONE");
+		if( paymentDate == "NaN/NaN/NaN"){
+			paymentDate = stepOne.paymentDueDate;
+		}*/
 		var selectedDate = paymentDate.split("/");
-		var month = selectedDate[0];
+		var month = selectedDate[0]/*.replace("01", "Jan ").replace("02", "Feb ")*/
 		
-		/*
-		.replace("01", "Jan ").replace("02", "Feb ")
-		.replace("03", "Mar ").replace("04", "Apr ").replace("05",
+
+
+		/*.replace("03", "Mar ").replace("04", "Apr ").replace("05",
 		"May ").replace("06", "Jun ").replace("07", "Jul ")
 		.replace("08", "Aug ").replace("09", "Sep ").replace("10",
 		"Oct ").replace("11", "Nov ").replace("12", "Dec ");*/
@@ -1329,19 +1337,20 @@ dfs.crd.pymt.paymentDateSet = function(paymentDate)
 		day = day.toString();
 
 
-/**/
+
 
 		if (day < 10)
 			day = "0" + day;
 
-/*var date = new Date('2010-10-11T00:00:00+05:30');
-alert(date.getMonth().toString() + '/' + date.getDate().toString() + '/' +  date.getFullYear().toString());*/
 
-		/*var date = dateFormat(new Date("Thu Oct 14 2010 00:00:00 GMT 0530 (India Standard Time)"), 'dd/mm/yyyy');*/
 
+
+
+
+		//var formattedDate = month + day + ", " + selectedDate[2];
 		var formattedDate = month+"/"+day+"/" + selectedDate[2];
-		//paymentDate = formattedDate.replace("Thu Oct 14 2010 00:00:00 GMT 0530 (India Standard Time)", 'dd/mm/yyyy')
-		//alert(paymentDate);
+
+
 		/*paymentDate = formattedDate.replace(", ", "/").replace("Jan ", "01/")
 		.replace("Feb ", "02/").replace("Mar ", "03/").replace("Apr ",
 		"04/").replace("May ", "05/").replace("Jun ", "06/")
@@ -1351,7 +1360,7 @@ alert(date.getMonth().toString() + '/' + date.getDate().toString() + '/' +  date
 
 		$("#datepicker-value").val(formattedDate);
 		$("#datepicker-val").val(formattedDate);
-		/*$("#datepicker-val").css("margin","4px 0px");*/
+		$("#datepicker-val").css("margin","4px 0px");
 		$("#date-compare").val(formattedDate);
 		
 		if ((jQuery.inArray(($("#date-compare").val()), dfs.crd.pymt.validDays) > -1)){	                                           
@@ -1593,8 +1602,8 @@ dfs.crd.pymt.changeDropDownLabel = function()
 		if (option.index() != 0)
 			isBankSelected = true;
 
-		if ($("#date-compare").val() != "")
-			isDateSelected = true;
+/*		if ($("#date-compare").val() != "")
+			isDateSelected = true; */
 
 		var radio_btn = $("[name='radio-choice-1']");
 
@@ -1610,7 +1619,7 @@ dfs.crd.pymt.changeDropDownLabel = function()
 			}
 		}
 
-		if (isDateSelected && isBankSelected && ischecked_radio) {
+		if (/*isDateSelected && */isBankSelected && ischecked_radio) {
 
 			if (isOtherAmount && ($("#minpaystepone_other").val() == "")){
 				deactiveBtn("makePaymentOneContinue");
@@ -1805,7 +1814,6 @@ dfs.crd.pymt.confirmfromstep2tostep3 = function(isErrorForSubmit,nextAvalDateToP
 					headers : preparePostHeader(),
 					success : function(responseData, status, jqXHR)
 					{
-						
 						hideSpinner();
               if (!validateResponse(responseData,"paymentConfirmationstep3Validation"))      // Pen Test Validation
               {
@@ -1833,6 +1841,7 @@ dfs.crd.pymt.confirmfromstep2tostep3 = function(isErrorForSubmit,nextAvalDateToP
 					error : function(jqXHR, textStatus, errorThrown)
 					{
 						hideSpinner();						
+						
 						var code = getResponseStatusCode(jqXHR);
 						$("#confirmSuccessPay3").css('disabled', 'disable');
 						switch (code)
@@ -2180,4 +2189,25 @@ function confirmCancelPaymentLoad(){
       }catch(err){
             showSysException(err);
       }
+}
+
+function paymentInformationLoad(){
+ try{
+		var staticContentJson=getStaticContentData(toPageName,false,false);
+		var staticContentText="";
+		if(projectBeyondCard){
+			staticContentText=staticContentJson["paymentTerm_ITCard"];
+		}
+		if(isEmpty(staticContentText)){
+				var cardTypeTerm = "paymentTerm_"+incentiveTypeCode+"_"+incentiveCode;
+				if(!jQuery.isEmptyObject(staticContentJson)){
+				staticContentText = isEmpty(staticContentJson[cardTypeTerm])?(isEmpty(staticContentJson["paymentTerm_"+incentiveTypeCode])?staticContentJson["paymentTerm"]:staticContentJson["paymentTerm_"+incentiveTypeCode]):staticContentJson[cardTypeTerm];			
+			}
+		}		
+		
+		$("#paymentsTermsOfUse").html(staticContentText);
+
+	}catch(err){
+		showSysException(err);
+	}
 }

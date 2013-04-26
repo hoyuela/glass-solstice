@@ -26,7 +26,7 @@ dfs.crd.push.alert.populateAlertHistory = function(pageName)
         else
         {
             $(".main_content").hide();
-            $("#red_textfont").html('<br/>You have no alerts at this time.<br/>Click above to setup or modify your alert settings').show();
+            $("#red_textfont").html('You have no alerts at this time.<br/>Click above to setup or modify your alert settings').show();
             $('.main_heading_paragraph').hide();
             $(".deleted_messages").hide(); 
             $("#specialNotes").hide();
@@ -220,7 +220,7 @@ dfs.crd.push.alert.populateAlertHistoryPageDivs = function(responseData, pageId)
         else
         {   
             $(".main_content").hide();
-            $("#red_textfont").html('<br/>You have no alerts at this time.<br/>Click above to setup or modify your alert settings').show();
+            $("#red_textfont").html('You have no alerts at this time.<br/>Click above to setup or modify your alert settings').show();
             $('.main_heading_paragraph').hide();
             $(".deleted_messages").hide();
             $("#specialNotes").hide();
@@ -293,7 +293,7 @@ dfs.crd.push.alert.populateAlertHistoryPageDivs = function(responseData, pageId)
                                     else
                                     {
                                         $(".main_content").hide();
-                                        $("#red_textfont").html('<br/>You have no alerts at this time.<br/>Click above to setup or modify your alert settings').show();
+                                        $("#red_textfont").html('You have no alerts at this time.<br/>Click above to setup or modify your alert settings').show();
                                         $('.main_heading_paragraph').hide();
                                         $(".deleted_messages").hide();
                                         $("#specialNotes").hide();
@@ -503,5 +503,9 @@ dfs.crd.push.alert.postAlertHistoryMessage = function (msgAction, msgIdList)
 $("#manageAlerts-pg").live("pagebeforeshow", function(){
                 $("div h3 a", "#notifsettings").removeAttr("data-theme");
                 $("div h3 a", "#notifsettings").removeClass("ui-fullsize");             
+});
+$("#manageAlerts-pg").live("pageshow", function(){
+	var setVal = $(".crltDefAmt").val();
+	$("#crltDefAmtsetVal").text("$"+setVal);
 });
 /* JQM UC7 Ends */

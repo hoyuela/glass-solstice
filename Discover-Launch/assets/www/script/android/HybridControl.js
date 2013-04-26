@@ -64,6 +64,7 @@ HybridControl.prototype.getAccountDetails = function(successCallback, failureCal
 
 HybridControl.prototype.dismissProgressBar = function(successCallback, failureCallback) {
 //alert("dismiss");
+	
 	cordova.exec(successCallback, failureCallback, 'HybridControlPlugin', 'dismissProgressBar', []);
 }
 
@@ -92,4 +93,8 @@ HybridControl.prototype.getDID = function(successCallback, failureCallback) {
 }
 HybridControl.prototype.getOID = function(successCallback, failureCallback) {
 	cordova.exec(successCallback, failureCallback, 'HybridControlPlugin', 'getOID', []);
+}
+
+HybridControl.prototype.showSpinner = function(successCallback, failureCallback) {
+	cordova.exec(successCallback, failureCallback, 'HybridControlPlugin', 'showSpinner', []);
 }

@@ -221,7 +221,7 @@ function formatPaymentDueDate_MakePaymentStep1(paymentDueDate){
 
 function formatPostingDueDate_MakePaymentStep2(paymentDueDate){
 	try{
-		var monthArray=['Janurary','Feburary','March','April','May','June','July',
+		var monthArray=['January','Feburary','March','April','May','June','July',
 		                'August','September','October','November','December'];
 		var paymentMonth = paymentDueDate.substring(0,2);
 		var paymentDay = paymentDueDate.substring(3,5);

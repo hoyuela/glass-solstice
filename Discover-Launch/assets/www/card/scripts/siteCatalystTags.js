@@ -143,6 +143,7 @@ function sendMoney3PostSC(){
 	s.events="event48,event49";
 	s.products=";;;;event49="+sendMoney3Data.amount+"";
 	s.eVar5="DiscoverCard:MoneyMessenger";
+	killDataFromCache("SENDMONEY_SUMMARY");
 	 }catch(err){
 	        //showSysException(err);
 	    }
@@ -390,6 +391,9 @@ function searchTransFiltersSCVariables(dateOption,amountOption,catgOption){
 dfs.crd.sct.pushAlertNotification = function()
 {
 	try{
+		if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
 		s.linkTrackVars=s.linkTrackVars+',prop1';
 		s.prop1=s.pageName+':AlertsButtonClick';
 		s.tl(this,'o','Alerts Button Click');
@@ -403,6 +407,9 @@ dfs.crd.sct.pushAlertNotification = function()
 function newNotificationExist()
 {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
 	s.prop1=s.pageName+':NewNotificationsExist';
 	}catch(err){
         //showSysException(err);
@@ -413,6 +420,9 @@ function newNotificationExist()
 function allNotificationRead()
 {
 try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
 	s.prop1=s.pageName+':AllNotificationsRead';	
 	}catch(err){
         //showSysException(err);
@@ -423,6 +433,9 @@ try{
 dfs.crd.sct.globalFaqLinks = function()
 {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
 	s.linkTrackVars=s.linkTrackVars+',prop1';
 	s.prop1=s.pageName+':GlobalFAQClick'; 
 	s.tl(this,'o','Global FAQ Button Click');
@@ -436,6 +449,9 @@ dfs.crd.sct.globalFaqLinks = function()
 dfs.crd.sct.trackNotificationClick = function()
 {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
 	s.linkTrackVars=s.linkTrackVars+',prop1';
 	s.prop1=s.pageName+':EnableTrackingNotifications'; 
 	s.tl(this,'o','Enable Tracking Notifications Click');
@@ -449,6 +465,9 @@ dfs.crd.sct.trackNotificationClick = function()
 dfs.crd.sct.disableNotificationClick = function()
 {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
 	s.linkTrackVars=s.linkTrackVars+',prop1';
 	s.prop1=s.pageName+':DisableTrackingNotifications'; 
 	s.tl(this,'o','Disable Tracking Notifications Click');
@@ -462,6 +481,9 @@ dfs.crd.sct.disableNotificationClick = function()
 dfs.crd.sct.textTermsNConditions = function()
 {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
 	s.linkTrackVars=s.linkTrackVars+',prop1';
 	s.prop1=s.pageName+':Text Messages Terms and Conditions';
 	s.tl(this,'o','Text Messages Terms and Conditions Click');
@@ -475,6 +497,9 @@ dfs.crd.sct.textTermsNConditions = function()
 dfs.crd.sct.deviceTermsNConditions = function()
 {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
 	s.linkTrackVars=s.linkTrackVars+',prop1';
 	s.prop1=s.pageName+':Device Terms and Conditions';
 	s.tl(this,'o','Device Terms and Conditions Click');
@@ -488,6 +513,9 @@ dfs.crd.sct.deviceTermsNConditions = function()
 dfs.crd.sct.trackTxtCheckboxClicks = function(alertName)
 {
 	try{	
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}	
 	s.linkTrackVars=s.linkTrackVars+',prop1';
 	s.prop1=s.pageName+':TextAlerts+:'+alertName+' Click';
 	s.tl(this,'o','Text<Checkbox> Click');
@@ -500,6 +528,9 @@ dfs.crd.sct.trackTxtCheckboxClicks = function(alertName)
 dfs.crd.sct.trackDeviceCheckboxClicks = function(alertName)
 {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
 	s.linkTrackVars=s.linkTrackVars+',prop1';
 	s.prop1=s.pageName+':DeviceAlerts+:'+alertName+' Click';
 	s.tl(this,'o','Device<Checkbox> Click');
@@ -512,6 +543,9 @@ dfs.crd.sct.trackDeviceCheckboxClicks = function(alertName)
 dfs.crd.sct.trackMenuCollapseClick = function(TabID)
 {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
 	s.linkTrackVars=s.linkTrackVars+',prop40';
 	s.prop40=s.pageName+':'+TabID+'';
 	s.tl(this,'o','Tab Click');
@@ -535,6 +569,9 @@ function trackInlineError()
 dfs.crd.sct.trackDescriptionCollapseClick = function(tabID)
 {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
 	s.linkTrackVars=s.linkTrackVars+',prop40';
 	s.prop40=s.pageName+':'+tabID+'';
 	s.tl(this,'o','Tab Click');
@@ -585,9 +622,27 @@ function trackmsgDeletedError()
 
 
 /*****Tagging Spec - Discover Card Mobile R5 - Handset & Tablet - Start****/
+//Refer a Friend - Confirmation Overlay (Track by Type)
+dfs.crd.sct.rafConfirmationOverlay = function(type) {
+	try{
+		if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
+		s.linkTrackVars=s.linkTrackVars+',prop1';
+		s.prop1=s.pageName+':ReferAFriendConfirmation:'+type; 
+		s.tl(this,'o','ReferAFriend:Confirmation');
+		s.manageVars("clearVars");
+	 }catch(err){
+	        //showSysException(err);
+	    }
+}
+
 //Help with Redemption (Question Button) Click
 dfs.crd.sct.redemptionHelpQuestionIcon = function() {
 	try{
+		if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
 		s.linkTrackVars=s.linkTrackVars+',prop1';
 		s.prop1=s.pageName+':MobileRedemptionHelp'; 
 		s.tl(this,'o','MobileRedemption:Help');
@@ -600,6 +655,9 @@ dfs.crd.sct.redemptionHelpQuestionIcon = function() {
 //Cashback Bonus FAQ - Expand/Contract Menu Items
 dfs.crd.sct.cashbackBonusFAQ = function(cbbfaqnum) {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+			s.pageName=toPageName;
+			}
      // s.prop40='';
 	  s.linkTrackVars=s.linkTrackVars+',prop40';
 	  s.prop40=s.pageName+ ":" +cbbfaqnum; 
@@ -613,6 +671,9 @@ dfs.crd.sct.cashbackBonusFAQ = function(cbbfaqnum) {
 //Redemption - Best Value - Tab Tracking
 dfs.crd.sct.redemptionBestValueTabTracking = function(a) {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+	s.pageName=toPageName;
+	}
     s.linkTrackVars=s.linkTrackVars+',prop40'; 
     s.prop40=s.pageName+':' + a; 
     s.tl(this,'o','Tab Click');
@@ -666,6 +727,9 @@ function giftcard3PostSC(){
 //Refer a Friend - Share Now Clicks
 dfs.crd.sct.rafShareNow = function(SiteName) {
 	try{
+		if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+	s.pageName=toPageName;
+	}
 		s.linkTrackVars= s.linkTrackVars+',events,eVar8,prop8,prop13';
 		s.events='event6'; 
 		s.linkTrackEvents='event6'; 
@@ -681,6 +745,9 @@ dfs.crd.sct.rafShareNow = function(SiteName) {
 //Refer a Friend - Share Again Clicks
 dfs.crd.sct.rafShareAgain = function(SiteName) {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+	s.pageName=toPageName;
+	}
 		s.linkTrackVars= s.linkTrackVars+',events,eVar8,prop8,prop13';
 		s.events='event6';
 		s.linkTrackEvents='event6';
@@ -696,6 +763,9 @@ dfs.crd.sct.rafShareAgain = function(SiteName) {
 //Redemption Overview Overlay Click
 dfs.crd.sct.redemptionOverviewOverlay = function() {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+	s.pageName=toPageName;
+	}
 		s.linkTrackVars=s.linkTrackVars+',prop1';
 		s.prop1=s.pageName+':MobileRedemptionOverview'; s.tl(this,'o','MobileRedemption:Overview');
 		s.manageVars("clearVars"); 
@@ -776,6 +846,9 @@ function redemptionLandingPostSC(){
 //Tab Switching between Extras & History
 dfs.crd.sct.extrasHistoryTabSwitch = function(tabName) {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+	s.pageName=toPageName;
+	}
 		s.linkTrackVars=s.linkTrackVars+',prop40';
 		s.prop40=s.pageName+':'+tabName+'';
 		s.tl(this,'o','Tab Click');
@@ -788,6 +861,9 @@ dfs.crd.sct.extrasHistoryTabSwitch = function(tabName) {
 //All Sort Functionality
 dfs.crd.sct.extrasSortFunctionality = function(SortType) {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+	s.pageName=toPageName;
+	}
 		s.linkTrackVars=s.linkTrackVars+',prop1';
 		s.prop1=s.pageName+':'+SortType+'';
 		s.tl(this,'o','Discover Extras Sort:'+SortType+'');
@@ -800,6 +876,9 @@ dfs.crd.sct.extrasSortFunctionality = function(SortType) {
 //Select Grid View Vs. List View
 dfs.crd.sct.extrasGridListSwitch = function(TabName) {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+	s.pageName=toPageName;
+	}
 		s.linkTrackVars=s.linkTrackVars+',prop40'; 
 		s.prop40=s.pageName+':'+TabName+''; 
 		s.tl(this,'o','Tab Click');
@@ -868,6 +947,9 @@ dfs.crd.sct.saveOfferToPhotos = function() {
 //View Map Click
 dfs.crd.sct.viewMap = function() {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+	s.pageName=toPageName;
+	}
 		s.linkTrackVars=s.linkTrackVars+',prop1';
 		s.prop1=s.pageName+':ViewMap';
 		s.tl(this,'o','CBB Extras Mobile View Map Click');
@@ -879,6 +961,9 @@ dfs.crd.sct.viewMap = function() {
 //Add to Calendar Click
 dfs.crd.sct.addToCalendar = function() {
 	try{
+	if ( isEmpty(s.pageName) && (!isEmpty(toPageName))){
+	s.pageName=toPageName;
+	}
 		s.linkTrackVars=s.linkTrackVars+',prop1';
 		s.prop1=s.pageName+':AddToCalendar'; 
 		s.tl(this,'o','CBB Extras Mobile Add To Calendar Click');

@@ -53,7 +53,7 @@ $(document).scrollTop(0);
                     showHeaderFooter();                      
                 });
                 
-                /* on drop down change event reset header footer  by Nitin */
+                /* on drop down change event reset header footer*/
                 $("select").live("change",function(){
                   showHeaderFooter();                                 
                 });
