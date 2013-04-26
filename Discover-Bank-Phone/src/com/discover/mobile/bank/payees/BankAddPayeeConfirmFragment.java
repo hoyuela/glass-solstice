@@ -42,7 +42,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	 * Flag used to determine whether payee was updated or added.
 	 */
 	public boolean isUpdate;
-	
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 			if( null != bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM)) {
 				detail = (PayeeDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);	
 			}
-			
+
 			/**read whether this confirmation is shown for an payee update or addition*/
 			isUpdate = bundle.getBoolean(KEY_PAYEE_UPDATE);
 		} 
@@ -87,18 +87,18 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 		noteTextMsg.setVisibility(View.GONE);
 
 		actionButton.setText(R.string.bank_sch_payment);
-		
+
 		/**Set footer to show privacy & terms | feedback*/
 		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
-		
+
 		/**Check if confirmation page is for a payee update or addition*/
 		if( isUpdate ) {
 			topNote.setText(R.string.bank_updated_confirm);
-			
+
 			actionLink.setText(R.string.bank_manage_payees);
 		} else {
 			topNote.setText(R.string.bank_add_confirm);
-			
+
 			actionLink.setText(R.string.bank_add_another);
 		}
 	}
@@ -110,7 +110,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	protected void onActionButtonClick()  {
 		if( getActivity() instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
-			
+
 			//Pop everything out of the stack till we get to AccountSummary
 			activity.popTillFragment(BankAccountSummaryFragment.class);
 
@@ -136,7 +136,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	private void navigateBack() {
 		if( getActivity() instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
-			
+
 			/**Check if confirmation page is for a payee update or addition*/
 			if( isUpdate ) {
 				/**
@@ -152,7 +152,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns list of elements created to be displayed in the body of the view. Called by super class.
 	 */
@@ -197,13 +197,13 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	public void onBackPressed() {
-		navigateBack();
+		//Disable the back press
 	}
 
 	@Override
 	protected void helpMenuOnClick(final HelpWidget help) {
-		
+
 		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
-		
+
 	}
 } 

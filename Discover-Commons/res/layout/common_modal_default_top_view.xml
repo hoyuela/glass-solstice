@@ -5,7 +5,7 @@
     android:paddingLeft="@dimen/forms_inner_padding"
     android:paddingRight="@dimen/forms_inner_padding">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"  >
 	   
@@ -15,6 +15,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignTop="@+id/modal_alert_title"
+	        android:layout_marginTop="10dp"
 	        android:src="@drawable/error_icon_red" 
 	        android:visibility="gone"
 	        style="@style/modal_error_image"/>

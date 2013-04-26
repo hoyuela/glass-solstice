@@ -28,7 +28,10 @@
 
     <!-- Account - Skipped SSO Signin -->
     <string name="skipsso_modal_title">We\'re Sorry</string>
-    <string name="skipsso_modal_body">Due to special conditions related to your credit card account, we can\'t provide you with access to your credit card account information at this time. To login to Discover Bank only please select Continue Below.</string>
+    <string name="skipsso_modal_body">
+        Due to special conditions related to your credit card account, we can\'t provide you with access to your account 
+        information at this time. \n\n Because of increased security measures, you will need to log into Discover Bank in 
+        order to access your online account.</string>
     <string name="skipsso_modal_button">Continue</string>
 
 </resources>

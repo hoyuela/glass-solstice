@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/modal_alert_divider"
+        android:layout_alignParentTop="true" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/forms_inner_padding"
+            android:paddingRight="@dimen/forms_inner_padding" >
+
+            <TextView
+                android:id="@+id/modal_alert_title"
+                style="@style/modal_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="@string/atm_location_modal_title" />
+
+            <TextView
+                android:id="@+id/modal_alert_text"
+                style="@style/modal_content_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/modal_alert_title"
+                android:text="@string/atm_location_modal_content" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/modal_alert_divider"
+        android:layout_width="fill_parent"
+        android:layout_height="5dp"
+        android:layout_above="@+id/modal_ok_button"
+        android:background="@drawable/shadow_gradient"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/modal_ok_button"
+        style="@style/call_to_action_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/modal_alert_cancel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/modal_orange_margin_top"
+        android:text="@string/atm_location_modal_allow" />
+
+    <Button
+        android:id="@+id/modal_alert_cancel"
+        style="@style/white_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/modal_ok_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/modal_ok_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/between_related_elements_padding"
+        android:text="@string/atm_location_modal_decline" />
+
+</RelativeLayout>

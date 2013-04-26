@@ -42,8 +42,8 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 
 	private final Account[] selectedAccounts = new Account[2];
 
-	private final int INTERNAL_ACCOUNT = 0;
-	private final int EXTERNAL_ACCOUNT = 1;
+	private static final int INTERNAL_ACCOUNT = 0;
+	private static final int EXTERNAL_ACCOUNT = 1;
 
 	private AccountList internalAccounts = null;
 	private AccountList externalAccounts = null;

@@ -10,6 +10,7 @@ import roboguice.util.Strings;
 import android.content.Context;
 import android.util.Log;
 
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.error.BankErrorSSOResponseParser;
@@ -28,11 +29,11 @@ import com.discover.mobile.common.net.error.ExceptionLibrary;
  * 
  */
 public class CreateBankLoginCall extends
-		BankJsonResponseMappingNetworkServiceCall<BankLoginData> {
-	
+BankJsonResponseMappingNetworkServiceCall<BankLoginData> {
+
 	private final String TAG = CreateBankLoginCall.class.getSimpleName();
 	private final TypedReferenceHandler<BankLoginData> handler;
-	
+
 	public CreateBankLoginCall(final Context context,
 			final AsyncCallback<BankLoginData> callback,
 			final BankLoginDetails login, final boolean skipSSO) {
@@ -48,14 +49,17 @@ public class CreateBankLoginCall extends
 				requiresSessionForRequest = false;
 
 				sendDeviceIdentifiers = true;
-						
+
 				body = login;
-				
+
 				// Specify what error parser to use when receiving an error response
 				errorResponseParser = BankErrorSSOResponseParser.instance();
 
 			}
 		}, BankLoginData.class);
+
+		//Reset the sso flag
+		BankUser.instance().setSsoUser(false);
 
 		handler = new StrongReferenceHandler<BankLoginData>(callback);
 	}
@@ -63,7 +67,7 @@ public class CreateBankLoginCall extends
 	public CreateBankLoginCall(final Context context,
 			final AsyncCallback<BankLoginData> callback,
 			final BankLoginDetails login) {
-		
+
 		this(context, callback, login, false);
 	}
 
@@ -75,7 +79,7 @@ public class CreateBankLoginCall extends
 	protected TypedReferenceHandler<BankLoginData> getHandler() {
 		return handler;
 	}
-	
+
 	/**
 	 * Verifies that a token is provided by the service via the Authorization HTTP Header. If it is, 
 	 * then it caches the token in the SessionTokenManager which will later be used by any bank related
@@ -89,7 +93,7 @@ public class CreateBankLoginCall extends
 	protected BankLoginData parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 		final BankLoginData data = super.parseSuccessResponse(status, headers, body);
-		
+
 		//Fetch token from JSON response
 		if( data.token != null && !Strings.isEmpty(data.token)  ) {
 			//When sending a request with a token as part of the request the format to follow is 
@@ -98,14 +102,14 @@ public class CreateBankLoginCall extends
 			BankUrlManager.setNewLinks(data.links);
 		} else {
 			final String message = "Response does not include token";
-			
+
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, message);
 			}
-	
+
 			throw new ExceptionLibrary.MissingTokenException();
 		}
-		
+
 		return data;
 	}
 }

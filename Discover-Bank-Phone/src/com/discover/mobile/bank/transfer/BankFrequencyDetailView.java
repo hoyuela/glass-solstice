@@ -22,7 +22,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankUser;
+import com.discover.mobile.bank.services.error.BankError;
+import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
 import com.discover.mobile.bank.util.BankStringFormatter;
@@ -37,7 +40,7 @@ import com.discover.mobile.common.ui.widgets.PositiveIntegerEditText;
  * @author jthornton
  *
  */
-public class BankFrequencyDetailView extends RelativeLayout{
+public class BankFrequencyDetailView extends RelativeLayout implements BankErrorHandlerDelegate {
 
 	/**Rotation Key Values*/
 	private static final String RADIO = "radio";
@@ -120,7 +123,9 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		
 		transactionAmount.setEnabled(false);
 		earliestPaymentDate = Calendar.getInstance();
+		earliestPaymentDate.add(Calendar.DAY_OF_MONTH, 1);
 		chosenPaymentDate = Calendar.getInstance();
+		chosenPaymentDate.add(Calendar.DAY_OF_MONTH, 1);
 
 		addView(view);
 	}
@@ -501,6 +506,39 @@ public class BankFrequencyDetailView extends RelativeLayout{
 		dateValue.setText(BankStringFormatter.formatDate(year.toString(),
 				BankStringFormatter.formatDayOfMonth(month), BankStringFormatter.formatDayOfMonth(day)));
 		chosenPaymentDate.set(year, month - 1, day);
+	}
+
+	/**
+	 * Handle the inline errors that the server responds with.
+	 */
+	@Override
+	public boolean handleError(final BankErrorResponse msgErrResponse) {
+		boolean isHandled = false;
+		
+		for(final BankError error : msgErrResponse.errors) {
+			final String errorFieldName = error.name;
+			
+			if(TransferDetail.DURATION_VALUE.equalsIgnoreCase(errorFieldName)){
+				TextView errorLabel = null;
+				isHandled = true;
+				final String durationType = getDurationType();
+				
+				if(TransferDetail.UNTIL_AMOUNT.equalsIgnoreCase(durationType)) {
+					errorLabel = (TextView)this.findViewById(R.id.date_error_label);
+					errorLabel.setText(error.message);
+				} else if (TransferDetail.UNTIL_DATE.equalsIgnoreCase(durationType)) {
+					errorLabel = (TextView)this.findViewById(R.id.transactions_error_label);
+					errorLabel.setText(error.message);
+				} else if (TransferDetail.UNTIL_COUNT.equalsIgnoreCase(durationType)) {
+					errorLabel = (TextView)this.findViewById(R.id.dollar_error_label);
+					errorLabel.setText(error.message);
+				} else{
+					isHandled = false;
+				}
+				
+			}
+		}
+		return isHandled;
 	}
 
 }
