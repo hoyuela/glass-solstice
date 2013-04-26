@@ -260,7 +260,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		idField.clearFocus();
 		passField.clearFocus();
 		setCheckMark(false, false);
-		Log.e("Allie", "Error shows, check toggled off");
 	}
 
 	/**
@@ -709,7 +708,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 * @param v the calling view.
 	 */
 	public void toggleCheckBoxFromXml(final View v) {
-		Log.e("Allie", "Toggled from XML");
 		toggleSaveUserIdSwitch(v, true);
 	}
 
