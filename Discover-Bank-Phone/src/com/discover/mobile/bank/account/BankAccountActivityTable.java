@@ -165,20 +165,23 @@ public class BankAccountActivityTable extends BaseTable{
 
 			@Override
 			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
-				if(isChecked){
-					postedToggle = true;		
-					if(null == posted && null == BankUser.instance().getCurrentAccount().posted){
-						BankServiceCallFactory.createGetActivityServerCall(
-								BankUser.instance().getCurrentAccount().getLink(Account.LINKS_POSTED_ACTIVITY)).submit();
-					}else if(null == posted && null != BankUser.instance().getCurrentAccount().posted){
-						header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
-						posted = BankUser.instance().getCurrentAccount().posted;
-						updateAdapter(posted);	
-					}
-					else{
-						header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
-						updateAdapter(posted);	
-					}
+				if (!isChecked) {
+					return; // Do nothing
+				}
+
+				postedToggle = true;	
+
+				if (posted != null) {
+					header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
+					updateAdapter(posted);
+				} else if (BankUser.instance().getCurrentAccount().posted != null) {
+					header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
+					posted = BankUser.instance().getCurrentAccount().posted;
+					updateAdapter(posted);
+				} else {
+					// Both posted lists are null -- Generate service call
+					BankServiceCallFactory.createGetActivityServerCall(
+						BankUser.instance().getCurrentAccount().getLink(Account.LINKS_POSTED_ACTIVITY)).submit();
 				}
 			}
 		};
@@ -193,19 +196,23 @@ public class BankAccountActivityTable extends BaseTable{
 
 			@Override 
 			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
-				if(isChecked){
-					postedToggle = false;	
-					if(null == scheduled && null == BankUser.instance().getCurrentAccount().scheduled){
-						BankServiceCallFactory.createGetActivityServerCall(
-								BankUser.instance().getCurrentAccount().getLink(Account.LINKS_SCHEDULED_ACTIVITY)).submit();
-					}else if(null == scheduled && null != BankUser.instance().getCurrentAccount().scheduled){
-						header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);
-						scheduled = BankUser.instance().getCurrentAccount().scheduled;
-						updateAdapter(scheduled);	
-					}else{
-						header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);
-						updateAdapter(scheduled);	
-					}			
+				if (!isChecked) {
+					return; // Do nothing
+				}
+
+				postedToggle = false;
+
+				if (scheduled != null) {
+					header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);
+					updateAdapter(scheduled);
+				} else if (BankUser.instance().getCurrentAccount().scheduled != null) {
+					header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);
+					scheduled = BankUser.instance().getCurrentAccount().scheduled;
+					updateAdapter(scheduled);
+				} else {
+					// Both scheduled lists are null -- Generate service call
+					BankServiceCallFactory.createGetActivityServerCall(
+						BankUser.instance().getCurrentAccount().getLink(Account.LINKS_SCHEDULED_ACTIVITY)).submit();
 				}
 			}
 		};
@@ -231,7 +238,8 @@ public class BankAccountActivityTable extends BaseTable{
 	 * Get the load more URL
 	 */
 	private ReceivedUrl getLoadMoreUrl(){
-		return (header.isPosted()) ? posted.links.get(ListActivityDetail.NEXT) : scheduled.links.get(ListActivityDetail.NEXT);
+		return (header.isPosted()) ? 
+				posted.links.get(ListActivityDetail.NEXT) : scheduled.links.get(ListActivityDetail.NEXT);
 	}
 
 	/**
