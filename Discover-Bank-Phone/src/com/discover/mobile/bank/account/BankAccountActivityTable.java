@@ -44,6 +44,12 @@ public class BankAccountActivityTable extends BaseTable{
 	/**Title view of the page*/
 	private AccountActivityHeader header;
 
+	/**Boolean set to true when the toggle needs to be adjusted to posted*/
+	private Boolean postedToggle;
+
+	/**String key to get the postedToggle out of the bundle*/
+	private static final String POSTED_TOGGLE_KEY = "ptk";
+
 	/**
 	 * Handle the received data from the service call
 	 * @param bundle - bundle received from the service call
@@ -54,6 +60,12 @@ public class BankAccountActivityTable extends BaseTable{
 		super.refreshListener();
 		footer.showDone();
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
+		if(postedToggle){
+			header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
+		}else{
+			header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);
+		}
+
 		if(header.isPosted()){
 			if(null == posted){
 				posted = new ListActivityDetail();
@@ -154,15 +166,17 @@ public class BankAccountActivityTable extends BaseTable{
 			@Override
 			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
 				if(isChecked){
-					header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);		
+					postedToggle = true;		
 					if(null == posted && null == BankUser.instance().getCurrentAccount().posted){
 						BankServiceCallFactory.createGetActivityServerCall(
 								BankUser.instance().getCurrentAccount().getLink(Account.LINKS_POSTED_ACTIVITY)).submit();
 					}else if(null == posted && null != BankUser.instance().getCurrentAccount().posted){
+						header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
 						posted = BankUser.instance().getCurrentAccount().posted;
 						updateAdapter(posted);	
 					}
 					else{
+						header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
 						updateAdapter(posted);	
 					}
 				}
@@ -180,14 +194,16 @@ public class BankAccountActivityTable extends BaseTable{
 			@Override 
 			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
 				if(isChecked){
-					header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);	
+					postedToggle = false;	
 					if(null == scheduled && null == BankUser.instance().getCurrentAccount().scheduled){
 						BankServiceCallFactory.createGetActivityServerCall(
 								BankUser.instance().getCurrentAccount().getLink(Account.LINKS_SCHEDULED_ACTIVITY)).submit();
 					}else if(null == scheduled && null != BankUser.instance().getCurrentAccount().scheduled){
+						header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);
 						scheduled = BankUser.instance().getCurrentAccount().scheduled;
 						updateAdapter(scheduled);	
 					}else{
+						header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);
 						updateAdapter(scheduled);	
 					}			
 				}
@@ -269,6 +285,7 @@ public class BankAccountActivityTable extends BaseTable{
 		bundle.putBoolean(BankExtraKeys.CATEGORY_SELECTED, header.getSelectedCategory());
 		bundle.putInt(BankExtraKeys.SORT_ORDER, header.getSortOrder());
 		bundle.putBoolean(BankExtraKeys.TITLE_EXPANDED, header.isHeaderExpanded());
+		bundle.putBoolean(POSTED_TOGGLE_KEY, postedToggle);
 
 		return bundle;
 	}
@@ -281,6 +298,7 @@ public class BankAccountActivityTable extends BaseTable{
 	public void loadDataFromBundle(final Bundle bundle) {
 		if(null == bundle){return;}
 		header.setSelectedCategory(bundle.getBoolean(BankExtraKeys.CATEGORY_SELECTED, true));
+		postedToggle = bundle.getBoolean(POSTED_TOGGLE_KEY, false);
 		final ListActivityDetail current = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		final ListActivityDetail other = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.SECOND_DATA_LIST);
 		if(header.isPosted()){
