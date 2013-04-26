@@ -506,9 +506,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				}
 				//Clear the last error that occurred
 				setLastError(0);
-				if (idField.getText().length() > 0 || passField.getText().length() > 0){
+//				if (idField.getText().length() > 0 || passField.getText().length() > 0){
 					login();
-				}
+//				}
 			}
 		});
 
@@ -935,11 +935,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final boolean wasIdEmpty = Strings.isNullOrEmpty(idField.getText().toString());
 		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 
-		if (wasIdEmpty && wasPassEmpty){
-			return false;
-		}else if(wasIdEmpty || wasPassEmpty) {
-			final String errorText = this.getResources().getString(R.string.login_error);
-			this.getErrorHandler().showErrorsOnScreen(this, errorText);
+		if(wasIdEmpty && wasPassEmpty) {
+			this.getErrorHandler().showErrorsOnScreen(this, null);
 			idField.clearFocus();
 			passField.clearFocus();
 			setCheckMark(false, true);
