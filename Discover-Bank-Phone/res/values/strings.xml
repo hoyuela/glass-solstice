@@ -55,6 +55,6 @@
     
     <!-- SSO modal string -->
     <string name="sso_bad_bank_status_title">Your Request Could Not Be Completed</string>
-    <string name="sso_bad_bank_status_content">We\'re sorry. We can\'t complete your request to log into your Discover Bank Account at this time.  You will be directed to your Discover Card Home Screen.</string>
+    <string name="sso_bad_bank_status_content">Due to special conditions related to your credit card account, we can\'t provide you with access to your credit card account information at this time. To login to Discover Bank only please select Continue Below.</string>
 	<string name="sso_bad_bank_button">Continue</string>
 </resources>

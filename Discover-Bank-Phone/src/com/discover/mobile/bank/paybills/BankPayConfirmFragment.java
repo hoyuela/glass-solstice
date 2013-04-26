@@ -72,7 +72,7 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 
 		/**Set footer to show privacy & terms | feedback*/
 		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
-		
+
 		return view;
 	}
 
@@ -88,7 +88,8 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	protected void onActionButtonClick() {
-		this.onBackPressed();
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
+		activity.popTillFragment(BankSelectPayee.class);
 	}
 
 	/**
@@ -135,11 +136,10 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	public boolean isBackPressDisabled() {
 		return true;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
-		activity.popTillFragment(BankSelectPayee.class);
+		//Disable the back press
 	}
 
 

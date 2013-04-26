@@ -44,9 +44,7 @@ public class AtmWebView{
 	private static final String STREET_URL = "https://asys.discoverbank.com/api/content/atm/streetview.html?lat=%s&lng=%s";
 
 	/**Url to show the report atm*/
-	private static final String REPORT_URL = 
-			"https://secure.opinionlab.com/ccc01/o.asp?id=TsIyHYhm&referer="+
-					"https://www.discoverbank.com/m/accountcenter/atm-locator&atmIdentifier=";
+	private static final String REPORT_URL =  "https://secure.opinionlab.com/ccc01/o.asp?id=BesUXeQt&atmIdentifier=";
 
 	/**Url used for Google's terms*/
 	private static final String GOOGLE_PRIVACY = "http://www.google.com/intl/en-US_US/help/terms_maps.html";

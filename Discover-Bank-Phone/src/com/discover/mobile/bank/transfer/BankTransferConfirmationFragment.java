@@ -32,31 +32,31 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		loadBundleData(getArguments());
 		loadBundleData(savedInstanceState);
-		
+
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-		
+
 		actionButton.setText(R.string.schedule_another_transfer);
 		actionLink.setText(R.string.view_account_summary);
-			 
-        /**Set footer to show privacy & terms | feedback*/
+
+		/**Set footer to show privacy & terms | feedback*/
 		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
-		
+
 		showSuccessfulTransferTitle(view);
-		
+
 		return view;
 	}
-	
+
 	/**
 	 * Show the title note on the screen that a users transfer was a success.
 	 */
 	private void showSuccessfulTransferTitle(final View view) {
 		final TextView successTitle = (TextView)view.findViewById(R.id.success_note_text);
-		
+
 		successTitle.setText(R.string.transfer_success_title);
 		successTitle.setVisibility(View.VISIBLE);
 
 	}
-	
+
 	/**
 	 * Access a given bundle and retrieve data that we want from it.
 	 * @param bundle
@@ -66,7 +66,7 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 			successDetail = (TransferDetail)bundle.getSerializable(BankExtraKeys.TRANSFER_SUCCESS_DATA);
 		}
 	}
-	
+
 	/**
 	 * Save the success data to the bundle for configuration changes.
 	 */
@@ -75,17 +75,17 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 		super.onSaveInstanceState(outState);
 		outState.putSerializable(BankExtraKeys.TRANSFER_SUCCESS_DATA, successDetail);
 	}
-	
+
 	@Override
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
 		final ListItemGenerator generator = new ListItemGenerator(this.getActivity());
 		final List<RelativeLayout> list = new ArrayList<RelativeLayout>();
-		
+
 		list.addAll(generator.getTransferConfirmationList(successDetail));
-		
+
 		return list;
 	}
-	
+
 	/**
 	 * When the action button is clicked, we start the whole process over.
 	 */
@@ -95,7 +95,7 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 		if(args == null) {
 			args = new Bundle();
 		}
-		
+
 		args.putBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK, true);
 		BankConductor.navigateToTransferMoneyLandingPage(args);
 	}
@@ -107,7 +107,7 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 	protected void onActionLinkClick() {
 		BankConductor.navigateToHomePage();
 	}
-	
+
 	/**
 	 * Set the title breadcrumb position to the last step.
 	 */
@@ -115,15 +115,15 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 	protected int getProgressIndicatorStep() {
 		return 3;
 	}
-	
+
 	@Override
 	public void onBackPressed() {
-		
+		//Do nothing disable the back press
 	}
-	
+
 	@Override
 	public boolean isBackPressDisabled() {
 		return true;
 	}
-	
+
 }
