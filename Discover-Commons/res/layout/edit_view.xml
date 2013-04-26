@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/edit_label"
-        style="@style/blue_hyperlink_smallest"
+        style="@style/common_blue_hyperlink_smallest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
