@@ -13,9 +13,9 @@ import com.discover.mobile.common.utils.CommonUtils;
 public class SchedulePaymentAmountEditText extends ValidatedInputField {
 
 	/** Maximum payment amount */
-	private final double MAX_AMOUNT = 25000.0;
+	private static final double MAX_AMOUNT = 25000.0;
 	/** Minimum payment amount */
-	private final double MIN_AMOUNT = 1.0;
+	private static final double MIN_AMOUNT = 1.0;
 	/** True when the amount had focus at some point */
 	private boolean amountHadFocus = false;
 	/** Too High Error message */

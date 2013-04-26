@@ -35,25 +35,28 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	private LinearLayout linearLayout;
 
 	/**Static int for the heights of the top and bottom views*/
-	private final int VIEW_HEIGHTS = 0;
+	private static final int VIEW_HEIGHTS = 0;
 
 	/**Static weight for the top view in portrait mode*/
-	private final float NO_BOTTOM_WEIGHT = 10f;
+	private static final float NO_BOTTOM_WEIGHT = 10f;
 
 	/**Static weight for the top view in portrait mode*/
-	private float PORTRAIT_TOP_WEIGHT = 7f;
+	private static final float PORTRAIT_TOP_WEIGHT = 7f;
 
 	/**Static weight for the bottom view in portrait mode*/
-	private float PORTRAIT_BOTTOM_WEIGHT = 3f;
+	private static final float PORTRAIT_BOTTOM_WEIGHT = 3f;
 
 	/**Static weight for the top view in landscape mode*/
-	private float LANDSCAPE_TOP_WEIGHT = 5f;
+	private static final float LANDSCAPE_TOP_WEIGHT = 5f;
 
 	/**Static weight for the bottom view in landscape mode*/
-	private float LANDSCAPE_BOTTOM_WEIGHT = 5f;
+	private static final float LANDSCAPE_BOTTOM_WEIGHT = 5f;
 
 	/**An attached activity that will be closed if the dialog is dismissed with the back button*/
 	private Activity toClose;
+	
+	/** Used to hide the bottom View (of type ModalDefaultOneButtonBottomView) */
+	private boolean hideBottom = false;
 
 	/**Static variable for the orientation*/
 	static int orientation = 0;
@@ -295,7 +298,8 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	 * @return the orientation changed listener
 	 */
 	public OrientationEventListener createOrientationListener() {
-		final OrientationEventListener ret = new OrientationEventListener(this.getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
+		final OrientationEventListener ret = 
+				new OrientationEventListener(this.getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
 			@Override
 			public void onOrientationChanged(final int arg0) {
 				if( orientation != context.getResources().getConfiguration().orientation ) {
@@ -318,7 +322,7 @@ public class ModalAlertWithOneButton extends AlertDialog{
 		float topWeight;
 		float bottomWeight;
 
-		if (null == bottom){
+		if (null == bottom || hideBottom){
 			topWeight = NO_BOTTOM_WEIGHT;
 			bottomWeight = VIEW_HEIGHTS;
 		}else if (Configuration.ORIENTATION_LANDSCAPE == orientation) { 
@@ -329,7 +333,8 @@ public class ModalAlertWithOneButton extends AlertDialog{
 			bottomWeight = PORTRAIT_BOTTOM_WEIGHT;
 		} 
 
-		final LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, topWeight);
+		final LinearLayout.LayoutParams p1 = 
+				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, topWeight);
 
 		final LinearLayout.LayoutParams p2 = 
 				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0, bottomWeight);
@@ -348,13 +353,9 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	 * Method used to hide the bottom view.
 	 */
 	public void hideBottomView() {
-		if( bottom != null && bottom instanceof ModalDefaultOneButtonBottomView ) {
+		if( bottom instanceof ModalDefaultOneButtonBottomView ) {
 			((ModalDefaultOneButtonBottomView)bottom).setVisibility(View.GONE);
-			
-			PORTRAIT_TOP_WEIGHT = 10;
-			PORTRAIT_BOTTOM_WEIGHT = 0;
-			LANDSCAPE_TOP_WEIGHT = 10;
-			LANDSCAPE_BOTTOM_WEIGHT = 0;
+			hideBottom = true;
 		}
 	}
 }
