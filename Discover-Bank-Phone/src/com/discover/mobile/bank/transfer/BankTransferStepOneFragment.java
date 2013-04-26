@@ -525,6 +525,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		fromCell.getMiddleLabel().setText(R.string.select_account);
 
 		fromCell.getView().setOnClickListener(fromAccountClickListener);
+		fromCell.getTopLabel().setTextAppearance(getActivity(), R.style.field_copy_medium);
+		fromCell.getMiddleLabel().setTextAppearance(getActivity(), R.style.body_copy_title);
 		fromAccountTextView = fromCell.getMiddleLabel();
 		
 		
@@ -543,6 +545,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		toCell.getDividerLine().setVisibility(View.VISIBLE);
 		toCell.getTopLabel().setText(R.string.to);
 		toCell.getView().setOnClickListener(toAccountClickListener);
+		toCell.getTopLabel().setTextAppearance(getActivity(), R.style.field_copy_medium);
+		toCell.getMiddleLabel().setTextAppearance(getActivity(), R.style.body_copy_title);
 		toAccountTextView = toCell.getMiddleLabel();
 		
 		return toCell;
@@ -558,6 +562,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		amountField = amountListItem.getEditField();
 		amountField.attachErrorLabel(amountListItem.getErrorLabel());
 		amountListItem.getErrorLabel().setText(R.string.amount_less_than_twenty_five);
+		final TextView amountLabel = (TextView)amountListItem.findViewById(R.id.amount_title);
+		amountLabel.setTextAppearance(getActivity(), R.style.field_copy_medium);
 		return amountListItem;
 	}
 
@@ -570,6 +576,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		frequencyCell = new BankSimpleEditDetail(currentActivity);
 		frequencyCell.getTopLabel().setText(R.string.frequency);
 		frequencyCell.getMiddleLabel().setText(R.string.one_time);
+		frequencyCell.getTopLabel().setTextAppearance(getActivity(), R.style.field_copy_medium);
+		frequencyCell.getMiddleLabel().setTextAppearance(getActivity(), R.style.body_copy_title);
 
 		frequencyCell.getView().setOnClickListener(new OnClickListener(){
 			@Override
@@ -592,6 +600,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 
 		sendOnListItem.getTopLabel().setText(R.string.send_on);
 		sendOnListItem.getMiddleLabel().setText(R.string.select_a_date);
+		sendOnListItem.getTopLabel().setTextAppearance(getActivity(), R.style.field_copy_medium);
+		sendOnListItem.getMiddleLabel().setTextAppearance(getActivity(), R.style.body_copy_title);
+		
 		sendOnListItem.getView().setOnClickListener(new OnClickListener() {
 			
 			@Override
