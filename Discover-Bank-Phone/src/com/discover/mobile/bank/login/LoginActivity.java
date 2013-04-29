@@ -135,11 +135,15 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 	private boolean saveUserId = false;
 	
+	/** {@code true} when we restored the bank toggle on orientation change. */
 	private boolean restoreBankToggle = false;
 
+	/** {@code true} when we restored an error on orientation change. */
+	private boolean restoreError = false;
+	
 	private InputMethodManager imm;
 
-	private final int LOGOUT_TEXT_COLOR = R.color.body_copy;
+	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -315,9 +319,15 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final int lastError = getLastError();
 		final boolean saveIdWasChecked = saveUserId;
 
+		
+		// Do not change screen appearance as it was just completed by restoring state
+		// due to orientation change.  Simply resets flag since we've caught orientation.
+		if (restoreError) {
+			restoreError = false;
+		}
 		//Do not load saved credentials if there was a previous login attempt
 		//which failed because of a lock out
-		if( StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS != lastError &&
+		else if( StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS != lastError &&
 				RegistrationErrorCodes.LOCKED_OUT_ACCOUNT != lastError) {
 			if(idField.length() < 1) {
 				loadSavedCredentials();
@@ -336,10 +346,11 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			setCheckMark(saveIdWasChecked, false);
 		}
 
-		// Proper card|bank toggle removed on orientation change
+		// Proper card|bank Account Type removed on orientation change
 		// (This is due to the BaseActivity onResume reloading prefs only stored on login)
+		// (Must set before setApplicationAccount())
 		if (restoreBankToggle) {
-			setLoginTypeToBank();
+			Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
 			restoreBankToggle = false;
 		}
 		
@@ -451,7 +462,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		if(!errorIsVisible() && errorTextView.length() > 0) {
 			errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 		}
-
+		restoreError = savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY) == View.VISIBLE;
 	}
 
 	/**
