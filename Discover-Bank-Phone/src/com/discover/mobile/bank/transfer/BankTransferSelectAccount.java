@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.transfer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.deposit.BankSelectAccountComparable;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
@@ -92,6 +94,10 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 
 		if (args != null) {
 			final AccountList accountList = getAccounts(accountType);
+			
+			if(INTERNAL_ACCOUNT == accountType)
+				Collections.sort(accountList.accounts, new BankSelectAccountComparable());
+			
 			if(accountList != null && getAccountSize(accountList) > 0) {
 				populateTableWithAccounts(accountType, accountList, mainView);
 			}else {
