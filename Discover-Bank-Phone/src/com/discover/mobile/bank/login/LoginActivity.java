@@ -90,6 +90,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private static final String ERROR_MESSAGE_KEY = "g";
 	private static final String ERROR_MESSAGE_VISIBILITY = "h";
 	private static final String ERROR_MESSAGE_COLOR = "i";
+	private static final String TOGGLE_BANK_KEY = "j";
 
 	/** ID that allows control over relative buttons' placement.*/
 	private static final int LOGIN_BUTTON_ID = 1;
@@ -133,6 +134,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private boolean preAuthHasRun = false;
 
 	private boolean saveUserId = false;
+	
+	private boolean restoreBankToggle = false;
 
 	private InputMethodManager imm;
 
@@ -333,6 +336,13 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			setCheckMark(saveIdWasChecked, false);
 		}
 
+		// Proper card|bank toggle removed on orientation change
+		// (This is due to the BaseActivity onResume reloading prefs only stored on login)
+		if (restoreBankToggle) {
+			setLoginTypeToBank();
+			restoreBankToggle = false;
+		}
+		
 		//Default to the last path user chose for login Card or Bank
 		this.setApplicationAccount();
 
@@ -401,6 +411,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		outState.putString(ERROR_MESSAGE_KEY, errorTextView.getText().toString());
 		outState.putInt(ERROR_MESSAGE_VISIBILITY, errorTextView.getVisibility());
 		outState.putInt(ERROR_MESSAGE_COLOR, errorTextView.getCurrentTextColor());
+		outState.putBoolean(TOGGLE_BANK_KEY, Globals.getCurrentAccount().equals(AccountType.BANK_ACCOUNT));
 
 		super.onSaveInstanceState(outState);
 	}
@@ -422,6 +433,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 			restoreErrorTextView(savedInstanceState);
 			resetInputFieldColors();
+			
+			restoreBankToggle = savedInstanceState.getBoolean(TOGGLE_BANK_KEY, false);
 		}
 
 	}
