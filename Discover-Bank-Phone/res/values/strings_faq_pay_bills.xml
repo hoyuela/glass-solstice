@@ -78,7 +78,7 @@
 			payment has been sent. In the case of a paper check being mailed, 
 			bill payments are marked as Paid 3 business days thereafter.\n\nCancelled –
 			Bill payment has been cancelled. Deleting a scheduled bill
-			payment will result in a canceled status.
+			payment will result in a cancelled status.
 		</string>
 		
 		<string name="delete_payment_title">Why can’t I edit or delete a bill payment?</string>

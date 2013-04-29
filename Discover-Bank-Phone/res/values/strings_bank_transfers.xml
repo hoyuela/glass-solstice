@@ -41,7 +41,7 @@
     <string name="change_transfer_from_account">You can not transfer between two External Accounts. <![CDATA[<font color="#0267b1">Edit From Transfer Account</font>]]></string>
     
     <string name="cancel_this_action">Cancel This Action</string>
-	<string name="cancel_this_action_content">Are you sure you wants to cancel? All information you have entered will be lost.</string>
+	<string name="cancel_this_action_content">Are you sure you want to cancel? All information you have entered will be lost.</string>
     
 	<string name="transfer_success_title">Your scheduled transfer has been completed successfully.</string>
 	
