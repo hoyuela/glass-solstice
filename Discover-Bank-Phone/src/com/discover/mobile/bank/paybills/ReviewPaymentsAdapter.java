@@ -82,14 +82,18 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		/**Update the display values*/
 		holder.date.setText(convertDate(detail));
 
-		/**Get Name from payee list*/
-		String nickName = detail.payee.nickName;
+		if (detail.payee != null) {
+			/** Get Name from payee list */
+			String nickName = detail.payee.nickName;
 
-		/**Use nickname from payee if name does not exist in name*/
-		if( Strings.isNullOrEmpty(nickName) ) {
-			nickName = detail.payee.nickName;
+			/** Use name from payee if nickname does not exist in name */
+			if (Strings.isNullOrEmpty(nickName)) {
+				nickName = detail.payee.name;
+			}
+
+			holder.payee.setText(nickName);
 		}
-		holder.payee.setText(nickName);
+		
 		final double amount = ((double)detail.amount.value)/DOLLAR_CONVERSION;
 		if(amount < 0){
 			holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
@@ -175,10 +179,10 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 	 * @author jthornton
 	 *
 	 */
-	private class ViewHolder {
-		public TextView date;
-		public TextView payee;
-		public TextView amount;
-		public int pos;
+	private static class ViewHolder {
+		private TextView date;
+		private TextView payee;
+		private TextView amount;
+		private int pos;
 	}
 }
