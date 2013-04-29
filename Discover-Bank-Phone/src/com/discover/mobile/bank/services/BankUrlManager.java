@@ -47,6 +47,7 @@ public class BankUrlManager  {
 	 */
 	public static final String ACCOUNT_URL_KEY = "accounts";
 	public static final String TRANSFER_URL_KEY = "transfers";
+	public static final String EXTERNAL_TRANSFER_ACCOUNTS_URL_KEY = "transferAccounts";
 	public static final String PING_URL_KEY = "ping";
 	public static final String PAYEES_URL_KEY = "payees";
 	public static final String PAYMENTS_URL_KEY = "payments";
