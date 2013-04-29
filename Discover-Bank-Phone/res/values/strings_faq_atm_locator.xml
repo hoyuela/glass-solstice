@@ -10,24 +10,18 @@
 
         <item>@string/lost_or_stolen_title</item>
         <item>@string/lost_or_stolen_body</item>
-        
-        <item>@string/surcharge_free_title</item>
-        <item>@string/surcharge_free_body</item>
-        
-        <item>@string/are_there_fees_title</item>
-        <item>@string/are_there_fees_body</item>
-        
+                
         <item>@string/how_change_pin_title</item>
         <item>@string/how_change_pin_body</item>
-        
+
         <item>@string/daily_withdrawal_limit_title</item>
         <item>@string/daily_withdrawal_limit_body</item>
-
+        
         <item>@string/atm_withdrawal_fees_title</item>
         <item>@string/atm_withdrawal_fees_body</item>
         
-		<item>@string/surcharge_free_title</item>
-		<item>@string/surcharge_free_body</item>
+        <item>@string/surcharge_free_title</item>
+        <item>@string/surcharge_free_body</item>
 	
         <item>@string/outside_us_use_title</item>
         <item>@string/outside_us_use_body</item>
@@ -56,17 +50,6 @@
 	<string name="surcharge_free_body">
 	    To display only surcharge-free ATMs on your search, enable the “Display only Surcharge-Free ATMs” button. 
 	    Surcharge-free ATMs are represented by orange icons in map and list view.
-	</string>
-	
-	<string name="are_there_fees_title">
-	    Are there any fees associated with the use of a surcharge-free ATM?
-	</string>
-	<string name="are_there_fees_body">
-	    You will not be charged an ATM surcharge when you withdraw cash with your Discover debit card at the 
-	    surcharge-free ATMs represented by orange map pins. If you take a cash advance with your Discover 
-	    credit card at one of these locations, you will not be charged an ATM surcharge fee but your cash advance 
-	    APR and cash advance fee will apply.  ATM surcharge fees may apply to Discover cash withdrawals at 
-	    other ATMs not designated “Surcharge-Free.”
 	</string>
 	
 	<string name="where_can_you_use_title">

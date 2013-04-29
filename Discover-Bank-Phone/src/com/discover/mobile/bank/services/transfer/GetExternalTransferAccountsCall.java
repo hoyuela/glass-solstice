@@ -17,12 +17,13 @@ import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 
-public class GetExternalTransferAccountsCall extends BankUnamedListJsonResponseMappingNetworkServiceCall<AccountList, Account>{
+public class GetExternalTransferAccountsCall extends 
+											BankUnamedListJsonResponseMappingNetworkServiceCall<AccountList, Account>{
 	/**Reference handler to allow the call to be back on the UI*/
 	private final TypedReferenceHandler<AccountList> handler;
 
 	public GetExternalTransferAccountsCall(final Context context, final AsyncCallback<AccountList> callback) {
-		super(context, new GetCallParams(BankUrlManager.getUrl(BankUrlManager.TRANSFER_URL_KEY) + "accounts") {
+		super(context, new GetCallParams(BankUrlManager.getUrl(BankUrlManager.EXTERNAL_TRANSFER_ACCOUNTS_URL_KEY)) {
 			{
 				requiresSessionForRequest = true;
 				errorResponseParser = BankErrorResponseParser.instance();
@@ -38,7 +39,8 @@ public class GetExternalTransferAccountsCall extends BankUnamedListJsonResponseM
 	}
 
 	@Override
-	protected AccountList parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
+	protected AccountList parseSuccessResponse(final int status, final Map<String,List<String>> headers, 
+																						final InputStream body)
 			throws IOException {
 		
 		final AccountList accountList = new AccountList();

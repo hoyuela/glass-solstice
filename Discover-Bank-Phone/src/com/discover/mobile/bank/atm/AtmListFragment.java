@@ -32,6 +32,9 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
  */
 public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
+	/**Empty String for converting to an address*/
+	private static final String EMPTY_STRING = " ";
+
 	/**Adapter used to display data*/
 	private AtmListAdapter adapter;
 
@@ -54,9 +57,9 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
 		/**ATMs retrieved from the server*/
-		AtmResults results = (AtmResults)bundle.get(BankExtraKeys.DATA_LIST_ITEM);
+		final AtmResults results = (AtmResults)bundle.get(BankExtraKeys.DATA_LIST_ITEM);
 		/**Current amount of results being shown*/
-		int index = (bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0));
+		final int index = (bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0));
 
 		//If the results is empty or null
 		if(null == results || null == results.results || null == results.results.atms || results.results.atms.isEmpty()){
@@ -154,11 +157,11 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 	 */
 	public void showStreetView(final AtmDetail atm){
 		try {
-			final String addressString =  atm.address1 + " "  + atm.city +" " + atm.state;
+			final String addressString =  atm.address1 + EMPTY_STRING  + atm.city +EMPTY_STRING + atm.state;
 			final Geocoder coder = new Geocoder(this.getActivity());
 			final List<Address> addresses = coder.getFromLocationName(addressString, 1);
 			final Bundle bundle = new Bundle();
-			if(null == addresses || addresses.isEmpty()){
+			if(null != addresses && !addresses.isEmpty()){
 				bundle.putDouble(BankExtraKeys.STREET_LAT, addresses.get(0).getLatitude());
 				bundle.putDouble(BankExtraKeys.STREET_LON, addresses.get(0).getLongitude());						
 			}else{

@@ -158,7 +158,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	 */
 	private static final Pattern R8601 = Pattern
 			.compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
-					+ "(\\d{2}):(\\d{2})\\.(\\d{3}))((\\+|-)(\\d{4}))");
+					+ "(\\d{2}):(\\d{2}))((\\+|-)(\\d{4}))");
 	
 	/** Amount of time to wait when closing the calendar to finish selection animation. */
 	private static final int CALENDAR_DELAY = 500;
@@ -204,6 +204,9 @@ public class SchedulePaymentFragment extends BaseFragment
 		paymentCaret = (ImageView)view.findViewById(R.id.payment_caret);
 		bankUser = BankUser.instance();
 
+		/**Set a default value for chosen payment date*/
+		chosenPaymentDate = Calendar.getInstance();
+		
 		loadDataFromBundle();
 		setInitialViewData();
 		setMemoFieldValidation();
@@ -636,8 +639,11 @@ public class SchedulePaymentFragment extends BaseFragment
 					earliestPaymentDate.get(Calendar.DAY_OF_MONTH));
 
 			return formatPaymentDate(m.group(1), m.group(2), m.group(3));
+		} else {
+			return formatPaymentDate( Integer.toString(chosenPaymentDate.get(Calendar.YEAR)), 
+									  Integer.toString(chosenPaymentDate.get(Calendar.MONTH) + 1), 
+					                  Integer.toString(chosenPaymentDate.get(Calendar.DAY_OF_MONTH)));
 		}
-		return "";
 	}
 	
 	/**
@@ -821,7 +827,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * @param amount
 	 * @return
 	 */
-	private int formatAmount(String amount) {
+	private int formatAmount(final String amount) {
 		int ret = 0;
 		if (!Strings.isNullOrEmpty(amount)) {
 			String formattedAmount = amount.replaceAll(",", "");

@@ -90,6 +90,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private static final String ERROR_MESSAGE_KEY = "g";
 	private static final String ERROR_MESSAGE_VISIBILITY = "h";
 	private static final String ERROR_MESSAGE_COLOR = "i";
+	private static final String TOGGLE_BANK_KEY = "j";
 
 	/** ID that allows control over relative buttons' placement.*/
 	private static final int LOGIN_BUTTON_ID = 1;
@@ -133,10 +134,16 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private boolean preAuthHasRun = false;
 
 	private boolean saveUserId = false;
+	
+	/** {@code true} when we restored the bank toggle on orientation change. */
+	private boolean restoreBankToggle = false;
 
+	/** {@code true} when we restored an error on orientation change. */
+	private boolean restoreError = false;
+	
 	private InputMethodManager imm;
 
-	private final int LOGOUT_TEXT_COLOR = R.color.body_copy;
+	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -312,9 +319,15 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final int lastError = getLastError();
 		final boolean saveIdWasChecked = saveUserId;
 
+		
+		// Do not change screen appearance as it was just completed by restoring state
+		// due to orientation change.  Simply resets flag since we've caught orientation.
+		if (restoreError) {
+			restoreError = false;
+		}
 		//Do not load saved credentials if there was a previous login attempt
 		//which failed because of a lock out
-		if( StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS != lastError &&
+		else if( StandardErrorCodes.EXCEEDED_LOGIN_ATTEMPTS != lastError &&
 				RegistrationErrorCodes.LOCKED_OUT_ACCOUNT != lastError) {
 			if(idField.length() < 1) {
 				loadSavedCredentials();
@@ -333,6 +346,14 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			setCheckMark(saveIdWasChecked, false);
 		}
 
+		// Proper card|bank Account Type removed on orientation change
+		// (This is due to the BaseActivity onResume reloading prefs only stored on login)
+		// (Must set before setApplicationAccount())
+		if (restoreBankToggle) {
+			Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
+			restoreBankToggle = false;
+		}
+		
 		//Default to the last path user chose for login Card or Bank
 		this.setApplicationAccount();
 
@@ -401,6 +422,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		outState.putString(ERROR_MESSAGE_KEY, errorTextView.getText().toString());
 		outState.putInt(ERROR_MESSAGE_VISIBILITY, errorTextView.getVisibility());
 		outState.putInt(ERROR_MESSAGE_COLOR, errorTextView.getCurrentTextColor());
+		outState.putBoolean(TOGGLE_BANK_KEY, Globals.getCurrentAccount().equals(AccountType.BANK_ACCOUNT));
 
 		super.onSaveInstanceState(outState);
 	}
@@ -422,6 +444,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 			restoreErrorTextView(savedInstanceState);
 			resetInputFieldColors();
+			
+			restoreBankToggle = savedInstanceState.getBoolean(TOGGLE_BANK_KEY, false);
 		}
 
 	}
@@ -438,7 +462,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		if(!errorIsVisible() && errorTextView.length() > 0) {
 			errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 		}
-
+		restoreError = savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY) == View.VISIBLE;
 	}
 
 	/**

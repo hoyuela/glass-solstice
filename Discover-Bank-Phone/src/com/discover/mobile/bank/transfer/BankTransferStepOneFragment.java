@@ -793,7 +793,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		});
 		final ModalDefaultTopView top = new ModalDefaultTopView(this.getActivity(), null);
 		top.hideNeedHelpFooter();
-		top.setTitle(R.string.cancel_this_action);
+		top.setTitle(getString(R.string.cancel_this_action) + "?");
 		top.setContent(R.string.cancel_this_action_content);
 		final ModalAlertWithOneButton cancelModal = new ModalAlertWithOneButton(this.getActivity(), top, bottom);
 

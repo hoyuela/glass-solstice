@@ -48,6 +48,12 @@ public interface CardFacade {
 	 */
 	public String getPreAuthUrl();
 
+	/**
+	 * Returns the card base url for preauth
+	 * @return
+	 */
+	public String getPreAuthBaseUrl();
+
 	/** 
 	 * Initializes the PhoneGap framework code
 	 */

@@ -67,6 +67,7 @@ public class HelpWidget extends RelativeLayout {
 		adapter = new HelpAdapter(context, R.layout.common_help_list_item, new ArrayList<HelpItemGenerator>());
 		list.setAdapter(adapter);
 
+		help.setImageDrawable(context.getResources().getDrawable(R.drawable.common_question_mark_icon));
 		help.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {

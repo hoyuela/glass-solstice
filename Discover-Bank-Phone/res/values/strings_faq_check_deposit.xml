@@ -67,16 +67,7 @@
     <string name="deposit_fees_body">
         No. There are no fees to use this service. Message and data rates may apply. 
     </string>
-    
-    <string name="deposit_limits_title">
-        Are there deposit limits?
-    </string>
-    <string name="deposit_limits_body">
-        You may deposit up to 5 checks per day and 25 checks per month.  For saving and money market accounts, 
-        there is a limit of $5,000 per check, $25,000 per day and $125,000 per month.
-		\n\nFor checking accounts, there is a limit of $1,000 per check, $5,000 per day and $25,000 per month 
-    </string>
-    
+
     <string name="when_deposit_posted_title">
         When will my deposit be posted to my account?
     </string>
