@@ -43,7 +43,7 @@ public class AtmServiceHelper {
 	private int distance = DEFAULT_DISTANCE;
 
 	/**Boolean letting the application know if the ATM should not have a surcharge*/
-	private boolean isSurchargeFree = false;
+	private boolean surchargeFree = false;
 
 	/**Location to search for atms around*/
 	private final Location location;
@@ -105,12 +105,20 @@ public class AtmServiceHelper {
 	public String getQueryString(){
 		final StringBuilder builder = new StringBuilder();
 		builder.append(QUERY_START);
-		builder.append(LAT + location.getLatitude() + DIVIDER);
-		builder.append(LON + location.getLongitude() + DIVIDER);
-		builder.append(MAX_RESULTS + maxResults + DIVIDER);
-		builder.append(DISTANCE + distance + DIVIDER);
+		builder.append(LAT);
+		builder.append(location.getLatitude());
+		builder.append(DIVIDER);
+		builder.append(LON);
+		builder.append(location.getLongitude());
+		builder.append(DIVIDER);
+		builder.append(MAX_RESULTS);
+		builder.append(maxResults);
+		builder.append(DIVIDER);
+		builder.append(DISTANCE);
+		builder.append(distance);
+		builder.append(DIVIDER);
 		builder.append(SURCHARGE);
-		if(isSurchargeFree){
+		if(surchargeFree){
 			builder.append(SURCHARGE_FREE);
 		}
 		return builder.toString();
@@ -133,7 +141,7 @@ public class AtmServiceHelper {
 	public String getAddressToLocationString(){
 		final StringBuilder builder = new StringBuilder();
 		builder.append(QUERY_START + ADDRESS);
-		builder.append(address.replaceAll(" ","%20"));
+		builder.append(address.replaceAll(SPACE,"%20"));
 		builder.append(ADDRESS_TO_LOCATION_END);
 		return builder.toString();
 	}
@@ -170,14 +178,14 @@ public class AtmServiceHelper {
 	 * @return the isSurchargeFree
 	 */
 	public boolean isSurchargeFree() {
-		return isSurchargeFree;
+		return surchargeFree;
 	}
 
 	/**
 	 * @param isSurchargeFree the isSurchargeFree to set
 	 */
 	public void setSurchargeFree(final boolean isSurchargeFree) {
-		this.isSurchargeFree = isSurchargeFree;
+		this.surchargeFree = isSurchargeFree;
 	}
 
 
