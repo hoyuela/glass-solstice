@@ -60,7 +60,7 @@ $(document).bind("pageinit", function(){
 		$(this).siblings().find("p").removeClass("navtab-pcolor");
 		$('.partner-list').css('display','none');
 		$("#partner-"+a).css('display','block');
-		dfs.crd.sct.redemptionBestValueTabTracking(a);//site catalyst
+		
 	});
                  
                  //Click Highlight
@@ -701,6 +701,12 @@ $("#redeem-dtlview, #redeem-ecert-dtlview, #redeem-ecert-error, #redeem-ecert-er
 		  $("ul.collapsible li a").html("See partner description");  
 		}
 	});
+	
+	if($("#stepper1").val()=="1") {
+		$(".ui-corner-left").addClass("disabled-btn");
+	}else{
+		$(".ui-corner-left").removeClass("disabled-btn");
+	}
 });
 
 $("#redeem-dtlview, #gift-card-verify-partner, #ecert-verify-partner, #redeem-ecert-dtlview, #redeem-ecert-error, #redeem-ecert-error-sample, #redeem-gcard-dtlview, #cofirm-gift-card-partner").live('pageshow', function (event){
@@ -825,7 +831,7 @@ $(document).bind("pageshow", function(event,ui){
                                                                                                                                                                                                                                                                      $(this).addClass('ui-btn-down-c');
                                                                                                                                                                                                                                                                      });
                  $("#js-search-submit").click(function(){
-                                              $(this).parent().addClass('ui-btn-down-c')
+                                             /* $(this).parent().addClass('ui-btn-down-c')*/
                                               
                                               })
                  

@@ -285,6 +285,7 @@ public final class BankConductor  extends Conductor {
 				}
 				/**Add a new instance of Account Summary page to the back stack and place in foreground of application*/
 				else {
+					((BankNavigationRootActivity) activity).closeDialog();
 					((BankNavigationRootActivity) activity).makeFragmentVisible(new BankAccountSummaryFragment());
 				}
 			}
@@ -935,6 +936,8 @@ public final class BankConductor  extends Conductor {
 					//Navigate user to final step in Check deposit work-flow
 				case Confirmation:
 					fragment = new BankDepositConfirmFragment();
+					//Clear the accounts
+					BankUser.instance().setAccountOutDated(true);
 					break;
 					//Navigate to timeout error if check deposit error fragment flag is found in bundle
 				case DepositError:

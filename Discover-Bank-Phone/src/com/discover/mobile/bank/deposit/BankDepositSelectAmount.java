@@ -104,7 +104,19 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	 */
 	@Override
 	protected String getPageTitle() {
-		return (account != null) ? account.nickname : "";
+		final StringBuilder titleBuilder = new StringBuilder("");
+		
+		if(account != null && !Strings.isNullOrEmpty(account.nickname)) {
+			titleBuilder.append(account.nickname);
+			final String ending = account.getShortDottedFormattedAccountNumber();
+			
+			if(!Strings.isNullOrEmpty(ending)) {
+				titleBuilder.append(" \n");
+				titleBuilder.append(ending);
+			}
+		}
+		
+		return titleBuilder.toString();
 	}
 
 	/**

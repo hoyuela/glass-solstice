@@ -32,6 +32,7 @@ import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.help.ContactUsType;
@@ -671,7 +672,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final BankLoginDetails login = new BankLoginDetails();
 		login.password = password;
 		login.username = username;
-
 		BankConductor.authorizeWithCredentials(login);
 	}
 
@@ -771,7 +771,10 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				//Track that the bank toggle was selected
 				BankTrackingHelper.trackPage(LoginActivity.class.getSimpleName());
 			}
-
+			
+			// Need to reset the error handler type to card|bank for service calls
+			BankNetworkServiceCallManager.getInstance().resetErrorHandler();
+			
 			//Refresh Screen based on Selected Account Preferences
 			loadSavedCredentials();
 			idField.clearFocus();

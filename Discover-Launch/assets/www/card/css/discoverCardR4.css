@@ -1371,7 +1371,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 .ui-datepicker select.ui-datepicker-month-year {width: 100%;}
 .ui-datepicker select.ui-datepicker-month, 
 .ui-datepicker select.ui-datepicker-year { width: 49%;}
-.ui-datepicker table {width: 108%; font-size: .9em; border-collapse: collapse; margin:0 0 .4em -4%; }
+.ui-datepicker table {width: 108%; font-size: .9em; /*border-collapse: collapse;*/ margin:0 0 .4em -4%; }
 .ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: bold; border: 0;  }
 .ui-datepicker td { border: 0; padding: 1px; }
 .ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: right; text-decoration: none; }
@@ -1632,7 +1632,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 	line-height:1;
 }
 
-#search #r4-wrap label input,.rd-page #amountCombo input{
+#search #r4-wrap label input,.rd-page #amountCombo input,#search #r4-wrap #keywords{
 	display: inline-block;
 	font-size: 12px;
 	height: 26px;
@@ -1641,6 +1641,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 	margin: 5px 3px 0 0;
 	max-width: 95%;
 }
+#search #r4-wrap #keywords{margin:5px 3px 0 0 !important; padding:4px !important;}
 	
 #search #r4-wrap #js-date-picker-range input {
 	width: 85px;
@@ -2579,11 +2580,18 @@ only screen and (min-device-pixel-ratio: 1.5)
 #personalizeCashPin1-pg ul.white-box-rd-corner li div input{margin-top:5px; height:20px;}
 #personalizeCashPin1-pg ul{margin-top:0;}
 #paymentsHistory-pg .ui-li-static.ui-li,#pendingPayments-pg .ui-li-static.ui-li{padding:10px;}
-#personalizeCashPin1-pg.faq-page .rd-faq-question-list li{ padding:5px 0px 15px 0px;}
+#personalizeCashPin1-pg.faq-page .rd-faq-question-list li{ padding:5px 0px 15px 0px; margin-left:0px !important;}
+#personalizeCashPin1-pg.faq-page .rdfaq-plus{ width:13px;}
+#personalizeCashPin1-pg.faq-page .rd-faq-question-list .ui-grid-a .ui-block-b{width:93% !important;}
 #personalizeCashPin2-pg .bluelink{ font-size:12px !important;}
 #paymentStep1-pg .white-form .ui-radio .ui-icon{ top:19px;}
 #strongAuthFirstQues-pg .ui-radio span span.ui-btn-text{ font-size:12px;}
 #strongAuthFirstQues-pg .ui-radio .ui-btn-up-c,#strongAuthFirstQues-pg .ui-radio .ui-btn-hover-c{ line-height:20px !important;}
+#strongAuthFirstQues_WhatThis{ font-size:12px; padding-top:10px; padding-bottom:0px !important; padding-left: 20px;}
+#share-mail-app #comments{ padding-left:0px;}
+.marginbottom15px{ margin-bottom:15px;}
+#paymentStep1-pg .r3matchbtn{ margin:10px;}
+#paymentStep1-pg .margintb5px{ margin:5px 0 10px 0;}
 /*#updateEmail-pg .whitebg-list-view li.span{
 font-weight: bold;
 font-size: 14px;
@@ -2591,3 +2599,13 @@ color: #42484d;
 display: block;
 text-shadow: none;
 padding-top: 12px;}*/
+
+.ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCsRed span.dueDateTextRed,
+.ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCs span.dueDateText
+{display:none}
+.dueDateParCsRed  {border:1px solid #E12121 !important}
+.dueDateParCs {border:1px solid #2489ce !important}
+
+.dueDateParCsRed  span, .dueDateParCsRed  a{color:#E12121 !important}
+.dueDateParCs  span, .dueDateParCs  a{color:#2489ce !important}
+.dueDateText, .dueDateTextRed{display:block;font-size:8px;}

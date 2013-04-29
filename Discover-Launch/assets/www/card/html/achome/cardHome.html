@@ -6,71 +6,7 @@
 <body>
 	<!--page start	-->
 	<div data-role="page" id="cardHome-pg" class="pn-page">
-		<!--header start  -->
-		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
-			<header id="header" class="cmn_header_nobackbtn">
-			</header>
-		</div>
-		<!-- header	end	-->
-		<!-- content start -->
-		<div data-role="content" class="ui-content-internalpages">
-			<div class="wraper">
-			    <!-- buttons -->
-                <div class="navtabs ui-grid-a ssoToggle cardTab">
-                    <div class="ui-block-a navtabsStyle selectedTab">
-                        <span>Card</span>
-                    </div>
-                    <div class="ui-block-b navtabsStyle bankTab">
-                        <span>Bank</span>
-                    </div>
-                </div>
-                <!-- buttons end -->
-			<div class="error-box" style="display: none;">
-			<span class="errormsg" id="errorCardHomeDiv"></span></div>
-                
-                <div id="new-message-count-div" class="new_message_div">
-                    <a href="#" onclick="navigation('../pushNotification/alertHistory');" data-inline="true">
-                        <span class="notification_image"></span>
-                        <div id="new-message-count-text" class="notification_text"></div>
-                    </a>
-                </div>
-                
-				<div id="primaryCardmember"  class="boldtext"></div>
-				<div id="card-info"></div>
-                
-                <div id="global-errors"></div>
-				<div class="errormsg2" id = "errorCardHomeDiv"></div>
-				<div data-role="listview" data-inset="true"  class="cardhome_ul" id="cardHome_List">
 
-					<a href="#"  onclick="navigation('../payments/paymentStep1');">
-						<div class="col1">
-							<div class="col_left boldtext" id="div11" >Last Statement Balance:</div>
-							<div class="col_big_right orangetxt boldtext" id="cardHome_statementBalance">&nbsp;</div>
-							<div class="col_left" id="cardHome_minpay">Min. Payment Due 8/18:</div>
-							<div class="col_right orangetxt boldtext"  id="cardHome_minimumPaymentDue">&nbsp;</div>
-						</div>
-						<div class="col2">PAY</div>
-					</a>
-					<a href="#"  onclick="navigation('../statements/accountActivity');">
-						<div class="col1">
-							<div class="col_left boldtext" id="div21" style="width:50%">Current Balance:</div>
-							<div class="col_big_right orangetxt boldtext" id="cardHome_currentBalance">&nbsp;</div>
-							<div class="col_small_left">Credit line Available:</div>
-							<div class="col_big_right orangetxt boldtext" id="cardHome_availableCredit">&nbsp;</div>
-						</div>
-						<div class="col2">VIEW </div>
-					</a>
-				</div>
-			</div>
-			<div id="footnotes" class="footnotes" >
-            </div>
-		</div>
-		<!-- content end -->
-		<div data-role="footer" id="pg-footer" data-position="fixed"
-			data-id="myfooter" data-tap-toggle="false">
-			<footer id="footer" class="mnu_footer">
-			</footer>
-		</div>
 	</div>
 	<!--page end -->
 </body>

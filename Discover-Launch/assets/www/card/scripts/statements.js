@@ -623,17 +623,25 @@ dfs.crd.stmt.search = (function () {
 					searchResults += "</div>";	
 				}else{
 					var tranTxt = "transactions";
-					var matchTxt = "match";
+					//var matchTxt = "match";
+					var matchTxt = "result";
 					if(totalTransactions === 1){
 						tranTxt =  "transaction";
-						matchTxt = "matches";
+						//matchTxt = "matches";
+						matchTxt = "results";
 					}
-					searchResults += "<p class=\"boldtext\">Found "+totalTransactions+" ";
-					searchResults += tranTxt+" totalling "+totalTransactionAmount+" that "+matchTxt+":</p>";
+					//searchResults += "<p class=\"boldtext\">Found "+totalTransactions+" ";
+					searchResults += "<div class='searchResultsStat'><p class='hideLiMain'><span class='pn-plus'></span><span class='boldtext'>"+totalTransactions+"</span> ";
+					//searchResults += tranTxt+" totalling "+totalTransactionAmount+" that "+matchTxt+":</p>";
+					searchResults += matchTxt+" totalling <span class='boldtext'>"+totalTransactionAmount+"</span></p>";
+					
+					searchResults += "<div class='hidden-element'>";
 					searchResults += "<p><span class=\"inlineLabel boldtext\">Keywords:</span>"+keywords+"</p>";
 					searchResults += "<p><span class=\"inlineLabel boldtext\">Date:</span>"+dateOption+"</p>";
 					searchResults += "<p><span class=\"inlineLabel boldtext\">Amount:</span>"+amountOption+"</p>";
 					searchResults += "<p><span class=\"inlineLabel boldtext\">Category:</span>"+catgOption+"</p>";
+					searchResults += "</div></div>";
+					
 					searchResults += "<p class=\"notes\">Pending Transactions will not appear in search results.</p>";
 					searchResults += "</div>";
 					searchResults += "<div id=\"search-sortContainer\">";
@@ -1006,7 +1014,9 @@ function accountLandingLoad() {
 		};
 		console.log("Account landing load calling getStatements");
 		var statements = dfs.crd.stmt.shared.util.getStatements(); 
-		if ( statements.isEmpty() ) {
+			if ( cardType === "000002" && statements.isEmpty() ) {
+                    dom.$statementsNav.remove();
+                } else if ( statements.isEmpty() ) {
 			dom.$statementsNav.html(dom.noStatements);
 		}
 		//reset date selector so default item is displayed
@@ -1039,7 +1049,7 @@ function statementLandingLoad() {
 				 * when I construct the variable here it works as expected.
 				 */
 				var statementURL = RESTURL+"stmt/"+dfs.crd.stmt.shared.constant.STMT_WS_VERS+"/statements";
-				RenderStatement.prototype.show(null, statements.array, index, statementURL);
+				RenderStatement.prototype.show(null,statements.array, index, statementURL);
 				
 			});
 		});
@@ -1057,5 +1067,21 @@ function statementLandingLoad() {
         showSysException(err);
     }
 }
+
+/* hide show para in search result page */
+
+$("#search .pn-plus").css("background-position","bottom left");
+var searchResultStat = "open";
+$("#search .hideLiMain").live("click",function(){
+	if(searchResultStat=="open"){
+		$(this).children(".pn-plus").css("background-position","0px -27px");
+		$(this).parents().children(".hidden-element").show();
+		searchResultStat = "close"
+	}else{
+		$(this).children(".pn-plus").css("background-position","0 0");
+		$(this).parents().children(".hidden-element").hide();
+		searchResultStat = "open";
+	};
+})
 
 /*Statements 13.1 Script Ends Here*/

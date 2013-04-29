@@ -423,7 +423,7 @@
 				}
 				
 				$("#giftCard2Image").attr("src", selectedDesignImg);
-				$("#selected-redeem-cbb").html("<span class='font17'>$</span>"+amountSelected);
+				$("#selected-redeem-cbb").html("<span>$</span>"+amountSelected);
 				$("#cbb-redem").html("$"+amountSelected+".00");
 				$("#cbb-curr-balance").html("$"+globalEarnRewardAmount);
 				$("#giftCard2_CashBackBonusBalance").html("$"+globalEarnRewardAmount);

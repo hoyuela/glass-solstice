@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -113,10 +112,10 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		transactionAmount = (PositiveIntegerEditText) view.findViewById(R.id.transaction_amount);
 		dateValue = (TextView) view.findViewById(R.id.date_value);
 
-		((LinearLayout) view.findViewById(R.id.cancelled_layout)).setOnClickListener(getLayoutListener(CANCELLED));
-		((LinearLayout) view.findViewById(R.id.date_layout)).setOnClickListener(getLayoutListener(DATE));
-		((LinearLayout) view.findViewById(R.id.transaction_layout)).setOnClickListener(getLayoutListener(TRANSACTION));
-		((LinearLayout) view.findViewById(R.id.dollar_layout)).setOnClickListener(getLayoutListener(AMOUNT));
+		view.findViewById(R.id.cancelled_layout).setOnClickListener(getLayoutListener(CANCELLED));
+		view.findViewById(R.id.date_layout).setOnClickListener(getLayoutListener(DATE));
+		view.findViewById(R.id.transaction_layout).setOnClickListener(getLayoutListener(TRANSACTION));
+		view.findViewById(R.id.dollar_layout).setOnClickListener(getLayoutListener(AMOUNT));
 
 		dollarAmount.setEnabled(false);
 		dollarAmount.enableBankAmountTextWatcher(true);

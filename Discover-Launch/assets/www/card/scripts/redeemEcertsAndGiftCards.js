@@ -36,7 +36,7 @@ dfs.crd.rwd.loadredemptionLanding = function() {
 		var allPartersDetails = dfs.crd.rwd.getAllPartners();
 
 		var totalPartnersCount;
-		var totalPartnersDisplay = "Partners Gift Cards and eCerts ";
+		var totalPartnersDisplay = "Partner Gift Cards and eCerts ";//changing partners to partner
 		if (!jQuery.isEmptyObject(allPartersDetails)) {
 			if (!isEmpty(allPartersDetails.totalCount)) {
 				totalPartnersCount = allPartersDetails.totalCount;
@@ -1246,7 +1246,7 @@ function redeemPartner1Load() {
 
 					} else {
 						amtSpan += "<section data-amount-pay='' data-amount-get='' data-max-qty=''>";
-						amtSpan += "<span><a href='#' class='r5-btn disabled-btn ui-link'> <span class='chk'></span><span class='disabled-bg'> <span class='white-doller'>$"
+						amtSpan += "<span><a href='#' class='r5-btn disabled-btn ui-link'> <span class='chk'></span><span> <span class='white-doller'>$"
 							+ modeAmt
 							+ "</span> <span class='yellow-doller'>$"
 							+ disbAmt + "</span> </span> </a></span>"
@@ -1811,7 +1811,7 @@ function redeemPartnerECT3Load() {
 				}
 
 				if (!isEmpty(ECTNumber)) {
-					ecrtificateDetails += "<p class='ecert-code-lbl'>eCertificate Code:</p><p class='ecert-code-num' id='ECTnum'>"
+					ecrtificateDetails += "<p class='ecert-code-lbl'>eCertificate Code:</p><p class='ecert-code-num marginbottom10px' id='ECTnum'>"
 						+ ECTNumber + "</p>"
 						$("#ecertTouchInfo").html(
 						"TIP: Touch the eCertificate number to copy it.");
@@ -2093,7 +2093,7 @@ function redeem_ecert_printphotosLoad() {
 						+ printEertNumber + "</p>"
 				}
 				if (!isEmpty(printECTPin)) {
-					ecrtificateDetails += " <p class='ecert-code-lbl-savetophotos'>PIN:</p><p class='ecert-code-num-savetophotos'>"
+					ecrtificateDetails += " <p class='ecert-code-lbl-savetophotos margintop5px'>PIN:</p><p class='ecert-code-num-savetophotos'>"
 						+ printECTPin + "</p>"
 				}
 
@@ -2337,7 +2337,7 @@ dfs.crd.rwd.renderGCDRedeemConfirmationPage = function() {
 		var updatedPOSTDetails;
 		var merchantDetailsToPOST = getDataFromCache("REDEEMSELCETED");
 		if (!jQuery.isEmptyObject(merchantDetailsToPOST)) {
-			updatedPOSTDetails = dfs.crd.rwd.postCBB(merchantDetailsToPOST);
+			updatedPOSTDetails = dfs.crd.rwd.postCBB_partnerGiftCards(merchantDetailsToPOST);
 			if (!jQuery.isEmptyObject(updatedPOSTDetails)) {
 				killDataFromCache("ACHOME");
 				killDataFromCache("REDEEM_HISTORY");
@@ -2452,7 +2452,7 @@ dfs.crd.rwd.postCBB = function(merchantDetailsToPOST) {
 	try {
 		if (!jQuery.isEmptyObject(merchantDetailsToPOST)) {
 			var newData = new Date();
-			var redeemMerchantURL = RESTURL + "rewards/v2/redeem";// with Rewards V3 version, isMobilized and partnerPhone field is removed
+			var redeemMerchantURL = RESTURL + "rewards/v3/redeem";// with Rewards V3 version, isMobilized and partnerPhone field is removed
 			var amount = merchantDetailsToPOST.selectedModeAmount;
 			var mediaCode = merchantDetailsToPOST.mediaCode;
 			var modeCode = merchantDetailsToPOST.modeCode;
@@ -2488,7 +2488,7 @@ dfs.crd.rwd.postCBB = function(merchantDetailsToPOST) {
                   }
 					if (jqXHR.status != 200 & jqXHR.status != 204) {
 						var code = getResponseStatusCode(jqXHR);
-						errorHandler(code, '', 'renderPartnerECT3');
+						errorHandler(code, '', 'redeemPartnerECT3');
 					} else {
 						redeemDetails = responseData;
 					}
@@ -2555,7 +2555,135 @@ dfs.crd.rwd.postCBB = function(merchantDetailsToPOST) {
 						}
 						break;
 					default:
-						errorHandler(code, '', 'renderPartnerECT3');
+						errorHandler(code, '', 'redeemPartnerECT3');
+					break;
+					}
+				}
+			})
+		}
+		// console.log("before return");
+		return redeemDetails;
+
+	} catch (err) {
+		showSysException(err)
+	}
+
+}
+
+/* For partner gift cards the evrsion would be V2 only. Restfull service change to make it V3 will go later. So adding a new method
+ * only for partner gift cards 
+ */
+
+dfs.crd.rwd.postCBB_partnerGiftCards = function(merchantDetailsToPOST) {
+	// console.log("postCBB");
+	var redeemDetails;
+	try {
+		if (!jQuery.isEmptyObject(merchantDetailsToPOST)) {
+			var newData = new Date();
+			var redeemMerchantURL = RESTURL + "rewards/v2/redeem";// with Rewards V2 version,
+			var amount = merchantDetailsToPOST.selectedModeAmount;
+			var mediaCode = merchantDetailsToPOST.mediaCode;
+			var modeCode = merchantDetailsToPOST.modeCode;
+			var orderQty = merchantDetailsToPOST.selectedQuantity;
+			var dataJSON = {
+					"amount" : amount,
+					"mediaCode" : mediaCode,
+					"modeCode" : modeCode,
+					"orderQty" : orderQty
+			};
+			var dataJSONString = JSON.stringify(dataJSON);
+			var errPost;
+			// console.log("dataJSONString :: " + dataJSONString);
+
+			showSpinner();
+			// var redeemDetails = getContentJson("RedeemECertificatePartner");
+
+			$
+			.ajax({
+				type : "POST",
+				url : redeemMerchantURL,
+				async : false,
+				dataType : 'json',
+				data : dataJSONString,
+				headers : preparePostHeader(),
+				success : function(responseData, status, jqXHR) {
+					// console.log("success in redeeem ");
+					hideSpinner();
+					if (!validateResponse(responseData,"redeemPartnerPostValidation")) // Pen Test Validation
+                  {
+                  errorHandler("SecurityTestFail","","");
+                  return;
+                  }
+					if (jqXHR.status != 200 & jqXHR.status != 204) {
+						var code = getResponseStatusCode(jqXHR);
+						errorHandler(code, '', 'redeemPartnerECT3');
+					} else {
+						redeemDetails = responseData;
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					hideSpinner();
+					var code = getResponseStatusCode(jqXHR);
+					cpEvent.preventDefault();
+					dfs.crd.rwd.insuficientErrorPresentSubmit = 'false';
+					// console.log("error in redeeem " + code);
+
+					switch (code) {
+					case "1608":
+						dfs.crd.rwd.insuficientErrorPresentSubmit = 'true';
+						errPost = jQuery.parseJSON(jqXHR.responseText);
+						errAvailCBB = errPost.data.availBalance;
+						// console.log("errAvailCBB :: " + errAvailCBB);
+						// console.log("error 1608");
+						navigation('../rewards/redeemPartner1');
+						// console.log("navigated");
+						break;
+					case "1629":
+						var errorMessage = errorCodeMap.REDEEM_BAD_ACCOUNT_STATUS;
+						var promoCodeTextData = [];
+						promoCodeTextData['ACHome_CashBackBonusBalance'] = "$"
+							+ globalEarnRewardAmount;
+						var parseContentText = parseContent(
+								errorMessage, promoCodeTextData);
+						if (!isEmpty(parseContentText)) {
+							errorHandler(code, parseContentText,
+							'redemptionLanding');
+						} else {
+							errorHandler('0', '', 'redemptionLanding');
+						}
+						break;
+					case "1656":
+						// console.log("error 1656");
+						cpEvent.preventDefault();
+						var errorMessage = errorCodeMap.REDEEM_BAD_ACCOUNT_STATUS;
+						var promoCodeTextData = [];
+						promoCodeTextData['ACHome_CashBackBonusBalance'] = "$"
+							+ globalEarnRewardAmount;
+						var parseContentText = parseContent(
+								errorMessage, promoCodeTextData);
+						if (!isEmpty(parseContentText)) {
+							errorHandler(code, parseContentText,
+							'redemptionLanding');
+						} else {
+							errorHandler('0', '', 'redemptionLanding');
+						}
+						break;
+					case "1613":
+						var errorMessage = errorCodeMap.REDEEM_EMC_STATUS;
+						var promoCodeTextData = [];
+						promoCodeTextData['ACHome_CashBackBonusBalance'] = "$"
+							+ globalEarnRewardAmount;
+						var parseContentText = parseContent(
+								errorMessage, promoCodeTextData);
+						if (!isEmpty(parseContentText)) {
+							errorHandler(code, parseContentText,
+							'redemptionLanding');
+						} else {
+							errorHandler('0', '', 'redeemPartner1');
+						}
+						break;
+					default:
+						errorHandler(code, '', 'redeemPartnerGCD3');
 					break;
 					}
 				}
@@ -2674,8 +2802,14 @@ function redeemBestValueLoad() {
 				extra20ULList += "</ul>";
 				$("#partner-amnt20").html(extra20ULList);
 				$("#partner-amnt20").trigger("create");
+				dfs.crd.sct.redemptionBestValueTabTracking("Extra $20+"); //sitecatalyst
 			}// extra 20
 
+			$("#amnt20")
+						.click(
+								function() {
+								dfs.crd.sct.redemptionBestValueTabTracking("Extra $20+"); //sitecatalyst
+								});
 			$("#amnt15")
 			.click(
 					function() {
@@ -2864,6 +2998,7 @@ function redeemBestValueLoad() {
 							$("#partner-amnt10").trigger("create");
 
 						}// end extra10
+						dfs.crd.sct.redemptionBestValueTabTracking("Extra $10"); // sitecatalyst
 					});// if 10 clicked
 
 			$("#amnt5")
@@ -2959,6 +3094,7 @@ function redeemBestValueLoad() {
 
 						}// end extra5
 
+					dfs.crd.sct.redemptionBestValueTabTracking("Extra $5");//site catalyst
 					});// if 5 clicked
 
 		}// end if bestValuePartnersData
@@ -3097,7 +3233,7 @@ dfs.crd.rwd.renderRedeemHistoryPage = function(pageName) {
 dfs.crd.rwd.getRedemptionHistory = function(pageId) {
 	try {
 		var newData = new Date();
-		var HISTORYURL = RESTURL + "rewards/v2/orderhistory?" + newData + "";
+		var HISTORYURL = RESTURL + "rewards/v3/orderhistory?" + newData + "";
 		var redeemHistory = getDataFromCache(pageId);
 		// redeemHistory = getContentJson("orderhistory");
 		if (jQuery.isEmptyObject(redeemHistory)) {
@@ -3155,7 +3291,8 @@ dfs.crd.rwd.populatRedeemptionHistory = function(responseData) {
 			var orderHistoryList = responseData.orderHistory;
 			if (orderHistoryList !== null && orderHistoryList !== 'undefined'
 				&& orderHistoryList !== '' && orderHistoryList.length !== 0) {
-				var redeemHistUL = "<ul id='rd-history-list'  class='whitebg-list-view'  data-theme='d' data-inset='true'>";
+				
+				var redeemHistUL = "<ul id='rd-history-list'  class='details-section-container ui-btn-corner-all '  data-theme='d' data-inset='true'>";
 				// console.log("has order count : " + orderHistoryList.length);
 				$
 				.each(
@@ -3286,7 +3423,6 @@ dfs.crd.rwd.populatRedeemptionHistory = function(responseData) {
 								redeemHistLi += "<div class='ui-block-a'>";
 								redeemHistLi += "<p class='ecert-icon'><b> "
 									+ itemDesc + " </b></p>";
-								
 								redeemHistLi += "<a href='#' data-transition='slide' class='rd-right-arrow' id='EecrtConfirm' onClick=dfs.crd.rwd.getEcetDetailsFromModeCode('"
 									+ mediaCode
 									+ "','"
@@ -3298,9 +3434,7 @@ dfs.crd.rwd.populatRedeemptionHistory = function(responseData) {
 									+ "','"
 									+ orderDate
 									+ "','"
-									+ dsbrstAmt + "')></a>"
-								
-								
+									+ dsbrstAmt + "')></a>";
 								if (accountEarnsMiles(orderhistIncentiveTypeCd)) {
 									redeemHistLi += "<p>$"
 										+ numberWithCommas(dsbrstCashAmtDisp)
@@ -3354,8 +3488,8 @@ dfs.crd.rwd.populatRedeemptionHistory = function(responseData) {
 								redeemHistLi += "<li>";
 								redeemHistLi += "<div class='ui-grid-c'>";
 								redeemHistLi += "<div class='ui-block-a'>";
-								redeemHistLi += "<p><strong> "
-									+ itemDesc + " </strong></p>";
+								redeemHistLi += "<p><b> "
+									+ itemDesc + " </b></p>";
 								if (accountEarnsMiles(orderhistIncentiveTypeCd)) {
 									redeemHistLi += "<p>$"
 										+ numberWithCommas(dsbrstCashAmtDisp)
@@ -3375,7 +3509,7 @@ dfs.crd.rwd.populatRedeemptionHistory = function(responseData) {
 									+ orderId + "</span><p>"
 									+ orderDate + "</p>";
 								redeemHistLi += "</div>";
-								redeemHistLi += "<div class='ui-block-c'></div>";
+								/*redeemHistLi += "<div class='ui-block-c'></div>";*/
 								redeemHistLi += "</div>";
 								redeemHistLi += "</li>";
 								redeemHistUL += redeemHistLi;
@@ -3402,7 +3536,7 @@ dfs.crd.rwd.populatRedeemptionHistory = function(responseData) {
 									+ orderId + "</span><p>"
 									+ orderDate + "</p>";
 								redeemHistLi += "</div>";
-								redeemHistLi += "<div class='ui-block-c'></div>";
+								/*redeemHistLi += "<div class='ui-block-c'></div>";*/
 								redeemHistLi += "</div>";
 								redeemHistLi += "</li>";
 								redeemHistUL += redeemHistLi;
@@ -3544,7 +3678,7 @@ function redeemCashbackEcertConfDetailsLoad() {
 
 			}
 			if (!isEmpty(ECTConfPin)) {
-				ecrtificateConfDetails += " <p class='ecert-code-lbl display-inline'>PIN:</p><p class='ecert-code-num display-inline'>"
+				ecrtificateConfDetails += " <p class='ecert-code-lbl margintop5px'>PIN:</p><p class='ecert-code-num'>"
 					+ ECTConfPin + "</p>"
 					if (device.platform == "Android") {
 						emailBody += "%0APIN: " + ECTConfPin;

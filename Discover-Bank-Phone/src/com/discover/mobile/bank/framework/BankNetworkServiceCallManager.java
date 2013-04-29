@@ -106,7 +106,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 * Holds reference to an instance of BankBaseErrorResponseHandler used to handle failures when a NetworkServiceCall
 	 * fails.
 	 */
-	private final BankBaseErrorResponseHandler errorHandler;
+	private BankBaseErrorResponseHandler errorHandler;
 	/**
 	 * Holds Reference to Singleton instance of NetworkServiceCallManager
 	 */
@@ -137,6 +137,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	static public BankNetworkServiceCallManager getInstance() {
 
 		return instance;
+	}
+	
+	/**
+	 * Initializes a new error handler based on the current Activity.
+	 */
+	public void resetErrorHandler() {
+		errorHandler = new BankBaseErrorResponseHandler((ErrorHandlerUi) DiscoverActivityManager.getActiveActivity());
 	}
 
 	/**
@@ -427,19 +434,19 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		//Handle the manage payee service call (which is a get payee service call).
 		else if( sender instanceof ManagePayeeServiceCall) {
 			final Bundle bundle = new Bundle();
-			
+
 			//Update the current list of payees
 			BankUser.instance().updateCache(result);
 			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
-			
+
 			/**Check to see if the payees were downloaded because of a delete payee call*/
 			if( prevCall instanceof DeletePayeeServiceCall &&
-				!((DeletePayeeServiceCall)prevCall).isHandled()) {
+					!((DeletePayeeServiceCall)prevCall).isHandled()) {
 				/**Mark the Service as being handled to avoid this block of code being called again on the next update*/
 				((DeletePayeeServiceCall)prevCall).markHandled();
 
 				bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
-				
+
 				BankConductor.navigateToManagePayee(bundle);
 			} 
 			/**Check to see if the payees were downloaded because of an added payee call*/
@@ -447,7 +454,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 					!((AddPayeeServiceCall)prevCall).isHandled() ) {
 				/**Mark the Service as being handled to avoid this block of code being called again on the next update*/
 				((AddPayeeServiceCall)prevCall).markHandled();
-				
+
 				BankConductor.navigateToAddPayee(BankAddPayeeConfirmFragment.class, ((AddPayeeServiceCall)prevCall).getResponse());
 			} 
 			/**Catch-all means it was just a payee download*/
@@ -474,7 +481,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			}else{
 				Log.d(TAG, "Could not mark scheduled and posted activity as dirty");
 			}
-
+			//Mark the list of accounts dirty
+			BankUser.instance().setAccountOutDated(true);
 			BankConductor.navigateToTransferConfirmation(resultBundle);
 		}
 		//Handle the payee success call

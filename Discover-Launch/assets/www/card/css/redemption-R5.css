@@ -153,7 +153,7 @@ font-size: 24px;margin: 0px 0 11px 0;line-height: 25px;Color: #3d484d;}
 	pointer-events: none;
 	opacity: 0.6;
 }
-#redemption-landing .pglist .footer-text{font-size:10px;color: #0070A8;font-weight:bold;margin-top:15px;}
+#redemption-landing .pglist .footer-text{font-size:11px;color: #474e55;font-weight:bold;margin-top:15px;}
 #redemption-landing .pglist .footer-text p a{/*color:#fa561b;*/ font-weight:bold !important;text-decoration:underline;}
 .rd-page #cofirm-gift-card h4 {text-shadow:none;padding:0;margin:0 0 10px;}
 .rd-page .gift-card-section img{ padding:0 10px 2px 0;}
@@ -168,6 +168,8 @@ font-size: 24px;margin: 0px 0 11px 0;line-height: 25px;Color: #3d484d;}
 .rd-page input.error-box{ border:1px solid #fd0202 !important;}
 .rd-page .btm-links{color:#0170a7;font-size:12px;padding:5px 0 0 0;text-align:center;font-weight:bold;}
 .rd-page .common-btn{min-width:130px; padding:1px 0; margin-top:20px;}
+#redeemPartner1_terms{
+font-size: 11px;}
 /*R4 Margin change*/
 /*.rd-page .progress-indicator{ margin-top:-4px !important;}*/
 .rd-page .progress-indicator,.pf-page .progress-indicator{ margin-top:-3px !important;}
@@ -235,7 +237,7 @@ font-size: 24px;margin: 0px 0 11px 0;line-height: 25px;Color: #3d484d;}
 
 
 /*.rd-page .cbb-detail-border{ border-bottom:1px dashed #5d5d5d;}*/
-.rd-page .terms-note{ padding:10px 0px 0px 10px;}
+.rd-page .terms-note{ padding:10px 10px 0px 10px;}
 .rd-page .terms-note p, .terms-note a {/*font-size:10px !important;line-height:0;*/}
 .rd-page .terms-note p {/*padding:0;margin:0;*/}
 .rd-page .link-style-3,.rd-page .link-style-3:hover{ color:#025d96; font-size:14px; font-weight:normal !Important;}
@@ -246,7 +248,7 @@ font-size: 24px;margin: 0px 0 11px 0;line-height: 25px;Color: #3d484d;}
 /*Style ends for Fix header with CBB Section*/
 
 .rd-page .small-font{/* font-size:11px !Important;*/}
-.rd-page .r5-btn{ -webkit-border-radius:4px; padding:6px 5px 0 5px !important; margin:5px 0 0 0; display:inline-block; min-width:118px; text-align:left; font-size:14px; font-weight:bold; min-height:24px;}
+.rd-page .r5-btn{ -webkit-border-radius:4px; padding:6px 5px 0 5px !important; margin:5px 0 0 0; display:inline-block; min-width:124px; text-align:left; font-size:14px; font-weight:bold; min-height:24px;}
 .rd-page .blk-wht-btn{background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #f2f2f2));text-shadow:none; color:#3f4648 !important; border:1px solid #d5d5d5; font-weight:bold !important;}
 .rd-page .drkgry-wht-btn span, .gry-wht-btn span, .blk-wht-btn span{ margin-top:0px;display:inline-block;}
 .rd-page .blk-wht-btn span.yellow-bg, .drkgry-wht-btn span.yellow-bg /* , .drkgry-wht-btn span.disabled-bg*/ { margin-top:-3px;}
@@ -274,7 +276,7 @@ background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0%
 .rd-page .gry-org-small-btn{ margin:1px 0 0 0; display:inline-block; background:url(../images/gry-org-small-btn.png) no-repeat center 0; background-size:54px 18px; -moz-background-size:54px 18px; width:54px; height:18px;}
 .rd-page .gry-org-small-btn label{ width:50%; float:left; text-align:center;}
 .rd-page .normal-font{ font-size:11px; padding:3px 3px 0 3px; color:#333;}
-.rd-page .redeem-description img{ padding:5px 12px 10px 0;}
+.rd-page .redeem-description img{ /*padding:5px 12px 10px 0;*/ padding:0px 10px 0 0;}
 .rd-page .redeem-description .collapsible { border:none; margin:0 !important;}
 #merchantDesc, #merchantDesc p{ font-size:10px; padding-bottom:10px;}
 .rd-page #merchantDesc ul{ font-size:10px; padding-top:10px;}
@@ -289,7 +291,7 @@ background-size: 11px 11px;
 .rd-page .cancel-btn{ /*padding-right:30px;*/ font-weight:bold !important;}
 .rd-page .ecart-txt{ font-size:9px !Important; color:#b7b7b7 !important; line-height:9px;}
 .rd-page .ecart-padd{ padding-top:28px !important;}
-.rd-page .yellow-bg{ background:url(../images/btn-bkground-pill.png) no-repeat; -webkit-background-size:127px 34px; width:127px; height:36px; display:inline-block;}
+.rd-page .yellow-bg{ background:url(../images/btn-bkground-pill.png) no-repeat; -webkit-background-size:127px 34px; width:124px; height:36px; display:inline-block;}
 .rd-page .disabled-btn{ background:url(../images/disabled-bg.png) no-repeat; -webkit-background-size:127px 34px; /*width:80px; height:24px;*/ display:inline-block;}
 .rd-page .yellow-bg span, .rd-page .disabled-btn span{ /*padding:0px 8px 5px 0px;*/ float:left; font-weight:normal; text-shadow:none;}
 .rd-page .disabled-btn span {padding:1px 0 2px 0;}
@@ -335,8 +337,8 @@ background-size: 11px 11px;
 .rd-page #tnc-confirmation-verify .ui-block-b{width: 50% !important;float: left;text-align:right;}
 .rd-page #tnc-confirmation-verify .ui-block-b .ui-btn {width:100px !important}
 .rd-page #tnc-confirmation-verify .ui-grid-a .ui-block-a{clear:both !important;}
-.rd-page .cardverify-note{padding-top:15px;text-shadow:none;}
-.rd-page .cardverify-note p {color:#838383;font-size:10px;padding-bottom:10px;line-height:12px;}
+/*.rd-page .cardverify-note{padding-top:15px;text-shadow:none;}*/
+/*.rd-page .cardverify-note p {color:#838383;font-size:10px;padding-bottom:10px;line-height:12px;} */
 .rd-page .tnc-links {margin-bottom:20px;}
 .rd-page .tnc-links li {padding:0 0 10px 0 !important;} /*redeem-discover-gift-card-select-design css starts here*/
 .rd-page .tnc-links a{
@@ -387,7 +389,7 @@ line-height: 17px;
 /*purchase-agreement-redemption css ends here*/
 
 /*redeem-ecart-pin css starts here*/
-.rd-page .ecert-info{border:1px solid #d6d7d7;/*-webkit-box-shadow:0 0 5px 3px #cccccc,#f3f5f6 0 0 5px 5px inset ;*/background-color:#FFF;-webkit-border-radius:5px;}
+.rd-page .ecert-info{padding-bottom:10px;border:1px solid #d6d7d7;/*-webkit-box-shadow:0 0 5px 3px #cccccc,#f3f5f6 0 0 5px 5px inset ;*/background-color:#FFF;-webkit-border-radius:5px;}
 #ecart-print-pin .ecert-info,#ecart-print .ecert-info,#ecart-save .ecert-info{margin-top:50px;}
  #ecart-save-pin .ecert-info{margin-top:25px;}
 .rd-page .ecert-code{width:65%;margin-left:10px;margin-top:10px;float:left;border-right:1px solid black; color:#3d484d}
@@ -405,7 +407,7 @@ line-height: 17px;
 #ecart-ios-pin .partner-img,#ecart-pin-android .partner-img,#ecart-mobileweb-pin .partner-img{width:37%;margin-top:0;float:left;margin-right: 5%;height: 66px;padding-top: 15px;border:none;-webkit-box-shadow:none;}
 .rd-page .ui-content .ui-listview-inset{ margin:5px 0;}
 
-.rd-page .partner-img-info{width:50%;float:left;margin-top:10px;}
+.rd-page .partner-img-info{width:54%;float:left;/*margin-top:10px;*/}
 .rd-page .ui-content-internalpages .partner-img-info p{padding:0;margin:0;}
 .rd-page .ui-content-internalpages .partner-img-info .partner-details{font-size:16px;font-weight:bold;font-family:Arial, Helvetica, sans-serif;}
 .rd-page .ui-content-internalpages .partner-img-info .order-details{font-size:11px;font-weight:bold;font-family:Arial, Helvetica, sans-serif;color:#8d8d8d;}
@@ -417,11 +419,15 @@ line-height: 17px;
 .rd-page div.btns .r5-btn{ -webkit-border-radius:5px; padding:5px 0 !important; font-size:11px; text-align:center;font-weight:bold !important;min-width:76px;}
 .rd-page .btns a:nth-child(2){margin-left:3%;}
 .rd-page .btns a:nth-child(3){margin-left:3%;}
+#rd-history-ios .ui-btn-up-c,#rd-history-ios .ui-btn-hover-c,
+#ecart-ios .ui-btn-up-c,#ecart-ios .ui-btn-hover-c
+{line-height: 32px;}
+
 /*redeem-ecart-pin css ends here*/
 
 /*redeem-ecart css starts here*/
 .rd-page .ecert-amnt-cnfrm{float:left;margin-top:7px;width: 31%;}
-.rd-page .ecert-amnt-cnfrm span{font-size:2em;color:#ff6503;font-weight:bold; text-align:center;display: block;}
+.rd-page .ecert-amnt-cnfrm span{font-size:2em; /*margin-top: 20px;*/ color:#ff6503;font-weight:bold; text-align:center;display: block;}
 .rd-page .ecert-info1-cnfrm{width:100%;border-bottom:1px solid #d7d5d5;-webkit-box-shadow: inset 0 0 5px 5px #f3f5f6;-webkit-border-top-right-radius:4px;-webkit-border-top-left-radius:4px;padding-bottom:8px;}
 
 /*redeem-ecart css ends here*/
@@ -446,11 +452,11 @@ line-height: 17px;
 .rd-page .ecert-code-savetophotos{width:65%;margin-left:10px;margin-top:8px;float:left;border-right:1px solid black;}
 .rd-page .ui-content-internalpages .ecert-code-savetophotos .ecert-code-lbl{margin:0;padding:0;color:#000;font-size:14px;font-weight:500;}
 .rd-page .ui-content-internalpages .ecert-code-savetophotos .ecert-code-num{margin:0;padding:0;font-weight:900;font-size:1em;}
-.rd-page .ecert-amnt-cnfrm-savetophotos{float:left;margin-top:25px;width: 31%;}
+.rd-page .ecert-amnt-cnfrm-savetophotos{float:left;margin-top:5px;width: 31%;}
 .rd-page .ecert-amnt-cnfrm-savetophotos span{font-size:2em;color:#f76709;font-weight:bold; text-align:center;display: block;}
 .rd-page .ui-content-internalpages .partner-img-info-savetophotos .partner-details-savetophotos{font-size:14px;font-weight:bold;font-family:Arial, Helvetica, sans-serif;}
 .rd-page .ui-content-internalpages .partner-img-info-savetophotos .order-details-savetophotos{font-size:10px;font-weight:bold;font-family:Arial, Helvetica, sans-serif;color:#8d8d8d;}
-.rd-page .partner-img-info-savetophotos{width:50%;float:left;margin-top:15px;margin-bottom:30px;}
+.rd-page .partner-img-info-savetophotos{width:50%;float:left;margin-top:15px;margin-bottom:15px;}
 .rd-page .ui-content-internalpages .partner-img-info-savetophotos p{padding:0;margin:0;}
 .rd-page .partner-img-savetophotos{width:36%;margin-top:15px;margin-right:5%;border:1px solid #ececec;float:left;height:66px;padding-top:15px;-webkit-box-shadow: inset 0 -7px 5px #f3f5f6;text-align: center;}
 .rd-page .ui-content-internalpages .ecert-code-savetophotos .ecert-code-lbl-savetophotos{margin:0;padding:0;color:#000;font-size:12px;font-weight:500;}
@@ -625,9 +631,10 @@ border-bottom:1px solid #e8eced !important;-webkit-border-radius:0 !important; /
 #browse-all-partners div[data-role="content"] form.ui-listview-filter .ui-input-search .ui-input-text{font-weight:bold;}
 .rd-page .partners li h3{margin-top:10px;}
 .ui-li-has-arrow .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-arrow {
-padding-right: 40px;
+padding-right: 30px;
 min-height:0px;
 }
+/*.rd-page .partners li a img.ui-corner-tl {padding: 10px 0px 10px 0;}*/
 .rd-page .partners li a p{
 	margin-left:15%;
 	white-space:normal;
@@ -689,7 +696,7 @@ min-height:0px;
 #rd-history-mobileweb .ui-content-internalpages .wraper .ecert-info .ecert-info2{border-bottom:0;}
 #rd-history-mobileweb-pin .ui-content-internalpages .wraper .ecert-info .ecert-info2{border-bottom:0;}
 .rd-history-wraper{margin-top:35px;}
-.rd-page .bottom-text a{font-weight:bold !important; font-size:10px;}
+.rd-page .bottom-text a{font-weight:bold !important; font-size:11px;}
 #rd-history-ios .display-inline{display:inline;}
 #rd-history-ios .ecert-info1{padding-bottom:0;}
 /*redemption-history starts*/
@@ -715,12 +722,12 @@ min-height:0px;
 #rd-history .ui-grid-c .ui-block-b{width:100%; color:#8a9499;/*text-align:right;*/font-size:9px;padding-top:5px}
 #rd-history .ui-grid-c .ui-block-c{width:7.5%}
 #rd-history .ui-grid-c .ui-block-d{width:7.5%}
-#redeem-history #rd-history-all{border-radius:4px 0 0 4px !important; }
-#redeem-history #rd-history-ecert{border-radius:0 4px 4px 0!important}
+/*#redeem-history #rd-history-all{border-radius:4px 0 0 4px !important; }*/
+/*#redeem-history #rd-history-ecert{border-radius:0 4px 4px 0!important}*/
 .ecert-icon{background:url(../images/eCert-icon.png) right 3px no-repeat; background-size:13px 13px;/*height:32px;width:100%*/ display: inline-block;
 padding-right: 20px !important; margin-bottom: 5px !important; max-width:84%}
 /*.rd-right-arrow{background:url(../images/right_arrow.png) right center no-repeat;height:32px;width:100%;display:block}*/
-.rd-right-arrow{background: url(../../images/listGrayArrow.png) no-repeat right center;height:20px; width:20px; background-size:7px 9px; /*display:block; */ float: right;  }
+.rd-right-arrow{margin-right:0 !important; background: url(../../images/listGrayArrow.png) no-repeat right center;height:20px; width:20px; background-size:7px 9px; /*display:block; */ float: right;  }
 #rd-history .errormsg-all{color:#b7b7b7;text-shadow:none;padding:8px;font-size:14px;display:none}
 #rd-history .errormsg-ecert{color:#b7b7b7;text-shadow:none;padding:8px;font-size:14px;display:none}
 /*redemption-history ends*/
@@ -733,7 +740,7 @@ padding-right: 20px !important; margin-bottom: 5px !important; max-width:84%}
 .rd-page .ui-content-internalpages .ol-part,.rd-page .ui-content-internalpages .find-details{font-size:12px;}
 .rd-page .ui-content-internalpages .find-details{color:#9f9f9f;margin-top:10px;}
 /*.rd-page .ui-content-internalpages .ol-part{margin-top:11px;}*/
-.rd-page .ui-content-internalpages .pay-with-cb-bonus{text-align: center;border-top: solid #f8ae94;border-bottom: solid #f8ae94;border-width: thin;margin-bottom: 17px;margin-top: 38px;}
+.rd-page .ui-content-internalpages .pay-with-cb-bonus{border-top: solid #f8ae94;border-bottom: solid #f8ae94;border-width: thin;margin-bottom: 17px;margin-top: 38px;}
 /*.rd-page .ui-content-internalpages .pay-with-cb-bonus .ui-grid-a{width:80%;margin-left:10%;} */
 .rd-page .ui-content-internalpages .pay-with-cb-bonus .grid-wrap{margin-top:42px;margin-bottom:17px;}
 .rd-page .ui-content-internalpages .pay-with-cb-bonus .grid-wrap .ui-grid-a .amz{background-image: url(../images/pwcb-amz-img.png);background-size: 115px 23px;background-repeat: no-repeat;width: 50%;height: 23px;background-position: 15% 50%;padding-top: 15px;cursor: pointer}
@@ -750,7 +757,19 @@ padding-right: 20px !important; margin-bottom: 5px !important; max-width:84%}
 .rd-page .partners .ui-icon-shadow{-webkit-box-shadow:none;}
 .rd-page .partners li a img.ui-corner-tl{-webkit-border-top-left-radius:0;}
 .rd-page .partners li a img.ui-corner-bl{-webkit-border-bottom-left-radius:0;}
-
+/*.edo-page#edoHistory-pg .rd-faq-main {
+text-align: right;
+float: right;
+padding-top: 5px;
+margin-right: 10px;
+}*/
+#edoHistory-pg h1 {
+font-size: 24px;
+margin: 0px 0 11px 10px;
+line-height: 25px;
+color: #3d484d;
+font-weight: bold;
+}
 /*Redeem- Pay with Cashback and pay with Miles Ends*/
 
 /*Code for FAQ page*/
@@ -773,7 +792,7 @@ padding-right: 20px !important; margin-bottom: 5px !important; max-width:84%}
 /*line no. 442 changed*/
 .rd-page .rd-landing-heading-text .ui-block-a{width:90%;}
 .rd-page .rd-landing-heading-text .ui-block-b{width:10%;}
-.rd-page .rd-faq-main, .edo-page .rd-faq-main{ /*position:absolute;right:10px;*/ text-align:right; float: right;}
+.rd-page .rd-faq-main, .edo-page .rd-faq-main{ /*position:absolute;right:10px;*/ text-align:right; float: right;padding-top: 0px;}
 .rd-page .tooltip{width:200px;height:auto; position:absolute;right:26px;top:110px;z-index:9999;display:none;}
 #redeem-history .tooltip{width:200px;height:auto; position:absolute;right:26px;top:85px;z-index:9999;display:none;}
 
@@ -989,9 +1008,9 @@ line-height: 20px;
 #redemption-landing.r5-btn-new{ min-width:114px !Important;}
 #redemption-landing .addto{ margin:0 !important; display:block; text-align:left; font-size:10px;}
 #redemption-landing .passbook{ padding-left:0px; font-size:13px; color:#000; margin-top:0px !Important; float:left;}
-#redemption-landing .ui-link{font-weight:normal !Important; text-decoration:none;}
+#redemption-landing .ui-link{font-weight:bold !Important; text-decoration:none;}
 #redemption-landing   #addPassbookBTN{ margin:10px 0 20px 0 !important;text-align:center;}
-#redemption-landing  #closebtn{ margin:6px 8px 6px 0 ;}
+/*#redemption-landing  #closebtn{ margin:6px 8px 6px 0 ;}*/
 
 /* aditional class to create hover efect on al LI */
 
@@ -1111,14 +1130,7 @@ list-style-type:none;
 .divhead h1{color:#ff6600 !important;}
 #gift-card-verify .ui-content-internalpages .divhead h2{padding-top:0px !important; margin-bottom:0px;}
 #last4 h3{margin:5px 0 5px 0;}
- /* retina image changes */
-@media ( -webkit-min-device-pixel-ratio :2) {
-	#redemption-landing li div.arrow, #browse-landing .whitebg-list-view li div.arrow ,.rd-right-arrow,.rd-page.browse-partners .ui-icon{
-	background:url(../images/GrayArrow-2x.png) no-repeat right center; 
-	background-size:12px 12px;
-	margin-right:10px;
-	}
-	}
+
 #directDeposit3-pg ul.whitebg-list-view li ul.textsetting,
 #statementCredit2-pg ul.whitebg-list-view li ul.textsetting,
 #statementCredit3-pg ul.whitebg-list-view li ul.textsetting,
@@ -1149,7 +1161,7 @@ border:1px solid rgb(138, 138, 138) /*{a-bup-border}*/
 .faqWraper {
     display: inline-block;
     width: 100%;
-	margin-top:7px;
+	/*margin-top:7px;*/
 	height:30px;
 }
 
@@ -1161,9 +1173,10 @@ border:1px solid rgb(138, 138, 138) /*{a-bup-border}*/
 .ui-content-internalpages .redeemPartnerECTValue li.font14gray {color:#3d484d; font-size:20px !important; margin-left: 0px;}
 .ui-content-internalpages .redeemPartnerECTValue li.lighterGray {color:rgb(133, 142, 146) !important; padding-right:0px !important; font-size:20px !important}
 
-.rd-page .shipping-details-btm-border ul li, .shipping-detl-content ul li {padding:0px 6px}
+.rd-page .shipping-details-btm-border ul li, .shipping-detl-content ul li {padding:0px 10px}
 .browseAllPartners .ui-btn-up-c {border-top:0px !important;}
 #faqDeviceAlerts-pg .rdfaq-hidden-element a{ font-size:12px !important; color:#267bb1 !important; font-weight:normal !important;}
+
 
 /* retina image changes */
 @media ( -webkit-min-device-pixel-ratio :2) {
@@ -1178,8 +1191,6 @@ border:1px solid rgb(138, 138, 138) /*{a-bup-border}*/
 		-moz-background-size:54px 18px;
 	}
 }
-
-
 
 
 

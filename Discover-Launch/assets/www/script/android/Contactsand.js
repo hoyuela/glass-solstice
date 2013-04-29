@@ -2,11 +2,10 @@ var ContactsView = function() {};
 
 showAllContacts = function(successCallback, failureCallback) {   
 
-
-    return PhoneGap.exec(function(args) {
+    return PhoneGap.exec(function success(args) {
         document.getElementById("fullname").value = args.name;
         document.getElementById("emailOrphone").value = args.value;
-         }, failureCallback, 'ContactsViewPlugin', 'invokecontacts', ["jsonformat"]);
+         }, failureCallback, 'ContactsListPlugin', 'showContacts', ["jsonformat"]);
 };
 
 showAllContactsForRAF = function(successCallback, failureCallback) {   
@@ -20,9 +19,9 @@ showAllContactsForRAF = function(successCallback, failureCallback) {
           $('.email-inputs').val(args.value); 
 		}
 		$('.email-inputs').focus();
-		}, failureCallback, 'ContactsViewPlugin', 'invokecontacts', ["jsonformat"]);
+		}, failureCallback, 'ContactsListPlugin', 'invokecontacts', ["jsonformat"]);
 };
 
 PhoneGap.addConstructor(function() {
-    PhoneGap.addPlugin("contactsview", new Contacts());
+    //PhoneGap.addPlugin("contactsview", new Contacts());
 });

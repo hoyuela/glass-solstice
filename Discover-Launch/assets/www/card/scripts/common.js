@@ -48,6 +48,7 @@ var achomeData="";
 var isLhnNavigation  = false;
 var currentActivePage="";
 var errorFlag=false;
+var customErrPage="";
 /** **CONSTANTS and Global Variables End ** */
 
 /** Name Space**/
@@ -157,14 +158,17 @@ function onOffline()
 function onBackKeyDown () {
 console.log("inside onBackKeyDown");
 console.log("in back activepage beforing calling back "+currentActivePage);
-	if(pageTitle[currentActivePage] == null || currentActivePage == "pageError-pg")
+	if(currentActivePage != "cardHome-pg")
 	{
-		window.history.back();
-	}
-	else
-	{
-		console.log("calling native backpressed");
-		HybridControl.prototype.popCurrentFragment(null,null);
+		if(pageTitle[currentActivePage] == null && currentActivePage != "pageError-pg")
+		{
+			window.history.back();
+		}
+		else
+		{
+			console.log("calling native backpressed");
+			HybridControl.prototype.popCurrentFragment(null,null);
+		}
 	}
 //if($.mobile.activePage.is('#login-pg')){
 //e.preventDefault();
@@ -567,6 +571,7 @@ var display_date = today.defaultView();
 /**
  *	This function works for handling errors that occur throughout the application 
  */
+/* 
 function errorHandler(errorCode,customErrorMessage,menuHglt){
 	try{
 		var errorMsg;	
@@ -591,6 +596,83 @@ function errorHandler(errorCode,customErrorMessage,menuHglt){
 		});	
 		errorFlag=true;
 		navigation('../common/pageError');
+	}catch(err){
+		showSysException(err);
+	}
+}
+*/
+
+//Ankit's Changes for flip Switch toggle image
+
+var fnChangeSwitchStyle = function(){
+	$("#flip-b").die("change").live("change", function(){
+		var switchValue = $(this).val();
+		if(switchValue == 'yes' || switchValue == 'on'){
+			$(this).siblings(".ui-slider").addClass('activeSwitch');
+			}
+		else{
+			$(this).siblings(".ui-slider").removeClass('activeSwitch');
+	
+			}
+		$("flip-b").slider('refresh');	
+	
+	});
+}
+$('#cardLogin-pg,#manageAlerts-pg').live("pageshow",function(){
+fnChangeSwitchStyle();
+
+});
+//========================================
+
+/**
+ *	This function works for handling errors that occur throughout the application 
+ */
+function errorHandler(errorCode,customErrorMessage,menuHglt){
+	try{
+		var errorMsg;	
+		customErrPage=menuHglt;		
+		if (!isEmpty(customErrorMessage)) {
+			errorMsg=customErrorMessage;
+		}else{
+			var staticMessage=errorCodeMap[errorCode];
+			if(!isEmpty(staticMessage)) {
+				errorMsg=staticMessage;
+			}else{		
+				errorMsg=errorCodeMap['0'];
+			}
+		}
+
+		if (!isEmpty(errorMsg)){
+			cpEvent.preventDefault();
+		}
+
+		$('#pageError-pg').live('pagebeforeshow',function(){
+			$("#pageError_errorMessage").html(errorMsg);
+		});	
+		
+		var errorPageTitleHtml=$('#pageError-pg #pageError_errorMessage').html();
+		if(!isEmpty(errorPageTitleHtml)){
+			fromPageName = "pageError";
+		}
+		
+		if(fromPageName == "pageError"){
+
+			var errorPageTitleHtml=$('#pageError-pg #pageError_errorMessage').html();
+			if(isEmpty(errorPageTitleHtml)){
+				navigation("../common/pageError");	
+			}else{
+				$("#pageError_errorMessage").html(errorMsg);
+				 var activePage=$.mobile.activePage.attr('id');
+					 
+					if(isDeviceReady == true)
+					{      
+						if(activePage != "loadingPage-pg")
+							HybridControl.prototype.dismissProgressBar(null,null);
+       			 	} 		
+			}
+		}else{
+			navigation("../common/pageError");	
+		}
 	}catch(err){
 		showSysException(err);
 	}
@@ -1083,9 +1165,16 @@ $('[data-role=page]').live('pageshow', function(e,data){
 			if(toPageName != "loadingPage")
         		HybridControl.prototype.setTitleView(toPageName);
         }*/
+        
+		if(isEmpty(customErrPage)){		
         var activePage=$.mobile.activePage.attr('id');
         currentActivePage = activePage;
-                
+        }else{         
+		 activePage=pageTitleForError[customErrPage];
+         currentActivePage = activePage;
+         customErrPage="";
+		}
+		        
         switch (activePage){
 		case "login-pg":
 			clearTimeout(timer);
@@ -1150,7 +1239,7 @@ $('[data-role=page]').live('pageshow', function(e,data){
 	s.pageName=activePage;  
 
 	console.log("activepage beforing calling handlenativeframe "+activePage);
-	if(pageTitle[activePage] != null)
+	if(pageTitle[activePage] != null || activePage == "pageError-pg")
 	{
 		console.log("condition is true");
 		handleNativeFrame(activePage);

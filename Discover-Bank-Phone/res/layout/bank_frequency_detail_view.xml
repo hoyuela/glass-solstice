@@ -12,7 +12,7 @@
 
     <TextView
         android:id="@+id/continue_until_label"
-        style="@style/field_copy"
+        style="@style/field_copy_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -58,7 +58,7 @@
 
         <TextView
             android:id="@+id/canceled_label"
-            style="@style/field_copy"
+            style="@style/field_copy_medium"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="4"
@@ -111,7 +111,7 @@
 
             <TextView
                 android:id="@+id/date_label"
-                style="@style/field_copy"
+                style="@style/field_copy_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="false"
@@ -121,7 +121,7 @@
 
             <TextView
                 android:id="@+id/date_value"
-                style="@style/body_copy_title_max"
+                style="@style/body_copy_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -187,11 +187,11 @@
 
         <TextView
             android:id="@+id/transactions_label"
-            style="@style/field_copy"
+            style="@style/field_copy_medium"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
-            android:layout_weight="2.75"
+            android:layout_weight="2.25"
             android:text="@string/transfer_transactions"
             android:textColor="@color/field_copy" />
 
@@ -200,7 +200,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/forms_inner_padding"
-            android:layout_weight="1.75"
+            android:layout_weight="2.25"
             android:gravity="center_vertical"
             android:imeOptions="actionDone"
             android:textCursorDrawable="@null" />
@@ -252,10 +252,11 @@
 
         <TextView
             android:id="@+id/dollar_label"
-            style="@style/field_copy"
+            style="@style/field_copy_medium"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="2.25"
+            android:layout_weight="1.75"
+            android:singleLine="true"
             android:gravity="center_vertical"
             android:text="@string/transfer_dollar_amount"
             android:textColor="@color/field_copy" />
@@ -276,7 +277,7 @@
             style="@style/pmt_amount_style"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.75"
+            android:layout_weight="2.25"
             android:imeOptions="actionDone" />
     </LinearLayout>
 

@@ -36,10 +36,10 @@ import com.google.common.base.Strings;
 public class DepositSubmissionActivity extends BaseActivity implements CompletionListener {
 	/**The Debug TAG for this activity*/
 	final String TAG = DepositSubmissionActivity.class.getSimpleName();
-	
+
 	/**An AsyncTask that handles changing the loading image every second.*/
 	private SecondTimer timerAnimator = new SecondTimer();
-	
+
 	/**A reference to the Activity that launched this Activity */
 	private Activity callingActivity = null;
 
@@ -52,14 +52,14 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		DiscoverActivityManager.setActiveActivity(this);
 		submit();
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		/**
 		 * Do nothing because we want the back button to be disabled for this activity.
 		 */
 	}
-	
+
 	/**
 	 * Submit the check images and the information about the checks and what account to deposit to.
 	 */
@@ -74,13 +74,13 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 
 		if(extras != null){
 			account = (Account)extras.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-			
+
 			if(account != null){
 				detail = new DepositDetail();
 				detail.amount = new Money();
 				detail.amount.value = extras.getInt(BankExtraKeys.AMOUNT);
 				detail.account = Integer.parseInt(account.id);		
-			
+
 				detail.frontImage = getCompressedImageFromPath(CheckDepositCaptureActivity.FRONT_PICTURE);
 				detail.backImage = getCompressedImageFromPath(CheckDepositCaptureActivity.BACK_PICTURE);
 			}else {
@@ -91,7 +91,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		}
 		return detail;
 	}
-	
+
 	/**
 	 * Returns a compressed JPEG image that is base64 encoded given a path name to an image.
 	 * @param path the path of an image to decode and compress.
@@ -105,28 +105,31 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		if(!Strings.isNullOrEmpty(path)) {
 			final ByteArrayOutputStream imageBitStream = new ByteArrayOutputStream();
 			Bitmap decodedImage = null;
-			
+
 			final File pictureFile = getFileStreamPath(path);
 
-			if(pictureFile != null)
+			if(pictureFile != null) {
 				decodedImage = BitmapFactory.decodeFile(pictureFile.getAbsolutePath());
-			else
+			} else {
 				Log.e(TAG, "Error : Could Not Decode image from file path!");
-			
-			if(decodedImage != null)
+			}
+
+			if(decodedImage != null) {
 				decodedImage.compress(Bitmap.CompressFormat.JPEG, jpegCompressionQuality, imageBitStream);
-			else
+			} else {
 				Log.e(TAG, "Error : Could not compress decoded image!");
-			
+			}
+
 			base64Image.append(Base64.encodeToString(imageBitStream.toByteArray(), Base64.NO_WRAP));
-			
-			if(Strings.isNullOrEmpty(base64Image.toString()))
+
+			if(Strings.isNullOrEmpty(base64Image.toString())) {
 				Log.e(TAG, "Error : Compressed Image is Empty!");
+			}
 		}
-		
+
 		return base64Image.toString();
 	}
-	
+
 	//Start the animator task.
 	@Override
 	public void onResume() {
@@ -134,19 +137,19 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		timerAnimator = new SecondTimer();
 		timerAnimator.execute();
 	}
-	
+
 	//Stop the animator task.
 	@Override
 	public void onPause() {
 		super.onPause();
 		timerAnimator.cancel(true);
 	}
-	
+
 	@Override
 	public ErrorHandler getErrorHandler() {
 		return null;
 	}
-	
+
 	/**An index value used for looping through all possible loading images */
 	private int count = 0;
 	protected void cycleBankImage() {
@@ -156,12 +159,13 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		final int bankImages[] = {R.drawable.bank_fill_1, R.drawable.bank_fill_2, R.drawable.bank_fill_3};
 
 		count++;
-		if(count >= bankImages.length)
+		if(count >= bankImages.length) {
 			count = 0;
-		
+		}
+
 		bankImage.setImageDrawable(getResources().getDrawable(bankImages[count]));
 	}
-	
+
 	/**
 	 * An infinitely running AsyncTask that will animate the loading image in this Activity.
 	 * @author scottseward
@@ -177,7 +181,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 			}
 			return null;
 		}
-		
+
 		/**
 		 * Restart the timer and animation every time one finishes.
 		 */
@@ -187,7 +191,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 			timerAnimator = new SecondTimer();
 			timerAnimator.execute();
 		}
-		
+
 	}
 
 	@Override
@@ -199,12 +203,12 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	public void complete(final NetworkServiceCall<?> sender, final Object result) {
 		DiscoverActivityManager.setActiveActivity(callingActivity);
 		finish();
-		
+
 		final Bundle extras = this.getIntent().getExtras();
 		final Account account = (Account)extras.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		BankServiceCallFactory.createGetAccountLimits(account, true).submit();
 	}
-	
+
 	@Override
 	public void startProgressDialog() {		
 		//do nothing

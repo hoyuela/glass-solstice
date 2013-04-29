@@ -1,3 +1,89 @@
+/* over write font family to ROBOTO font start */
+
+/*@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Regular'), local('Roboto-Regular'), url(../Roboto-Regular.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roboto Bold'), local('Roboto-Bold'), url(../Roboto-Bold.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Roboto Italic'), local('Roboto-Italic'), url(../Roboto-Italic.woff) format('woff');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'), url(../Roboto-BoldItalic.woff) format('woff');
+}
+ 
+body,
+input, textarea, label, a, h1, h2, h3, h4, p, div, span,dl, ul, li,
+.ui-btn-active,
+.ui-bar-a,
+.ui-bar-a input,
+.ui-bar-a select,
+.ui-bar-a textarea,
+.ui-bar-a button,
+.ui-body-a,
+.ui-body-a input,
+.ui-body-a select,
+.ui-body-a textarea,
+.ui-body-a button ,
+.ui-btn-up-a,
+.ui-btn-hover-a,
+.ui-btn-down-a,
+.ui-bar-b,
+.ui-bar-b input,
+.ui-bar-b select,
+.ui-bar-b textarea,
+.ui-bar-b button,
+.ui-body-b,
+.ui-body-b input,
+.ui-body-b select,
+.ui-body-b textarea,
+.ui-body-b button,
+.ui-btn-up-b,
+.ui-btn-hover-b,
+.ui-btn-down-b,
+.ui-bar-c,
+.ui-bar-c input,
+.ui-bar-c select,
+.ui-bar-c textarea,
+.ui-bar-c button,
+.ui-body-c,
+.ui-body-c input,
+.ui-body-c select,
+.ui-body-c textarea,
+.ui-body-c button,
+.ui-btn-up-c,
+.ui-btn-hover-c,
+.ui-btn-down-c,
+.ui-bar-d,
+.ui-bar-d input,
+.ui-bar-d select,
+.ui-bar-d textarea,
+.ui-bar-d button,
+.ui-body-d,
+.ui-body-d input,
+.ui-body-d select,
+.ui-body-d textarea,
+.ui-body-d button,
+.ui-btn-up-d,
+.ui-btn-hover-d,
+.ui-btn-down-d
+ {font-family: 'Roboto';}*/
+ 
+/* over write font family to ROBOTO font end */
+
 body.ui-mobile-viewport,div.ui-mobile-viewport {
 	/* background: #1A1A1A; */
 }
@@ -18,6 +104,7 @@ body.ui-mobile-viewport,div.ui-mobile-viewport {
 	padding: 0 5px 0 5px;
 	line-height:26px;
 }
+
 .white-box-rd-corner .small_btn_110px {
 	background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713) !important;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053), to(#fc510b), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) ) !important;
@@ -88,7 +175,7 @@ border: 1px solid grey;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053), to(#ef6713), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f));
 }
 /*from app start */
-span.small_btn_150px .ui-btn-up-c, span.small_btn_150px .ui-btn-hover-c{padding:0 25px 0 25px; line-height:20px; margin-left:10px;}
+span.small_btn_150px .ui-btn-up-c, span.small_btn_150px .ui-btn-hover-c{padding:0 25px 0 25px; /*line-height:20px;*/ margin-left:10px;}
 span input.small_btn_150px .ui-btn-up-c, span input.small_btn_150px .ui-btn-hover-c{padding:0 25px 0 25px;line-height:20px; margin-left:10px;}
 #paymentsHistory-pg .txtcenteraln .small_btn{padding:0 15px 0 15px !important}
 /*#paymentsHistory-pg .txtcenteraln .small_btn.ui-btn-hover-c{padding:0 15px 0 15px !important}*/
@@ -150,7 +237,7 @@ span input.small_btn_150px .ui-btn-up-c, span input.small_btn_150px .ui-btn-hove
 }
 /*space management */ 
 .ui-btn-inner {
- padding: 5px;
+ padding: 5px 1px 5px 1px;
  font-size: 12px; /* JQM UC1 */
 }
 /* JQM UC1 */
@@ -363,10 +450,11 @@ height: 28px;
 
 div.ui-slider-switch {
 	/*height: 34px !important;*/
-	width:85px;
+	width:85px !important;
 margin-left: 16px;
 	/*border-radius: 2px;
 	-webkit-border-radius: 2px;*/
+	height: 27px;
 }
 
 #card-login .ui-btn-down-d,#manageAlerts-pg .ui-btn-down-d  {border:0px !important}
@@ -374,7 +462,7 @@ margin-left: 16px;
 span.ui-slider-label {
 	font-size: 16px;
 	text-shadow: #000 1px 1px 2px;
-	line-height: 35px;
+	line-height: 30px;
 	border-radius: 4px;
 	-webkit-border-radius: 4px;
 	/*border:1px solid #aaa;*/
@@ -465,6 +553,10 @@ padding: 3px 8px 3px 8px;
 
 #manageAlerts-pg #id-notify-cancel  {font-size:17px; color:#267bb1 !important}
 
+#globalErrorDiv span.blueLink a {
+                color: #09C !important;
+                text-decoration: none;
+}
 /************************************************************************************************/
 /******************* Please uncomment below 2 classes to hide header and footer *****************/
 .ui-page.ui-body-c, .ui-page-active {padding-top:0px !important; padding-bottom:0px !important;}

@@ -270,6 +270,7 @@ if(x=="disabled")
 		$(this).prev().hide();
 		$(this).next().show();
 		$(this).next().select();
+		$("#subject").val('');
 	});
 	
 	
@@ -965,6 +966,7 @@ dfs.crd.raf.getConfirmationMessage = function(eventCurrentTargetID) {
 			}
 		}
 	}
+	dfs.crd.sct.rafConfirmationOverlay(myDivId);//site catalyst implementation for Refer a Friend - Confirmation Overlay (Track by Type)
 }
 
 dfs.crd.raf.cbbReferAFriend = function(){

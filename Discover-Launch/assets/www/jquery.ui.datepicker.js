@@ -264,11 +264,13 @@ function Datepicker() {
 		yearSuffix: '' // Additional text to append to the year in the month headers
 	};
 	this._defaults = { // Global defaults for all the date picker instances
+	    isSearchTransaction:false,
 		showOn: 'focus', // 'focus' for popup on focus,
 			// 'button' for trigger button, or 'both' for either
 		showAnim: 'show', // Name of jQuery animation for popup
 		showOptions: {}, // Options for enhanced animations
 		dueDate:null,
+		minDueDate:null,
 		defaultDate: null, // Used when field is blank: actual date,
 			// +/-number for offset from today, null for today
 		appendText: '', // Display text following the input box, e.g. showing the format
@@ -1062,7 +1064,7 @@ $.extend(Datepicker.prototype, {
 			return;
 		}
 		var inst = this._getInst(target[0]);
-		inst.selectedDay = inst.currentDay = $('a', td).html();
+		inst.selectedDay = inst.currentDay = $('a', td).html().substring(0,2);
 		inst.selectedMonth = inst.currentMonth = month;
 		inst.selectedYear = inst.currentYear = year;
 		this._selectDate(id, this._formatDate(inst,
@@ -1566,7 +1568,11 @@ $.extend(Datepicker.prototype, {
 		var currentDate = this._daylightSavingAdjust((!inst.currentDay ? new Date(9999, 9, 9) :
 			new Date(inst.currentYear, inst.currentMonth, inst.currentDay)));
 		var minDate = this._getMinMaxDate(inst, 'min');
-		var dueDate = this._get(inst,"dueDate");
+		var dueDate = this._getDueDate(inst,'dueDate');
+        var minDueDate = this._getDueDate(inst,'minDueDate');
+		
+		 var isSearchTransaction = this._get(inst,'isSearchTransaction');
+ 
 		var maxDate = this._getMinMaxDate(inst, 'max');
 		var drawMonth = inst.drawMonth - showCurrentAtPos;
 		var drawYear = inst.drawYear;
@@ -1630,6 +1636,7 @@ $.extend(Datepicker.prototype, {
 		var selectOtherMonths = this._get(inst, 'selectOtherMonths');
 		var calculateWeek = this._get(inst, 'calculateWeek') || this.iso8601Week;
 		var defaultDate = this._getDefaultDate(inst);
+		
 		var html = '';
 	 
 		for (var row = 0; row < numMonths[0]; row++) {
@@ -1675,34 +1682,47 @@ $.extend(Datepicker.prototype, {
 					var tbody = (!showWeek ? '' : '<td class="ui-datepicker-week-col">' +
 						this._get(inst, 'calculateWeek')(printDate) + '</td>');
 					for (var dow = 0; dow < 7; dow++) { // create date picker days
+					    
+						//console.log(unselectable+" "+printDate.getTime());
 						var daySettings = (beforeShowDay ?
 							beforeShowDay.apply((inst.input ? inst.input[0] : null), [printDate]) : [true, '']);
 						var otherMonth = (printDate.getMonth() != drawMonth);
 						var unselectable = (otherMonth && !selectOtherMonths) || !daySettings[0] ||
-							(minDate && printDate < minDate) || (maxDate && printDate > maxDate);
+							(minDate && printDate < minDate) || (maxDate && printDate > maxDate) || (printDate.getTime() > today.getTime() && isSearchTransaction);
 						tbody += '<td class="' +
+						      
 							((dow + firstDay + 6) % 7 >= 5 ? ' ui-datepicker-week-end' : '') + // highlight weekends
+							((printDate.getTime() > today.getTime() &&  isSearchTransaction) ? 'tomorrow' : '')  + // after Current day
 							(otherMonth ? ' ui-datepicker-other-month' : '') + // highlight days from other months
+							
 							((printDate.getTime() == selectedDate.getTime() && drawMonth == inst.selectedMonth && inst._keyEvent) || // user pressed key
 							(defaultDate.getTime() == printDate.getTime() && defaultDate.getTime() == selectedDate.getTime()) ?
 							// or defaultDate is current printedDate and defaultDate is selectedDate
 							' ' + this._dayOverClass : '') + // highlight selected day
 							(unselectable ? ' ' + this._unselectableClass + ' ui-state-disabled': '') +  // highlight unselectable days
-							(dueDate-printDate===0?' '+"dueDateParCs":'')+
+							(new Date(dueDate).getTime()<new Date(minDueDate).getTime() && (dueDate-printDate)===0 ? " dueDateParCsRed ": new Date(dueDate).getTime()>=new Date(minDueDate).getTime() && dueDate-printDate===0?' '+" dueDateParCs ":' ')+//[C11]
 							(otherMonth && !showOtherMonths ? '' : ' ' + daySettings[1] + // highlight custom dates
 							(printDate.getTime() == currentDate.getTime() ? ' ' + this._currentClass : '') + // highlight selected day
 							(printDate.getTime() == today.getTime() ? ' ui-datepicker-today' : '')) + '"' + // highlight today (if different)
+							
+							
 							((!otherMonth || showOtherMonths) && daySettings[2] ? ' title="' + daySettings[2] + '"' : '') + // cell title
 							(unselectable ? '' : ' onclick="DP_jQuery_' + dpuuid + '.datepicker._selectDay(\'#' +
 							inst.id + '\',' + printDate.getMonth() + ',' + printDate.getFullYear() + ', this);return false;"') + '>' + // actions
 							(otherMonth && !showOtherMonths ? '&#xa0;' : // display for other months
-							(unselectable ? '<span class="ui-state-default">' + printDate.getDate() + '</span>' : '<a class="ui-state-default' +
+							(unselectable ? '<span class="ui-state-default">' + printDate.getDate() +
+							(new Date(dueDate).getTime()<new Date(minDueDate).getTime() && (dueDate-printDate)===0 ?  "<span class='dueDateTextRed'>DUE</span>": new Date(dueDate).getTime()>=new Date(minDueDate).getTime() && dueDate-printDate===0?"<span class='dueDateText'>DUE</span>":' ')
+							+ '</span>'
+							
+							: '<a class="ui-state-default' +
 							(printDate.getTime() == today.getTime() ? ' ui-state-highlight' : '') +
 							(printDate.getTime() == currentDate.getTime() ? ' ui-state-active' : '') + // highlight selected day
 							(otherMonth ? ' ui-priority-secondary' : '') + // distinguish dates from other months
-							(dueDate-printDate===0?' '+"dueDateCs":'')+
+							(new Date(dueDate).getTime()<new Date(minDueDate).getTime() && (dueDate-printDate)===0 ?  " dueDateCsRed ": new Date(dueDate).getTime()>=new Date(minDueDate).getTime() && dueDate-printDate===0?" dueDateCs ":' ')+
+							//(printDate.getTime() >= today.getTime()) ? ' tomorrow' : ''  + // after Current day
 							'" href="#">' + printDate.getDate() +
-							(dueDate-printDate===0?' '+"<span class='dueDateText'>DUE</span>":'')+
+							(new Date(dueDate).getTime()<new Date(minDueDate).getTime() && (dueDate-printDate)===0 ?  "<span class='dueDateTextRed'>DUE</span>": new Date(dueDate).getTime()>=new Date(minDueDate).getTime() && dueDate-printDate===0?"<span class='dueDateText'>DUE</span>":' ')+
+							 
 							
 							 '</a>')) +
 							
@@ -1780,7 +1800,7 @@ $.extend(Datepicker.prototype, {
 			var endYear = Math.max(year, determineYear(years[1] || ''));
 			year = (minDate ? Math.max(year, minDate.getFullYear()) : year);
 			endYear = (maxDate ? Math.min(endYear, maxDate.getFullYear()) : endYear);
-			html += '<select class="ui-datepicker-year" ' +
+			html += '<select id="calYearPicker" class="ui-datepicker-year" ' +
 				'onchange="DP_jQuery_' + dpuuid + '.datepicker._selectMonthYear(\'#' + inst.id + '\', this, \'Y\');" ' +
 				'onclick="DP_jQuery_' + dpuuid + '.datepicker._clickMonthYear(\'#' + inst.id + '\');"' +
 				'>';
@@ -1841,6 +1861,10 @@ $.extend(Datepicker.prototype, {
 		return this._determineDate(inst, this._get(inst, minMax + 'Date'), null);
 	},
 
+	_getDueDate:function(inst,dueDate){
+		return this._determineDate(inst, this._get(inst, dueDate), null);
+	},
+	 
 	/* Find the number of days in a given month. */
 	_getDaysInMonth: function(year, month) {
 		return 32 - new Date(year, month, 32).getDate();

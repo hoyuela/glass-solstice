@@ -1,4 +1,4 @@
 {
-    "pendingPayments" : "<li class ='borderbottom '><div><div class='col1'>!~paymentDate~!</div><div class='col2'>!~paymentMethod~!</div><div class='col3 boldtext'>!~paymentAmount~!</div></div><div class='accountsearchresult'><div class='toprow1'>!~bank~!</div></div></li>",
-	"paymentsHistory" : "<li class ='borderbottom'><div><div class='col1'>!~paymentDate~!</div><div class='col2'>!~paymentMethod~!</div><div class='col3 boldtext'>$!~paymentAmount~!</div></div><div class='accountsearchresult'><div class='toprow1'>!~bank~!</div></div></li>"
+    "pendingPayments" : "<li class ='borderbottom '><div><div class='accountsearchresult'><div class='toprow1'>!~bank~!</div></div><div class='col1'>!~paymentDate~!</div><div class='col2'>!~paymentMethod~!</div><div class='col3'>!~paymentAmount~!</div></div></li>",
+	"paymentsHistory" : "<li class ='borderbottom'><div><div class='accountsearchresult'><div class='toprow1'>!~bank~!</div></div><div class='col1'>!~paymentDate~!</div><div class='col2'>!~paymentMethod~!</div><div class='col3'>$!~paymentAmount~!</div></div></li>"
 }
