@@ -4,6 +4,8 @@
 package com.discover.mobile.bank.atm;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -211,9 +213,16 @@ public final class AtmModalFactory{
 	 * @return the modal that will ask the user if they would like to allow
 	 * the app to use their current location
 	 */
-	public static ModalAlertWithOneButton getAtmLocatorHelpModal(final Context context){
-		final AtmLocatorHelpModalTop top  = new AtmLocatorHelpModalTop(context, null);
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(context, top, null);
+	public static ModalAlertWithOneButton getAtmLocatorHelpModal(final AtmMapFragment fragment){
+		final AtmLocatorHelpModalTop top  = new AtmLocatorHelpModalTop(fragment.getActivity(), null);
+		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(fragment.getActivity(), top, null);
+		modal.setOnDismissListener(new OnDismissListener(){
+			@Override
+			public void onDismiss(final DialogInterface dialog) {
+				fragment.setHelpModalShowing(false);
+
+			}
+		});
 
 		return modal;
 	}

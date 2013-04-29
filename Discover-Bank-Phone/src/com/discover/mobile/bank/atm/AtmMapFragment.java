@@ -142,7 +142,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		/**
 		 * Check if this is called because of rotation or because it is the first time it is instantiated.
 		 * Nested Fragments should only be instantiated on the initial creation of this fragment.
@@ -157,15 +157,23 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
-		View view = inflater.inflate(getLayout(), null);
-		
+		final View view = inflater.inflate(getLayout(), null);
+
 		/**
 		 * The map and list fragments should only be added if they aren't already on the back stack. These
 		 * are the only nested fragments that should be on the back stack of the child fragment manager for this fragment.
 		 */
 		if( getChildFragmentManager().getBackStackEntryCount() == 0 ) {
-			this.getChildFragmentManager().beginTransaction().add(R.id.discover_map, fragment).addToBackStack(fragment.getClass().getSimpleName()).commit();
-			this.getChildFragmentManager().beginTransaction().add(R.id.discover_list, listFragment).addToBackStack(listFragment.getClass().getSimpleName()).commit();
+			this.getChildFragmentManager()
+			.beginTransaction()
+			.add(R.id.discover_map, fragment)
+			.addToBackStack(fragment.getClass().getSimpleName())
+			.commit();
+			this.getChildFragmentManager()
+			.beginTransaction()
+			.add(R.id.discover_list, listFragment)
+			.addToBackStack(listFragment.getClass().getSimpleName())
+			.commit();
 		}
 		/**
 		 * If fragments are already on the back stack then just do a look up in the back stack.
@@ -175,7 +183,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			listFragment = (AtmListFragment)getChildFragmentManager().findFragmentById(R.id.discover_list);
 			listFragment.setObserver(this);
 		}
-		
+
 		final WebView web = (WebView) view.findViewById(R.id.web_view);
 		final ProgressBar bar = (ProgressBar) view.findViewById(R.id.progress_bar);
 		streetView = new AtmWebView(web, bar);
@@ -194,7 +202,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		setUpListeners();
 		disableMenu();
 		savedState = getArguments();
-		
+
 		return view;
 	}
 
@@ -205,7 +213,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void onResume(){
 		super.onResume();
-		
+
 		final NavigationRootActivity activity = ((NavigationRootActivity)this.getActivity());
 		activity.setCurrentFragment(this);
 		setUpMap();
@@ -233,9 +241,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		if( fragment.getView() != null && fragment.getMap() != null ) {
 			setMapTransparent((ViewGroup)fragment.getView());
 		}
-	
+
 		if(isHelpModalShowing()){
-			HelpMenuListFactory.instance().showAtmHelpModal();
+			HelpMenuListFactory.instance().showAtmHelpModal(this);
 		}		
 	}
 
@@ -360,16 +368,16 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			AtmModalFactory.getInvalidAddressModal(this.getActivity()).show();
 		}else{
 			final AddressToLocationResultDetail address = addressResults.results.get(0);
-			final Location location = new Location(LocationManager.GPS_PROVIDER);
-			location.setLatitude(address.geometry.endLocation.lat);
-			location.setLongitude(address.geometry.endLocation.lon);
+			final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
+			newLocation.setLatitude(address.geometry.endLocation.lat);
+			newLocation.setLongitude(address.geometry.endLocation.lon);
 			mapWrapper.clear();
 			currentIndex = 0;
-			mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, this.getActivity());
-			
-			zoomToLocation(location);
-			
-			getAtms(location);
+			mapWrapper.setUsersCurrentLocation(newLocation, R.drawable.atm_starting_point_pin, this.getActivity());
+
+			zoomToLocation(newLocation);
+
+			getAtms(newLocation);
 			hasLoadedAtms = true;
 		}
 	}
@@ -425,7 +433,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	 * @param savedInstanceState - bundle holding the state of the fragment
 	 */
 	private void resumeStateOfFragment(final Bundle savedInstanceState) {
-	
+
 		locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
 		final Double lat = savedInstanceState.getDouble(LAT_KEY);
 		final Double lon = savedInstanceState.getDouble(LONG_KEY);
@@ -442,11 +450,11 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			if(null != results){
 				hasLoadedAtms = true;
 			}
-			final Location location = new Location(LocationManager.GPS_PROVIDER);
-			location.setLatitude(lat);
-			location.setLongitude(lon);
-			mapWrapper.setCurrentLocation(location);
-			setUserLocation(location);
+			final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
+			newLocation.setLatitude(lat);
+			newLocation.setLongitude(lon);
+			mapWrapper.setCurrentLocation(newLocation);
+			setUserLocation(newLocation);
 			if(null != results){
 				mapWrapper.addObjectsToMap(results.results.atms.subList(0, currentIndex));
 				hasLoadedAtms = true;
@@ -459,7 +467,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 				showStreetView(savedInstanceState);
 			}
 		}
-		
+
 	}
 
 	/**
@@ -517,7 +525,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	}
 
 	private boolean isListEmpty(){
-		return (null == results || null == results.results || null == results.results.atms || results.results.atms.isEmpty());
+		return (null == results || null == results.results ||
+				null == results.results.atms || results.results.atms.isEmpty());
 	}
 
 	@Override
@@ -541,9 +550,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		locationStatus = LOCKED_ON;
 		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, this.getActivity());
 		if(null == location){return;}
-		
+
 		zoomToLocation(location);
-		
+
 		if(!hasLoadedAtms){
 			getAtms(location);
 			hasLoadedAtms = true;
@@ -569,13 +578,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		locationManagerWrapper.stopGettingLocaiton();
 
 		searchBar.saveState(outState);
-		if(null != locationModal && locationModal.isShowing()){
-			locationModal.dismiss();
-		} else if(null != settingsModal && settingsModal.isShowing()){
-			settingsModal.dismiss();
-		} else if(null != locationFailureModal && locationFailureModal.isShowing()){
-			locationFailureModal.dismiss();
-		}
+		hideModalIfNeeded();
 		outState.putInt(LOCATION_STATUS, locationStatus);
 		if(null != mapWrapper.getCurrentLocation()){
 			outState.putDouble(LAT_KEY, mapWrapper.getCurrentLocation().getLatitude());
@@ -584,6 +587,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		if(results != null){
 			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, results);
 		}
+		outState.putBoolean(ATM_HELP_MODAL, isHelpModalShowing());
 		outState.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
 		outState.putBoolean(BUTTON_KEY, isOnMap);
 		outState.putBoolean(STREET_VIEW_SHOWING, shouldGoBack);
@@ -592,13 +596,26 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		}
 	}
 
+	/**
+	 * Hide one of the modals if they are showing
+	 */
+	private void hideModalIfNeeded() {
+		if(null != locationModal && locationModal.isShowing()){
+			locationModal.dismiss();
+		} else if(null != settingsModal && settingsModal.isShowing()){
+			settingsModal.dismiss();
+		} else if(null != locationFailureModal && locationFailureModal.isShowing()){
+			locationFailureModal.dismiss();
+		}
+	}
+
 	@Override
 	public void onPause(){
 		super.onPause();
-		
+
 		location = mapWrapper.getCurrentLocation();
 		enableMenu();
-		
+
 		/**
 		 * Save the state of this fragment in the argument bundle provided
 		 * at instantiation. This allows for the data to persist even
@@ -808,8 +825,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	public void setHelpModalShowing(final boolean helpModalShowing) {
 		this.helpModalShowing = helpModalShowing;
 	}
-	
-	private void zoomToLocation(Location location) {
+
+	private void zoomToLocation(final Location location) {
 		if (LocationManager.GPS_PROVIDER == location.getProvider()) {
 			mapWrapper.zoomToLocation(location, MAP_CURRENT_GPS_ZOOM);
 		} else {
