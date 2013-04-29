@@ -35,6 +35,9 @@ import com.google.android.gms.maps.model.Marker;
  */
 public class AtmMarkerBalloonManager{
 
+	/**Empty String for converting to an address*/
+	private static final String EMPTY_STRING = " ";
+
 	/**Map of markers and atm so that the atm*/
 	private final Map<Marker, AtmDetail> markerMap;
 
@@ -103,7 +106,7 @@ public class AtmMarkerBalloonManager{
 	private View getMarkerView(final AtmDetail atm) {
 		final View view = LayoutInflater.from(context).inflate(R.layout.bank_atm_marker_info, null);
 		final TextView name = (TextView) view.findViewById(R.id.name);
-		final TextView address = (TextView) view.findViewById(R.id.address);
+		final TextView addressField = (TextView) view.findViewById(R.id.address);
 		final TextView hoursLabel = (TextView) view.findViewById(R.id.hours_label);
 		final ImageView hoursDivider = (ImageView) view.findViewById(R.id.divider1);
 		final ImageView directionsDivider = (ImageView) view.findViewById(R.id.divider3);
@@ -115,12 +118,13 @@ public class AtmMarkerBalloonManager{
 		}else{
 			name.setText(atm.locationName);
 		}
-		address.setText(atm.address1);
+		addressField.setText(atm.address1);
 		if(atm.atmHrs.equalsIgnoreCase(AtmDetail.UNKNOWN)){
 			hours.setVisibility(View.GONE);
 			hoursLabel.setVisibility(View.GONE);
 			hoursDivider.setVisibility(View.GONE);
-			final RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)directionsDivider.getLayoutParams();
+			final RelativeLayout.LayoutParams layoutParams = 
+					(RelativeLayout.LayoutParams)directionsDivider.getLayoutParams();
 			layoutParams.addRule(RelativeLayout.BELOW, R.id.top_layout);
 			directionsDivider.setLayoutParams(layoutParams);
 		}else{
@@ -146,26 +150,13 @@ public class AtmMarkerBalloonManager{
 	 */
 	public GoogleMap.OnInfoWindowClickListener getOnClickListener(){
 		return new OnInfoWindowClickListener(){
-
 			@Override
 			public void onInfoWindowClick(final Marker marker) {
 				final AtmDetail atm = markerMap.get(marker); 
 				//Means it was the current location that was clicked.
 				if(null != atm){
 					try {
-						final String addressString =  atm.address1 + " "  + atm.city +" " + atm.state;
-						final Geocoder coder = new Geocoder(context);
-						final List<Address> addresses = coder.getFromLocationName(addressString, 1);
-						final Bundle bundle = new Bundle();
-						if(null == addresses || addresses.isEmpty()){
-							bundle.putDouble(BankExtraKeys.STREET_LAT, addresses.get(0).getLatitude());
-							bundle.putDouble(BankExtraKeys.STREET_LON, addresses.get(0).getLongitude());						
-						}else{
-							bundle.putDouble(BankExtraKeys.STREET_LAT, atm.getLatitude());
-							bundle.putDouble(BankExtraKeys.STREET_LON, atm.getLongitude());	
-						}
-						bundle.putInt(BankExtraKeys.ATM_ID, atm.id);
-						fragment.showStreetView(bundle);
+						fragment.showStreetView(getStreetViewBundle(atm));
 					} catch (final IOException e) {
 						if(Log.isLoggable(AtmMarkerBalloonManager.class.getSimpleName(), Log.ERROR)){
 							Log.e(AtmMarkerBalloonManager.class.getSimpleName(), "Error Getting Street View:" + e);
@@ -174,6 +165,28 @@ public class AtmMarkerBalloonManager{
 				}				
 			}
 		};
+	}
+
+	/**
+	 * Create the bundle so that street view can be shown
+	 * @param atm - atm to create the bundle for
+	 * @return the bundle so that street view can be shown
+	 * @throws IOException
+	 */
+	protected Bundle getStreetViewBundle(final AtmDetail atm) throws IOException{
+		final String addressString =  atm.address1 + EMPTY_STRING  + atm.city + EMPTY_STRING + atm.state;
+		final Geocoder coder = new Geocoder(context);
+		final List<Address> addresses = coder.getFromLocationName(addressString, 1);
+		final Bundle bundle = new Bundle();
+		if(null != addresses &&  !addresses.isEmpty()){
+			bundle.putDouble(BankExtraKeys.STREET_LAT, addresses.get(0).getLatitude());
+			bundle.putDouble(BankExtraKeys.STREET_LON, addresses.get(0).getLongitude());
+		}else{
+			bundle.putDouble(BankExtraKeys.STREET_LAT, atm.getLatitude());
+			bundle.putDouble(BankExtraKeys.STREET_LON, atm.getLongitude());	
+		}
+		bundle.putInt(BankExtraKeys.ATM_ID, atm.id);
+		return bundle;			
 	}
 
 	/**
