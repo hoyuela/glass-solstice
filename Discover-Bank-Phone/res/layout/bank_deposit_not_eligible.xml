@@ -46,7 +46,7 @@
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:drawablePadding="@dimen/between_related_elements_padding"
-            android:drawableRight="@drawable/external_link_icon"
+            android:drawableRight="@drawable/external_link_icon_white"
             android:text="@string/bank_open_account" />
 
         <com.discover.mobile.bank.ui.widgets.BankLayoutFooter

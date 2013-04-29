@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/openAccountDetails"
-            android:drawableRight="@drawable/external_link_icon"
+            android:drawableRight="@drawable/external_link_icon_white"
             android:layout_marginTop="@dimen/modal_footer_topmargin"
             android:drawablePadding="@dimen/between_related_elements_padding"
             android:layout_gravity="center"

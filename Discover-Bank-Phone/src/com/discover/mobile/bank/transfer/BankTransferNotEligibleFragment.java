@@ -31,7 +31,7 @@ public class BankTransferNotEligibleFragment extends BankMessageFragment{
 			final Bundle savedInstanceState) {	
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
-		actionButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.external_link_icon, 0);
+		actionButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.external_link_icon_white, 0);
 		actionButton.setCompoundDrawablePadding((int) getResources().getDimension(R.dimen.between_related_elements_padding));
 
 		/**Help widget setup to show faq*/
