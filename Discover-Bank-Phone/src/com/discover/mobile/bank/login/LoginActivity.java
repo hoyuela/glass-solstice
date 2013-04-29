@@ -919,8 +919,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	public void openAtmLocator() {
 		BankTrackingHelper.forceTrackPage(R.string.bank_atm_start);
-		final Intent newVisibleIntent = new Intent(this, AtmLocatorActivity.class);
-		this.startActivity(newVisibleIntent);
+		launchActivityFromClass(AtmLocatorActivity.class);
 	}
 
 	/**
