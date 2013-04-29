@@ -523,7 +523,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		fromCell.getDividerLine().setVisibility(View.INVISIBLE);
 		fromCell.getTopLabel().setText(R.string.from);
 		fromCell.getMiddleLabel().setText(R.string.select_account);
-
+		fromCell.getMiddleLabel().setSingleLine(false);
+		fromCell.getMiddleLabel().setMaxLines(2);
 		fromCell.getView().setOnClickListener(fromAccountClickListener);
 		fromCell.getTopLabel().setTextAppearance(getActivity(), R.style.field_copy_medium);
 		fromCell.getMiddleLabel().setTextAppearance(getActivity(), R.style.body_copy_title);
@@ -541,7 +542,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	private BankSimpleEditDetail getToListItem(final Activity currentActivity) {
 		toCell = new BankSimpleEditDetail(currentActivity);
 		toCell.getMiddleLabel().setText(R.string.select_account);
-
+		toCell.getMiddleLabel().setSingleLine(false);
+		toCell.getMiddleLabel().setMaxLines(2);
 		toCell.getDividerLine().setVisibility(View.VISIBLE);
 		toCell.getTopLabel().setText(R.string.to);
 		toCell.getView().setOnClickListener(toAccountClickListener);
