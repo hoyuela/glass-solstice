@@ -179,11 +179,11 @@
         <receiver android:name="com.xtify.sdk.c2dm.C2DMBroadcastReceiver" >
             <intent-filter android:permission="com.google.android.c2dm.permission.SEND" >
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.discover.mobile" />
+                <category android:name="com.discoverfinancial.mobile" />
             </intent-filter>
             <intent-filter android:permission="com.google.android.c2dm.permission.SEND" >
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="com.discover.mobile" />
+                <category android:name="com.discoverfinancial.mobile" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.discover.mobile.card.push.receive.XtifyNotifier" >
@@ -220,7 +220,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".bank.atm.AtmLocatorActivity"
+        <activity android:name="com.discover.mobile.bank.atm.AtmLocatorActivity"
             android:windowSoftInputMode="adjustPan"></activity>
 
         <!-- Broadcast Receiver to logout user out of the application -->
@@ -230,7 +230,7 @@
             </intent-filter>
         </receiver>
         
-         <activity android:name=".bank.help.BankInfoNavigationActivity"
+         <activity android:name="com.discover.mobile.bank.help.BankInfoNavigationActivity"
                    android:windowSoftInputMode="adjustPan" />
     </application>
 
