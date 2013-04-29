@@ -23,6 +23,7 @@ import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.bank.ui.table.TableTitles;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
+import com.discover.mobile.common.utils.StringUtility;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
 /**
@@ -31,9 +32,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
  *
  */
 public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
-
-	/**Empty String for converting to an address*/
-	private static final String EMPTY_STRING = " ";
 
 	/**Adapter used to display data*/
 	private AtmListAdapter adapter;
@@ -157,7 +155,8 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 	 */
 	public void showStreetView(final AtmDetail atm){
 		try {
-			final String addressString =  atm.address1 + EMPTY_STRING  + atm.city +EMPTY_STRING + atm.state;
+			final String addressString =  atm.address1 + StringUtility.SPACE  + atm.city 
+					+ StringUtility.SPACE + atm.state;
 			final Geocoder coder = new Geocoder(this.getActivity());
 			final List<Address> addresses = coder.getFromLocationName(addressString, 1);
 			final Bundle bundle = new Bundle();
