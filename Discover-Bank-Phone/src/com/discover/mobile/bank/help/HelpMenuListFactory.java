@@ -6,7 +6,6 @@ package com.discover.mobile.bank.help;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
@@ -20,7 +19,6 @@ import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpItemGenerator;
-import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * Singleton class to put all of the help list items so that they are easily accessible to the fragment.
@@ -151,9 +149,9 @@ public final class HelpMenuListFactory {
 	/**
 	 * Show the ATM help modal if it needs to be shown
 	 */
-	public void showAtmHelpModal() {
+	public void showAtmHelpModal(final AtmMapFragment fragment) {
 		final BaseFragmentActivity activity = (BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();
-		activity.showCustomAlert(AtmModalFactory.getAtmLocatorHelpModal(activity));
+		activity.showCustomAlert(AtmModalFactory.getAtmLocatorHelpModal(fragment));
 	}
 
 	/**
@@ -165,7 +163,7 @@ public final class HelpMenuListFactory {
 			@Override
 			public void onClick(final View v) {
 				final BaseFragmentActivity activity = (BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();
-				activity.showCustomAlert(AtmModalFactory.getAtmLocatorHelpModal(activity));
+				activity.showCustomAlert(AtmModalFactory.getAtmLocatorHelpModal(fragment));
 				fragment.setHelpModalShowing(true);
 			}	
 		};
@@ -182,20 +180,6 @@ public final class HelpMenuListFactory {
 			public void onClick(final View v) {
 				BankConductor.navigateToSpecificFaq(faqType);
 
-			}
-		};
-	}
-
-	/**
-	 * Click listener for the Help Number item.  On click the user will be directed to the dialer with the help number
-	 * @return Click listener for the Help Number FAQ item.  On click the user will be directed to the dialer with Help Number.
-	 */
-	private OnClickListener getHelpNumberListener(){
-		return new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				final Activity activity = DiscoverActivityManager.getActiveActivity();
-				CommonUtils.dialNumber(activity.getResources().getString(R.string.help_menu_number), activity);
 			}
 		};
 	}
