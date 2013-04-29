@@ -40,7 +40,7 @@ public final class HelpMenuListFactory {
 	 * Private constructor, creates the default help menu items.
 	 */
 	private HelpMenuListFactory(){
-		allFaq = new HelpItemGenerator(R.string.help_all_faq, true, false, getAllFaqListener());
+		allFaq = new HelpItemGenerator(R.string.common_help_all_faq, true, false, getAllFaqListener());
 	}
 
 	/**

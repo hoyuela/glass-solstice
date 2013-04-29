@@ -3,16 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/light_gray_bkgrd">
-    
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="1dp"
-        android:layout_marginLeft="@dimen/forms_inner_padding" 
-    	android:layout_marginRight="@dimen/forms_inner_padding" 
-        android:layout_marginTop="@dimen/status_bar_height" 
-        android:background="@drawable/rounded_table_corners_no_padding" />
+   
+	    <ListView
+	        android:id="@android:id/list"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="1dp"
+	        android:scrollbarStyle="outsideInset"
+	        android:layout_marginLeft="@dimen/forms_inner_padding" 
+	    	android:layout_marginRight="@dimen/forms_inner_padding" 
+	        android:layout_marginTop="@dimen/status_bar_height"
+	        android:background="@drawable/privacy_terms_background" />
     
      <com.discover.mobile.common.help.HelpWidget
             android:id="@+id/help"
