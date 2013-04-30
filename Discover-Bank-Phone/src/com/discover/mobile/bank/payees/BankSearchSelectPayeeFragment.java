@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
@@ -55,10 +54,6 @@ public class BankSearchSelectPayeeFragment extends BaseFragment implements OnCli
 	 * Layout holding the payees
 	 * */
 	private LinearLayout payeesList;
-	/**
-	 * Button used to open a help guide when clicked on
-	 */
-	private ImageButton helpButton;
 	/**
 	 * TextView which displays what search criteria was used to run the Payees Search
 	 */

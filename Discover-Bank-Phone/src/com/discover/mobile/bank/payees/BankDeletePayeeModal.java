@@ -32,16 +32,12 @@ public class BankDeletePayeeModal extends BankOneButtonFragment {
 	 * Reference to payee that will be deleted when action button is pressed
 	 */
 	private PayeeDetail payee;
-	/**
-	 * Reference to bundle that was read via onCreateView
-	 */
-	private Bundle bundle;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		
-		bundle = (savedInstanceState != null) ? savedInstanceState : getArguments();
+		Bundle bundle = (savedInstanceState != null) ? savedInstanceState : getArguments();
 		
 		if( bundle != null ) {
 			payee = (PayeeDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
