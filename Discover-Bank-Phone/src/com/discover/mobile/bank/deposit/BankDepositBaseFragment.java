@@ -30,7 +30,8 @@ public abstract class BankDepositBaseFragment extends BankOneButtonFragment {
 		
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
 		progressIndicator.initialize(getProgressIndicatorStep());
-		progressIndicator.setTitle(R.string.bank_deposit_enter_details, R.string.bank_deposit_capture, R.string.bank_deposit_confirmation);
+		progressIndicator.setTitle(R.string.bank_deposit_enter_details, R.string.bank_deposit_capture, 
+																		R.string.bank_deposit_confirmation);
 
 		return view;
 	}
