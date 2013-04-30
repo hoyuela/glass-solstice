@@ -95,8 +95,12 @@ public class FAQDetailFragment extends BaseFragment {
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
-		outState.putSerializable(BankExtraKeys.PRIMARY_LIST, getSaveStateValues());
-		outState.putInt(SCROLL_Y, ((ScrollView)this.getView().findViewById(R.id.scroll_view)).getScrollY());
+		super.onSaveInstanceState(outState);
+		
+		if( outState != null && this.getView() != null) {
+			outState.putSerializable(BankExtraKeys.PRIMARY_LIST, getSaveStateValues());
+			outState.putInt(SCROLL_Y, ((ScrollView)this.getView().findViewById(R.id.scroll_view)).getScrollY());
+		}
 	}
 		
 	/**
