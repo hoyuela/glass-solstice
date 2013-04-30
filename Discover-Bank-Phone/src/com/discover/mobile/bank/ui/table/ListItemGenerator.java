@@ -293,7 +293,6 @@ public class ListItemGenerator {
 			items.add(getStatusCell(item.status));
 		}
 		items.add(getConfirmationCell(item.confirmationNumber));
-		items.add(getMemoItemCell(item.memo));
 
 		hideDivider(items);
 		return items;
@@ -426,7 +425,6 @@ public class ListItemGenerator {
 		// Using transaction id for the confirmation number. Using specialized Confirmation cell to fit the long id.
 		items.add(getLongConfirmationCell(item.id));
 		
-		items.add(getMemoItemCell(item.memo));
 		hideDivider(items);
 		return items;
 	}

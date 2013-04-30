@@ -72,7 +72,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		setIsLoadingMore(false);
 		super.refreshListener();
 		footer.showDone();
-		final int category = header.getCurrentCategory();
+		final int category = futureValue;
 
 		header.setCurrentCategory(futureValue);
 		final boolean dataDeleted = bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE);

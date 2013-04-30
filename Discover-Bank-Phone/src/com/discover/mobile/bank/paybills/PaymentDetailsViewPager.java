@@ -51,6 +51,11 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 			initialViewPosition = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX);
 		}
 
+		if(detailList == null) {
+			detailList = new ListPaymentDetail();
+			detailList.payments = new ArrayList<PaymentDetail>();
+		}
+		
 		//Make sure the list is not null so that the Fragment will not crash upon getting no data.
 		if(detailList.payments == null) {
 			detailList.payments = new ArrayList<PaymentDetail>();
