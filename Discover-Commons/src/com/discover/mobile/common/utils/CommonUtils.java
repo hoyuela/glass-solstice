@@ -21,14 +21,25 @@ import android.widget.TextView;
  * @author jthornton
  *
  */
-public class CommonUtils {
+public final class CommonUtils {
 	
 	/**Static int for the minimum length of a phone number*/
-	private static int PHONE_NUMBER_MIN = 10;
+	private static final int PHONE_NUMBER_MIN = 10;
+	/** Index of the first dash "-" in a phone number. */
+	private static final int PHONE_DASH_FIRST = 3;
+	/** Index of the second dash "-" in a phone number. */
+	private static final int PHONE_DASH_SECOND = 6;
+	
+	/** Number of characters between spaces in an account number */
+	private static final int ACCOUNT_BLOCK_LENGTH = 4;
 	
 	/** Number of cents in a dollar */
-	private static int CENTS_IN_DOLLAR = 100;
+	private static final int CENTS_IN_DOLLAR = 100;
 
+	private CommonUtils() {
+		throw new AssertionError();
+	}
+	
 	/**
 	 * Convert the simple number into a phone number string
 	 * 
@@ -39,7 +50,9 @@ public class CommonUtils {
 	 */
 	public static String toPhoneNumber(final String number){
 		if(number == null || number.length() < PHONE_NUMBER_MIN){return "";}
-		return String.format("%s-%s-%s", number.substring(0, 3), number.substring(3, 6), number.substring(6, 10));
+		return String.format("%s-%s-%s", number.substring(0, PHONE_DASH_FIRST), 
+				number.substring(PHONE_DASH_FIRST, PHONE_DASH_SECOND), 
+				number.substring(PHONE_DASH_SECOND, PHONE_NUMBER_MIN));
 	}
 	
 	/**
@@ -123,15 +136,15 @@ public class CommonUtils {
 	 * rest of the input string, minus those 4 beginning characters and the
 	 * space.
 	 */
-	public final static String getStringWithSpacesEvery4Characters(
-			final String stringWithoutSpaces) {
-		if (stringWithoutSpaces != null && stringWithoutSpaces.length() > 3)
-			return stringWithoutSpaces.substring(0, 4)
-					+ " "
+	public final static String getStringWithSpacesEvery4Characters(final String stringWithoutSpaces) {
+		if (stringWithoutSpaces != null && stringWithoutSpaces.length() >= ACCOUNT_BLOCK_LENGTH) {
+			return stringWithoutSpaces.substring(0, ACCOUNT_BLOCK_LENGTH)
+					+ StringUtility.SPACE
 					+ getStringWithSpacesEvery4Characters(stringWithoutSpaces
-							.substring(4));
-		else
-			return stringWithoutSpaces;
+							.substring(ACCOUNT_BLOCK_LENGTH));
+		} 
+
+		return stringWithoutSpaces;
 	}
 	
 
@@ -142,7 +155,7 @@ public class CommonUtils {
 		String stringWithNoSpaces = stringWithSpaces;
 
 		if (stringWithSpaces != null) {
-			stringWithNoSpaces = stringWithSpaces.replace(" ", "");
+			stringWithNoSpaces = stringWithSpaces.replace(StringUtility.SPACE, StringUtility.EMPTY);
 		}
 
 		return stringWithNoSpaces;
@@ -166,8 +179,8 @@ public class CommonUtils {
 			dialNumber.setData(Uri.parse("tel:" + number));
 
 			callingContext.startActivity(dialNumber);
-		} return;
-
+		}
+		return;
 	}
 
 	public final static void setViewGone(final View v) {
@@ -226,9 +239,15 @@ public class CommonUtils {
 	 */
 	public final static int formatCurrencyStringAsBankInt(String amount) {
 		
-		amount = formatCurrencyAsStringWithoutSign(amount);
-		amount = amount.replaceAll(",", "");
-		final double d = Double.parseDouble(amount);
+		String newAmount = formatCurrencyAsStringWithoutSign(amount);
+		newAmount = newAmount.replaceAll(StringUtility.COMMA, "");
+		
+		double d;
+		try {
+			d = Double.parseDouble(newAmount);
+		} catch (final Exception e) {
+			d = 0.0f;
+		}
 		
 		return (int)(d * CENTS_IN_DOLLAR);
 	}
@@ -242,18 +261,19 @@ public class CommonUtils {
 	 *         "0.00" if an errors occurs.
 	 */
 	public final static String formatCurrencyAsStringWithoutSign(String amount) {
-
-		amount = amount.replaceAll("\\$", "");
-		amount = amount.replaceAll(",", "");
+		// Remove special characters before parsing
+		String newAmount = amount.replaceAll("\\$", "");
+		newAmount = newAmount.replaceAll(StringUtility.COMMA, "");
+		
 		double d;
 		try {
-			d = Double.parseDouble(amount);
+			d = Double.parseDouble(newAmount);
 		} catch (final Exception e) {
 			d = 0.0f;
 		}
+		
 		String outAmount = NumberFormat.getCurrencyInstance(Locale.US).format(d);
 		outAmount = outAmount.replaceAll("\\$", "");
-		//
 		
 		return outAmount;
 	}
@@ -264,12 +284,10 @@ public class CommonUtils {
 	 */
 	public final static void fixBackgroundRepeat(final View view) {
 	    final Drawable bg = view.getBackground();
-	    if (bg != null) {
-	        if (bg instanceof BitmapDrawable) {
-	            final BitmapDrawable bmp = (BitmapDrawable) bg;
-	            bmp.mutate(); // make sure that we aren't sharing state anymore
-	            bmp.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
-	        }
-	    }
+		if (bg instanceof BitmapDrawable) {
+			final BitmapDrawable bmp = (BitmapDrawable) bg;
+			bmp.mutate(); // make sure that we aren't sharing state anymore
+			bmp.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
+		}
 	}
 }
