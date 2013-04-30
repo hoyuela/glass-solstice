@@ -107,7 +107,10 @@ public class DiscoverMapWrapper {
 	 * @param context - activity context
 	 */
 	public void createAddressString(final Context context){
-		if(location == null){addressString = "";}
+		if (location == null) {
+			addressString = "";
+			return;
+		}
 
 		final Geocoder coder = new Geocoder(context);
 		try {

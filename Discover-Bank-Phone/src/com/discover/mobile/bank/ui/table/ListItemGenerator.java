@@ -15,6 +15,7 @@ import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.bank.util.BankStringFormatter;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 /**
@@ -26,6 +27,14 @@ import com.google.common.base.Strings;
  *
  */
 public class ListItemGenerator { 
+	/** Minimum phone number String length required to manually format.*/
+	private static final int PHONE_LENGTH_MIN = 5;
+	/** Index where the phone number dash "-" should be inserted. */
+	private static final int PHONE_DASH_INDEX = 3;
+	
+	private static final String STATUS_SCHEDULED = "SCHEDULED";
+	private static final String STATUS_PAID = "PAID";
+	private static final String STATUS_CANCELLED = "CANCELLED";
 	
 	private ViewPagerListItem listItem;
 	private Context context = null;
@@ -116,7 +125,8 @@ public class ListItemGenerator {
 	}
 
 	public ViewPagerListItem getFromCell(final String from, final String balance) {
-		return getThreeItemCell(R.string.from, from, context.getString(R.string.available_balance) + " " + balance);
+		return getThreeItemCell(R.string.from, from, 
+				context.getString(R.string.available_balance) + StringUtility.SPACE + balance);
 	}
 	
 	public ViewPagerListItem getFromCell(final String from) {
@@ -160,7 +170,8 @@ public class ListItemGenerator {
 		final StringBuilder formattedTitle = new StringBuilder();
 		final String titleText = context.getString(R.string.pay_from_acct_ending_in);
 
-		formattedTitle.append(titleText + " ");
+		formattedTitle.append(titleText);
+		formattedTitle.append(StringUtility.SPACE);
 		formattedTitle.append(acctEndingNumber);
 
 		final ViewPagerListItem temp = getTwoItemCell(R.string.empty, accountName);
@@ -208,10 +219,11 @@ public class ListItemGenerator {
 	private String badPhoneNumberFormatter(final String phoneNumber) {
 		if(phoneNumber == null) {
 			return "";
-		} else if (phoneNumber.length() < 5) {
+		} else if (phoneNumber.length() < PHONE_LENGTH_MIN) {
 			return phoneNumber;
 		} else {
-			return phoneNumber.subSequence(0, 3) + "-" + badPhoneNumberFormatter(phoneNumber.substring(3));
+			return phoneNumber.subSequence(0, PHONE_DASH_INDEX) + "-" 
+					+ badPhoneNumberFormatter(phoneNumber.substring(PHONE_DASH_INDEX));
 		}
 	}
 
@@ -277,11 +289,10 @@ public class ListItemGenerator {
 		items.add(getPayFromAccountCell(account.accountNumber.ending, account.nickname));
 		items.add(getAmountCell(item.amount.value));
 		items.add(getPaymentDateCell(item));
-		if("SCHEDULED".equalsIgnoreCase(item.status)){
+		if(STATUS_SCHEDULED.equalsIgnoreCase(item.status)){
 			items.add(getStatusCell(item.status));
 		}
 		items.add(getConfirmationCell(item.confirmationNumber));
-		items.add(getMemoItemCell(item.memo));
 
 		hideDivider(items);
 		return items;
@@ -325,9 +336,9 @@ public class ListItemGenerator {
 		direction = (isFromCell) ? R.string.from : R.string.to;
 
 		builder.append(context.getString(direction));
-		builder.append(" ");
+		builder.append(StringUtility.SPACE);
 		builder.append(context.getString(R.string.account_ending_in_first_two_caps));
-		builder.append(" ");
+		builder.append(StringUtility.SPACE);
 		builder.append(transferAccount.accountNumber.ending);
 
 		item.getTopLabel().setText(builder.toString());
@@ -380,14 +391,14 @@ public class ListItemGenerator {
 		final String itemStatus = item.status;
 		ViewPagerListItem paymentDateItem = null;
 
-		if("SCHEDULED".equalsIgnoreCase(itemStatus)){
+		if(STATUS_SCHEDULED.equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
-		}else if("PAID".equalsIgnoreCase(itemStatus)){
+		}else if(STATUS_PAID.equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
 			paymentDateItem.getTopLabel().setText(R.string.completed_pay_date);
-		}else if ("CANCELLED".equalsIgnoreCase(itemStatus)){
+		}else if (STATUS_CANCELLED.equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
 			paymentDateItem.getTopLabel().setText(R.string.completed_pay_date);
@@ -414,7 +425,6 @@ public class ListItemGenerator {
 		// Using transaction id for the confirmation number. Using specialized Confirmation cell to fit the long id.
 		items.add(getLongConfirmationCell(item.id));
 		
-		items.add(getMemoItemCell(item.memo));
 		hideDivider(items);
 		return items;
 	}

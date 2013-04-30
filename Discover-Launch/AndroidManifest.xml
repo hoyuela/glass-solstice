@@ -221,6 +221,7 @@
         </receiver>
 
         <activity android:name="com.discover.mobile.bank.atm.AtmLocatorActivity"
+            android:launchMode="standard"
             android:windowSoftInputMode="adjustPan"></activity>
 
         <!-- Broadcast Receiver to logout user out of the application -->
@@ -231,6 +232,7 @@
         </receiver>
         
          <activity android:name="com.discover.mobile.bank.help.BankInfoNavigationActivity"
+             	   android:launchMode="standard"
                    android:windowSoftInputMode="adjustPan" />
     </application>
 

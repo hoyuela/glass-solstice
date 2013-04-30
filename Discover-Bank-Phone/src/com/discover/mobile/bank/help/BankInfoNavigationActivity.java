@@ -48,6 +48,9 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 		/**Check if this is the first time this activity is being launched*/
 		if( savedInstanceState == null ) {
 			launchStartPage();
+		} else {
+			final Bundle bundle = this.getIntent().getExtras();
+			goBackToLogin = bundle.getBoolean(GO_BACK_TO_LOGIN, true);
 		}
 		
 		showActionBar();
@@ -148,6 +151,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 			super.onBackPressed();
 		} else if (goBackToLogin) {
 			BankConductor.navigateToLoginPage(this, "", "");
+			finish();
 		} else {
 			finish();
 		}
@@ -158,7 +162,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 	 * @param goToLoginOnBack - True when "onBackPressed" will navigate to login on back 
 	 * (given no fragments on the stack) 
 	 */
-	public void setOnBackNavigation(boolean goToLoginOnBack) {
+	public void setOnBackNavigation(final boolean goToLoginOnBack) {
 		this.goBackToLogin = goToLoginOnBack;
 	}
 }

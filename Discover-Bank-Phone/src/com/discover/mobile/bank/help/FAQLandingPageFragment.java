@@ -5,11 +5,11 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
@@ -37,11 +37,25 @@ public class FAQLandingPageFragment extends BaseFragment {
 		final View view = inflater.inflate(R.layout.faq_landing_page, null);
 		
 		final String[] values = getResources().getStringArray(R.array.faq_sections);
-		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), 
-													R.layout.single_item_table_cell, android.R.id.text1, values);
-		final ListView list = (ListView)view.findViewById(android.R.id.list);
-		list.setAdapter(adapter);
-		list.setOnItemClickListener(itemClickListener);
+
+		final LinearLayout faqList = (LinearLayout)view.findViewById(R.id.faq_list);
+		
+		//Build the linear layout table.
+		for(int i = 0; i < values.length; ++i) {
+			
+			if(i > 0) 
+				insertDividerLine(faqList);
+			
+			//Set the text of the section
+			final RelativeLayout item = (RelativeLayout)inflater.inflate(R.layout.single_item_table_cell, null);
+			final TextView label = (TextView)item.findViewById(android.R.id.text1);
+			label.setText(values[i]);
+			item.setOnClickListener(getListClickListener(item));
+
+			//Add the constructed list item to the table.
+			faqList.addView(item);
+			
+		}
 		
 		//Disable hardware acceleration for the UI so that the dotted line gets drawn correctly.
 		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
@@ -50,18 +64,40 @@ public class FAQLandingPageFragment extends BaseFragment {
 		
 		return view;
 	}
-
-	private final OnItemClickListener itemClickListener = new OnItemClickListener() {
-
-		@Override
-		public void onItemClick(final AdapterView<?> arg0, final View clickedView, final int position,
-				final long id) {
-			final TextView itemTitle = (TextView)clickedView.findViewById(android.R.id.text1);
-			decideWhereToNavigateFromSectionTitle(itemTitle.getText().toString());
-		}
-		
-	};
 	
+	/**
+	 * Place a divider line at the next available position in the linear layout.
+	 * @param view a linear layout to add a divider line to.
+	 */
+	private void insertDividerLine(final LinearLayout view) {
+		final View divider = new View(getActivity(), null);
+		divider.setBackgroundResource(R.drawable.table_dotted_line);
+		final LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 1);
+		
+		view.addView(divider, params);
+	}
+	
+	/**
+	 * A click listener that when onClick is called, navigates to a specific FAQ section based
+	 * on the title of the listItem.
+	 * @param listItem a listItem that is used to indicate a FAQ section.
+	 * @return an OnClickListener that will navigate to a FAQ section.
+	 */
+	private OnClickListener getListClickListener(final RelativeLayout listItem) {
+		return new OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				final TextView cellText = (TextView)listItem.findViewById(android.R.id.text1);
+				decideWhereToNavigateFromSectionTitle(cellText.getText().toString());
+			}
+		};
+	}
+	
+	/**
+	 * Navigates to a FAQ section based on a title.
+	 * @param title a FAQ section title that corresponds to a FAQ detail page.
+	 */
 	private void decideWhereToNavigateFromSectionTitle(final String title) {
 		final Resources res = getResources();
 		

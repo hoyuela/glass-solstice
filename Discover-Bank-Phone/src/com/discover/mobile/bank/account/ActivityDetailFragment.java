@@ -36,7 +36,7 @@ public class ActivityDetailFragment extends DetailFragment {
 	protected void setupFragmentLayout(final View fragmentView) {
 		final ActivityDetail item = (ActivityDetail)getArguments().getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		
-		if(Strings.isNullOrEmpty(item.status)) 
+		if(Strings.isNullOrEmpty(item.status) || ActivityDetail.POSTED.equalsIgnoreCase(item.status))
 			setupTransactionData(item, fragmentView);
 		else
 			setupScheduledTransactionData(item, fragmentView);

@@ -1227,8 +1227,9 @@ public final class BankConductor  extends Conductor {
 			bundle.putSerializable(BankInfoNavigationActivity.PRIVACY_AND_TERMS, type);
 			bundle.putBoolean(BankInfoNavigationActivity.GO_BACK_TO_LOGIN, 
 					activity instanceof LoginActivity ? true : false);
+			intent.putExtras(bundle);
 			activity.startActivity(intent);
-
+			
 			if (activity instanceof LoginActivity) {
 				activity.finish();
 			}
@@ -1303,6 +1304,10 @@ public final class BankConductor  extends Conductor {
 			/**Launch Privacy & Terms Activity if user is not logged in*/
 			if( activity instanceof LoginActivity ) {
 				final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
+				
+				/**This key is used to notify the activity where to navigate on back-press**/
+				bundle.putBoolean(BankInfoNavigationActivity.GO_BACK_TO_LOGIN,true);
+				
 				intent.putExtras(bundle);
 				activity.startActivity(intent);
 				activity.finish();
