@@ -5,6 +5,8 @@ package com.discover.mobile.bank.services.atm;
 
 import android.location.Location;
 
+import com.discover.mobile.common.utils.StringUtility;
+
 /**
  * Helper object for the Get ATM details service calls.  When the user puts all
  * of the details in the object it will create the correct query string.  Example
@@ -30,10 +32,8 @@ public class AtmServiceHelper {
 	private static final String DESTINATION = "destination=";
 	private static final String SENSOR = "sensor=false";
 	private static final String ADDRESS = "address=";
-	private static final String SPACE = " ";
 	private static final String PLUS = "+";
 	private static final String COMMA = ",";
-	private static final String EMPTY = "";
 	private static final String ADDRESS_TO_LOCATION_END = "&ka=&sensor=false";
 
 	/**Maximum number of results the service should return*/
@@ -43,7 +43,7 @@ public class AtmServiceHelper {
 	private int distance = DEFAULT_DISTANCE;
 
 	/**Boolean letting the application know if the ATM should not have a surcharge*/
-	private boolean isSurchargeFree = false;
+	private boolean surchargeFree = false;
 
 	/**Location to search for atms around*/
 	private final Location location;
@@ -105,12 +105,20 @@ public class AtmServiceHelper {
 	public String getQueryString(){
 		final StringBuilder builder = new StringBuilder();
 		builder.append(QUERY_START);
-		builder.append(LAT + location.getLatitude() + DIVIDER);
-		builder.append(LON + location.getLongitude() + DIVIDER);
-		builder.append(MAX_RESULTS + maxResults + DIVIDER);
-		builder.append(DISTANCE + distance + DIVIDER);
+		builder.append(LAT);
+		builder.append(location.getLatitude());
+		builder.append(DIVIDER);
+		builder.append(LON);
+		builder.append(location.getLongitude());
+		builder.append(DIVIDER);
+		builder.append(MAX_RESULTS);
+		builder.append(maxResults);
+		builder.append(DIVIDER);
+		builder.append(DISTANCE);
+		builder.append(distance);
+		builder.append(DIVIDER);
 		builder.append(SURCHARGE);
-		if(isSurchargeFree){
+		if(surchargeFree){
 			builder.append(SURCHARGE_FREE);
 		}
 		return builder.toString();
@@ -123,9 +131,9 @@ public class AtmServiceHelper {
 	public String getDirectionsQueryString(){
 		final StringBuilder builder = new StringBuilder();
 		builder.append(QUERY_START + ORIGIN);
-		builder.append(from.replaceAll(SPACE, PLUS).replaceAll(COMMA, EMPTY));
+		builder.append(from.replaceAll(StringUtility.SPACE, PLUS).replaceAll(COMMA, StringUtility.EMPTY));
 		builder.append(DIVIDER+DESTINATION);
-		builder.append(to.replaceAll(SPACE, PLUS).replaceAll(COMMA, EMPTY));
+		builder.append(to.replaceAll(StringUtility.SPACE, PLUS).replaceAll(COMMA, StringUtility.EMPTY));
 		builder.append(DIVIDER+SENSOR);
 		return builder.toString();
 	}
@@ -133,7 +141,7 @@ public class AtmServiceHelper {
 	public String getAddressToLocationString(){
 		final StringBuilder builder = new StringBuilder();
 		builder.append(QUERY_START + ADDRESS);
-		builder.append(address.replaceAll(" ","%20"));
+		builder.append(address.replaceAll(StringUtility.SPACE, StringUtility.ENCODED_SPACE));
 		builder.append(ADDRESS_TO_LOCATION_END);
 		return builder.toString();
 	}
@@ -170,14 +178,14 @@ public class AtmServiceHelper {
 	 * @return the isSurchargeFree
 	 */
 	public boolean isSurchargeFree() {
-		return isSurchargeFree;
+		return surchargeFree;
 	}
 
 	/**
 	 * @param isSurchargeFree the isSurchargeFree to set
 	 */
 	public void setSurchargeFree(final boolean isSurchargeFree) {
-		this.isSurchargeFree = isSurchargeFree;
+		this.surchargeFree = isSurchargeFree;
 	}
 
 

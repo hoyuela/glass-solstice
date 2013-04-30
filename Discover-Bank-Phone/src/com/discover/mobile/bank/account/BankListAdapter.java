@@ -79,6 +79,10 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		}else{
 			holder = (ItemViewHolder) view.getTag();
 		}
+		
+		if (detail == null) {
+			return view;
+		}
 
 		/**Update the display values*/
 		String date = detail.getTableDisplayDate();
@@ -157,10 +161,10 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	 * @author jthornton
 	 *
 	 */
-	private class ItemViewHolder {
-		public TextView date;
-		public TextView desc;
-		public TextView amount;
-		public int pos;
+	private static class ItemViewHolder {
+		private TextView date;
+		private TextView desc;
+		private TextView amount;
+		private int pos;
 	}
 }

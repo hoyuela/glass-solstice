@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.atm.AtmDetail;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.model.Marker;
@@ -34,9 +35,6 @@ import com.google.android.gms.maps.model.Marker;
  *
  */
 public class AtmMarkerBalloonManager{
-
-	/**Empty String for converting to an address*/
-	private static final String EMPTY_STRING = " ";
 
 	/**Map of markers and atm so that the atm*/
 	private final Map<Marker, AtmDetail> markerMap;
@@ -174,7 +172,8 @@ public class AtmMarkerBalloonManager{
 	 * @throws IOException
 	 */
 	protected Bundle getStreetViewBundle(final AtmDetail atm) throws IOException{
-		final String addressString =  atm.address1 + EMPTY_STRING  + atm.city + EMPTY_STRING + atm.state;
+		final String addressString =  atm.address1 + StringUtility.SPACE 
+				+ atm.city + StringUtility.SPACE + atm.state;
 		final Geocoder coder = new Geocoder(context);
 		final List<Address> addresses = coder.getFromLocationName(addressString, 1);
 		final Bundle bundle = new Bundle();
