@@ -298,9 +298,9 @@ public abstract class NetworkServiceCall<R> {
 			public void run() {
 				try {
 					executeRequest();
-				} catch (final Throwable t) {
-					Log.w(TAG, "caught throwable during network call execution", t);
-					sendResultToHandler(t, RESULT_EXCEPTION);
+				} catch (final Exception e) {
+					Log.w(TAG, "caught exception during network call execution", e);
+					sendResultToHandler(e, RESULT_EXCEPTION);
 				}
 			}
 		});
