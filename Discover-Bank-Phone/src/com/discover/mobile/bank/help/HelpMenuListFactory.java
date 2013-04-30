@@ -139,8 +139,6 @@ public final class HelpMenuListFactory {
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
 		final HelpItemGenerator atmHelp = 
 				new HelpItemGenerator(R.string.help_menu_atm_help, true, false, getAtmHelpListener(fragment));
-		new HelpItemGenerator(R.string.help_menu_atm_faq, true, true, 
-				getDefaultClickListener(BankExtraKeys.ATM_LOCATOR_FAQ));
 		items.add(allFaq);
 		items.add(atmHelp);
 		return items;

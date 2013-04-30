@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -377,8 +376,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		} else {
 			this.showLoginPane();
 		}
-
-		new IntentFilter("android.intent.action.SCREEN_OFF");
 
 		//If previous screen was Strong Auth Page then clear text fields and show text fields in red
 		//because that means the user did not login successfully
