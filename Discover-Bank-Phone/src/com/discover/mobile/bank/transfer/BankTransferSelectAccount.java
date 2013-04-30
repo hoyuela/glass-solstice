@@ -355,7 +355,8 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	private ViewPagerListItem getListItemFromAccount(final Account account) {
 		final ListItemGenerator generator = new ListItemGenerator(this.getActivity());
 		final ViewPagerListItem item = generator.getTwoItemCell(R.string.empty, account.nickname);
-
+		item.getMiddleLabel().setSingleLine(false);
+		item.getMiddleLabel().setMaxLines(2);
 		if(account.accountNumber != null)
 			item.getTopLabel().setText(getAccountEndingTextForAccount(account.accountNumber.ending));
 		
