@@ -485,7 +485,9 @@ public final class BankConductor  extends Conductor {
 			else if( navActivity.getCurrentContentFragment() instanceof BankAccountActivityTable ) {
 				final BankAccountActivityTable revPmtFrag = 
 												(BankAccountActivityTable)navActivity.getCurrentContentFragment();
+				bundle.putBoolean(BankExtraKeys.IS_TOGGLING_ACTIVITY, true);
 				revPmtFrag.handleReceivedData(bundle);
+				
 			}
 			//Handle the first time user opens Account Activity page
 			else {

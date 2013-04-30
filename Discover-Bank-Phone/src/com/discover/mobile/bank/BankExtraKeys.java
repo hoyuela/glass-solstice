@@ -92,6 +92,9 @@ public final class BankExtraKeys {
 
 	/** A key used for when something is loading more content and needs so save this state to a bundle */
 	public static final String IS_LOADING_MORE = "loading";
+	
+	/** A key used for when a user is toggling between sections in posted/scheduled activity*/
+	public static final String IS_TOGGLING_ACTIVITY = "acttog";
 
 	/**
 	 * String used to send data back from the frequency widget
