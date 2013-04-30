@@ -245,7 +245,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		final String value;
 		switch(index){
 			case DATE:
-				value = BankStringFormatter.convertToISO8601Date(dateValue.getText().toString());
+				value = BankStringFormatter.convertToISO8601Date(dateValue.getText().toString(),false);
 				break;
 			case TRANSACTION:
 				value = transactionAmount.getText().toString();

@@ -803,7 +803,7 @@ public class SchedulePaymentFragment extends BaseFragment
 					payment.amount = formatAmount(amountEdit.getText()
 									.toString());
 					payment.paymentMethod.id = Integer.toString(accountId);
-					payment.deliverBy = BankStringFormatter.convertToISO8601Date(dateText.getText().toString());
+					payment.deliverBy = BankStringFormatter.convertToISO8601Date(dateText.getText().toString(),true);
 							
 					if ( !Strings.isNullOrEmpty(memo)) {
 						payment.memo = memo;

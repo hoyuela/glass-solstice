@@ -646,7 +646,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 				transferObject.frequency = frequencyCode;
 			}
 			
-			transferObject.sendDate = BankStringFormatter.convertToISO8601Date(dateTextView.getText().toString());
+			transferObject.sendDate = BankStringFormatter.convertToISO8601Date(dateTextView.getText().toString(),true);
 	
 			final String cents = amountField.getText().toString().replaceAll(NON_NUMBER_CHARACTERS, "");
 			if(!Strings.isNullOrEmpty(cents)) {
