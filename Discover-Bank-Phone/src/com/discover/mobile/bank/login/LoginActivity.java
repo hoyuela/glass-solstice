@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.atm.AtmLocatorActivity;
+import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.framework.BankConductor;
@@ -133,13 +134,13 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private boolean preAuthHasRun = false;
 
 	private boolean saveUserId = false;
-	
+
 	/** {@code true} when we restored the bank toggle on orientation change. */
 	private boolean restoreBankToggle = false;
 
 	/** {@code true} when we restored an error on orientation change. */
 	private boolean restoreError = false;
-	
+
 	private InputMethodManager imm;
 
 	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
@@ -318,7 +319,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final int lastError = getLastError();
 		final boolean saveIdWasChecked = saveUserId;
 
-		
+
 		// Do not change screen appearance as it was just completed by restoring state
 		// due to orientation change.  Simply resets flag since we've caught orientation.
 		if (restoreError) {
@@ -352,7 +353,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
 			restoreBankToggle = false;
 		}
-		
+
 		//Default to the last path user chose for login Card or Bank
 		this.setApplicationAccount();
 
@@ -380,7 +381,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		//If previous screen was Strong Auth Page then clear text fields and show text fields in red
 		//because that means the user did not login successfully
 		if( null != DiscoverActivityManager.getPreviousActiveActivity() &&
-				DiscoverActivityManager.getPreviousActiveActivity().getSimpleName().equals("EnhancedAccountSecurityActivity")) {
+				DiscoverActivityManager.getPreviousActiveActivity().equals(EnhancedAccountSecurityActivity.class)) {
 			this.getErrorHandler().showErrorsOnScreen(this, null);
 			DiscoverActivityManager.clearPreviousActiveActivity();
 		}
@@ -441,7 +442,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 			restoreErrorTextView(savedInstanceState);
 			resetInputFieldColors();
-			
+
 			restoreBankToggle = savedInstanceState.getBoolean(TOGGLE_BANK_KEY, false);
 		}
 
@@ -792,10 +793,10 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				//Track that the bank toggle was selected
 				BankTrackingHelper.trackPage(LoginActivity.class.getSimpleName());
 			}
-			
+
 			// Need to reset the error handler type to card|bank for service calls
 			BankNetworkServiceCallManager.getInstance().resetErrorHandler();
-			
+
 			//Refresh Screen based on Selected Account Preferences
 			loadSavedCredentials();
 			idField.clearFocus();
