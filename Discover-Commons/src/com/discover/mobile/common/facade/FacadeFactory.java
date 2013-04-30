@@ -144,7 +144,8 @@ public class FacadeFactory {
 				
 				singletons.put(fullyQualifiedClassName, facade);
 			} catch (Exception e) {
-				throw new RuntimeException("FACADE BOOTSTRAP FAILED: Unable to find facade impl class:" + fullyQualifiedClassName);
+				throw new RuntimeException("FACADE BOOTSTRAP FAILED: Unable to find facade impl class:" 
+						+ fullyQualifiedClassName + "\n" + e.toString());
 			}
 		}
 		return facade;
