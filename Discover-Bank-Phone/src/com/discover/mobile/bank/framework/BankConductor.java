@@ -471,24 +471,30 @@ public final class BankConductor  extends Conductor {
 	 * @param bundle - bundle to pass into the screen
 	 */
 	public static void navigateToAccountActivityPage(final Bundle bundle, final boolean isGoingBack){
-		final BankNavigationRootActivity activity =
-				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		((AlertDialogParent)activity).closeDialog();
-
-		//Handle the case where loading more data
-		if(activity.isFragmentLoadingMore() && !isGoingBack){
-			activity.addDataToDynamicDataFragment(bundle);
-		}
-		//Handle the case where switch between different types of activity posted and scheduled
-		else if( activity.getCurrentContentFragment() instanceof BankAccountActivityTable ) {
-			final BankAccountActivityTable revPmtFrag = (BankAccountActivityTable)activity.getCurrentContentFragment();
-			revPmtFrag.handleReceivedData(bundle);
-		}
-		//Handle the first time user opens Account Activity page
-		else {
-			final BankAccountActivityTable fragment =  new BankAccountActivityTable();
-			fragment.setArguments(bundle);
-			((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+		
+		if(activity instanceof BankNavigationRootActivity) {
+			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
+			
+			//Handle the case where loading more data
+			if(navActivity.isFragmentLoadingMore() && !isGoingBack){
+				navActivity.addDataToDynamicDataFragment(bundle);
+			}
+			//Handle the case where switch between different types of activity posted and scheduled
+			else if( navActivity.getCurrentContentFragment() instanceof BankAccountActivityTable ) {
+				final BankAccountActivityTable revPmtFrag = 
+												(BankAccountActivityTable)navActivity.getCurrentContentFragment();
+				bundle.putBoolean(BankExtraKeys.IS_TOGGLING_ACTIVITY, true);
+				revPmtFrag.handleReceivedData(bundle);
+				
+			}
+			//Handle the first time user opens Account Activity page
+			else {
+				final BankAccountActivityTable fragment =  new BankAccountActivityTable();
+				fragment.setArguments(bundle);
+				((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+			}
 		}
 	}
 

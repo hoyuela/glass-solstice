@@ -45,7 +45,7 @@ public class BankAccountActivityTable extends BaseTable{
 	private AccountActivityHeader header;
 
 	/**Boolean set to true when the toggle needs to be adjusted to posted*/
-	private Boolean postedToggle;
+	private Boolean postedToggle = true;
 
 	/**String key to get the postedToggle out of the bundle*/
 	private static final String POSTED_TOGGLE_KEY = "ptk";
@@ -60,6 +60,10 @@ public class BankAccountActivityTable extends BaseTable{
 		super.refreshListener();
 		footer.showDone();
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
+		
+		if(bundle.getBoolean(BankExtraKeys.IS_TOGGLING_ACTIVITY))
+			postedToggle = !postedToggle;
+		
 		if(postedToggle){
 			header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
 		}else{
@@ -169,8 +173,6 @@ public class BankAccountActivityTable extends BaseTable{
 					return; // Do nothing
 				}
 
-				postedToggle = true;	
-
 				if (posted != null) {
 					header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
 					updateAdapter(posted);
@@ -199,8 +201,6 @@ public class BankAccountActivityTable extends BaseTable{
 				if (!isChecked) {
 					return; // Do nothing
 				}
-
-				postedToggle = false;
 
 				if (scheduled != null) {
 					header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);
@@ -306,7 +306,7 @@ public class BankAccountActivityTable extends BaseTable{
 	public void loadDataFromBundle(final Bundle bundle) {
 		if(null == bundle){return;}
 		header.setSelectedCategory(bundle.getBoolean(BankExtraKeys.CATEGORY_SELECTED, true));
-		postedToggle = bundle.getBoolean(POSTED_TOGGLE_KEY, false);
+		postedToggle = bundle.getBoolean(POSTED_TOGGLE_KEY, true);
 		final ListActivityDetail current = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		final ListActivityDetail other = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.SECOND_DATA_LIST);
 		if(header.isPosted()){

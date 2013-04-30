@@ -113,7 +113,8 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 	 */
 	@Override
 	protected int getProgressIndicatorStep() {
-		return 3;
+		final int lastStep = 3;
+		return lastStep;
 	}
 
 	@Override

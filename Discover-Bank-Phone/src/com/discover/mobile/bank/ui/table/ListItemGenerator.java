@@ -343,6 +343,8 @@ public class ListItemGenerator {
 
 		item.getTopLabel().setText(builder.toString());
 		item.getMiddleLabel().setText(transferAccount.nickname);
+		item.getMiddleLabel().setSingleLine(false);
+		item.getMiddleLabel().setMaxLines(2);
 
 		return item;
 	}

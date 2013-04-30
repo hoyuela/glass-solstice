@@ -62,6 +62,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 * we need a reference to it so we can refresh it on resume
 	 */
 	private ReviewCheckDepositTableCell checkImageCell;
+	
 	/**
 	 * Reference to bundle provided in onCreateView or via getArguments() depending on what created the fragment.
 	 */
@@ -80,7 +81,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState){
-
+		setRetainInstance(true);
 		bundle = ( null != savedInstanceState ) ? savedInstanceState : getArguments();
 
 		/**Store bundle provided to restore state of fragment onResume*/
@@ -117,10 +118,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	public void onResume() {
 		super.onResume();
 
-		if(checkImageCell != null) {
-			checkImageCell.loadImages(getActivity());
-		}
-
 		restoreState();
 
 		/**Check if an exception occurred  that needs to be handled*/
@@ -129,7 +126,15 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		/**Check if a successful response was received*/
 		handlePendingConfirmation();
 	}
-
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		if(bundle == null)
+			bundle = new Bundle();
+		
+		onSaveInstanceState(bundle);
+	}
 
 	/**
 	 * Method checks if a socket timeout occurred, if so navigates the user to 
@@ -313,6 +318,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			content.add(amountDetail);
 
 			checkImageCell = new ReviewCheckDepositTableCell(currentActivity);
+
 			content.add(checkImageCell);
 		}
 		return content;
