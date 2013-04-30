@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.services.error;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author henryoyuela
  *
  */
-public class BankErrorResponse extends AbstractErrorResponse<BankErrorResponse> {
+public class BankErrorResponse extends AbstractErrorResponse<BankErrorResponse> implements Cloneable {
+	
+	/**
+	 * Get a new BankErrorResponse object that contains only the list of errors.
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		final BankErrorResponse temp = new BankErrorResponse();
+		temp.errors = new ArrayList<BankError>(errors);
+		
+		return temp;
+	}
+
 	/**
 	 * Auto-generated serial UID which is used to serialize and de-serialize BankErrorResponse objects
 	 */
