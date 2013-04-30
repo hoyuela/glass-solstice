@@ -9,6 +9,7 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
+import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpWidget;
 
@@ -22,6 +23,8 @@ import com.discover.mobile.common.help.HelpWidget;
  *
  */
 public class ProvideFeedbackFragment extends TermsConditionsFragment {
+	/**URL for providing feedback for card when the user is not logged in*/
+	static final String CARD_PROVIDE_FEEDBACK = "https://secure.opinionlab.com/ccc01/o.asp?id=OWPeJUwo";
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -49,7 +52,12 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 	
 	@Override
 	public String getTermsUrl() {
-		return BankUrlManager.getProvideFeedbackUrl();
+		/**Determine whether to use feedback link for Card or Bank*/
+		if( AccountType.CARD_ACCOUNT == Globals.getCurrentAccount() ) {
+			return CARD_PROVIDE_FEEDBACK;
+		} else {
+			return BankUrlManager.getProvideFeedbackUrl();
+		}
 	}
 
 	@Override
