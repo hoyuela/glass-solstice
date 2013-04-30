@@ -60,7 +60,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	private String frequencyCode = TransferDetail.ONE_TIME_TRANSFER;
 	private String frequencyText = "One Time";
 	
-	private final String date = "date";
+	private static final String DATE = "date";
 	private static final String NON_NUMBER_CHARACTERS = "[^0-9]";
 
 	private AmountValidatedEditField amountField;
@@ -144,7 +144,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	private void updateDateField() {
 		final Bundle args = getArguments();
 		if(args != null) {
-			final String savedDate = args.getString(date);
+			final String savedDate = args.getString(DATE);
 			final boolean isRecurringTransfer = !TransferDetail.ONE_TIME_TRANSFER.equalsIgnoreCase(frequencyCode);
 			
 			boolean areBothAccountsInternal = false;
@@ -216,7 +216,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		
 		final Bundle args = getArguments();
 		if(args != null && dateTextView != null && !Strings.isNullOrEmpty(dateTextView.getText().toString())) {
-			args.putString(date, dateTextView.getText().toString());
+			args.putString(DATE, dateTextView.getText().toString());
 		}
 	}
 
@@ -262,7 +262,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		}
 
 		if( dateTextView != null )
-			args.putString(date, dateTextView.getText().toString());
+			args.putString(DATE, dateTextView.getText().toString());
 		
 		return args;
 	}
@@ -289,7 +289,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			restoreFrequencyTable(bundle);
 			
 			if(dateTextView != null)
-				dateTextView.setText(bundle.getString(date));
+				dateTextView.setText(bundle.getString(DATE));
 
 			amountField.enableBankAmountTextWatcher(false);
 			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));

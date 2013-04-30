@@ -75,7 +75,8 @@ public final class BankAtmUtil {
 		builder.append("Link to directions: " + MAP_URL+SOURCE_ADDRESS);
 		builder.append(leg.startAddress.replace(" ", "+"));
 		builder.append(DEST_ADDRESS);
-		builder.append(leg.endAddress.replaceAll(" ", "+") + DOUBLE_ENTER);
+		builder.append(leg.endAddress.replaceAll(" ", "+"));
+		builder.append(DOUBLE_ENTER);
 		builder.append(directions.routes.get(0).copyrights);
 		i.setType(TYPE);
 		i.putExtra(Intent.EXTRA_SUBJECT, 
