@@ -73,27 +73,27 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	/**
 	 * Reference to a TextView which displays page title for the layout.
 	 */
-	protected TextView pageTitle;
+	private TextView pageTitle;
 	/**
 	 * Holds list of items that are generated using the method getViewPagerListContent() or getRelativeLayoutListContent()
 	 */
-	protected List<?> content;
+	private List<?> content;
 	/**
 	 * Reference to TextView that shows on top of content table used for showing general errors for the screen.
 	 */
-	protected TextView generalError = null;
+	private TextView generalError = null;
 	/**
 	 * Reference to scroll view
 	 */
-	protected ScrollView scrollView;
+	private ScrollView scrollView;
 	/**
 	 * String appended to a string to determine whether a field has an error on rotation
 	 */
-	final protected static String KEY_ERROR_EXT = ".hasError";
+	protected static final String KEY_ERROR_EXT = ".hasError";
 	/**
 	 * Reference to footer in layout
 	 */
-	protected BankLayoutFooter footer;
+	private BankLayoutFooter footer;
 	
 
 	/**
@@ -327,5 +327,25 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	
 	protected LinearLayout getTable() {
 		return contentTable;
+	}
+	
+	protected BankLayoutFooter getFooter() {
+		return footer;
+	}
+	
+	protected List<?> getContent() {
+		return content;
+	}
+	
+	protected TextView getGeneralError() {
+		return generalError;
+	}
+	
+	protected ScrollView getScrollView() {
+		return scrollView;
+	}
+	
+	protected TextView getPageTitleView() {
+		return pageTitle;
 	}
 }

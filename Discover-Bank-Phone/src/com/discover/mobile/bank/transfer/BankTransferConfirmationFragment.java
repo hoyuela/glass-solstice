@@ -39,7 +39,7 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 		getActionLink().setText(R.string.view_account_summary);
 
 		/**Set footer to show privacy & terms | feedback*/
-		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
+		getFooter().setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
 
 		showSuccessfulTransferTitle(view);
 

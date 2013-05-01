@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
  * Class derived from BankEditDetail used for displaying a Spinner with a list of abbreviations for
@@ -60,6 +61,7 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
 
 	private void initializeSpinner() {
 		stateSpinner = new Spinner(getContext());
+		TextView middleLabel = getMiddleLabel();
 		
 		if( middleLabel != null && stateSpinner != null ) {
 			/**Create Adapter that will state the list of U.S. State abbreviations*/
@@ -75,7 +77,7 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
 			params.addRule(RelativeLayout.ALIGN_LEFT, middleLabel.getId());
 			stateSpinner.setLayoutParams(params);
 			stateSpinner.setVisibility(View.INVISIBLE);		
-			((ViewGroup) view).addView(stateSpinner);
+			((ViewGroup) getView()).addView(stateSpinner);
 			
 			/**Set Event Handlers*/
 			stateSpinner.setOnItemSelectedListener(this);
@@ -126,6 +128,7 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
 		if( stateSpinner != null && stateSpinnerClicked) {
 			final State state = (State)stateSpinner.getSelectedItem();
 			setText(state.abbrev);
+			BankEditDetail nextDetail = getNextDetail();
 			
 			if( nextDetail != null ) {
 				stateSpinnerClicked = false;

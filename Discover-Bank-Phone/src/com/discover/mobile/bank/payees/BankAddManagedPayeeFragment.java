@@ -213,11 +213,15 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 	 */
 	@Override
 	protected AddPayeeDetail getPayeeDetail() {
-		if( content != null ) {
-			final BankEditDetail nickName =  ((BankEditDetail)content.get(ManagedPayeeFields.PayeeNickName.ordinal())); 
-			final BankEditDetail acctNum = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumber.ordinal()));
-			final BankEditDetail name = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeName.ordinal()));
-			final BankEditDetail acctConfirm = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal()));
+		if( getContent() != null ) {
+			final BankEditDetail nickName =  
+					((BankEditDetail)getContent().get(ManagedPayeeFields.PayeeNickName.ordinal())); 
+			final BankEditDetail acctNum = 
+					((BankEditDetail)getContent().get(ManagedPayeeFields.PayeeAccountNumber.ordinal()));
+			final BankEditDetail name = 
+					((BankEditDetail)getContent().get(ManagedPayeeFields.PayeeName.ordinal()));
+			final BankEditDetail acctConfirm = 
+					((BankEditDetail)getContent().get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal()));
 
 			detail.name = name.getText();
 			detail.nickName = nickName.getText();
@@ -226,7 +230,7 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 
 			/**If Zip is required then set zip for the payee being added*/
 			if(payeeSearchResult != null && payeeSearchResult.isZipRequired() ) {
-				final BankEditDetail zip = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeZipCode.ordinal()));
+				final BankEditDetail zip = ((BankEditDetail)getContent().get(ManagedPayeeFields.PayeeZipCode.ordinal()));
 
 				detail.zip =  zip.getText();
 				detail.isZipRequired = true;
@@ -247,7 +251,8 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 		
 		/**Verify if account numbers entered by the user's match otherwise show inline error*/
 		if( !doAcctNumbersMatch() ) {
-			final BankEditDetail acctConfirm = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal()));
+			final BankEditDetail acctConfirm = 
+					((BankEditDetail)getContent().get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal()));
 
 			/**Show non-matching acct# error inline*/
 			acctConfirm.showErrorLabel(R.string.bank_nonmatching_acct);
@@ -260,8 +265,10 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 	 * @return Returns true account numbers match, false otherwise.
 	 */
 	private boolean doAcctNumbersMatch() {
-		final BankEditDetail acctNum = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumber.ordinal()));
-		final BankEditDetail acctConfirm = ((BankEditDetail)content.get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal()));
+		final BankEditDetail acctNum = 
+				((BankEditDetail)getContent().get(ManagedPayeeFields.PayeeAccountNumber.ordinal()));
+		final BankEditDetail acctConfirm = 
+				((BankEditDetail)getContent().get(ManagedPayeeFields.PayeeAccountNumberConfirmed.ordinal()));
 
 		final String accountNum =  acctNum.getEditableField().getText().toString();;
 		final String accountMatch =  acctConfirm.getEditableField().getText().toString();

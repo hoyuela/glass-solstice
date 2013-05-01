@@ -73,7 +73,7 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		progressIndicator.setTitle(R.string.bank_pmt_details, R.string.confirm, R.string.confirm);
 
 		/**Set footer to show privacy & terms | feedback*/
-		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
+		getFooter().setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
 
 		return view;
 	}

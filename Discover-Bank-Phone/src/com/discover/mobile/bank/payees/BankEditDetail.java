@@ -25,14 +25,14 @@ import com.discover.mobile.common.ui.widgets.ValidatedInputFieldListener;
  *
  */
 public class BankEditDetail extends RelativeLayout implements OnClickListener, OnFocusChangeListener, OnEditorActionListener, ValidatedInputFieldListener{
-	protected TextView topLabel;
-	protected TextView middleLabel;
-	protected PayeeValidatedEditField editableField;
-	protected BankEditDetail nextDetail;
-	protected TextView errorLabel;
-	protected View dividerLine;
-	protected View caret;
-	protected View view;
+	private TextView topLabel;
+	private TextView middleLabel;
+	private PayeeValidatedEditField editableField;
+	private BankEditDetail nextDetail;
+	private TextView errorLabel;
+	private View dividerLine;
+	private View caret;
+	private View view;
 	
 	public BankEditDetail(final Context context) {
 		super(context);
@@ -120,6 +120,10 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		return caret;
 	}
 
+	public BankEditDetail getNextDetail() {
+		return nextDetail;
+	}
+	
 	/**
 	 * Method used to set the text for the middle label and editable field at once.
 	 * 

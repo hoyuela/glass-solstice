@@ -42,10 +42,10 @@ public abstract class ValidatedInputField extends EditText{
 	/**
 	 * Drawables that are used in the right compound drawable locations.
 	 */
-	protected Drawable redX = null;
-	protected Drawable grayX = null;
-	protected Drawable greenCheck = null;
-	protected Drawable downArrow = null;
+	private Drawable redX = null;
+	private Drawable grayX = null;
+	private Drawable greenCheck = null;
+	private Drawable downArrow = null;
 
 	public boolean isInErrorState = false;
 

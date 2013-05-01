@@ -185,7 +185,7 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 	 */
 	@Override
 	protected AddPayeeDetail getPayeeDetail() {
-		if( content != null ) {			
+		if( getContent() != null ) {			
 			final AddUnmanagedPayee payee = (AddUnmanagedPayee)detail;
 			
 			payee.name = getFieldText(UnmanagedPayeeFields.PayeeName.ordinal());

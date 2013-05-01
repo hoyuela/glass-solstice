@@ -65,7 +65,7 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 		setLinkText(R.string.bank_deposit_received_actionlink);
 
 		/**Set footer to show privacy & terms | feedback*/
-		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
+		getFooter().setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
 		return view;
 	}
 

@@ -35,7 +35,7 @@ public abstract class Conductor   {
 
 	public static final String TAG = Conductor.class.getSimpleName();
 
-	protected CacheManager cacheMgr = CacheManager.instance();
+	private CacheManager cacheMgr = CacheManager.instance();
 
 	/**
 	 * A map to manage the caller's requested destination and the network
@@ -44,10 +44,10 @@ public abstract class Conductor   {
 	 * the key is the networkServiceCall's hashcode
 	 */
 	@SuppressWarnings("rawtypes")
-	protected HashMap<Integer, DestinationDetails> destinationMap = new HashMap<Integer, DestinationDetails>();
+	private HashMap<Integer, DestinationDetails> destinationMap = new HashMap<Integer, DestinationDetails>();
 
 	/** the service call factory used to create the call object */
-	protected ServiceCallFactory serviceCallFactory;
+	private ServiceCallFactory serviceCallFactory;
 
 	/**
 	 * provides the card/bank specific service call factory impl class
@@ -68,7 +68,13 @@ public abstract class Conductor   {
 	private Conductor() {
 	}
 
-
+	public HashMap<Integer, DestinationDetails> getDestinationMap() {
+		return destinationMap;
+	}
+	
+	public ServiceCallFactory getServiceCallFactory() {
+		return serviceCallFactory;
+	}
 
 	/**
 	 * Navigates to the given fragment. 1. checks to see if fragment requires
@@ -283,9 +289,9 @@ public abstract class Conductor   {
 	 */
 	public class DestinationDetails {
 		@SuppressWarnings("rawtypes")
-		public Class destFragment;
-		public DestinationType destType;
-		public Bundle destBundle;
+		private Class destFragment;
+		private DestinationType destType;
+		private Bundle destBundle;
 
 		/**
 		 * @return the destFragment
