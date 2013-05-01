@@ -97,7 +97,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	/**
 	 * A state flag so that we don't run this twice.
 	 */
-	private static boolean PHONE_GAP_INIT_COMPLETE = false;
+	private static boolean _phoneGapInitComplete = false;
 
 	// INPUT FIELDS
 
@@ -1107,9 +1107,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 		// splash screen is still up - let's init phone gap now before
 		// we take it down
-		if ( !PHONE_GAP_INIT_COMPLETE ) {
+		if ( !_phoneGapInitComplete ) {
 			FacadeFactory.getCardFacade().initPhoneGap();
-			PHONE_GAP_INIT_COMPLETE = true;
+			_phoneGapInitComplete = true;
 		}
 		showSplashScreen(false);
 
