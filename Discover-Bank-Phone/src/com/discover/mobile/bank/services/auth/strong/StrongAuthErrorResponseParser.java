@@ -16,31 +16,33 @@ public class StrongAuthErrorResponseParser implements ErrorResponseParser<Strong
 	private static final String TAG = StrongAuthErrorResponseParser.class.getSimpleName();
 		
 	@Override
-	public StrongAuthErrorResponse parseErrorResponse(int httpStatusCode,
-			InputStream in, HttpURLConnection conn) throws IOException {
+	public StrongAuthErrorResponse parseErrorResponse(final int httpStatusCode,
+			final InputStream in, final HttpURLConnection conn) throws IOException {
 		
-		Map<String,List<String>> headers = conn.getHeaderFields();
-		if(!canParseErrorResponse(headers))
+		final Map<String,List<String>> headers = conn.getHeaderFields();
+		if(!canParseErrorResponse(headers)){
 			return null;
+		}
 		
-		String result = getStrongAuthResult(headers);
+		final String result = getStrongAuthResult(headers);
 		return new StrongAuthErrorResponse(result);
 	}
 	
-	private boolean canParseErrorResponse(Map<String,List<String>> headers) {
+	private boolean canParseErrorResponse(final Map<String,List<String>> headers) {
 		return headers.containsKey(HttpHeaders.Authentication);
 	}
 	
-	private String getStrongAuthResult(Map<String,List<String>> headers) throws IOException {
-		List<String> values = headers.get(HttpHeaders.Authentication);
+	private String getStrongAuthResult(final Map<String,List<String>> headers) throws IOException {
+		final List<String> values = headers.get(HttpHeaders.Authentication);
 		
 		if(values == null || values.isEmpty()) {
-			String message = "No value for WWW-Authenticate header";
+			final String message = "No value for WWW-Authenticate header";
 			Log.e(TAG, message);
 			throw new IOException(message);
 		}
-		if(values.size() > 1)
+		if(values.size() > 1){
 			Log.e(TAG, "Unexpected number of WWW-Authenticate headers");
+		}
 		
 		return values.get(0);
 	}

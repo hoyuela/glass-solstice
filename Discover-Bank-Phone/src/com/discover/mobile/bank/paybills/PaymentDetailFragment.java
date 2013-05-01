@@ -36,8 +36,9 @@ public class PaymentDetailFragment extends DetailFragment{
 		final LinearLayout contentTable = (LinearLayout)fragmentView.findViewById(R.id.content_table);
 		
 		for(final ViewPagerListItem element : elementList) {
-			if(element != null)
+			if(element != null){
 				contentTable.addView(element);
+			}
 		}
 		
 		customSetup(fragmentView);
@@ -50,9 +51,9 @@ public class PaymentDetailFragment extends DetailFragment{
 	 */
 	protected void customSetup(final View mainView) {
 		/** Reference to button used to delete a scheduled payment */
-		Button deleteButton = (Button)mainView.findViewById(R.id.delete_payment_button);
+		final Button deleteButton = (Button)mainView.findViewById(R.id.delete_payment_button);
 		/** Reference to button used to edit a scheduled payment */
-		Button editButton = (Button)mainView.findViewById(R.id.edit_payment_button);
+		final Button editButton = (Button)mainView.findViewById(R.id.edit_payment_button);
 		
 		//If the payment is not a scheduled payment, hide the delete and edit button.
 		if(!"SCHEDULED".equalsIgnoreCase(item.status) || item.isJointPayment ){

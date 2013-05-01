@@ -172,8 +172,9 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 					if(reviewDepositOnFinish){
 						final BankNavigationRootActivity current = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 						Bundle bundle = current.getIntent().getExtras();
-						if(bundle == null)
+						if(bundle == null){
 							bundle = new Bundle();
+						}
 						bundle.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, true);
 						bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
 						bundle.putInt(BankExtraKeys.AMOUNT, depositAmount);

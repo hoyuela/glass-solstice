@@ -103,8 +103,9 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 				loadingSpinner.setVisibility(View.GONE);
 				termsWebView.setVisibility(View.VISIBLE);
 				loadingSpinner.clearAnimation();
-				if(pageLoadSuccess)
+				if(pageLoadSuccess){
 					acceptButton.setEnabled(true);
+				}
 			}
 			
 			@Override

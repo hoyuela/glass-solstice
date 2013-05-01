@@ -154,10 +154,11 @@ public class ListItemGenerator {
 		final boolean isOneTimeTransfer = TransferDetail.ONE_TIME_TRANSFER.equalsIgnoreCase(frequency) ||
 									context.getResources().getString(R.string.one_time).equalsIgnoreCase(frequency);
 		
-		if(isOneTimeTransfer)
+		if(isOneTimeTransfer){
 			item = getTwoItemCell(R.string.frequency, frequency);
-		else
+		}else{
 			item = getTwoItemImageCell(R.string.frequency, frequency);
+		}
 		
 		return item;
 	}
@@ -366,8 +367,9 @@ public class ListItemGenerator {
 				frequency = formattedFrequency[i];
 		}
 		
-		if(Strings.isNullOrEmpty(frequency))
+		if(Strings.isNullOrEmpty(frequency)){
 			frequency = results.frequency;
+		}
 		
 		final List<ViewPagerListItem> list = new ArrayList<ViewPagerListItem>();
 
@@ -439,8 +441,9 @@ public class ListItemGenerator {
 	public List<ViewPagerListItem> getScheduledTransferList(final ActivityDetail item) {
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
 
-		if(item.fromAccount != null)
+		if(item.fromAccount != null){
 			items.add(getFromCell(item.fromAccount.nickname));
+		}
 		
 		items.add(getToCell(item.toAccount.nickname));
 		items.add(getAmountCell(item.amount.formatted));
@@ -448,8 +451,9 @@ public class ListItemGenerator {
 		items.add(getDeliverByCell(item.deliverByDate));
 		
 		items.add(getFrequencyCell(item.durationType));
-		if(item.durationValue != null)
+		if(item.durationValue != null){
 			items.add(getFrequencyDurationCell(item.durationValue));
+		}
 		
 		hideDivider(items);
 		return items;
@@ -472,8 +476,9 @@ public class ListItemGenerator {
 	}
 	
 	private void hideDivider(final List<ViewPagerListItem> items) {
-		if(items != null && items.size() > 0)
+		if(items != null && items.size() > 0){
 			items.get(0).getDividerLine().setVisibility(View.GONE);
+		}
 	}
 
 }

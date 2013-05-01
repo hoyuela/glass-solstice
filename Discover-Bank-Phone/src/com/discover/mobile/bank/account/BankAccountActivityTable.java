@@ -61,8 +61,9 @@ public class BankAccountActivityTable extends BaseTable{
 		footer.showDone();
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		
-		if(bundle.getBoolean(BankExtraKeys.IS_TOGGLING_ACTIVITY))
+		if(bundle.getBoolean(BankExtraKeys.IS_TOGGLING_ACTIVITY)){
 			postedToggle = !postedToggle;
+		}
 		
 		if(postedToggle){
 			header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
