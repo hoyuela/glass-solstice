@@ -36,10 +36,11 @@ public class ActivityDetailFragment extends DetailFragment {
 	protected void setupFragmentLayout(final View fragmentView) {
 		final ActivityDetail item = (ActivityDetail)getArguments().getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		
-		if(Strings.isNullOrEmpty(item.status) || ActivityDetail.POSTED.equalsIgnoreCase(item.status))
+		if(Strings.isNullOrEmpty(item.status) || ActivityDetail.POSTED.equalsIgnoreCase(item.status)){
 			setupTransactionData(item, fragmentView);
-		else
+		}else{
 			setupScheduledTransactionData(item, fragmentView);
+		}
 		
 	}
 
@@ -66,9 +67,11 @@ public class ActivityDetailFragment extends DetailFragment {
 		}
 		
 		//Add the items to the content table.
-		if(items != null)
-			for(final ViewPagerListItem row : items) 
+		if(items != null){
+			for(final ViewPagerListItem row : items){ 
 				contentTable.addView(row);
+			}
+		}
 		
 	}
 	
@@ -86,10 +89,11 @@ public class ActivityDetailFragment extends DetailFragment {
 		.setText(BankStringFormatter.convertCentsToDollars(item.amount.value));
 		((TextView)contentTable.findViewById(R.id.description_cell)).setText(item.description);
 		final TextView transactionId = ((TextView)contentTable.findViewById(R.id.transaction_id));
-		if(!item.id.equals("0"))
+		if(!item.id.equals("0")){
 			transactionId.setText(item.id);
-		else
+		}else{
 			transactionId.setVisibility(View.GONE);
+		}
 		
 		((TextView)contentTable.findViewById(R.id.date_cell)).setText(
 				BankStringFormatter.convertDate(

@@ -57,8 +57,9 @@ public abstract class DetailFragment extends Fragment {
 	public void onStop() {
 		super.onStop();
 		
-		if(creatorTask != null)
+		if(creatorTask != null){
 			creatorTask.cancel(true);
+		}
 	}
 	
 	

@@ -166,8 +166,9 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 			final Bundle args = getArguments();
 			boolean reviewDepositOnFinish = false;
 			
-			if(args != null)
+			if(args != null){
 				reviewDepositOnFinish = args.getBoolean(BankExtraKeys.REENTER_AMOUNT);
+			}
 			
 			if(reviewDepositOnFinish) {
 				//Reset the review deposit bundle boolean to prevent odd navigation issues later.
@@ -307,8 +308,9 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		
 		/**Check if onPause was called because of an orientation change*/
 		if( !isOrientationChanging ) {
-			if(amountItem != null && amountItem.getEditableField() != null)
+			if(amountItem != null && amountItem.getEditableField() != null){
 				this.amountItem.getEditableField().showKeyboard(false);
+			}
 		}
 	}
 

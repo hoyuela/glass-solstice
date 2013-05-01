@@ -251,12 +251,14 @@ public class BankErrorHandler implements ErrorHandler {
 			final String message = bankErrorResponse.getErrorMessage();
 			
 			/**Set modal title with title sent from server*/
-			if( !Strings.isNullOrEmpty(title) )
+			if( !Strings.isNullOrEmpty(title) ){
 				modalTopView.setTitle(title);
+			}
 
 			/**Set body text with text sent from server*/
-			if( !Strings.isNullOrEmpty(message)) 
+			if( !Strings.isNullOrEmpty(message)) {
 				modalTopView.setContent(message);
+			}
 			
 			/**Set modal phonenumber with number sent from server*/
 			final NeedHelpFooter footer = modalTopView.getHelpFooter();

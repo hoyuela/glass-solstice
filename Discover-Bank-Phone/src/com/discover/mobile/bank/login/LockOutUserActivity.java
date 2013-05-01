@@ -53,10 +53,12 @@ public class LockOutUserActivity extends RoboActivity {
 		final Integer errorText = (Integer) extras.getSerializable(IntentExtraKey.ERROR_TEXT_KEY);
 		final Integer errorTitleText = (Integer) extras.getSerializable(IntentExtraKey.ERROR_TITLE_TEXT_KEY);
 		
-		if (errorText != null)
+		if (errorText != null){
 			setErrorText(errorText);
-		if (errorTitleText != null)
+		}
+		if (errorTitleText != null){
 			setErrorTitleText(errorTitleText);
+		}
 	}
 	
 	@Override

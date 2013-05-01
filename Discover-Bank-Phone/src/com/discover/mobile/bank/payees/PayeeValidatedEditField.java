@@ -251,8 +251,9 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 */
 	@Override
 	protected void hideErrorLabel() {
-		if(errorLabel != null)
+		if(errorLabel != null){
 			this.errorLabel.setVisibility(View.INVISIBLE);
+		}
 	}
 	
 	/**
@@ -289,8 +290,9 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 
 			@Override
 			public void afterTextChanged(final Editable s) {
-				if(isValid())
+				if(isValid()){
 					clearErrors();
+				}
 			}
 
 			@Override
