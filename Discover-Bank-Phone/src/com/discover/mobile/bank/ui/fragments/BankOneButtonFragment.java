@@ -183,8 +183,9 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 */
 	public void loadListElementsToLayoutFromList(final LinearLayout layout, final List<?> elementList){
 		if(layout != null && elementList != null){
-			for(final Object element : elementList)
+			for(final Object element : elementList){
 				layout.addView((View)element);
+			}
 		}
 	}
 	

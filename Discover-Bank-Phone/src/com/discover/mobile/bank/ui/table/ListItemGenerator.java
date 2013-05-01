@@ -363,8 +363,9 @@ public class ListItemGenerator {
 		String frequency = "";
 		
 		for(int i = 0; i < frequencyCodes.length; ++i) {
-			if(frequencyCodes[i].equalsIgnoreCase(results.frequency))
+			if(frequencyCodes[i].equalsIgnoreCase(results.frequency)){
 				frequency = formattedFrequency[i];
+			}
 		}
 		
 		if(Strings.isNullOrEmpty(frequency)){

@@ -341,8 +341,9 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 			final Account[] temp = (Account[])args.getSerializable(BankExtraKeys.DATA_SELECTED_INDEX);
 			 
 			if(temp != null){
-				for(int i = 0; i < temp.length; ++i)
+				for(int i = 0; i < temp.length; ++i){
 					 selectedAccounts[i] = temp[i];
+				}
 			}
 		}
 
@@ -440,9 +441,9 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 			}
 			
 			this.getFragmentManager().popBackStack();
-		}
-		else
+		}else{
 			BankConductor.navigateBackFromTransferSelectAccount(args);
+		}
 	}
 
 	/**

@@ -184,15 +184,16 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 			
 			//Decide what kind of transaction we have, and return an applicable title.
 			if(!ActivityDetail.POSTED.equalsIgnoreCase(transactionType)){
-				if(ActivityDetail.TYPE_DEPOSIT.equalsIgnoreCase(transactionType))
+				if(ActivityDetail.TYPE_DEPOSIT.equalsIgnoreCase(transactionType)){
 					title = R.string.check_deposit;
-				else if(ActivityDetail.TYPE_PAYMENT.equalsIgnoreCase(transactionType))
+				}else if(ActivityDetail.TYPE_PAYMENT.equalsIgnoreCase(transactionType)){
 					title = R.string.bill_pay;
-				else if(ActivityDetail.TYPE_TRANSFER.equalsIgnoreCase(transactionType)) {
-					if(!Strings.isNullOrEmpty(activityItems.activities.get(position).durationValue))
+				}else if(ActivityDetail.TYPE_TRANSFER.equalsIgnoreCase(transactionType)) {
+					if(!Strings.isNullOrEmpty(activityItems.activities.get(position).durationValue)){
 						title = R.string.repeating_funds_transfer;
-					else
+					}else{
 						title = R.string.funds_transfer;
+					}
 				}
 			}
 		}
