@@ -106,7 +106,6 @@ public class GetAccountLimits  extends BankJsonResponseMappingNetworkServiceCall
 	 */
 	private static GetCallParams generateCallParams(final Account account) {
 		//TODO: Needs to get updated once server side provides the url even if user is not enrolled
-		//final String url = BankUrlManager.getUrl(BankUrlManager.DEPOSITS_URL_KEY) +"limits/" +account.id;
 		final String url = "/api/deposits/limits/" +account.id;
 		
 		final GetCallParams callParams = new GetCallParams(url);
