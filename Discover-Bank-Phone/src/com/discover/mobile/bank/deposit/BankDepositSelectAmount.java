@@ -54,6 +54,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	 */
 	private Bundle bundle = null;
 	
+	private static final int CAPTURE_ACTIVITY = 1;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -150,8 +151,6 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		
 		return items;
 	}
-
-	final int CAPTURE_ACTIVITY = 1;
 	
 	@Override
 	protected void onActionButtonClick() {	

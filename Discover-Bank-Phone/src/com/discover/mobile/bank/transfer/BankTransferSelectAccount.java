@@ -40,7 +40,7 @@ import com.google.common.base.Strings;
  *
  */
 public class BankTransferSelectAccount extends BaseFragment implements FragmentOnBackPressed {
-	private final String TAG = BankTransferSelectAccount.class.getSimpleName();
+	private final static String TAG = BankTransferSelectAccount.class.getSimpleName();
 
 	private final Account[] selectedAccounts = new Account[2];
 

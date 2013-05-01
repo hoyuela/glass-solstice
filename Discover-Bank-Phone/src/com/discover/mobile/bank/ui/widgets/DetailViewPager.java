@@ -33,7 +33,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  *
  */
 public abstract class DetailViewPager extends BaseFragment implements DynamicDataFragment{
-	private final String TAG = DetailViewPager.class.getSimpleName();
+	private static final String TAG = DetailViewPager.class.getSimpleName();
 
 	/** The View Pager*/
 	private ViewPager viewPager;

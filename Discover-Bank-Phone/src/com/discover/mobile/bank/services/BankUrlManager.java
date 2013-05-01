@@ -15,7 +15,7 @@ import com.google.common.base.Strings;
  * @author ajleeds
  * 
  */
-public class BankUrlManager  {
+public final class BankUrlManager  {
 
 	private static String _baseURL = BankBaseUrl.getString("BankUrlManager.0");
 	private static final String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";

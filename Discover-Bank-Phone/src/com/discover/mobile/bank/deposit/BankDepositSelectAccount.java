@@ -39,7 +39,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	/**
 	 * Used to log into Android logcat
 	 */
-	private final String TAG = BankDepositSelectAccount.class.getSimpleName();
+	private final static String TAG = BankDepositSelectAccount.class.getSimpleName();
 
 	/**
 	 * Boolean flag to detect if the user just accepted the terms and conditions,
