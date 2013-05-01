@@ -66,8 +66,9 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		populateAccounts(INTERNAL_ACCOUNT, mainView);
 		populateAccounts(EXTERNAL_ACCOUNT, mainView);
 
-		if(isOtherAccountExternalAccount() && getTotalAccountSize() > 2)
+		if(isOtherAccountExternalAccount() && getTotalAccountSize() > 2){
 			showExternalAccountWarning(mainView);
+		}
 
 		return mainView;
 	}
@@ -95,8 +96,9 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		if (args != null) {
 			final AccountList accountList = getAccounts(accountType);
 			
-			if(INTERNAL_ACCOUNT == accountType)
+			if(INTERNAL_ACCOUNT == accountType){
 				Collections.sort(accountList.accounts, new BankSelectAccountComparable());
+			}
 			
 			if(accountList != null && getAccountSize(accountList) > 0) {
 				populateTableWithAccounts(accountType, accountList, mainView);
@@ -115,11 +117,12 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	private void showExternalAccountWarning(final View mainView) {
 		final TextView editOtherAccountLink = (TextView)mainView.findViewById(R.id.change_other_account_link);
 
-		if(isToAccountScreen())
+		if(isToAccountScreen()){
 			editOtherAccountLink.setText(Html.fromHtml(getString(R.string.change_transfer_from_account)));
-		else
+		} else{
 			editOtherAccountLink.setText(Html.fromHtml(getString(R.string.change_transfer_to_account)));
-
+		}
+		
 		editOtherAccountLink.setOnClickListener(pushReselectClickListener);
 
 		mainView.findViewById(R.id.external_accounts_title).setVisibility(View.VISIBLE);
@@ -152,11 +155,12 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		final Bundle args = getArguments();
 		int title = 0;
 
-		if(isToAccountScreen())
+		if(isToAccountScreen()){
 			title = R.string.from;
-		else
+		}else{
 			title = R.string.to;
-
+		}
+		
 		args.putInt(BankExtraKeys.TITLE_TEXT, title);
 	}
 
@@ -168,12 +172,13 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		boolean isToScreen = false;
 		final Bundle args = getArguments();
 		int titleRes = 0;
-		if(args != null)
+		if(args != null){
 			titleRes = args.getInt(BankExtraKeys.TITLE_TEXT);
-
-		if(titleRes == R.string.to)
+		}
+		if(titleRes == R.string.to){
 			isToScreen = true;
-
+		}
+		
 		return isToScreen;
 	}
 
@@ -216,9 +221,9 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	private boolean isOtherAccountExternalAccount() {
 		boolean hasExternalAccount = false;
 		final Account other = getOtherSelectedAccount();
-		if(other != null)
+		if(other != null){
 			hasExternalAccount = other.isExternalAccount();
-
+		}
 		return hasExternalAccount;
 	}
 
@@ -229,11 +234,12 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	private Account getOtherSelectedAccount() {
 		Account otherSelectedAccount = null;
 
-		if(isToAccountScreen())
+		if(isToAccountScreen()){
 			otherSelectedAccount = selectedAccounts[1];
-		else
+		}else{
 			otherSelectedAccount = selectedAccounts[0];
-
+		}
+		
 		return otherSelectedAccount;
 	}
 
@@ -291,8 +297,9 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	private AccountList getInternalAccounts() {
 		if(internalAccounts == null) {
 			internalAccounts = getAccounts(INTERNAL_ACCOUNT);
-			if(internalAccounts == null)
+			if(internalAccounts == null){
 				internalAccounts = getNewAccountList();
+			}
 		}
 
 		return internalAccounts;
@@ -306,8 +313,9 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	private AccountList getExternalAccounts() {
 		if(externalAccounts == null) {
 			externalAccounts = getAccounts(EXTERNAL_ACCOUNT);
-			if(externalAccounts == null)
+			if(externalAccounts == null){
 				externalAccounts = getNewAccountList();
+			}
 		}
 
 		return externalAccounts;
@@ -357,16 +365,17 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		final ViewPagerListItem item = generator.getTwoItemCell(R.string.empty, account.nickname);
 		item.getMiddleLabel().setSingleLine(false);
 		item.getMiddleLabel().setMaxLines(2);
-		if(account.accountNumber != null)
+		if(account.accountNumber != null){
 			item.getTopLabel().setText(getAccountEndingTextForAccount(account.accountNumber.ending));
+		}
 		
 		if(account.equals(getOtherSelectedAccount()) || getTotalAccountSize() > 2 && 
-				account.equals(getOtherSelectedAccount())) 
+				account.equals(getOtherSelectedAccount())){ 
 			item.getMiddleLabel().setTextColor(getResources().getColor(R.color.field_copy));
-		
-		else
+		}else{
 			item.getMiddleLabel().setTextColor(getResources().getColor(R.color.black));
-
+		}
+		
 		item.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -396,8 +405,9 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	private boolean isAccountAlreadyChosen(final Account testAccount) {
 		boolean accountAlreadySelected = false;
 
-		if(testAccount != null)
+		if(testAccount != null){
 			accountAlreadySelected = testAccount.equals(getOtherSelectedAccount());
+		}
 
 		return accountAlreadySelected;
 	}
@@ -408,11 +418,12 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	 */
 	private void selectAccount(final Account account) {
 
-		if(isToAccountScreen())
+		if(isToAccountScreen()){
 			selectedAccounts[0] = account;
-		else
+		}else{
 			selectedAccounts[1] = account;
-
+		}
+		
 		twoAccountAutoSelect();
 
 		final Bundle args = getArguments();
@@ -422,11 +433,12 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 
 		if(shouldGoBackToSelectAccount) {
 			args.putBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK, false);
-			if(isToAccountScreen())
+			if(isToAccountScreen()){
 				args.putInt(BankExtraKeys.TITLE_TEXT, R.string.from);
-			else
+			}else{
 				args.putInt(BankExtraKeys.TITLE_TEXT, R.string.to);
-
+			}
+			
 			this.getFragmentManager().popBackStack();
 		}
 		else
@@ -458,10 +470,12 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		Account otherAccount = null;
 		final List<Account> allAccounts = new ArrayList<Account>();
 
-		if(getInternalAccounts() != null)
+		if(getInternalAccounts() != null){
 			allAccounts.addAll(getInternalAccounts().accounts);
-		if(getExternalAccounts() != null)
+		}
+		if(getExternalAccounts() != null){
 			allAccounts.addAll(getExternalAccounts().accounts);
+		}
 
 		for(final Account item : allAccounts){
 			if(!item.equals(account) && item.isTransferEligible() && 
@@ -480,10 +494,13 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	 */
 	private int getAccountSize(final AccountList accountList) {
 		int size = 0;
-		if(accountList != null && accountList.accounts != null)
-			for(final Account account : accountList.accounts)
-				if(account.isTransferEligible())
+		if(accountList != null && accountList.accounts != null){
+			for(final Account account : accountList.accounts){
+				if(account.isTransferEligible()){
 					size++;
+				}
+			}
+		}
 
 		return size;
 	}
@@ -559,8 +576,9 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 			flipTitleBundle();
 			useMyBackPress = false;
 			((BankNavigationRootActivity)this.getActivity()).onBackPressed();
-		}else
+		}else{
 			BankConductor.navigateBackFromTransferSelectAccount(args);
+		}
 	}
 
 	@Override

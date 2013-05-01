@@ -50,8 +50,9 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 	public void setBody(final String bodyText) {
 		final TextView bodyLabel = (TextView)findViewById(R.id.faq_section_detail);
 		
-		if(bodyLabel != null) 
+		if(bodyLabel != null){ 
 			bodyLabel.setText(bodyText);
+		}
 	}
 	
 	/**
@@ -61,8 +62,9 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 	public void setTitle(final String title) {
 		final TextView titleLabel = (TextView)findViewById(R.id.faq_section_title);
 		
-		if(titleLabel != null)
+		if(titleLabel != null){
 			titleLabel.setText(title);
+		}
 	}
 	
 	/**
@@ -78,10 +80,11 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 	};
 	
 	private void toggleRowExpansion(final String toggleValue) {
-		if(isOpen()) 
+		if(isOpen()){ 
 			closeItem();
-		else
+		}else{
 			openItem();
+		}
 	}
 	
 	public boolean isOpen() {
@@ -104,8 +107,9 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 	public void hideDivider() {
 		final View view = findViewById(R.id.divider);
 		
-		if(view != null)
+		if(view != null){
 			view.setVisibility(View.GONE);
+		}
 	}
 	
 	/**

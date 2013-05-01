@@ -120,8 +120,9 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 		
 		hasCamera = (camera != null);
 	
-		if(hasCamera)
+		if(hasCamera){
 			camera.release();
+		}
 		
 		return hasCamera;
 	}

@@ -44,8 +44,9 @@ public class FAQLandingPageFragment extends BaseFragment {
 		//Build the linear layout table.
 		for(int i = 0; i < values.length; ++i) {
 			
-			if(i > 0) 
+			if(i > 0){ 
 				insertDividerLine(faqList);
+			}
 			
 			//Set the text of the section
 			final RelativeLayout item = (RelativeLayout)inflater.inflate(R.layout.single_item_table_cell, null);
@@ -105,14 +106,15 @@ public class FAQLandingPageFragment extends BaseFragment {
 	private void decideWhereToNavigateFromSectionTitle(final String title) {
 		final Resources res = getResources();
 		
-		if(title.equals(res.getString(R.string.general)))
+		if(title.equals(res.getString(R.string.general))){
 			BankConductor.navigateToFAQDetail(BankExtraKeys.GENERAL_FAQ);
-		else if(title.equals(res.getString(R.string.online_bill_pay)))
+		}else if(title.equals(res.getString(R.string.online_bill_pay))){
 			BankConductor.navigateToFAQDetail(BankExtraKeys.BILL_PAY_FAQ);
-		else if(title.equals(res.getString(R.string.deposit_a_check)))
+		}else if(title.equals(res.getString(R.string.deposit_a_check))){
 			BankConductor.navigateToFAQDetail(BankExtraKeys.CHECK_DEPOSIT_FAQ);
-		else if(title.equals(res.getString(R.string.atm_locator_single_line)))
+		}else if(title.equals(res.getString(R.string.atm_locator_single_line))){
 			BankConductor.navigateToFAQDetail(BankExtraKeys.ATM_LOCATOR_FAQ);
+		}
 	
 	}
 	

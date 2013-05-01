@@ -155,16 +155,17 @@ public class TermsLandingPageFragment extends BaseFragment {
 	private void navigateTo(final String title) {
 		final Resources res = getResources();
 		
-		if(title.equals(res.getString(R.string.bank_terms_privacy_statement)))
+		if(title.equals(res.getString(R.string.bank_terms_privacy_statement))){
 			BankConductor.navigateToPrivacyTerms(PrivacyTermsType.MobilePrivacyStatement);
-		else if(title.equals(res.getString(R.string.bank_terms_of_use)))
+		}else if(title.equals(res.getString(R.string.bank_terms_of_use))){
 			BankConductor.navigateToPrivacyTerms(PrivacyTermsType.MobileTermsOfUse);
-		else if(title.equals(res.getString(R.string.bank_terms_bill_pay)))
+		}else if(title.equals(res.getString(R.string.bank_terms_bill_pay))){
 			BankConductor.navigateToPrivacyTerms(PrivacyTermsType.BillPayTermsOfUse);
-		else if(title.equals(res.getString(R.string.bank_deposit_check)))
+		}else if(title.equals(res.getString(R.string.bank_deposit_check))){
 			BankConductor.navigateToPrivacyTerms(PrivacyTermsType.DepositTermsOfUse);
-		else if(title.equals(res.getString(R.string.bank_terms_google))) 
+		}else if(title.equals(res.getString(R.string.bank_terms_google))){ 
 			BankConductor.navigateToPrivacyTerms(PrivacyTermsType.GoogleTermsOfUse);
+		}
 	}
 		
 	@Override

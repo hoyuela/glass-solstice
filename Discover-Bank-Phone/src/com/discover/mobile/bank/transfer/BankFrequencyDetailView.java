@@ -503,8 +503,9 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 			
 			@Override
 			public void run() {
-				if(calendarFragment != null)
+				if(calendarFragment != null){
 					calendarFragment.dismiss();
+				}
 			}
 		};
 	}

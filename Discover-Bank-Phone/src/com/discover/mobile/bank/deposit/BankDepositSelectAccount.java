@@ -61,8 +61,9 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		//Load the terms boolean from the arguments bundle, then clear it
 		clearTermsBoolean(loadTermsBoolean(getArguments()));
 		
-		if(acceptedTerms)
+		if(acceptedTerms){
 			showHowItWorksModal();
+		}
 		
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
@@ -235,8 +236,9 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	 * @param arguments a Bundle that was supplied from this fragment.
 	 */
 	private Bundle loadTermsBoolean(final Bundle bundle) {
-		if(bundle != null)
+		if(bundle != null){
 			acceptedTerms = bundle.getBoolean(BankExtraKeys.ACCEPTED_TERMS);
+		}
 		return bundle;
 	}
 	
@@ -246,8 +248,9 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	 * @param bundle
 	 */
 	private void clearTermsBoolean(final Bundle bundle) {
-		if(bundle != null) 
+		if(bundle != null){ 
 			bundle.putBoolean(BankExtraKeys.ACCEPTED_TERMS, false);
+		}
 	}
 
 	@Override
