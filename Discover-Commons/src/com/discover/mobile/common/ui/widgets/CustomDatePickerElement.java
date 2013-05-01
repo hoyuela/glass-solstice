@@ -108,7 +108,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	}
 
 
-	protected void setupDatePickerDialog() {
+	private void setupDatePickerDialog() {
 		final Calendar currentDate = Calendar.getInstance();
 
 		final int currentYearMinusEighteen = currentDate.get(Calendar.YEAR) - getYearOffset();
@@ -118,7 +118,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 		attachedDatePickerDialog = new CustomDatePickerDialog(getContext(), new OnDateSetListener() {
 
 			@Override
-			public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
+			public final void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
 				setDay(dayOfMonth);
 				setMonth(monthOfYear);
 				setYear(year);

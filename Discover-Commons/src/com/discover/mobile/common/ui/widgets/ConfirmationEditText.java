@@ -50,6 +50,7 @@ public class ConfirmationEditText extends ValidatedInputField {
 	
 	private void doSetup() {
 		setupFocusChangedListener();
+		setupTextChangedListener();
 	}
 
 	/**
@@ -125,8 +126,7 @@ public class ConfirmationEditText extends ValidatedInputField {
 	 * it will stay gray until it matches, then it will turn green and place a green check mark in the right
 	 * drawable location of the input field.
 	 */
-	@Override
-	protected void setupTextChangedListener() {
+	private void setupTextChangedListener() {
 		final ConfirmationEditText self = this;
 
 		this.addTextChangedListener(new TextWatcher() {
