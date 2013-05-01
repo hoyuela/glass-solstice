@@ -138,7 +138,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		return instance;
 	}
-	
+
 	/**
 	 * Initializes a new error handler based on the current Activity.
 	 */
@@ -524,7 +524,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Get Payment Successful, navigate to the review payments table
 		else if( sender instanceof GetPaymentsServiceCall ) {
-			final Bundle bundle = new Bundle();
+			Bundle bundle;
+			if(null != ((GetPaymentsServiceCall) sender).getExtras()){
+				bundle = ((GetPaymentsServiceCall) sender).getExtras();
+			}else{
+				bundle = new Bundle();
+			}
 			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
 			if(((GetPaymentsServiceCall) sender).isWasDeleted()){
 				bundle.putAll(((GetPaymentsServiceCall) sender).getExtras());

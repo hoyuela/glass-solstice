@@ -19,6 +19,7 @@ import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
+import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
@@ -50,11 +51,11 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	/**Adapter to show data*/
 	private ReviewPaymentsAdapter adapter;
 
-	/**Integer value of the toggle that will need to be show in the call succeeds*/
-	private int futureValue = ReviewPaymentsHeader.SCHEDULED_PAYMENTS;
-
 	/**Key to get the future value out of the bundle*/
-	private static final String FUTURE_VALUE_KEY = "fvk";
+	//private static final String FUTURE_VALUE_KEY = "fvk";
+
+	/**Default Key if it is used the toggle of buttons wont happen*/
+	private static final int NO_CHANGE = -1;
 
 	/**
 	 * Handle the received data. Can be called to referesh the list data or in order to load more data.
@@ -72,9 +73,14 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		setIsLoadingMore(false);
 		super.refreshListener();
 		footer.showDone();
-		final int category = futureValue;
+		int category = bundle.getInt(BankExtraKeys.CATEGORY_SELECTED, ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
 
-		header.setCurrentCategory(futureValue);
+		if(NO_CHANGE == category){
+			category = header.getCurrentCategory();
+		}else{
+			header.setCurrentCategory(category);
+		}
+
 		final boolean dataDeleted = bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE);
 		ListPaymentDetail list = (ListPaymentDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		if (list == null) {
@@ -195,7 +201,11 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 */
 	public void loadMore(final String url){
 		setIsLoadingMore(true);
-		BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+		final Bundle bundle = new Bundle();
+		bundle.putInt(BankExtraKeys.CATEGORY_SELECTED, NO_CHANGE);
+		final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
+		call.setExtras(bundle);
+		call.submit();
 	}
 
 	/**
@@ -208,7 +218,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		header.getScheduled().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				futureValue = ReviewPaymentsHeader.SCHEDULED_PAYMENTS;
 				if (scheduled != null) {
 					header.setCurrentCategory(ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
 					updateAdapter(scheduled);
@@ -218,8 +227,12 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 					updateAdapter(scheduled);
 				} else {
 					//Generate a url to download schedule payments
+					final Bundle bundle = new Bundle();
+					bundle.putInt(BankExtraKeys.CATEGORY_SELECTED,  ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
-					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+					final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
+					call.setExtras(bundle);
+					call.submit();
 				}
 			}
 		});
@@ -227,7 +240,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		header.getCompleted().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				futureValue = ReviewPaymentsHeader.COMPLETED_PAYMENTS;
 				if (completed != null) {
 					header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
 					updateAdapter(completed);
@@ -236,8 +248,13 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 					completed = BankUser.instance().getCompleted();
 					updateAdapter(completed);
 				} else {
+					//Generate a url to download schedule payments
+					final Bundle bundle = new Bundle();
+					bundle.putInt(BankExtraKeys.CATEGORY_SELECTED,  ReviewPaymentsHeader.COMPLETED_PAYMENTS);
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.COMPLETED);
-					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+					final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
+					call.setExtras(bundle);
+					call.submit();
 				}
 			}
 		});
@@ -245,7 +262,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		header.getCanceled().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				futureValue = ReviewPaymentsHeader.CANCELED_PAYMENTS;
 				if (canceled != null) {
 					header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
 					updateAdapter(canceled);
@@ -254,8 +270,13 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 					canceled = BankUser.instance().getCancelled();
 					updateAdapter(canceled);
 				} else {
+					//Generate a url to download schedule payments
+					final Bundle bundle = new Bundle();
+					bundle.putInt(BankExtraKeys.CATEGORY_SELECTED,  ReviewPaymentsHeader.CANCELED_PAYMENTS);
 					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.CANCELLED);
-					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+					final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
+					call.setExtras(bundle);
+					call.submit();
 				}
 			}
 		});
@@ -342,7 +363,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		bundle.putSerializable(getScheduleKey(category), scheduled);
 		bundle.putSerializable(getCompletedKey(category), completed);
 		bundle.putSerializable(getCanceledKey(category), canceled);
-		bundle.putInt(FUTURE_VALUE_KEY, futureValue);
 
 		return bundle;
 	}
@@ -355,7 +375,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	public void loadDataFromBundle(final Bundle bundle) {
 		if(null == bundle){return;}
 		final int category = bundle.getInt(BankExtraKeys.CATEGORY_SELECTED, ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
-		futureValue = bundle.getInt(FUTURE_VALUE_KEY, ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
 		header.setCurrentCategory(category);
 		scheduled = (ListPaymentDetail)bundle.getSerializable(getScheduleKey(category));
 		completed = (ListPaymentDetail)bundle.getSerializable(getCompletedKey(category));
@@ -375,21 +394,24 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 * @return the schedule key that will be used in the bundle
 	 */
 	private String getScheduleKey(final int category){
-		return (category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.SCHEDULED_LIST;
+		return (category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS) ? 
+				BankExtraKeys.PRIMARY_LIST : BankExtraKeys.SCHEDULED_LIST;
 	}
 
 	/**
 	 * @return the completed key that will be used in the bundle
 	 */
 	private String getCompletedKey(final int category){
-		return (category == ReviewPaymentsHeader.COMPLETED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.COMPLETED_LIST;
+		return (category == ReviewPaymentsHeader.COMPLETED_PAYMENTS) ? 
+				BankExtraKeys.PRIMARY_LIST : BankExtraKeys.COMPLETED_LIST;
 	}
 
 	/**
 	 * @return the canceled key that will be used in the bundle
 	 */
 	private String getCanceledKey(final int category){
-		return (category == ReviewPaymentsHeader.CANCELED_PAYMENTS) ? BankExtraKeys.PRIMARY_LIST : BankExtraKeys.CANCELED_LIST;
+		return (category == ReviewPaymentsHeader.CANCELED_PAYMENTS) ? 
+				BankExtraKeys.PRIMARY_LIST : BankExtraKeys.CANCELED_LIST;
 	}
 
 	/**
