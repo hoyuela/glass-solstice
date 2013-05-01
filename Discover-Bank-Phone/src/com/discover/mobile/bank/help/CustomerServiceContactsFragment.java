@@ -120,8 +120,9 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 */
 	public static void loadListElementsToLayoutFromList(final LinearLayout layout, final List<TwoElementListItem> elementList) {
 		if(layout != null){
-			for(final TwoElementListItem element : elementList)
+			for(final TwoElementListItem element : elementList){
 				layout.addView(element);
+			}
 		}
 	}
 	
