@@ -16,7 +16,7 @@ import com.discover.mobile.common.framework.Conductor;
  * @author ekaram
  *
  */
-public class FacadeFactory {
+public final class FacadeFactory {
 	
 	/**
 	 * The private map to store the singleton objects

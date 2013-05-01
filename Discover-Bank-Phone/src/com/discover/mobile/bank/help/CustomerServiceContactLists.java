@@ -20,7 +20,7 @@ import com.discover.mobile.common.utils.CommonUtils;
  * @author scottseward
  *
  */
-public class CustomerServiceContactLists {
+public final class CustomerServiceContactLists {
 	
 	/**
 	 * Easy handles for the calling context and its resources.

@@ -26,7 +26,7 @@ import com.discover.mobile.common.error.ErrorHandlerUi;
  * @author henryoyuela
  *
  */
-public class BankPhoneAsyncCallbackBuilder {
+public final class BankPhoneAsyncCallbackBuilder {
 	/**
 	 * This is a utility class and should not have a public or default constructor.
 	 */

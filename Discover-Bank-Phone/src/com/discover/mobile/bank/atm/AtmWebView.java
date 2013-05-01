@@ -56,7 +56,7 @@ public class AtmWebView{
 	private boolean isReportingAtm;
 
 	/**ATM ID String */
-	private String atm_id;
+	private String atmID;
 
 	/**
 	 * 
@@ -114,8 +114,8 @@ public class AtmWebView{
 	 */
 	public void reportAtm(final String id){
 		isReportingAtm = true;
-		atm_id = id;
-		setupWebView(REPORT_URL + atm_id);
+		atmID = id;
+		setupWebView(REPORT_URL + atmID);
 		web.setVisibility(View.VISIBLE);
 		web.setBackgroundColor(Color.WHITE);
 	}
@@ -145,7 +145,7 @@ public class AtmWebView{
 				outState.putDouble(BankExtraKeys.STREET_LON, Double.parseDouble(lon));
 			}
 		}else {
-			outState.putString(BankExtraKeys.ATM_ID, atm_id);
+			outState.putString(BankExtraKeys.ATM_ID, atmID);
 		}
 	}
 

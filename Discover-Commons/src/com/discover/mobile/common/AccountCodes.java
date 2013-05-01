@@ -1,6 +1,6 @@
 package com.discover.mobile.common;
 
-public class AccountCodes {
+public final class AccountCodes {
 
 	
 	/** Incentive Type for Miles Bonus */

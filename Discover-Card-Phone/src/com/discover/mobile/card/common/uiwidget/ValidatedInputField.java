@@ -28,13 +28,13 @@ import com.discover.mobile.card.R;
 public abstract class ValidatedInputField extends EditText{
 
 	/** Default and error drawables for input fields */
-	protected final int FIELD_DEFAULT_APPEARANCE = R.drawable.edit_text_default;
-	protected final int FIELD_ERROR_APPEARANCE = R.drawable.edit_text_red;
+	protected static final int FIELD_DEFAULT_APPEARANCE = R.drawable.edit_text_default;
+	protected static final int FIELD_ERROR_APPEARANCE = R.drawable.edit_text_red;
 
 	private ValidatedInputField thisEditText;
 
 	/**Default date picker ems size*/
-	protected final int DATE_PICKER_EMS_LENGTH = 11;
+	protected static final int DATE_PICKER_EMS_LENGTH = 11;
 
 	/**A shared input filter to be used when changing the max input length of a field.*/
 	InputFilter[] filterArray = new InputFilter[1];

@@ -25,7 +25,7 @@ import com.discover.mobile.common.net.error.ExceptionLibrary;
 public class CreateBankSSOLoginCall extends
 BankJsonResponseMappingNetworkServiceCall<BankLoginData> {
 
-	private final String TAG = CreateBankSSOLoginCall.class.getSimpleName();
+	private final static String TAG = CreateBankSSOLoginCall.class.getSimpleName();
 	private final TypedReferenceHandler<BankLoginData> handler;
 
 	public CreateBankSSOLoginCall(final Context context,

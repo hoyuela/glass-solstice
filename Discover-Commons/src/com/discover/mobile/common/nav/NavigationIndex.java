@@ -11,7 +11,7 @@ package com.discover.mobile.common.nav;
  * @author ajleeds
  *
  */
-public class NavigationIndex {
+public final class NavigationIndex {
 	
 	private static int _previousMainIndex = 0;
 	private static int _mainIndex = 0;
