@@ -84,10 +84,10 @@ public final class State {
 	 * @param _name Name of the state represented by the instance of this class.
 	 * @param _abbrev Abbreviation of the state represent by the instance of this class.
 	 */
-	private State( final String _name, final String _abbrev )
+	private State( final String name, final String abbrev )
 	{
-	    name = _name;
-	    abbrev = _abbrev;
+	    this.name = name;
+	    this.abbrev = abbrev;
 	}
 
 	/**

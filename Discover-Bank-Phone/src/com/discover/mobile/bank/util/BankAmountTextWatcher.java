@@ -166,7 +166,7 @@ public class BankAmountTextWatcher implements TextWatcher {
 			valueText = BankStringFormatter.convertStringFloatToDollars(Double.toString(value));
 			valueText = valueText.replace("$", "");
 			watchee.removeTextChangedListener(this);
-			watchee.setText(valueText.toString());
+			watchee.setText(valueText);
 			watchee.addTextChangedListener(this);
 			watchee.setSelection(valueText.length());
 		} else {

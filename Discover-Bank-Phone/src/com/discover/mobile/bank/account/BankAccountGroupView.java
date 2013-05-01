@@ -133,8 +133,8 @@ public class BankAccountGroupView extends LinearLayout  {
 			/**Use name for grouping otherwise use type*/
 			
 			type.setText(getGroupTitle(account));
-			
-			layout.addView(lastAccountReference = new BankAccountView(this.getContext(), account));
+			lastAccountReference = new BankAccountView(this.getContext(), account);
+			layout.addView(lastAccountReference);
 			
 			if(firstAccountReference == null) {
 				firstAccountReference = lastAccountReference;
