@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -39,8 +40,7 @@ import com.discover.mobile.common.ui.widgets.PositiveIntegerEditText;
  * @author jthornton
  *
  */
-public class BankFrequencyDetailView extends RelativeLayout implements BankErrorHandlerDelegate {
-
+public class BankFrequencyDetailView extends RelativeLayout implements BankErrorHandlerDelegate {	
 	/**Rotation Key Values*/
 	private static final String RADIO = "radio";
 	private static final String DATE_VALUE = "dateValue";
@@ -90,6 +90,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 
 	/** Fragment used to select a payment date*/
 	private CalendarFragment calendarFragment;
+	
 
 	/**
 	 * Constructor for the view
@@ -245,7 +246,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		final String value;
 		switch(index){
 			case DATE:
-				value = BankStringFormatter.convertToISO8601Date(dateValue.getText().toString());
+				value = BankStringFormatter.convertToISO8601Date(dateValue.getText().toString(),false);
 				break;
 			case TRANSACTION:
 				value = transactionAmount.getText().toString();
@@ -320,8 +321,20 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		((TextView)view.findViewById(R.id.date_value)).setTextColor(res.getColor(R.color.field_copy));
 		final ImageView caret = (ImageView)view.findViewById(R.id.freq_caret);
 		caret.setImageDrawable(getResources().getDrawable(R.drawable.gray_right_arrow));
+		clearErrorLabel(R.id.date_error_label);
+		((TextView)view.findViewById(R.id.date_value)).setText(getResources().getString(R.string.transfer_selected_date));
 	}
-
+	
+	private void clearErrorLabel(final int labelResId) {
+		final TextView errorLabel = (TextView)findViewById(labelResId);
+		if(errorLabel != null) {
+			errorLabel.setText("");
+			errorLabel.setVisibility(View.GONE);
+		}else {
+			Log.e(BankFrequencyDetailView.class.getSimpleName(), "Could not hide error label, Resource ID not found");
+		}
+	}
+	
 	/**
 	 * Disable the transaction cell
 	 */
@@ -333,6 +346,8 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		transactionAmount.clearErrors();
 		transactionAmount.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 		transactionAmount.setEnabled(false);
+		transactionAmount.setText("");
+		clearErrorLabel(R.id.transactions_error_label);
 	}
 
 	/**
@@ -345,8 +360,12 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		((TextView)view.findViewById(R.id.dollar)).setTextColor(res.getColor(R.color.field_copy));
 		dollarAmount.setEnabled(false);
 		dollarAmount.clearFocus();
+		dollarAmount.enableBankAmountTextWatcher(false);
+		dollarAmount.setText("");
+		dollarAmount.enableBankAmountTextWatcher(true);
 		dollarAmount.setupDefaultAppearance();
 		dollarAmount.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+		clearErrorLabel(R.id.dollar_error_label);
 	}
 
 	/**
@@ -523,16 +542,19 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 				final String durationType = getDurationType();
 				
 				if(TransferDetail.UNTIL_AMOUNT.equalsIgnoreCase(durationType)) {
-					errorLabel = (TextView)this.findViewById(R.id.date_error_label);
+					errorLabel = (TextView)this.findViewById(R.id.dollar_error_label);
 					errorLabel.setText(error.message);
 				} else if (TransferDetail.UNTIL_DATE.equalsIgnoreCase(durationType)) {
-					errorLabel = (TextView)this.findViewById(R.id.transactions_error_label);
+					errorLabel = (TextView)this.findViewById(R.id.date_error_label);
 					errorLabel.setText(error.message);
 				} else if (TransferDetail.UNTIL_COUNT.equalsIgnoreCase(durationType)) {
-					errorLabel = (TextView)this.findViewById(R.id.dollar_error_label);
+					errorLabel = (TextView)this.findViewById(R.id.transactions_error_label);
 					errorLabel.setText(error.message);
 				} else{
 					isHandled = false;
+				}
+				if(isHandled) {
+					errorLabel.setVisibility(View.VISIBLE);
 				}
 				
 			}

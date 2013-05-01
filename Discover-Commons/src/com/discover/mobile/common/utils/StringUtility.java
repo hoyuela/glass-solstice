@@ -10,6 +10,7 @@ public final class StringUtility {
 	public static final String EMPTY = "";
 	public static final String SPACE = " ";
 	public static final String ENCODED_SPACE = "%20";
+	public static final String COMMA = ",";
 	
 	private StringUtility() {
 		throw new AssertionError();

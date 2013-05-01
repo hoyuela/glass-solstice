@@ -28,23 +28,21 @@ import com.google.common.base.Strings;
  *
  */
 public class ReviewCheckDepositTableCell extends RelativeLayout {
-	
-	View mainView = null;
-	
+		
 	public ReviewCheckDepositTableCell(final Context context) {
 		super(context);
-		doSetup(context);
+		doSetup();
 	}
 	
 	public ReviewCheckDepositTableCell(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		doSetup(context);
+		doSetup();
 	}
 	
 	public ReviewCheckDepositTableCell(final Context context, final AttributeSet attrs,
 			final int defStyle) {
 		super(context, attrs, defStyle);
-		doSetup(context);
+		doSetup();
 	}
 	
 	/**
@@ -52,9 +50,9 @@ public class ReviewCheckDepositTableCell extends RelativeLayout {
 	 * images into the cell.
 	 * @param context
 	 */
-	private void doSetup(final Context context) {
-		addView(getInflatedLayout(context));
-		loadImages(context);
+	private void doSetup() {
+		addView(getInflatedLayout());
+		loadImages();
 	}
 	
 	/**
@@ -62,18 +60,16 @@ public class ReviewCheckDepositTableCell extends RelativeLayout {
 	 * @param context the calling context
 	 * @return the inflated view for this cell.
 	 */
-	private View getInflatedLayout(final Context context) {
-		if(mainView == null)
-			mainView = LayoutInflater.from(context).inflate(R.layout.review_check_deposit_cell, null);
-		return mainView;
+	private View getInflatedLayout() {
+		return LayoutInflater.from(getContext()).inflate(R.layout.review_check_deposit_cell, null);
 	}
 	
 	/**
 	 * Load the check images into the image views that are presented on this table cell.
 	 */
-	public void loadImages(final Context context) {		
-		loadImageToView(context, R.id.check_front_image, CheckDepositCaptureActivity.FRONT_PICTURE);
-		loadImageToView(context, R.id.check_back_image, CheckDepositCaptureActivity.BACK_PICTURE);
+	public void loadImages() {		
+		loadImageToView(R.id.check_front_image, CheckDepositCaptureActivity.FRONT_PICTURE);
+		loadImageToView(R.id.check_back_image, CheckDepositCaptureActivity.BACK_PICTURE);
 	}
 	
 	/**
@@ -82,17 +78,18 @@ public class ReviewCheckDepositTableCell extends RelativeLayout {
 	 * @param imageViewResource the ImageView resource id in the layout file.
 	 * @param filename the file name of the image to load.
 	 */
-	private void loadImageToView(final Context context, final int imageViewResource, final String filename) {
-		if(context != null && imageViewResource != 0 && !Strings.isNullOrEmpty(filename)) {
+	private void loadImageToView(final int imageViewResource, final String filename) {
+		if(imageViewResource != 0 && !Strings.isNullOrEmpty(filename)) {
 			Bitmap decodedImage = null;
 			final ScalableImage checkImageView = (ScalableImage)findViewById(imageViewResource);
-			final File savedImage = context.getFileStreamPath(filename);
+			final File savedImage = getContext().getFileStreamPath(filename);
 			
-			decodedImage = BitmapFactory.decodeFile(savedImage.getAbsolutePath());
+			final BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = 2;
+			if(savedImage != null) {
+				decodedImage = BitmapFactory.decodeFile(savedImage.getAbsolutePath(), options);
+			}
 			
-			if(savedImage != null)
-				decodedImage = BitmapFactory.decodeFile(savedImage.getAbsolutePath());
-
 			if(decodedImage != null && checkImageView != null){
 				final Drawable image = new BitmapDrawable(getResources(), decodedImage);
 				checkImageView.setBackgroundDrawable(image);

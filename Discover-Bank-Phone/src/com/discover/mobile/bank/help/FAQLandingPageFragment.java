@@ -17,6 +17,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.utils.CommonUtils;
 /**
  * This is the landing page for the FAQ section.
  * This page displays all FAQ categories for a Bank user.
@@ -60,7 +61,10 @@ public class FAQLandingPageFragment extends BaseFragment {
 		//Disable hardware acceleration for the UI so that the dotted line gets drawn correctly.
 		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
             view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
+        } else {
+			// Tiled background is often broken for older devices
+			CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.faq_layout));
+		}
 		
 		return view;
 	}

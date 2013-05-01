@@ -2,12 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto/com.discover.mobile.bank"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/light_gray_bkgrd" >
+    android:layout_height="fill_parent" >
 
     <RelativeLayout
+        android:id="@+id/customer_service_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@drawable/light_gray_bkgrd" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -55,6 +56,7 @@
             <LinearLayout
                 android:id="@+id/bank_phone_numbers_list"
                 style="@style/customer_service_table"
+                android:layout_marginBottom="@dimen/between_related_elements_padding"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bank_phone_title_label" >
@@ -67,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bank_phone_numbers_list"
                 android:layout_marginTop="@dimen/groups_of_elements_padding"
+                android:layout_marginBottom="@dimen/between_related_elements_padding"
                 android:text="@string/by_mail" />
 
             <TextView

@@ -128,7 +128,7 @@ public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 	 */
 	@Override
 	public void onClick(final View sender) {
-		if(sender == addPayee) {
+		if(sender.equals(addPayee)) {
 			BankConductor.navigateToAddPayee(BankEnterPayeeFragment.class, null);
 		}
 	}

@@ -185,7 +185,8 @@ public abstract class Conductor   {
 			fragment = (Fragment) destClass.newInstance();
 		} catch (final Exception e) {
 			throw new RuntimeException(
-					"Unable to instantiate to supplied fragment!  Please ensure public no-arg constructor");
+					"Unable to instantiate to supplied fragment!  Please ensure public no-arg constructor"
+					+ "\n" + e.toString());
 		}
 		if (bundle != null) {
 			fragment.setArguments(bundle);

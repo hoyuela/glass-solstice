@@ -190,7 +190,7 @@ public final class BankStringFormatter {
 	 * @param formattedDate a String in the format mm/dd/yyyy
 	 * @return a String in the format yyyy-MM-dd'T'HH:mm:ss.SSSZ in the eastern time zone
 	 */
-	public static String convertToISO8601Date(final String formattedDate) {
+	public static String convertToISO8601Date(final String formattedDate, final boolean useMilliSecs ) {
 		String selectedDate = "";
 
 		if(!Strings.isNullOrEmpty(formattedDate)) {
@@ -200,8 +200,14 @@ public final class BankStringFormatter {
 			final SimpleDateFormat chosenDateFormat = new SimpleDateFormat(DATE_MM_DD_YYYY, Locale.getDefault());
 			chosenDateFormat.setTimeZone(TimeZone.getTimeZone(easternTime));
 			
-			final SimpleDateFormat submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ", 
-																						Locale.getDefault() );
+			final SimpleDateFormat submissionDateFormat;
+			
+			if( useMilliSecs ) {
+				submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ", Locale.getDefault() );
+			} else {
+				submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ", Locale.getDefault() );
+			}
+			
 			submissionDateFormat.setTimeZone(TimeZone.getTimeZone(easternTime));
 			
 			try {							

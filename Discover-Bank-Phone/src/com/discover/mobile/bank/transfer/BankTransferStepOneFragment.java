@@ -60,11 +60,14 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	private String frequencyCode = TransferDetail.ONE_TIME_TRANSFER;
 	private String frequencyText = "One Time";
 	
-	private final String date = "date";
+	private static final String DATE = "date";
 	private static final String NON_NUMBER_CHARACTERS = "[^0-9]";
+	private static final String ERROR_OBJECT = "err";
 
 	private AmountValidatedEditField amountField;
-
+	
+	private BankErrorResponse lastErrorObject = null;
+	
 	private Account toAccount = null;
 	private Account fromAccount = null;
 
@@ -114,9 +117,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		earliestPaymentDate = CalendarFragment.getFirstValidDateCalendar(Calendar.getInstance(), 
 				BankUser.instance().getHolidays());
 		
-		if(args != null)
+		if(args != null) {
 			externalAccounts = (AccountList)args.getSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS);
-		
+			lastErrorObject = (BankErrorResponse)args.getSerializable(ERROR_OBJECT);		
+		}
 		return view;
 	}
 
@@ -127,6 +131,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	@Override
 	public void onResume() {
 		super.onResume();
+		
 		updateSelectedAccountLabels();
 		frequencyCell.setText(frequencyText);
 		frequencyCell.getErrorLabel().setVisibility(View.GONE);
@@ -135,6 +140,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		restoreStateFromBundle(getArguments());
 
 		updateDateField();
+		
+		if(lastErrorObject != null)
+			handleError(lastErrorObject);
 	}
 	
 	/**
@@ -144,17 +152,15 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	private void updateDateField() {
 		final Bundle args = getArguments();
 		if(args != null) {
-			final String savedDate = args.getString(date);
+			final String savedDate = args.getString(DATE);
 			final boolean isRecurringTransfer = !TransferDetail.ONE_TIME_TRANSFER.equalsIgnoreCase(frequencyCode);
 			
-			boolean areBothAccountsInternal = false;
-			if(toAccount != null && fromAccount != null) {
-				areBothAccountsInternal = !toAccount.isExternalAccount() && !fromAccount.isExternalAccount();
-			}
+			final boolean accountsAreInternal = areBothAccountsInternal();
 			
-			if(isRecurringTransfer && !areBothAccountsInternal) {
+			
+			if(isRecurringTransfer && !accountsAreInternal) {
 				setDateFieldToFirstValidDate(1);
-			} else if(areBothAccountsInternal) {
+			} else if(accountsAreInternal) {
 				setDateFieldToFirstValidDate(0);
 				disableDateSelection();
 				
@@ -166,6 +172,16 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 				setDateFieldToFirstValidDate(0);
 			}
 		}
+	}
+	
+	private boolean areBothAccountsInternal() {
+		boolean areBothAccountsInternal = false;
+		
+		if(toAccount != null && fromAccount != null) {
+			areBothAccountsInternal = !toAccount.isExternalAccount() && !fromAccount.isExternalAccount();
+		}
+		
+		return areBothAccountsInternal;
 	}
 	
 	/**
@@ -216,7 +232,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		
 		final Bundle args = getArguments();
 		if(args != null && dateTextView != null && !Strings.isNullOrEmpty(dateTextView.getText().toString())) {
-			args.putString(date, dateTextView.getText().toString());
+			args.putString(DATE, dateTextView.getText().toString());
 		}
 	}
 
@@ -257,12 +273,21 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		
 		args.putString(BankExtraKeys.FREQUENCY_TEXT, frequencyText);
 
-		if( toAccount != null && fromAccount != null) {
+		if(toAccount != null && fromAccount != null) {
 			args.putSerializable(BankExtraKeys.DATA_SELECTED_INDEX, getSelectedAccounts());
 		}
 
-		if( dateTextView != null )
-			args.putString(date, dateTextView.getText().toString());
+		if(dateTextView != null) {
+			args.putString(DATE, dateTextView.getText().toString());
+		}
+		
+		if(lastErrorObject != null) {
+			try {
+				args.putSerializable(ERROR_OBJECT, (BankErrorResponse)lastErrorObject.clone());
+			} catch (final CloneNotSupportedException e) {
+				Log.e(TAG, "Could not clone object : " + e);
+			}
+		}
 		
 		return args;
 	}
@@ -289,7 +314,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			restoreFrequencyTable(bundle);
 			
 			if(dateTextView != null)
-				dateTextView.setText(bundle.getString(date));
+				dateTextView.setText(bundle.getString(DATE));
 
 			amountField.enableBankAmountTextWatcher(false);
 			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
@@ -646,7 +671,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 				transferObject.frequency = frequencyCode;
 			}
 			
-			transferObject.sendDate = BankStringFormatter.convertToISO8601Date(dateTextView.getText().toString());
+			transferObject.sendDate = BankStringFormatter.convertToISO8601Date(dateTextView.getText().toString(),true);
 	
 			final String cents = amountField.getText().toString().replaceAll(NON_NUMBER_CHARACTERS, "");
 			if(!Strings.isNullOrEmpty(cents)) {
@@ -924,7 +949,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	@Override
 	public boolean handleError(final BankErrorResponse msgErrResponse) {
 		boolean handled = false;		
-
+		lastErrorObject = msgErrResponse;
+		
 		for(final BankError error : msgErrResponse.errors) {
 			final String errorFieldName = error.name;
 			

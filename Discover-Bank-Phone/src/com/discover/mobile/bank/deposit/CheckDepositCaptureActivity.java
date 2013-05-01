@@ -9,6 +9,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
@@ -354,20 +356,34 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				if(event.getAction() != MotionEvent.ACTION_UP) {
 					return false;
 				}
-				captureButton.setPressed(true);   
-				disableClickListeners();
-				startCountdownTimer();
-
-				//Track the taking of pictures
-				if(!isStepOneChecked()){
-					BankTrackingHelper.forceTrackPage(R.string.bank_capture_front);
-				}else if(!isStepTwoChecked()){
-					BankTrackingHelper.forceTrackPage(R.string.bank_capture_back);
-				}
+				beginCaptureProcess();
 			}
 			return true;		    
 		}
 	};
+	
+	/**
+	 * Starts the process of capturing an image.
+	 */
+	private void beginCaptureProcess() {
+		captureButton.setPressed(true);   
+		disableClickListeners();
+		startCountdownTimer();
+		recordAnalyticsPictureTaking();
+	}
+	
+	/**
+	 * Record the analytics data for this section of the application.
+	 */
+	private void recordAnalyticsPictureTaking() {
+		
+		//Track the taking of pictures
+		if(!isStepOneChecked()){
+			BankTrackingHelper.forceTrackPage(R.string.bank_capture_front);
+		}else if(!isStepTwoChecked()){
+			BankTrackingHelper.forceTrackPage(R.string.bank_capture_back);
+		}
+	}
 
 	/**
 	 * Disable the  click listeners for the touch to auto focus and capture button.
@@ -508,7 +524,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * hiding the check brackets, showing the confirmatoin buttons and setting
 	 * the next check mark to visible.
 	 */
-	private byte[] lastPicture = null;
+	private Bitmap lastPicture = null;
 	private final PictureCallback mPicture = new PictureCallback() {
 
 		@Override
@@ -519,7 +535,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			setPictureConfirmationButtons();
 			hideImageBrackets();
 			setNextCheckVisible();
-			lastPicture = data;
+			lastPicture = BitmapFactory.decodeByteArray(data, 0, data.length);
 		}
 	};
 
@@ -529,9 +545,10 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private void saveLastConfirmedImage() {
 		//Write the image to disk.
 		try {
-			if(lastPicture != null && lastPicture.length > 0) {
+			if(lastPicture != null) {
+				final int fullQuality = 100;
 				final FileOutputStream fos = getFileOutputStream();
-				fos.write(lastPicture);
+				lastPicture.compress(Bitmap.CompressFormat.JPEG, fullQuality, fos);
 				fos.close();
 			}
 		} catch (final FileNotFoundException e) {
@@ -678,7 +695,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			parameters.setPictureSize(smallCaptureSize.width, smallCaptureSize.height);
 		}
 
-		parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+		parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
 		camera.setParameters(parameters);
 	}
 
