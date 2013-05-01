@@ -29,6 +29,13 @@ public class CustomerServiceContactLists {
 	private static Context context;
 	
 	/**
+	 * This is a utility class and should not have a public or default constructor.
+	 */
+	private CustomerServiceContactLists() {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
 	 * This is a static method that returns a list of telephone contacts that are in the form of RelativeLayout
 	 * elements. They contain two labels, one that describes the phone number and one that is the phone number
 	 * the phone number is clickable and initiates a telephone dial.

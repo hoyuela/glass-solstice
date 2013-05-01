@@ -37,6 +37,13 @@ public class InputValidator {
 	private final static int MONTH_MIN_VALUE = 0;	
 
 	/**
+	 * This is a utility class and should not have a public or default constructor.
+	 */
+	private InputValidator() {
+		throw new UnsupportedOperationException();
+	}
+	
+	/**
 	 * Compares a String to a regular expression to determine if that String could be a valid email address.
 	 * @param email A String representation of an email address.
 	 * @return true if the email address could be a valid email address.

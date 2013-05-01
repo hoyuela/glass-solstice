@@ -18,6 +18,13 @@ public class NavigationIndex {
 	private static int PREVIOUS_SUB_INDEX = 1;
 	private static int SUB_INDEX = 1;
 	
+	/**
+	 * This is a utility class and should not have a public or default constructor.
+	 */
+	private NavigationIndex() {
+		throw new UnsupportedOperationException();
+	}
+	
 	public static void setSubIndex(final int index){
 		if (index == -1 && SUB_INDEX != -1){
 			PREVIOUS_SUB_INDEX = SUB_INDEX;

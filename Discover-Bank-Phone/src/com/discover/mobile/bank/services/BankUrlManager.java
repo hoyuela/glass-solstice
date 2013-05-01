@@ -67,6 +67,14 @@ public class BankUrlManager  {
 	 */
 	public static final String PUT_METHOD = "?_method=PUT";
 
+	
+	/**
+	 * This is a utility class and should not have a public or default constructor.
+	 */
+	private BankUrlManager() {
+		throw new UnsupportedOperationException();
+	}
+	
 	/**
 	 * Sets the base URL used for all NetworkServiceCall<> objects used for Bank Service API
 	 * 
