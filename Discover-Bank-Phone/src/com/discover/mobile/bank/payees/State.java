@@ -7,7 +7,7 @@ package com.discover.mobile.bank.payees;
  *
  */
 public class State {
-	public static State[] STATES = new State[] {
+	public final static State[] STATES = new State[] {
 		new State("Alabama", "AL"),
 		new State("Alaska", "AK"),
 		new State("Arizona", "AZ"),

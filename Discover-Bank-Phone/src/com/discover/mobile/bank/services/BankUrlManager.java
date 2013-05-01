@@ -17,7 +17,7 @@ import com.google.common.base.Strings;
  */
 public class BankUrlManager  {
 
-	private static String BASE_URL = BankBaseUrl.getString("BankUrlManager.0");
+	private static String _baseURL = BankBaseUrl.getString("BankUrlManager.0");
 	private static final String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
 
 	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
@@ -67,20 +67,28 @@ public class BankUrlManager  {
 	 */
 	public static final String PUT_METHOD = "?_method=PUT";
 
+	
+	/**
+	 * This is a utility class and should not have a public or default constructor.
+	 */
+	private BankUrlManager() {
+		throw new UnsupportedOperationException();
+	}
+	
 	/**
 	 * Sets the base URL used for all NetworkServiceCall<> objects used for Bank Service API
 	 * 
 	 * @param value
 	 */
 	public static void setBaseUrl(final String value ) {
-		BASE_URL = value;
+		_baseURL = value;
 	}
 
 	/**
 	 * @return the baseUrl
 	 */
 	public static String getBaseUrl() {
-		return BASE_URL;
+		return _baseURL;
 	}
 
 	/**

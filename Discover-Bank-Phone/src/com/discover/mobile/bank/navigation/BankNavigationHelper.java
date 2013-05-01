@@ -13,6 +13,14 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
  *
  */
 final public class BankNavigationHelper {
+
+	/**
+	 * This is a utility class and should not have a public or default constructor.
+	 */
+	private BankNavigationHelper() {
+		throw new UnsupportedOperationException();
+	}
+	
 	/**
 	 * Method used to determine if user is already viewing a screen that the user can navigate to
 	 * via the menu section specified.

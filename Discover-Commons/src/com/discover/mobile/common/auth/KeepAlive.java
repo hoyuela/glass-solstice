@@ -35,7 +35,14 @@ public class KeepAlive {
 
 	/** Used to decide if a refresh call is needed for Bank */
 	private static boolean isBankAuthenticated = false;
-
+	
+	/**
+	 * This is a utility class and should not have a public or default constructor.
+	 */
+	private KeepAlive() {
+		throw new UnsupportedOperationException();
+	}
+	
 	/**
 	 * Checks to see if the last bank refresh call period is greater than the
 	 * minimum allowed.
