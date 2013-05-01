@@ -11,6 +11,7 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 
 /**
  * Base fragment class used for the Check Deposit - work flow. This class is based off of BankOneButton Fragment which uses the layout
@@ -29,6 +30,7 @@ public abstract class BankDepositBaseFragment extends BankOneButtonFragment {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
+		BankHeaderProgressIndicator progressIndicator = getProgressIndicator();
 		progressIndicator.initialize(getProgressIndicatorStep());
 		progressIndicator.setTitle(R.string.bank_deposit_enter_details, R.string.bank_deposit_capture, 
 																		R.string.bank_deposit_confirmation);

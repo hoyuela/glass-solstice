@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
@@ -44,11 +45,12 @@ public class BankDeletePayeeModal extends BankOneButtonFragment {
 		}
 		
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
+		TextView noteTextMsg = getNoteMessage();
 		
 		/**Update screen with text strings for delete payee*/
 		noteTextMsg.setText(R.string.bank_payee_delete_body);
-		actionButton.setText(R.string.bank_payee_delete_action);
-		actionLink.setText(R.string.bank_payee_delete_link);
+		setButtonText(R.string.bank_payee_delete_action);
+		setLinkText(R.string.bank_payee_delete_link);
 		noteTextMsg.setVisibility(View.VISIBLE);
 		
 		/**Set padding for body text*/
@@ -57,9 +59,9 @@ public class BankDeletePayeeModal extends BankOneButtonFragment {
 		noteTextMsg.setLayoutParams(params);
 		
 		/**Hide controls that are not needed*/
-		contentTable.setVisibility(View.GONE);
-		noteTitle.setVisibility(View.GONE);
-		actionLink.setVisibility(View.GONE);
+		getTable().setVisibility(View.GONE);
+		getNoteTitle().setVisibility(View.GONE);
+		getActionLink().setVisibility(View.GONE);
 			
 		return view;
 	}

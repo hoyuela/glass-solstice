@@ -71,9 +71,9 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		hideUnusedLabels(view);
 		
 		/**Show "Continue" text in single button on screen*/
-		actionButton.setText(R.string.continue_text);
+		setButtonText(R.string.continue_text);
 
-		contentTable.setBackgroundDrawable(null);
+		getTable().setBackgroundDrawable(null);
 		
 		/**Listen when user taps on the layout to close the keyboard*/
 		view.findViewById(R.id.main_layout).setOnTouchListener(new OnTouchListener() {           
@@ -93,9 +93,8 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	
 	/**Hide controls that are not needed*/
 	private void hideUnusedLabels(final View view) {
-		noteTitle.setVisibility(View.GONE);
-		noteTextMsg.setVisibility(View.GONE);
-		actionLink.setVisibility(View.GONE);
+		hideBottomNote();
+		getActionLink().setVisibility(View.GONE);
 		(view.findViewById(R.id.top_note_text)).setVisibility(View.GONE);
 	}
 	

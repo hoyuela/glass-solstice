@@ -53,10 +53,9 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
 		/**Hide controls that are not needed*/
-		actionButton.setVisibility(View.GONE);
-		actionLink.setVisibility(View.GONE);
-		noteTitle.setVisibility(View.GONE);
-		noteTextMsg.setVisibility(View.GONE);
+		getActionButton().setVisibility(View.GONE);
+		getActionLink().setVisibility(View.GONE);
+		hideBottomNote();
 
 		//Load the terms boolean from the arguments bundle, then clear it
 		clearTermsBoolean(loadTermsBoolean(getArguments()));
