@@ -54,7 +54,7 @@ import com.google.common.base.Strings;
  *
  */
 public class BankTransferStepOneFragment extends BankTransferBaseFragment implements BankErrorHandlerDelegate {
-	private final String TAG = BankTransferStepOneFragment.class.getSimpleName();
+	private static final String TAG = BankTransferStepOneFragment.class.getSimpleName();
 	
 	/**Code of the frequency*/
 	private String frequencyCode = TransferDetail.ONE_TIME_TRANSFER;
