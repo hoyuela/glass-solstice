@@ -190,10 +190,11 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	@Override
 	public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
 		DiscoverActivityManager.setActiveActivity(getActivity());
-		if(requestCode == CAPTURE_ACTIVITY)
+		if(requestCode == CAPTURE_ACTIVITY){
 			if(resultCode == Activity.RESULT_OK) {
 				navigateToReviewDeposit();
 			}
+		}
 	}
 
 	/**

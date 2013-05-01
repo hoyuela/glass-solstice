@@ -130,8 +130,9 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	@Override
 	public void onPause() {
 		super.onPause();
-		if(bundle == null)
+		if(bundle == null){
 			bundle = new Bundle();
+		}
 		
 		onSaveInstanceState(bundle);
 	}

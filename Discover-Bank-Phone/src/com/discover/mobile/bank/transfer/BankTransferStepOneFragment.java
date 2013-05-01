@@ -141,8 +141,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 
 		updateDateField();
 		
-		if(lastErrorObject != null)
+		if(lastErrorObject != null){
 			handleError(lastErrorObject);
+		}
 	}
 	
 	/**
@@ -300,12 +301,14 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		if(bundle != null) {
 			final AccountList bundleExternalAccounts = 
 					(AccountList)bundle.getSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS);
-			if(bundleExternalAccounts != null)
+			if(bundleExternalAccounts != null){
 				externalAccounts = bundleExternalAccounts;
+			}
 			
 			Account[] selectedAccounts = (Account[])bundle.getSerializable(BankExtraKeys.DATA_SELECTED_INDEX);
-			if(selectedAccounts == null)
+			if(selectedAccounts == null){
 				selectedAccounts = new Account[2];
+			}
 			
 			this.setSelectedAccounts(selectedAccounts);
 			this.updateSelectedAccountLabels();
@@ -313,9 +316,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			restoreFrequencyText(bundle);
 			restoreFrequencyTable(bundle);
 			
-			if(dateTextView != null)
+			if(dateTextView != null){
 				dateTextView.setText(bundle.getString(DATE));
-
+			}
+			
 			amountField.enableBankAmountTextWatcher(false);
 			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
 			amountField.enableBankAmountTextWatcher(true);
@@ -338,8 +342,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			frequencyText = value;
 		}
 		
-		if(frequencyCell != null)
+		if(frequencyCell != null){
 			frequencyCell.setText(frequencyText);
+		}
 	}
 	
 	/**
@@ -394,8 +399,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	private String getEndingInText (final boolean isToAccount, final Account account) {
 		final StringBuilder builder = new StringBuilder();
 		String prefix = "From";
-		if(isToAccount)
+		if(isToAccount){
 			prefix = "To";
+		}
 		
 		builder.append(prefix);
 		if(account != null && account.accountNumber != null && !Strings.isNullOrEmpty(account.accountNumber.ending)) {
@@ -795,8 +801,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		int value = 0;
 		final int twentyFiveDollars = 2500;
 		
-		if(!Strings.isNullOrEmpty(amount))
+		if(!Strings.isNullOrEmpty(amount)){
 			value = Integer.parseInt(amount.replaceAll(NON_NUMBER_CHARACTERS, ""));
+		}
 		
 		return InputValidator.isValueBoundedBy(value, twentyFiveDollars, Integer.MAX_VALUE);
 	}
@@ -877,8 +884,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			
 			@Override
 			public void run() {
-				if(calendarFragment != null)
+				if(calendarFragment != null){
 					calendarFragment.dismiss();
+				}
 			}
 		};
 	}

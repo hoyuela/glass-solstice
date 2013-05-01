@@ -41,8 +41,9 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 	public void onResume() {
 		super.onResume();
 		
-		if(this.getCurrentContentFragment() == null)
+		if(this.getCurrentContentFragment() == null){
 			showFAQDetailIfNeeded();
+		}
 	}
 	
 	private void showFAQDetailIfNeeded() {
@@ -76,8 +77,9 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 		//Navigation root activity, it should only be closed from the logged in page
 		if( backStackCount > 1 ) {
 			fragmentManager.popBackStack();
-		}else
+		}else{
 			finish();
+		}
 		
 	}
 	
