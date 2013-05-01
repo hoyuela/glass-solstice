@@ -76,7 +76,7 @@ import com.google.common.base.Strings;
 
 public class LoginActivity extends BaseActivity implements LoginActivityInterface {
 	/* TAG used to print logs for the LoginActivity into logcat */
-	private final String TAG = LoginActivity.class.getSimpleName();
+	private static final String TAG = LoginActivity.class.getSimpleName();
 
 	/**
 	 * These are string values used when passing extras to the saved instance
@@ -97,7 +97,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	/**
 	 * A state flag so that we don't run this twice.
 	 */
-	private static boolean _phoneGapInitComplete = false;
+	private static boolean phoneGapInitComplete = false;
 
 	// INPUT FIELDS
 
@@ -1107,9 +1107,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 		// splash screen is still up - let's init phone gap now before
 		// we take it down
-		if ( !_phoneGapInitComplete ) {
+		if ( !phoneGapInitComplete ) {
 			FacadeFactory.getCardFacade().initPhoneGap();
-			_phoneGapInitComplete = true;
+			phoneGapInitComplete = true;
 		}
 		showSplashScreen(false);
 

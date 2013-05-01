@@ -13,10 +13,10 @@ package com.discover.mobile.common.nav;
  */
 public final class NavigationIndex {
 	
-	private static int _previousMainIndex = 0;
-	private static int _mainIndex = 0;
-	private static int _previousSubIndex = 1;
-	private static int _subIndex = 1;
+	private static int previousMainIndex = 0;
+	private static int mainIndex = 0;
+	private static int previousSubIndex = 1;
+	private static int subIndex = 1;
 	
 	/**
 	 * This is a utility class and should not have a public or default constructor.
@@ -26,46 +26,46 @@ public final class NavigationIndex {
 	}
 	
 	public static void setSubIndex(final int index){
-		if (index == -1 && _subIndex != -1){
-			_previousSubIndex = _subIndex;
+		if (index == -1 && subIndex != -1){
+			previousSubIndex = subIndex;
 		}
-		_subIndex = index;
+		subIndex = index;
 	}
 	
 	public static int getMainIndex(){
-		return _mainIndex;
+		return mainIndex;
 	}
 
 	public static void setIndex(final int index){
-		if (index == _previousMainIndex){
-			_subIndex = _previousSubIndex;
+		if (index == previousMainIndex){
+			subIndex = previousSubIndex;
 		}else {
 			/**
 			 * Only set the previous main index if sub is valid. Otherwise don't set it. 
 			 * This is needed so that when flipping around in the menu and coming back 
 			 * to the original option, the sub gets highlighting correctly.
 			 */
-			if (_subIndex != -1){
-				_previousMainIndex = _mainIndex;
+			if (subIndex != -1){
+				previousMainIndex = mainIndex;
 			}
 			//Set - 1 so that no sub menu is highlighted when a main is expanded. 
 			setSubIndex(-1);
 		}
-		_mainIndex = index;
+		mainIndex = index;
 	}
 	
 	public static int getSubIndex() {
-		return _subIndex;
+		return subIndex;
 	}
 	
 	/**
 	 * Called at login in order to clear the navigation state
 	 */
 	public static void clearAll(){
-		_previousMainIndex = 0;
-		_previousSubIndex = 0;
-		_mainIndex = 0;
-		_subIndex = 0;
+		previousMainIndex = 0;
+		previousSubIndex = 0;
+		mainIndex = 0;
+		subIndex = 0;
 	}
 
 }
