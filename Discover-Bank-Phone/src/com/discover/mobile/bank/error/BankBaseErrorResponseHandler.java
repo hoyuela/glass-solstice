@@ -51,12 +51,12 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	/**
 	 * Contains a reference to an ErrorHandlerFactory to 
 	 */
-	protected ErrorHandler mErrorHandler= null;
-	protected ErrorHandlerUi mErrorHandlerUi = null;
+	private ErrorHandler mErrorHandler= null;
+	private ErrorHandlerUi mErrorHandlerUi = null;
 	/**
 	 * Holds reference to the last error response received from the server.
 	 */
-	protected ErrorResponse<?> lastErrorResponse;
+	private ErrorResponse<?> lastErrorResponse;
 
 	/**
 	 * Default constructor should not be used

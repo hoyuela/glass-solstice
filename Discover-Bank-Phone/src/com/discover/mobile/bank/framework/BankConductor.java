@@ -108,9 +108,9 @@ import com.google.common.base.Strings;
  */
 public final class BankConductor  extends Conductor {
 
-	protected static BankConductor instance;
+	private static BankConductor instance;
 
-	protected CacheManager cacheMgr = BankUser.instance();
+	private final CacheManager cacheMgr = BankUser.instance();
 
 	private static BankLoginDetails loginDetails;
 

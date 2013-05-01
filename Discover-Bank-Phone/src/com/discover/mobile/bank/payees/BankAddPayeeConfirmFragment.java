@@ -34,7 +34,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	/** 
 	 * Reference to a AddPayeeDetail object used to hold the information of the Payee that will be added.
 	 */
-	PayeeDetail detail = new PayeeDetail();
+	private PayeeDetail detail = new PayeeDetail();
 	/**
 	 * Key used to read flag from bundle, obtained via getArguments(), to determine if confirmation page is for a update or addition.
 	 */
@@ -42,7 +42,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	/**
 	 * Flag used to determine whether payee was updated or added.
 	 */
-	public boolean isUpdate;
+	private boolean isUpdate;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
