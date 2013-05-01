@@ -62,8 +62,9 @@ public class CardExpirationDateEditText extends CustomDatePickerElement{
 	 */
 	@Override
 	public void updateLabelWithSavedDate(){
-		if(this.isValid())
+		if(this.isValid()){
 			this.setText(CommonUtils.getFormattedDate(getMonth(), getYear()));
+		}
 	}
 		
 	/**

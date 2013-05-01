@@ -71,14 +71,15 @@ public abstract class NavigationItem {
 	 */
 	private static NavigationItem createSectionItem(final NavigationItemAdapter adapter, final int index) {
 		final ComponentInfo sectionInfo = section.get(index);
-		if(sectionInfo instanceof GroupComponentInfo)
+		if(sectionInfo instanceof GroupComponentInfo){
 			return createSectionGroupItem((GroupComponentInfo)sectionInfo, adapter, index);
-		else if(sectionInfo instanceof FragmentComponentInfo)
+		}else if(sectionInfo instanceof FragmentComponentInfo){
 			return createSectionFragmentItem((FragmentComponentInfo)sectionInfo, adapter, index);
-		else if (sectionInfo instanceof ClickComponentInfo)
+		}else if (sectionInfo instanceof ClickComponentInfo){
 			return createSectionClickItem((ClickComponentInfo)sectionInfo, adapter, index);
-		else
+		}else{
 			throw new UnsupportedOperationException("Unknown ComponentInfo: " + sectionInfo); //$NON-NLS-1$
+		}
 	}
 
 	/**
