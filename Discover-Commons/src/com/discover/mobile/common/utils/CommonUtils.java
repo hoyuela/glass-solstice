@@ -184,18 +184,21 @@ public final class CommonUtils {
 	}
 
 	public final static void setViewGone(final View v) {
-		if(v != null)
+		if(v != null){
 			v.setVisibility(View.GONE);
+		}
 	}
 
 	public final static void setViewVisible(final View v) {
-		if(v != null)
+		if(v != null){
 			v.setVisibility(View.VISIBLE);
+		}
 	}
 
 	public final static void setViewInvisible(final View v) {
-		if(v != null)
+		if(v != null){
 			v.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	/**
@@ -237,7 +240,7 @@ public final class CommonUtils {
 	 * @param amount
 	 * @return Integer representation of a currency amount
 	 */
-	public final static int formatCurrencyStringAsBankInt(String amount) {
+	public final static int formatCurrencyStringAsBankInt(final String amount) {
 		
 		String newAmount = formatCurrencyAsStringWithoutSign(amount);
 		newAmount = newAmount.replaceAll(StringUtility.COMMA, "");
@@ -260,7 +263,7 @@ public final class CommonUtils {
 	 * @return String representation of a currency amount without '$'. Returns
 	 *         "0.00" if an errors occurs.
 	 */
-	public final static String formatCurrencyAsStringWithoutSign(String amount) {
+	public final static String formatCurrencyAsStringWithoutSign(final String amount) {
 		// Remove special characters before parsing
 		String newAmount = amount.replaceAll("\\$", "");
 		newAmount = newAmount.replaceAll(StringUtility.COMMA, "");

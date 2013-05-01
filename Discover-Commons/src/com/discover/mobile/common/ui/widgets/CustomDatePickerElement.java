@@ -81,8 +81,9 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 		this.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(final View v, final MotionEvent event) {
-				if(event.getAction() == MotionEvent.ACTION_UP)
+				if(event.getAction() == MotionEvent.ACTION_UP){
 					attachedDatePickerDialog.show();
+				}
 				return false;
 			}
 		});
@@ -99,10 +100,11 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
 				if(!hasFocus){
-					if (!isValid())
+					if (!isValid()){
 						setErrors();
-					else
+					}else{
 						clearErrors();
+					}
 				}
 
 			}
@@ -200,8 +202,9 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	 * values.
 	 */
 	public void updateLabelWithSavedDate(){
-		if(this.isValid())
+		if(this.isValid()){
 			this.setText( CommonUtils.getFormattedDate(getMonth(), getDay(), getYear()) );
+		}
 	}
 
 

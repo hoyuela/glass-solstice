@@ -105,8 +105,9 @@ public class ConfirmationEditText extends ValidatedInputField {
 				}
 				else{
 					setRightDrawableGrayX();
-					if(isInErrorState)
+					if(isInErrorState){
 						setRightDrawableRedX();
+					}
 				}
 
 			}
@@ -129,10 +130,11 @@ public class ConfirmationEditText extends ValidatedInputField {
 			public void afterTextChanged(final Editable s) {
 				afterText = s.toString();
 				if(beforeText.equals(afterText)){
-					if(isValid())
+					if(isValid()){
 						setAppearanceMatched();
-					else
+					}else{
 						updateAppearanceForInput();
+					}
 				}
 			}
 
@@ -144,17 +146,18 @@ public class ConfirmationEditText extends ValidatedInputField {
 			@Override
 			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
 
-				if(isUserId)
+				if(isUserId){
 					CommonUtils.setInputToLowerCase(s, self);
-				if(count > 0)
+				}
+				if(count > 0){
 					isInDefaultState = false;
-
+				}
 				if(!isInDefaultState && isValid()){
 					clearErrors();
 					setAppearanceMatched();
-				}
-				else
+				}else{
 					clearErrors();
+				}
 
 
 			}
@@ -202,9 +205,9 @@ public class ConfirmationEditText extends ValidatedInputField {
 		if(isValid()){
 			clearErrors();
 			setAppearanceMatched();
-		}
-		else
+		}else{
 			setErrors();
+		}
 	}
 
 	/**

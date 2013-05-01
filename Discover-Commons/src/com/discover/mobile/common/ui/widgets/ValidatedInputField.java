@@ -124,16 +124,18 @@ public abstract class ValidatedInputField extends EditText{
 	 * Set the visibility of the attached error label to GONE.
 	 */
 	protected void hideErrorLabel() {
-		if(errorLabel != null)
+		if(errorLabel != null){
 			this.errorLabel.setVisibility(View.GONE);
+		}
 	}
 
 	/**
 	 * Set the visibility of the attached error label to VISIBLE.
 	 */
 	protected void showErrorLabel() {
-		if(errorLabel != null)
+		if(errorLabel != null){
 			this.errorLabel.setVisibility(View.VISIBLE);
+		}
 	}
 
 	/**
@@ -145,9 +147,9 @@ public abstract class ValidatedInputField extends EditText{
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
 				clearRightDrawable();
-				if(hasFocus)
+				if(hasFocus){
 					clearErrors();					
-				else{
+				}else{
 					updateAppearanceForInput();
 					if(!isInErrorState) {
 						clearErrors();
@@ -197,8 +199,9 @@ public abstract class ValidatedInputField extends EditText{
 
 			@Override
 			public void afterTextChanged(final Editable s) {
-				if(isValid())
+				if(isValid()){
 					clearErrors();
+				}
 			}
 
 			@Override
@@ -215,20 +218,23 @@ public abstract class ValidatedInputField extends EditText{
 	 * Load it from the resources so that the calling class can use the image.
 	 */
 	protected Drawable getRedX() {
-		if(redX == null)
+		if(redX == null){
 			redX = getResources().getDrawable(R.drawable.x_red);
+		}
 		return redX;
 	}
 
 	protected Drawable getGrayX() {
-		if(grayX == null)
+		if(grayX == null){
 			grayX = getResources().getDrawable(R.drawable.x_gray);
+		}
 		return grayX;
 	}
 
 	protected Drawable getGreenCheck() {
-		if(greenCheck == null)
+		if(greenCheck == null){
 			greenCheck = getResources().getDrawable(R.drawable.checkmark_green);
+		}
 		return greenCheck;
 	}
 
@@ -237,8 +243,9 @@ public abstract class ValidatedInputField extends EditText{
 	 * Load it from the resources so that the calling class can use the image.
 	 */
 	protected Drawable getDownArrow() {
-		if(downArrow == null)
+		if(downArrow == null){
 			downArrow = getResources().getDrawable(R.drawable.down_arrow);
+		}
 		return downArrow;
 	}
 	/**

@@ -44,8 +44,9 @@ public class InputValidator {
 	public static boolean isEmailValid(final String email){
 		if(email== null){return false;}
 		
-		if(pattern == null)
+		if(pattern == null){
 			pattern = Pattern.compile(EMAIL_PATTERN);
+		}
 		
 		matcher = pattern.matcher(email);
 		return matcher.matches();
@@ -76,8 +77,9 @@ public class InputValidator {
 		boolean hasNumber 	   = false;
 				
 		//Check length of input.
-		if(inputSequence.length() >= 8 && inputSequence.length() <= 32)
+		if(inputSequence.length() >= 8 && inputSequence.length() <= 32){
 			hasGoodLength = true;
+		}
 					
 		//A password must have at least 1 letter and 1 number and cannot be 'password'
 		//but password doesn't have a number...
@@ -119,8 +121,9 @@ public class InputValidator {
 			   !uid.startsWith("6011")){
 				isUserIdValid = true;
 			}
-		else
-			isUserIdValid = false;	
+		else{
+			isUserIdValid = false;
+		}
 		
 		return isUserIdValid;
 	}
