@@ -35,8 +35,8 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 
-		actionButton.setText(R.string.schedule_another_transfer);
-		actionLink.setText(R.string.view_account_summary);
+		getActionButton().setText(R.string.schedule_another_transfer);
+		getActionLink().setText(R.string.view_account_summary);
 
 		/**Set footer to show privacy & terms | feedback*/
 		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);

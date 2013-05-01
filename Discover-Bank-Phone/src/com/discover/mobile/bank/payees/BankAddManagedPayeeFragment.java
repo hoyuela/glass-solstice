@@ -121,10 +121,10 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 		final TextView topNote = (TextView)mainView.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
 		
-		noteTitle.setText(R.string.bank_verified_payees_address);
-		noteTitle.setVisibility(View.VISIBLE);
-		noteTextMsg.setText(R.string.bank_verified_payees_address_msg);
-		noteTextMsg.setVisibility(View.VISIBLE);
+		getNoteTitle().setText(R.string.bank_verified_payees_address);
+		getNoteTitle().setVisibility(View.VISIBLE);
+		getNoteMessage().setText(R.string.bank_verified_payees_address_msg);
+		getNoteMessage().setVisibility(View.VISIBLE);
 	}
 	
 	/**

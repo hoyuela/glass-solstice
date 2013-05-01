@@ -22,6 +22,7 @@ import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
@@ -94,21 +95,21 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		/**Hide top note by default**/
 		final TextView topNote = (TextView)mainView.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
-		noteTitle.setVisibility(View.GONE);
-		noteTextMsg.setVisibility(View.GONE);
+		hideBottomNote();
 
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
+		BankHeaderProgressIndicator progressIndicator = getProgressIndicator();
 		progressIndicator.initialize(0);
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_payee_details, R.string.bank_payee_added, R.string.bank_payee_added);
 
 		if( isUpdate ) {
-			actionButton.setText(R.string.bank_save_payee);
+			getActionButton().setText(R.string.bank_save_payee);
 		} else {
-			actionButton.setText(R.string.bank_add_payee);
+			getActionButton().setText(R.string.bank_add_payee);
 		}
 
-		actionLink.setText(R.string.bank_add_cancel);
+		getActionLink().setText(R.string.bank_add_cancel);
 	}
 
 

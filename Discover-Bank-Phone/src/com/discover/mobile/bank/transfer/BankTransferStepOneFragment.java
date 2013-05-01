@@ -103,10 +103,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
 		/**Hide controls that are not needed*/
-		actionButton.setText(R.string.schedule_transfer);
-		actionLink.setText(R.string.cancel_text);
-		noteTitle.setVisibility(View.GONE);
-		noteTextMsg.setVisibility(View.GONE);
+		setButtonText(R.string.schedule_transfer);
+		setLinkText(R.string.cancel_text);
+		hideBottomNote();
 
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);

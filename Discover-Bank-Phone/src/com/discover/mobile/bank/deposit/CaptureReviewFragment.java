@@ -93,12 +93,11 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		final View view = super.onCreateView(inflater, container, savedInstanceState);	
 
 		//Set button text labels.
-		actionButton.setText(R.string.deposit_now);
-		actionLink.setText(R.string.cancel_text);
+		setButtonText(R.string.deposit_now);
+		setLinkText(R.string.cancel_text);
 
 		/**Hide controls that are not needed*/
-		noteTitle.setVisibility(View.GONE);
-		noteTextMsg.setVisibility(View.GONE);
+		hideBottomNote();
 		pageTitle.setVisibility(View.GONE);
 
 		/**Hide top note as it is not needed for this view**/

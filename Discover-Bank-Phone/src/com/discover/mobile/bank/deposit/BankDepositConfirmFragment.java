@@ -52,18 +52,17 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 
 		/**Hide controls that are not needed*/
-		noteTitle.setVisibility(View.GONE);
-		noteTextMsg.setVisibility(View.GONE);
+		hideBottomNote();
 
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
 
 		/**Show Action Button text in single button on screen*/
-		actionButton.setText(R.string.bank_deposit_received_actionbutton);
+		setButtonText(R.string.bank_deposit_received_actionbutton);
 
 		/**Show Link text in link on screen*/
-		actionLink.setText(R.string.bank_deposit_received_actionlink);
+		setLinkText(R.string.bank_deposit_received_actionlink);
 
 		/**Set footer to show privacy & terms | feedback*/
 		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);

@@ -46,29 +46,29 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	/**
 	 * LinearLayout that will display a list of content provided by sub-class via getContent 
 	 */
-	protected LinearLayout contentTable;
+	private LinearLayout contentTable;
 	/**
 	 * Reference to a button whose click event is to be handled by a sub-classes implementation of onActionButtonClick()
 	 */
-	protected Button actionButton;
+	private Button actionButton;
 	/**
 	 * Reference to a TextView whose click event is to be handled by a sub-classs implementation of onActionLinkClick
 	 */
-	protected TextView actionLink;
+	private TextView actionLink;
 	/**
 	 * Reference to a Progress indicator used to display a users progress in the current work-flow
 	 */
-	protected BankHeaderProgressIndicator progressIndicator;
+	private BankHeaderProgressIndicator progressIndicator;
 	/**
 	 * Reference to a TextView which displays a title for the instructions or note provided to the user.
 	 * By default view is gone, sub-class to make it visible as required.
 	 */
-	protected TextView noteTitle;
+	private TextView noteTitle;
 	/**
 	 * Reference to a TextView which displays a note or instructions to the user. By default view is gone, 
 	 * sub-class to make it visible as required.
 	 */
-	protected TextView noteTextMsg;
+	private TextView noteTextMsg;
 	
 	/**
 	 * Reference to a TextView which displays page title for the layout.
@@ -290,5 +290,42 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 			scrollView.fullScroll(ScrollView.FOCUS_UP);
 			scrollView.smoothScrollTo(0, 0);
 		}
+	}
+	
+	protected void hideBottomNote() {
+		noteTitle.setVisibility(View.GONE);
+		noteTextMsg.setVisibility(View.GONE);
+	}
+	
+	protected void setButtonText(int resId) {
+		actionButton.setText(resId);
+	}
+	
+	protected void setLinkText(int resId) {
+		actionLink.setText(resId);
+	}
+	
+	protected BankHeaderProgressIndicator getProgressIndicator() {
+		return progressIndicator;
+	}
+	
+	protected Button getActionButton() {
+		return actionButton;
+	}
+	
+	protected TextView getActionLink() {
+		return actionLink;
+	}
+	
+	protected TextView getNoteTitle() {
+		return noteTitle;
+	}
+	
+	protected TextView getNoteMessage() {
+		return noteTextMsg;
+	}
+	
+	protected LinearLayout getTable() {
+		return contentTable;
 	}
 }
