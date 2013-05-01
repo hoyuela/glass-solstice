@@ -45,7 +45,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	/**
 	 * Used to display the account ending number value in an Account object
 	 */
-	protected final TextView acctEnding;
+	private final TextView acctEnding;
 	/**
 	 * Holds a reference to the view that displays a carat image
 	 */
@@ -53,11 +53,11 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	/**
 	 * Holds a reference to the Account object whose data is displayed in the view
 	 */
-	protected Account account;
+	private Account account;
 	/**
 	 * Reference to layout used for this view
 	 */
-	protected final RelativeLayout layout;
+	private final RelativeLayout layout;
 
 	/**
 	 * 
@@ -238,5 +238,18 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 				.getDimension(R.dimen.forms_inner_padding),
 				(int)context.getResources()
 				.getDimension(R.dimen.table_inner_padding));
+	}
+	
+	/**
+	 * Method used to retrieve the Account associated with this view.
+	 * 
+	 * @return Returns to account object passed in via the constructor at instantiation
+	 */
+	public Account getAccount() {
+		return account;
+	}
+	
+	protected TextView getAccountEnding() {
+		return acctEnding;
 	}
 }
