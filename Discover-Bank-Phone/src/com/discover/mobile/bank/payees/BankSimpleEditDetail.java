@@ -51,7 +51,7 @@ public class BankSimpleEditDetail extends RelativeLayout {
 	/**
 	 * Retrieve refrences to all necessary interface items.
 	 */
-	protected void loadViews() {
+	private void loadViews() {
 		view = findViewById(R.id.list_item);
 		caret = findViewById(R.id.caret);
 		topLabel = (TextView)findViewById(R.id.top_label);

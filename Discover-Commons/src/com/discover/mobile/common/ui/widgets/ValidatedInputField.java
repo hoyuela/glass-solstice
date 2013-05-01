@@ -194,7 +194,7 @@ public abstract class ValidatedInputField extends EditText{
 	 * previously marked as an error, it will turn 'normal' as soon as
 	 * the input reaches a valid state.
 	 */
-	protected void setupTextChangedListener(){
+	private void setupTextChangedListener(){
 		this.addTextChangedListener(new TextWatcher() {
 
 			@Override

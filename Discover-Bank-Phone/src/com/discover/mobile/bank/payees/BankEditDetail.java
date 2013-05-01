@@ -57,7 +57,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		return (RelativeLayout)LayoutInflater.from(getContext()).inflate(R.layout.bank_edit_detail_view, null);
 	}
 	
-	protected void loadViews() {
+	public final void loadViews() {
 		view = findViewById(R.id.list_item);
 		caret = findViewById(R.id.caret);
 		topLabel = (TextView)findViewById(R.id.top_label);
