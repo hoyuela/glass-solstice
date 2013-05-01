@@ -227,7 +227,7 @@ public class AccountActivityHeader extends RelativeLayout{
 	 * @param notChecke - toggle button that is not checked
 	 * @param isPosted - boolean to set is posted equal to
 	 */
-	public void toggleButton(final ToggleButton checked, final ToggleButton notChecked, final boolean isPosted){
+	public final void toggleButton(final ToggleButton checked, final ToggleButton notChecked, final boolean isPosted){
 		checked.setTextColor(getResources().getColor(R.color.white));
 		notChecked.setTextColor(getResources().getColor(R.color.body_copy));
 		if(isPosted){
