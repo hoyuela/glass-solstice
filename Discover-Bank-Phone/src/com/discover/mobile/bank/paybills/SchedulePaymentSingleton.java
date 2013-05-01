@@ -5,7 +5,7 @@ import android.os.Bundle;
 /**
  * Saves the Bundle for SchedulePayment during a rotation.
  */
-public class SchedulePaymentSingleton {
+public final class SchedulePaymentSingleton {
 
 	private static volatile SchedulePaymentSingleton instance = null;
 	

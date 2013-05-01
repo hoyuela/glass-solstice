@@ -7,7 +7,7 @@ package com.discover.mobile.bank.services.auth;
  * @author henryoyuela
  *
  */
-public class BankSchema {
+public final class BankSchema {
 	/**
 	 * Used for sending a session token to be used as authorization in a request.
 	 */

@@ -1,6 +1,6 @@
 package com.discover.mobile.bank.ui.widgets;
 
-public class FooterType {
+public final class FooterType {
 	/** Category code to identify an Privacy and Terms Footer Type **/
 	public static final int PRIVACY_TERMS = 1;
 	
