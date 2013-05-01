@@ -29,16 +29,6 @@ public class BaseExceptionFailureHandler implements ExceptionFailureHandler {
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final Throwable arg0) {	
 		//FIXME push this down into PreAuthCheckCall override error handler
 		
-//		//Check if this is an exception that occured to pre-auth
-//		if( sender instanceof PreAuthCheckCall) {
-//			final LoginActivity loginActivity = (LoginActivity)BankActivityManager.getActiveActivity();
-//			loginActivity.showSplashScreen(false);
-//		} else if (!(sender instanceof LogOutCall)) {
-//			ErrorHandlerFactory.getInstance().handleGenericError(0);
-//		}else {
-//			BankNavigator.navigateToLoginPage(BankActivityManager.getActiveActivity(), IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE);
-//		}
-//		
 		return true;
 	}
 
