@@ -142,7 +142,7 @@ public abstract class ValidatedInputField extends EditText{
 	 * Sets a focus changed listener that will validate and update the appearance of the input field
 	 * upon focus change.
 	 */
-	protected void setupFocusChangedListener() {
+	private void setupFocusChangedListener() {
 		this.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {

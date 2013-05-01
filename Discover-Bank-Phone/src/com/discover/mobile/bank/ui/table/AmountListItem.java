@@ -45,10 +45,10 @@ public class AmountListItem extends RelativeLayout {
 		return amount;
 	}
 	
-	protected RelativeLayout getInflatedLayout(final Context context) {
+	private RelativeLayout getInflatedLayout(final Context context) {
 		return (RelativeLayout)LayoutInflater.from(context).inflate(R.layout.formatted_amount_list_item, null);
 	}
-	
+		
 	public TextView getErrorLabel() {
 		return (TextView)findViewById(R.id.amount_error);
 	}

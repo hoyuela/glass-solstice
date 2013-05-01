@@ -59,7 +59,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	 * Change the input field to accept and validate a username. This is an alphanum input
 	 * with no suggestions and a max length of 32 characters.
 	 */
-	public void setFieldUsername() {
+	public final void setFieldUsername() {
 		isUsernameField = true;
 		setupUsernameInputRestrictions();
 	}

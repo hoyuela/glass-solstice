@@ -2,7 +2,7 @@ package com.discover.mobile.bank.ui.table;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.widget.RelativeLayout;
+import android.view.View;
 
 import com.discover.mobile.bank.R;
 
@@ -15,11 +15,12 @@ public class AdjustedAmountListItem extends AmountListItem {
 
 	public AdjustedAmountListItem(final Context context) {
 		super(context);
+		this.removeAllViews();
+		addView(getInflatedLayout());
 	}
 	
-	@Override
-	protected RelativeLayout getInflatedLayout(final Context context) {
-		return (RelativeLayout)LayoutInflater.from(context).inflate(R.layout.adjusted_formatted_amount_list_item, null);
+	private View getInflatedLayout() {
+		return LayoutInflater.from(getContext()).inflate(R.layout.adjusted_formatted_amount_list_item, null);
 	}
 	
 }
