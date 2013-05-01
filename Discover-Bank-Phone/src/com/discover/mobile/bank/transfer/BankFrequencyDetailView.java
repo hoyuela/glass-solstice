@@ -135,7 +135,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	 * @param index
 	 * @return
 	 */
-	private OnClickListener getLayoutListener(final int index) {
+	private final OnClickListener getLayoutListener(final int index) {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {

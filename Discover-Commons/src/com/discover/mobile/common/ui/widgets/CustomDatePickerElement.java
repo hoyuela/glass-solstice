@@ -20,8 +20,6 @@ import com.discover.mobile.common.utils.CommonUtils;
  *
  */
 public abstract class CustomDatePickerElement extends ValidatedInputField {
-	protected Context currentContext;
-
 	protected CustomDatePickerDialog attachedDatePickerDialog;
 
 	protected final int INVALID_VALUE = -1;
@@ -32,23 +30,22 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 
 	public CustomDatePickerElement(final Context context) {
 		super(context);
-		defaultSetup(context);
+		defaultSetup();
 	}
 
 	public CustomDatePickerElement(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		defaultSetup(context);
-
+		defaultSetup();
 	}
 
 	public CustomDatePickerElement(final Context context, final AttributeSet attrs, final int defStyle){
 		super(context, attrs, defStyle);
-		defaultSetup(context);
+		defaultSetup();
 
 	}
 
-	protected void defaultSetup(final Context context) {
-		currentContext = context;
+	private void defaultSetup() {
+		setupFocusChangedListener();
 		setupDatePickerDialog();
 		setupOnTouchListener();
 		setupOnClickListener();
@@ -93,8 +90,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	 * If the date is invalid, set the error state.
 	 * If the date is valid, clear the error state.
 	 */
-	@Override
-	protected void setupFocusChangedListener() {
+	private void setupFocusChangedListener() {
 		this.setOnFocusChangeListener(new OnFocusChangeListener() {
 
 			@Override
@@ -119,7 +115,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 		final int currentDay = currentDate.get(Calendar.DAY_OF_MONTH) - getDayOffset();
 		final int currentMonth = currentDate.get(Calendar.MONTH) - getMonthOffset();
 
-		attachedDatePickerDialog = new CustomDatePickerDialog(currentContext, new OnDateSetListener() {
+		attachedDatePickerDialog = new CustomDatePickerDialog(getContext(), new OnDateSetListener() {
 
 			@Override
 			public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {

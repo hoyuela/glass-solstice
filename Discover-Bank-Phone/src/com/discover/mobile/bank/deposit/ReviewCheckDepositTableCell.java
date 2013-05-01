@@ -67,7 +67,7 @@ public class ReviewCheckDepositTableCell extends RelativeLayout {
 	/**
 	 * Load the check images into the image views that are presented on this table cell.
 	 */
-	public void loadImages() {		
+	private void loadImages() {		
 		loadImageToView(R.id.check_front_image, CheckDepositCaptureActivity.FRONT_PICTURE);
 		loadImageToView(R.id.check_back_image, CheckDepositCaptureActivity.BACK_PICTURE);
 	}

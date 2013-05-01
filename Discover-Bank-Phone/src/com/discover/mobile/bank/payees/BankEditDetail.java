@@ -36,25 +36,25 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	
 	public BankEditDetail(final Context context) {
 		super(context);
-		doSetup(context);
+		doSetup();
 	}
 	
 	public BankEditDetail(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		doSetup(context);
+		doSetup();
 	}
 	public BankEditDetail(final Context context, final AttributeSet attrs, final int defStyle) {
 		super(context, attrs, defStyle);
-		doSetup(context);
+		doSetup();
 	}
 
-	protected void doSetup(final Context context) {
-		addView(getInflatedLayout(context));
+	private void doSetup() {
+		addView(getInflatedLayout());
 		loadViews();
 	}
 	
-	private RelativeLayout getInflatedLayout(final Context context) {
-		return (RelativeLayout)LayoutInflater.from(context).inflate(R.layout.bank_edit_detail_view, null);
+	private RelativeLayout getInflatedLayout() {
+		return (RelativeLayout)LayoutInflater.from(getContext()).inflate(R.layout.bank_edit_detail_view, null);
 	}
 	
 	protected void loadViews() {

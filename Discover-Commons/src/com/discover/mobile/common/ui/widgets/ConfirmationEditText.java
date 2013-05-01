@@ -18,14 +18,17 @@ public class ConfirmationEditText extends ValidatedInputField {
 
 	public ConfirmationEditText(final Context context) {
 		super(context);
+		doSetup();
 	}
 
 	public ConfirmationEditText(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
+		doSetup();
 	}
 
 	public ConfirmationEditText(final Context context, final AttributeSet attrs, final int defStyle){
 		super(context, attrs, defStyle);
+		doSetup();
 	}
 
 	/**
@@ -43,6 +46,10 @@ public class ConfirmationEditText extends ValidatedInputField {
 
 			editTextToMatch.addTextChangedListener(getMatcherTextWatcher());
 		}
+	}
+	
+	private void doSetup() {
+		setupFocusChangedListener();
 	}
 
 	/**
@@ -90,8 +97,7 @@ public class ConfirmationEditText extends ValidatedInputField {
 	 * If the field is yet to be matched it will still be gray, but when a user navigates away it will turn red
 	 * to notify them that they need to correct it.
 	 */
-	@Override
-	protected void setupFocusChangedListener() {
+	private void setupFocusChangedListener() {
 
 		this.setOnFocusChangeListener(new OnFocusChangeListener() {
 

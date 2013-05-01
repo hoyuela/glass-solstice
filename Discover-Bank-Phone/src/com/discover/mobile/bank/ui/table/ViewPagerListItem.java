@@ -25,35 +25,31 @@ public class ViewPagerListItem extends RelativeLayout {
 	
 	public ViewPagerListItem(final Context context) {
 		super(context);
-		doSetup(context);
+		doSetup();
 	}
 	public ViewPagerListItem(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		doSetup(context);
+		doSetup();
 	}
 	public ViewPagerListItem(final Context context, final AttributeSet attrs, final int defStyle) {
 		super(context, attrs, defStyle);
-		doSetup(context);
+		doSetup();
 	}
 
-	private void doSetup(final Context context) {
-		addView(getInflatedLayout(context));
+	private void doSetup() {
+		addView(getInflatedLayout());
 		loadViews();
 	}
 	
-	private RelativeLayout getInflatedLayout(final Context context) {
-		return (RelativeLayout)LayoutInflater.from(context).inflate(getItemLayout(), null);
+	private RelativeLayout getInflatedLayout() {
+		return (RelativeLayout)LayoutInflater.from(getContext()).inflate(R.layout.view_pager_list_item, null);
 	}
 	
-	private void loadViews() {
+	public final void loadViews() {
 		topLabel = (TextView)findViewById(R.id.top_label);
 		middleLabel = (TextView)findViewById(R.id.middle_label);
 		bottomLabel = (TextView)findViewById(R.id.bottom_label);
 		dividerLine = findViewById(R.id.divider_line);
-	}
-	
-	protected int getItemLayout() {
-		return R.layout.view_pager_list_item;
 	}
 	
 	/**

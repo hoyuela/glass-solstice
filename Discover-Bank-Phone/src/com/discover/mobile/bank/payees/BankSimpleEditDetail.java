@@ -39,7 +39,7 @@ public class BankSimpleEditDetail extends RelativeLayout {
 		doSetup(context);
 	}
 
-	protected void doSetup(final Context context) {
+	private void doSetup(final Context context) {
 		addView(getInflatedLayout(context));
 		loadViews();
 	}

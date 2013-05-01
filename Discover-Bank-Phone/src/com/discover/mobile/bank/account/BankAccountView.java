@@ -145,7 +145,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	 * 
 	 * @param account Reference to an Account object that holds all the information to display in this view.
 	 */
-	public void setAccountInformation(final Account account) {
+	public final void setAccountInformation(final Account account) {
 
 		this.setEnding(account.accountNumber);
 		this.setBalance(account.balance);

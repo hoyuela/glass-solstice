@@ -148,7 +148,7 @@ public class AccountActivityHeader extends RelativeLayout{
 	 * Add the account and display it 
 	 * @param account - account to add
 	 */
-	public void addAccount(){
+	public final void addAccount(){
 		if(null == account){return;}
 		final String s = account.type.replaceAll("_", " ");
 		final StringBuilder result = new StringBuilder(s.length());
@@ -182,7 +182,7 @@ public class AccountActivityHeader extends RelativeLayout{
 	 * Get image on click listener
 	 * @return image on click listener
 	 */
-	public OnClickListener getImageOnClickListener(){
+	public final OnClickListener getImageOnClickListener(){
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v){
@@ -279,7 +279,7 @@ public class AccountActivityHeader extends RelativeLayout{
 	/**
 	 * @param isHeaderExpanded the isHeaderExpanded to set
 	 */
-	public void setHeaderExpanded(final boolean isHeaderExpanded) {
+	public final void setHeaderExpanded(final boolean isHeaderExpanded) {
 		this.isHeaderExpanded = isHeaderExpanded;
 		if(isHeaderExpanded){
 			setSpan(R.drawable.drk_blue_arrow_up);
@@ -333,7 +333,7 @@ public class AccountActivityHeader extends RelativeLayout{
 	 * Set the selected category
 	 * @param the selected category
 	 */
-	public void setSelectedCategory(final boolean isPosted) {
+	public final void setSelectedCategory(final boolean isPosted) {
 		this.isPosted = isPosted;
 		if(isPosted){
 			toggleButton(postedButton, scheduledButton, isPosted);

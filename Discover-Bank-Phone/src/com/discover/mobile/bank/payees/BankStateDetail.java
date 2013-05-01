@@ -22,6 +22,7 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
 	 * Spinner that displays a list of abbreviations for each U.S. States
 	 */
 	private Spinner stateSpinner;
+	
 	/**
 	 * Flag used to determine whether the spinner was shown because the user clicked on the layout of this control.
 	 */
@@ -29,21 +30,21 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
 	
 	public BankStateDetail(final Context context) {
 		super(context);
+		doSetup();
 	}
 	
 	public BankStateDetail(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-	}
-	public BankStateDetail(final Context context, final AttributeSet attrs, final int defStyle) {
-		super(context, attrs, defStyle);
+		doSetup();
 	}
 	
-	@Override
-	protected void doSetup(final Context context) {
-		super.doSetup(context);
-		
+	public BankStateDetail(final Context context, final AttributeSet attrs, final int defStyle) {
+		super(context, attrs, defStyle);
+		doSetup();
+	}
+	
+	private void doSetup() {		
 		initializeSpinner();
-		
 	}
 	
 	@Override

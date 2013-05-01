@@ -88,7 +88,7 @@ public class TableLoadMoreFooter extends RelativeLayout implements OnClickListen
 	/**
 	 * Show the hide all view
 	 */
-	public void hideAll(){
+	public final void hideAll(){
 		load.setVisibility(View.GONE);
 		load.clearAnimation();
 		go.setVisibility(View.GONE);
