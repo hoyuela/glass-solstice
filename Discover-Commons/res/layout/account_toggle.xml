@@ -100,7 +100,7 @@
             android:layout_below="@id/acct_toggle_card_section"
             android:layout_marginLeft="@dimen/toggle_divider_side_pad_p"
             android:layout_marginRight="@dimen/toggle_divider_side_pad_p"
-            android:background="@drawable/gray_dash_line" />
+            android:background="@drawable/gray_solid_line" />
 
         <!-- Bank -->
 

@@ -21,7 +21,9 @@ import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.error.BankErrorCodes;
 import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
+import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.error.ErrorHandler;
@@ -137,7 +139,12 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			} 
 			//Handle bad bank status but good card status
 			else if(sender instanceof CreateBankSSOLoginCall && errCode.equalsIgnoreCase(BankErrorCodes.ERROR_SSO_BAD_BANK_STATUS)){
-				getBadBankStatusModal().show();
+				final Activity activity = DiscoverActivityManager.getActiveActivity();
+				if(activity instanceof BaseFragmentActivity){
+					((BaseFragmentActivity) activity).showCustomAlert(getBadBankStatusModal());
+				}else if(activity instanceof BaseActivity){
+					((BaseActivity) activity).showCustomAlert(getBadBankStatusModal());
+				}
 			}
 			//Non-SSO Fraud users, and SSO (Card ALU) Fraud users are handled here, they stay at login page.
 			else if (errCode.equals(BankErrorCodes.ERROR_FRAUD_USER) || errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
