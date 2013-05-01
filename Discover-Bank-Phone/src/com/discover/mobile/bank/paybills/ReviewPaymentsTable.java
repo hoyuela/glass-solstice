@@ -51,9 +51,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	/**Adapter to show data*/
 	private ReviewPaymentsAdapter adapter;
 
-	/**Key to get the future value out of the bundle*/
-	//private static final String FUTURE_VALUE_KEY = "fvk";
-
 	/**Default Key if it is used the toggle of buttons wont happen*/
 	private static final int NO_CHANGE = -1;
 
