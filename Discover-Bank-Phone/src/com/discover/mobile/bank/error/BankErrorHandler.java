@@ -49,7 +49,7 @@ import com.google.common.base.Strings;
  *
  */
 
-public class BankErrorHandler implements ErrorHandler {
+public final class BankErrorHandler implements ErrorHandler {
 
 	static final String TAG = BankErrorHandler.class.getSimpleName();
 	static final ErrorHandler instance = new BankErrorHandler();

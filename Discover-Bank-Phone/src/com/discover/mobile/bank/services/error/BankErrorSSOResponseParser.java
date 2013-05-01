@@ -22,7 +22,7 @@ import com.discover.mobile.common.net.json.JacksonObjectMapperHolder;
  * constructor definition of a JsonResponseMappingNetworkServiceCall sub-class.
  * 
  */
-public class BankErrorSSOResponseParser implements
+public final class BankErrorSSOResponseParser implements
 		ErrorResponseParser<BankErrorSSOResponse> {
 	/**
 	 * Used to print logs using Android logcat API - Class Simplename was too long to log.

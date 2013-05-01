@@ -26,7 +26,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
  * @author henryoyuela
  * 
  */
-public class BankExceptionHandler extends BaseExceptionFailureHandler {	
+public final class BankExceptionHandler extends BaseExceptionFailureHandler {	
 	private Throwable lastThrowable;
 	private NetworkServiceCall<?> lastSender;
 	private static final BankExceptionHandler instance = new BankExceptionHandler();
