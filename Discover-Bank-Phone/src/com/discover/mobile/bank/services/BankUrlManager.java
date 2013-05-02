@@ -23,14 +23,15 @@ public final class BankUrlManager  {
 	public static final double MAX_IDLE_TIME = 900; //900 = 15 min
 
 	public static final String EMPTY = "";
+	private static final String BANK_LOGIN_URL = "https://www.discoverbank.com/bankac/loginreg/login";
 	public static final String SLASH = "/";
 	private static final String AUTHENTICATE_CURRENT_CUSTOMER_URL = "/api/customers/current";
 	private static final String GET_TOKEN_URL = "/api/auth/token";
 	private static final String GET_SSO_TOKEN_URL = "/api/auth/token/sso";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
 	private static final String CUSTOMER_SERVICE_URL = "/api/customers/current";
-	private static final String STATEMENTS_URL = "https://www.discoverbank.com/bankac/loginreg/login ";
-	private static final String OPEN_ACCOUNT_URL = "https://www.discover.com/online-banking/savings.html"; 
+	private static final String STATEMENTS_URL = BANK_LOGIN_URL;
+	private static final String OPEN_ACCOUNT_URL = BANK_LOGIN_URL;
 	private static final String TERMS_AND_CONDITIONS_URL = "/api/content/payments/terms.js";
 	private static final String ACCEPT_PAY_BILLS_TERMS_URL = "/api/payments/terms";
 	private static final String ATM_LOCATOR_URL = "https://api.discover.com/api/atmLocator/SearchGeocodedLocation.xml";
