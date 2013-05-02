@@ -5,6 +5,7 @@ package com.discover.mobile.common.framework;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -35,7 +36,7 @@ public abstract class Conductor   {
 
 	public static final String TAG = Conductor.class.getSimpleName();
 
-	private CacheManager cacheMgr = CacheManager.instance();
+	private final CacheManager cacheMgr = CacheManager.instance();
 
 	/**
 	 * A map to manage the caller's requested destination and the network
@@ -44,8 +45,8 @@ public abstract class Conductor   {
 	 * the key is the networkServiceCall's hashcode
 	 */
 	@SuppressWarnings("rawtypes")
-	private HashMap<Integer, DestinationDetails> destinationMap = new HashMap<Integer, DestinationDetails>();
-
+	private final Map<Integer, DestinationDetails> destinationMap = new HashMap<Integer, DestinationDetails>();
+	
 	/** the service call factory used to create the call object */
 	private ServiceCallFactory serviceCallFactory;
 
@@ -68,7 +69,7 @@ public abstract class Conductor   {
 	private Conductor() {
 	}
 
-	public HashMap<Integer, DestinationDetails> getDestinationMap() {
+	public Map<Integer, DestinationDetails> getDestinationMap() {
 		return destinationMap;
 	}
 	
@@ -289,9 +290,9 @@ public abstract class Conductor   {
 	 */
 	public class DestinationDetails {
 		@SuppressWarnings("rawtypes")
-		private Class destFragment;
-		private DestinationType destType;
-		private Bundle destBundle;
+		private final Class destFragment;
+		private final DestinationType destType;
+		private final Bundle destBundle;
 
 		/**
 		 * @return the destFragment
