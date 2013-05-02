@@ -49,7 +49,7 @@ public class CardExpirationDateEditText extends CustomDatePickerElement{
 	 * @param context
 	 */
 	private void hideDayPicker() {
-		attachedDatePickerDialog.hideDayPicker();
+		getDialog().hideDayPicker();
 	}
 	
 	@Override

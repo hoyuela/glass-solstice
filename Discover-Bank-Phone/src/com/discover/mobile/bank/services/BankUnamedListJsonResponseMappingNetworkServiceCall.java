@@ -27,7 +27,7 @@ public abstract class BankUnamedListJsonResponseMappingNetworkServiceCall<M, I>
 	/**
 	 * Flag used to determine whether service call is to run silently in background.
 	 */
-	boolean isBackgroundCall = false;
+	private boolean isBackgroundCall = false;
 	
 	/**
 	 * 

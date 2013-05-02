@@ -42,7 +42,7 @@ public class BankAccountGroupView extends LinearLayout  {
 	/**
 	 * Reference to layout used to display content for this view
 	 */
-	final LinearLayout layout;
+	private final LinearLayout layout;
 	
 	/** Reference to the last {@code BankAccountView} that belongs to this view. */
 	private BankAccountView lastAccountReference;

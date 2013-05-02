@@ -87,19 +87,19 @@ public class CalendarFragment extends CaldroidFragment {
 	/**
 	 * Reference to the current chosen date on the calendar at start-up
 	 */
-	protected Calendar selectedDate;
+	private Calendar selectedDate;
 	/**
 	 * Reference to first selectable date on the calendar
 	 */
-	protected Calendar minDate;
+	private Calendar minDate;
 	/**
 	 * Reference to the list of non-selectable dates on the calendar
 	 */
-	protected ArrayList<Date> holidays;
+	private ArrayList<Date> holidays;
 	/**
 	 * Reference to text view that displays at the top of the fragment as the title
 	 */
-	protected TextView titleTxtVw;
+	private TextView titleTxtVw;
 	/**
 	 * Integer that holds the month that is currently being displayed on the calendar. Used to handle rotation.
 	 */
@@ -111,7 +111,7 @@ public class CalendarFragment extends CaldroidFragment {
 	/**
 	 * Reference to listener that will receive events when there is a change in month or selected date from the calendar.
 	 */
-	protected CalendarListener eventListener;
+	private CalendarListener eventListener;
 	
 	
 	@Override

@@ -147,7 +147,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	/** Boolean flag to detect if fragment's orientation is changing*/
 	private boolean isOrientationChanging = false;
 	/** Reference to the Activity's canceled listener */
-	OnPaymentCanceledListener canceledListener;
+	private OnPaymentCanceledListener canceledListener;
 	/**Flag used to control whether back press should show cancel modal*/
 	private boolean isBackPressedDisabled = true;
 	

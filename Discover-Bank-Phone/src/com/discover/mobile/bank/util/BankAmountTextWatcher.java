@@ -19,15 +19,15 @@ public class BankAmountTextWatcher implements TextWatcher {
 	/**
 	 * Holds the last string assigned to the watched EditText by this TextWatcher after formatting it.
 	 */
-	protected String valueText;
+	private String valueText;
 	/**
 	 * Holds Reference to the EditText which is being watched and whose text is formatted.
 	 */
-	protected EditText watchee;
+	private EditText watchee;
 	/**
 	 * Holds the numeric version of what is assigned to valueText
 	 */
-	protected double value;
+	private double value;
 	/**
 	 * Holds the maximum value that can be entered by the user in watchee.
 	 */

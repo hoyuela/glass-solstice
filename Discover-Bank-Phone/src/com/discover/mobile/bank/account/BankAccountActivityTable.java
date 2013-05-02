@@ -58,7 +58,7 @@ public class BankAccountActivityTable extends BaseTable{
 	public void handleReceivedData(final Bundle bundle) {
 		setIsLoadingMore(false);
 		super.refreshListener();
-		footer.showDone();
+		getLoadMoreFooter().showDone();
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		
 		if(bundle.getBoolean(BankExtraKeys.IS_TOGGLING_ACTIVITY)){
@@ -119,11 +119,11 @@ public class BankAccountActivityTable extends BaseTable{
 		if(adapter.getCount() < 1){
 			header.setMessage(this.getEmptyStringText());
 			showNothingToLoad();
-			footer.hideAll();
+			getLoadMoreFooter().hideAll();
 		} else {
-			table.setMode(Mode.PULL_FROM_END);
+			getTable().setMode(Mode.PULL_FROM_END);
 			header.clearMessage();
-			footer.showDone();
+			getLoadMoreFooter().showDone();
 		}
 		adapter.notifyDataSetChanged();
 		final ReceivedUrl url = getLoadMoreUrl();
@@ -228,9 +228,9 @@ public class BankAccountActivityTable extends BaseTable{
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url || null == url.url || url.url.isEmpty()){
 			showNothingToLoad();
-			footer.showDone();
+			getLoadMoreFooter().showDone();
 		}else{
-			footer.showLoading();
+			getLoadMoreFooter().showLoading();
 			loadMore(url.url);
 		}
 	}
@@ -273,7 +273,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	@Override
 	public View getFooter(){
-		return footer;
+		return getLoadMoreFooter();
 	}
 
 	/**
@@ -333,7 +333,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 * Hide the footer
 	 */
 	public void hideFooter() {
-		footer.hideAll();
+		getLoadMoreFooter().hideAll();
 	}
 
 	/**
@@ -360,13 +360,13 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	@Override
 	public void setupFooter() {
-		footer.getGo().setOnClickListener(new OnClickListener(){
+		getLoadMoreFooter().getGo().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
 				scrollToTop();
 			}
 		});
-		footer.showDone();
+		getLoadMoreFooter().showDone();
 	}
 
 	/**

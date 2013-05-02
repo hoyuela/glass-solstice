@@ -171,8 +171,8 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 
 	private void setupRadioGroupListener() {
 		securityRadioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			final int subCopyColor = getResources().getColor(R.color.sub_copy);
-			final int fieldCopyColor = getResources().getColor(R.color.field_copy);
+			final private int subCopyColor = getResources().getColor(R.color.sub_copy);
+			final private int fieldCopyColor = getResources().getColor(R.color.field_copy);
 
 			@Override
 			public void onCheckedChanged(final RadioGroup group, final int checkedId) { 

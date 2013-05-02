@@ -69,7 +69,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	public void handleReceivedData(final Bundle bundle) {
 		setIsLoadingMore(false);
 		super.refreshListener();
-		footer.showDone();
+		getLoadMoreFooter().showDone();
 		int category = bundle.getInt(BankExtraKeys.CATEGORY_SELECTED, ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
 
 		if(NO_CHANGE == category){
@@ -170,9 +170,9 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
 			showNothingToLoad();
-			footer.showDone();
+			getLoadMoreFooter().showDone();
 		}else{
-			footer.showLoading();
+			getLoadMoreFooter().showLoading();
 			loadMore(url.url);
 		}
 	}
@@ -291,13 +291,13 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 */
 	@Override
 	public void setupFooter() {
-		footer.getGo().setOnClickListener(new OnClickListener(){
+		getLoadMoreFooter().getGo().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
 				scrollToTop();
 			}
 		});
-		footer.showDone();
+		getLoadMoreFooter().showDone();
 	}
 
 	/**
@@ -313,7 +313,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 */
 	@Override
 	public View getFooter() {
-		return footer;
+		return getLoadMoreFooter();
 	}
 
 	/**
@@ -429,11 +429,11 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		if(adapter.getCount() < 1){
 			header.setMessage(this.getEmptyStringText());
 			showNothingToLoad();
-			footer.hideAll();
+			getLoadMoreFooter().hideAll();
 		}else{
-			table.setMode(Mode.PULL_FROM_END);
+			getTable().setMode(Mode.PULL_FROM_END);
 			header.clearMessage();
-			footer.showDone();
+			getLoadMoreFooter().showDone();
 		}
 
 		final ReceivedUrl url = getLoadMoreUrl();

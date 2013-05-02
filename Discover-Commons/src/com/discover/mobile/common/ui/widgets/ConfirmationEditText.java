@@ -130,8 +130,8 @@ public class ConfirmationEditText extends ValidatedInputField {
 		final ConfirmationEditText self = this;
 
 		this.addTextChangedListener(new TextWatcher() {
-			String beforeText;
-			String afterText;
+			private String beforeText;
+			private String afterText;
 			@Override
 			public void afterTextChanged(final Editable s) {
 				afterText = s.toString();

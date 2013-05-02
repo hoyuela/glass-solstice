@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
@@ -31,6 +32,7 @@ public class BankTransferNotEligibleFragment extends BankMessageFragment{
 			final Bundle savedInstanceState) {	
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
+		Button actionButton = getActionButton();
 		actionButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.external_link_icon_white, 0);
 		actionButton.setCompoundDrawablePadding((int) getResources().getDimension(R.dimen.between_related_elements_padding));
 

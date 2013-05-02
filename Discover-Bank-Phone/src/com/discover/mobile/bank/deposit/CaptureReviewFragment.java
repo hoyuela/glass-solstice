@@ -98,7 +98,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 
 		/**Hide controls that are not needed*/
 		hideBottomNote();
-		pageTitle.setVisibility(View.GONE);
+		getPageTitleView().setVisibility(View.GONE);
 
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);

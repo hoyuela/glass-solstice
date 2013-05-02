@@ -25,10 +25,10 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 public abstract class BaseTable extends BaseFragment  implements DynamicDataFragment{
 
 	/**List View holding the data*/
-	protected PullToRefreshListView table;
+	private PullToRefreshListView table;
 
 	/**Footer of the table*/
-	protected TableLoadMoreFooter footer;
+	private TableLoadMoreFooter footer;
 
 	/**Bundle to load data from*/
 	private Bundle loadBundle;
@@ -220,4 +220,11 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		table.setMode(Mode.DISABLED);
 	}
 
+	protected TableLoadMoreFooter getLoadMoreFooter() {
+		return footer;
+	}
+
+	protected PullToRefreshListView getTable() {
+		return table;
+	}
 }

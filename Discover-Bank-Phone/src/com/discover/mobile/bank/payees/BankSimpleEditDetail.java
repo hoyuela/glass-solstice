@@ -18,12 +18,12 @@ import com.discover.mobile.bank.R;
  *
  */
 public class BankSimpleEditDetail extends RelativeLayout {
-	protected TextView topLabel;
-	protected TextView middleLabel;
-	protected TextView errorLabel;
-	protected View dividerLine;
-	protected View caret;
-	protected View view;
+	private TextView topLabel;
+	private TextView middleLabel;
+	private TextView errorLabel;
+	private View dividerLine;
+	private View caret;
+	private View view;
 	
 	public BankSimpleEditDetail(final Context context) {
 		super(context);

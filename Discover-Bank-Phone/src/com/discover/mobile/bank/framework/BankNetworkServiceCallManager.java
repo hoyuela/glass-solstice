@@ -882,11 +882,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 *
 	 */
 	public class NetworkServiceCallAsyncArgs {
-		public final NetworkServiceCall<?> sender;
-		public final Serializable arguments;
-		public final Throwable exception;
-		public final ErrorResponse<?> error;
-		public final Result result;
+		private final NetworkServiceCall<?> sender;
+		private final Serializable arguments;
+		private final Throwable exception;
+		private final ErrorResponse<?> error;
+		private final Result result;
 
 		/**
 		 * Constructor used for a creating an object representing a successful NetworkServiceCall<?>

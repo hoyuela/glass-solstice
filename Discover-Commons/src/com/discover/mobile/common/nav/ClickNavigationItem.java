@@ -23,8 +23,8 @@ public class ClickNavigationItem extends NavigationItem {
 
 	@Override
 	void onClick(final ListView listView, final View clickedView) {
-		NavigationIndex.setSubIndex(absoluteIndex);
-		adapter.notifyDataSetChanged();
+		NavigationIndex.setSubIndex(getAbsoluteIndex());
+		getAdapter().notifyDataSetChanged();
 		listener.onClick(clickedView);
 	}
 

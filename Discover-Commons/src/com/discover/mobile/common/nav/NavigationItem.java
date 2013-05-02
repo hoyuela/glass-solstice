@@ -21,10 +21,11 @@ import com.google.common.collect.Lists;
  */
 public abstract class NavigationItem {
 
-	final NavigationItemAdapter adapter;
-	final NavigationItemView view;
-	final int absoluteIndex;
-	static ImmutableList<ComponentInfo> section;
+	private final NavigationItemAdapter adapter;
+	private final NavigationItemView view;
+	private final int absoluteIndex;
+	private static ImmutableList<ComponentInfo> section;
+	
 	NavigationItem(final NavigationItemAdapter adapter, final NavigationItemView view, final int absoluteIndex) {
 		this.adapter = adapter;
 		this.view = view;
@@ -33,6 +34,18 @@ public abstract class NavigationItem {
 
 	abstract void onClick(ListView listView, View clickedView);
 
+	protected NavigationItemAdapter getAdapter() {
+		return adapter;
+	}
+	
+	protected NavigationItemView getItemView() {
+		return view;
+	}
+	
+	protected int getAbsoluteIndex() {
+		return absoluteIndex;
+	}
+	
 	/**
 	 * Sets up the adapter and make the home fragment the first visible fragment when logging in.  
 	 * @param adapter

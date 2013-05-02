@@ -18,12 +18,12 @@ import com.discover.mobile.bank.R;
  *
  */
 public class SelectListItem extends RelativeLayout {
-	protected TextView topLabel;
-	protected TextView middleLabel;
-	protected View view;
-	protected View divider;
-	protected ImageView image;
-	protected RelativeLayout mainLayout;
+	private TextView topLabel;
+	private TextView middleLabel;
+	private View view;
+	private View divider;
+	private ImageView image;
+	private RelativeLayout mainLayout;
 
 
 	public SelectListItem(final Context context) {

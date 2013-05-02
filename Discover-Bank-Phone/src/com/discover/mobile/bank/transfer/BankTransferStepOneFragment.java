@@ -506,7 +506,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 * Used for the to account table cell, when it is clicked, navigate to the select
 	 * to account screen.
 	 */
-	final OnClickListener toAccountClickListener = new OnClickListener() {
+	private final OnClickListener toAccountClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(final View v) {
@@ -519,7 +519,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 * Used for the from account table cell, when it is clicked, navigate to the select
 	 * from account screen.
 	 */
-	final OnClickListener fromAccountClickListener = new OnClickListener() {
+	private final OnClickListener fromAccountClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(final View v) {
@@ -690,7 +690,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	
 			BankServiceCallFactory.createScheduleTransferCall(transferObject).submit();
 		}else {
-			scrollView.smoothScrollTo(0, 0);
+			getScrollView().smoothScrollTo(0, 0);
 		}
 	}
 	
@@ -980,7 +980,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		
 		showErrorLabel(getString(R.string.bank_deposit_error_notify), (TextView)getView().findViewById(R.id.general_error));
 
-		scrollView.smoothScrollTo(0, 0);
+		getScrollView().smoothScrollTo(0, 0);
 		return handled;
 	}
 	

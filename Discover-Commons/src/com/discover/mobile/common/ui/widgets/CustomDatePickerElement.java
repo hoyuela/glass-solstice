@@ -20,9 +20,9 @@ import com.discover.mobile.common.utils.CommonUtils;
  *
  */
 public abstract class CustomDatePickerElement extends ValidatedInputField {
-	protected CustomDatePickerDialog attachedDatePickerDialog;
+	private CustomDatePickerDialog attachedDatePickerDialog;
 
-	protected final int INVALID_VALUE = -1;
+	private final int INVALID_VALUE = -1;
 
 	private int day = INVALID_VALUE;
 	private int month = INVALID_VALUE;
@@ -266,6 +266,10 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	}
 	protected int getMonthOffset(){
 		return 0;
+	}
+	
+	protected CustomDatePickerDialog getDialog() {
+		return attachedDatePickerDialog;
 	}
 
 }

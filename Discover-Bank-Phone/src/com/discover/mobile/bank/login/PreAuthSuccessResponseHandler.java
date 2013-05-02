@@ -16,7 +16,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
  *
  */
 public class PreAuthSuccessResponseHandler implements SuccessListener<PreAuthResult>{
-	LoginActivity loginActivity;
+	private final LoginActivity loginActivity;
 
 	private final static String TAG = "PreAuthSuccess";
 	

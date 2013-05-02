@@ -108,9 +108,9 @@ import com.google.common.base.Strings;
  */
 public final class BankConductor  extends Conductor {
 
-	protected static BankConductor instance;
+	private static BankConductor instance;
 
-	protected CacheManager cacheMgr = BankUser.instance();
+	private final CacheManager cacheMgr = BankUser.instance();
 
 	private static BankLoginDetails loginDetails;
 
@@ -182,9 +182,9 @@ public final class BankConductor  extends Conductor {
 
 				// call payload in the bundle
 				@SuppressWarnings("unchecked")
-				final NetworkServiceCall<?> call = serviceCallFactory.createServiceCall(cacheObjReq,payload);
+				final NetworkServiceCall<?> call = getServiceCallFactory().createServiceCall(cacheObjReq,payload);
 				// associate the destination with the call
-				destinationMap.put(call.hashCode(), new DestinationDetails(DestinationType.FRAGMENT, fragmentClass, bundle));
+				getDestinationMap().put(call.hashCode(), new DestinationDetails(DestinationType.FRAGMENT, fragmentClass, bundle));
 				call.submit();
 			}else{
 				final Bundle updatedBundle = new Bundle();

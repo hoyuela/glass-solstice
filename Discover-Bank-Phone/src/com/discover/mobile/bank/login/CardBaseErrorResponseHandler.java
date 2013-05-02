@@ -50,9 +50,14 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	/**
 	 * The Parent RoboSlidingFragmentActvitiy that made the service call
 	 */
-	protected ErrorHandlerUi errorHandlerUi = null;
+	private ErrorHandlerUi errorHandlerUi = null;
 	
-	protected ErrorHandler mErrorHandlerFactory = null;
+	private ErrorHandler mErrorHandlerFactory = null;
+	
+	public ErrorHandlerUi getUi() {
+		return errorHandlerUi;
+	}
+	
 	/**
 	 * Private constructor to prevent construction without a fragment or
 	 * activity

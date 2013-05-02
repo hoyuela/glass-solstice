@@ -44,7 +44,7 @@ public class BankPayTerms extends BaseFragment{
 	private int titleText = R.string.pay_a_bill_title;
 
 	/**The String resource that is used for the title in the Action bar*/
-	int titleStringResource;
+	private int titleStringResource;
 
 	/**The ProgressBar that is shown while the web view loads its content */
 	private ProgressBar loadingSpinner;
