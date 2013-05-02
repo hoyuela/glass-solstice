@@ -4,6 +4,7 @@
 package com.discover.mobile.common.facade;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.framework.Conductor;
@@ -21,7 +22,7 @@ public final class FacadeFactory {
 	/**
 	 * The private map to store the singleton objects
 	 */
-	private static HashMap<String, Object> singletons = new HashMap<String, Object>();
+	private static Map<String, Object> singletons = new HashMap<String, Object>();
 	
 	/**
 	 * This is a utility class and should not have a public or default constructor.

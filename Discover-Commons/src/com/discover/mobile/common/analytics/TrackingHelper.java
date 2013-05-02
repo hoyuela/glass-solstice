@@ -1,7 +1,7 @@
 package com.discover.mobile.common.analytics;
 
-import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 import android.app.Activity;
 
@@ -88,7 +88,7 @@ public final class TrackingHelper {
 	/**
 	 * Track a page with extra data
 	 */
-	public static void trackBankPage(final String pageName, final HashMap<String, Object> extras){
+	public static void trackBankPage(final String pageName, final Map<String, Object> extras){
 		trackPageView(pageName, BANK_APP_NAME, extras);
 	}
 
@@ -105,7 +105,7 @@ public final class TrackingHelper {
 	 * 
 	 * @param pageName - supply the page name according to the specification from Discover
 	 */
-	private static void trackPageView(final String pageName, final String appName, final HashMap<String, Object> extras) {
+	private static void trackPageView(final String pageName, final String appName, final Map<String, Object> extras) {
 		if(measurement == null){return;}
 		measurement.clearVars();
 		final Hashtable<String, Object> contextData = new Hashtable<String, Object>();

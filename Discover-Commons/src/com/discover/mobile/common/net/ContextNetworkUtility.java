@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,7 +19,7 @@ final class ContextNetworkUtility {
 	
 	// This should only ever be mutated on the main thread
 	@SuppressLint("UseSparseArrays")
-	private static HashMap<Integer, String> keyValuePairs = new HashMap<Integer,String>();
+	private static Map<Integer, String> keyValuePairs = new HashMap<Integer,String>();
 	
 	/**
 	 * Loads resource only one time  
@@ -27,7 +28,7 @@ final class ContextNetworkUtility {
 	 * @param id
 	 * @return
 	 */
-	static synchronized String getStringResource(final Context currentContext, int id) {
+	static synchronized String getStringResource(final Context currentContext, final int id) {
 		checkState(isMainThread(), "getBaseUrl() must be called from the main thread");
 		String value = null;
 		if( !keyValuePairs.containsKey(id) ) {
