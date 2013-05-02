@@ -68,6 +68,8 @@
             android:layout_below="@+id/lable1"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_toRightOf="@+id/lable2"
+            android:singleLine="true"
+            android:textIsSelectable="false"
             android:gravity="right" />
 
         <TextView
@@ -91,6 +93,8 @@
             android:layout_below="@+id/lable2"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_toRightOf="@+id/lable3"
+            android:singleLine="true"
+            android:textIsSelectable="false"
             android:gravity="right" />
     </RelativeLayout>
 
