@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
  * @author ajleeds
  *
  */
-public class BankBaseUrl {
+public final class BankBaseUrl {
 	private static final String BUNDLE_NAME = "com.discover.mobile.bank.bankurl"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle

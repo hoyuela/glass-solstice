@@ -30,7 +30,7 @@ public class FAQDetailFragment extends BaseFragment {
 	private final static String SCROLL_Y = "a";
 	
 	/** The list of FAQ items that will be shown in this Fragment */
-	final List<FAQListItem>faqItems = new ArrayList<FAQListItem>();
+	private final List<FAQListItem>faqItems = new ArrayList<FAQListItem>();
 
 	/**
 	 * Setup the Fragment to be shown.
@@ -58,8 +58,9 @@ public class FAQDetailFragment extends BaseFragment {
 		mainScroll.post(new Runnable() {
 			@Override
 			public void run() {
-				if(savedInstanceState != null && mainScroll != null)
+				if(savedInstanceState != null && mainScroll != null){
 					mainScroll.scrollTo(0, savedInstanceState.getInt(SCROLL_Y));
+				}
 			}
 		});
 			
@@ -76,14 +77,15 @@ public class FAQDetailFragment extends BaseFragment {
 		
 		//Compare the faqType value with the BankExtraKeys and return the string resource value that matches.
 		if(!Strings.isNullOrEmpty(faqType)) {
-			if(faqType.equals(BankExtraKeys.GENERAL_FAQ))
+			if(faqType.equals(BankExtraKeys.GENERAL_FAQ)){
 				titleResource = R.string.general;
-			else if(faqType.equals(BankExtraKeys.BILL_PAY_FAQ))
+			}else if(faqType.equals(BankExtraKeys.BILL_PAY_FAQ)){
 				titleResource = R.string.online_bill_pay;
-			else if(faqType.equals(BankExtraKeys.CHECK_DEPOSIT_FAQ))
+			}else if(faqType.equals(BankExtraKeys.CHECK_DEPOSIT_FAQ)){
 				titleResource = R.string.deposit_a_check;
-			else if(faqType.equals(BankExtraKeys.ATM_LOCATOR_FAQ))
+			}else if(faqType.equals(BankExtraKeys.ATM_LOCATOR_FAQ)){
 				titleResource = R.string.atm_locator_single_line;
+			}
 		}
 		
 		return titleResource;
@@ -111,9 +113,11 @@ public class FAQDetailFragment extends BaseFragment {
 		final boolean openList[] = new boolean[faqItems.size()];
 		
 		//Find all faqItems that are open, then update the boolean value in the array to true.
-		for(int i = 0; i < openList.length; ++i)
-			if(faqItems.get(i).isOpen())
+		for(int i = 0; i < openList.length; ++i){
+			if(faqItems.get(i).isOpen()){
 				openList[i] = true;
+			}
+		}
 		
 		return openList;
 	}
@@ -128,8 +132,9 @@ public class FAQDetailFragment extends BaseFragment {
 			
 			//Restore the open and close states of the list items
 			for(int i = 0; i < openStates.length; ++i) {
-				if(openStates[i] && i < faqItems.size())
+				if(openStates[i] && i < faqItems.size()){
 					faqItems.get(i).openItem();
+				}
 			}
 		}
 	}
@@ -152,8 +157,9 @@ public class FAQDetailFragment extends BaseFragment {
 			final FAQListItem listItem = new FAQListItem(getActivity());
 			
 			//Hide the first divider line.
-			if(i == 0)
+			if(i == 0){
 				listItem.hideDivider();
+			}
 			
 			//Get the FAQ list data in pairs. They are stored in title,body,title,body..etc. order.
 			listItem.setTitle(listItems[i]);
@@ -165,9 +171,11 @@ public class FAQDetailFragment extends BaseFragment {
 		//To be sure that the only content in the table is the FAQ items, remove everything else first.
 		contentTable.removeAllViews();
 		
-		for(final FAQListItem item : faqItems)
-			if(item != null)
+		for(final FAQListItem item : faqItems){
+			if(item != null){
 				contentTable.addView(item);
+			}
+		}
 	}
 	
 	/**
@@ -181,14 +189,15 @@ public class FAQDetailFragment extends BaseFragment {
 		final Resources res = getResources();
 		
 		if(!Strings.isNullOrEmpty(faqType)) {
-			if(faqType.equals(BankExtraKeys.GENERAL_FAQ))
+			if(faqType.equals(BankExtraKeys.GENERAL_FAQ)){
 				content = res.getStringArray(R.array.general_faq_array);
-			else if(faqType.equals(BankExtraKeys.BILL_PAY_FAQ))
+			}else if(faqType.equals(BankExtraKeys.BILL_PAY_FAQ)){
 				content = res.getStringArray(R.array.online_bill_pay_array);
-			else if(faqType.equals(BankExtraKeys.ATM_LOCATOR_FAQ))
+			}else if(faqType.equals(BankExtraKeys.ATM_LOCATOR_FAQ)){
 				content = res.getStringArray(R.array.atm_locator_faq_array);
-			else if(faqType.equals(BankExtraKeys.CHECK_DEPOSIT_FAQ))
+			}else if(faqType.equals(BankExtraKeys.CHECK_DEPOSIT_FAQ)){
 				content = res.getStringArray(R.array.check_deposit_faq_array);
+			}
 		}
 		
 		return content;
@@ -202,8 +211,9 @@ public class FAQDetailFragment extends BaseFragment {
 		String faqType = "";
 		final Bundle args = getArguments();
 		
-		if(args != null)
+		if(args != null){
 			faqType = args.getString(BankExtraKeys.FAQ_TYPE);
+		}
 		
 		return faqType;
 	}

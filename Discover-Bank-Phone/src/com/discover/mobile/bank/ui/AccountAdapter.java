@@ -15,7 +15,7 @@ import com.discover.mobile.bank.services.account.Account;
 public class AccountAdapter extends ArrayAdapter<Account> {
 
 	private final Activity context;
-	List<Account> data = null;
+	private List<Account> data = null;
 
 	public AccountAdapter(final Activity context, final int textViewResourceId,
 			final List<Account> accounts) {

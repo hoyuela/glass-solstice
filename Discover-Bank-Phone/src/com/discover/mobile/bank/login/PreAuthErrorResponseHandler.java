@@ -58,8 +58,8 @@ public class PreAuthErrorResponseHandler extends CardBaseErrorResponseHandler im
 	protected boolean handleJsonErrorCode(final JsonMessageErrorResponse messageErrorResponse) {
 		if (messageErrorResponse.getMessageStatusCode() == FORCED_UPGRADE_REQUIRED) {
 			TrackingHelper.trackPageView(AnalyticsPage.FORCED_UPGRADE);
-			PreAuthCallHelper.showForcedUpgradeAlertDialog(errorHandlerUi);
-			PreAuthCallHelper.updateDateInPrefs(errorHandlerUi.getContext());
+			PreAuthCallHelper.showForcedUpgradeAlertDialog(getUi());
+			PreAuthCallHelper.updateDateInPrefs(getUi().getContext());
 			return true;
 		}
 

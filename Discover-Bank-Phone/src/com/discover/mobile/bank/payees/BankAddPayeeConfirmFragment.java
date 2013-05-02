@@ -19,6 +19,7 @@ import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.common.help.HelpWidget;
 
@@ -33,7 +34,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	/** 
 	 * Reference to a AddPayeeDetail object used to hold the information of the Payee that will be added.
 	 */
-	PayeeDetail detail = new PayeeDetail();
+	private PayeeDetail detail = new PayeeDetail();
 	/**
 	 * Key used to read flag from bundle, obtained via getArguments(), to determine if confirmation page is for a update or addition.
 	 */
@@ -41,7 +42,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	/**
 	 * Flag used to determine whether payee was updated or added.
 	 */
-	public boolean isUpdate;
+	private boolean isUpdate;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -78,28 +79,28 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 		topNote.setVisibility(View.VISIBLE);
 
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
+		BankHeaderProgressIndicator progressIndicator = getProgressIndicator();
 		progressIndicator.initialize(2);
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_payee_details, R.string.bank_payee_added, R.string.bank_payee_added);
 
 		/**Hide Bottom Note*/
-		noteTitle.setVisibility(View.GONE);
-		noteTextMsg.setVisibility(View.GONE);
+		hideBottomNote();
 
-		actionButton.setText(R.string.bank_sch_payment);
+		getActionButton().setText(R.string.bank_sch_payment);
 
 		/**Set footer to show privacy & terms | feedback*/
-		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
+		getFooter().setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
 
 		/**Check if confirmation page is for a payee update or addition*/
 		if( isUpdate ) {
 			topNote.setText(R.string.bank_updated_confirm);
 
-			actionLink.setText(R.string.bank_manage_payees);
+			getActionLink().setText(R.string.bank_manage_payees);
 		} else {
 			topNote.setText(R.string.bank_add_confirm);
 
-			actionLink.setText(R.string.bank_add_another);
+			getActionLink().setText(R.string.bank_add_another);
 		}
 	}
 

@@ -114,9 +114,9 @@ public final class BankStringFormatter {
 			final String endingIn = currentActivity.getResources().getString(R.string.account_ending_in_first_two_caps);
 			accountEndingInBuilder.append(endingIn);
 			accountEndingInBuilder.append(" ");
-			if(!Strings.isNullOrEmpty(accountNumber))
+			if(!Strings.isNullOrEmpty(accountNumber)){
 				accountEndingInBuilder.append(accountNumber);
-			else {
+			}else {
 				accountEndingInBuilder.append("VOID");
 				Log.e(tag, "Error formatting 'account ending in' String. No account number provided to method.");
 			}

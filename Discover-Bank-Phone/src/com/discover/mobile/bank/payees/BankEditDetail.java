@@ -25,39 +25,39 @@ import com.discover.mobile.common.ui.widgets.ValidatedInputFieldListener;
  *
  */
 public class BankEditDetail extends RelativeLayout implements OnClickListener, OnFocusChangeListener, OnEditorActionListener, ValidatedInputFieldListener{
-	protected TextView topLabel;
-	protected TextView middleLabel;
-	protected PayeeValidatedEditField editableField;
-	protected BankEditDetail nextDetail;
-	protected TextView errorLabel;
-	protected View dividerLine;
-	protected View caret;
-	protected View view;
+	private TextView topLabel;
+	private TextView middleLabel;
+	private PayeeValidatedEditField editableField;
+	private BankEditDetail nextDetail;
+	private TextView errorLabel;
+	private View dividerLine;
+	private View caret;
+	private View view;
 	
 	public BankEditDetail(final Context context) {
 		super(context);
-		doSetup(context);
+		doSetup();
 	}
 	
 	public BankEditDetail(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		doSetup(context);
+		doSetup();
 	}
 	public BankEditDetail(final Context context, final AttributeSet attrs, final int defStyle) {
 		super(context, attrs, defStyle);
-		doSetup(context);
+		doSetup();
 	}
 
-	protected void doSetup(final Context context) {
-		addView(getInflatedLayout(context));
+	private void doSetup() {
+		addView(getInflatedLayout());
 		loadViews();
 	}
 	
-	private RelativeLayout getInflatedLayout(final Context context) {
-		return (RelativeLayout)LayoutInflater.from(context).inflate(R.layout.bank_edit_detail_view, null);
+	private RelativeLayout getInflatedLayout() {
+		return (RelativeLayout)LayoutInflater.from(getContext()).inflate(R.layout.bank_edit_detail_view, null);
 	}
 	
-	protected void loadViews() {
+	public final void loadViews() {
 		view = findViewById(R.id.list_item);
 		caret = findViewById(R.id.caret);
 		topLabel = (TextView)findViewById(R.id.top_label);
@@ -120,6 +120,10 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		return caret;
 	}
 
+	public BankEditDetail getNextDetail() {
+		return nextDetail;
+	}
+	
 	/**
 	 * Method used to set the text for the middle label and editable field at once.
 	 * 

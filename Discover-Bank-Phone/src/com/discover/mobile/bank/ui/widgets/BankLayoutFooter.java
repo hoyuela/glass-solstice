@@ -108,7 +108,7 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 
 	}
 
-	public void setFooterType(final int type) {
+	public final void setFooterType(final int type) {
 		/** Check if Need Help Footer should be shown */
 		if (FooterType.NEED_HELP == (type & FooterType.NEED_HELP)) {
 			helpFooter.show(true);

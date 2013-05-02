@@ -57,8 +57,9 @@ public abstract class DetailFragment extends Fragment {
 	public void onStop() {
 		super.onStop();
 		
-		if(creatorTask != null)
+		if(creatorTask != null){
 			creatorTask.cancel(true);
+		}
 	}
 	
 	
@@ -71,8 +72,8 @@ public abstract class DetailFragment extends Fragment {
 	 *
 	 */
 	public class LayoutCreatorTask extends AsyncTask<Void, Void, Void> {
-		View subView;
-		RelativeLayout mainViewRelativeLayout;
+		private View subView;
+		private RelativeLayout mainViewRelativeLayout;
 
 		/**
 		 * During background thread processing, inflate the layout that will be used,

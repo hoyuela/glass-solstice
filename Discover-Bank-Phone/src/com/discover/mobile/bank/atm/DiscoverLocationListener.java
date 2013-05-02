@@ -16,7 +16,7 @@ import android.os.Bundle;
 public class DiscoverLocationListener implements LocationListener{
 
 	/**Fragment to return the location to*/
-	final LocationFragment fragment;
+	final private LocationFragment fragment;
 
 	/**
 	 * Constructor for the listener

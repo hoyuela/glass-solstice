@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
 import com.google.common.base.Strings;
 
@@ -23,29 +22,22 @@ import com.google.common.base.Strings;
 public abstract class BankMessageFragment extends BaseFragment implements OnClickListener  {
 
 	/**
-	 * Reference to footer in layout
-	 */
-	protected BankLayoutFooter footer;
-	/**
 	 * Reference to single button on screen
 	 */
-	protected Button actionButton;
+	private Button actionButton;
 	/**
 	 * Reference to page title on the fragment
 	 */
-	protected TextView pageTitle;
+	private TextView pageTitle;
 	/**
 	 * Reference to text view that holds the message text for the fragment.
 	 */
-	protected TextView bodyText;
+	private TextView bodyText;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_message_fragment_layout, null);
-		
-		/**Create footer that will listen when user taps on Need Help Number to dial*/
-		footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
 		
 		/**Set the fragment as the handler for the button click event*/
 		actionButton = (Button)view.findViewById(R.id.action_button);
@@ -94,4 +86,7 @@ public abstract class BankMessageFragment extends BaseFragment implements OnClic
 		}
 	}
 	
+	protected Button getActionButton() {
+		return actionButton;
+	}
 }

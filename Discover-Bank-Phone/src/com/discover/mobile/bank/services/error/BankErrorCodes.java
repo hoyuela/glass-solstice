@@ -6,7 +6,7 @@ package com.discover.mobile.bank.services.error;
  * @author henryoyuela
  *
  */
-public class BankErrorCodes {
+public final class BankErrorCodes {
 
 	/**
 	 * Error Code used to describe a Planned System Maintenance error response with HTTP Status Code 503

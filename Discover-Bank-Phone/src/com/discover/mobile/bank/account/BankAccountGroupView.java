@@ -42,7 +42,7 @@ public class BankAccountGroupView extends LinearLayout  {
 	/**
 	 * Reference to layout used to display content for this view
 	 */
-	final LinearLayout layout;
+	private final LinearLayout layout;
 	
 	/** Reference to the last {@code BankAccountView} that belongs to this view. */
 	private BankAccountView lastAccountReference;
@@ -133,8 +133,8 @@ public class BankAccountGroupView extends LinearLayout  {
 			/**Use name for grouping otherwise use type*/
 			
 			type.setText(getGroupTitle(account));
-			
-			layout.addView(lastAccountReference = new BankAccountView(this.getContext(), account));
+			lastAccountReference = new BankAccountView(this.getContext(), account);
+			layout.addView(lastAccountReference);
 			
 			if(firstAccountReference == null) {
 				firstAccountReference = lastAccountReference;

@@ -18,12 +18,12 @@ import com.discover.mobile.bank.R;
  *
  */
 public class BankSimpleEditDetail extends RelativeLayout {
-	protected TextView topLabel;
-	protected TextView middleLabel;
-	protected TextView errorLabel;
-	protected View dividerLine;
-	protected View caret;
-	protected View view;
+	private TextView topLabel;
+	private TextView middleLabel;
+	private TextView errorLabel;
+	private View dividerLine;
+	private View caret;
+	private View view;
 	
 	public BankSimpleEditDetail(final Context context) {
 		super(context);
@@ -39,7 +39,7 @@ public class BankSimpleEditDetail extends RelativeLayout {
 		doSetup(context);
 	}
 
-	protected void doSetup(final Context context) {
+	private void doSetup(final Context context) {
 		addView(getInflatedLayout(context));
 		loadViews();
 	}
@@ -51,7 +51,7 @@ public class BankSimpleEditDetail extends RelativeLayout {
 	/**
 	 * Retrieve refrences to all necessary interface items.
 	 */
-	protected void loadViews() {
+	private void loadViews() {
 		view = findViewById(R.id.list_item);
 		caret = findViewById(R.id.caret);
 		topLabel = (TextView)findViewById(R.id.top_label);

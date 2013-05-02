@@ -143,8 +143,9 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 			if (Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Unable to verify amount entered by user");
 			}
-			if (errorLabel != null)
+			if (errorLabel != null){
 				errorLabel.setText(R.string.bank_deposit_unknown_limit);
+			}
 		}
 
 		return ret;
@@ -164,7 +165,8 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 	 */
 	@Override
 	protected void hideErrorLabel() {
-		if(errorLabel != null)
+		if(errorLabel != null){
 			this.errorLabel.setVisibility(hiddenErrorVisibility);
+		}
 	}
 }

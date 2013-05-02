@@ -16,12 +16,19 @@ import com.discover.mobile.common.framework.Conductor;
  * @author ekaram
  *
  */
-public class FacadeFactory {
+public final class FacadeFactory {
 	
 	/**
 	 * The private map to store the singleton objects
 	 */
 	private static HashMap<String, Object> singletons = new HashMap<String, Object>();
+	
+	/**
+	 * This is a utility class and should not have a public or default constructor.
+	 */
+	private FacadeFactory() {
+		throw new UnsupportedOperationException();
+	}
 	
 	/**
 	 * The logout facade
@@ -116,7 +123,7 @@ public class FacadeFactory {
 	 * @param accountType
 	 * @return
 	 */
-	public static Conductor getConductorFacade(AccountType accountType){ 
+	public static Conductor getConductorFacade(final AccountType accountType){ 
 		if ( accountType == AccountType.CARD_ACCOUNT ){ 
 			return (Conductor) getImplClass("com.discover.mobile.card.facade.CardConductorFacadeImpl");
 		}else{ 
@@ -135,7 +142,7 @@ public class FacadeFactory {
 	 * @param fullyQualifiedClassName
 	 * @return
 	 */
-	private static synchronized Object getImplClass(String fullyQualifiedClassName){
+	private static synchronized Object getImplClass(final String fullyQualifiedClassName){
 		Object facade = singletons.get(fullyQualifiedClassName);
 		if ( facade == null ) { 
 			try {
@@ -143,7 +150,7 @@ public class FacadeFactory {
 				facade = Class.forName(fullyQualifiedClassName).getConstructors()[0].newInstance(null);
 				
 				singletons.put(fullyQualifiedClassName, facade);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				throw new RuntimeException("FACADE BOOTSTRAP FAILED: Unable to find facade impl class:" 
 						+ fullyQualifiedClassName + "\n" + e.toString());
 			}

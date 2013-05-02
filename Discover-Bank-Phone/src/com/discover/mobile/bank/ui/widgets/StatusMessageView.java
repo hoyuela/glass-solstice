@@ -52,7 +52,7 @@ public class StatusMessageView extends RelativeLayout {
 		inflateLayout();
 	}
 
-	protected void inflateLayout() {
+	private void inflateLayout() {
 		final LayoutInflater inflater = (LayoutInflater) getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 

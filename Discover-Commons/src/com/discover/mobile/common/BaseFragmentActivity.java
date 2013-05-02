@@ -61,8 +61,8 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	/**Fragment that is currently being shown to the user*/
 	protected Fragment currentFragment;
 
-	protected EventManager eventManager;
-	protected HashMap<Key<?>,Object> scopedObjects = new HashMap<Key<?>, Object>();
+	private EventManager eventManager;
+	private HashMap<Key<?>,Object> scopedObjects = new HashMap<Key<?>, Object>();
 	/**
 	 * Flag used to determine if the activity is in resumed state
 	 */

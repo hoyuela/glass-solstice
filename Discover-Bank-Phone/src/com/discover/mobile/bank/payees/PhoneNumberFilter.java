@@ -29,8 +29,9 @@ public class PhoneNumberFilter extends NumberKeyListener {
             final Spanned dest, final int dstart, final int dend) {
 
         // Don't let phone numbers start with 1
-        if (dstart == 0 && source.equals("1")) 
+        if (dstart == 0 && source.equals("1")){ 
             return "";
+        }
 
         return super.filter(source, start, end, dest, dstart, dend);
     }

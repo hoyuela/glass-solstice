@@ -80,14 +80,21 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 */ 
 	public PayeeValidatedEditField(final Context context) {
 		super(context);		
+		defaultSetup();
 	}
 
 	public PayeeValidatedEditField(final Context context, final AttributeSet attrs) {
 		super(context, attrs);	
+		defaultSetup();
 	}
 
 	public PayeeValidatedEditField(final Context context, final AttributeSet attrs, final int defStyle) {
 		super(context, attrs, defStyle);
+		defaultSetup();
+	}
+	
+	private void defaultSetup() {
+		setupTextChangedListener();
 	}
 
 	/**
@@ -251,8 +258,9 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 */
 	@Override
 	protected void hideErrorLabel() {
-		if(errorLabel != null)
+		if(errorLabel != null){
 			this.errorLabel.setVisibility(View.INVISIBLE);
+		}
 	}
 	
 	/**
@@ -277,20 +285,20 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 		}
 	}
 	
-	@Override
 	/**
 	 * Sets a text changed listener to listen for new input. Validates
 	 * the input in real time, so that if the field has been 
 	 * previously marked as an error, it will turn 'normal' as soon as
 	 * the input reaches a valid state.
 	 */
-	protected void setupTextChangedListener(){
+	private void setupTextChangedListener(){
 		validator = new TextWatcher() {
 
 			@Override
 			public void afterTextChanged(final Editable s) {
-				if(isValid())
+				if(isValid()){
 					clearErrors();
+				}
 			}
 
 			@Override

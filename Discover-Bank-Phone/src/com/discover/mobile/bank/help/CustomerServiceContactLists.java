@@ -20,13 +20,20 @@ import com.discover.mobile.common.utils.CommonUtils;
  * @author scottseward
  *
  */
-public class CustomerServiceContactLists {
+public final class CustomerServiceContactLists {
 	
 	/**
 	 * Easy handles for the calling context and its resources.
 	 */
 	private static Resources res;
 	private static Context context;
+	
+	/**
+	 * This is a utility class and should not have a public or default constructor.
+	 */
+	private CustomerServiceContactLists() {
+		throw new UnsupportedOperationException();
+	}
 	
 	/**
 	 * This is a static method that returns a list of telephone contacts that are in the form of RelativeLayout

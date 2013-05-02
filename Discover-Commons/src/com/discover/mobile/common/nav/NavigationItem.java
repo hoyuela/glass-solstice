@@ -21,10 +21,11 @@ import com.google.common.collect.Lists;
  */
 public abstract class NavigationItem {
 
-	final NavigationItemAdapter adapter;
-	final NavigationItemView view;
-	final int absoluteIndex;
-	static ImmutableList<ComponentInfo> section;
+	private final NavigationItemAdapter adapter;
+	private final NavigationItemView view;
+	private final int absoluteIndex;
+	private static ImmutableList<ComponentInfo> section;
+	
 	NavigationItem(final NavigationItemAdapter adapter, final NavigationItemView view, final int absoluteIndex) {
 		this.adapter = adapter;
 		this.view = view;
@@ -33,6 +34,18 @@ public abstract class NavigationItem {
 
 	abstract void onClick(ListView listView, View clickedView);
 
+	protected NavigationItemAdapter getAdapter() {
+		return adapter;
+	}
+	
+	protected NavigationItemView getItemView() {
+		return view;
+	}
+	
+	protected int getAbsoluteIndex() {
+		return absoluteIndex;
+	}
+	
 	/**
 	 * Sets up the adapter and make the home fragment the first visible fragment when logging in.  
 	 * @param adapter
@@ -71,14 +84,15 @@ public abstract class NavigationItem {
 	 */
 	private static NavigationItem createSectionItem(final NavigationItemAdapter adapter, final int index) {
 		final ComponentInfo sectionInfo = section.get(index);
-		if(sectionInfo instanceof GroupComponentInfo)
+		if(sectionInfo instanceof GroupComponentInfo){
 			return createSectionGroupItem((GroupComponentInfo)sectionInfo, adapter, index);
-		else if(sectionInfo instanceof FragmentComponentInfo)
+		}else if(sectionInfo instanceof FragmentComponentInfo){
 			return createSectionFragmentItem((FragmentComponentInfo)sectionInfo, adapter, index);
-		else if (sectionInfo instanceof ClickComponentInfo)
+		}else if (sectionInfo instanceof ClickComponentInfo){
 			return createSectionClickItem((ClickComponentInfo)sectionInfo, adapter, index);
-		else
+		}else{
 			throw new UnsupportedOperationException("Unknown ComponentInfo: " + sectionInfo); //$NON-NLS-1$
+		}
 	}
 
 	/**

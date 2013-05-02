@@ -54,6 +54,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	 */
 	private Bundle bundle = null;
 	
+	private static final int CAPTURE_ACTIVITY = 1;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -71,9 +72,9 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		hideUnusedLabels(view);
 		
 		/**Show "Continue" text in single button on screen*/
-		actionButton.setText(R.string.continue_text);
+		setButtonText(R.string.continue_text);
 
-		contentTable.setBackgroundDrawable(null);
+		getTable().setBackgroundDrawable(null);
 		
 		/**Listen when user taps on the layout to close the keyboard*/
 		view.findViewById(R.id.main_layout).setOnTouchListener(new OnTouchListener() {           
@@ -93,9 +94,8 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	
 	/**Hide controls that are not needed*/
 	private void hideUnusedLabels(final View view) {
-		noteTitle.setVisibility(View.GONE);
-		noteTextMsg.setVisibility(View.GONE);
-		actionLink.setVisibility(View.GONE);
+		hideBottomNote();
+		getActionLink().setVisibility(View.GONE);
 		(view.findViewById(R.id.top_note_text)).setVisibility(View.GONE);
 	}
 	
@@ -151,8 +151,6 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		
 		return items;
 	}
-
-	final int CAPTURE_ACTIVITY = 1;
 	
 	@Override
 	protected void onActionButtonClick() {	
@@ -166,8 +164,9 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 			final Bundle args = getArguments();
 			boolean reviewDepositOnFinish = false;
 			
-			if(args != null)
+			if(args != null){
 				reviewDepositOnFinish = args.getBoolean(BankExtraKeys.REENTER_AMOUNT);
+			}
 			
 			if(reviewDepositOnFinish) {
 				//Reset the review deposit bundle boolean to prevent odd navigation issues later.
@@ -190,10 +189,11 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	@Override
 	public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
 		DiscoverActivityManager.setActiveActivity(getActivity());
-		if(requestCode == CAPTURE_ACTIVITY)
+		if(requestCode == CAPTURE_ACTIVITY){
 			if(resultCode == Activity.RESULT_OK) {
 				navigateToReviewDeposit();
 			}
+		}
 	}
 
 	/**
@@ -306,8 +306,9 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		
 		/**Check if onPause was called because of an orientation change*/
 		if( !isOrientationChanging ) {
-			if(amountItem != null && amountItem.getEditableField() != null)
+			if(amountItem != null && amountItem.getEditableField() != null){
 				this.amountItem.getEditableField().showKeyboard(false);
+			}
 		}
 	}
 

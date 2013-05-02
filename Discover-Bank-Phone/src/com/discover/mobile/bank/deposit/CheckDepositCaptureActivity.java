@@ -45,10 +45,11 @@ import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 
 public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
-	private final String TAG = CheckDepositCaptureActivity.class.getSimpleName();
+	private static final String TAG = CheckDepositCaptureActivity.class.getSimpleName();
 
 	public static final int RETAKE_FRONT = 1;
 	public static final int RETAKE_BACK  = 2;
+	public static final int THREE = 3;
 	public static final String FRONT_PICTURE = "frontCheckImage";
 	public static final String BACK_PICTURE = "backCheckImage";
 
@@ -86,7 +87,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private Drawable countdownTwo;
 	private Drawable countdownOne;
 
-	final int THREE = 3;
 	private int count = THREE;
 
 	private boolean cameraConfigured = false;
@@ -891,7 +891,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	public class CameraCountdownTask extends AsyncTask<Void, Void, Void> {
 		private boolean isRunning = false;
-		final int ONE_SECOND = 1000;
+		private static final int ONE_SECOND = 1000;
 
 		/**
 		 * Before the task begins its background processing, make sure that the close button is not visible

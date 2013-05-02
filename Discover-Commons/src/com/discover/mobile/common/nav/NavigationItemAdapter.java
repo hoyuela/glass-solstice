@@ -34,12 +34,12 @@ class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 	
 	@Override
 	public int getItemViewType(final int position) {
-		return getItem(position).view.getViewType();
+		return getItem(position).getItemView().getViewType();
 	}
 	
 	@Override
 	public View getView(final int position, final View convertView, final ViewGroup parent) {
-		return getItem(position).view.getView(convertView, layoutInflater, position);
+		return getItem(position).getItemView().getView(convertView, layoutInflater, position);
 	}
 	
 	NavigationItem getSelectedItem() {

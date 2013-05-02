@@ -30,13 +30,13 @@ final class FragmentNavigationItem extends NavigationItem {
 
 	@Override
 	void onClick(final ListView listView, final View clickedView) {
-			NavigationIndex.setSubIndex(absoluteIndex);
-			adapter.notifyDataSetChanged();
+			NavigationIndex.setSubIndex(getAbsoluteIndex());
+			getAdapter().notifyDataSetChanged();
 			makeVisible();
 	}
 
 	private void makeVisible() {
-		adapter.getNavigationRoot().makeFragmentVisible(getCachedOrCreateFragment());
+		getAdapter().getNavigationRoot().makeFragmentVisible(getCachedOrCreateFragment());
 	}
 
 	Fragment getCachedOrCreateFragment() {

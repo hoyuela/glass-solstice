@@ -22,7 +22,7 @@ import com.discover.mobile.bank.util.BankStringFormatter;
  * @author henryoyuela
  *
  */
-public class BankDepositListGenerator {
+public final class BankDepositListGenerator {
 	
 	/**
 	 * Unused constructor, this class only has static methods.

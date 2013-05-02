@@ -30,7 +30,7 @@ public class BankDepositForbidden extends BaseFragment {
 	/**
 	 * Reference to footer in layout
 	 */
-	protected BankLayoutFooter footer;
+	private BankLayoutFooter footer;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,

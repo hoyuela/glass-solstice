@@ -54,7 +54,7 @@ import com.google.common.base.Strings;
  *
  */
 public class BankTransferStepOneFragment extends BankTransferBaseFragment implements BankErrorHandlerDelegate {
-	private final String TAG = BankTransferStepOneFragment.class.getSimpleName();
+	private static final String TAG = BankTransferStepOneFragment.class.getSimpleName();
 	
 	/**Code of the frequency*/
 	private String frequencyCode = TransferDetail.ONE_TIME_TRANSFER;
@@ -103,10 +103,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
 		/**Hide controls that are not needed*/
-		actionButton.setText(R.string.schedule_transfer);
-		actionLink.setText(R.string.cancel_text);
-		noteTitle.setVisibility(View.GONE);
-		noteTextMsg.setVisibility(View.GONE);
+		setButtonText(R.string.schedule_transfer);
+		setLinkText(R.string.cancel_text);
+		hideBottomNote();
 
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
@@ -141,8 +140,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 
 		updateDateField();
 		
-		if(lastErrorObject != null)
+		if(lastErrorObject != null){
 			handleError(lastErrorObject);
+		}
 	}
 	
 	/**
@@ -300,12 +300,14 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		if(bundle != null) {
 			final AccountList bundleExternalAccounts = 
 					(AccountList)bundle.getSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS);
-			if(bundleExternalAccounts != null)
+			if(bundleExternalAccounts != null){
 				externalAccounts = bundleExternalAccounts;
+			}
 			
 			Account[] selectedAccounts = (Account[])bundle.getSerializable(BankExtraKeys.DATA_SELECTED_INDEX);
-			if(selectedAccounts == null)
+			if(selectedAccounts == null){
 				selectedAccounts = new Account[2];
+			}
 			
 			this.setSelectedAccounts(selectedAccounts);
 			this.updateSelectedAccountLabels();
@@ -313,9 +315,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			restoreFrequencyText(bundle);
 			restoreFrequencyTable(bundle);
 			
-			if(dateTextView != null)
+			if(dateTextView != null){
 				dateTextView.setText(bundle.getString(DATE));
-
+			}
+			
 			amountField.enableBankAmountTextWatcher(false);
 			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
 			amountField.enableBankAmountTextWatcher(true);
@@ -338,8 +341,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			frequencyText = value;
 		}
 		
-		if(frequencyCell != null)
+		if(frequencyCell != null){
 			frequencyCell.setText(frequencyText);
+		}
 	}
 	
 	/**
@@ -394,8 +398,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	private String getEndingInText (final boolean isToAccount, final Account account) {
 		final StringBuilder builder = new StringBuilder();
 		String prefix = "From";
-		if(isToAccount)
+		if(isToAccount){
 			prefix = "To";
+		}
 		
 		builder.append(prefix);
 		if(account != null && account.accountNumber != null && !Strings.isNullOrEmpty(account.accountNumber.ending)) {
@@ -501,7 +506,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 * Used for the to account table cell, when it is clicked, navigate to the select
 	 * to account screen.
 	 */
-	final OnClickListener toAccountClickListener = new OnClickListener() {
+	private final OnClickListener toAccountClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(final View v) {
@@ -514,7 +519,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 * Used for the from account table cell, when it is clicked, navigate to the select
 	 * from account screen.
 	 */
-	final OnClickListener fromAccountClickListener = new OnClickListener() {
+	private final OnClickListener fromAccountClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(final View v) {
@@ -685,7 +690,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	
 			BankServiceCallFactory.createScheduleTransferCall(transferObject).submit();
 		}else {
-			scrollView.smoothScrollTo(0, 0);
+			getScrollView().smoothScrollTo(0, 0);
 		}
 	}
 	
@@ -795,8 +800,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		int value = 0;
 		final int twentyFiveDollars = 2500;
 		
-		if(!Strings.isNullOrEmpty(amount))
+		if(!Strings.isNullOrEmpty(amount)){
 			value = Integer.parseInt(amount.replaceAll(NON_NUMBER_CHARACTERS, ""));
+		}
 		
 		return InputValidator.isValueBoundedBy(value, twentyFiveDollars, Integer.MAX_VALUE);
 	}
@@ -877,8 +883,9 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			
 			@Override
 			public void run() {
-				if(calendarFragment != null)
+				if(calendarFragment != null){
 					calendarFragment.dismiss();
+				}
 			}
 		};
 	}
@@ -973,7 +980,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		
 		showErrorLabel(getString(R.string.bank_deposit_error_notify), (TextView)getView().findViewById(R.id.general_error));
 
-		scrollView.smoothScrollTo(0, 0);
+		getScrollView().smoothScrollTo(0, 0);
 		return handled;
 	}
 	

@@ -36,8 +36,9 @@ public class PayeeDetailFragment extends DetailFragment implements OnClickListen
 		final List<ViewPagerListItem>listElements = generator.getPayeeDetailList(item);
 		
 		final LinearLayout content = (LinearLayout)fragmentView.findViewById(R.id.content_table);
-		for(final ViewPagerListItem element: listElements)
+		for(final ViewPagerListItem element: listElements){
 			content.addView(element);
+		}
 		
 		final Button editButton = (Button)fragmentView.findViewById(R.id.edit_payee_button);
 		editButton.setOnClickListener(this);

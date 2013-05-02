@@ -27,7 +27,7 @@ public class BankDepositNotEligibleFragment extends BaseFragment implements OnCl
 	/**
 	 * Reference to footer in layout
 	 */
-	protected BankLayoutFooter footer;
+	private BankLayoutFooter footer;
 
 	
 	@Override

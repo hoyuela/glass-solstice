@@ -6,8 +6,8 @@ package com.discover.mobile.bank.payees;
  * @author henryoyuela
  *
  */
-public class State {
-	public static State[] STATES = new State[] {
+public final class State {
+	public final static State[] STATES = new State[] {
 		new State("Alabama", "AL"),
 		new State("Alaska", "AK"),
 		new State("Arizona", "AZ"),
@@ -75,8 +75,8 @@ public class State {
 	};
 
 	
-	public String name = "";
-	public String abbrev = "";
+	private String name = "";
+	private String abbrev = "";
 
 	/***
 	 * Constructo used to populate name and abbreviation at instantiation.
@@ -84,10 +84,10 @@ public class State {
 	 * @param _name Name of the state represented by the instance of this class.
 	 * @param _abbrev Abbreviation of the state represent by the instance of this class.
 	 */
-	private State( final String _name, final String _abbrev )
+	private State( final String name, final String abbrev )
 	{
-	    name = _name;
-	    abbrev = _abbrev;
+	    this.name = name;
+	    this.abbrev = abbrev;
 	}
 
 	/**
@@ -98,5 +98,13 @@ public class State {
 	public String toString()
 	{
 	    return( name + " (" + abbrev + ")" );
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getAbbreviation() {
+		return abbrev;
 	}
 }

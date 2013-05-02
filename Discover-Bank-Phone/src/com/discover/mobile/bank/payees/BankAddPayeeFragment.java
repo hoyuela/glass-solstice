@@ -22,6 +22,7 @@ import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
+import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
@@ -94,21 +95,21 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		/**Hide top note by default**/
 		final TextView topNote = (TextView)mainView.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
-		noteTitle.setVisibility(View.GONE);
-		noteTextMsg.setVisibility(View.GONE);
+		hideBottomNote();
 
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
+		BankHeaderProgressIndicator progressIndicator = getProgressIndicator();
 		progressIndicator.initialize(0);
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_payee_details, R.string.bank_payee_added, R.string.bank_payee_added);
 
 		if( isUpdate ) {
-			actionButton.setText(R.string.bank_save_payee);
+			getActionButton().setText(R.string.bank_save_payee);
 		} else {
-			actionButton.setText(R.string.bank_add_payee);
+			getActionButton().setText(R.string.bank_add_payee);
 		}
 
-		actionLink.setText(R.string.bank_add_cancel);
+		getActionLink().setText(R.string.bank_add_cancel);
 	}
 
 
@@ -126,7 +127,8 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 */
 	protected boolean canProceed() {
 		boolean ret = true;
-
+		List<?> content = getContent();
+		
 		/**Iterate through each BankEditDetail object and make sure their editable field validates correctly*/
 		if( content != null){
 			for(final Object element : content) {
@@ -151,6 +153,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 * Shows inline errors for all BankEditDetail objects if fields do not validate correctly.
 	 */
 	protected void updateFieldsAppearance() {
+		List<?> content = getContent();
 		/**Iterate through each BankEditDetail and ensure it validates correctly otherwise show inline errors*/
 		if( content != null){
 			for(final Object element : content) {
@@ -199,6 +202,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 */
 	protected int getFindError() {
 		int firstItemWithError = -1;
+		List<?> content = getContent();
 		
 		/**Iterate through each BankEditDetail and ensure it validates correctly otherwise show inline errors*/
 		if( content != null) {
@@ -314,9 +318,10 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		}
 
 		if( arguments != null ) {
+			List<?> content = getContent();
 			/**Store the state of the editable fields, to re-open keyboard on orientation change if necessary*/
-			if( this.content != null ) {
-				for( final Object object : this.content) {
+			if( content != null ) {
+				for( final Object object : content) {
 					if( object instanceof BankEditDetail ) {
 						final BankEditDetail item = (BankEditDetail)object;
 						
@@ -329,8 +334,8 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 							arguments.putString(key +KEY_ERROR_EXT, item.getEditableField().getErrorLabel().getText().toString());
 						}
 						
-						if( generalError.getVisibility() == View.VISIBLE ) {
-							arguments.putString(KEY_ERROR_EXT, generalError.getText().toString());
+						if( getGeneralError().getVisibility() == View.VISIBLE ) {
+							arguments.putString(KEY_ERROR_EXT, getGeneralError().getText().toString());
 						}
 					}
 				}
@@ -341,7 +346,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	protected void updateUi() {
 		/**Restore the state of the editable fields and re-open keyboard if either of them had focus*/
 		if( bundle != null  ) {
-			for( final Object object : this.content) {
+			for( final Object object : getContent()) {
 				if( object instanceof BankEditDetail ) {
 					
 					final BankEditDetail item = (BankEditDetail)object;
@@ -352,7 +357,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 					
 					
 					if( hasFocus || !Strings.isNullOrEmpty(errorString) || 
-						(!Strings.isNullOrEmpty(genError) && generalError.getVisibility() == View.VISIBLE) ) {
+						(!Strings.isNullOrEmpty(genError) && getGeneralError().getVisibility() == View.VISIBLE) ) {
 						/** 
 						 * Have to execute the setting of the editable field to edit mode asyncronously otherwise
 						 * the keyboard doesn't open.
@@ -423,7 +428,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	public void clearErrors() {
 		clearGeneralError();
 		
-		for( final Object object : this.content) {
+		for( final Object object : getContent()) {
 			if( object instanceof BankEditDetail ) {
 				final BankEditDetail detail = (BankEditDetail) object;
 				detail.getEditableField().clearErrors();
@@ -440,6 +445,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 * @param text The inline error text is to be applied to the field
 	 */
 	public void setErrorString(final int field, final String text) {
+		List<?> content = getContent();
 		if( content != null && field < content.size() ) {
 			final BankEditDetail detail = getFieldDetail(field);
 			
@@ -460,6 +466,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 */
 	public BankEditDetail getFieldDetail(final int field)  {
 		BankEditDetail ret = null;
+		List<?> content = getContent();
 		
 		if( content != null && field < content.size() ) {
 			ret =  ((BankEditDetail)content.get(field)); 

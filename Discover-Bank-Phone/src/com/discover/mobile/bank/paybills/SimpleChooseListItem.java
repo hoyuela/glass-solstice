@@ -168,7 +168,7 @@ public class SimpleChooseListItem extends RelativeLayout{
 	/**
 	 * @param item the item to set
 	 */
-	public void setItem(final Serializable item) {
+	public final void setItem(final Serializable item) {
 		this.item = item;
 	}
 

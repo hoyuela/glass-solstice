@@ -35,7 +35,7 @@ import com.google.common.base.Strings;
  */
 public class DepositSubmissionActivity extends BaseActivity implements CompletionListener {
 	/**The Debug TAG for this activity*/
-	final String TAG = DepositSubmissionActivity.class.getSimpleName();
+	private static final String TAG = DepositSubmissionActivity.class.getSimpleName();
 
 	/**An AsyncTask that handles changing the loading image every second.*/
 	private SecondTimer timerAnimator = new SecondTimer();
@@ -171,11 +171,11 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	 * @author scottseward
 	 */
 	protected class SecondTimer extends AsyncTask<Void, Void, Void> {
-		final long oneSecondInMilliSeconds = 1000;
+		private static final long ONE_SECOND_IN_MILLISECONDS = 1000;
 		@Override
 		protected Void doInBackground(final Void... params) {
 			try {
-				Thread.sleep(oneSecondInMilliSeconds);
+				Thread.sleep(ONE_SECOND_IN_MILLISECONDS);
 			} catch (final InterruptedException e) {
 				Log.d(TAG, "Error sleeping thread for animation " + e);
 			}

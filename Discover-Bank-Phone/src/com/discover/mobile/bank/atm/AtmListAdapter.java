@@ -66,22 +66,25 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 	@Override
 	public View getView(final int position, View view, final ViewGroup parent){
 		ItemViewHolder holder = null;
+		View convertedView;
 
 		final AtmDetail detail = results.get(position);
 
 		/**If the view is null, create a new one*/
-		if(null == view || !(view.getTag() instanceof ItemViewHolder)){
+		if(null == view || !(view.getTag() instanceof ItemViewHolder)) {
 			holder = new ItemViewHolder();
-			view = inflater.inflate(getLayout(detail), null);
-			holder = updateViewHolder(holder, view);
+			convertedView = inflater.inflate(getLayout(detail), null);
+			holder = updateViewHolder(holder, convertedView);
+			
 			/**Else reuse the old one*/
-		}else{
-			holder = (ItemViewHolder) view.getTag();
+		} else {
+			convertedView = view;
+			holder = (ItemViewHolder) convertedView.getTag();
 		}
 
 		setUpClickableItems(holder, detail);
 		displayItems(holder, detail, position);
-		return view;
+		return convertedView;
 	}
 
 	/**
@@ -309,26 +312,26 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 	 * @author jthornton
 	 *
 	 */
-	private class ItemViewHolder {
-		public RelativeLayout top;
-		public ImageView expand;
-		public TextView title;
-		public TextView address;
-		public TextView address2;
-		public TextView distance;
-		public RelativeLayout bottom;
-		public TextView hours;
-		public TextView hoursLabel;
-		public TextView serviceLabel;;
-		public TextView service1;
-		public TextView service2;
-		public TextView service3;
-		public TextView service4;
-		public TextView service5;
-		public Button email;
-		public ImageView directions;
-		public TextView report;
-		public ImageView streetview;
-		public int numFeatures = 0;
+	private static class ItemViewHolder {
+		private RelativeLayout top;
+		private ImageView expand;
+		private TextView title;
+		private TextView address;
+		private TextView address2;
+		private TextView distance;
+		private RelativeLayout bottom;
+		private TextView hours;
+		private TextView hoursLabel;
+		private TextView serviceLabel;;
+		private TextView service1;
+		private TextView service2;
+		private TextView service3;
+		private TextView service4;
+		private TextView service5;
+		private Button email;
+		private ImageView directions;
+		private TextView report;
+		private ImageView streetview;
+		private int numFeatures = 0;
 	}
 }

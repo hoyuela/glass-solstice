@@ -21,6 +21,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.atm.AtmDetail;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.ui.table.BaseTable;
+import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
 import com.discover.mobile.bank.ui.table.TableTitles;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.utils.StringUtility;
@@ -58,6 +59,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 		final AtmResults results = (AtmResults)bundle.get(BankExtraKeys.DATA_LIST_ITEM);
 		/**Current amount of results being shown*/
 		final int index = (bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0));
+		TableLoadMoreFooter footer = getLoadMoreFooter();
 
 		//If the results is empty or null
 		if(null == results || null == results.results || null == results.results.atms || results.results.atms.isEmpty()){
@@ -82,7 +84,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 		if(!observer.canLoadMore()){
 			showNothingToLoad();
 		}else{
-			table.setMode(Mode.PULL_FROM_END);
+			getTable().setMode(Mode.PULL_FROM_END);
 		}
 	}
 
@@ -119,7 +121,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 	@Override
 	public void maybeLoadMore() {
 		if(observer.canLoadMore()){
-			footer.showLoading();
+			getLoadMoreFooter().showLoading();
 			//Delay the loading of the load more so that the listener has time to refresh.
 			final Handler handler = new Handler(); 
 			handler.postDelayed(new Runnable() { 
@@ -141,6 +143,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
 	@Override
 	public void setupFooter() {
+		TableLoadMoreFooter footer = getLoadMoreFooter();
 		footer.getGo().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
@@ -183,7 +186,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
 	@Override
 	public View getFooter() {
-		return footer;
+		return getLoadMoreFooter();
 	}
 
 	@Override

@@ -36,7 +36,7 @@ import com.discover.mobile.common.help.HelpWidget;
  *
  */
 public class BankSelectPayee extends BaseFragment{
-	final String TAG = BankSelectPayee.class.getSimpleName();
+	final static String TAG = BankSelectPayee.class.getSimpleName();
 
 	/**List of payees*/
 	private ListPayeeDetail payees;
@@ -45,7 +45,7 @@ public class BankSelectPayee extends BaseFragment{
 	private LinearLayout payeesList;
 
 	/**Text view holding the empty list message*/
-	protected TextView empty;
+	private TextView empty;
 
 	private View view;
 

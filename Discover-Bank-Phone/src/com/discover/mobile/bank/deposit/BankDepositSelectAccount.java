@@ -39,7 +39,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	/**
 	 * Used to log into Android logcat
 	 */
-	private final String TAG = BankDepositSelectAccount.class.getSimpleName();
+	private final static String TAG = BankDepositSelectAccount.class.getSimpleName();
 
 	/**
 	 * Boolean flag to detect if the user just accepted the terms and conditions,
@@ -53,16 +53,16 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
 		/**Hide controls that are not needed*/
-		actionButton.setVisibility(View.GONE);
-		actionLink.setVisibility(View.GONE);
-		noteTitle.setVisibility(View.GONE);
-		noteTextMsg.setVisibility(View.GONE);
+		getActionButton().setVisibility(View.GONE);
+		getActionLink().setVisibility(View.GONE);
+		hideBottomNote();
 
 		//Load the terms boolean from the arguments bundle, then clear it
 		clearTermsBoolean(loadTermsBoolean(getArguments()));
 		
-		if(acceptedTerms)
+		if(acceptedTerms){
 			showHowItWorksModal();
+		}
 		
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
@@ -171,8 +171,9 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 					if(reviewDepositOnFinish){
 						final BankNavigationRootActivity current = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 						Bundle bundle = current.getIntent().getExtras();
-						if(bundle == null)
+						if(bundle == null){
 							bundle = new Bundle();
+						}
 						bundle.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, true);
 						bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
 						bundle.putInt(BankExtraKeys.AMOUNT, depositAmount);
@@ -235,8 +236,9 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	 * @param arguments a Bundle that was supplied from this fragment.
 	 */
 	private Bundle loadTermsBoolean(final Bundle bundle) {
-		if(bundle != null)
+		if(bundle != null){
 			acceptedTerms = bundle.getBoolean(BankExtraKeys.ACCEPTED_TERMS);
+		}
 		return bundle;
 	}
 	
@@ -246,8 +248,9 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	 * @param bundle
 	 */
 	private void clearTermsBoolean(final Bundle bundle) {
-		if(bundle != null) 
+		if(bundle != null){ 
 			bundle.putBoolean(BankExtraKeys.ACCEPTED_TERMS, false);
+		}
 	}
 
 	@Override

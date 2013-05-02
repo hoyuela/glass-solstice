@@ -138,7 +138,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	private OnClickListener getLayoutListener(final int index) {
 		return new OnClickListener(){
 			@Override
-			public void onClick(final View v) {
+			public final void onClick(final View v) {
 				enableCell(index);				
 			}
 		};
@@ -503,8 +503,9 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 			
 			@Override
 			public void run() {
-				if(calendarFragment != null)
+				if(calendarFragment != null){
 					calendarFragment.dismiss();
+				}
 			}
 		};
 	}

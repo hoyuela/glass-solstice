@@ -23,14 +23,7 @@ public class BankSelectAccountItem extends BankAccountView {
 		
 		this.listener = listener;
 	}
-	/**
-	 * Method used to retrieve the Account associated with this view.
-	 * 
-	 * @return Returns to account object passed in via the constructor at instantiation
-	 */
-	public Account getAccount() {
-		return account;
-	}
+
 	
 	/**
 	 * 
@@ -39,10 +32,10 @@ public class BankSelectAccountItem extends BankAccountView {
 	@Override
 	public void setEnding(final AccountNumber value) {
 		try {
-			acctEnding.setText("(..." +account.accountNumber.ending +")");
+			getAccountEnding().setText("(..." + getAccount().accountNumber.ending +")");
 		} catch(final Exception ex) {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
-				acctEnding.setText("");
+				getAccountEnding().setText("");
 			}
 		}
 	}

@@ -33,7 +33,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  *
  */
 public abstract class DetailViewPager extends BaseFragment implements DynamicDataFragment{
-	private final String TAG = DetailViewPager.class.getSimpleName();
+	private static final String TAG = DetailViewPager.class.getSimpleName();
 
 	/** The View Pager*/
 	private ViewPager viewPager;
@@ -226,27 +226,8 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 		updateSlidingDrawerLock();
 		loadMoreIfNeeded(position);
 		updateNavigationButtons();
-		updateScheduledPaymentWarning(position);
 	}
 
-	/**
-	 * 
-	 * @param position
-	 */
-	private void updateScheduledPaymentWarning(final int position) {
-		/*TODO: Need to know why this is required, this is not in the comps nor is it in the acceptance criteria
-		if(isUserPrimaryHolder(position) || !isFragmentEditable(position)){
-			jointAccountWarning.setVisibility(View.GONE);
-		}else if(isFragmentEditable(position)){
-			final String accountWarningText = this.getActivity().getString(R.string.non_primary_joint_account_warning);
-			// FIXME Need to know how we are getting the account holder's name to put in here.
-			final String accountHolderName = "Account Holder";
-			final String formattedWarningText = String.format(accountWarningText, accountHolderName);
-			jointAccountWarning.setText(formattedWarningText);
-			jointAccountWarning.setVisibility(View.VISIBLE);
-		}
-		 */
-	}
 
 	/**
 	 * If the position provided is not zero, or, the start of the list, then lock the sliding drawer

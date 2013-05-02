@@ -158,7 +158,7 @@ public abstract class NetworkServiceCall<R> {
 	static final int RESULT_START = 3;
 
 	private final ServiceCallParams params;
-	private final String BASE_URL;
+	private final String baseURL;
 	private final String X_APP_VERSION;
 	private final String X_CLIENT_PLATFORM;
 
@@ -185,7 +185,7 @@ public abstract class NetworkServiceCall<R> {
 		this.context = context;
 		this.params = params;
 
-		BASE_URL = getBaseUrl();
+		baseURL = getBaseUrl();
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xApplicationVersion);
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xClientPlatform);
 
@@ -203,7 +203,7 @@ public abstract class NetworkServiceCall<R> {
 		this.context = context;
 		this.params = params;
 
-		BASE_URL = url;
+		baseURL = url;
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xApplicationVersion);
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xClientPlatform);
 
@@ -412,15 +412,9 @@ public abstract class NetworkServiceCall<R> {
 
 	private HttpURLConnection createConnection() throws IOException {
 		final URL fullUrl = getFullUrl();
-		// if (fullUrl.getProtocol().toLowerCase().equals("https")) {
-		// trustAllHosts();
-		// HttpsURLConnection https = (HttpsURLConnection)
-		// fullUrl.openConnection();
-		// https.setHostnameVerifier(DO_NOT_VERIFY);
-		// conn = https;
-		// } else {
+		
 		conn = (HttpURLConnection) fullUrl.openConnection();
-		// }
+
 		return conn;
 	}
 
@@ -466,7 +460,7 @@ public abstract class NetworkServiceCall<R> {
 	}
 
 	private URL getFullUrl() throws IOException {
-		return new URL(BASE_URL + params.path);
+		return new URL(baseURL + params.path);
 	}
 
 	private void prepareConnection() throws IOException, NoSuchAlgorithmException {

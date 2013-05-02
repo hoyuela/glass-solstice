@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
  * Class derived from BankEditDetail used for displaying a Spinner with a list of abbreviations for
@@ -22,6 +23,7 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
 	 * Spinner that displays a list of abbreviations for each U.S. States
 	 */
 	private Spinner stateSpinner;
+	
 	/**
 	 * Flag used to determine whether the spinner was shown because the user clicked on the layout of this control.
 	 */
@@ -29,21 +31,21 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
 	
 	public BankStateDetail(final Context context) {
 		super(context);
+		doSetup();
 	}
 	
 	public BankStateDetail(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-	}
-	public BankStateDetail(final Context context, final AttributeSet attrs, final int defStyle) {
-		super(context, attrs, defStyle);
+		doSetup();
 	}
 	
-	@Override
-	protected void doSetup(final Context context) {
-		super.doSetup(context);
-		
+	public BankStateDetail(final Context context, final AttributeSet attrs, final int defStyle) {
+		super(context, attrs, defStyle);
+		doSetup();
+	}
+	
+	private void doSetup() {		
 		initializeSpinner();
-		
 	}
 	
 	@Override
@@ -59,6 +61,7 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
 
 	private void initializeSpinner() {
 		stateSpinner = new Spinner(getContext());
+		TextView middleLabel = getMiddleLabel();
 		
 		if( middleLabel != null && stateSpinner != null ) {
 			/**Create Adapter that will state the list of U.S. State abbreviations*/
@@ -74,7 +77,7 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
 			params.addRule(RelativeLayout.ALIGN_LEFT, middleLabel.getId());
 			stateSpinner.setLayoutParams(params);
 			stateSpinner.setVisibility(View.INVISIBLE);		
-			((ViewGroup) view).addView(stateSpinner);
+			((ViewGroup) getView()).addView(stateSpinner);
 			
 			/**Set Event Handlers*/
 			stateSpinner.setOnItemSelectedListener(this);
@@ -124,7 +127,8 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
  	     */
 		if( stateSpinner != null && stateSpinnerClicked) {
 			final State state = (State)stateSpinner.getSelectedItem();
-			setText(state.abbrev);
+			setText(state.getAbbreviation());
+			BankEditDetail nextDetail = getNextDetail();
 			
 			if( nextDetail != null ) {
 				stateSpinnerClicked = false;
