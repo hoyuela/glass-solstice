@@ -30,7 +30,7 @@
     <string name="skipsso_modal_title">We\'re Sorry</string>
     <string name="skipsso_modal_body">
         Due to special conditions related to your credit card account, we can\'t provide you with access to your account 
-        information at this time. \n\n Because of increased security measures, you will need to log into Discover Bank in 
+        information at this time. \n\nBecause of increased security measures, you will need to log into Discover Bank in 
         order to access your online account.</string>
     <string name="skipsso_modal_button">Continue</string>
 
