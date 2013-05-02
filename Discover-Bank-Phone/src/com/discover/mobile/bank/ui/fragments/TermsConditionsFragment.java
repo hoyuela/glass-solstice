@@ -45,9 +45,6 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	/**We need an api call that is avaialable in API11+ so this is defined to check against version numbers*/
 	private static final int API_ELEVEN = 11;
 
-	/**The String resource that is used for the title in the Action bar*/
-	int titleStringResource;
-
 	/**The ProgressBar that is shown while the web view loads its content */
 	private ProgressBar loadingSpinner;
 

@@ -44,7 +44,7 @@ public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
 		/**Set String for when user does not have payees and has navigated to this screen*/
-		empty.setText(R.string.bank_payee_empty);
+		getEmpty().setText(R.string.bank_payee_empty);
 		
 		/**Set click listener to open BankEnterPayeeFragment*/
 		addPayee = (Button)view.findViewById(R.id.add_payee);

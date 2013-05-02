@@ -30,7 +30,7 @@ public class FAQDetailFragment extends BaseFragment {
 	private final static String SCROLL_Y = "a";
 	
 	/** The list of FAQ items that will be shown in this Fragment */
-	final List<FAQListItem>faqItems = new ArrayList<FAQListItem>();
+	private final List<FAQListItem>faqItems = new ArrayList<FAQListItem>();
 
 	/**
 	 * Setup the Fragment to be shown.

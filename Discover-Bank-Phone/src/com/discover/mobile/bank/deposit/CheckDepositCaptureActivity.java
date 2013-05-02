@@ -891,7 +891,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	public class CameraCountdownTask extends AsyncTask<Void, Void, Void> {
 		private boolean isRunning = false;
-		final int oneSecond = 1000;
+		private static final int ONE_SECOND = 1000;
 
 		/**
 		 * Before the task begins its background processing, make sure that the close button is not visible
@@ -910,7 +910,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		@Override
 		protected Void doInBackground(final Void... params) {
 			try {
-				Thread.sleep(oneSecond);
+				Thread.sleep(ONE_SECOND);
 			} catch (final InterruptedException e) {
 				Log.e(TAG, "Countdown Thread Interrupted: " + e);
 			}

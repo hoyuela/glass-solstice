@@ -21,7 +21,7 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 public class RefreshBankSessionCall extends BankNetworkServiceCall<Object> {
 
 	/**Reference handler for returning to the UI*/
-	final TypedReferenceHandler<Object> handler;
+	private final TypedReferenceHandler<Object> handler;
 	
 	public RefreshBankSessionCall(final Context context, final AsyncCallback<Object> callback) {
 		super(context, new GetCallParams(BankUrlManager.getRefreshSessionUrl()) {

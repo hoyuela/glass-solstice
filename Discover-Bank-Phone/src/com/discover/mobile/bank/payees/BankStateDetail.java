@@ -127,7 +127,7 @@ public class BankStateDetail extends BankEditDetail implements OnItemSelectedLis
  	     */
 		if( stateSpinner != null && stateSpinnerClicked) {
 			final State state = (State)stateSpinner.getSelectedItem();
-			setText(state.abbrev);
+			setText(state.getAbbreviation());
 			BankEditDetail nextDetail = getNextDetail();
 			
 			if( nextDetail != null ) {

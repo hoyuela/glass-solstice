@@ -75,8 +75,8 @@ public final class State {
 	};
 
 	
-	public String name = "";
-	public String abbrev = "";
+	private String name = "";
+	private String abbrev = "";
 
 	/***
 	 * Constructo used to populate name and abbreviation at instantiation.
@@ -98,5 +98,13 @@ public final class State {
 	public String toString()
 	{
 	    return( name + " (" + abbrev + ")" );
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getAbbreviation() {
+		return abbrev;
 	}
 }
