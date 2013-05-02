@@ -2,7 +2,6 @@ package com.discover.mobile.bank.ui.table;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -186,7 +185,7 @@ public class ListItemGenerator {
 	}
 
 	public ViewPagerListItem getStatusCell(final String status) {
-		return getTwoItemCell(R.string.status, BankStringFormatter.capitalize(status.toLowerCase(Locale.US)));
+		return getTwoItemCell(R.string.status, status);
 	}
 
 	public ViewPagerListItem getConfirmationCell(final String confirmationNumber) {
