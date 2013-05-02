@@ -2,6 +2,7 @@ package com.discover.mobile.bank.ui.table;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -185,7 +186,7 @@ public class ListItemGenerator {
 	}
 
 	public ViewPagerListItem getStatusCell(final String status) {
-		return getTwoItemCell(R.string.status, status);
+		return getTwoItemCell(R.string.status, BankStringFormatter.capitalize(status.toLowerCase(Locale.US)));
 	}
 
 	public ViewPagerListItem getConfirmationCell(final String confirmationNumber) {
@@ -406,7 +407,7 @@ public class ListItemGenerator {
 		}else if (STATUS_CANCELLED.equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
-			paymentDateItem.getTopLabel().setText(R.string.completed_pay_date);
+			paymentDateItem.getTopLabel().setText(R.string.schedule_pay_date);
 		}
 
 		return paymentDateItem;

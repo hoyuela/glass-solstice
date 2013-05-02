@@ -101,6 +101,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 */
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+		setRetainInstance(true);
 		super.onCreate(savedInstanceState);
 		final View mainView = inflater.inflate(R.layout.account_item_detail_view, null);
 
