@@ -513,10 +513,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			//Mark the scheduled activity dirty so that it is refreshed
 			final Account account = BankUser.instance().getAccount(detail.paymentAccount.id);
 			if(null != account){
-				account.scheduled = null;
+				account.scheduled = null;			
 			}
 			//Mark the scheduled payments dirty so that it is refreshed
 			BankUser.instance().setScheduled(null);
+			
+			//Mark the cancelled payment dirty so that it is refreshed
+			BankUser.instance().setCancelled(null);
 		}
 		//Payee Search Success, navigate to Add Payee Workflow Step 4
 		else if( sender instanceof SearchPayeeServiceCall ) {
