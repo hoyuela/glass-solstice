@@ -2,6 +2,7 @@ package com.discover.mobile.bank.ui.table;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -70,30 +71,28 @@ public class TableLoadMoreFooter extends RelativeLayout implements OnClickListen
 		load.clearAnimation();
 		go.setVisibility(View.VISIBLE);
 		line.setVisibility(View.VISIBLE);
-		privacy.setVisibility(View.VISIBLE);
-	}
-
-	/**
-	 * Show the list is empty view
-	 * @param message
-	 */
-	public void showEmpty(){
-		load.setVisibility(View.GONE);
-		load.clearAnimation();
-		go.setVisibility(View.GONE);
-		line.setVisibility(View.GONE);
-		privacy.setVisibility(View.GONE);
+		
+		/** Right Justify Privacy & Terms */
+		final RelativeLayout.LayoutParams params = (LayoutParams) privacy.getLayoutParams();
+		params.rightMargin = (int) getResources().getDimension(R.dimen.forms_inner_padding);
+		privacy.setLayoutParams(params);
+		privacy.setGravity(Gravity.RIGHT);
 	}
 
 	/**
 	 * Show the hide all view
 	 */
-	public final void hideAll(){
+	public final void hideAll(){		
 		load.setVisibility(View.GONE);
 		load.clearAnimation();
 		go.setVisibility(View.GONE);
 		line.setVisibility(View.GONE);
-		privacy.setVisibility(View.GONE);
+		
+		/** Center Justify Privacy & Terms */
+		final RelativeLayout.LayoutParams params = (LayoutParams) privacy.getLayoutParams();
+		params.rightMargin = 0;
+		privacy.setLayoutParams(params);
+		privacy.setGravity(Gravity.CENTER_HORIZONTAL);
 	}
 
 	/**
