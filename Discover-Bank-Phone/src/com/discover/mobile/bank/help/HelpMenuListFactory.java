@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
-import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.atm.AtmModalFactory;
@@ -40,7 +39,7 @@ public final class HelpMenuListFactory {
 	 * Private constructor, creates the default help menu items.
 	 */
 	private HelpMenuListFactory(){
-		allFaq = new HelpItemGenerator(R.string.common_help_all_faq, true, false, getAllFaqListener());
+		allFaq = new HelpItemGenerator(R.string.common_help_all_faq, true, true, getAllFaqListener());
 	}
 
 	/**
@@ -124,10 +123,10 @@ public final class HelpMenuListFactory {
 	 */
 	public List<HelpItemGenerator> getCheckDepositHelpItems(){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
-		final HelpItemGenerator howItWorksModal = new HelpItemGenerator(R.string.check_deposit_help, true, false, 
+		final HelpItemGenerator howItWorksModal = new HelpItemGenerator(R.string.check_deposit_help, false, true, 
 				getHowItWorksModalListener());
-		items.add(allFaq);
 		items.add(howItWorksModal);
+		items.add(allFaq);
 		return items;
 	}
 
@@ -138,9 +137,9 @@ public final class HelpMenuListFactory {
 	public List<HelpItemGenerator> getAtmHelpItems(final AtmMapFragment fragment){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
 		final HelpItemGenerator atmHelp = 
-				new HelpItemGenerator(R.string.help_menu_atm_help, true, false, getAtmHelpListener(fragment));
-		items.add(allFaq);
+				new HelpItemGenerator(R.string.help_menu_atm_help, false, true, getAtmHelpListener(fragment));
 		items.add(atmHelp);
+		items.add(allFaq);
 		return items;
 	}
 
@@ -164,21 +163,6 @@ public final class HelpMenuListFactory {
 				activity.showCustomAlert(AtmModalFactory.getAtmLocatorHelpModal(fragment));
 				fragment.setHelpModalShowing(true);
 			}	
-		};
-	}
-
-	/**
-	 * Default click listener for menu items. On click the menu item will navigate the user to
-	 * a sub section of all the FAQs
-	 * @return the click listener for menu items
-	 */
-	private OnClickListener getDefaultClickListener(final String faqType){
-		return new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				BankConductor.navigateToSpecificFaq(faqType);
-
-			}
 		};
 	}
 

@@ -406,7 +406,7 @@ public class ListItemGenerator {
 		}else if (STATUS_CANCELLED.equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
-			paymentDateItem.getTopLabel().setText(R.string.completed_pay_date);
+			paymentDateItem.getTopLabel().setText(R.string.schedule_pay_date);
 		}
 
 		return paymentDateItem;
