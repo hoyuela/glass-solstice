@@ -54,7 +54,7 @@
     <string name="bank_network_connection_error_action">Retry</string>
     
     <!-- SSO modal string -->
-    <string name="sso_bad_bank_status_title">Your Request Could Not Be Completed</string>
-    <string name="sso_bad_bank_status_content">Due to special conditions related to your credit card account, we can\'t provide you with access to your credit card account information at this time. To login to Discover Bank only please select Continue Below.</string>
+    <string name="sso_bad_bank_status_title">We\'re Sorry</string>
+    <string name="sso_bad_bank_status_content">Due to special conditions related to your bank account, we can\'t provide you with access to your bank account at this time.  To login to Discover Card only please select Continue below.</string>
 	<string name="sso_bad_bank_button">Continue</string>
 </resources>

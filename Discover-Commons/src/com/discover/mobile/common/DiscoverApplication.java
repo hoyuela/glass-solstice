@@ -2,6 +2,7 @@ package com.discover.mobile.common;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.acra.annotation.ReportsCrashes;
 
@@ -10,7 +11,7 @@ import android.app.Application;
 @ReportsCrashes(formKey = "dDAzM3VJakhEcHpvV2dsZlpJcXZqOGc6MQ")
 public class DiscoverApplication extends Application {
 
-	HashMap<String, Object> globalData=new HashMap<String, Object>();
+	Map<String, Object> globalData=new HashMap<String, Object>();
 	List<String>cookie;
 	
 	static {
@@ -36,7 +37,7 @@ public class DiscoverApplication extends Application {
 	 * Thsi method return the data stored in hashmap
 	 * @return data Actual data
 	 */
-	public HashMap<String,Object> getData()
+	public Map<String,Object> getData()
 	{
 		return globalData;
 		
