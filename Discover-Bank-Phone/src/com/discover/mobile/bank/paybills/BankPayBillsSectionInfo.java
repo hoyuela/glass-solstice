@@ -127,9 +127,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 					BankConductor.navigateToPayBillsLanding();
 				} else if (isEligible() && !isEnrolled()) {
 					sendToTermsScreen(R.string.review_payments_title);
-				} else if (null == BankUser.instance().getPayees() && null == BankUser.instance().getScheduled()) {
-					BankServiceCallFactory.createGetPayeeServiceRequest(true).submit();
-				} else if (null != BankUser.instance().getPayees() && null != BankUser.instance().getScheduled()) {
+				} else if( null != BankUser.instance().getScheduled()) {
 					final Bundle bundle = new Bundle();
 					bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, BankUser.instance().getScheduled());
 					BankConductor.navigateToReviewPaymentsTable(bundle);
