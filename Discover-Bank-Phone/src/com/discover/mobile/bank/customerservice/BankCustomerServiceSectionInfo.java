@@ -16,8 +16,10 @@ public final class BankCustomerServiceSectionInfo extends GroupComponentInfo {
 		super(R.string.section_title_customer_service,
 				new ClickComponentInfo(R.string.sub_section_title_contact_us, false, onContactUsClick() ),
 				new ClickComponentInfo(R.string.sub_section_title_faq, false, onFaqClick()),
-				new ClickComponentInfo(R.string.sub_section_title_secure_message,true, externalLink(BankUrlManager.getStatementsUrl())),
-				new ClickComponentInfo(R.string.sub_section_title_user_profile,true, externalLink(BankUrlManager.getStatementsUrl())));
+				new ClickComponentInfo(R.string.sub_section_title_secure_message,true, 
+																	externalLink(BankUrlManager.getStatementsUrl())),
+				new ClickComponentInfo(R.string.sub_section_title_user_profile,true, 
+																	externalLink(BankUrlManager.getStatementsUrl())));
 	}
 	
 	
