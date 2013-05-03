@@ -17,7 +17,8 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
  * @author scottseward
  *
  */
-public class GetPayBillsTermsAndConditionsCall extends BankJsonResponseMappingNetworkServiceCall<PayBillsTermsAndConditionsDetail>{
+public class GetPayBillsTermsAndConditionsCall extends 
+										BankJsonResponseMappingNetworkServiceCall<PayBillsTermsAndConditionsDetail>{
 	private final TypedReferenceHandler<PayBillsTermsAndConditionsDetail> handler;
 
 	public GetPayBillsTermsAndConditionsCall(final Context context,

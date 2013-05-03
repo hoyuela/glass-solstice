@@ -31,8 +31,9 @@ public final class BankUrlManager  {
 	private static final String GET_SSO_TOKEN_URL = "/api/auth/token/sso";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
 	private static final String CUSTOMER_SERVICE_URL = API_CUSTOMERS_CURRENT;
+	private static final String MANAGE_EXTERNAL_ACCOUNTS_URL = BANK_LOGIN_URL;
 	private static final String STATEMENTS_URL = BANK_LOGIN_URL;
-	private static final String OPEN_ACCOUNT_URL = BANK_LOGIN_URL;
+	private static final String OPEN_ACCOUNT_URL = "https://www.discover.com/online-banking/savings.html";
 	private static final String TERMS_AND_CONDITIONS_URL = "/api/content/payments/terms.js";
 	private static final String ACCEPT_PAY_BILLS_TERMS_URL = "/api/payments/terms";
 	private static final String ATM_LOCATOR_URL = "https://api.discover.com/api/atmLocator/SearchGeocodedLocation.xml";
@@ -298,6 +299,10 @@ public final class BankUrlManager  {
 	 */
 	public static String getStatementsUrl() {
 		return STATEMENTS_URL;
+	}
+	
+	public static String getManageExternalAccountsUrl() {
+		return MANAGE_EXTERNAL_ACCOUNTS_URL;
 	}
 
 	/**

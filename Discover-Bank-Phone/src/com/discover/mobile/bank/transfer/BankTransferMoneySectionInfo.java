@@ -25,8 +25,10 @@ public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 	public BankTransferMoneySectionInfo() {
 		super(R.string.section_title_transfer_money, 
 				new ClickComponentInfo(R.string.section_title_transfer_money, getTransferFundsLandingClickListener()),  
-				new ClickComponentInfo(R.string.sub_section_title_review_transfers,true, externalLink(BankUrlManager.getStatementsUrl())), 
-				new ClickComponentInfo(R.string.sub_section_title_manage_external_accounts,true,externalLink(BankUrlManager.getOpenAccountUrl())));
+				new ClickComponentInfo(R.string.sub_section_title_review_transfers,true, 
+															externalLink(BankUrlManager.getStatementsUrl())), 
+				new ClickComponentInfo(R.string.sub_section_title_manage_external_accounts,true,
+														externalLink(BankUrlManager.getManageExternalAccountsUrl())));
 	}
 
 	private static OnClickListener externalLink(final String url){
