@@ -31,6 +31,7 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		overridePendingTransition(R.anim.fragment_slide_in_right , R.anim.fragment_slide_out_left);
 		setContentView(R.layout.faq_logged_out);
 		showActionBar();
 		final SlidingMenu slidingMenu = ((SlidingFragmentActivity)this).getSlidingMenu();
@@ -44,6 +45,12 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 		if(this.getCurrentContentFragment() == null){
 			showFAQDetailIfNeeded();
 		}
+	}
+	
+	@Override
+	public void onPause() {
+		overridePendingTransition(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right);
+		super.onPause();
 	}
 	
 	private void showFAQDetailIfNeeded() {
