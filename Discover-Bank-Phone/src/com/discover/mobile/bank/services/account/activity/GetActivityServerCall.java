@@ -73,6 +73,9 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 				//therefore the session should not be cleared otherwise the token will be wiped out
 				clearsSessionBeforeRequest = false;
 
+				/**Set timeout to receive response to two minutes*/
+				this.readTimeoutSeconds = 120;
+				
 				//This ensures the token is added to the HTTP Authorization Header of the HTTP request
 				requiresSessionForRequest = true;
 

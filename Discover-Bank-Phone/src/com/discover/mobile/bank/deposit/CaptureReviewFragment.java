@@ -505,8 +505,11 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 
 					/**If has an image cell in-line error then show it on rotation*/
 					if(!Strings.isNullOrEmpty(imageError) ) {
-						showGeneralError( getActivity().getResources().getString(R.string.bank_deposit_error_notify) );
-						checkImageCell.showErrorLabel(imageError);
+						final Activity activity =  getActivity();
+						if( activity != null && checkImageCell != null) {
+							showGeneralError( activity.getResources().getString(R.string.bank_deposit_error_notify) );
+							checkImageCell.showErrorLabel(imageError);
+						}
 					}
 				}
 			}, oneSecond);

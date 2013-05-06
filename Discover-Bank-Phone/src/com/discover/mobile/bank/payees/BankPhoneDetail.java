@@ -25,8 +25,11 @@ public class BankPhoneDetail extends BankEditDetail {
 	public BankPhoneDetail(final Context context, final AttributeSet attrs, final int defStyle) {
 		super(context, attrs, defStyle);
 	}
+	   
+	@Override
+	protected void loadViews() { 		
+		super.loadViews();
 	
-	public final void loadLocalViews() { 		
 		/**Allow only character length of 12 characters, follow format  XXX-XXX-XXXX*/
 		final PayeeValidatedEditField phoneNumber = getEditableField();
 		phoneNumber.setMinimum(12);

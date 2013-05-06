@@ -2,6 +2,7 @@ package com.discover.mobile.bank.account;
 
 import java.util.List;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,7 +14,6 @@ import com.discover.mobile.bank.ui.fragments.DetailFragment;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.bank.util.BankStringFormatter;
-import com.google.common.base.Strings;
 
 /**
  * The Fragment responsible for presenting detailed information about a users Transactions.
@@ -36,10 +36,15 @@ public class ActivityDetailFragment extends DetailFragment {
 	protected void setupFragmentLayout(final View fragmentView) {
 		final ActivityDetail item = (ActivityDetail)getArguments().getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		
-		if(Strings.isNullOrEmpty(item.status) || ActivityDetail.POSTED.equalsIgnoreCase(item.status)){
+		final Bundle bundle = this.getArguments();
+		
+		/**This flag indicates whether the activity that will be displayed is a posted or scheduled activity*/
+		final boolean isPosted = bundle.getBoolean(BankExtraKeys.CATEGORY_SELECTED);
+		
+		if( isPosted ) {
 			setupTransactionData(item, fragmentView);
-		}else{
-			setupScheduledTransactionData(item, fragmentView);
+		} else {
+			setupScheduledTransactionData(item, fragmentView);			
 		}
 		
 	}
@@ -97,9 +102,11 @@ public class ActivityDetailFragment extends DetailFragment {
 		
 		((TextView)contentTable.findViewById(R.id.date_cell)).setText(
 				BankStringFormatter.convertDate(
-						item.postedDate.split(ActivityDetail.DATE_DIVIDER)[0]));
+						item.getTableDisplayDate().split(ActivityDetail.DATE_DIVIDER)[0]));
+		
+		final int value = item.getBalanceValue();
 		((TextView)contentTable.findViewById(R.id.balance_cell))
-		.setText(BankStringFormatter.convertCentsToDollars(item.balance.value));
+		.setText(BankStringFormatter.convertCentsToDollars(value));
 	}
 
 }
