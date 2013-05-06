@@ -88,6 +88,7 @@ public class AtmWebView{
 				loadingSpinner.setVisibility(View.GONE);
 				web.setVisibility(View.VISIBLE);
 				web.setBackgroundResource(R.color.transparentGray);
+				web.requestFocus(View.FOCUS_DOWN);
 				loadingSpinner.clearAnimation();
 			}
 
