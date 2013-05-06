@@ -118,6 +118,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		super.onResume();
 
 		restoreState();
+		checkImageCell.loadImages();
 
 		/**Check if an exception occurred  that needs to be handled*/
 		handlePendingSocketException();
@@ -487,14 +488,13 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 */
 	public void restoreState() {
 		if( bundle != null  ) {	
-			final long oneSecond = 1000;
 			
 			final String key = (amountDetail != null) ? amountDetail.getTopLabel().getText().toString() : "";
 			final String amountError = bundle.getString(key +KEY_ERROR_EXT);
 			final String imageError = bundle.getString(IMAGE_CELL_ERROR_KEY);
 
 			/**Handle display of inline error asyncronously*/
-			new Handler().postDelayed(new Runnable() {
+			new Handler().post(new Runnable() {
 				@Override
 				public void run() {			
 					/**If has amount in-line error then show it on rotation */
@@ -502,7 +502,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 						showGeneralError( getActivity().getResources().getString(R.string.bank_deposit_error_notify) );
 						amountDetail.getEditableField().showErrorLabelNoFocus(amountError);
 					}
-
 					/**If has an image cell in-line error then show it on rotation*/
 					if(!Strings.isNullOrEmpty(imageError) ) {
 						final Activity activity =  getActivity();
@@ -512,7 +511,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 						}
 					}
 				}
-			}, oneSecond);
+			});
 		}
 	}
 
