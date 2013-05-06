@@ -14,7 +14,7 @@
 
         <RelativeLayout
             android:id="@+id/acct_toggle_title_section"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="@dimen/toggle_cell_height"
             android:layout_alignParentTop="true" >
 
@@ -54,7 +54,7 @@
 
         <RelativeLayout
             android:id="@+id/acct_toggle_card_section"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="@dimen/toggle_cell_height"
             android:layout_below="@id/acct_toggle_divider" >
 
