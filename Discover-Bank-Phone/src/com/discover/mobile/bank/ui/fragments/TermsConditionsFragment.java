@@ -86,12 +86,16 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	boolean pageLoadSuccess = true;
 
 	@SuppressLint("NewApi")
-	private void setupWebView() {
+	private void setupWebView(boolean loadUrl) {
 		pageLoadSuccess = true;
 		final WebSettings webSettings = termsWebView.getSettings();
 		webSettings.setJavaScriptEnabled(true);
 		webSettings.setRenderPriority(RenderPriority.HIGH);
-		termsWebView.loadUrl(this.getTermsUrl());
+		
+		if (loadUrl) {
+			termsWebView.loadUrl(this.getTermsUrl());
+		}
+		
 		termsWebView.setBackgroundColor(Color.TRANSPARENT);
 		termsWebView.setWebViewClient(new WebViewClient() {
 			@Override
@@ -119,7 +123,11 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		}
 	}
 
-
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		termsWebView.saveState(outState);
+	}
+	
 	/**
 	 * Inflates the view and loads needed resources from the layout.
 	 * Also sets up the web view and starts loading the content.
@@ -133,7 +141,13 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 
 		final View mainView = inflater.inflate(R.layout.payment_terms_and_conditions, null);
 		loadResources(mainView);
-		setupWebView();
+		
+		if (savedInstanceState != null) {
+			termsWebView.restoreState(savedInstanceState);
+			setupWebView(false);
+		} else {
+			setupWebView(true);
+		}
 
 		/***Set the title of the page*/
 		pageTitle.setText(this.getPageTitle());
